@@ -19,6 +19,7 @@ import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarListItem
 import com.michaldrabik.ui_progress.main.ProgressMainUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -35,22 +36,10 @@ class CalendarViewModel @Inject constructor(
   private val translationsRepository: TranslationsRepository,
 ) : BaseViewModel() {
 
+  private var loadItemsJob: Job? = null
+
   private val itemsState = MutableStateFlow<List<CalendarListItem>?>(null)
   private val modeState = MutableStateFlow(CalendarMode.PRESENT_FUTURE)
-
-  val uiState = combine(
-    itemsState,
-    modeState
-  ) { s1, s2 ->
-    CalendarUiState(
-      items = s1,
-      mode = s2
-    )
-  }.stateIn(
-    scope = viewModelScope,
-    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = CalendarUiState()
-  )
 
   private val language by lazy { translationsRepository.getLanguage() }
   private var mode = CalendarMode.PRESENT_FUTURE
@@ -76,7 +65,8 @@ class CalendarViewModel @Inject constructor(
   }
 
   private fun loadItems() {
-    viewModelScope.launch {
+    loadItemsJob?.cancel()
+    loadItemsJob = viewModelScope.launch {
       val items = when (mode) {
         CalendarMode.PRESENT_FUTURE -> futureCase.loadItems(searchQuery ?: "")
         CalendarMode.RECENTS -> recentsCase.loadItems(searchQuery ?: "")
@@ -138,4 +128,18 @@ class CalendarViewModel @Inject constructor(
       isQuickRateEnabled = ratingsCase.isQuickRateEnabled()
     }
   }
+
+  val uiState = combine(
+    itemsState,
+    modeState
+  ) { s1, s2 ->
+    CalendarUiState(
+      items = s1,
+      mode = s2
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = CalendarUiState()
+  )
 }

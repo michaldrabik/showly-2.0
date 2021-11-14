@@ -25,6 +25,7 @@ import com.michaldrabik.ui_progress.progress.cases.ProgressPinnedItemsCase
 import com.michaldrabik.ui_progress.progress.cases.ProgressSortOrderCase
 import com.michaldrabik.ui_progress.progress.recycler.ProgressListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -44,31 +45,13 @@ class ProgressViewModel @Inject constructor(
   private val translationsRepository: TranslationsRepository,
 ) : BaseViewModel() {
 
+  private var loadItemsJob: Job? = null
+
   private val itemsState = MutableStateFlow<List<ProgressListItem>?>(null)
   private val loadingState = MutableStateFlow(false)
   private val overscrollState = MutableStateFlow(false)
   private val scrollState = MutableStateFlow(Event(false))
   private val sortOrderState = MutableStateFlow<Event<Pair<SortOrder, SortType>>?>(null)
-
-  val uiState = combine(
-    itemsState,
-    scrollState,
-    sortOrderState,
-    loadingState,
-    overscrollState
-  ) { s1, s2, s3, s4, s5 ->
-    ProgressUiState(
-      items = s1,
-      scrollReset = s2,
-      sortOrder = s3,
-      isLoading = s4,
-      isOverScrollEnabled = s5
-    )
-  }.stateIn(
-    scope = viewModelScope,
-    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = ProgressUiState()
-  )
 
   private val language by lazy { translationsRepository.getLanguage() }
   private var searchQuery: String? = null
@@ -89,7 +72,8 @@ class ProgressViewModel @Inject constructor(
   }
 
   private fun loadItems(resetScroll: Boolean = false) {
-    viewModelScope.launch {
+    loadItemsJob?.cancel()
+    loadItemsJob = viewModelScope.launch {
       loadingState.value = true
       val items = itemsCase.loadItems(searchQuery ?: "")
       itemsState.value = items
@@ -177,4 +161,24 @@ class ProgressViewModel @Inject constructor(
     itemsState.value = currentItems
     scrollState.value = Event(false)
   }
+
+  val uiState = combine(
+    itemsState,
+    scrollState,
+    sortOrderState,
+    loadingState,
+    overscrollState
+  ) { s1, s2, s3, s4, s5 ->
+    ProgressUiState(
+      items = s1,
+      scrollReset = s2,
+      sortOrder = s3,
+      isLoading = s4,
+      isOverScrollEnabled = s5
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = ProgressUiState()
+  )
 }

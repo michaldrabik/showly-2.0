@@ -24,6 +24,7 @@ import com.michaldrabik.ui_progress_movies.progress.cases.ProgressMoviesPinnedCa
 import com.michaldrabik.ui_progress_movies.progress.cases.ProgressMoviesSortCase
 import com.michaldrabik.ui_progress_movies.progress.recycler.ProgressMovieListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -42,6 +43,8 @@ class ProgressMoviesViewModel @Inject constructor(
   private val settingsRepository: SettingsRepository,
   private val translationsRepository: TranslationsRepository,
 ) : BaseViewModel() {
+
+  private var loadItemsJob: Job? = null
 
   private val itemsState = MutableStateFlow<List<ProgressMovieListItem.MovieItem>?>(null)
   private val scrollState = MutableStateFlow(Event(false))
@@ -67,7 +70,8 @@ class ProgressMoviesViewModel @Inject constructor(
   }
 
   private fun loadItems(resetScroll: Boolean = false) {
-    viewModelScope.launch {
+    loadItemsJob?.cancel()
+    loadItemsJob = viewModelScope.launch {
       val items = itemsCase.loadItems(searchQuery ?: "")
       itemsState.value = items
       scrollState.value = Event(resetScroll)

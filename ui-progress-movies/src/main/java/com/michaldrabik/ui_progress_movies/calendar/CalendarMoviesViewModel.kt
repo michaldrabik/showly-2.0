@@ -15,6 +15,7 @@ import com.michaldrabik.ui_progress_movies.calendar.helpers.CalendarMode
 import com.michaldrabik.ui_progress_movies.calendar.recycler.CalendarMovieListItem
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -31,22 +32,10 @@ class CalendarMoviesViewModel @Inject constructor(
   private val translationsRepository: TranslationsRepository,
 ) : BaseViewModel() {
 
+  private var loadItemsJob: Job? = null
+
   private val itemsState = MutableStateFlow<List<CalendarMovieListItem>?>(null)
   private val modeState = MutableStateFlow(CalendarMode.PRESENT_FUTURE)
-
-  val uiState = combine(
-    itemsState,
-    modeState
-  ) { s1, s2 ->
-    CalendarMoviesUiState(
-      items = s1,
-      mode = s2
-    )
-  }.stateIn(
-    scope = viewModelScope,
-    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = CalendarMoviesUiState()
-  )
 
   private val language by lazy { translationsRepository.getLanguage() }
   private var mode = CalendarMode.PRESENT_FUTURE
@@ -72,7 +61,8 @@ class CalendarMoviesViewModel @Inject constructor(
   }
 
   private fun loadItems() {
-    viewModelScope.launch {
+    loadItemsJob?.cancel()
+    loadItemsJob = viewModelScope.launch {
       val items = when (mode) {
         CalendarMode.PRESENT_FUTURE -> futureCase.loadItems(searchQuery ?: "")
         CalendarMode.RECENTS -> recentsCase.loadItems(searchQuery ?: "")
@@ -121,4 +111,18 @@ class CalendarMoviesViewModel @Inject constructor(
       isQuickRateEnabled = ratingsCase.isQuickRateEnabled()
     }
   }
+
+  val uiState = combine(
+    itemsState,
+    modeState
+  ) { s1, s2 ->
+    CalendarMoviesUiState(
+      items = s1,
+      mode = s2
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = CalendarMoviesUiState()
+  )
 }
