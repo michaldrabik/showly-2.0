@@ -76,6 +76,11 @@ class FollowedShowsFragment :
     outState.putInt("ARG_PAGE", followedShowsPager?.currentItem ?: 0)
   }
 
+  override fun onResume() {
+    super.onResume()
+    showNavigation()
+  }
+
   override fun onPause() {
     enableUi()
     tabsViewTranslation = followedShowsTabs.translationY

@@ -76,6 +76,11 @@ class FollowedMoviesFragment :
     outState.putInt("ARG_PAGE", followedMoviesPager?.currentItem ?: 0)
   }
 
+  override fun onResume() {
+    super.onResume()
+    showNavigation()
+  }
+
   override fun onPause() {
     enableUi()
     tabsViewTranslation = followedMoviesTabs.translationY
@@ -140,8 +145,6 @@ class FollowedMoviesFragment :
       followedMoviesTabs.updateTopMargin(dimenToPx(R.dimen.myMoviesSearchViewPadding) + statusBarSize)
       followedMoviesModeTabs.updateTopMargin(dimenToPx(R.dimen.collectionTabsMargin) + statusBarSize)
       followedMoviesIcons.updateTopMargin(dimenToPx(R.dimen.myMoviesSearchViewPadding) + statusBarSize)
-      followedMoviesSearchEmptyView.updateTopMargin(dimenToPx(R.dimen.searchViewHeightPadded) + statusBarSize)
-      followedMoviesSearchWrapper.updateTopMargin(dimenToPx(R.dimen.searchViewHeightPadded) + statusBarSize)
       followedMoviesSearchLocalView.updateTopMargin(dimenToPx(R.dimen.myMoviesSearchLocalViewPadding) + statusBarSize)
     }
   }
