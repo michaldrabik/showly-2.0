@@ -86,6 +86,7 @@
   <string name="textRemoveFromTraktHidden">¿Te gustaría eliminar este elemento de \'Elementos Ocultos\' de tu cuenta Trakt.tv?</string>
   <string name="textRemoveFromTraktWatchlist">¿Te gustaría eliminar este elemento de \'Pendientes\' de tu cuenta Trakt.tv?</string>
   <string name="textRemoveFromTraktProgress">¿Te gustaría eliminar este elemento de \'Progreso\' de tu cuenta Trakt.tv?</string>
+  <string name="textPremiumAd">¡Conviértete en un seguidor y consigue acceso a funciones extra! Haz clic para ver más.</string>
   <string name="menuPin">Anclar a la parte superior</string>
   <string name="menuUnpin">Desanclar de la parte superior</string>
   <string name="errorGeneral">Ups… Algo salió mal.\nPor favor, contáctanos si esto sigue sucediendo.</string>
