@@ -51,7 +51,7 @@
   <LinearLayout
     android:id="@+id/progressWidgetMoviesLabel"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/widgetLabelHeight"
     android:background="@drawable/bg_widget_toolbar"
     android:gravity="center_vertical"
     android:orientation="horizontal"

@@ -78,6 +78,14 @@ class CalendarMoviesWidgetProvider : BaseWidgetProvider() {
       data = Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME))
     }
 
+    val mainIntent = PendingIntent.getActivity(
+      context,
+      0,
+      Intent().apply { setClassName(context, Config.HOST_ACTIVITY_NAME) },
+      PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+    )
+    remoteViews.setOnClickPendingIntent(R.id.calendarWidgetMoviesLabel, mainIntent)
+
     val listIntent = PendingIntent.getBroadcast(context, 0, listClickIntent, PendingIntent.FLAG_UPDATE_CURRENT)
     remoteViews.setPendingIntentTemplate(R.id.calendarWidgetMoviesList, listIntent)
 

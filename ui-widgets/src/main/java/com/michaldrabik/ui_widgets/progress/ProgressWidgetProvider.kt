@@ -80,6 +80,14 @@ class ProgressWidgetProvider : BaseWidgetProvider() {
       setInt(R.id.progressWidgetDayRoot, "setBackgroundResource", getBackgroundResId())
     }
 
+    val mainIntent = PendingIntent.getActivity(
+      context,
+      0,
+      Intent().apply { setClassName(context, HOST_ACTIVITY_NAME) },
+      PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+    )
+    remoteViews.setOnClickPendingIntent(R.id.progressWidgetLabel, mainIntent)
+
     val listClickIntent = Intent(context, ProgressWidgetProvider::class.java).apply {
       action = ACTION_LIST_CLICK
       data = Uri.parse(intent.toUri(URI_INTENT_SCHEME))

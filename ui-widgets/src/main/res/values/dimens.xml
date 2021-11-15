@@ -4,4 +4,5 @@
   <dimen name="widgetImageWidth">40dp</dimen>
   <dimen name="widgetPaddingTop">26dp</dimen>
   <dimen name="widgetCorner">6dp</dimen>
+  <dimen name="widgetLabelHeight">24dp</dimen>
 </resources>

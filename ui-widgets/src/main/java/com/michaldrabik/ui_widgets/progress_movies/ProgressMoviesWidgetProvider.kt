@@ -75,6 +75,14 @@ class ProgressMoviesWidgetProvider : BaseWidgetProvider() {
       setInt(R.id.progressWidgetMoviesDayRoot, "setBackgroundResource", getBackgroundResId())
     }
 
+    val mainIntent = PendingIntent.getActivity(
+      context,
+      0,
+      Intent().apply { setClassName(context, Config.HOST_ACTIVITY_NAME) },
+      PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+    )
+    remoteViews.setOnClickPendingIntent(R.id.progressWidgetMoviesLabel, mainIntent)
+
     val listClickIntent = Intent(context, ProgressMoviesWidgetProvider::class.java).apply {
       action = ACTION_LIST_CLICK
       data = Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME))
