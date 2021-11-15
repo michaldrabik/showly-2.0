@@ -66,8 +66,6 @@
   <string name="textSettingsStreamingsDisclaimer">Данные сервисов вещания предоставляются</string>
   <string name="textSettingsStreamingServicesTitle">Стриминговые сервисы</string>
   <string name="textSettingsStreamingServicesMessage">Отображать данные потоковых служб.</string>
-  <string name="textPremium">Showly Premium</string>
-  <string name="textPremiumAd">Станьте спонсором и получите доступ к бонусным функциям! Нажмите, чтобы увидеть больше.</string>
   <string name="textThemeDark">Темная</string>
   <string name="textThemeLight">Светлая</string>
   <string name="textThemeSystem">Системная</string>
