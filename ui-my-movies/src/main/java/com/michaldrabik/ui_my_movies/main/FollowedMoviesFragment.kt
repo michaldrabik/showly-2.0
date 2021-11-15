@@ -191,8 +191,6 @@ class FollowedMoviesFragment :
   private fun openMainSearch() {
     disableUi()
     hideNavigation()
-    exitSearch()
-    resetTranslations(100)
     followedMoviesModeTabs.fadeOut(duration = 200).add(animations)
     followedMoviesTabs.fadeOut(duration = 200).add(animations)
     followedMoviesIcons.fadeOut(duration = 200).add(animations)

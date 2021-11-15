@@ -202,8 +202,6 @@ class ProgressMainFragment :
   private fun openMainSearch() {
     disableUi()
     hideNavigation()
-    exitSearch()
-    resetTranslations(100)
     progressMainPagerModeTabs.fadeOut(duration = 200).add(animations)
     progressMainTabs.fadeOut(duration = 200).add(animations)
     progressMainSideIcons.fadeOut(duration = 200).add(animations)

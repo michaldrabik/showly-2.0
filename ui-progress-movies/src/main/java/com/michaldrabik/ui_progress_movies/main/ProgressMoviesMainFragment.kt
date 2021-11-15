@@ -211,8 +211,6 @@ class ProgressMoviesMainFragment :
   private fun openMainSearch() {
     disableUi()
     hideNavigation()
-    exitSearch()
-    resetTranslations(100)
     progressMoviesModeTabs.fadeOut(duration = 200).add(animations)
     progressMoviesTabs.fadeOut(duration = 200).add(animations)
     progressMoviesSideIcons.fadeOut(duration = 200).add(animations)

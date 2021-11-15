@@ -282,8 +282,6 @@ class ListsFragment :
   private fun openMainSearch() {
     disableUi()
     hideNavigation()
-    exitSearch()
-    resetTranslations(100)
     fragmentListsModeTabs.fadeOut(duration = 200).add(animations)
     fragmentListsIcons.fadeOut(duration = 200).add(animations)
     fragmentListsRecycler.fadeOut(duration = 200) {
