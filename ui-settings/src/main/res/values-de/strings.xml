@@ -66,8 +66,6 @@
   <string name="textSettingsStreamingsDisclaimer">Streaming-Daten werden bereitgestellt von</string>
   <string name="textSettingsStreamingServicesTitle">Streaming Services</string>
   <string name="textSettingsStreamingServicesMessage">Streaming-Daten anzeigen.</string>
-  <string name="textPremium">Showly Premium</string>
-  <string name="textPremiumAd">Werden Sie Unterstützer und erhalten Sie Zugang zu Bonusfunktionen! Klicken Sie hier, um mehr zu sehen.</string>
   <string name="textThemeDark">Dunkel</string>
   <string name="textThemeLight">Licht</string>
   <string name="textThemeSystem">System</string>
