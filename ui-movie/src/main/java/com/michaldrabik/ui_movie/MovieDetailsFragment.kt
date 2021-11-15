@@ -203,6 +203,9 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       requireContext().copyToClipboard(movieDetailsTitle.text.toString())
       showSnack(MessageEvent.info(R.string.textCopiedToClipboard))
     }
+    movieDetailsPremiumAd.onClick {
+      navigateTo(R.id.actionMovieDetailsFragmentToPremium)
+    }
   }
 
   private fun setupStatusBar() {
@@ -463,6 +466,9 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       ratings?.let { renderRatings(it, movie) }
       removeFromTrakt?.let { event ->
         event.consume()?.let { openRemoveTraktSheet(it) }
+      }
+      isPremium.let {
+        movieDetailsPremiumAd.visibleIf(!it)
       }
       isFinished?.let { event ->
         event.consume()?.let {

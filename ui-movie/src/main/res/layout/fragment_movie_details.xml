@@ -6,6 +6,7 @@
   android:id="@+id/movieDetailsRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  tools:layout_marginTop="-500dp"
   >
 
   <androidx.core.widget.NestedScrollView
@@ -460,6 +461,7 @@
         app:drawableTint="?android:attr/textColorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/movieDetailsRelatedRecycler"
+        app:layout_constraintBottom_toTopOf="@id/movieDetailsPremiumAd"
         app:layout_goneMarginTop="0dp"
         tools:visibility="visible"
         />
@@ -481,6 +483,18 @@
         app:layout_goneMarginBottom="@dimen/spaceBig"
         app:layout_goneMarginTop="54dp"
         tools:visibility="visible"
+        />
+
+      <com.michaldrabik.ui_base.common.views.PremiumAdView
+        android:id="@+id/movieDetailsPremiumAd"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spaceNormal"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="@dimen/spaceNormal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/movieDetailsCustomImagesLabel"
         />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

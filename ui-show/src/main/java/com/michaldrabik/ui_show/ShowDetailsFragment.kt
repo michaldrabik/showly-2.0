@@ -225,6 +225,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       requireContext().copyToClipboard(showDetailsTitle.text.toString())
       showSnack(MessageEvent.info(R.string.textCopiedToClipboard))
     }
+    showDetailsPremiumAd.onClick {
+      navigateTo(R.id.actionShowDetailsFragmentToPremium)
+    }
   }
 
   private fun setupStatusBar() {
@@ -562,6 +565,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       ratingState?.let { renderRating(it) }
       removeFromTrakt?.let { event ->
         event.consume()?.let { openRemoveTraktSheet(it) }
+      }
+      isPremium.let {
+        showDetailsPremiumAd.visibleIf(!it)
       }
       isFinished?.let { event ->
         event.consume()?.let {

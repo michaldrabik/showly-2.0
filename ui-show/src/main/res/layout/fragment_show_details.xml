@@ -6,7 +6,7 @@
   android:id="@+id/showDetailsRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:layout_marginTop="-0dp"
+  tools:layout_marginTop="-1000dp"
   tools:theme="@style/AppTheme"
   >
 
@@ -619,10 +619,23 @@
         android:visibility="gone"
         app:drawableStartCompat="@drawable/ic_custom_image"
         app:drawableTint="?android:attr/textColorPrimary"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsPremiumAd"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsRelatedRecycler"
         app:layout_goneMarginTop="0dp"
         tools:visibility="visible"
+        />
+
+      <com.michaldrabik.ui_base.common.views.PremiumAdView
+        android:id="@+id/showDetailsPremiumAd"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spaceNormal"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="@dimen/spaceNormal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsCustomImagesLabel"
         />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
