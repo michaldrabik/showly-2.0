@@ -66,8 +66,6 @@
   <string name="textSettingsStreamingsDisclaimer">Akış hizmetleri verileri tarafından sağlanır</string>
   <string name="textSettingsStreamingServicesTitle">Yayın Servisleri</string>
   <string name="textSettingsStreamingServicesMessage">Yayın hizmetleri verilerini görüntüleyin.</string>
-  <string name="textPremium">Showly Premium</string>
-  <string name="textPremiumAd">Destekçi olun ve bonus özelliklere erişin! Daha fazlasını görmek için dokunun.</string>
   <string name="textThemeDark">Karanlık</string>
   <string name="textThemeLight">Aydınlık</string>
   <string name="textThemeSystem">Sistem</string>
