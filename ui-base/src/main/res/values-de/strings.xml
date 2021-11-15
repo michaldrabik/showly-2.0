@@ -86,6 +86,7 @@
   <string name="textRemoveFromTraktHidden">Möchtest du dieses Element von deinem Trakt.tv-Account \'Versteckt\' entfernen?</string>
   <string name="textRemoveFromTraktWatchlist">Möchtest du dieses Element von deinem Trakt.tv-Account \'Watchlist\' entfernen?</string>
   <string name="textRemoveFromTraktProgress">Möchtest du dieses Element von deinem Trakt.tv-Account \'Fortschritt\' entfernen?</string>
+  <string name="textPremiumAd">Werden Sie Unterstützer und erhalten Sie Zugang zu Bonusfunktionen! Klicken Sie hier, um mehr zu sehen.</string>
   <string name="menuPin">Oben anpinnen</string>
   <string name="menuUnpin">Pin von Oben lösen</string>
   <string name="errorGeneral">Hoppla… Da ging etwas schief.\nBitte kontaktiere uns, wenn dies weiterhin geschieht.</string>
