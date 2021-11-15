@@ -86,6 +86,7 @@
   <string name="textRemoveFromTraktHidden">Bu öğeyi Trakt.tv hesabınızdan \'Gizli\' kaldırmak ister misiniz?</string>
   <string name="textRemoveFromTraktWatchlist">Bu öğeyi Trakt.tv hesabınızdaki \'Watchlist\' kaldırmak ister misiniz?</string>
   <string name="textRemoveFromTraktProgress">Bu öğeyi Trakt.tv hesabınızdaki \'İlerleme\'den kaldırmak ister misiniz?</string>
+  <string name="textPremiumAd">Destekçi olun ve bonus özelliklere erişin! Daha fazlasını görmek için dokunun.</string>
   <string name="menuPin">En üste sabitle</string>
   <string name="menuUnpin">Sabitlemeyi kaldır</string>
   <string name="errorGeneral">Hay aksi… Bir şeyler ters gitti.\nBu sorun devam ederse lütfen bizimle iletişime geçin.</string>
