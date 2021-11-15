@@ -104,4 +104,5 @@
   <string name="errorTraktLocked">Ваша учетная запись Trakt.tv в настоящее время заблокирована.\nПожалуйста, свяжитесь со службой поддержки Trakt.tv по адресу https://support.trakt.tv/ для разблокировки вашей учетной записи.</string>
   <string name="errorSubscriptionsNotAvailable">Сервисы Google Play недоступны на этом устройстве.</string>
   <string name="textLink">Ссылка</string>
+  <string name="textPremiumAd">Станьте спонсором и получите доступ к бонусным функциям! Нажмите, чтобы увидеть больше.</string>
 </resources>

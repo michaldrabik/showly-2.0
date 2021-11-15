@@ -11,7 +11,7 @@
   android:overScrollMode="never"
   android:scrollbars="none"
   tools:background="@color/colorBackground"
-  tools:layout_marginTop="-700dp"
+  tools:layout_marginTop="-0dp"
   tools:theme="@style/AppTheme"
   >
 
@@ -37,7 +37,7 @@
       app:title="@string/textSettings"
       />
 
-    <com.michaldrabik.ui_settings.views.PremiumAdView
+    <com.michaldrabik.ui_base.common.views.PremiumAdView
       android:id="@+id/settingsPremium"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"

@@ -96,4 +96,5 @@
   <string name="errorTraktLocked">Trakt.tv hesabınız şu anda kilitli.\nHesabınızın kilidini açmak için lütfen https://support.trakt.tv/ adresinden Trakt.tv destek ekibi ile iletişime geçin.</string>
   <string name="errorSubscriptionsNotAvailable">Google Play Abonelikleri bu cihazda kullanılamaz.</string>
   <string name="textLink">Link</string>
+  <string name="textPremiumAd">Destekçi olun ve bonus özelliklere erişin! Daha fazlasını görmek için dokunun.</string>
 </resources>

@@ -96,4 +96,5 @@
   <string name="errorTraktLocked">Trakt.tv-tilisi on lukittu.\nOta yhteyttä Trakt.tv:n tukeen osoitteessa https://support.trakt.tv/ poistaaksesi lukituksen.</string>
   <string name="errorSubscriptionsNotAvailable">Google Play -tilaukset eivät ole käytettävissä tällä laitteella.</string>
   <string name="textLink">Linkki</string>
+  <string name="textPremiumAd">Ryhdy tukijaksi, niin saat käyttöösi lisäominaisuuksia! Napauta nähdäksesi lisää.</string>
 </resources>

@@ -66,8 +66,6 @@
   <string name="textSettingsStreamingsDisclaimer">Suoratoistopalveluiden tiedot tarjoaa</string>
   <string name="textSettingsStreamingServicesTitle">Suoratoistopalvelut</string>
   <string name="textSettingsStreamingServicesMessage">Näytä suoratoistopalveluiden tiedot.</string>
-  <string name="textPremium">Showly Premium</string>
-  <string name="textPremiumAd">Ryhdy tukijaksi, niin saat käyttöösi lisäominaisuuksia! Napauta nähdäksesi lisää.</string>
   <string name="textThemeDark">Tumma</string>
   <string name="textThemeLight">Vaalea</string>
   <string name="textThemeSystem">Järjestelmä</string>

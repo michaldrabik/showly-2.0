@@ -112,4 +112,5 @@
   <string name="errorTraktLocked">حسابك في Trakt.tv مغلق. تواصل مع دعم Trakt.tv عبر الرابط https://support.trakt.tv/ لِفتح حسابك.</string>
   <string name="errorSubscriptionsNotAvailable">الدفع عبر Google Play غير متوفر على هذا الجهاز.</string>
   <string name="textLink">إفتح في</string>
+  <string name="textPremiumAd">إدعم تطوير التطبيق واحصل على مميزات إضافية! انقر لرؤية المزيد.</string>
 </resources>

@@ -96,4 +96,5 @@
   <string name="errorTraktLocked">Tu cuenta de Trakt.tv está bloqueada actualmente.\nPor favor, ponte en contacto con el soporte de Trakt.tv en https://support.trakt.tv/ para desbloquear tu cuenta.</string>
   <string name="errorSubscriptionsNotAvailable">Las suscripciones de Google Play no están disponibles en este dispositivo.</string>
   <string name="textLink">Enlace</string>
+  <string name="textPremiumAd">¡Conviértete en un seguidor y consigue acceso a funciones extra! Haz clic para ver más.</string>
 </resources>
