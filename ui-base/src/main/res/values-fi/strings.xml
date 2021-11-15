@@ -86,6 +86,7 @@
   <string name="textRemoveFromTraktHidden">Haluatko poistaa kohteen Trakt.tv-tilisi \'Hidden Items\' (Piilotetut kohteet) -osiosta?</string>
   <string name="textRemoveFromTraktWatchlist">Haluatko poistaa kohteen Trakt.tv-tilisi \'Watchlist\' (Katselulista) -osiosta?</string>
   <string name="textRemoveFromTraktProgress">Haluatko poistaa kohteen Trakt.tv-tilisi \'Progress\' (Katselutilanne) -osiosta?</string>
+  <string name="textPremiumAd">Ryhdy tukijaksi, niin saat käyttöösi lisäominaisuuksia! Napauta nähdäksesi lisää.</string>
   <string name="menuPin">Kiinnitä listan ylälaitaan</string>
   <string name="menuUnpin">Irrota listan ylälaidasta</string>
   <string name="errorGeneral">Hups… Jotain meni pieleen.\nOta meihin yhteyttä, jos tämä jatkuu.</string>
