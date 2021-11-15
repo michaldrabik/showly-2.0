@@ -17,6 +17,7 @@ import com.michaldrabik.ui_my_shows.archive.cases.ArchiveSortOrderCase
 import com.michaldrabik.ui_my_shows.archive.recycler.ArchiveListItem
 import com.michaldrabik.ui_my_shows.main.FollowedShowsUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -31,6 +32,8 @@ class ArchiveViewModel @Inject constructor(
   private val ratingsCase: ArchiveRatingsCase,
   private val imagesProvider: ShowImagesProvider,
 ) : BaseViewModel() {
+
+  private var loadItemsJob: Job? = null
 
   private val itemsState = MutableStateFlow<List<ArchiveListItem>>(emptyList())
   private val sortOrderState = MutableStateFlow<Event<Pair<SortOrder, SortType>>?>(null)
@@ -48,7 +51,8 @@ class ArchiveViewModel @Inject constructor(
   }
 
   fun loadShows(resetScroll: Boolean = false) {
-    viewModelScope.launch {
+    loadItemsJob?.cancel()
+    loadItemsJob = viewModelScope.launch {
       val items = loadShowsCase.loadShows(searchQuery ?: "")
         .map {
           val image = imagesProvider.findCachedImage(it.first, POSTER)

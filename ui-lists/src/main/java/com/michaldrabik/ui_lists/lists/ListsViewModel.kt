@@ -14,6 +14,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -29,6 +30,8 @@ class ListsViewModel @Inject constructor(
   private val movieImagesProvider: MovieImagesProvider,
 ) : BaseViewModel() {
 
+  private var loadItemsJob: Job? = null
+
   private val itemsState = MutableStateFlow<List<ListsItem>?>(null)
   private val scrollState = MutableStateFlow(Event(false))
   private val sortOrderState = MutableStateFlow<Event<Pair<SortOrder, SortType>>?>(null)
@@ -37,7 +40,8 @@ class ListsViewModel @Inject constructor(
     resetScroll: Boolean,
     searchQuery: String? = null
   ) {
-    viewModelScope.launch {
+    loadItemsJob?.cancel()
+    loadItemsJob = viewModelScope.launch {
       val items = mainCase.loadLists(searchQuery)
       itemsState.value = items
       scrollState.value = Event(resetScroll)

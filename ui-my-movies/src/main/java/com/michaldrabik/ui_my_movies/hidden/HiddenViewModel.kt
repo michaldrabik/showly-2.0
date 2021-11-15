@@ -17,6 +17,7 @@ import com.michaldrabik.ui_my_movies.hidden.cases.HiddenSortOrderCase
 import com.michaldrabik.ui_my_movies.hidden.recycler.HiddenListItem
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -31,6 +32,8 @@ class HiddenViewModel @Inject constructor(
   private val ratingsCase: HiddenRatingsCase,
   private val imagesProvider: MovieImagesProvider,
 ) : BaseViewModel() {
+
+  private var loadItemsJob: Job? = null
 
   private val itemsState = MutableStateFlow<List<HiddenListItem>>(emptyList())
   private val sortOrderState = MutableStateFlow<Event<Pair<SortOrder, SortType>>?>(null)
@@ -48,7 +51,8 @@ class HiddenViewModel @Inject constructor(
   }
 
   fun loadMovies(resetScroll: Boolean = false) {
-    viewModelScope.launch {
+    loadItemsJob?.cancel()
+    loadItemsJob = viewModelScope.launch {
       val items = loadMoviesCase.loadMovies(searchQuery ?: "")
         .map {
           val image = imagesProvider.findCachedImage(it.first, POSTER)

@@ -17,6 +17,7 @@ import com.michaldrabik.ui_my_movies.watchlist.cases.WatchlistRatingsCase
 import com.michaldrabik.ui_my_movies.watchlist.cases.WatchlistSortOrderCase
 import com.michaldrabik.ui_my_movies.watchlist.recycler.WatchlistListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -31,6 +32,8 @@ class WatchlistViewModel @Inject constructor(
   private val loadMoviesCase: WatchlistLoadMoviesCase,
   private val imagesProvider: MovieImagesProvider,
 ) : BaseViewModel() {
+
+  private var loadItemsJob: Job? = null
 
   private val itemsState = MutableStateFlow<List<WatchlistListItem>>(emptyList())
   private val sortOrderState = MutableStateFlow<Event<Pair<SortOrder, SortType>>?>(null)
@@ -48,7 +51,8 @@ class WatchlistViewModel @Inject constructor(
   }
 
   fun loadMovies(resetScroll: Boolean = false) {
-    viewModelScope.launch {
+    loadItemsJob?.cancel()
+    loadItemsJob = viewModelScope.launch {
       val dateFormat = loadMoviesCase.loadDateFormat()
       val items = loadMoviesCase.loadMovies(searchQuery ?: "")
         .map {

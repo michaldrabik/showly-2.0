@@ -26,6 +26,7 @@ import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem.Type
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,6 +42,8 @@ class MyShowsViewModel @Inject constructor(
   private val sortingCase: MyShowsSortingCase,
   private val ratingsCase: MyShowsRatingsCase,
 ) : BaseViewModel() {
+
+  private var loadItemsJob: Job? = null
 
   private val itemsState = MutableStateFlow<List<MyShowsItem>?>(null)
   private val itemsUpdateState = MutableStateFlow<Event<List<Type>?>?>(null)
@@ -60,7 +63,8 @@ class MyShowsViewModel @Inject constructor(
   }
 
   fun loadShows(resetScroll: List<Type>? = null) {
-    viewModelScope.launch {
+    loadItemsJob?.cancel()
+    loadItemsJob = viewModelScope.launch {
       val settings = loadShowsCase.loadSettings()
       val shows = loadShowsCase.loadAllShows().map { toListItemAsync(Type.ALL_SHOWS_ITEM, it) }.awaitAll()
       val seasons = loadShowsCase.loadSeasonsForShows(shows.map { it.show.traktId })

@@ -24,6 +24,7 @@ import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem.Type.ALL_MOV
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem.Type.RECENT_MOVIE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,6 +42,8 @@ class MyMoviesViewModel @Inject constructor(
   private val sortingCase: MyMoviesSortingCase,
 ) : BaseViewModel() {
 
+  private var loadItemsJob: Job? = null
+
   private val itemsState = MutableStateFlow<List<MyMoviesItem>?>(null)
   private val itemsUpdateState = MutableStateFlow<Event<Boolean>?>(null)
 
@@ -56,7 +59,8 @@ class MyMoviesViewModel @Inject constructor(
   }
 
   fun loadMovies(notifyListsUpdate: Boolean = false) {
-    viewModelScope.launch {
+    loadItemsJob?.cancel()
+    loadItemsJob = viewModelScope.launch {
       val settings = loadMoviesCase.loadSettings()
       val dateFormat = loadMoviesCase.loadDateFormat()
       val movies = loadMoviesCase.loadAll().map { toListItemAsync(ALL_MOVIES_ITEM, it, dateFormat) }.awaitAll()
