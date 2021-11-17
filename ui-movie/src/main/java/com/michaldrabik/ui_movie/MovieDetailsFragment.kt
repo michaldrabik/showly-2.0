@@ -420,7 +420,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         }
         movieDetailsLinksButton.run {
           onClick {
-            val args = LinksBottomSheet.createBundle(movie.ids, movie.title, Mode.MOVIES)
+            val args = LinksBottomSheet.createBundle(movie)
             navigateTo(R.id.actionMovieDetailsFragmentToLinks, args)
           }
         }

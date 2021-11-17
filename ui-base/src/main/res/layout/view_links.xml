@@ -31,7 +31,7 @@
     android:layout_marginStart="@dimen/spaceNormal"
     android:layout_marginEnd="@dimen/spaceNormal"
     android:gravity="start"
-    android:text="Link"
+    android:text="@string/textLink"
     android:textAlignment="viewStart"
     android:textAllCaps="true"
     android:textColor="?android:attr/textColorPrimary"
@@ -43,7 +43,7 @@
     />
 
   <com.michaldrabik.ui_base.common.sheets.links.views.LinkItemView
-    android:id="@+id/viewLinksTrakt"
+    android:id="@+id/viewLinksWebsite"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/spaceNormal"
@@ -52,6 +52,20 @@
     app:layout_constraintEnd_toStartOf="@id/viewLinksGuideline"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/viewLinksTitle"
+    custom:icon="@drawable/ic_link_color"
+    custom:text="Website"
+    />
+
+  <com.michaldrabik.ui_base.common.sheets.links.views.LinkItemView
+    android:id="@+id/viewLinksTrakt"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceNormal"
+    android:layout_marginTop="@dimen/spaceMedium"
+    android:layout_marginEnd="@dimen/spaceSmall"
+    app:layout_constraintEnd_toStartOf="@id/viewLinksGuideline"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/viewLinksWebsite"
     custom:icon="@drawable/ic_trakt"
     custom:text="Trakt.tv"
     />
@@ -169,7 +183,7 @@
     />
 
   <com.michaldrabik.ui_base.common.sheets.links.views.LinkItemView
-    android:id="@+id/viewLinksGif"
+    android:id="@+id/viewLinksTwitter"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/spaceSmall"
@@ -178,6 +192,20 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toEndOf="@id/viewLinksGuideline"
     app:layout_constraintTop_toBottomOf="@id/viewLinksYouTube"
+    custom:icon="@drawable/ic_twitter"
+    custom:text="Twitter"
+    />
+
+  <com.michaldrabik.ui_base.common.sheets.links.views.LinkItemView
+    android:id="@+id/viewLinksGif"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceSmall"
+    android:layout_marginTop="@dimen/spaceMedium"
+    android:layout_marginEnd="@dimen/spaceNormal"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@id/viewLinksGuideline"
+    app:layout_constraintTop_toBottomOf="@id/viewLinksTwitter"
     custom:icon="@drawable/ic_giphy"
     custom:text="Giphy"
     />

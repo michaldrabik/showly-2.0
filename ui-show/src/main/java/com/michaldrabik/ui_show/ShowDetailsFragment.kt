@@ -516,7 +516,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         showDetailsCustomImagesLabel.visibleIf(Config.SHOW_PREMIUM)
         showDetailsCustomImagesLabel.onClick { showCustomImagesSheet(show.traktId, isPremium) }
         showDetailsLinksButton.onClick {
-          val args = LinksBottomSheet.createBundle(show.ids, show.title, Mode.SHOWS)
+          val args = LinksBottomSheet.createBundle(show)
           navigateTo(R.id.actionShowDetailsFragmentToLinks, args)
         }
         showDetailsAddButton.isEnabled = true

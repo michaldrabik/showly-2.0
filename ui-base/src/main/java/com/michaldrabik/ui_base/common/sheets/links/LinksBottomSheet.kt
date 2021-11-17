@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,33 +17,43 @@ import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_model.Ids
+import com.michaldrabik.ui_model.Movie
+import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.view_links.*
 
 @AndroidEntryPoint
 class LinksBottomSheet : BaseBottomSheetFragment<LinksViewModel>() {
 
+  @Parcelize
+  data class Options(
+    val ids: Ids,
+    val title: String,
+    val website: String,
+    val type: Mode,
+  ) : Parcelable
+
   companion object {
-    fun createBundle(
-      ids: Ids,
-      title: String,
-      type: Mode
-    ) = bundleOf(
-      NavigationArgs.ARG_ID to ids,
-      NavigationArgs.ARG_TITLE to title,
-      NavigationArgs.ARG_TYPE to type.type,
-    )
+    fun createBundle(movie: Movie): Bundle {
+      val options = Options(movie.ids, movie.title, movie.homepage, Mode.MOVIES)
+      return bundleOf(NavigationArgs.ARG_OPTIONS to options)
+    }
+
+    fun createBundle(show: Show): Bundle {
+      val options = Options(show.ids, show.title, show.homepage, Mode.SHOWS)
+      return bundleOf(NavigationArgs.ARG_OPTIONS to options)
+    }
   }
 
   override val layoutResId = R.layout.view_links
 
-  private val ids by lazy { requireArguments().getParcelable<Ids>(NavigationArgs.ARG_ID) as Ids }
-  private val title by lazy { requireArguments().getString(NavigationArgs.ARG_TITLE) }
-  private val type by lazy {
-    val type = requireArguments().getString(NavigationArgs.ARG_TYPE, "")
-    Mode.fromType(type)
-  }
+  private val options by lazy { (requireArguments().getParcelable<Options>(NavigationArgs.ARG_OPTIONS))!! }
+  private val ids by lazy { options.ids }
+  private val title by lazy { options.title }
+  private val website by lazy { options.website }
+  private val type by lazy { options.type }
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
@@ -60,6 +71,7 @@ class LinksBottomSheet : BaseBottomSheetFragment<LinksViewModel>() {
 
   private fun setupView() {
     viewLinksButtonClose.onClick { dismiss() }
+    setWebLink()
     setTraktLink()
     setTvdbLink()
     setTmdbLink()
@@ -82,6 +94,20 @@ class LinksBottomSheet : BaseBottomSheetFragment<LinksViewModel>() {
     }
     viewLinksGif.onClick {
       openWebUrl("https://giphy.com/search/${getQuery()}")
+    }
+    viewLinksTwitter.onClick {
+      openWebUrl("https://twitter.com/search?q=${getQuery()}&src=typed_query")
+    }
+  }
+
+  private fun setWebLink() {
+    viewLinksWebsite.run {
+      if (website.isBlank()) {
+        alpha = 0.5F
+        isEnabled = false
+      } else {
+        onClick { openWebUrl(website) }
+      }
     }
   }
 
