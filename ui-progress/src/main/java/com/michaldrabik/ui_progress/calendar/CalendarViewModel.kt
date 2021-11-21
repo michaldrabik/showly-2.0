@@ -10,6 +10,7 @@ import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.EpisodeBundle
+import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.calendar.cases.CalendarRatingsCase
@@ -37,6 +38,7 @@ class CalendarViewModel @Inject constructor(
 ) : BaseViewModel() {
 
   private var loadItemsJob: Job? = null
+  private var loadTranslationJobs: MutableMap<IdTrakt, Job> = mutableMapOf()
 
   private val itemsState = MutableStateFlow<List<CalendarListItem>?>(null)
   private val modeState = MutableStateFlow(CalendarMode.PRESENT_FUTURE)
@@ -105,7 +107,8 @@ class CalendarViewModel @Inject constructor(
   fun findMissingTranslation(item: CalendarListItem) {
     check(item is CalendarListItem.Episode)
     if (item.translations?.show != null || language == Config.DEFAULT_LANGUAGE) return
-    viewModelScope.launch {
+    loadTranslationJobs[item.show.ids.trakt]?.cancel()
+    val job = viewModelScope.launch {
       try {
         val translation = translationsRepository.loadTranslation(item.show, language)
         val translations = item.translations?.copy(show = translation)
@@ -114,6 +117,7 @@ class CalendarViewModel @Inject constructor(
         Logger.record(error, "Source" to "CalendarViewModel::findMissingTranslation()")
       }
     }
+    loadTranslationJobs[item.show.ids.trakt] = job
   }
 
   private fun updateItem(new: CalendarListItem.Episode) {
@@ -127,6 +131,11 @@ class CalendarViewModel @Inject constructor(
     viewModelScope.launch {
       isQuickRateEnabled = ratingsCase.isQuickRateEnabled()
     }
+  }
+
+  override fun onCleared() {
+    loadTranslationJobs.values.forEach { it.cancel() }
+    super.onCleared()
   }
 
   val uiState = combine(
