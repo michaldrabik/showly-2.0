@@ -60,7 +60,7 @@ class TranslationsRepository @Inject constructor(
     if (onlyLocal) return null
 
     val timestamp = database.translationsSyncLogDao().getById(show.traktId)?.syncedAt ?: 0
-    if (nowUtcMillis() - timestamp < ConfigVariant.TRANSLATION_SYNC_COOLDOWN) {
+    if (nowUtcMillis() - timestamp < ConfigVariant.TRANSLATION_SYNC_SHOW_MOVIE_COOLDOWN) {
       return Translation.EMPTY
     }
 
@@ -99,7 +99,7 @@ class TranslationsRepository @Inject constructor(
     if (onlyLocal) return null
 
     val timestamp = database.translationsMoviesSyncLogDao().getById(movie.traktId)?.syncedAt ?: 0
-    if (nowUtcMillis() - timestamp < ConfigVariant.TRANSLATION_SYNC_COOLDOWN) {
+    if (nowUtcMillis() - timestamp < ConfigVariant.TRANSLATION_SYNC_SHOW_MOVIE_COOLDOWN) {
       return Translation.EMPTY
     }
 
@@ -135,7 +135,7 @@ class TranslationsRepository @Inject constructor(
     val nowMillis = nowUtcMillis()
     val local = database.episodeTranslationsDao().getById(episode.ids.trakt.id, showId.id, language)
     local?.let {
-      val isCacheValid = nowMillis - it.updatedAt < ConfigVariant.TRANSLATION_CACHE_DURATION
+      val isCacheValid = nowMillis - it.updatedAt < ConfigVariant.TRANSLATION_SYNC_EPISODE_COOLDOWN
       if (it.title.isNotBlank() && it.overview.isNotBlank()) {
         return mappers.translation.fromDatabase(it)
       }
@@ -181,7 +181,7 @@ class TranslationsRepository @Inject constructor(
 
     val local = database.episodeTranslationsDao().getByIds(episodesIds, showId.id, language)
     val hasAllTranslated = local.isNotEmpty() && local.all { it.title.isNotBlank() && it.overview.isNotBlank() }
-    val isCacheValid = local.isNotEmpty() && nowUtcMillis() - local.first().updatedAt < ConfigVariant.TRANSLATION_CACHE_DURATION
+    val isCacheValid = local.isNotEmpty() && nowUtcMillis() - local.first().updatedAt < ConfigVariant.TRANSLATION_SYNC_EPISODE_COOLDOWN
 
     if (hasAllTranslated || (!hasAllTranslated && isCacheValid)) {
       return episodes.map { episode ->

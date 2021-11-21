@@ -9,12 +9,12 @@ object ConfigVariant {
 
   val SHOW_SYNC_COOLDOWN by lazy { HOURS.toMillis(12) }
   val MOVIE_SYNC_COOLDOWN by lazy { DAYS.toMillis(3) }
-  val TRANSLATION_SYNC_COOLDOWN by lazy { DAYS.toMillis(7) }
+  val TRANSLATION_SYNC_SHOW_MOVIE_COOLDOWN by lazy { DAYS.toMillis(7) }
+  val TRANSLATION_SYNC_EPISODE_COOLDOWN by lazy { DAYS.toMillis(3) }
 
   val RATINGS_CACHE_DURATION by lazy { DAYS.toMillis(3) }
   val STREAMINGS_CACHE_DURATION by lazy { DAYS.toMillis(3) }
 
   val REMOTE_CONFIG_FETCH_INTERVAL by lazy { MINUTES.toSeconds(60) }
-  val TWITTER_AD_DELAY by lazy { DAYS.toMillis(3) }
-  val TRANSLATION_CACHE_DURATION by lazy { DAYS.toMillis(3) }
+  val TWITTER_AD_DELAY by lazy { DAYS.toMillis(5) }
 }
