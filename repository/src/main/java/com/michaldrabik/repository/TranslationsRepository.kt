@@ -132,72 +132,76 @@ class TranslationsRepository @Inject constructor(
     language: String = DEFAULT_LANGUAGE,
     onlyLocal: Boolean = false,
   ): Translation? {
+    val nowMillis = nowUtcMillis()
     val local = database.episodeTranslationsDao().getById(episode.ids.trakt.id, showId.id, language)
     local?.let {
-      return mappers.translation.fromDatabase(it)
+      val isCacheValid = nowMillis - it.updatedAt < ConfigVariant.TRANSLATION_CACHE_DURATION
+      if (it.title.isNotBlank() && it.overview.isNotBlank()) {
+        return mappers.translation.fromDatabase(it)
+      }
+      if ((it.title.isNotBlank() || it.overview.isNotBlank()) && (isCacheValid || onlyLocal)) {
+        return mappers.translation.fromDatabase(it)
+      }
     }
+
     if (onlyLocal) return null
 
-    val remoteTranslation = cloud.traktApi.fetchSeasonTranslations(showId.id, episode.season, language)
+    val remoteTranslations = cloud.traktApi.fetchSeasonTranslations(showId.id, episode.season, language)
       .map { mappers.translation.fromNetwork(it) }
-    val targetTranslation = remoteTranslation.find { it.ids.trakt == episode.ids.trakt }
 
-    remoteTranslation
-      .filter { it.overview.isNotBlank() }
+    remoteTranslations
       .forEach { item ->
         val dbItem = EpisodeTranslation.fromTraktId(
-          item.ids.trakt.id,
-          showId.id,
-          item.title,
-          item.language,
-          item.overview,
-          nowUtcMillis()
+          traktEpisodeId = item.ids.trakt.id,
+          traktShowId = showId.id,
+          title = item.title,
+          overview = item.overview,
+          language = item.language,
+          createdAt = nowMillis
         )
         database.episodeTranslationsDao().insert(dbItem)
       }
 
-    if (targetTranslation != null) {
-      return Translation(
-        targetTranslation.title,
-        targetTranslation.overview,
-        targetTranslation.language
-      )
-    }
+    remoteTranslations
+      .find { it.ids.trakt == episode.ids.trakt }
+      ?.let {
+        return Translation(it.title, it.overview, it.language)
+      }
+
     return null
   }
 
   suspend fun loadTranslations(
     season: Season,
     showId: IdTrakt,
-    language: String = DEFAULT_LANGUAGE,
-    onlyLocal: Boolean = false,
+    language: String = DEFAULT_LANGUAGE
   ): List<SeasonTranslation> {
     val episodes = season.episodes.toList()
     val episodesIds = season.episodes.map { it.ids.trakt.id }
-    val local = database.episodeTranslationsDao().getByIds(episodesIds, showId.id, language)
 
-    if (local.isNotEmpty()) {
+    val local = database.episodeTranslationsDao().getByIds(episodesIds, showId.id, language)
+    val hasAllTranslated = local.isNotEmpty() && local.all { it.title.isNotBlank() && it.overview.isNotBlank() }
+    val isCacheValid = local.isNotEmpty() && nowUtcMillis() - local.first().updatedAt < ConfigVariant.TRANSLATION_CACHE_DURATION
+
+    if (hasAllTranslated || (!hasAllTranslated && isCacheValid)) {
       return episodes.map { episode ->
         val translation = local.find { it.idTrakt == episode.ids.trakt.id }
         SeasonTranslation(
           ids = episode.ids.copy(),
           title = translation?.title ?: "",
+          overview = translation?.overview ?: "",
           seasonNumber = season.number,
           episodeNumber = episode.number,
-          overview = translation?.overview ?: "",
           language = translation?.language ?: language,
           isLocal = true
         )
       }
     }
 
-    if (onlyLocal) return emptyList()
-
     val remoteTranslation = cloud.traktApi.fetchSeasonTranslations(showId.id, season.number, language)
       .map { mappers.translation.fromNetwork(it) }
 
     remoteTranslation
-      .filter { it.overview.isNotBlank() }
       .forEach { item ->
         val dbItem = EpisodeTranslation.fromTraktId(
           item.ids.trakt.id,
@@ -215,9 +219,9 @@ class TranslationsRepository @Inject constructor(
       SeasonTranslation(
         ids = episode.ids.copy(),
         title = translation?.title ?: "",
+        overview = translation?.overview ?: "",
         seasonNumber = season.number,
         episodeNumber = episode.number,
-        overview = translation?.overview ?: "",
         language = translation?.language ?: language,
         isLocal = true
       )

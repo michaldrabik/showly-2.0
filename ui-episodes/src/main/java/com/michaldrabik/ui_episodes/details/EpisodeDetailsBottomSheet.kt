@@ -261,11 +261,11 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
       }
       translation?.let { t ->
         t.consume()?.let {
+          if (it.title.isNotBlank()) {
+            episodeDetailsTitle.setTextFade(it.title, duration = 0)
+          }
           if (it.overview.isNotBlank()) {
-            episodeDetailsOverview.setTextFade(it.overview, 0)
-            if (it.title.isNotBlank()) {
-              episodeDetailsTitle.setTextFade(it.title, 0)
-            }
+            episodeDetailsOverview.setTextFade(it.overview, duration = 0)
           }
         }
       }

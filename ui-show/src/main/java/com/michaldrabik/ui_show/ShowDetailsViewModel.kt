@@ -320,7 +320,7 @@ class ShowDetailsViewModel @Inject constructor(
         translations.forEach { translation ->
           val episode = episodes.find { it.id == translation.ids.trakt.id }
           episode?.let { ep ->
-            if (translation.overview.isNotBlank()) {
+            if (translation.title.isNotBlank() || translation.overview.isNotBlank()) {
               val t = Translation(translation.title, translation.overview, translation.language)
               val withTranslation = ep.copy(translation = t)
               episodes.findReplace(withTranslation) { it.id == withTranslation.id }
