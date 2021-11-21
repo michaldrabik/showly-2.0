@@ -123,7 +123,10 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
 
   private fun setupView(view: View) {
     view.run {
-      episodeDetailsTitle.text = episode.title
+      episodeDetailsTitle.text = when (episode.title) {
+        "Episode ${episode.number}" -> String.format(ENGLISH, context.getString(R.string.textEpisode), episode.number)
+        else -> episode.title
+      }
       episodeDetailsOverview.text =
         if (episode.overview.isBlank()) getString(R.string.textNoDescription) else episode.overview
       episodeDetailsButton.run {

@@ -75,6 +75,8 @@ class CalendarWidgetViewsFactory(
     val episodeTitle = when {
       item.episode.title.isBlank() -> context.getString(R.string.textTba)
       item.translations?.episode?.title?.isBlank() == false -> item.translations?.episode?.title
+      item.episode.title == "Episode ${item.episode.number}" ->
+        String.format(Locale.ENGLISH, context.getString(R.string.textEpisode), item.episode.number)
       else -> item.episode.title
     }
 

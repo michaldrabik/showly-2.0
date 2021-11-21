@@ -40,10 +40,13 @@ class EpisodeView : ConstraintLayout {
     clear()
 
     val hasAired = item.episode.hasAired(item.season) || item.season.isSpecial()
-    episodeTitle.text = String.format(ENGLISH, context.getString(R.string.textEpisode), item.episode.number)
+    val episodeTitleText = String.format(ENGLISH, context.getString(R.string.textEpisode), item.episode.number)
+    episodeTitle.text = episodeTitleText
     episodeOverview.text = when {
       !item.translation?.title.isNullOrBlank() -> item.translation?.title
-      else -> item.episode.title.ifEmpty { context.getString(R.string.textTba) }
+      item.episode.title.isEmpty() -> context.getString(R.string.textTba)
+      item.episode.title == "Episode ${item.episode.number}" -> episodeTitleText
+      else -> item.episode.title
     }
     episodeCheckbox.isChecked = item.isWatched
     episodeCheckbox.isEnabled = hasAired || !isLocked
