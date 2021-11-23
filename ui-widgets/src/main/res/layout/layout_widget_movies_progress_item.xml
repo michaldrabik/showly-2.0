@@ -48,38 +48,42 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_vertical"
-    android:layout_marginEnd="@dimen/spaceMedium"
-    android:gravity="center_vertical"
     >
 
-    <TextView
-      android:id="@+id/progressMoviesWidgetItemTitle"
-      style="@style/WidgetItem.Title"
+    <LinearLayout
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_alignParentStart="true"
-      android:layout_marginEnd="@dimen/spaceMedium"
-      android:layout_marginBottom="@dimen/spaceMicro"
+      android:layout_centerVertical="true"
       android:layout_toStartOf="@id/progressMoviesWidgetItemCheckButton"
-      tools:ignore="RtlSymmetry"
-      tools:text="Breaking Bad"
-      />
+      android:orientation="vertical"
+      >
 
-    <TextView
-      android:id="@+id/progressMoviesWidgetItemSubtitle2"
-      style="@style/WidgetItem.Subtitle"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_below="@id/progressMoviesWidgetItemTitle"
-      android:layout_alignParentStart="true"
-      android:layout_marginEnd="@dimen/spaceMedium"
-      android:layout_toStartOf="@id/progressMoviesWidgetItemCheckButton"
-      tools:text="asdasasdasd"
-      />
+      <TextView
+        android:id="@+id/progressMoviesWidgetItemTitle"
+        style="@style/WidgetItem.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spaceMicro"
+        tools:ignore="RtlSymmetry"
+        tools:text="Breaking Bad"
+        />
+
+      <TextView
+        android:id="@+id/progressMoviesWidgetItemSubtitle2"
+        style="@style/WidgetItem.Subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Lorem Ipsum"
+        />
+
+    </LinearLayout>
 
     <ImageButton
       android:id="@+id/progressMoviesWidgetItemCheckButton"
       style="@style/WidgetItem.CheckButton"
+      android:layout_width="@dimen/widgetCheckButtonWidth"
+      android:layout_height="@dimen/widgetImageHeight"
       android:layout_alignParentEnd="true"
       android:layout_centerVertical="true"
       />

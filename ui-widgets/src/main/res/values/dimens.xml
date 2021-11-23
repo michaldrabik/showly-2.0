@@ -5,4 +5,6 @@
   <dimen name="widgetPaddingTop">26dp</dimen>
   <dimen name="widgetCorner">6dp</dimen>
   <dimen name="widgetLabelHeight">24dp</dimen>
+  <dimen name="widgetCheckButtonWidth">46dp</dimen>
+  <dimen name="widgetCheckButtonHeight">60dp</dimen>
 </resources>

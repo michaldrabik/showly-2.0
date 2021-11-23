@@ -42,6 +42,8 @@ class ProgressWidgetViewsFactory(
   private val imageCorner by lazy { context.dimenToPx(R.dimen.mediaTileCorner) }
   private val imageWidth by lazy { context.dimenToPx(R.dimen.widgetImageWidth) }
   private val imageHeight by lazy { context.dimenToPx(R.dimen.widgetImageHeight) }
+  private val checkWidth by lazy { context.dimenToPx(R.dimen.widgetCheckButtonWidth) }
+  private val spaceMedium by lazy { context.dimenToPx(R.dimen.spaceMedium) }
   private val adapterItems by lazy { mutableListOf<ProgressListItem>() }
   private val durationPrinter by lazy { DurationPrinter(context.applicationContext) }
 
@@ -91,10 +93,12 @@ class ProgressWidgetViewsFactory(
       if (hasAired) {
         setViewVisibility(R.id.progressWidgetItemCheckButton, VISIBLE)
         setViewVisibility(R.id.progressWidgetItemDateButton, GONE)
+        setViewPadding(R.id.progressWidgetItemProgress, 0, 0, checkWidth, 0)
       } else {
         setViewVisibility(R.id.progressWidgetItemCheckButton, GONE)
         setViewVisibility(R.id.progressWidgetItemDateButton, VISIBLE)
         setTextViewText(R.id.progressWidgetItemDateButton, durationPrinter.print(item.episode?.firstAired))
+        setViewPadding(R.id.progressWidgetItemProgress, 0, 0, spaceMedium, 0)
       }
 
       val fillIntent = Intent().apply {

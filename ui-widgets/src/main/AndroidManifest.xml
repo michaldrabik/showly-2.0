@@ -1,9 +1,8 @@
-<manifest
-  xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.michaldrabik.ui_widgets"
   >
 
-  <application>
+  <application android:theme="@style/AppTheme">
 
     <service
       android:name="com.michaldrabik.ui_widgets.progress.ProgressWidgetService"
@@ -39,8 +38,8 @@
 
     <receiver
       android:name="com.michaldrabik.ui_widgets.progress.ProgressWidgetProvider"
-      android:label="Shows Progress"
       android:exported="true"
+      android:label="Shows Progress"
       >
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -54,8 +53,8 @@
 
     <receiver
       android:name="com.michaldrabik.ui_widgets.progress_movies.ProgressMoviesWidgetProvider"
-      android:label="Movies Progress"
       android:exported="true"
+      android:label="Movies Progress"
       >
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -69,8 +68,8 @@
 
     <receiver
       android:name="com.michaldrabik.ui_widgets.calendar.CalendarWidgetProvider"
-      android:label="Shows Calendar"
       android:exported="true"
+      android:label="Shows Calendar"
       >
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -84,8 +83,8 @@
 
     <receiver
       android:name="com.michaldrabik.ui_widgets.calendar_movies.CalendarMoviesWidgetProvider"
-      android:label="Movies Calendar"
       android:exported="true"
+      android:label="Movies Calendar"
       >
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -99,8 +98,8 @@
 
     <receiver
       android:name="com.michaldrabik.ui_widgets.search.SearchWidgetProvider"
-      android:label="Search"
       android:exported="true"
+      android:label="Search"
       >
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

@@ -49,7 +49,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_vertical"
-    android:layout_marginEnd="@dimen/spaceMedium"
     android:gravity="center_vertical"
     >
 
@@ -107,7 +106,6 @@
       android:layout_below="@id/progressWidgetItemTitle"
       android:layout_alignBaseline="@id/progressWidgetItemSubtitle"
       android:layout_marginStart="6dp"
-      android:layout_marginEnd="@dimen/spaceMedium"
       android:layout_marginBottom="@dimen/spaceTiny"
       android:layout_toStartOf="@id/progressWidgetItemCheckButton"
       android:layout_toEndOf="@id/progressWidgetItemSubtitle"
@@ -134,13 +132,15 @@
     <ProgressBar
       android:id="@+id/progressWidgetItemProgress"
       style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-      android:layout_width="100dp"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_alignTop="@id/progressWidgetItemProgressText"
       android:layout_alignBottom="@id/progressWidgetItemProgressText"
       android:layout_alignParentEnd="true"
       android:layout_marginStart="@dimen/spaceSmall"
       android:layout_toEndOf="@id/progressWidgetItemProgressText"
+      android:paddingStart="0dp"
+      android:paddingEnd="@dimen/widgetCheckButtonWidth"
       android:progressBackgroundTint="?android:attr/textColorSecondary"
       android:progressTint="?attr/colorAccent"
       android:scaleY="0.75"
@@ -150,6 +150,7 @@
     <ImageButton
       android:id="@+id/progressWidgetItemCheckButton"
       style="@style/WidgetItem.CheckButton"
+      android:layout_alignParentTop="true"
       android:layout_alignParentEnd="true"
       />
 
@@ -160,6 +161,7 @@
       android:layout_alignTop="@id/progressWidgetItemTitle"
       android:layout_alignBottom="@id/progressWidgetItemTitle"
       android:layout_alignParentEnd="true"
+      android:layout_marginEnd="@dimen/spaceMedium"
       android:gravity="center"
       android:textAllCaps="true"
       android:textColor="?android:attr/textColorSecondary"

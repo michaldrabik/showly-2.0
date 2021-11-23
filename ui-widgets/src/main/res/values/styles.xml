@@ -31,8 +31,8 @@
   <style name="WidgetItem" />
 
   <style name="WidgetItem.CheckButton" parent="WidgetItem">
-    <item name="android:layout_width">24dp</item>
-    <item name="android:layout_height">24dp</item>
+    <item name="android:layout_width">@dimen/widgetCheckButtonWidth</item>
+    <item name="android:layout_height">@dimen/widgetCheckButtonHeight</item>
     <item name="android:background">@drawable/bg_widget_check_button</item>
     <item name="android:src">@drawable/ic_check_small</item>
     <item name="android:tint">?android:attr/textColorPrimary</item>
