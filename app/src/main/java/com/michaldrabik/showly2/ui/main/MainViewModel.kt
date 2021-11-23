@@ -90,7 +90,7 @@ class MainViewModel @Inject constructor(
     val showWhatsNew = initCase.showWhatsNew(isInitialRun)
 
     initialRunEvent.value = Event(isInitialRun)
-    whatsNewEvent.value = Event(false)
+    whatsNewEvent.value = Event(showWhatsNew)
   }
 
   fun checkRateApp() {
