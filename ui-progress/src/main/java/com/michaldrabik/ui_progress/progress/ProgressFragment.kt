@@ -183,7 +183,7 @@ class ProgressFragment :
       OverScrollBounceEffectDecoratorBase.DEFAULT_DECELERATE_FACTOR
     ).apply {
       setOverScrollUpdateListener { _, state, offset ->
-        with(progressOverscrollIcon) {
+        progressOverscrollIcon?.run {
           if (offset > 0) {
             val value = (offset / OVERSCROLL_OFFSET).coerceAtMost(1F)
             val valueTranslation = offset / OVERSCROLL_OFFSET_TRANSLATION

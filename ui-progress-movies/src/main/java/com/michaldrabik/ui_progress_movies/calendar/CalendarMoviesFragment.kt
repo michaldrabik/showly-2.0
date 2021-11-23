@@ -92,6 +92,7 @@ class CalendarMoviesFragment :
   }
 
   private fun setupOverscroll() {
+    if (overscroll != null) return
     val adapt = TopOverscrollAdapter(progressMoviesCalendarRecycler)
     overscroll = VerticalOverScrollBounceEffectDecorator(
       adapt,
@@ -100,7 +101,7 @@ class CalendarMoviesFragment :
       DEFAULT_DECELERATE_FACTOR
     ).apply {
       setOverScrollUpdateListener { _, state, offset ->
-        with(progressMoviesCalendarOverscrollIcon) {
+        progressMoviesCalendarOverscrollIcon?.run {
           if (offset > 0) {
             val value = (offset / OVERSCROLL_OFFSET).coerceAtMost(1F)
             val valueTranslation = offset / OVERSCROLL_OFFSET_TRANSLATION

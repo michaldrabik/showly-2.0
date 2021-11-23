@@ -118,7 +118,7 @@ class CalendarFragment :
       DEFAULT_DECELERATE_FACTOR
     ).apply {
       setOverScrollUpdateListener { _, state, offset ->
-        with(progressCalendarOverscrollIcon) {
+        progressCalendarOverscrollIcon?.run {
           if (offset > 0) {
             val value = (offset / OVERSCROLL_OFFSET).coerceAtMost(1F)
             val valueTranslation = offset / OVERSCROLL_OFFSET_TRANSLATION
@@ -232,6 +232,7 @@ class CalendarFragment :
   private fun requireMainFragment() = requireParentFragment() as ProgressMainFragment
 
   override fun onDestroyView() {
+    overscroll?.detach()
     overscroll = null
     adapter = null
     layoutManager = null
