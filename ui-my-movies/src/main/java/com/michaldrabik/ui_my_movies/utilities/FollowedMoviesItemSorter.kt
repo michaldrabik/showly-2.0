@@ -10,7 +10,6 @@ import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.SortType.ASCENDING
 import com.michaldrabik.ui_model.SortType.DESCENDING
 import com.michaldrabik.ui_model.Translation
-import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -40,8 +39,8 @@ class FollowedMoviesItemSorter @Inject constructor() {
 
   private fun getTitle(item: Pair<Movie, Translation?>): String {
     val translatedTitle =
-      if (item.second?.hasTitle == false) null
-      else item.second?.title
-    return (translatedTitle ?: item.first.titleNoThe).uppercase(Locale.ROOT)
+      if (item.second?.hasTitle == true) item.second?.title
+      else item.first.titleNoThe
+    return translatedTitle?.uppercase() ?: ""
   }
 }

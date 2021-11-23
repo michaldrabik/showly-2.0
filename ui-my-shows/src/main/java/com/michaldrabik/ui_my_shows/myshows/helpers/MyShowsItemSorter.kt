@@ -9,7 +9,6 @@ import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.SortType.ASCENDING
 import com.michaldrabik.ui_model.SortType.DESCENDING
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
-import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -39,8 +38,8 @@ class MyShowsItemSorter @Inject constructor() {
 
   private fun getTitle(item: MyShowsItem): String {
     val translatedTitle =
-      if (item.translation?.hasTitle == false) null
-      else item.show.title
-    return (translatedTitle ?: item.show.titleNoThe).uppercase(Locale.ROOT)
+      if (item.translation?.hasTitle == true) item.translation.title
+      else item.show.titleNoThe
+    return translatedTitle.uppercase()
   }
 }

@@ -9,7 +9,6 @@ import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.SortType.ASCENDING
 import com.michaldrabik.ui_model.SortType.DESCENDING
 import com.michaldrabik.ui_progress_movies.progress.recycler.ProgressMovieListItem
-import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -38,8 +37,8 @@ class ProgressMoviesItemsSorter @Inject constructor() {
 
   private fun getTitle(item: ProgressMovieListItem.MovieItem): String {
     val translatedTitle =
-      if (item.translation?.hasTitle == false) null
-      else item.translation?.title
-    return (translatedTitle ?: item.movie.titleNoThe).uppercase(Locale.ROOT)
+      if (item.translation?.hasTitle == true) item.translation.title
+      else item.movie.titleNoThe
+    return translatedTitle.uppercase()
   }
 }

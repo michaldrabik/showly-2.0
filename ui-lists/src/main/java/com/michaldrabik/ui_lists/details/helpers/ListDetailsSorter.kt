@@ -42,9 +42,7 @@ class ListDetailsSorter @Inject constructor() {
     }
 
   private fun getTitle(item: ListDetailsItem): String {
-    val translatedTitle =
-      if (item.translation?.hasTitle == false) null
-      else item.translation?.title
-    return translatedTitle ?: item.getTitleNoThe()
+    return if (item.translation?.hasTitle == true) item.translation.title
+    else item.getTitleNoThe().uppercase()
   }
 }

@@ -5,6 +5,7 @@ import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_search.recycler.SearchListItem
 import com.michaldrabik.ui_search.utilities.SearchOptions
 import dagger.hilt.android.scopes.ViewModelScoped
+import java.util.Locale
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -34,8 +35,8 @@ class SearchSortingCase @Inject constructor() {
 
   private fun getTitle(item: SearchListItem): String {
     val translatedTitle =
-      if (item.translation?.hasTitle == false) null
-      else item.translation?.title
-    return translatedTitle ?: item.title
+      if (item.translation?.hasTitle == true) item.translation.title
+      else item.title
+    return translatedTitle.uppercase(Locale.ROOT)
   }
 }
