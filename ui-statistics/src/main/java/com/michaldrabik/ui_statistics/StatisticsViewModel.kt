@@ -20,6 +20,7 @@ import com.michaldrabik.ui_statistics.views.mostWatched.StatisticsMostWatchedIte
 import com.michaldrabik.ui_statistics.views.ratings.recycler.StatisticsRatingItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
@@ -46,7 +47,7 @@ class StatisticsViewModel @Inject constructor(
 
   private var takeLimit = 5
 
-  fun loadMostWatchedShows(limit: Int = 0) {
+  fun loadData(limit: Int = 0, initialDelay: Long = 150L) {
     takeLimit += limit
     viewModelScope.launch {
       val language = translationsRepository.getLanguage()
@@ -74,13 +75,13 @@ class StatisticsViewModel @Inject constructor(
             translation = translation
           )
         }
-        .sortedByDescending { item -> item.episodes.sumBy { it.runtime } }
+        .sortedByDescending { item -> item.episodes.sumOf { it.runtime } }
         .take(takeLimit)
         .map {
           it.copy(image = imagesProvider.findCachedImage(it.show, POSTER))
         }
 
-      delay(150) // Let transition finish peacefully.
+      delay(initialDelay) // Let transition finish peacefully.
 
       mostWatchedShowsState.value = mostWatchedShows
       mostWatchedTotalCountState.value = showsIds.size
@@ -105,6 +106,8 @@ class StatisticsViewModel @Inject constructor(
     showsIds: List<Long>,
     allEpisodes: MutableList<Episode> = mutableListOf(),
   ): List<Episode> {
+    viewModelScope.ensureActive()
+
     val batch = showsIds.take(500)
     if (batch.isEmpty()) return allEpisodes
 
@@ -118,6 +121,8 @@ class StatisticsViewModel @Inject constructor(
     showsIds: List<Long>,
     allSeasons: MutableList<Season> = mutableListOf(),
   ): List<Season> {
+    viewModelScope.ensureActive()
+
     val batch = showsIds.take(500)
     if (batch.isEmpty()) return allSeasons
 

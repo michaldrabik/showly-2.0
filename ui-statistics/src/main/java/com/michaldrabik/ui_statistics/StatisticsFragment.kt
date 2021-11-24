@@ -33,7 +33,7 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
         with(viewModel) {
           launch { uiState.collect { render(it) } }
           if (!isInitialized) {
-            loadMostWatchedShows()
+            loadData()
             isInitialized = true
           }
           loadRatings()
@@ -45,7 +45,7 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
   private fun setupView() {
     statisticsToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
     statisticsMostWatchedShows.run {
-      onLoadMoreClickListener = { addLimit -> viewModel.loadMostWatchedShows(addLimit) }
+      onLoadMoreClickListener = { addLimit -> viewModel.loadData(addLimit) }
       onShowClickListener = {
         openShowDetails(it.traktId)
       }

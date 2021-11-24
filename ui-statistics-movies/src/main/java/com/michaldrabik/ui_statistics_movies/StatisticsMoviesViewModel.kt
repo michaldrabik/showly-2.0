@@ -27,7 +27,7 @@ class StatisticsMoviesViewModel @Inject constructor(
   private val topGenresState = MutableStateFlow<List<Genre>?>(null)
   private val ratingsState = MutableStateFlow<List<StatisticsMoviesRatingItem>?>(null)
 
-  fun loadMovies(initialDelay: Long = 150L) {
+  fun loadData(initialDelay: Long = 150L) {
     viewModelScope.launch {
       val myMovies = moviesRepository.myMovies.loadAll().distinctBy { it.traktId }
       val genres = extractTopGenres(myMovies)

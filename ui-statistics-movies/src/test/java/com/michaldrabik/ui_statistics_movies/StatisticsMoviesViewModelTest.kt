@@ -108,7 +108,7 @@ class StatisticsMoviesViewModelTest : BaseMockTest() {
     val job = launch { SUT.uiState.toList(stateResult) }
     val job2 = launch { SUT.messageState.toList(messagesResult) }
 
-    SUT.loadMovies(initialDelay = 0)
+    SUT.loadData(initialDelay = 0)
 
     val result = stateResult.last()
     assertThat(result.totalWatchedMovies).isEqualTo(3)

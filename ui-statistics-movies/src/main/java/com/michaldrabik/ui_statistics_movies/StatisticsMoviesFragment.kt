@@ -33,7 +33,7 @@ class StatisticsMoviesFragment : BaseFragment<StatisticsMoviesViewModel>(R.layou
         with(viewModel) {
           launch { uiState.collect { render(it) } }
           if (!isInitialized) {
-            loadMovies()
+            loadData()
             isInitialized = true
           }
           loadRatings()
