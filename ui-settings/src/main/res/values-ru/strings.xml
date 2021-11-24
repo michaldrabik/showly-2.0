@@ -14,8 +14,8 @@
   <string name="textSettingsTraktSyncSummary">Синхронизация данных между Trakt.tv и Showly.</string>
   <string name="textSettingsTraktQuickSyncTitle">Мгновенная загрузка Trakt.tv</string>
   <string name="textSettingsTraktQuickSyncSummary">Мгновенная загрузка данных в Trakt.tv после добавления их в приложении.</string>
-  <string name="textSettingsTraktQuickRemoveTitle">Мгновенное удаление из Trakt.tv</string>
-  <string name="textSettingsTraktQuickRemoveSummary">Добавляет опцию удаления данных из Trakt.tv после его удаления в приложении.</string>
+  <string name="textSettingsTraktQuickRemoveTitle">Удаление данных из Trakt.tv</string>
+  <string name="textSettingsTraktQuickRemoveSummary">Предложение удалить данные с вашего аккаунта Trakt.tv после удаления их в приложении.</string>
   <string name="textSettingsTraktQuickRateTitle">Быстрый рейтинг Trakt.tv</string>
   <string name="textSettingsTraktQuickRateSummary">Оцените эпизоды и фильмы, когда вы помечаете их как просмотренные на экране «Прогресс».</string>
   <string name="textSettingsGeneral">Общие &amp; UX</string>
