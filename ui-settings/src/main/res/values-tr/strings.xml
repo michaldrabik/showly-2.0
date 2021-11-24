@@ -14,8 +14,8 @@
   <string name="textSettingsTraktSyncSummary">Trakt.tv ve Showly arasında verileri eşitleyin.</string>
   <string name="textSettingsTraktQuickSyncTitle">Trakt.tv Anlık Karşıya Yükleme</string>
   <string name="textSettingsTraktQuickSyncSummary">Verileri, uygulamaya ekledikten sonra anında Trakt.tv hizmetine yükleyin.</string>
-  <string name="textSettingsTraktQuickRemoveTitle">Trakt.tv Anlık Silme</string>
-  <string name="textSettingsTraktQuickRemoveSummary">Verileri uygulamadan kaldırdıktan sonra Trakt.tv\'den de silme seçeneği ekleyin.</string>
+  <string name="textSettingsTraktQuickRemoveTitle">Trakt.tv Verisini Sil</string>
+  <string name="textSettingsTraktQuickRemoveSummary">Verilerin ygulamadan silinince Trakt.tv hesabınızdan da silinmesini önerir.</string>
   <string name="textSettingsTraktQuickRateTitle">Trakt.tv Hızlı Oy Verme</string>
   <string name="textSettingsTraktQuickRateSummary">Bölümleri ve filmleri \"İlerleme\" ekranında izlendi olarak işaretlediğinizde oy verin.</string>
   <string name="textSettingsGeneral">Genel ve Deneyim</string>
