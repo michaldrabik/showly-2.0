@@ -1,7 +1,6 @@
 package com.michaldrabik.data_remote.trakt.api
 
 import com.michaldrabik.data_remote.Config
-import com.michaldrabik.data_remote.trakt.model.ActorsResponse
 import com.michaldrabik.data_remote.trakt.model.Comment
 import com.michaldrabik.data_remote.trakt.model.CustomList
 import com.michaldrabik.data_remote.trakt.model.Episode
@@ -170,16 +169,6 @@ interface TraktService {
     @Path("episodeNumber") episodeNumber: Int,
     @Query("timestamp") timestamp: Long
   ): List<Comment>
-
-  @GET("shows/{traktId}/people")
-  suspend fun fetchShowPeople(
-    @Path("traktId") traktId: Long
-  ): ActorsResponse
-
-  @GET("movies/{traktId}/people")
-  suspend fun fetchMoviePeople(
-    @Path("traktId") traktId: Long
-  ): ActorsResponse
 
   // Auth
 

@@ -2,9 +2,9 @@ package com.michaldrabik.ui_show
 
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.utilities.Event
-import com.michaldrabik.ui_model.Actor
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.Show
@@ -20,7 +20,7 @@ data class ShowDetailsUiState(
   val showLoading: Boolean? = null,
   val image: Image? = null,
   val seasons: List<SeasonListItem>? = null,
-  val actors: List<Actor>? = null,
+  val actors: List<Person>? = null,
   val relatedShows: List<RelatedListItem>? = null,
   val streamings: StreamingsBundle? = null,
   val nextEpisode: NextEpisodeBundle? = null,

@@ -2,10 +2,10 @@ package com.michaldrabik.ui_movie
 
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.utilities.Event
-import com.michaldrabik.ui_model.Actor
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Movie
+import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.StreamingService
@@ -17,7 +17,7 @@ data class MovieDetailsUiState(
   val movie: Movie? = null,
   val movieLoading: Boolean? = null,
   val image: Image? = null,
-  val actors: List<Actor>? = null,
+  val actors: List<Person>? = null,
   val relatedMovies: List<RelatedListItem>? = null,
   val comments: List<Comment>? = null,
   val listsCount: Int? = null,

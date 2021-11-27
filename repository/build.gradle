@@ -37,6 +37,7 @@ dependencies {
 
   implementation "androidx.core:core-ktx:$versions.androidKtx"
   implementation "androidx.appcompat:appcompat:$versions.androidAppCompat"
+  implementation "com.jakewharton.timber:timber:$versions.timber"
 
   implementation "com.google.dagger:hilt-android:$versions.hilt"
   kapt "com.google.dagger:hilt-compiler:$versions.hilt"

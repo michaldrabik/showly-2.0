@@ -15,7 +15,7 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
-import com.michaldrabik.ui_model.Actor
+import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_movie.R
 import kotlinx.android.synthetic.main.view_actor_movie.view.*
 
@@ -33,25 +33,25 @@ class ActorView : FrameLayout {
     clipChildren = false
   }
 
-  fun bind(item: Actor, clickListener: (Actor) -> Unit) {
+  fun bind(item: Person, clickListener: (Person) -> Unit) {
     clear()
-    tag = item.tmdbId
+    tag = item.ids.tmdb.id
     setOnClickListener {
-      if (item.image.isNotBlank()) clickListener(item)
+      if (!item.imagePath.isNullOrBlank()) clickListener(item)
     }
     actorMovieName.text = item.name.split(" ").joinToString("\n")
     loadImage(item)
   }
 
-  private fun loadImage(actor: Actor) {
-    if (actor.image.isBlank()) {
+  private fun loadImage(actor: Person) {
+    if (actor.imagePath.isNullOrBlank()) {
       actorMoviePlaceholder.visible()
       actorMovieImage.gone()
       return
     }
 
     Glide.with(this)
-      .load("$TMDB_IMAGE_BASE_ACTOR_URL${actor.image}")
+      .load("$TMDB_IMAGE_BASE_ACTOR_URL${actor.imagePath}")
       .diskCacheStrategy(DATA)
       .transform(CenterCrop(), RoundedCorners(cornerRadius))
       .transition(withCrossFade(IMAGE_FADE_DURATION_MS))

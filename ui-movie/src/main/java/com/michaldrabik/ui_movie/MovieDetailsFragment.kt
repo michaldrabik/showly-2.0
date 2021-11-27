@@ -68,7 +68,6 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
-import com.michaldrabik.ui_model.Actor
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.IdImdb
@@ -78,6 +77,7 @@ import com.michaldrabik.ui_model.ImageFamily.MOVIE
 import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
 import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.Movie
+import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.Translation
@@ -288,17 +288,17 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     movieDetailsBackArrow2.crossfadeTo(movieDetailsBackArrow)
   }
 
-  private fun showFullActorView(actor: Actor) {
+  private fun showFullActorView(actor: Person) {
     if (movieDetailsActorFullContainer.isVisible) {
       return
     }
 
     Glide.with(this)
-      .load("$TMDB_IMAGE_BASE_ACTOR_FULL_URL${actor.image}")
+      .load("$TMDB_IMAGE_BASE_ACTOR_FULL_URL${actor.imagePath}")
       .transform(CenterCrop(), RoundedCorners(actorViewCorner))
       .into(movieDetailsActorFullImage)
 
-    val actorView = movieDetailsActorsRecycler.findViewWithTag<View>(actor.tmdbId)
+    val actorView = movieDetailsActorsRecycler.findViewWithTag<View>(actor.ids.tmdb.id)
     val transform = MaterialContainerTransform().apply {
       startView = actorView
       endView = movieDetailsActorFullContainer
@@ -308,12 +308,12 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     TransitionManager.beginDelayedTransition(movieDetailsRoot, transform)
     actorView.gone()
     movieDetailsActorFullImdb.apply {
-      val imdbId = actor.imdbId != null
+      val imdbId = actor.ids.imdb.id.isNotBlank()
       visibleIf(imdbId)
-      if (imdbId) onClick { openIMDbLink(IdImdb(actor.imdbId!!), "name") }
+      if (imdbId) onClick { openIMDbLink(actor.ids.imdb, "name") }
     }
     movieDetailsActorFullName.apply {
-      text = getString(R.string.textActorRole, actor.name, actor.role)
+      text = getString(R.string.textActorRole, actor.name, actor.character)
       fadeIn()
     }
     movieDetailsActorFullContainer.apply {
@@ -327,8 +327,8 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     }
   }
 
-  private fun hideFullActorView(actor: Actor) {
-    val actorView = movieDetailsActorsRecycler.findViewWithTag<View>(actor.tmdbId)
+  private fun hideFullActorView(actor: Person) {
+    val actorView = movieDetailsActorsRecycler.findViewWithTag<View>(actor.ids.tmdb.id)
     val transform = MaterialContainerTransform().apply {
       startView = movieDetailsActorFullContainer
       endView = actorView
@@ -548,7 +548,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       .into(movieDetailsImage)
   }
 
-  private fun renderActors(actors: List<Actor>) {
+  private fun renderActors(actors: List<Person>) {
     if (actorsAdapter?.itemCount != 0) return
     actorsAdapter?.setItems(actors)
     movieDetailsActorsRecycler.visibleIf(actors.isNotEmpty())
@@ -694,7 +694,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
           return@addCallback
         }
         movieDetailsActorFullContainer.isVisible -> {
-          hideFullActorView(movieDetailsActorFullContainer.tag as Actor)
+          hideFullActorView(movieDetailsActorFullContainer.tag as Person)
           return@addCallback
         }
         else -> {

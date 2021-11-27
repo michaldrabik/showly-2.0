@@ -23,7 +23,6 @@ import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
 import com.michaldrabik.ui_base.utilities.extensions.replace
-import com.michaldrabik.ui_model.Actor
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.EpisodeBundle
@@ -31,6 +30,7 @@ import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.ImageType.POSTER
+import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.Season
@@ -100,7 +100,7 @@ class ShowDetailsViewModel @Inject constructor(
   private val showLoadingState = MutableStateFlow<Boolean?>(null)
   private val showRatingsState = MutableStateFlow<Ratings?>(null)
   private val imageState = MutableStateFlow<Image?>(null)
-  private val actorsState = MutableStateFlow<List<Actor>?>(null)
+  private val actorsState = MutableStateFlow<List<Person>?>(null)
   private val seasonsState = MutableStateFlow<List<SeasonListItem>?>(null)
   private val relatedState = MutableStateFlow<List<RelatedListItem>?>(null)
   private val nextEpisodeState = MutableStateFlow<NextEpisodeBundle?>(null)

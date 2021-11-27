@@ -1,6 +1,6 @@
 package com.michaldrabik.data_remote.tmdb.model
 
-data class TmdbActors(
+data class TmdbPeople(
   val id: Long,
-  val cast: List<TmdbActor>?
+  val cast: List<TmdbPerson>?
 )

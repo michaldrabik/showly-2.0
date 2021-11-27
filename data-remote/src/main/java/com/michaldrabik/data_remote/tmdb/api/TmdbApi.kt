@@ -1,7 +1,7 @@
 package com.michaldrabik.data_remote.tmdb.api
 
-import com.michaldrabik.data_remote.tmdb.model.TmdbActor
 import com.michaldrabik.data_remote.tmdb.model.TmdbImages
+import com.michaldrabik.data_remote.tmdb.model.TmdbPerson
 import com.michaldrabik.data_remote.tmdb.model.TmdbStreamingCountry
 import java.util.Locale.ROOT
 
@@ -34,14 +34,14 @@ class TmdbApi(private val service: TmdbService) {
       TmdbImages.EMPTY
     }
 
-  suspend fun fetchMovieActors(tmdbId: Long): List<TmdbActor> {
+  suspend fun fetchMovieActors(tmdbId: Long): List<TmdbPerson> {
     val result = service.fetchMovieActors(tmdbId)
-    return result.cast?.map { it.copy(movieTmdbId = result.id) } ?: emptyList()
+    return result.cast?.toList() ?: emptyList()
   }
 
-  suspend fun fetchShowActors(tmdbId: Long): List<TmdbActor> {
+  suspend fun fetchShowActors(tmdbId: Long): List<TmdbPerson> {
     val result = service.fetchShowActors(tmdbId)
-    return result.cast?.map { it.copy(showTmdbId = result.id) } ?: emptyList()
+    return result.cast?.toList() ?: emptyList()
   }
 
   suspend fun fetchShowWatchProviders(tmdbId: Long, countryCode: String): TmdbStreamingCountry? {

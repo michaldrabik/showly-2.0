@@ -3,7 +3,7 @@ package com.michaldrabik.data_local.database.migrations
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-const val DATABASE_VERSION = 29
+const val DATABASE_VERSION = 30
 const val DATABASE_NAME = "SHOWLY2_DB_2"
 
 // TODO Split into separate files?
@@ -514,7 +514,50 @@ object Migrations {
             "`updated_at` INTEGER NOT NULL, " +
             "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)"
         )
-        execSQL("CREATE UNIQUE INDEX index_movies_archive_id_trakt ON movies_archive(id_trakt)")
+        execSQL("CREATE UNIQUE INDEX index_movies_archive_id_trakt ON people(id_trakt)")
+      }
+    }
+  }
+
+  private val MIGRATION_30 = object : Migration(29, 30) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+      with(database) {
+        execSQL("DROP TABLE actors")
+        execSQL(
+          "CREATE TABLE IF NOT EXISTS `people` (" +
+            "`id_tmdb` INTEGER PRIMARY KEY NOT NULL, " +
+            "`id_trakt` INTEGER, " +
+            "`id_imdb` TEXT, " +
+            "`name` TEXT NOT NULL, " +
+            "`type` TEXT NOT NULL, " +
+            "`biography` TEXT, " +
+            "`birthday` TEXT, " +
+            "`character` TEXT, " +
+            "`birthplace` TEXT, " +
+            "`deathday` TEXT, " +
+            "`image_path` TEXT, " +
+            "`homepage` TEXT, " +
+            "`created_at` INTEGER NOT NULL, " +
+            "`updated_at` INTEGER NOT NULL)"
+        )
+        execSQL("CREATE INDEX index_people_id_trakt ON people(id_trakt)")
+        execSQL("CREATE UNIQUE INDEX index_people_id_tmdb ON people(id_tmdb)")
+
+        execSQL(
+          "CREATE TABLE IF NOT EXISTS `people_shows_movies` (" +
+            "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+            "`id_tmdb_person` INTEGER NOT NULL, " +
+            "`mode` TEXT NOT NULL, " +
+            "`type` TEXT NOT NULL, " +
+            "`character` TEXT, " +
+            "`id_trakt_show` INTEGER, " +
+            "`id_trakt_movie` INTEGER, " +
+            "`created_at` INTEGER NOT NULL, " +
+            "`updated_at` INTEGER NOT NULL, " +
+            "FOREIGN KEY(`id_tmdb_person`) REFERENCES `people`(`id_tmdb`) ON DELETE CASCADE)"
+        )
+        execSQL("CREATE INDEX index_people_shows_movies_id_show_mode ON people_shows_movies(id_trakt_show, mode)")
+        execSQL("CREATE INDEX index_people_shows_movies_id_movie_mode ON people_shows_movies(id_trakt_movie, mode)")
       }
     }
   }
@@ -547,6 +590,7 @@ object Migrations {
     MIGRATION_26,
     MIGRATION_27,
     MIGRATION_28,
-    MIGRATION_29
+    MIGRATION_29,
+    MIGRATION_30
   )
 }

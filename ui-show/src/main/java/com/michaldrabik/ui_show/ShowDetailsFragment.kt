@@ -49,44 +49,13 @@ import com.michaldrabik.ui_base.common.sheets.links.LinksBottomSheet
 import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.SnackbarHost
-import com.michaldrabik.ui_base.utilities.extensions.addDivider
-import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
-import com.michaldrabik.ui_base.utilities.extensions.copyToClipboard
-import com.michaldrabik.ui_base.utilities.extensions.crossfadeTo
-import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
-import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
-import com.michaldrabik.ui_base.utilities.extensions.fadeIf
-import com.michaldrabik.ui_base.utilities.extensions.fadeIn
-import com.michaldrabik.ui_base.utilities.extensions.fadeOut
-import com.michaldrabik.ui_base.utilities.extensions.gone
-import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
-import com.michaldrabik.ui_base.utilities.extensions.onClick
-import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
-import com.michaldrabik.ui_base.utilities.extensions.screenHeight
-import com.michaldrabik.ui_base.utilities.extensions.screenWidth
-import com.michaldrabik.ui_base.utilities.extensions.setTextIfEmpty
-import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
-import com.michaldrabik.ui_base.utilities.extensions.visible
-import com.michaldrabik.ui_base.utilities.extensions.visibleIf
-import com.michaldrabik.ui_base.utilities.extensions.withFailListener
-import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
+import com.michaldrabik.ui_base.utilities.extensions.*
 import com.michaldrabik.ui_episodes.details.EpisodeDetailsBottomSheet
-import com.michaldrabik.ui_model.Actor
-import com.michaldrabik.ui_model.Comment
-import com.michaldrabik.ui_model.Episode
-import com.michaldrabik.ui_model.Genre
-import com.michaldrabik.ui_model.IdImdb
-import com.michaldrabik.ui_model.IdTrakt
-import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.*
 import com.michaldrabik.ui_model.ImageFamily.SHOW
 import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
 import com.michaldrabik.ui_model.ImageType.FANART
-import com.michaldrabik.ui_model.RatingState
-import com.michaldrabik.ui_model.Ratings
-import com.michaldrabik.ui_model.Season
-import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_GALLERY
-import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_TAB_SELECTED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_WATCHED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_NEW_COMMENT
@@ -108,20 +77,14 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_REMOVE_TRAKT
 import com.michaldrabik.ui_show.actors.ActorsAdapter
 import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
 import com.michaldrabik.ui_show.helpers.ShowLink
-import com.michaldrabik.ui_show.helpers.ShowLink.IMDB
-import com.michaldrabik.ui_show.helpers.ShowLink.METACRITIC
-import com.michaldrabik.ui_show.helpers.ShowLink.ROTTEN
-import com.michaldrabik.ui_show.helpers.ShowLink.TRAKT
+import com.michaldrabik.ui_show.helpers.ShowLink.*
 import com.michaldrabik.ui_show.helpers.StreamingsBundle
 import com.michaldrabik.ui_show.quickSetup.QuickSetupView
 import com.michaldrabik.ui_show.related.RelatedListItem
 import com.michaldrabik.ui_show.related.RelatedShowAdapter
 import com.michaldrabik.ui_show.seasons.SeasonListItem
 import com.michaldrabik.ui_show.seasons.SeasonsAdapter
-import com.michaldrabik.ui_show.views.AddToShowsButton.State.ADD
-import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_HIDDEN
-import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_MY_SHOWS
-import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_WATCHLIST
+import com.michaldrabik.ui_show.views.AddToShowsButton.State.*
 import com.michaldrabik.ui_streamings.recycler.StreamingAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_show_details.*
@@ -426,17 +389,17 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     navigateTo(R.id.actionShowDetailsFragmentToPostComment, bundle)
   }
 
-  private fun showFullActorView(actor: Actor) {
+  private fun showFullActorView(actor: Person) {
     if (showDetailsActorFullContainer.isVisible) {
       return
     }
 
     Glide.with(this)
-      .load("$TMDB_IMAGE_BASE_ACTOR_FULL_URL${actor.image}")
+      .load("$TMDB_IMAGE_BASE_ACTOR_FULL_URL${actor.imagePath}")
       .transform(CenterCrop(), RoundedCorners(actorViewCorner))
       .into(showDetailsActorFullImage)
 
-    val actorView = showDetailsActorsRecycler.findViewWithTag<View>(actor.tmdbId)
+    val actorView = showDetailsActorsRecycler.findViewWithTag<View>(actor.ids.tmdb.id)
     val transform = MaterialContainerTransform().apply {
       startView = actorView
       endView = showDetailsActorFullContainer
@@ -446,14 +409,14 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     TransitionManager.beginDelayedTransition(showDetailsRoot, transform)
     actorView.gone()
     showDetailsActorFullImdb.apply {
-      val hasImdbId = actor.imdbId != null
+      val hasImdbId = actor.ids.imdb.id.isNotBlank()
       visibleIf(hasImdbId)
       if (hasImdbId) {
-        onClick { openIMDbLink(IdImdb(actor.imdbId!!), "name") }
+        onClick { openIMDbLink(actor.ids.imdb, "name") }
       }
     }
     showDetailsActorFullName.apply {
-      text = getString(R.string.textActorRole, actor.name, actor.role)
+      text = getString(R.string.textActorRole, actor.name, actor.character)
       fadeIn(withHardware = true)
     }
     showDetailsActorFullContainer.apply {
@@ -467,8 +430,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
   }
 
-  private fun hideFullActorView(actor: Actor) {
-    val actorView = showDetailsActorsRecycler.findViewWithTag<View>(actor.tmdbId)
+  private fun hideFullActorView(actor: Person) {
+    val actorView = showDetailsActorsRecycler.findViewWithTag<View>(actor.ids.tmdb.id)
     val transform = MaterialContainerTransform().apply {
       startView = showDetailsActorFullContainer
       endView = actorView
@@ -669,7 +632,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
   }
 
-  private fun renderActors(actors: List<Actor>) {
+  private fun renderActors(actors: List<Person>) {
     if (actorsAdapter?.itemCount != 0) return
     actorsAdapter?.setItems(actors)
     showDetailsActorsRecycler.visibleIf(actors.isNotEmpty())
@@ -878,7 +841,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           return@addCallback
         }
         showDetailsActorFullContainer.isVisible -> {
-          hideFullActorView(showDetailsActorFullContainer.tag as Actor)
+          hideFullActorView(showDetailsActorFullContainer.tag as Person)
           return@addCallback
         }
         else -> {

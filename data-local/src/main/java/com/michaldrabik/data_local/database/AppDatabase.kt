@@ -2,7 +2,6 @@ package com.michaldrabik.data_local.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.michaldrabik.data_local.database.dao.ActorsDao
 import com.michaldrabik.data_local.database.dao.ArchiveMoviesDao
 import com.michaldrabik.data_local.database.dao.ArchiveShowsDao
 import com.michaldrabik.data_local.database.dao.CustomImagesDao
@@ -22,6 +21,8 @@ import com.michaldrabik.data_local.database.dao.MoviesSyncLogDao
 import com.michaldrabik.data_local.database.dao.MyMoviesDao
 import com.michaldrabik.data_local.database.dao.MyShowsDao
 import com.michaldrabik.data_local.database.dao.NewsDao
+import com.michaldrabik.data_local.database.dao.PeopleDao
+import com.michaldrabik.data_local.database.dao.PeopleShowsMoviesDao
 import com.michaldrabik.data_local.database.dao.RecentSearchDao
 import com.michaldrabik.data_local.database.dao.RelatedMoviesDao
 import com.michaldrabik.data_local.database.dao.RelatedShowsDao
@@ -40,7 +41,6 @@ import com.michaldrabik.data_local.database.dao.UserDao
 import com.michaldrabik.data_local.database.dao.WatchlistMoviesDao
 import com.michaldrabik.data_local.database.dao.WatchlistShowsDao
 import com.michaldrabik.data_local.database.migrations.DATABASE_VERSION
-import com.michaldrabik.data_local.database.model.Actor
 import com.michaldrabik.data_local.database.model.ArchiveMovie
 import com.michaldrabik.data_local.database.model.ArchiveShow
 import com.michaldrabik.data_local.database.model.CustomImage
@@ -60,6 +60,8 @@ import com.michaldrabik.data_local.database.model.MoviesSyncLog
 import com.michaldrabik.data_local.database.model.MyMovie
 import com.michaldrabik.data_local.database.model.MyShow
 import com.michaldrabik.data_local.database.model.News
+import com.michaldrabik.data_local.database.model.Person
+import com.michaldrabik.data_local.database.model.PersonShowMovie
 import com.michaldrabik.data_local.database.model.RecentSearch
 import com.michaldrabik.data_local.database.model.RelatedMovie
 import com.michaldrabik.data_local.database.model.RelatedShow
@@ -97,7 +99,8 @@ import com.michaldrabik.data_local.database.model.WatchlistShow
     MovieImage::class,
     User::class,
     Season::class,
-    Actor::class,
+    Person::class,
+    PersonShowMovie::class,
     Episode::class,
     Settings::class,
     RecentSearch::class,
@@ -161,7 +164,9 @@ abstract class AppDatabase : RoomDatabase() {
 
   abstract fun seasonsDao(): SeasonsDao
 
-  abstract fun actorsDao(): ActorsDao
+  abstract fun peopleDao(): PeopleDao
+
+  abstract fun peopleShowsMoviesDao(): PeopleShowsMoviesDao
 
   abstract fun settingsDao(): SettingsDao
 
