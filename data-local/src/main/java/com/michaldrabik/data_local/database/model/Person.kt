@@ -30,5 +30,6 @@ data class Person(
   @ColumnInfo(name = "image_path") var image: String?,
   @ColumnInfo(name = "homepage") var homepage: String?,
   @ColumnInfo(name = "created_at") var createdAt: ZonedDateTime,
-  @ColumnInfo(name = "updated_at") var updatedAt: ZonedDateTime
+  @ColumnInfo(name = "updated_at") var updatedAt: ZonedDateTime,
+  @ColumnInfo(name = "details_updated_at") var detailsUpdatedAt: ZonedDateTime?,
 )

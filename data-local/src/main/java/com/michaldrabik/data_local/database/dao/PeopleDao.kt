@@ -1,6 +1,6 @@
-// ktlint-disable
 package com.michaldrabik.data_local.database.dao
 
+/* ktlint-disable */
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
@@ -20,6 +20,9 @@ interface PeopleDao : BaseDao<Person> {
     }
     if (updateList.isNotEmpty()) update(updateList)
   }
+
+  @Query("SELECT * FROM people WHERE id_tmdb = :tmdbId")
+  suspend fun getById(tmdbId: Long): Person?
 
   @Query("SELECT people.*, people_shows_movies.type AS type, people_shows_movies.character AS character FROM people INNER JOIN people_shows_movies ON people_shows_movies.id_tmdb_person = people.id_tmdb WHERE people_shows_movies.id_trakt_show = :showTraktId")
   suspend fun getAllForShow(showTraktId: Long): List<Person>

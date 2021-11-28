@@ -280,6 +280,11 @@
       app:destination="@id/linksDialog"
       app:launchSingleTop="true"
       />
+    <action
+      android:id="@+id/actionShowDetailsFragmentToPerson"
+      app:destination="@id/personDetailsDialog"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment
@@ -342,6 +347,11 @@
     <action
       android:id="@+id/actionMovieDetailsFragmentToLinks"
       app:destination="@id/linksDialog"
+      app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionMovieDetailsFragmentToPerson"
+      app:destination="@id/personDetailsDialog"
       app:launchSingleTop="true"
       />
   </fragment>
@@ -594,6 +604,12 @@
     android:id="@+id/premiumFragment"
     android:name="com.michaldrabik.ui_premium.PremiumFragment"
     android:label="fragmentPremium"
+    />
+
+  <dialog
+    android:id="@+id/personDetailsDialog"
+    android:name="com.michaldrabik.ui_people.PersonDetailsBottomSheet"
+    android:label="dialogPersonDetails"
     />
 
   <dialog

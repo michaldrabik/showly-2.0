@@ -8,6 +8,7 @@ import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Person
 import java.time.LocalDate
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter.ISO_LOCAL_DATE
 import javax.inject.Inject
 import com.michaldrabik.data_local.database.model.Person as PersonDb
@@ -48,7 +49,7 @@ class PersonMapper @Inject constructor() {
       deathday = personDb.deathday?.let { if (it.isNotBlank()) LocalDate.parse(it) else null }
     )
 
-  fun toDatabase(person: Person): PersonDb {
+  fun toDatabase(person: Person, detailsTimestamp: ZonedDateTime?): PersonDb {
     val idTrakt = if (person.ids.trakt.id != -1L) person.ids.trakt.id else null
     val idImdb = if (person.ids.imdb.id.isNotBlank()) person.ids.imdb.id else null
     return PersonDb(
@@ -65,7 +66,8 @@ class PersonMapper @Inject constructor() {
       image = person.imagePath,
       homepage = person.homepage,
       createdAt = nowUtc(),
-      updatedAt = nowUtc()
+      updatedAt = nowUtc(),
+      detailsUpdatedAt = detailsTimestamp
     )
   }
 

@@ -538,6 +538,7 @@ object Migrations {
             "`image_path` TEXT, " +
             "`homepage` TEXT, " +
             "`created_at` INTEGER NOT NULL, " +
+            "`details_updated_at` INTEGER, " +
             "`updated_at` INTEGER NOT NULL)"
         )
         execSQL("CREATE INDEX index_people_id_trakt ON people(id_trakt)")

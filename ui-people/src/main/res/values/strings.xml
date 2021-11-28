@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textBorn" comment="For example - Born: 12 January 1990">Born:</string>
+  <string name="textDied" comment="For example - Died: 12 January 2020">Died:</string>
+</resources>

@@ -2,6 +2,7 @@ package com.michaldrabik.data_remote.tmdb.api
 
 import com.michaldrabik.data_remote.tmdb.model.TmdbImages
 import com.michaldrabik.data_remote.tmdb.model.TmdbPeople
+import com.michaldrabik.data_remote.tmdb.model.TmdbPerson
 import com.michaldrabik.data_remote.tmdb.model.TmdbStreamings
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -20,6 +21,9 @@ interface TmdbService {
 
   @GET("movie/{tmdbId}/images")
   suspend fun fetchMovieImages(@Path("tmdbId") tmdbId: Long): TmdbImages
+
+  @GET("person/{tmdbId}")
+  suspend fun fetchPersonDetails(@Path("tmdbId") tmdbId: Long): TmdbPerson
 
   @GET("movie/{tmdbId}/credits")
   suspend fun fetchMovieActors(@Path("tmdbId") tmdbId: Long): TmdbPeople

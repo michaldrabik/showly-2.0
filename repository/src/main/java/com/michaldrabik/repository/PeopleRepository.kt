@@ -20,6 +20,23 @@ class PeopleRepository @Inject constructor(
   private val mappers: Mappers
 ) {
 
+  suspend fun loadDetails(person: Person): Person {
+    val local = database.peopleDao().getById(person.ids.tmdb.id)
+    if (local?.detailsUpdatedAt != null) {
+      return mappers.person.fromDatabase(local, person.character)
+    }
+
+    val remotePerson = cloud.tmdbApi.fetchPersonDetails(person.ids.tmdb.id)
+
+    val personUi = mappers.person.fromNetwork(remotePerson)
+      .copy(imagePath = person.imagePath ?: remotePerson.profile_path)
+    val dbPerson = mappers.person.toDatabase(personUi, nowUtc())
+
+    database.peopleDao().upsert(listOf(dbPerson))
+
+    return personUi
+  }
+
   suspend fun loadAllForShow(showIds: Ids): List<Person> {
     val timestamp = nowUtc()
 
@@ -36,7 +53,7 @@ class PeopleRepository @Inject constructor(
       .sortedWith(compareBy { it.profile_path.isNullOrBlank() })
       .map { mappers.person.fromNetwork(it) }
 
-    val dbTmdbActors = remoteTmdbActors.map { mappers.person.toDatabase(it) }
+    val dbTmdbActors = remoteTmdbActors.map { mappers.person.toDatabase(it, null) }
     val dbTmdbActorsShows = remoteTmdbActors.map {
       PersonShowMovie(
         id = 0,
@@ -78,7 +95,7 @@ class PeopleRepository @Inject constructor(
       .sortedWith(compareBy { it.profile_path.isNullOrBlank() })
       .map { mappers.person.fromNetwork(it) }
 
-    val dbTmdbActors = remoteTmdbActors.map { mappers.person.toDatabase(it) }
+    val dbTmdbActors = remoteTmdbActors.map { mappers.person.toDatabase(it, null) }
     val dbTmdbActorsShows = remoteTmdbActors.map {
       PersonShowMovie(
         id = 0,

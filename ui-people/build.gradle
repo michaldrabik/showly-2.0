@@ -33,14 +33,10 @@ dependencies {
   implementation project(':common')
   implementation project(':data-local')
   implementation project(':data-remote')
-  implementation project(':repository')
   implementation project(':ui-base')
-  implementation project(':ui-model')
   implementation project(':ui-navigation')
-  implementation project(':ui-episodes')
-  implementation project(':ui-comments')
-  implementation project(':ui-streamings')
-  implementation project(':ui-people')
+  implementation project(':ui-model')
+  implementation project(':repository')
 
   implementation "com.google.dagger:hilt-android:$versions.hilt"
   kapt "com.google.dagger:hilt-compiler:$versions.hilt"

@@ -53,4 +53,8 @@ class TmdbApi(private val service: TmdbService) {
     val result = service.fetchMovieWatchProviders(tmdbId)
     return result.results[countryCode.uppercase(ROOT)]
   }
+
+  suspend fun fetchPersonDetails(id: Long): TmdbPerson {
+    return service.fetchPersonDetails(id)
+  }
 }
