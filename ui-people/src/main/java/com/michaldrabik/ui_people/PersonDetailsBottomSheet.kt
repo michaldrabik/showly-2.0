@@ -70,18 +70,18 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>
   @SuppressLint("SetTextI18n")
   private fun render(uiState: PersonDetailsUiState) {
     uiState.run {
-      personDetails?.let {
+      personDetails?.let { it ->
         viewPersonDetailsTitle.text = it.name
         viewPersonDetailsSubtitle.text = it.character
         viewPersonDetailsBio.visibleIf(!it.bio.isNullOrBlank())
         viewPersonDetailsBio.text = it.bio
 
-        it.getAge()?.let { age -> viewPersonDetailsTitle.text = "${it.name} ($age)" }
         it.birthday?.let { date ->
           viewPersonDetailsBirthdayLabel.visible()
           viewPersonDetailsBirthdayValue.visible()
           val birthdayText = dateFormat?.format(date)
             ?.capitalizeWords()
+            ?.plus(it.getAge()?.let { age -> " ($age)" } ?: "")
             ?.plus(if (!it.birthplace.isNullOrBlank()) "\n${it.birthplace}" else "")
           viewPersonDetailsBirthdayValue.text = birthdayText
         }

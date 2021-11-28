@@ -232,6 +232,7 @@
         android:ellipsize="end"
         android:gravity="start"
         android:justificationMode="inter_word"
+        android:lineSpacingExtra="1dp"
         android:textAlignment="viewStart"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="14sp"
@@ -459,9 +460,9 @@
         android:visibility="gone"
         app:drawableStartCompat="@drawable/ic_custom_image"
         app:drawableTint="?android:attr/textColorPrimary"
+        app:layout_constraintBottom_toTopOf="@id/movieDetailsPremiumAd"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/movieDetailsRelatedRecycler"
-        app:layout_constraintBottom_toTopOf="@id/movieDetailsPremiumAd"
         app:layout_goneMarginTop="0dp"
         tools:visibility="visible"
         />

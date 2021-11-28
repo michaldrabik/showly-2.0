@@ -221,6 +221,7 @@ class ShowDetailsViewModel @Inject constructor(
     try {
       val actors = actorsCase.loadActors(show)
       actorsState.value = actors
+      actorsCase.preloadDetails(actors)
     } catch (error: Throwable) {
       actorsState.value = emptyList()
       rethrowCancellation(error)
