@@ -7,10 +7,11 @@ sealed class PersonDetailsItem() {
 
   data class MainInfo(
     val person: Person,
-    val dateFormat: DateTimeFormatter?
+    val dateFormat: DateTimeFormatter?,
+    val isLoading: Boolean,
   ) : PersonDetailsItem()
 
   data class MainBio(
-    val biography: String
+    val biography: String?
   ) : PersonDetailsItem()
 }

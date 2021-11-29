@@ -1,10 +1,7 @@
 package com.michaldrabik.ui_people
 
-import com.michaldrabik.ui_model.Person
-import java.time.format.DateTimeFormatter
+import com.michaldrabik.ui_people.recycler.PersonDetailsItem
 
 data class PersonDetailsUiState(
-  val isLoading: Boolean? = null,
-  val personDetails: Person? = null,
-  val dateFormat: DateTimeFormatter? = null,
+  val personDetailsItems: List<PersonDetailsItem>? = null,
 )

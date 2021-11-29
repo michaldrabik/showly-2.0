@@ -117,10 +117,10 @@
     android:textColor="?android:attr/textColorSecondary"
     android:textSize="14sp"
     android:visibility="gone"
+    app:layout_constraintTop_toTopOf="@id/viewPersonDetailsBirthdayValue"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="0"
     app:layout_constraintStart_toEndOf="@id/viewPersonDetailsImageGuide1"
-    app:layout_constraintTop_toTopOf="@id/viewPersonDetailsBirthdayValue"
     tools:visibility="visible"
     />
 
@@ -143,7 +143,7 @@
     app:layout_constraintHorizontal_bias="0"
     app:layout_constraintStart_toEndOf="@id/viewPersonDetailsBirthdayLabel"
     app:layout_goneMarginBottom="0dp"
-    tools:text="@tools:sample/lorem/random"
+    tools:text="@tools:sample/lorem"
     tools:visibility="visible"
     />
 
@@ -187,6 +187,48 @@
     app:layout_constraintTop_toTopOf="@id/viewPersonDetailsDeathdayLabel"
     tools:ignore="HardcodedText"
     tools:text="@tools:sample/lorem/random"
+    tools:visibility="visible"
+    />
+
+  <TextView
+    android:id="@+id/viewPersonDetailsAgeLabel"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:ellipsize="end"
+    android:gravity="start"
+    android:lineSpacingExtra="1dp"
+    android:maxLines="1"
+    android:text="@string/textAge"
+    android:textAlignment="viewStart"
+    android:textColor="?android:attr/textColorSecondary"
+    android:textSize="14sp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="@id/viewPersonDetailsAgeValue"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0"
+    app:layout_constraintStart_toEndOf="@id/viewPersonDetailsImageGuide1"
+    app:layout_constraintTop_toTopOf="@id/viewPersonDetailsAgeValue"
+    tools:visibility="visible"
+    />
+
+  <TextView
+    android:id="@+id/viewPersonDetailsAgeValue"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceTiny"
+    android:layout_marginBottom="@dimen/spaceMicro"
+    android:gravity="start"
+    android:lineSpacingExtra="1dp"
+    android:textAlignment="viewStart"
+    android:textColor="?android:attr/textColorPrimary"
+    android:textSize="14sp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toTopOf="@id/viewPersonDetailsBirthdayValue"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0"
+    app:layout_constraintStart_toEndOf="@id/viewPersonDetailsBirthdayLabel"
+    app:layout_goneMarginBottom="0dp"
+    tools:text="@tools:sample/lorem"
     tools:visibility="visible"
     />
 

@@ -14,7 +14,9 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.gone
+import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
+import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_people.R
@@ -31,6 +33,8 @@ class PersonDetailsInfoView : ConstraintLayout {
   private val cornerRadius by lazy { context.dimenToPx(R.dimen.mediaTileCorner).toFloat() }
   private val spaceNormal by lazy { context.dimenToPx(R.dimen.spaceNormal) }
 
+  var onLinksClickListener: ((Person) -> Unit)? = null
+
   init {
     inflate(context, R.layout.view_person_details_info, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
@@ -40,28 +44,27 @@ class PersonDetailsInfoView : ConstraintLayout {
   fun bind(item: PersonDetailsItem.MainInfo) {
     viewPersonDetailsTitle.text = item.person.name
     viewPersonDetailsSubtitle.text = item.person.character
+    viewPersonDetailsLinkIcon.onClick { onLinksClickListener?.invoke(item.person) }
 
     item.person.birthday?.let { date ->
       viewPersonDetailsBirthdayLabel.visible()
       viewPersonDetailsBirthdayValue.visible()
+      viewPersonDetailsAgeLabel.visible()
+      viewPersonDetailsAgeValue.visible()
       val birthdayText = item.dateFormat?.format(date)
         ?.capitalizeWords()
-        ?.plus(item.person.getAge()?.let { age -> " ($age)" } ?: "")
         ?.plus(if (!item.person.birthplace.isNullOrBlank()) "\n${item.person.birthplace}" else "")
       viewPersonDetailsBirthdayValue.text = birthdayText
+      viewPersonDetailsAgeValue.text = item.person.getAge().toString()
     }
     item.person.deathday?.let { date ->
       viewPersonDetailsDeathdayLabel.visible()
       viewPersonDetailsDeathdayValue.visible()
       viewPersonDetailsDeathdayValue.text = item.dateFormat?.format(date)?.capitalizeWords()
     }
+    viewPersonDetailsProgress.visibleIf(item.isLoading)
 
     renderImage(item.person)
-
-//    viewPersonDetailsLinkIcon.onClick { _ ->
-//      val options = PersonLinksBottomSheet.createBundle(it)
-//      navigateTo(R.id.actionPersonDetailsDialogToLinks, options)
-//    }
   }
 
   private fun renderImage(person: Person) {

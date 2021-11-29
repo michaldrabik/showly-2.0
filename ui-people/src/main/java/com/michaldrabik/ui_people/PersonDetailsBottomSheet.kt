@@ -11,12 +11,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
-import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_PERSON
+import com.michaldrabik.ui_people.links.PersonLinksBottomSheet
 import com.michaldrabik.ui_people.recycler.PersonDetailsAdapter
-import com.michaldrabik.ui_people.recycler.PersonDetailsItem
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.view_person_details.*
 import kotlinx.coroutines.flow.collect
@@ -61,7 +60,9 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>
 
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-    adapter = PersonDetailsAdapter()
+    adapter = PersonDetailsAdapter(
+      onLinksClickListener = { openLinksSheet(it) }
+    )
     with(personDetailsRecycler) {
       adapter = this@PersonDetailsBottomSheet.adapter
       layoutManager = this@PersonDetailsBottomSheet.layoutManager
@@ -69,73 +70,16 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>
     }
   }
 
+  private fun openLinksSheet(it: Person) {
+    val options = PersonLinksBottomSheet.createBundle(it)
+    navigateTo(R.id.actionPersonDetailsDialogToLinks, options)
+  }
+
   @SuppressLint("SetTextI18n")
   private fun render(uiState: PersonDetailsUiState) {
     uiState.run {
-      personDetails?.let {
-        adapter?.setItems(
-          listOf(
-            PersonDetailsItem.MainInfo(it, dateFormat),
-            PersonDetailsItem.MainBio(it.bio ?: "")
-          )
-        )
-      }
+      personDetailsItems?.let { adapter?.setItems(it) }
     }
-//    uiState.run {
-//      personDetails?.let { it ->
-//        viewPersonDetailsTitle.text = it.name
-//        viewPersonDetailsSubtitle.text = it.character
-//        viewPersonDetailsBio.visibleIf(!it.bio.isNullOrBlank())
-//        viewPersonDetailsBio.text = it.bio
-//
-//        it.birthday?.let { date ->
-//          viewPersonDetailsBirthdayLabel.visible()
-//          viewPersonDetailsBirthdayValue.visible()
-//          val birthdayText = dateFormat?.format(date)
-//            ?.capitalizeWords()
-//            ?.plus(it.getAge()?.let { age -> " ($age)" } ?: "")
-//            ?.plus(if (!it.birthplace.isNullOrBlank()) "\n${it.birthplace}" else "")
-//          viewPersonDetailsBirthdayValue.text = birthdayText
-//        }
-//        it.deathday?.let { date ->
-//          viewPersonDetailsDeathdayLabel.visible()
-//          viewPersonDetailsDeathdayValue.visible()
-//          viewPersonDetailsDeathdayValue.text = dateFormat?.format(date)?.capitalizeWords()
-//        }
-//
-//        renderImage(it)
-//
-//        viewPersonDetailsLinkIcon.onClick { _ ->
-//          val options = PersonLinksBottomSheet.createBundle(it)
-//          navigateTo(R.id.actionPersonDetailsDialogToLinks, options)
-//        }
-//      }
-//      isLoading?.let {
-//        viewPersonDetailsProgress.visibleIf(it)
-//        viewPersonDetailsLinkIcon.isClickable = !it
-//      }
-//    }
-  }
-
-  private fun renderImage(person: Person) {
-//    if (person.imagePath.isNullOrBlank()) {
-//      viewPersonDetailsImage.gone()
-//      viewPersonDetailsPlaceholder.visible()
-//      return
-//    }
-//
-//    viewPersonDetailsImage.visible()
-//    viewPersonDetailsPlaceholder.gone()
-//
-//    Glide.with(this)
-//      .load("${Config.TMDB_IMAGE_BASE_ACTOR_URL}${person.imagePath}")
-//      .transform(CenterCrop(), GranularRoundedCorners(topLeftCornerRadius, cornerRadius, cornerRadius, cornerRadius))
-//      .transition(DrawableTransitionOptions.withCrossFade(Config.IMAGE_FADE_DURATION_MS))
-//      .withFailListener {
-//        viewPersonDetailsImage.gone()
-//        viewPersonDetailsPlaceholder.visible()
-//      }
-//      .into(viewPersonDetailsImage)
   }
 
   override fun onDestroyView() {

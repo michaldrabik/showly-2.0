@@ -4,10 +4,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
+import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_people.recycler.views.PersonDetailsBioView
 import com.michaldrabik.ui_people.recycler.views.PersonDetailsInfoView
 
-class PersonDetailsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class PersonDetailsAdapter(
+  var onLinksClickListener: (Person) -> Unit
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   companion object {
     private const val VIEW_TYPE_INFO = 1
@@ -26,7 +29,11 @@ class PersonDetailsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
-    VIEW_TYPE_INFO -> BaseViewHolder(PersonDetailsInfoView(parent.context))
+    VIEW_TYPE_INFO -> BaseViewHolder(
+      PersonDetailsInfoView(parent.context).apply {
+        onLinksClickListener = this@PersonDetailsAdapter.onLinksClickListener
+      }
+    )
     VIEW_TYPE_BIO -> BaseViewHolder(PersonDetailsBioView(parent.context))
     else -> throw IllegalStateException()
   }

@@ -78,7 +78,7 @@ class PersonLinksBottomSheet : BaseBottomSheetFragment<PersonLinksViewModel>() {
       openWebUrl("https://duckduckgo.com/?q=$name")
     }
     viewPersonLinksTwitter.onClick {
-      openWebUrl("https://twitter.com/search?q=$name&src=typed_query")
+      openWebUrl("https://twitter.com/search?q=$name&src=typed_query&f=user")
     }
   }
 
