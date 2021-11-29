@@ -10,6 +10,8 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_model.Person
@@ -44,7 +46,6 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>
   override fun createViewModel() = ViewModelProvider(this)[PersonDetailsViewModel::class.java]
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
     setupView()
     setupRecycler()
 
@@ -55,7 +56,8 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>
   }
 
   private fun setupView() {
-//    viewPersonDetailsBio.setInitialLines(5)
+    val behavior: BottomSheetBehavior<*> = (dialog as BottomSheetDialog).behavior
+    behavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
   }
 
   private fun setupRecycler() {

@@ -8,8 +8,10 @@ import com.michaldrabik.data_remote.Config.TRAKT_SYNC_PAGE_LIMIT
 import com.michaldrabik.data_remote.trakt.model.Comment
 import com.michaldrabik.data_remote.trakt.model.CustomList
 import com.michaldrabik.data_remote.trakt.model.Episode
+import com.michaldrabik.data_remote.trakt.model.Ids
 import com.michaldrabik.data_remote.trakt.model.Movie
 import com.michaldrabik.data_remote.trakt.model.OAuthResponse
+import com.michaldrabik.data_remote.trakt.model.PersonCredit
 import com.michaldrabik.data_remote.trakt.model.Show
 import com.michaldrabik.data_remote.trakt.model.SyncExportItem
 import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
@@ -61,6 +63,24 @@ class TraktApi(private val service: TraktService) {
   suspend fun fetchSearch(query: String, withMovies: Boolean) =
     if (withMovies) service.fetchSearchResultsMovies(query)
     else service.fetchSearchResults(query)
+
+  suspend fun fetchPersonIds(idType: String, id: String): Ids? {
+    val result = service.fetchPersonIds(idType, id)
+    if (result.isNotEmpty()) {
+      return result.first().person?.ids
+    }
+    return null
+  }
+
+  suspend fun fetchPersonShowsCredits(traktId: Long): List<PersonCredit> {
+    val result = service.fetchPersonCredits(traktId = traktId, "shows")
+    return result.cast ?: emptyList()
+  }
+
+  suspend fun fetchPersonMoviesCredits(traktId: Long): List<PersonCredit> {
+    val result = service.fetchPersonCredits(traktId = traktId, "movies")
+    return result.cast ?: emptyList()
+  }
 
   suspend fun fetchSearchId(idType: String, id: String) =
     service.fetchSearchId(idType, id)

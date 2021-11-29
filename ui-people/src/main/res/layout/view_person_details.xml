@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/viewPersonDetailsRoot"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:background="@drawable/bg_bottom_sheet"
   android:clipToPadding="false"
   android:focusableInTouchMode="true"
-  tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
   >
 
   <androidx.recyclerview.widget.RecyclerView
@@ -23,4 +21,4 @@
     android:paddingBottom="@dimen/spaceNormal"
     />
 
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

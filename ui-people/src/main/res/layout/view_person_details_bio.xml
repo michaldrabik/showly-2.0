@@ -13,7 +13,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/spaceNormal"
-    android:layout_marginTop="@dimen/spaceMedium"
     android:layout_marginEnd="@dimen/spaceNormal"
     android:ellipsize="end"
     android:gravity="start"

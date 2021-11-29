@@ -3,7 +3,8 @@ package com.michaldrabik.data_remote.trakt.model
 data class SearchResult(
   val score: Float?,
   val show: Show?,
-  val movie: Movie?
+  val movie: Movie?,
+  val person: Person?
 ) {
 
   fun getVotes() = when {

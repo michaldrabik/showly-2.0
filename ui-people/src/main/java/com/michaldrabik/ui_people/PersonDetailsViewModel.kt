@@ -5,9 +5,11 @@ import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
 import com.michaldrabik.ui_base.utilities.extensions.replaceItem
 import com.michaldrabik.ui_model.Person
+import com.michaldrabik.ui_people.cases.PersonDetailsCreditsCase
 import com.michaldrabik.ui_people.cases.PersonDetailsLoadCase
 import com.michaldrabik.ui_people.recycler.PersonDetailsItem
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -19,6 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PersonDetailsViewModel @Inject constructor(
   private val loadDetailsCase: PersonDetailsLoadCase,
+  private val loadCreditsCase: PersonDetailsCreditsCase,
 ) : BaseViewModel() {
 
   private val personDetailsItemsState = MutableStateFlow<List<PersonDetailsItem>?>(null)
@@ -28,21 +31,30 @@ class PersonDetailsViewModel @Inject constructor(
       val progressJob = launchDelayed(750) { setLoading(true) }
       try {
         val dateFormat = loadDetailsCase.loadDateFormat()
-        personDetailsItemsState.value = mutableListOf<PersonDetailsItem>(
-          PersonDetailsItem.MainInfo(person, dateFormat, false)
-        ).apply {
+        personDetailsItemsState.value = mutableListOf<PersonDetailsItem>().apply {
+          add(PersonDetailsItem.MainInfo(person, dateFormat, false))
           if (!person.bio.isNullOrBlank()) {
             add(PersonDetailsItem.MainBio(person.bio, person.bioTranslation))
           }
         }
 
-        val details = loadDetailsCase.loadDetails(person)
-        personDetailsItemsState.value = mutableListOf<PersonDetailsItem>(
-          PersonDetailsItem.MainInfo(details, dateFormat, false)
-        ).apply {
+        val detailsAsync = async { loadDetailsCase.loadDetails(person) }
+        val creditsAsync = async { loadCreditsCase.loadCredits(person) }
+        val details = detailsAsync.await()
+        val credits = creditsAsync.await()
+
+        personDetailsItemsState.value = mutableListOf<PersonDetailsItem>().apply {
+          add(PersonDetailsItem.MainInfo(details, dateFormat, false))
           if (!details.bio.isNullOrBlank()) {
             add(PersonDetailsItem.MainBio(details.bio, details.bioTranslation))
           }
+          addAll(
+            credits.map { credit ->
+              credit.show?.let { return@map PersonDetailsItem.CreditsShowItem(it, credit.image) }
+              credit.movie?.let { return@map PersonDetailsItem.CreditsMovieItem(it, credit.image) }
+              throw IllegalStateException()
+            }
+          )
         }
       } catch (error: Throwable) {
         // TODO Handle error ui

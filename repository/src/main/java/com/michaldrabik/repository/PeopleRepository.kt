@@ -10,7 +10,13 @@ import com.michaldrabik.data_local.database.model.PersonShowMovie
 import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.Ids
+import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Person
+import com.michaldrabik.ui_model.PersonCredit
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -44,6 +50,36 @@ class PeopleRepository @Inject constructor(
     database.peopleDao().upsert(listOf(dbPerson))
 
     return personUi
+  }
+
+  suspend fun loadCredits(person: Person) = coroutineScope {
+    val idTmdb = person.ids.tmdb.id
+    var idTrakt: Long?
+
+    val localPerson = database.peopleDao().getById(idTmdb)
+    idTrakt = localPerson?.idTrakt
+    if (idTrakt == null) {
+      val ids = cloud.traktApi.fetchPersonIds("tmdb", idTmdb.toString())
+      ids?.trakt?.let {
+        idTrakt = it
+        database.peopleDao().updateTraktId(it, idTmdb)
+      }
+    }
+    if (idTrakt == null) return@coroutineScope emptyList()
+
+    val showsCreditsAsync = async { cloud.traktApi.fetchPersonShowsCredits(idTrakt!!) }
+    val moviesCreditsAsync = async { cloud.traktApi.fetchPersonMoviesCredits(idTrakt!!) }
+    val remoteCredits = awaitAll(showsCreditsAsync, moviesCreditsAsync)
+      .flatten()
+      .map {
+        PersonCredit(
+          show = it.show?.let { show -> mappers.show.fromNetwork(show) },
+          movie = it.movie?.let { movie -> mappers.movie.fromNetwork(movie) },
+          image = Image.createUnknown(ImageType.POSTER)
+        )
+      }
+
+    return@coroutineScope remoteCredits
   }
 
   suspend fun loadAllForShow(showIds: Ids): List<Person> {

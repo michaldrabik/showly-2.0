@@ -8,6 +8,7 @@ import com.michaldrabik.data_remote.trakt.model.HiddenItem
 import com.michaldrabik.data_remote.trakt.model.Movie
 import com.michaldrabik.data_remote.trakt.model.MovieResult
 import com.michaldrabik.data_remote.trakt.model.OAuthResponse
+import com.michaldrabik.data_remote.trakt.model.PersonCreditsResult
 import com.michaldrabik.data_remote.trakt.model.RatingResultEpisode
 import com.michaldrabik.data_remote.trakt.model.RatingResultMovie
 import com.michaldrabik.data_remote.trakt.model.RatingResultShow
@@ -91,6 +92,12 @@ interface TraktService {
 
   @GET("shows/{traktId}/next_episode?extended=full")
   suspend fun fetchNextEpisode(@Path("traktId") traktId: Long): Response<Episode>
+
+  @GET("search/{idType}/{id}?type=person")
+  suspend fun fetchPersonIds(@Path("idType") idType: String, @Path("id") id: String): List<SearchResult>
+
+  @GET("people/{traktId}/{type}?extended=full")
+  suspend fun fetchPersonCredits(@Path("traktId") traktId: Long, @Path("type") type: String): PersonCreditsResult
 
   @GET("search/{idType}/{id}?extended=full")
   suspend fun fetchSearchId(@Path("idType") idType: String, @Path("id") id: String): List<SearchResult>

@@ -33,6 +33,9 @@ interface PeopleDao : BaseDao<Person> {
   @Query("SELECT * FROM people")
   suspend fun getAll(): List<Person>
 
+  @Query("UPDATE people SET id_trakt = :idTrakt WHERE id_tmdb = :idTmdb")
+  suspend fun updateTraktId(idTrakt: Long, idTmdb: Long)
+
   @Query("UPDATE people SET biography_translation = NULL, details_updated_at = NULL")
   suspend fun deleteTranslations()
 }
