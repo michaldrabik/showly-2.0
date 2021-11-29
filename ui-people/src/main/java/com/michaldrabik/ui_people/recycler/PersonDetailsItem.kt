@@ -12,6 +12,7 @@ sealed class PersonDetailsItem() {
   ) : PersonDetailsItem()
 
   data class MainBio(
-    val biography: String?
+    val biography: String?,
+    val biographyTranslation: String?,
   ) : PersonDetailsItem()
 }

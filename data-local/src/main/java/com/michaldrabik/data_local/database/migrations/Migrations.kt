@@ -531,6 +531,7 @@ object Migrations {
             "`name` TEXT NOT NULL, " +
             "`type` TEXT NOT NULL, " +
             "`biography` TEXT, " +
+            "`biography_translation` TEXT, " +
             "`birthday` TEXT, " +
             "`character` TEXT, " +
             "`birthplace` TEXT, " +

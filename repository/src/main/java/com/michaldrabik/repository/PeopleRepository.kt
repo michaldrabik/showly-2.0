@@ -15,6 +15,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class PeopleRepository @Inject constructor(
+  private val settingsRepository: SettingsRepository,
   private val database: AppDatabase,
   private val cloud: Cloud,
   private val mappers: Mappers
@@ -26,10 +27,18 @@ class PeopleRepository @Inject constructor(
       return mappers.person.fromDatabase(local, person.character)
     }
 
+    val language = settingsRepository.language
     val remotePerson = cloud.tmdbApi.fetchPersonDetails(person.ids.tmdb.id)
+    var bioTranslation: String? = null
+    if (language != Config.DEFAULT_LANGUAGE) {
+      val translations = cloud.tmdbApi.fetchPersonTranslations(person.ids.tmdb.id)
+      bioTranslation = translations[language]?.biography
+    }
 
-    val personUi = mappers.person.fromNetwork(remotePerson)
-      .copy(imagePath = person.imagePath ?: remotePerson.profile_path)
+    val personUi = mappers.person.fromNetwork(remotePerson).copy(
+      bioTranslation = bioTranslation,
+      imagePath = person.imagePath ?: remotePerson.profile_path
+    )
     val dbPerson = mappers.person.toDatabase(personUi, nowUtc())
 
     database.peopleDao().upsert(listOf(dbPerson))

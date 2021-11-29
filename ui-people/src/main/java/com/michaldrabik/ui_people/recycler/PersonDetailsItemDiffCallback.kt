@@ -18,7 +18,7 @@ class PersonDetailsItemDiffCallback : DiffUtil.ItemCallback<PersonDetailsItem>()
           oldItem.isLoading == newItem.isLoading
       }
       oldItem is PersonDetailsItem.MainBio && newItem is PersonDetailsItem.MainBio -> {
-        oldItem.biography == newItem.biography
+        oldItem == newItem
       }
       else -> false
     }

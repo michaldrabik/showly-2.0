@@ -22,6 +22,10 @@ class PersonDetailsBioView : FrameLayout {
   }
 
   fun bind(item: PersonDetailsItem.MainBio) {
-    viewPersonDetailsBio.text = item.biography
+    if (!item.biographyTranslation.isNullOrBlank()) {
+      viewPersonDetailsBio.text = item.biographyTranslation
+    } else {
+      viewPersonDetailsBio.text = item.biography
+    }
   }
 }

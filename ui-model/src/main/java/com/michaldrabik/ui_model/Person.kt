@@ -12,6 +12,7 @@ data class Person(
   val name: String,
   val type: Type,
   val bio: String?,
+  val bioTranslation: String?,
   val character: String?,
   val birthplace: String?,
   val imagePath: String?,

@@ -23,6 +23,7 @@ data class Person(
   @ColumnInfo(name = "name") var name: String,
   @ColumnInfo(name = "type") var type: String,
   @ColumnInfo(name = "biography") var biography: String?,
+  @ColumnInfo(name = "biography_translation") var biographyTranslation: String?,
   @ColumnInfo(name = "birthday") var birthday: String?,
   @ColumnInfo(name = "birthplace") var birthplace: String?,
   @ColumnInfo(name = "character") var character: String?,

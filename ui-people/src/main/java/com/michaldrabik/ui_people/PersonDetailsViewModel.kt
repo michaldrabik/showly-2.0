@@ -32,7 +32,7 @@ class PersonDetailsViewModel @Inject constructor(
           PersonDetailsItem.MainInfo(person, dateFormat, false)
         ).apply {
           if (!person.bio.isNullOrBlank()) {
-            add(PersonDetailsItem.MainBio(person.bio))
+            add(PersonDetailsItem.MainBio(person.bio, person.bioTranslation))
           }
         }
 
@@ -41,7 +41,7 @@ class PersonDetailsViewModel @Inject constructor(
           PersonDetailsItem.MainInfo(details, dateFormat, false)
         ).apply {
           if (!details.bio.isNullOrBlank()) {
-            add(PersonDetailsItem.MainBio(details.bio))
+            add(PersonDetailsItem.MainBio(details.bio, details.bioTranslation))
           }
         }
       } catch (error: Throwable) {

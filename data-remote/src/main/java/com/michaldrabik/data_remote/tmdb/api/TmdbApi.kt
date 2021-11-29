@@ -3,6 +3,7 @@ package com.michaldrabik.data_remote.tmdb.api
 import com.michaldrabik.data_remote.tmdb.model.TmdbImages
 import com.michaldrabik.data_remote.tmdb.model.TmdbPerson
 import com.michaldrabik.data_remote.tmdb.model.TmdbStreamingCountry
+import com.michaldrabik.data_remote.tmdb.model.TmdbTranslation
 import java.util.Locale.ROOT
 
 class TmdbApi(private val service: TmdbService) {
@@ -56,5 +57,10 @@ class TmdbApi(private val service: TmdbService) {
 
   suspend fun fetchPersonDetails(id: Long): TmdbPerson {
     return service.fetchPersonDetails(id)
+  }
+
+  suspend fun fetchPersonTranslations(id: Long): Map<String, TmdbTranslation.Data> {
+    val result = service.fetchPersonTranslation(id).translations ?: emptyList()
+    return result.associateBy({ it.iso_639_1.lowercase() }, { it.data ?: TmdbTranslation.Data(null) })
   }
 }

@@ -32,4 +32,7 @@ interface PeopleDao : BaseDao<Person> {
 
   @Query("SELECT * FROM people")
   suspend fun getAll(): List<Person>
+
+  @Query("UPDATE people SET biography_translation = NULL, details_updated_at = NULL")
+  suspend fun deleteTranslations()
 }
