@@ -1,5 +1,5 @@
 <resources>
   <dimen name="personImageWidth">80dp</dimen>
   <dimen name="personImageHeight">120dp</dimen>
-  <dimen name="personImageCorner">18dp</dimen>
+  <dimen name="personImageCorner">17dp</dimen>
 </resources>

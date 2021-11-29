@@ -3,7 +3,9 @@
 <navigation
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/navigationGraph"
+  tools:ignore="InvalidNavigation"
   >
 
   <action
@@ -610,7 +612,13 @@
     android:id="@+id/personDetailsDialog"
     android:name="com.michaldrabik.ui_people.PersonDetailsBottomSheet"
     android:label="dialogPersonDetails"
-    />
+    >
+    <action
+      android:id="@+id/actionPersonDetailsDialogToLinks"
+      app:destination="@id/personLinksDialog"
+      app:launchSingleTop="true"
+      />
+  </dialog>
 
   <dialog
     android:id="@+id/customImagesDialog"
@@ -690,6 +698,12 @@
     android:id="@+id/linksDialog"
     android:name="com.michaldrabik.ui_base.common.sheets.links.LinksBottomSheet"
     android:label="dialogLinks"
+    />
+
+  <dialog
+    android:id="@+id/personLinksDialog"
+    android:name="com.michaldrabik.ui_people.links.PersonLinksBottomSheet"
+    android:label="dialogPersonLinks"
     />
 
 </navigation>

@@ -18,11 +18,13 @@ import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
+import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_PERSON
+import com.michaldrabik.ui_people.links.PersonLinksBottomSheet
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.view_person_details.*
 import kotlinx.android.synthetic.main.view_person_details.view.*
@@ -92,8 +94,16 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>
         }
 
         renderImage(it)
+
+        viewPersonDetailsLinkIcon.onClick { _ ->
+          val options = PersonLinksBottomSheet.createBundle(it)
+          navigateTo(R.id.actionPersonDetailsDialogToLinks, options)
+        }
       }
-      isLoading?.let { viewPersonDetailsProgress.visibleIf(it) }
+      isLoading?.let {
+        viewPersonDetailsProgress.visibleIf(it)
+        viewPersonDetailsLinkIcon.isClickable = !it
+      }
     }
   }
 
