@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/viewPersonDetailsRoot"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
@@ -19,7 +21,24 @@
     android:minHeight="600dp"
     android:overScrollMode="never"
     android:paddingTop="@dimen/spaceNormal"
-    android:paddingBottom="@dimen/spaceNormal"
+    android:paddingBottom="56dp"
+    />
+
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/personDetailsRecyclerFab"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|end"
+    android:layout_margin="@dimen/spaceNormal"
+    android:rotation="270"
+    android:visibility="gone"
+    app:backgroundTint="?attr/colorAccent"
+    app:fabSize="mini"
+    app:layout_behavior="com.google.android.material.floatingactionbutton.FloatingActionButton$Behavior"
+    app:srcCompat="@drawable/ic_arrow_right"
+    app:tint="?attr/textColorOnSurface"
+    tools:ignore="ContentDescription"
+    tools:visibility="visible"
     />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

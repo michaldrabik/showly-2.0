@@ -9,11 +9,15 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
+import com.michaldrabik.ui_base.utilities.extensions.fadeIn
+import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
+import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_PERSON
 import com.michaldrabik.ui_people.links.PersonLinksBottomSheet
@@ -26,6 +30,8 @@ import kotlinx.coroutines.flow.collect
 class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>() {
 
   companion object {
+    const val SHOW_BACK_UP_BUTTON_THRESHOLD = 25
+
     fun createBundle(person: Person) = bundleOf(ARG_PERSON to person)
   }
 
@@ -63,6 +69,10 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>
       skipCollapsed = true
       state = BottomSheetBehavior.STATE_HALF_EXPANDED
     }
+    personDetailsRecyclerFab.onClick {
+      personDetailsRecyclerFab.fadeOut(150)
+      personDetailsRecycler.smoothScrollToPosition(0)
+    }
   }
 
   private fun setupRecycler() {
@@ -74,6 +84,8 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>
       adapter = this@PersonDetailsBottomSheet.adapter
       layoutManager = this@PersonDetailsBottomSheet.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+      removeOnScrollListener(recyclerScrollListener)
+      addOnScrollListener(recyclerScrollListener)
     }
   }
 
@@ -93,5 +105,16 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>
     adapter = null
     layoutManager = null
     super.onDestroyView()
+  }
+
+  private val recyclerScrollListener = object : RecyclerView.OnScrollListener() {
+    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+      if (newState != RecyclerView.SCROLL_STATE_IDLE) return
+      if ((layoutManager?.findFirstVisibleItemPosition() ?: 0) >= SHOW_BACK_UP_BUTTON_THRESHOLD) {
+        personDetailsRecyclerFab.fadeIn(150)
+      } else {
+        personDetailsRecyclerFab.fadeOut(150)
+      }
+    }
   }
 }
