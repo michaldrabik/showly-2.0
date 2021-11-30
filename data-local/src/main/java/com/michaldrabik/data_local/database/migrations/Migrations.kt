@@ -514,7 +514,7 @@ object Migrations {
             "`updated_at` INTEGER NOT NULL, " +
             "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)"
         )
-        execSQL("CREATE UNIQUE INDEX index_movies_archive_id_trakt ON people(id_trakt)")
+        execSQL("CREATE UNIQUE INDEX index_movies_archive_id_trakt ON movies_archive(id_trakt)")
       }
     }
   }

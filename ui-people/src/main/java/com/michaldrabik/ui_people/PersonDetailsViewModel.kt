@@ -9,7 +9,6 @@ import com.michaldrabik.ui_people.cases.PersonDetailsCreditsCase
 import com.michaldrabik.ui_people.cases.PersonDetailsLoadCase
 import com.michaldrabik.ui_people.recycler.PersonDetailsItem
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -38,31 +37,43 @@ class PersonDetailsViewModel @Inject constructor(
           }
         }
 
-        val detailsAsync = async { loadDetailsCase.loadDetails(person) }
-        val creditsAsync = async { loadCreditsCase.loadCredits(person) }
-        val details = detailsAsync.await()
-        val credits = creditsAsync.await()
-
+        val details = loadDetailsCase.loadDetails(person)
         personDetailsItemsState.value = mutableListOf<PersonDetailsItem>().apply {
           add(PersonDetailsItem.MainInfo(details, dateFormat, false))
           if (!details.bio.isNullOrBlank()) {
             add(PersonDetailsItem.MainBio(details.bio, details.bioTranslation))
           }
-          addAll(
-            credits.map { credit ->
-              credit.show?.let { return@map PersonDetailsItem.CreditsShowItem(it, credit.image) }
-              credit.movie?.let { return@map PersonDetailsItem.CreditsMovieItem(it, credit.image) }
-              throw IllegalStateException()
-            }
-          )
+          add(PersonDetailsItem.Loading)
         }
+        progressJob.cancelAndJoin()
+
+        loadCredits(details)
       } catch (error: Throwable) {
         // TODO Handle error ui
-        setLoading(false)
         rethrowCancellation(error)
       } finally {
+        setLoading(false)
         progressJob.cancelAndJoin()
       }
+    }
+  }
+
+  private suspend fun loadCredits(person: Person) {
+    val credits = loadCreditsCase.loadCredits(person)
+    val current = personDetailsItemsState.value?.toMutableList()
+    current?.let { currentValue ->
+      currentValue.remove(PersonDetailsItem.Loading)
+      credits.forEach { (year, credit) ->
+        currentValue.add(PersonDetailsItem.CreditsHeader(year))
+        currentValue.addAll(
+          credit.map { c ->
+            c.show?.let { return@map PersonDetailsItem.CreditsShowItem(it, c.image) }
+            c.movie?.let { return@map PersonDetailsItem.CreditsMovieItem(it, c.image) }
+            throw IllegalStateException()
+          }
+        )
+      }
+      personDetailsItemsState.value = currentValue
     }
   }
 

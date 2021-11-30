@@ -16,14 +16,18 @@ class PersonDetailsCreditsCase @Inject constructor(
   private val movieImagesProvider: MovieImagesProvider
 ) {
 
-  suspend fun loadCredits(person: Person): List<PersonCredit> {
+  suspend fun loadCredits(person: Person): Map<Int?, List<PersonCredit>> {
     val result = peopleRepository.loadCredits(person)
     return result
+      .filter { it.releaseDate != null || (it.releaseDate == null && it.isUpcoming) }
       .map {
         it.show?.let { show -> return@map it.copy(image = showImagesProvider.findCachedImage(show, ImageType.POSTER)) }
         it.movie?.let { movie -> return@map it.copy(image = movieImagesProvider.findCachedImage(movie, ImageType.POSTER)) }
         throw IllegalStateException()
       }
-      .sortedWith(compareBy<PersonCredit> { (it.year ?: 0) > 0 }.thenByDescending { it.year })
+      .sortedWith(
+        compareByDescending<PersonCredit> { it.releaseDate == null }.thenByDescending { it.releaseDate?.toEpochDay() }
+      )
+      .groupBy { it.releaseDate?.year }
   }
 }

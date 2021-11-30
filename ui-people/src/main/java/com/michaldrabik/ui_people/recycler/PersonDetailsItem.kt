@@ -19,6 +19,10 @@ sealed class PersonDetailsItem {
     val biographyTranslation: String?,
   ) : PersonDetailsItem()
 
+  data class CreditsHeader(
+    val year: Int?,
+  ) : PersonDetailsItem()
+
   data class CreditsShowItem(
     val show: Show,
     val image: Image,
@@ -28,4 +32,6 @@ sealed class PersonDetailsItem {
     val movie: Movie,
     val image: Image,
   ) : PersonDetailsItem()
+
+  object Loading : PersonDetailsItem()
 }

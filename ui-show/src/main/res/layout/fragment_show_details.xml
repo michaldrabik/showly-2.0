@@ -275,7 +275,6 @@
         android:ellipsize="end"
         android:gravity="start"
         android:justificationMode="inter_word"
-        android:lineSpacingExtra="1dp"
         android:textAlignment="viewStart"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="14sp"

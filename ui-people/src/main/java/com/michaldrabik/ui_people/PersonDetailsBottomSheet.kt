@@ -57,7 +57,12 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>
 
   private fun setupView() {
     val behavior: BottomSheetBehavior<*> = (dialog as BottomSheetDialog).behavior
-    behavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+    with(behavior) {
+      isFitToContents = false
+      halfExpandedRatio = 0.55F
+      skipCollapsed = true
+      state = BottomSheetBehavior.STATE_HALF_EXPANDED
+    }
   }
 
   private fun setupRecycler() {

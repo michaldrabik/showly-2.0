@@ -37,7 +37,8 @@ class PersonMapper @Inject constructor() {
     Person(
       ids = Ids.EMPTY.copy(
         trakt = IdTrakt(personDb.idTrakt ?: -1),
-        tmdb = IdTmdb(personDb.idTmdb)
+        tmdb = IdTmdb(personDb.idTmdb),
+        imdb = IdImdb(personDb.idImdb ?: "")
       ),
       name = personDb.name,
       type = typeToEnum(personDb.type),

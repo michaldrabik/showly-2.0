@@ -6,4 +6,6 @@
   <dimen name="personCreditsImageWidth">49dp</dimen>
   <dimen name="personCreditsImageHeight">74dp</dimen>
   <dimen name="personCreditsImageGuide">61dp</dimen>
+  <dimen name="personCreditsHeaderTextSize">20sp</dimen>
+
 </resources>

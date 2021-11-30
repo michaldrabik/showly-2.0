@@ -43,9 +43,7 @@ class PersonDetailsCreditsItemView : FrameLayout {
 
   fun bind(item: PersonDetailsItem.CreditsMovieItem) {
     bindTitleDescription(item.movie.title, item.movie.overview)
-
-    val year = if (item.movie.year > 0) item.movie.year.toString() else "TBA"
-    viewPersonCreditsItemNetwork.text = String.format("%s", year)
+    viewPersonCreditsItemNetwork.text = String.format("%s", item.movie.released?.year ?: "TBA")
 
     viewPersonCreditsItemPlaceholder.setImageResource(R.drawable.ic_film)
     viewPersonCreditsItemIcon.setImageResource(R.drawable.ic_film)
