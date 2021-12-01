@@ -12,7 +12,8 @@ import com.michaldrabik.ui_people.recycler.views.PersonDetailsInfoView
 import com.michaldrabik.ui_people.recycler.views.PersonDetailsLoadingView
 
 class PersonDetailsAdapter(
-  var onLinksClickListener: (Person) -> Unit
+  val onImageMissingListener: (PersonDetailsItem, Boolean) -> Unit,
+  val onLinksClickListener: (Person) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   companion object {
@@ -46,7 +47,11 @@ class PersonDetailsAdapter(
         }
       )
       VIEW_TYPE_BIO -> BaseViewHolder(PersonDetailsBioView(parent.context))
-      VIEW_TYPE_CREDIT_ITEM -> BaseViewHolder(PersonDetailsCreditsItemView(parent.context))
+      VIEW_TYPE_CREDIT_ITEM -> BaseViewHolder(
+        PersonDetailsCreditsItemView(parent.context).apply {
+          onImageMissingListener = this@PersonDetailsAdapter.onImageMissingListener
+        }
+      )
       VIEW_TYPE_CREDIT_HEADER -> BaseViewHolder(PersonDetailsHeaderView(parent.context))
       VIEW_TYPE_LOADING -> BaseViewHolder(PersonDetailsLoadingView(parent.context))
       else -> throw IllegalStateException()

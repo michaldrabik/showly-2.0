@@ -8,10 +8,10 @@ class PersonDetailsItemDiffCallback : DiffUtil.ItemCallback<PersonDetailsItem>()
     when {
       oldItem is PersonDetailsItem.MainInfo && newItem is PersonDetailsItem.MainInfo -> true
       oldItem is PersonDetailsItem.MainBio && newItem is PersonDetailsItem.MainBio -> true
-      oldItem is PersonDetailsItem.CreditsMovieItem && newItem is PersonDetailsItem.CreditsMovieItem -> true
-      oldItem is PersonDetailsItem.CreditsShowItem && newItem is PersonDetailsItem.CreditsShowItem -> true
       oldItem is PersonDetailsItem.Loading && newItem is PersonDetailsItem.Loading -> true
-      oldItem is PersonDetailsItem.CreditsHeader && newItem is PersonDetailsItem.CreditsHeader -> true
+      oldItem is PersonDetailsItem.CreditsHeader && newItem is PersonDetailsItem.CreditsHeader && oldItem.getId() == newItem.getId() -> true
+      oldItem is PersonDetailsItem.CreditsShowItem && newItem is PersonDetailsItem.CreditsShowItem && oldItem.getId() == newItem.getId() -> true
+      oldItem is PersonDetailsItem.CreditsMovieItem && newItem is PersonDetailsItem.CreditsMovieItem && oldItem.getId() == newItem.getId() -> true
       else -> false
     }
 

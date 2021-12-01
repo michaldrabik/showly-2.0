@@ -2,10 +2,12 @@ package com.michaldrabik.ui_people
 
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
 import com.michaldrabik.ui_base.utilities.extensions.replaceItem
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_people.cases.PersonDetailsCreditsCase
+import com.michaldrabik.ui_people.cases.PersonDetailsImagesCase
 import com.michaldrabik.ui_people.cases.PersonDetailsLoadCase
 import com.michaldrabik.ui_people.recycler.PersonDetailsItem
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,13 +23,14 @@ import javax.inject.Inject
 class PersonDetailsViewModel @Inject constructor(
   private val loadDetailsCase: PersonDetailsLoadCase,
   private val loadCreditsCase: PersonDetailsCreditsCase,
+  private val loadImagesCase: PersonDetailsImagesCase,
 ) : BaseViewModel() {
 
   private val personDetailsItemsState = MutableStateFlow<List<PersonDetailsItem>?>(null)
 
   fun loadDetails(person: Person) {
     viewModelScope.launch {
-      val progressJob = launchDelayed(750) { setLoading(true) }
+      val progressJob = launchDelayed(750) { setMainLoading(true) }
       try {
         val dateFormat = loadDetailsCase.loadDateFormat()
         personDetailsItemsState.value = mutableListOf<PersonDetailsItem>().apply {
@@ -52,7 +55,7 @@ class PersonDetailsViewModel @Inject constructor(
         // TODO Handle error ui
         rethrowCancellation(error)
       } finally {
-        setLoading(false)
+        setMainLoading(false)
         progressJob.cancelAndJoin()
       }
     }
@@ -77,7 +80,28 @@ class PersonDetailsViewModel @Inject constructor(
     }
   }
 
-  private fun setLoading(isLoading: Boolean) {
+  fun loadMissingImage(item: PersonDetailsItem, force: Boolean) {
+    viewModelScope.launch {
+      (item as? PersonDetailsItem.CreditsShowItem)?.let {
+        updateItem(it.copy(isLoading = true))
+        val updatedItem = loadImagesCase.loadMissingImage(it, force)
+        updateItem(updatedItem)
+      }
+      (item as? PersonDetailsItem.CreditsMovieItem)?.let {
+        updateItem(it.copy(isLoading = true))
+        val updatedItem = loadImagesCase.loadMissingImage(it, force)
+        updateItem(updatedItem)
+      }
+    }
+  }
+
+  private fun updateItem(newItem: PersonDetailsItem) {
+    val currentItems = personDetailsItemsState.value?.toMutableList()
+    currentItems?.findReplace(newItem) { it.getId() == newItem.getId() }
+    personDetailsItemsState.value = currentItems
+  }
+
+  private fun setMainLoading(isLoading: Boolean) {
     val current = personDetailsItemsState.value?.toMutableList()
     current?.let { currentValue ->
       val mainInfoItem = currentValue.first { it is PersonDetailsItem.MainInfo } as PersonDetailsItem.MainInfo

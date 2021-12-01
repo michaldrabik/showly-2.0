@@ -8,10 +8,12 @@ import java.time.format.DateTimeFormatter
 
 sealed class PersonDetailsItem {
 
+  open fun getId(): Long? = null
+
   data class MainInfo(
     val person: Person,
     val dateFormat: DateTimeFormatter?,
-    val isLoading: Boolean,
+    val isLoading: Boolean = false
   ) : PersonDetailsItem()
 
   data class MainBio(
@@ -21,17 +23,25 @@ sealed class PersonDetailsItem {
 
   data class CreditsHeader(
     val year: Int?,
-  ) : PersonDetailsItem()
+  ) : PersonDetailsItem() {
+    override fun getId() = year?.toLong()
+  }
 
   data class CreditsShowItem(
     val show: Show,
     val image: Image,
-  ) : PersonDetailsItem()
+    val isLoading: Boolean = false
+  ) : PersonDetailsItem() {
+    override fun getId() = show.traktId
+  }
 
   data class CreditsMovieItem(
     val movie: Movie,
     val image: Image,
-  ) : PersonDetailsItem()
+    val isLoading: Boolean = false
+  ) : PersonDetailsItem() {
+    override fun getId() = movie.traktId
+  }
 
   object Loading : PersonDetailsItem()
 }
