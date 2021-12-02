@@ -11,11 +11,13 @@ import com.michaldrabik.ui_people.cases.PersonDetailsImagesCase
 import com.michaldrabik.ui_people.cases.PersonDetailsLoadCase
 import com.michaldrabik.ui_people.recycler.PersonDetailsItem
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,9 +29,12 @@ class PersonDetailsViewModel @Inject constructor(
 
   private val personDetailsItemsState = MutableStateFlow<List<PersonDetailsItem>?>(null)
 
+  private var mainProgressJob: Job? = null
+  private var creditsProgressJob: Job? = null
+
   fun loadDetails(person: Person) {
     viewModelScope.launch {
-      val progressJob = launchDelayed(750) { setMainLoading(true) }
+      mainProgressJob = launchDelayed(750) { setMainLoading(true) }
       try {
         val dateFormat = loadDetailsCase.loadDateFormat()
         personDetailsItemsState.value = mutableListOf<PersonDetailsItem>().apply {
@@ -46,17 +51,17 @@ class PersonDetailsViewModel @Inject constructor(
             add(PersonDetailsItem.MainBio(details.bio, details.bioTranslation))
           }
         }
-        progressJob.cancel()
+        mainProgressJob?.cancel()
 
-        launchDelayed(750) { setCreditsLoading(true) }
+        creditsProgressJob = launchDelayed(750) { setCreditsLoading(true) }
         loadCredits(details)
       } catch (error: Throwable) {
         // TODO Handle error ui
+        Timber.e(error)
         rethrowCancellation(error)
       } finally {
         setMainLoading(false)
         setCreditsLoading(false)
-        progressJob.cancel()
       }
     }
   }
@@ -102,6 +107,8 @@ class PersonDetailsViewModel @Inject constructor(
   }
 
   private fun setMainLoading(isLoading: Boolean) {
+    if (!isLoading) mainProgressJob?.cancel()
+
     val current = personDetailsItemsState.value?.toMutableList()
     current?.let { currentValue ->
       val mainInfoItem = currentValue.first { it is PersonDetailsItem.MainInfo } as PersonDetailsItem.MainInfo
@@ -112,6 +119,8 @@ class PersonDetailsViewModel @Inject constructor(
   }
 
   private fun setCreditsLoading(isLoading: Boolean) {
+    if (!isLoading) creditsProgressJob?.cancel()
+
     val current = personDetailsItemsState.value?.toMutableList()
     current?.let { currentValue ->
       if (isLoading) {

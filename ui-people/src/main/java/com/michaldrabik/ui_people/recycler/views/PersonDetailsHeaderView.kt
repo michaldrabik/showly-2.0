@@ -23,6 +23,6 @@ class PersonDetailsHeaderView : FrameLayout {
   fun bind(item: PersonDetailsItem.CreditsHeader) {
     viewPersonDetailsHeader.text =
       if (item.year != null) item.year.toString()
-      else context.getString(R.string.textShowStatusUpcoming)
+      else context.getString(R.string.textMovieStatusInProduction)
   }
 }

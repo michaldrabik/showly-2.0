@@ -19,7 +19,7 @@ interface PeopleCreditsDao : BaseDao<PersonCredits> {
 
   @Query(
     "SELECT movies.*, people_credits.created_at AS created_at, people_credits.updated_at AS updated_at FROM movies " +
-      "INNER JOIN people_credits ON people_credits.id_trakt_show = movies.id_trakt WHERE people_credits.id_trakt_person = :personTraktId"
+      "INNER JOIN people_credits ON people_credits.id_trakt_movie = movies.id_trakt WHERE people_credits.id_trakt_person = :personTraktId"
   )
   suspend fun getAllMoviesForPerson(personTraktId: Long): List<Movie>
 
