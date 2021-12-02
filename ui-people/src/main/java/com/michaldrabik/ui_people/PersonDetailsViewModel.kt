@@ -11,7 +11,6 @@ import com.michaldrabik.ui_people.cases.PersonDetailsImagesCase
 import com.michaldrabik.ui_people.cases.PersonDetailsLoadCase
 import com.michaldrabik.ui_people.recycler.PersonDetailsItem
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -46,26 +45,27 @@ class PersonDetailsViewModel @Inject constructor(
           if (!details.bio.isNullOrBlank()) {
             add(PersonDetailsItem.MainBio(details.bio, details.bioTranslation))
           }
-          add(PersonDetailsItem.Loading)
         }
-        progressJob.cancelAndJoin()
+        progressJob.cancel()
 
+        launchDelayed(750) { setCreditsLoading(true) }
         loadCredits(details)
       } catch (error: Throwable) {
         // TODO Handle error ui
         rethrowCancellation(error)
       } finally {
         setMainLoading(false)
-        progressJob.cancelAndJoin()
+        setCreditsLoading(false)
+        progressJob.cancel()
       }
     }
   }
 
   private suspend fun loadCredits(person: Person) {
     val credits = loadCreditsCase.loadCredits(person)
+    setCreditsLoading(false)
     val current = personDetailsItemsState.value?.toMutableList()
     current?.let { currentValue ->
-      currentValue.remove(PersonDetailsItem.Loading)
       credits.forEach { (year, credit) ->
         currentValue.add(PersonDetailsItem.CreditsHeader(year))
         currentValue.addAll(
@@ -107,6 +107,18 @@ class PersonDetailsViewModel @Inject constructor(
       val mainInfoItem = currentValue.first { it is PersonDetailsItem.MainInfo } as PersonDetailsItem.MainInfo
       val value = mainInfoItem.copy(isLoading = isLoading)
       currentValue.replaceItem(mainInfoItem, value)
+      personDetailsItemsState.value = currentValue
+    }
+  }
+
+  private fun setCreditsLoading(isLoading: Boolean) {
+    val current = personDetailsItemsState.value?.toMutableList()
+    current?.let { currentValue ->
+      if (isLoading) {
+        currentValue.add(PersonDetailsItem.Loading)
+      } else {
+        currentValue.remove(PersonDetailsItem.Loading)
+      }
       personDetailsItemsState.value = currentValue
     }
   }

@@ -4,8 +4,10 @@ import androidx.room.withTransaction
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.extensions.nowUtc
+import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.database.model.PersonCredits
 import com.michaldrabik.data_local.database.model.PersonShowMovie
 import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.repository.mappers.Mappers
@@ -67,6 +69,27 @@ class PeopleRepository @Inject constructor(
     }
     if (idTrakt == null) return@coroutineScope emptyList()
 
+    // Return locally cached data if available
+    val timestamp = database.peopleCreditsDao().getTimestampForPerson(idTrakt!!)
+    if (timestamp != null && nowUtcMillis() - timestamp < Config.PEOPLE_CREDITS_CACHE_DURATION) {
+      val localCredits = mutableListOf<PersonCredit>()
+
+      val showsCreditsAsync = async { database.peopleCreditsDao().getAllShowsForPerson(idTrakt!!) }
+      val moviesCreditsAsync = async { database.peopleCreditsDao().getAllMoviesForPerson(idTrakt!!) }
+      val shows = showsCreditsAsync.await()
+      val movies = moviesCreditsAsync.await()
+
+      shows.mapTo(localCredits) {
+        PersonCredit(show = mappers.show.fromDatabase(it), movie = null, image = Image.createUnknown(ImageType.POSTER))
+      }
+      movies.mapTo(localCredits) {
+        PersonCredit(movie = mappers.movie.fromDatabase(it), show = null, image = Image.createUnknown(ImageType.POSTER))
+      }
+
+      return@coroutineScope localCredits
+    }
+
+    // Return remote fetched data if available and cache it locally
     val showsCreditsAsync = async { cloud.traktApi.fetchPersonShowsCredits(idTrakt!!) }
     val moviesCreditsAsync = async { cloud.traktApi.fetchPersonMoviesCredits(idTrakt!!) }
     val remoteCredits = awaitAll(showsCreditsAsync, moviesCreditsAsync)
@@ -78,6 +101,29 @@ class PeopleRepository @Inject constructor(
           image = Image.createUnknown(ImageType.POSTER)
         )
       }
+
+    val localCredits = remoteCredits.map {
+      PersonCredits(
+        id = 0,
+        idTraktPerson = idTrakt!!,
+        idTraktShow = it.show?.traktId,
+        idTraktMovie = it.movie?.traktId,
+        type = if (it.show != null) Mode.SHOWS.type else Mode.MOVIES.type,
+        createdAt = nowUtc(),
+        updatedAt = nowUtc()
+      )
+    }
+
+    with(database) {
+      val shows = remoteCredits.filter { it.show != null }.map { it.show!! }
+      val movies = remoteCredits.filter { it.movie != null }.map { it.movie!! }
+
+      withTransaction {
+        showsDao().upsert(shows.map { mappers.show.toDatabase(it) })
+        moviesDao().upsert(movies.map { mappers.movie.toDatabase(it) })
+        peopleCreditsDao().insert(idTrakt!!, localCredits)
+      }
+    }
 
     return@coroutineScope remoteCredits
   }

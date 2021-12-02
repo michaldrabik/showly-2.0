@@ -560,6 +560,20 @@ object Migrations {
         )
         execSQL("CREATE INDEX index_people_shows_movies_id_show_mode ON people_shows_movies(id_trakt_show, mode)")
         execSQL("CREATE INDEX index_people_shows_movies_id_movie_mode ON people_shows_movies(id_trakt_movie, mode)")
+
+        execSQL(
+          "CREATE TABLE IF NOT EXISTS `people_credits` (" +
+            "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+            "`id_trakt_person` INTEGER NOT NULL, " +
+            "`id_trakt_show` INTEGER, " +
+            "`id_trakt_movie` INTEGER, " +
+            "`type` TEXT NOT NULL, " +
+            "`created_at` INTEGER NOT NULL, " +
+            "`updated_at` INTEGER NOT NULL, " +
+            "FOREIGN KEY(`id_trakt_show`) REFERENCES `shows`(`id_trakt`) ON DELETE CASCADE, " +
+            "FOREIGN KEY(`id_trakt_movie`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)"
+        )
+        execSQL("CREATE INDEX index_people_credits_id_person ON people_credits(id_trakt_person)")
       }
     }
   }
