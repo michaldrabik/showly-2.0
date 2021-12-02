@@ -18,7 +18,7 @@
     android:background="@android:color/transparent"
     android:clipChildren="false"
     android:clipToPadding="false"
-    android:minHeight="600dp"
+    android:minHeight="1000dp"
     android:overScrollMode="never"
     android:paddingTop="@dimen/spaceNormal"
     android:paddingBottom="56dp"
