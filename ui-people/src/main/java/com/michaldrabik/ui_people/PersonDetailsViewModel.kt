@@ -13,6 +13,7 @@ import com.michaldrabik.ui_people.cases.PersonDetailsLoadCase
 import com.michaldrabik.ui_people.recycler.PersonDetailsItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -38,7 +39,6 @@ class PersonDetailsViewModel @Inject constructor(
   fun loadDetails(person: Person) {
     mainJob?.cancel()
     mainJob = viewModelScope.launch {
-      personDetailsItemsState.value = emptyList()
       mainProgressJob = launchDelayed(750) { setMainLoading(true) }
       try {
         val dateFormat = loadDetailsCase.loadDateFormat()
@@ -52,9 +52,8 @@ class PersonDetailsViewModel @Inject constructor(
           add(PersonDetailsItem.MainInfo(details, dateFormat, false))
           add(PersonDetailsItem.MainBio(details.bio, details.bioTranslation))
         }
-        mainProgressJob?.cancel()
+        mainProgressJob?.cancelAndJoin()
 
-        creditsProgressJob = launchDelayed(750) { setCreditsLoading(true) }
         loadCredits(details)
       } catch (error: Throwable) {
         // TODO Handle error ui
@@ -62,7 +61,6 @@ class PersonDetailsViewModel @Inject constructor(
         rethrowCancellation(error)
       } finally {
         setMainLoading(false)
-        setCreditsLoading(false)
       }
     }
   }
@@ -70,26 +68,35 @@ class PersonDetailsViewModel @Inject constructor(
   fun loadCredits(person: Person, filters: List<Mode> = emptyList()) {
     creditsJob?.cancel()
     creditsJob = viewModelScope.launch {
-      val credits = loadCreditsCase.loadCredits(person, filters)
-      setCreditsLoading(false)
+      creditsProgressJob = launchDelayed(750) { setCreditsLoading(true) }
+      try {
+        val credits = loadCreditsCase.loadCredits(person, filters)
+        setCreditsLoading(false)
 
-      val current = personDetailsItemsState.value?.toMutableList()
-      current?.let { currentValue ->
-        if (currentValue.none { it is PersonDetailsItem.CreditsFiltersItem }) {
-          currentValue.add(PersonDetailsItem.CreditsFiltersItem(filters))
+        val current = personDetailsItemsState.value?.toMutableList()
+        current?.let { currentValue ->
+          if (currentValue.none { it is PersonDetailsItem.CreditsFiltersItem }) {
+            currentValue.add(PersonDetailsItem.CreditsFiltersItem(filters))
+          }
+          currentValue.removeIf { it.isCreditsItem() }
+          credits.forEach { (year, credit) ->
+            currentValue.add(PersonDetailsItem.CreditsHeader(year))
+            currentValue.addAll(
+              credit.map { c ->
+                c.show?.let { return@map PersonDetailsItem.CreditsShowItem(it, c.image) }
+                c.movie?.let { return@map PersonDetailsItem.CreditsMovieItem(it, c.image) }
+                throw IllegalStateException()
+              }
+            )
+          }
+          personDetailsItemsState.value = currentValue
         }
-        currentValue.removeIf { it.isCreditsItem() }
-        credits.forEach { (year, credit) ->
-          currentValue.add(PersonDetailsItem.CreditsHeader(year))
-          currentValue.addAll(
-            credit.map { c ->
-              c.show?.let { return@map PersonDetailsItem.CreditsShowItem(it, c.image) }
-              c.movie?.let { return@map PersonDetailsItem.CreditsMovieItem(it, c.image) }
-              throw IllegalStateException()
-            }
-          )
-        }
-        personDetailsItemsState.value = currentValue
+      } catch (error: Throwable) {
+        // TODO Handle error ui
+        Timber.e(error)
+        rethrowCancellation(error)
+      } finally {
+        setCreditsLoading(false)
       }
     }
   }
