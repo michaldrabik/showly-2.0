@@ -73,8 +73,11 @@ class PersonDetailsViewModel @Inject constructor(
 
         val current = personDetailsItemsState.value?.toMutableList()
         current?.let { currentValue ->
+          val filtersItem = PersonDetailsItem.CreditsFiltersItem(filters)
           if (currentValue.none { it is PersonDetailsItem.CreditsFiltersItem }) {
-            currentValue.add(PersonDetailsItem.CreditsFiltersItem(filters))
+            currentValue.add(filtersItem)
+          } else {
+            currentValue.findReplace(filtersItem) { it is PersonDetailsItem.CreditsFiltersItem }
           }
           currentValue.removeIf { it.isCreditsItem() }
           credits.forEach { (year, credit) ->
