@@ -5,6 +5,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_model.Translation
 import java.time.format.DateTimeFormatter
 
 sealed class PersonDetailsItem {
@@ -33,6 +34,7 @@ sealed class PersonDetailsItem {
   data class CreditsShowItem(
     val show: Show,
     val image: Image,
+    val translation: Translation?,
     val isLoading: Boolean = false
   ) : PersonDetailsItem() {
     override fun getId() = show.traktId
@@ -41,6 +43,7 @@ sealed class PersonDetailsItem {
   data class CreditsMovieItem(
     val movie: Movie,
     val image: Image,
+    val translation: Translation?,
     val isLoading: Boolean = false
   ) : PersonDetailsItem() {
     override fun getId() = movie.traktId

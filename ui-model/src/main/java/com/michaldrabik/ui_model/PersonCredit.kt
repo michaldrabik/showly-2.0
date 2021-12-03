@@ -10,7 +10,8 @@ import java.time.ZonedDateTime
 data class PersonCredit(
   val show: Show?,
   val movie: Movie?,
-  val image: Image
+  val image: Image,
+  val translation: Translation?
 ) {
 
   val releaseDate: LocalDate?

@@ -81,6 +81,7 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>
     adapter = PersonDetailsAdapter(
       onLinksClickListener = { openLinksSheet(it) },
       onImageMissingListener = { item, force -> viewModel.loadMissingImage(item, force) },
+      onTranslationMissingListener = { item -> viewModel.loadMissingTranslation(item) },
       onFiltersChangeListener = { filters -> viewModel.loadCredits(person, filters) }
     )
     with(personDetailsRecycler) {

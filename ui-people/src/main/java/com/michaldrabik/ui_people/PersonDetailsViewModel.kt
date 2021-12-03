@@ -1,7 +1,9 @@
 package com.michaldrabik.ui_people
 
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.common.Config
 import com.michaldrabik.common.Mode
+import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
@@ -10,6 +12,7 @@ import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_people.cases.PersonDetailsCreditsCase
 import com.michaldrabik.ui_people.cases.PersonDetailsImagesCase
 import com.michaldrabik.ui_people.cases.PersonDetailsLoadCase
+import com.michaldrabik.ui_people.cases.PersonDetailsTranslationsCase
 import com.michaldrabik.ui_people.recycler.PersonDetailsItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -27,6 +30,8 @@ class PersonDetailsViewModel @Inject constructor(
   private val loadDetailsCase: PersonDetailsLoadCase,
   private val loadCreditsCase: PersonDetailsCreditsCase,
   private val loadImagesCase: PersonDetailsImagesCase,
+  private val loadTranslationsCase: PersonDetailsTranslationsCase,
+  private val settingsRepository: SettingsRepository,
 ) : BaseViewModel() {
 
   private val personDetailsItemsState = MutableStateFlow<List<PersonDetailsItem>?>(null)
@@ -34,6 +39,8 @@ class PersonDetailsViewModel @Inject constructor(
   private var mainProgressJob: Job? = null
   private var creditsJob: Job? = null
   private var creditsProgressJob: Job? = null
+
+  private val language by lazy { settingsRepository.language }
 
   fun loadDetails(person: Person) {
     viewModelScope.launch {
@@ -68,7 +75,7 @@ class PersonDetailsViewModel @Inject constructor(
     creditsJob = viewModelScope.launch {
       creditsProgressJob = launchDelayed(750) { setCreditsLoading(true) }
       try {
-        val credits = loadCreditsCase.loadCredits(person, filters)
+        val credits = loadCreditsCase.loadCredits(person, filters, language)
         setCreditsLoading(false)
 
         val current = personDetailsItemsState.value?.toMutableList()
@@ -84,8 +91,8 @@ class PersonDetailsViewModel @Inject constructor(
             currentValue.add(PersonDetailsItem.CreditsHeader(year))
             currentValue.addAll(
               credit.map { c ->
-                c.show?.let { return@map PersonDetailsItem.CreditsShowItem(it, c.image) }
-                c.movie?.let { return@map PersonDetailsItem.CreditsMovieItem(it, c.image) }
+                c.show?.let { return@map PersonDetailsItem.CreditsShowItem(it, c.image, translation = null) }
+                c.movie?.let { return@map PersonDetailsItem.CreditsMovieItem(it, c.image, translation = null) }
                 throw IllegalStateException()
               }
             )
@@ -112,6 +119,22 @@ class PersonDetailsViewModel @Inject constructor(
       (item as? PersonDetailsItem.CreditsMovieItem)?.let {
         updateItem(it.copy(isLoading = true))
         val updatedItem = loadImagesCase.loadMissingImage(it, force)
+        updateItem(updatedItem)
+      }
+    }
+  }
+
+  fun loadMissingTranslation(item: PersonDetailsItem) {
+    if (language == Config.DEFAULT_LANGUAGE) return
+    viewModelScope.launch {
+      (item as? PersonDetailsItem.CreditsShowItem)?.let {
+        updateItem(it.copy(isLoading = true))
+        val updatedItem = loadTranslationsCase.loadMissingTranslation(it, language)
+        updateItem(updatedItem)
+      }
+      (item as? PersonDetailsItem.CreditsMovieItem)?.let {
+        updateItem(it.copy(isLoading = true))
+        val updatedItem = loadTranslationsCase.loadMissingTranslation(it, language)
         updateItem(updatedItem)
       }
     }

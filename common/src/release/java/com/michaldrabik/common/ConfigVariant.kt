@@ -9,7 +9,7 @@ object ConfigVariant {
 
   val SHOW_SYNC_COOLDOWN by lazy { HOURS.toMillis(12) }
   val MOVIE_SYNC_COOLDOWN by lazy { DAYS.toMillis(3) }
-  val TRANSLATION_SYNC_SHOW_MOVIE_COOLDOWN by lazy { DAYS.toMillis(7) }
+  val TRANSLATION_SYNC_SHOW_MOVIE_COOLDOWN by lazy { DAYS.toMillis(5) }
   val TRANSLATION_SYNC_EPISODE_COOLDOWN by lazy { DAYS.toMillis(3) }
 
   val RATINGS_CACHE_DURATION by lazy { DAYS.toMillis(3) }

@@ -80,10 +80,20 @@ class PeopleRepository @Inject constructor(
       val movies = moviesCreditsAsync.await()
 
       shows.mapTo(localCredits) {
-        PersonCredit(show = mappers.show.fromDatabase(it), movie = null, image = Image.createUnknown(ImageType.POSTER))
+        PersonCredit(
+          show = mappers.show.fromDatabase(it),
+          movie = null,
+          image = Image.createUnknown(ImageType.POSTER),
+          translation = null
+        )
       }
       movies.mapTo(localCredits) {
-        PersonCredit(movie = mappers.movie.fromDatabase(it), show = null, image = Image.createUnknown(ImageType.POSTER))
+        PersonCredit(
+          movie = mappers.movie.fromDatabase(it),
+          show = null,
+          image = Image.createUnknown(ImageType.POSTER),
+          translation = null
+        )
       }
 
       return@coroutineScope localCredits
@@ -98,7 +108,8 @@ class PeopleRepository @Inject constructor(
         PersonCredit(
           show = it.show?.let { show -> mappers.show.fromNetwork(show) },
           movie = it.movie?.let { movie -> mappers.movie.fromNetwork(movie) },
-          image = Image.createUnknown(ImageType.POSTER)
+          image = Image.createUnknown(ImageType.POSTER),
+          translation = null
         )
       }
 

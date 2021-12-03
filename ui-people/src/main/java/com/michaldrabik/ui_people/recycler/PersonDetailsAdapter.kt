@@ -15,6 +15,7 @@ import com.michaldrabik.ui_people.recycler.views.PersonDetailsLoadingView
 
 class PersonDetailsAdapter(
   val onImageMissingListener: (PersonDetailsItem, Boolean) -> Unit,
+  val onTranslationMissingListener: (PersonDetailsItem) -> Unit,
   val onLinksClickListener: (Person) -> Unit,
   var onFiltersChangeListener: ((List<Mode>) -> Unit)
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -55,6 +56,7 @@ class PersonDetailsAdapter(
       VIEW_TYPE_CREDIT_ITEM -> BaseViewHolder(
         PersonDetailsCreditsItemView(parent.context).apply {
           onImageMissingListener = this@PersonDetailsAdapter.onImageMissingListener
+          onTranslationMissingListener = this@PersonDetailsAdapter.onTranslationMissingListener
         }
       )
       VIEW_TYPE_CREDIT_HEADER -> BaseViewHolder(PersonDetailsHeaderView(parent.context))

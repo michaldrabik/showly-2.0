@@ -17,6 +17,7 @@ import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
 import com.michaldrabik.ui_model.ImageStatus
 import com.michaldrabik.ui_model.ImageType
+import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_people.R
 import com.michaldrabik.ui_people.recycler.PersonDetailsItem
 import kotlinx.android.synthetic.main.view_person_details_credits_item.view.*
@@ -27,9 +28,8 @@ class PersonDetailsCreditsItemView : FrameLayout {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-  var imageLoadCompleteListener: (() -> Unit)? = null
   var onImageMissingListener: ((PersonDetailsItem, Boolean) -> Unit)? = null
-  var onImageMissingTranslationListener: ((PersonDetailsItem) -> Unit)? = null
+  var onTranslationMissingListener: ((PersonDetailsItem) -> Unit)? = null
 
   private val cornerRadius by lazy { context.dimenToPx(R.dimen.mediaTileCorner) }
   private val spaceNano by lazy { context.dimenToPx(R.dimen.spaceNano).toFloat() }
@@ -43,7 +43,7 @@ class PersonDetailsCreditsItemView : FrameLayout {
 
   fun bind(item: PersonDetailsItem.CreditsShowItem) {
     clear()
-    bindTitleDescription(item.show.title, item.show.overview)
+    bindTitleDescription(item.show.title, item.show.overview, item.translation)
 
     val year = if (item.show.year > 0) item.show.year.toString() else "TBA"
     viewPersonCreditsItemNetwork.text =
@@ -59,7 +59,7 @@ class PersonDetailsCreditsItemView : FrameLayout {
 
   fun bind(item: PersonDetailsItem.CreditsMovieItem) {
     clear()
-    bindTitleDescription(item.movie.title, item.movie.overview)
+    bindTitleDescription(item.movie.title, item.movie.overview, item.translation)
     viewPersonCreditsItemNetwork.text = String.format("%s", item.movie.released?.year ?: "TBA")
 
     viewPersonCreditsItemPlaceholder.setImageResource(R.drawable.ic_film)
@@ -69,11 +69,16 @@ class PersonDetailsCreditsItemView : FrameLayout {
     if (!item.isLoading) loadImage(item)
   }
 
-  private fun bindTitleDescription(title: String, description: String) {
-    viewPersonCreditsItemTitle.text = title
-    viewPersonCreditsItemDescription.text =
-      if (description.isNotBlank()) description
-      else context.getString(R.string.textNoDescription)
+  private fun bindTitleDescription(title: String, description: String, translation: Translation?) {
+    viewPersonCreditsItemTitle.text = when {
+      translation?.title?.isNotBlank() == true -> translation.title
+      else -> title
+    }
+    viewPersonCreditsItemDescription.text = when {
+      translation?.overview?.isNotBlank() == true -> translation.overview
+      description.isNotBlank() -> description
+      else -> context.getString(R.string.textNoDescription)
+    }
   }
 
   private fun loadImage(item: PersonDetailsItem) {
@@ -112,19 +117,28 @@ class PersonDetailsCreditsItemView : FrameLayout {
       .withSuccessListener {
         viewPersonCreditsItemPlaceholder.gone()
         viewPersonCreditsItemImage.visible()
-        imageLoadCompleteListener?.invoke()
+        loadTranslation(item)
       }
       .withFailListener {
         if (image.status == ImageStatus.AVAILABLE) {
           viewPersonCreditsItemPlaceholder.visible()
           viewPersonCreditsItemImage.gone()
-          imageLoadCompleteListener?.invoke()
+          loadTranslation(item)
           return@withFailListener
         }
         val force = (image.status == ImageStatus.UNKNOWN)
         onImageMissingListener?.invoke(item, force)
       }
       .into(viewPersonCreditsItemImage)
+  }
+
+  private fun loadTranslation(item: PersonDetailsItem) {
+    if (item is PersonDetailsItem.CreditsShowItem && item.translation == null) {
+      onTranslationMissingListener?.invoke(item)
+    }
+    if (item is PersonDetailsItem.CreditsMovieItem && item.translation == null) {
+      onTranslationMissingListener?.invoke(item)
+    }
   }
 
   private fun clear() {
