@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
+import com.michaldrabik.ui_base.common.FastLinearLayoutManager
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
@@ -76,7 +77,7 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>
   }
 
   private fun setupRecycler() {
-    layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+    layoutManager = FastLinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     adapter = PersonDetailsAdapter(
       onLinksClickListener = { openLinksSheet(it) },
       onImageMissingListener = { item, force -> viewModel.loadMissingImage(item, force) },

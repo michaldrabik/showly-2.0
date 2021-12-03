@@ -114,12 +114,6 @@ class PersonDetailsViewModel @Inject constructor(
     }
   }
 
-  private fun updateItem(newItem: PersonDetailsItem) {
-    val currentItems = personDetailsItemsState.value?.toMutableList()
-    currentItems?.findReplace(newItem) { it.getId() == newItem.getId() }
-    personDetailsItemsState.value = currentItems
-  }
-
   private fun setMainLoading(isLoading: Boolean) {
     if (!isLoading) mainProgressJob?.cancel()
 
@@ -144,6 +138,12 @@ class PersonDetailsViewModel @Inject constructor(
       }
       personDetailsItemsState.value = currentValue
     }
+  }
+
+  private fun updateItem(newItem: PersonDetailsItem) {
+    val currentItems = personDetailsItemsState.value?.toMutableList()
+    currentItems?.findReplace(newItem) { it.getId() == newItem.getId() }
+    personDetailsItemsState.value = currentItems
   }
 
   val uiState = combine(
