@@ -70,16 +70,15 @@ class PersonDetailsViewModel @Inject constructor(
   fun loadCredits(person: Person, filters: List<Mode> = emptyList()) {
     creditsJob?.cancel()
     creditsJob = viewModelScope.launch {
-      val current = personDetailsItemsState.value?.toMutableList()
-      current?.removeIf { it.isCreditsItem() }
-      personDetailsItemsState.value = current
-
       val credits = loadCreditsCase.loadCredits(person, filters)
       setCreditsLoading(false)
+
+      val current = personDetailsItemsState.value?.toMutableList()
       current?.let { currentValue ->
         if (currentValue.none { it is PersonDetailsItem.CreditsFiltersItem }) {
           currentValue.add(PersonDetailsItem.CreditsFiltersItem(filters))
         }
+        currentValue.removeIf { it.isCreditsItem() }
         credits.forEach { (year, credit) ->
           currentValue.add(PersonDetailsItem.CreditsHeader(year))
           currentValue.addAll(
