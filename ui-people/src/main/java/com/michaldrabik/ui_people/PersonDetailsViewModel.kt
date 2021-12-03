@@ -31,14 +31,12 @@ class PersonDetailsViewModel @Inject constructor(
 
   private val personDetailsItemsState = MutableStateFlow<List<PersonDetailsItem>?>(null)
 
-  private var mainJob: Job? = null
   private var mainProgressJob: Job? = null
   private var creditsJob: Job? = null
   private var creditsProgressJob: Job? = null
 
   fun loadDetails(person: Person) {
-    mainJob?.cancel()
-    mainJob = viewModelScope.launch {
+    viewModelScope.launch {
       mainProgressJob = launchDelayed(750) { setMainLoading(true) }
       try {
         val dateFormat = loadDetailsCase.loadDateFormat()
