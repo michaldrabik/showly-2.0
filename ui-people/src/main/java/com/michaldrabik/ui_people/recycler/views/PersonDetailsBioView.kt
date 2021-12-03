@@ -22,10 +22,10 @@ class PersonDetailsBioView : FrameLayout {
   }
 
   fun bind(item: PersonDetailsItem.MainBio) {
-    if (!item.biographyTranslation.isNullOrBlank()) {
-      viewPersonDetailsBio.text = item.biographyTranslation
-    } else {
-      viewPersonDetailsBio.text = item.biography
+    when {
+      item.biography.isNullOrBlank() -> viewPersonDetailsBio.text = context.getString(R.string.textNoDescription)
+      !item.biographyTranslation.isNullOrBlank() -> viewPersonDetailsBio.text = item.biographyTranslation
+      else -> viewPersonDetailsBio.text = item.biography
     }
   }
 }

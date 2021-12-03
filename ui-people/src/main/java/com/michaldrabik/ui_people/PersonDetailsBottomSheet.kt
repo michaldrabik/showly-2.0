@@ -79,7 +79,8 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>
     layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     adapter = PersonDetailsAdapter(
       onLinksClickListener = { openLinksSheet(it) },
-      onImageMissingListener = { item, force -> viewModel.loadMissingImage(item, force) }
+      onImageMissingListener = { item, force -> viewModel.loadMissingImage(item, force) },
+      onFiltersChangeListener = { filters -> viewModel.loadCredits(person, filters) }
     )
     with(personDetailsRecycler) {
       adapter = this@PersonDetailsBottomSheet.adapter

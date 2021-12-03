@@ -4,16 +4,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
+import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_people.recycler.views.PersonDetailsBioView
 import com.michaldrabik.ui_people.recycler.views.PersonDetailsCreditsItemView
+import com.michaldrabik.ui_people.recycler.views.PersonDetailsFiltersView
 import com.michaldrabik.ui_people.recycler.views.PersonDetailsHeaderView
 import com.michaldrabik.ui_people.recycler.views.PersonDetailsInfoView
 import com.michaldrabik.ui_people.recycler.views.PersonDetailsLoadingView
 
 class PersonDetailsAdapter(
   val onImageMissingListener: (PersonDetailsItem, Boolean) -> Unit,
-  val onLinksClickListener: (Person) -> Unit
+  val onLinksClickListener: (Person) -> Unit,
+  var onFiltersChangeListener: ((List<Mode>) -> Unit)
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   companion object {
@@ -21,7 +24,8 @@ class PersonDetailsAdapter(
     private const val VIEW_TYPE_BIO = 2
     private const val VIEW_TYPE_CREDIT_ITEM = 3
     private const val VIEW_TYPE_CREDIT_HEADER = 4
-    private const val VIEW_TYPE_LOADING = 5
+    private const val VIEW_TYPE_CREDIT_LOADING = 5
+    private const val VIEW_TYPE_CREDIT_FILTERS = 6
   }
 
   private val asyncDiffer = AsyncListDiffer(this, PersonDetailsItemDiffCallback())
@@ -35,7 +39,8 @@ class PersonDetailsAdapter(
       is PersonDetailsItem.CreditsShowItem -> VIEW_TYPE_CREDIT_ITEM
       is PersonDetailsItem.CreditsMovieItem -> VIEW_TYPE_CREDIT_ITEM
       is PersonDetailsItem.CreditsHeader -> VIEW_TYPE_CREDIT_HEADER
-      is PersonDetailsItem.Loading -> VIEW_TYPE_LOADING
+      is PersonDetailsItem.CreditsLoadingItem -> VIEW_TYPE_CREDIT_LOADING
+      is PersonDetailsItem.CreditsFiltersItem -> VIEW_TYPE_CREDIT_FILTERS
       else -> throw IllegalStateException()
     }
 
@@ -53,7 +58,12 @@ class PersonDetailsAdapter(
         }
       )
       VIEW_TYPE_CREDIT_HEADER -> BaseViewHolder(PersonDetailsHeaderView(parent.context))
-      VIEW_TYPE_LOADING -> BaseViewHolder(PersonDetailsLoadingView(parent.context))
+      VIEW_TYPE_CREDIT_LOADING -> BaseViewHolder(PersonDetailsLoadingView(parent.context))
+      VIEW_TYPE_CREDIT_FILTERS -> BaseViewHolder(
+        PersonDetailsFiltersView(parent.context).apply {
+          onChipsChangeListener = this@PersonDetailsAdapter.onFiltersChangeListener
+        }
+      )
       else -> throw IllegalStateException()
     }
 
@@ -64,7 +74,8 @@ class PersonDetailsAdapter(
       is PersonDetailsItem.CreditsHeader -> (holder.itemView as PersonDetailsHeaderView).bind(item)
       is PersonDetailsItem.CreditsShowItem -> (holder.itemView as PersonDetailsCreditsItemView).bind(item)
       is PersonDetailsItem.CreditsMovieItem -> (holder.itemView as PersonDetailsCreditsItemView).bind(item)
-      is PersonDetailsItem.Loading -> Unit
+      is PersonDetailsItem.CreditsFiltersItem -> (holder.itemView as PersonDetailsFiltersView).bind(item.filters)
+      is PersonDetailsItem.CreditsLoadingItem -> Unit
     }
 
   override fun getItemCount() = asyncDiffer.currentList.size

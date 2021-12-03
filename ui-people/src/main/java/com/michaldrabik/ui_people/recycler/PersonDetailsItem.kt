@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_people.recycler
 
+import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Person
@@ -9,6 +10,8 @@ import java.time.format.DateTimeFormatter
 sealed class PersonDetailsItem {
 
   open fun getId(): Long? = null
+
+  fun isCreditsItem() = this is CreditsHeader || this is CreditsMovieItem || this is CreditsShowItem
 
   data class MainInfo(
     val person: Person,
@@ -43,5 +46,9 @@ sealed class PersonDetailsItem {
     override fun getId() = movie.traktId
   }
 
-  object Loading : PersonDetailsItem()
+  data class CreditsFiltersItem(
+    val filters: List<Mode>
+  ) : PersonDetailsItem()
+
+  object CreditsLoadingItem : PersonDetailsItem()
 }

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/viewPersonDetailsFiltersRoot"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  >
+
+  <com.google.android.material.chip.ChipGroup
+    android:id="@+id/viewPersonDetailsFiltersChipGroup"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/spaceNormal"
+    android:layout_marginBottom="@dimen/spaceTiny"
+    android:paddingStart="@dimen/spaceNormal"
+    android:paddingEnd="@dimen/spaceNormal"
+    app:chipSpacingHorizontal="@dimen/spaceSmall"
+    app:layout_behavior="com.michaldrabik.ui_base.common.behaviour.ScrollableViewBehaviour"
+    >
+
+    <com.google.android.material.chip.Chip
+      android:id="@+id/viewPersonDetailsFiltersShowsChip"
+      style="@style/Widget.MaterialComponents.Chip.Choice"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/textShows"
+      android:textColor="@color/selector_search_chip_text"
+      android:textSize="16sp"
+      app:checkedIconTint="@color/selector_search_chip_text"
+      app:chipBackgroundColor="@color/selector_search_chip_background"
+      app:chipStrokeColor="@color/selector_search_chip_text"
+      app:chipStrokeWidth="1dp"
+      app:ensureMinTouchTargetSize="false"
+      />
+
+    <com.google.android.material.chip.Chip
+      android:id="@+id/viewPersonDetailsFiltersMoviesChip"
+      style="@style/Widget.MaterialComponents.Chip.Choice"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/textMovies"
+      android:textColor="@color/selector_search_chip_text"
+      android:textSize="16sp"
+      app:checkedIconTint="@color/selector_search_chip_text"
+      app:chipBackgroundColor="@color/selector_search_chip_background"
+      app:chipStrokeColor="@color/selector_search_chip_text"
+      app:chipStrokeWidth="1dp"
+      app:ensureMinTouchTargetSize="false"
+      />
+
+  </com.google.android.material.chip.ChipGroup>
+
+</FrameLayout>

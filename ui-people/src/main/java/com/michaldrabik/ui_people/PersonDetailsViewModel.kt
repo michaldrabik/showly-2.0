@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_people
 
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
@@ -29,27 +30,27 @@ class PersonDetailsViewModel @Inject constructor(
 
   private val personDetailsItemsState = MutableStateFlow<List<PersonDetailsItem>?>(null)
 
+  private var mainJob: Job? = null
   private var mainProgressJob: Job? = null
+  private var creditsJob: Job? = null
   private var creditsProgressJob: Job? = null
 
   fun loadDetails(person: Person) {
-    viewModelScope.launch {
+    mainJob?.cancel()
+    mainJob = viewModelScope.launch {
+      personDetailsItemsState.value = emptyList()
       mainProgressJob = launchDelayed(750) { setMainLoading(true) }
       try {
         val dateFormat = loadDetailsCase.loadDateFormat()
         personDetailsItemsState.value = mutableListOf<PersonDetailsItem>().apply {
           add(PersonDetailsItem.MainInfo(person, dateFormat, false))
-          if (!person.bio.isNullOrBlank()) {
-            add(PersonDetailsItem.MainBio(person.bio, person.bioTranslation))
-          }
+          add(PersonDetailsItem.MainBio(person.bio, person.bioTranslation))
         }
 
         val details = loadDetailsCase.loadDetails(person)
         personDetailsItemsState.value = mutableListOf<PersonDetailsItem>().apply {
           add(PersonDetailsItem.MainInfo(details, dateFormat, false))
-          if (!details.bio.isNullOrBlank()) {
-            add(PersonDetailsItem.MainBio(details.bio, details.bioTranslation))
-          }
+          add(PersonDetailsItem.MainBio(details.bio, details.bioTranslation))
         }
         mainProgressJob?.cancel()
 
@@ -66,22 +67,31 @@ class PersonDetailsViewModel @Inject constructor(
     }
   }
 
-  private suspend fun loadCredits(person: Person) {
-    val credits = loadCreditsCase.loadCredits(person)
-    setCreditsLoading(false)
-    val current = personDetailsItemsState.value?.toMutableList()
-    current?.let { currentValue ->
-      credits.forEach { (year, credit) ->
-        currentValue.add(PersonDetailsItem.CreditsHeader(year))
-        currentValue.addAll(
-          credit.map { c ->
-            c.show?.let { return@map PersonDetailsItem.CreditsShowItem(it, c.image) }
-            c.movie?.let { return@map PersonDetailsItem.CreditsMovieItem(it, c.image) }
-            throw IllegalStateException()
-          }
-        )
+  fun loadCredits(person: Person, filters: List<Mode> = emptyList()) {
+    creditsJob?.cancel()
+    creditsJob = viewModelScope.launch {
+      val current = personDetailsItemsState.value?.toMutableList()
+      current?.removeIf { it.isCreditsItem() }
+      personDetailsItemsState.value = current
+
+      val credits = loadCreditsCase.loadCredits(person, filters)
+      setCreditsLoading(false)
+      current?.let { currentValue ->
+        if (currentValue.none { it is PersonDetailsItem.CreditsFiltersItem }) {
+          currentValue.add(PersonDetailsItem.CreditsFiltersItem(filters))
+        }
+        credits.forEach { (year, credit) ->
+          currentValue.add(PersonDetailsItem.CreditsHeader(year))
+          currentValue.addAll(
+            credit.map { c ->
+              c.show?.let { return@map PersonDetailsItem.CreditsShowItem(it, c.image) }
+              c.movie?.let { return@map PersonDetailsItem.CreditsMovieItem(it, c.image) }
+              throw IllegalStateException()
+            }
+          )
+        }
+        personDetailsItemsState.value = currentValue
       }
-      personDetailsItemsState.value = currentValue
     }
   }
 
@@ -124,9 +134,9 @@ class PersonDetailsViewModel @Inject constructor(
     val current = personDetailsItemsState.value?.toMutableList()
     current?.let { currentValue ->
       if (isLoading) {
-        currentValue.add(PersonDetailsItem.Loading)
+        currentValue.add(PersonDetailsItem.CreditsLoadingItem)
       } else {
-        currentValue.remove(PersonDetailsItem.Loading)
+        currentValue.remove(PersonDetailsItem.CreditsLoadingItem)
       }
       personDetailsItemsState.value = currentValue
     }
