@@ -106,6 +106,7 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>
       val bundle = bundleOf(NavigationArgs.ARG_MOVIE_ID to item.movie.traktId)
       findNavController().navigate(R.id.actionPersonDetailsDialogToMovie, bundle)
     }
+    dismiss()
   }
 
   private fun openLinksSheet(it: Person) {
