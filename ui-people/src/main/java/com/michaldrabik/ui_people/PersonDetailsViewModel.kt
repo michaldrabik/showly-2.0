@@ -39,6 +39,8 @@ class PersonDetailsViewModel @Inject constructor(
   private var mainProgressJob: Job? = null
   private var creditsJob: Job? = null
   private var creditsProgressJob: Job? = null
+  private var imagesJobs = mutableMapOf<String, Boolean>()
+  private var translationsJobs = mutableMapOf<String, Boolean>()
 
   private val language by lazy { settingsRepository.language }
 
@@ -91,8 +93,8 @@ class PersonDetailsViewModel @Inject constructor(
             currentValue.add(PersonDetailsItem.CreditsHeader(year))
             currentValue.addAll(
               credit.map { c ->
-                c.show?.let { return@map PersonDetailsItem.CreditsShowItem(it, c.image, translation = null) }
-                c.movie?.let { return@map PersonDetailsItem.CreditsMovieItem(it, c.image, translation = null) }
+                c.show?.let { return@map PersonDetailsItem.CreditsShowItem(it, c.image, c.translation) }
+                c.movie?.let { return@map PersonDetailsItem.CreditsMovieItem(it, c.image, c.translation) }
                 throw IllegalStateException()
               }
             )
@@ -110,6 +112,10 @@ class PersonDetailsViewModel @Inject constructor(
   }
 
   fun loadMissingImage(item: PersonDetailsItem, force: Boolean) {
+    if (item.getId() in imagesJobs.keys) {
+      return
+    }
+    imagesJobs[item.getId()] = true
     viewModelScope.launch {
       (item as? PersonDetailsItem.CreditsShowItem)?.let {
         updateItem(it.copy(isLoading = true))
@@ -125,15 +131,16 @@ class PersonDetailsViewModel @Inject constructor(
   }
 
   fun loadMissingTranslation(item: PersonDetailsItem) {
-    if (language == Config.DEFAULT_LANGUAGE) return
+    if (language == Config.DEFAULT_LANGUAGE || item.getId() in translationsJobs.keys) {
+      return
+    }
+    translationsJobs[item.getId()] = true
     viewModelScope.launch {
       (item as? PersonDetailsItem.CreditsShowItem)?.let {
-        updateItem(it.copy(isLoading = true))
         val updatedItem = loadTranslationsCase.loadMissingTranslation(it, language)
         updateItem(updatedItem)
       }
       (item as? PersonDetailsItem.CreditsMovieItem)?.let {
-        updateItem(it.copy(isLoading = true))
         val updatedItem = loadTranslationsCase.loadMissingTranslation(it, language)
         updateItem(updatedItem)
       }

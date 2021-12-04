@@ -7,10 +7,11 @@ import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
 import java.time.format.DateTimeFormatter
+import java.util.UUID
 
 sealed class PersonDetailsItem {
 
-  open fun getId(): Long? = null
+  open fun getId(): String = UUID.randomUUID().toString()
 
   fun isCreditsItem() = this is CreditsHeader || this is CreditsMovieItem || this is CreditsShowItem
 
@@ -28,7 +29,7 @@ sealed class PersonDetailsItem {
   data class CreditsHeader(
     val year: Int?,
   ) : PersonDetailsItem() {
-    override fun getId() = year?.toLong()
+    override fun getId() = year?.toString() ?: ""
   }
 
   data class CreditsShowItem(
@@ -37,7 +38,7 @@ sealed class PersonDetailsItem {
     val translation: Translation?,
     val isLoading: Boolean = false
   ) : PersonDetailsItem() {
-    override fun getId() = show.traktId
+    override fun getId() = "${show.traktId}show"
   }
 
   data class CreditsMovieItem(
@@ -46,7 +47,7 @@ sealed class PersonDetailsItem {
     val translation: Translation?,
     val isLoading: Boolean = false
   ) : PersonDetailsItem() {
-    override fun getId() = movie.traktId
+    override fun getId() = "${movie.traktId}movie"
   }
 
   data class CreditsFiltersItem(

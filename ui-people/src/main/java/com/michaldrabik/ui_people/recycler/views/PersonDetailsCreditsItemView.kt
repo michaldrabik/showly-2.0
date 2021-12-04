@@ -11,6 +11,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
+import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
@@ -95,8 +96,13 @@ class PersonDetailsCreditsItemView : FrameLayout {
     }
 
     if (image.status == ImageStatus.UNAVAILABLE) {
-      viewPersonCreditsItemPlaceholder.visible()
       viewPersonCreditsItemImage.gone()
+      viewPersonCreditsItemPlaceholder.fadeIn(Config.IMAGE_FADE_DURATION_MS.toLong())
+      return
+    }
+
+    if (image.status == ImageStatus.UNKNOWN && ids.tvdb.id <= 0) {
+      onImageMissingListener?.invoke(item, true)
       return
     }
 
@@ -116,13 +122,12 @@ class PersonDetailsCreditsItemView : FrameLayout {
       .transition(DrawableTransitionOptions.withCrossFade(Config.IMAGE_FADE_DURATION_MS))
       .withSuccessListener {
         viewPersonCreditsItemPlaceholder.gone()
-        viewPersonCreditsItemImage.visible()
         loadTranslation(item)
       }
       .withFailListener {
         if (image.status == ImageStatus.AVAILABLE) {
-          viewPersonCreditsItemPlaceholder.visible()
           viewPersonCreditsItemImage.gone()
+          viewPersonCreditsItemPlaceholder.fadeIn(Config.IMAGE_FADE_DURATION_MS.toLong())
           loadTranslation(item)
           return@withFailListener
         }
