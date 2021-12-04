@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -20,9 +21,11 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_model.Person
+import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_PERSON
 import com.michaldrabik.ui_people.links.PersonLinksBottomSheet
 import com.michaldrabik.ui_people.recycler.PersonDetailsAdapter
+import com.michaldrabik.ui_people.recycler.PersonDetailsItem
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.view_person_details.*
 import kotlinx.coroutines.flow.collect
@@ -79,7 +82,7 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>
   private fun setupRecycler() {
     layoutManager = FastLinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     adapter = PersonDetailsAdapter(
-      onItemClickListener = { },
+      onItemClickListener = { openDetails(it) },
       onLinksClickListener = { openLinksSheet(it) },
       onImageMissingListener = { item, force -> viewModel.loadMissingImage(item, force) },
       onTranslationMissingListener = { item -> viewModel.loadMissingTranslation(item) },
@@ -91,6 +94,17 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
       removeOnScrollListener(recyclerScrollListener)
       addOnScrollListener(recyclerScrollListener)
+    }
+  }
+
+  private fun openDetails(item: PersonDetailsItem) {
+    if (item is PersonDetailsItem.CreditsShowItem) {
+      val bundle = bundleOf(NavigationArgs.ARG_SHOW_ID to item.show.traktId)
+      findNavController().navigate(R.id.actionPersonDetailsDialogToShow, bundle)
+    }
+    if (item is PersonDetailsItem.CreditsMovieItem) {
+      val bundle = bundleOf(NavigationArgs.ARG_MOVIE_ID to item.movie.traktId)
+      findNavController().navigate(R.id.actionPersonDetailsDialogToMovie, bundle)
     }
   }
 

@@ -5,12 +5,10 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
-import android.graphics.Color.TRANSPARENT
 import android.graphics.Typeface.BOLD
 import android.graphics.Typeface.NORMAL
 import android.net.Uri
 import android.os.Bundle
-import android.transition.TransitionManager
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
 import android.view.animation.AnimationUtils
@@ -32,7 +30,6 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.transition.platform.MaterialContainerTransform
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.common.Config.INITIAL_RATING
@@ -117,7 +114,6 @@ import com.michaldrabik.ui_show.views.AddToShowsButton
 import com.michaldrabik.ui_streamings.recycler.StreamingAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_show_details.*
-import kotlinx.android.synthetic.main.fragment_show_details_actor_full_view.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
 import kotlinx.coroutines.flow.collect
 import java.time.Duration
@@ -420,59 +416,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private fun showFullActorView(actor: Person) {
     val bundle = PersonDetailsBottomSheet.createBundle(actor)
     navigateTo(R.id.actionShowDetailsFragmentToPerson, bundle)
-//    if (showDetailsActorFullContainer.isVisible) {
-//      return
-//    }
-//
-//    Glide.with(this)
-//      .load("$TMDB_IMAGE_BASE_ACTOR_FULL_URL${actor.imagePath}")
-//      .transform(CenterCrop(), RoundedCorners(actorViewCorner))
-//      .into(showDetailsActorFullImage)
-//
-//    val actorView = showDetailsActorsRecycler.findViewWithTag<View>(actor.ids.tmdb.id)
-//    val transform = MaterialContainerTransform().apply {
-//      startView = actorView
-//      endView = showDetailsActorFullContainer
-//      scrimColor = TRANSPARENT
-//      addTarget(showDetailsActorFullContainer)
-//    }
-//    TransitionManager.beginDelayedTransition(showDetailsRoot, transform)
-//    actorView.gone()
-//    showDetailsActorFullImdb.apply {
-//      val hasImdbId = actor.ids.imdb.id.isNotBlank()
-//      visibleIf(hasImdbId)
-//      if (hasImdbId) {
-//        onClick { openIMDbLink(actor.ids.imdb, "name") }
-//      }
-//    }
-//    showDetailsActorFullName.apply {
-//      text = getString(R.string.textActorRole, actor.name, actor.character)
-//      fadeIn(withHardware = true)
-//    }
-//    showDetailsActorFullContainer.apply {
-//      tag = actor
-//      onClick { hideFullActorView(actor) }
-//      visible()
-//    }
-//    showDetailsActorFullMask.apply {
-//      onClick { hideFullActorView(actor) }
-//      fadeIn(withHardware = true)
-//    }
-  }
-
-  private fun hideFullActorView(actor: Person) {
-    val actorView = showDetailsActorsRecycler.findViewWithTag<View>(actor.ids.tmdb.id)
-    val transform = MaterialContainerTransform().apply {
-      startView = showDetailsActorFullContainer
-      endView = actorView
-      scrimColor = TRANSPARENT
-      addTarget(actorView)
-    }
-    TransitionManager.beginDelayedTransition(showDetailsRoot, transform)
-    showDetailsActorFullContainer.gone()
-    actorView.visible()
-    showDetailsActorFullMask.fadeOut()
-    showDetailsActorFullName.fadeOut()
   }
 
   private fun render(uiState: ShowDetailsUiState) {
@@ -868,10 +811,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         }
         showDetailsCommentsView.isVisible -> {
           hideExtraView(showDetailsCommentsView)
-          return@addCallback
-        }
-        showDetailsActorFullContainer.isVisible -> {
-          hideFullActorView(showDetailsActorFullContainer.tag as Person)
           return@addCallback
         }
         else -> {

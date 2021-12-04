@@ -687,6 +687,4 @@
     app:tint="?android:attr/textColorPrimary"
     />
 
-  <include layout="@layout/fragment_show_details_actor_full_view" />
-
 </FrameLayout>

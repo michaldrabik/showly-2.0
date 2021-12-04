@@ -4,9 +4,6 @@
   <dimen name="actorTilePlaceholder">20dp</dimen>
   <dimen name="actorTileImageHeight">120dp</dimen>
   <dimen name="actorTileImageWidth">80dp</dimen>
-  <dimen name="actorFullTileCorner">8dp</dimen>
-  <dimen name="actorFullTileImageHeight">420dp</dimen>
-  <dimen name="actorFullTileImageWidth">280dp</dimen>
 
   <dimen name="relatedShowHeight">120dp</dimen>
   <dimen name="relatedShowWidth">80dp</dimen>

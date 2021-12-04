@@ -15,6 +15,7 @@ import com.michaldrabik.ui_model.PersonCredit
 import com.michaldrabik.ui_people.recycler.PersonDetailsItem
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
 
@@ -42,10 +43,12 @@ class PersonDetailsCreditsCase @Inject constructor(
     val watchlistShowsIdsAsync = async { showsRepository.watchlistShows.loadAllIds() }
     val watchlistMoviesIdsAsync = async { moviesRepository.watchlistMovies.loadAllIds() }
 
-    val myShowsIds = myShowsIdsAsync.await()
-    val myMoviesIds = myMoviesIdsAsync.await()
-    val watchlistShowsId = watchlistShowsIdsAsync.await()
-    val watchlistMoviesIds = watchlistMoviesIdsAsync.await()
+    val (myShowsIds, myMoviesIds, watchlistShowsId, watchlistMoviesIds) = awaitAll(
+      myShowsIdsAsync,
+      myMoviesIdsAsync,
+      watchlistShowsIdsAsync,
+      watchlistMoviesIdsAsync
+    )
 
     val credits = peopleRepository.loadCredits(person)
     credits

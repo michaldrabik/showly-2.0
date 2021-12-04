@@ -51,7 +51,9 @@ class PersonDetailsViewModel @Inject constructor(
         val dateFormat = loadDetailsCase.loadDateFormat()
         personDetailsItemsState.value = mutableListOf<PersonDetailsItem>().apply {
           add(PersonDetailsItem.MainInfo(person, dateFormat, false))
-          add(PersonDetailsItem.MainBio(person.bio, person.bioTranslation))
+          if (!person.bio.isNullOrBlank()) {
+            add(PersonDetailsItem.MainBio(person.bio, person.bioTranslation))
+          }
         }
 
         val details = loadDetailsCase.loadDetails(person)
