@@ -33,7 +33,7 @@ class DiscoverShowsCase @Inject constructor(
   suspend fun loadCachedShows(filters: DiscoverFilters) = coroutineScope {
     val myShowsIds = async { showsRepository.myShows.loadAllIds() }
     val watchlistShowsIds = async { showsRepository.watchlistShows.loadAllIds() }
-    val archiveShowsIds = async { showsRepository.archiveShows.loadAllIds() }
+    val archiveShowsIds = async { showsRepository.hiddenShows.loadAllIds() }
     val cachedShows = async { showsRepository.discoverShows.loadAllCached() }
     val language = translationsRepository.getLanguage()
 
@@ -54,7 +54,7 @@ class DiscoverShowsCase @Inject constructor(
 
     val myAsync = async { showsRepository.myShows.loadAllIds() }
     val watchlistSync = async { showsRepository.watchlistShows.loadAllIds() }
-    val archiveAsync = async { showsRepository.archiveShows.loadAllIds() }
+    val archiveAsync = async { showsRepository.hiddenShows.loadAllIds() }
     val (myIds, watchlistIds, archiveIds) = awaitAll(myAsync, watchlistSync, archiveAsync)
     val collectionSize = myIds.size + watchlistIds.size + archiveIds.size
 

@@ -91,13 +91,7 @@ class PersonDetailsViewModel @Inject constructor(
           currentValue.removeIf { it.isCreditsItem() }
           credits.forEach { (year, credit) ->
             currentValue.add(PersonDetailsItem.CreditsHeader(year))
-            currentValue.addAll(
-              credit.map { c ->
-                c.show?.let { return@map PersonDetailsItem.CreditsShowItem(it, c.image, c.translation) }
-                c.movie?.let { return@map PersonDetailsItem.CreditsMovieItem(it, c.image, c.translation) }
-                throw IllegalStateException()
-              }
-            )
+            currentValue.addAll(credit)
           }
           personDetailsItemsState.value = currentValue
         }

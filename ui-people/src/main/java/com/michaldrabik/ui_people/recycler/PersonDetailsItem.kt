@@ -6,12 +6,16 @@ import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
+import java.time.LocalDate
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.UUID
 
 sealed class PersonDetailsItem {
 
   open fun getId(): String = UUID.randomUUID().toString()
+
+  open fun getReleaseDate(): LocalDate? = null
 
   fun isCreditsItem() = this is CreditsHeader || this is CreditsMovieItem || this is CreditsShowItem
 
@@ -35,19 +39,31 @@ sealed class PersonDetailsItem {
   data class CreditsShowItem(
     val show: Show,
     val image: Image,
+    val isMy: Boolean,
+    val isWatchlist: Boolean,
     val translation: Translation?,
     val isLoading: Boolean = false
   ) : PersonDetailsItem() {
     override fun getId() = "${show.traktId}show"
+    override fun getReleaseDate() =
+      if (show.firstAired.isNotBlank()) {
+        ZonedDateTime.parse(show.firstAired).toLocalDate()
+      } else {
+        null
+      }
   }
 
   data class CreditsMovieItem(
     val movie: Movie,
     val image: Image,
+    val isMy: Boolean,
+    val isWatchlist: Boolean,
     val translation: Translation?,
+    val moviesEnabled: Boolean,
     val isLoading: Boolean = false
   ) : PersonDetailsItem() {
     override fun getId() = "${movie.traktId}movie"
+    override fun getReleaseDate() = movie.released
   }
 
   data class CreditsFiltersItem(

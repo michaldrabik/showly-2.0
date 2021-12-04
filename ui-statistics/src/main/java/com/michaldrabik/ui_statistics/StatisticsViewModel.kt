@@ -53,7 +53,7 @@ class StatisticsViewModel @Inject constructor(
       val language = translationsRepository.getLanguage()
 
       val myShows = showsRepository.myShows.loadAll()
-      val hiddenShows = showsRepository.archiveShows.loadAll()
+      val hiddenShows = showsRepository.hiddenShows.loadAll()
 
       val shows = (myShows + hiddenShows).distinctBy { it.traktId }
       val showsIds = shows.map { it.traktId }

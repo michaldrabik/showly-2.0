@@ -14,6 +14,7 @@ import com.michaldrabik.ui_people.recycler.views.PersonDetailsInfoView
 import com.michaldrabik.ui_people.recycler.views.PersonDetailsLoadingView
 
 class PersonDetailsAdapter(
+  var onItemClickListener: (PersonDetailsItem) -> Unit,
   val onImageMissingListener: (PersonDetailsItem, Boolean) -> Unit,
   val onTranslationMissingListener: (PersonDetailsItem) -> Unit,
   val onLinksClickListener: (Person) -> Unit,
@@ -55,6 +56,7 @@ class PersonDetailsAdapter(
       VIEW_TYPE_BIO -> BaseViewHolder(PersonDetailsBioView(parent.context))
       VIEW_TYPE_CREDIT_ITEM -> BaseViewHolder(
         PersonDetailsCreditsItemView(parent.context).apply {
+          onItemClickListener = this@PersonDetailsAdapter.onItemClickListener
           onImageMissingListener = this@PersonDetailsAdapter.onImageMissingListener
           onTranslationMissingListener = this@PersonDetailsAdapter.onTranslationMissingListener
         }

@@ -18,7 +18,7 @@ class ShowDetailsMainCase @Inject constructor(
     with(showsRepository) {
       myShows.delete(idTrakt)
       watchlistShows.delete(idTrakt)
-      archiveShows.delete(idTrakt)
+      hiddenShows.delete(idTrakt)
       detailsShow.delete(idTrakt)
     }
     Timber.d("Removing malformed show...")
