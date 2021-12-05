@@ -60,16 +60,6 @@ abstract class ListDetailsItemView : FrameLayout {
       return
     }
 
-    // TODO Investigate crash
-//    if (item.image.status == UNKNOWN) {
-//      val showTvdbId = item.show?.ids?.tvdb?.id ?: 0
-//      val movieTvdbId = item.movie?.ids?.tvdb?.id ?: 0
-//      if (item.isShow() && showTvdbId <= 0 || item.isMovie() && movieTvdbId <= 0) {
-//        onImageLoadFail(item)
-//        return
-//      }
-//    }
-
     val unknownBase = when (item.image.type) {
       POSTER -> TVDB_IMAGE_BASE_POSTER_URL
       else -> TVDB_IMAGE_BASE_FANART_URL

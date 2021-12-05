@@ -32,7 +32,7 @@ class ListDetailsAdapter(
 
   private var items = listOf<ListDetailsItem>()
 
-  fun setItems(newItems: List<ListDetailsItem>, notifyItemsChange: Boolean = false) {
+  fun setItems(newItems: List<ListDetailsItem>, notifyItemsChange: Boolean) {
     // Using old DiffUtil method here because of drag and drop issues with asyncDiff.
     val diff = DiffUtil.calculateDiff(ListDetailsDiffCallback(items, newItems))
     diff.dispatchUpdatesTo(this)
