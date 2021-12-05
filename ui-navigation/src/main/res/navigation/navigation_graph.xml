@@ -622,14 +622,12 @@
       android:id="@+id/actionPersonDetailsDialogToShow"
       app:destination="@id/showDetailsFragment"
       app:enterAnim="@anim/anim_fade_in"
-      app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
       />
     <action
       android:id="@+id/actionPersonDetailsDialogToMovie"
       app:destination="@id/movieDetailsFragment"
       app:enterAnim="@anim/anim_fade_in"
-      app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
       />
   </dialog>

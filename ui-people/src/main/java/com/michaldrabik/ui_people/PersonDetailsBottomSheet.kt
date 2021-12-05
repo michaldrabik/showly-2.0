@@ -20,8 +20,10 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_navigation.java.NavigationArgs
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_PERSON
 import com.michaldrabik.ui_people.links.PersonLinksBottomSheet
 import com.michaldrabik.ui_people.recycler.PersonDetailsAdapter
@@ -36,12 +38,17 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>
   companion object {
     const val SHOW_BACK_UP_BUTTON_THRESHOLD = 25
 
-    fun createBundle(person: Person) = bundleOf(ARG_PERSON to person)
+    fun createBundle(person: Person, sourceId: IdTrakt) =
+      bundleOf(
+        ARG_PERSON to person,
+        ARG_ID to sourceId
+      )
   }
 
   override val layoutResId = R.layout.view_person_details
 
   private val person by lazy { requireArguments().getParcelable<Person>(ARG_PERSON) as Person }
+  private val sourceId by lazy { requireArguments().getParcelable<IdTrakt>(ARG_ID) as IdTrakt }
 
   private var adapter: PersonDetailsAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
@@ -98,13 +105,17 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>
   }
 
   private fun openDetails(item: PersonDetailsItem) {
-    if (item is PersonDetailsItem.CreditsShowItem) {
+    if (item is PersonDetailsItem.CreditsShowItem && item.show.traktId != sourceId.id) {
       val bundle = bundleOf(NavigationArgs.ARG_SHOW_ID to item.show.traktId)
-      findNavController().navigate(R.id.actionPersonDetailsDialogToShow, bundle)
+      requireParentFragment()
+        .findNavController()
+        .navigate(R.id.actionPersonDetailsDialogToShow, bundle)
     }
-    if (item is PersonDetailsItem.CreditsMovieItem) {
+    if (item is PersonDetailsItem.CreditsMovieItem && item.movie.traktId != sourceId.id) {
       val bundle = bundleOf(NavigationArgs.ARG_MOVIE_ID to item.movie.traktId)
-      findNavController().navigate(R.id.actionPersonDetailsDialogToMovie, bundle)
+      requireParentFragment()
+        .findNavController()
+        .navigate(R.id.actionPersonDetailsDialogToMovie, bundle)
     }
     dismiss()
   }

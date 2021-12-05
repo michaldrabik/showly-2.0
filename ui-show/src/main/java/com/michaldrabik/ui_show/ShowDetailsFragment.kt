@@ -414,7 +414,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   }
 
   private fun showFullActorView(actor: Person) {
-    val bundle = PersonDetailsBottomSheet.createBundle(actor)
+    val bundle = PersonDetailsBottomSheet.createBundle(actor, showId)
     navigateTo(R.id.actionShowDetailsFragmentToPerson, bundle)
   }
 
