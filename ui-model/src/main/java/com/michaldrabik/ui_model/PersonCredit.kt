@@ -14,6 +14,9 @@ data class PersonCredit(
   val translation: Translation?
 ) {
 
+  fun requireShow() = show!!
+  fun requireMovie() = movie!!
+
   val releaseDate: LocalDate?
     get() = when {
       show != null ->

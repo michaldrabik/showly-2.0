@@ -99,6 +99,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_EPISODE_DETAILS
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MANAGE_LISTS
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_PERSON_DETAILS
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_REMOVE_TRAKT
 import com.michaldrabik.ui_people.PersonDetailsBottomSheet
 import com.michaldrabik.ui_show.actors.ActorsAdapter
@@ -144,6 +145,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private val animationEnterLeft by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_in_from_left) }
   private val animationExitLeft by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_left) }
 
+  private var lastOpenedPerson: Person? = null
+
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     requireActivity().requestedOrientation = SCREEN_ORIENTATION_PORTRAIT
@@ -163,6 +166,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           isInitialized = true
         }
         viewModel.loadPremium()
+        lastOpenedPerson?.let { openPersonSheet(it) }
       }
     )
   }
@@ -234,7 +238,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private fun setupActorsList() {
     actorsAdapter = ActorsAdapter().apply {
-      itemClickListener = { showFullActorView(it) }
+      itemClickListener = { openPersonSheet(it) }
     }
     showDetailsActorsRecycler.apply {
       setHasFixedSize(true)
@@ -411,11 +415,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       else -> bundleOf(ARG_SHOW_ID to showId.id)
     }
     navigateTo(R.id.actionShowDetailsFragmentToPostComment, bundle)
-  }
-
-  private fun showFullActorView(actor: Person) {
-    val bundle = PersonDetailsBottomSheet.createBundle(actor, showId)
-    navigateTo(R.id.actionShowDetailsFragmentToPerson, bundle)
   }
 
   private fun render(uiState: ShowDetailsUiState) {
@@ -716,6 +715,15 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     } else {
       openWebUrl(link.getUri(id, country)) ?: showSnack(MessageEvent.info(R.string.errorCouldNotFindApp))
     }
+  }
+
+  private fun openPersonSheet(person: Person) {
+    lastOpenedPerson = null
+    setFragmentResultListener(REQUEST_PERSON_DETAILS) { _, _ ->
+      lastOpenedPerson = person
+    }
+    val bundle = PersonDetailsBottomSheet.createBundle(person, showId)
+    navigateTo(R.id.actionShowDetailsFragmentToPerson, bundle)
   }
 
   private fun openRemoveTraktSheet(@IdRes action: Int) {

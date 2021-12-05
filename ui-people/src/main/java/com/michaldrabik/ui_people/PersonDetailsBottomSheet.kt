@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,6 +26,7 @@ import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_PERSON
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_PERSON_DETAILS
 import com.michaldrabik.ui_people.links.PersonLinksBottomSheet
 import com.michaldrabik.ui_people.recycler.PersonDetailsAdapter
 import com.michaldrabik.ui_people.recycler.PersonDetailsItem
@@ -106,12 +108,14 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>
 
   private fun openDetails(item: PersonDetailsItem) {
     if (item is PersonDetailsItem.CreditsShowItem && item.show.traktId != sourceId.id) {
+      setFragmentResult(REQUEST_PERSON_DETAILS, Bundle.EMPTY)
       val bundle = bundleOf(NavigationArgs.ARG_SHOW_ID to item.show.traktId)
       requireParentFragment()
         .findNavController()
         .navigate(R.id.actionPersonDetailsDialogToShow, bundle)
     }
     if (item is PersonDetailsItem.CreditsMovieItem && item.movie.traktId != sourceId.id) {
+      setFragmentResult(REQUEST_PERSON_DETAILS, Bundle.EMPTY)
       val bundle = bundleOf(NavigationArgs.ARG_MOVIE_ID to item.movie.traktId)
       requireParentFragment()
         .findNavController()

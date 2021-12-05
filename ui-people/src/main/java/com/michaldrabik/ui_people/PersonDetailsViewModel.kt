@@ -79,7 +79,8 @@ class PersonDetailsViewModel @Inject constructor(
     creditsJob = viewModelScope.launch {
       creditsProgressJob = launchDelayed(750) { setCreditsLoading(true) }
       try {
-        val credits = loadCreditsCase.loadCredits(person, filters, language)
+        val credits = loadCreditsCase.loadCredits(person, filters)
+
         setCreditsLoading(false)
 
         val current = personDetailsItemsState.value?.toMutableList()

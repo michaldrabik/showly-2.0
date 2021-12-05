@@ -10,8 +10,10 @@ import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_model.ImageType
+import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.PersonCredit
+import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_people.recycler.PersonDetailsItem
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
@@ -30,14 +32,10 @@ class PersonDetailsCreditsCase @Inject constructor(
   private val movieImagesProvider: MovieImagesProvider
 ) {
 
+  private val language by lazy { settingsRepository.language }
   private val moviesEnabled by lazy { settingsRepository.isMoviesEnabled }
 
-  suspend fun loadCredits(
-    person: Person,
-    filters: List<Mode>,
-    language: String
-  ): Map<Int?, List<PersonDetailsItem>> = coroutineScope {
-
+  suspend fun loadCredits(person: Person, filters: List<Mode>) = coroutineScope {
     val myShowsIdsAsync = async { showsRepository.myShows.loadAllIds() }
     val myMoviesIdsAsync = async { moviesRepository.myMovies.loadAllIds() }
     val watchlistShowsIdsAsync = async { showsRepository.watchlistShows.loadAllIds() }
@@ -65,28 +63,45 @@ class PersonDetailsCreditsCase @Inject constructor(
         compareByDescending<PersonCredit> { it.releaseDate == null }.thenByDescending { it.releaseDate?.toEpochDay() }
       )
       .map {
-        it.show?.let { show ->
-          val isMy = show.traktId in myShowsIds
-          val isWatchlist = show.traktId in watchlistShowsId
-          val image = showImagesProvider.findCachedImage(show, ImageType.POSTER)
-          val translation = when (language) {
-            Config.DEFAULT_LANGUAGE -> null
-            else -> translationsRepository.loadTranslation(show, language, onlyLocal = true)
+        async {
+          when {
+            it.show != null -> createShowItem(it.requireShow(), myShowsIds, watchlistShowsId)
+            it.movie != null -> createMovieItem(it.requireMovie(), myMoviesIds, watchlistMoviesIds)
+            else -> throw IllegalStateException()
           }
-          return@map PersonDetailsItem.CreditsShowItem(show, image, isMy, isWatchlist, translation)
         }
-        it.movie?.let { movie ->
-          val isMy = movie.traktId in myMoviesIds
-          val isWatchlist = movie.traktId in watchlistMoviesIds
-          val image = movieImagesProvider.findCachedImage(movie, ImageType.POSTER)
-          val translation = when (language) {
-            Config.DEFAULT_LANGUAGE -> null
-            else -> translationsRepository.loadTranslation(movie, language, onlyLocal = true)
-          }
-          return@map PersonDetailsItem.CreditsMovieItem(movie, image, isMy, isWatchlist, translation, moviesEnabled)
-        }
-        throw IllegalStateException()
       }
+      .awaitAll()
       .groupBy { it.getReleaseDate()?.year }
+  }
+
+  private suspend fun createShowItem(
+    show: Show,
+    myShowsIds: List<Long>,
+    watchlistShowsId: List<Long>
+  ) = show.let {
+    val isMy = it.traktId in myShowsIds
+    val isWatchlist = it.traktId in watchlistShowsId
+    val image = showImagesProvider.findCachedImage(it, ImageType.POSTER)
+    val translation = when (language) {
+      Config.DEFAULT_LANGUAGE -> null
+      else -> translationsRepository.loadTranslation(it, language, onlyLocal = true)
+    }
+    PersonDetailsItem.CreditsShowItem(it, image, isMy, isWatchlist, translation)
+  }
+
+  private suspend fun createMovieItem(
+    movie: Movie,
+    myMoviesIds: List<Long>,
+    watchlistMoviesId: List<Long>
+  ) = movie.let {
+    val isMy = it.traktId in myMoviesIds
+    val isWatchlist = it.traktId in watchlistMoviesId
+    val image = movieImagesProvider.findCachedImage(it, ImageType.POSTER)
+    val translation = when (language) {
+      Config.DEFAULT_LANGUAGE -> null
+      else -> translationsRepository.loadTranslation(it, language, onlyLocal = true)
+    }
+    PersonDetailsItem.CreditsMovieItem(it, image, isMy, isWatchlist, translation, moviesEnabled)
   }
 }
