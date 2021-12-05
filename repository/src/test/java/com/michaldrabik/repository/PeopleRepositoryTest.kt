@@ -28,13 +28,14 @@ class PeopleRepositoryTest : BaseMockTest() {
   @RelaxedMockK lateinit var peopleShowsMoviesDao: PeopleShowsMoviesDao
   @RelaxedMockK lateinit var person: Person
   @RelaxedMockK lateinit var tmdbApi: TmdbApi
+  @RelaxedMockK lateinit var settingsRepository: SettingsRepository
 
   private lateinit var SUT: PeopleRepository
 
   @Before
   override fun setUp() {
     super.setUp()
-    SUT = PeopleRepository(database, cloud, mappers)
+    SUT = PeopleRepository(settingsRepository, database, cloud, mappers)
     coEvery { database.peopleDao() } returns peopleDao
     coEvery { database.peopleShowsMoviesDao() } returns peopleShowsMoviesDao
     coEvery { cloud.tmdbApi } returns tmdbApi
