@@ -538,6 +538,4 @@
     app:tint="?android:attr/textColorPrimary"
     />
 
-  <include layout="@layout/fragment_movie_details_actor_full_view" />
-
 </FrameLayout>

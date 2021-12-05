@@ -5,12 +5,10 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
-import android.graphics.Color.TRANSPARENT
 import android.graphics.Typeface.BOLD
 import android.graphics.Typeface.NORMAL
 import android.net.Uri
 import android.os.Bundle
-import android.transition.TransitionManager
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
@@ -28,15 +26,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.transition.platform.MaterialContainerTransform
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.common.Config.INITIAL_RATING
-import com.michaldrabik.common.Config.TMDB_IMAGE_BASE_ACTOR_FULL_URL
 import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseFragment
@@ -108,10 +103,10 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MANAGE_LISTS
+import com.michaldrabik.ui_people.PersonDetailsBottomSheet
 import com.michaldrabik.ui_streamings.recycler.StreamingAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_movie_details.*
-import kotlinx.android.synthetic.main.fragment_movie_details_actor_full_view.*
 import kotlinx.coroutines.flow.collect
 import java.util.Locale.ENGLISH
 import java.util.Locale.ROOT
@@ -127,6 +122,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   private var actorsAdapter: ActorsAdapter? = null
   private var streamingAdapter: StreamingAdapter? = null
   private var relatedAdapter: RelatedMovieAdapter? = null
+  private var lastOpenedPerson: Person? = null
 
   private val imageHeight by lazy {
     if (resources.configuration.orientation == ORIENTATION_PORTRAIT) screenHeight()
@@ -135,7 +131,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   private val imageRatio by lazy { resources.getString(R.string.detailsImageRatio).toFloat() }
   private val imagePadded by lazy { resources.getBoolean(R.bool.detailsImagePadded) }
 
-  private val actorViewCorner by lazy { requireContext().dimenToPx(R.dimen.actorMovieFullTileCorner) }
   private val animationEnterRight by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_in_from_right) }
   private val animationExitRight by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_right) }
   private val animationEnterLeft by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_in_from_left) }
@@ -159,6 +154,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
           isInitialized = true
         }
         viewModel.loadPremium()
+        lastOpenedPerson?.let { openPersonSheet(it) }
       }
     )
   }
@@ -226,7 +222,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 
   private fun setupActorsList() {
     actorsAdapter = ActorsAdapter().apply {
-      itemClickListener = { showFullActorView(it) }
+      itemClickListener = { openPersonSheet(it) }
     }
     movieDetailsActorsRecycler.apply {
       setHasFixedSize(true)
@@ -286,60 +282,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       startAnimation(animationEnterLeft)
     }
     movieDetailsBackArrow2.crossfadeTo(movieDetailsBackArrow)
-  }
-
-  private fun showFullActorView(actor: Person) {
-    if (movieDetailsActorFullContainer.isVisible) {
-      return
-    }
-
-    Glide.with(this)
-      .load("$TMDB_IMAGE_BASE_ACTOR_FULL_URL${actor.imagePath}")
-      .transform(CenterCrop(), RoundedCorners(actorViewCorner))
-      .into(movieDetailsActorFullImage)
-
-    val actorView = movieDetailsActorsRecycler.findViewWithTag<View>(actor.ids.tmdb.id)
-    val transform = MaterialContainerTransform().apply {
-      startView = actorView
-      endView = movieDetailsActorFullContainer
-      scrimColor = TRANSPARENT
-      addTarget(movieDetailsActorFullContainer)
-    }
-    TransitionManager.beginDelayedTransition(movieDetailsRoot, transform)
-    actorView.gone()
-    movieDetailsActorFullImdb.apply {
-      val imdbId = actor.ids.imdb.id.isNotBlank()
-      visibleIf(imdbId)
-      if (imdbId) onClick { openIMDbLink(actor.ids.imdb, "name") }
-    }
-    movieDetailsActorFullName.apply {
-      text = getString(R.string.textActorRole, actor.name, actor.character)
-      fadeIn()
-    }
-    movieDetailsActorFullContainer.apply {
-      tag = actor
-      onClick { hideFullActorView(actor) }
-      visible()
-    }
-    movieDetailsActorFullMask.apply {
-      onClick { hideFullActorView(actor) }
-      fadeIn()
-    }
-  }
-
-  private fun hideFullActorView(actor: Person) {
-    val actorView = movieDetailsActorsRecycler.findViewWithTag<View>(actor.ids.tmdb.id)
-    val transform = MaterialContainerTransform().apply {
-      startView = movieDetailsActorFullContainer
-      endView = actorView
-      scrimColor = TRANSPARENT
-      addTarget(actorView)
-    }
-    TransitionManager.beginDelayedTransition(movieDetailsRoot, transform)
-    movieDetailsActorFullContainer.gone()
-    actorView.visible()
-    movieDetailsActorFullMask.fadeOut(withHardware = true)
-    movieDetailsActorFullName.fadeOut(withHardware = true)
   }
 
   private fun showCustomImagesSheet(movieId: Long, isPremium: Boolean?) {
@@ -633,6 +575,15 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     navigateTo(action, args)
   }
 
+  private fun openPersonSheet(person: Person) {
+    lastOpenedPerson = null
+    setFragmentResultListener(NavigationArgs.REQUEST_PERSON_DETAILS) { _, _ ->
+      lastOpenedPerson = person
+    }
+    val bundle = PersonDetailsBottomSheet.createBundle(person, movieId)
+    navigateTo(R.id.actionMovieDetailsFragmentToPerson, bundle)
+  }
+
   private fun openShareSheet(movie: Movie) {
     val intent = Intent().apply {
       val text = "Hey! Check out ${movie.title}:\nhttps://trakt.tv/movies/${movie.ids.slug.id}\nhttps://www.imdb.com/title/${movie.ids.imdb.id}"
@@ -691,10 +642,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       when {
         movieDetailsCommentsView.isVisible -> {
           hideExtraView(movieDetailsCommentsView)
-          return@addCallback
-        }
-        movieDetailsActorFullContainer.isVisible -> {
-          hideFullActorView(movieDetailsActorFullContainer.tag as Person)
           return@addCallback
         }
         else -> {
