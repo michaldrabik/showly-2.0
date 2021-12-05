@@ -8,4 +8,7 @@
   <dimen name="personCreditsImageGuide">65dp</dimen>
   <dimen name="personCreditsHeaderTextSize">20sp</dimen>
 
+  <dimen name="personGalleryImageHeight">412dp</dimen>
+  <dimen name="personGalleryImageWidth">275dp</dimen>
+
 </resources>

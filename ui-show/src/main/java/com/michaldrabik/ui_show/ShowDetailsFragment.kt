@@ -101,7 +101,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_EPISODE_DETAIL
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MANAGE_LISTS
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_PERSON_DETAILS
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_REMOVE_TRAKT
-import com.michaldrabik.ui_people.PersonDetailsBottomSheet
+import com.michaldrabik.ui_people.details.PersonDetailsBottomSheet
 import com.michaldrabik.ui_show.actors.ActorsAdapter
 import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
 import com.michaldrabik.ui_show.helpers.ShowLink
@@ -174,7 +174,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     hideNavigation()
     showDetailsImageGuideline.setGuidelineBegin((imageHeight * imageRatio).toInt())
     showDetailsEpisodesView.itemClickListener = { show, episode, season, isWatched ->
-      showEpisodeDetails(show, episode, season, isWatched, episode.hasAired(season))
+      openEpisodeDetails(show, episode, season, isWatched, episode.hasAired(season))
     }
     listOf(showDetailsBackArrow, showDetailsBackArrow2).onClick { requireActivity().onBackPressed() }
     showDetailsImage.onClick {
@@ -195,9 +195,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
     showDetailsCommentsView.run {
       onRepliesClickListener = { viewModel.loadCommentReplies(it) }
-      onReplyCommentClickListener = { showPostCommentSheet(comment = it) }
+      onReplyCommentClickListener = { openPostCommentSheet(comment = it) }
       onDeleteCommentClickListener = { openDeleteCommentDialog(it) }
-      onPostCommentClickListener = { showPostCommentSheet() }
+      onPostCommentClickListener = { openPostCommentSheet() }
     }
     showDetailsTipGallery.onClick {
       it.gone()
@@ -339,83 +339,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     viewModel.refreshAnnouncements()
   }
 
-  private fun showEpisodeDetails(
-    show: Show,
-    episode: Episode,
-    season: Season?,
-    isWatched: Boolean,
-    showButton: Boolean = true,
-    showTabs: Boolean = true,
-  ) {
-    if (!checkNavigation(R.id.showDetailsFragment)) return
-    if (season !== null) {
-      setFragmentResultListener(REQUEST_EPISODE_DETAILS) { _, bundle ->
-        when {
-          bundle.containsKey(ACTION_RATING_CHANGED) -> viewModel.refreshEpisodesRatings()
-          bundle.containsKey(ACTION_EPISODE_WATCHED) -> {
-            val watched = bundle.getBoolean(ACTION_EPISODE_WATCHED)
-            viewModel.setWatchedEpisode(episode, season, watched)
-          }
-          bundle.containsKey(ACTION_EPISODE_TAB_SELECTED) -> {
-            val selectedEpisode = bundle.getParcelable<Episode>(ACTION_EPISODE_TAB_SELECTED)!!
-            showDetailsEpisodesView.selectEpisode(selectedEpisode)
-          }
-        }
-      }
-    }
-    val bundle = Bundle().apply {
-      val seasonEpisodes = season?.episodes?.map { it.number }?.toIntArray()
-      putLong(EpisodeDetailsBottomSheet.ARG_ID_TRAKT, show.traktId)
-      putLong(EpisodeDetailsBottomSheet.ARG_ID_TMDB, show.ids.tmdb.id)
-      putParcelable(EpisodeDetailsBottomSheet.ARG_EPISODE, episode)
-      putIntArray(EpisodeDetailsBottomSheet.ARG_SEASON_EPISODES, seasonEpisodes)
-      putBoolean(EpisodeDetailsBottomSheet.ARG_IS_WATCHED, isWatched)
-      putBoolean(EpisodeDetailsBottomSheet.ARG_SHOW_BUTTON, showButton)
-      putBoolean(EpisodeDetailsBottomSheet.ARG_SHOW_TABS, showTabs)
-    }
-    navigateTo(R.id.actionShowDetailsFragmentEpisodeDetails, bundle)
-  }
-
-  private fun showCustomImagesSheet(showId: Long, isPremium: Boolean?) {
-    if (isPremium == false) {
-      navigateTo(R.id.actionShowDetailsFragmentToPremium)
-      return
-    }
-
-    setFragmentResultListener(REQUEST_CUSTOM_IMAGE) { _, bundle ->
-      viewModel.loadBackgroundImage()
-      if (!bundle.getBoolean(ARG_CUSTOM_IMAGE_CLEARED)) showCustomImagesSheet(showId, true)
-    }
-
-    val bundle = bundleOf(
-      ARG_SHOW_ID to showId,
-      ARG_FAMILY to SHOW
-    )
-    navigateTo(R.id.actionShowDetailsFragmentToCustomImages, bundle)
-  }
-
-  private fun showPostCommentSheet(comment: Comment? = null) {
-    setFragmentResultListener(REQUEST_COMMENT) { _, bundle ->
-      showSnack(MessageEvent.info(R.string.textCommentPosted))
-      when (bundle.getString(ARG_COMMENT_ACTION)) {
-        ACTION_NEW_COMMENT -> {
-          val newComment = bundle.getParcelable<Comment>(ARG_COMMENT)!!
-          viewModel.addNewComment(newComment)
-          if (comment == null) showDetailsCommentsView.resetScroll()
-        }
-      }
-    }
-
-    val bundle = when {
-      comment != null -> bundleOf(
-        ARG_COMMENT_ID to comment.getReplyId(),
-        ARG_REPLY_USER to comment.user.username
-      )
-      else -> bundleOf(ARG_SHOW_ID to showId.id)
-    }
-    navigateTo(R.id.actionShowDetailsFragmentToPostComment, bundle)
-  }
-
   private fun render(uiState: ShowDetailsUiState) {
     uiState.run {
       show?.let { show ->
@@ -448,7 +371,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           }
         }
         showDetailsCustomImagesLabel.visibleIf(Config.SHOW_PREMIUM)
-        showDetailsCustomImagesLabel.onClick { showCustomImagesSheet(show.traktId, isPremium) }
+        showDetailsCustomImagesLabel.onClick { openCustomImagesSheet(show.traktId, isPremium) }
         showDetailsLinksButton.onClick {
           val args = LinksBottomSheet.createBundle(show)
           navigateTo(R.id.actionShowDetailsFragmentToLinks, args)
@@ -590,7 +513,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
       with(showDetailsEpisodeCard) {
         onClick {
-          showEpisodeDetails(show, episode, null, isWatched = false, showButton = false, showTabs = false)
+          openEpisodeDetails(show, episode, null, isWatched = false, showButton = false, showTabs = false)
         }
         fadeIn(withHardware = true)
       }
@@ -716,6 +639,65 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
   }
 
+  private fun openEpisodeDetails(
+    show: Show,
+    episode: Episode,
+    season: Season?,
+    isWatched: Boolean,
+    showButton: Boolean = true,
+    showTabs: Boolean = true,
+  ) {
+    if (!checkNavigation(R.id.showDetailsFragment)) return
+    if (season !== null) {
+      setFragmentResultListener(REQUEST_EPISODE_DETAILS) { _, bundle ->
+        when {
+          bundle.containsKey(ACTION_RATING_CHANGED) -> viewModel.refreshEpisodesRatings()
+          bundle.containsKey(ACTION_EPISODE_WATCHED) -> {
+            val watched = bundle.getBoolean(ACTION_EPISODE_WATCHED)
+            viewModel.setWatchedEpisode(episode, season, watched)
+          }
+          bundle.containsKey(ACTION_EPISODE_TAB_SELECTED) -> {
+            val selectedEpisode = bundle.getParcelable<Episode>(ACTION_EPISODE_TAB_SELECTED)!!
+            showDetailsEpisodesView.selectEpisode(selectedEpisode)
+          }
+        }
+      }
+    }
+    val bundle = Bundle().apply {
+      val seasonEpisodes = season?.episodes?.map { it.number }?.toIntArray()
+      putLong(EpisodeDetailsBottomSheet.ARG_ID_TRAKT, show.traktId)
+      putLong(EpisodeDetailsBottomSheet.ARG_ID_TMDB, show.ids.tmdb.id)
+      putParcelable(EpisodeDetailsBottomSheet.ARG_EPISODE, episode)
+      putIntArray(EpisodeDetailsBottomSheet.ARG_SEASON_EPISODES, seasonEpisodes)
+      putBoolean(EpisodeDetailsBottomSheet.ARG_IS_WATCHED, isWatched)
+      putBoolean(EpisodeDetailsBottomSheet.ARG_SHOW_BUTTON, showButton)
+      putBoolean(EpisodeDetailsBottomSheet.ARG_SHOW_TABS, showTabs)
+    }
+    navigateTo(R.id.actionShowDetailsFragmentEpisodeDetails, bundle)
+  }
+
+  private fun openPostCommentSheet(comment: Comment? = null) {
+    setFragmentResultListener(REQUEST_COMMENT) { _, bundle ->
+      showSnack(MessageEvent.info(R.string.textCommentPosted))
+      when (bundle.getString(ARG_COMMENT_ACTION)) {
+        ACTION_NEW_COMMENT -> {
+          val newComment = bundle.getParcelable<Comment>(ARG_COMMENT)!!
+          viewModel.addNewComment(newComment)
+          if (comment == null) showDetailsCommentsView.resetScroll()
+        }
+      }
+    }
+
+    val bundle = when {
+      comment != null -> bundleOf(
+        ARG_COMMENT_ID to comment.getReplyId(),
+        ARG_REPLY_USER to comment.user.username
+      )
+      else -> bundleOf(ARG_SHOW_ID to showId.id)
+    }
+    navigateTo(R.id.actionShowDetailsFragmentToPostComment, bundle)
+  }
+
   private fun openPersonSheet(person: Person) {
     lastOpenedPerson = null
     setFragmentResultListener(REQUEST_PERSON_DETAILS) { _, _ ->
@@ -806,6 +788,26 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       ARG_TYPE to Mode.SHOWS.type
     )
     navigateTo(R.id.actionShowDetailsFragmentToManageLists, bundle)
+  }
+
+  private fun openCustomImagesSheet(showId: Long, isPremium: Boolean?) {
+    if (isPremium == false) {
+      navigateTo(R.id.actionShowDetailsFragmentToPremium)
+      return
+    }
+
+    setFragmentResultListener(REQUEST_CUSTOM_IMAGE) { _, bundle ->
+      viewModel.loadBackgroundImage()
+      if (!bundle.getBoolean(ARG_CUSTOM_IMAGE_CLEARED)) {
+        openCustomImagesSheet(showId, true)
+      }
+    }
+
+    val bundle = bundleOf(
+      ARG_SHOW_ID to showId,
+      ARG_FAMILY to SHOW
+    )
+    navigateTo(R.id.actionShowDetailsFragmentToCustomImages, bundle)
   }
 
   override fun setupBackPressed() {

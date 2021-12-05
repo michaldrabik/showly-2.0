@@ -365,6 +365,12 @@
     />
 
   <fragment
+    android:id="@+id/personGalleryFragment"
+    android:name="com.michaldrabik.ui_people.gallery.PersonGalleryFragment"
+    android:label="fragmentPersonGallery"
+    />
+
+  <fragment
     android:id="@+id/followedShowsFragment"
     android:name="com.michaldrabik.ui_my_shows.main.FollowedShowsFragment"
     android:label="fragmentFollowedShows"
@@ -610,7 +616,7 @@
 
   <dialog
     android:id="@+id/personDetailsDialog"
-    android:name="com.michaldrabik.ui_people.PersonDetailsBottomSheet"
+    android:name="com.michaldrabik.ui_people.details.PersonDetailsBottomSheet"
     android:label="dialogPersonDetails"
     >
     <action
@@ -628,6 +634,13 @@
       android:id="@+id/actionPersonDetailsDialogToMovie"
       app:destination="@id/movieDetailsFragment"
       app:enterAnim="@anim/anim_fade_in"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+    <action
+      android:id="@+id/actionPersonDetailsDialogToGallery"
+      app:destination="@id/personGalleryFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
       />
   </dialog>
@@ -714,7 +727,7 @@
 
   <dialog
     android:id="@+id/personLinksDialog"
-    android:name="com.michaldrabik.ui_people.links.PersonLinksBottomSheet"
+    android:name="com.michaldrabik.ui_people.details.links.PersonLinksBottomSheet"
     android:label="dialogPersonLinks"
     />
 

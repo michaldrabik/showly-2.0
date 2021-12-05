@@ -11,6 +11,7 @@ import com.michaldrabik.data_local.database.model.PersonCredits
 import com.michaldrabik.data_local.database.model.PersonShowMovie
 import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.repository.mappers.Mappers
+import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
@@ -137,6 +138,11 @@ class PeopleRepository @Inject constructor(
     }
 
     return@coroutineScope remoteCredits
+  }
+
+  suspend fun loadDefaultImage(personTmdbId: IdTmdb): String? {
+    val localPerson = database.peopleDao().getById(personTmdbId.id)
+    return localPerson?.image
   }
 
   suspend fun loadAllForShow(showIds: Ids): List<Person> {

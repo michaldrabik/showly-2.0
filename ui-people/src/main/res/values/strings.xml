@@ -4,4 +4,5 @@
   <string name="textBorn" comment="For example - Born: 12 January 1990">Born:</string>
   <string name="textDied" comment="For example - Died: 12 January 2020">Died:</string>
   <string name="textCredits" comment="List of shows and movies the person appears on">Credits</string>
+  <string name="textGalleryEmpty">No images available</string>
 </resources>

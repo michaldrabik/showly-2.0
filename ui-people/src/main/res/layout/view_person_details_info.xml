@@ -34,10 +34,12 @@
     android:layout_height="@dimen/personImageHeight"
     android:background="@drawable/bg_person_image_elevation"
     android:elevation="@dimen/elevationNormal"
+    android:foreground="@drawable/bg_media_view_ripple"
     android:visibility="gone"
     app:layout_constraintBottom_toBottomOf="@id/viewPersonDetailsImageGuide2"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
+    tools:targetApi="m"
     tools:visibility="visible"
     />
 

@@ -103,7 +103,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MANAGE_LISTS
-import com.michaldrabik.ui_people.PersonDetailsBottomSheet
+import com.michaldrabik.ui_people.details.PersonDetailsBottomSheet
 import com.michaldrabik.ui_streamings.recycler.StreamingAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_movie_details.*
@@ -181,9 +181,9 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     }
     movieDetailsCommentsView.run {
       onRepliesClickListener = { viewModel.loadCommentReplies(it) }
-      onReplyCommentClickListener = { showPostCommentSheet(comment = it) }
+      onReplyCommentClickListener = { openPostCommentSheet(comment = it) }
       onDeleteCommentClickListener = { openDeleteCommentDialog(it) }
-      onPostCommentClickListener = { showPostCommentSheet() }
+      onPostCommentClickListener = { openPostCommentSheet() }
     }
     movieDetailsAddButton.run {
       isEnabled = false
@@ -284,45 +284,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     movieDetailsBackArrow2.crossfadeTo(movieDetailsBackArrow)
   }
 
-  private fun showCustomImagesSheet(movieId: Long, isPremium: Boolean?) {
-    if (isPremium == false) {
-      navigateTo(R.id.actionMovieDetailsFragmentToPremium)
-      return
-    }
-
-    setFragmentResultListener(REQUEST_CUSTOM_IMAGE) { _, bundle ->
-      viewModel.loadBackgroundImage()
-      if (!bundle.getBoolean(ARG_CUSTOM_IMAGE_CLEARED)) showCustomImagesSheet(movieId, true)
-    }
-
-    val bundle = bundleOf(
-      ARG_MOVIE_ID to movieId,
-      ARG_FAMILY to MOVIE
-    )
-    navigateTo(R.id.actionMovieDetailsFragmentToCustomImages, bundle)
-  }
-
-  private fun showPostCommentSheet(comment: Comment? = null) {
-    setFragmentResultListener(REQUEST_COMMENT) { _, bundle ->
-      showSnack(MessageEvent.info(R.string.textCommentPosted))
-      when (bundle.getString(ARG_COMMENT_ACTION)) {
-        ACTION_NEW_COMMENT -> {
-          val newComment = bundle.getParcelable<Comment>(ARG_COMMENT)!!
-          viewModel.addNewComment(newComment)
-          if (comment == null) movieDetailsCommentsView.resetScroll()
-        }
-      }
-    }
-    val bundle = when {
-      comment != null -> bundleOf(
-        ARG_COMMENT_ID to comment.getReplyId(),
-        ARG_REPLY_USER to comment.user.username
-      )
-      else -> bundleOf(ARG_MOVIE_ID to movieId.id)
-    }
-    navigateTo(R.id.actionMovieDetailsFragmentToPostComment, bundle)
-  }
-
   private fun render(uiState: MovieDetailsUiState) {
     uiState.run {
       movie?.let { movie ->
@@ -368,7 +329,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         }
         movieDetailsSeparator5.visible()
         movieDetailsCustomImagesLabel.visibleIf(Config.SHOW_PREMIUM)
-        movieDetailsCustomImagesLabel.onClick { showCustomImagesSheet(movie.traktId, isPremium) }
+        movieDetailsCustomImagesLabel.onClick { openCustomImagesSheet(movie.traktId, isPremium) }
         movieDetailsAddButton.isEnabled = true
       }
       movieLoading?.let {
@@ -634,6 +595,45 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       ARG_TYPE to Mode.MOVIES.type
     )
     navigateTo(R.id.actionMovieDetailsFragmentToManageLists, bundle)
+  }
+
+  private fun openCustomImagesSheet(movieId: Long, isPremium: Boolean?) {
+    if (isPremium == false) {
+      navigateTo(R.id.actionMovieDetailsFragmentToPremium)
+      return
+    }
+
+    setFragmentResultListener(REQUEST_CUSTOM_IMAGE) { _, bundle ->
+      viewModel.loadBackgroundImage()
+      if (!bundle.getBoolean(ARG_CUSTOM_IMAGE_CLEARED)) openCustomImagesSheet(movieId, true)
+    }
+
+    val bundle = bundleOf(
+      ARG_MOVIE_ID to movieId,
+      ARG_FAMILY to MOVIE
+    )
+    navigateTo(R.id.actionMovieDetailsFragmentToCustomImages, bundle)
+  }
+
+  private fun openPostCommentSheet(comment: Comment? = null) {
+    setFragmentResultListener(REQUEST_COMMENT) { _, bundle ->
+      showSnack(MessageEvent.info(R.string.textCommentPosted))
+      when (bundle.getString(ARG_COMMENT_ACTION)) {
+        ACTION_NEW_COMMENT -> {
+          val newComment = bundle.getParcelable<Comment>(ARG_COMMENT)!!
+          viewModel.addNewComment(newComment)
+          if (comment == null) movieDetailsCommentsView.resetScroll()
+        }
+      }
+    }
+    val bundle = when {
+      comment != null -> bundleOf(
+        ARG_COMMENT_ID to comment.getReplyId(),
+        ARG_REPLY_USER to comment.user.username
+      )
+      else -> bundleOf(ARG_MOVIE_ID to movieId.id)
+    }
+    navigateTo(R.id.actionMovieDetailsFragmentToPostComment, bundle)
   }
 
   override fun setupBackPressed() {
