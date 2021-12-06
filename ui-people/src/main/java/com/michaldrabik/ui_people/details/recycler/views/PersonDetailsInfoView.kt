@@ -47,6 +47,7 @@ class PersonDetailsInfoView : ConstraintLayout {
     viewPersonDetailsSubtitle.text = item.person.character
     viewPersonDetailsLinkIcon.onClick { onLinksClickListener?.invoke(item.person) }
     viewPersonDetailsImage.onClick { onImageClickListener?.invoke() }
+    viewPersonDetailsPlaceholder.onClick { onImageClickListener?.invoke() }
 
     item.person.birthday?.let { date ->
       viewPersonDetailsBirthdayLabel.visible()

@@ -37,9 +37,7 @@ class ActorView : FrameLayout {
   fun bind(item: Person, clickListener: (Person) -> Unit) {
     clear()
     tag = item.ids.tmdb.id
-    onClick {
-      if (!item.imagePath.isNullOrBlank()) clickListener(item)
-    }
+    onClick { clickListener(item) }
     actorName.text = item.name.split(" ").joinToString("\n")
     loadImage(item)
   }

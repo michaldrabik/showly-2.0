@@ -13,6 +13,7 @@ import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.common.Config.TMDB_IMAGE_BASE_ACTOR_URL
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.gone
+import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_model.Person
@@ -36,9 +37,7 @@ class ActorView : FrameLayout {
   fun bind(item: Person, clickListener: (Person) -> Unit) {
     clear()
     tag = item.ids.tmdb.id
-    setOnClickListener {
-      if (!item.imagePath.isNullOrBlank()) clickListener(item)
-    }
+    onClick { clickListener(item) }
     actorMovieName.text = item.name.split(" ").joinToString("\n")
     loadImage(item)
   }

@@ -9,7 +9,9 @@
   android:clipToPadding="false"
   android:focusableInTouchMode="true"
   tools:background="?attr/colorPrimaryBackground"
+  tools:ignore="UnusedAttribute"
   tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
+  tools:targetApi="m"
   >
 
   <androidx.constraintlayout.widget.Guideline
@@ -39,7 +41,6 @@
     app:layout_constraintBottom_toBottomOf="@id/viewPersonDetailsImageGuide2"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    tools:targetApi="m"
     tools:visibility="visible"
     />
 
@@ -50,6 +51,7 @@
     android:layout_gravity="center"
     android:background="@drawable/bg_person_placeholder"
     android:elevation="@dimen/elevationNormal"
+    android:foreground="@drawable/bg_media_view_ripple"
     android:padding="@dimen/spaceBig"
     android:visibility="gone"
     app:layout_constraintBottom_toBottomOf="@id/viewPersonDetailsImageGuide2"
