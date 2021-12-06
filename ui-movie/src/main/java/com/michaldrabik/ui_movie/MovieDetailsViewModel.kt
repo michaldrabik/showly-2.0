@@ -170,6 +170,7 @@ class MovieDetailsViewModel @Inject constructor(
     try {
       val actors = actorsCase.loadActors(movie)
       actorsState.value = actors
+      actorsCase.preloadDetails(actors)
     } catch (error: Throwable) {
       actorsState.value = emptyList()
       rethrowCancellation(error)
