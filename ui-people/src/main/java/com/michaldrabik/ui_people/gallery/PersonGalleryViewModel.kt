@@ -24,19 +24,18 @@ class PersonGalleryViewModel @Inject constructor(
 
   fun loadImages(id: IdTmdb) {
     viewModelScope.launch {
-      val image = imagesCase.loadInitialImage(id)
-      if (image?.status == ImageStatus.AVAILABLE) {
-        imagesState.value = listOf(image)
+      val initialImage = imagesCase.loadInitialImage(id)
+      if (initialImage?.status == ImageStatus.AVAILABLE) {
+        imagesState.value = listOf(initialImage)
       }
-//      try {
-//        loadingState.value = true
-//        val allImages = imagesCase.loadAllImages(id, family, type, image)
-//        imagesState.value = allImages
-//        typeState.value = type
-//        loadingState.value = false
-//      } catch (t: Throwable) {
-//        loadingState.value = false
-//      }
+      try {
+        loadingState.value = true
+        val allImages = imagesCase.loadAllImages(id, initialImage)
+        imagesState.value = allImages
+        loadingState.value = false
+      } catch (t: Throwable) {
+        loadingState.value = false
+      }
     }
   }
 

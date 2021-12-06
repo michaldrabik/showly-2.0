@@ -63,4 +63,12 @@ class TmdbApi(private val service: TmdbService) {
     val result = service.fetchPersonTranslation(id).translations ?: emptyList()
     return result.associateBy({ it.iso_639_1.lowercase() }, { it.data ?: TmdbTranslation.Data(null) })
   }
+
+  suspend fun fetchPersonImages(tmdbId: Long) =
+    try {
+      if (tmdbId <= 0) TmdbImages.EMPTY
+      service.fetchPersonImages(tmdbId)
+    } catch (error: Throwable) {
+      TmdbImages.EMPTY
+    }
 }

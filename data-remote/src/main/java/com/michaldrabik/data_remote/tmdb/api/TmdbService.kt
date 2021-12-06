@@ -23,6 +23,9 @@ interface TmdbService {
   @GET("movie/{tmdbId}/images")
   suspend fun fetchMovieImages(@Path("tmdbId") tmdbId: Long): TmdbImages
 
+  @GET("person/{tmdbId}/images")
+  suspend fun fetchPersonImages(@Path("tmdbId") tmdbId: Long): TmdbImages
+
   @GET("person/{tmdbId}")
   suspend fun fetchPersonDetails(@Path("tmdbId") tmdbId: Long): TmdbPerson
 

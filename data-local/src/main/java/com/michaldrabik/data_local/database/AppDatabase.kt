@@ -23,6 +23,7 @@ import com.michaldrabik.data_local.database.dao.MyShowsDao
 import com.michaldrabik.data_local.database.dao.NewsDao
 import com.michaldrabik.data_local.database.dao.PeopleCreditsDao
 import com.michaldrabik.data_local.database.dao.PeopleDao
+import com.michaldrabik.data_local.database.dao.PeopleImagesDao
 import com.michaldrabik.data_local.database.dao.PeopleShowsMoviesDao
 import com.michaldrabik.data_local.database.dao.RecentSearchDao
 import com.michaldrabik.data_local.database.dao.RelatedMoviesDao
@@ -63,6 +64,7 @@ import com.michaldrabik.data_local.database.model.MyShow
 import com.michaldrabik.data_local.database.model.News
 import com.michaldrabik.data_local.database.model.Person
 import com.michaldrabik.data_local.database.model.PersonCredits
+import com.michaldrabik.data_local.database.model.PersonImage
 import com.michaldrabik.data_local.database.model.PersonShowMovie
 import com.michaldrabik.data_local.database.model.RecentSearch
 import com.michaldrabik.data_local.database.model.RelatedMovie
@@ -104,6 +106,7 @@ import com.michaldrabik.data_local.database.model.WatchlistShow
     Person::class,
     PersonShowMovie::class,
     PersonCredits::class,
+    PersonImage::class,
     Episode::class,
     Settings::class,
     RecentSearch::class,
@@ -172,6 +175,8 @@ abstract class AppDatabase : RoomDatabase() {
   abstract fun peopleShowsMoviesDao(): PeopleShowsMoviesDao
 
   abstract fun peopleCreditsDao(): PeopleCreditsDao
+
+  abstract fun peopleImagesDao(): PeopleImagesDao
 
   abstract fun settingsDao(): SettingsDao
 

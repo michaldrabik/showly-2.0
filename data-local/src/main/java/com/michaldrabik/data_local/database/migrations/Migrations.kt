@@ -574,6 +574,16 @@ object Migrations {
             "FOREIGN KEY(`id_trakt_movie`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)"
         )
         execSQL("CREATE INDEX index_people_credits_id_person ON people_credits(id_trakt_person)")
+
+        execSQL(
+          "CREATE TABLE IF NOT EXISTS `people_images` (" +
+            "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+            "`id_tmdb` INTEGER, " +
+            "`file_path` TEXT NOT NULL, " +
+            "`created_at` INTEGER NOT NULL, " +
+            "`updated_at` INTEGER NOT NULL)"
+        )
+        execSQL("CREATE INDEX index_people_images_id_person ON people_images(id_tmdb)")
       }
     }
   }
