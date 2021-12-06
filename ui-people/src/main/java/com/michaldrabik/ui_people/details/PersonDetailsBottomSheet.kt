@@ -15,14 +15,20 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.snackbar.Snackbar
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
 import com.michaldrabik.ui_base.common.FastLinearLayoutManager
+import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.TipsHost
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
+import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Person
+import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_PERSON
@@ -69,6 +75,7 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     setupView()
+    setupTips()
     setupRecycler()
 
     launchAndRepeatStarted(
@@ -81,13 +88,23 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>
     val behavior: BottomSheetBehavior<*> = (dialog as BottomSheetDialog).behavior
     with(behavior) {
       isFitToContents = false
-      halfExpandedRatio = 0.55F
+      halfExpandedRatio = 0.6F
       skipCollapsed = true
       state = BottomSheetBehavior.STATE_HALF_EXPANDED
     }
     personDetailsRecyclerFab.onClick {
       personDetailsRecyclerFab.fadeOut(150)
       personDetailsRecycler.smoothScrollToPosition(0)
+    }
+  }
+
+  private fun setupTips() {
+    val isShown = (requireActivity() as TipsHost).isTipShown(Tip.PERSON_DETAILS_GALLERY)
+    if (!isShown) {
+      val message = getString(Tip.PERSON_DETAILS_GALLERY.textResId)
+      viewPersonDetailsRoot.showInfoSnackbar(message, length = Snackbar.LENGTH_INDEFINITE) {
+        (requireActivity() as TipsHost).setTipShow(Tip.PERSON_DETAILS_GALLERY)
+      }
     }
   }
 
@@ -145,6 +162,15 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>
   private fun render(uiState: PersonDetailsUiState) {
     uiState.run {
       personDetailsItems?.let { adapter?.setItems(it) }
+    }
+  }
+
+  private fun renderSnackbar(message: MessageEvent) {
+    message.consume()?.let {
+      when (message.type) {
+        MessageEvent.Type.INFO -> viewPersonDetailsRoot.showInfoSnackbar(getString(it))
+        MessageEvent.Type.ERROR -> viewPersonDetailsRoot.showErrorSnackbar(getString(it))
+      }
     }
   }
 
