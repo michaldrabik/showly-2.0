@@ -124,10 +124,10 @@ class ProgressViewModel @Inject constructor(
       try {
         val token = userTraktManager.checkAuthorization().token
         ratingsRepository.shows.addRating(token, episode, rating)
-        _messageState.emit(MessageEvent.info(R.string.textRateSaved))
+        _messageChannel.send(MessageEvent.info(R.string.textRateSaved))
         Analytics.logEpisodeRated(showTraktId.id, episode, rating)
       } catch (error: Throwable) {
-        _messageState.emit(MessageEvent.error(R.string.errorGeneral))
+        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
       }
     }
   }

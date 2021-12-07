@@ -42,7 +42,7 @@ class CreateListViewModel @Inject constructor(
         val list = createListCase.createList(name, description)
         listUpdateState.value = Event(list)
       } catch (error: Throwable) {
-        _messageState.emit(MessageEvent.error(R.string.errorCouldNotCreateList))
+        _messageChannel.send(MessageEvent.error(R.string.errorCouldNotCreateList))
         loadingState.value = false
       }
     }
@@ -57,7 +57,7 @@ class CreateListViewModel @Inject constructor(
         val updatedList = createListCase.updateList(list)
         listUpdateState.value = Event(updatedList)
       } catch (error: Throwable) {
-        _messageState.emit(MessageEvent.error(R.string.errorCouldNotUpdateList))
+        _messageChannel.send(MessageEvent.error(R.string.errorCouldNotUpdateList))
         detailsState.value = list
         loadingState.value = false
       }

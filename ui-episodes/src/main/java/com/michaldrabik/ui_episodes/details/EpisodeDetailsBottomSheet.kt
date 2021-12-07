@@ -111,7 +111,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
       repeatOnLifecycle(Lifecycle.State.STARTED) {
         with(viewModel) {
           launch { uiState.collect { render(it) } }
-          launch { messageState.collect { renderSnackbar(it) } }
+          launch { messageChannel.collect { renderSnackbar(it) } }
           loadSeason(showTraktId, episode, seasonEpisodes)
           loadTranslation(showTraktId, episode)
           loadImage(showTmdbId, episode)

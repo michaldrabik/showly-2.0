@@ -133,10 +133,10 @@ class ProgressMoviesViewModel @Inject constructor(
       try {
         val token = userTraktManager.checkAuthorization().token
         ratingsRepository.movies.addRating(token, movie, rating)
-        _messageState.emit(MessageEvent.info(R.string.textRateSaved))
+        _messageChannel.send(MessageEvent.info(R.string.textRateSaved))
         Analytics.logMovieRated(movie, rating)
       } catch (error: Throwable) {
-        _messageState.emit(MessageEvent.error(R.string.errorGeneral))
+        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
       }
     }
   }

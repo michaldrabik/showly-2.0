@@ -65,7 +65,7 @@ class ListDetailsViewModel @Inject constructor(
 
       val tip = Tip.LIST_ITEM_SWIPE_DELETE
       if (listItems.isNotEmpty() && !tipsCase.isTipShown(tip)) {
-        _messageState.emit(MessageEvent.info(tip.textResId, indefinite = true))
+        _messageChannel.send(MessageEvent.info(tip.textResId, indefinite = true))
         tipsCase.setTipShown(tip)
       }
     }
@@ -172,7 +172,7 @@ class ListDetailsViewModel @Inject constructor(
         listDeleteState.value = Event(true)
       } catch (error: Throwable) {
         loadingState.value = false
-        _messageState.emit(MessageEvent.error(R.string.errorCouldNotDeleteList))
+        _messageChannel.send(MessageEvent.error(R.string.errorCouldNotDeleteList))
       }
     }
   }

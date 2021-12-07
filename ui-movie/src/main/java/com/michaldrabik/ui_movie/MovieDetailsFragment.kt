@@ -147,7 +147,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
-      { viewModel.messageState.collect { renderSnack(it) } },
+      { viewModel.messageChannel.collect { renderSnack(it) } },
       doAfterLaunch = {
         if (!isInitialized) {
           viewModel.loadDetails(movieId)

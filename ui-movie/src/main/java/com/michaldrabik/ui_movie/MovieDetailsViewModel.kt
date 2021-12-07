@@ -143,9 +143,9 @@ class MovieDetailsViewModel @Inject constructor(
         progressJob.cancel()
         if (error is HttpException && error.code() == 404) {
           // Malformed Trakt data or duplicate show.
-          _messageState.emit(MessageEvent.info(R.string.errorMalformedMovie))
+          _messageChannel.send(MessageEvent.info(R.string.errorMalformedMovie))
         } else {
-          _messageState.emit(MessageEvent.error(R.string.errorCouldNotLoadMovie))
+          _messageChannel.send(MessageEvent.error(R.string.errorCouldNotLoadMovie))
         }
         Logger.record(error, "Source" to "MovieDetailsViewModel")
         rethrowCancellation(error)
@@ -265,7 +265,7 @@ class MovieDetailsViewModel @Inject constructor(
         commentsState.value = currentComments
       } catch (t: Throwable) {
         commentsState.value = currentComments
-        _messageState.emit(MessageEvent.error(R.string.errorGeneral))
+        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
       }
     }
   }
@@ -310,12 +310,12 @@ class MovieDetailsViewModel @Inject constructor(
         }
 
         commentsState.value = currentComments
-        _messageState.emit(MessageEvent.info(R.string.textCommentDeleted))
+        _messageChannel.send(MessageEvent.info(R.string.textCommentDeleted))
       } catch (t: Throwable) {
         if (t is HttpException && t.code() == 409) {
-          _messageState.emit(MessageEvent.error(R.string.errorCommentDelete))
+          _messageChannel.send(MessageEvent.error(R.string.errorCommentDelete))
         } else {
-          _messageState.emit(MessageEvent.error(R.string.errorGeneral))
+          _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
         }
         commentsState.value = currentComments
       }
@@ -381,11 +381,11 @@ class MovieDetailsViewModel @Inject constructor(
         ratingsCase.addRating(movie, rating)
         val userRating = TraktRating(movie.ids.trakt, rating)
         ratingState.value = RatingState(rateLoading = false, rateAllowed = true, userRating = userRating)
-        _messageState.emit(MessageEvent.info(R.string.textRateSaved))
+        _messageChannel.send(MessageEvent.info(R.string.textRateSaved))
         Analytics.logMovieRated(movie, rating)
       } catch (error: Throwable) {
         ratingState.value = RatingState(rateLoading = false, rateAllowed = true)
-        _messageState.emit(MessageEvent.error(R.string.errorGeneral))
+        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
         Timber.e(error)
         rethrowCancellation(error)
       }
@@ -398,10 +398,10 @@ class MovieDetailsViewModel @Inject constructor(
         ratingState.value = RatingState(rateLoading = true, rateAllowed = true)
         ratingsCase.deleteRating(movie)
         ratingState.value = RatingState(rateLoading = false, rateAllowed = true, userRating = TraktRating.EMPTY)
-        _messageState.emit(MessageEvent.info(R.string.textShowRatingDeleted))
+        _messageChannel.send(MessageEvent.info(R.string.textShowRatingDeleted))
       } catch (error: Throwable) {
         ratingState.value = RatingState(rateLoading = false, rateAllowed = true)
-        _messageState.emit(MessageEvent.error(R.string.errorGeneral))
+        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
         Timber.e(error)
         rethrowCancellation(error)
       }

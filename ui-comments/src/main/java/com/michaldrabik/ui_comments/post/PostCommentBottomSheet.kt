@@ -66,7 +66,7 @@ class PostCommentBottomSheet : BaseBottomSheetFragment<PostCommentViewModel>() {
       repeatOnLifecycle(Lifecycle.State.STARTED) {
         with(viewModel) {
           launch { uiState.collect { render(it) } }
-          launch { messageState.collect { renderSnackbar(it) } }
+          launch { messageChannel.collect { renderSnackbar(it) } }
         }
       }
     }

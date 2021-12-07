@@ -81,7 +81,8 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
-      { viewModel.loadDetails(person) }
+      { viewModel.messageChannel.collect { renderSnackbar(it) } },
+      doAfterLaunch = { viewModel.loadDetails(person) }
     )
   }
 

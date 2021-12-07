@@ -173,9 +173,9 @@ class ShowDetailsViewModel @Inject constructor(
         progressJob.cancel()
         if (error is HttpException && error.code() == 404) {
           // Malformed Trakt data or duplicate show.
-          _messageState.emit(MessageEvent.info(R.string.errorMalformedShow))
+          _messageChannel.send(MessageEvent.info(R.string.errorMalformedShow))
         } else {
-          _messageState.emit(MessageEvent.error(R.string.errorCouldNotLoadShow))
+          _messageChannel.send(MessageEvent.error(R.string.errorCouldNotLoadShow))
         }
         Logger.record(error, "Source" to "ShowDetailsViewModel")
         Timber.e(error)
@@ -386,7 +386,7 @@ class ShowDetailsViewModel @Inject constructor(
 
         commentsState.value = currentComments
       } catch (error: Throwable) {
-        _messageState.emit(MessageEvent.error(R.string.errorGeneral))
+        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
         commentsState.value = currentComments
         Timber.e(error)
         rethrowCancellation(error)
@@ -434,12 +434,12 @@ class ShowDetailsViewModel @Inject constructor(
         }
 
         commentsState.value = currentComments
-        _messageState.emit(MessageEvent.info(R.string.textCommentDeleted))
+        _messageChannel.send(MessageEvent.info(R.string.textCommentDeleted))
       } catch (t: Throwable) {
         if (t is HttpException && t.code() == 409) {
-          _messageState.emit(MessageEvent.error(R.string.errorCommentDelete))
+          _messageChannel.send(MessageEvent.error(R.string.errorCommentDelete))
         } else {
-          _messageState.emit(MessageEvent.error(R.string.errorGeneral))
+          _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
         }
         commentsState.value = currentComments
       }
@@ -489,11 +489,11 @@ class ShowDetailsViewModel @Inject constructor(
         ratingsCase.addRating(show, rating)
         val userRating = TraktRating(show.ids.trakt, rating)
         ratingState.value = RatingState(rateLoading = false, rateAllowed = true, userRating = userRating)
-        _messageState.emit(MessageEvent.info(R.string.textRateSaved))
+        _messageChannel.send(MessageEvent.info(R.string.textRateSaved))
         Analytics.logShowRated(show, rating)
       } catch (error: Throwable) {
         ratingState.value = RatingState(rateLoading = false, rateAllowed = true)
-        _messageState.emit(MessageEvent.error(R.string.errorGeneral))
+        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
         Timber.e(error)
         rethrowCancellation(error)
       }
@@ -506,10 +506,10 @@ class ShowDetailsViewModel @Inject constructor(
         ratingState.value = RatingState(rateLoading = true, rateAllowed = true)
         ratingsCase.deleteRating(show)
         ratingState.value = RatingState(rateLoading = false, rateAllowed = true, userRating = TraktRating.EMPTY)
-        _messageState.emit(MessageEvent.info(R.string.textShowRatingDeleted))
+        _messageChannel.send(MessageEvent.info(R.string.textShowRatingDeleted))
       } catch (error: Throwable) {
         ratingState.value = RatingState(rateLoading = false, rateAllowed = true)
-        _messageState.emit(MessageEvent.error(R.string.errorGeneral))
+        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
         Timber.e(error)
         rethrowCancellation(error)
       }
@@ -661,7 +661,7 @@ class ShowDetailsViewModel @Inject constructor(
 
   private suspend fun checkSeasonsLoaded(): Boolean {
     if (!areSeasonsLoaded) {
-      _messageState.emit(MessageEvent.info(R.string.errorSeasonsNotLoaded))
+      _messageChannel.send(MessageEvent.info(R.string.errorSeasonsNotLoaded))
       return false
     }
     return true
@@ -740,7 +740,7 @@ class ShowDetailsViewModel @Inject constructor(
           setWatchedEpisode(episode, season, true)
         }
 
-      _messageState.emit(MessageEvent.info(R.string.textShowQuickProgressDone))
+      _messageChannel.send(MessageEvent.info(R.string.textShowQuickProgressDone))
       Analytics.logShowQuickProgress(show)
     }
   }

@@ -232,7 +232,7 @@ class SettingsViewModel @Inject constructor(
       try {
         signingInState.value = true
         traktCase.authorizeTrakt(authData)
-        _messageState.emit(MessageEvent.info(R.string.textTraktLoginSuccess))
+        _messageChannel.send(MessageEvent.info(R.string.textTraktLoginSuccess))
         refreshSettings()
         Analytics.logTraktLogin()
       } catch (error: Throwable) {
@@ -240,7 +240,7 @@ class SettingsViewModel @Inject constructor(
           error is HttpException && error.code() == 423 -> R.string.errorTraktLocked
           else -> R.string.errorAuthorization
         }
-        _messageState.emit(MessageEvent.error(message))
+        _messageChannel.send(MessageEvent.error(message))
         Logger.record(error, "Source" to "SettingsViewModel::authorizeTrakt()")
       } finally {
         signingInState.value = false
@@ -251,7 +251,7 @@ class SettingsViewModel @Inject constructor(
   fun logoutTrakt(context: Context) {
     viewModelScope.launch {
       traktCase.logoutTrakt(context)
-      _messageState.emit(MessageEvent.info(R.string.textTraktLogoutSuccess))
+      _messageChannel.send(MessageEvent.info(R.string.textTraktLogoutSuccess))
       refreshSettings()
       Analytics.logTraktLogout()
     }
@@ -262,7 +262,7 @@ class SettingsViewModel @Inject constructor(
       withContext(IO) { Glide.get(context).clearDiskCache() }
       Glide.get(context).clearMemory()
       mainCase.deleteImagesCache()
-      _messageState.emit(MessageEvent.info(R.string.textImagesCacheCleared))
+      _messageChannel.send(MessageEvent.info(R.string.textImagesCacheCleared))
     }
   }
 

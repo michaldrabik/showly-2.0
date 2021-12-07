@@ -5,10 +5,12 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.common.Mode
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
 import com.michaldrabik.ui_base.utilities.extensions.replaceItem
 import com.michaldrabik.ui_model.Person
+import com.michaldrabik.ui_people.R
 import com.michaldrabik.ui_people.details.cases.PersonDetailsCreditsCase
 import com.michaldrabik.ui_people.details.cases.PersonDetailsImagesCase
 import com.michaldrabik.ui_people.details.cases.PersonDetailsLoadCase
@@ -65,7 +67,7 @@ class PersonDetailsViewModel @Inject constructor(
 
         loadCredits(details)
       } catch (error: Throwable) {
-        // TODO Handle error ui
+        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
         Timber.e(error)
         rethrowCancellation(error)
       } finally {
@@ -99,7 +101,7 @@ class PersonDetailsViewModel @Inject constructor(
           personDetailsItemsState.value = currentValue
         }
       } catch (error: Throwable) {
-        // TODO Handle error ui
+        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
         Timber.e(error)
         rethrowCancellation(error)
       } finally {
