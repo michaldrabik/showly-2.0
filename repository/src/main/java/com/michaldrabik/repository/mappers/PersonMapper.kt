@@ -28,12 +28,12 @@ class PersonMapper @Inject constructor() {
       birthplace = person.place_of_birth,
       imagePath = person.profile_path,
       homepage = person.homepage,
-      character = person.character,
+      characters = extractCharacters(person),
       birthday = person.birthday?.let { if (it.isNotBlank()) LocalDate.parse(it) else null },
       deathday = person.deathday?.let { if (it.isNotBlank()) LocalDate.parse(it) else null }
     )
 
-  fun fromDatabase(personDb: PersonDb, character: String? = null) =
+  fun fromDatabase(personDb: PersonDb, characters: List<String> = emptyList()) =
     Person(
       ids = Ids.EMPTY.copy(
         trakt = IdTrakt(personDb.idTrakt ?: -1),
@@ -44,7 +44,7 @@ class PersonMapper @Inject constructor() {
       type = typeToEnum(personDb.type),
       bio = personDb.biography,
       bioTranslation = personDb.biographyTranslation,
-      character = character ?: personDb.character,
+      characters = if (characters.isNotEmpty()) characters else personDb.character?.split(",") ?: emptyList(),
       birthplace = personDb.birthplace,
       imagePath = personDb.image,
       homepage = personDb.homepage,
@@ -63,7 +63,7 @@ class PersonMapper @Inject constructor() {
       type = person.type.slug,
       biography = person.bio,
       biographyTranslation = person.bioTranslation,
-      character = person.character,
+      character = person.characters.joinToString(","),
       birthday = person.birthday?.format(ISO_LOCAL_DATE),
       birthplace = person.birthplace,
       deathday = person.deathday?.format(ISO_LOCAL_DATE),
@@ -73,6 +73,12 @@ class PersonMapper @Inject constructor() {
       updatedAt = nowUtc(),
       detailsUpdatedAt = detailsTimestamp
     )
+  }
+
+  private fun extractCharacters(person: TmdbPerson) = when {
+    person.roles != null -> person.roles?.mapNotNull { it.character } ?: emptyList()
+    !person.character.isNullOrBlank() -> listOf(person.character!!)
+    else -> emptyList()
   }
 
   private fun typeToEnum(type: String?) = when (type) {

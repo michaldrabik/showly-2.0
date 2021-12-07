@@ -14,7 +14,7 @@ class PersonDetailsLoadCase @Inject constructor(
 
   suspend fun loadDetails(person: Person) =
     peopleRepository.loadDetails(person)
-      .copy(character = person.character)
+      .copy(characters = person.characters)
 
   fun loadDateFormat() = dateFormatProvider.loadShortDayFormat()
 }

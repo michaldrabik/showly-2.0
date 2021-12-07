@@ -13,7 +13,7 @@ data class Person(
   val type: Type,
   val bio: String?,
   val bioTranslation: String?,
-  val character: String?,
+  val characters: List<String>,
   val birthplace: String?,
   val imagePath: String?,
   val homepage: String?,

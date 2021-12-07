@@ -6,10 +6,16 @@ data class TmdbPerson(
   val place_of_birth: String?,
   val homepage: String?,
   val character: String?,
+  val roles: List<Role>?,
   val deathday: String?,
   val birthday: String?,
   val biography: String?,
   val imdb_id: String?,
   val known_for_department: String?,
   val profile_path: String?
-)
+) {
+
+  data class Role(
+    val character: String?
+  )
+}

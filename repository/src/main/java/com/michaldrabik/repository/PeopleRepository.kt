@@ -33,10 +33,14 @@ class PeopleRepository @Inject constructor(
   private val mappers: Mappers
 ) {
 
+  companion object {
+    const val ACTORS_DISPLAY_LIMIT = 30
+  }
+
   suspend fun loadDetails(person: Person): Person {
     val local = database.peopleDao().getById(person.ids.tmdb.id)
     if (local?.detailsUpdatedAt != null) {
-      return mappers.person.fromDatabase(local, person.character)
+      return mappers.person.fromDatabase(local, person.characters)
     }
 
     val language = settingsRepository.language
@@ -211,11 +215,13 @@ class PeopleRepository @Inject constructor(
       return local
         .sortedWith(compareBy { it.image.isNullOrBlank() })
         .map { mappers.person.fromDatabase(it) }
+        .take(ACTORS_DISPLAY_LIMIT)
     }
 
     val remoteTmdbActors = cloud.tmdbApi.fetchShowActors(showIds.tmdb.id)
       .sortedWith(compareBy { it.profile_path.isNullOrBlank() })
       .map { mappers.person.fromNetwork(it) }
+      .take(ACTORS_DISPLAY_LIMIT)
 
     val dbTmdbActors = remoteTmdbActors.map { mappers.person.toDatabase(it, null) }
     val dbTmdbActorsShows = remoteTmdbActors.map {
@@ -224,7 +230,7 @@ class PeopleRepository @Inject constructor(
         idTmdbPerson = it.ids.tmdb.id,
         mode = Mode.SHOWS.type,
         type = Person.Type.ACTING.slug,
-        character = it.character,
+        character = it.characters.joinToString(","),
         idTraktShow = showIds.trakt.id,
         idTraktMovie = null,
         createdAt = timestamp,
@@ -253,11 +259,13 @@ class PeopleRepository @Inject constructor(
       return local
         .sortedWith(compareBy { it.image.isNullOrBlank() })
         .map { mappers.person.fromDatabase(it) }
+        .take(ACTORS_DISPLAY_LIMIT)
     }
 
     val remoteTmdbActors = cloud.tmdbApi.fetchMovieActors(movieIds.tmdb.id)
       .sortedWith(compareBy { it.profile_path.isNullOrBlank() })
       .map { mappers.person.fromNetwork(it) }
+      .take(ACTORS_DISPLAY_LIMIT)
 
     val dbTmdbActors = remoteTmdbActors.map { mappers.person.toDatabase(it, null) }
     val dbTmdbActorsShows = remoteTmdbActors.map {
@@ -266,7 +274,7 @@ class PeopleRepository @Inject constructor(
         idTmdbPerson = it.ids.tmdb.id,
         mode = Mode.MOVIES.type,
         type = Person.Type.ACTING.slug,
-        character = it.character,
+        character = it.characters.joinToString(","),
         idTraktShow = null,
         idTraktMovie = movieIds.trakt.id,
         createdAt = timestamp,

@@ -44,7 +44,7 @@ class PersonDetailsInfoView : ConstraintLayout {
 
   fun bind(item: PersonDetailsItem.MainInfo) {
     viewPersonDetailsTitle.text = item.person.name
-    viewPersonDetailsSubtitle.text = item.person.character
+    viewPersonDetailsSubtitle.text = item.person.characters.joinToString(", ")
     viewPersonDetailsLinkIcon.onClick { onLinksClickListener?.invoke(item.person) }
     viewPersonDetailsImage.onClick { onImageClickListener?.invoke() }
     viewPersonDetailsPlaceholder.onClick { onImageClickListener?.invoke() }

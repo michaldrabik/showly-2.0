@@ -35,7 +35,7 @@ interface TmdbService {
   @GET("movie/{tmdbId}/credits")
   suspend fun fetchMovieActors(@Path("tmdbId") tmdbId: Long): TmdbPeople
 
-  @GET("tv/{tmdbId}/credits")
+  @GET("tv/{tmdbId}/aggregate_credits")
   suspend fun fetchShowActors(@Path("tmdbId") tmdbId: Long): TmdbPeople
 
   @GET("movie/{tmdbId}/watch/providers")

@@ -15,10 +15,7 @@ class MovieDetailsActorsCase @Inject constructor(
   private val peopleRepository: PeopleRepository
 ) {
 
-  suspend fun loadActors(movie: Movie): List<Person> {
-    val people = peopleRepository.loadAllForMovie(movie.ids)
-    return people.take(20)
-  }
+  suspend fun loadActors(movie: Movie) = peopleRepository.loadAllForMovie(movie.ids)
 
   suspend fun preloadDetails(people: List<Person>) = supervisorScope {
     val errorHandler = CoroutineExceptionHandler { _, _ -> Timber.d("Failed to preload details.") }

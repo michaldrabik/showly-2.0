@@ -102,10 +102,10 @@
     android:textAlignment="viewStart"
     android:textColor="@color/colorAccent"
     android:textSize="14sp"
-    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintEnd_toStartOf="@id/viewPersonDetailsLinkIcon"
     app:layout_constraintStart_toEndOf="@id/viewPersonDetailsImageGuide1"
     app:layout_constraintTop_toBottomOf="@id/viewPersonDetailsTitle"
-    tools:text="Starlord"
+    tools:text="Starlord, John Doe, Starlord, John Doe, Starlord, John Doe, Starlord, John Doe"
     />
 
   <TextView
@@ -135,7 +135,7 @@
     android:layout_marginBottom="@dimen/spaceMicro"
     android:ellipsize="end"
     android:gravity="start"
-    android:maxLines="3"
+    android:maxLines="2"
     android:textAlignment="viewStart"
     android:textColor="?android:attr/textColorPrimary"
     android:textSize="14sp"
@@ -145,7 +145,7 @@
     app:layout_constraintHorizontal_bias="0"
     app:layout_constraintStart_toEndOf="@id/viewPersonDetailsBirthdayLabel"
     app:layout_goneMarginBottom="0dp"
-    tools:text="@tools:sample/lorem"
+    tools:text="@tools:sample/lorem/random"
     tools:visibility="visible"
     />
 
