@@ -24,6 +24,7 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.screenHeight
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_model.IdTrakt
@@ -87,10 +88,9 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>
   private fun setupView() {
     val behavior: BottomSheetBehavior<*> = (dialog as BottomSheetDialog).behavior
     with(behavior) {
-      isFitToContents = false
-      halfExpandedRatio = 0.6F
+      peekHeight = (screenHeight() * 0.55).toInt()
       skipCollapsed = true
-      state = BottomSheetBehavior.STATE_HALF_EXPANDED
+      state = BottomSheetBehavior.STATE_COLLAPSED
     }
     personDetailsRecyclerFab.onClick {
       personDetailsRecyclerFab.fadeOut(150)
@@ -100,9 +100,9 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>
 
   private fun setupTips() {
     val isShown = (requireActivity() as TipsHost).isTipShown(Tip.PERSON_DETAILS_GALLERY)
-    if (!isShown) {
+    if (!isShown && !person.imagePath.isNullOrBlank()) {
       val message = getString(Tip.PERSON_DETAILS_GALLERY.textResId)
-      viewPersonDetailsRoot.showInfoSnackbar(message, length = Snackbar.LENGTH_INDEFINITE) {
+      personDetailsSnackHost.showInfoSnackbar(message, length = Snackbar.LENGTH_INDEFINITE) {
         (requireActivity() as TipsHost).setTipShow(Tip.PERSON_DETAILS_GALLERY)
       }
     }

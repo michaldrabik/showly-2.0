@@ -41,4 +41,12 @@
     tools:visibility="visible"
     />
 
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/personDetailsSnackHost"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="top"
+    android:layout_marginTop="@dimen/personImageTipMargin"
+    />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
