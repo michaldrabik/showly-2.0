@@ -21,6 +21,7 @@ data class ShowDetailsUiState(
   val image: Image? = null,
   val seasons: List<SeasonListItem>? = null,
   val actors: List<Person>? = null,
+  val crew: Map<Person.Department, List<Person>>? = null,
   val relatedShows: List<RelatedListItem>? = null,
   val streamings: StreamingsBundle? = null,
   val nextEpisode: NextEpisodeBundle? = null,

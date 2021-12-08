@@ -6,6 +6,7 @@ data class TmdbPerson(
   val place_of_birth: String?,
   val homepage: String?,
   val character: String?,
+  val department: String?,
   val roles: List<Role>?,
   val deathday: String?,
   val birthday: String?,
@@ -18,4 +19,9 @@ data class TmdbPerson(
   data class Role(
     val character: String?
   )
+
+  enum class Type {
+    CAST,
+    CREW
+  }
 }

@@ -21,7 +21,7 @@ data class Person(
   @ColumnInfo(name = "id_trakt") var idTrakt: Long?,
   @ColumnInfo(name = "id_imdb") var idImdb: String?,
   @ColumnInfo(name = "name") var name: String,
-  @ColumnInfo(name = "type") var type: String,
+  @ColumnInfo(name = "department") var department: String,
   @ColumnInfo(name = "biography") var biography: String?,
   @ColumnInfo(name = "biography_translation") var biographyTranslation: String?,
   @ColumnInfo(name = "birthday") var birthday: String?,

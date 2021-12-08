@@ -79,7 +79,7 @@ class PersonDetailsViewModel @Inject constructor(
   fun loadCredits(person: Person, filters: List<Mode> = emptyList()) {
     creditsJob?.cancel()
     creditsJob = viewModelScope.launch {
-      creditsProgressJob = launchDelayed(750) { setCreditsLoading(true) }
+      creditsProgressJob = launchDelayed(500) { setCreditsLoading(true) }
       try {
         val credits = loadCreditsCase.loadCredits(person, filters)
 

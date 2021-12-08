@@ -40,9 +40,14 @@ class TmdbApi(private val service: TmdbService) {
     return result.cast?.toList() ?: emptyList()
   }
 
-  suspend fun fetchShowActors(tmdbId: Long): List<TmdbPerson> {
-    val result = service.fetchShowActors(tmdbId)
-    return result.cast?.toList() ?: emptyList()
+  suspend fun fetchShowPeople(tmdbId: Long): Map<TmdbPerson.Type, List<TmdbPerson>> {
+    val result = service.fetchShowPeople(tmdbId)
+    val cast = result.cast?.toList() ?: emptyList()
+    val crew = result.crew?.toList() ?: emptyList()
+    return mapOf(
+      TmdbPerson.Type.CAST to cast,
+      TmdbPerson.Type.CREW to crew
+    )
   }
 
   suspend fun fetchShowWatchProviders(tmdbId: Long, countryCode: String): TmdbStreamingCountry? {

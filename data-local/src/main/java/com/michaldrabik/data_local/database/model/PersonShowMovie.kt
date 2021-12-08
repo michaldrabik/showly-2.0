@@ -29,7 +29,7 @@ data class PersonShowMovie(
   @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long,
   @ColumnInfo(name = "id_tmdb_person") var idTmdbPerson: Long,
   @ColumnInfo(name = "mode") var mode: String,
-  @ColumnInfo(name = "type") var type: String,
+  @ColumnInfo(name = "department") var department: String,
   @ColumnInfo(name = "character") var character: String?,
   @ColumnInfo(name = "id_trakt_show") var idTraktShow: Long?,
   @ColumnInfo(name = "id_trakt_movie") var idTraktMovie: Long?,

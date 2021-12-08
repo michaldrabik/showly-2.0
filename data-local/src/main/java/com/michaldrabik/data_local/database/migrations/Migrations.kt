@@ -529,7 +529,7 @@ object Migrations {
             "`id_trakt` INTEGER, " +
             "`id_imdb` TEXT, " +
             "`name` TEXT NOT NULL, " +
-            "`type` TEXT NOT NULL, " +
+            "`department` TEXT NOT NULL, " +
             "`biography` TEXT, " +
             "`biography_translation` TEXT, " +
             "`birthday` TEXT, " +
@@ -550,7 +550,7 @@ object Migrations {
             "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
             "`id_tmdb_person` INTEGER NOT NULL, " +
             "`mode` TEXT NOT NULL, " +
-            "`type` TEXT NOT NULL, " +
+            "`department` TEXT NOT NULL, " +
             "`character` TEXT, " +
             "`id_trakt_show` INTEGER, " +
             "`id_trakt_movie` INTEGER, " +

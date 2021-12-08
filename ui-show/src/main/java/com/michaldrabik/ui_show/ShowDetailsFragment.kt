@@ -409,6 +409,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       ratings?.let { renderRatings(it, show) }
       nextEpisode?.let { renderNextEpisode(it) }
       actors?.let { renderActors(it) }
+      crew?.let { renderCrew(it) }
       streamings?.let { renderStreamings(it) }
       relatedShows?.let { renderRelatedShows(it) }
       translation?.let { renderTranslation(it) }
@@ -532,6 +533,34 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     showDetailsActorsRecycler.visibleIf(actors.isNotEmpty())
     showDetailsActorsEmptyView.visibleIf(actors.isEmpty())
     showDetailsActorsProgress.gone()
+  }
+
+  private fun renderCrew(crew: Map<Person.Department, List<Person>>) {
+    if (!crew.containsKey(Person.Department.DIRECTING)) return
+    showDetailsCrewGroup.fadeIn(withHardware = true)
+
+    val directors = crew[Person.Department.DIRECTING] ?: emptyList()
+    val writers = crew[Person.Department.WRITING] ?: emptyList()
+    val sound = crew[Person.Department.SOUND] ?: emptyList()
+
+    if (directors.isNotEmpty()) {
+      showDetailsDirectingValue.text = directors
+        .take(3)
+        .joinToString("\n") { it.name }
+        .plus(if (directors.size > 3) "\n..." else "")
+    }
+    if (writers.isNotEmpty()) {
+      showDetailsWritingValue.text = writers
+        .take(3)
+        .joinToString("\n") { it.name }
+        .plus(if (writers.size > 3) "\n..." else "")
+    }
+    if (sound.isNotEmpty()) {
+      showDetailsMusicValue.text = sound
+        .take(3)
+        .joinToString("\n") { it.name }
+        .plus(if (sound.size > 3) "\n..." else "")
+    }
   }
 
   private fun renderSeasons(seasonsItems: List<SeasonListItem>) {

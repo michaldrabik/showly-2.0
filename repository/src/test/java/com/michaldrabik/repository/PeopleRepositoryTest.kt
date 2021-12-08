@@ -57,7 +57,7 @@ class PeopleRepositoryTest : BaseMockTest() {
       peopleShowsMoviesDao.getTimestampForShow(11)
       peopleDao.getAllForShow(11)
     }
-    coVerify(exactly = 0) { tmdbApi.fetchShowActors(any()) }
+    coVerify(exactly = 0) { tmdbApi.fetchShowPeople(any()) }
   }
 
   @Test
@@ -70,7 +70,7 @@ class PeopleRepositoryTest : BaseMockTest() {
     coVerifyOrder {
       peopleShowsMoviesDao.getTimestampForShow(11)
       peopleDao.getAllForShow(11)
-      tmdbApi.fetchShowActors(12)
+      tmdbApi.fetchShowPeople(12)
       peopleDao.upsert(any())
       peopleShowsMoviesDao.insertForShow(any(), 11)
     }

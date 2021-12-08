@@ -10,7 +10,7 @@ import java.time.Period
 data class Person(
   val ids: Ids,
   val name: String,
-  val type: Type,
+  val department: Department,
   val bio: String?,
   val bioTranslation: String?,
   val characters: List<String>,
@@ -27,7 +27,7 @@ data class Person(
     else -> null
   }
 
-  enum class Type(val slug: String) {
+  enum class Department(val slug: String) {
     ACTING("Acting"),
     DIRECTING("Directing"),
     WRITING("Writing"),

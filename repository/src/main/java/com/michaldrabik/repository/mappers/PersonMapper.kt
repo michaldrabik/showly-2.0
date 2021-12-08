@@ -22,7 +22,7 @@ class PersonMapper @Inject constructor() {
         imdb = IdImdb(person.imdb_id ?: "")
       ),
       name = person.name ?: "",
-      type = typeToEnum(person.known_for_department),
+      department = typeToEnum(person.department ?: person.known_for_department),
       bio = person.biography,
       bioTranslation = null,
       birthplace = person.place_of_birth,
@@ -41,7 +41,7 @@ class PersonMapper @Inject constructor() {
         imdb = IdImdb(personDb.idImdb ?: "")
       ),
       name = personDb.name,
-      type = typeToEnum(personDb.type),
+      department = typeToEnum(personDb.department),
       bio = personDb.biography,
       bioTranslation = personDb.biographyTranslation,
       characters = if (characters.isNotEmpty()) characters else personDb.character?.split(",") ?: emptyList(),
@@ -60,7 +60,7 @@ class PersonMapper @Inject constructor() {
       idTrakt = idTrakt,
       idImdb = idImdb,
       name = person.name,
-      type = person.type.slug,
+      department = person.department.slug,
       biography = person.bio,
       biographyTranslation = person.bioTranslation,
       character = person.characters.joinToString(","),
@@ -82,10 +82,10 @@ class PersonMapper @Inject constructor() {
   }
 
   private fun typeToEnum(type: String?) = when (type) {
-    "Acting", "Actors" -> Person.Type.ACTING
-    "Directing" -> Person.Type.DIRECTING
-    "Writing" -> Person.Type.WRITING
-    "Sound" -> Person.Type.SOUND
-    else -> Person.Type.UNKNOWN
+    "Acting", "Actors" -> Person.Department.ACTING
+    "Directing" -> Person.Department.DIRECTING
+    "Writing" -> Person.Department.WRITING
+    "Sound" -> Person.Department.SOUND
+    else -> Person.Department.UNKNOWN
   }
 }

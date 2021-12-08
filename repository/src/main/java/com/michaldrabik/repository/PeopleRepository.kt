@@ -11,6 +11,7 @@ import com.michaldrabik.data_local.database.model.PersonCredits
 import com.michaldrabik.data_local.database.model.PersonImage
 import com.michaldrabik.data_local.database.model.PersonShowMovie
 import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.data_remote.tmdb.model.TmdbPerson
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.Ids
@@ -19,6 +20,7 @@ import com.michaldrabik.ui_model.ImageFamily
 import com.michaldrabik.ui_model.ImageSource
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Person
+import com.michaldrabik.ui_model.Person.Department
 import com.michaldrabik.ui_model.PersonCredit
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -35,6 +37,7 @@ class PeopleRepository @Inject constructor(
 
   companion object {
     const val ACTORS_DISPLAY_LIMIT = 30
+    const val CREW_DISPLAY_LIMIT = 10
   }
 
   suspend fun loadDetails(person: Person): Person {
@@ -205,7 +208,7 @@ class PeopleRepository @Inject constructor(
     }
   }
 
-  suspend fun loadAllForShow(showIds: Ids): List<Person> {
+  suspend fun loadAllForShow(showIds: Ids): Map<Department, List<Person>> {
     val timestamp = nowUtc()
 
     val localTimestamp = database.peopleShowsMoviesDao().getTimestampForShow(showIds.trakt.id) ?: 0
@@ -215,21 +218,37 @@ class PeopleRepository @Inject constructor(
       return local
         .sortedWith(compareBy { it.image.isNullOrBlank() })
         .map { mappers.person.fromDatabase(it) }
-        .take(ACTORS_DISPLAY_LIMIT)
+        .groupBy { it.department }
     }
 
-    val remoteTmdbActors = cloud.tmdbApi.fetchShowActors(showIds.tmdb.id)
+    val remoteTmdbPeople = cloud.tmdbApi.fetchShowPeople(showIds.tmdb.id)
+
+    val remoteTmdbActors = remoteTmdbPeople
+      .getOrDefault(TmdbPerson.Type.CAST, emptyList())
       .sortedWith(compareBy { it.profile_path.isNullOrBlank() })
       .map { mappers.person.fromNetwork(it) }
       .take(ACTORS_DISPLAY_LIMIT)
 
-    val dbTmdbActors = remoteTmdbActors.map { mappers.person.toDatabase(it, null) }
-    val dbTmdbActorsShows = remoteTmdbActors.map {
+    val crewFilter = arrayOf(Department.DIRECTING, Department.WRITING, Department.SOUND).map { it.slug }
+    val remoteTmdbCrew = remoteTmdbPeople
+      .getOrDefault(TmdbPerson.Type.CREW, emptyList())
+      .filter { it.department in crewFilter }
+      .sortedWith(compareBy { it.profile_path.isNullOrBlank() })
+      .map { mappers.person.fromNetwork(it) }
+      .groupBy { it.department }
+
+    val directors = remoteTmdbCrew[Department.DIRECTING]?.take(CREW_DISPLAY_LIMIT) ?: emptyList()
+    val writers = remoteTmdbCrew[Department.WRITING]?.take(CREW_DISPLAY_LIMIT) ?: emptyList()
+    val sound = remoteTmdbCrew[Department.SOUND]?.take(CREW_DISPLAY_LIMIT) ?: emptyList()
+
+    val filteredTmdbPeople = remoteTmdbActors + directors + writers + sound
+    val dbTmdbPeople = filteredTmdbPeople.map { mappers.person.toDatabase(it, null) }
+    val dbTmdbPeopleShows = filteredTmdbPeople.map {
       PersonShowMovie(
         id = 0,
         idTmdbPerson = it.ids.tmdb.id,
         mode = Mode.SHOWS.type,
-        type = Person.Type.ACTING.slug,
+        department = it.department.slug,
         character = it.characters.joinToString(","),
         idTraktShow = showIds.trakt.id,
         idTraktMovie = null,
@@ -240,13 +259,13 @@ class PeopleRepository @Inject constructor(
 
     with(database) {
       withTransaction {
-        peopleDao().upsert(dbTmdbActors)
-        peopleShowsMoviesDao().insertForShow(dbTmdbActorsShows, showIds.trakt.id)
+        peopleDao().upsert(dbTmdbPeople)
+        peopleShowsMoviesDao().insertForShow(dbTmdbPeopleShows, showIds.trakt.id)
       }
     }
 
     Timber.d("Returning remote result.")
-    return remoteTmdbActors
+    return filteredTmdbPeople.groupBy { it.department }
   }
 
   suspend fun loadAllForMovie(movieIds: Ids): List<Person> {
@@ -273,7 +292,7 @@ class PeopleRepository @Inject constructor(
         id = 0,
         idTmdbPerson = it.ids.tmdb.id,
         mode = Mode.MOVIES.type,
-        type = Person.Type.ACTING.slug,
+        department = it.department.slug,
         character = it.characters.joinToString(","),
         idTraktShow = null,
         idTraktMovie = movieIds.trakt.id,
