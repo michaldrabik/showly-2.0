@@ -34,5 +34,4 @@ class PeopleListHeaderView : FrameLayout {
     }
     viewPeopleListHeaderSubtitle.text = item.mediaTitle
   }
-
 }

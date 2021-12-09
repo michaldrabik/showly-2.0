@@ -66,7 +66,7 @@ class PeopleListItemView : FrameLayout {
       return
     }
     Glide.with(this)
-      .load("${Config.TMDB_IMAGE_BASE_PROFILE_THUMB_URL}${imagePath}")
+      .load("${Config.TMDB_IMAGE_BASE_PROFILE_THUMB_URL}$imagePath")
       .transform(centerCropTransformation, cornersTransformation)
       .transition(DrawableTransitionOptions.withCrossFade(Config.IMAGE_FADE_DURATION_MS))
       .withSuccessListener {
