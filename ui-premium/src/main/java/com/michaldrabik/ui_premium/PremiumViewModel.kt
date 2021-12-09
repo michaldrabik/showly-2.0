@@ -73,7 +73,7 @@ class PremiumViewModel @Inject constructor(
           _messageChannel.trySend(MessageEvent.error(R.string.errorGeneral))
           connectionsCount = 0
         } else {
-          Timber.w("BillingClient Disconnected. Retrying....")
+          Timber.w("BillingClient Disconnected. Retrying...")
           loadBilling(billingClient)
         }
       }

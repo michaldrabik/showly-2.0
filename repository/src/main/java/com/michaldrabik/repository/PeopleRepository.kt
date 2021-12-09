@@ -37,7 +37,7 @@ class PeopleRepository @Inject constructor(
 
   companion object {
     const val ACTORS_DISPLAY_LIMIT = 30
-    const val CREW_DISPLAY_LIMIT = 10
+    const val CREW_DISPLAY_LIMIT = 20
   }
 
   suspend fun loadDetails(person: Person): Person {
@@ -111,8 +111,9 @@ class PeopleRepository @Inject constructor(
     }
 
     // Return remote fetched data if available and cache it locally
-    val showsCreditsAsync = async { cloud.traktApi.fetchPersonShowsCredits(idTrakt!!) }
-    val moviesCreditsAsync = async { cloud.traktApi.fetchPersonMoviesCredits(idTrakt!!) }
+    val type = if (person.department == Department.ACTING) TmdbPerson.Type.CAST else TmdbPerson.Type.CREW
+    val showsCreditsAsync = async { cloud.traktApi.fetchPersonShowsCredits(idTrakt!!, type) }
+    val moviesCreditsAsync = async { cloud.traktApi.fetchPersonMoviesCredits(idTrakt!!, type) }
     val remoteCredits = awaitAll(showsCreditsAsync, moviesCreditsAsync)
       .flatten()
       .map {
@@ -230,9 +231,12 @@ class PeopleRepository @Inject constructor(
       .take(ACTORS_DISPLAY_LIMIT)
 
     val crewFilter = arrayOf(Department.DIRECTING, Department.WRITING, Department.SOUND).map { it.slug }
+    val jobsFilter = Person.Job.values().map { it.slug }
     val remoteTmdbCrew = remoteTmdbPeople
       .getOrDefault(TmdbPerson.Type.CREW, emptyList())
+      .asSequence()
       .filter { it.department in crewFilter }
+      .filter { it.jobs?.any { job -> job.job ?: "" in jobsFilter } == true }
       .sortedWith(compareBy { it.profile_path.isNullOrBlank() })
       .map { mappers.person.fromNetwork(it) }
       .groupBy { it.department }

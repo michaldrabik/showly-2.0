@@ -226,8 +226,8 @@ class ShowDetailsViewModel @Inject constructor(
       val actors = people.getOrDefault(Department.ACTING, emptyList())
       val crew = people.filter { it.key !in arrayOf(Department.ACTING, Department.UNKNOWN) }
 
-      actorsState.value = actors
-      crewState.value = crew
+      actorsState.value = emptyList()
+      crewState.value = emptyMap()
 
       actorsCase.preloadDetails(actors)
     } catch (error: Throwable) {

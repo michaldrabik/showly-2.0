@@ -43,6 +43,7 @@
   <string name="textScreenplay">Screenplay</string>
   <string name="textSound">Sound</string>
   <string name="textMusic">Music</string>
+  <string name="textActing">Acting</string>
 
   <string name="textAiredAlready">Aired</string>
   <string name="textAirsNow">Airs Now</string>

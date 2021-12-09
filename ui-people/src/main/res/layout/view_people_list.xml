@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/viewPeopleListRoot"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:background="@drawable/bg_bottom_sheet"
+  android:clipToPadding="false"
+  android:focusableInTouchMode="true"
+  >
+
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/viewPeopleListRecycler"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:overScrollMode="never"
+    android:paddingTop="@dimen/spaceNormal"
+    android:paddingBottom="@dimen/spaceNormal"
+    />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -8,6 +8,7 @@ data class TmdbPerson(
   val character: String?,
   val department: String?,
   val roles: List<Role>?,
+  val jobs: List<Job>?,
   val deathday: String?,
   val birthday: String?,
   val biography: String?,
@@ -18,6 +19,10 @@ data class TmdbPerson(
 
   data class Role(
     val character: String?
+  )
+
+  data class Job(
+    val job: String?
   )
 
   enum class Type {

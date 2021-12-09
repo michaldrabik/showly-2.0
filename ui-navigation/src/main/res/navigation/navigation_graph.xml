@@ -287,6 +287,11 @@
       app:destination="@id/personDetailsDialog"
       app:launchSingleTop="true"
       />
+    <action
+      android:id="@+id/actionShowDetailsFragmentToPeopleList"
+      app:destination="@id/peopleListDialog"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment
@@ -639,6 +644,20 @@
     <action
       android:id="@+id/actionPersonDetailsDialogToGallery"
       app:destination="@id/personGalleryFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+  </dialog>
+
+  <dialog
+    android:id="@+id/peopleListDialog"
+    android:name="com.michaldrabik.ui_people.list.PeopleListBottomSheet"
+    android:label="dialogPeopleList"
+    >
+    <action
+      android:id="@+id/actionPeopleListDialogToDetails"
+      app:destination="@id/personDetailsDialog"
       app:enterAnim="@anim/anim_fade_in"
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"

@@ -34,4 +34,12 @@ data class Person(
     SOUND("Sound"),
     UNKNOWN("")
   }
+
+  enum class Job(val slug: String) {
+    DIRECTOR("Director"),
+    WRITER("Writer"),
+    STORY("Story"),
+    MUSIC("Music"),
+    ORIGINAL_MUSIC("Original Music Composer")
+  }
 }

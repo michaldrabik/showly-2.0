@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
 import android.view.animation.AnimationUtils
+import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
@@ -61,6 +62,7 @@ import com.michaldrabik.ui_base.utilities.extensions.screenHeight
 import com.michaldrabik.ui_base.utilities.extensions.screenWidth
 import com.michaldrabik.ui_base.utilities.extensions.setTextIfEmpty
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
+import com.michaldrabik.ui_base.utilities.extensions.trimWithSuffix
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
@@ -102,6 +104,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MANAGE_LISTS
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_PERSON_DETAILS
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_REMOVE_TRAKT
 import com.michaldrabik.ui_people.details.PersonDetailsBottomSheet
+import com.michaldrabik.ui_people.list.PeopleListBottomSheet
 import com.michaldrabik.ui_show.actors.ActorsAdapter
 import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
 import com.michaldrabik.ui_show.helpers.ShowLink
@@ -536,31 +539,29 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   }
 
   private fun renderCrew(crew: Map<Person.Department, List<Person>>) {
-    if (!crew.containsKey(Person.Department.DIRECTING)) return
-    showDetailsCrewGroup.fadeIn(withHardware = true)
+
+    fun renderPeople(labelView: View, valueView: TextView, people: List<Person>, department: Person.Department) {
+      if (people.isEmpty()) return
+      labelView.fadeIn(withHardware = true)
+      valueView.fadeIn(withHardware = true)
+      valueView.text = people
+        .take(2)
+        .joinToString("\n") { it.name.trimWithSuffix(20, "…") }
+        .plus(if (people.size > 2) "\n…" else "")
+      valueView.onClick { openPeopleListSheet(people, department) }
+    }
+
+    if (!crew.containsKey(Person.Department.DIRECTING)) {
+      return
+    }
 
     val directors = crew[Person.Department.DIRECTING] ?: emptyList()
     val writers = crew[Person.Department.WRITING] ?: emptyList()
     val sound = crew[Person.Department.SOUND] ?: emptyList()
 
-    if (directors.isNotEmpty()) {
-      showDetailsDirectingValue.text = directors
-        .take(3)
-        .joinToString("\n") { it.name }
-        .plus(if (directors.size > 3) "\n..." else "")
-    }
-    if (writers.isNotEmpty()) {
-      showDetailsWritingValue.text = writers
-        .take(3)
-        .joinToString("\n") { it.name }
-        .plus(if (writers.size > 3) "\n..." else "")
-    }
-    if (sound.isNotEmpty()) {
-      showDetailsMusicValue.text = sound
-        .take(3)
-        .joinToString("\n") { it.name }
-        .plus(if (sound.size > 3) "\n..." else "")
-    }
+    renderPeople(showDetailsDirectingLabel, showDetailsDirectingValue, directors, Person.Department.DIRECTING)
+    renderPeople(showDetailsWritingLabel, showDetailsWritingValue, writers, Person.Department.WRITING)
+    renderPeople(showDetailsMusicLabel, showDetailsMusicValue, sound, Person.Department.SOUND)
   }
 
   private fun renderSeasons(seasonsItems: List<SeasonListItem>) {
@@ -734,6 +735,17 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
     val bundle = PersonDetailsBottomSheet.createBundle(person, showId)
     navigateTo(R.id.actionShowDetailsFragmentToPerson, bundle)
+  }
+
+  private fun openPeopleListSheet(people: List<Person>, department: Person.Department) {
+    if (people.isEmpty()) return
+    if (people.size == 1) {
+      openPersonSheet(people.first())
+      return
+    }
+    val title = showDetailsTitle.text.toString()
+    val bundle = PeopleListBottomSheet.createBundle(showId, title, Mode.SHOWS, department)
+    navigateTo(R.id.actionShowDetailsFragmentToPeopleList, bundle)
   }
 
   private fun openRemoveTraktSheet(@IdRes action: Int) {

@@ -5,6 +5,7 @@ import com.michaldrabik.data_remote.Config.TRAKT_CLIENT_ID
 import com.michaldrabik.data_remote.Config.TRAKT_CLIENT_SECRET
 import com.michaldrabik.data_remote.Config.TRAKT_REDIRECT_URL
 import com.michaldrabik.data_remote.Config.TRAKT_SYNC_PAGE_LIMIT
+import com.michaldrabik.data_remote.tmdb.model.TmdbPerson
 import com.michaldrabik.data_remote.trakt.model.Comment
 import com.michaldrabik.data_remote.trakt.model.CustomList
 import com.michaldrabik.data_remote.trakt.model.Episode
@@ -72,14 +73,18 @@ class TraktApi(private val service: TraktService) {
     return null
   }
 
-  suspend fun fetchPersonShowsCredits(traktId: Long): List<PersonCredit> {
+  suspend fun fetchPersonShowsCredits(traktId: Long, type: TmdbPerson.Type): List<PersonCredit> {
     val result = service.fetchPersonCredits(traktId = traktId, "shows")
-    return result.cast ?: emptyList()
+    val cast = result.cast ?: emptyList()
+    val crew = result.crew?.values?.flatten()?.distinctBy { it.show?.ids?.trakt } ?: emptyList()
+    return if (type == TmdbPerson.Type.CAST) cast else crew
   }
 
-  suspend fun fetchPersonMoviesCredits(traktId: Long): List<PersonCredit> {
+  suspend fun fetchPersonMoviesCredits(traktId: Long, type: TmdbPerson.Type): List<PersonCredit> {
     val result = service.fetchPersonCredits(traktId = traktId, "movies")
-    return result.cast ?: emptyList()
+    val cast = result.cast ?: emptyList()
+    val crew = result.crew?.values?.flatten()?.distinctBy { it.movie?.ids?.trakt } ?: emptyList()
+    return if (type == TmdbPerson.Type.CAST) cast else crew
   }
 
   suspend fun fetchSearchId(idType: String, id: String) =

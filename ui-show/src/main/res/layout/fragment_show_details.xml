@@ -293,7 +293,7 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="@dimen/spaceNormal"
+        android:layout_marginTop="14dp"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:layout_marginBottom="@dimen/spaceMedium"
         android:background="?attr/colorSeparator"
@@ -301,8 +301,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsDirectingValue"
-        app:layout_goneMarginTop="@dimen/spaceBig"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsCrewBarrier"
         />
 
       <androidx.recyclerview.widget.RecyclerView
@@ -363,14 +362,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="@dimen/spaceNormal"
+        android:layout_marginTop="13dp"
         android:gravity="center_vertical"
         android:text="@string/textDirecting"
         android:textColor="?android:attr/textColorSecondary"
-        android:textSize="12sp"
+        android:textSize="11sp"
         app:layout_constraintBottom_toTopOf="@id/showDetailsDirectingValue"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsActorsRecycler"
         />
@@ -382,8 +379,7 @@
         android:minWidth="50dp"
         android:text="-"
         android:textColor="?android:attr/textColorPrimary"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@id/separator2"
+        android:textSize="11sp"
         app:layout_constraintStart_toStartOf="@id/showDetailsDirectingLabel"
         app:layout_constraintTop_toBottomOf="@id/showDetailsDirectingLabel"
         tools:ignore="HardcodedText"
@@ -397,7 +393,7 @@
         android:layout_marginStart="@dimen/spaceBig"
         android:text="@string/textWriting"
         android:textColor="?android:attr/textColorSecondary"
-        android:textSize="12sp"
+        android:textSize="11sp"
         app:layout_constraintBottom_toBottomOf="@id/showDetailsDirectingLabel"
         app:layout_constraintStart_toEndOf="@id/showDetailsDirectingValue"
         app:layout_constraintTop_toTopOf="@id/showDetailsDirectingLabel"
@@ -410,22 +406,22 @@
         android:minWidth="50dp"
         android:text="-"
         android:textColor="?android:attr/textColorPrimary"
-        android:textSize="14sp"
+        android:textSize="11sp"
         app:layout_constraintStart_toStartOf="@id/showDetailsWritingLabel"
         app:layout_constraintTop_toBottomOf="@id/showDetailsWritingLabel"
         tools:ignore="HardcodedText"
-        tools:text="Steven Spilberg"
+        tools:text="Steven Spilberg\nTest"
         />
 
       <TextView
         android:id="@+id/showDetailsMusicLabel"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginStart="@dimen/spaceBig"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:text="@string/textMusic"
         android:textColor="?android:attr/textColorSecondary"
-        android:textSize="12sp"
+        android:textSize="11sp"
         app:layout_constraintBottom_toBottomOf="@id/showDetailsDirectingLabel"
         app:layout_constraintStart_toEndOf="@id/showDetailsWritingValue"
         app:layout_constraintTop_toTopOf="@id/showDetailsDirectingLabel"
@@ -438,12 +434,20 @@
         android:layout_marginEnd="@dimen/spaceNormal"
         android:text="-"
         android:textColor="?android:attr/textColorPrimary"
-        android:textSize="14sp"
+        android:textSize="11sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/showDetailsMusicLabel"
         app:layout_constraintTop_toBottomOf="@id/showDetailsMusicLabel"
         tools:ignore="HardcodedText"
         tools:text="Steven Spilberg"
+        />
+
+      <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/showDetailsCrewBarrier"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="showDetailsDirectingValue, showDetailsWritingValue, showDetailsMusicValue"
         />
 
       <include
