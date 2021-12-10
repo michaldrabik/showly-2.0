@@ -18,6 +18,7 @@ data class MovieDetailsUiState(
   val movieLoading: Boolean? = null,
   val image: Image? = null,
   val actors: List<Person>? = null,
+  val crew: Map<Person.Department, List<Person>>? = null,
   val relatedMovies: List<RelatedListItem>? = null,
   val comments: List<Comment>? = null,
   val listsCount: Int? = null,

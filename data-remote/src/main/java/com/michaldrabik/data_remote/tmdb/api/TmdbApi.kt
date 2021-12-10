@@ -35,9 +35,14 @@ class TmdbApi(private val service: TmdbService) {
       TmdbImages.EMPTY
     }
 
-  suspend fun fetchMovieActors(tmdbId: Long): List<TmdbPerson> {
-    val result = service.fetchMovieActors(tmdbId)
-    return result.cast?.toList() ?: emptyList()
+  suspend fun fetchMoviePeople(tmdbId: Long): Map<TmdbPerson.Type, List<TmdbPerson>> {
+    val result = service.fetchMoviePeople(tmdbId)
+    val cast = result.cast?.toList() ?: emptyList()
+    val crew = result.crew?.toList() ?: emptyList()
+    return mapOf(
+      TmdbPerson.Type.CAST to cast,
+      TmdbPerson.Type.CREW to crew
+    )
   }
 
   suspend fun fetchShowPeople(tmdbId: Long): Map<TmdbPerson.Type, List<TmdbPerson>> {

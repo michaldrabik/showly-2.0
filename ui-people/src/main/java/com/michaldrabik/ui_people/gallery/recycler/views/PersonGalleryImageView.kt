@@ -8,11 +8,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
-import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
-import com.michaldrabik.ui_base.utilities.extensions.visible
-import com.michaldrabik.ui_base.utilities.extensions.withFailListener
-import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_people.R
 import kotlinx.android.synthetic.main.view_person_gallery_image.view.*
@@ -34,7 +30,6 @@ class PersonGalleryImageView : FrameLayout {
   fun bind(image: Image) {
     clear()
     viewPersonGalleryImage.onClick { onItemClickListener?.invoke() }
-    viewPersonGalleryImageProgress.visible()
     loadImage(image)
   }
 
@@ -42,13 +37,10 @@ class PersonGalleryImageView : FrameLayout {
     Glide.with(this)
       .load(image.fullFileUrl)
       .transform(CenterCrop(), RoundedCorners(cornerRadius))
-      .withFailListener { viewPersonGalleryImageProgress.gone() }
-      .withSuccessListener { viewPersonGalleryImageProgress.gone() }
       .into(viewPersonGalleryImage)
   }
 
   private fun clear() {
-    viewPersonGalleryImageProgress.gone()
     Glide.with(this).clear(viewPersonGalleryImage)
   }
 }

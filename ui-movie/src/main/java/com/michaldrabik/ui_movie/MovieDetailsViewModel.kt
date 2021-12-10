@@ -81,6 +81,7 @@ class MovieDetailsViewModel @Inject constructor(
   private val movieRatingsState = MutableStateFlow<Ratings?>(null)
   private val imageState = MutableStateFlow<Image?>(null)
   private val actorsState = MutableStateFlow<List<Person>?>(null)
+  private val crewState = MutableStateFlow<Map<Person.Department, List<Person>>?>(null)
   private val relatedState = MutableStateFlow<List<RelatedListItem>?>(null)
   private val commentsState = MutableStateFlow<List<Comment>?>(null)
   private val commentsDateFormatState = MutableStateFlow<DateTimeFormatter?>(null)
@@ -134,7 +135,7 @@ class MovieDetailsViewModel @Inject constructor(
         loadBackgroundImage(movie)
         loadListsCount(movie)
         launch { loadRatings(movie) }
-        launch { loadActors(movie) }
+        launch { loadCastCrew(movie) }
         launch { loadStreamings(movie) }
         launch { loadRelatedMovies(movie) }
         launch { loadTranslation(movie) }
@@ -166,13 +167,20 @@ class MovieDetailsViewModel @Inject constructor(
     }
   }
 
-  private suspend fun loadActors(movie: Movie) {
+  private suspend fun loadCastCrew(movie: Movie) {
     try {
-      val actors = actorsCase.loadActors(movie)
+      val people = actorsCase.loadPeople(movie)
+
+      val actors = people.getOrDefault(Person.Department.ACTING, emptyList())
+      val crew = people.filter { it.key !in arrayOf(Person.Department.ACTING, Person.Department.UNKNOWN) }
+
       actorsState.value = actors
+      crewState.value = crew
+
       actorsCase.preloadDetails(actors)
     } catch (error: Throwable) {
       actorsState.value = emptyList()
+      crewState.value = emptyMap()
       rethrowCancellation(error)
     }
   }
@@ -507,6 +515,7 @@ class MovieDetailsViewModel @Inject constructor(
     movieRatingsState,
     imageState,
     actorsState,
+    crewState,
     relatedState,
     commentsState,
     commentsDateFormatState,
@@ -521,27 +530,28 @@ class MovieDetailsViewModel @Inject constructor(
     listsCountState,
     removeTraktEvent,
     finishedEvent
-  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19 ->
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s20 ->
     MovieDetailsUiState(
       movie = s1,
       movieLoading = s2,
       ratings = s3,
       image = s4,
       actors = s5,
-      relatedMovies = s6,
-      comments = s7,
-      commentsDateFormat = s8,
-      followedState = s9,
-      ratingState = s10,
-      streamings = s11,
-      translation = s12,
-      country = s13,
-      dateFormat = s14,
-      isSignedIn = s15,
-      isPremium = s16,
-      listsCount = s17,
-      removeFromTrakt = s18,
-      isFinished = s19
+      crew = s6,
+      relatedMovies = s7,
+      comments = s8,
+      commentsDateFormat = s9,
+      followedState = s10,
+      ratingState = s11,
+      streamings = s12,
+      translation = s13,
+      country = s14,
+      dateFormat = s15,
+      isSignedIn = s16,
+      isPremium = s17,
+      listsCount = s18,
+      removeFromTrakt = s19,
+      isFinished = s20
     )
   }.stateIn(
     scope = viewModelScope,

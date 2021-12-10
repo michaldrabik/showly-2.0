@@ -9,6 +9,7 @@ data class TmdbPerson(
   val department: String?,
   val roles: List<Role>?,
   val jobs: List<Job>?,
+  val job: String?,
   val deathday: String?,
   val birthday: String?,
   val biography: String?,

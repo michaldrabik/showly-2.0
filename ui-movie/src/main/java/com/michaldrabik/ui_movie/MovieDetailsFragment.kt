@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
@@ -59,6 +60,7 @@ import com.michaldrabik.ui_base.utilities.extensions.screenHeight
 import com.michaldrabik.ui_base.utilities.extensions.screenWidth
 import com.michaldrabik.ui_base.utilities.extensions.setTextIfEmpty
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
+import com.michaldrabik.ui_base.utilities.extensions.trimWithSuffix
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
@@ -104,6 +106,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MANAGE_LISTS
 import com.michaldrabik.ui_people.details.PersonDetailsBottomSheet
+import com.michaldrabik.ui_people.list.PeopleListBottomSheet
 import com.michaldrabik.ui_streamings.recycler.StreamingAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_movie_details.*
@@ -350,6 +353,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       }
       image?.let { renderImage(it) }
       actors?.let { renderActors(it) }
+      crew?.let { renderCrew(it) }
       streamings?.let { renderStreamings(it) }
       translation?.let { renderTranslation(it) }
       relatedMovies?.let { renderRelatedMovies(it) }
@@ -459,6 +463,32 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     movieDetailsActorsProgress.gone()
   }
 
+  private fun renderCrew(crew: Map<Person.Department, List<Person>>) {
+
+    fun renderPeople(labelView: View, valueView: TextView, people: List<Person>, department: Person.Department) {
+      if (people.isEmpty()) return
+      labelView.fadeIn(withHardware = true)
+      valueView.fadeIn(withHardware = true)
+      valueView.text = people
+        .take(2)
+        .joinToString("\n") { it.name.trimWithSuffix(20, "…") }
+        .plus(if (people.size > 2) "\n…" else "")
+      valueView.onClick { openPeopleListSheet(people, department) }
+    }
+
+    if (!crew.containsKey(Person.Department.DIRECTING)) {
+      return
+    }
+
+    val directors = crew[Person.Department.DIRECTING] ?: emptyList()
+    val writers = crew[Person.Department.WRITING] ?: emptyList()
+    val sound = crew[Person.Department.SOUND] ?: emptyList()
+
+    renderPeople(movieDetailsDirectingLabel, movieDetailsDirectingValue, directors, Person.Department.DIRECTING)
+    renderPeople(movieDetailsWritingLabel, movieDetailsWritingValue, writers, Person.Department.WRITING)
+    renderPeople(movieDetailsMusicLabel, movieDetailsMusicValue, sound, Person.Department.SOUND)
+  }
+
   private fun renderStreamings(streamings: StreamingsState) {
     if (streamingAdapter?.itemCount != 0) return
     val (items, isLocal) = streamings
@@ -543,6 +573,17 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     }
     val bundle = PersonDetailsBottomSheet.createBundle(person, movieId)
     navigateTo(R.id.actionMovieDetailsFragmentToPerson, bundle)
+  }
+
+  private fun openPeopleListSheet(people: List<Person>, department: Person.Department) {
+    if (people.isEmpty()) return
+    if (people.size == 1) {
+      openPersonSheet(people.first())
+      return
+    }
+    val title = movieDetailsTitle.text.toString()
+    val bundle = PeopleListBottomSheet.createBundle(movieId, title, Mode.MOVIES, department)
+    navigateTo(R.id.actionMovieDetailsFragmentToPeopleList, bundle)
   }
 
   private fun openShareSheet(movie: Movie) {

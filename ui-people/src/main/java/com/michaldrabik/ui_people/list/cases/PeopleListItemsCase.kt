@@ -22,7 +22,7 @@ class PeopleListItemsCase @Inject constructor(
     val ids = Ids.EMPTY.copy(trakt = idTrakt)
     val people: Map<Person.Department, List<Person>> = when (mode) {
       Mode.SHOWS -> peopleRepository.loadAllForShow(ids)
-      Mode.MOVIES -> TODO()
+      Mode.MOVIES -> peopleRepository.loadAllForMovie(ids)
     }
     return people.getOrDefault(department, emptyList()).map {
       PeopleListItem.PersonItem(it)
