@@ -40,6 +40,7 @@ class PersonDetailsInfoView : ConstraintLayout {
     inflate(context, R.layout.view_person_details_info, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     updatePadding(left = spaceNormal, right = spaceNormal)
+    clipToPadding = false
   }
 
   fun bind(item: PersonDetailsItem.MainInfo) {
