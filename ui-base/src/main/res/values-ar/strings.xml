@@ -30,7 +30,15 @@
   <string name="textNoDescription">لا يتوفر وصف.</string>
   <string name="textPleaseWait">الرجاء الانتظار…</string>
   <string name="textRate">قيم</string>
+  <string name="textLink">إفتح في</string>
   <string name="textRateSaved">حُفظ تقييمك.</string>
+  <string name="textPeople">الأشخاص:</string>
+  <string name="textDirecting">اخراج</string>
+  <string name="textDirector">المخرج</string>
+  <string name="textWriting">الكتابة</string>
+  <string name="textScreenplay">النص السينمائي</string>
+  <string name="textSound">الصوت</string>
+  <string name="textMusic">موسيقى</string>
   <string name="textAiredAlready">بُثت</string>
   <string name="textAirsNow">يُبث الآن</string>
   <plurals name="textDaysToAir">
@@ -94,6 +102,7 @@
   <string name="textRemoveFromTraktHidden">أترغب في إزالته من قائمة \"المحتويات المخفية\" في حسابك على موقع Trakt.tv؟</string>
   <string name="textRemoveFromTraktWatchlist">أترغب في إزالته من \"قائمة المشاهدة\" في حسابك على موقع Trakt.tv؟</string>
   <string name="textRemoveFromTraktProgress">أترغب في إزالته من قائمة \"مستوى التقدم\" في حسابك على موقع Trakt.tv؟</string>
+  <string name="textPremiumAd">إدعم تطوير التطبيق واحصل على مميزات إضافية! انقر لرؤية المزيد.</string>
   <string name="menuPin">تثبيت في الأعلى</string>
   <string name="menuUnpin">إلغاء التثبيت من الأعلى</string>
   <string name="errorGeneral">عفواً… حدث خطأ ما.\nإذا استمرت المشكلة بالحدوث، رجاءً تواصل معنا.</string>

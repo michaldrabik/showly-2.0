@@ -14,8 +14,8 @@
   <string name="textSettingsTraktSyncSummary">Sincronizar datos entre Trakt.tv y Showly.</string>
   <string name="textSettingsTraktQuickSyncTitle">Subida Instantánea Trakt.tv</string>
   <string name="textSettingsTraktQuickSyncSummary">Sube datos instantáneamente a Trakt.tv después de añadirlos en la aplicación.</string>
-  <string name="textSettingsTraktQuickRemoveTitle">Eliminación Instantánea Trakt.tv</string>
-  <string name="textSettingsTraktQuickRemoveSummary">Añade la opción para eliminar datos de Trakt.tv después de eliminarlos en la aplicación.</string>
+  <string name="textSettingsTraktQuickRemoveTitle">Eliminar Datos de Trakt.tv</string>
+  <string name="textSettingsTraktQuickRemoveSummary">Opción para eliminar datos de tu cuenta Trakt.tv después de eliminarlos en la aplicación.</string>
   <string name="textSettingsTraktQuickRateTitle">Valoración Rápida de Trakt.tv</string>
   <string name="textSettingsTraktQuickRateSummary">Califica episodios y películas cada vez que los marques como vistos en la pantalla de \'Progreso\'.</string>
   <string name="textSettingsGeneral">General &amp; UX</string>

@@ -14,8 +14,8 @@
   <string name="textSettingsTraktSyncSummary">Synkronoi tiedot Trakt.tv:n ja Showlyn välillä.</string>
   <string name="textSettingsTraktQuickSyncTitle">Trakt.tv-pikalähetys</string>
   <string name="textSettingsTraktQuickSyncSummary">Lähetä tiedot Trakt.tv-kokoelmaasi heti kun lisäät ne sovellukseen.</string>
-  <string name="textSettingsTraktQuickRemoveTitle">Trakt.tv-pikapoisto</string>
-  <string name="textSettingsTraktQuickRemoveSummary">Lisää valinta tietojen poistoon Trakt.tv-kokoelmastasi kun ne poistetaan sovelluksesta.</string>
+  <string name="textSettingsTraktQuickRemoveTitle">Poista tiedot Trakt.tv-tililtä</string>
+  <string name="textSettingsTraktQuickRemoveSummary">Tarjoa tietojen poistoa Trakt.tv-tililtäsi, kun olet poistanut ne sovelluksesta.</string>
   <string name="textSettingsTraktQuickRateTitle">Trakt.tv-pika-arviointi</string>
   <string name="textSettingsTraktQuickRateSummary">Arvioi jaksot ja elokuvat aina kun merkitset ne katselutilanteessa katselluiksi.</string>
   <string name="textSettingsGeneral">Yleiset &amp; käyttölittymä</string>

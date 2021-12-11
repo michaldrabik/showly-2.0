@@ -30,7 +30,15 @@
   <string name="textNoDescription">Resumen no disponible.</string>
   <string name="textPleaseWait">Espera, por favor…</string>
   <string name="textRate">Calificar</string>
+  <string name="textLink">Enlace</string>
   <string name="textRateSaved">Tu calificación se ha guardado.</string>
+  <string name="textPeople">Personas:</string>
+  <string name="textDirecting">Dirección</string>
+  <string name="textDirector">Director</string>
+  <string name="textWriting">Escritores</string>
+  <string name="textScreenplay">Guión</string>
+  <string name="textSound">Sonido</string>
+  <string name="textMusic">Música</string>
   <string name="textAiredAlready">Emitido</string>
   <string name="textAirsNow">Se emite ahora</string>
   <plurals name="textDaysToAir">
@@ -78,6 +86,7 @@
   <string name="textRemoveFromTraktHidden">¿Te gustaría eliminar este elemento de \'Elementos Ocultos\' de tu cuenta Trakt.tv?</string>
   <string name="textRemoveFromTraktWatchlist">¿Te gustaría eliminar este elemento de \'Pendientes\' de tu cuenta Trakt.tv?</string>
   <string name="textRemoveFromTraktProgress">¿Te gustaría eliminar este elemento de \'Progreso\' de tu cuenta Trakt.tv?</string>
+  <string name="textPremiumAd">¡Conviértete en un seguidor y consigue acceso a funciones extra! Haz clic para ver más.</string>
   <string name="menuPin">Anclar a la parte superior</string>
   <string name="menuUnpin">Desanclar de la parte superior</string>
   <string name="errorGeneral">Ups… Algo salió mal.\nPor favor, contáctanos si esto sigue sucediendo.</string>
