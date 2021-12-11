@@ -30,7 +30,6 @@
   <string name="textNoDescription">Tanıtım mevcut değil.</string>
   <string name="textPleaseWait">Lütfen bekleyin…</string>
   <string name="textRate">Oy Ver</string>
-  <string name="textLink">Link</string>
   <string name="textRateSaved">Oyunuz kaydedildi.</string>
   <string name="textPeople">Kişiler:</string>
   <string name="textDirecting">Reji</string>
@@ -86,7 +85,6 @@
   <string name="textRemoveFromTraktHidden">Bu öğeyi Trakt.tv hesabınızdan \'Gizli\' kaldırmak ister misiniz?</string>
   <string name="textRemoveFromTraktWatchlist">Bu öğeyi Trakt.tv hesabınızdaki \'Watchlist\' kaldırmak ister misiniz?</string>
   <string name="textRemoveFromTraktProgress">Bu öğeyi Trakt.tv hesabınızdaki \'İlerleme\'den kaldırmak ister misiniz?</string>
-  <string name="textPremiumAd">Destekçi olun ve bonus özelliklere erişin! Daha fazlasını görmek için dokunun.</string>
   <string name="menuPin">En üste sabitle</string>
   <string name="menuUnpin">Sabitlemeyi kaldır</string>
   <string name="errorGeneral">Hay aksi… Bir şeyler ters gitti.\nBu sorun devam ederse lütfen bizimle iletişime geçin.</string>

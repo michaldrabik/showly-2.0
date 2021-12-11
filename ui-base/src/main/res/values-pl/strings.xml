@@ -30,7 +30,6 @@
   <string name="textNoDescription">Opis niedostępny.</string>
   <string name="textPleaseWait">Proszę czekać…</string>
   <string name="textRate">Oceń</string>
-  <string name="textLink">Link</string>
   <string name="textRateSaved">Ocena została zapisana.</string>
   <string name="textPeople">Osoby:</string>
   <string name="textDirecting">Reżyseria</string>
@@ -94,7 +93,6 @@
   <string name="textRemoveFromTraktHidden">Czy chcesz usunąć ten element z sekcji \'Ukryte\' na twoim koncie Trakt.tv?</string>
   <string name="textRemoveFromTraktWatchlist">Czy chcesz usunąć ten element z sekcji \'Na Później\' na twoim koncie Trakt.tv?</string>
   <string name="textRemoveFromTraktProgress">Czy chcesz usunąć ten element z sekcji \'Postęp\' na twoim koncie Trakt.tv?</string>
-  <string name="textPremiumAd">Zostań subskrybentem i uzyskaj dostęp do dodatkowych funkcji! Kliknij, aby zobaczyć więcej.</string>
   <string name="menuPin">Przypnij u góry</string>
   <string name="menuUnpin">Odepnij z góry</string>
   <string name="errorGeneral">Oj… Coś poszło nie tak.\nSkontaktuj się z nami jeżeli błąd się powtarza.</string>

@@ -30,7 +30,6 @@
   <string name="textNoDescription">Описание недоступно.</string>
   <string name="textPleaseWait">Подождите…</string>
   <string name="textRate">Оценить</string>
-  <string name="textLink">Ссылка</string>
   <string name="textRateSaved">Ваша оценка была сохранена.</string>
   <string name="textPeople">Люди:</string>
   <string name="textDirecting">Режиссура</string>
@@ -94,7 +93,6 @@
   <string name="textRemoveFromTraktHidden">Вы хотите удалить этот предмет из вашего аккаунта Trakt.tv \'Скрытое\'?</string>
   <string name="textRemoveFromTraktWatchlist">Вы хотите удалить этот предмет из вашего аккаунта Trakt.tv \'Буду смотреть\'?</string>
   <string name="textRemoveFromTraktProgress">Вы хотите удалить этот предмет из вашего аккаунта Trakt.tv \'Прогресс\'?</string>
-  <string name="textPremiumAd">Станьте спонсором и получите доступ к бонусным функциям! Нажмите, чтобы увидеть больше.</string>
   <string name="menuPin">Закрепить</string>
   <string name="menuUnpin">Открепить</string>
   <string name="errorGeneral">Ой,… Что-то пошло не так.\nПожалуйста, свяжитесь с нами, если это повторится.</string>

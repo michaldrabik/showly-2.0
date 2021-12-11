@@ -30,7 +30,6 @@
   <string name="textNoDescription">Aperçu non disponible.</string>
   <string name="textPleaseWait">Veuillez patienter…</string>
   <string name="textRate">Noter</string>
-  <string name="textLink">Lien</string>
   <string name="textRateSaved">Votre évaluation a été enregistrée.</string>
   <string name="textPeople">Personnes :</string>
   <string name="textDirecting">Réalisation</string>
@@ -86,7 +85,6 @@
   <string name="textRemoveFromTraktHidden">Voulez-vous retirer cet élément des \'Éléments masqués\' de votre compte Trakt.tv ?</string>
   <string name="textRemoveFromTraktWatchlist">Voulez-vous retirer cet élément de la liste \'Watchlist\' de votre compte Trakt.tv ?</string>
   <string name="textRemoveFromTraktProgress">Voulez-vous retirer cet élément de la liste \'Progression\' de votre compte Trakt.tv ?</string>
-  <string name="textPremiumAd">Devenez un supporteur et accédez à des fonctionnalités bonus ! Cliquez pour en savoir plus.</string>
   <string name="menuPin">Épingler en haut</string>
   <string name="menuUnpin">Désépingler du haut</string>
   <string name="errorGeneral">Oups… Quelque chose s\'est mal passé.\nVeuillez nous contacter si cela continue de se produire.</string>
