@@ -5,15 +5,14 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
-import android.graphics.Color.TRANSPARENT
 import android.graphics.Typeface.BOLD
 import android.graphics.Typeface.NORMAL
 import android.net.Uri
 import android.os.Bundle
-import android.transition.TransitionManager
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
 import android.view.animation.AnimationUtils
+import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
@@ -22,6 +21,7 @@ import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
+import androidx.fragment.app.clearFragmentResultListener
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,15 +29,12 @@ import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.transition.platform.MaterialContainerTransform
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.common.Config.INITIAL_RATING
-import com.michaldrabik.common.Config.TMDB_IMAGE_BASE_ACTOR_FULL_URL
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_base.Analytics
@@ -66,12 +63,12 @@ import com.michaldrabik.ui_base.utilities.extensions.screenHeight
 import com.michaldrabik.ui_base.utilities.extensions.screenWidth
 import com.michaldrabik.ui_base.utilities.extensions.setTextIfEmpty
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
+import com.michaldrabik.ui_base.utilities.extensions.trimWithSuffix
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
 import com.michaldrabik.ui_episodes.details.EpisodeDetailsBottomSheet
-import com.michaldrabik.ui_model.Actor
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Genre
@@ -81,6 +78,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageFamily.SHOW
 import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
 import com.michaldrabik.ui_model.ImageType.FANART
+import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.Season
@@ -104,28 +102,23 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_EPISODE_DETAILS
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MANAGE_LISTS
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_PERSON_DETAILS
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_REMOVE_TRAKT
+import com.michaldrabik.ui_people.details.PersonDetailsBottomSheet
+import com.michaldrabik.ui_people.list.PeopleListBottomSheet
 import com.michaldrabik.ui_show.actors.ActorsAdapter
 import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
 import com.michaldrabik.ui_show.helpers.ShowLink
-import com.michaldrabik.ui_show.helpers.ShowLink.IMDB
-import com.michaldrabik.ui_show.helpers.ShowLink.METACRITIC
-import com.michaldrabik.ui_show.helpers.ShowLink.ROTTEN
-import com.michaldrabik.ui_show.helpers.ShowLink.TRAKT
 import com.michaldrabik.ui_show.helpers.StreamingsBundle
 import com.michaldrabik.ui_show.quickSetup.QuickSetupView
 import com.michaldrabik.ui_show.related.RelatedListItem
 import com.michaldrabik.ui_show.related.RelatedShowAdapter
 import com.michaldrabik.ui_show.seasons.SeasonListItem
 import com.michaldrabik.ui_show.seasons.SeasonsAdapter
-import com.michaldrabik.ui_show.views.AddToShowsButton.State.ADD
-import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_HIDDEN
-import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_MY_SHOWS
-import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_WATCHLIST
+import com.michaldrabik.ui_show.views.AddToShowsButton
 import com.michaldrabik.ui_streamings.recycler.StreamingAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_show_details.*
-import kotlinx.android.synthetic.main.fragment_show_details_actor_full_view.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
 import kotlinx.coroutines.flow.collect
 import java.time.Duration
@@ -143,6 +136,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private var relatedAdapter: RelatedShowAdapter? = null
   private var seasonsAdapter: SeasonsAdapter? = null
   private var streamingAdapter: StreamingAdapter? = null
+  private var lastOpenedPerson: Person? = null
 
   private val imageHeight by lazy {
     if (resources.configuration.orientation == ORIENTATION_PORTRAIT) screenHeight()
@@ -151,7 +145,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private val imageRatio by lazy { resources.getString(R.string.detailsImageRatio).toFloat() }
   private val imagePadded by lazy { resources.getBoolean(R.bool.detailsImagePadded) }
 
-  private val actorViewCorner by lazy { requireContext().dimenToPx(R.dimen.actorFullTileCorner) }
   private val animationEnterRight by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_in_from_right) }
   private val animationExitRight by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_right) }
   private val animationEnterLeft by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_in_from_left) }
@@ -169,13 +162,14 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
-      { viewModel.messageState.collect { renderSnack(it) } },
+      { viewModel.messageChannel.collect { renderSnack(it) } },
       doAfterLaunch = {
         if (!isInitialized) {
           viewModel.loadDetails(showId)
           isInitialized = true
         }
         viewModel.loadPremium()
+        lastOpenedPerson?.let { openPersonSheet(it) }
       }
     )
   }
@@ -184,7 +178,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     hideNavigation()
     showDetailsImageGuideline.setGuidelineBegin((imageHeight * imageRatio).toInt())
     showDetailsEpisodesView.itemClickListener = { show, episode, season, isWatched ->
-      showEpisodeDetails(show, episode, season, isWatched, episode.hasAired(season))
+      openEpisodeDetails(show, episode, season, isWatched, episode.hasAired(season))
     }
     listOf(showDetailsBackArrow, showDetailsBackArrow2).onClick { requireActivity().onBackPressed() }
     showDetailsImage.onClick {
@@ -205,9 +199,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
     showDetailsCommentsView.run {
       onRepliesClickListener = { viewModel.loadCommentReplies(it) }
-      onReplyCommentClickListener = { showPostCommentSheet(comment = it) }
+      onReplyCommentClickListener = { openPostCommentSheet(comment = it) }
       onDeleteCommentClickListener = { openDeleteCommentDialog(it) }
-      onPostCommentClickListener = { showPostCommentSheet() }
+      onPostCommentClickListener = { openPostCommentSheet() }
     }
     showDetailsTipGallery.onClick {
       it.gone()
@@ -247,7 +241,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private fun setupActorsList() {
     actorsAdapter = ActorsAdapter().apply {
-      itemClickListener = { showFullActorView(it) }
+      itemClickListener = { openPersonSheet(it) }
     }
     showDetailsActorsRecycler.apply {
       setHasFixedSize(true)
@@ -349,139 +343,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     viewModel.refreshAnnouncements()
   }
 
-  private fun showEpisodeDetails(
-    show: Show,
-    episode: Episode,
-    season: Season?,
-    isWatched: Boolean,
-    showButton: Boolean = true,
-    showTabs: Boolean = true,
-  ) {
-    if (!checkNavigation(R.id.showDetailsFragment)) return
-    if (season !== null) {
-      setFragmentResultListener(REQUEST_EPISODE_DETAILS) { _, bundle ->
-        when {
-          bundle.containsKey(ACTION_RATING_CHANGED) -> viewModel.refreshEpisodesRatings()
-          bundle.containsKey(ACTION_EPISODE_WATCHED) -> {
-            val watched = bundle.getBoolean(ACTION_EPISODE_WATCHED)
-            viewModel.setWatchedEpisode(episode, season, watched)
-          }
-          bundle.containsKey(ACTION_EPISODE_TAB_SELECTED) -> {
-            val selectedEpisode = bundle.getParcelable<Episode>(ACTION_EPISODE_TAB_SELECTED)!!
-            showDetailsEpisodesView.selectEpisode(selectedEpisode)
-          }
-        }
-      }
-    }
-    val bundle = Bundle().apply {
-      val seasonEpisodes = season?.episodes?.map { it.number }?.toIntArray()
-      putLong(EpisodeDetailsBottomSheet.ARG_ID_TRAKT, show.traktId)
-      putLong(EpisodeDetailsBottomSheet.ARG_ID_TMDB, show.ids.tmdb.id)
-      putParcelable(EpisodeDetailsBottomSheet.ARG_EPISODE, episode)
-      putIntArray(EpisodeDetailsBottomSheet.ARG_SEASON_EPISODES, seasonEpisodes)
-      putBoolean(EpisodeDetailsBottomSheet.ARG_IS_WATCHED, isWatched)
-      putBoolean(EpisodeDetailsBottomSheet.ARG_SHOW_BUTTON, showButton)
-      putBoolean(EpisodeDetailsBottomSheet.ARG_SHOW_TABS, showTabs)
-    }
-    navigateTo(R.id.actionShowDetailsFragmentEpisodeDetails, bundle)
-  }
-
-  private fun showCustomImagesSheet(showId: Long, isPremium: Boolean?) {
-    if (isPremium == false) {
-      navigateTo(R.id.actionShowDetailsFragmentToPremium)
-      return
-    }
-
-    setFragmentResultListener(REQUEST_CUSTOM_IMAGE) { _, bundle ->
-      viewModel.loadBackgroundImage()
-      if (!bundle.getBoolean(ARG_CUSTOM_IMAGE_CLEARED)) showCustomImagesSheet(showId, true)
-    }
-
-    val bundle = bundleOf(
-      ARG_SHOW_ID to showId,
-      ARG_FAMILY to SHOW
-    )
-    navigateTo(R.id.actionShowDetailsFragmentToCustomImages, bundle)
-  }
-
-  private fun showPostCommentSheet(comment: Comment? = null) {
-    setFragmentResultListener(REQUEST_COMMENT) { _, bundle ->
-      showSnack(MessageEvent.info(R.string.textCommentPosted))
-      when (bundle.getString(ARG_COMMENT_ACTION)) {
-        ACTION_NEW_COMMENT -> {
-          val newComment = bundle.getParcelable<Comment>(ARG_COMMENT)!!
-          viewModel.addNewComment(newComment)
-          if (comment == null) showDetailsCommentsView.resetScroll()
-        }
-      }
-    }
-
-    val bundle = when {
-      comment != null -> bundleOf(
-        ARG_COMMENT_ID to comment.getReplyId(),
-        ARG_REPLY_USER to comment.user.username
-      )
-      else -> bundleOf(ARG_SHOW_ID to showId.id)
-    }
-    navigateTo(R.id.actionShowDetailsFragmentToPostComment, bundle)
-  }
-
-  private fun showFullActorView(actor: Actor) {
-    if (showDetailsActorFullContainer.isVisible) {
-      return
-    }
-
-    Glide.with(this)
-      .load("$TMDB_IMAGE_BASE_ACTOR_FULL_URL${actor.image}")
-      .transform(CenterCrop(), RoundedCorners(actorViewCorner))
-      .into(showDetailsActorFullImage)
-
-    val actorView = showDetailsActorsRecycler.findViewWithTag<View>(actor.tmdbId)
-    val transform = MaterialContainerTransform().apply {
-      startView = actorView
-      endView = showDetailsActorFullContainer
-      scrimColor = TRANSPARENT
-      addTarget(showDetailsActorFullContainer)
-    }
-    TransitionManager.beginDelayedTransition(showDetailsRoot, transform)
-    actorView.gone()
-    showDetailsActorFullImdb.apply {
-      val hasImdbId = actor.imdbId != null
-      visibleIf(hasImdbId)
-      if (hasImdbId) {
-        onClick { openIMDbLink(IdImdb(actor.imdbId!!), "name") }
-      }
-    }
-    showDetailsActorFullName.apply {
-      text = getString(R.string.textActorRole, actor.name, actor.role)
-      fadeIn(withHardware = true)
-    }
-    showDetailsActorFullContainer.apply {
-      tag = actor
-      onClick { hideFullActorView(actor) }
-      visible()
-    }
-    showDetailsActorFullMask.apply {
-      onClick { hideFullActorView(actor) }
-      fadeIn(withHardware = true)
-    }
-  }
-
-  private fun hideFullActorView(actor: Actor) {
-    val actorView = showDetailsActorsRecycler.findViewWithTag<View>(actor.tmdbId)
-    val transform = MaterialContainerTransform().apply {
-      startView = showDetailsActorFullContainer
-      endView = actorView
-      scrimColor = TRANSPARENT
-      addTarget(actorView)
-    }
-    TransitionManager.beginDelayedTransition(showDetailsRoot, transform)
-    showDetailsActorFullContainer.gone()
-    actorView.visible()
-    showDetailsActorFullMask.fadeOut()
-    showDetailsActorFullName.fadeOut()
-  }
-
   private fun render(uiState: ShowDetailsUiState) {
     uiState.run {
       show?.let { show ->
@@ -514,7 +375,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           }
         }
         showDetailsCustomImagesLabel.visibleIf(Config.SHOW_PREMIUM)
-        showDetailsCustomImagesLabel.onClick { showCustomImagesSheet(show.traktId, isPremium) }
+        showDetailsCustomImagesLabel.onClick { openCustomImagesSheet(show.traktId, isPremium) }
         showDetailsLinksButton.onClick {
           val args = LinksBottomSheet.createBundle(show)
           navigateTo(R.id.actionShowDetailsFragmentToLinks, args)
@@ -530,10 +391,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       }
       followedState?.let {
         when {
-          it.isMyShows -> showDetailsAddButton.setState(IN_MY_SHOWS, it.withAnimation)
-          it.isWatchlist -> showDetailsAddButton.setState(IN_WATCHLIST, it.withAnimation)
-          it.isHidden -> showDetailsAddButton.setState(IN_HIDDEN, it.withAnimation)
-          else -> showDetailsAddButton.setState(ADD, it.withAnimation)
+          it.isMyShows -> showDetailsAddButton.setState(AddToShowsButton.State.IN_MY_SHOWS, it.withAnimation)
+          it.isWatchlist -> showDetailsAddButton.setState(AddToShowsButton.State.IN_WATCHLIST, it.withAnimation)
+          it.isHidden -> showDetailsAddButton.setState(AddToShowsButton.State.IN_HIDDEN, it.withAnimation)
+          else -> showDetailsAddButton.setState(AddToShowsButton.State.ADD, it.withAnimation)
         }
         showDetailsHideLabel.visibleIf(!it.isHidden)
       }
@@ -552,6 +413,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       ratings?.let { renderRatings(it, show) }
       nextEpisode?.let { renderNextEpisode(it) }
       actors?.let { renderActors(it) }
+      crew?.let { renderCrew(it) }
       streamings?.let { renderStreamings(it) }
       relatedShows?.let { renderRelatedShows(it) }
       translation?.let { renderTranslation(it) }
@@ -608,15 +470,15 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     if (showDetailsRatings.isBound()) return
     showDetailsRatings.bind(ratings)
     show?.let {
-      showDetailsRatings.onTraktClick = { openShowLink(TRAKT, show.traktId.toString()) }
-      showDetailsRatings.onImdbClick = { openShowLink(IMDB, show.ids.imdb.id) }
-      showDetailsRatings.onMetaClick = { openShowLink(METACRITIC, show.title) }
+      showDetailsRatings.onTraktClick = { openShowLink(ShowLink.TRAKT, show.traktId.toString()) }
+      showDetailsRatings.onImdbClick = { openShowLink(ShowLink.IMDB, show.ids.imdb.id) }
+      showDetailsRatings.onMetaClick = { openShowLink(ShowLink.METACRITIC, show.title) }
       showDetailsRatings.onRottenClick = {
         val url = it.rottenTomatoesUrl
         if (!url.isNullOrBlank()) {
-          openWebUrl(url) ?: openShowLink(ROTTEN, "${show.title} ${show.year}")
+          openWebUrl(url) ?: openShowLink(ShowLink.ROTTEN, "${show.title} ${show.year}")
         } else {
-          openShowLink(ROTTEN, "${show.title} ${show.year}")
+          openShowLink(ShowLink.ROTTEN, "${show.title} ${show.year}")
         }
       }
     }
@@ -656,7 +518,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
       with(showDetailsEpisodeCard) {
         onClick {
-          showEpisodeDetails(show, episode, null, isWatched = false, showButton = false, showTabs = false)
+          openEpisodeDetails(show, episode, null, isWatched = false, showButton = false, showTabs = false)
         }
         fadeIn(withHardware = true)
       }
@@ -669,12 +531,37 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
   }
 
-  private fun renderActors(actors: List<Actor>) {
+  private fun renderActors(actors: List<Person>) {
     if (actorsAdapter?.itemCount != 0) return
     actorsAdapter?.setItems(actors)
     showDetailsActorsRecycler.visibleIf(actors.isNotEmpty())
     showDetailsActorsEmptyView.visibleIf(actors.isEmpty())
     showDetailsActorsProgress.gone()
+  }
+
+  private fun renderCrew(crew: Map<Person.Department, List<Person>>) {
+
+    fun renderPeople(labelView: View, valueView: TextView, people: List<Person>, department: Person.Department) {
+      labelView.visibleIf(people.isNotEmpty())
+      valueView.visibleIf(people.isNotEmpty())
+      valueView.text = people
+        .take(2)
+        .joinToString("\n") { it.name.trimWithSuffix(20, "…") }
+        .plus(if (people.size > 2) "\n…" else "")
+      valueView.onClick { openPeopleListSheet(people, department) }
+    }
+
+    if (!crew.containsKey(Person.Department.DIRECTING)) {
+      return
+    }
+
+    val directors = crew[Person.Department.DIRECTING] ?: emptyList()
+    val writers = crew[Person.Department.WRITING] ?: emptyList()
+    val sound = crew[Person.Department.SOUND] ?: emptyList()
+
+    renderPeople(showDetailsDirectingLabel, showDetailsDirectingValue, directors, Person.Department.DIRECTING)
+    renderPeople(showDetailsWritingLabel, showDetailsWritingValue, writers, Person.Department.WRITING)
+    renderPeople(showDetailsMusicLabel, showDetailsMusicValue, sound, Person.Department.SOUND)
   }
 
   private fun renderSeasons(seasonsItems: List<SeasonListItem>) {
@@ -775,11 +662,91 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     id: String,
     country: AppCountry = UNITED_STATES,
   ) {
-    if (link == IMDB) {
+    if (link == ShowLink.IMDB) {
       openIMDbLink(IdImdb(id), "title")
     } else {
       openWebUrl(link.getUri(id, country)) ?: showSnack(MessageEvent.info(R.string.errorCouldNotFindApp))
     }
+  }
+
+  private fun openEpisodeDetails(
+    show: Show,
+    episode: Episode,
+    season: Season?,
+    isWatched: Boolean,
+    showButton: Boolean = true,
+    showTabs: Boolean = true,
+  ) {
+    if (!checkNavigation(R.id.showDetailsFragment)) return
+    if (season !== null) {
+      setFragmentResultListener(REQUEST_EPISODE_DETAILS) { _, bundle ->
+        when {
+          bundle.containsKey(ACTION_RATING_CHANGED) -> viewModel.refreshEpisodesRatings()
+          bundle.containsKey(ACTION_EPISODE_WATCHED) -> {
+            val watched = bundle.getBoolean(ACTION_EPISODE_WATCHED)
+            viewModel.setWatchedEpisode(episode, season, watched)
+          }
+          bundle.containsKey(ACTION_EPISODE_TAB_SELECTED) -> {
+            val selectedEpisode = bundle.getParcelable<Episode>(ACTION_EPISODE_TAB_SELECTED)!!
+            showDetailsEpisodesView.selectEpisode(selectedEpisode)
+          }
+        }
+      }
+    }
+    val bundle = Bundle().apply {
+      val seasonEpisodes = season?.episodes?.map { it.number }?.toIntArray()
+      putLong(EpisodeDetailsBottomSheet.ARG_ID_TRAKT, show.traktId)
+      putLong(EpisodeDetailsBottomSheet.ARG_ID_TMDB, show.ids.tmdb.id)
+      putParcelable(EpisodeDetailsBottomSheet.ARG_EPISODE, episode)
+      putIntArray(EpisodeDetailsBottomSheet.ARG_SEASON_EPISODES, seasonEpisodes)
+      putBoolean(EpisodeDetailsBottomSheet.ARG_IS_WATCHED, isWatched)
+      putBoolean(EpisodeDetailsBottomSheet.ARG_SHOW_BUTTON, showButton)
+      putBoolean(EpisodeDetailsBottomSheet.ARG_SHOW_TABS, showTabs)
+    }
+    navigateTo(R.id.actionShowDetailsFragmentEpisodeDetails, bundle)
+  }
+
+  private fun openPostCommentSheet(comment: Comment? = null) {
+    setFragmentResultListener(REQUEST_COMMENT) { _, bundle ->
+      showSnack(MessageEvent.info(R.string.textCommentPosted))
+      when (bundle.getString(ARG_COMMENT_ACTION)) {
+        ACTION_NEW_COMMENT -> {
+          val newComment = bundle.getParcelable<Comment>(ARG_COMMENT)!!
+          viewModel.addNewComment(newComment)
+          if (comment == null) showDetailsCommentsView.resetScroll()
+        }
+      }
+    }
+
+    val bundle = when {
+      comment != null -> bundleOf(
+        ARG_COMMENT_ID to comment.getReplyId(),
+        ARG_REPLY_USER to comment.user.username
+      )
+      else -> bundleOf(ARG_SHOW_ID to showId.id)
+    }
+    navigateTo(R.id.actionShowDetailsFragmentToPostComment, bundle)
+  }
+
+  private fun openPersonSheet(person: Person) {
+    lastOpenedPerson = null
+    setFragmentResultListener(REQUEST_PERSON_DETAILS) { _, _ ->
+      lastOpenedPerson = person
+    }
+    val bundle = PersonDetailsBottomSheet.createBundle(person, showId)
+    navigateTo(R.id.actionShowDetailsFragmentToPerson, bundle)
+  }
+
+  private fun openPeopleListSheet(people: List<Person>, department: Person.Department) {
+    if (people.isEmpty()) return
+    if (people.size == 1) {
+      openPersonSheet(people.first())
+      return
+    }
+    clearFragmentResultListener(REQUEST_PERSON_DETAILS)
+    val title = showDetailsTitle.text.toString()
+    val bundle = PeopleListBottomSheet.createBundle(showId, title, Mode.SHOWS, department)
+    navigateTo(R.id.actionShowDetailsFragmentToPeopleList, bundle)
   }
 
   private fun openRemoveTraktSheet(@IdRes action: Int) {
@@ -865,6 +832,26 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     navigateTo(R.id.actionShowDetailsFragmentToManageLists, bundle)
   }
 
+  private fun openCustomImagesSheet(showId: Long, isPremium: Boolean?) {
+    if (isPremium == false) {
+      navigateTo(R.id.actionShowDetailsFragmentToPremium)
+      return
+    }
+
+    setFragmentResultListener(REQUEST_CUSTOM_IMAGE) { _, bundle ->
+      viewModel.loadBackgroundImage()
+      if (!bundle.getBoolean(ARG_CUSTOM_IMAGE_CLEARED)) {
+        openCustomImagesSheet(showId, true)
+      }
+    }
+
+    val bundle = bundleOf(
+      ARG_SHOW_ID to showId,
+      ARG_FAMILY to SHOW
+    )
+    navigateTo(R.id.actionShowDetailsFragmentToCustomImages, bundle)
+  }
+
   override fun setupBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
     dispatcher.addCallback(viewLifecycleOwner) {
@@ -875,10 +862,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         }
         showDetailsCommentsView.isVisible -> {
           hideExtraView(showDetailsCommentsView)
-          return@addCallback
-        }
-        showDetailsActorFullContainer.isVisible -> {
-          hideFullActorView(showDetailsActorFullContainer.tag as Actor)
           return@addCallback
         }
         else -> {

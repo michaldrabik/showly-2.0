@@ -62,6 +62,11 @@ abstract class MovieView<Item : MovieListItem> : FrameLayout {
       return
     }
 
+    if (item.image.status == UNKNOWN && item.movie.ids.tvdb.id <= 0) {
+      onImageLoadFail(item)
+      return
+    }
+
     val unknownBase = when (item.image.type) {
       POSTER -> TVDB_IMAGE_BASE_POSTER_URL
       else -> TVDB_IMAGE_BASE_FANART_URL

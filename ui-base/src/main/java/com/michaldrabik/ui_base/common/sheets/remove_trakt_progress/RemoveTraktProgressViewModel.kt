@@ -33,7 +33,7 @@ class RemoveTraktProgressViewModel @Inject constructor(
         }
         finishedState.value = true
       } catch (error: Throwable) {
-        _messageState.emit(MessageEvent.error(R.string.errorTraktSyncGeneral))
+        _messageChannel.send(MessageEvent.error(R.string.errorTraktSyncGeneral))
         loadingState.value = false
       }
     }

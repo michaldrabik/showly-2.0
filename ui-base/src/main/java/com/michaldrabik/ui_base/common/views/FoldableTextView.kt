@@ -15,10 +15,17 @@ class FoldableTextView : AppCompatTextView {
     private const val MAX_LINES = 100
   }
 
+  private var initialLines = MIN_LINES
+
   init {
-    maxLines = MIN_LINES
+    maxLines = initialLines
     setOnClickListener {
-      maxLines = if (maxLines == MAX_LINES) MIN_LINES else MAX_LINES
+      maxLines = if (maxLines == MAX_LINES) initialLines else MAX_LINES
     }
+  }
+
+  fun setInitialLines(lines: Int) {
+    initialLines = lines
+    maxLines = lines
   }
 }

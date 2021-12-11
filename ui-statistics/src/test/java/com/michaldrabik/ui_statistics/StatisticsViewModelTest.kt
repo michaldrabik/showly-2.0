@@ -135,7 +135,7 @@ class StatisticsViewModelTest : BaseMockTest() {
     )
 
     coEvery { showsRepository.myShows.loadAll() } returns shows
-    coEvery { showsRepository.archiveShows.loadAll() } returns shows2
+    coEvery { showsRepository.hiddenShows.loadAll() } returns shows2
 
     coEvery { database.episodesDao().getAllWatchedForShows(any()) } returns listOf(
       TestData.createEpisode().copy(idShowTrakt = 1, runtime = 5),

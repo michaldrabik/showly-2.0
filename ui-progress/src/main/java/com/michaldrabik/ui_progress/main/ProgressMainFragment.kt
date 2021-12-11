@@ -86,7 +86,7 @@ class ProgressMainFragment :
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
-      { viewModel.messageState.collect { showSnack(it) } },
+      { viewModel.messageChannel.collect { showSnack(it) } },
       doAfterLaunch = { viewModel.loadProgress() }
     )
   }

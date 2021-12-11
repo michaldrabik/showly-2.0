@@ -3,15 +3,15 @@ package com.michaldrabik.ui_show.actors
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.michaldrabik.ui_model.Actor
+import com.michaldrabik.ui_model.Person
 
 class ActorsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-  private val items: MutableList<Actor> = mutableListOf()
+  private val items: MutableList<Person> = mutableListOf()
 
-  var itemClickListener: (Actor) -> Unit = {}
+  var itemClickListener: (Person) -> Unit = {}
 
-  fun setItems(items: List<Actor>) {
+  fun setItems(items: List<Person>) {
     this.items.apply {
       clear()
       addAll(items)

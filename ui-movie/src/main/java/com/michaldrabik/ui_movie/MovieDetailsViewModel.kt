@@ -18,12 +18,12 @@ import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
-import com.michaldrabik.ui_model.Actor
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
+import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.TraktRating
@@ -80,7 +80,8 @@ class MovieDetailsViewModel @Inject constructor(
   private val movieLoadingState = MutableStateFlow<Boolean?>(null)
   private val movieRatingsState = MutableStateFlow<Ratings?>(null)
   private val imageState = MutableStateFlow<Image?>(null)
-  private val actorsState = MutableStateFlow<List<Actor>?>(null)
+  private val actorsState = MutableStateFlow<List<Person>?>(null)
+  private val crewState = MutableStateFlow<Map<Person.Department, List<Person>>?>(null)
   private val relatedState = MutableStateFlow<List<RelatedListItem>?>(null)
   private val commentsState = MutableStateFlow<List<Comment>?>(null)
   private val commentsDateFormatState = MutableStateFlow<DateTimeFormatter?>(null)
@@ -134,7 +135,7 @@ class MovieDetailsViewModel @Inject constructor(
         loadBackgroundImage(movie)
         loadListsCount(movie)
         launch { loadRatings(movie) }
-        launch { loadActors(movie) }
+        launch { loadCastCrew(movie) }
         launch { loadStreamings(movie) }
         launch { loadRelatedMovies(movie) }
         launch { loadTranslation(movie) }
@@ -143,9 +144,9 @@ class MovieDetailsViewModel @Inject constructor(
         progressJob.cancel()
         if (error is HttpException && error.code() == 404) {
           // Malformed Trakt data or duplicate show.
-          _messageState.emit(MessageEvent.info(R.string.errorMalformedMovie))
+          _messageChannel.send(MessageEvent.info(R.string.errorMalformedMovie))
         } else {
-          _messageState.emit(MessageEvent.error(R.string.errorCouldNotLoadMovie))
+          _messageChannel.send(MessageEvent.error(R.string.errorCouldNotLoadMovie))
         }
         Logger.record(error, "Source" to "MovieDetailsViewModel")
         rethrowCancellation(error)
@@ -166,12 +167,20 @@ class MovieDetailsViewModel @Inject constructor(
     }
   }
 
-  private suspend fun loadActors(movie: Movie) {
+  private suspend fun loadCastCrew(movie: Movie) {
     try {
-      val actors = actorsCase.loadActors(movie)
+      val people = actorsCase.loadPeople(movie)
+
+      val actors = people.getOrDefault(Person.Department.ACTING, emptyList())
+      val crew = people.filter { it.key !in arrayOf(Person.Department.ACTING, Person.Department.UNKNOWN) }
+
       actorsState.value = actors
+      crewState.value = crew
+
+      actorsCase.preloadDetails(actors)
     } catch (error: Throwable) {
       actorsState.value = emptyList()
+      crewState.value = emptyMap()
       rethrowCancellation(error)
     }
   }
@@ -264,7 +273,7 @@ class MovieDetailsViewModel @Inject constructor(
         commentsState.value = currentComments
       } catch (t: Throwable) {
         commentsState.value = currentComments
-        _messageState.emit(MessageEvent.error(R.string.errorGeneral))
+        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
       }
     }
   }
@@ -309,12 +318,12 @@ class MovieDetailsViewModel @Inject constructor(
         }
 
         commentsState.value = currentComments
-        _messageState.emit(MessageEvent.info(R.string.textCommentDeleted))
+        _messageChannel.send(MessageEvent.info(R.string.textCommentDeleted))
       } catch (t: Throwable) {
         if (t is HttpException && t.code() == 409) {
-          _messageState.emit(MessageEvent.error(R.string.errorCommentDelete))
+          _messageChannel.send(MessageEvent.error(R.string.errorCommentDelete))
         } else {
-          _messageState.emit(MessageEvent.error(R.string.errorGeneral))
+          _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
         }
         commentsState.value = currentComments
       }
@@ -380,11 +389,11 @@ class MovieDetailsViewModel @Inject constructor(
         ratingsCase.addRating(movie, rating)
         val userRating = TraktRating(movie.ids.trakt, rating)
         ratingState.value = RatingState(rateLoading = false, rateAllowed = true, userRating = userRating)
-        _messageState.emit(MessageEvent.info(R.string.textRateSaved))
+        _messageChannel.send(MessageEvent.info(R.string.textRateSaved))
         Analytics.logMovieRated(movie, rating)
       } catch (error: Throwable) {
         ratingState.value = RatingState(rateLoading = false, rateAllowed = true)
-        _messageState.emit(MessageEvent.error(R.string.errorGeneral))
+        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
         Timber.e(error)
         rethrowCancellation(error)
       }
@@ -397,10 +406,10 @@ class MovieDetailsViewModel @Inject constructor(
         ratingState.value = RatingState(rateLoading = true, rateAllowed = true)
         ratingsCase.deleteRating(movie)
         ratingState.value = RatingState(rateLoading = false, rateAllowed = true, userRating = TraktRating.EMPTY)
-        _messageState.emit(MessageEvent.info(R.string.textShowRatingDeleted))
+        _messageChannel.send(MessageEvent.info(R.string.textShowRatingDeleted))
       } catch (error: Throwable) {
         ratingState.value = RatingState(rateLoading = false, rateAllowed = true)
-        _messageState.emit(MessageEvent.error(R.string.errorGeneral))
+        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
         Timber.e(error)
         rethrowCancellation(error)
       }
@@ -506,6 +515,7 @@ class MovieDetailsViewModel @Inject constructor(
     movieRatingsState,
     imageState,
     actorsState,
+    crewState,
     relatedState,
     commentsState,
     commentsDateFormatState,
@@ -520,27 +530,28 @@ class MovieDetailsViewModel @Inject constructor(
     listsCountState,
     removeTraktEvent,
     finishedEvent
-  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19 ->
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s20 ->
     MovieDetailsUiState(
       movie = s1,
       movieLoading = s2,
       ratings = s3,
       image = s4,
       actors = s5,
-      relatedMovies = s6,
-      comments = s7,
-      commentsDateFormat = s8,
-      followedState = s9,
-      ratingState = s10,
-      streamings = s11,
-      translation = s12,
-      country = s13,
-      dateFormat = s14,
-      isSignedIn = s15,
-      isPremium = s16,
-      listsCount = s17,
-      removeFromTrakt = s18,
-      isFinished = s19
+      crew = s6,
+      relatedMovies = s7,
+      comments = s8,
+      commentsDateFormat = s9,
+      followedState = s10,
+      ratingState = s11,
+      streamings = s12,
+      translation = s13,
+      country = s14,
+      dateFormat = s15,
+      isSignedIn = s16,
+      isPremium = s17,
+      listsCount = s18,
+      removeFromTrakt = s19,
+      isFinished = s20
     )
   }.stateIn(
     scope = viewModelScope,

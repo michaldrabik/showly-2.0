@@ -148,7 +148,7 @@ class DiscoverViewModel @Inject constructor(
 
   private suspend fun onError(error: Throwable) {
     if (error !is CancellationException) {
-      _messageState.emit(MessageEvent.error(R.string.errorCouldNotLoadDiscover))
+      _messageChannel.send(MessageEvent.error(R.string.errorCouldNotLoadDiscover))
       Timber.e(error)
     }
     rethrowCancellation(error)

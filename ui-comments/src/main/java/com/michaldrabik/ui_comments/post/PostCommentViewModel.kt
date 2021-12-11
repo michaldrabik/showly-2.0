@@ -118,9 +118,9 @@ class PostCommentViewModel @Inject constructor(
 
   private suspend fun handleError(error: Throwable) {
     if (error is HttpException && error.code() == 422) {
-      _messageState.emit(MessageEvent.error(R.string.errorCommentFormat))
+      _messageChannel.send(MessageEvent.error(R.string.errorCommentFormat))
     } else {
-      _messageState.emit(MessageEvent.error(R.string.errorGeneral))
+      _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
     }
     loadingState.value = false
   }

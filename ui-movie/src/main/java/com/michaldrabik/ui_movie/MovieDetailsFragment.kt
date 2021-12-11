@@ -5,15 +5,14 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
-import android.graphics.Color.TRANSPARENT
 import android.graphics.Typeface.BOLD
 import android.graphics.Typeface.NORMAL
 import android.net.Uri
 import android.os.Bundle
-import android.transition.TransitionManager
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
@@ -22,21 +21,19 @@ import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
+import androidx.fragment.app.clearFragmentResultListener
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.transition.platform.MaterialContainerTransform
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.common.Config.INITIAL_RATING
-import com.michaldrabik.common.Config.TMDB_IMAGE_BASE_ACTOR_FULL_URL
 import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseFragment
@@ -64,11 +61,11 @@ import com.michaldrabik.ui_base.utilities.extensions.screenHeight
 import com.michaldrabik.ui_base.utilities.extensions.screenWidth
 import com.michaldrabik.ui_base.utilities.extensions.setTextIfEmpty
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
+import com.michaldrabik.ui_base.utilities.extensions.trimWithSuffix
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
-import com.michaldrabik.ui_model.Actor
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.IdImdb
@@ -78,6 +75,8 @@ import com.michaldrabik.ui_model.ImageFamily.MOVIE
 import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
 import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.Movie
+import com.michaldrabik.ui_model.Person
+import com.michaldrabik.ui_model.Person.Department
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.Translation
@@ -108,10 +107,11 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MANAGE_LISTS
+import com.michaldrabik.ui_people.details.PersonDetailsBottomSheet
+import com.michaldrabik.ui_people.list.PeopleListBottomSheet
 import com.michaldrabik.ui_streamings.recycler.StreamingAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_movie_details.*
-import kotlinx.android.synthetic.main.fragment_movie_details_actor_full_view.*
 import kotlinx.coroutines.flow.collect
 import java.util.Locale.ENGLISH
 import java.util.Locale.ROOT
@@ -127,6 +127,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   private var actorsAdapter: ActorsAdapter? = null
   private var streamingAdapter: StreamingAdapter? = null
   private var relatedAdapter: RelatedMovieAdapter? = null
+  private var lastOpenedPerson: Person? = null
 
   private val imageHeight by lazy {
     if (resources.configuration.orientation == ORIENTATION_PORTRAIT) screenHeight()
@@ -135,7 +136,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   private val imageRatio by lazy { resources.getString(R.string.detailsImageRatio).toFloat() }
   private val imagePadded by lazy { resources.getBoolean(R.bool.detailsImagePadded) }
 
-  private val actorViewCorner by lazy { requireContext().dimenToPx(R.dimen.actorMovieFullTileCorner) }
   private val animationEnterRight by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_in_from_right) }
   private val animationExitRight by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_right) }
   private val animationEnterLeft by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_in_from_left) }
@@ -152,13 +152,14 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
-      { viewModel.messageState.collect { renderSnack(it) } },
+      { viewModel.messageChannel.collect { renderSnack(it) } },
       doAfterLaunch = {
         if (!isInitialized) {
           viewModel.loadDetails(movieId)
           isInitialized = true
         }
         viewModel.loadPremium()
+        lastOpenedPerson?.let { openPersonSheet(it) }
       }
     )
   }
@@ -185,9 +186,9 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     }
     movieDetailsCommentsView.run {
       onRepliesClickListener = { viewModel.loadCommentReplies(it) }
-      onReplyCommentClickListener = { showPostCommentSheet(comment = it) }
+      onReplyCommentClickListener = { openPostCommentSheet(comment = it) }
       onDeleteCommentClickListener = { openDeleteCommentDialog(it) }
-      onPostCommentClickListener = { showPostCommentSheet() }
+      onPostCommentClickListener = { openPostCommentSheet() }
     }
     movieDetailsAddButton.run {
       isEnabled = false
@@ -226,7 +227,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 
   private fun setupActorsList() {
     actorsAdapter = ActorsAdapter().apply {
-      itemClickListener = { showFullActorView(it) }
+      itemClickListener = { openPersonSheet(it) }
     }
     movieDetailsActorsRecycler.apply {
       setHasFixedSize(true)
@@ -288,99 +289,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     movieDetailsBackArrow2.crossfadeTo(movieDetailsBackArrow)
   }
 
-  private fun showFullActorView(actor: Actor) {
-    if (movieDetailsActorFullContainer.isVisible) {
-      return
-    }
-
-    Glide.with(this)
-      .load("$TMDB_IMAGE_BASE_ACTOR_FULL_URL${actor.image}")
-      .transform(CenterCrop(), RoundedCorners(actorViewCorner))
-      .into(movieDetailsActorFullImage)
-
-    val actorView = movieDetailsActorsRecycler.findViewWithTag<View>(actor.tmdbId)
-    val transform = MaterialContainerTransform().apply {
-      startView = actorView
-      endView = movieDetailsActorFullContainer
-      scrimColor = TRANSPARENT
-      addTarget(movieDetailsActorFullContainer)
-    }
-    TransitionManager.beginDelayedTransition(movieDetailsRoot, transform)
-    actorView.gone()
-    movieDetailsActorFullImdb.apply {
-      val imdbId = actor.imdbId != null
-      visibleIf(imdbId)
-      if (imdbId) onClick { openIMDbLink(IdImdb(actor.imdbId!!), "name") }
-    }
-    movieDetailsActorFullName.apply {
-      text = getString(R.string.textActorRole, actor.name, actor.role)
-      fadeIn()
-    }
-    movieDetailsActorFullContainer.apply {
-      tag = actor
-      onClick { hideFullActorView(actor) }
-      visible()
-    }
-    movieDetailsActorFullMask.apply {
-      onClick { hideFullActorView(actor) }
-      fadeIn()
-    }
-  }
-
-  private fun hideFullActorView(actor: Actor) {
-    val actorView = movieDetailsActorsRecycler.findViewWithTag<View>(actor.tmdbId)
-    val transform = MaterialContainerTransform().apply {
-      startView = movieDetailsActorFullContainer
-      endView = actorView
-      scrimColor = TRANSPARENT
-      addTarget(actorView)
-    }
-    TransitionManager.beginDelayedTransition(movieDetailsRoot, transform)
-    movieDetailsActorFullContainer.gone()
-    actorView.visible()
-    movieDetailsActorFullMask.fadeOut(withHardware = true)
-    movieDetailsActorFullName.fadeOut(withHardware = true)
-  }
-
-  private fun showCustomImagesSheet(movieId: Long, isPremium: Boolean?) {
-    if (isPremium == false) {
-      navigateTo(R.id.actionMovieDetailsFragmentToPremium)
-      return
-    }
-
-    setFragmentResultListener(REQUEST_CUSTOM_IMAGE) { _, bundle ->
-      viewModel.loadBackgroundImage()
-      if (!bundle.getBoolean(ARG_CUSTOM_IMAGE_CLEARED)) showCustomImagesSheet(movieId, true)
-    }
-
-    val bundle = bundleOf(
-      ARG_MOVIE_ID to movieId,
-      ARG_FAMILY to MOVIE
-    )
-    navigateTo(R.id.actionMovieDetailsFragmentToCustomImages, bundle)
-  }
-
-  private fun showPostCommentSheet(comment: Comment? = null) {
-    setFragmentResultListener(REQUEST_COMMENT) { _, bundle ->
-      showSnack(MessageEvent.info(R.string.textCommentPosted))
-      when (bundle.getString(ARG_COMMENT_ACTION)) {
-        ACTION_NEW_COMMENT -> {
-          val newComment = bundle.getParcelable<Comment>(ARG_COMMENT)!!
-          viewModel.addNewComment(newComment)
-          if (comment == null) movieDetailsCommentsView.resetScroll()
-        }
-      }
-    }
-    val bundle = when {
-      comment != null -> bundleOf(
-        ARG_COMMENT_ID to comment.getReplyId(),
-        ARG_REPLY_USER to comment.user.username
-      )
-      else -> bundleOf(ARG_MOVIE_ID to movieId.id)
-    }
-    navigateTo(R.id.actionMovieDetailsFragmentToPostComment, bundle)
-  }
-
   private fun render(uiState: MovieDetailsUiState) {
     uiState.run {
       movie?.let { movie ->
@@ -426,7 +334,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         }
         movieDetailsSeparator5.visible()
         movieDetailsCustomImagesLabel.visibleIf(Config.SHOW_PREMIUM)
-        movieDetailsCustomImagesLabel.onClick { showCustomImagesSheet(movie.traktId, isPremium) }
+        movieDetailsCustomImagesLabel.onClick { openCustomImagesSheet(movie.traktId, isPremium) }
         movieDetailsAddButton.isEnabled = true
       }
       movieLoading?.let {
@@ -447,6 +355,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       }
       image?.let { renderImage(it) }
       actors?.let { renderActors(it) }
+      crew?.let { renderCrew(it) }
       streamings?.let { renderStreamings(it) }
       translation?.let { renderTranslation(it) }
       relatedMovies?.let { renderRelatedMovies(it) }
@@ -548,12 +457,37 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       .into(movieDetailsImage)
   }
 
-  private fun renderActors(actors: List<Actor>) {
+  private fun renderActors(actors: List<Person>) {
     if (actorsAdapter?.itemCount != 0) return
     actorsAdapter?.setItems(actors)
     movieDetailsActorsRecycler.visibleIf(actors.isNotEmpty())
     movieDetailsActorsEmptyView.visibleIf(actors.isEmpty())
     movieDetailsActorsProgress.gone()
+  }
+
+  private fun renderCrew(crew: Map<Department, List<Person>>) {
+
+    fun renderPeople(labelView: View, valueView: TextView, people: List<Person>, department: Department) {
+      labelView.visibleIf(people.isNotEmpty())
+      valueView.visibleIf(people.isNotEmpty())
+      valueView.text = people
+        .take(2)
+        .joinToString("\n") { it.name.trimWithSuffix(20, "…") }
+        .plus(if (people.size > 2) "\n…" else "")
+      valueView.onClick { openPeopleListSheet(people, department) }
+    }
+
+    if (!crew.containsKey(Department.DIRECTING)) {
+      return
+    }
+
+    val directors = crew[Department.DIRECTING] ?: emptyList()
+    val writers = crew[Department.WRITING] ?: emptyList()
+    val sound = crew[Department.SOUND] ?: emptyList()
+
+    renderPeople(movieDetailsDirectingLabel, movieDetailsDirectingValue, directors, Department.DIRECTING)
+    renderPeople(movieDetailsWritingLabel, movieDetailsWritingValue, writers, Department.WRITING)
+    renderPeople(movieDetailsMusicLabel, movieDetailsMusicValue, sound, Department.SOUND)
   }
 
   private fun renderStreamings(streamings: StreamingsState) {
@@ -633,6 +567,27 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     navigateTo(action, args)
   }
 
+  private fun openPersonSheet(person: Person) {
+    lastOpenedPerson = null
+    setFragmentResultListener(NavigationArgs.REQUEST_PERSON_DETAILS) { _, _ ->
+      lastOpenedPerson = person
+    }
+    val bundle = PersonDetailsBottomSheet.createBundle(person, movieId)
+    navigateTo(R.id.actionMovieDetailsFragmentToPerson, bundle)
+  }
+
+  private fun openPeopleListSheet(people: List<Person>, department: Department) {
+    if (people.isEmpty()) return
+    if (people.size == 1) {
+      openPersonSheet(people.first())
+      return
+    }
+    clearFragmentResultListener(NavigationArgs.REQUEST_PERSON_DETAILS)
+    val title = movieDetailsTitle.text.toString()
+    val bundle = PeopleListBottomSheet.createBundle(movieId, title, Mode.MOVIES, department)
+    navigateTo(R.id.actionMovieDetailsFragmentToPeopleList, bundle)
+  }
+
   private fun openShareSheet(movie: Movie) {
     val intent = Intent().apply {
       val text = "Hey! Check out ${movie.title}:\nhttps://trakt.tv/movies/${movie.ids.slug.id}\nhttps://www.imdb.com/title/${movie.ids.imdb.id}"
@@ -685,16 +640,51 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     navigateTo(R.id.actionMovieDetailsFragmentToManageLists, bundle)
   }
 
+  private fun openCustomImagesSheet(movieId: Long, isPremium: Boolean?) {
+    if (isPremium == false) {
+      navigateTo(R.id.actionMovieDetailsFragmentToPremium)
+      return
+    }
+
+    setFragmentResultListener(REQUEST_CUSTOM_IMAGE) { _, bundle ->
+      viewModel.loadBackgroundImage()
+      if (!bundle.getBoolean(ARG_CUSTOM_IMAGE_CLEARED)) openCustomImagesSheet(movieId, true)
+    }
+
+    val bundle = bundleOf(
+      ARG_MOVIE_ID to movieId,
+      ARG_FAMILY to MOVIE
+    )
+    navigateTo(R.id.actionMovieDetailsFragmentToCustomImages, bundle)
+  }
+
+  private fun openPostCommentSheet(comment: Comment? = null) {
+    setFragmentResultListener(REQUEST_COMMENT) { _, bundle ->
+      showSnack(MessageEvent.info(R.string.textCommentPosted))
+      when (bundle.getString(ARG_COMMENT_ACTION)) {
+        ACTION_NEW_COMMENT -> {
+          val newComment = bundle.getParcelable<Comment>(ARG_COMMENT)!!
+          viewModel.addNewComment(newComment)
+          if (comment == null) movieDetailsCommentsView.resetScroll()
+        }
+      }
+    }
+    val bundle = when {
+      comment != null -> bundleOf(
+        ARG_COMMENT_ID to comment.getReplyId(),
+        ARG_REPLY_USER to comment.user.username
+      )
+      else -> bundleOf(ARG_MOVIE_ID to movieId.id)
+    }
+    navigateTo(R.id.actionMovieDetailsFragmentToPostComment, bundle)
+  }
+
   override fun setupBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
     dispatcher.addCallback(viewLifecycleOwner) {
       when {
         movieDetailsCommentsView.isVisible -> {
           hideExtraView(movieDetailsCommentsView)
-          return@addCallback
-        }
-        movieDetailsActorFullContainer.isVisible -> {
-          hideFullActorView(movieDetailsActorFullContainer.tag as Actor)
           return@addCallback
         }
         else -> {

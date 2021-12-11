@@ -86,14 +86,14 @@ class TraktSyncViewModel @Inject constructor(
           throw IllegalStateException("Invalid Trakt authorization code.")
         }
         userManager.authorize(code)
-        _messageState.emit(info(R.string.textTraktLoginSuccess))
+        _messageChannel.send(info(R.string.textTraktLoginSuccess))
         invalidate()
       } catch (error: Throwable) {
         val message = when {
           error is HttpException && error.code() == 423 -> R.string.errorTraktLocked
           else -> R.string.errorAuthorization
         }
-        _messageState.emit(error(message))
+        _messageChannel.send(error(message))
       }
     }
   }
@@ -116,7 +116,7 @@ class TraktSyncViewModel @Inject constructor(
         is TraktSyncStart -> {
           progressState.value = true
           progressStatusState.value = ""
-          _messageState.emit(info(R.string.textTraktSyncStarted))
+          _messageChannel.send(info(R.string.textTraktSyncStarted))
         }
         is TraktSyncProgress -> {
           progressState.value = true
@@ -125,12 +125,12 @@ class TraktSyncViewModel @Inject constructor(
         is TraktSyncSuccess -> {
           progressState.value = false
           progressStatusState.value = ""
-          _messageState.emit(info(R.string.textTraktSyncComplete))
+          _messageChannel.send(info(R.string.textTraktSyncComplete))
         }
         is TraktSyncError -> {
           progressState.value = false
           progressStatusState.value = ""
-          _messageState.emit(info(R.string.textTraktSyncError))
+          _messageChannel.send(info(R.string.textTraktSyncError))
         }
         is TraktSyncAuthError -> {
           viewModelScope.launch {
@@ -138,7 +138,7 @@ class TraktSyncViewModel @Inject constructor(
             progressState.value = false
             progressStatusState.value = ""
             authErrorState.value = true
-            _messageState.emit(error(R.string.errorTraktAuthorization))
+            _messageChannel.send(error(R.string.errorTraktAuthorization))
           }
         }
         else -> Timber.d("Unsupported sync event")

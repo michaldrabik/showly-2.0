@@ -50,7 +50,7 @@ class RemoveTraktWatchlistBottomSheet : BaseBottomSheetFragment<RemoveTraktWatch
     setupView(view)
 
     launchAndRepeatStarted(
-      { viewModel.messageState.collect { renderSnackbar(it) } },
+      { viewModel.messageChannel.collect { renderSnackbar(it) } },
       { viewModel.uiState.collect { render(it) } }
     )
   }

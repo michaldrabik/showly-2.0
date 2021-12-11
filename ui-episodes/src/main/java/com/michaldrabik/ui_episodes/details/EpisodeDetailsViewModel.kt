@@ -235,12 +235,12 @@ class EpisodeDetailsViewModel @Inject constructor(
         }
 
         commentsState.value = current
-        _messageState.emit(MessageEvent.info(R.string.textCommentDeleted))
+        _messageChannel.send(MessageEvent.info(R.string.textCommentDeleted))
       } catch (t: Throwable) {
         if (t is HttpException && t.code() == 409) {
-          _messageState.emit(MessageEvent.error(R.string.errorCommentDelete))
+          _messageChannel.send(MessageEvent.error(R.string.errorCommentDelete))
         } else {
-          _messageState.emit(MessageEvent.error(R.string.errorGeneral))
+          _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
         }
         commentsState.value = current
       }
@@ -272,13 +272,13 @@ class EpisodeDetailsViewModel @Inject constructor(
 
         ratingsRepository.shows.addRating(token, episode, rating)
 
-        _messageState.emit(MessageEvent.info(R.string.textRateSaved))
+        _messageChannel.send(MessageEvent.info(R.string.textRateSaved))
         ratingState.value = RatingState(rateAllowed = true, rateLoading = false, userRating = TraktRating(episode.ids.trakt, rating))
         ratingChangeEvent.value = Event(true)
 
         Analytics.logEpisodeRated(showTraktId.id, episode, rating)
       } catch (error: Throwable) {
-        _messageState.emit(MessageEvent.error(R.string.errorGeneral))
+        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
         ratingState.value = RatingState(rateAllowed = true, rateLoading = false)
       }
     }
@@ -292,10 +292,10 @@ class EpisodeDetailsViewModel @Inject constructor(
         ratingsRepository.shows.deleteRating(token, episode)
         ratingState.value = RatingState(rateAllowed = true, rateLoading = false, userRating = TraktRating.EMPTY)
         ratingChangeEvent.value = Event(true)
-        _messageState.emit(MessageEvent.info(R.string.textShowRatingDeleted))
+        _messageChannel.send(MessageEvent.info(R.string.textShowRatingDeleted))
       } catch (error: Throwable) {
         ratingState.value = RatingState(rateAllowed = true, rateLoading = false)
-        _messageState.emit(MessageEvent.error(R.string.errorGeneral))
+        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
       }
     }
   }

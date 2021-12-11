@@ -89,6 +89,8 @@ abstract class BaseFragment<T : BaseViewModel>(@LayoutRes contentLayoutId: Int) 
 
   override fun showTip(tip: Tip) = (requireActivity() as TipsHost).showTip(tip)
 
+  override fun setTipShow(tip: Tip) = (requireActivity() as TipsHost).showTip(tip)
+
   protected fun isTraktSyncing() = (requireAppContext() as OnTraktSyncListener).isTraktSyncActive()
 
   private fun clearAnimations() {

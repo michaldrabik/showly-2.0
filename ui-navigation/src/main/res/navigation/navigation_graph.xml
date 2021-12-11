@@ -3,7 +3,9 @@
 <navigation
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/navigationGraph"
+  tools:ignore="InvalidNavigation"
   >
 
   <action
@@ -280,6 +282,16 @@
       app:destination="@id/linksDialog"
       app:launchSingleTop="true"
       />
+    <action
+      android:id="@+id/actionShowDetailsFragmentToPerson"
+      app:destination="@id/personDetailsDialog"
+      app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionShowDetailsFragmentToPeopleList"
+      app:destination="@id/peopleListDialog"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment
@@ -344,12 +356,28 @@
       app:destination="@id/linksDialog"
       app:launchSingleTop="true"
       />
+    <action
+      android:id="@+id/actionMovieDetailsFragmentToPerson"
+      app:destination="@id/personDetailsDialog"
+      app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionMovieDetailsFragmentToPeopleList"
+      app:destination="@id/peopleListDialog"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment
     android:id="@+id/artGalleryFragment"
     android:name="com.michaldrabik.ui_gallery.fanart.ArtGalleryFragment"
     android:label="fragmentArtGallery"
+    />
+
+  <fragment
+    android:id="@+id/personGalleryFragment"
+    android:name="com.michaldrabik.ui_people.gallery.PersonGalleryFragment"
+    android:label="fragmentPersonGallery"
     />
 
   <fragment
@@ -597,6 +625,51 @@
     />
 
   <dialog
+    android:id="@+id/personDetailsDialog"
+    android:name="com.michaldrabik.ui_people.details.PersonDetailsBottomSheet"
+    android:label="dialogPersonDetails"
+    >
+    <action
+      android:id="@+id/actionPersonDetailsDialogToLinks"
+      app:destination="@id/personLinksDialog"
+      app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionPersonDetailsDialogToShow"
+      app:destination="@id/showDetailsFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+    <action
+      android:id="@+id/actionPersonDetailsDialogToMovie"
+      app:destination="@id/movieDetailsFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+    <action
+      android:id="@+id/actionPersonDetailsDialogToGallery"
+      app:destination="@id/personGalleryFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+  </dialog>
+
+  <dialog
+    android:id="@+id/peopleListDialog"
+    android:name="com.michaldrabik.ui_people.list.PeopleListBottomSheet"
+    android:label="dialogPeopleList"
+    >
+    <action
+      android:id="@+id/actionPeopleListDialogToDetails"
+      app:destination="@id/personDetailsDialog"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+  </dialog>
+
+  <dialog
     android:id="@+id/customImagesDialog"
     android:name="com.michaldrabik.ui_gallery.custom.CustomImagesBottomSheet"
     android:label="dialogCustomImages"
@@ -674,6 +747,12 @@
     android:id="@+id/linksDialog"
     android:name="com.michaldrabik.ui_base.common.sheets.links.LinksBottomSheet"
     android:label="dialogLinks"
+    />
+
+  <dialog
+    android:id="@+id/personLinksDialog"
+    android:name="com.michaldrabik.ui_people.details.links.PersonLinksBottomSheet"
+    android:label="dialogPersonLinks"
     />
 
 </navigation>

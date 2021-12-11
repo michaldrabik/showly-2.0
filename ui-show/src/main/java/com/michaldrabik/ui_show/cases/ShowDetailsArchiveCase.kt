@@ -17,11 +17,11 @@ class ShowDetailsArchiveCase @Inject constructor(
 ) {
 
   suspend fun isArchived(show: Show) =
-    showsRepository.archiveShows.isArchived(show.ids.trakt)
+    showsRepository.hiddenShows.isArchived(show.ids.trakt)
 
   suspend fun addToArchive(show: Show, removeLocalData: Boolean) {
     database.withTransaction {
-      showsRepository.archiveShows.insert(show.ids.trakt)
+      showsRepository.hiddenShows.insert(show.ids.trakt)
       if (removeLocalData) {
         database.episodesDao().deleteAllUnwatchedForShow(show.traktId)
         val seasons = database.seasonsDao().getAllByShowId(show.traktId)
@@ -39,5 +39,5 @@ class ShowDetailsArchiveCase @Inject constructor(
   }
 
   suspend fun removeFromArchive(show: Show) =
-    showsRepository.archiveShows.delete(show.ids.trakt)
+    showsRepository.hiddenShows.delete(show.ids.trakt)
 }

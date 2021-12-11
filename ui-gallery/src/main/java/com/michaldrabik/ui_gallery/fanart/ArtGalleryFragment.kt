@@ -48,6 +48,7 @@ import kotlinx.android.synthetic.main.fragment_art_gallery.*
 import kotlinx.android.synthetic.main.view_gallery_url_dialog.view.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @SuppressLint("SetTextI18n", "DefaultLocale", "SourceLockedOrientationActivity")
 @AndroidEntryPoint
@@ -109,6 +110,7 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
         artGalleryPagerIndicator.visible()
         artGalleryPagerIndicator.setViewPager(artGalleryPager)
       }
+      else -> Timber.d("Unused orientation")
     }
   }
 

@@ -50,7 +50,7 @@ class RemoveTraktProgressBottomSheet : BaseBottomSheetFragment<RemoveTraktProgre
     setupView(view)
 
     launchAndRepeatStarted(
-      { viewModel.messageState.collect { renderSnackbar(it) } },
+      { viewModel.messageChannel.collect { renderSnackbar(it) } },
       { viewModel.uiState.collect { render(it) } }
     )
   }

@@ -5,11 +5,14 @@ import com.michaldrabik.data_remote.Config.TRAKT_CLIENT_ID
 import com.michaldrabik.data_remote.Config.TRAKT_CLIENT_SECRET
 import com.michaldrabik.data_remote.Config.TRAKT_REDIRECT_URL
 import com.michaldrabik.data_remote.Config.TRAKT_SYNC_PAGE_LIMIT
+import com.michaldrabik.data_remote.tmdb.model.TmdbPerson
 import com.michaldrabik.data_remote.trakt.model.Comment
 import com.michaldrabik.data_remote.trakt.model.CustomList
 import com.michaldrabik.data_remote.trakt.model.Episode
+import com.michaldrabik.data_remote.trakt.model.Ids
 import com.michaldrabik.data_remote.trakt.model.Movie
 import com.michaldrabik.data_remote.trakt.model.OAuthResponse
+import com.michaldrabik.data_remote.trakt.model.PersonCredit
 import com.michaldrabik.data_remote.trakt.model.Show
 import com.michaldrabik.data_remote.trakt.model.SyncExportItem
 import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
@@ -62,6 +65,28 @@ class TraktApi(private val service: TraktService) {
     if (withMovies) service.fetchSearchResultsMovies(query)
     else service.fetchSearchResults(query)
 
+  suspend fun fetchPersonIds(idType: String, id: String): Ids? {
+    val result = service.fetchPersonIds(idType, id)
+    if (result.isNotEmpty()) {
+      return result.first().person?.ids
+    }
+    return null
+  }
+
+  suspend fun fetchPersonShowsCredits(traktId: Long, type: TmdbPerson.Type): List<PersonCredit> {
+    val result = service.fetchPersonCredits(traktId = traktId, "shows")
+    val cast = result.cast ?: emptyList()
+    val crew = result.crew?.values?.flatten()?.distinctBy { it.show?.ids?.trakt } ?: emptyList()
+    return if (type == TmdbPerson.Type.CAST) cast else crew
+  }
+
+  suspend fun fetchPersonMoviesCredits(traktId: Long, type: TmdbPerson.Type): List<PersonCredit> {
+    val result = service.fetchPersonCredits(traktId = traktId, "movies")
+    val cast = result.cast ?: emptyList()
+    val crew = result.crew?.values?.flatten()?.distinctBy { it.movie?.ids?.trakt } ?: emptyList()
+    return if (type == TmdbPerson.Type.CAST) cast else crew
+  }
+
   suspend fun fetchSearchId(idType: String, id: String) =
     service.fetchSearchId(idType, id)
 
@@ -105,12 +130,6 @@ class TraktApi(private val service: TraktService) {
   } catch (t: Throwable) {
     emptyList()
   }
-
-  suspend fun fetchShowActors(traktId: Long) =
-    service.fetchShowPeople(traktId).cast ?: emptyList()
-
-  suspend fun fetchMovieActors(traktId: Long) =
-    service.fetchMoviePeople(traktId).cast ?: emptyList()
 
   suspend fun fetchAuthTokens(code: String): OAuthResponse {
     val request = OAuthRequest(

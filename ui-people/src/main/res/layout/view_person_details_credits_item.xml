@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/viewPersonCreditsItemRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:clipToPadding="false"
+    android:paddingStart="@dimen/spaceNormal"
+    android:paddingTop="@dimen/spaceSmall"
+    android:paddingEnd="@dimen/spaceNormal"
+    android:paddingBottom="@dimen/spaceSmall"
+    >
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/viewPersonCreditsItemGuide"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:layout_constraintGuide_begin="@dimen/personCreditsImageGuide"
+      />
+
+    <ImageView
+      android:id="@+id/viewPersonCreditsItemImage"
+      android:layout_width="@dimen/personCreditsImageWidth"
+      android:layout_height="@dimen/personCreditsImageHeight"
+      android:background="@drawable/bg_media_view_elevation"
+      android:elevation="@dimen/elevationSmall"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+    <ImageView
+      android:id="@+id/viewPersonCreditsItemPlaceholder"
+      android:layout_width="@dimen/personCreditsImageWidth"
+      android:layout_height="@dimen/personCreditsImageHeight"
+      android:layout_gravity="center"
+      android:background="@drawable/bg_media_view_placeholder"
+      android:elevation="@dimen/elevationSmall"
+      android:padding="14dp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_television"
+      app:tint="?attr/colorPlaceholderIcon"
+      tools:visibility="visible"
+      />
+
+    <ProgressBar
+      android:id="@+id/viewPersonCreditsItemProgress"
+      style="@style/ProgressBar.Dark"
+      android:layout_width="24dp"
+      android:layout_height="24dp"
+      android:layout_gravity="center"
+      android:layout_marginEnd="@dimen/spaceMedium"
+      android:translationZ="10dp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/viewPersonCreditsItemGuide"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:visibility="visible"
+      />
+
+    <ImageView
+      android:id="@+id/viewPersonCreditsItemBadge"
+      style="@style/Badge"
+      android:layout_width="18dp"
+      android:layout_height="18dp"
+      android:layout_marginTop="-5dp"
+      android:layout_marginEnd="12dp"
+      android:visibility="gone"
+      app:layout_constraintEnd_toStartOf="@id/viewPersonCreditsItemGuide"
+      app:layout_constraintTop_toTopOf="@id/viewPersonCreditsItemRoot"
+      app:srcCompat="@drawable/ic_bookmark_full"
+      tools:visibility="visible"
+      />
+
+    <ImageView
+      android:id="@+id/viewPersonCreditsItemWatchlistBadge"
+      style="@style/Badge.Watchlist"
+      android:layout_width="18dp"
+      android:layout_height="18dp"
+      android:layout_marginTop="-5dp"
+      android:layout_marginEnd="12dp"
+      android:visibility="gone"
+      app:layout_constraintEnd_toStartOf="@id/viewPersonCreditsItemGuide"
+      app:layout_constraintTop_toTopOf="@id/viewPersonCreditsItemRoot"
+      app:srcCompat="@drawable/ic_bookmark_full"
+      tools:visibility="visible"
+      />
+
+    <TextView
+      android:id="@+id/viewPersonCreditsItemTitle"
+      style="@style/CollectionItem.Title"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:textSize="16sp"
+      app:layout_constraintBottom_toTopOf="@id/viewPersonCreditsItemDescription"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/viewPersonCreditsItemGuide"
+      app:layout_constraintTop_toBottomOf="@+id/viewPersonCreditsItemNetwork"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:text="Game of Thrones"
+      />
+
+    <ImageView
+      android:id="@+id/viewPersonCreditsItemIcon"
+      android:layout_width="20dp"
+      android:layout_height="14dp"
+      android:layout_marginStart="-2dp"
+      app:layout_constraintBottom_toBottomOf="@id/viewPersonCreditsItemNetwork"
+      app:layout_constraintStart_toEndOf="@id/viewPersonCreditsItemGuide"
+      app:layout_constraintTop_toTopOf="@id/viewPersonCreditsItemNetwork"
+      app:srcCompat="@drawable/ic_television"
+      app:tint="?attr/colorAccent"
+      />
+
+    <TextView
+      android:id="@+id/viewPersonCreditsItemNetwork"
+      style="@style/CollectionItem.Header"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceMicro"
+      android:layout_marginBottom="@dimen/spaceMicro"
+      android:textSize="11sp"
+      app:layout_constraintBottom_toTopOf="@+id/viewPersonCreditsItemTitle"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/viewPersonCreditsItemIcon"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:ignore="SmallSp"
+      tools:text="2006 (Netflix)"
+      />
+
+    <TextView
+      android:id="@+id/viewPersonCreditsItemDescription"
+      style="@style/CollectionItem.Description"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:textSize="12sp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/viewPersonCreditsItemGuide"
+      app:layout_constraintTop_toBottomOf="@id/viewPersonCreditsItemTitle"
+      tools:text="Lorem Ipsum"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>

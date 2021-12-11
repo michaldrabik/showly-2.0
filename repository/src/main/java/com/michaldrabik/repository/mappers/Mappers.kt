@@ -11,7 +11,7 @@ class Mappers @Inject constructor(
   val movie: MovieMapper,
   val episode: EpisodeMapper,
   val season: SeasonMapper,
-  val actor: ActorMapper,
+  val person: PersonMapper,
   val comment: CommentMapper,
   val news: NewsMapper,
   val settings: SettingsMapper,

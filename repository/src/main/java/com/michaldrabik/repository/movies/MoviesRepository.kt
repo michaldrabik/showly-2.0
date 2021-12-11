@@ -16,11 +16,12 @@ class MoviesRepository @Inject constructor(
   val hiddenMovies: ArchiveMoviesRepository,
 ) {
 
-  suspend fun loadCollection() = coroutineScope {
-    val async1 = async { myMovies.loadAll() }
-    val async2 = async { watchlistMovies.loadAll() }
-    val async3 = async { hiddenMovies.loadAll() }
-    val (my, watchlist, hidden) = awaitAll(async1, async2, async3)
-    (my + watchlist + hidden).distinctBy { it.traktId }
-  }
+  suspend fun loadCollection(skipHidden: Boolean = false) =
+    coroutineScope {
+      val async1 = async { myMovies.loadAll() }
+      val async2 = async { watchlistMovies.loadAll() }
+      val async3 = async { if (skipHidden) emptyList() else hiddenMovies.loadAll() }
+      val (my, watchlist, hidden) = awaitAll(async1, async2, async3)
+      (my + watchlist + hidden).distinctBy { it.traktId }
+    }
 }

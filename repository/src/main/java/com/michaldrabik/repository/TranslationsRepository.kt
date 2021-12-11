@@ -74,7 +74,7 @@ class TranslationsRepository @Inject constructor(
     val translationDb = ShowTranslation.fromTraktId(
       show.traktId,
       translation.title,
-      translation.language,
+      language,
       translation.overview,
       nowUtcMillis()
     )
@@ -113,7 +113,7 @@ class TranslationsRepository @Inject constructor(
     val translationDb = MovieTranslation.fromTraktId(
       movie.traktId,
       translation.title,
-      translation.language,
+      language,
       translation.overview,
       nowUtcMillis()
     )
@@ -156,7 +156,7 @@ class TranslationsRepository @Inject constructor(
           traktShowId = showId.id,
           title = item.title,
           overview = item.overview,
-          language = item.language,
+          language = language,
           createdAt = nowMillis
         )
         database.episodeTranslationsDao().insert(dbItem)
@@ -192,7 +192,7 @@ class TranslationsRepository @Inject constructor(
           overview = translation?.overview ?: "",
           seasonNumber = season.number,
           episodeNumber = episode.number,
-          language = translation?.language ?: language,
+          language = language,
           isLocal = true
         )
       }
@@ -207,7 +207,7 @@ class TranslationsRepository @Inject constructor(
           item.ids.trakt.id,
           showId.id,
           item.title,
-          item.language,
+          language,
           item.overview,
           nowUtcMillis()
         )
@@ -222,7 +222,7 @@ class TranslationsRepository @Inject constructor(
         overview = translation?.overview ?: "",
         seasonNumber = season.number,
         episodeNumber = episode.number,
-        language = translation?.language ?: language,
+        language = language,
         isLocal = true
       )
     }

@@ -67,6 +67,10 @@ class ListsTripleImageView : FrameLayout {
       placeholderView.visible()
       return
     }
+    if (itemImage.image.status == ImageStatus.UNKNOWN && itemImage.getIds()?.tvdb?.id ?: 0 <= 0) {
+      missingImageListener?.invoke(itemImage, true)
+      return
+    }
 
     val unknownBase = when (itemImage.image.type) {
       ImageType.POSTER -> Config.TVDB_IMAGE_BASE_POSTER_URL

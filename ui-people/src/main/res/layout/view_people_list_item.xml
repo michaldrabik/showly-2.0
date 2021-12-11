@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/viewPersonItemRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:clipToPadding="false"
+    android:paddingStart="@dimen/spaceNormal"
+    android:paddingTop="@dimen/spaceSmall"
+    android:paddingEnd="@dimen/spaceNormal"
+    android:paddingBottom="@dimen/spaceSmall"
+    >
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/viewPersonItemGuide"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:layout_constraintGuide_begin="@dimen/personCreditsImageGuide"
+      />
+
+    <ImageView
+      android:id="@+id/viewPersonItemImage"
+      android:layout_width="@dimen/personCreditsImageWidth"
+      android:layout_height="@dimen/personCreditsImageHeight"
+      android:background="@drawable/bg_media_view_elevation"
+      android:elevation="@dimen/elevationSmall"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+    <ImageView
+      android:id="@+id/viewPersonItemPlaceholder"
+      android:layout_width="@dimen/personCreditsImageWidth"
+      android:layout_height="@dimen/personCreditsImageHeight"
+      android:layout_gravity="center"
+      android:background="@drawable/bg_media_view_placeholder"
+      android:elevation="@dimen/elevationSmall"
+      android:padding="14dp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_person_outline"
+      app:tint="?attr/colorPlaceholderIcon"
+      tools:visibility="visible"
+      />
+
+    <TextView
+      android:id="@+id/viewPersonItemHeader"
+      style="@style/CollectionItem.Header"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:textSize="11sp"
+      app:layout_constraintBottom_toTopOf="@+id/viewPersonItemTitle"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/viewPersonItemGuide"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:ignore="SmallSp"
+      tools:text="Director"
+      />
+
+    <TextView
+      android:id="@+id/viewPersonItemTitle"
+      style="@style/CollectionItem.Title"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:textSize="16sp"
+      app:layout_constraintBottom_toTopOf="@id/viewPersonItemDescription"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/viewPersonItemGuide"
+      app:layout_constraintTop_toBottomOf="@id/viewPersonItemHeader"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:text="Hans Zimmer"
+      />
+
+    <TextView
+      android:id="@+id/viewPersonItemDescription"
+      style="@style/CollectionItem.Description"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:textSize="11sp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/viewPersonItemGuide"
+      app:layout_constraintTop_toBottomOf="@id/viewPersonItemTitle"
+      tools:text="Music"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>

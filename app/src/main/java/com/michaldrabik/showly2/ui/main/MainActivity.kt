@@ -219,8 +219,10 @@ class MainActivity :
 
   override fun showTip(tip: Tip) {
     tutorialView.showTip(tip)
-    viewModel.setTipShown(tip)
+    setTipShow(tip)
   }
+
+  override fun setTipShow(tip: Tip) = viewModel.setTipShown(tip)
 
   override fun isTipShown(tip: Tip) = viewModel.isTipShown(tip)
 

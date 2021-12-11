@@ -62,6 +62,11 @@ abstract class ShowView<Item : ListItem> : FrameLayout {
       return
     }
 
+    if (item.image.status == UNKNOWN && item.show.ids.tvdb.id <= 0) {
+      onImageLoadFail(item)
+      return
+    }
+
     val unknownBase = when (item.image.type) {
       POSTER -> TVDB_IMAGE_BASE_POSTER_URL
       else -> TVDB_IMAGE_BASE_FANART_URL

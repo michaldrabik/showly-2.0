@@ -46,24 +46,6 @@ class PremiumViewModel @Inject constructor(
   private val loadingState = MutableStateFlow(false)
   private val finishEvent = MutableStateFlow<Event<Boolean>?>(null)
 
-  val uiState = combine(
-    purchaseItemsState,
-    purchasePendingState,
-    loadingState,
-    finishEvent
-  ) { s1, s2, s3, s4 ->
-    PremiumUiState(
-      purchaseItems = s1,
-      isPurchasePending = s2,
-      isLoading = s3,
-      onFinish = s4
-    )
-  }.stateIn(
-    scope = viewModelScope,
-    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = PremiumUiState()
-  )
-
   private var connectionsCount = 0
 
   fun loadBilling(billingClient: BillingClient) {
@@ -78,20 +60,20 @@ class PremiumViewModel @Inject constructor(
             checkOwnedPurchases(billingClient)
             connectionsCount = 0
           } else {
-            _messageState.tryEmit(MessageEvent.error(R.string.errorSubscriptionsNotAvailable))
+            _messageChannel.trySend(MessageEvent.error(R.string.errorSubscriptionsNotAvailable))
           }
         } else {
-          _messageState.tryEmit(MessageEvent.error(R.string.errorSubscriptionsNotAvailable))
+          _messageChannel.trySend(MessageEvent.error(R.string.errorSubscriptionsNotAvailable))
         }
       }
 
       override fun onBillingServiceDisconnected() {
         if (connectionsCount > 3) {
           Timber.e("BillingClient Disconnected. All retries failed.")
-          _messageState.tryEmit(MessageEvent.error(R.string.errorGeneral))
+          _messageChannel.trySend(MessageEvent.error(R.string.errorGeneral))
           connectionsCount = 0
         } else {
-          Timber.w("BillingClient Disconnected. Retrying....")
+          Timber.w("BillingClient Disconnected. Retrying...")
           loadBilling(billingClient)
         }
       }
@@ -135,7 +117,7 @@ class PremiumViewModel @Inject constructor(
       } catch (error: Throwable) {
         purchaseItemsState.value = emptyList()
         loadingState.value = false
-        _messageState.emit(MessageEvent.error(R.string.errorGeneral))
+        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
         Timber.e(error)
       }
     }
@@ -197,14 +179,32 @@ class PremiumViewModel @Inject constructor(
         Timber.e(error)
         purchaseItemsState.value = emptyList()
         loadingState.value = false
-        _messageState.emit(MessageEvent.error(R.string.errorGeneral))
+        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
       }
     }
   }
 
   private suspend fun unlockAndFinish() {
     settingsRepository.isPremium = true
-    _messageState.emit(MessageEvent.info(R.string.textPurchaseThanks))
+    _messageChannel.send(MessageEvent.info(R.string.textPurchaseThanks))
     finishEvent.value = Event(true)
   }
+
+  val uiState = combine(
+    purchaseItemsState,
+    purchasePendingState,
+    loadingState,
+    finishEvent
+  ) { s1, s2, s3, s4 ->
+    PremiumUiState(
+      purchaseItems = s1,
+      isPurchasePending = s2,
+      isLoading = s3,
+      onFinish = s4
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = PremiumUiState()
+  )
 }

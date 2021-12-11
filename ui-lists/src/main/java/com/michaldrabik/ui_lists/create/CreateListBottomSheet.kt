@@ -54,7 +54,7 @@ class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
       repeatOnLifecycle(Lifecycle.State.STARTED) {
         with(viewModel) {
           launch { uiState.collect { render(it) } }
-          launch { messageState.collect { renderSnackbar(it) } }
+          launch { messageChannel.collect { renderSnackbar(it) } }
           if (isEditMode()) {
             viewModel.loadDetails(list?.id!!)
           }

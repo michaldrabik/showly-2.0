@@ -305,7 +305,7 @@ class SearchViewModel @Inject constructor(
   private suspend fun onError() {
     searchingState.value = false
     emptyState.value = false
-    _messageState.emit(MessageEvent.error(R.string.errorCouldNotLoadSearchResults))
+    _messageChannel.send(MessageEvent.error(R.string.errorCouldNotLoadSearchResults))
   }
 
   override fun onCleared() {

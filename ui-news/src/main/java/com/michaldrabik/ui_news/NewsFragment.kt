@@ -79,7 +79,7 @@ class NewsFragment :
       repeatOnLifecycle(Lifecycle.State.STARTED) {
         with(viewModel) {
           launch { uiState.collect { render(it) } }
-          launch { messageState.collect { showSnack(it) } }
+          launch { messageChannel.collect { showSnack(it) } }
         }
       }
     }

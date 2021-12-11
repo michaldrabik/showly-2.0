@@ -3,6 +3,7 @@ package com.michaldrabik.ui_model
 import com.michaldrabik.common.Config.AWS_IMAGE_BASE_URL
 import com.michaldrabik.common.Config.TMDB_IMAGE_BASE_FANART_URL
 import com.michaldrabik.common.Config.TMDB_IMAGE_BASE_POSTER_URL
+import com.michaldrabik.common.Config.TMDB_IMAGE_BASE_PROFILE_URL
 import com.michaldrabik.common.Config.TMDB_IMAGE_BASE_STILL_URL
 import com.michaldrabik.common.Config.TVDB_IMAGE_BASE_BANNERS_URL
 import com.michaldrabik.ui_model.ImageFamily.SHOW
@@ -16,6 +17,7 @@ import com.michaldrabik.ui_model.ImageStatus.UNKNOWN
 import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.ImageType.FANART_WIDE
 import com.michaldrabik.ui_model.ImageType.POSTER
+import com.michaldrabik.ui_model.ImageType.PROFILE
 import com.michaldrabik.ui_model.ImageType.TWITTER
 
 data class Image(
@@ -35,6 +37,7 @@ data class Image(
     TMDB -> when (type) {
       POSTER -> "${TMDB_IMAGE_BASE_POSTER_URL}$fileUrl"
       FANART, FANART_WIDE -> "${TMDB_IMAGE_BASE_FANART_URL}$fileUrl"
+      PROFILE -> "${TMDB_IMAGE_BASE_PROFILE_URL}$fileUrl"
       TWITTER -> ""
     }
     AWS -> "$AWS_IMAGE_BASE_URL$fileUrl"

@@ -88,7 +88,7 @@ class NewsViewModel @Inject constructor(
           previousRefresh = nowUtcMillis()
         }
       } catch (error: Throwable) {
-        _messageState.emit(MessageEvent.error(R.string.errorGeneral))
+        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
         loadingState.value = false
         rethrowCancellation(error)
       } finally {

@@ -1,0 +1,15 @@
+<resources>
+  <dimen name="personImageWidth">80dp</dimen>
+  <dimen name="personImageHeight">120dp</dimen>
+  <dimen name="personImageCorner">17dp</dimen>
+  <dimen name="personImageTipMargin">152dp</dimen>
+
+  <dimen name="personCreditsImageWidth">53dp</dimen>
+  <dimen name="personCreditsImageHeight">80dp</dimen>
+  <dimen name="personCreditsImageGuide">65dp</dimen>
+  <dimen name="personCreditsHeaderTextSize">20sp</dimen>
+
+  <dimen name="personGalleryImageHeight">412dp</dimen>
+  <dimen name="personGalleryImageWidth">275dp</dimen>
+
+</resources>

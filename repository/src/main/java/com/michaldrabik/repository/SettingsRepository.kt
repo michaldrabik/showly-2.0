@@ -141,6 +141,7 @@ class SettingsRepository @Inject constructor(
         showTranslationsDao().deleteByLanguage(input)
         movieTranslationsDao().deleteByLanguage(input)
         episodeTranslationsDao().deleteByLanguage(input)
+        peopleDao().deleteTranslations()
       }
     }
   }

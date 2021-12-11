@@ -28,7 +28,7 @@ class ArchiveLoadShowsCase @Inject constructor(
     val sortOrder = settingsRepository.sortSettings.hiddenShowsSortOrder
     val sortType = settingsRepository.sortSettings.hiddenShowsSortType
 
-    return showsRepository.archiveShows.loadAll()
+    return showsRepository.hiddenShows.loadAll()
       .map { it to translations[it.traktId] }
       .filterByQuery(searchQuery)
       .sortedWith(sorter.sort(sortOrder, sortType))
