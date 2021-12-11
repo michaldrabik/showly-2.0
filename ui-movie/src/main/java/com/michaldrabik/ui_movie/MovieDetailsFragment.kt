@@ -21,6 +21,7 @@ import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
+import androidx.fragment.app.clearFragmentResultListener
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -581,6 +582,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       openPersonSheet(people.first())
       return
     }
+    clearFragmentResultListener(NavigationArgs.REQUEST_PERSON_DETAILS)
     val title = movieDetailsTitle.text.toString()
     val bundle = PeopleListBottomSheet.createBundle(movieId, title, Mode.MOVIES, department)
     navigateTo(R.id.actionMovieDetailsFragmentToPeopleList, bundle)
