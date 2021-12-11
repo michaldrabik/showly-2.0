@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_people.list.recycler.views
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -44,6 +45,7 @@ class PeopleListItemView : FrameLayout {
     viewPersonItemRoot.onClick { onItemClickListener?.invoke(item.person) }
   }
 
+  @SuppressLint("SetTextI18n")
   fun bind(item: PeopleListItem.PersonItem) {
     clear()
     this.item = item
@@ -58,7 +60,7 @@ class PeopleListItemView : FrameLayout {
       else -> "-"
     }
     viewPersonItemDescription.visibleIf(item.person.episodesCount > 0)
-    viewPersonItemDescription.text = "Episodes: ${item.person.episodesCount}" // TODO string
+    viewPersonItemDescription.text = "${context.getString(R.string.textEpisodes)}: ${item.person.episodesCount}"
 
     loadImage(item.person.imagePath)
   }

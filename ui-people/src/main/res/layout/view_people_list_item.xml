@@ -90,7 +90,7 @@
       style="@style/CollectionItem.Description"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:textSize="12sp"
+      android:textSize="11sp"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/viewPersonItemGuide"

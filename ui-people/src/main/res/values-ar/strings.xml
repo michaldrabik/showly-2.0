@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="textGalleryEmpty">لا توجد صور</string>
+  <string name="textEpisodes">حلقات</string>
 </resources>
