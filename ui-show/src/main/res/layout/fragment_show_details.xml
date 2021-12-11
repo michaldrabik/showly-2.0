@@ -350,15 +350,6 @@
         tools:visibility="visible"
         />
 
-      <androidx.constraintlayout.widget.Group
-        android:id="@+id/showDetailsCrewGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="showDetailsDirectingLabel, showDetailsDirectingValue, showDetailsWritingLabel, showDetailsWritingValue, showDetailsMusicLabel, showDetailsMusicValue"
-        tools:visibility="visible"
-        />
-
       <TextView
         android:id="@+id/showDetailsDirectingLabel"
         android:layout_width="wrap_content"
@@ -369,10 +360,12 @@
         android:text="@string/textDirecting"
         android:textColor="?android:attr/textColorSecondary"
         android:textSize="11sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/showDetailsDirectingValue"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsActorsRecycler"
         app:layout_goneMarginTop="@dimen/spaceHuge"
+        tools:visibility="visible"
         />
 
       <TextView
@@ -383,10 +376,12 @@
         android:text="-"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="11sp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="@id/showDetailsDirectingLabel"
         app:layout_constraintTop_toBottomOf="@id/showDetailsDirectingLabel"
         tools:ignore="HardcodedText"
         tools:text="Steven"
+        tools:visibility="visible"
         />
 
       <TextView
@@ -397,9 +392,11 @@
         android:text="@string/textWriting"
         android:textColor="?android:attr/textColorSecondary"
         android:textSize="11sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/showDetailsDirectingLabel"
         app:layout_constraintStart_toEndOf="@id/showDetailsDirectingValue"
         app:layout_constraintTop_toTopOf="@id/showDetailsDirectingLabel"
+        tools:visibility="visible"
         />
 
       <TextView
@@ -410,10 +407,12 @@
         android:text="-"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="11sp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="@id/showDetailsWritingLabel"
         app:layout_constraintTop_toBottomOf="@id/showDetailsWritingLabel"
         tools:ignore="HardcodedText"
         tools:text="Steven Spilberg\nTest"
+        tools:visibility="visible"
         />
 
       <TextView
@@ -425,9 +424,11 @@
         android:text="@string/textMusic"
         android:textColor="?android:attr/textColorSecondary"
         android:textSize="11sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/showDetailsDirectingLabel"
         app:layout_constraintStart_toEndOf="@id/showDetailsWritingValue"
         app:layout_constraintTop_toTopOf="@id/showDetailsDirectingLabel"
+        tools:visibility="visible"
         />
 
       <TextView
@@ -438,11 +439,13 @@
         android:text="-"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="11sp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/showDetailsMusicLabel"
         app:layout_constraintTop_toBottomOf="@id/showDetailsMusicLabel"
         tools:ignore="HardcodedText"
         tools:text="Steven Spilberg"
+        tools:visibility="visible"
         />
 
       <androidx.constraintlayout.widget.Barrier

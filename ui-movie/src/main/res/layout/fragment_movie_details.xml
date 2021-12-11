@@ -339,15 +339,6 @@
         tools:visibility="visible"
         />
 
-      <androidx.constraintlayout.widget.Group
-        android:id="@+id/movieDetailsCrewGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="movieDetailsDirectingLabel, movieDetailsDirectingValue, movieDetailsWritingLabel, movieDetailsWritingValue, movieDetailsMusicLabel, movieDetailsMusicValue"
-        tools:visibility="visible"
-        />
-
       <TextView
         android:id="@+id/movieDetailsDirectingLabel"
         android:layout_width="wrap_content"
@@ -358,10 +349,12 @@
         android:text="@string/textDirecting"
         android:textColor="?android:attr/textColorSecondary"
         android:textSize="11sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/movieDetailsDirectingValue"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/movieDetailsActorsRecycler"
         app:layout_goneMarginTop="@dimen/spaceHuge"
+        tools:visibility="visible"
         />
 
       <TextView
@@ -372,10 +365,12 @@
         android:text="-"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="11sp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="@id/movieDetailsDirectingLabel"
         app:layout_constraintTop_toBottomOf="@id/movieDetailsDirectingLabel"
         tools:ignore="HardcodedText"
         tools:text="Steven"
+        tools:visibility="visible"
         />
 
       <TextView
@@ -386,9 +381,11 @@
         android:text="@string/textWriting"
         android:textColor="?android:attr/textColorSecondary"
         android:textSize="11sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/movieDetailsDirectingLabel"
         app:layout_constraintStart_toEndOf="@id/movieDetailsDirectingValue"
         app:layout_constraintTop_toTopOf="@id/movieDetailsDirectingLabel"
+        tools:visibility="visible"
         />
 
       <TextView
@@ -399,10 +396,12 @@
         android:text="-"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="11sp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="@id/movieDetailsWritingLabel"
         app:layout_constraintTop_toBottomOf="@id/movieDetailsWritingLabel"
         tools:ignore="HardcodedText"
         tools:text="Steven Spilberg\nTest"
+        tools:visibility="visible"
         />
 
       <TextView
@@ -414,9 +413,11 @@
         android:text="@string/textMusic"
         android:textColor="?android:attr/textColorSecondary"
         android:textSize="11sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/movieDetailsDirectingLabel"
         app:layout_constraintStart_toEndOf="@id/movieDetailsWritingValue"
         app:layout_constraintTop_toTopOf="@id/movieDetailsDirectingLabel"
+        tools:visibility="visible"
         />
 
       <TextView
@@ -427,11 +428,13 @@
         android:text="-"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="11sp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/movieDetailsMusicLabel"
         app:layout_constraintTop_toBottomOf="@id/movieDetailsMusicLabel"
         tools:ignore="HardcodedText"
         tools:text="Steven Spilberg"
+        tools:visibility="visible"
         />
 
       <androidx.constraintlayout.widget.Barrier

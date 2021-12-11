@@ -541,9 +541,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private fun renderCrew(crew: Map<Person.Department, List<Person>>) {
 
     fun renderPeople(labelView: View, valueView: TextView, people: List<Person>, department: Person.Department) {
-      if (people.isEmpty()) return
-      labelView.fadeIn(withHardware = true)
-      valueView.fadeIn(withHardware = true)
+      labelView.visibleIf(people.isNotEmpty())
+      valueView.visibleIf(people.isNotEmpty())
       valueView.text = people
         .take(2)
         .joinToString("\n") { it.name.trimWithSuffix(20, "…") }

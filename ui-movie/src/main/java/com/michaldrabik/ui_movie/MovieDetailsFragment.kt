@@ -75,6 +75,7 @@ import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
 import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Person
+import com.michaldrabik.ui_model.Person.Department
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.Translation
@@ -463,12 +464,11 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     movieDetailsActorsProgress.gone()
   }
 
-  private fun renderCrew(crew: Map<Person.Department, List<Person>>) {
+  private fun renderCrew(crew: Map<Department, List<Person>>) {
 
-    fun renderPeople(labelView: View, valueView: TextView, people: List<Person>, department: Person.Department) {
-      if (people.isEmpty()) return
-      labelView.fadeIn(withHardware = true)
-      valueView.fadeIn(withHardware = true)
+    fun renderPeople(labelView: View, valueView: TextView, people: List<Person>, department: Department) {
+      labelView.visibleIf(people.isNotEmpty())
+      valueView.visibleIf(people.isNotEmpty())
       valueView.text = people
         .take(2)
         .joinToString("\n") { it.name.trimWithSuffix(20, "…") }
@@ -476,17 +476,17 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       valueView.onClick { openPeopleListSheet(people, department) }
     }
 
-    if (!crew.containsKey(Person.Department.DIRECTING)) {
+    if (!crew.containsKey(Department.DIRECTING)) {
       return
     }
 
-    val directors = crew[Person.Department.DIRECTING] ?: emptyList()
-    val writers = crew[Person.Department.WRITING] ?: emptyList()
-    val sound = crew[Person.Department.SOUND] ?: emptyList()
+    val directors = crew[Department.DIRECTING] ?: emptyList()
+    val writers = crew[Department.WRITING] ?: emptyList()
+    val sound = crew[Department.SOUND] ?: emptyList()
 
-    renderPeople(movieDetailsDirectingLabel, movieDetailsDirectingValue, directors, Person.Department.DIRECTING)
-    renderPeople(movieDetailsWritingLabel, movieDetailsWritingValue, writers, Person.Department.WRITING)
-    renderPeople(movieDetailsMusicLabel, movieDetailsMusicValue, sound, Person.Department.SOUND)
+    renderPeople(movieDetailsDirectingLabel, movieDetailsDirectingValue, directors, Department.DIRECTING)
+    renderPeople(movieDetailsWritingLabel, movieDetailsWritingValue, writers, Department.WRITING)
+    renderPeople(movieDetailsMusicLabel, movieDetailsMusicValue, sound, Department.SOUND)
   }
 
   private fun renderStreamings(streamings: StreamingsState) {
@@ -575,7 +575,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     navigateTo(R.id.actionMovieDetailsFragmentToPerson, bundle)
   }
 
-  private fun openPeopleListSheet(people: List<Person>, department: Person.Department) {
+  private fun openPeopleListSheet(people: List<Person>, department: Department) {
     if (people.isEmpty()) return
     if (people.size == 1) {
       openPersonSheet(people.first())
