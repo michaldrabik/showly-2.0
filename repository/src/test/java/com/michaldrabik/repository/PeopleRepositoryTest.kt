@@ -11,6 +11,7 @@ import com.michaldrabik.repository.common.BaseMockTest
 import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Ids
+import com.michaldrabik.ui_model.Person.Department
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.coVerifyOrder
@@ -87,7 +88,7 @@ class PeopleRepositoryTest : BaseMockTest() {
       peopleShowsMoviesDao.getTimestampForMovie(11)
       peopleDao.getAllForMovie(11)
     }
-    coVerify(exactly = 0) { tmdbApi.fetchMovieActors(any()) }
+    coVerify(exactly = 0) { tmdbApi.fetchMoviePeople(any()) }
   }
 
   @Test
@@ -100,7 +101,7 @@ class PeopleRepositoryTest : BaseMockTest() {
     coVerifyOrder {
       peopleShowsMoviesDao.getTimestampForMovie(11)
       peopleDao.getAllForMovie(11)
-      tmdbApi.fetchMovieActors(12)
+      tmdbApi.fetchMoviePeople(12)
       peopleDao.upsert(any())
       peopleShowsMoviesDao.insertForMovie(any(), 11)
     }
@@ -110,13 +111,22 @@ class PeopleRepositoryTest : BaseMockTest() {
   fun `Should return shows items with image in the first place`() = runBlocking {
     coEvery { peopleShowsMoviesDao.getTimestampForShow(any()) } returns nowUtc().minusHours(10).toMillis()
 
-    val person1 = mockk<Person>(relaxed = true) { coEvery { image } returns null }
-    val person2 = mockk<Person>(relaxed = true) { coEvery { image } returns "test" }
-    val person3 = mockk<Person>(relaxed = true) { coEvery { image } returns "test" }
+    val person1 = mockk<Person>(relaxed = true) {
+      coEvery { image } returns null
+      coEvery { department } returns "Acting"
+    }
+    val person2 = mockk<Person>(relaxed = true) {
+      coEvery { image } returns "test"
+      coEvery { department } returns "Acting"
+    }
+    val person3 = mockk<Person>(relaxed = true) {
+      coEvery { image } returns "test"
+      coEvery { department } returns "Acting"
+    }
     coEvery { peopleDao.getAllForShow(any()) } returns listOf(person1, person2, person3)
 
     val result = SUT.loadAllForShow(Ids.EMPTY.copy(trakt = IdTrakt(11)))
-    assertThat(result.last().imagePath).isNull()
+    assertThat(result[Department.ACTING]!!.first().imagePath).isNotNull()
 
     coVerify { peopleDao.getAllForShow(any()) }
   }
@@ -125,13 +135,22 @@ class PeopleRepositoryTest : BaseMockTest() {
   fun `Should return movies items with image in the first place`() = runBlocking {
     coEvery { peopleShowsMoviesDao.getTimestampForMovie(any()) } returns nowUtc().minusHours(10).toMillis()
 
-    val person1 = mockk<Person>(relaxed = true) { coEvery { image } returns null }
-    val person2 = mockk<Person>(relaxed = true) { coEvery { image } returns "test" }
-    val person3 = mockk<Person>(relaxed = true) { coEvery { image } returns "test" }
+    val person1 = mockk<Person>(relaxed = true) {
+      coEvery { image } returns null
+      coEvery { department } returns "Acting"
+    }
+    val person2 = mockk<Person>(relaxed = true) {
+      coEvery { image } returns "test"
+      coEvery { department } returns "Acting"
+    }
+    val person3 = mockk<Person>(relaxed = true) {
+      coEvery { image } returns "test"
+      coEvery { department } returns "Acting"
+    }
     coEvery { peopleDao.getAllForMovie(any()) } returns listOf(person1, person2, person3)
 
     val result = SUT.loadAllForMovie(Ids.EMPTY.copy(trakt = IdTrakt(11)))
-    assertThat(result.last().imagePath).isNull()
+    assertThat(result[Department.ACTING]!!.first().imagePath).isNotNull()
 
     coVerify { peopleDao.getAllForMovie(any()) }
   }

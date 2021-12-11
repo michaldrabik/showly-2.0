@@ -217,9 +217,9 @@ class PeopleRepository @Inject constructor(
     if (local.isNotEmpty() && localTimestamp + Config.ACTORS_CACHE_DURATION > timestamp.toMillis()) {
       Timber.d("Returning cached result. Cache still valid for ${(localTimestamp + Config.ACTORS_CACHE_DURATION) - timestamp.toMillis()} ms")
       return local
-        .sortedWith(compareBy { it.image.isNullOrBlank() })
         .map { mappers.person.fromDatabase(it) }
         .groupBy { it.department }
+        .mapValues { v -> v.value.sortedWith(compareBy { it.imagePath.isNullOrBlank() }) }
     }
 
     val remoteTmdbPeople = cloud.tmdbApi.fetchShowPeople(showIds.tmdb.id)
@@ -282,9 +282,9 @@ class PeopleRepository @Inject constructor(
     if (local.isNotEmpty() && localTimestamp + Config.ACTORS_CACHE_DURATION > timestamp.toMillis()) {
       Timber.d("Returning cached result. Cache still valid for ${(localTimestamp + Config.ACTORS_CACHE_DURATION) - timestamp.toMillis()} ms")
       return local
-        .sortedWith(compareBy { it.image.isNullOrBlank() })
         .map { mappers.person.fromDatabase(it) }
         .groupBy { it.department }
+        .mapValues { v -> v.value.sortedWith(compareBy { it.imagePath.isNullOrBlank() }) }
     }
 
     val remoteTmdbPeople = cloud.tmdbApi.fetchMoviePeople(movieIds.tmdb.id)

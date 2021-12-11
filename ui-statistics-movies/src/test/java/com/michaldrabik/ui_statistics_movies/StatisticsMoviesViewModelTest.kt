@@ -69,7 +69,7 @@ class StatisticsMoviesViewModelTest : BaseMockTest() {
     coEvery { ratingsCase.loadRatings() } returns listOf(movieItem)
 
     val job = launch { SUT.uiState.toList(stateResult) }
-    val job2 = launch { SUT.messageState.toList(messagesResult) }
+    val job2 = launch { SUT.messageChannel.toList(messagesResult) }
 
     SUT.loadRatings()
 
@@ -85,7 +85,7 @@ class StatisticsMoviesViewModelTest : BaseMockTest() {
     coEvery { ratingsCase.loadRatings() } throws Throwable("Test error")
 
     val job = launch { SUT.uiState.toList(stateResult) }
-    val job2 = launch { SUT.messageState.toList(messagesResult) }
+    val job2 = launch { SUT.messageChannel.toList(messagesResult) }
 
     SUT.loadRatings()
 
@@ -106,7 +106,7 @@ class StatisticsMoviesViewModelTest : BaseMockTest() {
     coEvery { moviesRepository.myMovies.loadAll() } returns movies
 
     val job = launch { SUT.uiState.toList(stateResult) }
-    val job2 = launch { SUT.messageState.toList(messagesResult) }
+    val job2 = launch { SUT.messageChannel.toList(messagesResult) }
 
     SUT.loadData(initialDelay = 0)
 
