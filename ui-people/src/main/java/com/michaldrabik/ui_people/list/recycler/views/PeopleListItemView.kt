@@ -20,6 +20,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
 import com.michaldrabik.ui_model.Person
+import com.michaldrabik.ui_model.Person.Department
 import com.michaldrabik.ui_model.Person.Job
 import com.michaldrabik.ui_people.R
 import com.michaldrabik.ui_people.list.recycler.PeopleListItem
@@ -51,13 +52,19 @@ class PeopleListItemView : FrameLayout {
     this.item = item
 
     viewPersonItemTitle.text = item.person.name
-    val mainJob = item.person.jobs.firstOrNull()
+    val mainJob = item.person.jobs.firstOrNull { it != Job.UNKNOWN }
     viewPersonItemHeader.text = when (mainJob) {
       Job.DIRECTOR -> context.getString(R.string.textDirector)
       Job.WRITER, Job.STORY -> context.getString(R.string.textWriting)
       Job.SCREENPLAY -> context.getString(R.string.textScreenplay)
       Job.MUSIC, Job.ORIGINAL_MUSIC -> context.getString(R.string.textMusic)
-      else -> "-"
+      else -> when (item.person.department) {
+        Department.ACTING -> context.getString(R.string.textActing)
+        Department.DIRECTING -> context.getString(R.string.textDirector)
+        Department.WRITING -> context.getString(R.string.textWriting)
+        Department.SOUND -> context.getString(R.string.textMusic)
+        Department.UNKNOWN -> "-"
+      }
     }
     viewPersonItemDescription.visibleIf(item.person.episodesCount > 0)
     viewPersonItemDescription.text = "${context.getString(R.string.textEpisodes)}: ${item.person.episodesCount}"
