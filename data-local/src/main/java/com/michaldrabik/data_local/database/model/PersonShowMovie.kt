@@ -31,6 +31,8 @@ data class PersonShowMovie(
   @ColumnInfo(name = "mode") var mode: String,
   @ColumnInfo(name = "department") var department: String,
   @ColumnInfo(name = "character") var character: String?,
+  @ColumnInfo(name = "job") var job: String?,
+  @ColumnInfo(name = "episodes_count") var episodesCount: Int,
   @ColumnInfo(name = "id_trakt_show") var idTraktShow: Long?,
   @ColumnInfo(name = "id_trakt_movie") var idTraktMovie: Long?,
   @ColumnInfo(name = "created_at") var createdAt: ZonedDateTime,

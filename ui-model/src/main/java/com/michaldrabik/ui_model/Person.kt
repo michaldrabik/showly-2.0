@@ -14,6 +14,8 @@ data class Person(
   val bio: String?,
   val bioTranslation: String?,
   val characters: List<String>,
+  val jobs: List<Job>,
+  val episodesCount: Int,
   val birthplace: String?,
   val imagePath: String?,
   val homepage: String?,
@@ -32,14 +34,20 @@ data class Person(
     DIRECTING("Directing"),
     WRITING("Writing"),
     SOUND("Sound"),
-    UNKNOWN("")
+    UNKNOWN("-")
   }
 
   enum class Job(val slug: String) {
     DIRECTOR("Director"),
     WRITER("Writer"),
     STORY("Story"),
+    SCREENPLAY("Screenplay"),
     MUSIC("Music"),
-    ORIGINAL_MUSIC("Original Music Composer")
+    ORIGINAL_MUSIC("Original Music Composer"),
+    UNKNOWN("-");
+
+    companion object {
+      fun fromSlug(slug: String?) = values().firstOrNull { it.slug == slug } ?: UNKNOWN
+    }
   }
 }

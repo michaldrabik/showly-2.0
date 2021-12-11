@@ -29,6 +29,8 @@ class PersonMapper @Inject constructor() {
       imagePath = person.profile_path,
       homepage = person.homepage,
       characters = extractCharacters(person),
+      jobs = extractJobs(person),
+      episodesCount = person.total_episode_count ?: 0,
       birthday = person.birthday?.let { if (it.isNotBlank()) LocalDate.parse(it) else null },
       deathday = person.deathday?.let { if (it.isNotBlank()) LocalDate.parse(it) else null }
     )
@@ -45,6 +47,8 @@ class PersonMapper @Inject constructor() {
       bio = personDb.biography,
       bioTranslation = personDb.biographyTranslation,
       characters = if (characters.isNotEmpty()) characters else personDb.character?.split(",") ?: emptyList(),
+      jobs = personDb.job?.split(",")?.map { Person.Job.fromSlug(it) } ?: emptyList(),
+      episodesCount = personDb.episodesCount ?: 0,
       birthplace = personDb.birthplace,
       imagePath = personDb.image,
       homepage = personDb.homepage,
@@ -64,6 +68,8 @@ class PersonMapper @Inject constructor() {
       biography = person.bio,
       biographyTranslation = person.bioTranslation,
       character = person.characters.joinToString(","),
+      job = person.jobs.joinToString(",") { it.slug },
+      episodesCount = person.episodesCount,
       birthday = person.birthday?.format(ISO_LOCAL_DATE),
       birthplace = person.birthplace,
       deathday = person.deathday?.format(ISO_LOCAL_DATE),
@@ -78,6 +84,12 @@ class PersonMapper @Inject constructor() {
   private fun extractCharacters(person: TmdbPerson) = when {
     person.roles != null -> person.roles?.mapNotNull { it.character } ?: emptyList()
     !person.character.isNullOrBlank() -> listOf(person.character!!)
+    else -> emptyList()
+  }
+
+  private fun extractJobs(person: TmdbPerson) = when {
+    person.jobs != null -> person.jobs?.map { Person.Job.fromSlug(it.job) } ?: emptyList()
+    !person.job.isNullOrBlank() -> listOf(Person.Job.fromSlug(person.job))
     else -> emptyList()
   }
 

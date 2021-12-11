@@ -534,6 +534,8 @@ object Migrations {
             "`biography_translation` TEXT, " +
             "`birthday` TEXT, " +
             "`character` TEXT, " +
+            "`job` TEXT, " +
+            "`episodes_count` INTEGER, " +
             "`birthplace` TEXT, " +
             "`deathday` TEXT, " +
             "`image_path` TEXT, " +
@@ -552,6 +554,8 @@ object Migrations {
             "`mode` TEXT NOT NULL, " +
             "`department` TEXT NOT NULL, " +
             "`character` TEXT, " +
+            "`job` TEXT, " +
+            "`episodes_count` INTEGER NOT NULL, " +
             "`id_trakt_show` INTEGER, " +
             "`id_trakt_movie` INTEGER, " +
             "`created_at` INTEGER NOT NULL, " +

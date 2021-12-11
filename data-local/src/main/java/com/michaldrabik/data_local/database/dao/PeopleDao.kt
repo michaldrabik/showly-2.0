@@ -27,10 +27,10 @@ interface PeopleDao : BaseDao<Person> {
   @Query("SELECT * FROM people WHERE id_tmdb IN (:tmdbIds)")
   suspend fun getByIds(tmdbIds: List<Int>): List<Person>
 
-  @Query("SELECT people.*, people_shows_movies.department AS department, people_shows_movies.character AS character FROM people INNER JOIN people_shows_movies ON people_shows_movies.id_tmdb_person = people.id_tmdb WHERE people_shows_movies.id_trakt_show = :showTraktId")
+  @Query("SELECT people.*, people_shows_movies.department AS department, people_shows_movies.character AS character, people_shows_movies.job AS job, people_shows_movies.episodes_count AS episodesCount FROM people INNER JOIN people_shows_movies ON people_shows_movies.id_tmdb_person = people.id_tmdb WHERE people_shows_movies.id_trakt_show = :showTraktId")
   suspend fun getAllForShow(showTraktId: Long): List<Person>
 
-  @Query("SELECT people.*, people_shows_movies.department AS department, people_shows_movies.character AS character FROM people INNER JOIN people_shows_movies ON people_shows_movies.id_tmdb_person = people.id_tmdb WHERE people_shows_movies.id_trakt_movie = :movieTraktId")
+  @Query("SELECT people.*, people_shows_movies.department AS department, people_shows_movies.character AS character, people_shows_movies.job AS job, people_shows_movies.episodes_count AS episodesCount FROM people INNER JOIN people_shows_movies ON people_shows_movies.id_tmdb_person = people.id_tmdb WHERE people_shows_movies.id_trakt_movie = :movieTraktId")
   suspend fun getAllForMovie(movieTraktId: Long): List<Person>
 
   @Query("SELECT * FROM people")

@@ -27,6 +27,8 @@ data class Person(
   @ColumnInfo(name = "birthday") var birthday: String?,
   @ColumnInfo(name = "birthplace") var birthplace: String?,
   @ColumnInfo(name = "character") var character: String?,
+  @ColumnInfo(name = "episodes_count") var episodesCount: Int?,
+  @ColumnInfo(name = "job") var job: String?,
   @ColumnInfo(name = "deathday") var deathday: String?,
   @ColumnInfo(name = "image_path") var image: String?,
   @ColumnInfo(name = "homepage") var homepage: String?,

@@ -57,6 +57,21 @@
       />
 
     <TextView
+      android:id="@+id/viewPersonItemHeader"
+      style="@style/CollectionItem.Header"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:textSize="11sp"
+      app:layout_constraintBottom_toTopOf="@+id/viewPersonItemTitle"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/viewPersonItemGuide"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:ignore="SmallSp"
+      tools:text="Director"
+      />
+
+    <TextView
       android:id="@+id/viewPersonItemTitle"
       style="@style/CollectionItem.Title"
       android:layout_width="0dp"
@@ -65,9 +80,9 @@
       app:layout_constraintBottom_toTopOf="@id/viewPersonItemDescription"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/viewPersonItemGuide"
-      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/viewPersonItemHeader"
       app:layout_constraintVertical_chainStyle="packed"
-      tools:text="Hans ZImmer"
+      tools:text="Hans Zimmer"
       />
 
     <TextView
