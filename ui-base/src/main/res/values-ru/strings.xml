@@ -30,6 +30,7 @@
   <string name="textNoDescription">Описание недоступно.</string>
   <string name="textPleaseWait">Подождите…</string>
   <string name="textRate">Оценить</string>
+  <string name="textLink">Ссылка</string>
   <string name="textRateSaved">Ваша оценка была сохранена.</string>
   <string name="textPeople">Люди:</string>
   <string name="textDirecting">Режиссура</string>
@@ -38,6 +39,7 @@
   <string name="textScreenplay">Сценарист</string>
   <string name="textSound">Звук</string>
   <string name="textMusic">Музыка</string>
+  <string name="textActing">Фильмография</string>
   <string name="textAiredAlready">Вышло</string>
   <string name="textAirsNow">Уже вышло</string>
   <plurals name="textDaysToAir">
@@ -93,6 +95,7 @@
   <string name="textRemoveFromTraktHidden">Вы хотите удалить этот предмет из вашего аккаунта Trakt.tv \'Скрытое\'?</string>
   <string name="textRemoveFromTraktWatchlist">Вы хотите удалить этот предмет из вашего аккаунта Trakt.tv \'Буду смотреть\'?</string>
   <string name="textRemoveFromTraktProgress">Вы хотите удалить этот предмет из вашего аккаунта Trakt.tv \'Прогресс\'?</string>
+  <string name="textPremiumAd">Станьте спонсором и получите доступ к бонусным функциям! Нажмите, чтобы увидеть больше.</string>
   <string name="menuPin">Закрепить</string>
   <string name="menuUnpin">Открепить</string>
   <string name="errorGeneral">Ой,… Что-то пошло не так.\nПожалуйста, свяжитесь с нами, если это повторится.</string>
@@ -110,6 +113,4 @@
   <string name="errorTraktSyncGeneral">Ошибка синхронизации Trakt.tv. \nПроверьте доступ в Интернет и повторите попытку.</string>
   <string name="errorTraktLocked">Ваша учетная запись Trakt.tv в настоящее время заблокирована.\nПожалуйста, свяжитесь со службой поддержки Trakt.tv по адресу https://support.trakt.tv/ для разблокировки вашей учетной записи.</string>
   <string name="errorSubscriptionsNotAvailable">Сервисы Google Play недоступны на этом устройстве.</string>
-  <string name="textLink">Ссылка</string>
-  <string name="textPremiumAd">Станьте спонсором и получите доступ к бонусным функциям! Нажмите, чтобы увидеть больше.</string>
 </resources>
