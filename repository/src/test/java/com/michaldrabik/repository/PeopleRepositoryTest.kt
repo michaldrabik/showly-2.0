@@ -2,15 +2,23 @@ package com.michaldrabik.repository
 
 import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.common.extensions.nowUtc
+import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.common.extensions.toMillis
+import com.michaldrabik.data_local.database.dao.MoviesDao
+import com.michaldrabik.data_local.database.dao.PeopleCreditsDao
 import com.michaldrabik.data_local.database.dao.PeopleDao
 import com.michaldrabik.data_local.database.dao.PeopleShowsMoviesDao
-import com.michaldrabik.data_local.database.model.Person
+import com.michaldrabik.data_local.database.dao.ShowsDao
+import com.michaldrabik.data_local.database.model.Movie
+import com.michaldrabik.data_local.database.model.Show
 import com.michaldrabik.data_remote.tmdb.api.TmdbApi
+import com.michaldrabik.data_remote.trakt.api.TraktApi
+import com.michaldrabik.data_remote.trakt.model.PersonCredit
 import com.michaldrabik.repository.common.BaseMockTest
 import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Ids
+import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.Person.Department
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -22,13 +30,19 @@ import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import com.michaldrabik.data_local.database.model.Person as PersonDb
+import com.michaldrabik.data_remote.trakt.model.Ids as IdsRemote
 
 class PeopleRepositoryTest : BaseMockTest() {
 
   @RelaxedMockK lateinit var peopleDao: PeopleDao
+  @RelaxedMockK lateinit var showsDao: ShowsDao
+  @RelaxedMockK lateinit var moviesDao: MoviesDao
   @RelaxedMockK lateinit var peopleShowsMoviesDao: PeopleShowsMoviesDao
-  @RelaxedMockK lateinit var person: Person
+  @RelaxedMockK lateinit var peopleCreditsDao: PeopleCreditsDao
+  @RelaxedMockK lateinit var person: PersonDb
   @RelaxedMockK lateinit var tmdbApi: TmdbApi
+  @RelaxedMockK lateinit var traktApi: TraktApi
   @RelaxedMockK lateinit var settingsRepository: SettingsRepository
 
   private lateinit var SUT: PeopleRepository
@@ -38,8 +52,12 @@ class PeopleRepositoryTest : BaseMockTest() {
     super.setUp()
     SUT = PeopleRepository(settingsRepository, database, cloud, mappers)
     coEvery { database.peopleDao() } returns peopleDao
+    coEvery { database.showsDao() } returns showsDao
+    coEvery { database.moviesDao() } returns moviesDao
+    coEvery { database.peopleCreditsDao() } returns peopleCreditsDao
     coEvery { database.peopleShowsMoviesDao() } returns peopleShowsMoviesDao
     coEvery { cloud.tmdbApi } returns tmdbApi
+    coEvery { cloud.traktApi } returns traktApi
   }
 
   @After
@@ -111,15 +129,15 @@ class PeopleRepositoryTest : BaseMockTest() {
   fun `Should return shows items with image in the first place`() = runBlocking {
     coEvery { peopleShowsMoviesDao.getTimestampForShow(any()) } returns nowUtc().minusHours(10).toMillis()
 
-    val person1 = mockk<Person>(relaxed = true) {
+    val person1 = mockk<PersonDb>(relaxed = true) {
       coEvery { image } returns null
       coEvery { department } returns "Acting"
     }
-    val person2 = mockk<Person>(relaxed = true) {
+    val person2 = mockk<PersonDb>(relaxed = true) {
       coEvery { image } returns "test"
       coEvery { department } returns "Acting"
     }
-    val person3 = mockk<Person>(relaxed = true) {
+    val person3 = mockk<PersonDb>(relaxed = true) {
       coEvery { image } returns "test"
       coEvery { department } returns "Acting"
     }
@@ -135,15 +153,15 @@ class PeopleRepositoryTest : BaseMockTest() {
   fun `Should return movies items with image in the first place`() = runBlocking {
     coEvery { peopleShowsMoviesDao.getTimestampForMovie(any()) } returns nowUtc().minusHours(10).toMillis()
 
-    val person1 = mockk<Person>(relaxed = true) {
+    val person1 = mockk<PersonDb>(relaxed = true) {
       coEvery { image } returns null
       coEvery { department } returns "Acting"
     }
-    val person2 = mockk<Person>(relaxed = true) {
+    val person2 = mockk<PersonDb>(relaxed = true) {
       coEvery { image } returns "test"
       coEvery { department } returns "Acting"
     }
-    val person3 = mockk<Person>(relaxed = true) {
+    val person3 = mockk<PersonDb>(relaxed = true) {
       coEvery { image } returns "test"
       coEvery { department } returns "Acting"
     }
@@ -153,5 +171,80 @@ class PeopleRepositoryTest : BaseMockTest() {
     assertThat(result[Department.ACTING]!!.first().imagePath).isNotNull()
 
     coVerify { peopleDao.getAllForMovie(any()) }
+  }
+
+  @Test
+  fun `Should return empty credits if Trakt ID is not found for given TMDB ID`() = runBlocking {
+    val person = mockk<Person>(relaxed = true)
+    val personDb = mockk<PersonDb>(relaxed = true) {
+      coEvery { idTrakt } returns null
+    }
+    val ids = mockk<IdsRemote>(relaxed = true) {
+      coEvery { trakt } returns null
+    }
+    coEvery { peopleDao.getById(any()) } returns personDb
+    coEvery { traktApi.fetchPersonIds(any(), any()) } returns ids
+
+    val result = SUT.loadCredits(person)
+
+    assertThat(result).isEmpty()
+    coVerify { peopleDao.getById(any()) }
+    coVerify(exactly = 0) { peopleDao.updateTraktId(any(), any()) }
+  }
+
+  @Test
+  fun `Should return locally cached credits if Trakt ID is found and cache is valid`() = runBlocking {
+    val person = mockk<Person>(relaxed = true)
+    val personDb = mockk<PersonDb>(relaxed = true) {
+      coEvery { idTrakt } returns 1
+    }
+    val ids = mockk<IdsRemote>(relaxed = true) {
+      coEvery { trakt } returns 1
+    }
+    val show = mockk<Show>(relaxed = true)
+    val movie = mockk<Movie>(relaxed = true)
+    coEvery { peopleDao.getById(any()) } returns personDb
+    coEvery { traktApi.fetchPersonIds(any(), any()) } returns ids
+    coEvery { peopleCreditsDao.getTimestampForPerson(any()) } returns nowUtcMillis() - 100
+    coEvery { peopleCreditsDao.getAllShowsForPerson(any()) } returns listOf(show)
+    coEvery { peopleCreditsDao.getAllMoviesForPerson(any()) } returns listOf(movie)
+
+    val result = SUT.loadCredits(person)
+
+    assertThat(result).hasSize(2)
+    assertThat(result[0].show).isNotNull()
+    assertThat(result[1].movie).isNotNull()
+    coVerify { peopleDao.getById(any()) }
+    coVerify(exactly = 0) { peopleDao.updateTraktId(any(), any()) }
+    coVerify(exactly = 0) { traktApi.fetchPersonShowsCredits(any(), any()) }
+    coVerify(exactly = 0) { traktApi.fetchPersonMoviesCredits(any(), any()) }
+  }
+
+  @Test
+  fun `Should return remote credits if Trakt ID is found and cache is invalid`() = runBlocking {
+    val person = mockk<Person>(relaxed = true)
+    val personDb = mockk<PersonDb>(relaxed = true) {
+      coEvery { idTrakt } returns 1
+    }
+    val ids = mockk<IdsRemote>(relaxed = true) {
+      coEvery { trakt } returns 1
+    }
+    val creditsShows = mockk<PersonCredit>(relaxed = true)
+    val creditsMovies = mockk<PersonCredit>(relaxed = true)
+    coEvery { peopleDao.getById(any()) } returns personDb
+    coEvery { traktApi.fetchPersonIds(any(), any()) } returns ids
+    coEvery { traktApi.fetchPersonShowsCredits(any(), any()) } returns listOf(creditsShows)
+    coEvery { traktApi.fetchPersonMoviesCredits(any(), any()) } returns listOf(creditsMovies)
+
+    val result = SUT.loadCredits(person)
+
+    assertThat(result).hasSize(2)
+    assertThat(result[0].show).isNotNull()
+    assertThat(result[1].movie).isNotNull()
+    coVerify { peopleDao.getById(any()) }
+    coVerify(exactly = 1) { showsDao.upsert(any()) }
+    coVerify(exactly = 1) { moviesDao.upsert(any()) }
+    coVerify(exactly = 1) { peopleCreditsDao.insert(any(), any()) }
+    coVerify(exactly = 0) { peopleDao.updateTraktId(any(), any()) }
   }
 }

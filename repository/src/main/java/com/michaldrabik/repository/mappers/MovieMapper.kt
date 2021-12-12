@@ -17,7 +17,7 @@ class MovieMapper @Inject constructor(
     movie.title ?: "",
     movie.year ?: -1,
     movie.overview ?: "",
-    movie.released?.let { LocalDate.parse(it) },
+    movie.released?.let { if (it.isNotBlank()) LocalDate.parse(it) else null },
     movie.runtime ?: -1,
     movie.country ?: "",
     movie.trailer ?: "",
