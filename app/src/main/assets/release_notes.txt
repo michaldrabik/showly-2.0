@@ -1,12 +1,8 @@
-* Sorting options now allow to choose between ascending and descending
+This update is focused on people!
 
-* Top search element will now always open global search. Context search has been added into each section.
+* Added information about directing/writing/music people in shows and movies details
 
-* Added shows/movies filters and sorting into search screen
-
-* Added option to pull down Progress list to start Trakt Sync
-
-* New updated Links section for both show and movie details screens
+* Added option to view person's details along with credits sorted by year
 
 Do you enjoy Showly app and want to support the developer?
 Become a subscriber and gain access to cool bonus features! Check Settings to learn more!
