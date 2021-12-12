@@ -256,10 +256,11 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
       }
 
     settingsContactDevs.onClick {
+      val id = settingsUserId.text
       val intent = Intent(ACTION_SENDTO).apply {
         data = Uri.parse("mailto:")
         putExtra(EXTRA_EMAIL, arrayOf(Config.DEVELOPER_MAIL))
-        putExtra(EXTRA_SUBJECT, "Showly 2.0 Message")
+        putExtra(EXTRA_SUBJECT, "Showly Message (ID: $id)")
       }
       if (intent.resolveActivity(requireActivity().packageManager) != null) {
         startActivity(intent)
