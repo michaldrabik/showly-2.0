@@ -41,5 +41,12 @@ dependencies {
   implementation "com.google.dagger:hilt-android:$versions.hilt"
   kapt "com.google.dagger:hilt-compiler:$versions.hilt"
 
+  testImplementation "junit:junit:$versions.junit"
+  testImplementation "io.mockk:mockk:$versions.mockk"
+  testImplementation "com.google.truth:truth:$versions.truth"
+  testImplementation "androidx.arch.core:core-testing:$versions.coreTesting"
+  testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$versions.coroutinesTesting"
+  androidTestImplementation "androidx.test:runner:$versions.testRunner"
+
   coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$versions.androidDesugarLibs"
 }
