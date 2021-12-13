@@ -24,6 +24,7 @@ class SearchFiltersCase @Inject constructor(
       filterNone -> true
       searchOptions.filters.contains(SHOWS) -> item.isShow
       searchOptions.filters.contains(MOVIES) && isMoviesEnabled -> item.isMovie
+      searchOptions.filters.contains(MOVIES) && !isMoviesEnabled -> false
       else -> true
     }
   }
