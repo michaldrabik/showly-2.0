@@ -30,6 +30,7 @@
   <string name="textNoDescription">Übersicht nicht verfügbar.</string>
   <string name="textPleaseWait">Bitte warten…</string>
   <string name="textRate">Bewerten</string>
+  <string name="textLink">Link</string>
   <string name="textRateSaved">Deine Bewertung wurde gespeichert.</string>
   <string name="textPeople">Personen:</string>
   <string name="textDirecting">Regie</string>
@@ -38,6 +39,7 @@
   <string name="textScreenplay">Drehbuch</string>
   <string name="textSound">Ton</string>
   <string name="textMusic">Musik</string>
+  <string name="textActing">Darsteller</string>
   <string name="textAiredAlready">Veröffentlicht</string>
   <string name="textAirsNow">Jetzt live</string>
   <plurals name="textDaysToAir">
@@ -85,6 +87,7 @@
   <string name="textRemoveFromTraktHidden">Möchtest du dieses Element von deinem Trakt.tv-Account \'Versteckt\' entfernen?</string>
   <string name="textRemoveFromTraktWatchlist">Möchtest du dieses Element von deinem Trakt.tv-Account \'Watchlist\' entfernen?</string>
   <string name="textRemoveFromTraktProgress">Möchtest du dieses Element von deinem Trakt.tv-Account \'Fortschritt\' entfernen?</string>
+  <string name="textPremiumAd">Werden Sie Unterstützer und erhalten Sie Zugang zu Bonusfunktionen! Klicken Sie hier, um mehr zu sehen.</string>
   <string name="menuPin">Oben anpinnen</string>
   <string name="menuUnpin">Pin von Oben lösen</string>
   <string name="errorGeneral">Hoppla… Da ging etwas schief.\nBitte kontaktiere uns, wenn dies weiterhin geschieht.</string>
@@ -102,6 +105,4 @@
   <string name="errorTraktSyncGeneral">Synchronisationserror mit Trakt.tv.\nBitte check deine Internetverbindung und versuch es erneut. </string>
   <string name="errorTraktLocked">Ihr Trakt.tv-Konto ist derzeit gesperrt. Wenden Sie sich unter https://support.trakt.tv/ an den Trakt.tv-Support, um Ihr Konto zu entsperren.</string>
   <string name="errorSubscriptionsNotAvailable">Google Play Abonnements sind auf diesem Gerät nicht verfügbar.</string>
-  <string name="textLink">Link</string>
-  <string name="textPremiumAd">Werden Sie Unterstützer und erhalten Sie Zugang zu Bonusfunktionen! Klicken Sie hier, um mehr zu sehen.</string>
 </resources>
