@@ -30,6 +30,7 @@
   <string name="textNoDescription">Resumo não disponível.</string>
   <string name="textPleaseWait">Por favor, aguarde…</string>
   <string name="textRate">Avaliar</string>
+  <string name="textLink">Link</string>
   <string name="textRateSaved">Sua avaliação foi salva.</string>
   <string name="textPeople">Pessoas:</string>
   <string name="textDirecting">Direcionando</string>
@@ -38,6 +39,7 @@
   <string name="textScreenplay">Screenplay</string>
   <string name="textSound">Som</string>
   <string name="textMusic">Música</string>
+  <string name="textActing">Atuação</string>
   <string name="textAiredAlready">Exibido</string>
   <string name="textAirsNow">No ar agora</string>
   <plurals name="textDaysToAir">
@@ -85,6 +87,7 @@
   <string name="textRemoveFromTraktHidden">Você gostaria de remover este item da sua conta Trakt.tv \'Oculto\'?</string>
   <string name="textRemoveFromTraktWatchlist">Você gostaria de remover este item da sua conta do Trakt.tv \"Watchlist\"?</string>
   <string name="textRemoveFromTraktProgress">Você gostaria de remover este item da sua conta do Trakt.tv \"Progresso\"?</string>
+  <string name="textPremiumAd">Torne-se um apoiador e tenha acesso a recursos premium! Clique para ver mais.</string>
   <string name="menuPin">Fixar no topo</string>
   <string name="menuUnpin">Desafixar do topo</string>
   <string name="errorGeneral">Ops… Algo deu errado.\nEntre em contato conosco se isto continuar acontecendo.</string>
@@ -102,6 +105,4 @@
   <string name="errorTraktSyncGeneral">Erro de sincronização Trakt.tv.\nPor favor, verifique sua conexão com a internet e tente novamente.</string>
   <string name="errorTraktLocked">Sua conta Trakt.tv está bloqueada no momento.\nPor favor, entre em contato com o suporte de Trakt.tv em https://support.trakt.tv/ para desbloquear sua conta.</string>
   <string name="errorSubscriptionsNotAvailable">As assinaturas do Google Play não estão disponíveis neste dispositivo.</string>
-  <string name="textLink">Link</string>
-  <string name="textPremiumAd">Torne-se um apoiador e tenha acesso a recursos premium! Clique para ver mais.</string>
 </resources>
