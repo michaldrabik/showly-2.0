@@ -26,6 +26,7 @@ import com.michaldrabik.ui_search.cases.SearchQueryCase
 import com.michaldrabik.ui_search.cases.SearchRecentsCase
 import com.michaldrabik.ui_search.cases.SearchSortingCase
 import com.michaldrabik.ui_search.cases.SearchSuggestionsCase
+import com.michaldrabik.ui_search.cases.SearchTranslationsCase
 import com.michaldrabik.ui_search.recycler.SearchListItem
 import com.michaldrabik.ui_search.utilities.SearchOptions
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -44,6 +45,7 @@ class SearchViewModel @Inject constructor(
   private val searchFiltersCase: SearchFiltersCase,
   private val searchSortingCase: SearchSortingCase,
   private val searchMainCase: SearchMainCase,
+  private val searchTranslationsCase: SearchTranslationsCase,
   private val recentSearchesCase: SearchRecentsCase,
   private val suggestionsCase: SearchSuggestionsCase,
   private val showsImagesProvider: ShowImagesProvider,
@@ -116,7 +118,7 @@ class SearchViewModel @Inject constructor(
 
         val items = results
           .map {
-            val translation = searchMainCase.loadTranslation(it)
+            val translation = searchTranslationsCase.loadTranslation(it)
 
             val image =
               if (it.isShow) showsImagesProvider.findCachedImage(it.show, POSTER)
@@ -226,7 +228,7 @@ class SearchViewModel @Inject constructor(
         val image =
           if (it.isShow) showsImagesProvider.findCachedImage(it.show, POSTER)
           else moviesImagesProvider.findCachedImage(it.movie, POSTER)
-        val translation = searchMainCase.loadTranslation(it)
+        val translation = searchTranslationsCase.loadTranslation(it)
         SearchListItem(
           id = UUID.randomUUID(),
           show = it.show,
@@ -282,12 +284,12 @@ class SearchViewModel @Inject constructor(
   }
 
   fun loadMissingSuggestionTranslation(item: SearchListItem) {
-    if (item.translation != null || searchMainCase.language == Config.DEFAULT_LANGUAGE) return
+    if (item.translation != null || searchTranslationsCase.language == Config.DEFAULT_LANGUAGE) return
     viewModelScope.launch {
       try {
         val translation =
-          if (item.isShow) searchMainCase.loadTranslation(item.show)
-          else searchMainCase.loadTranslation(item.movie)
+          if (item.isShow) searchTranslationsCase.loadTranslation(item.show)
+          else searchTranslationsCase.loadTranslation(item.movie)
         updateSuggestionsItem(item.copy(translation = translation))
       } catch (error: Throwable) {
         Logger.record(error, "Source" to "SearchViewModel::loadMissingTranslation()")
