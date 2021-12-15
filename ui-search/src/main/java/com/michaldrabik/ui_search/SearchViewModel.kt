@@ -13,15 +13,10 @@ import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
-import com.michaldrabik.ui_model.ImageType.POSTER
-import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.RecentSearch
-import com.michaldrabik.ui_model.SearchResult
-import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_search.cases.SearchFiltersCase
-import com.michaldrabik.ui_search.cases.SearchMainCase
 import com.michaldrabik.ui_search.cases.SearchQueryCase
 import com.michaldrabik.ui_search.cases.SearchRecentsCase
 import com.michaldrabik.ui_search.cases.SearchSortingCase
@@ -31,12 +26,10 @@ import com.michaldrabik.ui_search.recycler.SearchListItem
 import com.michaldrabik.ui_search.utilities.SearchOptions
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -44,7 +37,6 @@ class SearchViewModel @Inject constructor(
   private val searchQueryCase: SearchQueryCase,
   private val searchFiltersCase: SearchFiltersCase,
   private val searchSortingCase: SearchSortingCase,
-  private val searchMainCase: SearchMainCase,
   private val searchTranslationsCase: SearchTranslationsCase,
   private val recentSearchesCase: SearchRecentsCase,
   private val suggestionsCase: SearchSuggestionsCase,
@@ -110,39 +102,8 @@ class SearchViewModel @Inject constructor(
         currentSearch = null
 
         val results = searchQueryCase.searchByQuery(trimmed)
-        val myShowsIds = searchMainCase.loadMyShowsIds()
-        val watchlistShowsIds = searchMainCase.loadWatchlistShowsIds()
-        val myMoviesIds = searchMainCase.loadMyMoviesIds()
-        val watchlistMoviesIds = searchMainCase.loadWatchlistMoviesIds()
         val isMoviesEnabled = searchFiltersCase.isMoviesEnabled
-
-        val items = results
-          .map {
-            val translation = searchTranslationsCase.loadTranslation(it)
-
-            val image =
-              if (it.isShow) showsImagesProvider.findCachedImage(it.show, POSTER)
-              else moviesImagesProvider.findCachedImage(it.movie, POSTER)
-
-            val isFollowed =
-              if (it.isShow) it.traktId in myShowsIds
-              else it.traktId in myMoviesIds
-
-            val isWatchlist =
-              if (it.isShow) it.traktId in watchlistShowsIds
-              else it.traktId in watchlistMoviesIds
-
-            SearchListItem(
-              id = UUID.randomUUID(),
-              show = it.show,
-              movie = it.movie,
-              image = image,
-              score = it.score,
-              isFollowed = isFollowed,
-              isWatchlist = isWatchlist,
-              translation = translation
-            )
-          }.also { currentSearch = it }
+        val items = results.also { currentSearch = it }
 
         recentSearchesCase.saveRecentSearch(trimmed)
 
@@ -201,10 +162,6 @@ class SearchViewModel @Inject constructor(
     sortOrderEvent.value = Event(Pair(order, type))
   }
 
-  fun clearSuggestions() {
-    suggestionsItemsState.value = emptyList()
-  }
-
   fun loadSuggestions(query: String) {
     suggestionsJob?.cancel()
 
@@ -214,36 +171,13 @@ class SearchViewModel @Inject constructor(
     }
 
     suggestionsJob = viewModelScope.launch {
-      val showsDef = async { suggestionsCase.loadShows(query.trim(), 5) }
-      val moviesDef = async { suggestionsCase.loadMovies(query.trim(), 5) }
-      val suggestions = (showsDef.await() + moviesDef.await()).map {
-        when (it) {
-          is Show -> SearchResult(0F, it, Movie.EMPTY)
-          is Movie -> SearchResult(0F, Show.EMPTY, it)
-          else -> throw IllegalStateException()
-        }
-      }
-
-      val items = suggestions.map {
-        val image =
-          if (it.isShow) showsImagesProvider.findCachedImage(it.show, POSTER)
-          else moviesImagesProvider.findCachedImage(it.movie, POSTER)
-        val translation = searchTranslationsCase.loadTranslation(it)
-        SearchListItem(
-          id = UUID.randomUUID(),
-          show = it.show,
-          movie = it.movie,
-          image = image,
-          score = it.score,
-          isFollowed = false,
-          isWatchlist = false,
-          translation = translation
-        )
-      }
-
-      val results = items.sortedByDescending { it.votes }
+      val results = suggestionsCase.loadSuggestions(query)
       suggestionsItemsState.value = results
     }
+  }
+
+  fun clearSuggestions() {
+    suggestionsItemsState.value = emptyList()
   }
 
   fun loadMissingImage(item: SearchListItem, force: Boolean) {

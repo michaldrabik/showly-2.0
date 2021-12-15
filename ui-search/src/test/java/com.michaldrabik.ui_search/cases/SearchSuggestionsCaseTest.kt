@@ -7,6 +7,8 @@ import com.michaldrabik.data_local.database.dao.ShowsDao
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.mappers.Mappers
+import com.michaldrabik.ui_base.images.MovieImagesProvider
+import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_search.BaseMockTest
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
@@ -26,6 +28,8 @@ class SearchSuggestionsCaseTest : BaseMockTest() {
   @RelaxedMockK lateinit var mappers: Mappers
   @RelaxedMockK lateinit var settingsRepository: SettingsRepository
   @RelaxedMockK lateinit var translationsRepository: TranslationsRepository
+  @RelaxedMockK lateinit var showImagesProvider: ShowImagesProvider
+  @RelaxedMockK lateinit var movieImagesProvider: MovieImagesProvider
 
   private lateinit var SUT: SearchSuggestionsCase
 
@@ -38,7 +42,14 @@ class SearchSuggestionsCaseTest : BaseMockTest() {
     coEvery { database.showsDao() } returns showsDao
     coEvery { database.moviesDao() } returns moviesDao
 
-    SUT = SearchSuggestionsCase(database, mappers, translationsRepository, settingsRepository)
+    SUT = SearchSuggestionsCase(
+      database,
+      mappers,
+      translationsRepository,
+      settingsRepository,
+      showImagesProvider,
+      movieImagesProvider
+    )
   }
 
   @After
@@ -109,11 +120,9 @@ class SearchSuggestionsCaseTest : BaseMockTest() {
 
   @Test
   fun `Should return empty list if query is blank`() = runBlockingTest {
-    val result1 = SUT.loadShows("   ", 10)
-    val result2 = SUT.loadMovies("   ", 10)
+    val result = SUT.loadSuggestions("   ")
 
-    assertThat(result1).isEmpty()
-    assertThat(result2).isEmpty()
+    assertThat(result).isEmpty()
     coVerify(exactly = 0) { showsDao.getAll() }
     coVerify(exactly = 0) { moviesDao.getAll() }
   }

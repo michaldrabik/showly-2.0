@@ -6,7 +6,14 @@ import com.michaldrabik.data_remote.trakt.api.TraktApi
 import com.michaldrabik.data_remote.trakt.model.SearchResult
 import com.michaldrabik.data_remote.trakt.model.Show
 import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.mappers.Mappers
+import com.michaldrabik.repository.movies.MoviesRepository
+import com.michaldrabik.repository.shows.ShowsRepository
+import com.michaldrabik.ui_base.images.MovieImagesProvider
+import com.michaldrabik.ui_base.images.ShowImagesProvider
+import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_search.BaseMockTest
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
@@ -25,15 +32,40 @@ class SearchQueryCaseTest : BaseMockTest() {
   @RelaxedMockK lateinit var traktApi: TraktApi
   @RelaxedMockK lateinit var mappers: Mappers
   @RelaxedMockK lateinit var settingsRepository: SettingsRepository
+  @RelaxedMockK lateinit var showsRepository: ShowsRepository
+  @RelaxedMockK lateinit var moviesRepository: MoviesRepository
+  @RelaxedMockK lateinit var translationsRepository: TranslationsRepository
+  @RelaxedMockK lateinit var showImagesProvider: ShowImagesProvider
+  @RelaxedMockK lateinit var movieImagesProvider: MovieImagesProvider
 
   private lateinit var SUT: SearchQueryCase
 
   @Before
   override fun setUp() {
     super.setUp()
+
     coEvery { cloud.traktApi } returns traktApi
     coEvery { settingsRepository.isMoviesEnabled } returns true
-    SUT = SearchQueryCase(cloud, mappers, settingsRepository)
+    coEvery { translationsRepository.getLanguage() } returns "en"
+
+    coEvery { showImagesProvider.findCachedImage(any(), any()) } returns Image.createUnknown(ImageType.POSTER)
+    coEvery { movieImagesProvider.findCachedImage(any(), any()) } returns Image.createUnknown(ImageType.POSTER)
+
+    coEvery { showsRepository.myShows.loadAllIds() } returns emptyList()
+    coEvery { showsRepository.watchlistShows.loadAllIds() } returns emptyList()
+    coEvery { moviesRepository.myMovies.loadAllIds() } returns emptyList()
+    coEvery { moviesRepository.watchlistMovies.loadAllIds() } returns emptyList()
+
+    SUT = SearchQueryCase(
+      cloud,
+      mappers,
+      settingsRepository,
+      showsRepository,
+      moviesRepository,
+      translationsRepository,
+      showImagesProvider,
+      movieImagesProvider
+    )
   }
 
   @After
@@ -59,5 +91,7 @@ class SearchQueryCaseTest : BaseMockTest() {
     assertThat(result[1].score).isEqualTo(2F)
     assertThat(result[2].score).isEqualTo(1F)
     coVerify(exactly = 1) { traktApi.fetchSearch("test", any()) }
+    coVerify(exactly = 3) { showImagesProvider.findCachedImage(any(), any()) }
+    coVerify(exactly = 0) { movieImagesProvider.findCachedImage(any(), any()) }
   }
 }

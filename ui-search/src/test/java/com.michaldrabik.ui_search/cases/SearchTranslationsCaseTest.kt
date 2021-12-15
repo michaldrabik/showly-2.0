@@ -3,7 +3,6 @@ package com.michaldrabik.ui_search.cases
 import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.ui_model.Movie
-import com.michaldrabik.ui_model.SearchResult
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_search.BaseMockTest
@@ -34,18 +33,6 @@ class SearchTranslationsCaseTest : BaseMockTest() {
   @After
   fun tearDown() {
     clearAllMocks()
-  }
-
-  @Test
-  fun `Should return empty translation if language is default`() = runBlockingTest {
-    coEvery { translationsRepository.getLanguage() } returns "en"
-
-    val item = mockk<SearchResult>()
-    val result = SUT.loadTranslation(item)
-
-    assertThat(result).isEqualTo(Translation.EMPTY)
-    coVerify(exactly = 1) { translationsRepository.getLanguage() }
-    confirmVerified(translationsRepository)
   }
 
   @Test
@@ -92,40 +79,6 @@ class SearchTranslationsCaseTest : BaseMockTest() {
     coEvery { translationsRepository.loadTranslation(any<Movie>(), any(), any()) } returns Translation.EMPTY
 
     val item = mockk<Movie>()
-    val result = SUT.loadTranslation(item)
-
-    assertThat(result).isNotNull()
-    coVerify(exactly = 1) { translationsRepository.getLanguage() }
-    coVerify(exactly = 1) { translationsRepository.loadTranslation(any<Movie>(), any(), any()) }
-    confirmVerified(translationsRepository)
-  }
-
-  @Test
-  fun `Should return result translation for show if language is not default`() = runBlockingTest {
-    coEvery { translationsRepository.getLanguage() } returns "pl"
-    coEvery { translationsRepository.loadTranslation(any<Show>(), any(), any()) } returns Translation.EMPTY
-
-    val item = mockk<SearchResult> {
-      coEvery { isShow } returns true
-      coEvery { show } returns Show.EMPTY
-    }
-    val result = SUT.loadTranslation(item)
-
-    assertThat(result).isNotNull()
-    coVerify(exactly = 1) { translationsRepository.getLanguage() }
-    coVerify(exactly = 1) { translationsRepository.loadTranslation(any<Show>(), any(), any()) }
-    confirmVerified(translationsRepository)
-  }
-
-  @Test
-  fun `Should return result translation for movie if language is not default`() = runBlockingTest {
-    coEvery { translationsRepository.getLanguage() } returns "pl"
-    coEvery { translationsRepository.loadTranslation(any<Movie>(), any(), any()) } returns Translation.EMPTY
-
-    val item = mockk<SearchResult> {
-      coEvery { isShow } returns false
-      coEvery { movie } returns Movie.EMPTY
-    }
     val result = SUT.loadTranslation(item)
 
     assertThat(result).isNotNull()

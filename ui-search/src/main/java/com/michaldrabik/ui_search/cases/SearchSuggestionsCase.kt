@@ -5,10 +5,18 @@ import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.mappers.Mappers
+import com.michaldrabik.ui_base.images.MovieImagesProvider
+import com.michaldrabik.ui_base.images.ShowImagesProvider
+import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
+import com.michaldrabik.ui_model.SearchResult
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_search.recycler.SearchListItem
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import java.util.UUID
 import javax.inject.Inject
 import com.michaldrabik.data_local.database.model.Movie as MovieDb
 import com.michaldrabik.data_local.database.model.Show as ShowDb
@@ -18,8 +26,12 @@ class SearchSuggestionsCase @Inject constructor(
   private val database: AppDatabase,
   private val mappers: Mappers,
   private val translationsRepository: TranslationsRepository,
-  private val settingsRepository: SettingsRepository
+  private val settingsRepository: SettingsRepository,
+  private val showsImagesProvider: ShowImagesProvider,
+  private val moviesImagesProvider: MovieImagesProvider
 ) {
+
+  val language by lazy { translationsRepository.getLanguage() }
 
   private var showsCache: List<ShowDb>? = null
   private var moviesCache: List<MovieDb>? = null
@@ -43,7 +55,37 @@ class SearchSuggestionsCase @Inject constructor(
     }
   }
 
-  suspend fun loadShows(query: String, limit: Int): List<Show> {
+  suspend fun loadSuggestions(query: String) = coroutineScope {
+    val showsDef = async { loadShows(query.trim(), 5) }
+    val moviesDef = async { loadMovies(query.trim(), 5) }
+
+    val suggestions = (showsDef.await() + moviesDef.await()).map {
+      when (it) {
+        is Show -> SearchResult(0F, it, Movie.EMPTY)
+        is Movie -> SearchResult(0F, Show.EMPTY, it)
+        else -> throw IllegalStateException()
+      }
+    }
+
+    suggestions.map {
+      val image =
+        if (it.isShow) showsImagesProvider.findCachedImage(it.show, ImageType.POSTER)
+        else moviesImagesProvider.findCachedImage(it.movie, ImageType.POSTER)
+      val translation = loadTranslation(it)
+      SearchListItem(
+        id = UUID.randomUUID(),
+        show = it.show,
+        movie = it.movie,
+        image = image,
+        score = it.score,
+        isFollowed = false,
+        isWatchlist = false,
+        translation = translation
+      )
+    }.sortedByDescending { it.votes }
+  }
+
+  private suspend fun loadShows(query: String, limit: Int): List<Show> {
     if (query.trim().isBlank()) return emptyList()
     preloadCache()
     return showsCache
@@ -56,7 +98,7 @@ class SearchSuggestionsCase @Inject constructor(
       ?: emptyList()
   }
 
-  suspend fun loadMovies(query: String, limit: Int): List<Movie> {
+  private suspend fun loadMovies(query: String, limit: Int): List<Movie> {
     if (query.trim().isBlank()) return emptyList()
     preloadCache()
     return moviesCache
@@ -67,6 +109,14 @@ class SearchSuggestionsCase @Inject constructor(
       ?.take(limit)
       ?.map { mappers.movie.fromDatabase(it) }
       ?: emptyList()
+  }
+
+  private suspend fun loadTranslation(result: SearchResult): Translation? {
+    if (language == Config.DEFAULT_LANGUAGE) return Translation.EMPTY
+    return when {
+      result.isShow -> translationsRepository.loadTranslation(result.show, language, onlyLocal = true)
+      else -> translationsRepository.loadTranslation(result.movie, language, onlyLocal = true)
+    }
   }
 
   fun clearCache() {
