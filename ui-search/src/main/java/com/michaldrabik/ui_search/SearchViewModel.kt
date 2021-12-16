@@ -84,38 +84,46 @@ class SearchViewModel @Inject constructor(
   }
 
   fun search(query: String) {
+
+    fun setInitialState() {
+      searchItemsState.value = emptyList()
+      searchItemsAnimateEvent.value = Event(false)
+      searchingState.value = true
+      emptyState.value = false
+      initialState.value = false
+      filtersVisibleState.value = false
+      suggestionsItemsState.value = emptyList()
+      searchOptionsState.value = SearchOptions()
+      recentSearchItemsState.value = emptyList()
+      currentSearch = null
+    }
+
+    fun setResultsState(items: List<SearchListItem>, isMoviesEnabled: Boolean) {
+      searchItemsState.value = items
+      searchItemsAnimateEvent.value = Event(true)
+      searchingState.value = false
+      emptyState.value = items.isEmpty()
+      initialState.value = false
+      filtersVisibleState.value = items.isNotEmpty()
+      moviesEnabledState.value = isMoviesEnabled
+      suggestionsItemsState.value = emptyList()
+      resetScrollEvent.value = Event(true)
+    }
+
     val trimmed = query.trim()
     if (trimmed.isEmpty()) return
+
     viewModelScope.launch {
       try {
         isSearching = true
-
-        searchItemsState.value = emptyList()
-        searchItemsAnimateEvent.value = Event(false)
-        recentSearchItemsState.value = emptyList()
-        searchingState.value = true
-        emptyState.value = false
-        initialState.value = false
-        filtersVisibleState.value = false
-        suggestionsItemsState.value = emptyList()
-        searchOptionsState.value = SearchOptions()
-        currentSearch = null
+        setInitialState()
 
         val results = searchQueryCase.searchByQuery(trimmed)
         val isMoviesEnabled = searchFiltersCase.isMoviesEnabled
         val items = results.also { currentSearch = it }
-
         recentSearchesCase.saveRecentSearch(trimmed)
 
-        searchItemsState.value = items
-        searchItemsAnimateEvent.value = Event(true)
-        searchingState.value = false
-        emptyState.value = items.isEmpty()
-        initialState.value = false
-        filtersVisibleState.value = items.isNotEmpty()
-        moviesEnabledState.value = isMoviesEnabled
-        suggestionsItemsState.value = emptyList()
-        resetScrollEvent.value = Event(true)
+        setResultsState(items, isMoviesEnabled)
       } catch (t: Throwable) {
         onError()
       } finally {
