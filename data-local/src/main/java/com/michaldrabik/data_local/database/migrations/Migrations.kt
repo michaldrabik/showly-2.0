@@ -582,7 +582,7 @@ object Migrations {
         execSQL(
           "CREATE TABLE IF NOT EXISTS `people_images` (" +
             "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
-            "`id_tmdb` INTEGER, " +
+            "`id_tmdb` INTEGER NOT NULL, " +
             "`file_path` TEXT NOT NULL, " +
             "`created_at` INTEGER NOT NULL, " +
             "`updated_at` INTEGER NOT NULL)"

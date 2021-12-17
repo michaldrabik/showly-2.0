@@ -14,6 +14,7 @@ import javax.inject.Singleton
 
 @Singleton
 class ProgressMoviesItemsSorter @Inject constructor() {
+
   fun sort(sortOrder: SortOrder, sortType: SortType) = when (sortType) {
     ASCENDING -> sortAscending(sortOrder)
     DESCENDING -> sortDescending(sortOrder)
