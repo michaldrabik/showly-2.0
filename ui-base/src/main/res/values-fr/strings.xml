@@ -30,6 +30,7 @@
   <string name="textNoDescription">Aperçu non disponible.</string>
   <string name="textPleaseWait">Veuillez patienter…</string>
   <string name="textRate">Noter</string>
+  <string name="textLink">Lien</string>
   <string name="textRateSaved">Votre évaluation a été enregistrée.</string>
   <string name="textPeople">Personnes :</string>
   <string name="textDirecting">Réalisation</string>
@@ -38,6 +39,7 @@
   <string name="textScreenplay">Scénario</string>
   <string name="textSound">Son</string>
   <string name="textMusic">Musique</string>
+  <string name="textActing">Jeu d\'acteur</string>
   <string name="textAiredAlready">Diffusé</string>
   <string name="textAirsNow">Diffusé en ce moment</string>
   <plurals name="textDaysToAir">
@@ -85,6 +87,7 @@
   <string name="textRemoveFromTraktHidden">Voulez-vous retirer cet élément des \'Éléments masqués\' de votre compte Trakt.tv ?</string>
   <string name="textRemoveFromTraktWatchlist">Voulez-vous retirer cet élément de la liste \'Watchlist\' de votre compte Trakt.tv ?</string>
   <string name="textRemoveFromTraktProgress">Voulez-vous retirer cet élément de la liste \'Progression\' de votre compte Trakt.tv ?</string>
+  <string name="textPremiumAd">Devenez un supporteur et accédez à des fonctionnalités bonus ! Cliquez pour en savoir plus.</string>
   <string name="menuPin">Épingler en haut</string>
   <string name="menuUnpin">Désépingler du haut</string>
   <string name="errorGeneral">Oups… Quelque chose s\'est mal passé.\nVeuillez nous contacter si cela continue de se produire.</string>
@@ -102,6 +105,4 @@
   <string name="errorTraktSyncGeneral">Erreur de synchronisation Trakt.tv.\nVeuillez vérifier votre connexion internet et réessayer.</string>
   <string name="errorTraktLocked">Votre compte Trakt.tv est actuellement verrouillé.\nVeuillez contacter l\'assistance Trakt.tv à https://support.trakt.tv/ pour déverrouiller votre compte.</string>
   <string name="errorSubscriptionsNotAvailable">Les abonnements via Google Play ne sont pas disponibles sur cet appareil.</string>
-  <string name="textLink">Lien</string>
-  <string name="textPremiumAd">Devenez un supporteur et accédez à des fonctionnalités bonus ! Cliquez pour en savoir plus.</string>
 </resources>
