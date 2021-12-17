@@ -179,9 +179,9 @@ class PeopleRepository @Inject constructor(
       .map { mappers.person.fromNetwork(it) }
       .groupBy { it.department }
 
-    val directors = remoteTmdbCrew[Department.DIRECTING]?.take(CREW_DISPLAY_LIMIT) ?: emptyList()
-    val writers = remoteTmdbCrew[Department.WRITING]?.take(CREW_DISPLAY_LIMIT) ?: emptyList()
-    val sound = remoteTmdbCrew[Department.SOUND]?.take(CREW_DISPLAY_LIMIT) ?: emptyList()
+    val directors = remoteTmdbCrew[Department.DIRECTING]?.take(CREW_DISPLAY_LIMIT)?.distinctBy { it.ids.tmdb } ?: emptyList()
+    val writers = remoteTmdbCrew[Department.WRITING]?.take(CREW_DISPLAY_LIMIT)?.distinctBy { it.ids.tmdb } ?: emptyList()
+    val sound = remoteTmdbCrew[Department.SOUND]?.take(CREW_DISPLAY_LIMIT)?.distinctBy { it.ids.tmdb } ?: emptyList()
 
     val filteredTmdbPeople = remoteTmdbActors + directors + writers + sound
     val dbTmdbPeople = filteredTmdbPeople.map { mappers.person.toDatabase(it, null) }
@@ -244,9 +244,9 @@ class PeopleRepository @Inject constructor(
       .map { mappers.person.fromNetwork(it) }
       .groupBy { it.department }
 
-    val directors = remoteTmdbCrew[Department.DIRECTING]?.take(CREW_DISPLAY_LIMIT) ?: emptyList()
-    val writers = remoteTmdbCrew[Department.WRITING]?.take(CREW_DISPLAY_LIMIT) ?: emptyList()
-    val sound = remoteTmdbCrew[Department.SOUND]?.take(CREW_DISPLAY_LIMIT) ?: emptyList()
+    val directors = remoteTmdbCrew[Department.DIRECTING]?.take(CREW_DISPLAY_LIMIT)?.distinctBy { it.ids.tmdb } ?: emptyList()
+    val writers = remoteTmdbCrew[Department.WRITING]?.take(CREW_DISPLAY_LIMIT)?.distinctBy { it.ids.tmdb } ?: emptyList()
+    val sound = remoteTmdbCrew[Department.SOUND]?.take(CREW_DISPLAY_LIMIT)?.distinctBy { it.ids.tmdb } ?: emptyList()
 
     val filteredTmdbPeople = remoteTmdbActors + directors + writers + sound
     val dbTmdbPeople = filteredTmdbPeople.map { mappers.person.toDatabase(it, null) }
