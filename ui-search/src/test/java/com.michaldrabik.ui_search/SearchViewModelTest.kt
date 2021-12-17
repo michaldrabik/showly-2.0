@@ -7,9 +7,15 @@ import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.ImageStatus
+import com.michaldrabik.ui_model.ImageType
+import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.RecentSearch
+import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
+import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_search.cases.SearchFiltersCase
 import com.michaldrabik.ui_search.cases.SearchQueryCase
 import com.michaldrabik.ui_search.cases.SearchRecentsCase
@@ -17,6 +23,7 @@ import com.michaldrabik.ui_search.cases.SearchSortingCase
 import com.michaldrabik.ui_search.cases.SearchSuggestionsCase
 import com.michaldrabik.ui_search.cases.SearchTranslationsCase
 import com.michaldrabik.ui_search.recycler.SearchListItem
+import io.mockk.Called
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -285,5 +292,169 @@ class SearchViewModelTest : BaseMockTest() {
     assertThat(stateResult[1].suggestionsItems).hasSize(2)
 
     job.cancel()
+  }
+
+  @Test
+  fun `Should update missing image for show properly`() = runBlockingTest {
+    val item = TestData.SEARCH_LIST_ITEM.copy(
+      show = Show.EMPTY.copy(title = "test")
+    )
+    coEvery { showsImagesProvider.loadRemoteImage(any(), any(), any()) } returns Image.createUnavailable(ImageType.POSTER)
+    coEvery { searchQueryCase.searchByQuery(any()) } returns listOf(item)
+    coEvery { recentSearchesCase.saveRecentSearch(any()) } just Runs
+    val job = launch { SUT.uiState.toList(stateResult) }
+
+    SUT.search("test")
+    SUT.loadMissingImage(item, true)
+
+    with(stateResult.last()) {
+      assertThat(searchItems).hasSize(1)
+      assertThat(searchItems?.last()?.image?.status).isEqualTo(ImageStatus.UNAVAILABLE)
+    }
+
+    coVerify(exactly = 1) { showsImagesProvider.loadRemoteImage(any(), any(), any()) }
+    coVerify { moviesImagesProvider wasNot Called }
+
+    job.cancel()
+  }
+
+  @Test
+  fun `Should update missing image for movie properly`() = runBlockingTest {
+    val item = TestData.SEARCH_LIST_ITEM.copy(
+      movie = Movie.EMPTY.copy(title = "test")
+    )
+    coEvery { moviesImagesProvider.loadRemoteImage(any(), any(), any()) } returns Image.createUnavailable(ImageType.POSTER)
+    coEvery { searchQueryCase.searchByQuery(any()) } returns listOf(item)
+    coEvery { recentSearchesCase.saveRecentSearch(any()) } just Runs
+    val job = launch { SUT.uiState.toList(stateResult) }
+
+    SUT.search("test")
+    SUT.loadMissingImage(item, true)
+
+    with(stateResult.last()) {
+      assertThat(searchItems).hasSize(1)
+      assertThat(searchItems?.last()?.image?.status).isEqualTo(ImageStatus.UNAVAILABLE)
+    }
+
+    coVerify(exactly = 1) { moviesImagesProvider.loadRemoteImage(any(), any(), any()) }
+    coVerify { showsImagesProvider wasNot Called }
+
+    job.cancel()
+  }
+
+  @Test
+  fun `Should update missing suggestion image for show properly`() = runBlockingTest {
+    val item = TestData.SEARCH_LIST_ITEM.copy(
+      show = Show.EMPTY.copy(title = "test")
+    )
+    coEvery { showsImagesProvider.loadRemoteImage(any(), any(), any()) } returns Image.createUnavailable(ImageType.POSTER)
+    coEvery { suggestionsCase.loadSuggestions((any())) } returns listOf(item)
+    val job = launch { SUT.uiState.toList(stateResult) }
+
+    SUT.loadSuggestions("test")
+    SUT.loadMissingSuggestionImage(item, true)
+
+    with(stateResult.last()) {
+      assertThat(suggestionsItems).hasSize(1)
+      assertThat(suggestionsItems?.last()?.image?.status).isEqualTo(ImageStatus.UNAVAILABLE)
+    }
+
+    coVerify(exactly = 1) { showsImagesProvider.loadRemoteImage(any(), any(), any()) }
+    coVerify { moviesImagesProvider wasNot Called }
+
+    job.cancel()
+  }
+
+  @Test
+  fun `Should update missing suggestion image for movie properly`() = runBlockingTest {
+    val item = TestData.SEARCH_LIST_ITEM.copy(
+      movie = Movie.EMPTY.copy(title = "test")
+    )
+    coEvery { showsImagesProvider.loadRemoteImage(any(), any(), any()) } returns Image.createUnavailable(ImageType.POSTER)
+    coEvery { suggestionsCase.loadSuggestions((any())) } returns listOf(item)
+    val job = launch { SUT.uiState.toList(stateResult) }
+
+    SUT.loadSuggestions("test")
+    SUT.loadMissingSuggestionImage(item, true)
+
+    with(stateResult.last()) {
+      assertThat(suggestionsItems).hasSize(1)
+      assertThat(suggestionsItems?.last()?.image?.status).isEqualTo(ImageStatus.UNAVAILABLE)
+    }
+
+    coVerify(exactly = 1) { moviesImagesProvider.loadRemoteImage(any(), any(), any()) }
+    coVerify { showsImagesProvider wasNot Called }
+
+    job.cancel()
+  }
+
+  @Test
+  fun `Should update missing suggestion translation for show properly`() = runBlockingTest {
+    val item = TestData.SEARCH_LIST_ITEM.copy(
+      show = Show.EMPTY.copy(title = "test")
+    )
+    coEvery { searchTranslationsCase.language } returns "pl"
+    coEvery { searchTranslationsCase.loadTranslation(any<Show>()) } returns Translation.EMPTY
+    coEvery { suggestionsCase.loadSuggestions((any())) } returns listOf(item)
+    val job = launch { SUT.uiState.toList(stateResult) }
+
+    SUT.loadSuggestions("test")
+    SUT.loadMissingSuggestionTranslation(item)
+
+    with(stateResult.last()) {
+      assertThat(suggestionsItems).hasSize(1)
+      assertThat(suggestionsItems?.last()?.translation).isEqualTo(Translation.EMPTY)
+    }
+
+    coVerify(exactly = 1) { searchTranslationsCase.loadTranslation(any<Show>()) }
+    coVerify(exactly = 0) { searchTranslationsCase.loadTranslation(any<Movie>()) }
+
+    job.cancel()
+  }
+
+  @Test
+  fun `Should update missing suggestion translation for movie properly`() = runBlockingTest {
+    val item = TestData.SEARCH_LIST_ITEM.copy(
+      movie = Movie.EMPTY.copy(title = "test")
+    )
+    coEvery { searchTranslationsCase.language } returns "pl"
+    coEvery { searchTranslationsCase.loadTranslation(any<Movie>()) } returns Translation.EMPTY
+    coEvery { suggestionsCase.loadSuggestions((any())) } returns listOf(item)
+    val job = launch { SUT.uiState.toList(stateResult) }
+
+    SUT.loadSuggestions("test")
+    SUT.loadMissingSuggestionTranslation(item)
+
+    with(stateResult.last()) {
+      assertThat(suggestionsItems).hasSize(1)
+      assertThat(suggestionsItems?.last()?.translation).isEqualTo(Translation.EMPTY)
+    }
+
+    coVerify(exactly = 1) { searchTranslationsCase.loadTranslation(any<Movie>()) }
+    coVerify(exactly = 0) { searchTranslationsCase.loadTranslation(any<Show>()) }
+
+    job.cancel()
+  }
+
+  @Test
+  fun `Should not update missing suggestion translation if default language`() = runBlockingTest {
+    coEvery { searchTranslationsCase.language } returns "en"
+    val item = TestData.SEARCH_LIST_ITEM
+
+    SUT.loadMissingSuggestionTranslation(item)
+
+    coVerify(exactly = 0) { searchTranslationsCase.loadTranslation(any<Movie>()) }
+    coVerify(exactly = 0) { searchTranslationsCase.loadTranslation(any<Show>()) }
+  }
+
+  @Test
+  fun `Should not update missing suggestion translation if already has translation`() = runBlockingTest {
+    coEvery { searchTranslationsCase.language } returns "pl"
+    val item = TestData.SEARCH_LIST_ITEM.copy(translation = Translation.EMPTY)
+
+    SUT.loadMissingSuggestionTranslation(item)
+
+    coVerify(exactly = 0) { searchTranslationsCase.loadTranslation(any<Movie>()) }
+    coVerify(exactly = 0) { searchTranslationsCase.loadTranslation(any<Show>()) }
   }
 }

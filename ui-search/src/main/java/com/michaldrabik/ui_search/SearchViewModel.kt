@@ -5,7 +5,6 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.SEARCH_RECENTS_AMOUNT
 import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.BaseViewModel
-import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.Event
@@ -30,6 +29,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -226,7 +226,9 @@ class SearchViewModel @Inject constructor(
   }
 
   fun loadMissingSuggestionTranslation(item: SearchListItem) {
-    if (item.translation != null || searchTranslationsCase.language == Config.DEFAULT_LANGUAGE) return
+    if (item.translation != null || searchTranslationsCase.language == Config.DEFAULT_LANGUAGE) {
+      return
+    }
     viewModelScope.launch {
       try {
         val translation =
@@ -234,14 +236,13 @@ class SearchViewModel @Inject constructor(
           else searchTranslationsCase.loadTranslation(item.movie)
         updateSuggestionsItem(item.copy(translation = translation))
       } catch (error: Throwable) {
-        Logger.record(error, "Source" to "SearchViewModel::loadMissingTranslation()")
+        Timber.e(error)
       }
     }
   }
 
   private fun updateSuggestionsItem(new: SearchListItem) {
-    val currentState = uiState
-    val currentItems = currentState.value.suggestionsItems?.toMutableList()
+    val currentItems = uiState.value.suggestionsItems?.toMutableList()
     currentItems?.run { findReplace(new) { it.isSameAs(new) } }
     suggestionsItemsState.value = currentItems
   }
