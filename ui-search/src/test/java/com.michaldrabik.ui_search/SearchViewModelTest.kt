@@ -91,6 +91,7 @@ class SearchViewModelTest : BaseMockTest() {
 
   @Test
   fun `Should preload suggestions`() = runBlockingTest {
+    coEvery { suggestionsCase.preloadCache() } just Runs
     SUT.preloadSuggestions()
     coVerify(exactly = 1) { suggestionsCase.preloadCache() }
   }
