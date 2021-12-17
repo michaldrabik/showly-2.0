@@ -26,6 +26,7 @@ abstract class BaseWidgetProvider : AppWidgetProvider() {
       75 -> R.drawable.bg_widget_75
       50 -> R.drawable.bg_widget_50
       25 -> R.drawable.bg_widget_25
+      0 -> R.drawable.bg_widget_0
       else -> R.drawable.bg_widget
     }
 

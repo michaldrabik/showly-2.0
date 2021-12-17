@@ -44,6 +44,7 @@
   <attr name="colorWidgetBackground75" format="color" />
   <attr name="colorWidgetBackground50" format="color" />
   <attr name="colorWidgetBackground25" format="color" />
+  <attr name="colorWidgetBackground0" format="color" />
   <attr name="colorWidgetStatusBackground" format="color" />
 
   <declare-styleable name="LinkItem">
