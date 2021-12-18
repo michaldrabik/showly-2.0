@@ -27,7 +27,7 @@
   <string name="textSettingsShowsNotificationsWhenNextDay">1 Tag danach</string>
   <string name="textTipDiscover">Doppeltipp auf den \'Entdecken\' Tap um eine Schnellsuche zu starten.</string>
   <string name="textTipMyShows">Tippe zweimal auf die Menüschaltfläche \'Sammlung\', um schnell zwischen den Registerkarten zu wechseln.</string>
-  <string name="textTipShowDetailsGallery">Tippe auf das Bild der Serie um die Galerie zu öffnen.</string>
+  <string name="textTipShowDetailsGallery">Bild antippen, um Galerie zu öffnen.</string>
   <string name="textTipDiscoverFilters">Benutze verschiedene Filter um deinen Entdecken Feed zu verfeinern.</string>
   <string name="textTipWatchlistPinItem">Tippe &amp; Halte um oben anzupinnen.</string>
   <string name="textTipBottomModeMenu">Wischen Sie unten Menü links oder rechts um den Modus zu wechseln.</string>

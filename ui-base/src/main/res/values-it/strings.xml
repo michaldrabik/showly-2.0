@@ -30,6 +30,7 @@
   <string name="textNoDescription">Panoramica non disponibile.</string>
   <string name="textPleaseWait">Attendere prego…</string>
   <string name="textRate">Valuta</string>
+  <string name="textLink">Link</string>
   <string name="textRateSaved">La tua valutazione è stata salvata.</string>
   <string name="textPeople">Persone:</string>
   <string name="textDirecting">Regia</string>
@@ -38,6 +39,7 @@
   <string name="textScreenplay">Sceneggiatura</string>
   <string name="textSound">Suono</string>
   <string name="textMusic">Musica</string>
+  <string name="textActing">Recitazione</string>
   <string name="textAiredAlready">Trasmesso</string>
   <string name="textAirsNow">Trasmesso ora</string>
   <plurals name="textDaysToAir">
@@ -85,6 +87,7 @@
   <string name="textRemoveFromTraktHidden">Vuoi rimuovere questo elemento dagli \"Elementi nascosti\" del tuo account Trakt.tv?</string>
   <string name="textRemoveFromTraktWatchlist">Vuoi rimuovere questo elemento dalla \"Watchlist\" del tuo account Trakt.tv?</string>
   <string name="textRemoveFromTraktProgress">Vuoi rimuovere questo elemento dai \"Progressi\" del tuo account Trakt.tv?</string>
+  <string name="textPremiumAd">Diventa un sostenitore e ottieni l\'accesso alle funzionalità bonus! Clicca per saperne di più.</string>
   <string name="menuPin">Fissa in cima</string>
   <string name="menuUnpin">Rimuovi</string>
   <string name="errorGeneral">Oops... Qualcosa è andato storto.\nPer favore contattaci se il problema persiste.</string>
@@ -102,6 +105,4 @@
   <string name="errorTraktSyncGeneral">Errore sincronizzazione Trakt.tv .\nPer favore controlla la tua connessione internet e prova di nuovo.</string>
   <string name="errorTraktLocked">Il tuo account Trakt.tv è bloccato.\nPer favore contatta il supporto di Trakt.tv al link https://support.trakt.tv/ per sbloccare il tuo account.</string>
   <string name="errorSubscriptionsNotAvailable">Gli abbonamenti tramite Google Play non sono disponibili su questo dispositivo.</string>
-  <string name="textLink">Link</string>
-  <string name="textPremiumAd">Diventa un sostenitore e ottieni l\'accesso alle funzionalità bonus! Clicca per saperne di più.</string>
 </resources>

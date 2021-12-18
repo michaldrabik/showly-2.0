@@ -27,7 +27,7 @@
   <string name="textSettingsShowsNotificationsWhenNextDay">Päivän kuluttua</string>
   <string name="textTipDiscover">Napauta Etsi-valikkopainiketta uudelleen avataksesi haun nopeasti.</string>
   <string name="textTipMyShows">Napauta Kokoelma-valikkopainiketta uudelleen siirtyäksesi alueiden välillä nopeasti.</string>
-  <string name="textTipShowDetailsGallery">Avaa galleria napauttamalla sarjan kuvaa.</string>
+  <string name="textTipShowDetailsGallery">Avaa galleria napauttamalla kuvaa.</string>
   <string name="textTipDiscoverFilters">Käytä suodatusnäkymää tarkentaaksesi etsinnän syötettä.</string>
   <string name="textTipWatchlistPinItem">Kiinnitä kohde listan ylälaitaan painamalla sitä pitkään.</string>
   <string name="textTipBottomModeMenu">Vaihda aluetta nopeasti pyyhkäisemällä alareunan valikkoa vasemmalle tai oikealle.</string>
