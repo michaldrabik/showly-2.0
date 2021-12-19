@@ -122,7 +122,6 @@ class ShowDetailsViewModel @Inject constructor(
   private val finishedEvent = MutableStateFlow<Event<Boolean>?>(null)
 
   private var show by notNull<Show>()
-  private var areSeasonsLoaded = false
   private var areSeasonsLocal = false
   private val seasonItems = mutableListOf<SeasonListItem>()
 
@@ -166,11 +165,7 @@ class ShowDetailsViewModel @Inject constructor(
         launch { loadNextEpisode(show) }
         launch { loadTranslation(show) }
         launch { loadRelatedShows(show) }
-        launch {
-          areSeasonsLoaded = false
-          loadSeasons(show, (context as OnlineStatusProvider).isOnline())
-          areSeasonsLoaded = true
-        }
+        launch { loadSeasons(show, (context as OnlineStatusProvider).isOnline()) }
       } catch (error: Throwable) {
         progressJob.cancel()
         if (error is HttpException && error.code() == 404) {
@@ -237,7 +232,7 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
-  private suspend fun loadSeasons(show: Show, isOnline: Boolean): List<Season> = try {
+  private suspend fun loadSeasons(show: Show, isOnline: Boolean) = try {
     val (seasons, isLocal) = episodesCase.loadSeasons(show, isOnline)
     areSeasonsLocal = isLocal
     val format = dateFormatProvider.loadFullHourFormat()
@@ -254,10 +249,8 @@ class ShowDetailsViewModel @Inject constructor(
 
     val calculated = markWatchedEpisodes(seasonsItems)
     seasonsState.value = calculated
-    seasons
   } catch (error: Throwable) {
     seasonsState.value = emptyList()
-    emptyList()
   }
 
   private suspend fun loadRelatedShows(show: Show) {
@@ -669,7 +662,7 @@ class ShowDetailsViewModel @Inject constructor(
   }
 
   private suspend fun checkSeasonsLoaded(): Boolean {
-    if (!areSeasonsLoaded) {
+    if (seasonsState.value == null) {
       _messageChannel.send(MessageEvent.info(R.string.errorSeasonsNotLoaded))
       return false
     }
