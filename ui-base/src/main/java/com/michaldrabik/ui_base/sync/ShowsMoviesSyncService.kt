@@ -3,12 +3,12 @@ package com.michaldrabik.ui_base.sync
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.JobIntentService
-import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.ShowsMoviesSyncComplete
 import com.michaldrabik.ui_base.sync.movies.MoviesSyncRunner
 import com.michaldrabik.ui_base.sync.shows.ShowsSyncRunner
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -41,8 +41,8 @@ class ShowsMoviesSyncService : JobIntentService(), CoroutineScope {
     val showsAsync = async {
       try {
         return@async showsSyncRunner.run()
-      } catch (t: Throwable) {
-        Logger.record(t, "Source" to "ShowsSyncRunner")
+      } catch (error: Throwable) {
+        if (error is CancellationException) throw error
         return@async 0
       }
     }
@@ -50,8 +50,8 @@ class ShowsMoviesSyncService : JobIntentService(), CoroutineScope {
     val moviesAsync = async {
       try {
         return@async moviesSyncRunner.run()
-      } catch (t: Throwable) {
-        Logger.record(t, "Source" to "MoviesSyncRunner")
+      } catch (error: Throwable) {
+        if (error is CancellationException) throw error
         return@async 0
       }
     }

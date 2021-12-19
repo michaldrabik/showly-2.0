@@ -164,25 +164,30 @@ class EpisodesManager @Inject constructor(
       val seasonsToAdd = mutableListOf<SeasonDb>()
       val episodesToAdd = mutableListOf<EpisodeDb>()
 
-      newSeasons.forEach { newSeason ->
-        val localSeason = localSeasons.find { it.seasonNumber == newSeason.number }
-        val seasonDb = mappers.season.toDatabase(
-          newSeason,
-          show.ids.trakt,
-          localSeason?.isWatched ?: false
-        )
-        seasonsToAdd.add(seasonDb)
+      newSeasons.forEach { season ->
+        var isAnyEpisodeUnwatched = false
 
-        newSeason.episodes.forEach { newEpisode ->
+        season.episodes.forEach { newEpisode ->
           val localEpisode = localEpisodes.find { it.episodeNumber == newEpisode.number && it.seasonNumber == newEpisode.season }
+
+          val isWatched = localEpisode?.isWatched ?: false
+          if (!isWatched) isAnyEpisodeUnwatched = true
+
           val episodeDb = mappers.episode.toDatabase(
-            newEpisode,
-            newSeason,
-            show.ids.trakt,
-            localEpisode?.isWatched ?: false
+            episode = newEpisode,
+            season = season,
+            showId = show.ids.trakt,
+            isWatched = isWatched
           )
           episodesToAdd.add(episodeDb)
         }
+
+        val seasonDb = mappers.season.toDatabase(
+          season = season,
+          showId = show.ids.trakt,
+          isWatched = !isAnyEpisodeUnwatched
+        )
+        seasonsToAdd.add(seasonDb)
       }
 
       database.runTransaction {
