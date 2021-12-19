@@ -4,7 +4,6 @@ import com.michaldrabik.data_remote.tmdb.model.TmdbImages
 import com.michaldrabik.data_remote.tmdb.model.TmdbPerson
 import com.michaldrabik.data_remote.tmdb.model.TmdbStreamingCountry
 import com.michaldrabik.data_remote.tmdb.model.TmdbTranslation
-import java.util.Locale.ROOT
 
 class TmdbApi(private val service: TmdbService) {
 
