@@ -57,12 +57,20 @@ class TmdbApi(private val service: TmdbService) {
 
   suspend fun fetchShowWatchProviders(tmdbId: Long, countryCode: String): TmdbStreamingCountry? {
     val result = service.fetchShowWatchProviders(tmdbId)
-    return result.results[countryCode.uppercase(ROOT)]
+    val code = when (countryCode.uppercase()) {
+      "UK" -> "GB"
+      else -> countryCode.uppercase()
+    }
+    return result.results[code]
   }
 
   suspend fun fetchMovieWatchProviders(tmdbId: Long, countryCode: String): TmdbStreamingCountry? {
     val result = service.fetchMovieWatchProviders(tmdbId)
-    return result.results[countryCode.uppercase(ROOT)]
+    val code = when (countryCode.uppercase()) {
+      "UK" -> "GB"
+      else -> countryCode.uppercase()
+    }
+    return result.results[code]
   }
 
   suspend fun fetchPersonDetails(id: Long): TmdbPerson {
