@@ -23,6 +23,7 @@ import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
+import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.common.Config.INITIAL_RATING
 import com.michaldrabik.common.extensions.dateFromMillis
@@ -203,7 +204,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
       isImageLoading.let { episodeDetailsProgress.visibleIf(it) }
       image?.let {
         Glide.with(this@EpisodeDetailsBottomSheet)
-          .load(it.fullFileUrlEpisode)
+          .load("${Config.TMDB_IMAGE_BASE_STILL_URL}${it.fileUrl}")
           .transform(CenterCrop(), GranularRoundedCorners(cornerRadius, cornerRadius, 0F, 0F))
           .transition(DrawableTransitionOptions.withCrossFade(IMAGE_FADE_DURATION_MS))
           .withFailListener { episodeDetailsImagePlaceholder.visible() }
