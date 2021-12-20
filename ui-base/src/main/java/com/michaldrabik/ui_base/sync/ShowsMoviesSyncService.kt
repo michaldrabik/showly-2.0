@@ -8,7 +8,6 @@ import com.michaldrabik.ui_base.events.ShowsMoviesSyncComplete
 import com.michaldrabik.ui_base.sync.movies.MoviesSyncRunner
 import com.michaldrabik.ui_base.sync.shows.ShowsSyncRunner
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -40,19 +39,19 @@ class ShowsMoviesSyncService : JobIntentService(), CoroutineScope {
 
     val showsAsync = async {
       try {
-        return@async showsSyncRunner.run()
+        showsSyncRunner.run()
       } catch (error: Throwable) {
-        if (error is CancellationException) throw error
-        return@async 0
+        Timber.e(error)
+        0
       }
     }
 
     val moviesAsync = async {
       try {
-        return@async moviesSyncRunner.run()
+        moviesSyncRunner.run()
       } catch (error: Throwable) {
-        if (error is CancellationException) throw error
-        return@async 0
+        Timber.e(error)
+        0
       }
     }
 
