@@ -4,5 +4,7 @@ This update is focused on people!
 
 * Added option to view person's details along with credits sorted by year
 
+* Fixed bug where streaming services would not be displayed for UK region
+
 Do you enjoy Showly app and want to support the developer?
 Become a subscriber and gain access to cool bonus features! Check Settings to learn more!
