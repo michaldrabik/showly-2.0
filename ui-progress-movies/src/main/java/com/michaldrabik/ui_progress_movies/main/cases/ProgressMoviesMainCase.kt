@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_progress_movies.main.cases
 
-import android.content.Context
 import androidx.room.withTransaction
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.repository.PinnedItemsRepository
@@ -20,7 +19,7 @@ class ProgressMoviesMainCase @Inject constructor(
   private val quickSyncManager: QuickSyncManager
 ) {
 
-  suspend fun addToMyMovies(context: Context, movie: Movie) {
+  suspend fun addToMyMovies(movie: Movie) {
     database.withTransaction {
       moviesRepository.myMovies.insert(movie.ids.trakt)
       moviesRepository.watchlistMovies.delete(movie.ids.trakt)
@@ -29,8 +28,8 @@ class ProgressMoviesMainCase @Inject constructor(
     quickSyncManager.scheduleMovies(listOf(movie.ids.trakt.id))
   }
 
-  suspend fun addToMyMovies(context: Context, movieId: IdTrakt) {
+  suspend fun addToMyMovies(movieId: IdTrakt) {
     val movie = Movie.EMPTY.copy(Ids.EMPTY.copy(trakt = movieId))
-    addToMyMovies(context, movie)
+    addToMyMovies(movie)
   }
 }

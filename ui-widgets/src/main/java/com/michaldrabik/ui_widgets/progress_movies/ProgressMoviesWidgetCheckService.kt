@@ -46,7 +46,7 @@ class ProgressMoviesWidgetCheckService : JobIntentService(), CoroutineScope {
     }
 
     runBlocking {
-      progressMoviesCase.addToMyMovies(applicationContext, IdTrakt(movieId))
+      progressMoviesCase.addToMyMovies(IdTrakt(movieId))
       (applicationContext as WidgetsProvider).requestMoviesWidgetsUpdate()
     }
   }

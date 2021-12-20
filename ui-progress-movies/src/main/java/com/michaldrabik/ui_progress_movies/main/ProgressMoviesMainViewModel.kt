@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_progress_movies.main
 
-import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_model.Movie
@@ -23,22 +22,6 @@ class ProgressMoviesMainViewModel @Inject constructor(
   private val searchQueryState = MutableStateFlow<String?>(null)
   private val calendarModeState = MutableStateFlow<CalendarMode?>(null)
 
-  val uiState = combine(
-    timestampState,
-    searchQueryState,
-    calendarModeState
-  ) { s1, s2, s3 ->
-    ProgressMoviesMainUiState(
-      timestamp = s1,
-      searchQuery = s2,
-      calendarMode = s3
-    )
-  }.stateIn(
-    scope = viewModelScope,
-    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = ProgressMoviesMainUiState()
-  )
-
   private var calendarMode = CalendarMode.PRESENT_FUTURE
 
   fun loadProgress() {
@@ -60,10 +43,26 @@ class ProgressMoviesMainViewModel @Inject constructor(
     calendarModeState.value = calendarMode
   }
 
-  fun setWatchedMovie(context: Context, movie: Movie) {
+  fun setWatchedMovie(movie: Movie) {
     viewModelScope.launch {
-      moviesCase.addToMyMovies(context, movie)
+      moviesCase.addToMyMovies(movie)
       timestampState.value = System.currentTimeMillis()
     }
   }
+
+  val uiState = combine(
+    timestampState,
+    searchQueryState,
+    calendarModeState
+  ) { s1, s2, s3 ->
+    ProgressMoviesMainUiState(
+      timestamp = s1,
+      searchQuery = s2,
+      calendarMode = s3
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = ProgressMoviesMainUiState()
+  )
 }

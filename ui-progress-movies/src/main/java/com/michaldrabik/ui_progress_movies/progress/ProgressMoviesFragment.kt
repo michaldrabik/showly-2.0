@@ -126,7 +126,7 @@ class ProgressMoviesFragment :
         if (viewModel.isQuickRateEnabled) {
           openRateDialog(it)
         } else {
-          parentViewModel.setWatchedMovie(requireAppContext(), it.movie)
+          parentViewModel.setWatchedMovie(it.movie)
         }
       }
     )
@@ -221,7 +221,7 @@ class ProgressMoviesFragment :
       .setBackground(ContextCompat.getDrawable(context, R.drawable.bg_dialog))
       .setView(rateView)
       .setPositiveButton(R.string.textRate) { _, _ ->
-        parentViewModel.setWatchedMovie(requireAppContext(), item.movie)
+        parentViewModel.setWatchedMovie(item.movie)
         viewModel.addRating(rateView.getRating(), item.movie)
       }
       .setNegativeButton(R.string.textCancel) { _, _ -> }
