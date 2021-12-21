@@ -38,6 +38,8 @@ jobs:
         run: ./gradlew :ui-statistics-movies:testDebugUnitTest
       - name: Run Unit Tests (ui-search)
         run: ./gradlew :ui-search:testDebugUnitTest
+      - name: Run Unit Tests (ui-progress-movies)
+        run: ./gradlew :ui-progress-movies:testDebugUnitTest
 
       - name: Build APK
         run: ./gradlew app:assembleRelease
