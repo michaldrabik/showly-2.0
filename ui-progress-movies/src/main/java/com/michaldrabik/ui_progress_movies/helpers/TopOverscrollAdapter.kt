@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_progress_movies.calendar.helpers
+package com.michaldrabik.ui_progress_movies.helpers
 
 import androidx.recyclerview.widget.RecyclerView
 import me.everything.android.ui.overscroll.adapters.RecyclerViewOverScrollDecorAdapter

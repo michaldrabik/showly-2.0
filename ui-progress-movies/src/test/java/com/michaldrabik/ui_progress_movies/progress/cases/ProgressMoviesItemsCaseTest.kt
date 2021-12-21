@@ -157,14 +157,14 @@ class ProgressMoviesItemsCaseTest : BaseMockTest() {
       )
 
       coEvery { moviesRepository.watchlistMovies.loadAll() } returns listOf(movie1, movie2, movie3)
-      coEvery { sorter.sort(any(), any()) } returns compareBy { it.movie.rating }
+      coEvery { sorter.sort(any(), any()) } returns compareByDescending { it.movie.rating }
 
       val result1 = SUT.loadItems(searchQuery = "")
-      assertThat(result1[0].movie).isEqualTo(movie2)
+      assertThat(result1[0].movie).isEqualTo(movie3)
       assertThat(result1[1].movie).isEqualTo(movie1)
-      assertThat(result1[2].movie).isEqualTo(movie3)
+      assertThat(result1[2].movie).isEqualTo(movie2)
 
-      coEvery { sorter.sort(any(), any()) } returns compareByDescending { it.movie.title }
+      coEvery { sorter.sort(any(), any()) } returns compareBy { it.movie.title }
 
       val result2 = SUT.loadItems(searchQuery = "")
       assertThat(result2[0].movie).isEqualTo(movie1)

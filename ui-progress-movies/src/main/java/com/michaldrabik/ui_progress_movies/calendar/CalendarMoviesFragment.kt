@@ -20,8 +20,8 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_progress_movies.R
 import com.michaldrabik.ui_progress_movies.calendar.helpers.CalendarMode.PRESENT_FUTURE
 import com.michaldrabik.ui_progress_movies.calendar.helpers.CalendarMode.RECENTS
-import com.michaldrabik.ui_progress_movies.calendar.helpers.TopOverscrollAdapter
 import com.michaldrabik.ui_progress_movies.calendar.recycler.CalendarMoviesAdapter
+import com.michaldrabik.ui_progress_movies.helpers.TopOverscrollAdapter
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainFragment
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainViewModel
 import dagger.hilt.android.AndroidEntryPoint
