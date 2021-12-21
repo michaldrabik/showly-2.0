@@ -29,38 +29,39 @@ abstract class CalendarMoviesItemsCase constructor(
   abstract val grouper: CalendarGrouper
   abstract val sorter: CalendarSorter
 
-  suspend fun loadItems(searchQuery: String): List<CalendarMovieListItem> = withContext(Dispatchers.Default) {
-    val now = nowUtc().toLocalZone()
-    val language = translationsRepository.getLanguage()
-    val dateFormat = dateFormatProvider.loadFullDayFormat()
+  suspend fun loadItems(searchQuery: String): List<CalendarMovieListItem> =
+    withContext(Dispatchers.Default) {
+      val now = nowUtc().toLocalZone()
+      val language = translationsRepository.getLanguage()
+      val dateFormat = dateFormatProvider.loadFullDayFormat()
 
-    val (myMovies, watchlistMovies) = awaitAll(
-      async { moviesRepository.myMovies.loadAll() },
-      async { moviesRepository.watchlistMovies.loadAll() }
-    )
+      val (myMovies, watchlistMovies) = awaitAll(
+        async { moviesRepository.myMovies.loadAll() },
+        async { moviesRepository.watchlistMovies.loadAll() }
+      )
 
-    val elements = (myMovies + watchlistMovies)
-      .filter { filter.filter(now, it) }
-      .sortedWith(sorter.sort())
-      .map { movie ->
-        async {
-          var translation: Translation? = null
-          if (language != Config.DEFAULT_LANGUAGE) {
-            translation = translationsRepository.loadTranslation(movie, language, onlyLocal = true)
+      val elements = (myMovies + watchlistMovies)
+        .filter { filter.filter(now, it) }
+        .sortedWith(sorter.sort())
+        .map { movie ->
+          async {
+            var translation: Translation? = null
+            if (language != Config.DEFAULT_LANGUAGE) {
+              translation = translationsRepository.loadTranslation(movie, language, onlyLocal = true)
+            }
+            CalendarMovieListItem.MovieItem(
+              movie = movie,
+              image = imagesProvider.findCachedImage(movie, ImageType.POSTER),
+              isWatched = myMovies.any { it.traktId == movie.traktId },
+              dateFormat = dateFormat,
+              translation = translation
+            )
           }
-          CalendarMovieListItem.MovieItem(
-            movie = movie,
-            image = imagesProvider.findCachedImage(movie, ImageType.POSTER),
-            isWatched = myMovies.any { it.traktId == movie.traktId },
-            dateFormat = dateFormat,
-            translation = translation
-          )
-        }
-      }.awaitAll()
+        }.awaitAll()
 
-    val queryElements = filterByQuery(searchQuery, elements)
-    grouper.groupByTime(queryElements)
-  }
+      val queryElements = filterByQuery(searchQuery, elements)
+      grouper.groupByTime(queryElements)
+    }
 
   private fun filterByQuery(query: String, items: List<CalendarMovieListItem.MovieItem>) =
     items.filter {

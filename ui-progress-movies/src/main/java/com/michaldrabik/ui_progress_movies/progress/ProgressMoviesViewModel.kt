@@ -80,7 +80,7 @@ class ProgressMoviesViewModel @Inject constructor(
   }
 
   fun loadSortOrder() {
-    if (itemsState.value?.isEmpty() == true) return
+    if (itemsState.value.isNullOrEmpty()) return
     viewModelScope.launch {
       val sortOrder = sortCase.loadSortOrder()
       sortOrderState.value = Event(sortOrder)
