@@ -1,12 +1,12 @@
 package com.michaldrabik.ui_progress_movies.calendar.helpers.groupers
 
-import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_progress_movies.R
 import com.michaldrabik.ui_progress_movies.calendar.helpers.CalendarMode
 import com.michaldrabik.ui_progress_movies.calendar.recycler.CalendarMovieListItem
 import java.time.DayOfWeek
 import java.time.Month
+import java.time.ZonedDateTime
 import java.time.temporal.TemporalAdjusters.next
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -14,8 +14,11 @@ import javax.inject.Singleton
 @Singleton
 class CalendarFutureGrouper @Inject constructor() : CalendarGrouper {
 
-  override fun groupByTime(items: List<CalendarMovieListItem.MovieItem>): List<CalendarMovieListItem> {
-    val nowDays = nowUtc().toLocalZone().toLocalDate()
+  override fun groupByTime(
+    nowUtc: ZonedDateTime,
+    items: List<CalendarMovieListItem.MovieItem>
+  ): List<CalendarMovieListItem> {
+    val nowDays = nowUtc.toLocalZone().toLocalDate()
 
     val itemsMap = mutableMapOf<Int, MutableList<CalendarMovieListItem>>()
       .apply {

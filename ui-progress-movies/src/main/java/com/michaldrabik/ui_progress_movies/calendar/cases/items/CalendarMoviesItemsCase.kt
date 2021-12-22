@@ -60,7 +60,7 @@ abstract class CalendarMoviesItemsCase constructor(
         }.awaitAll()
 
       val queryElements = filterByQuery(searchQuery, elements)
-      grouper.groupByTime(queryElements)
+      grouper.groupByTime(nowUtc(), queryElements)
     }
 
   private fun filterByQuery(query: String, items: List<CalendarMovieListItem.MovieItem>) =

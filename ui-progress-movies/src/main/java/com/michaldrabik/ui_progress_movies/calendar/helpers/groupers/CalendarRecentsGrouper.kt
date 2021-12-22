@@ -1,18 +1,21 @@
 package com.michaldrabik.ui_progress_movies.calendar.helpers.groupers
 
-import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_progress_movies.R
 import com.michaldrabik.ui_progress_movies.calendar.helpers.CalendarMode
 import com.michaldrabik.ui_progress_movies.calendar.recycler.CalendarMovieListItem
+import java.time.ZonedDateTime
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class CalendarRecentsGrouper @Inject constructor() : CalendarGrouper {
 
-  override fun groupByTime(items: List<CalendarMovieListItem.MovieItem>): List<CalendarMovieListItem> {
-    val now = nowUtc().toLocalZone().toLocalDate()
+  override fun groupByTime(
+    nowUtc: ZonedDateTime,
+    items: List<CalendarMovieListItem.MovieItem>
+  ): List<CalendarMovieListItem> {
+    val now = nowUtc.toLocalZone().toLocalDate()
 
     val yesterdayItems = items.filter {
       val dateDays = it.movie.released
