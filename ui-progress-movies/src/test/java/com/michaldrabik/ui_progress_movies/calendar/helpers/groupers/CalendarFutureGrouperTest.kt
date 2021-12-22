@@ -91,18 +91,4 @@ class CalendarFutureGrouperTest : BaseMockTest() {
     assertThat((results[14] as CalendarMovieListItem.Header).textResId).isEqualTo(R.string.textLater)
     assertThat((results[15] as CalendarMovieListItem.MovieItem)).isEqualTo(item8)
   }
-
-//  @Test
-//  fun `Should not include items older than 90 days`() = runBlockingTest {
-//    val now = LocalDate.now()
-//    val movie1 = Movie.EMPTY.copy(released = now.minusDays(91))
-//
-//    val item1 = mockk<CalendarMovieListItem.MovieItem> {
-//      every { movie } returns movie1
-//    }
-//
-//    val results = SUT.groupByTime(listOf(item1))
-//
-//    assertThat(results).isEmpty()
-//  }
 }
