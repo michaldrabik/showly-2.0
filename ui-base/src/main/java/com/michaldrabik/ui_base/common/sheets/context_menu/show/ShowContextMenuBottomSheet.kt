@@ -14,6 +14,7 @@ import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent.Type
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
+import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visible
@@ -49,11 +50,17 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet<ShowContextMenuViewMod
   }
 
   private fun setupView() {
+    collectionItemContextMoveToMyButton.text = getString(R.string.textMoveToMyShows)
+    collectionItemContextRemoveFromMyButton.text = getString(R.string.textRemoveFromMyShows)
+
+    collectionItemContextMoveToWatchlistButton.onClick { viewModel.moveToWatchlist(showId) }
+    collectionItemContextRemoveFromWatchlistButton.onClick { viewModel.removeToWatchlist(showId) }
   }
 
   @SuppressLint("SetTextI18n")
   private fun render(uiState: ShowContextMenuUiState) {
     uiState.run {
+      isFinished?.let { if (it) dismissWithSuccess() }
       item?.let {
         renderItem(it)
         renderImage(it.image)
@@ -74,6 +81,14 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet<ShowContextMenuViewMod
 
     collectionItemContextDescription.visibleIf(item.show.overview.isNotBlank())
     collectionItemContextNetwork.visibleIf(item.show.network.isNotBlank())
+
+    collectionItemContextMoveToMyButton.visibleIf(!item.isMyShow)
+    collectionItemContextMoveToWatchlistButton.visibleIf(!item.isWatchlist)
+    collectionItemContextMoveToHiddenButton.visibleIf(!item.isHidden)
+
+    collectionItemContextRemoveFromMyButton.visibleIf(item.isMyShow)
+    collectionItemContextRemoveFromWatchlistButton.visibleIf(item.isWatchlist)
+    collectionItemContextRemoveFromHiddenButton.visibleIf(item.isHidden)
   }
 
   private fun renderImage(image: Image) {

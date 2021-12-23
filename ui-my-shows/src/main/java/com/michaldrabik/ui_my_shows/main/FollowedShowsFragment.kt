@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.addCallback
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.clearFragmentResultListener
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.viewpager.widget.ViewPager
 import com.michaldrabik.ui_base.BaseFragment
@@ -33,6 +35,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_ITEM_MENU
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_followed_shows.*
 
@@ -212,6 +215,12 @@ class FollowedShowsFragment :
   }
 
   fun openShowMenu(show: Show) {
+    setFragmentResultListener(REQUEST_ITEM_MENU) { requestKey, _ ->
+      if (requestKey == REQUEST_ITEM_MENU) {
+        onTraktSyncComplete()
+      }
+      clearFragmentResultListener(REQUEST_ITEM_MENU)
+    }
     val bundle = ContextMenuBottomSheet.createBundle(show.ids.trakt)
     navigateTo(R.id.actionFollowedShowsFragmentToItemMenu, bundle)
   }

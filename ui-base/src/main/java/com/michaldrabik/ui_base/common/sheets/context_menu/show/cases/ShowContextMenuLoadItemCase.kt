@@ -18,19 +18,23 @@ class ShowContextMenuLoadItemCase @Inject constructor(
   private val translationsRepository: TranslationsRepository,
 ) {
 
-  suspend fun loadItem(traktId: IdTrakt): ShowContextItem = coroutineScope {
+  suspend fun loadItem(traktId: IdTrakt) = coroutineScope {
     val showDetails = showsRepository.detailsShow.load(traktId)
 
     val imageAsync = async { imagesProvider.findCachedImage(showDetails, ImageType.POSTER) }
     val translationAsync = async { translationsRepository.loadTranslation(showDetails, onlyLocal = true) }
 
+    val isMyShowAsync = async { showsRepository.myShows.exists(traktId) }
+    val isWatchlistAsync = async { showsRepository.watchlistShows.exists(traktId) }
+    val isHiddenAsync = async { showsRepository.hiddenShows.exists(traktId) }
+
     ShowContextItem(
       show = showDetails,
       image = imageAsync.await(),
       translation = translationAsync.await(),
-      isMyShow = false,
-      isWatchlist = false,
-      isHidden = false
+      isMyShow = isMyShowAsync.await(),
+      isWatchlist = isWatchlistAsync.await(),
+      isHidden = isHiddenAsync.await()
     )
   }
 }

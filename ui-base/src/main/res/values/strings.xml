@@ -101,6 +101,15 @@
   <string name="textRemoveFromTraktWatchlist">Would you like to remove this item from your Trakt.tv account \'Watchlist\'?</string>
   <string name="textRemoveFromTraktProgress">Would you like to remove this item from your Trakt.tv account \'Progress\'?</string>
 
+  <string name="textMoveToMyShows">Move to my shows</string>
+  <string name="textMoveToMyMovies">Move to my movies</string>
+  <string name="textMoveToWatchlist">Move to watchlist</string>
+  <string name="textMoveToHidden">Move to hidden</string>
+  <string name="textRemoveFromMyShows">Remove from my shows</string>
+  <string name="textRemoveFromMyMovies">Remove from my movies</string>
+  <string name="textRemoveFromWatchlist">Remove from watchlist</string>
+  <string name="textRemoveFromHidden">Remove from hidden</string>
+
   <string name="textPremium" translatable="false">Showly Premium</string>
   <string name="textPremiumAd">Become a supporter and get access to bonus features! Click to see more.</string>
 

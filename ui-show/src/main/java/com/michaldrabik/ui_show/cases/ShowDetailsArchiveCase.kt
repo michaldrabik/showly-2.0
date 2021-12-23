@@ -17,7 +17,7 @@ class ShowDetailsArchiveCase @Inject constructor(
 ) {
 
   suspend fun isArchived(show: Show) =
-    showsRepository.hiddenShows.isArchived(show.ids.trakt)
+    showsRepository.hiddenShows.exists(show.ids.trakt)
 
   suspend fun addToArchive(show: Show, removeLocalData: Boolean) {
     database.withTransaction {

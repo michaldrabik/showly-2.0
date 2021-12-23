@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
@@ -14,6 +15,7 @@ import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_ITEM_MENU
 
 abstract class ContextMenuBottomSheet<T : BaseViewModel> : BaseBottomSheetFragment<T>() {
 
@@ -32,5 +34,10 @@ abstract class ContextMenuBottomSheet<T : BaseViewModel> : BaseBottomSheetFragme
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme)
     return inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
+  }
+
+  protected fun dismissWithSuccess() {
+    setFragmentResult(REQUEST_ITEM_MENU, Bundle.EMPTY)
+    dismiss()
   }
 }

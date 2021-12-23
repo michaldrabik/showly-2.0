@@ -42,6 +42,6 @@ class ArchiveShowsRepository @Inject constructor(
   suspend fun delete(id: IdTrakt) =
     database.archiveShowsDao().deleteById(id.id)
 
-  suspend fun isArchived(id: IdTrakt) =
+  suspend fun exists(id: IdTrakt) =
     database.archiveShowsDao().getById(id.id) != null
 }
