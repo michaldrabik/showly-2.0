@@ -50,17 +50,31 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet<ShowContextMenuViewMod
   }
 
   private fun setupView() {
-    collectionItemContextMoveToMyButton.text = getString(R.string.textMoveToMyShows)
-    collectionItemContextRemoveFromMyButton.text = getString(R.string.textRemoveFromMyShows)
+    contextMenuItemDescription.setInitialLines(5)
+    contextMenuItemMoveToMyButton.text = getString(R.string.textMoveToMyShows)
+    contextMenuItemRemoveFromMyButton.text = getString(R.string.textRemoveFromMyShows)
 
-    collectionItemContextMoveToWatchlistButton.onClick { viewModel.moveToWatchlist(showId) }
-    collectionItemContextRemoveFromWatchlistButton.onClick { viewModel.removeToWatchlist(showId) }
+    contextMenuItemMoveToMyButton.onClick { viewModel.moveToMyShows() }
+    contextMenuItemRemoveFromMyButton.onClick { viewModel.removeFromMyShows() }
+    contextMenuItemMoveToWatchlistButton.onClick { viewModel.moveToWatchlist() }
+    contextMenuItemRemoveFromWatchlistButton.onClick { viewModel.removeFromWatchlist() }
+    contextMenuItemMoveToHiddenButton.onClick { viewModel.moveToHidden() }
+    contextMenuItemRemoveFromHiddenButton.onClick { viewModel.removeFromHidden() }
   }
 
   @SuppressLint("SetTextI18n")
   private fun render(uiState: ShowContextMenuUiState) {
     uiState.run {
-      isFinished?.let { if (it) dismissWithSuccess() }
+      isFinished?.let {
+        if (it) {
+          dismissWithSuccess()
+          return@run
+        }
+      }
+      isLoading?.let {
+        contextMenuItemProgress.visibleIf(it)
+        contextMenuItemButtonsLayout.visibleIf(!it, gone = false)
+      }
       item?.let {
         renderItem(it)
         renderImage(it.image)
@@ -69,34 +83,34 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet<ShowContextMenuViewMod
   }
 
   private fun renderItem(item: ShowContextItem) {
-    collectionItemContextTitle.text =
+    contextMenuItemTitle.text =
       if (item.translation?.title.isNullOrBlank()) item.show.title
       else item.translation?.title
-    collectionItemContextDescription.text =
+    contextMenuItemDescription.text =
       if (item.translation?.overview.isNullOrBlank()) item.show.overview
       else item.translation?.overview
-    collectionItemContextNetwork.text =
+    contextMenuItemNetwork.text =
       if (item.show.year > 0) getString(R.string.textNetwork, item.show.network, item.show.year.toString())
       else String.format("%s", item.show.network)
 
-    collectionItemContextDescription.visibleIf(item.show.overview.isNotBlank())
-    collectionItemContextNetwork.visibleIf(item.show.network.isNotBlank())
+    contextMenuItemDescription.visibleIf(item.show.overview.isNotBlank())
+    contextMenuItemNetwork.visibleIf(item.show.network.isNotBlank())
 
-    collectionItemContextMoveToMyButton.visibleIf(!item.isMyShow)
-    collectionItemContextMoveToWatchlistButton.visibleIf(!item.isWatchlist)
-    collectionItemContextMoveToHiddenButton.visibleIf(!item.isHidden)
+    contextMenuItemMoveToMyButton.visibleIf(!item.isMyShow)
+    contextMenuItemMoveToWatchlistButton.visibleIf(!item.isWatchlist)
+    contextMenuItemMoveToHiddenButton.visibleIf(!item.isHidden)
 
-    collectionItemContextRemoveFromMyButton.visibleIf(item.isMyShow)
-    collectionItemContextRemoveFromWatchlistButton.visibleIf(item.isWatchlist)
-    collectionItemContextRemoveFromHiddenButton.visibleIf(item.isHidden)
+    contextMenuItemRemoveFromMyButton.visibleIf(item.isMyShow)
+    contextMenuItemRemoveFromWatchlistButton.visibleIf(item.isWatchlist)
+    contextMenuItemRemoveFromHiddenButton.visibleIf(item.isHidden)
   }
 
   private fun renderImage(image: Image) {
-    Glide.with(this).clear(collectionItemContextImage)
+    Glide.with(this).clear(contextMenuItemImage)
 
     if (image.status != ImageStatus.AVAILABLE) {
-      collectionItemContextPlaceholder.visible()
-      collectionItemContextImage.gone()
+      contextMenuItemPlaceholder.visible()
+      contextMenuItemImage.gone()
       return
     }
 
@@ -105,21 +119,21 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet<ShowContextMenuViewMod
       .transform(centerCropTransformation, cornersTransformation)
       .transition(DrawableTransitionOptions.withCrossFade(Config.IMAGE_FADE_DURATION_MS))
       .withSuccessListener {
-        collectionItemContextPlaceholder.gone()
-        collectionItemContextImage.visible()
+        contextMenuItemPlaceholder.gone()
+        contextMenuItemImage.visible()
       }
       .withFailListener {
-        collectionItemContextPlaceholder.visible()
-        collectionItemContextImage.gone()
+        contextMenuItemPlaceholder.visible()
+        contextMenuItemImage.gone()
       }
-      .into(collectionItemContextImage)
+      .into(contextMenuItemImage)
   }
 
   private fun renderSnackbar(message: MessageEvent) {
     message.consume()?.let {
       when (message.type) {
-        Type.INFO -> collectionItemContextRoot.showInfoSnackbar(getString(it))
-        Type.ERROR -> collectionItemContextRoot.showErrorSnackbar(getString(it))
+        Type.INFO -> contextMenuItemRoot.showInfoSnackbar(getString(it))
+        Type.ERROR -> contextMenuItemRoot.showErrorSnackbar(getString(it))
       }
     }
   }

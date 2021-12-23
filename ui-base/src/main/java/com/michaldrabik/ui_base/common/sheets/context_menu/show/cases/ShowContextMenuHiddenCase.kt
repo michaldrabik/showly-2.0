@@ -1,7 +1,9 @@
 package com.michaldrabik.ui_base.common.sheets.context_menu.show.cases
 
+import com.michaldrabik.common.Mode
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.Season
+import com.michaldrabik.data_local.database.model.TraktSyncQueue
 import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
@@ -13,19 +15,19 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
 @ViewModelScoped
-class ShowContextMenuWatchlistCase @Inject constructor(
+class ShowContextMenuHiddenCase @Inject constructor(
   private val database: AppDatabase,
   private val showsRepository: ShowsRepository,
   private val pinnedItemsRepository: PinnedItemsRepository,
   private val quickSyncManager: QuickSyncManager,
 ) {
 
-  suspend fun moveToWatchlist(traktId: IdTrakt, removeLocalData: Boolean) {
+  suspend fun moveToHidden(traktId: IdTrakt, removeLocalData: Boolean) {
     val show = Show.EMPTY.copy(ids = Ids.EMPTY.copy(traktId))
     val isMyShow = showsRepository.myShows.exists(traktId)
 
     database.runTransaction {
-      showsRepository.watchlistShows.insert(traktId)
+      showsRepository.hiddenShows.insert(traktId)
       if (removeLocalData && isMyShow) {
         episodesDao().deleteAllUnwatchedForShow(traktId.id)
         val seasons = seasonsDao().getAllByShowId(traktId.id)
@@ -40,11 +42,11 @@ class ShowContextMenuWatchlistCase @Inject constructor(
       }
       pinnedItemsRepository.removePinnedItem(show)
     }
-    quickSyncManager.scheduleShowsWatchlist(listOf(traktId.id))
+    quickSyncManager.scheduleHidden(traktId.id, Mode.SHOWS, TraktSyncQueue.Operation.ADD)
   }
 
-  suspend fun removeFromWatchlist(traktId: IdTrakt) {
-    showsRepository.watchlistShows.delete(traktId)
-    quickSyncManager.clearShowsWatchlist(listOf(traktId.id))
+  suspend fun removeFromHidden(traktId: IdTrakt) {
+    showsRepository.hiddenShows.delete(traktId)
+    quickSyncManager.clearHiddenShows(listOf(traktId.id))
   }
 }

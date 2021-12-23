@@ -215,7 +215,35 @@
     <item name="android:textSize">12sp</item>
   </style>
 
-  <style name="ShowlyOutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+  <style name="ContextMenuItemButton.Move" parent="Widget.MaterialComponents.Button.OutlinedButton">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:gravity">center</item>
+    <item name="android:includeFontPadding">true</item>
+    <item name="android:textColor">?android:attr/textColorPrimary</item>
+    <item name="icon">@drawable/ic_move</item>
+    <item name="iconGravity">textStart</item>
+    <item name="iconPadding">@dimen/spaceTiny</item>
+    <item name="iconTint">?android:attr/textColorPrimary</item>
+    <item name="rippleColor">?android:attr/textColorPrimary</item>
+    <item name="strokeColor">?android:attr/textColorPrimary</item>
+  </style>
+
+  <style name="ContextMenuItemButton.Remove" parent="Widget.MaterialComponents.Button.TextButton">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:gravity">center</item>
+    <item name="android:includeFontPadding">false</item>
+    <item name="android:textColor">?android:attr/textColorPrimary</item>
+    <item name="icon">@drawable/ic_remove_list</item>
+    <item name="iconGravity">textStart</item>
+    <item name="iconPadding">@dimen/spaceTiny</item>
+    <item name="iconTint">?android:attr/textColorPrimary</item>
+    <item name="rippleColor">?android:attr/textColorPrimary</item>
+    <item name="strokeColor">?android:attr/textColorPrimary</item>
+  </style>
+
+  <style name="DeclineOutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
     <item name="strokeColor">@color/colorGrayLight</item>
   </style>
 

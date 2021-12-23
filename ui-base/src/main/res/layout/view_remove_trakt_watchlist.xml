@@ -49,7 +49,7 @@
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/viewRemoveTraktWatchlistButtonNo"
-    style="@style/ShowlyOutlinedButton"
+    style="@style/DeclineOutlinedButton"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/spaceMedium"

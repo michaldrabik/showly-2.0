@@ -26,7 +26,7 @@ class WatchlistShowsRepository @Inject constructor(
 
   suspend fun insert(id: IdTrakt) {
     val dbShow = WatchlistShow.fromTraktId(id.id, nowUtcMillis())
-    database.run {
+    with(database) {
       withTransaction {
         watchlistShowsDao().insert(dbShow)
         myShowsDao().deleteById(id.id)
