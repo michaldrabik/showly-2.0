@@ -120,7 +120,7 @@
     android:id="@+id/contextMenuItemButtonsLayout"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
+    android:layout_marginTop="11dp"
     android:divider="@drawable/divider_item_menu"
     android:orientation="vertical"
     android:showDividers="middle"
@@ -135,6 +135,7 @@
       style="@style/ContextMenuItemButton.Move"
       android:text="@string/textMoveToMyShows"
       android:visibility="gone"
+      app:icon="@drawable/ic_bookmark_full"
       tools:visibility="visible"
       />
 
@@ -143,6 +144,7 @@
       style="@style/ContextMenuItemButton.Move"
       android:text="@string/textMoveToWatchlist"
       android:visibility="gone"
+      app:icon="@drawable/ic_bookmark_full"
       tools:visibility="visible"
       />
 
@@ -151,6 +153,7 @@
       style="@style/ContextMenuItemButton.Move"
       android:text="@string/textMoveToHidden"
       android:visibility="gone"
+      app:icon="@drawable/ic_eye_no"
       tools:visibility="visible"
       />
 
