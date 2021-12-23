@@ -1,0 +1,36 @@
+package com.michaldrabik.ui_base.common.sheets.context_menu.show.cases
+
+import com.michaldrabik.repository.TranslationsRepository
+import com.michaldrabik.repository.shows.ShowsRepository
+import com.michaldrabik.ui_base.common.sheets.context_menu.show.helpers.ShowContextItem
+import com.michaldrabik.ui_base.images.ShowImagesProvider
+import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.ImageType
+import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import javax.inject.Inject
+
+@ViewModelScoped
+class ShowContextMenuLoadItemCase @Inject constructor(
+  private val showsRepository: ShowsRepository,
+  private val imagesProvider: ShowImagesProvider,
+  private val translationsRepository: TranslationsRepository,
+) {
+
+  suspend fun loadItem(traktId: IdTrakt): ShowContextItem = coroutineScope {
+    val showDetails = showsRepository.detailsShow.load(traktId)
+
+    val imageAsync = async { imagesProvider.findCachedImage(showDetails, ImageType.POSTER) }
+    val translationAsync = async { translationsRepository.loadTranslation(showDetails, onlyLocal = true) }
+
+    ShowContextItem(
+      show = showDetails,
+      image = imageAsync.await(),
+      translation = translationAsync.await(),
+      isMyShow = false,
+      isWatchlist = false,
+      isHidden = false
+    )
+  }
+}

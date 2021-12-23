@@ -3,7 +3,6 @@ package com.michaldrabik.ui_progress.progress.views
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
@@ -19,6 +18,7 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.expandTouch
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.onLongClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Season
@@ -36,7 +36,6 @@ class ProgressItemView : ShowView<ProgressListItem.Episode> {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-  var itemLongClickListener: ((ProgressListItem.Episode, View) -> Unit)? = null
   var detailsClickListener: ((ProgressListItem.Episode) -> Unit)? = null
   var checkClickListener: ((ProgressListItem.Episode) -> Unit)? = null
 
@@ -47,10 +46,7 @@ class ProgressItemView : ShowView<ProgressListItem.Episode> {
     progressItemCheckButton.expandTouch(100)
 
     onClick { itemClickListener?.invoke(item) }
-    setOnLongClickListener {
-      itemLongClickListener?.invoke(item, progressItemTitle)
-      true
-    }
+    onLongClick { itemLongClickListener?.invoke(item, it) }
     progressItemInfoButton.onClick { detailsClickListener?.invoke(item) }
     imageLoadCompleteListener = { loadTranslation() }
   }

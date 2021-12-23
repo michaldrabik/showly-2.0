@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/collectionItemContextRoot"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:background="@drawable/bg_bottom_sheet"
+  android:clipToPadding="false"
+  android:focusableInTouchMode="true"
+  android:paddingStart="@dimen/spaceNormal"
+  android:paddingTop="@dimen/spaceNormal"
+  android:paddingEnd="@dimen/spaceNormal"
+  android:paddingBottom="@dimen/spaceNormal"
+  tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
+  >
+
+  <androidx.constraintlayout.widget.Guideline
+    android:id="@+id/collectionItemContextGuide1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layout_constraintGuide_begin="96dp"
+    />
+
+  <ImageView
+    android:id="@+id/collectionItemContextImage"
+    android:layout_width="@dimen/collectionItemImageWidth"
+    android:layout_height="@dimen/collectionItemImageHeight"
+    android:background="@drawable/bg_item_menu_elevation"
+    android:elevation="@dimen/elevationSmall"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    />
+
+  <ImageView
+    android:id="@+id/collectionItemContextPlaceholder"
+    android:layout_width="@dimen/collectionItemImageWidth"
+    android:layout_height="@dimen/collectionItemImageHeight"
+    android:layout_gravity="center"
+    android:background="@drawable/bg_item_menu_placeholder"
+    android:elevation="@dimen/elevationSmall"
+    android:padding="@dimen/spaceBig"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:srcCompat="@drawable/ic_television"
+    app:tint="?attr/colorPlaceholderIcon"
+    tools:visibility="visible"
+    />
+
+  <!--  <ProgressBar-->
+  <!--    android:id="@+id/collectionItemContextProgress"-->
+  <!--    style="@style/ProgressBar.Dark"-->
+  <!--    android:layout_width="28dp"-->
+  <!--    android:layout_height="28dp"-->
+  <!--    android:layout_gravity="center"-->
+  <!--    android:visibility="gone"-->
+  <!--    app:layout_constraintBottom_toBottomOf="parent"-->
+  <!--    app:layout_constraintEnd_toEndOf="@id/collectionItemContextImage"-->
+  <!--    app:layout_constraintStart_toStartOf="@id/collectionItemContextImage"-->
+  <!--    app:layout_constraintTop_toTopOf="parent"-->
+  <!--    tools:visibility="visible"-->
+  <!--    />-->
+
+  <TextView
+    android:id="@+id/collectionItemContextTitle"
+    style="@style/CollectionItem.Title"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    app:layout_constraintBottom_toTopOf="@id/collectionItemContextDescription"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@id/collectionItemContextGuide1"
+    app:layout_constraintTop_toBottomOf="@+id/collectionItemContextNetwork"
+    app:layout_constraintVertical_chainStyle="packed"
+    tools:text="Game of Thrones"
+    />
+
+  <TextView
+    android:id="@+id/collectionItemContextNetwork"
+    style="@style/CollectionItem.Header"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    app:layout_constraintBottom_toTopOf="@+id/collectionItemContextTitle"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@id/collectionItemContextGuide1"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_chainStyle="packed"
+    tools:ignore="SmallSp"
+    tools:text="Netflix"
+    />
+
+  <TextView
+    android:id="@+id/collectionItemContextDescription"
+    style="@style/CollectionItem.Description"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@id/collectionItemContextGuide1"
+    app:layout_constraintTop_toBottomOf="@id/collectionItemContextTitle"
+    tools:text="Lorem Ipsum"
+    />
+
+  <!--  <ImageView-->
+  <!--    android:id="@+id/collectionItemContextStarIcon"-->
+  <!--    android:layout_width="20dp"-->
+  <!--    android:layout_height="0dp"-->
+  <!--    app:layout_constraintBottom_toTopOf="@+id/collectionItemContextTitle"-->
+  <!--    app:layout_constraintEnd_toStartOf="@id/collectionItemContextRating"-->
+  <!--    app:layout_constraintTop_toTopOf="@id/collectionItemContextNetwork"-->
+  <!--    app:srcCompat="@drawable/ic_star"-->
+  <!--    app:tint="?attr/colorAccent"-->
+  <!--    />-->
+
+  <!--  <TextView-->
+  <!--    android:id="@+id/collectionItemContextRating"-->
+  <!--    android:layout_width="wrap_content"-->
+  <!--    android:layout_height="wrap_content"-->
+  <!--    android:gravity="end"-->
+  <!--    android:textColor="?android:attr/textColorSecondary"-->
+  <!--    android:textSize="12sp"-->
+  <!--    app:layout_constraintBottom_toTopOf="@+id/collectionItemContextTitle"-->
+  <!--    app:layout_constraintEnd_toEndOf="parent"-->
+  <!--    app:layout_constraintTop_toTopOf="@id/collectionItemContextNetwork"-->
+  <!--    tools:text="7.6"-->
+  <!--    />-->
+
+  <!--  <ImageView-->
+  <!--    android:id="@+id/collectionItemContextUserStarIcon"-->
+  <!--    android:layout_width="20dp"-->
+  <!--    android:layout_height="0dp"-->
+  <!--    android:visibility="gone"-->
+  <!--    app:layout_constraintBottom_toTopOf="@id/collectionItemContextTitle"-->
+  <!--    app:layout_constraintEnd_toStartOf="@id/collectionItemContextUserRating"-->
+  <!--    app:layout_constraintTop_toTopOf="@id/collectionItemContextNetwork"-->
+  <!--    app:srcCompat="@drawable/ic_star"-->
+  <!--    app:tint="?android:attr/textColorPrimary"-->
+  <!--    tools:visibility="visible"-->
+  <!--    />-->
+
+  <!--  <TextView-->
+  <!--    android:id="@+id/collectionItemContextUserRating"-->
+  <!--    android:layout_width="wrap_content"-->
+  <!--    android:layout_height="wrap_content"-->
+  <!--    android:layout_marginEnd="@dimen/spaceTiny"-->
+  <!--    android:gravity="end"-->
+  <!--    android:textColor="?android:attr/textColorSecondary"-->
+  <!--    android:textSize="12sp"-->
+  <!--    android:visibility="gone"-->
+  <!--    app:layout_constraintBottom_toTopOf="@id/collectionItemContextTitle"-->
+  <!--    app:layout_constraintEnd_toStartOf="@id/collectionItemContextStarIcon"-->
+  <!--    app:layout_constraintTop_toTopOf="@id/collectionItemContextNetwork"-->
+  <!--    tools:text="10"-->
+  <!--    tools:visibility="visible"-->
+  <!--    />-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

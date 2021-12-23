@@ -14,6 +14,7 @@ import com.michaldrabik.ui_base.utilities.extensions.bump
 import com.michaldrabik.ui_base.utilities.extensions.expandTouch
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.onLongClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_progress_movies.R
@@ -37,10 +38,7 @@ class ProgressMoviesItemView : MovieView<ProgressMovieListItem.MovieItem> {
     addRipple()
     progressMovieItemCheckButton.expandTouch(100)
     onClick { itemClickListener?.invoke(item) }
-    setOnLongClickListener {
-      itemLongClickListener?.invoke(item, progressMovieItemTitle)
-      true
-    }
+    onLongClick { itemLongClickListener?.invoke(item, progressMovieItemTitle) }
     imageLoadCompleteListener = { loadTranslation() }
   }
 

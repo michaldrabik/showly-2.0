@@ -12,6 +12,7 @@ import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
+import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
 import com.michaldrabik.ui_base.common.views.exSearchLocalViewInput
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -208,6 +209,11 @@ class FollowedShowsFragment :
       navigateTo(R.id.actionFollowedShowsFragmentToShowDetailsFragment, bundle)
       exitSearch()
     }.add(animations)
+  }
+
+  fun openShowMenu(show: Show) {
+    val bundle = ContextMenuBottomSheet.createBundle(show.ids.trakt)
+    navigateTo(R.id.actionFollowedShowsFragmentToItemMenu, bundle)
   }
 
   private fun openSettings() {

@@ -126,7 +126,7 @@ class ProgressFragment :
         requireMainFragment().openShowDetails(it.show)
       }
       itemLongClickListener = { item, view ->
-        openPopupMenu(item, view)
+        openPopupMenu(item as ProgressListItem.Episode, view)
       }
       detailsClickListener = {
         requireMainFragment().openEpisodeDetails(it.show, it.requireEpisode(), it.requireSeason())

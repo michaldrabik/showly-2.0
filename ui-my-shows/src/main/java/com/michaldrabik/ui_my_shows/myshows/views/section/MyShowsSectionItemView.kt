@@ -9,6 +9,7 @@ import com.michaldrabik.ui_base.common.views.ShowView
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.onLongClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.ImageStatus
@@ -29,6 +30,7 @@ class MyShowsSectionItemView : ShowView<MyShowsItem> {
     setBackgroundResource(R.drawable.bg_media_view_elevation)
     elevation = context.dimenToPx(R.dimen.elevationSmall).toFloat()
     onClick { itemClickListener?.invoke(item) }
+    onLongClick { itemLongClickListener?.invoke(item, this) }
   }
 
   override val imageView: ImageView = myShowImage

@@ -2,6 +2,7 @@ package com.michaldrabik.ui_my_shows.myshows.views
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
@@ -30,16 +31,18 @@ class MyShowsRecentsView : FrameLayout {
 
   fun bind(
     item: MyShowsItem.RecentsSection,
-    itemClickListener: (MyShowsItem) -> Unit
+    itemClickListener: (MyShowsItem) -> Unit,
+    itemLongClickListener: (MyShowsItem, View) -> Unit
   ) {
     myShowsRecentsContainer.removeAllViews()
 
     val clickListener: (MyShowsItem) -> Unit = { itemClickListener.invoke(it) }
+    val longClickListener: (MyShowsItem, View) -> Unit = { i, view -> itemLongClickListener.invoke(i, view) }
 
     item.items.forEachIndexed { index, showItem ->
       val view = MyShowFanartView(context).apply {
         layoutParams = LayoutParams(0, MATCH_PARENT)
-        bind(showItem, clickListener)
+        bind(showItem, clickListener, longClickListener)
       }
       val layoutParams = GridLayout.LayoutParams().apply {
         width = itemWidth

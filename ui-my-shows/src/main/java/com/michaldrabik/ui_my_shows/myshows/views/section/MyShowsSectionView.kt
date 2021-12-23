@@ -62,12 +62,14 @@ class MyShowsSectionView : FrameLayout {
     scrollPosition: Pair<Int, Int>,
     notifyListsUpdate: Boolean,
     clickListener: (MyShowsItem) -> Unit,
+    longClickListener: (MyShowsItem, View) -> Unit,
     sectionImageListener: ((MyShowsItem, MyShowsItem.HorizontalSection, Boolean) -> Unit)?,
   ) {
     this.section = section.section
     sectionAdapter.run {
       setItems(section.items, notifyChange = notifyListsUpdate)
       itemClickListener = { clickListener(it) }
+      itemLongClickListener = { item, view -> longClickListener(item, view) }
       missingImageListener = { item, force -> sectionImageListener?.invoke(item, section, force) }
       listChangeListener = { layoutManager.scrollToPosition(0) }
     }

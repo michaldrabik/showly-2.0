@@ -416,6 +416,11 @@
       app:destination="@id/searchFragment"
       app:launchSingleTop="true"
       />
+    <action
+      android:id="@+id/actionFollowedShowsFragmentToItemMenu"
+      app:destination="@id/showItemContextDialog"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment
@@ -452,6 +457,11 @@
     <action
       android:id="@+id/actionFollowedMoviesFragmentToSearch"
       app:destination="@id/searchFragment"
+      app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionFollowedMoviesFragmentToItemContext"
+      app:destination="@id/movieItemContextDialog"
       app:launchSingleTop="true"
       />
   </fragment>
@@ -753,6 +763,18 @@
     android:id="@+id/personLinksDialog"
     android:name="com.michaldrabik.ui_people.details.links.PersonLinksBottomSheet"
     android:label="dialogPersonLinks"
+    />
+
+  <dialog
+    android:id="@+id/showItemContextDialog"
+    android:name="com.michaldrabik.ui_base.common.sheets.context_menu.show.ShowContextMenuBottomSheet"
+    android:label="dialogShowItemContext"
+    />
+
+  <dialog
+    android:id="@+id/movieItemContextDialog"
+    android:name="com.michaldrabik.ui_base.common.sheets.context_menu.movie.MovieContextMenuBottomSheet"
+    android:label="dialogMovieItemContext"
     />
 
 </navigation>

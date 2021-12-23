@@ -14,6 +14,7 @@ class WatchlistAdapter : BaseAdapter<WatchlistListItem>() {
     BaseViewHolder(
       WatchlistShowView(parent.context).apply {
         itemClickListener = { super.itemClickListener.invoke(it) }
+        itemLongClickListener = { item, view -> super.itemLongClickListener.invoke(item, view) }
         missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
         missingTranslationListener = { super.missingTranslationListener.invoke(it) }
       }

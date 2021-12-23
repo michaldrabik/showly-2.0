@@ -74,6 +74,7 @@ class ArchiveFragment :
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
       missingTranslationListener = { viewModel.loadMissingTranslation(it) }
       itemClickListener = { openShowDetails(it.show) }
+      itemLongClickListener = { item, _ -> openShowMenu(item.show) }
       listChangeListener = {
         archiveRecycler.scrollToPosition(0)
         (requireParentFragment() as FollowedShowsFragment).resetTranslations()
@@ -128,6 +129,10 @@ class ArchiveFragment :
 
   private fun openShowDetails(show: Show) {
     (requireParentFragment() as? FollowedShowsFragment)?.openShowDetails(show)
+  }
+
+  private fun openShowMenu(show: Show) {
+    (requireParentFragment() as? FollowedShowsFragment)?.openShowMenu(show)
   }
 
   override fun onEnterSearch() {

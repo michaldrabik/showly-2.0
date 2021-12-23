@@ -2,6 +2,7 @@ package com.michaldrabik.ui_my_shows.myshows.views
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View
 import android.widget.FrameLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -11,6 +12,7 @@ import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.onLongClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_model.Image
@@ -33,13 +35,18 @@ class MyShowFanartView : FrameLayout {
 
   private val cornerRadius by lazy { context.dimenToPx(R.dimen.myShowsFanartCorner) }
 
-  fun bind(showItem: MyShowsItem, clickListener: (MyShowsItem) -> Unit) {
+  fun bind(
+    showItem: MyShowsItem,
+    clickListener: (MyShowsItem) -> Unit,
+    longClickListener: (MyShowsItem, View) -> Unit
+  ) {
     clear()
     myShowFanartTitle.visible()
     myShowFanartTitle.text =
       if (showItem.translation?.title.isNullOrBlank()) showItem.show.title
       else showItem.translation?.title
     onClick { clickListener(showItem) }
+    onLongClick { longClickListener(showItem, it) }
     loadImage(showItem.image)
   }
 

@@ -12,6 +12,7 @@ abstract class BaseAdapter<Item : ListItem> : RecyclerView.Adapter<RecyclerView.
   var missingImageListener: (Item, Boolean) -> Unit = { _, _ -> }
   var missingTranslationListener: (Item) -> Unit = { _ -> }
   var itemClickListener: (Item) -> Unit = { }
+  var itemLongClickListener: (Item, View) -> Unit = { _, _ -> }
   var listChangeListener: (() -> Unit)? = null
 
   protected var notifyChange = false

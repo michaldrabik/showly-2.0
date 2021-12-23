@@ -98,6 +98,7 @@ class MyShowsFragment :
       stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
       horizontalPositions = this@MyShowsFragment.horizontalPositions?.toMutableMap() ?: mutableMapOf()
       itemClickListener = { openShowDetails(it.show) }
+      itemLongClickListener = { item, _ -> openShowMenu(item.show) }
       missingImageListener = { item, force -> viewModel.loadMissingImage(item, force) }
       missingTranslationListener = { viewModel.loadMissingTranslation(it) }
       sectionMissingImageListener = { item, section, force -> viewModel.loadSectionMissingItem(item, section, force) }
@@ -156,6 +157,10 @@ class MyShowsFragment :
 
   private fun openShowDetails(show: Show) {
     (requireParentFragment() as? FollowedShowsFragment)?.openShowDetails(show)
+  }
+
+  private fun openShowMenu(show: Show) {
+    (requireParentFragment() as? FollowedShowsFragment)?.openShowMenu(show)
   }
 
   override fun onEnterSearch() {

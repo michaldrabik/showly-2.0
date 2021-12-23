@@ -16,6 +16,7 @@ open class MyShowsSectionAdapter : BaseAdapter<MyShowsItem>() {
     ViewHolderShow(
       MyShowsSectionItemView(parent.context).apply {
         itemClickListener = { super.itemClickListener.invoke(it) }
+        itemLongClickListener = { item, view -> super.itemLongClickListener.invoke(item, view) }
         missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
       }
     )

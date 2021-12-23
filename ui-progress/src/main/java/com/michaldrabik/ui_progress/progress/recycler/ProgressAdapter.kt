@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_progress.progress.recycler
 
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
@@ -19,7 +18,6 @@ class ProgressAdapter : BaseAdapter<ProgressListItem>() {
 
   var detailsClickListener: ((ProgressListItem.Episode) -> Unit)? = null
   var checkClickListener: ((ProgressListItem.Episode) -> Unit)? = null
-  var itemLongClickListener: ((ProgressListItem.Episode, View) -> Unit)? = null
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     when (viewType) {
@@ -27,7 +25,7 @@ class ProgressAdapter : BaseAdapter<ProgressListItem>() {
         ProgressItemView(parent.context).apply {
           itemClickListener = { super.itemClickListener.invoke(it) }
           itemLongClickListener = { item, view ->
-            this@ProgressAdapter.itemLongClickListener?.invoke(item, view)
+            this@ProgressAdapter.itemLongClickListener.invoke(item, view)
           }
           detailsClickListener = { this@ProgressAdapter.detailsClickListener?.invoke(it) }
           checkClickListener = { this@ProgressAdapter.checkClickListener?.invoke(it) }

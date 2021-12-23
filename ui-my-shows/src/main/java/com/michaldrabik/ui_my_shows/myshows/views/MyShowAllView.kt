@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.michaldrabik.ui_base.common.views.ShowView
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.onLongClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_my_shows.R
@@ -28,6 +29,7 @@ class MyShowAllView : ShowView<MyShowsItem> {
     inflate(context, R.layout.view_my_show_all, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     myShowAllRoot.onClick { itemClickListener?.invoke(item) }
+    myShowAllRoot.onLongClick { itemLongClickListener?.invoke(item, it) }
     imageLoadCompleteListener = { loadTranslation() }
   }
 
