@@ -22,12 +22,14 @@ class DiscoverAdapter : BaseAdapter<DiscoverListItem>() {
     POSTER.id -> BaseViewHolder(
       ShowPosterView(parent.context).apply {
         itemClickListener = { super.itemClickListener.invoke(it) }
+        itemLongClickListener = { item, view -> super.itemLongClickListener.invoke(item, view) }
         missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
       }
     )
     FANART.id, FANART_WIDE.id -> BaseViewHolder(
       ShowFanartView(parent.context).apply {
         itemClickListener = { super.itemClickListener.invoke(it) }
+        itemLongClickListener = { item, view -> super.itemLongClickListener.invoke(item, view) }
         missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
       }
     )

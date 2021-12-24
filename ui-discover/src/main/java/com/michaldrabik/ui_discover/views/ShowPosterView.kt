@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide
 import com.michaldrabik.ui_base.common.views.ShowView
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.onLongClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_discover.R
@@ -24,6 +25,7 @@ class ShowPosterView : ShowView<DiscoverListItem> {
   init {
     inflate(context, R.layout.view_show_poster, this)
     showPosterRoot.onClick { itemClickListener?.invoke(item) }
+    showPosterRoot.onLongClick { itemLongClickListener?.invoke(item, this) }
   }
 
   override val imageView: ImageView = showPosterImage

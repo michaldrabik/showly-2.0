@@ -3,6 +3,6 @@
   xmlns:android="http://schemas.android.com/apk/res/android">
   <size
     android:width="1dp"
-    android:height="0dp"
+    android:height="2dp"
     />
 </shape>

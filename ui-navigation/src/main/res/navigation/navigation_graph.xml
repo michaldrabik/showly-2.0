@@ -94,6 +94,11 @@
       app:destination="@id/settingsFragment"
       app:launchSingleTop="true"
       />
+    <action
+      android:id="@+id/actionDiscoverFragmentToItemMenu"
+      app:destination="@id/showItemContextDialog"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment

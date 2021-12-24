@@ -9,6 +9,8 @@ import androidx.core.animation.doOnEnd
 import androidx.core.view.isVisible
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
+import androidx.fragment.app.clearFragmentResultListener
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -21,6 +23,7 @@ import com.michaldrabik.common.Config.MAIN_GRID_SPAN
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
+import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -40,8 +43,10 @@ import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
 import com.michaldrabik.ui_discover.recycler.DiscoverAdapter
 import com.michaldrabik.ui_discover.recycler.DiscoverListItem
 import com.michaldrabik.ui_model.ImageType
+import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_ITEM_MENU
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_discover.*
 import kotlinx.coroutines.flow.collect
@@ -147,9 +152,10 @@ class DiscoverFragment :
         if (it.image.type == ImageType.TWITTER) {
           openWebUrl(Config.TWITTER_URL)
         } else {
-          navigateToDetails(it)
+          openDetails(it)
         }
       }
+      itemLongClickListener = { item, _ -> openShowMenu(item.show) }
       listChangeListener = { discoverRecycler.scrollToPosition(0) }
       twitterCancelClickListener = { viewModel.cancelTwitterAd() }
     }
@@ -216,10 +222,21 @@ class DiscoverFragment :
     }.add(animations)
   }
 
-  private fun navigateToDetails(item: DiscoverListItem) {
+  private fun openDetails(item: DiscoverListItem) {
     disableUi()
     hideNavigation()
     animateItemsExit(item)
+  }
+
+  private fun openShowMenu(show: Show) {
+    setFragmentResultListener(REQUEST_ITEM_MENU) { requestKey, _ ->
+      if (requestKey == REQUEST_ITEM_MENU) {
+        viewModel.loadItems()
+      }
+      clearFragmentResultListener(REQUEST_ITEM_MENU)
+    }
+    val bundle = ContextMenuBottomSheet.createBundle(show.ids.trakt)
+    navigateTo(R.id.actionDiscoverFragmentToItemMenu, bundle)
   }
 
   private fun animateItemsExit(item: DiscoverListItem) {

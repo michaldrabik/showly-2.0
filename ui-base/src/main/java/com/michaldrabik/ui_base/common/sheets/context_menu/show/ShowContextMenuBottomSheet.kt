@@ -86,9 +86,11 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet<ShowContextMenuViewMod
     contextMenuItemTitle.text =
       if (item.translation?.title.isNullOrBlank()) item.show.title
       else item.translation?.title
+
     contextMenuItemDescription.text =
       if (item.translation?.overview.isNullOrBlank()) item.show.overview
       else item.translation?.overview
+
     contextMenuItemNetwork.text =
       if (item.show.year > 0) getString(R.string.textNetwork, item.show.network, item.show.year.toString())
       else String.format("%s", item.show.network)
@@ -103,6 +105,12 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet<ShowContextMenuViewMod
     contextMenuItemRemoveFromMyButton.visibleIf(item.isMyShow)
     contextMenuItemRemoveFromWatchlistButton.visibleIf(item.isWatchlist)
     contextMenuItemRemoveFromHiddenButton.visibleIf(item.isHidden)
+
+    if (!item.isInCollection()) {
+      contextMenuItemMoveToMyButton.text = getString(R.string.textAddToMyShows)
+      contextMenuItemMoveToWatchlistButton.text = getString(R.string.textAddToWatchlist)
+      contextMenuItemMoveToHiddenButton.text = getString(R.string.textAddToHidden)
+    }
   }
 
   private fun renderImage(image: Image) {

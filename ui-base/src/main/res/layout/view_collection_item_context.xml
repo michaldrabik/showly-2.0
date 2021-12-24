@@ -14,7 +14,6 @@
   android:paddingTop="@dimen/spaceNormal"
   android:paddingEnd="@dimen/spaceNormal"
   android:paddingBottom="@dimen/spaceMedium"
-  tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
   >
 
   <androidx.constraintlayout.widget.Guideline

@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide
 import com.michaldrabik.ui_base.common.views.ShowView
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.onLongClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_discover.R
 import com.michaldrabik.ui_discover.recycler.DiscoverListItem
@@ -23,6 +24,7 @@ class ShowFanartView : ShowView<DiscoverListItem> {
   init {
     inflate(context, R.layout.view_show_fanart, this)
     showFanartRoot.onClick { itemClickListener?.invoke(item) }
+    showFanartRoot.onLongClick { itemLongClickListener?.invoke(item, this) }
   }
 
   override val imageView: ImageView = showFanartImage
