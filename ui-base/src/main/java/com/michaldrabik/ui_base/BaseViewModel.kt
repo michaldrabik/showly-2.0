@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_base
 
 import androidx.lifecycle.ViewModel
+import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.channels.Channel
@@ -16,6 +17,9 @@ open class BaseViewModel : ViewModel() {
 
   protected val _messageChannel = Channel<MessageEvent>(Channel.BUFFERED)
   val messageChannel = _messageChannel.receiveAsFlow()
+
+  protected val _eventChannel = Channel<Event<*>>(Channel.BUFFERED)
+  val eventChannel = _eventChannel.receiveAsFlow()
 
   protected fun rethrowCancellation(error: Throwable) {
     if (error is CancellationException) {

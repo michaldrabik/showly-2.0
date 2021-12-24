@@ -263,6 +263,7 @@ class FollowedShowsFragment :
 
   override fun onTraktSyncComplete() {
     followedShowsSearchView.setTraktProgress(false)
+    followedShowsSearchView.traktIconVisible = false
     childFragmentManager.fragments.forEach {
       (it as? OnTraktSyncListener)?.onTraktSyncComplete()
     }

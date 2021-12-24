@@ -247,6 +247,7 @@ class FollowedMoviesFragment :
 
   override fun onTraktSyncComplete() {
     followedMoviesSearchView.setTraktProgress(false)
+    followedMoviesSearchView.traktIconVisible = false
     childFragmentManager.fragments.forEach {
       (it as? OnTraktSyncListener)?.onTraktSyncComplete()
     }

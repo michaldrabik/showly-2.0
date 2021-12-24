@@ -3,6 +3,7 @@ package com.michaldrabik.ui_base.common.sheets.context_menu.show
 import android.annotation.SuppressLint
 import android.content.Context
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.OnlineStatusProvider
@@ -10,7 +11,10 @@ import com.michaldrabik.ui_base.common.sheets.context_menu.show.cases.ShowContex
 import com.michaldrabik.ui_base.common.sheets.context_menu.show.cases.ShowContextMenuLoadItemCase
 import com.michaldrabik.ui_base.common.sheets.context_menu.show.cases.ShowContextMenuMyShowsCase
 import com.michaldrabik.ui_base.common.sheets.context_menu.show.cases.ShowContextMenuWatchlistCase
+import com.michaldrabik.ui_base.common.sheets.context_menu.show.events.FinishEvent
+import com.michaldrabik.ui_base.common.sheets.context_menu.show.events.RemoveTraktEvent
 import com.michaldrabik.ui_base.common.sheets.context_menu.show.helpers.ShowContextItem
+import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_model.IdTrakt
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,20 +34,23 @@ class ShowContextMenuViewModel @Inject constructor(
   private val loadItemCase: ShowContextMenuLoadItemCase,
   private val myShowsCase: ShowContextMenuMyShowsCase,
   private val watchlistCase: ShowContextMenuWatchlistCase,
-  private val hiddenCase: ShowContextMenuHiddenCase
+  private val hiddenCase: ShowContextMenuHiddenCase,
+  private val settingsRepository: SettingsRepository
 ) : BaseViewModel() {
 
   private var showId by notNull<IdTrakt>()
+  private var isQuickRemoveEnabled by notNull<Boolean>()
 
   private val loadingState = MutableStateFlow(false)
-  private val finishedState = MutableStateFlow(false)
   private val itemState = MutableStateFlow<ShowContextItem?>(null)
 
-  fun loadShow(showId: IdTrakt) {
-    this.showId = showId
+  fun loadShow(idTrakt: IdTrakt) {
     viewModelScope.launch {
+      showId = idTrakt
+      isQuickRemoveEnabled = settingsRepository.load().traktQuickRemoveEnabled
+
       try {
-        val item = loadItemCase.loadItem(showId)
+        val item = loadItemCase.loadItem(idTrakt)
         itemState.value = item
       } catch (error: Throwable) {
         _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
@@ -59,8 +66,8 @@ class ShowContextMenuViewModel @Inject constructor(
       }
       try {
         loadingState.value = true
-        myShowsCase.moveToMyShows(showId)
-        finishedState.value = true
+        val result = myShowsCase.moveToMyShows(showId)
+        checkQuickRemove(result)
       } catch (error: Throwable) {
         onError(error)
       }
@@ -72,7 +79,7 @@ class ShowContextMenuViewModel @Inject constructor(
       try {
         loadingState.value = true
         myShowsCase.removeFromMyShows(showId, removeLocalData = isOnline())
-        finishedState.value = true
+        checkQuickRemove(RemoveTraktEvent(removeProgress = true))
       } catch (error: Throwable) {
         onError(error)
       }
@@ -83,8 +90,8 @@ class ShowContextMenuViewModel @Inject constructor(
     viewModelScope.launch {
       try {
         loadingState.value = true
-        watchlistCase.moveToWatchlist(showId, removeLocalData = isOnline())
-        finishedState.value = true
+        val result = watchlistCase.moveToWatchlist(showId, removeLocalData = isOnline())
+        checkQuickRemove(result)
       } catch (error: Throwable) {
         onError(error)
       }
@@ -96,7 +103,7 @@ class ShowContextMenuViewModel @Inject constructor(
       try {
         loadingState.value = true
         watchlistCase.removeFromWatchlist(showId)
-        finishedState.value = true
+        checkQuickRemove(RemoveTraktEvent(removeWatchlist = true))
       } catch (error: Throwable) {
         onError(error)
       }
@@ -107,8 +114,8 @@ class ShowContextMenuViewModel @Inject constructor(
     viewModelScope.launch {
       try {
         loadingState.value = true
-        hiddenCase.moveToHidden(showId, removeLocalData = isOnline())
-        finishedState.value = true
+        val result = hiddenCase.moveToHidden(showId, removeLocalData = isOnline())
+        checkQuickRemove(result)
       } catch (error: Throwable) {
         onError(error)
       }
@@ -120,10 +127,18 @@ class ShowContextMenuViewModel @Inject constructor(
       try {
         loadingState.value = true
         hiddenCase.removeFromHidden(showId)
-        finishedState.value = true
+        checkQuickRemove(RemoveTraktEvent(removeHidden = true))
       } catch (error: Throwable) {
         onError(error)
       }
+    }
+  }
+
+  private suspend fun checkQuickRemove(event: RemoveTraktEvent) {
+    if (isQuickRemoveEnabled) {
+      _eventChannel.send(Event(event))
+    } else {
+      _eventChannel.send(Event(FinishEvent(true)))
     }
   }
 
@@ -137,13 +152,11 @@ class ShowContextMenuViewModel @Inject constructor(
 
   val uiState = combine(
     loadingState,
-    finishedState,
     itemState
-  ) { s1, s2, s3 ->
+  ) { s1, s2 ->
     ShowContextMenuUiState(
       isLoading = s1,
-      isFinished = s2,
-      item = s3
+      item = s2
     )
   }.stateIn(
     scope = viewModelScope,

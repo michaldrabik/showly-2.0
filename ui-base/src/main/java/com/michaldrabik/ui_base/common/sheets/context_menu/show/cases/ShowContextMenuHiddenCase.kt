@@ -6,12 +6,16 @@ import com.michaldrabik.data_local.database.model.Season
 import com.michaldrabik.data_local.database.model.TraktSyncQueue
 import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
+import com.michaldrabik.ui_base.common.sheets.context_menu.show.events.RemoveTraktEvent
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.ui_base.utilities.extensions.runTransaction
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Show
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -22,9 +26,13 @@ class ShowContextMenuHiddenCase @Inject constructor(
   private val quickSyncManager: QuickSyncManager,
 ) {
 
-  suspend fun moveToHidden(traktId: IdTrakt, removeLocalData: Boolean) {
+  suspend fun moveToHidden(traktId: IdTrakt, removeLocalData: Boolean) = coroutineScope {
     val show = Show.EMPTY.copy(ids = Ids.EMPTY.copy(traktId))
-    val isMyShow = showsRepository.myShows.exists(traktId)
+
+    val (isMyShow, isWatchlist) = awaitAll(
+      async { showsRepository.myShows.exists(traktId) },
+      async { showsRepository.watchlistShows.exists(traktId) }
+    )
 
     database.runTransaction {
       showsRepository.hiddenShows.insert(traktId)
@@ -43,6 +51,8 @@ class ShowContextMenuHiddenCase @Inject constructor(
       pinnedItemsRepository.removePinnedItem(show)
     }
     quickSyncManager.scheduleHidden(traktId.id, Mode.SHOWS, TraktSyncQueue.Operation.ADD)
+
+    RemoveTraktEvent(removeProgress = isMyShow, removeWatchlist = isWatchlist)
   }
 
   suspend fun removeFromHidden(traktId: IdTrakt) {

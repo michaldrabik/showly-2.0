@@ -774,7 +774,23 @@
     android:id="@+id/showItemContextDialog"
     android:name="com.michaldrabik.ui_base.common.sheets.context_menu.show.ShowContextMenuBottomSheet"
     android:label="dialogShowItemContext"
-    />
+    >
+    <action
+      android:id="@+id/actionShowItemContextDialogToRemoveTraktHidden"
+      app:destination="@id/removeTraktHiddenDialog"
+      app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionShowItemContextDialogToRemoveTraktWatchlist"
+      app:destination="@id/removeTraktWatchlistDialog"
+      app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionShowItemContextDialogToRemoveTraktProgress"
+      app:destination="@id/removeTraktProgressDialog"
+      app:launchSingleTop="true"
+      />
+  </dialog>
 
   <dialog
     android:id="@+id/movieItemContextDialog"

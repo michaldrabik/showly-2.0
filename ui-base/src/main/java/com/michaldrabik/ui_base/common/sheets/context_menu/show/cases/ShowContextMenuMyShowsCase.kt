@@ -6,12 +6,16 @@ import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.shows.ShowsRepository
+import com.michaldrabik.ui_base.common.sheets.context_menu.show.events.RemoveTraktEvent
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_base.utilities.extensions.runTransaction
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Show
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
 import com.michaldrabik.data_local.database.model.Episode as EpisodeDb
 import com.michaldrabik.data_local.database.model.Season as SeasonDb
@@ -27,7 +31,12 @@ class ShowContextMenuMyShowsCase @Inject constructor(
   private val announcementManager: AnnouncementManager,
 ) {
 
-  suspend fun moveToMyShows(traktId: IdTrakt) {
+  suspend fun moveToMyShows(traktId: IdTrakt) = coroutineScope {
+    val (isWatchlist, isHidden) = awaitAll(
+      async { showsRepository.watchlistShows.exists(traktId) },
+      async { showsRepository.hiddenShows.exists(traktId) }
+    )
+
     val seasons = cloud.traktApi.fetchSeasons(traktId.id)
       .map { mappers.season.fromNetwork(it) }
       .filter { it.episodes.isNotEmpty() }
@@ -65,6 +74,8 @@ class ShowContextMenuMyShowsCase @Inject constructor(
     }
 
     announcementManager.refreshShowsAnnouncements()
+
+    RemoveTraktEvent(removeWatchlist = isWatchlist, removeHidden = isHidden)
   }
 
   suspend fun removeFromMyShows(traktId: IdTrakt, removeLocalData: Boolean) {

@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_base.common.sheets.context_menu.show
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
@@ -9,7 +8,10 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
+import com.michaldrabik.ui_base.common.sheets.context_menu.show.events.FinishEvent
+import com.michaldrabik.ui_base.common.sheets.context_menu.show.events.RemoveTraktEvent
 import com.michaldrabik.ui_base.common.sheets.context_menu.show.helpers.ShowContextItem
+import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent.Type
 import com.michaldrabik.ui_base.utilities.extensions.gone
@@ -21,10 +23,8 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
-import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageStatus
-import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.view_collection_item_context.*
 import kotlinx.coroutines.flow.collect
@@ -34,8 +34,6 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet<ShowContextMenuViewMod
 
   override val layoutResId = R.layout.view_collection_item_context
 
-  private val showId by lazy { requireArguments().getParcelable<IdTrakt>(ARG_ID)!! }
-
   override fun createViewModel() = ViewModelProvider(this)[ShowContextMenuViewModel::class.java]
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,8 +42,9 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet<ShowContextMenuViewMod
 
     launchAndRepeatStarted(
       { viewModel.messageChannel.collect { renderSnackbar(it) } },
+      { viewModel.eventChannel.collect { handleEvent(it) } },
       { viewModel.uiState.collect { render(it) } },
-      doAfterLaunch = { viewModel.loadShow(showId) }
+      doAfterLaunch = { viewModel.loadShow(itemId) }
     )
   }
 
@@ -62,15 +61,8 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet<ShowContextMenuViewMod
     contextMenuItemRemoveFromHiddenButton.onClick { viewModel.removeFromHidden() }
   }
 
-  @SuppressLint("SetTextI18n")
   private fun render(uiState: ShowContextMenuUiState) {
     uiState.run {
-      isFinished?.let {
-        if (it) {
-          dismissWithSuccess()
-          return@run
-        }
-      }
       isLoading?.let {
         contextMenuItemProgress.visibleIf(it)
         contextMenuItemButtonsLayout.visibleIf(!it, gone = false)
@@ -143,6 +135,19 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet<ShowContextMenuViewMod
         Type.INFO -> contextMenuItemRoot.showInfoSnackbar(getString(it))
         Type.ERROR -> contextMenuItemRoot.showErrorSnackbar(getString(it))
       }
+    }
+  }
+
+  private fun handleEvent(event: Event<*>) {
+    when (val result = event.peek()) {
+      is RemoveTraktEvent -> when {
+        result.removeProgress -> openRemoveTraktSheet(R.id.actionShowItemContextDialogToRemoveTraktProgress)
+        result.removeWatchlist -> openRemoveTraktSheet(R.id.actionShowItemContextDialogToRemoveTraktWatchlist)
+        result.removeHidden -> openRemoveTraktSheet(R.id.actionShowItemContextDialogToRemoveTraktHidden)
+        else -> close()
+      }
+      is FinishEvent -> if (result.isSuccess) close()
+      else -> throw IllegalStateException()
     }
   }
 }

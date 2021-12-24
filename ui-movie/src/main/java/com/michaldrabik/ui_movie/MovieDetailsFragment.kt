@@ -559,9 +559,11 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   }
 
   private fun openRemoveTraktSheet(@IdRes action: Int) {
-    setFragmentResultListener(NavigationArgs.REQUEST_REMOVE_TRAKT) { _, _ ->
-      val text = resources.getString(R.string.textTraktSyncMovieRemovedFromTrakt)
-      (requireActivity() as SnackbarHost).provideSnackbarLayout().showInfoSnackbar(text)
+    setFragmentResultListener(NavigationArgs.REQUEST_REMOVE_TRAKT) { _, bundle ->
+      if (bundle.getBoolean(NavigationArgs.RESULT, false)) {
+        val text = resources.getString(R.string.textTraktSyncMovieRemovedFromTrakt)
+        (requireActivity() as SnackbarHost).provideSnackbarLayout().showInfoSnackbar(text)
+      }
     }
     val args = bundleOf(ARG_ID to movieId.id, ARG_TYPE to Mode.MOVIES)
     navigateTo(action, args)

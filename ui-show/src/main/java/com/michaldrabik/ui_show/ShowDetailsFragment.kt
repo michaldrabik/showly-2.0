@@ -85,6 +85,7 @@ import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_GALLERY
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_TAB_SELECTED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_WATCHED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_NEW_COMMENT
@@ -750,12 +751,14 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   }
 
   private fun openRemoveTraktSheet(@IdRes action: Int) {
-    setFragmentResultListener(REQUEST_REMOVE_TRAKT) { _, _ ->
-      val text = resources.getString(R.string.textTraktSyncRemovedFromTrakt)
-      (requireActivity() as SnackbarHost).provideSnackbarLayout().showInfoSnackbar(text)
+    setFragmentResultListener(REQUEST_REMOVE_TRAKT) { _, bundle ->
+      if (bundle.getBoolean(NavigationArgs.RESULT, false)) {
+        val text = resources.getString(R.string.textTraktSyncRemovedFromTrakt)
+        (requireActivity() as SnackbarHost).provideSnackbarLayout().showInfoSnackbar(text)
 
-      if (action == R.id.actionShowDetailsFragmentToRemoveTraktProgress) {
-        viewModel.launchRefreshWatchedEpisodes()
+        if (action == R.id.actionShowDetailsFragmentToRemoveTraktProgress) {
+          viewModel.launchRefreshWatchedEpisodes()
+        }
       }
     }
     val args = bundleOf(ARG_ID to showId.id, ARG_TYPE to Mode.SHOWS)

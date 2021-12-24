@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_base.common.sheets.remove_trakt_hidden
 
 import android.annotation.SuppressLint
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +24,7 @@ import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_REMOVE_TRAKT
+import com.michaldrabik.ui_navigation.java.NavigationArgs.RESULT
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.view_remove_trakt_hidden.*
 import kotlinx.android.synthetic.main.view_remove_trakt_hidden.view.*
@@ -58,7 +60,10 @@ class RemoveTraktHiddenBottomSheet : BaseBottomSheetFragment<RemoveTraktHiddenVi
   @SuppressLint("SetTextI18n")
   private fun setupView(view: View) {
     view.run {
-      viewRemoveTraktHiddenButtonNo.onClick { dismiss() }
+      viewRemoveTraktHiddenButtonNo.onClick {
+        setFragmentResult(REQUEST_REMOVE_TRAKT, bundleOf(RESULT to false))
+        closeSheet()
+      }
       viewRemoveTraktHiddenButtonYes.onClick {
         viewModel.removeFromTrakt(IdTrakt(itemId), itemType)
       }
@@ -77,8 +82,8 @@ class RemoveTraktHiddenBottomSheet : BaseBottomSheetFragment<RemoveTraktHiddenVi
       }
       isFinished?.let {
         if (it) {
-          setFragmentResult(REQUEST_REMOVE_TRAKT, bundleOf())
-          dismiss()
+          setFragmentResult(REQUEST_REMOVE_TRAKT, bundleOf(RESULT to true))
+          closeSheet()
         }
       }
     }
@@ -91,5 +96,10 @@ class RemoveTraktHiddenBottomSheet : BaseBottomSheetFragment<RemoveTraktHiddenVi
         Type.ERROR -> viewRemoveTraktHiddenSnackHost.showErrorSnackbar(getString(it))
       }
     }
+  }
+
+  override fun onCancel(dialog: DialogInterface) {
+    setFragmentResult(REQUEST_REMOVE_TRAKT, bundleOf(RESULT to false))
+    super.onCancel(dialog)
   }
 }

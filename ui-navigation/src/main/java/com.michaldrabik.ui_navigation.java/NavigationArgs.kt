@@ -41,4 +41,6 @@ object NavigationArgs {
   const val REQUEST_MANAGE_LISTS = "REQUEST_MANAGE_LISTS"
   const val REQUEST_REMOVE_TRAKT = "REQUEST_REMOVE_TRAKT"
   const val REQUEST_ITEM_MENU = "REQUEST_ITEM_MENU"
+
+  const val RESULT = "RESULT"
 }
