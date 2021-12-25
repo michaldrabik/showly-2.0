@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textAddToMyMovies">Añadir a mis películas</string>
-  <string name="textMovieWatchLater">Ver Después</string>
   <string name="textInMyMovies">Añadido a mis películas</string>
   <string name="textInMoviesWatchlist">Añadido a pendientes</string>
   <string name="textInHidden">Ocultos</string>

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textAdd">Add to my shows</string>
-  <string name="textWatchLater">See Later</string>
   <string name="textNextEpisode">Next Episode:</string>
   <string name="textInMyShows">Added to my shows</string>
   <string name="textInWatchlist">Added to watchlist</string>

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textAdd">إضافة إلى مسلسلاتي</string>
-  <string name="textWatchLater">مشاهدة لاحقاً</string>
   <string name="textNextEpisode">الحلقة التالية:</string>
   <string name="textInMyShows">تمت الإضافة إلى مسلسلاتي</string>
   <string name="textInWatchlist">تمت الإضافة إلى قائمة المشاهدة</string>

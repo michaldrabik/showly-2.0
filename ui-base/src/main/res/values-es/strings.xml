@@ -105,4 +105,7 @@
   <string name="errorTraktSyncGeneral">Error de sincronización de Trakt.tv.\nPor favor comprueba tu conexión a Internet y prueba de nuevo o contáctanos si sigue sucediendo.</string>
   <string name="errorTraktLocked">Tu cuenta de Trakt.tv está bloqueada actualmente.\nPor favor, ponte en contacto con el soporte de Trakt.tv en https://support.trakt.tv/ para desbloquear tu cuenta.</string>
   <string name="errorSubscriptionsNotAvailable">Las suscripciones de Google Play no están disponibles en este dispositivo.</string>
+  <string name="textAddToMyShows">Añadir a Mis Series</string>
+  <string name="textAddToMyMovies">Añadir a mis películas</string>
+  <string name="textWatchlist">Pendientes</string>
 </resources>

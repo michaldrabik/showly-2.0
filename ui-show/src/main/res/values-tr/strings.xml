@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textAdd">Dizilerime ekle</string>
-  <string name="textWatchLater">Sonra İzle</string>
   <string name="textNextEpisode">Sonraki Bölüm:</string>
   <string name="textInMyShows">Dizilerime eklendi</string>
   <string name="textInWatchlist">İstek listesine eklendi</string>

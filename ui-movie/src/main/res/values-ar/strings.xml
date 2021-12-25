@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textAddToMyMovies">إضافة إلى أفلامي</string>
-  <string name="textMovieWatchLater">مشاهدة لاحقاً</string>
   <string name="textInMyMovies">تمت الإضافة إلى أفلامي</string>
   <string name="textInMoviesWatchlist">تمت الإضافة إلى قائمة المشاهدة</string>
   <string name="textInHidden">المخفية</string>

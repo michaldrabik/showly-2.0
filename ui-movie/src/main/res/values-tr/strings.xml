@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textAddToMyMovies">Filmlerime ekle</string>
-  <string name="textMovieWatchLater">Sonra İzle</string>
   <string name="textInMyMovies">Filmlerime eklendi</string>
   <string name="textInMoviesWatchlist">İstek listesine eklendi</string>
   <string name="textInHidden">Gizlenmiş</string>
