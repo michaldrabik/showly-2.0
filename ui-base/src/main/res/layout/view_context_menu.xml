@@ -173,6 +173,8 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/contextMenuItemPinButtonsLayout"
     app:layout_goneMarginTop="8dp"
+    android:visibility="gone"
+    tools:visibility="visible"
     />
 
   <!-- Main Buttons -->

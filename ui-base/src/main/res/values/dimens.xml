@@ -60,7 +60,7 @@
   <dimen name="tutorialTipSize">28dp</dimen>
   <dimen name="scrollBarWidth">3dp</dimen>
 
-  <dimen name="collectionItemCorner">17dp</dimen>
+  <dimen name="collectionItemCorner">16dp</dimen>
   <dimen name="collectionItemImageHeight">120dp</dimen>
   <dimen name="collectionItemImageWidth">80dp</dimen>
 

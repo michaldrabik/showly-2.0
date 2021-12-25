@@ -27,13 +27,13 @@ import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
 import com.michaldrabik.ui_model.ImageStatus
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.view_collection_item_context.*
+import kotlinx.android.synthetic.main.view_context_menu.*
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class ShowContextMenuBottomSheet : ContextMenuBottomSheet<ShowContextMenuViewModel>() {
 
-  override val layoutResId = R.layout.view_collection_item_context
+  override val layoutResId = R.layout.view_context_menu
 
   override fun createViewModel() = ViewModelProvider(this)[ShowContextMenuViewModel::class.java]
 
@@ -54,6 +54,7 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet<ShowContextMenuViewMod
     contextMenuItemMoveToMyButton.text = getString(R.string.textMoveToMyShows)
     contextMenuItemRemoveFromMyButton.text = getString(R.string.textRemoveFromMyShows)
     contextMenuItemPinButtonsLayout.visibleIf(showPinButtons)
+    contextMenuItemSeparator2.visibleIf(showPinButtons)
 
     contextMenuItemMoveToMyButton.onClick { viewModel.moveToMyShows() }
     contextMenuItemRemoveFromMyButton.onClick { viewModel.removeFromMyShows() }
