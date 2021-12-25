@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_base.common.sheets.context_menu.show.cases
 
+import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.common.sheets.context_menu.show.helpers.ShowContextItem
@@ -14,27 +15,31 @@ import javax.inject.Inject
 @ViewModelScoped
 class ShowContextMenuLoadItemCase @Inject constructor(
   private val showsRepository: ShowsRepository,
+  private val pinnedItemsRepository: PinnedItemsRepository,
   private val imagesProvider: ShowImagesProvider,
   private val translationsRepository: TranslationsRepository,
 ) {
 
   suspend fun loadItem(traktId: IdTrakt) = coroutineScope {
-    val showDetails = showsRepository.detailsShow.load(traktId)
+    val show = showsRepository.detailsShow.load(traktId)
 
-    val imageAsync = async { imagesProvider.findCachedImage(showDetails, ImageType.POSTER) }
-    val translationAsync = async { translationsRepository.loadTranslation(showDetails, onlyLocal = true) }
+    val imageAsync = async { imagesProvider.findCachedImage(show, ImageType.POSTER) }
+    val translationAsync = async { translationsRepository.loadTranslation(show, onlyLocal = true) }
 
     val isMyShowAsync = async { showsRepository.myShows.exists(traktId) }
     val isWatchlistAsync = async { showsRepository.watchlistShows.exists(traktId) }
     val isHiddenAsync = async { showsRepository.hiddenShows.exists(traktId) }
 
+    val isPinnedAsync = async { pinnedItemsRepository.isItemPinned(show) }
+
     ShowContextItem(
-      show = showDetails,
+      show = show,
       image = imageAsync.await(),
       translation = translationAsync.await(),
       isMyShow = isMyShowAsync.await(),
       isWatchlist = isWatchlistAsync.await(),
-      isHidden = isHiddenAsync.await()
+      isHidden = isHiddenAsync.await(),
+      isPinnedTop = isPinnedAsync.await()
     )
   }
 }

@@ -21,7 +21,6 @@ import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.main.ProgressMainUiState
 import com.michaldrabik.ui_progress.progress.cases.ProgressItemsCase
-import com.michaldrabik.ui_progress.progress.cases.ProgressPinnedItemsCase
 import com.michaldrabik.ui_progress.progress.cases.ProgressSortOrderCase
 import com.michaldrabik.ui_progress.progress.recycler.ProgressListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -36,7 +35,6 @@ import javax.inject.Inject
 @HiltViewModel
 class ProgressViewModel @Inject constructor(
   private val itemsCase: ProgressItemsCase,
-  private val pinnedItemsCase: ProgressPinnedItemsCase,
   private val sortOrderCase: ProgressSortOrderCase,
   private val imagesProvider: ShowImagesProvider,
   private val userTraktManager: UserTraktManager,
@@ -135,15 +133,6 @@ class ProgressViewModel @Inject constructor(
   fun setSortOrder(sortOrder: SortOrder, sortType: SortType) {
     sortOrderCase.setSortOrder(sortOrder, sortType)
     loadItems(resetScroll = true)
-  }
-
-  fun togglePinItem(item: ProgressListItem.Episode) {
-    if (item.isPinned) {
-      pinnedItemsCase.removePinnedItem(item.show)
-    } else {
-      pinnedItemsCase.addPinnedItem(item.show)
-    }
-    loadItems(resetScroll = item.isPinned)
   }
 
   fun checkQuickRateEnabled() {

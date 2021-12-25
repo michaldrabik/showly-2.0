@@ -24,21 +24,21 @@
     app:layout_constraintGuide_begin="@dimen/collectionItemImageWidth"
     />
 
-  <androidx.constraintlayout.widget.Barrier
+  <androidx.constraintlayout.widget.Guideline
     android:id="@+id/contextMenuItemGuide2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    app:layout_constraintGuide_begin="0dp"
+    />
+
+  <androidx.constraintlayout.widget.Barrier
+    android:id="@+id/contextMenuItemBarrier"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     app:barrierDirection="bottom"
     app:constraint_referenced_ids="contextMenuItemDescription, contextMenuItemImage, contextMenuItemPlaceholder"
-    />
-
-  <androidx.constraintlayout.widget.Guideline
-    android:id="@+id/contextMenuItemGuide3"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    app:layout_constraintGuide_begin="0dp"
     />
 
   <ImageView
@@ -78,7 +78,7 @@
     android:elevation="@dimen/elevationSmall"
     android:translationY="-4dp"
     app:layout_constraintEnd_toStartOf="@id/contextMenuItemGuide1"
-    app:layout_constraintTop_toBottomOf="@id/contextMenuItemGuide3"
+    app:layout_constraintTop_toBottomOf="@id/contextMenuItemGuide2"
     app:srcCompat="@drawable/ic_bookmark_full"
     tools:visibility="visible"
     />
@@ -118,37 +118,77 @@
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/spaceNormal"
-    app:layout_constraintBottom_toBottomOf="@id/contextMenuItemGuide2"
+    app:layout_constraintBottom_toBottomOf="@id/contextMenuItemBarrier"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toEndOf="@id/contextMenuItemGuide1"
     app:layout_constraintTop_toBottomOf="@id/contextMenuItemTitle"
     tools:text="@tools:sample/lorem/random"
     />
 
+  <!-- Pinning Buttons -->
+
+  <LinearLayout
+    android:id="@+id/contextMenuItemPinButtonsLayout"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:divider="@drawable/divider_item_menu"
+    android:orientation="vertical"
+    android:showDividers="middle"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="@id/contextMenuItemSeparator2"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/contextMenuItemBarrier"
+    tools:visibility="visible"
+    >
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/contextMenuItemPinButton"
+      style="@style/ContextMenuItemButton.Move"
+      android:text="@string/menuPin"
+      android:visibility="gone"
+      app:icon="@drawable/ic_pin"
+      tools:visibility="visible"
+      />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/contextMenuItemUnpinButton"
+      style="@style/ContextMenuItemButton.Move"
+      android:text="@string/menuUnpin"
+      android:visibility="gone"
+      app:icon="@drawable/ic_pin"
+      tools:visibility="visible"
+      />
+
+  </LinearLayout>
+
   <View
-    android:id="@+id/contextMenuItemSeparator"
+    android:id="@+id/contextMenuItemSeparator2"
     android:layout_width="0dp"
     android:layout_height="1dp"
-    android:layout_marginTop="@dimen/spaceNormal"
+    android:layout_marginTop="11dp"
     android:background="?attr/colorSeparator"
     app:layout_constraintBottom_toTopOf="@id/contextMenuItemButtonsLayout"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/contextMenuItemGuide2"
+    app:layout_constraintTop_toBottomOf="@id/contextMenuItemPinButtonsLayout"
+    app:layout_goneMarginTop="8dp"
     />
+
+  <!-- Main Buttons -->
 
   <LinearLayout
     android:id="@+id/contextMenuItemButtonsLayout"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:layout_marginTop="11dp"
+    android:layout_marginTop="@dimen/spaceMedium"
     android:divider="@drawable/divider_item_menu"
     android:orientation="vertical"
     android:showDividers="middle"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/contextMenuItemSeparator"
+    app:layout_constraintTop_toBottomOf="@id/contextMenuItemSeparator2"
     >
 
     <com.google.android.material.button.MaterialButton
@@ -215,7 +255,7 @@
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="@id/contextMenuItemGuide2"
+    app:layout_constraintTop_toTopOf="@id/contextMenuItemBarrier"
     tools:visibility="visible"
     />
 

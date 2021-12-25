@@ -22,6 +22,7 @@ import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_LIST
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_ITEM_MENU
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_REMOVE_TRAKT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.RESULT
@@ -29,11 +30,17 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.RESULT
 abstract class ContextMenuBottomSheet<T : BaseViewModel> : BaseBottomSheetFragment<T>() {
 
   companion object {
-    fun createBundle(idTrakt: IdTrakt) =
-      bundleOf(ARG_ID to idTrakt)
+    fun createBundle(
+      idTrakt: IdTrakt,
+      showPinButtons: Boolean = false
+    ) = bundleOf(
+      ARG_ID to idTrakt,
+      ARG_LIST to showPinButtons
+    )
   }
 
   protected val itemId by lazy { requireArguments().getParcelable<IdTrakt>(ARG_ID)!! }
+  protected val showPinButtons by lazy { requireArguments().getBoolean(ARG_LIST, false) }
 
   private val cornerRadius by lazy { dimenToPx(R.dimen.mediaTileCorner).toFloat() }
   private val cornerBigRadius by lazy { dimenToPx(R.dimen.collectionItemCorner).toFloat() }

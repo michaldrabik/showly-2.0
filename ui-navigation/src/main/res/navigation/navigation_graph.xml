@@ -173,6 +173,11 @@
       app:destination="@id/searchFragment"
       app:launchSingleTop="true"
       />
+    <action
+      android:id="@+id/actionProgressFragmentToItemMenu"
+      app:destination="@id/showItemContextDialog"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment

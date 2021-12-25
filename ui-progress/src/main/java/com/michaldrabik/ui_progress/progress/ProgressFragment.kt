@@ -2,10 +2,8 @@ package com.michaldrabik.ui_progress.progress
 
 import android.os.Build
 import android.os.Bundle
-import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
 import androidx.core.view.updateMargins
@@ -125,8 +123,8 @@ class ProgressFragment :
       itemClickListener = {
         requireMainFragment().openShowDetails(it.show)
       }
-      itemLongClickListener = { item, view ->
-        openPopupMenu(item as ProgressListItem.Episode, view)
+      itemLongClickListener = { item, _ ->
+        requireMainFragment().openShowMenu(item.show)
       }
       detailsClickListener = {
         requireMainFragment().openEpisodeDetails(it.show, it.requireEpisode(), it.requireSeason())
@@ -215,22 +213,6 @@ class ProgressFragment :
         }
       }
     }
-  }
-
-  private fun openPopupMenu(item: ProgressListItem.Episode, view: View) {
-    val menu = PopupMenu(requireContext(), view, Gravity.CENTER)
-    if (item.isPinned) {
-      menu.inflate(R.menu.progress_item_menu_unpin)
-    } else {
-      menu.inflate(R.menu.progress_item_menu_pin)
-    }
-    menu.setOnMenuItemClickListener { menuItem ->
-      if (menuItem.itemId == R.id.menuWatchlistItemPin) {
-        viewModel.togglePinItem(item)
-      }
-      true
-    }
-    menu.show()
   }
 
   private fun openRateDialog(item: ProgressListItem.Episode) {

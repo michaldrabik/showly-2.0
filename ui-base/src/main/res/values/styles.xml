@@ -224,6 +224,7 @@
     <item name="iconGravity">textStart</item>
     <item name="iconPadding">@dimen/spaceTiny</item>
     <item name="iconTint">?android:attr/textColorPrimary</item>
+    <item name="iconSize">22dp</item>
     <item name="rippleColor">?android:attr/textColorPrimary</item>
     <item name="strokeColor">?android:attr/textColorPrimary</item>
   </style>
@@ -236,6 +237,7 @@
     <item name="android:textColor">?android:attr/textColorPrimary</item>
     <item name="icon">@drawable/ic_remove_list</item>
     <item name="iconGravity">textStart</item>
+    <item name="iconSize">22dp</item>
     <item name="iconPadding">@dimen/spaceTiny</item>
     <item name="iconTint">?android:attr/textColorPrimary</item>
     <item name="rippleColor">?android:attr/textColorPrimary</item>

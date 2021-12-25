@@ -53,6 +53,7 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet<ShowContextMenuViewMod
     contextMenuItemDescription.setInitialLines(5)
     contextMenuItemMoveToMyButton.text = getString(R.string.textMoveToMyShows)
     contextMenuItemRemoveFromMyButton.text = getString(R.string.textRemoveFromMyShows)
+    contextMenuItemPinButtonsLayout.visibleIf(showPinButtons)
 
     contextMenuItemMoveToMyButton.onClick { viewModel.moveToMyShows() }
     contextMenuItemRemoveFromMyButton.onClick { viewModel.removeFromMyShows() }
@@ -60,6 +61,8 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet<ShowContextMenuViewMod
     contextMenuItemRemoveFromWatchlistButton.onClick { viewModel.removeFromWatchlist() }
     contextMenuItemMoveToHiddenButton.onClick { viewModel.moveToHidden() }
     contextMenuItemRemoveFromHiddenButton.onClick { viewModel.removeFromHidden() }
+    contextMenuItemPinButton.onClick { viewModel.addToTopPinned() }
+    contextMenuItemUnpinButton.onClick { viewModel.removeFromTopPinned() }
   }
 
   private fun render(uiState: ShowContextMenuUiState) {
@@ -90,6 +93,9 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet<ShowContextMenuViewMod
 
     contextMenuItemDescription.visibleIf(item.show.overview.isNotBlank())
     contextMenuItemNetwork.visibleIf(item.show.network.isNotBlank())
+
+    contextMenuItemPinButton.visibleIf(!item.isPinnedTop)
+    contextMenuItemUnpinButton.visibleIf(item.isPinnedTop)
 
     contextMenuItemMoveToMyButton.visibleIf(!item.isMyShow)
     contextMenuItemMoveToWatchlistButton.visibleIf(!item.isWatchlist)

@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.core.view.updateMargins
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.clearFragmentResultListener
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.viewpager.widget.ViewPager
@@ -16,6 +17,7 @@ import com.michaldrabik.ui_base.common.OnShowsMoviesSyncedListener
 import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
+import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
 import com.michaldrabik.ui_base.common.views.exSearchLocalViewInput
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -40,6 +42,7 @@ import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_TAB_SELECTED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_EPISODE_DETAILS
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_ITEM_MENU
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode
 import com.michaldrabik.ui_progress.main.adapters.ProgressMainAdapter
@@ -228,6 +231,17 @@ class ProgressMainFragment :
         progressMainRoot.fadeIn(50).add(animations)
       }
     }.add(animations)
+  }
+
+  fun openShowMenu(show: Show) {
+    setFragmentResultListener(REQUEST_ITEM_MENU) { requestKey, _ ->
+      if (requestKey == REQUEST_ITEM_MENU) {
+        viewModel.loadProgress()
+      }
+      clearFragmentResultListener(REQUEST_ITEM_MENU)
+    }
+    val bundle = ContextMenuBottomSheet.createBundle(show.ids.trakt, showPinButtons = true)
+    navigateTo(R.id.actionProgressFragmentToItemMenu, bundle)
   }
 
   fun openEpisodeDetails(show: Show, episode: Episode, season: Season) {

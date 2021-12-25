@@ -10,7 +10,8 @@ data class ShowContextItem(
   val translation: Translation?,
   val isMyShow: Boolean,
   val isWatchlist: Boolean,
-  val isHidden: Boolean
+  val isHidden: Boolean,
+  val isPinnedTop: Boolean
 ) {
 
   fun isInCollection() = isHidden || isWatchlist || isMyShow
