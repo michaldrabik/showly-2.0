@@ -61,7 +61,7 @@ class PersonLinksBottomSheet : BaseBottomSheetFragment<PersonLinksViewModel>() {
   }
 
   private fun setupView() {
-    viewPersonLinksButtonClose.onClick { dismiss() }
+    viewPersonLinksButtonClose.onClick { closeSheet() }
     setWebLink()
     setTmdbLink()
     setImdbLink()

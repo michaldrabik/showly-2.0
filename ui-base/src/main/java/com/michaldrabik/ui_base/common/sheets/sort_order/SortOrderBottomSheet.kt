@@ -117,7 +117,7 @@ class SortOrderBottomSheet : BaseBottomSheetFragment<SortOrderViewModel>() {
       )
       setFragmentResult(requestKey, result)
     }
-    dismiss()
+    closeSheet()
   }
 
   private val itemClickListener: (SortOrder, SortType) -> Unit =

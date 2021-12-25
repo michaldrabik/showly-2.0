@@ -119,7 +119,7 @@ class PostCommentBottomSheet : BaseBottomSheetFragment<PostCommentViewModel>() {
               ARG_COMMENT to commentBundle.second
             )
           )
-          dismiss()
+          closeSheet()
         }
       }
     }

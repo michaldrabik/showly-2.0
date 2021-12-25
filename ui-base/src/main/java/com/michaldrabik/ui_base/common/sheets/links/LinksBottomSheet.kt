@@ -70,7 +70,7 @@ class LinksBottomSheet : BaseBottomSheetFragment<LinksViewModel>() {
   }
 
   private fun setupView() {
-    viewLinksButtonClose.onClick { dismiss() }
+    viewLinksButtonClose.onClick { closeSheet() }
     setWebLink()
     setTraktLink()
     setTvdbLink()

@@ -143,7 +143,6 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>
         .findNavController()
         .navigate(R.id.actionPersonDetailsDialogToMovie, bundle)
     }
-    dismiss()
   }
 
   private fun openGallery() {

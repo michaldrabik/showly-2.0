@@ -111,7 +111,7 @@ class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
       onListUpdated?.let {
         it.consume()?.let {
           setFragmentResult(REQUEST_CREATE_LIST, bundleOf())
-          dismiss()
+          closeSheet()
         }
       }
     }

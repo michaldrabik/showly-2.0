@@ -13,7 +13,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -91,7 +90,7 @@ class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>(), 
   }
 
   private fun setupView() {
-    viewManageListsButton.onClick { findNavController().popBackStack() }
+    viewManageListsButton.onClick { closeSheet() }
     viewManageListsCreateButton.onClick {
       setFragmentResultListener(REQUEST_CREATE_LIST) { _, _ -> viewModel.loadLists(itemId, itemType) }
       navigateTo(R.id.actionManageListsDialogToCreateListDialog, Bundle.EMPTY)
