@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.IdRes
 import androidx.appcompat.view.ContextThemeWrapper
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
@@ -38,6 +39,9 @@ abstract class ContextMenuBottomSheet<T : BaseViewModel> : BaseBottomSheetFragme
   private val cornerBigRadius by lazy { dimenToPx(R.dimen.collectionItemCorner).toFloat() }
   protected val centerCropTransformation by lazy { CenterCrop() }
   protected val cornersTransformation by lazy { GranularRoundedCorners(cornerBigRadius, cornerRadius, cornerRadius, cornerRadius) }
+
+  protected val colorAccent by lazy { ContextCompat.getColor(requireContext(), R.color.colorAccent) }
+  protected val colorGray by lazy { ContextCompat.getColor(requireContext(), R.color.colorGrayLight) }
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 

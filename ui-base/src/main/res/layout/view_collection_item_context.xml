@@ -33,6 +33,14 @@
     app:constraint_referenced_ids="contextMenuItemDescription, contextMenuItemImage, contextMenuItemPlaceholder"
     />
 
+  <androidx.constraintlayout.widget.Guideline
+    android:id="@+id/contextMenuItemGuide3"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    app:layout_constraintGuide_begin="0dp"
+    />
+
   <ImageView
     android:id="@+id/contextMenuItemImage"
     android:layout_width="@dimen/collectionItemImageWidth"
@@ -58,6 +66,20 @@
     app:layout_constraintTop_toTopOf="parent"
     app:srcCompat="@drawable/ic_television"
     app:tint="?attr/colorPlaceholderIcon"
+    tools:visibility="visible"
+    />
+
+  <ImageView
+    android:id="@+id/contextMenuItemBadge"
+    style="@style/Badge"
+    android:layout_width="24dp"
+    android:layout_height="24dp"
+    android:layout_marginEnd="@dimen/spaceMicro"
+    android:elevation="@dimen/elevationSmall"
+    android:translationY="-4dp"
+    app:layout_constraintEnd_toStartOf="@id/contextMenuItemGuide1"
+    app:layout_constraintTop_toBottomOf="@id/contextMenuItemGuide3"
+    app:srcCompat="@drawable/ic_bookmark_full"
     tools:visibility="visible"
     />
 
@@ -195,6 +217,13 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="@id/contextMenuItemGuide2"
     tools:visibility="visible"
+    />
+
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/contextMenuItemSnackbarHost"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintBottom_toBottomOf="parent"
     />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,9 @@
 package com.michaldrabik.ui_base.common.sheets.context_menu.show
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.View
+import androidx.core.widget.ImageViewCompat
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -23,7 +25,6 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
-import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageStatus
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.view_collection_item_context.*
@@ -69,7 +70,7 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet<ShowContextMenuViewMod
       }
       item?.let {
         renderItem(it)
-        renderImage(it.image)
+        renderImage(it)
       }
     }
   }
@@ -98,24 +99,33 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet<ShowContextMenuViewMod
     contextMenuItemRemoveFromWatchlistButton.visibleIf(item.isWatchlist)
     contextMenuItemRemoveFromHiddenButton.visibleIf(item.isHidden)
 
+    contextMenuItemBadge.visibleIf(item.isMyShow || item.isWatchlist)
+    val color = if (item.isMyShow) colorAccent else colorGray
+    ImageViewCompat.setImageTintList(contextMenuItemBadge, ColorStateList.valueOf(color))
+
     if (!item.isInCollection()) {
       contextMenuItemMoveToMyButton.text = getString(R.string.textAddToMyShows)
       contextMenuItemMoveToWatchlistButton.text = getString(R.string.textAddToWatchlist)
-      contextMenuItemMoveToHiddenButton.text = getString(R.string.textAddToHidden)
+      contextMenuItemMoveToHiddenButton.text = getString(R.string.textHide)
     }
   }
 
-  private fun renderImage(image: Image) {
+  private fun renderImage(item: ShowContextItem) {
     Glide.with(this).clear(contextMenuItemImage)
+    var imageUrl = item.image.fullFileUrl
 
-    if (image.status != ImageStatus.AVAILABLE) {
+    if (item.image.status == ImageStatus.UNAVAILABLE) {
       contextMenuItemPlaceholder.visible()
       contextMenuItemImage.gone()
       return
     }
 
+    if (item.image.status == ImageStatus.UNKNOWN) {
+      imageUrl = "${Config.TVDB_IMAGE_BASE_POSTER_URL}${item.show.ids.tvdb.id}-1.jpg"
+    }
+
     Glide.with(this)
-      .load(image.fullFileUrl)
+      .load(imageUrl)
       .transform(centerCropTransformation, cornersTransformation)
       .transition(DrawableTransitionOptions.withCrossFade(Config.IMAGE_FADE_DURATION_MS))
       .withSuccessListener {
