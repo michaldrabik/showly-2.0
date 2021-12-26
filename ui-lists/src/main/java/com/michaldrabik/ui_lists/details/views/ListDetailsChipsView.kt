@@ -23,7 +23,7 @@ class ListDetailsChipsView : FrameLayout, CoordinatorLayout.AttachedBehavior {
   }
 
   var onChipsChangeListener: ((List<Mode>) -> Unit)? = null
-  var isListenerEnabled = true
+  var isListenerEnabled = false
 
   private fun onChipCheckChange() {
     if (!isListenerEnabled) return
