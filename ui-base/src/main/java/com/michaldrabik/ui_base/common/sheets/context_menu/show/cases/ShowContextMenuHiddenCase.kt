@@ -35,7 +35,12 @@ class ShowContextMenuHiddenCase @Inject constructor(
     )
 
     database.runTransaction {
-      showsRepository.hiddenShows.insert(traktId)
+      with(showsRepository) {
+        hiddenShows.insert(show.ids.trakt)
+        myShows.delete(show.ids.trakt)
+        watchlistShows.delete(show.ids.trakt)
+      }
+
       if (removeLocalData && isMyShow) {
         episodesDao().deleteAllUnwatchedForShow(traktId.id)
         val seasons = seasonsDao().getAllByShowId(traktId.id)

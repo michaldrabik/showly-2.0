@@ -11,7 +11,7 @@ class ShowsRepository @Inject constructor(
   val discoverShows: DiscoverShowsRepository,
   val myShows: MyShowsRepository,
   val watchlistShows: WatchlistShowsRepository,
-  val hiddenShows: ArchiveShowsRepository,
+  val hiddenShows: HiddenShowsRepository,
   val relatedShows: RelatedShowsRepository,
   val detailsShow: ShowDetailsRepository
 ) {

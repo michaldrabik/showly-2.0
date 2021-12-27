@@ -33,7 +33,12 @@ class ShowContextMenuWatchlistCase @Inject constructor(
     )
 
     database.runTransaction {
-      showsRepository.watchlistShows.insert(traktId)
+      with(showsRepository) {
+        watchlistShows.insert(show.ids.trakt)
+        myShows.delete(show.ids.trakt)
+        hiddenShows.delete(show.ids.trakt)
+      }
+
       if (removeLocalData && isMyShow) {
         episodesDao().deleteAllUnwatchedForShow(traktId.id)
         val seasons = seasonsDao().getAllByShowId(traktId.id)

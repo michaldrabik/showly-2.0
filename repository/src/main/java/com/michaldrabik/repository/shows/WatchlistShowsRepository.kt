@@ -1,6 +1,5 @@
 package com.michaldrabik.repository.shows
 
-import androidx.room.withTransaction
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.WatchlistShow
@@ -26,13 +25,7 @@ class WatchlistShowsRepository @Inject constructor(
 
   suspend fun insert(id: IdTrakt) {
     val dbShow = WatchlistShow.fromTraktId(id.id, nowUtcMillis())
-    with(database) {
-      withTransaction {
-        watchlistShowsDao().insert(dbShow)
-        myShowsDao().deleteById(id.id)
-        archiveShowsDao().deleteById(id.id)
-      }
-    }
+    database.watchlistShowsDao().insert(dbShow)
   }
 
   suspend fun delete(id: IdTrakt) =

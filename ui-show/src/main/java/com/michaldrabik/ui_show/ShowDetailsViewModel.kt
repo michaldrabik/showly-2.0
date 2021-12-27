@@ -41,9 +41,9 @@ import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_show.ShowDetailsUiState.FollowedState
 import com.michaldrabik.ui_show.cases.ShowDetailsActorsCase
-import com.michaldrabik.ui_show.cases.ShowDetailsArchiveCase
 import com.michaldrabik.ui_show.cases.ShowDetailsCommentsCase
 import com.michaldrabik.ui_show.cases.ShowDetailsEpisodesCase
+import com.michaldrabik.ui_show.cases.ShowDetailsHiddenCase
 import com.michaldrabik.ui_show.cases.ShowDetailsListsCase
 import com.michaldrabik.ui_show.cases.ShowDetailsMainCase
 import com.michaldrabik.ui_show.cases.ShowDetailsMyShowsCase
@@ -81,7 +81,7 @@ class ShowDetailsViewModel @Inject constructor(
   private val translationCase: ShowDetailsTranslationCase,
   private val ratingsCase: ShowDetailsRatingCase,
   private val watchlistCase: ShowDetailsWatchlistCase,
-  private val archiveCase: ShowDetailsArchiveCase,
+  private val hiddenCase: ShowDetailsHiddenCase,
   private val myShowsCase: ShowDetailsMyShowsCase,
   private val episodesCase: ShowDetailsEpisodesCase,
   private val commentsCase: ShowDetailsCommentsCase,
@@ -137,7 +137,7 @@ class ShowDetailsViewModel @Inject constructor(
         val isSignedIn = userManager.isAuthorized()
         val isMyShow = async { myShowsCase.isMyShows(show) }
         val isWatchLater = async { watchlistCase.isWatchlist(show) }
-        val isArchived = async { archiveCase.isArchived(show) }
+        val isArchived = async { hiddenCase.isArchived(show) }
         val isFollowed = FollowedState(
           isMyShows = isMyShow.await(),
           isWatchlist = isWatchLater.await(),
@@ -547,7 +547,7 @@ class ShowDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       if (!checkSeasonsLoaded()) return@launch
 
-      archiveCase.addToArchive(show, removeLocalData = !areSeasonsLocal)
+      hiddenCase.addToArchive(show, removeLocalData = !areSeasonsLocal)
       quickSyncManager.scheduleHidden(show.traktId, Mode.SHOWS, Operation.ADD)
       followedState.value = FollowedState.inHidden()
       Analytics.logShowAddToArchive(show)
@@ -560,7 +560,7 @@ class ShowDetailsViewModel @Inject constructor(
 
       val isMyShows = myShowsCase.isMyShows(show)
       val isWatchlist = watchlistCase.isWatchlist(show)
-      val isArchived = archiveCase.isArchived(show)
+      val isArchived = hiddenCase.isArchived(show)
 
       when {
         isMyShows -> {
@@ -571,7 +571,7 @@ class ShowDetailsViewModel @Inject constructor(
           quickSyncManager.clearWatchlistShows(listOf(show.traktId))
         }
         isArchived -> {
-          archiveCase.removeFromArchive(show)
+          hiddenCase.removeFromArchive(show)
           quickSyncManager.clearHiddenShows(listOf(show.traktId))
         }
       }
@@ -629,7 +629,7 @@ class ShowDetailsViewModel @Inject constructor(
       when {
         isChecked -> {
           episodesManager.setEpisodeWatched(bundle)
-          if (myShowsCase.isMyShows(show) || watchlistCase.isWatchlist(show) || archiveCase.isArchived(show)) {
+          if (myShowsCase.isMyShows(show) || watchlistCase.isWatchlist(show) || hiddenCase.isArchived(show)) {
             quickSyncManager.scheduleEpisodes(listOf(episode.ids.trakt.id))
           }
         }
@@ -648,7 +648,7 @@ class ShowDetailsViewModel @Inject constructor(
       when {
         isChecked -> {
           val episodesAdded = episodesManager.setSeasonWatched(bundle)
-          if (myShowsCase.isMyShows(show) || watchlistCase.isWatchlist(show) || archiveCase.isArchived(show)) {
+          if (myShowsCase.isMyShows(show) || watchlistCase.isWatchlist(show) || hiddenCase.isArchived(show)) {
             quickSyncManager.scheduleEpisodes(episodesAdded.map { it.ids.trakt.id })
           }
         }
