@@ -35,11 +35,7 @@ class ShowContextMenuHiddenCase @Inject constructor(
     )
 
     database.runTransaction {
-      with(showsRepository) {
-        hiddenShows.insert(show.ids.trakt)
-        myShows.delete(show.ids.trakt)
-        watchlistShows.delete(show.ids.trakt)
-      }
+      showsRepository.hiddenShows.insert(show.ids.trakt)
 
       if (removeLocalData && isMyShow) {
         episodesDao().deleteAllUnwatchedForShow(traktId.id)
@@ -53,9 +49,9 @@ class ShowContextMenuHiddenCase @Inject constructor(
         }
         seasonsDao().delete(toDelete)
       }
-      pinnedItemsRepository.removePinnedItem(show)
     }
 
+    pinnedItemsRepository.removePinnedItem(show)
     with(quickSyncManager) {
       clearWatchlistShows(listOf(traktId.id))
       scheduleHidden(traktId.id, Mode.SHOWS, TraktSyncQueue.Operation.ADD)

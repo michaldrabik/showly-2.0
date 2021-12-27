@@ -33,6 +33,7 @@ class MovieDetailsMyMoviesCase @Inject constructor(
   suspend fun addToMyMovies(movie: Movie) {
     moviesRepository.myMovies.insert(movie.ids.trakt)
     quickSyncManager.scheduleMovies(listOf(movie.traktId))
+    pinnedItemsRepository.removePinnedItem(movie)
     announcementManager.refreshMoviesAnnouncements()
   }
 

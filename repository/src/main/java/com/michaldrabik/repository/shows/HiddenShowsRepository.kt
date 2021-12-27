@@ -1,5 +1,6 @@
 package com.michaldrabik.repository.shows
 
+import androidx.room.withTransaction
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.ArchiveShow
@@ -29,7 +30,13 @@ class HiddenShowsRepository @Inject constructor(
 
   suspend fun insert(id: IdTrakt) {
     val dbShow = ArchiveShow.fromTraktId(id.id, nowUtcMillis())
-    database.archiveShowsDao().insert(dbShow)
+    database.run {
+      withTransaction {
+        archiveShowsDao().insert(dbShow)
+        myShowsDao().deleteById(id.id)
+        watchlistShowsDao().deleteById(id.id)
+      }
+    }
   }
 
   suspend fun delete(id: IdTrakt) =

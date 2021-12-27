@@ -32,6 +32,8 @@ class ShowContextMenuMyShowsCase @Inject constructor(
 ) {
 
   suspend fun moveToMyShows(traktId: IdTrakt) = coroutineScope {
+    val show = Show.EMPTY.copy(ids = Ids.EMPTY.copy(traktId))
+
     val (isWatchlist, isHidden) = awaitAll(
       async { showsRepository.watchlistShows.exists(traktId) },
       async { showsRepository.hiddenShows.exists(traktId) }
@@ -45,11 +47,7 @@ class ShowContextMenuMyShowsCase @Inject constructor(
     val episodes = seasons.flatMap { it.episodes }
 
     database.runTransaction {
-      with(showsRepository) {
-        myShows.insert(traktId)
-        watchlistShows.delete(traktId)
-        hiddenShows.delete(traktId)
-      }
+      showsRepository.myShows.insert(traktId)
 
       val localSeasons = database.seasonsDao().getAllByShowId(traktId.id)
       val localEpisodes = database.episodesDao().getAllByShowId(traktId.id)
@@ -73,6 +71,7 @@ class ShowContextMenuMyShowsCase @Inject constructor(
       database.episodesDao().upsert(episodesToAdd)
     }
 
+    pinnedItemsRepository.removePinnedItem(show)
     announcementManager.refreshShowsAnnouncements()
 
     RemoveTraktUiEvent(removeWatchlist = isWatchlist, removeHidden = isHidden)

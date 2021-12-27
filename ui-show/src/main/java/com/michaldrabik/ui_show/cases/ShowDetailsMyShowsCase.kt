@@ -5,6 +5,7 @@ import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.shows.ShowsRepository
+import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
@@ -21,7 +22,8 @@ class ShowDetailsMyShowsCase @Inject constructor(
   private val database: AppDatabase,
   private val mappers: Mappers,
   private val showsRepository: ShowsRepository,
-  private val pinnedItemsRepository: PinnedItemsRepository
+  private val pinnedItemsRepository: PinnedItemsRepository,
+  private val announcementManager: AnnouncementManager
 ) {
 
   suspend fun getAllIds() = coroutineScope {
@@ -41,11 +43,7 @@ class ShowDetailsMyShowsCase @Inject constructor(
     episodes: List<Episode>
   ) {
     database.withTransaction {
-      with(showsRepository) {
-        myShows.insert(show.ids.trakt)
-        watchlistShows.delete(show.ids.trakt)
-        hiddenShows.delete(show.ids.trakt)
-      }
+      showsRepository.myShows.insert(show.ids.trakt)
 
       val localSeasons = database.seasonsDao().getAllByShowId(show.traktId)
       val localEpisodes = database.episodesDao().getAllByShowId(show.traktId)
@@ -68,6 +66,9 @@ class ShowDetailsMyShowsCase @Inject constructor(
       database.seasonsDao().upsert(seasonsToAdd)
       database.episodesDao().upsert(episodesToAdd)
     }
+
+    pinnedItemsRepository.removePinnedItem(show)
+    announcementManager.refreshShowsAnnouncements()
   }
 
   suspend fun removeFromMyShows(show: Show, removeLocalData: Boolean) {

@@ -3,8 +3,6 @@ package com.michaldrabik.ui_show
 import android.annotation.SuppressLint
 import android.content.Context
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.common.Mode
-import com.michaldrabik.data_local.database.model.TraktSyncQueue.Operation
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_base.Analytics
@@ -527,7 +525,6 @@ class ShowDetailsViewModel @Inject constructor(
 
       myShowsCase.addToMyShows(show, seasons, episodes)
       followedState.value = FollowedState.inMyShows()
-      announcementManager.refreshShowsAnnouncements()
       Analytics.logShowAddToMyShows(show)
     }
   }
@@ -537,7 +534,6 @@ class ShowDetailsViewModel @Inject constructor(
       if (!checkSeasonsLoaded()) return@launch
 
       watchlistCase.addToWatchlist(show)
-      quickSyncManager.scheduleShowsWatchlist(listOf(show.traktId))
       followedState.value = FollowedState.inWatchlist()
       Analytics.logShowAddToWatchlistShows(show)
     }
@@ -548,7 +544,6 @@ class ShowDetailsViewModel @Inject constructor(
       if (!checkSeasonsLoaded()) return@launch
 
       hiddenCase.addToHidden(show, removeLocalData = !areSeasonsLocal)
-      quickSyncManager.scheduleHidden(show.traktId, Mode.SHOWS, Operation.ADD)
       followedState.value = FollowedState.inHidden()
       Analytics.logShowAddToArchive(show)
     }
