@@ -8,7 +8,6 @@ import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
-import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_movies.hidden.cases.HiddenLoadMoviesCase
@@ -54,10 +53,6 @@ class HiddenViewModel @Inject constructor(
     loadItemsJob?.cancel()
     loadItemsJob = viewModelScope.launch {
       val items = loadMoviesCase.loadMovies(searchQuery ?: "")
-        .map {
-          val image = imagesProvider.findCachedImage(it.first, POSTER)
-          HiddenListItem(it.first, image, false, it.second)
-        }
       itemsState.value = items
       scrollState.value = Event(resetScroll)
       loadRatings(items, resetScroll)
