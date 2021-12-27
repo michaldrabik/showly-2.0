@@ -1,7 +1,5 @@
 package com.michaldrabik.ui_progress_movies.main.cases
 
-import androidx.room.withTransaction
-import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
@@ -13,20 +11,13 @@ import javax.inject.Singleton
 
 @Singleton
 class ProgressMoviesMainCase @Inject constructor(
-  private val database: AppDatabase,
   private val moviesRepository: MoviesRepository,
   private val pinnedItemsRepository: PinnedItemsRepository,
   private val quickSyncManager: QuickSyncManager
 ) {
 
   suspend fun addToMyMovies(movie: Movie) {
-    database.withTransaction {
-      with(moviesRepository) {
-        myMovies.insert(movie.ids.trakt)
-        watchlistMovies.delete(movie.ids.trakt)
-        hiddenMovies.delete(movie.ids.trakt)
-      }
-    }
+    moviesRepository.myMovies.insert(movie.ids.trakt)
     pinnedItemsRepository.removePinnedItem(movie)
     quickSyncManager.scheduleMovies(listOf(movie.ids.trakt.id))
   }

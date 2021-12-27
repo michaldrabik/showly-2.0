@@ -1,8 +1,6 @@
 package com.michaldrabik.ui_movie
 
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.common.Mode
-import com.michaldrabik.data_local.database.model.TraktSyncQueue
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_base.Analytics
@@ -419,9 +417,7 @@ class MovieDetailsViewModel @Inject constructor(
   fun addFollowedMovie() {
     viewModelScope.launch {
       myMoviesCase.addToMyMovies(movie)
-      quickSyncManager.scheduleMovies(listOf(movie.traktId))
       followedState.value = FollowedState.inMyMovies()
-      announcementManager.refreshMoviesAnnouncements()
       Analytics.logMovieAddToMyMovies(movie)
     }
   }
@@ -429,9 +425,7 @@ class MovieDetailsViewModel @Inject constructor(
   fun addWatchlistMovie() {
     viewModelScope.launch {
       watchlistCase.addToWatchlist(movie)
-      quickSyncManager.scheduleMoviesWatchlist(listOf(movie.traktId))
       followedState.value = FollowedState.inWatchlist()
-      announcementManager.refreshMoviesAnnouncements()
       Analytics.logMovieAddToWatchlistMovies(movie)
     }
   }
@@ -439,7 +433,6 @@ class MovieDetailsViewModel @Inject constructor(
   fun addHiddenMovie() {
     viewModelScope.launch {
       hiddenCase.addToHidden(movie)
-      quickSyncManager.scheduleHidden(movie.traktId, Mode.MOVIES, TraktSyncQueue.Operation.ADD)
       followedState.value = FollowedState.inHidden()
       Analytics.logMovieAddToArchive(movie)
     }

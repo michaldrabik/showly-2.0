@@ -1,5 +1,6 @@
 package com.michaldrabik.repository.movies
 
+import androidx.room.withTransaction
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.MyMovie
@@ -33,7 +34,13 @@ class MyMoviesRepository @Inject constructor(
 
   suspend fun insert(id: IdTrakt) {
     val movie = MyMovie.fromTraktId(id.id, nowUtcMillis())
-    database.myMoviesDao().insert(listOf(movie))
+    database.run {
+      withTransaction {
+        myMoviesDao().insert(listOf(movie))
+        watchlistMoviesDao().deleteById(id.id)
+        archiveMoviesDao().deleteById(id.id)
+      }
+    }
   }
 
   suspend fun delete(id: IdTrakt) =

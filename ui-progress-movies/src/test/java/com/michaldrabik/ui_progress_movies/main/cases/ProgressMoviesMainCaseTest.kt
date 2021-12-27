@@ -28,7 +28,6 @@ class ProgressMoviesMainCaseTest : BaseMockTest() {
   override fun setUp() {
     super.setUp()
     SUT = ProgressMoviesMainCase(
-      database,
       moviesRepository,
       pinnedItemsRepository,
       quickSyncManager

@@ -6,7 +6,6 @@ import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.ui_base.common.sheets.context_menu.events.RemoveTraktUiEvent
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
-import com.michaldrabik.ui_base.utilities.extensions.runTransaction
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Movie
@@ -33,22 +32,15 @@ class MovieContextMenuWatchlistCase @Inject constructor(
       async { moviesRepository.hiddenMovies.exists(traktId) }
     )
 
-    database.runTransaction {
-      with(moviesRepository) {
-        watchlistMovies.insert(traktId)
-        myMovies.delete(traktId)
-        hiddenMovies.delete(traktId)
-      }
-    }
+    moviesRepository.watchlistMovies.insert(movie.ids.trakt)
+    pinnedItemsRepository.removePinnedItem(movie)
+    announcementManager.refreshMoviesAnnouncements()
 
     with(quickSyncManager) {
       clearMovies(listOf(traktId.id))
       clearHiddenMovies(listOf(traktId.id))
       scheduleMoviesWatchlist(listOf(traktId.id))
     }
-
-    pinnedItemsRepository.removePinnedItem(movie)
-    announcementManager.refreshMoviesAnnouncements()
 
     RemoveTraktUiEvent(removeProgress = isMyMovie, removeHidden = isHidden)
   }

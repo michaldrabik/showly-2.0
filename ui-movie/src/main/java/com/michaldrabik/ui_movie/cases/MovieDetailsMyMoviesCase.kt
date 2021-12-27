@@ -1,9 +1,9 @@
 package com.michaldrabik.ui_movie.cases
 
-import androidx.room.withTransaction
-import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.movies.MoviesRepository
+import com.michaldrabik.ui_base.notifications.AnnouncementManager
+import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.ui_model.Movie
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
@@ -13,9 +13,10 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class MovieDetailsMyMoviesCase @Inject constructor(
-  private val database: AppDatabase,
   private val moviesRepository: MoviesRepository,
-  private val pinnedItemsRepository: PinnedItemsRepository
+  private val pinnedItemsRepository: PinnedItemsRepository,
+  private val quickSyncManager: QuickSyncManager,
+  private val announcementManager: AnnouncementManager
 ) {
 
   suspend fun getAllIds() = coroutineScope {
@@ -30,19 +31,13 @@ class MovieDetailsMyMoviesCase @Inject constructor(
     moviesRepository.myMovies.load(movie.ids.trakt) != null
 
   suspend fun addToMyMovies(movie: Movie) {
-    database.withTransaction {
-      with(moviesRepository) {
-        myMovies.insert(movie.ids.trakt)
-        watchlistMovies.delete(movie.ids.trakt)
-        hiddenMovies.delete(movie.ids.trakt)
-      }
-    }
+    moviesRepository.myMovies.insert(movie.ids.trakt)
+    quickSyncManager.scheduleMovies(listOf(movie.traktId))
+    announcementManager.refreshMoviesAnnouncements()
   }
 
   suspend fun removeFromMyMovies(movie: Movie) {
-    database.withTransaction {
-      moviesRepository.myMovies.delete(movie.ids.trakt)
-      pinnedItemsRepository.removePinnedItem(movie)
-    }
+    moviesRepository.myMovies.delete(movie.ids.trakt)
+    pinnedItemsRepository.removePinnedItem(movie)
   }
 }
