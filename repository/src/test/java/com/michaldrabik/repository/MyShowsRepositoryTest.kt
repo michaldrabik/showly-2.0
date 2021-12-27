@@ -1,7 +1,9 @@
 package com.michaldrabik.repository
 
 import com.google.common.truth.Truth.assertThat
+import com.michaldrabik.data_local.database.dao.ArchiveShowsDao
 import com.michaldrabik.data_local.database.dao.MyShowsDao
+import com.michaldrabik.data_local.database.dao.WatchlistShowsDao
 import com.michaldrabik.data_local.database.model.MyShow
 import com.michaldrabik.repository.common.BaseMockTest
 import com.michaldrabik.repository.shows.MyShowsRepository
@@ -11,7 +13,6 @@ import io.mockk.coEvery
 import io.mockk.coJustRun
 import io.mockk.coVerify
 import io.mockk.confirmVerified
-import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.slot
 import kotlinx.coroutines.runBlocking
@@ -22,7 +23,9 @@ import com.michaldrabik.data_local.database.model.Show as ShowDb
 
 class MyShowsRepositoryTest : BaseMockTest() {
 
-  @MockK lateinit var myShowsDao: MyShowsDao
+  @RelaxedMockK lateinit var myShowsDao: MyShowsDao
+  @RelaxedMockK lateinit var watchlistShowsDao: WatchlistShowsDao
+  @RelaxedMockK lateinit var archiveShowsDao: ArchiveShowsDao
   @RelaxedMockK lateinit var showDb: ShowDb
 
   private lateinit var SUT: MyShowsRepository
@@ -32,6 +35,8 @@ class MyShowsRepositoryTest : BaseMockTest() {
     super.setUp()
     SUT = MyShowsRepository(database, mappers)
     coEvery { database.myShowsDao() } returns myShowsDao
+    coEvery { database.watchlistShowsDao() } returns watchlistShowsDao
+    coEvery { database.archiveShowsDao() } returns archiveShowsDao
   }
 
   @After
@@ -123,6 +128,8 @@ class MyShowsRepositoryTest : BaseMockTest() {
         assertThat(updatedAt).isGreaterThan(0)
       }
       coVerify(exactly = 1) { myShowsDao.insert(any()) }
+      coVerify(exactly = 1) { watchlistShowsDao.deleteById(any()) }
+      coVerify(exactly = 1) { archiveShowsDao.deleteById(any()) }
     }
   }
 

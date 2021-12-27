@@ -46,7 +46,6 @@ class ProgressMoviesMainCaseTest : BaseMockTest() {
     SUT.addToMyMovies(movie)
 
     coVerify { moviesRepository.myMovies.insert(IdTrakt(123)) }
-    coVerify { moviesRepository.watchlistMovies.delete(IdTrakt(123)) }
     coVerify { pinnedItemsRepository.removePinnedItem(movie) }
     coVerify { quickSyncManager.scheduleMovies(listOf(123)) }
   }
@@ -56,7 +55,6 @@ class ProgressMoviesMainCaseTest : BaseMockTest() {
     SUT.addToMyMovies(IdTrakt(123))
 
     coVerify { moviesRepository.myMovies.insert(IdTrakt(123)) }
-    coVerify { moviesRepository.watchlistMovies.delete(IdTrakt(123)) }
     coVerify { pinnedItemsRepository.removePinnedItem(any<Movie>()) }
     coVerify { quickSyncManager.scheduleMovies(listOf(123)) }
   }
