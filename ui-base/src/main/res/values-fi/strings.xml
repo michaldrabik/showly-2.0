@@ -87,6 +87,19 @@
   <string name="textRemoveFromTraktHidden">Haluatko poistaa kohteen Trakt.tv-tilisi \'Hidden Items\' (Piilotetut kohteet) -osiosta?</string>
   <string name="textRemoveFromTraktWatchlist">Haluatko poistaa kohteen Trakt.tv-tilisi \'Watchlist\' (Katselulista) -osiosta?</string>
   <string name="textRemoveFromTraktProgress">Haluatko poistaa kohteen Trakt.tv-tilisi \'Progress\' (Katselutilanne) -osiosta?</string>
+  <string name="textAddToMyShows">Lisää omiin sarjoihin</string>
+  <string name="textAddToMyMovies">Lisää omiin elokuviin</string>
+  <string name="textAddToWatchlist">Lisää katselulistalle</string>
+  <string name="textAddToHidden">Lisää piilotettuihin</string>
+  <string name="textMoveToMyShows">Siirrä omiin sarjoihin</string>
+  <string name="textMoveToMyMovies">Siirrä omiin elokuviin</string>
+  <string name="textMoveToWatchlist">Siirrä katselulistalle</string>
+  <string name="textMoveToHidden">Siirrä piilotettuihin</string>
+  <string name="textRemoveFromMyShows">Poista omista sarjoista</string>
+  <string name="textRemoveFromMyMovies">Poista omista elokuvista</string>
+  <string name="textRemoveFromWatchlist">Poista katselulistalta</string>
+  <string name="textRemoveFromHidden">Poista piilotetuista</string>
+  <string name="textWatchlist">Katselulista</string>
   <string name="textPremiumAd">Ryhdy tukijaksi, niin saat käyttöösi lisäominaisuuksia! Napauta nähdäksesi lisää.</string>
   <string name="menuPin">Kiinnitä listan ylälaitaan</string>
   <string name="menuUnpin">Irrota listan ylälaidasta</string>
@@ -105,7 +118,4 @@
   <string name="errorTraktSyncGeneral">Trakt.tv-synkronointivirhe.\nTarkista Internet-yhteys ja yritä uudelleen.</string>
   <string name="errorTraktLocked">Trakt.tv-tilisi on lukittu.\nOta yhteyttä Trakt.tv:n tukeen osoitteessa https://support.trakt.tv/ poistaaksesi lukituksen.</string>
   <string name="errorSubscriptionsNotAvailable">Google Play -tilaukset eivät ole käytettävissä tällä laitteella.</string>
-  <string name="textAddToMyShows">Lisää omiin sarjoihin</string>
-  <string name="textAddToMyMovies">Lisää omiin elokuviin</string>
-  <string name="textWatchlist">Katselulista</string>
 </resources>
