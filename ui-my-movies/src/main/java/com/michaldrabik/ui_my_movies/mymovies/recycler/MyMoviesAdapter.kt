@@ -12,12 +12,14 @@ import com.michaldrabik.ui_my_movies.mymovies.views.MyMoviesRecentsView
 
 class MyMoviesAdapter(
   itemClickListener: (MyMoviesItem) -> Unit,
+  itemLongClickListener: (MyMoviesItem) -> Unit,
   missingImageListener: (MyMoviesItem, Boolean) -> Unit,
   missingTranslationListener: (MyMoviesItem) -> Unit,
   listChangeListener: (() -> Unit),
   val onSortOrderClickListener: (SortOrder, SortType) -> Unit
 ) : BaseMovieAdapter<MyMoviesItem>(
   itemClickListener = itemClickListener,
+  itemLongClickListener = itemLongClickListener,
   missingImageListener = missingImageListener,
   missingTranslationListener = missingTranslationListener,
   listChangeListener = listChangeListener
@@ -42,6 +44,7 @@ class MyMoviesAdapter(
       VIEW_TYPE_MOVIE_ITEM -> BaseViewHolder(
         MyMovieAllView(parent.context).apply {
           itemClickListener = this@MyMoviesAdapter.itemClickListener
+          itemLongClickListener = this@MyMoviesAdapter.itemLongClickListener
           missingImageListener = this@MyMoviesAdapter.missingImageListener
           missingTranslationListener = this@MyMoviesAdapter.missingTranslationListener
         }
@@ -58,7 +61,8 @@ class MyMoviesAdapter(
       )
       VIEW_TYPE_RECENTS_SECTION -> (holder.itemView as MyMoviesRecentsView).bind(
         item.recentsSection!!,
-        itemClickListener
+        itemClickListener,
+        itemLongClickListener
       )
       VIEW_TYPE_MOVIE_ITEM -> (holder.itemView as MyMovieAllView).bind(item)
     }

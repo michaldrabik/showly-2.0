@@ -458,7 +458,7 @@ class MovieDetailsViewModel @Inject constructor(
         }
         isWatchlist -> {
           watchlistCase.removeFromWatchlist(movie)
-          quickSyncManager.clearMoviesWatchlist(listOf(movie.traktId))
+          quickSyncManager.clearWatchlistMovies(listOf(movie.traktId))
         }
         isHidden -> {
           archiveCase.removeFromArchive(movie)

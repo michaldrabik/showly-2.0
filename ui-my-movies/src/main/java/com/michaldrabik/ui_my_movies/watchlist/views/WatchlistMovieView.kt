@@ -11,6 +11,7 @@ import com.michaldrabik.ui_base.common.views.MovieView
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.onLongClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_my_movies.R
@@ -29,7 +30,10 @@ class WatchlistMovieView : MovieView<WatchlistListItem> {
     inflate(context, R.layout.view_watchlist_movie, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     imageLoadCompleteListener = { loadTranslation() }
-    watchlistMoviesRoot.onClick { itemClickListener?.invoke(item) }
+    with(watchlistMoviesRoot) {
+      onClick { itemClickListener?.invoke(item) }
+      onLongClick { itemLongClickListener?.invoke(item) }
+    }
   }
 
   override val imageView: ImageView = watchlistMoviesImage

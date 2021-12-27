@@ -9,10 +9,12 @@ import com.michaldrabik.ui_progress_movies.calendar.views.CalendarMoviesItemView
 
 class CalendarMoviesAdapter(
   itemClickListener: (CalendarMovieListItem) -> Unit,
+  itemLongClickListener: (CalendarMovieListItem) -> Unit,
   missingImageListener: (CalendarMovieListItem, Boolean) -> Unit,
   missingTranslationListener: (CalendarMovieListItem) -> Unit,
 ) : BaseMovieAdapter<CalendarMovieListItem>(
   itemClickListener = itemClickListener,
+  itemLongClickListener = itemLongClickListener,
   missingImageListener = missingImageListener,
   missingTranslationListener = missingTranslationListener,
 ) {
@@ -29,6 +31,7 @@ class CalendarMoviesAdapter(
       VIEW_TYPE_ITEM -> BaseViewHolder(
         CalendarMoviesItemView(parent.context).apply {
           itemClickListener = this@CalendarMoviesAdapter.itemClickListener
+          itemLongClickListener = this@CalendarMoviesAdapter.itemLongClickListener
           missingImageListener = this@CalendarMoviesAdapter.missingImageListener
           missingTranslationListener = this@CalendarMoviesAdapter.missingTranslationListener
         }

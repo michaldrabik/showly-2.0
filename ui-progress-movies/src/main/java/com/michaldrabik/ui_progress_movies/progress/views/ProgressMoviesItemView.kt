@@ -3,7 +3,6 @@ package com.michaldrabik.ui_progress_movies.progress.views
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
@@ -29,7 +28,6 @@ class ProgressMoviesItemView : MovieView<ProgressMovieListItem.MovieItem> {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-  var itemLongClickListener: ((ProgressMovieListItem.MovieItem, View) -> Unit)? = null
   var checkClickListener: ((ProgressMovieListItem.MovieItem) -> Unit)? = null
 
   init {
@@ -38,7 +36,7 @@ class ProgressMoviesItemView : MovieView<ProgressMovieListItem.MovieItem> {
     addRipple()
     progressMovieItemCheckButton.expandTouch(100)
     onClick { itemClickListener?.invoke(item) }
-    onLongClick { itemLongClickListener?.invoke(item, progressMovieItemTitle) }
+    onLongClick { itemLongClickListener?.invoke(item) }
     imageLoadCompleteListener = { loadTranslation() }
   }
 

@@ -65,6 +65,7 @@ class MyMoviesFragment :
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
     adapter = MyMoviesAdapter(
       itemClickListener = { openMovieDetails(it.movie) },
+      itemLongClickListener = { openMovieMenu(it.movie) },
       missingImageListener = { item, force -> viewModel.loadMissingImage(item, force) },
       missingTranslationListener = { viewModel.loadMissingTranslation(it) },
       onSortOrderClickListener = { order, type -> showSortOrderDialog(order, type) },
@@ -117,6 +118,10 @@ class MyMoviesFragment :
 
   private fun openMovieDetails(movie: Movie) {
     (requireParentFragment() as? FollowedMoviesFragment)?.openMovieDetails(movie)
+  }
+
+  private fun openMovieMenu(movie: Movie) {
+    (requireParentFragment() as? FollowedMoviesFragment)?.openMovieMenu(movie)
   }
 
   override fun onEnterSearch() {

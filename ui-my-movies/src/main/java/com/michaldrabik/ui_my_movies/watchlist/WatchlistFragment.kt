@@ -67,6 +67,7 @@ class WatchlistFragment :
     layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
     adapter = WatchlistAdapter(
       itemClickListener = { openMovieDetails(it.movie) },
+      itemLongClickListener = { openMovieMenu(it.movie) },
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) },
       missingTranslationListener = { viewModel.loadMissingTranslation(it) },
       listChangeListener = {
@@ -123,6 +124,10 @@ class WatchlistFragment :
 
   private fun openMovieDetails(movie: Movie) {
     (requireParentFragment() as? FollowedMoviesFragment)?.openMovieDetails(movie)
+  }
+
+  private fun openMovieMenu(movie: Movie) {
+    (requireParentFragment() as? FollowedMoviesFragment)?.openMovieMenu(movie)
   }
 
   override fun onEnterSearch() {

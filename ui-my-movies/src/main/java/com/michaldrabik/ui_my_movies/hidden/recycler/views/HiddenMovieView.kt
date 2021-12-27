@@ -11,6 +11,7 @@ import com.michaldrabik.ui_base.common.views.MovieView
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.onLongClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_my_movies.R
@@ -29,6 +30,7 @@ class HiddenMovieView : MovieView<HiddenListItem> {
     inflate(context, R.layout.view_hidden_show, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     hiddenMovieRoot.onClick { itemClickListener?.invoke(item) }
+    hiddenMovieRoot.onLongClick { itemLongClickListener?.invoke(item) }
     imageLoadCompleteListener = { loadTranslation() }
   }
 
@@ -56,7 +58,7 @@ class HiddenMovieView : MovieView<HiddenListItem> {
 
     hiddenMovieRating.text = String.format(ENGLISH, "%.1f", item.movie.rating)
     hiddenMovieDescription.visibleIf(item.movie.overview.isNotBlank())
-    hiddenMovieNetwork.visibleIf(item.movie.released != null || item.movie.year > 0)
+    hiddenMovieNetwork.visibleIf(!item.movie.hasNoDate())
     hiddenMovieNetwork.text = when {
       item.movie.released != null -> item.dateFormat?.format(item.movie.released)?.capitalizeWords()
       else -> String.format(ENGLISH, "%d", item.movie.year)

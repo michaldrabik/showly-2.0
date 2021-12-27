@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_base.common.sheets.context_menu.show
+package com.michaldrabik.ui_base.common.sheets.context_menu.movie
 
 import android.content.res.ColorStateList
 import android.os.Bundle
@@ -10,19 +10,21 @@ import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
 import com.michaldrabik.ui_base.common.sheets.context_menu.events.FinishUiEvent
 import com.michaldrabik.ui_base.common.sheets.context_menu.events.RemoveTraktUiEvent
-import com.michaldrabik.ui_base.common.sheets.context_menu.show.helpers.ShowContextItem
+import com.michaldrabik.ui_base.common.sheets.context_menu.movie.helpers.MovieContextItem
 import com.michaldrabik.ui_base.utilities.Event
+import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.view_context_menu.*
 import kotlinx.coroutines.flow.collect
+import java.util.Locale
 
 @AndroidEntryPoint
-class ShowContextMenuBottomSheet : ContextMenuBottomSheet<ShowContextMenuViewModel>() {
+class MovieContextMenuBottomSheet : ContextMenuBottomSheet<MovieContextMenuViewModel>() {
 
-  override fun createViewModel() = ViewModelProvider(this)[ShowContextMenuViewModel::class.java]
+  override fun createViewModel() = ViewModelProvider(this)[MovieContextMenuViewModel::class.java]
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -32,17 +34,17 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet<ShowContextMenuViewMod
       { viewModel.messageChannel.collect { renderSnackbar(it) } },
       { viewModel.eventChannel.collect { handleEvent(it) } },
       { viewModel.uiState.collect { render(it) } },
-      doAfterLaunch = { viewModel.loadShow(itemId) }
+      doAfterLaunch = { viewModel.loadMovie(itemId) }
     )
   }
 
   override fun setupView() {
     super.setupView()
-    contextMenuItemMoveToMyButton.text = getString(R.string.textMoveToMyShows)
-    contextMenuItemRemoveFromMyButton.text = getString(R.string.textRemoveFromMyShows)
+    contextMenuItemMoveToMyButton.text = getString(R.string.textMoveToMyMovies)
+    contextMenuItemRemoveFromMyButton.text = getString(R.string.textRemoveFromMyMovies)
 
-    contextMenuItemMoveToMyButton.onClick { viewModel.moveToMyShows() }
-    contextMenuItemRemoveFromMyButton.onClick { viewModel.removeFromMyShows() }
+    contextMenuItemMoveToMyButton.onClick { viewModel.moveToMyMovies() }
+    contextMenuItemRemoveFromMyButton.onClick { viewModel.removeFromMyMovies() }
     contextMenuItemMoveToWatchlistButton.onClick { viewModel.moveToWatchlist() }
     contextMenuItemRemoveFromWatchlistButton.onClick { viewModel.removeFromWatchlist() }
     contextMenuItemMoveToHiddenButton.onClick { viewModel.moveToHidden() }
@@ -51,7 +53,7 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet<ShowContextMenuViewMod
     contextMenuItemUnpinButton.onClick { viewModel.removeFromTopPinned() }
   }
 
-  private fun render(uiState: ShowContextMenuUiState) {
+  private fun render(uiState: MovieContextMenuUiState) {
     uiState.run {
       isLoading?.let {
         contextMenuItemProgress.visibleIf(it)
@@ -59,44 +61,45 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet<ShowContextMenuViewMod
       }
       item?.let {
         renderItem(it)
-        renderImage(it.image, it.show.ids.tvdb)
+        renderImage(it.image, it.movie.ids.tvdb)
       }
     }
   }
 
-  private fun renderItem(item: ShowContextItem) {
+  private fun renderItem(item: MovieContextItem) {
     contextMenuItemTitle.text =
-      if (item.translation?.title.isNullOrBlank()) item.show.title
+      if (item.translation?.title.isNullOrBlank()) item.movie.title
       else item.translation?.title
 
     contextMenuItemDescription.text =
-      if (item.translation?.overview.isNullOrBlank()) item.show.overview
+      if (item.translation?.overview.isNullOrBlank()) item.movie.overview
       else item.translation?.overview
 
-    contextMenuItemNetwork.text =
-      if (item.show.year > 0) getString(R.string.textNetwork, item.show.network, item.show.year.toString())
-      else String.format("%s", item.show.network)
+    contextMenuItemNetwork.text = when {
+      item.movie.released != null -> item.dateFormat?.format(item.movie.released)?.capitalizeWords()
+      else -> String.format(Locale.ENGLISH, "%d", item.movie.year)
+    }
 
-    contextMenuItemDescription.visibleIf(item.show.overview.isNotBlank())
-    contextMenuItemNetwork.visibleIf(item.show.network.isNotBlank())
+    contextMenuItemDescription.visibleIf(item.movie.overview.isNotBlank())
+    contextMenuItemNetwork.visibleIf(item.movie.released != null || item.movie.year > 0)
 
     contextMenuItemPinButton.visibleIf(!item.isPinnedTop)
     contextMenuItemUnpinButton.visibleIf(item.isPinnedTop)
 
-    contextMenuItemMoveToMyButton.visibleIf(!item.isMyShow)
+    contextMenuItemMoveToMyButton.visibleIf(!item.isMyMovie)
     contextMenuItemMoveToWatchlistButton.visibleIf(!item.isWatchlist)
     contextMenuItemMoveToHiddenButton.visibleIf(!item.isHidden)
 
-    contextMenuItemRemoveFromMyButton.visibleIf(item.isMyShow)
+    contextMenuItemRemoveFromMyButton.visibleIf(item.isMyMovie)
     contextMenuItemRemoveFromWatchlistButton.visibleIf(item.isWatchlist)
     contextMenuItemRemoveFromHiddenButton.visibleIf(item.isHidden)
 
-    contextMenuItemBadge.visibleIf(item.isMyShow || item.isWatchlist)
-    val color = if (item.isMyShow) colorAccent else colorGray
+    contextMenuItemBadge.visibleIf(item.isMyMovie || item.isWatchlist)
+    val color = if (item.isMyMovie) colorAccent else colorGray
     ImageViewCompat.setImageTintList(contextMenuItemBadge, ColorStateList.valueOf(color))
 
     if (!item.isInCollection()) {
-      contextMenuItemMoveToMyButton.text = getString(R.string.textAddToMyShows)
+      contextMenuItemMoveToMyButton.text = getString(R.string.textAddToMyMovies)
       contextMenuItemMoveToWatchlistButton.text = getString(R.string.textAddToWatchlist)
       contextMenuItemMoveToHiddenButton.text = getString(R.string.textHide)
     }
@@ -105,9 +108,9 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet<ShowContextMenuViewMod
   private fun handleEvent(event: Event<*>) {
     when (val result = event.peek()) {
       is RemoveTraktUiEvent -> when {
-        result.removeProgress -> openRemoveTraktSheet(R.id.actionShowItemContextDialogToRemoveTraktProgress, Mode.SHOWS)
-        result.removeWatchlist -> openRemoveTraktSheet(R.id.actionShowItemContextDialogToRemoveTraktWatchlist, Mode.SHOWS)
-        result.removeHidden -> openRemoveTraktSheet(R.id.actionShowItemContextDialogToRemoveTraktHidden, Mode.SHOWS)
+        result.removeProgress -> openRemoveTraktSheet(R.id.actionMovieItemContextDialogToRemoveTraktProgress, Mode.MOVIES)
+        result.removeWatchlist -> openRemoveTraktSheet(R.id.actionMovieItemContextDialogToRemoveTraktWatchlist, Mode.MOVIES)
+        result.removeHidden -> openRemoveTraktSheet(R.id.actionMovieItemContextDialogToRemoveTraktHidden, Mode.MOVIES)
         else -> close()
       }
       is FinishUiEvent -> if (result.isSuccess) close()

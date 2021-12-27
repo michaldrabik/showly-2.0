@@ -113,7 +113,7 @@ class DiscoverFragment :
       sortIconVisible = true
       settingsIconVisible = false
       isClickable = false
-      onClick { navigateToSearch() }
+      onClick { openSearch() }
       onSortClickListener = { toggleFiltersView() }
       translationY = searchViewPosition
       if (isTraktSyncing()) setTraktProgress(true)
@@ -212,7 +212,7 @@ class DiscoverFragment :
     }
   }
 
-  private fun navigateToSearch() {
+  private fun openSearch() {
     disableUi()
     hideNavigation()
     discoverFiltersView.fadeOut().add(animations)
@@ -314,7 +314,7 @@ class DiscoverFragment :
 
   override fun onTraktSyncComplete() = discoverSearchView.setTraktProgress(false)
 
-  override fun onTabReselected() = navigateToSearch()
+  override fun onTabReselected() = openSearch()
 
   override fun onPause() {
     enableUi()

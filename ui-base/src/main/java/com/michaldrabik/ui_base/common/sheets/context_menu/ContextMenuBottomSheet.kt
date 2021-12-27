@@ -10,22 +10,36 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
+import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.michaldrabik.common.Config
 import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.R
+import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
+import com.michaldrabik.ui_base.utilities.extensions.gone
+import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
+import com.michaldrabik.ui_base.utilities.extensions.visible
+import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_base.utilities.extensions.withFailListener
+import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
 import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.IdTvdb
+import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.ImageStatus
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_LIST
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_ITEM_MENU
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_REMOVE_TRAKT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.RESULT
+import kotlinx.android.synthetic.main.view_context_menu.*
 
 abstract class ContextMenuBottomSheet<T : BaseViewModel> : BaseBottomSheetFragment<T>() {
 
@@ -39,13 +53,15 @@ abstract class ContextMenuBottomSheet<T : BaseViewModel> : BaseBottomSheetFragme
     )
   }
 
+  override val layoutResId = R.layout.view_context_menu
+
   protected val itemId by lazy { requireArguments().getParcelable<IdTrakt>(ARG_ID)!! }
-  protected val showPinButtons by lazy { requireArguments().getBoolean(ARG_LIST, false) }
+  private val showPinButtons by lazy { requireArguments().getBoolean(ARG_LIST, false) }
 
   private val cornerRadius by lazy { dimenToPx(R.dimen.mediaTileCorner).toFloat() }
   private val cornerBigRadius by lazy { dimenToPx(R.dimen.collectionItemCorner).toFloat() }
-  protected val centerCropTransformation by lazy { CenterCrop() }
-  protected val cornersTransformation by lazy { GranularRoundedCorners(cornerBigRadius, cornerRadius, cornerRadius, cornerRadius) }
+  private val centerCropTransformation by lazy { CenterCrop() }
+  private val cornersTransformation by lazy { GranularRoundedCorners(cornerBigRadius, cornerRadius, cornerRadius, cornerRadius) }
 
   protected val colorAccent by lazy { ContextCompat.getColor(requireContext(), R.color.colorAccent) }
   protected val colorGray by lazy { ContextCompat.getColor(requireContext(), R.color.colorGrayLight) }
@@ -57,7 +73,51 @@ abstract class ContextMenuBottomSheet<T : BaseViewModel> : BaseBottomSheetFragme
     return inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
   }
 
-  protected fun openRemoveTraktSheet(@IdRes action: Int) {
+  protected open fun setupView() {
+    contextMenuItemDescription.setInitialLines(5)
+    contextMenuItemPinButtonsLayout.visibleIf(showPinButtons)
+    contextMenuItemSeparator2.visibleIf(showPinButtons)
+  }
+
+  protected fun renderImage(image: Image, tvdbId: IdTvdb) {
+    Glide.with(this).clear(contextMenuItemImage)
+    var imageUrl = image.fullFileUrl
+
+    if (image.status == ImageStatus.UNAVAILABLE) {
+      contextMenuItemPlaceholder.visible()
+      contextMenuItemImage.gone()
+      return
+    }
+
+    if (image.status == ImageStatus.UNKNOWN) {
+      imageUrl = "${Config.TVDB_IMAGE_BASE_POSTER_URL}${tvdbId.id}-1.jpg"
+    }
+
+    Glide.with(this)
+      .load(imageUrl)
+      .transform(centerCropTransformation, cornersTransformation)
+      .transition(DrawableTransitionOptions.withCrossFade(Config.IMAGE_FADE_DURATION_MS))
+      .withSuccessListener {
+        contextMenuItemPlaceholder.gone()
+        contextMenuItemImage.visible()
+      }
+      .withFailListener {
+        contextMenuItemPlaceholder.visible()
+        contextMenuItemImage.gone()
+      }
+      .into(contextMenuItemImage)
+  }
+
+  protected fun renderSnackbar(message: MessageEvent) {
+    message.consume()?.let {
+      when (message.type) {
+        MessageEvent.Type.INFO -> contextMenuItemRoot.showInfoSnackbar(getString(it))
+        MessageEvent.Type.ERROR -> contextMenuItemRoot.showErrorSnackbar(getString(it))
+      }
+    }
+  }
+
+  protected fun openRemoveTraktSheet(@IdRes action: Int, mode: Mode) {
     setFragmentResultListener(REQUEST_REMOVE_TRAKT) { _, bundle ->
       if (bundle.getBoolean(RESULT, false)) {
         val text = resources.getQuantityString(R.plurals.textTraktQuickSyncComplete, 1)
@@ -65,7 +125,7 @@ abstract class ContextMenuBottomSheet<T : BaseViewModel> : BaseBottomSheetFragme
       }
       close()
     }
-    val args = bundleOf(ARG_ID to itemId.id, NavigationArgs.ARG_TYPE to Mode.SHOWS)
+    val args = bundleOf(ARG_ID to itemId.id, NavigationArgs.ARG_TYPE to mode)
     navigateTo(action, args)
   }
 

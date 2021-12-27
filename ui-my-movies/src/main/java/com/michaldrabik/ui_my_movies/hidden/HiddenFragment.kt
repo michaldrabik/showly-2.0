@@ -68,6 +68,7 @@ class HiddenFragment :
     layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
     adapter = HiddenAdapter(
       itemClickListener = { openMovieDetails(it.movie) },
+      itemLongClickListener = { openMovieMenu(it.movie) },
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) },
       missingTranslationListener = { viewModel.loadMissingTranslation(it) },
       listChangeListener = {
@@ -124,6 +125,10 @@ class HiddenFragment :
 
   private fun openMovieDetails(movie: Movie) {
     (requireParentFragment() as? FollowedMoviesFragment)?.openMovieDetails(movie)
+  }
+
+  private fun openMovieMenu(movie: Movie) {
+    (requireParentFragment() as? FollowedMoviesFragment)?.openMovieMenu(movie)
   }
 
   override fun onEnterSearch() {

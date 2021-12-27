@@ -8,11 +8,13 @@ import com.michaldrabik.ui_my_movies.watchlist.views.WatchlistMovieView
 
 class WatchlistAdapter(
   itemClickListener: (WatchlistListItem) -> Unit,
+  itemLongClickListener: (WatchlistListItem) -> Unit,
   missingImageListener: (WatchlistListItem, Boolean) -> Unit,
   missingTranslationListener: (WatchlistListItem) -> Unit,
   listChangeListener: () -> Unit,
 ) : BaseMovieAdapter<WatchlistListItem>(
   itemClickListener = itemClickListener,
+  itemLongClickListener = itemLongClickListener,
   missingImageListener = missingImageListener,
   missingTranslationListener = missingTranslationListener,
   listChangeListener = listChangeListener
@@ -28,6 +30,7 @@ class WatchlistAdapter(
     BaseViewHolder(
       WatchlistMovieView(parent.context).apply {
         itemClickListener = this@WatchlistAdapter.itemClickListener
+        itemLongClickListener = this@WatchlistAdapter.itemLongClickListener
         missingImageListener = this@WatchlistAdapter.missingImageListener
         missingTranslationListener = this@WatchlistAdapter.missingTranslationListener
       }

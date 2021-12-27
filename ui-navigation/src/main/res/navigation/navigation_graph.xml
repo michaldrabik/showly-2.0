@@ -123,6 +123,11 @@
       app:destination="@id/settingsFragment"
       app:launchSingleTop="true"
       />
+    <action
+      android:id="@+id/actionDiscoverMoviesFragmentToItemMenu"
+      app:destination="@id/movieItemContextDialog"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment
@@ -221,6 +226,11 @@
     <action
       android:id="@+id/actionProgressMoviesFragmentToSearch"
       app:destination="@id/searchFragment"
+      app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionProgressMoviesFragmentToItemMenu"
+      app:destination="@id/movieItemContextDialog"
       app:launchSingleTop="true"
       />
   </fragment>
@@ -470,7 +480,7 @@
       app:launchSingleTop="true"
       />
     <action
-      android:id="@+id/actionFollowedMoviesFragmentToItemContext"
+      android:id="@+id/actionFollowedMoviesFragmentToItemMenu"
       app:destination="@id/movieItemContextDialog"
       app:launchSingleTop="true"
       />
@@ -801,6 +811,22 @@
     android:id="@+id/movieItemContextDialog"
     android:name="com.michaldrabik.ui_base.common.sheets.context_menu.movie.MovieContextMenuBottomSheet"
     android:label="dialogMovieItemContext"
-    />
+    >
+    <action
+      android:id="@+id/actionMovieItemContextDialogToRemoveTraktHidden"
+      app:destination="@id/removeTraktHiddenDialog"
+      app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionMovieItemContextDialogToRemoveTraktWatchlist"
+      app:destination="@id/removeTraktWatchlistDialog"
+      app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionMovieItemContextDialogToRemoveTraktProgress"
+      app:destination="@id/removeTraktProgressDialog"
+      app:launchSingleTop="true"
+      />
+  </dialog>
 
 </navigation>

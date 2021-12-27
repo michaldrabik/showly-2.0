@@ -79,6 +79,7 @@ class CalendarMoviesFragment :
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
     adapter = CalendarMoviesAdapter(
       itemClickListener = { requireMainFragment().openMovieDetails(it.movie) },
+      itemLongClickListener = { requireMainFragment().openMovieMenu(it.movie, showPinButtons = false) },
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) },
       missingTranslationListener = { item -> viewModel.findMissingTranslation(item) }
     )

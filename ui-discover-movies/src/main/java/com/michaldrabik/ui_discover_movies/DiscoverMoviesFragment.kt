@@ -9,6 +9,8 @@ import androidx.core.animation.doOnEnd
 import androidx.core.view.isVisible
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
+import androidx.fragment.app.clearFragmentResultListener
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -19,6 +21,7 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
+import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -33,6 +36,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
 import com.michaldrabik.ui_discover_movies.recycler.DiscoverMovieListItem
 import com.michaldrabik.ui_discover_movies.recycler.DiscoverMoviesAdapter
+import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_discover_movies.*
@@ -100,7 +104,7 @@ class DiscoverMoviesFragment :
       sortIconVisible = true
       settingsIconVisible = false
       isClickable = false
-      onClick { navigateToSearch() }
+      onClick { openSearch() }
       onSortClickListener = { toggleFiltersView() }
       translationY = searchViewPosition
       if (isTraktSyncing()) setTraktProgress(true)
@@ -144,7 +148,8 @@ class DiscoverMoviesFragment :
   private fun setupRecycler() {
     layoutManager = GridLayoutManager(context, Config.MAIN_GRID_SPAN)
     adapter = DiscoverMoviesAdapter(
-      itemClickListener = { navigateToDetails(it) },
+      itemClickListener = { openDetails(it) },
+      itemLongClickListener = { openMovieMenu(it.movie) },
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) },
       listChangeListener = { discoverMoviesRecycler.scrollToPosition(0) }
     )
@@ -177,7 +182,7 @@ class DiscoverMoviesFragment :
     }
   }
 
-  private fun navigateToSearch() {
+  private fun openSearch() {
     disableUi()
     hideNavigation()
     discoverMoviesFiltersView.fadeOut().add(animations)
@@ -187,10 +192,21 @@ class DiscoverMoviesFragment :
     }.add(animations)
   }
 
-  private fun navigateToDetails(item: DiscoverMovieListItem) {
+  private fun openDetails(item: DiscoverMovieListItem) {
     disableUi()
     hideNavigation()
     animateItemsExit(item)
+  }
+
+  private fun openMovieMenu(movie: Movie) {
+    setFragmentResultListener(NavigationArgs.REQUEST_ITEM_MENU) { requestKey, _ ->
+      if (requestKey == NavigationArgs.REQUEST_ITEM_MENU) {
+        viewModel.loadMovies()
+      }
+      clearFragmentResultListener(NavigationArgs.REQUEST_ITEM_MENU)
+    }
+    val bundle = ContextMenuBottomSheet.createBundle(movie.ids.trakt)
+    navigateTo(R.id.actionDiscoverMoviesFragmentToItemMenu, bundle)
   }
 
   private fun animateItemsExit(item: DiscoverMovieListItem) {
@@ -268,7 +284,7 @@ class DiscoverMoviesFragment :
 
   override fun onTraktSyncComplete() = discoverMoviesSearchView.setTraktProgress(false)
 
-  override fun onTabReselected() = navigateToSearch()
+  override fun onTabReselected() = openSearch()
 
   override fun onPause() {
     enableUi()

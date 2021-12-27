@@ -11,6 +11,7 @@ import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.onLongClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_model.Image
@@ -33,13 +34,18 @@ class MyMovieFanartView : FrameLayout {
 
   private val cornerRadius by lazy { context.dimenToPx(R.dimen.myMoviesFanartCorner) }
 
-  fun bind(item: MyMoviesItem, clickListener: (MyMoviesItem) -> Unit) {
+  fun bind(
+    item: MyMoviesItem,
+    clickListener: (MyMoviesItem) -> Unit,
+    longClickListener: (MyMoviesItem) -> Unit
+  ) {
     clear()
     myMovieFanartTitle.visible()
     myMovieFanartTitle.text =
       if (item.translation?.title.isNullOrBlank()) item.movie.title
       else item.translation?.title
     onClick { clickListener(item) }
+    onLongClick { longClickListener(item) }
     loadImage(item.image)
   }
 

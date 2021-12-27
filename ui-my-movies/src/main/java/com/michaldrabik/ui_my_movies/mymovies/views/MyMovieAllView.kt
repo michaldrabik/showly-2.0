@@ -11,6 +11,7 @@ import com.michaldrabik.ui_base.common.views.MovieView
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.onLongClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_my_movies.R
@@ -30,6 +31,7 @@ class MyMovieAllView : MovieView<MyMoviesItem> {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     imageLoadCompleteListener = { loadTranslation() }
     myMovieAllRoot.onClick { itemClickListener?.invoke(item) }
+    myMovieAllRoot.onLongClick { itemLongClickListener?.invoke(item) }
   }
 
   override val imageView: ImageView = myMovieAllImage

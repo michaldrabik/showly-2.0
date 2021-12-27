@@ -2,10 +2,8 @@ package com.michaldrabik.ui_progress_movies.progress
 
 import android.os.Build
 import android.os.Bundle
-import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
 import androidx.core.view.updateMargins
@@ -115,7 +113,7 @@ class ProgressMoviesFragment :
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
     adapter = ProgressMoviesAdapter(
       itemClickListener = { requireMainFragment().openMovieDetails(it.movie) },
-      itemLongClickListener = { item, view -> openPopupMenu(item, view) },
+      itemLongClickListener = { requireMainFragment().openMovieMenu(it.movie) },
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) },
       missingTranslationListener = { item -> viewModel.findMissingTranslation(item) },
       listChangeListener = {
@@ -193,22 +191,6 @@ class ProgressMoviesFragment :
       (progressMoviesEmptyView.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarHeight + dimenToPx(R.dimen.spaceBig))
     }
-  }
-
-  private fun openPopupMenu(item: ProgressMovieListItem.MovieItem, view: View) {
-    val menu = PopupMenu(requireContext(), view, Gravity.CENTER)
-    if (item.isPinned) {
-      menu.inflate(R.menu.progress_movies_item_menu_unpin)
-    } else {
-      menu.inflate(R.menu.progress_movies_item_menu_pin)
-    }
-    menu.setOnMenuItemClickListener { menuItem ->
-      if (menuItem.itemId == R.id.menuProgressItemPin) {
-        viewModel.togglePinItem(item)
-      }
-      true
-    }
-    menu.show()
   }
 
   private fun openRateDialog(item: ProgressMovieListItem.MovieItem) {

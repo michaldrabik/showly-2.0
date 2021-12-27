@@ -1,7 +1,5 @@
 package com.michaldrabik.ui_movie.cases
 
-import com.michaldrabik.data_remote.Cloud
-import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.ui_model.Movie
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -9,8 +7,6 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class MovieDetailsWatchlistCase @Inject constructor(
-  private val cloud: Cloud,
-  private val userManager: UserTraktManager,
   private val moviesRepository: MoviesRepository
 ) {
 

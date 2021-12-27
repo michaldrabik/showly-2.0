@@ -42,6 +42,6 @@ class ArchiveMoviesRepository @Inject constructor(
   suspend fun delete(id: IdTrakt) =
     database.archiveMoviesDao().deleteById(id.id)
 
-  suspend fun isHidden(id: IdTrakt) =
+  suspend fun exists(id: IdTrakt) =
     database.archiveMoviesDao().getById(id.id) != null
 }

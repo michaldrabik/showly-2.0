@@ -7,6 +7,7 @@ import com.michaldrabik.ui_base.common.MovieListItem
 
 abstract class BaseMovieAdapter<Item : MovieListItem>(
   val itemClickListener: ((Item) -> Unit)? = null,
+  val itemLongClickListener: ((Item) -> Unit)? = null,
   var missingImageListener: ((Item, Boolean) -> Unit)? = null,
   var missingTranslationListener: ((Item) -> Unit)? = null,
   var listChangeListener: (() -> Unit)? = null

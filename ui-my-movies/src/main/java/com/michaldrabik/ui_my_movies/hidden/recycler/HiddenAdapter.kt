@@ -8,11 +8,13 @@ import com.michaldrabik.ui_my_movies.hidden.recycler.views.HiddenMovieView
 
 class HiddenAdapter(
   itemClickListener: (HiddenListItem) -> Unit,
+  itemLongClickListener: (HiddenListItem) -> Unit,
   missingImageListener: (HiddenListItem, Boolean) -> Unit,
   missingTranslationListener: (HiddenListItem) -> Unit,
   listChangeListener: () -> Unit,
 ) : BaseMovieAdapter<HiddenListItem>(
   itemClickListener = itemClickListener,
+  itemLongClickListener = itemLongClickListener,
   missingImageListener = missingImageListener,
   missingTranslationListener = missingTranslationListener,
   listChangeListener = listChangeListener
@@ -28,6 +30,7 @@ class HiddenAdapter(
     BaseViewHolder(
       HiddenMovieView(parent.context).apply {
         itemClickListener = { super.itemClickListener?.invoke(it) }
+        itemLongClickListener = { super.itemLongClickListener?.invoke(it) }
         missingImageListener = { item, force -> super.missingImageListener?.invoke(item, force) }
         missingTranslationListener = { super.missingTranslationListener?.invoke(it) }
       }

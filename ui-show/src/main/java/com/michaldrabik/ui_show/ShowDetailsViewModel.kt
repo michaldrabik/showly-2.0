@@ -568,7 +568,7 @@ class ShowDetailsViewModel @Inject constructor(
         }
         isWatchlist -> {
           watchlistCase.removeFromWatchlist(show)
-          quickSyncManager.clearShowsWatchlist(listOf(show.traktId))
+          quickSyncManager.clearWatchlistShows(listOf(show.traktId))
         }
         isArchived -> {
           archiveCase.removeFromArchive(show)

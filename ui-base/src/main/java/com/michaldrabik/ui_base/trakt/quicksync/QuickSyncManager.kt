@@ -151,14 +151,14 @@ class QuickSyncManager @Inject constructor(
     Timber.d("Movies removed from sync queue. Count: ${moviesIds.size}")
   }
 
-  suspend fun clearShowsWatchlist(showsIds: List<Long>) {
+  suspend fun clearWatchlistShows(showsIds: List<Long>) {
     if (!ensureQuickRemove()) return
 
     database.traktSyncQueueDao().deleteAll(showsIds, Type.SHOW_WATCHLIST.slug)
     Timber.d("Shows removed from sync queue. Count: ${showsIds.size}")
   }
 
-  suspend fun clearMoviesWatchlist(moviesIds: List<Long>) {
+  suspend fun clearWatchlistMovies(moviesIds: List<Long>) {
     if (!ensureQuickRemove()) return
 
     database.traktSyncQueueDao().deleteAll(moviesIds, Type.MOVIE_WATCHLIST.slug)

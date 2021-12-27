@@ -6,7 +6,7 @@ import com.michaldrabik.data_local.database.model.Season
 import com.michaldrabik.data_local.database.model.TraktSyncQueue
 import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
-import com.michaldrabik.ui_base.common.sheets.context_menu.show.events.RemoveTraktEvent
+import com.michaldrabik.ui_base.common.sheets.context_menu.events.RemoveTraktUiEvent
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.ui_base.utilities.extensions.runTransaction
 import com.michaldrabik.ui_model.IdTrakt
@@ -50,9 +50,13 @@ class ShowContextMenuHiddenCase @Inject constructor(
       }
       pinnedItemsRepository.removePinnedItem(show)
     }
-    quickSyncManager.scheduleHidden(traktId.id, Mode.SHOWS, TraktSyncQueue.Operation.ADD)
 
-    RemoveTraktEvent(removeProgress = isMyShow, removeWatchlist = isWatchlist)
+    with(quickSyncManager) {
+      clearWatchlistShows(listOf(traktId.id))
+      scheduleHidden(traktId.id, Mode.SHOWS, TraktSyncQueue.Operation.ADD)
+    }
+
+    RemoveTraktUiEvent(removeProgress = isMyShow, removeWatchlist = isWatchlist)
   }
 
   suspend fun removeFromHidden(traktId: IdTrakt) {

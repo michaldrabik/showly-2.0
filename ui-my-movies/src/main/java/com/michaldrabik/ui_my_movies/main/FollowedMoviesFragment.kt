@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.addCallback
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.clearFragmentResultListener
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.viewpager.widget.ViewPager
 import com.michaldrabik.ui_base.BaseFragment
@@ -12,6 +14,7 @@ import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
+import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
 import com.michaldrabik.ui_base.common.views.exSearchLocalViewInput
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -31,6 +34,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_my_movies.R
+import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_followed_movies.*
@@ -207,6 +211,17 @@ class FollowedMoviesFragment :
       navigateTo(R.id.actionFollowedMoviesFragmentToMovieDetailsFragment, bundle)
       exitSearch()
     }.add(animations)
+  }
+
+  fun openMovieMenu(movie: Movie) {
+    setFragmentResultListener(NavigationArgs.REQUEST_ITEM_MENU) { requestKey, _ ->
+      if (requestKey == NavigationArgs.REQUEST_ITEM_MENU) {
+        onTraktSyncComplete()
+      }
+      clearFragmentResultListener(NavigationArgs.REQUEST_ITEM_MENU)
+    }
+    val bundle = ContextMenuBottomSheet.createBundle(movie.ids.trakt)
+    navigateTo(R.id.actionFollowedMoviesFragmentToItemMenu, bundle)
   }
 
   private fun openSettings() {

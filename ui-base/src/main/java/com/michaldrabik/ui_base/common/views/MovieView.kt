@@ -46,6 +46,7 @@ abstract class MovieView<Item : MovieListItem> : FrameLayout {
   protected abstract val placeholderView: ImageView
 
   var itemClickListener: ((Item) -> Unit)? = null
+  var itemLongClickListener: ((Item) -> Unit)? = null
   var imageLoadCompleteListener: (() -> Unit)? = null
   var missingImageListener: ((Item, Boolean) -> Unit)? = null
   var missingTranslationListener: ((Item) -> Unit)? = null

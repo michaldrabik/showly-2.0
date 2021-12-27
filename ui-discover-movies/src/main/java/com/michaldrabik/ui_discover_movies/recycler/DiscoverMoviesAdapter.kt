@@ -12,10 +12,12 @@ import com.michaldrabik.ui_model.ImageType.POSTER
 
 class DiscoverMoviesAdapter(
   itemClickListener: (DiscoverMovieListItem) -> Unit,
+  itemLongClickListener: (DiscoverMovieListItem) -> Unit,
   missingImageListener: (DiscoverMovieListItem, Boolean) -> Unit,
   listChangeListener: () -> Unit
 ) : BaseMovieAdapter<DiscoverMovieListItem>(
   itemClickListener = itemClickListener,
+  itemLongClickListener = itemLongClickListener,
   missingImageListener = missingImageListener,
   listChangeListener = listChangeListener
 ) {
@@ -30,12 +32,14 @@ class DiscoverMoviesAdapter(
     POSTER.id -> BaseViewHolder(
       MoviePosterView(parent.context).apply {
         itemClickListener = this@DiscoverMoviesAdapter.itemClickListener
+        itemLongClickListener = this@DiscoverMoviesAdapter.itemLongClickListener
         missingImageListener = this@DiscoverMoviesAdapter.missingImageListener
       }
     )
     FANART.id, FANART_WIDE.id -> BaseViewHolder(
       MovieFanartView(parent.context).apply {
         itemClickListener = this@DiscoverMoviesAdapter.itemClickListener
+        itemLongClickListener = this@DiscoverMoviesAdapter.itemLongClickListener
         missingImageListener = this@DiscoverMoviesAdapter.missingImageListener
       }
     )

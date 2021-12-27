@@ -12,6 +12,7 @@ import com.michaldrabik.ui_base.utilities.extensions.addRipple
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.onLongClick
 import com.michaldrabik.ui_progress_movies.R
 import com.michaldrabik.ui_progress_movies.calendar.recycler.CalendarMovieListItem
 import kotlinx.android.synthetic.main.view_progress_movies_calendar_item.view.*
@@ -28,6 +29,7 @@ class CalendarMoviesItemView : MovieView<CalendarMovieListItem.MovieItem> {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     addRipple()
     onClick { itemClickListener?.invoke(item) }
+    onLongClick { itemLongClickListener?.invoke(item) }
     imageLoadCompleteListener = { loadTranslation() }
   }
 

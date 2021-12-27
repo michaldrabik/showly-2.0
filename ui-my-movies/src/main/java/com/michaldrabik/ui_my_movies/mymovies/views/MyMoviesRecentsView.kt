@@ -30,16 +30,18 @@ class MyMoviesRecentsView : FrameLayout {
 
   fun bind(
     item: MyMoviesItem.RecentsSection,
-    itemClickListener: ((MyMoviesItem) -> Unit)?
+    itemClickListener: ((MyMoviesItem) -> Unit)?,
+    itemLongClickListener: ((MyMoviesItem) -> Unit)?
   ) {
     myMoviesRecentsContainer.removeAllViews()
 
     val clickListener: (MyMoviesItem) -> Unit = { itemClickListener?.invoke(it) }
+    val longClickListener: (MyMoviesItem) -> Unit = { itemLongClickListener?.invoke(it) }
 
     item.items.forEachIndexed { index, showItem ->
       val view = MyMovieFanartView(context).apply {
         layoutParams = LayoutParams(0, MATCH_PARENT)
-        bind(showItem, clickListener)
+        bind(showItem, clickListener, longClickListener)
       }
       val layoutParams = GridLayout.LayoutParams().apply {
         width = itemWidth

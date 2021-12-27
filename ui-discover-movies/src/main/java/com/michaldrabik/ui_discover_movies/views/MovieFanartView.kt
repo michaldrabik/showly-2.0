@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide
 import com.michaldrabik.ui_base.common.views.MovieView
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.onLongClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_discover_movies.R
 import com.michaldrabik.ui_discover_movies.recycler.DiscoverMovieListItem
@@ -22,7 +23,10 @@ class MovieFanartView : MovieView<DiscoverMovieListItem> {
 
   init {
     inflate(context, R.layout.view_movie_fanart, this)
-    movieFanartRoot.onClick { itemClickListener?.invoke(item) }
+    with(movieFanartRoot) {
+      onClick { itemClickListener?.invoke(item) }
+      onLongClick { itemLongClickListener?.invoke(item) }
+    }
   }
 
   override val imageView: ImageView = movieFanartImage

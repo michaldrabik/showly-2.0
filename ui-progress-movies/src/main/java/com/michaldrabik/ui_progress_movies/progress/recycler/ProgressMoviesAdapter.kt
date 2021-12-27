@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_progress_movies.progress.recycler
 
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
@@ -9,13 +8,14 @@ import com.michaldrabik.ui_progress_movies.progress.views.ProgressMoviesItemView
 
 class ProgressMoviesAdapter(
   itemClickListener: (ProgressMovieListItem.MovieItem) -> Unit,
+  itemLongClickListener: (ProgressMovieListItem.MovieItem) -> Unit,
   missingImageListener: (ProgressMovieListItem.MovieItem, Boolean) -> Unit,
   missingTranslationListener: (ProgressMovieListItem.MovieItem) -> Unit,
   listChangeListener: () -> Unit,
   val checkClickListener: (ProgressMovieListItem.MovieItem) -> Unit,
-  val itemLongClickListener: (ProgressMovieListItem.MovieItem, View) -> Unit,
 ) : BaseMovieAdapter<ProgressMovieListItem.MovieItem>(
   itemClickListener = itemClickListener,
+  itemLongClickListener = itemLongClickListener,
   missingImageListener = missingImageListener,
   missingTranslationListener = missingTranslationListener,
   listChangeListener = listChangeListener
