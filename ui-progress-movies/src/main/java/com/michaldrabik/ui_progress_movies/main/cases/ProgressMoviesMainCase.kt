@@ -21,8 +21,11 @@ class ProgressMoviesMainCase @Inject constructor(
 
   suspend fun addToMyMovies(movie: Movie) {
     database.withTransaction {
-      moviesRepository.myMovies.insert(movie.ids.trakt)
-      moviesRepository.watchlistMovies.delete(movie.ids.trakt)
+      with(moviesRepository) {
+        myMovies.insert(movie.ids.trakt)
+        watchlistMovies.delete(movie.ids.trakt)
+        hiddenMovies.delete(movie.ids.trakt)
+      }
     }
     pinnedItemsRepository.removePinnedItem(movie)
     quickSyncManager.scheduleMovies(listOf(movie.ids.trakt.id))

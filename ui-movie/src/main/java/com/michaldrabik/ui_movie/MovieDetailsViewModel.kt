@@ -31,8 +31,8 @@ import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_movie.MovieDetailsUiState.FollowedState
 import com.michaldrabik.ui_movie.MovieDetailsUiState.StreamingsState
 import com.michaldrabik.ui_movie.cases.MovieDetailsActorsCase
-import com.michaldrabik.ui_movie.cases.MovieDetailsArchiveCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsCommentsCase
+import com.michaldrabik.ui_movie.cases.MovieDetailsHiddenCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsListsCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsMainCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsMyMoviesCase
@@ -65,7 +65,7 @@ class MovieDetailsViewModel @Inject constructor(
   private val ratingsCase: MovieDetailsRatingCase,
   private val myMoviesCase: MovieDetailsMyMoviesCase,
   private val watchlistCase: MovieDetailsWatchlistCase,
-  private val archiveCase: MovieDetailsArchiveCase,
+  private val hiddenCase: MovieDetailsHiddenCase,
   private val listsCase: MovieDetailsListsCase,
   private val streamingCase: MovieDetailsStreamingCase,
   private val settingsRepository: SettingsRepository,
@@ -112,7 +112,7 @@ class MovieDetailsViewModel @Inject constructor(
         val isSignedIn = userManager.isAuthorized()
         val isMyMovie = async { myMoviesCase.isMyMovie(movie) }
         val isWatchlist = async { watchlistCase.isWatchlist(movie) }
-        val isHidden = async { archiveCase.isArchived(movie) }
+        val isHidden = async { hiddenCase.isHidden(movie) }
         val isFollowed = FollowedState(
           isMyMovie = isMyMovie.await(),
           isWatchlist = isWatchlist.await(),
@@ -438,7 +438,7 @@ class MovieDetailsViewModel @Inject constructor(
 
   fun addHiddenMovie() {
     viewModelScope.launch {
-      archiveCase.addToArchive(movie)
+      hiddenCase.addToHidden(movie)
       quickSyncManager.scheduleHidden(movie.traktId, Mode.MOVIES, TraktSyncQueue.Operation.ADD)
       followedState.value = FollowedState.inHidden()
       Analytics.logMovieAddToArchive(movie)
@@ -449,7 +449,7 @@ class MovieDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       val isMyMovie = myMoviesCase.isMyMovie(movie)
       val isWatchlist = watchlistCase.isWatchlist(movie)
-      val isHidden = archiveCase.isArchived(movie)
+      val isHidden = hiddenCase.isHidden(movie)
 
       when {
         isMyMovie -> {
@@ -461,7 +461,7 @@ class MovieDetailsViewModel @Inject constructor(
           quickSyncManager.clearWatchlistMovies(listOf(movie.traktId))
         }
         isHidden -> {
-          archiveCase.removeFromArchive(movie)
+          hiddenCase.removeFromHidden(movie)
           quickSyncManager.clearHiddenMovies(listOf(movie.traktId))
         }
       }

@@ -13,7 +13,7 @@ class MoviesRepository @Inject constructor(
   val movieDetails: MovieDetailsRepository,
   val myMovies: MyMoviesRepository,
   val watchlistMovies: WatchlistMoviesRepository,
-  val hiddenMovies: ArchiveMoviesRepository,
+  val hiddenMovies: HiddenMoviesRepository,
 ) {
 
   suspend fun loadCollection(skipHidden: Boolean = false) =

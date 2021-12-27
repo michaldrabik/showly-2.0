@@ -16,10 +16,10 @@ class ShowDetailsHiddenCase @Inject constructor(
   private val pinnedItemsRepository: PinnedItemsRepository
 ) {
 
-  suspend fun isArchived(show: Show) =
+  suspend fun isHidden(show: Show) =
     showsRepository.hiddenShows.exists(show.ids.trakt)
 
-  suspend fun addToArchive(show: Show, removeLocalData: Boolean) {
+  suspend fun addToHidden(show: Show, removeLocalData: Boolean) {
     database.runTransaction {
       with(showsRepository) {
         hiddenShows.insert(show.ids.trakt)
@@ -43,6 +43,6 @@ class ShowDetailsHiddenCase @Inject constructor(
     pinnedItemsRepository.removePinnedItem(show)
   }
 
-  suspend fun removeFromArchive(show: Show) =
+  suspend fun removeFromHidden(show: Show) =
     showsRepository.hiddenShows.delete(show.ids.trakt)
 }
