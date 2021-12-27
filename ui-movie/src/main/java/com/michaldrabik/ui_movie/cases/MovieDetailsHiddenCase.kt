@@ -25,6 +25,9 @@ class MovieDetailsHiddenCase @Inject constructor(
     quickSyncManager.scheduleHidden(movie.traktId, Mode.MOVIES, TraktSyncQueue.Operation.ADD)
   }
 
-  suspend fun removeFromHidden(movie: Movie) =
+  suspend fun removeFromHidden(movie: Movie) {
     moviesRepository.hiddenMovies.delete(movie.ids.trakt)
+    pinnedItemsRepository.removePinnedItem(movie)
+    quickSyncManager.clearHiddenMovies(listOf(movie.traktId))
+  }
 }

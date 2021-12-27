@@ -558,17 +558,9 @@ class ShowDetailsViewModel @Inject constructor(
       val isArchived = hiddenCase.isHidden(show)
 
       when {
-        isMyShows -> {
-          myShowsCase.removeFromMyShows(show, removeLocalData = !areSeasonsLocal)
-        }
-        isWatchlist -> {
-          watchlistCase.removeFromWatchlist(show)
-          quickSyncManager.clearWatchlistShows(listOf(show.traktId))
-        }
-        isArchived -> {
-          hiddenCase.removeFromHidden(show)
-          quickSyncManager.clearHiddenShows(listOf(show.traktId))
-        }
+        isMyShows -> myShowsCase.removeFromMyShows(show, removeLocalData = !areSeasonsLocal)
+        isWatchlist -> watchlistCase.removeFromWatchlist(show)
+        isArchived -> hiddenCase.removeFromHidden(show)
       }
 
       val traktQuickRemoveEnabled = settingsRepository.load().traktQuickRemoveEnabled

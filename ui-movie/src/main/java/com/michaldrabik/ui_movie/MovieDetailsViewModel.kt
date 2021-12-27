@@ -445,18 +445,9 @@ class MovieDetailsViewModel @Inject constructor(
       val isHidden = hiddenCase.isHidden(movie)
 
       when {
-        isMyMovie -> {
-          myMoviesCase.removeFromMyMovies(movie)
-          quickSyncManager.clearMovies(listOf(movie.traktId))
-        }
-        isWatchlist -> {
-          watchlistCase.removeFromWatchlist(movie)
-          quickSyncManager.clearWatchlistMovies(listOf(movie.traktId))
-        }
-        isHidden -> {
-          hiddenCase.removeFromHidden(movie)
-          quickSyncManager.clearHiddenMovies(listOf(movie.traktId))
-        }
+        isMyMovie -> myMoviesCase.removeFromMyMovies(movie)
+        isWatchlist -> watchlistCase.removeFromWatchlist(movie)
+        isHidden -> hiddenCase.removeFromHidden(movie)
       }
 
       val traktQuickRemoveEnabled = settingsRepository.load().traktQuickRemoveEnabled

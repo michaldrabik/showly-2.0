@@ -40,5 +40,6 @@ class MovieDetailsMyMoviesCase @Inject constructor(
   suspend fun removeFromMyMovies(movie: Movie) {
     moviesRepository.myMovies.delete(movie.ids.trakt)
     pinnedItemsRepository.removePinnedItem(movie)
+    quickSyncManager.clearMovies(listOf(movie.traktId))
   }
 }

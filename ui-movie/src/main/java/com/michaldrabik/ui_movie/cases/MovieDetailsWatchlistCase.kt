@@ -26,6 +26,9 @@ class MovieDetailsWatchlistCase @Inject constructor(
     announcementManager.refreshMoviesAnnouncements()
   }
 
-  suspend fun removeFromWatchlist(movie: Movie) =
+  suspend fun removeFromWatchlist(movie: Movie) {
     moviesRepository.watchlistMovies.delete(movie.ids.trakt)
+    pinnedItemsRepository.removePinnedItem(movie)
+    quickSyncManager.clearWatchlistMovies(listOf(movie.traktId))
+  }
 }

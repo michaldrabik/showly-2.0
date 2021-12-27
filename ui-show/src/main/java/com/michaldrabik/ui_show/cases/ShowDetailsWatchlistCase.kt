@@ -19,10 +19,13 @@ class ShowDetailsWatchlistCase @Inject constructor(
 
   suspend fun addToWatchlist(show: Show) {
     showsRepository.watchlistShows.insert(show.ids.trakt)
-    quickSyncManager.scheduleShowsWatchlist(listOf(show.traktId))
     pinnedItemsRepository.removePinnedItem(show)
+    quickSyncManager.scheduleShowsWatchlist(listOf(show.traktId))
   }
 
-  suspend fun removeFromWatchlist(show: Show) =
+  suspend fun removeFromWatchlist(show: Show) {
     showsRepository.watchlistShows.delete(show.ids.trakt)
+    pinnedItemsRepository.removePinnedItem(show)
+    quickSyncManager.clearWatchlistShows(listOf(show.traktId))
+  }
 }

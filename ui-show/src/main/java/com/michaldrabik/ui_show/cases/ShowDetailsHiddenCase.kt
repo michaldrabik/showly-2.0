@@ -44,6 +44,9 @@ class ShowDetailsHiddenCase @Inject constructor(
     quickSyncManager.scheduleHidden(show.traktId, Mode.SHOWS, TraktSyncQueue.Operation.ADD)
   }
 
-  suspend fun removeFromHidden(show: Show) =
+  suspend fun removeFromHidden(show: Show) {
     showsRepository.hiddenShows.delete(show.ids.trakt)
+    pinnedItemsRepository.removePinnedItem(show)
+    quickSyncManager.clearHiddenShows(listOf(show.traktId))
+  }
 }
