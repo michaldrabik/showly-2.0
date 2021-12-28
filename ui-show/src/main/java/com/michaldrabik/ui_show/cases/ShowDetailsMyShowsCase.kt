@@ -35,7 +35,7 @@ class ShowDetailsMyShowsCase @Inject constructor(
   }
 
   suspend fun isMyShows(show: Show) =
-    showsRepository.myShows.load(show.ids.trakt) != null
+    showsRepository.myShows.exists(show.ids.trakt)
 
   suspend fun addToMyShows(
     show: Show,

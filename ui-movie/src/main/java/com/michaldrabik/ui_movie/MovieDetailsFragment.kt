@@ -41,6 +41,7 @@ import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.AppCountry.UNITED_STATES
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.sheets.links.LinksBottomSheet
+import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet
 import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.SnackbarHost
@@ -565,7 +566,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         (requireActivity() as SnackbarHost).provideSnackbarLayout().showInfoSnackbar(text)
       }
     }
-    val args = bundleOf(ARG_ID to movieId.id, ARG_TYPE to Mode.MOVIES)
+    val args = RemoveTraktBottomSheet.createBundle(movieId, RemoveTraktBottomSheet.Mode.MOVIE)
     navigateTo(action, args)
   }
 

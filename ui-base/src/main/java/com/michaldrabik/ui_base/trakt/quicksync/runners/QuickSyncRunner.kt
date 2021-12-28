@@ -55,10 +55,11 @@ class QuickSyncRunner @Inject constructor(
   private suspend fun exportHistoryItems(
     token: TraktAuthToken,
     moviesEnabled: Boolean,
-    count: Int = 0
+    count: Int = 0,
+    clearedProgressIds: MutableSet<Long> = mutableSetOf()
   ): Int {
     val types = if (moviesEnabled) listOf(MOVIE, EPISODE) else listOf(EPISODE)
-    val items = database.traktSyncQueueDao().getAll(types.map { it.slug }).take(BATCH_LIMIT)
+    val items = database.traktSyncQueueDao().getAll(types.map { it.slug })
     if (items.isEmpty()) {
       Timber.d("Nothing to export. Cancelling..")
       return count
@@ -66,9 +67,10 @@ class QuickSyncRunner @Inject constructor(
 
     Timber.d("Exporting history items...")
 
-    val exportEpisodes = items.filter { it.type == EPISODE.slug }.distinctBy { it.idTrakt }
-    val exportMovies = items.filter { it.type == MOVIE.slug }.distinctBy { it.idTrakt }
-    val clearProgress = exportEpisodes.any { it.operation == TraktSyncQueue.Operation.ADD_WITH_CLEAR.slug }
+    val batch = items.take(BATCH_LIMIT)
+    val exportEpisodes = batch.filter { it.type == EPISODE.slug }.distinctBy { it.idTrakt }
+    val exportMovies = batch.filter { it.type == MOVIE.slug }.distinctBy { it.idTrakt }
+    val clearProgress = items.any { it.operation == TraktSyncQueue.Operation.ADD_WITH_CLEAR.slug }
 
     val request = SyncExportRequest(
       episodes = exportEpisodes.map { SyncExportItem.create(it.idTrakt, dateIsoStringFromMillis(it.updatedAt)) },
@@ -77,16 +79,22 @@ class QuickSyncRunner @Inject constructor(
 
     if (clearProgress) {
       Timber.d("Clearing progress for shows...")
-      val requestItems = exportEpisodes
+
+      val requestItems = items
         .mapNotNull { it.idList?.let { id -> SyncExportItem.create(id) } }
         .distinctBy { it.ids.trakt }
-      cloud.traktApi.postDeleteProgress(token.token, SyncExportRequest(shows = requestItems))
-      delay(DELAY)
+        .filterNot { clearedProgressIds.contains(it.ids.trakt) }
+
+      if (requestItems.isNotEmpty()) {
+        cloud.traktApi.postDeleteProgress(token.token, SyncExportRequest(shows = requestItems))
+        clearedProgressIds.addAll(requestItems.map { it.ids.trakt })
+        delay(DELAY)
+      }
     }
 
     cloud.traktApi.postSyncWatched(token.token, request)
     database.withTransaction {
-      val ids = items.map { it.idTrakt }
+      val ids = batch.map { it.idTrakt }
       database.traktSyncQueueDao().deleteAll(ids, EPISODE.slug)
       database.traktSyncQueueDao().deleteAll(ids, MOVIE.slug)
     }
@@ -97,7 +105,7 @@ class QuickSyncRunner @Inject constructor(
     val newItems = database.traktSyncQueueDao().getAll(types.map { it.slug })
     if (newItems.isNotEmpty()) {
       delay(DELAY)
-      return exportHistoryItems(token, moviesEnabled, currentCount)
+      return exportHistoryItems(token, moviesEnabled, currentCount, clearedProgressIds.toMutableSet())
     }
 
     return currentCount

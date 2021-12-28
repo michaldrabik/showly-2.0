@@ -15,10 +15,11 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.michaldrabik.common.Config
-import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.R
+import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet
+import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet.Mode
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -33,7 +34,6 @@ import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.IdTvdb
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageStatus
-import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_LIST
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_ITEM_MENU
@@ -125,7 +125,7 @@ abstract class ContextMenuBottomSheet<T : BaseViewModel> : BaseBottomSheetFragme
       }
       close()
     }
-    val args = bundleOf(ARG_ID to itemId.id, NavigationArgs.ARG_TYPE to mode)
+    val args = RemoveTraktBottomSheet.createBundle(itemId, mode)
     navigateTo(action, args)
   }
 

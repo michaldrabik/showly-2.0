@@ -751,19 +751,19 @@
 
   <dialog
     android:id="@+id/removeTraktHiddenDialog"
-    android:name="com.michaldrabik.ui_base.common.sheets.remove_trakt_hidden.RemoveTraktHiddenBottomSheet"
+    android:name="com.michaldrabik.ui_base.common.sheets.remove_trakt.remove_trakt_hidden.RemoveTraktHiddenBottomSheet"
     android:label="dialogRemoveTraktHidden"
     />
 
   <dialog
     android:id="@+id/removeTraktWatchlistDialog"
-    android:name="com.michaldrabik.ui_base.common.sheets.remove_trakt_watchlist.RemoveTraktWatchlistBottomSheet"
+    android:name="com.michaldrabik.ui_base.common.sheets.remove_trakt.remove_trakt_watchlist.RemoveTraktWatchlistBottomSheet"
     android:label="dialogRemoveTraktWatchlist"
     />
 
   <dialog
     android:id="@+id/removeTraktProgressDialog"
-    android:name="com.michaldrabik.ui_base.common.sheets.remove_trakt_progress.RemoveTraktProgressBottomSheet"
+    android:name="com.michaldrabik.ui_base.common.sheets.remove_trakt.remove_trakt_progress.RemoveTraktProgressBottomSheet"
     android:label="dialogRemoveTraktProgress"
     />
 

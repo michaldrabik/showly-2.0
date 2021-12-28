@@ -14,7 +14,6 @@ import android.view.ViewGroup.MarginLayoutParams
 import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.activity.addCallback
-import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -43,7 +42,9 @@ import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.AppCountry.UNITED_STATES
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.sheets.links.LinksBottomSheet
+import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet
 import com.michaldrabik.ui_base.common.views.RateView
+import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
@@ -163,6 +164,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
+      { viewModel.eventChannel.collect { handleEvent(it) } },
       { viewModel.messageChannel.collect { renderSnack(it) } },
       doAfterLaunch = {
         if (!isInitialized) {
@@ -274,7 +276,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     seasonsAdapter = SeasonsAdapter().apply {
       itemClickListener = { showEpisodesView(it) }
       itemCheckedListener = { item: SeasonListItem, isChecked: Boolean ->
-        viewModel.setWatchedSeason(item.season, isChecked)
+        viewModel.setWatchedSeason(item.season, isChecked, removeTrakt = true)
       }
     }
     showDetailsSeasonsRecycler.apply {
@@ -303,10 +305,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       }
       startAnimation(animationEnterRight)
       itemCheckedListener = { episode, season, isChecked ->
-        viewModel.setWatchedEpisode(episode, season, isChecked)
+        viewModel.setWatchedEpisode(episode, season, isChecked, removeTrakt = true)
       }
       seasonCheckedListener = { season, isChecked ->
-        viewModel.setWatchedSeason(season, isChecked)
+        viewModel.setWatchedSeason(season, isChecked, removeTrakt = true)
       }
     }
     showDetailsMainLayout.run {
@@ -342,6 +344,14 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     showDetailsBackArrow2.crossfadeTo(showDetailsBackArrow)
 
     viewModel.refreshAnnouncements()
+  }
+
+  private fun handleEvent(event: Event<*>) {
+    when (event) {
+      is FinishUiEvent -> requireActivity().onBackPressed()
+      is RemoveTraktUiEvent -> openRemoveTraktSheet(event)
+      is SeasonTranslationUiEvent -> showDetailsEpisodesView.bindEpisodes(event.item.episodes, animate = false)
+    }
   }
 
   private fun render(uiState: ShowDetailsUiState) {
@@ -418,24 +428,13 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       streamings?.let { renderStreamings(it) }
       relatedShows?.let { renderRelatedShows(it) }
       translation?.let { renderTranslation(it) }
-      seasonTranslation?.let { item ->
-        item.consume()?.let { showDetailsEpisodesView.bindEpisodes(it.episodes, animate = false) }
-      }
       comments?.let {
         showDetailsCommentsView.bind(it, commentsDateFormat)
         if (isSignedIn) showDetailsCommentsView.showCommentButton()
       }
       ratingState?.let { renderRating(it) }
-      removeFromTrakt?.let { event ->
-        event.consume()?.let { openRemoveTraktSheet(it) }
-      }
       isPremium.let {
         showDetailsPremiumAd.visibleIf(!it)
-      }
-      isFinished?.let { event ->
-        event.consume()?.let {
-          if (it) requireActivity().onBackPressed()
-        }
       }
     }
   }
@@ -685,7 +684,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           bundle.containsKey(ACTION_RATING_CHANGED) -> viewModel.refreshEpisodesRatings()
           bundle.containsKey(ACTION_EPISODE_WATCHED) -> {
             val watched = bundle.getBoolean(ACTION_EPISODE_WATCHED)
-            viewModel.setWatchedEpisode(episode, season, watched)
+            viewModel.setWatchedEpisode(episode, season, watched, removeTrakt = true)
           }
           bundle.containsKey(ACTION_EPISODE_TAB_SELECTED) -> {
             val selectedEpisode = bundle.getParcelable<Episode>(ACTION_EPISODE_TAB_SELECTED)!!
@@ -750,19 +749,19 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     navigateTo(R.id.actionShowDetailsFragmentToPeopleList, bundle)
   }
 
-  private fun openRemoveTraktSheet(@IdRes action: Int) {
+  private fun openRemoveTraktSheet(event: RemoveTraktUiEvent) {
     setFragmentResultListener(REQUEST_REMOVE_TRAKT) { _, bundle ->
       if (bundle.getBoolean(NavigationArgs.RESULT, false)) {
         val text = resources.getString(R.string.textTraktSyncRemovedFromTrakt)
         (requireActivity() as SnackbarHost).provideSnackbarLayout().showInfoSnackbar(text)
 
-        if (action == R.id.actionShowDetailsFragmentToRemoveTraktProgress) {
+        if (event.actionId == R.id.actionShowDetailsFragmentToRemoveTraktProgress) {
           viewModel.launchRefreshWatchedEpisodes()
         }
       }
     }
-    val args = bundleOf(ARG_ID to showId.id, ARG_TYPE to Mode.SHOWS)
-    navigateTo(action, args)
+    val args = RemoveTraktBottomSheet.createBundle(event.traktIds, event.mode)
+    navigateTo(event.actionId, args)
   }
 
   private fun openShareSheet(show: Show) {

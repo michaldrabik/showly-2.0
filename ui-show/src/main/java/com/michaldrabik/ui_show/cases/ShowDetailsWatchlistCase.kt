@@ -15,7 +15,7 @@ class ShowDetailsWatchlistCase @Inject constructor(
 ) {
 
   suspend fun isWatchlist(show: Show) =
-    showsRepository.watchlistShows.load(show.ids.trakt) != null
+    showsRepository.watchlistShows.exists(show.ids.trakt)
 
   suspend fun addToWatchlist(show: Show) {
     showsRepository.watchlistShows.insert(show.ids.trakt)

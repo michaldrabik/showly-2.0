@@ -10,12 +10,12 @@ import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.OnlineStatusProvider
+import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.episodes.EpisodesManager
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
-import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
@@ -114,10 +114,6 @@ class ShowDetailsViewModel @Inject constructor(
   private val signedInState = MutableStateFlow(false)
   private val premiumState = MutableStateFlow(false)
   private val listsCountState = MutableStateFlow(0)
-
-  private val seasonTranslationEvent = MutableStateFlow<Event<SeasonListItem>?>(null)
-  private val removeTraktEvent = MutableStateFlow<Event<Int>?>(null)
-  private val finishedEvent = MutableStateFlow<Event<Boolean>?>(null)
 
   private var show by notNull<Show>()
   private var areSeasonsLocal = false
@@ -331,7 +327,7 @@ class ShowDetailsViewModel @Inject constructor(
 
         val updatedItem = seasonItem.copy(episodes = episodes)
         seasonItems.findReplace(updatedItem) { it.id == updatedItem.id }
-        seasonTranslationEvent.value = Event(updatedItem)
+        _eventChannel.send(SeasonTranslationUiEvent(updatedItem))
       } catch (error: Throwable) {
         Logger.record(error, "Source" to "ShowDetailsViewModel::loadSeasonTranslation()")
         Timber.e(error)
@@ -567,23 +563,25 @@ class ShowDetailsViewModel @Inject constructor(
       val showRemoveTrakt = userManager.isAuthorized() && traktQuickRemoveEnabled && !areSeasonsLocal
 
       val state = FollowedState.idle()
+      val ids = listOf(show.ids.trakt)
+      val mode = RemoveTraktBottomSheet.Mode.SHOW
       when {
         isMyShows -> {
           followedState.value = state
           if (showRemoveTrakt) {
-            removeTraktEvent.value = Event(R.id.actionShowDetailsFragmentToRemoveTraktProgress)
+            _eventChannel.send(RemoveTraktUiEvent(R.id.actionShowDetailsFragmentToRemoveTraktProgress, mode, ids))
           }
         }
         isWatchlist -> {
           followedState.value = state
           if (showRemoveTrakt) {
-            removeTraktEvent.value = Event(R.id.actionShowDetailsFragmentToRemoveTraktWatchlist)
+            _eventChannel.send(RemoveTraktUiEvent(R.id.actionShowDetailsFragmentToRemoveTraktWatchlist, mode, ids))
           }
         }
         isArchived -> {
           followedState.value = state
           if (showRemoveTrakt) {
-            removeTraktEvent.value = Event(R.id.actionShowDetailsFragmentToRemoveTraktHidden)
+            _eventChannel.send(RemoveTraktUiEvent(R.id.actionShowDetailsFragmentToRemoveTraktHidden, mode, ids))
           }
         }
         else -> error("Unexpected show state.")
@@ -601,7 +599,7 @@ class ShowDetailsViewModel @Inject constructor(
         Timber.e(error)
         rethrowCancellation(error)
       } finally {
-        finishedEvent.value = Event(true)
+        _eventChannel.send(FinishUiEvent(true))
       }
     }
   }
@@ -610,6 +608,7 @@ class ShowDetailsViewModel @Inject constructor(
     episode: Episode,
     season: Season,
     isChecked: Boolean,
+    removeTrakt: Boolean = false,
     clearProgress: Boolean = false
   ) {
     viewModelScope.launch {
@@ -628,13 +627,25 @@ class ShowDetailsViewModel @Inject constructor(
         else -> {
           episodesManager.setEpisodeUnwatched(bundle)
           quickSyncManager.clearEpisodes(listOf(episode.ids.trakt.id))
+
+          val traktQuickRemoveEnabled = removeTrakt && settingsRepository.load().traktQuickRemoveEnabled
+          val showRemoveTrakt = userManager.isAuthorized() && traktQuickRemoveEnabled && !areSeasonsLocal && myShowsCase.isMyShows(show)
+          if (showRemoveTrakt) {
+            val ids = listOf(episode.ids.trakt)
+            val mode = RemoveTraktBottomSheet.Mode.EPISODE
+            _eventChannel.send(RemoveTraktUiEvent(R.id.actionShowDetailsFragmentToRemoveTraktProgress, mode, ids))
+          }
         }
       }
       refreshWatchedEpisodes()
     }
   }
 
-  fun setWatchedSeason(season: Season, isChecked: Boolean) {
+  fun setWatchedSeason(
+    season: Season,
+    isChecked: Boolean,
+    removeTrakt: Boolean = false
+  ) {
     viewModelScope.launch {
       val bundle = SeasonBundle(season, show)
       when {
@@ -647,6 +658,14 @@ class ShowDetailsViewModel @Inject constructor(
         else -> {
           episodesManager.setSeasonUnwatched(bundle)
           quickSyncManager.clearEpisodes(season.episodes.map { it.ids.trakt.id })
+
+          val traktQuickRemoveEnabled = removeTrakt && settingsRepository.load().traktQuickRemoveEnabled
+          val showRemoveTrakt = userManager.isAuthorized() && traktQuickRemoveEnabled && !areSeasonsLocal && myShowsCase.isMyShows(show)
+          if (showRemoveTrakt) {
+            val ids = season.episodes.map { it.ids.trakt }
+            val mode = RemoveTraktBottomSheet.Mode.EPISODE
+            _eventChannel.send(RemoveTraktUiEvent(R.id.actionShowDetailsFragmentToRemoveTraktProgress, mode, ids))
+          }
         }
       }
       refreshWatchedEpisodes()
@@ -758,11 +777,8 @@ class ShowDetailsViewModel @Inject constructor(
     countryState,
     signedInState,
     premiumState,
-    listsCountState,
-    seasonTranslationEvent,
-    removeTraktEvent,
-    finishedEvent
-  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s20, s21, s22 ->
+    listsCountState
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19 ->
     ShowDetailsUiState(
       show = s1,
       showLoading = s2,
@@ -782,10 +798,7 @@ class ShowDetailsViewModel @Inject constructor(
       country = s16,
       isSignedIn = s17,
       isPremium = s18,
-      listsCount = s19,
-      seasonTranslation = s20,
-      removeFromTrakt = s21,
-      isFinished = s22
+      listsCount = s19
     )
   }.stateIn(
     scope = viewModelScope,

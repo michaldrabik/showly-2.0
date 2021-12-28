@@ -1,7 +1,6 @@
 package com.michaldrabik.ui_show
 
 import com.michaldrabik.ui_base.common.AppCountry
-import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Person
@@ -31,13 +30,10 @@ data class ShowDetailsUiState(
   val followedState: FollowedState? = null,
   val ratingState: RatingState? = null,
   val ratings: Ratings? = null,
-  val removeFromTrakt: Event<Int>? = null,
   val translation: Translation? = null,
-  val seasonTranslation: Event<SeasonListItem>? = null,
   val country: AppCountry? = null,
   val isPremium: Boolean = false,
-  val isSignedIn: Boolean = false,
-  val isFinished: Event<Boolean>? = null,
+  val isSignedIn: Boolean = false
 ) {
 
   data class FollowedState(
