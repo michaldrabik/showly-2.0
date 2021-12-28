@@ -63,7 +63,7 @@
   <string name="textTraktSyncOptionDailyButton">Programmata per ogni giorno</string>
   <string name="textTraktSyncOption3DayButton">Programmata per ogni 3 giorni</string>
   <string name="textTraktSyncOptionWeeklyButton">Programmata per ogni settimana</string>
-  <string name="textShowStatusReturning">Serie TV Rinnovata</string>
+  <string name="textShowStatusReturning">Serie rinnovata</string>
   <string name="textShowStatusUpcoming">In arrivo</string>
   <string name="textShowStatusInProduction">In produzione</string>
   <string name="textShowStatusPlanned">Pianificata</string>
