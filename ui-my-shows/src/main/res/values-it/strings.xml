@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="menuMyShows">Le Mie Serie TV</string>
+  <string name="menuMyShows">I miei show</string>
   <string name="menuWatchlist">Da Vedere</string>
   <string name="menuHidden">Nascosto</string>
   <string name="textMyShowsEmpty">La tua raccolta di serie TV è vuota.\n\nVisita la pagina <b>Scopri</b> per aggiungere la tua prima serie TV.</string>
