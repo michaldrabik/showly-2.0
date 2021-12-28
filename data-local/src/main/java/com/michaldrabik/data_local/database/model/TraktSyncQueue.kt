@@ -17,10 +17,15 @@ data class TraktSyncQueue(
 
   companion object {
     fun createEpisode(
-      idTrakt: Long,
+      episodeTraktId: Long,
+      showTraktId: Long?,
       createdAt: Long,
-      updatedAt: Long
-    ) = TraktSyncQueue(0, idTrakt, null, Type.EPISODE.slug, Operation.ADD.slug, createdAt, updatedAt)
+      updatedAt: Long,
+      clearProgress: Boolean
+    ): TraktSyncQueue {
+      val operation = if (clearProgress) Operation.ADD_WITH_CLEAR else Operation.ADD
+      return TraktSyncQueue(0, episodeTraktId, showTraktId, Type.EPISODE.slug, operation.slug, createdAt, updatedAt)
+    }
 
     fun createShowWatchlist(
       idTrakt: Long,
@@ -84,6 +89,7 @@ data class TraktSyncQueue(
 
   enum class Operation(val slug: String) {
     ADD("add"),
+    ADD_WITH_CLEAR("add_clear"),
     REMOVE("remove")
   }
 }

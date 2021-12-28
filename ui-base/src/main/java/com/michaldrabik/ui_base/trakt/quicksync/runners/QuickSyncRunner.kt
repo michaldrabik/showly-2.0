@@ -3,6 +3,7 @@ package com.michaldrabik.ui_base.trakt.quicksync.runners
 import androidx.room.withTransaction
 import com.michaldrabik.common.extensions.dateIsoStringFromMillis
 import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.database.model.TraktSyncQueue
 import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type.EPISODE
 import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type.HIDDEN_MOVIE
 import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type.HIDDEN_SHOW
@@ -67,11 +68,21 @@ class QuickSyncRunner @Inject constructor(
 
     val exportEpisodes = items.filter { it.type == EPISODE.slug }.distinctBy { it.idTrakt }
     val exportMovies = items.filter { it.type == MOVIE.slug }.distinctBy { it.idTrakt }
+    val clearProgress = exportEpisodes.any { it.operation == TraktSyncQueue.Operation.ADD_WITH_CLEAR.slug }
 
     val request = SyncExportRequest(
       episodes = exportEpisodes.map { SyncExportItem.create(it.idTrakt, dateIsoStringFromMillis(it.updatedAt)) },
       movies = exportMovies.map { SyncExportItem.create(it.idTrakt, dateIsoStringFromMillis(it.updatedAt)) }
     )
+
+    if (clearProgress) {
+      Timber.d("Clearing progress for shows...")
+      val requestItems = exportEpisodes
+        .mapNotNull { it.idList?.let { id -> SyncExportItem.create(id) } }
+        .distinctBy { it.ids.trakt }
+      cloud.traktApi.postDeleteProgress(token.token, SyncExportRequest(shows = requestItems))
+      delay(DELAY)
+    }
 
     cloud.traktApi.postSyncWatched(token.token, request)
     database.withTransaction {

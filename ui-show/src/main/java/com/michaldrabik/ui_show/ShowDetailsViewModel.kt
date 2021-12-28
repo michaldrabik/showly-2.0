@@ -53,7 +53,7 @@ import com.michaldrabik.ui_show.cases.ShowDetailsWatchlistCase
 import com.michaldrabik.ui_show.episodes.EpisodeListItem
 import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
 import com.michaldrabik.ui_show.helpers.StreamingsBundle
-import com.michaldrabik.ui_show.quickSetup.QuickSetupListItem
+import com.michaldrabik.ui_show.quick_setup.QuickSetupListItem
 import com.michaldrabik.ui_show.related.RelatedListItem
 import com.michaldrabik.ui_show.seasons.SeasonListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -610,6 +610,7 @@ class ShowDetailsViewModel @Inject constructor(
     episode: Episode,
     season: Season,
     isChecked: Boolean,
+    clearProgress: Boolean = false
   ) {
     viewModelScope.launch {
       val bundle = EpisodeBundle(episode, season, show)
@@ -617,7 +618,11 @@ class ShowDetailsViewModel @Inject constructor(
         isChecked -> {
           episodesManager.setEpisodeWatched(bundle)
           if (myShowsCase.isMyShows(show) || watchlistCase.isWatchlist(show) || hiddenCase.isHidden(show)) {
-            quickSyncManager.scheduleEpisodes(listOf(episode.ids.trakt.id))
+            quickSyncManager.scheduleEpisodes(
+              episodesIds = listOf(episode.ids.trakt.id),
+              showId = show.traktId,
+              clearProgress = clearProgress
+            )
           }
         }
         else -> {
@@ -719,14 +724,14 @@ class ShowDetailsViewModel @Inject constructor(
       seasons
         .filter { !it.isSpecial() && it.number < item.season.number }
         .forEach { season ->
-          setWatchedSeason(season, true)
+          setWatchedSeason(season, isChecked = true)
         }
 
       val season = seasons.find { it.number == item.season.number }
       season?.episodes
         ?.filter { it.number <= item.episode.number }
         ?.forEach { episode ->
-          setWatchedEpisode(episode, season, true)
+          setWatchedEpisode(episode, season, isChecked = true, clearProgress = true)
         }
 
       _messageChannel.send(MessageEvent.info(R.string.textShowQuickProgressDone))

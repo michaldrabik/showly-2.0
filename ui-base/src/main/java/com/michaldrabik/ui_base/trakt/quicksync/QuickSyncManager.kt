@@ -22,11 +22,15 @@ class QuickSyncManager @Inject constructor(
   private val workManager: WorkManager
 ) {
 
-  suspend fun scheduleEpisodes(episodesIds: List<Long>) {
+  suspend fun scheduleEpisodes(
+    episodesIds: List<Long>,
+    showId: Long? = null,
+    clearProgress: Boolean = false
+  ) {
     if (!ensureQuickSync()) return
 
     val time = nowUtcMillis()
-    val items = episodesIds.map { TraktSyncQueue.createEpisode(it, time, time) }
+    val items = episodesIds.map { TraktSyncQueue.createEpisode(it, showId, time, time, clearProgress) }
     database.traktSyncQueueDao().insert(items)
     Timber.d("Episodes added into sync queue. Count: ${items.size}")
 

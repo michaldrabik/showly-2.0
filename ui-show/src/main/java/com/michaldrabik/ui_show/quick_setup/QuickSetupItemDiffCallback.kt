@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_show.quickSetup
+package com.michaldrabik.ui_show.quick_setup
 
 import androidx.recyclerview.widget.DiffUtil
 
