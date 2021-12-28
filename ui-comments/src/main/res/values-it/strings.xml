@@ -11,7 +11,7 @@
   <string name="textCommentConfirmDeleteTitle">Elimina commento</string>
   <string name="textCommentConfirmDelete">Sei sicuro di voler eliminare questo commento?</string>
   <string name="textShowRatingDeleted">La tua valutazione è stata rimossa.</string>
-  <string name="textSignBeforeRate">Per favore accedi prima di valutare una serie TV.</string>
+  <string name="textSignBeforeRate">Per favore accedi prima di valutare uno show.</string>
   <string name="textSignBeforeRateMovie">Per favore accedi prima di valutare un film.</string>
   <string name="textRateDelete">Rimuovi</string>
   <string name="errorCommentFormat">Il tuo commento deve essere in inglese e avere 5 o più parole.</string>
