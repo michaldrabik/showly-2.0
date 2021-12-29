@@ -87,6 +87,19 @@
   <string name="textRemoveFromTraktHidden">Você gostaria de remover este item da sua conta Trakt.tv \'Oculto\'?</string>
   <string name="textRemoveFromTraktWatchlist">Você gostaria de remover este item da sua conta do Trakt.tv \"Watchlist\"?</string>
   <string name="textRemoveFromTraktProgress">Você gostaria de remover este item da sua conta do Trakt.tv \"Progresso\"?</string>
+  <string name="textAddToMyShows">Adicionar às minhas séries</string>
+  <string name="textAddToMyMovies">Adicionar aos meus filmes</string>
+  <string name="textAddToWatchlist">Adicionar à Lista de Desejos</string>
+  <string name="textAddToHidden">Adicionar ao Oculto</string>
+  <string name="textMoveToMyShows">Mover para Minhas Séries</string>
+  <string name="textMoveToMyMovies">Mover para Meus filmes</string>
+  <string name="textMoveToWatchlist">Mover para a Lista de Desejos</string>
+  <string name="textMoveToHidden">Mover para Oculto</string>
+  <string name="textRemoveFromMyShows">Remover das Minhas Séries</string>
+  <string name="textRemoveFromMyMovies">Remover dos Meus Filmes</string>
+  <string name="textRemoveFromWatchlist">Remover da Lista de Desejos</string>
+  <string name="textRemoveFromHidden">Remover do Oculto</string>
+  <string name="textWatchlist">Interesses</string>
   <string name="textPremiumAd">Torne-se um apoiador e tenha acesso a recursos premium! Clique para ver mais.</string>
   <string name="menuPin">Fixar no topo</string>
   <string name="menuUnpin">Desafixar do topo</string>
@@ -105,7 +118,4 @@
   <string name="errorTraktSyncGeneral">Erro de sincronização Trakt.tv.\nPor favor, verifique sua conexão com a internet e tente novamente.</string>
   <string name="errorTraktLocked">Sua conta Trakt.tv está bloqueada no momento.\nPor favor, entre em contato com o suporte de Trakt.tv em https://support.trakt.tv/ para desbloquear sua conta.</string>
   <string name="errorSubscriptionsNotAvailable">As assinaturas do Google Play não estão disponíveis neste dispositivo.</string>
-  <string name="textAddToMyShows">Adicionar às minhas séries</string>
-  <string name="textAddToMyMovies">Adicionar aos meus filmes</string>
-  <string name="textWatchlist">Interesses</string>
 </resources>
