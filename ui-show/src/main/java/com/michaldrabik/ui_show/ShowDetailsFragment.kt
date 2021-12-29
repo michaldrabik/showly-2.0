@@ -350,7 +350,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     when (event) {
       is FinishUiEvent -> requireActivity().onBackPressed()
       is RemoveTraktUiEvent -> openRemoveTraktSheet(event)
-      is SeasonTranslationUiEvent -> showDetailsEpisodesView.bindEpisodes(event.item.episodes, animate = false)
     }
   }
 

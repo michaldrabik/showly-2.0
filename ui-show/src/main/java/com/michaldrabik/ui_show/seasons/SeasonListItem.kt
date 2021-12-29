@@ -8,7 +8,8 @@ data class SeasonListItem(
   val show: Show,
   val season: Season,
   val episodes: List<EpisodeListItem>,
-  val isWatched: Boolean
+  val isWatched: Boolean,
+  val updatedAt: Long,
 ) {
 
   val id = season.ids.trakt.id

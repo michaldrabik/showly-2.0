@@ -3,6 +3,7 @@ package com.michaldrabik.ui_show
 import android.annotation.SuppressLint
 import android.content.Context
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_base.Analytics
@@ -20,7 +21,6 @@ import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
-import com.michaldrabik.ui_base.utilities.extensions.replace
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.EpisodeBundle
@@ -59,6 +59,8 @@ import com.michaldrabik.ui_show.seasons.SeasonListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
@@ -117,7 +119,6 @@ class ShowDetailsViewModel @Inject constructor(
 
   private var show by notNull<Show>()
   private var areSeasonsLocal = false
-  private val seasonItems = mutableListOf<SeasonListItem>()
 
   fun loadDetails(id: IdTrakt) {
     viewModelScope.launch {
@@ -237,7 +238,7 @@ class ShowDetailsViewModel @Inject constructor(
           val translation = translationCase.loadTranslation(episode, show, onlyLocal = true)
           EpisodeListItem(episode, it, false, translation, rating, format)
         }
-        SeasonListItem(show, it, episodes, isWatched = false)
+        SeasonListItem(show, it, episodes, isWatched = false, updatedAt = nowUtcMillis())
       }
       .sortedByDescending { it.season.number }
 
@@ -325,9 +326,11 @@ class ShowDetailsViewModel @Inject constructor(
           }
         }
 
-        val updatedItem = seasonItem.copy(episodes = episodes)
+        val updatedItem = seasonItem.copy(episodes = episodes, updatedAt = nowUtcMillis())
+        val seasonItems = seasonsState.value?.toMutableList() ?: mutableListOf()
         seasonItems.findReplace(updatedItem) { it.id == updatedItem.id }
-        _eventChannel.send(SeasonTranslationUiEvent(updatedItem))
+        val calculated = markWatchedEpisodes(seasonItems)
+        seasonsState.value = calculated
       } catch (error: Throwable) {
         Logger.record(error, "Source" to "ShowDetailsViewModel::loadSeasonTranslation()")
         Timber.e(error)
@@ -516,6 +519,7 @@ class ShowDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       if (!checkSeasonsLoaded()) return@launch
 
+      val seasonItems = seasonsState.value?.toList() ?: emptyList()
       val seasons = seasonItems.map { it.season }
       val episodes = seasonItems.flatMap { it.episodes.map { e -> e.episode } }
 
@@ -682,6 +686,7 @@ class ShowDetailsViewModel @Inject constructor(
 
   fun refreshEpisodesRatings() {
     viewModelScope.launch {
+      val seasonItems = seasonsState.value?.toList() ?: emptyList()
       val items = seasonItems.map { seasonItem ->
         val episodes = seasonItem.episodes.map { episodeItem ->
           val rating = ratingsCase.loadRating(episodeItem.episode)
@@ -689,12 +694,12 @@ class ShowDetailsViewModel @Inject constructor(
         }
         seasonItem.copy(episodes = episodes)
       }
-      seasonItems.replace(items)
       seasonsState.value = items
     }
   }
 
   private suspend fun refreshWatchedEpisodes() {
+    val seasonItems = seasonsState.value?.toList() ?: emptyList()
     val updatedSeasonItems = markWatchedEpisodes(seasonItems)
     seasonsState.value = updatedSeasonItems
   }
@@ -705,25 +710,27 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
-  private suspend fun markWatchedEpisodes(seasonsList: List<SeasonListItem>): List<SeasonListItem> {
-    val items = mutableListOf<SeasonListItem>()
+  private suspend fun markWatchedEpisodes(seasonsList: List<SeasonListItem>): List<SeasonListItem> =
+    coroutineScope {
+      val items = mutableListOf<SeasonListItem>()
 
-    val watchedSeasonsIds = episodesManager.getWatchedSeasonsIds(show)
-    val watchedEpisodesIds = episodesManager.getWatchedEpisodesIds(show)
+      val (watchedSeasonsIds, watchedEpisodesIds) = awaitAll(
+        async { episodesManager.getWatchedSeasonsIds(show) },
+        async { episodesManager.getWatchedEpisodesIds(show) }
+      )
 
-    seasonsList.forEach { item ->
-      val isSeasonWatched = watchedSeasonsIds.any { id -> id == item.id }
-      val episodes = item.episodes.map { episodeItem ->
-        val isEpisodeWatched = watchedEpisodesIds.any { id -> id == episodeItem.id }
-        episodeItem.copy(season = item.season, isWatched = isEpisodeWatched)
+      seasonsList.forEach { item ->
+        val isSeasonWatched = watchedSeasonsIds.any { id -> id == item.id }
+        val episodes = item.episodes.map { episodeItem ->
+          val isEpisodeWatched = watchedEpisodesIds.any { id -> id == episodeItem.id }
+          episodeItem.copy(season = item.season, isWatched = isEpisodeWatched)
+        }
+        val updated = item.copy(episodes = episodes, isWatched = isSeasonWatched)
+        items.add(updated)
       }
-      val updated = item.copy(episodes = episodes, isWatched = isSeasonWatched)
-      items.add(updated)
-    }
 
-    seasonItems.replace(items)
-    return items
-  }
+      items
+    }
 
   fun refreshAnnouncements() {
     viewModelScope.launch {
@@ -739,6 +746,7 @@ class ShowDetailsViewModel @Inject constructor(
       if (item == null || !checkSeasonsLoaded()) return@launch
 
       episodesManager.setAllUnwatched(show.ids.trakt, skipSpecials = true)
+      val seasonItems = seasonsState.value?.toList() ?: emptyList()
       val seasons = seasonItems.map { it.season }
       seasons
         .filter { !it.isSpecial() && it.number < item.season.number }
