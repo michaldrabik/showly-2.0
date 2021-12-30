@@ -3,6 +3,8 @@ package com.michaldrabik.ui_base.common.sheets.sort_order.views
 import android.content.Context
 import android.graphics.Typeface
 import android.util.AttributeSet
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.utilities.extensions.addRipple
@@ -28,6 +30,7 @@ class SortOrderItemView : ConstraintLayout {
 
   init {
     inflate(context, R.layout.view_sort_order_item, this)
+    layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     val paddingHorizontal = context.dimenToPx(R.dimen.spaceNormal)
     setPadding(paddingHorizontal, 0, paddingHorizontal, 0)
     addRipple()
