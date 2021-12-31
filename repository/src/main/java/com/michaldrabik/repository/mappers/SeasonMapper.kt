@@ -26,6 +26,18 @@ class SeasonMapper @Inject constructor(
     season.episodes?.map { episodeMapper.fromNetwork(it) } ?: emptyList()
   )
 
+  fun toNetwork(season: Season) = SeasonNetwork(
+    ids = idsMapper.toNetwork(season.ids),
+    number = season.number,
+    episode_count = season.episodeCount,
+    aired_episodes = season.airedEpisodes,
+    title = season.title,
+    first_aired = season.firstAired.toString(),
+    overview = season.overview,
+    rating = season.rating,
+    episodes = season.episodes.map { episodeMapper.toNetwork(it) }
+  )
+
   fun fromDatabase(seasonDb: SeasonDb, episodes: List<Episode> = emptyList()) = Season(
     Ids.EMPTY.copy(trakt = IdTrakt(seasonDb.idTrakt)),
     seasonDb.seasonNumber,

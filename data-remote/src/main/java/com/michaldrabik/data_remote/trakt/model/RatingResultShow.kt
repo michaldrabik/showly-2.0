@@ -12,3 +12,10 @@ data class RatingResultEpisode(
   val episode: RatingResultValue,
   val show: RatingResultValue
 )
+
+data class RatingResultSeason(
+  val rating: Int,
+  val rated_at: String?,
+  val season: RatingResultValue,
+  val show: RatingResultValue
+)

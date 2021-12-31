@@ -468,7 +468,7 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
-  fun addRating(rating: Int) {
+  fun addShowRating(rating: Int) {
     viewModelScope.launch {
       try {
         ratingState.value = RatingState(rateLoading = true, rateAllowed = true)
@@ -486,7 +486,7 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
-  fun deleteRating() {
+  fun deleteShowRating() {
     viewModelScope.launch {
       try {
         ratingState.value = RatingState(rateLoading = true, rateAllowed = true)

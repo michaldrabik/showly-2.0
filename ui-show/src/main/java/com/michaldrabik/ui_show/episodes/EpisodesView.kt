@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.setCheckedSilent
+import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Season
@@ -71,6 +72,12 @@ class EpisodesView : ConstraintLayout {
     episodesSeasonRating.visibleIf(seasonRating > 0F)
     episodesSeasonRating.text = String.format(ENGLISH, "%.1f", seasonRating)
 
+    seasonItem.userRating?.let {
+      episodesSeasonMyStarIcon.visible()
+      episodesSeasonMyRating.visible()
+      episodesSeasonMyRating.text = String.format(ENGLISH, "%d", seasonItem.userRating.rating)
+    }
+
     episodesUnlockButton.visibleIf(!seasonItem.season.isSpecial() && seasonItem.episodes.any { !it.episode.hasAired(season) })
     episodesUnlockButton.onClick(safe = false) { toggleEpisodesLock() }
   }
@@ -115,6 +122,8 @@ class EpisodesView : ConstraintLayout {
     episodesUnlockButton.setOnClickListener(null)
     episodesUnlockButton.setImageResource(R.drawable.ic_locked)
     episodesUnlockButton.gone()
+    episodesSeasonMyStarIcon.gone()
+    episodesSeasonMyRating.gone()
     episodesAdapter.clearItems()
   }
 }

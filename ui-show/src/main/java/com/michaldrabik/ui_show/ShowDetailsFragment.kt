@@ -786,11 +786,11 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     MaterialAlertDialogBuilder(context, R.style.AlertDialog)
       .setBackground(ContextCompat.getDrawable(context, R.drawable.bg_dialog))
       .setView(rateView)
-      .setPositiveButton(R.string.textRate) { _, _ -> viewModel.addRating(rateView.getRating()) }
+      .setPositiveButton(R.string.textRate) { _, _ -> viewModel.addShowRating(rateView.getRating()) }
       .setNegativeButton(R.string.textCancel) { _, _ -> }
       .apply {
         if (showRemove) {
-          setNeutralButton(R.string.textRateDelete) { _, _ -> viewModel.deleteRating() }
+          setNeutralButton(R.string.textRateDelete) { _, _ -> viewModel.deleteShowRating() }
         }
       }
       .show()

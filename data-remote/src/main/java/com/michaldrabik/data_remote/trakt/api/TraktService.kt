@@ -11,6 +11,7 @@ import com.michaldrabik.data_remote.trakt.model.OAuthResponse
 import com.michaldrabik.data_remote.trakt.model.PersonCreditsResult
 import com.michaldrabik.data_remote.trakt.model.RatingResultEpisode
 import com.michaldrabik.data_remote.trakt.model.RatingResultMovie
+import com.michaldrabik.data_remote.trakt.model.RatingResultSeason
 import com.michaldrabik.data_remote.trakt.model.RatingResultShow
 import com.michaldrabik.data_remote.trakt.model.SearchResult
 import com.michaldrabik.data_remote.trakt.model.Season
@@ -342,4 +343,9 @@ interface TraktService {
   suspend fun fetchEpisodesRatings(
     @Header("Authorization") authToken: String
   ): List<RatingResultEpisode>
+
+  @GET("sync/ratings/seasons")
+  suspend fun fetchSeasonsRatings(
+    @Header("Authorization") authToken: String
+  ): List<RatingResultSeason>
 }

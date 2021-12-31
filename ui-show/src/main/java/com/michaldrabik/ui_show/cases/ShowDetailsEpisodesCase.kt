@@ -78,8 +78,10 @@ class ShowDetailsEpisodesCase @Inject constructor(
 
   private suspend fun mapToSeasonItems(remoteSeasons: List<Season>, show: Show) = coroutineScope {
     val format = dateFormatProvider.loadFullHourFormat()
+    val seasonsRatings = ratingsRepository.shows.loadRatingsSeasons(remoteSeasons)
     remoteSeasons
       .map {
+        val userRating = seasonsRatings.find { rating -> rating.idTrakt == it.ids.trakt }
         val episodes = it.episodes.map { episode ->
           async {
             val rating = ratingsRepository.shows.loadRating(episode)
@@ -87,7 +89,7 @@ class ShowDetailsEpisodesCase @Inject constructor(
             EpisodeListItem(episode, it, false, translation, rating, format)
           }
         }.awaitAll()
-        SeasonListItem(show, it, episodes, isWatched = false, updatedAt = nowUtcMillis())
+        SeasonListItem(show, it, episodes, isWatched = false, userRating = userRating, updatedAt = nowUtcMillis())
       }
       .sortedByDescending { it.season.number }
   }

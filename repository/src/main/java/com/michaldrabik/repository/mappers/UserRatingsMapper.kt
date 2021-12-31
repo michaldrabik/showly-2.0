@@ -4,10 +4,12 @@ import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.data_local.database.model.Rating
 import com.michaldrabik.data_remote.trakt.model.RatingResultEpisode
 import com.michaldrabik.data_remote.trakt.model.RatingResultMovie
+import com.michaldrabik.data_remote.trakt.model.RatingResultSeason
 import com.michaldrabik.data_remote.trakt.model.RatingResultShow
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Movie
+import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.TraktRating
 import java.time.ZonedDateTime
@@ -100,6 +102,34 @@ class UserRatingsMapper @Inject constructor() {
     rating = rating,
     seasonNumber = episode.season,
     episodeNumber = episode.number,
+    ratedAt = ratedAt,
+    createdAt = nowUtc(),
+    updatedAt = nowUtc()
+  )
+
+  fun toDatabaseSeason(
+    rating: RatingResultSeason
+  ) = Rating(
+    idTrakt = rating.season.ids.trakt!!,
+    type = "season",
+    rating = rating.rating,
+    seasonNumber = rating.season.season,
+    episodeNumber = rating.season.number,
+    ratedAt = ZonedDateTime.parse(rating.rated_at),
+    createdAt = nowUtc(),
+    updatedAt = nowUtc()
+  )
+
+  fun toDatabaseSeason(
+    season: Season,
+    rating: Int,
+    ratedAt: ZonedDateTime
+  ) = Rating(
+    idTrakt = season.ids.trakt.id,
+    type = "season",
+    rating = rating,
+    seasonNumber = season.number,
+    episodeNumber = null,
     ratedAt = ratedAt,
     createdAt = nowUtc(),
     updatedAt = nowUtc()
