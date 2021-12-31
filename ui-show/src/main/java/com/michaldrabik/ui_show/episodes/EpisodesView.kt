@@ -65,6 +65,12 @@ class EpisodesView : ConstraintLayout {
       }
       jumpDrawablesToCurrentState()
     }
+
+    val seasonRating = seasonItem.season.rating
+    episodesStarIcon.visibleIf(seasonRating > 0F)
+    episodesSeasonRating.visibleIf(seasonRating > 0F)
+    episodesSeasonRating.text = String.format(ENGLISH, "%.1f", seasonRating)
+
     episodesUnlockButton.visibleIf(!seasonItem.season.isSpecial() && seasonItem.episodes.any { !it.episode.hasAired(season) })
     episodesUnlockButton.onClick(safe = false) { toggleEpisodesLock() }
   }

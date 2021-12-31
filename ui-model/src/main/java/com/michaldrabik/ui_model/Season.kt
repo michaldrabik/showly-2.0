@@ -10,6 +10,7 @@ data class Season(
   val title: String,
   val firstAired: ZonedDateTime?,
   val overview: String,
+  val rating: Float,
   val episodes: List<Episode>
 ) {
 
@@ -22,6 +23,7 @@ data class Season(
       title = "",
       firstAired = null,
       overview = "",
+      rating = 0F,
       episodes = listOf()
     )
   }

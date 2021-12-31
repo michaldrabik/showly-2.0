@@ -50,7 +50,6 @@ import com.michaldrabik.ui_show.cases.ShowDetailsRelatedShowsCase
 import com.michaldrabik.ui_show.cases.ShowDetailsStreamingCase
 import com.michaldrabik.ui_show.cases.ShowDetailsTranslationCase
 import com.michaldrabik.ui_show.cases.ShowDetailsWatchlistCase
-import com.michaldrabik.ui_show.episodes.EpisodeListItem
 import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
 import com.michaldrabik.ui_show.helpers.StreamingsBundle
 import com.michaldrabik.ui_show.quick_setup.QuickSetupListItem
@@ -230,19 +229,7 @@ class ShowDetailsViewModel @Inject constructor(
   private suspend fun loadSeasons(show: Show, isOnline: Boolean) = try {
     val (seasons, isLocal) = episodesCase.loadSeasons(show, isOnline)
     areSeasonsLocal = isLocal
-    val format = dateFormatProvider.loadFullHourFormat()
-    val seasonsItems = seasons
-      .map {
-        val episodes = it.episodes.map { episode ->
-          val rating = ratingsCase.loadRating(episode)
-          val translation = translationCase.loadTranslation(episode, show, onlyLocal = true)
-          EpisodeListItem(episode, it, false, translation, rating, format)
-        }
-        SeasonListItem(show, it, episodes, isWatched = false, updatedAt = nowUtcMillis())
-      }
-      .sortedByDescending { it.season.number }
-
-    val calculated = markWatchedEpisodes(seasonsItems)
+    val calculated = markWatchedEpisodes(seasons)
     seasonsState.value = calculated
   } catch (error: Throwable) {
     seasonsState.value = emptyList()

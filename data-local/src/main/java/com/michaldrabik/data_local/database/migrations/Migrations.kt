@@ -608,6 +608,8 @@ object Migrations {
             "PRIMARY KEY (id_trakt, type))"
         )
         execSQL("CREATE INDEX index_ratings_id_trakt_type ON ratings(id_trakt, type)")
+
+        execSQL("ALTER TABLE seasons ADD COLUMN rating REAL")
       }
     }
   }
