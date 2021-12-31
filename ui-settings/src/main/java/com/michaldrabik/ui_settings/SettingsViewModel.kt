@@ -221,7 +221,7 @@ class SettingsViewModel @Inject constructor(
 
   fun setTraktSyncSchedule(schedule: TraktSyncSchedule, context: Context) {
     viewModelScope.launch {
-      traktCase.setTraktSyncSchedule(schedule, context)
+      traktCase.setTraktSyncSchedule(schedule)
       refreshSettings()
     }
   }

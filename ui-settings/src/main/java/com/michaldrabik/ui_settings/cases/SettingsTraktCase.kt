@@ -43,7 +43,7 @@ class SettingsTraktCase @Inject constructor(
     }
   }
 
-  suspend fun setTraktSyncSchedule(schedule: TraktSyncSchedule, context: Context) {
+  suspend fun setTraktSyncSchedule(schedule: TraktSyncSchedule) {
     val settings = settingsRepository.load()
     settings.let {
       val new = it.copy(traktSyncSchedule = schedule)
@@ -72,7 +72,7 @@ class SettingsTraktCase @Inject constructor(
         )
         settingsRepository.update(new)
       }
-      setTraktSyncSchedule(TraktSyncSchedule.OFF, context)
+      setTraktSyncSchedule(TraktSyncSchedule.OFF)
     }
 
     userManager.revokeToken()

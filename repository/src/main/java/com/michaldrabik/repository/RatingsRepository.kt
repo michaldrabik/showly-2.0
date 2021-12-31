@@ -11,7 +11,7 @@ class RatingsRepository @Inject constructor(
   val movies: MoviesRatingsRepository,
 ) {
 
-  fun clear() {
+  suspend fun clear() {
     shows.clear()
     movies.clear()
   }

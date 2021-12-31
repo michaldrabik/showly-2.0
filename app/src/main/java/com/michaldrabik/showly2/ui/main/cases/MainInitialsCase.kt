@@ -14,14 +14,13 @@ import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.showly2.BuildConfig
-import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.fcm.NotificationChannel
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import timber.log.Timber
 import java.util.Locale
@@ -109,21 +108,17 @@ class MainInitialsCase @Inject constructor(
   }
 
   suspend fun preloadRatings() = supervisorScope {
-    try {
-      if (!userTraktManager.isAuthorized()) return@supervisorScope
-      val token = userTraktManager.checkAuthorization().token
+    val errorHandler = CoroutineExceptionHandler { _, _ -> Timber.e("Failed to preload.") }
 
-      awaitAll(
-        async { ratingsRepository.shows.preloadShowsRatings(token) },
-        async { ratingsRepository.shows.preloadEpisodesRatings(token) },
-        async {
-          if (settingsRepository.isMoviesEnabled) {
-            ratingsRepository.movies.preloadMoviesRatings(token)
-          }
-        }
-      )
-    } catch (error: Throwable) {
-      Logger.record(error, "Source" to "MainInitialsCase::initRatings()")
+    if (!userTraktManager.isAuthorized()) {
+      return@supervisorScope
+    }
+
+    val token = userTraktManager.checkAuthorization().token
+    launch(errorHandler) { ratingsRepository.shows.preloadShowsRatings(token) }
+    launch(errorHandler) { ratingsRepository.shows.preloadEpisodesRatings(token) }
+    if (settingsRepository.isMoviesEnabled) {
+      launch(errorHandler) { ratingsRepository.movies.preloadMoviesRatings(token) }
     }
   }
 

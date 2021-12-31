@@ -32,7 +32,6 @@ class MainMiscCase @Inject constructor(
   }
 
   fun clear() {
-    ratingsRepository.clear()
     showImagesProvider.clear()
     movieImagesProvider.clear()
     Timber.d("Clearing...")

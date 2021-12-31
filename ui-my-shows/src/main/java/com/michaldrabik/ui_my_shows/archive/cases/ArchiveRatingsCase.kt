@@ -13,14 +13,13 @@ class ArchiveRatingsCase @Inject constructor(
 ) {
 
   suspend fun loadRatings(items: List<ArchiveListItem>): List<ArchiveListItem> {
-    if (!userTraktManager.isAuthorized()) return items
+    if (!userTraktManager.isAuthorized()) {
+      return items
+    }
 
-    val token = userTraktManager.checkAuthorization().token
-    ratingsRepository.shows.preloadShowsRatings(token)
-
-    return items.map {
-      val rating = ratingsRepository.shows.loadRating(token, it.show)
-      it.copy(userRating = rating?.rating)
+    val ratings = ratingsRepository.shows.loadRatings(items.map { it.show })
+    return items.map { item ->
+      item.copy(userRating = ratings.find { item.show.traktId == it.idTrakt.id }?.rating)
     }
   }
 }

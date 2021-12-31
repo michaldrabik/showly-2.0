@@ -255,8 +255,7 @@ class EpisodeDetailsViewModel @Inject constructor(
           return@launch
         }
         ratingState.value = RatingState(rateAllowed = true, rateLoading = true)
-        val token = userTraktManager.checkAuthorization()
-        val rating = ratingsRepository.shows.loadRating(token.token, episode)
+        val rating = ratingsRepository.shows.loadRating(episode)
         ratingState.value = RatingState(rateAllowed = true, rateLoading = false, userRating = rating)
       } catch (error: Throwable) {
         ratingState.value = RatingState(rateAllowed = false, rateLoading = false)

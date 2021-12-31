@@ -25,6 +25,7 @@ import com.michaldrabik.data_local.database.dao.PeopleCreditsDao
 import com.michaldrabik.data_local.database.dao.PeopleDao
 import com.michaldrabik.data_local.database.dao.PeopleImagesDao
 import com.michaldrabik.data_local.database.dao.PeopleShowsMoviesDao
+import com.michaldrabik.data_local.database.dao.RatingsDao
 import com.michaldrabik.data_local.database.dao.RecentSearchDao
 import com.michaldrabik.data_local.database.dao.RelatedMoviesDao
 import com.michaldrabik.data_local.database.dao.RelatedShowsDao
@@ -66,6 +67,7 @@ import com.michaldrabik.data_local.database.model.Person
 import com.michaldrabik.data_local.database.model.PersonCredits
 import com.michaldrabik.data_local.database.model.PersonImage
 import com.michaldrabik.data_local.database.model.PersonShowMovie
+import com.michaldrabik.data_local.database.model.Rating
 import com.michaldrabik.data_local.database.model.RecentSearch
 import com.michaldrabik.data_local.database.model.RelatedMovie
 import com.michaldrabik.data_local.database.model.RelatedShow
@@ -123,6 +125,7 @@ import com.michaldrabik.data_local.database.model.WatchlistShow
     CustomList::class,
     CustomListItem::class,
     News::class,
+    Rating::class,
     ShowRatings::class,
     MovieRatings::class,
     ShowStreaming::class,
@@ -195,6 +198,8 @@ abstract class AppDatabase : RoomDatabase() {
   abstract fun showTranslationsDao(): ShowTranslationsDao
 
   abstract fun movieTranslationsDao(): MovieTranslationsDao
+
+  abstract fun ratingsDao(): RatingsDao
 
   abstract fun showRatingsDao(): ShowRatingsDao
 

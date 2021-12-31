@@ -73,7 +73,7 @@ class StatisticsLoadRatingsCaseTest : BaseMockTest() {
 
     coEvery { userTraktManager.checkAuthorization() } returns TraktAuthToken("test")
     coEvery { userTraktManager.isAuthorized() } returns true
-    coEvery { ratingsRepository.shows.loadShowsRatings(any()) } returns ratings
+    coEvery { ratingsRepository.shows.loadShowsRatings() } returns ratings
     coEvery { showsRepository.myShows.loadAll(any()) } returns shows
     coEvery { showImagesProvider.findCachedImage(any(), any()) } returns image
 

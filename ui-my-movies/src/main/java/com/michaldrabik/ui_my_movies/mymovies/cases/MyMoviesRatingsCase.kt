@@ -15,12 +15,9 @@ class MyMoviesRatingsCase @Inject constructor(
   suspend fun loadRatings(items: MutableList<MyMoviesItem>): List<MyMoviesItem> {
     if (!userTraktManager.isAuthorized()) return items
 
-    val token = userTraktManager.checkAuthorization().token
-    ratingsRepository.movies.preloadMoviesRatings(token)
-
-    return items.map {
-      val rating = ratingsRepository.movies.loadRating(token, it.movie)
-      it.copy(userRating = rating?.rating)
+    val ratings = ratingsRepository.movies.loadRatings(items.map { it.movie })
+    return items.map { item ->
+      item.copy(userRating = ratings.find { item.movie.traktId == it.idTrakt.id }?.rating)
     }
   }
 }

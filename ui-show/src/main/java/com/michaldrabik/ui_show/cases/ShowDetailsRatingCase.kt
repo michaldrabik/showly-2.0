@@ -4,7 +4,6 @@ import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Show
-import com.michaldrabik.ui_model.TraktRating
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
@@ -24,12 +23,10 @@ class ShowDetailsRatingCase @Inject constructor(
     ratingsRepository.shows.deleteRating(token, show)
   }
 
-  suspend fun loadRating(show: Show): TraktRating? {
-    val token = userTraktManager.checkAuthorization().token
-    return ratingsRepository.shows.loadRating(token, show)
-  }
+  suspend fun loadRating(show: Show) =
+    ratingsRepository.shows.loadRatings(listOf(show)).firstOrNull()
 
-  fun loadRating(episode: Episode) =
+  suspend fun loadRating(episode: Episode) =
     ratingsRepository.shows.loadRating(episode)
 
   suspend fun loadExternalRatings(show: Show) =

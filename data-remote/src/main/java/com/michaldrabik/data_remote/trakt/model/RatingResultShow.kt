@@ -8,5 +8,7 @@ data class RatingResultShow(
 
 data class RatingResultEpisode(
   val rating: Int,
-  val episode: RatingResultValue
+  val rated_at: String?,
+  val episode: RatingResultValue,
+  val show: RatingResultValue
 )

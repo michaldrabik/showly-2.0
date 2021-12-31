@@ -15,12 +15,9 @@ class HiddenRatingsCase @Inject constructor(
   suspend fun loadRatings(items: List<HiddenListItem>): List<HiddenListItem> {
     if (!userTraktManager.isAuthorized()) return items
 
-    val token = userTraktManager.checkAuthorization().token
-    ratingsRepository.shows.preloadShowsRatings(token)
-
-    return items.map {
-      val rating = ratingsRepository.movies.loadRating(token, it.movie)
-      it.copy(userRating = rating?.rating)
+    val ratings = ratingsRepository.movies.loadRatings(items.map { it.movie })
+    return items.map { item ->
+      item.copy(userRating = ratings.find { item.movie.traktId == it.idTrakt.id }?.rating)
     }
   }
 }

@@ -3,7 +3,6 @@ package com.michaldrabik.ui_movie.cases
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_model.Movie
-import com.michaldrabik.ui_model.TraktRating
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
@@ -23,10 +22,8 @@ class MovieDetailsRatingCase @Inject constructor(
     ratingsRepository.movies.deleteRating(token, movie)
   }
 
-  suspend fun loadRating(movie: Movie): TraktRating? {
-    val token = userTraktManager.checkAuthorization().token
-    return ratingsRepository.movies.loadRating(token, movie)
-  }
+  suspend fun loadRating(movie: Movie) =
+    ratingsRepository.movies.loadRatings(listOf(movie)).firstOrNull()
 
   suspend fun loadExternalRatings(movie: Movie) =
     ratingsRepository.movies.external.loadRatings(movie)
