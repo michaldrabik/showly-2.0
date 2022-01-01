@@ -108,4 +108,6 @@
   <string name="textAddToMyShows">Lisää omiin sarjoihin</string>
   <string name="textAddToMyMovies">Lisää omiin elokuviin</string>
   <string name="textWatchlist">Katselulista</string>
+  <string name="textRemove">Poista</string>
+  <string name="textRateRemoved">Arviosi poistettiin.</string>
 </resources>

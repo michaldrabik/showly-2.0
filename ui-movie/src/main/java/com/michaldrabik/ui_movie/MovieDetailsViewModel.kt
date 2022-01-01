@@ -10,7 +10,6 @@ import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
-import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.combine
@@ -68,7 +67,6 @@ class MovieDetailsViewModel @Inject constructor(
   private val streamingCase: MovieDetailsStreamingCase,
   private val settingsRepository: SettingsRepository,
   private val userManager: UserTraktManager,
-  private val quickSyncManager: QuickSyncManager,
   private val imagesProvider: MovieImagesProvider,
   private val dateFormatProvider: DateFormatProvider,
   private val announcementManager: AnnouncementManager,
@@ -132,12 +130,12 @@ class MovieDetailsViewModel @Inject constructor(
 
         loadBackgroundImage(movie)
         loadListsCount(movie)
+        loadRating()
         launch { loadRatings(movie) }
         launch { loadCastCrew(movie) }
         launch { loadStreamings(movie) }
         launch { loadRelatedMovies(movie) }
         launch { loadTranslation(movie) }
-        launch { loadRating(movie, isSignedIn) }
       } catch (error: Throwable) {
         progressJob.cancel()
         if (error is HttpException && error.code() == 404) {
@@ -368,47 +366,16 @@ class MovieDetailsViewModel @Inject constructor(
     }
   }
 
-  private suspend fun loadRating(movie: Movie, isSignedIn: Boolean) {
-    if (!isSignedIn) return
-    try {
-      ratingState.value = RatingState(rateLoading = true, rateAllowed = isSignedIn)
-      val rating = ratingsCase.loadRating(movie)
-      ratingState.value = RatingState(rateLoading = false, rateAllowed = isSignedIn, userRating = rating ?: TraktRating.EMPTY)
-    } catch (error: Throwable) {
-      ratingState.value = RatingState(rateLoading = false, rateAllowed = isSignedIn)
-      rethrowCancellation(error)
-    }
-  }
-
-  fun addRating(rating: Int) {
+  fun loadRating() {
     viewModelScope.launch {
+      val isSignedIn = userManager.isAuthorized()
+      if (!isSignedIn) return@launch
       try {
-        ratingState.value = RatingState(rateLoading = true, rateAllowed = true)
-        ratingsCase.addRating(movie, rating)
-        val userRating = TraktRating(movie.ids.trakt, rating)
-        ratingState.value = RatingState(rateLoading = false, rateAllowed = true, userRating = userRating)
-        _messageChannel.send(MessageEvent.info(R.string.textRateSaved))
-        Analytics.logMovieRated(movie, rating)
+        ratingState.value = RatingState(rateLoading = true, rateAllowed = isSignedIn)
+        val rating = ratingsCase.loadRating(movie)
+        ratingState.value = RatingState(rateLoading = false, rateAllowed = isSignedIn, userRating = rating ?: TraktRating.EMPTY)
       } catch (error: Throwable) {
-        ratingState.value = RatingState(rateLoading = false, rateAllowed = true)
-        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
-        Timber.e(error)
-        rethrowCancellation(error)
-      }
-    }
-  }
-
-  fun deleteRating() {
-    viewModelScope.launch {
-      try {
-        ratingState.value = RatingState(rateLoading = true, rateAllowed = true)
-        ratingsCase.deleteRating(movie)
-        ratingState.value = RatingState(rateLoading = false, rateAllowed = true, userRating = TraktRating.EMPTY)
-        _messageChannel.send(MessageEvent.info(R.string.textShowRatingDeleted))
-      } catch (error: Throwable) {
-        ratingState.value = RatingState(rateLoading = false, rateAllowed = true)
-        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
-        Timber.e(error)
+        ratingState.value = RatingState(rateLoading = false, rateAllowed = isSignedIn)
         rethrowCancellation(error)
       }
     }

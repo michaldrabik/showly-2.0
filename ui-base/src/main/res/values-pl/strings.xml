@@ -116,4 +116,6 @@
   <string name="textAddToMyShows">Dodaj do moich</string>
   <string name="textAddToMyMovies">Dodaj do moich</string>
   <string name="textWatchlist">Na Później</string>
+  <string name="textRemove">Usuń</string>
+  <string name="textRateRemoved">Ocena została usunięta.</string>
 </resources>

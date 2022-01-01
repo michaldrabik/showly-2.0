@@ -4,8 +4,6 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.core.view.setPadding
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.setFragmentResultListener
@@ -16,7 +14,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
@@ -24,8 +21,8 @@ import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
-import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.trakt.TraktSyncService
+import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -34,7 +31,6 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
-import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.EPISODES_LEFT
 import com.michaldrabik.ui_model.SortOrder.NAME
@@ -48,10 +44,10 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_SORT_ORDER
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.helpers.TopOverscrollAdapter
+import com.michaldrabik.ui_progress.main.EpisodeCheckActionUiEvent
 import com.michaldrabik.ui_progress.main.ProgressMainFragment
 import com.michaldrabik.ui_progress.main.ProgressMainViewModel
 import com.michaldrabik.ui_progress.progress.recycler.ProgressAdapter
-import com.michaldrabik.ui_progress.progress.recycler.ProgressListItem
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import kotlinx.android.synthetic.main.fragment_progress.*
@@ -100,7 +96,7 @@ class ProgressFragment :
         with(viewModel) {
           launch { uiState.collect { render(it) } }
           launch { messageChannel.collect { showSnack(it) } }
-          checkQuickRateEnabled()
+          launch { eventChannel.collect { handleEvent(it) } }
         }
       }
     }
@@ -130,12 +126,7 @@ class ProgressFragment :
         requireMainFragment().openEpisodeDetails(it.show, it.requireEpisode(), it.requireSeason())
       }
       checkClickListener = {
-        if (viewModel.isQuickRateEnabled) {
-          openRateDialog(it)
-        } else {
-          val bundle = EpisodeBundle(it.episode!!, it.season!!, it.show)
-          parentViewModel.setWatchedEpisode(bundle)
-        }
+        viewModel.onEpisodeChecked(it)
       }
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
       missingTranslationListener = { viewModel.findMissingTranslation(it) }
@@ -215,24 +206,6 @@ class ProgressFragment :
     }
   }
 
-  private fun openRateDialog(item: ProgressListItem.Episode) {
-    val context = requireContext()
-    val rateView = RateView(context).apply {
-      setPadding(context.dimenToPx(R.dimen.spaceNormal))
-      setRating(5)
-    }
-    MaterialAlertDialogBuilder(context, R.style.AlertDialog)
-      .setBackground(ContextCompat.getDrawable(context, R.drawable.bg_dialog))
-      .setView(rateView)
-      .setPositiveButton(R.string.textRate) { _, _ ->
-        val bundle = EpisodeBundle(item.requireEpisode(), item.requireSeason(), item.show)
-        parentViewModel.setWatchedEpisode(bundle)
-        viewModel.addRating(rateView.getRating(), item.requireEpisode(), item.show.ids.trakt)
-      }
-      .setNegativeButton(R.string.textCancel) { _, _ -> }
-      .show()
-  }
-
   private fun openSortOrderDialog(order: SortOrder, type: SortType) {
     val options = listOf(NAME, RATING, NEWEST, RECENTLY_WATCHED, EPISODES_LEFT)
     val args = SortOrderBottomSheet.createBundle(options, order, type)
@@ -263,6 +236,15 @@ class ProgressFragment :
     progressRecycler.smoothScrollToPosition(0)
 
     setupOverscroll()
+  }
+
+  private fun handleEvent(event: Event<*>) {
+    when (event) {
+      is EpisodeCheckActionUiEvent -> {
+        if (event.isQuickRate) requireMainFragment().openRateDialog(event.episode)
+        else parentViewModel.setWatchedEpisode(event.episode)
+      }
+    }
   }
 
   private fun render(uiState: ProgressUiState) {

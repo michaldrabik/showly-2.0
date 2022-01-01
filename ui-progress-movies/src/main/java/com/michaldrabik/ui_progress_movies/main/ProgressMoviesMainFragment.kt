@@ -18,7 +18,11 @@ import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
+import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet
+import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Operation
+import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Type
 import com.michaldrabik.ui_base.common.views.exSearchLocalViewInput
+import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.disableUi
@@ -209,6 +213,18 @@ class ProgressMoviesMainFragment :
     }
     val bundle = ContextMenuBottomSheet.createBundle(movie.ids.trakt, showPinButtons)
     navigateTo(R.id.actionProgressMoviesFragmentToItemMenu, bundle)
+  }
+
+  fun openRateDialog(movie: Movie) {
+    setFragmentResultListener(NavigationArgs.REQUEST_RATING) { _, bundle ->
+      when (bundle.getParcelable<Operation>(NavigationArgs.RESULT)) {
+        Operation.SAVE -> showSnack(MessageEvent.info(R.string.textRateSaved))
+        Operation.REMOVE -> showSnack(MessageEvent.info(R.string.textRateRemoved))
+      }
+      viewModel.setWatchedMovie(movie)
+    }
+    val bundle = RatingsBottomSheet.createBundle(movie.ids.trakt, Type.MOVIE)
+    navigateTo(R.id.actionProgressMoviesFragmentToRating, bundle)
   }
 
   private fun openSettings() {

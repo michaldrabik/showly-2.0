@@ -152,7 +152,7 @@ class ShowDetailsViewModel @Inject constructor(
 
         loadBackgroundImage(show)
         loadListsCount(show)
-        launch { loadRating(show, isSignedIn) }
+        loadRating()
         launch { loadRatings(show) }
         launch { loadStreamings(show) }
         launch { loadCastCrew(show) }
@@ -456,47 +456,16 @@ class ShowDetailsViewModel @Inject constructor(
     premiumState.value = settingsRepository.isPremium
   }
 
-  private suspend fun loadRating(show: Show, isSignedIn: Boolean) {
-    if (!isSignedIn) return
-    try {
-      ratingState.value = RatingState(rateLoading = true, rateAllowed = isSignedIn)
-      val rating = ratingsCase.loadRating(show)
-      ratingState.value = RatingState(rateLoading = false, rateAllowed = isSignedIn, userRating = rating ?: TraktRating.EMPTY)
-    } catch (error: Throwable) {
-      ratingState.value = RatingState(rateLoading = false, rateAllowed = isSignedIn)
-      rethrowCancellation(error)
-    }
-  }
-
-  fun addShowRating(rating: Int) {
+  fun loadRating() {
     viewModelScope.launch {
+      val isSignedIn = userManager.isAuthorized()
+      if (!isSignedIn) return@launch
       try {
-        ratingState.value = RatingState(rateLoading = true, rateAllowed = true)
-        ratingsCase.addRating(show, rating)
-        val userRating = TraktRating(show.ids.trakt, rating)
-        ratingState.value = RatingState(rateLoading = false, rateAllowed = true, userRating = userRating)
-        _messageChannel.send(MessageEvent.info(R.string.textRateSaved))
-        Analytics.logShowRated(show, rating)
+        ratingState.value = RatingState(rateLoading = true, rateAllowed = isSignedIn)
+        val rating = ratingsCase.loadRating(show)
+        ratingState.value = RatingState(rateLoading = false, rateAllowed = isSignedIn, userRating = rating ?: TraktRating.EMPTY)
       } catch (error: Throwable) {
-        ratingState.value = RatingState(rateLoading = false, rateAllowed = true)
-        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
-        Timber.e(error)
-        rethrowCancellation(error)
-      }
-    }
-  }
-
-  fun deleteShowRating() {
-    viewModelScope.launch {
-      try {
-        ratingState.value = RatingState(rateLoading = true, rateAllowed = true)
-        ratingsCase.deleteRating(show)
-        ratingState.value = RatingState(rateLoading = false, rateAllowed = true, userRating = TraktRating.EMPTY)
-        _messageChannel.send(MessageEvent.info(R.string.textShowRatingDeleted))
-      } catch (error: Throwable) {
-        ratingState.value = RatingState(rateLoading = false, rateAllowed = true)
-        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
-        Timber.e(error)
+        ratingState.value = RatingState(rateLoading = false, rateAllowed = isSignedIn)
         rethrowCancellation(error)
       }
     }

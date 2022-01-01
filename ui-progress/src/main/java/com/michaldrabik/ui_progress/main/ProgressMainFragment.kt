@@ -18,7 +18,11 @@ import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
+import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet
+import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Operation
+import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Type
 import com.michaldrabik.ui_base.common.views.exSearchLocalViewInput
+import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.disableUi
@@ -37,8 +41,10 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_episodes.details.EpisodeDetailsBottomSheet
 import com.michaldrabik.ui_model.Episode
+import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_TAB_SELECTED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_EPISODE_DETAILS
@@ -263,6 +269,18 @@ class ProgressMainFragment :
       putBoolean(EpisodeDetailsBottomSheet.ARG_SHOW_TABS, true)
     }
     navigateTo(R.id.actionProgressFragmentToEpisodeDetails, bundle)
+  }
+
+  fun openRateDialog(episodeBundle: EpisodeBundle) {
+    setFragmentResultListener(NavigationArgs.REQUEST_RATING) { _, bundle ->
+      when (bundle.getParcelable<Operation>(NavigationArgs.RESULT)) {
+        Operation.SAVE -> showSnack(MessageEvent.info(R.string.textRateSaved))
+        Operation.REMOVE -> showSnack(MessageEvent.info(R.string.textRateRemoved))
+      }
+      viewModel.setWatchedEpisode(episodeBundle)
+    }
+    val bundle = RatingsBottomSheet.createBundle(episodeBundle.episode.ids.trakt, Type.EPISODE)
+    navigateTo(R.id.actionProgressFragmentToRating, bundle)
   }
 
   private fun openSettings() {

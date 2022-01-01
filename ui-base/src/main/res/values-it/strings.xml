@@ -108,4 +108,6 @@
   <string name="textAddToMyShows">Aggiungi serie TV</string>
   <string name="textAddToMyMovies">Aggiungi film</string>
   <string name="textWatchlist">Da Vedere</string>
+  <string name="textRemove">Rimuovi</string>
+  <string name="textRateRemoved">La tua valutazione è stata rimossa.</string>
 </resources>

@@ -30,6 +30,7 @@ object NavigationArgs {
   const val REQUEST_EPISODE_DETAILS = "REQUEST_EPISODE_DETAILS"
   const val REQUEST_PERSON_DETAILS = "REQUEST_PERSON_DETAILS"
   const val REQUEST_SORT_ORDER = "REQUEST_SORT_ORDER"
+  const val REQUEST_RATING = "REQUEST_RATING"
   fun requestSortOrderSection(section: String) = "REQUEST_SORT_ORDER_SECTION_$section"
 
   const val ACTION_NEW_COMMENT = "ACTION_NEW_COMMENT"

@@ -116,4 +116,6 @@
   <string name="textAddToMyShows">Добавить в мои сериалы</string>
   <string name="textAddToMyMovies">Добавить в мои фильмы</string>
   <string name="textWatchlist">Буду смотреть</string>
+  <string name="textRemove">Удалить</string>
+  <string name="textRateRemoved">Ваша оценка была удалена.</string>
 </resources>

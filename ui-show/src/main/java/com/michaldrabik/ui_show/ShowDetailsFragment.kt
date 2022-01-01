@@ -17,7 +17,6 @@ import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
-import androidx.core.view.setPadding
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.clearFragmentResultListener
@@ -33,7 +32,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
-import com.michaldrabik.common.Config.INITIAL_RATING
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_base.Analytics
@@ -42,8 +40,11 @@ import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.AppCountry.UNITED_STATES
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.sheets.links.LinksBottomSheet
+import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet
+import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Operation.REMOVE
+import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Operation.SAVE
+import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Type
 import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet
-import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.SnackbarHost
@@ -51,7 +52,6 @@ import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.copyToClipboard
 import com.michaldrabik.ui_base.utilities.extensions.crossfadeTo
-import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
@@ -457,8 +457,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
     showDetailsRateButton.onClick {
       if (rating.rateAllowed == true) {
-        val rate = rating.userRating?.rating ?: INITIAL_RATING
-        openRateDialog(rate, rate != 0)
+        openRateDialog()
       } else {
         showSnack(MessageEvent.info(R.string.textSignBeforeRate))
       }
@@ -777,23 +776,16 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     Analytics.logShowShareClick(show)
   }
 
-  private fun openRateDialog(rating: Int, showRemove: Boolean) {
-    val context = requireContext()
-    val rateView = RateView(context).apply {
-      setPadding(context.dimenToPx(R.dimen.spaceNormal))
-      setRating(rating)
-    }
-    MaterialAlertDialogBuilder(context, R.style.AlertDialog)
-      .setBackground(ContextCompat.getDrawable(context, R.drawable.bg_dialog))
-      .setView(rateView)
-      .setPositiveButton(R.string.textRate) { _, _ -> viewModel.addShowRating(rateView.getRating()) }
-      .setNegativeButton(R.string.textCancel) { _, _ -> }
-      .apply {
-        if (showRemove) {
-          setNeutralButton(R.string.textRateDelete) { _, _ -> viewModel.deleteShowRating() }
-        }
+  private fun openRateDialog() {
+    setFragmentResultListener(NavigationArgs.REQUEST_RATING) { _, bundle ->
+      when (bundle.getParcelable<RatingsBottomSheet.Options.Operation>(NavigationArgs.RESULT)) {
+        SAVE -> renderSnack(MessageEvent.info(R.string.textRateSaved))
+        REMOVE -> renderSnack(MessageEvent.info(R.string.textRateRemoved))
       }
-      .show()
+      viewModel.loadRating()
+    }
+    val bundle = RatingsBottomSheet.createBundle(showId, Type.SHOW)
+    navigateTo(R.id.actionShowDetailsFragmentToRating, bundle)
   }
 
   private fun openQuickSetupDialog(seasons: List<Season>) {

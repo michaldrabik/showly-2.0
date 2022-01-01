@@ -12,6 +12,7 @@
   <string name="textHot">Hot</string>
   <string name="textSubmit">Submit</string>
   <string name="textHide">Hide</string>
+  <string name="textRemove">Remove</string>
   <string name="textEmptyResults">There were no results…</string>
   <string name="textSearchFor">Search</string>
   <string name="textTip">Tip:</string>
@@ -34,6 +35,7 @@
   <string name="textRate">Rate</string>
   <string name="textLink">Link</string>
   <string name="textRateSaved">Your rating has been saved.</string>
+  <string name="textRateRemoved">Your rating has been removed.</string>
   <string name="textCopiedToClipboard" translatable="false">Title copied to clipboard.</string>
 
   <string name="textPeople">People:</string>

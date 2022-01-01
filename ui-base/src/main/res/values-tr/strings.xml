@@ -108,4 +108,6 @@
   <string name="textAddToMyShows">Dizilerime ekle</string>
   <string name="textAddToMyMovies">Filmlerime ekle</string>
   <string name="textWatchlist">İstek Listesi</string>
+  <string name="textRemove">Kaldır</string>
+  <string name="textRateRemoved">Verdiğiniz oy kaldırıldı.</string>
 </resources>

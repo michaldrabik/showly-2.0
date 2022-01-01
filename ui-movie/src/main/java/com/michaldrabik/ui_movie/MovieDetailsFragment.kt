@@ -18,7 +18,6 @@ import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
-import androidx.core.view.setPadding
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.clearFragmentResultListener
@@ -41,15 +40,16 @@ import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.AppCountry.UNITED_STATES
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.sheets.links.LinksBottomSheet
+import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet
+import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Operation
+import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Type
 import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet
-import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.copyToClipboard
 import com.michaldrabik.ui_base.utilities.extensions.crossfadeTo
-import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
@@ -408,7 +408,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     movieDetailsRateButton.onClick {
       if (rating.rateAllowed == true) {
         val rate = rating.userRating?.rating ?: INITIAL_RATING
-        openRateDialog(rate, rate != 0)
+        openRateDialog()
       } else {
         showSnack(MessageEvent.info(R.string.textSignBeforeRateMovie))
       }
@@ -605,23 +605,16 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     Analytics.logMovieShareClick(movie)
   }
 
-  private fun openRateDialog(rating: Int, showRemove: Boolean) {
-    val context = requireContext()
-    val rateView = RateView(context).apply {
-      setPadding(context.dimenToPx(R.dimen.spaceNormal))
-      setRating(rating)
-    }
-    MaterialAlertDialogBuilder(context, R.style.AlertDialog)
-      .setBackground(ContextCompat.getDrawable(context, R.drawable.bg_dialog))
-      .setView(rateView)
-      .setPositiveButton(R.string.textRate) { _, _ -> viewModel.addRating(rateView.getRating()) }
-      .setNegativeButton(R.string.textCancel) { _, _ -> }
-      .apply {
-        if (showRemove) {
-          setNeutralButton(R.string.textRateDelete) { _, _ -> viewModel.deleteRating() }
-        }
+  private fun openRateDialog() {
+    setFragmentResultListener(NavigationArgs.REQUEST_RATING) { _, bundle ->
+      when (bundle.getParcelable<Operation>(NavigationArgs.RESULT)) {
+        Operation.SAVE -> renderSnack(MessageEvent.info(R.string.textRateSaved))
+        Operation.REMOVE -> renderSnack(MessageEvent.info(R.string.textRateRemoved))
       }
-      .show()
+      viewModel.loadRating()
+    }
+    val bundle = RatingsBottomSheet.createBundle(movieId, Type.MOVIE)
+    navigateTo(R.id.actionMovieDetailsFragmentToRating, bundle)
   }
 
   private fun openDeleteCommentDialog(comment: Comment) {

@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_progress.calendar.cases
+package com.michaldrabik.ui_progress.progress.cases
 
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.UserTraktManager
@@ -6,7 +6,7 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
 @ViewModelScoped
-class CalendarRatingsCase @Inject constructor(
+class ProgressRatingsCase @Inject constructor(
   private val userTraktManager: UserTraktManager,
   private val settingsRepository: SettingsRepository,
 ) {

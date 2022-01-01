@@ -124,4 +124,6 @@
   <string name="textAddToMyShows">إضافة إلى مسلسلاتي</string>
   <string name="textAddToMyMovies">إضافة إلى أفلامي</string>
   <string name="textWatchlist">قائمة المشاهدة</string>
+  <string name="textRemove">حذف التقييم</string>
+  <string name="textRateRemoved">تم حذف تقييمك.</string>
 </resources>

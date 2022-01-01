@@ -18,6 +18,7 @@ import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_progress_movies.R
+import com.michaldrabik.ui_progress_movies.main.MovieCheckActionUiEvent
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainUiState
 import com.michaldrabik.ui_progress_movies.progress.cases.ProgressMoviesItemsCase
 import com.michaldrabik.ui_progress_movies.progress.cases.ProgressMoviesPinnedCase
@@ -54,7 +55,6 @@ class ProgressMoviesViewModel @Inject constructor(
   private val language by lazy { translationsRepository.getLanguage() }
   private var searchQuery: String? = null
   private var timestamp = 0L
-  var isQuickRateEnabled = false
 
   fun onParentState(state: ProgressMoviesMainUiState) {
     when {
@@ -66,6 +66,13 @@ class ProgressMoviesViewModel @Inject constructor(
         this.searchQuery = state.searchQuery
         loadItems(resetScroll = state.searchQuery.isNullOrBlank())
       }
+    }
+  }
+
+  fun onMovieChecked(movie: Movie) {
+    viewModelScope.launch {
+      val isQuickRate = isQuickRateEnabled()
+      _eventChannel.send(MovieCheckActionUiEvent(movie, isQuickRate))
     }
   }
 
@@ -141,13 +148,11 @@ class ProgressMoviesViewModel @Inject constructor(
     }
   }
 
-  fun checkQuickRateEnabled() {
-    viewModelScope.launch {
-      val isSignedIn = userTraktManager.isAuthorized()
-      val isPremium = settingsRepository.isPremium
-      val isQuickRate = settingsRepository.load().traktQuickRateEnabled
-      isQuickRateEnabled = isPremium && isSignedIn && isQuickRate
-    }
+  private suspend fun isQuickRateEnabled(): Boolean {
+    val isSignedIn = userTraktManager.isAuthorized()
+    val isPremium = settingsRepository.isPremium
+    val isQuickRate = settingsRepository.load().traktQuickRateEnabled
+    return isPremium && isSignedIn && isQuickRate
   }
 
   private fun updateItem(new: ProgressMovieListItem.MovieItem) {

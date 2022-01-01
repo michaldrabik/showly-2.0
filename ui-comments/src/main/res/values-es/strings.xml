@@ -10,10 +10,8 @@
   <string name="textCommentDeleted">Tu comentario ha sido borrado.</string>
   <string name="textCommentConfirmDeleteTitle">Borrar Comentario</string>
   <string name="textCommentConfirmDelete">¿Estás seguro de que quieres eliminar este comentario?</string>
-  <string name="textShowRatingDeleted">Tu calificación ha sido eliminada.</string>
   <string name="textSignBeforeRate">Por favor inicia sesión antes de calificar una serie.</string>
   <string name="textSignBeforeRateMovie">Por favor inicia sesión antes de calificar una película.</string>
-  <string name="textRateDelete">Eliminar</string>
   <string name="errorCommentFormat">Tu comentario debe estar en inglés y tener 5 palabras o más.</string>
   <string name="errorCommentDelete">Este comentario ya no puede ser eliminado.</string>
 </resources>
