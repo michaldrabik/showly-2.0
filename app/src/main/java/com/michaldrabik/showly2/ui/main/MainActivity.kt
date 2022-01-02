@@ -153,10 +153,10 @@ class MainActivity :
       setGraph(graph)
     }
     with(bottomNavigationView) {
-      setOnNavigationItemSelectedListener { item ->
+      setOnItemSelectedListener { item ->
         if (selectedItemId == item.itemId) {
           doForFragments { (it as? OnTabReselectedListener)?.onTabReselected() }
-          return@setOnNavigationItemSelectedListener true
+          return@setOnItemSelectedListener true
         }
 
         val target = when (item.itemId) {
@@ -175,7 +175,7 @@ class MainActivity :
           viewModel.checkRateApp()
         }
 
-        return@setOnNavigationItemSelectedListener true
+        return@setOnItemSelectedListener true
       }
       menu.findItem(R.id.menuNews).isVisible = viewModel.newsEnabled()
     }
