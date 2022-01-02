@@ -10,10 +10,8 @@
   <string name="textCommentDeleted">Twój komentarz został usunięty.</string>
   <string name="textCommentConfirmDeleteTitle">Usuń Komentarz</string>
   <string name="textCommentConfirmDelete">Czy na pewno chcesz usunąć ten komentarz?</string>
-  <string name="textShowRatingDeleted">Ocena została usunięta.</string>
   <string name="textSignBeforeRate">Zaloguj się aby móc ocenić.</string>
   <string name="textSignBeforeRateMovie">Zaloguj się aby móc ocenić.</string>
-  <string name="textRateDelete">Usuń</string>
   <string name="errorCommentFormat">Twój komentarz musi być w języku angielskim i mieć 5 lub więcej słów.</string>
   <string name="errorCommentDelete">Ten komentarz nie może być już usunięty.</string>
 </resources>
