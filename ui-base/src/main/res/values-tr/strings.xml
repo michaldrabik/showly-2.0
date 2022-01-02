@@ -12,6 +12,7 @@
   <string name="textHot">Popüler</string>
   <string name="textSubmit">Gönder</string>
   <string name="textHide">Saklamak</string>
+  <string name="textRemove">Kaldır</string>
   <string name="textEmptyResults">Hiçbir sonuç bulunamadı…</string>
   <string name="textSearchFor">Ara</string>
   <string name="textTip">İpucu:</string>
@@ -32,6 +33,7 @@
   <string name="textRate">Oy Ver</string>
   <string name="textLink">Link</string>
   <string name="textRateSaved">Oyunuz kaydedildi.</string>
+  <string name="textRateRemoved">Verdiğiniz oy kaldırıldı.</string>
   <string name="textPeople">Kişiler:</string>
   <string name="textDirecting">Reji</string>
   <string name="textDirector">Yönetmen</string>
