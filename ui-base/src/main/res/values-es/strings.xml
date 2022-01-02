@@ -12,6 +12,7 @@
   <string name="textHot">Tendencia</string>
   <string name="textSubmit">Enviar</string>
   <string name="textHide">Ocultar</string>
+  <string name="textRemove">Eliminar</string>
   <string name="textEmptyResults">No hay resultados...</string>
   <string name="textSearchFor">Buscar</string>
   <string name="textTip">Consejo:</string>
@@ -32,6 +33,7 @@
   <string name="textRate">Calificar</string>
   <string name="textLink">Enlace</string>
   <string name="textRateSaved">Tu calificación se ha guardado.</string>
+  <string name="textRateRemoved">Tu calificación ha sido eliminada.</string>
   <string name="textPeople">Personas:</string>
   <string name="textDirecting">Dirección</string>
   <string name="textDirector">Director</string>
