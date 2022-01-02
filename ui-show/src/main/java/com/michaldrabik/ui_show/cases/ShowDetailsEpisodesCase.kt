@@ -6,12 +6,14 @@ import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
+import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.episodes.EpisodesManager
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_show.episodes.EpisodeListItem
@@ -33,6 +35,7 @@ class ShowDetailsEpisodesCase @Inject constructor(
   private val ratingsRepository: RatingsRepository,
   private val translationsRepository: TranslationsRepository,
   private val episodesManager: EpisodesManager,
+  private val userManager: UserTraktManager,
   private val dateFormatProvider: DateFormatProvider
 ) {
 
@@ -77,11 +80,15 @@ class ShowDetailsEpisodesCase @Inject constructor(
   }
 
   private suspend fun mapToSeasonItems(remoteSeasons: List<Season>, show: Show) = coroutineScope {
+    val isSignedIn = userManager.isAuthorized()
     val format = dateFormatProvider.loadFullHourFormat()
     val seasonsRatings = ratingsRepository.shows.loadRatingsSeasons(remoteSeasons)
     remoteSeasons
       .map {
-        val userRating = seasonsRatings.find { rating -> rating.idTrakt == it.ids.trakt }
+        val userRating = RatingState(
+          userRating = seasonsRatings.find { rating -> rating.idTrakt == it.ids.trakt },
+          rateAllowed = isSignedIn,
+        )
         val episodes = it.episodes.map { episode ->
           async {
             val rating = ratingsRepository.shows.loadRating(episode)
@@ -89,7 +96,14 @@ class ShowDetailsEpisodesCase @Inject constructor(
             EpisodeListItem(episode, it, false, translation, rating, format)
           }
         }.awaitAll()
-        SeasonListItem(show, it, episodes, isWatched = false, userRating = userRating, updatedAt = nowUtcMillis())
+        SeasonListItem(
+          show = show,
+          season = it,
+          episodes = episodes,
+          isWatched = false,
+          userRating = userRating,
+          updatedAt = nowUtcMillis()
+        )
       }
       .sortedByDescending { it.season.number }
   }

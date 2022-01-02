@@ -73,7 +73,7 @@ class ShowsRatingsRepository @Inject constructor(
   suspend fun loadRatingsSeasons(seasons: List<Season>): List<TraktRating> {
     val ratings = mutableListOf<Rating>()
     seasons.chunked(CHUNK_SIZE).forEach { chunk ->
-      val items = database.ratingsDao().getAllByType(chunk.map { it.ids.trakt.id }, TYPE_SHOW)
+      val items = database.ratingsDao().getAllByType(chunk.map { it.ids.trakt.id }, TYPE_SEASON)
       ratings.addAll(items)
     }
     return ratings.map {
@@ -83,6 +83,13 @@ class ShowsRatingsRepository @Inject constructor(
 
   suspend fun loadRating(episode: Episode): TraktRating? {
     val rating = database.ratingsDao().getAllByType(listOf(episode.ids.trakt.id), TYPE_EPISODE)
+    return rating.firstOrNull()?.let {
+      mappers.userRatingsMapper.fromDatabase(it)
+    }
+  }
+
+  suspend fun loadRating(season: Season): TraktRating? {
+    val rating = database.ratingsDao().getAllByType(listOf(season.ids.trakt.id), TYPE_SEASON)
     return rating.firstOrNull()?.let {
       mappers.userRatingsMapper.fromDatabase(it)
     }

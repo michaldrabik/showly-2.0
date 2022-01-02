@@ -644,11 +644,14 @@ class ShowDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       val seasonItems = seasonsState.value?.toList() ?: emptyList()
       val items = seasonItems.map { seasonItem ->
+        val ratingSeason = ratingsCase.loadRating(seasonItem.season)
         val episodes = seasonItem.episodes.map { episodeItem ->
-          val rating = ratingsCase.loadRating(episodeItem.episode)
-          episodeItem.copy(myRating = rating)
-        }
-        seasonItem.copy(episodes = episodes)
+          async {
+            val ratingEpisode = ratingsCase.loadRating(episodeItem.episode)
+            episodeItem.copy(myRating = ratingEpisode)
+          }
+        }.awaitAll()
+        seasonItem.copy(episodes = episodes, userRating = seasonItem.userRating.copy(ratingSeason))
       }
       seasonsState.value = items
     }

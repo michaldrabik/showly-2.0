@@ -1,8 +1,8 @@
 package com.michaldrabik.ui_show.seasons
 
+import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
-import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_show.episodes.EpisodeListItem
 
 data class SeasonListItem(
@@ -10,7 +10,7 @@ data class SeasonListItem(
   val season: Season,
   val episodes: List<EpisodeListItem>,
   val isWatched: Boolean,
-  val userRating: TraktRating?,
+  val userRating: RatingState,
   val updatedAt: Long,
 ) {
 

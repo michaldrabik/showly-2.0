@@ -310,6 +310,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       seasonCheckedListener = { season, isChecked ->
         viewModel.setWatchedSeason(season, isChecked, removeTrakt = true)
       }
+      rateClickListener = { season ->
+        openRateSeasonDialog(season)
+      }
     }
     showDetailsMainLayout.run {
       fadeOut(200)
@@ -785,6 +788,18 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       viewModel.loadRating()
     }
     val bundle = RatingsBottomSheet.createBundle(showId, Type.SHOW)
+    navigateTo(R.id.actionShowDetailsFragmentToRating, bundle)
+  }
+
+  private fun openRateSeasonDialog(season: Season) {
+    setFragmentResultListener(NavigationArgs.REQUEST_RATING) { _, bundle ->
+      when (bundle.getParcelable<RatingsBottomSheet.Options.Operation>(NavigationArgs.RESULT)) {
+        SAVE -> renderSnack(MessageEvent.info(R.string.textRateSaved))
+        REMOVE -> renderSnack(MessageEvent.info(R.string.textRateRemoved))
+      }
+      viewModel.refreshEpisodesRatings()
+    }
+    val bundle = RatingsBottomSheet.createBundle(season.ids.trakt, Type.SEASON)
     navigateTo(R.id.actionShowDetailsFragmentToRating, bundle)
   }
 

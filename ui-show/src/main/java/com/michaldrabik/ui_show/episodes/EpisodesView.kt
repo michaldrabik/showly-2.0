@@ -29,6 +29,7 @@ class EpisodesView : ConstraintLayout {
   var itemClickListener: (Show, Episode, Season, Boolean) -> Unit = { _, _, _, _ -> }
   var itemCheckedListener: (Episode, Season, Boolean) -> Unit = { _, _, _ -> }
   var seasonCheckedListener: (Season, Boolean) -> Unit = { _, _ -> }
+  var rateClickListener: (Season) -> Unit = { }
 
   private val episodesAdapter by lazy { EpisodesAdapter() }
   private lateinit var show: Show
@@ -39,6 +40,7 @@ class EpisodesView : ConstraintLayout {
   init {
     inflate(context, R.layout.view_episodes, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+    setupView()
     setupRecycler()
   }
 
@@ -72,10 +74,13 @@ class EpisodesView : ConstraintLayout {
     episodesSeasonRating.visibleIf(seasonRating > 0F)
     episodesSeasonRating.text = String.format(ENGLISH, "%.1f", seasonRating)
 
-    seasonItem.userRating?.let {
+    val ratingState = seasonItem.userRating
+    episodesSeasonRateButton.visibleIf(ratingState.rateAllowed == true && ratingState.userRating == null)
+    ratingState.userRating?.let {
       episodesSeasonMyStarIcon.visible()
+      episodesSeasonMyStarIcon.isEnabled = ratingState.rateAllowed == true
       episodesSeasonMyRating.visible()
-      episodesSeasonMyRating.text = String.format(ENGLISH, "%d", seasonItem.userRating.rating)
+      episodesSeasonMyRating.text = String.format(ENGLISH, "%d", it.rating)
     }
 
     episodesUnlockButton.visibleIf(!seasonItem.season.isSpecial() && seasonItem.episodes.any { !it.episode.hasAired(season) })
@@ -92,6 +97,7 @@ class EpisodesView : ConstraintLayout {
     val seasonListItem = seasonListItems.find { it.season.ids.trakt == season.ids.trakt }
     seasonListItem?.let {
       this.season = it.season.copy()
+      bind(it)
       episodesCheckbox.setCheckedSilent(it.isWatched) { _, isChecked ->
         seasonCheckedListener(season, isChecked)
       }
@@ -104,6 +110,11 @@ class EpisodesView : ConstraintLayout {
     if (item != null) {
       itemClickListener.invoke(show, item.episode, season, item.isWatched)
     }
+  }
+
+  private fun setupView() {
+    episodesSeasonRateButton.onClick { rateClickListener.invoke(season) }
+    episodesSeasonMyStarIcon.onClick { rateClickListener.invoke(season) }
   }
 
   private fun setupRecycler() {
@@ -123,6 +134,7 @@ class EpisodesView : ConstraintLayout {
     episodesUnlockButton.setImageResource(R.drawable.ic_locked)
     episodesUnlockButton.gone()
     episodesSeasonMyStarIcon.gone()
+    episodesSeasonMyStarIcon.isEnabled = false
     episodesSeasonMyRating.gone()
     episodesAdapter.clearItems()
   }
