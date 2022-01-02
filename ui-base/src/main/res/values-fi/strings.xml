@@ -12,6 +12,7 @@
   <string name="textHot">Kuuma</string>
   <string name="textSubmit">Lähetä</string>
   <string name="textHide">Piilota</string>
+  <string name="textRemove">Poista</string>
   <string name="textEmptyResults">Ei tuloksia…</string>
   <string name="textSearchFor">Haku</string>
   <string name="textTip">Vinkki:</string>
@@ -32,6 +33,7 @@
   <string name="textRate">Avioi</string>
   <string name="textLink">Linkki</string>
   <string name="textRateSaved">Arviosi tallennettiin.</string>
+  <string name="textRateRemoved">Arviosi poistettiin.</string>
   <string name="textPeople">Henkilöt:</string>
   <string name="textDirecting">Ohjaus</string>
   <string name="textDirector">Ohjaaja</string>
