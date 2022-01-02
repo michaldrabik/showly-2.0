@@ -12,6 +12,7 @@
   <string name="textHot">Горячее</string>
   <string name="textSubmit">Отправить</string>
   <string name="textHide">Скрыть</string>
+  <string name="textRemove">Удалить</string>
   <string name="textEmptyResults">Ничего не найдено…</string>
   <string name="textSearchFor">Поиск</string>
   <string name="textTip">Подсказка:</string>
@@ -32,6 +33,7 @@
   <string name="textRate">Оценить</string>
   <string name="textLink">Ссылка</string>
   <string name="textRateSaved">Ваша оценка была сохранена.</string>
+  <string name="textRateRemoved">Ваша оценка была удалена.</string>
   <string name="textPeople">Люди:</string>
   <string name="textDirecting">Режиссура</string>
   <string name="textDirector">Режиссер</string>
