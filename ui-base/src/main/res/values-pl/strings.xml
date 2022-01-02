@@ -12,6 +12,7 @@
   <string name="textHot">Gorące</string>
   <string name="textSubmit">Wyślij</string>
   <string name="textHide">Ukryj</string>
+  <string name="textRemove">Usuń</string>
   <string name="textEmptyResults">Brak wyników…</string>
   <string name="textSearchFor">Szukaj</string>
   <string name="textTip">Wskazówka:</string>
@@ -32,6 +33,7 @@
   <string name="textRate">Oceń</string>
   <string name="textLink">Link</string>
   <string name="textRateSaved">Ocena została zapisana.</string>
+  <string name="textRateRemoved">Ocena została usunięta.</string>
   <string name="textPeople">Osoby:</string>
   <string name="textDirecting">Reżyseria</string>
   <string name="textDirector">Reżyseria</string>
