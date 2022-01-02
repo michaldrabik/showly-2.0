@@ -69,7 +69,7 @@ data class Settings(
       discoverFilterGenres = emptyList(),
       traktSyncSchedule = TraktSyncSchedule.OFF,
       traktQuickSyncEnabled = false,
-      traktQuickRemoveEnabled = false,
+      traktQuickRemoveEnabled = true,
       progressSortOrder = SortOrder.NAME,
       archiveIncludeStatistics = true,
       specialSeasonsEnabled = false,
