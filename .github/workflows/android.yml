@@ -22,7 +22,7 @@ jobs:
           KEYSTORE_PASSPHRASE: ${{ secrets.KEYSTORE_PASSPHRASE }}
 
       - name: Run ktlint
-        run: curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.42.1/ktlint && chmod a+x ktlint && ./ktlint
+        run: curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.43.2/ktlint && chmod a+x ktlint && ./ktlint
 
       - name: Run Unit Tests (app)
         run: ./gradlew :app:testDebugUnitTest
@@ -31,6 +31,7 @@ jobs:
       - name: Run Unit Tests (ui-discover)
         run: ./gradlew :ui-discover:testDebugUnitTest
       - name: Run Unit Tests (ui-trakt-sync)
+        run: ./gradlew :ui-trakt-sync:testDebugUnitTest
         run: ./gradlew :ui-trakt-sync:testDebugUnitTest
       - name: Run Unit Tests (ui-statistics)
         run: ./gradlew :ui-statistics:testDebugUnitTest
