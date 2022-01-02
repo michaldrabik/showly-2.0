@@ -124,7 +124,7 @@ class MyShowsRepositoryTest : BaseMockTest() {
       slot.captured[0].run {
         assertThat(id).isEqualTo(0)
         assertThat(idTrakt).isEqualTo(10)
-        assertThat(createdAt).isEqualTo(0)
+        assertThat(createdAt).isGreaterThan(0)
         assertThat(updatedAt).isEqualTo(0)
       }
       coVerify(exactly = 1) { myShowsDao.insert(any()) }
