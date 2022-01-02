@@ -12,6 +12,7 @@
   <string name="textHot">شائع</string>
   <string name="textSubmit">إرسال</string>
   <string name="textHide">إخفاء</string>
+  <string name="textRemove">حذف التقييم</string>
   <string name="textEmptyResults">لا توجد نتائج…</string>
   <string name="textSearchFor">البحث</string>
   <string name="textTip">نصيحة:</string>
@@ -32,6 +33,7 @@
   <string name="textRate">قيم</string>
   <string name="textLink">إفتح في</string>
   <string name="textRateSaved">حُفظ تقييمك.</string>
+  <string name="textRateRemoved">تم حذف تقييمك.</string>
   <string name="textPeople">الأشخاص:</string>
   <string name="textDirecting">اخراج</string>
   <string name="textDirector">المخرج</string>
