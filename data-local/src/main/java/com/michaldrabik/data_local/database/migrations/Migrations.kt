@@ -610,6 +610,10 @@ object Migrations {
         execSQL("CREATE INDEX index_ratings_id_trakt_type ON ratings(id_trakt, type)")
 
         execSQL("ALTER TABLE seasons ADD COLUMN rating REAL")
+
+        execSQL("CREATE INDEX index_people_credits_show ON people_credits(id_trakt_show)")
+        execSQL("CREATE INDEX index_people_credits_movies ON people_credits(id_trakt_movie)")
+        execSQL("CREATE INDEX index_people_shows_movies_tmdb_person ON people_shows_movies(id_tmdb_person)")
       }
     }
   }

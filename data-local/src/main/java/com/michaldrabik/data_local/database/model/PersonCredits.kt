@@ -26,7 +26,9 @@ import java.time.ZonedDateTime
     )
   ],
   indices = [
-    Index(value = ["id_trakt_person"])
+    Index(value = ["id_trakt_person"]),
+    Index(value = ["id_trakt_show"]),
+    Index(value = ["id_trakt_movie"]),
   ]
 )
 @TypeConverters(DateConverter::class)
