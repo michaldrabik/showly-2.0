@@ -22,7 +22,7 @@ class MoviesRatingsRepository @Inject constructor(
     private const val TYPE_MOVIE = "movie"
   }
 
-  suspend fun preloadMoviesRatings(token: String) {
+  suspend fun preloadRatings(token: String) {
     val ratings = cloud.traktApi.fetchMoviesRatings(token)
     val entities = ratings
       .filter { it.rated_at != null && it.movie.ids.trakt != null }

@@ -10,6 +10,10 @@ import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.TraktRating
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -18,7 +22,7 @@ class ShowsRatingsRepository @Inject constructor(
   val external: ShowsExternalRatingsRepository,
   private val cloud: Cloud,
   private val database: AppDatabase,
-  private val mappers: Mappers,
+  private val mappers: Mappers
 ) {
 
   companion object {
@@ -28,28 +32,36 @@ class ShowsRatingsRepository @Inject constructor(
     private const val CHUNK_SIZE = 250
   }
 
-  suspend fun preloadShowsRatings(token: String) {
-    val ratings = cloud.traktApi.fetchShowsRatings(token)
-    val entities = ratings
-      .filter { it.rated_at != null && it.show.ids.trakt != null }
-      .map { mappers.userRatingsMapper.toDatabaseShow(it) }
-    database.ratingsDao().replaceAll(entities, TYPE_SHOW)
-  }
+  suspend fun preloadRatings(token: String) = supervisorScope {
 
-  suspend fun preloadEpisodesRatings(token: String) {
-    val ratings = cloud.traktApi.fetchEpisodesRatings(token)
-    val entities = ratings
-      .filter { it.rated_at != null && it.episode.ids.trakt != null }
-      .map { mappers.userRatingsMapper.toDatabaseEpisode(it) }
-    database.ratingsDao().replaceAll(entities, TYPE_EPISODE)
-  }
+    suspend fun preloadShowsRatings(token: String) {
+      val ratings = cloud.traktApi.fetchShowsRatings(token)
+      val entities = ratings
+        .filter { it.rated_at != null && it.show.ids.trakt != null }
+        .map { mappers.userRatingsMapper.toDatabaseShow(it) }
+      database.ratingsDao().replaceAll(entities, TYPE_SHOW)
+    }
 
-  suspend fun preloadSeasonsRatings(token: String) {
-    val ratings = cloud.traktApi.fetchSeasonsRatings(token)
-    val entities = ratings
-      .filter { it.rated_at != null && it.season.ids.trakt != null }
-      .map { mappers.userRatingsMapper.toDatabaseSeason(it) }
-    database.ratingsDao().replaceAll(entities, TYPE_SEASON)
+    suspend fun preloadEpisodesRatings(token: String) {
+      val ratings = cloud.traktApi.fetchEpisodesRatings(token)
+      val entities = ratings
+        .filter { it.rated_at != null && it.episode.ids.trakt != null }
+        .map { mappers.userRatingsMapper.toDatabaseEpisode(it) }
+      database.ratingsDao().replaceAll(entities, TYPE_EPISODE)
+    }
+
+    suspend fun preloadSeasonsRatings(token: String) {
+      val ratings = cloud.traktApi.fetchSeasonsRatings(token)
+      val entities = ratings
+        .filter { it.rated_at != null && it.season.ids.trakt != null }
+        .map { mappers.userRatingsMapper.toDatabaseSeason(it) }
+      database.ratingsDao().replaceAll(entities, TYPE_SEASON)
+    }
+
+    val errorHandler = CoroutineExceptionHandler { _, _ -> Timber.e("Failed to preload some of ratings.") }
+    launch(errorHandler) { preloadShowsRatings(token) }
+    launch(errorHandler) { preloadEpisodesRatings(token) }
+    launch(errorHandler) { preloadSeasonsRatings(token) }
   }
 
   suspend fun loadShowsRatings(): List<TraktRating> {
