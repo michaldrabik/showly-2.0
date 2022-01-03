@@ -78,6 +78,7 @@ class MainViewModel @Inject constructor(
         initializeFcm()
         preloadRatings()
         loadRemoteConfig()
+        saveInstallTimestamp()
       }
     }
   }

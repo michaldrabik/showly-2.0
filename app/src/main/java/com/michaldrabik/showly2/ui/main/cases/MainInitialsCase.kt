@@ -10,6 +10,8 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.michaldrabik.common.Config
+import com.michaldrabik.common.extensions.nowUtc
+import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.UserTraktManager
@@ -166,5 +168,12 @@ class MainInitialsCase @Inject constructor(
       return true
     }
     return false
+  }
+
+  fun saveInstallTimestamp() {
+    if (settingsRepository.installTimestamp == 0L) {
+      settingsRepository.installTimestamp = nowUtcMillis()
+      Timber.d("Installation timestamp saved: ${nowUtc()}")
+    }
   }
 }

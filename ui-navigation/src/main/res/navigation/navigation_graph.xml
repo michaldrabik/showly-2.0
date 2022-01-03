@@ -99,6 +99,13 @@
       app:destination="@id/showItemContextDialog"
       app:launchSingleTop="true"
       />
+    <action
+      android:id="@+id/actionDiscoverFragmentToPremium"
+      app:destination="@id/premiumFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
   </fragment>
 
   <fragment
@@ -127,6 +134,13 @@
       android:id="@+id/actionDiscoverMoviesFragmentToItemMenu"
       app:destination="@id/movieItemContextDialog"
       app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionDiscoverMoviesFragmentToPremium"
+      app:destination="@id/premiumFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
       />
   </fragment>
 

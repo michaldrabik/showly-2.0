@@ -37,6 +37,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
 import com.michaldrabik.ui_discover_movies.recycler.DiscoverMovieListItem
 import com.michaldrabik.ui_discover_movies.recycler.DiscoverMoviesAdapter
+import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
@@ -149,7 +150,12 @@ class DiscoverMoviesFragment :
   private fun setupRecycler() {
     layoutManager = GridLayoutManager(context, Config.MAIN_GRID_SPAN)
     adapter = DiscoverMoviesAdapter(
-      itemClickListener = { openDetails(it) },
+      itemClickListener = {
+        when (it.image.type) {
+          ImageType.PREMIUM -> openPremium()
+          else -> openDetails(it)
+        }
+      },
       itemLongClickListener = { openMovieMenu(it.movie) },
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) },
       listChangeListener = { discoverMoviesRecycler.scrollToPosition(0) }
@@ -208,6 +214,12 @@ class DiscoverMoviesFragment :
     }
     val bundle = ContextMenuBottomSheet.createBundle(movie.ids.trakt)
     navigateTo(R.id.actionDiscoverMoviesFragmentToItemMenu, bundle)
+  }
+
+  private fun openPremium() {
+    disableUi()
+    hideNavigation()
+    navigateTo(R.id.actionDiscoverMoviesFragmentToPremium, Bundle.EMPTY)
   }
 
   private fun animateItemsExit(item: DiscoverMovieListItem) {

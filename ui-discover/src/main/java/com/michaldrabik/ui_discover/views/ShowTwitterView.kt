@@ -9,7 +9,7 @@ import com.michaldrabik.ui_discover.R
 import com.michaldrabik.ui_discover.recycler.DiscoverListItem
 import kotlinx.android.synthetic.main.view_show_twitter.view.*
 
-class TwitterView : ShowView<DiscoverListItem> {
+class ShowTwitterView : ShowView<DiscoverListItem> {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)

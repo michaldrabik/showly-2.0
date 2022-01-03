@@ -150,10 +150,10 @@ class DiscoverFragment :
       stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
       itemClickListener = {
-        if (it.image.type == ImageType.TWITTER) {
-          openWebUrl(Config.TWITTER_URL)
-        } else {
-          openDetails(it)
+        when (it.image.type) {
+          ImageType.TWITTER -> openWebUrl(Config.TWITTER_URL)
+          ImageType.PREMIUM -> openPremium()
+          else -> openDetails(it)
         }
       }
       itemLongClickListener = { item, _ -> openShowMenu(item.show) }
@@ -227,6 +227,12 @@ class DiscoverFragment :
     disableUi()
     hideNavigation()
     animateItemsExit(item)
+  }
+
+  private fun openPremium() {
+    disableUi()
+    hideNavigation()
+    navigateTo(R.id.actionDiscoverFragmentToPremium, Bundle.EMPTY)
   }
 
   private fun openShowMenu(show: Show) {

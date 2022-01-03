@@ -1,6 +1,9 @@
 package com.michaldrabik.ui_discover_movies.cases
 
 import com.michaldrabik.common.Config
+import com.michaldrabik.common.ConfigVariant
+import com.michaldrabik.common.extensions.nowUtcMillis
+import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.ui_base.images.MovieImagesProvider
@@ -10,10 +13,12 @@ import com.michaldrabik.ui_model.DiscoverSortOrder
 import com.michaldrabik.ui_model.DiscoverSortOrder.HOT
 import com.michaldrabik.ui_model.DiscoverSortOrder.NEWEST
 import com.michaldrabik.ui_model.DiscoverSortOrder.RATING
+import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.ImageType.FANART_WIDE
 import com.michaldrabik.ui_model.ImageType.POSTER
+import com.michaldrabik.ui_model.ImageType.PREMIUM
 import com.michaldrabik.ui_model.Movie
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
@@ -25,8 +30,13 @@ import javax.inject.Inject
 class DiscoverMoviesCase @Inject constructor(
   private val moviesRepository: MoviesRepository,
   private val imagesProvider: MovieImagesProvider,
-  private val translationsRepository: TranslationsRepository
+  private val translationsRepository: TranslationsRepository,
+  private val settingsRepository: SettingsRepository
 ) {
+
+  companion object {
+    private const val PREMIUM_AD_POSITION = 29
+  }
 
   suspend fun isCacheValid() = moviesRepository.discoverMovies.isCacheValid()
 
@@ -74,7 +84,7 @@ class DiscoverMoviesCase @Inject constructor(
     language: String
   ) = coroutineScope {
     val collectionIds = myMoviesIds + watchlistMoviesIds
-    movies
+    val moviesItems = movies
       .filter { !hiddenMoviesIds.contains(it.traktId) }
       .filter {
         if (filters?.hideCollection == false) true
@@ -98,7 +108,25 @@ class DiscoverMoviesCase @Inject constructor(
             translation = translation
           )
         }
-      }.awaitAll()
+      }
+      .awaitAll()
+      .toMutableList()
+
+    insertPremiumAdItem(moviesItems)
+    moviesItems
+  }
+
+  private fun insertPremiumAdItem(items: MutableList<DiscoverMovieListItem>) {
+    val isPremium = settingsRepository.isPremium
+    val isTimePassed = (nowUtcMillis() - settingsRepository.installTimestamp) > ConfigVariant.PREMIUM_AD_DELAY
+    if (isPremium || !isTimePassed) return
+
+    val premiumAd = DiscoverMovieListItem(Movie.EMPTY, Image.createUnknown(PREMIUM))
+    if (items.size >= PREMIUM_AD_POSITION) {
+      items.add(PREMIUM_AD_POSITION, premiumAd)
+    } else if (items.isNotEmpty()) {
+      items.add(premiumAd)
+    }
   }
 
   private suspend fun loadTranslation(language: String, itemType: ImageType, movie: Movie) =

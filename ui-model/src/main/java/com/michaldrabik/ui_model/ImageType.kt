@@ -9,5 +9,6 @@ enum class ImageType(
   FANART(2, 2, "fanart"),
   FANART_WIDE(3, 3, "fanart"),
   TWITTER(4, 3, "twitterAd"),
-  PROFILE(5, 1, "profile")
+  PREMIUM(5, 3, "premiumAd"),
+  PROFILE(6, 1, "profile")
 }

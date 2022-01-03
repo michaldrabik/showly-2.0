@@ -44,6 +44,7 @@ class SettingsRepository @Inject constructor(
     private const val THEME_WIDGET = "KEY_THEME_WIDGET"
     private const val THEME_WIDGET_TRANSPARENT = "KEY_THEME_WIDGET_TRANSPARENT"
     private const val USER_ID = "KEY_USER_ID"
+    private const val INSTALL_TIMESTAMP = "INSTALL_TIMESTAMP"
   }
 
   suspend fun isInitialized() =
@@ -68,12 +69,12 @@ class SettingsRepository @Inject constructor(
     }
     set(value) = preferences.edit(true) { putString(MODE, value.name) }
 
+  var installTimestamp by LongPreference(preferences, INSTALL_TIMESTAMP, 0L)
   var isPremium by BooleanPreference(preferences, PREMIUM)
   var streamingsEnabled by BooleanPreference(preferences, STREAMINGS_ENABLED, true)
   var isMoviesEnabled by BooleanPreference(preferences, MOVIES_ENABLED, true)
   var isNewsEnabled by BooleanPreference(preferences, NEWS_ENABLED)
   var isTwitterAdEnabled by BooleanPreference(preferences, TWITTER_AD_ENABLED, true)
-  var twitterAdTimestamp by LongPreference(preferences, TWITTER_AD_TIMESTAMP, 0)
   var language by StringPreference(preferences, LANGUAGE, DEFAULT_LANGUAGE)
   var country by StringPreference(preferences, COUNTRY, DEFAULT_COUNTRY)
   var dateFormat by StringPreference(preferences, DATE_FORMAT, DEFAULT_DATE_FORMAT)

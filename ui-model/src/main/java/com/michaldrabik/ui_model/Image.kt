@@ -17,7 +17,6 @@ import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.ImageType.FANART_WIDE
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.ImageType.PROFILE
-import com.michaldrabik.ui_model.ImageType.TWITTER
 
 data class Image(
   val id: Long,
@@ -37,7 +36,7 @@ data class Image(
       POSTER -> "${TMDB_IMAGE_BASE_POSTER_URL}$fileUrl"
       FANART, FANART_WIDE -> "${TMDB_IMAGE_BASE_FANART_URL}$fileUrl"
       PROFILE -> "${TMDB_IMAGE_BASE_PROFILE_URL}$fileUrl"
-      TWITTER -> ""
+      else -> ""
     }
     AWS -> "$AWS_IMAGE_BASE_URL$fileUrl"
     CUSTOM -> fileUrl
