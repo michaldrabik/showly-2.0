@@ -6,6 +6,7 @@ import android.view.ViewAnimationUtils
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.core.animation.doOnEnd
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
@@ -128,7 +129,7 @@ class DiscoverMoviesFragment :
 
   private fun setupStatusBar() {
     discoverMoviesRoot.doOnApplyWindowInsets { _, insets, _, _ ->
-      val statusBarSize = insets.systemWindowInsetTop
+      val statusBarSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
       discoverMoviesRecycler
         .updatePadding(top = statusBarSize + dimenToPx(R.dimen.discoverRecyclerPadding))
       (discoverMoviesSearchView.layoutParams as ViewGroup.MarginLayoutParams)

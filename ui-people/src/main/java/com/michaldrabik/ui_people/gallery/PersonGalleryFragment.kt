@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.addCallback
 import androidx.core.os.bundleOf
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.viewModels
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
@@ -69,7 +70,8 @@ class PersonGalleryFragment : BaseFragment<PersonGalleryViewModel>(R.layout.frag
 
   private fun setupStatusBar() {
     personGalleryBackArrow.doOnApplyWindowInsets { view, insets, _, _ ->
-      view.updateTopMargin(insets.systemWindowInsetTop)
+      val margin = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+      view.updateTopMargin(margin)
     }
   }
 

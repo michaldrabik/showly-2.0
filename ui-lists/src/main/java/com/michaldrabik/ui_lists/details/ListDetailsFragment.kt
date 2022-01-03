@@ -9,6 +9,7 @@ import androidx.activity.addCallback
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -115,7 +116,8 @@ class ListDetailsFragment :
 
   private fun setupView() {
     fragmentListDetailsRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
-      view.updatePadding(top = padding.top + insets.systemWindowInsetTop)
+      val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+      view.updatePadding(top = padding.top + inset)
     }
     with(fragmentListDetailsToolbar) {
       title = list.name

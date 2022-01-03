@@ -6,6 +6,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.activity.addCallback
 import androidx.core.os.bundleOf
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.postDelayed
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
@@ -153,7 +154,7 @@ class ListsFragment :
 
   private fun setupStatusBar() {
     fragmentListsRoot.doOnApplyWindowInsets { _, insets, _, _ ->
-      val statusBarSize = insets.systemWindowInsetTop
+      val statusBarSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
       fragmentListsSearchView.applyWindowInsetBehaviour(dimenToPx(R.dimen.spaceNormal) + statusBarSize)
       fragmentListsSearchView.updateTopMargin(dimenToPx(R.dimen.spaceSmall) + statusBarSize)
       fragmentListsModeTabs.updateTopMargin(dimenToPx(R.dimen.collectionTabsMargin) + statusBarSize)

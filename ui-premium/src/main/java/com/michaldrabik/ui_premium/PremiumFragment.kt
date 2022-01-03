@@ -2,6 +2,7 @@ package com.michaldrabik.ui_premium
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -55,7 +56,8 @@ class PremiumFragment : BaseFragment<PremiumViewModel>(R.layout.fragment_premium
   private fun setupView() {
     premiumToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
     premiumRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
-      view.updatePadding(top = padding.top + insets.systemWindowInsetTop)
+      val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+      view.updatePadding(top = padding.top + inset)
     }
   }
 

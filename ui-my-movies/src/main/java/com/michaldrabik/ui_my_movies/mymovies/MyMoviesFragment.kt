@@ -2,6 +2,7 @@ package com.michaldrabik.ui_my_movies.mymovies
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.postDelayed
 import androidx.core.view.updatePadding
 import androidx.fragment.app.setFragmentResultListener
@@ -88,7 +89,7 @@ class MyMoviesFragment :
       return
     }
     myMoviesRoot.doOnApplyWindowInsets { view, insets, _, _ ->
-      statusBarHeight = insets.systemWindowInsetTop
+      statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
       view.updatePadding(top = statusBarHeight)
     }
   }

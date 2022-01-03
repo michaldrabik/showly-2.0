@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateMargins
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.clearFragmentResultListener
@@ -169,7 +170,7 @@ class ProgressMoviesMainFragment :
 
   private fun setupStatusBar() {
     progressMoviesRoot.doOnApplyWindowInsets { _, insets, _, _ ->
-      val statusBarSize = insets.systemWindowInsetTop
+      val statusBarSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
       (progressMoviesSearchView.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceSmall))
       (progressMoviesModeTabs.layoutParams as ViewGroup.MarginLayoutParams)

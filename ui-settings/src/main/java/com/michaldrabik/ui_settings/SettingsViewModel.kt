@@ -222,7 +222,7 @@ class SettingsViewModel @Inject constructor(
     Analytics.logSettingsDateFormat(format.name)
   }
 
-  fun setTraktSyncSchedule(schedule: TraktSyncSchedule, context: Context) {
+  fun setTraktSyncSchedule(schedule: TraktSyncSchedule) {
     viewModelScope.launch {
       traktCase.setTraktSyncSchedule(schedule)
       refreshSettings()
@@ -252,9 +252,9 @@ class SettingsViewModel @Inject constructor(
     }
   }
 
-  fun logoutTrakt(context: Context) {
+  fun logoutTrakt() {
     viewModelScope.launch {
-      traktCase.logoutTrakt(context)
+      traktCase.logoutTrakt()
       _messageChannel.send(MessageEvent.info(R.string.textTraktLogoutSuccess))
       refreshSettings()
       Analytics.logTraktLogout()

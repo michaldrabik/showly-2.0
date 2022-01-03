@@ -4,6 +4,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.setFragmentResultListener
@@ -153,7 +154,7 @@ class ProgressFragment :
       return
     }
     progressRecycler.doOnApplyWindowInsets { view, insets, _, _ ->
-      statusBarHeight = insets.systemWindowInsetTop
+      statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
       view.updatePadding(top = statusBarHeight + dimenToPx(recyclerPadding))
       (progressEmptyView.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarHeight + dimenToPx(R.dimen.spaceBig))

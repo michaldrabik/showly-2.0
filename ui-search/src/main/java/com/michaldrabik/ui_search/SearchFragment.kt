@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -212,7 +213,8 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
 
   private fun setupStatusBar() {
     searchRoot.doOnApplyWindowInsets { view, insets, _, _ ->
-      view.updatePadding(top = insets.systemWindowInsetTop)
+      val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+      view.updatePadding(top = inset)
     }
   }
 

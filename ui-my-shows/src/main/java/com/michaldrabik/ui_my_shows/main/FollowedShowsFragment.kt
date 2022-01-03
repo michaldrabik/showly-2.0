@@ -3,6 +3,7 @@ package com.michaldrabik.ui_my_shows.main
 import android.os.Bundle
 import android.view.View
 import androidx.activity.addCallback
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.clearFragmentResultListener
 import androidx.fragment.app.setFragmentResultListener
@@ -144,7 +145,7 @@ class FollowedShowsFragment :
 
   private fun setupStatusBar() {
     followedShowsRoot.doOnApplyWindowInsets { _, insets, _, _ ->
-      val statusBarSize = insets.systemWindowInsetTop
+      val statusBarSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
       followedShowsSearchView.applyWindowInsetBehaviour(dimenToPx(R.dimen.spaceNormal) + statusBarSize)
       followedShowsSearchView.updateTopMargin(dimenToPx(R.dimen.spaceSmall) + statusBarSize)
       followedShowsModeTabs.updateTopMargin(dimenToPx(R.dimen.collectionTabsMargin) + statusBarSize)

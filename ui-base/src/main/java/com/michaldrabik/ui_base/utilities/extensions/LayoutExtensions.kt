@@ -2,9 +2,10 @@ package com.michaldrabik.ui_base.utilities.extensions
 
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowInsets
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
@@ -38,15 +39,14 @@ fun View.requestApplyInsetsWhenAttached() {
 /**
  * https://chris.banes.dev/2019/04/12/insets-listeners-to-layouts/
  */
-fun View.doOnApplyWindowInsets(f: (View, WindowInsets, InitialSpacing, InitialSpacing) -> Unit) {
+fun View.doOnApplyWindowInsets(f: (View, WindowInsetsCompat, InitialSpacing, InitialSpacing) -> Unit) {
   // Create a snapshot of the view's padding state
   val initialPadding = recordInitialPaddingForView(this)
   val initialMargin = recordInitialMarginForView(this)
   // Set an actual OnApplyWindowInsetsListener which proxies to the given
   // lambda, also passing in the original padding state
-  setOnApplyWindowInsetsListener { v, insets ->
+  ViewCompat.setOnApplyWindowInsetsListener(this) { v, insets ->
     f(v, insets, initialPadding, initialMargin)
-    // Always return the insets, so that children can also use them
     insets
   }
   // request some insets

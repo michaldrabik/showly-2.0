@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -73,7 +74,8 @@ class TraktSyncFragment :
 
   private fun setupStatusBar() {
     traktSyncRoot.doOnApplyWindowInsets { view, insets, _, _ ->
-      view.updatePadding(top = insets.systemWindowInsetTop)
+      val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+      view.updatePadding(top = inset)
     }
   }
 

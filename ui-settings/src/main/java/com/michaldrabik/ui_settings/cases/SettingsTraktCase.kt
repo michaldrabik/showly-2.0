@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_settings.cases
 
-import android.content.Context
 import android.net.Uri
 import androidx.work.WorkManager
 import com.michaldrabik.repository.RatingsRepository
@@ -60,9 +59,9 @@ class SettingsTraktCase @Inject constructor(
     userManager.authorize(code)
   }
 
-  suspend fun logoutTrakt(context: Context) {
+  suspend fun logoutTrakt() {
 
-    suspend fun disableTraktFeatures(context: Context) {
+    suspend fun disableTraktFeatures() {
       val settings = settingsRepository.load()
       settings.let {
         val new = it.copy(
@@ -78,7 +77,7 @@ class SettingsTraktCase @Inject constructor(
     userManager.revokeToken()
     userManager.clearTraktLogs()
     ratingsRepository.clear()
-    disableTraktFeatures(context)
+    disableTraktFeatures()
     TraktSyncWorker.cancelAll(workManager)
   }
 

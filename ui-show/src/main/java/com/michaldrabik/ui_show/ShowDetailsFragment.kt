@@ -16,6 +16,7 @@ import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
@@ -229,15 +230,16 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private fun setupStatusBar() {
     showDetailsBackArrow.doOnApplyWindowInsets { view, insets, _, _ ->
+      val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
       if (imagePadded) {
-        showDetailsMainLayout.updatePadding(top = insets.systemWindowInsetTop)
+        showDetailsMainLayout.updatePadding(top = inset)
       } else {
         (showDetailsShareButton.layoutParams as MarginLayoutParams)
-          .updateMargins(top = insets.systemWindowInsetTop)
+          .updateMargins(top = inset)
       }
       arrayOf<View>(view, showDetailsBackArrow2, showDetailsEpisodesView, showDetailsCommentsView)
         .forEach { v ->
-          (v.layoutParams as MarginLayoutParams).updateMargins(top = insets.systemWindowInsetTop)
+          (v.layoutParams as MarginLayoutParams).updateMargins(top = inset)
         }
     }
   }
@@ -368,7 +370,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           R.string.textShowExtraInfo,
           show.network,
           year,
-          country.toUpperCase(),
+          country.uppercase(),
           show.runtime.toString(),
           getString(R.string.textMinutesShort),
           renderGenres(show.genres)

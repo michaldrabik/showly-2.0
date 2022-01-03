@@ -78,8 +78,7 @@ class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>(), 
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
     adapter = ManageListsAdapter(
       itemCheckListener = { item, isChecked ->
-        val context = requireContext().applicationContext
-        viewModel.onListItemChecked(context, itemId, itemType, item, isChecked)
+        viewModel.onListItemChecked(itemId, itemType, item, isChecked)
       }
     )
     viewManageListsRecycler.apply {

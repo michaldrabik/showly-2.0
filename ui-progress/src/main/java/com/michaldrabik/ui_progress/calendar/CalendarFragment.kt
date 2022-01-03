@@ -3,6 +3,7 @@ package com.michaldrabik.ui_progress.calendar
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
@@ -154,7 +155,7 @@ class CalendarFragment :
     }
 
     progressCalendarRecycler.doOnApplyWindowInsets { view, insets, _, _ ->
-      statusBarHeight = insets.systemWindowInsetTop
+      statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
       view.updatePadding(top = statusBarHeight + dimenToPx(recyclerPadding))
       (progressCalendarOverscrollIcon.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarHeight + dimenToPx(overscrollPadding))

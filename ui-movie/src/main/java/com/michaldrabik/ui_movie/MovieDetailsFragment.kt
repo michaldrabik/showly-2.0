@@ -17,6 +17,7 @@ import androidx.activity.addCallback
 import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
@@ -32,7 +33,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
-import com.michaldrabik.common.Config.INITIAL_RATING
 import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseFragment
@@ -212,16 +212,17 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 
   private fun setupStatusBar() {
     movieDetailsBackArrow.doOnApplyWindowInsets { view, insets, _, _ ->
+      val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
       if (imagePadded) {
         movieDetailsMainLayout
-          .updatePadding(top = insets.systemWindowInsetTop)
+          .updatePadding(top = inset)
       } else {
         (movieDetailsShareButton.layoutParams as ViewGroup.MarginLayoutParams)
-          .updateMargins(top = insets.systemWindowInsetTop)
+          .updateMargins(top = inset)
       }
       arrayOf<View>(view, movieDetailsBackArrow2, movieDetailsCommentsView)
         .forEach { v ->
-          (v.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(top = insets.systemWindowInsetTop)
+          (v.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(top = inset)
         }
     }
   }
@@ -407,7 +408,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 
     movieDetailsRateButton.onClick {
       if (rating.rateAllowed == true) {
-        val rate = rating.userRating?.rating ?: INITIAL_RATING
         openRateDialog()
       } else {
         showSnack(MessageEvent.info(R.string.textSignBeforeRateMovie))
