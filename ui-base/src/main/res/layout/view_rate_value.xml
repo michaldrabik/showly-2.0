@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/viewPremiumAdRoot"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <TextView
+    android:id="@+id/viewRateValueText1"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:textColor="?android:attr/textColorPrimary"
+    android:textSize="60sp"
+    android:textStyle="bold"
+    tools:text="10"
+    />
+
+  <TextView
+    android:id="@+id/viewRateValueText2"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:textColor="?android:attr/textColorPrimary"
+    android:textSize="60sp"
+    android:textStyle="bold"
+    android:alpha="0"
+    tools:text="10"
+    />
+
+</merge>

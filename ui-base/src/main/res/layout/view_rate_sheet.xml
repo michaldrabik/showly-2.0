@@ -13,22 +13,17 @@
   android:padding="@dimen/spaceNormal"
   >
 
-  <TextView
+  <com.michaldrabik.ui_base.common.views.RateValueView
     android:id="@+id/viewRateSheetRating"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/spaceNormal"
-    android:gravity="center"
-    android:textColor="?android:attr/textColorPrimary"
-    android:textSize="60sp"
-    android:textStyle="bold"
     app:layout_constraintBottom_toTopOf="@id/viewRateSheetStarsLayout"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintVertical_bias="0"
     app:layout_constraintVertical_chainStyle="packed"
-    tools:text="10"
     />
 
   <LinearLayout

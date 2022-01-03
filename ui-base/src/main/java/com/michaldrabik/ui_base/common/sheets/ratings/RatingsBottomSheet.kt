@@ -12,6 +12,7 @@ import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.ViewModelProvider
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
 import com.michaldrabik.ui_base.R
+import com.michaldrabik.ui_base.common.views.RateValueView.Direction
 import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
@@ -72,7 +73,7 @@ class RatingsBottomSheet : BaseBottomSheetFragment<RatingsSheetViewModel>() {
 
   private fun setupView() {
     renderRating(INITIAL_RATING)
-    starsViews.forEach { star -> star.onClick { renderRating(it.tag.toString().toInt()) } }
+    starsViews.forEach { star -> star.onClick { renderRating(it.tag.toString().toInt(), animate = true) } }
     viewRateSheetSaveButton.onClick { viewModel.saveRating(selectedRating, id, type) }
     viewRateSheetRemoveButton.onClick { viewModel.removeRating(id, type) }
   }
@@ -98,13 +99,19 @@ class RatingsBottomSheet : BaseBottomSheetFragment<RatingsSheetViewModel>() {
     }
   }
 
-  private fun renderRating(rate: Int) {
+  private fun renderRating(rate: Int, animate: Boolean = false) {
+    val currentRating = selectedRating
     selectedRating = rate.coerceIn(1..10)
     starsViews.forEach { it.setImageResource(R.drawable.ic_star_empty) }
     (1..selectedRating).forEachIndexed { index, _ ->
       starsViews[index].setImageResource(R.drawable.ic_star)
     }
-    viewRateSheetRating.text = selectedRating.toString()
+    if (animate && currentRating != selectedRating) {
+      val direction = if (currentRating > selectedRating) Direction.RIGHT else Direction.LEFT
+      viewRateSheetRating.setValueAnimated(selectedRating.toString(), direction)
+    } else {
+      viewRateSheetRating.setValue(selectedRating.toString())
+    }
   }
 
   private fun renderSnackbar(message: MessageEvent) {
