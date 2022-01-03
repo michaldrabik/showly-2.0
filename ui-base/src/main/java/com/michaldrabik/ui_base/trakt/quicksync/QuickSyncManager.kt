@@ -27,7 +27,9 @@ class QuickSyncManager @Inject constructor(
     showId: Long? = null,
     clearProgress: Boolean = false
   ) {
-    if (!ensureQuickSync()) return
+    if (!ensureQuickSync() && !(clearProgress && ensureQuickRemove())) {
+      return
+    }
 
     val time = nowUtcMillis()
     val items = episodesIds.map { TraktSyncQueue.createEpisode(it, showId, time, time, clearProgress) }
