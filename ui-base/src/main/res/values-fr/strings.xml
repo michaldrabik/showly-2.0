@@ -12,6 +12,7 @@
   <string name="textHot">Tendance</string>
   <string name="textSubmit">Envoyer</string>
   <string name="textHide">Masquer</string>
+  <string name="textRemove">Supprimer</string>
   <string name="textEmptyResults">Il n\'y a aucun résultat…</string>
   <string name="textSearchFor">Recherche</string>
   <string name="textTip">Astuce :</string>
@@ -32,6 +33,7 @@
   <string name="textRate">Noter</string>
   <string name="textLink">Lien</string>
   <string name="textRateSaved">Votre évaluation a été enregistrée.</string>
+  <string name="textRateRemoved">Votre évaluation a été supprimée.</string>
   <string name="textPeople">Personnes :</string>
   <string name="textDirecting">Réalisation</string>
   <string name="textDirector">Réalisateur</string>
@@ -87,6 +89,19 @@
   <string name="textRemoveFromTraktHidden">Voulez-vous retirer cet élément des \'Éléments masqués\' de votre compte Trakt.tv ?</string>
   <string name="textRemoveFromTraktWatchlist">Voulez-vous retirer cet élément de la liste \'Watchlist\' de votre compte Trakt.tv ?</string>
   <string name="textRemoveFromTraktProgress">Voulez-vous retirer cet élément de la liste \'Progression\' de votre compte Trakt.tv ?</string>
+  <string name="textAddToMyShows">Ajouter à Mes Séries</string>
+  <string name="textAddToMyMovies">Ajouter à Mes Films</string>
+  <string name="textAddToWatchlist">Ajouter à la Watchlist</string>
+  <string name="textAddToHidden">Ajouter aux éléments Masqués</string>
+  <string name="textMoveToMyShows">Déplacer vers Mes Séries</string>
+  <string name="textMoveToMyMovies">Déplacer vers Mes Films</string>
+  <string name="textMoveToWatchlist">Déplacer vers la Watchlist</string>
+  <string name="textMoveToHidden">Déplacer vers les éléments Masqués</string>
+  <string name="textRemoveFromMyShows">Supprimer de Mes Séries</string>
+  <string name="textRemoveFromMyMovies">Supprimer de Mes Films</string>
+  <string name="textRemoveFromWatchlist">Supprimer de la Watchlist</string>
+  <string name="textRemoveFromHidden">Supprimer des éléments Masqués</string>
+  <string name="textWatchlist">Watchlist</string>
   <string name="textPremiumAd">Devenez un supporteur et accédez à des fonctionnalités bonus ! Cliquez pour en savoir plus.</string>
   <string name="menuPin">Épingler en haut</string>
   <string name="menuUnpin">Désépingler du haut</string>
@@ -105,7 +120,4 @@
   <string name="errorTraktSyncGeneral">Erreur de synchronisation Trakt.tv.\nVeuillez vérifier votre connexion internet et réessayer.</string>
   <string name="errorTraktLocked">Votre compte Trakt.tv est actuellement verrouillé.\nVeuillez contacter l\'assistance Trakt.tv à https://support.trakt.tv/ pour déverrouiller votre compte.</string>
   <string name="errorSubscriptionsNotAvailable">Les abonnements via Google Play ne sont pas disponibles sur cet appareil.</string>
-  <string name="textAddToMyShows">Ajouter à mes séries</string>
-  <string name="textAddToMyMovies">Ajouter à mes films</string>
-  <string name="textWatchlist">Watchlist</string>
 </resources>
