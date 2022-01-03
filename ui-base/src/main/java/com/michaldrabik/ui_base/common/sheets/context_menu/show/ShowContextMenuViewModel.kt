@@ -15,9 +15,11 @@ import com.michaldrabik.ui_base.common.sheets.context_menu.show.cases.ShowContex
 import com.michaldrabik.ui_base.common.sheets.context_menu.show.cases.ShowContextMenuPinnedCase
 import com.michaldrabik.ui_base.common.sheets.context_menu.show.cases.ShowContextMenuWatchlistCase
 import com.michaldrabik.ui_base.common.sheets.context_menu.show.helpers.ShowContextItem
+import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.ImageType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,6 +27,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 import kotlin.properties.Delegates.notNull
 
@@ -37,6 +40,7 @@ class ShowContextMenuViewModel @Inject constructor(
   private val watchlistCase: ShowContextMenuWatchlistCase,
   private val hiddenCase: ShowContextMenuHiddenCase,
   private val pinnedCase: ShowContextMenuPinnedCase,
+  private val imagesProvider: ShowImagesProvider,
   private val settingsRepository: SettingsRepository
 ) : BaseViewModel() {
 
@@ -69,6 +73,7 @@ class ShowContextMenuViewModel @Inject constructor(
       try {
         loadingState.value = true
         val result = myShowsCase.moveToMyShows(showId)
+        preloadImage()
         checkQuickRemove(result)
       } catch (error: Throwable) {
         onError(error)
@@ -147,6 +152,18 @@ class ShowContextMenuViewModel @Inject constructor(
     viewModelScope.launch {
       pinnedCase.removeFromTopPinned(showId)
       _eventChannel.send(Event(FinishUiEvent(true)))
+    }
+  }
+
+  private suspend fun preloadImage() {
+    try {
+      val show = itemState.value?.show
+      show?.let {
+        imagesProvider.loadRemoteImage(it, ImageType.FANART)
+      }
+    } catch (error: Throwable) {
+      Timber.e(error)
+      rethrowCancellation(error)
     }
   }
 

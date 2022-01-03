@@ -111,8 +111,8 @@ abstract class ContextMenuBottomSheet<T : BaseViewModel> : BaseBottomSheetFragme
   protected fun renderSnackbar(message: MessageEvent) {
     message.consume()?.let {
       when (message.type) {
-        MessageEvent.Type.INFO -> contextMenuItemRoot.showInfoSnackbar(getString(it))
-        MessageEvent.Type.ERROR -> contextMenuItemRoot.showErrorSnackbar(getString(it))
+        MessageEvent.Type.INFO -> contextMenuItemSnackbarHost.showInfoSnackbar(getString(it))
+        MessageEvent.Type.ERROR -> contextMenuItemSnackbarHost.showErrorSnackbar(getString(it))
       }
     }
   }
