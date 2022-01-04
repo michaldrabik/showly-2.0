@@ -81,7 +81,7 @@ class DiscoverShowsCase @Inject constructor(
     language: String
   ) = coroutineScope {
     val collectionIds = myShowsIds + watchlistShowsIds + archiveShowsIds
-    val showsItems = shows
+    shows
       .filter { !archiveShowsIds.contains(it.traktId) }
       .filter {
         if (filters?.hideCollection == false) true
@@ -98,8 +98,8 @@ class DiscoverShowsCase @Inject constructor(
           val image = imagesProvider.findCachedImage(show, itemType)
           val translation = loadTranslation(language, itemType, show)
           DiscoverListItem(
-            show,
-            image,
+            show = show,
+            image = image,
             isFollowed = show.traktId in myShowsIds,
             isWatchlist = show.traktId in watchlistShowsIds,
             translation = translation
@@ -107,11 +107,9 @@ class DiscoverShowsCase @Inject constructor(
         }
       }.awaitAll()
       .toMutableList()
-
-    insertTwitterAdItem(showsItems)
-    insertPremiumAdItem(showsItems)
-
-    showsItems.toList()
+      .apply { insertTwitterAdItem(this) }
+      .apply { insertPremiumAdItem(this) }
+      .toList()
   }
 
   private fun insertTwitterAdItem(items: MutableList<DiscoverListItem>) {

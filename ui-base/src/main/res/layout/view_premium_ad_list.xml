@@ -25,7 +25,7 @@
       android:layout_height="120dp"
       android:layout_gravity="start|center_vertical"
       android:layout_marginStart="@dimen/elevationNormal"
-      android:padding="18dp"
+      android:padding="22dp"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"

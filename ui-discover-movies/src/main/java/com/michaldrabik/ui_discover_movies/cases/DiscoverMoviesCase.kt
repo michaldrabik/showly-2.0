@@ -84,7 +84,7 @@ class DiscoverMoviesCase @Inject constructor(
     language: String
   ) = coroutineScope {
     val collectionIds = myMoviesIds + watchlistMoviesIds
-    val moviesItems = movies
+    movies
       .filter { !hiddenMoviesIds.contains(it.traktId) }
       .filter {
         if (filters?.hideCollection == false) true
@@ -111,9 +111,8 @@ class DiscoverMoviesCase @Inject constructor(
       }
       .awaitAll()
       .toMutableList()
-
-    insertPremiumAdItem(moviesItems)
-    moviesItems
+      .apply { insertPremiumAdItem(this) }
+      .toList()
   }
 
   private fun insertPremiumAdItem(items: MutableList<DiscoverMovieListItem>) {
