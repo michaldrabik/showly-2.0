@@ -111,7 +111,7 @@ class DiscoverShowsCase @Inject constructor(
     insertTwitterAdItem(showsItems)
     insertPremiumAdItem(showsItems)
 
-    showsItems
+    showsItems.toList()
   }
 
   private fun insertTwitterAdItem(items: MutableList<DiscoverListItem>) {
