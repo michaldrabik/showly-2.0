@@ -12,6 +12,7 @@
   <string name="textHot">شائع</string>
   <string name="textSubmit">إرسال</string>
   <string name="textHide">إخفاء</string>
+  <string name="textRemove">حذف التقييم</string>
   <string name="textEmptyResults">لا توجد نتائج…</string>
   <string name="textSearchFor">البحث</string>
   <string name="textTip">نصيحة:</string>
@@ -32,6 +33,7 @@
   <string name="textRate">قيم</string>
   <string name="textLink">إفتح في</string>
   <string name="textRateSaved">حُفظ تقييمك.</string>
+  <string name="textRateRemoved">تم حذف تقييمك.</string>
   <string name="textPeople">الأشخاص:</string>
   <string name="textDirecting">اخراج</string>
   <string name="textDirector">المخرج</string>
@@ -103,6 +105,19 @@
   <string name="textRemoveFromTraktHidden">أترغب في إزالته من قائمة \"المحتويات المخفية\" في حسابك على موقع Trakt.tv؟</string>
   <string name="textRemoveFromTraktWatchlist">أترغب في إزالته من \"قائمة المشاهدة\" في حسابك على موقع Trakt.tv؟</string>
   <string name="textRemoveFromTraktProgress">أترغب في إزالته من قائمة \"مستوى التقدم\" في حسابك على موقع Trakt.tv؟</string>
+  <string name="textAddToMyShows">إضافة إلى مسلسلاتي</string>
+  <string name="textAddToMyMovies">إضافة إلى أفلامي</string>
+  <string name="textAddToWatchlist">إضافة إلى قائمة المشاهدة</string>
+  <string name="textAddToHidden">إضافة إلى المخفية</string>
+  <string name="textMoveToMyShows">نقل إلى مسلسلاتي</string>
+  <string name="textMoveToMyMovies">نقل إلى أفلامي</string>
+  <string name="textMoveToWatchlist">نقل إلى قائمة المشاهدة</string>
+  <string name="textMoveToHidden">نقل إلى المخفية</string>
+  <string name="textRemoveFromMyShows">إزالة من مسلسلاتي</string>
+  <string name="textRemoveFromMyMovies">إزالة من أفلامي</string>
+  <string name="textRemoveFromWatchlist">إزالة من قائمة المشاهدة</string>
+  <string name="textRemoveFromHidden">إزالة من المخفية</string>
+  <string name="textWatchlist">قائمة المشاهدة</string>
   <string name="textPremiumAd">إدعم تطوير التطبيق واحصل على مميزات إضافية! انقر لرؤية المزيد.</string>
   <string name="menuPin">تثبيت في الأعلى</string>
   <string name="menuUnpin">إلغاء التثبيت من الأعلى</string>
@@ -121,9 +136,4 @@
   <string name="errorTraktSyncGeneral">فشلت مزامنة Trakt.tv.\nرجاءً تحقق من إتصالك بالإنترنت ثم حاول مرة أخرى.</string>
   <string name="errorTraktLocked">حسابك في Trakt.tv مغلق. تواصل مع دعم Trakt.tv عبر الرابط https://support.trakt.tv/ لِفتح حسابك.</string>
   <string name="errorSubscriptionsNotAvailable">الدفع عبر Google Play غير متوفر على هذا الجهاز.</string>
-  <string name="textAddToMyShows">إضافة إلى مسلسلاتي</string>
-  <string name="textAddToMyMovies">إضافة إلى أفلامي</string>
-  <string name="textWatchlist">قائمة المشاهدة</string>
-  <string name="textRemove">حذف التقييم</string>
-  <string name="textRateRemoved">تم حذف تقييمك.</string>
 </resources>

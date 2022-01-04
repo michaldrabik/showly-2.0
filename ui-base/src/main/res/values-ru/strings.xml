@@ -12,6 +12,7 @@
   <string name="textHot">Горячее</string>
   <string name="textSubmit">Отправить</string>
   <string name="textHide">Скрыть</string>
+  <string name="textRemove">Удалить</string>
   <string name="textEmptyResults">Ничего не найдено…</string>
   <string name="textSearchFor">Поиск</string>
   <string name="textTip">Подсказка:</string>
@@ -32,6 +33,7 @@
   <string name="textRate">Оценить</string>
   <string name="textLink">Ссылка</string>
   <string name="textRateSaved">Ваша оценка была сохранена.</string>
+  <string name="textRateRemoved">Ваша оценка была удалена.</string>
   <string name="textPeople">Люди:</string>
   <string name="textDirecting">Режиссура</string>
   <string name="textDirector">Режиссер</string>
@@ -95,6 +97,19 @@
   <string name="textRemoveFromTraktHidden">Вы хотите удалить этот предмет из вашего аккаунта Trakt.tv \'Скрытое\'?</string>
   <string name="textRemoveFromTraktWatchlist">Вы хотите удалить этот предмет из вашего аккаунта Trakt.tv \'Буду смотреть\'?</string>
   <string name="textRemoveFromTraktProgress">Вы хотите удалить этот предмет из вашего аккаунта Trakt.tv \'Прогресс\'?</string>
+  <string name="textAddToMyShows">Добавить в Мои Сериалы</string>
+  <string name="textAddToMyMovies">Добавить в Мои Фильмы</string>
+  <string name="textAddToWatchlist">Добавить в Буду Смотреть</string>
+  <string name="textAddToHidden">Добавить в Скрытое</string>
+  <string name="textMoveToMyShows">Переместить в Мои Сериалы</string>
+  <string name="textMoveToMyMovies">Переместить в Мои Фильмы</string>
+  <string name="textMoveToWatchlist">Переместить в Буду Смотреть</string>
+  <string name="textMoveToHidden">Переместить в Скрытое</string>
+  <string name="textRemoveFromMyShows">Удалить из Моих Сериалов</string>
+  <string name="textRemoveFromMyMovies">Удалить из Моих Фильмов</string>
+  <string name="textRemoveFromWatchlist">Удалить из Буду Смотреть</string>
+  <string name="textRemoveFromHidden">Удалить из Скрытое</string>
+  <string name="textWatchlist">Буду смотреть</string>
   <string name="textPremiumAd">Станьте спонсором и получите доступ к бонусным функциям! Нажмите, чтобы увидеть больше.</string>
   <string name="menuPin">Закрепить</string>
   <string name="menuUnpin">Открепить</string>
@@ -113,9 +128,4 @@
   <string name="errorTraktSyncGeneral">Ошибка синхронизации Trakt.tv. \nПроверьте доступ в Интернет и повторите попытку.</string>
   <string name="errorTraktLocked">Ваша учетная запись Trakt.tv в настоящее время заблокирована.\nПожалуйста, свяжитесь со службой поддержки Trakt.tv по адресу https://support.trakt.tv/ для разблокировки вашей учетной записи.</string>
   <string name="errorSubscriptionsNotAvailable">Сервисы Google Play недоступны на этом устройстве.</string>
-  <string name="textAddToMyShows">Добавить в мои сериалы</string>
-  <string name="textAddToMyMovies">Добавить в мои фильмы</string>
-  <string name="textWatchlist">Буду смотреть</string>
-  <string name="textRemove">Удалить</string>
-  <string name="textRateRemoved">Ваша оценка была удалена.</string>
 </resources>

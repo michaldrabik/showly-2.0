@@ -12,6 +12,7 @@
   <string name="textHot">Hot</string>
   <string name="textSubmit">Absenden</string>
   <string name="textHide">Verstecken</string>
+  <string name="textRemove">Löschen</string>
   <string name="textEmptyResults">Keine Ergebnisse…</string>
   <string name="textSearchFor">Suche</string>
   <string name="textTip">Tipp:</string>
@@ -32,6 +33,7 @@
   <string name="textRate">Bewerten</string>
   <string name="textLink">Link</string>
   <string name="textRateSaved">Deine Bewertung wurde gespeichert.</string>
+  <string name="textRateRemoved">Deine Bewertung wurde gelöscht.</string>
   <string name="textPeople">Personen:</string>
   <string name="textDirecting">Regie</string>
   <string name="textDirector">Regisseur</string>
@@ -87,6 +89,19 @@
   <string name="textRemoveFromTraktHidden">Möchtest du dieses Element von deinem Trakt.tv-Account \'Versteckt\' entfernen?</string>
   <string name="textRemoveFromTraktWatchlist">Möchtest du dieses Element von deinem Trakt.tv-Account \'Watchlist\' entfernen?</string>
   <string name="textRemoveFromTraktProgress">Möchtest du dieses Element von deinem Trakt.tv-Account \'Fortschritt\' entfernen?</string>
+  <string name="textAddToMyShows">Zu Meine Serien</string>
+  <string name="textAddToMyMovies">Zu Meinen Filmen</string>
+  <string name="textAddToWatchlist">Zu Watchlist</string>
+  <string name="textAddToHidden">Zu Versteckt</string>
+  <string name="textMoveToMyShows">Zu meinen Serien verschieben</string>
+  <string name="textMoveToMyMovies">In meine Filme verschieben</string>
+  <string name="textMoveToWatchlist">Zur Watchlist verschieben</string>
+  <string name="textMoveToHidden">In Versteckt verschieben</string>
+  <string name="textRemoveFromMyShows">Von meinen Serien entfernen</string>
+  <string name="textRemoveFromMyMovies">Von meinen Filmen entfernen</string>
+  <string name="textRemoveFromWatchlist">Von Watchlist entfernen</string>
+  <string name="textRemoveFromHidden">Von Versteckt entfernen</string>
+  <string name="textWatchlist">Watchlist</string>
   <string name="textPremiumAd">Werden Sie Unterstützer und erhalten Sie Zugang zu Bonusfunktionen! Klicken Sie hier, um mehr zu sehen.</string>
   <string name="menuPin">Oben anpinnen</string>
   <string name="menuUnpin">Pin von Oben lösen</string>
@@ -105,9 +120,4 @@
   <string name="errorTraktSyncGeneral">Synchronisationserror mit Trakt.tv.\nBitte check deine Internetverbindung und versuch es erneut. </string>
   <string name="errorTraktLocked">Ihr Trakt.tv-Konto ist derzeit gesperrt. Wenden Sie sich unter https://support.trakt.tv/ an den Trakt.tv-Support, um Ihr Konto zu entsperren.</string>
   <string name="errorSubscriptionsNotAvailable">Google Play Abonnements sind auf diesem Gerät nicht verfügbar.</string>
-  <string name="textAddToMyShows">Zu Meine Serien</string>
-  <string name="textAddToMyMovies">Zu Meinen Filmen</string>
-  <string name="textWatchlist">Watchlist</string>
-  <string name="textRemove">Löschen</string>
-  <string name="textRateRemoved">Deine Bewertung wurde gelöscht.</string>
 </resources>

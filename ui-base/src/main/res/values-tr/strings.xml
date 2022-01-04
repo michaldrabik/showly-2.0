@@ -12,6 +12,7 @@
   <string name="textHot">Popüler</string>
   <string name="textSubmit">Gönder</string>
   <string name="textHide">Saklamak</string>
+  <string name="textRemove">Kaldır</string>
   <string name="textEmptyResults">Hiçbir sonuç bulunamadı…</string>
   <string name="textSearchFor">Ara</string>
   <string name="textTip">İpucu:</string>
@@ -32,6 +33,7 @@
   <string name="textRate">Oy Ver</string>
   <string name="textLink">Link</string>
   <string name="textRateSaved">Oyunuz kaydedildi.</string>
+  <string name="textRateRemoved">Verdiğiniz oy kaldırıldı.</string>
   <string name="textPeople">Kişiler:</string>
   <string name="textDirecting">Reji</string>
   <string name="textDirector">Yönetmen</string>
@@ -87,6 +89,19 @@
   <string name="textRemoveFromTraktHidden">Bu öğeyi Trakt.tv hesabınızdan \'Gizli\' kaldırmak ister misiniz?</string>
   <string name="textRemoveFromTraktWatchlist">Bu öğeyi Trakt.tv hesabınızdaki \'Watchlist\' kaldırmak ister misiniz?</string>
   <string name="textRemoveFromTraktProgress">Bu öğeyi Trakt.tv hesabınızdaki \'İlerleme\'den kaldırmak ister misiniz?</string>
+  <string name="textAddToMyShows">Dizilerime Ekle</string>
+  <string name="textAddToMyMovies">Filmlerime Ekle</string>
+  <string name="textAddToWatchlist">İzleme Listesine Ekle</string>
+  <string name="textAddToHidden">Gizlenene Ekle</string>
+  <string name="textMoveToMyShows">Dizilerime Taşı</string>
+  <string name="textMoveToMyMovies">Filmlerime Taşı</string>
+  <string name="textMoveToWatchlist">İzleme Listesine Taşı</string>
+  <string name="textMoveToHidden">Gizlenene Taşı</string>
+  <string name="textRemoveFromMyShows">Dizilerimden Kaldır</string>
+  <string name="textRemoveFromMyMovies">Filmlerimden Kaldır</string>
+  <string name="textRemoveFromWatchlist">İzleme Listesinden Kaldır</string>
+  <string name="textRemoveFromHidden">Gizlenenlerden Kaldır</string>
+  <string name="textWatchlist">İstek Listesi</string>
   <string name="textPremiumAd">Destekçi olun ve bonus özelliklere erişin! Daha fazlasını görmek için dokunun.</string>
   <string name="menuPin">En üste sabitle</string>
   <string name="menuUnpin">Sabitlemeyi kaldır</string>
@@ -105,9 +120,4 @@
   <string name="errorTraktSyncGeneral">Trakt.tv eşitleme hatası.\nLütfen internet bağlantınızı kontrol edin ve tekrar deneyin.</string>
   <string name="errorTraktLocked">Trakt.tv hesabınız şu anda kilitli.\nHesabınızın kilidini açmak için lütfen https://support.trakt.tv/ adresinden Trakt.tv destek ekibi ile iletişime geçin.</string>
   <string name="errorSubscriptionsNotAvailable">Google Play Abonelikleri bu cihazda kullanılamaz.</string>
-  <string name="textAddToMyShows">Dizilerime ekle</string>
-  <string name="textAddToMyMovies">Filmlerime ekle</string>
-  <string name="textWatchlist">İstek Listesi</string>
-  <string name="textRemove">Kaldır</string>
-  <string name="textRateRemoved">Verdiğiniz oy kaldırıldı.</string>
 </resources>
