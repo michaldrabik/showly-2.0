@@ -278,7 +278,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     seasonsAdapter = SeasonsAdapter().apply {
       itemClickListener = { showEpisodesView(it) }
       itemCheckedListener = { item: SeasonListItem, isChecked: Boolean ->
-        viewModel.setWatchedSeason(item.season, isChecked, removeTrakt = true)
+        viewModel.setSeasonWatched(item.season, isChecked, removeTrakt = true)
       }
     }
     showDetailsSeasonsRecycler.apply {
@@ -307,10 +307,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       }
       startAnimation(animationEnterRight)
       itemCheckedListener = { episode, season, isChecked ->
-        viewModel.setWatchedEpisode(episode, season, isChecked, removeTrakt = true)
+        viewModel.setEpisodeWatched(episode, season, isChecked, removeTrakt = true)
       }
       seasonCheckedListener = { season, isChecked ->
-        viewModel.setWatchedSeason(season, isChecked, removeTrakt = true)
+        viewModel.setSeasonWatched(season, isChecked, removeTrakt = true)
       }
       rateClickListener = { season ->
         openRateSeasonDialog(season)
@@ -687,7 +687,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           bundle.containsKey(ACTION_RATING_CHANGED) -> viewModel.refreshEpisodesRatings()
           bundle.containsKey(ACTION_EPISODE_WATCHED) -> {
             val watched = bundle.getBoolean(ACTION_EPISODE_WATCHED)
-            viewModel.setWatchedEpisode(episode, season, watched, removeTrakt = true)
+            viewModel.setEpisodeWatched(episode, season, watched, removeTrakt = true)
           }
           bundle.containsKey(ACTION_EPISODE_TAB_SELECTED) -> {
             val selectedEpisode = bundle.getParcelable<Episode>(ACTION_EPISODE_TAB_SELECTED)!!

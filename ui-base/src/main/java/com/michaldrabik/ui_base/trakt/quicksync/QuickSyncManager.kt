@@ -150,6 +150,13 @@ class QuickSyncManager @Inject constructor(
     Timber.d("Episodes removed from sync queue. Count: $count")
   }
 
+  suspend fun clearEpisodes() {
+    if (!ensureQuickRemove()) return
+
+    database.traktSyncQueueDao().deleteAll(Type.EPISODE.slug)
+    Timber.d("Episodes removed from sync queue.")
+  }
+
   suspend fun clearMovies(moviesIds: List<Long>) {
     if (!ensureQuickRemove()) return
 

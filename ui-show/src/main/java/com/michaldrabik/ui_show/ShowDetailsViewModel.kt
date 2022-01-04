@@ -45,6 +45,7 @@ import com.michaldrabik.ui_show.cases.ShowDetailsHiddenCase
 import com.michaldrabik.ui_show.cases.ShowDetailsListsCase
 import com.michaldrabik.ui_show.cases.ShowDetailsMainCase
 import com.michaldrabik.ui_show.cases.ShowDetailsMyShowsCase
+import com.michaldrabik.ui_show.cases.ShowDetailsQuickProgressCase
 import com.michaldrabik.ui_show.cases.ShowDetailsRatingCase
 import com.michaldrabik.ui_show.cases.ShowDetailsRelatedShowsCase
 import com.michaldrabik.ui_show.cases.ShowDetailsStreamingCase
@@ -87,6 +88,7 @@ class ShowDetailsViewModel @Inject constructor(
   private val listsCase: ShowDetailsListsCase,
   private val streamingsCase: ShowDetailsStreamingCase,
   private val relatedShowsCase: ShowDetailsRelatedShowsCase,
+  private val quickProgressCase: ShowDetailsQuickProgressCase,
   private val settingsRepository: SettingsRepository,
   private val userManager: UserTraktManager,
   private val episodesManager: EpisodesManager,
@@ -564,7 +566,7 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
-  fun setWatchedEpisode(
+  fun setEpisodeWatched(
     episode: Episode,
     season: Season,
     isChecked: Boolean,
@@ -601,7 +603,7 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
-  fun setWatchedSeason(
+  fun setSeasonWatched(
     season: Season,
     isChecked: Boolean,
     removeTrakt: Boolean = false
@@ -632,12 +634,17 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
-  private suspend fun checkSeasonsLoaded(): Boolean {
-    if (seasonsState.value == null) {
-      _messageChannel.send(MessageEvent.info(R.string.errorSeasonsNotLoaded))
-      return false
+  fun setQuickProgress(item: QuickSetupListItem?) {
+    viewModelScope.launch {
+      if (item == null || !checkSeasonsLoaded()) return@launch
+
+      val seasonItems = seasonsState.value?.toList() ?: emptyList()
+      quickProgressCase.setQuickProgress(item, seasonItems, show)
+
+      _messageChannel.send(MessageEvent.info(R.string.textShowQuickProgressDone))
+      refreshWatchedEpisodes()
+      Analytics.logShowQuickProgress(show)
     }
-    return true
   }
 
   fun refreshEpisodesRatings() {
@@ -657,16 +664,24 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
-  private suspend fun refreshWatchedEpisodes() {
-    val seasonItems = seasonsState.value?.toList() ?: emptyList()
-    val updatedSeasonItems = markWatchedEpisodes(seasonItems)
-    seasonsState.value = updatedSeasonItems
-  }
-
   fun launchRefreshWatchedEpisodes() {
     viewModelScope.launch {
       refreshWatchedEpisodes()
     }
+  }
+
+  private suspend fun checkSeasonsLoaded(): Boolean {
+    if (seasonsState.value == null) {
+      _messageChannel.send(MessageEvent.info(R.string.errorSeasonsNotLoaded))
+      return false
+    }
+    return true
+  }
+
+  private suspend fun refreshWatchedEpisodes() {
+    val seasonItems = seasonsState.value?.toList() ?: emptyList()
+    val updatedSeasonItems = markWatchedEpisodes(seasonItems)
+    seasonsState.value = updatedSeasonItems
   }
 
   private suspend fun markWatchedEpisodes(seasonsList: List<SeasonListItem>): List<SeasonListItem> =
@@ -697,31 +712,6 @@ class ShowDetailsViewModel @Inject constructor(
       if (isFollowed) {
         announcementManager.refreshShowsAnnouncements()
       }
-    }
-  }
-
-  fun setQuickProgress(item: QuickSetupListItem?) {
-    viewModelScope.launch {
-      if (item == null || !checkSeasonsLoaded()) return@launch
-
-      episodesManager.setAllUnwatched(show.ids.trakt, skipSpecials = true)
-      val seasonItems = seasonsState.value?.toList() ?: emptyList()
-      val seasons = seasonItems.map { it.season }
-      seasons
-        .filter { !it.isSpecial() && it.number < item.season.number }
-        .forEach { season ->
-          setWatchedSeason(season, isChecked = true)
-        }
-
-      val season = seasons.find { it.number == item.season.number }
-      season?.episodes
-        ?.filter { it.number <= item.episode.number }
-        ?.forEach { episode ->
-          setWatchedEpisode(episode, season, isChecked = true, clearProgress = true)
-        }
-
-      _messageChannel.send(MessageEvent.info(R.string.textShowQuickProgressDone))
-      Analytics.logShowQuickProgress(show)
     }
   }
 
