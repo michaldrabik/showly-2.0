@@ -575,10 +575,11 @@ class ShowDetailsViewModel @Inject constructor(
   ) {
     viewModelScope.launch {
       val bundle = EpisodeBundle(episode, season, show)
+      val isCollection = myShowsCase.isMyShows(show) || watchlistCase.isWatchlist(show) || hiddenCase.isHidden(show)
       when {
         isChecked -> {
           episodesManager.setEpisodeWatched(bundle)
-          if (myShowsCase.isMyShows(show) || watchlistCase.isWatchlist(show) || hiddenCase.isHidden(show)) {
+          if (isCollection) {
             quickSyncManager.scheduleEpisodes(
               episodesIds = listOf(episode.ids.trakt.id),
               showId = show.traktId,
@@ -591,7 +592,7 @@ class ShowDetailsViewModel @Inject constructor(
           quickSyncManager.clearEpisodes(listOf(episode.ids.trakt.id))
 
           val traktQuickRemoveEnabled = removeTrakt && settingsRepository.load().traktQuickRemoveEnabled
-          val showRemoveTrakt = userManager.isAuthorized() && traktQuickRemoveEnabled && !areSeasonsLocal && myShowsCase.isMyShows(show)
+          val showRemoveTrakt = userManager.isAuthorized() && traktQuickRemoveEnabled && !areSeasonsLocal && isCollection
           if (showRemoveTrakt) {
             val ids = listOf(episode.ids.trakt)
             val mode = RemoveTraktBottomSheet.Mode.EPISODE
@@ -610,10 +611,11 @@ class ShowDetailsViewModel @Inject constructor(
   ) {
     viewModelScope.launch {
       val bundle = SeasonBundle(season, show)
+      val isCollection = myShowsCase.isMyShows(show) || watchlistCase.isWatchlist(show) || hiddenCase.isHidden(show)
       when {
         isChecked -> {
           val episodesAdded = episodesManager.setSeasonWatched(bundle)
-          if (myShowsCase.isMyShows(show) || watchlistCase.isWatchlist(show) || hiddenCase.isHidden(show)) {
+          if (isCollection) {
             quickSyncManager.scheduleEpisodes(episodesAdded.map { it.ids.trakt.id })
           }
         }
@@ -622,7 +624,7 @@ class ShowDetailsViewModel @Inject constructor(
           quickSyncManager.clearEpisodes(season.episodes.map { it.ids.trakt.id })
 
           val traktQuickRemoveEnabled = removeTrakt && settingsRepository.load().traktQuickRemoveEnabled
-          val showRemoveTrakt = userManager.isAuthorized() && traktQuickRemoveEnabled && !areSeasonsLocal && myShowsCase.isMyShows(show)
+          val showRemoveTrakt = userManager.isAuthorized() && traktQuickRemoveEnabled && !areSeasonsLocal && isCollection
           if (showRemoveTrakt) {
             val ids = season.episodes.map { it.ids.trakt }
             val mode = RemoveTraktBottomSheet.Mode.EPISODE
