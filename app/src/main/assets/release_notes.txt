@@ -1,10 +1,10 @@
-This update is focused on people!
+* Added new context menus for Progress/Discover/Collection tabs items. Tap and hold item to open new menu.
 
-* Added information about directing/writing/music people in shows and movies details
+* Added ratings for seasons.
 
-* Added option to view person's details along with credits sorted by year
+* Trakt Data Remove option will now also work with seasons and episodes.
 
-* Fixed bug where streaming services would not be displayed for UK region
+* Fixed misc. bugs reported by users.
 
 Do you enjoy Showly app and want to support the developer?
 Become a subscriber and gain access to cool bonus features! Check Settings to learn more!
