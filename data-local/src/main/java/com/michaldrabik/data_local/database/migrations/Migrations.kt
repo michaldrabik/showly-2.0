@@ -3,7 +3,7 @@ package com.michaldrabik.data_local.database.migrations
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-const val DATABASE_VERSION = 30
+const val DATABASE_VERSION = 31
 const val DATABASE_NAME = "SHOWLY2_DB_2"
 
 // TODO Split into separate files?
@@ -592,6 +592,32 @@ object Migrations {
     }
   }
 
+  private val MIGRATION_31 = object : Migration(30, 31) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+      with(database) {
+        execSQL(
+          "CREATE TABLE IF NOT EXISTS `ratings` (" +
+            "`id_trakt` INTEGER NOT NULL, " +
+            "`type` TEXT NOT NULL, " +
+            "`rating` INTEGER NOT NULL, " +
+            "`season_number` INTEGER, " +
+            "`episode_number` INTEGER, " +
+            "`rated_at` INTEGER NOT NULL, " +
+            "`created_at` INTEGER NOT NULL, " +
+            "`updated_at` INTEGER NOT NULL, " +
+            "PRIMARY KEY (id_trakt, type))"
+        )
+        execSQL("CREATE INDEX index_ratings_id_trakt_type ON ratings(id_trakt, type)")
+
+        execSQL("ALTER TABLE seasons ADD COLUMN rating REAL")
+
+        execSQL("CREATE INDEX index_people_credits_show ON people_credits(id_trakt_show)")
+        execSQL("CREATE INDEX index_people_credits_movies ON people_credits(id_trakt_movie)")
+        execSQL("CREATE INDEX index_people_shows_movies_tmdb_person ON people_shows_movies(id_tmdb_person)")
+      }
+    }
+  }
+
   val MIGRATIONS = listOf(
     MIGRATION_2,
     MIGRATION_3,
@@ -621,6 +647,7 @@ object Migrations {
     MIGRATION_27,
     MIGRATION_28,
     MIGRATION_29,
-    MIGRATION_30
+    MIGRATION_30,
+    MIGRATION_31
   )
 }

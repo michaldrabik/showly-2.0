@@ -12,6 +12,7 @@ import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsClient
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.browser.customtabs.CustomTabsServiceConnection
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -114,7 +115,7 @@ class NewsFragment :
 
   private fun setupStatusBar() {
     fragmentNewsRoot.doOnApplyWindowInsets { _, insets, _, _ ->
-      val statusBarSize = insets.systemWindowInsetTop
+      val statusBarSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
       fragmentNewsRecycler.updatePadding(top = dimenToPx(R.dimen.newsRecyclerTopPadding) + statusBarSize)
       fragmentNewsHeaderView.updateTopMargin(dimenToPx(R.dimen.spaceSmall) + statusBarSize)
       fragmentNewsFiltersView.updateTopMargin(dimenToPx(R.dimen.newsFiltersTopPadding) + statusBarSize)

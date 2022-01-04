@@ -22,5 +22,6 @@ data class Season(
   @ColumnInfo(name = "season_first_aired") var seasonFirstAired: ZonedDateTime?,
   @ColumnInfo(name = "episodes_count") var episodesCount: Int,
   @ColumnInfo(name = "episodes_aired_count") var episodesAiredCount: Int,
+  @ColumnInfo(name = "rating") var rating: Float?,
   @ColumnInfo(name = "is_watched") var isWatched: Boolean
 )

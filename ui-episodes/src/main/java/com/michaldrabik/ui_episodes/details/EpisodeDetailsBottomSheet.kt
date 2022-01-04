@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
-import androidx.core.view.setPadding
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Lifecycle
@@ -25,11 +24,12 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
-import com.michaldrabik.common.Config.INITIAL_RATING
 import com.michaldrabik.common.extensions.dateFromMillis
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
-import com.michaldrabik.ui_base.common.views.RateView
+import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet
+import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Operation
+import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Type
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent.Companion.info
 import com.michaldrabik.ui_base.utilities.MessageEvent.Type.ERROR
@@ -52,10 +52,10 @@ import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_TAB_SELECTED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_WATCHED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_NEW_COMMENT
-import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_RATING_CHANGED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT_ACTION
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT_ID
@@ -149,23 +149,17 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
     }
   }
 
-  private fun openRateDialog(rating: Int, showRemove: Boolean) {
-    val context = requireContext()
-    val rateView = RateView(context).apply {
-      setPadding(context.dimenToPx(R.dimen.spaceNormal))
-      setRating(rating)
-    }
-    MaterialAlertDialogBuilder(context, R.style.AlertDialog)
-      .setBackground(ContextCompat.getDrawable(context, R.drawable.bg_dialog))
-      .setView(rateView)
-      .setPositiveButton(R.string.textRate) { _, _ -> viewModel.addRating(rateView.getRating(), episode, showTraktId) }
-      .setNegativeButton(R.string.textCancel) { _, _ -> }
-      .apply {
-        if (showRemove) {
-          setNeutralButton(R.string.textRateDelete) { _, _ -> viewModel.deleteRating(episode) }
-        }
+  private fun openRateDialog() {
+    setFragmentResultListener(NavigationArgs.REQUEST_RATING) { _, bundle ->
+      when (bundle.getParcelable<Operation>(NavigationArgs.RESULT)) {
+        Operation.SAVE -> renderSnackbar(info(R.string.textRateSaved))
+        Operation.REMOVE -> renderSnackbar(info(R.string.textRateRemoved))
       }
-      .show()
+      viewModel.loadRatings(episode)
+      setFragmentResult(REQUEST_EPISODE_DETAILS, bundleOf(NavigationArgs.ACTION_RATING_CHANGED to true))
+    }
+    val bundle = RatingsBottomSheet.createBundle(episode.ids.trakt, Type.EPISODE)
+    navigateTo(R.id.actionEpisodeDetailsDialogToRate, bundle)
   }
 
   private fun openPostCommentSheet(comment: Comment? = null) {
@@ -244,8 +238,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
         episodeDetailsRateButton.visibleIf(state.rateLoading == false)
         episodeDetailsRateButton.onClick {
           if (state.rateAllowed == true) {
-            val rate = state.userRating?.rating ?: INITIAL_RATING
-            openRateDialog(rate, rate != 0)
+            openRateDialog()
           } else {
             renderSnackbar(info(R.string.textSignBeforeRate))
           }
@@ -256,11 +249,6 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
         } else {
           episodeDetailsRateButton.setTypeface(null, NORMAL)
           episodeDetailsRateButton.setText(R.string.textRate)
-        }
-      }
-      ratingChanged?.let {
-        it.consume()?.let {
-          setFragmentResult(REQUEST_EPISODE_DETAILS, bundleOf(ACTION_RATING_CHANGED to true))
         }
       }
       translation?.let { t ->

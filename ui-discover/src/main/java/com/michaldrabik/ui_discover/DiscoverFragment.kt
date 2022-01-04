@@ -6,6 +6,7 @@ import android.view.ViewAnimationUtils
 import android.view.ViewGroup.MarginLayoutParams
 import androidx.activity.addCallback
 import androidx.core.animation.doOnEnd
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
@@ -149,10 +150,10 @@ class DiscoverFragment :
       stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
       itemClickListener = {
-        if (it.image.type == ImageType.TWITTER) {
-          openWebUrl(Config.TWITTER_URL)
-        } else {
-          openDetails(it)
+        when (it.image.type) {
+          ImageType.TWITTER -> openWebUrl(Config.TWITTER_URL)
+          ImageType.PREMIUM -> openPremium()
+          else -> openDetails(it)
         }
       }
       itemLongClickListener = { item, _ -> openShowMenu(item.show) }
@@ -182,7 +183,7 @@ class DiscoverFragment :
 
   private fun setupStatusBar() {
     discoverRoot.doOnApplyWindowInsets { _, insets, _, _ ->
-      val statusBarSize = insets.systemWindowInsetTop
+      val statusBarSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
       val recyclerPadding =
         if (moviesEnabled) R.dimen.discoverRecyclerPadding
         else R.dimen.discoverRecyclerPaddingNoTabs
@@ -226,6 +227,12 @@ class DiscoverFragment :
     disableUi()
     hideNavigation()
     animateItemsExit(item)
+  }
+
+  private fun openPremium() {
+    disableUi()
+    hideNavigation()
+    navigateTo(R.id.actionDiscoverFragmentToPremium, Bundle.EMPTY)
   }
 
   private fun openShowMenu(show: Show) {

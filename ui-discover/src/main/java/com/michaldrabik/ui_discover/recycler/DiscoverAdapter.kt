@@ -6,10 +6,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.ui_base.BaseAdapter
 import com.michaldrabik.ui_discover.views.ShowFanartView
 import com.michaldrabik.ui_discover.views.ShowPosterView
-import com.michaldrabik.ui_discover.views.TwitterView
+import com.michaldrabik.ui_discover.views.ShowPremiumView
+import com.michaldrabik.ui_discover.views.ShowTwitterView
 import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.ImageType.FANART_WIDE
 import com.michaldrabik.ui_model.ImageType.POSTER
+import com.michaldrabik.ui_model.ImageType.PREMIUM
 import com.michaldrabik.ui_model.ImageType.TWITTER
 
 class DiscoverAdapter : BaseAdapter<DiscoverListItem>() {
@@ -34,9 +36,14 @@ class DiscoverAdapter : BaseAdapter<DiscoverListItem>() {
       }
     )
     TWITTER.id -> BaseViewHolder(
-      TwitterView(parent.context).apply {
+      ShowTwitterView(parent.context).apply {
         itemClickListener = { super.itemClickListener.invoke(it) }
         twitterCancelClickListener = { this@DiscoverAdapter.twitterCancelClickListener?.invoke() }
+      }
+    )
+    PREMIUM.id -> BaseViewHolder(
+      ShowPremiumView(parent.context).apply {
+        itemClickListener = { super.itemClickListener.invoke(it) }
       }
     )
     else -> throw IllegalStateException("Unknown view type.")
@@ -50,7 +57,9 @@ class DiscoverAdapter : BaseAdapter<DiscoverListItem>() {
       FANART.id, FANART_WIDE.id ->
         (holder.itemView as ShowFanartView).bind(item)
       TWITTER.id ->
-        (holder.itemView as TwitterView).bind(item)
+        (holder.itemView as ShowTwitterView).bind(item)
+      PREMIUM.id ->
+        (holder.itemView as ShowPremiumView).bind(item)
     }
   }
 

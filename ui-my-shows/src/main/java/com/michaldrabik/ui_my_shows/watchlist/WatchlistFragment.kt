@@ -2,6 +2,7 @@ package com.michaldrabik.ui_my_shows.watchlist
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.postDelayed
 import androidx.core.view.updatePadding
 import androidx.fragment.app.setFragmentResultListener
@@ -95,7 +96,7 @@ class WatchlistFragment :
       return
     }
     watchlistContent.doOnApplyWindowInsets { view, insets, padding, _ ->
-      statusBarHeight = insets.systemWindowInsetTop
+      statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
       view.updatePadding(top = padding.top + statusBarHeight)
       watchlistRecycler.updatePadding(top = dimenToPx(R.dimen.watchlistTabsViewPadding))
     }

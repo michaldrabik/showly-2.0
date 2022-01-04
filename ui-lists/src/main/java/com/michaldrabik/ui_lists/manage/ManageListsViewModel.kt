@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_lists.manage
 
-import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
@@ -51,7 +50,6 @@ class ManageListsViewModel @Inject constructor(
   }
 
   fun onListItemChecked(
-    context: Context,
     itemId: IdTrakt,
     itemType: String,
     listItem: ManageListsItem,

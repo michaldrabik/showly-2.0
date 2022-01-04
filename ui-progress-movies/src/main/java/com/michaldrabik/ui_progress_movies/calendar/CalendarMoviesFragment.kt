@@ -2,6 +2,7 @@ package com.michaldrabik.ui_progress_movies.calendar
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -142,7 +143,7 @@ class CalendarMoviesFragment :
       return
     }
     progressMoviesCalendarRecycler.doOnApplyWindowInsets { view, insets, _, _ ->
-      statusBarHeight = insets.systemWindowInsetTop
+      statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
       view.updatePadding(top = statusBarHeight + dimenToPx(R.dimen.progressMoviesCalendarTabsViewPadding))
     }
   }

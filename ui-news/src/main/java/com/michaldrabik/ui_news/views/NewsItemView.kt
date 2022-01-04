@@ -55,6 +55,7 @@ class NewsItemView : FrameLayout {
 
   private lateinit var item: NewsListItem
 
+  @Suppress("DEPRECATION")
   fun bind(item: NewsListItem) {
     clear()
     this.item = item

@@ -20,6 +20,7 @@ import java.time.ZonedDateTime
     )
   ],
   indices = [
+    Index(value = ["id_tmdb_person"]),
     Index(value = ["id_trakt_show", "mode"]),
     Index(value = ["id_trakt_movie", "mode"])
   ]

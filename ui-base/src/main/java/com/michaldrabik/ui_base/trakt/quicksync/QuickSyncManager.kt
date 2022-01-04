@@ -22,11 +22,17 @@ class QuickSyncManager @Inject constructor(
   private val workManager: WorkManager
 ) {
 
-  suspend fun scheduleEpisodes(episodesIds: List<Long>) {
-    if (!ensureQuickSync()) return
+  suspend fun scheduleEpisodes(
+    episodesIds: List<Long>,
+    showId: Long? = null,
+    clearProgress: Boolean = false
+  ) {
+    if (!ensureQuickSync() && !(clearProgress && ensureQuickRemove())) {
+      return
+    }
 
     val time = nowUtcMillis()
-    val items = episodesIds.map { TraktSyncQueue.createEpisode(it, time, time) }
+    val items = episodesIds.map { TraktSyncQueue.createEpisode(it, showId, time, time, clearProgress) }
     database.traktSyncQueueDao().insert(items)
     Timber.d("Episodes added into sync queue. Count: ${items.size}")
 
@@ -142,6 +148,13 @@ class QuickSyncManager @Inject constructor(
 
     val count = database.traktSyncQueueDao().deleteAll(episodesIds, Type.EPISODE.slug)
     Timber.d("Episodes removed from sync queue. Count: $count")
+  }
+
+  suspend fun clearEpisodes() {
+    if (!ensureQuickRemove()) return
+
+    database.traktSyncQueueDao().deleteAll(Type.EPISODE.slug)
+    Timber.d("Episodes removed from sync queue.")
   }
 
   suspend fun clearMovies(moviesIds: List<Long>) {

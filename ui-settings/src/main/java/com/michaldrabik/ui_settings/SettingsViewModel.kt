@@ -17,6 +17,7 @@ import com.michaldrabik.ui_model.NotificationDelay
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_model.TraktSyncSchedule
 import com.michaldrabik.ui_settings.cases.SettingsMainCase
+import com.michaldrabik.ui_settings.cases.SettingsRatingsCase
 import com.michaldrabik.ui_settings.cases.SettingsStreamingsCase
 import com.michaldrabik.ui_settings.cases.SettingsThemesCase
 import com.michaldrabik.ui_settings.cases.SettingsTraktCase
@@ -32,6 +33,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -40,6 +42,7 @@ class SettingsViewModel @Inject constructor(
   private val traktCase: SettingsTraktCase,
   private val themesCase: SettingsThemesCase,
   private val streamingsCase: SettingsStreamingsCase,
+  private val ratingsCase: SettingsRatingsCase,
 ) : BaseViewModel() {
 
   fun loadSettings() {
@@ -219,9 +222,9 @@ class SettingsViewModel @Inject constructor(
     Analytics.logSettingsDateFormat(format.name)
   }
 
-  fun setTraktSyncSchedule(schedule: TraktSyncSchedule, context: Context) {
+  fun setTraktSyncSchedule(schedule: TraktSyncSchedule) {
     viewModelScope.launch {
-      traktCase.setTraktSyncSchedule(schedule, context)
+      traktCase.setTraktSyncSchedule(schedule)
       refreshSettings()
     }
   }
@@ -232,8 +235,10 @@ class SettingsViewModel @Inject constructor(
       try {
         signingInState.value = true
         traktCase.authorizeTrakt(authData)
-        _messageChannel.send(MessageEvent.info(R.string.textTraktLoginSuccess))
+        traktCase.enableTraktQuickRemove(true)
         refreshSettings()
+        preloadRatings()
+        _messageChannel.send(MessageEvent.info(R.string.textTraktLoginSuccess))
         Analytics.logTraktLogin()
       } catch (error: Throwable) {
         val message = when {
@@ -248,12 +253,23 @@ class SettingsViewModel @Inject constructor(
     }
   }
 
-  fun logoutTrakt(context: Context) {
+  fun logoutTrakt() {
     viewModelScope.launch {
-      traktCase.logoutTrakt(context)
+      traktCase.logoutTrakt()
       _messageChannel.send(MessageEvent.info(R.string.textTraktLogoutSuccess))
       refreshSettings()
       Analytics.logTraktLogout()
+    }
+  }
+
+  private fun preloadRatings() {
+    viewModelScope.launch {
+      try {
+        ratingsCase.preloadRatings()
+      } catch (error: Throwable) {
+        Timber.e("Failed to preload some of ratings")
+        rethrowCancellation(error)
+      }
     }
   }
 

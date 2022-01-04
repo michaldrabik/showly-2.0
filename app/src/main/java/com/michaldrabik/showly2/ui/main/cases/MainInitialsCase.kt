@@ -10,18 +10,19 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.michaldrabik.common.Config
+import com.michaldrabik.common.extensions.nowUtc
+import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.showly2.BuildConfig
-import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.fcm.NotificationChannel
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import timber.log.Timber
 import java.util.Locale
@@ -109,21 +110,16 @@ class MainInitialsCase @Inject constructor(
   }
 
   suspend fun preloadRatings() = supervisorScope {
-    try {
-      if (!userTraktManager.isAuthorized()) return@supervisorScope
-      val token = userTraktManager.checkAuthorization().token
+    val errorHandler = CoroutineExceptionHandler { _, _ -> Timber.e("Failed to preload.") }
 
-      awaitAll(
-        async { ratingsRepository.shows.preloadShowsRatings(token) },
-        async { ratingsRepository.shows.preloadEpisodesRatings(token) },
-        async {
-          if (settingsRepository.isMoviesEnabled) {
-            ratingsRepository.movies.preloadMoviesRatings(token)
-          }
-        }
-      )
-    } catch (error: Throwable) {
-      Logger.record(error, "Source" to "MainInitialsCase::initRatings()")
+    if (!userTraktManager.isAuthorized()) {
+      return@supervisorScope
+    }
+
+    val token = userTraktManager.checkAuthorization().token
+    launch(errorHandler) { ratingsRepository.shows.preloadRatings(token) }
+    if (settingsRepository.isMoviesEnabled) {
+      launch(errorHandler) { ratingsRepository.movies.preloadRatings(token) }
     }
   }
 
@@ -172,5 +168,12 @@ class MainInitialsCase @Inject constructor(
       return true
     }
     return false
+  }
+
+  fun saveInstallTimestamp() {
+    if (settingsRepository.installTimestamp == 0L) {
+      settingsRepository.installTimestamp = nowUtcMillis()
+      Timber.d("Installation timestamp saved: ${nowUtc()}")
+    }
   }
 }

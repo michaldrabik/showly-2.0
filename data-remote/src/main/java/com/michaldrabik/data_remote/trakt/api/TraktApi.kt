@@ -13,6 +13,7 @@ import com.michaldrabik.data_remote.trakt.model.Ids
 import com.michaldrabik.data_remote.trakt.model.Movie
 import com.michaldrabik.data_remote.trakt.model.OAuthResponse
 import com.michaldrabik.data_remote.trakt.model.PersonCredit
+import com.michaldrabik.data_remote.trakt.model.Season
 import com.michaldrabik.data_remote.trakt.model.Show
 import com.michaldrabik.data_remote.trakt.model.SyncExportItem
 import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
@@ -304,6 +305,12 @@ class TraktApi(private val service: TraktService) {
     service.postRemoveRating("Bearer $token", body)
   }
 
+  suspend fun deleteRating(token: String, season: Season) {
+    val requestValue = RatingRequestValue(0, season.ids)
+    val body = RatingRequest(seasons = listOf(requestValue))
+    service.postRemoveRating("Bearer $token", body)
+  }
+
   suspend fun postRating(token: String, movie: Movie, rating: Int) {
     val requestValue = RatingRequestValue(rating, movie.ids)
     val body = RatingRequest(movies = listOf(requestValue))
@@ -322,6 +329,12 @@ class TraktApi(private val service: TraktService) {
     service.postRating("Bearer $token", body)
   }
 
+  suspend fun postRating(token: String, season: Season, rating: Int) {
+    val requestValue = RatingRequestValue(rating, season.ids)
+    val body = RatingRequest(seasons = listOf(requestValue))
+    service.postRating("Bearer $token", body)
+  }
+
   suspend fun fetchShowsRatings(token: String) =
     service.fetchShowsRatings("Bearer $token")
 
@@ -330,4 +343,7 @@ class TraktApi(private val service: TraktService) {
 
   suspend fun fetchEpisodesRatings(token: String) =
     service.fetchEpisodesRatings("Bearer $token")
+
+  suspend fun fetchSeasonsRatings(token: String) =
+    service.fetchSeasonsRatings("Bearer $token")
 }

@@ -2,6 +2,7 @@ package com.michaldrabik.ui_discover.cases
 
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.ConfigVariant
+import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
@@ -12,6 +13,7 @@ import com.michaldrabik.ui_model.DiscoverSortOrder
 import com.michaldrabik.ui_model.DiscoverSortOrder.HOT
 import com.michaldrabik.ui_model.DiscoverSortOrder.NEWEST
 import com.michaldrabik.ui_model.DiscoverSortOrder.RATING
+import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Show
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -27,6 +29,11 @@ class DiscoverShowsCase @Inject constructor(
   private val translationsRepository: TranslationsRepository,
   private val settingsRepository: SettingsRepository,
 ) {
+
+  companion object {
+    private const val TWITTER_AD_POSITION = 14
+    private const val PREMIUM_AD_POSITION = 29
+  }
 
   suspend fun isCacheValid() = showsRepository.discoverShows.isCacheValid()
 
@@ -73,7 +80,6 @@ class DiscoverShowsCase @Inject constructor(
     filters: DiscoverFilters?,
     language: String
   ) = coroutineScope {
-    val isTwitterAd = showTwitterAd()
     val collectionIds = myShowsIds + watchlistShowsIds + archiveShowsIds
     shows
       .filter { !archiveShowsIds.contains(it.traktId) }
@@ -85,23 +91,51 @@ class DiscoverShowsCase @Inject constructor(
       .mapIndexed { index, show ->
         async {
           val itemType = when (index) {
-            in (0..500 step 14) -> {
-              if (index == 14 && isTwitterAd) ImageType.TWITTER else ImageType.FANART_WIDE
-            }
+            in (0..500 step 14) -> ImageType.FANART_WIDE
             in (5..500 step 14), in (9..500 step 14) -> ImageType.FANART
             else -> ImageType.POSTER
           }
           val image = imagesProvider.findCachedImage(show, itemType)
           val translation = loadTranslation(language, itemType, show)
           DiscoverListItem(
-            show,
-            image,
+            show = show,
+            image = image,
             isFollowed = show.traktId in myShowsIds,
             isWatchlist = show.traktId in watchlistShowsIds,
             translation = translation
           )
         }
       }.awaitAll()
+      .toMutableList()
+      .apply { insertTwitterAdItem(this) }
+      .apply { insertPremiumAdItem(this) }
+      .toList()
+  }
+
+  private fun insertTwitterAdItem(items: MutableList<DiscoverListItem>) {
+    val isEnabled = settingsRepository.isTwitterAdEnabled
+    val isTimePassed = (nowUtcMillis() - settingsRepository.installTimestamp) > ConfigVariant.TWITTER_AD_DELAY
+    if (!isEnabled || !isTimePassed) return
+
+    val premiumAd = DiscoverListItem(Show.EMPTY, Image.createUnknown(ImageType.TWITTER))
+    if (items.size >= TWITTER_AD_POSITION) {
+      items.add(TWITTER_AD_POSITION, premiumAd)
+    } else {
+      items.add(premiumAd)
+    }
+  }
+
+  private fun insertPremiumAdItem(items: MutableList<DiscoverListItem>) {
+    val isPremium = settingsRepository.isPremium
+    val isTimePassed = (nowUtcMillis() - settingsRepository.installTimestamp) > ConfigVariant.PREMIUM_AD_DELAY
+    if (isPremium || !isTimePassed) return
+
+    val premiumAd = DiscoverListItem(Show.EMPTY, Image.createUnknown(ImageType.PREMIUM))
+    if (items.size >= PREMIUM_AD_POSITION) {
+      items.add(PREMIUM_AD_POSITION, premiumAd)
+    } else if (items.isNotEmpty()) {
+      items.add(premiumAd)
+    }
   }
 
   private suspend fun loadTranslation(language: String, itemType: ImageType, show: Show) =
@@ -112,25 +146,5 @@ class DiscoverShowsCase @Inject constructor(
     HOT -> this
     RATING -> this.sortedWith(compareByDescending<Show> { it.votes }.thenBy { it.rating })
     NEWEST -> this.sortedByDescending { it.year }
-  }
-
-  private fun showTwitterAd(): Boolean {
-    val isTwitterAdEnabled = settingsRepository.isTwitterAdEnabled
-    val twitterAdTimestamp = settingsRepository.twitterAdTimestamp
-
-    if (!isTwitterAdEnabled) {
-      return false
-    }
-
-    if (twitterAdTimestamp == 0L) {
-      settingsRepository.twitterAdTimestamp = System.currentTimeMillis()
-      return false
-    }
-
-    if (System.currentTimeMillis() - twitterAdTimestamp < ConfigVariant.TWITTER_AD_DELAY) {
-      return false
-    }
-
-    return true
   }
 }

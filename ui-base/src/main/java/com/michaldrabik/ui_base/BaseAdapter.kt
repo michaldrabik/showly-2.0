@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.ui_base.common.ListItem
 
+// TODO Refactor listeners into constructor
 abstract class BaseAdapter<Item : ListItem> : RecyclerView.Adapter<RecyclerView.ViewHolder>(), AsyncListDiffer.ListListener<Item> {
 
   abstract val asyncDiffer: AsyncListDiffer<Item>

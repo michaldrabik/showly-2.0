@@ -17,4 +17,5 @@ object ConfigVariant {
 
   val REMOTE_CONFIG_FETCH_INTERVAL by lazy { MINUTES.toSeconds(60) }
   val TWITTER_AD_DELAY by lazy { DAYS.toMillis(5) }
+  val PREMIUM_AD_DELAY by lazy { DAYS.toMillis(10) }
 }

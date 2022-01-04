@@ -8,12 +8,14 @@ import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_base.images.MovieImagesProvider
+import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_progress_movies.BaseMockTest
+import com.michaldrabik.ui_progress_movies.main.MovieCheckActionUiEvent
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainUiState
 import com.michaldrabik.ui_progress_movies.progress.cases.ProgressMoviesItemsCase
 import com.michaldrabik.ui_progress_movies.progress.cases.ProgressMoviesPinnedCase
@@ -56,6 +58,7 @@ class ProgressMoviesViewModelTest : BaseMockTest() {
   private val parentState = ProgressMoviesMainUiState()
 
   private val stateResult = mutableListOf<ProgressMoviesUiState>()
+  private val eventsResult = mutableListOf<Event<*>>()
   private val messagesResult = mutableListOf<MessageEvent>()
 
   @Before
@@ -206,15 +209,31 @@ class ProgressMoviesViewModelTest : BaseMockTest() {
 
   @Test
   fun `Should check quick rate option enabled`() = runBlockingTest {
-    val job = launch { SUT.uiState.toList(stateResult) }
+    val job = launch { SUT.eventChannel.toList(eventsResult) }
     coEvery { userTraktManager.isAuthorized() } returns true
     coEvery { settingsRepository.isPremium } returns true
     coEvery { settingsRepository.load() } returns Settings.createInitial().copy(traktQuickRateEnabled = true)
-    assertThat(SUT.isQuickRateEnabled).isFalse()
 
-    SUT.checkQuickRateEnabled()
+    SUT.onMovieChecked(Movie.EMPTY)
 
-    assertThat(SUT.isQuickRateEnabled).isTrue()
+    assertThat(eventsResult.last()).isInstanceOf(MovieCheckActionUiEvent::class.java)
+    assertThat((eventsResult.last() as MovieCheckActionUiEvent).isQuickRate).isTrue()
+    coVerify(exactly = 1) { userTraktManager.isAuthorized() }
+    coVerify(exactly = 1) { settingsRepository.load() }
+    job.cancel()
+  }
+
+  @Test
+  fun `Should check quick rate option not enabled`() = runBlockingTest {
+    val job = launch { SUT.eventChannel.toList(eventsResult) }
+    coEvery { userTraktManager.isAuthorized() } returns true
+    coEvery { settingsRepository.isPremium } returns true
+    coEvery { settingsRepository.load() } returns Settings.createInitial().copy(traktQuickRateEnabled = false)
+
+    SUT.onMovieChecked(Movie.EMPTY)
+
+    assertThat(eventsResult.last()).isInstanceOf(MovieCheckActionUiEvent::class.java)
+    assertThat((eventsResult.last() as MovieCheckActionUiEvent).isQuickRate).isFalse()
     coVerify(exactly = 1) { userTraktManager.isAuthorized() }
     coVerify(exactly = 1) { settingsRepository.load() }
     job.cancel()

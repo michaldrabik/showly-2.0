@@ -1,12 +1,12 @@
 package com.michaldrabik.repository.movies.ratings
 
 import com.michaldrabik.common.extensions.nowUtc
+import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.database.model.Rating
 import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.repository.mappers.Mappers
-import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.TraktRating
-import java.time.ZonedDateTime
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -14,30 +14,38 @@ import javax.inject.Singleton
 class MoviesRatingsRepository @Inject constructor(
   val external: MoviesExternalRatingsRepository,
   private val cloud: Cloud,
+  private val database: AppDatabase,
   private val mappers: Mappers,
 ) {
 
-  private var moviesCache: MutableList<TraktRating>? = null
+  companion object {
+    private const val TYPE_MOVIE = "movie"
+  }
 
-  suspend fun preloadMoviesRatings(token: String) {
-    if (moviesCache == null) {
-      val ratings = cloud.traktApi.fetchMoviesRatings(token)
-      moviesCache = ratings.map { rate ->
-        val id = IdTrakt(rate.movie.ids.trakt ?: -1)
-        val date = rate.rated_at?.let { ZonedDateTime.parse(it) } ?: nowUtc()
-        TraktRating(id, rate.rating, date)
-      }.toMutableList()
+  suspend fun preloadRatings(token: String) {
+    val ratings = cloud.traktApi.fetchMoviesRatings(token)
+    val entities = ratings
+      .filter { it.rated_at != null && it.movie.ids.trakt != null }
+      .map { mappers.userRatingsMapper.toDatabaseMovie(it) }
+    database.ratingsDao().replaceAll(entities, TYPE_MOVIE)
+  }
+
+  suspend fun loadMoviesRatings(): List<TraktRating> {
+    val ratings = database.ratingsDao().getAllByType(TYPE_MOVIE)
+    return ratings.map {
+      mappers.userRatingsMapper.fromDatabase(it)
     }
   }
 
-  suspend fun loadMoviesRatings(token: String): List<TraktRating> {
-    preloadMoviesRatings(token)
-    return moviesCache?.toList() ?: emptyList()
-  }
-
-  suspend fun loadRating(token: String, movie: Movie): TraktRating? {
-    preloadMoviesRatings(token)
-    return moviesCache?.find { it.idTrakt == movie.ids.trakt }
+  suspend fun loadRatings(movies: List<Movie>): List<TraktRating> {
+    val ratings = mutableListOf<Rating>()
+    movies.chunked(250).forEach { chunk ->
+      val items = database.ratingsDao().getAllByType(chunk.map { it.traktId }, TYPE_MOVIE)
+      ratings.addAll(items)
+    }
+    return ratings.map {
+      mappers.userRatingsMapper.fromDatabase(it)
+    }
   }
 
   suspend fun addRating(token: String, movie: Movie, rating: Int) {
@@ -46,11 +54,8 @@ class MoviesRatingsRepository @Inject constructor(
       mappers.movie.toNetwork(movie),
       rating
     )
-    moviesCache?.run {
-      val index = indexOfFirst { it.idTrakt == movie.ids.trakt }
-      if (index != -1) removeAt(index)
-      add(TraktRating(movie.ids.trakt, rating))
-    }
+    val entity = mappers.userRatingsMapper.toDatabaseMovie(movie, rating, nowUtc())
+    database.ratingsDao().replace(entity)
   }
 
   suspend fun deleteRating(token: String, movie: Movie) {
@@ -58,13 +63,10 @@ class MoviesRatingsRepository @Inject constructor(
       token,
       mappers.movie.toNetwork(movie)
     )
-    moviesCache?.run {
-      val index = indexOfFirst { it.idTrakt == movie.ids.trakt }
-      if (index != -1) removeAt(index)
-    }
+    database.ratingsDao().deleteByType(movie.traktId, TYPE_MOVIE)
   }
 
-  fun clear() {
-    moviesCache = null
+  suspend fun clear() {
+    database.ratingsDao().deleteAllByType(TYPE_MOVIE)
   }
 }

@@ -3,8 +3,7 @@ package com.michaldrabik.ui_progress.calendar
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.core.view.setPadding
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
@@ -14,21 +13,20 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
-import com.michaldrabik.ui_base.common.views.RateView
+import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
-import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode.PRESENT_FUTURE
 import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode.RECENTS
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarAdapter
 import com.michaldrabik.ui_progress.helpers.TopOverscrollAdapter
+import com.michaldrabik.ui_progress.main.EpisodeCheckActionUiEvent
 import com.michaldrabik.ui_progress.main.ProgressMainFragment
 import com.michaldrabik.ui_progress.main.ProgressMainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -77,7 +75,7 @@ class CalendarFragment :
         with(viewModel) {
           launch { uiState.collect { render(it) } }
           launch { messageChannel.collect { showSnack(it) } }
-          checkQuickRateEnabled()
+          launch { eventChannel.collect { handleEvent(it) } }
         }
       }
     }
@@ -90,14 +88,7 @@ class CalendarFragment :
       detailsClickListener = { requireMainFragment().openEpisodeDetails(it.show, it.episode, it.season) }
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
       missingTranslationListener = { viewModel.findMissingTranslation(it) }
-      checkClickListener = {
-        val bundle = EpisodeBundle(it.episode, it.season, it.show)
-        if (viewModel.isQuickRateEnabled) {
-          openRateDialog(bundle)
-        } else {
-          parentViewModel.setWatchedEpisode(bundle)
-        }
-      }
+      checkClickListener = { viewModel.onEpisodeChecked(it) }
     }
     progressCalendarRecycler.apply {
       adapter = this@CalendarFragment.adapter
@@ -164,28 +155,11 @@ class CalendarFragment :
     }
 
     progressCalendarRecycler.doOnApplyWindowInsets { view, insets, _, _ ->
-      statusBarHeight = insets.systemWindowInsetTop
+      statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
       view.updatePadding(top = statusBarHeight + dimenToPx(recyclerPadding))
       (progressCalendarOverscrollIcon.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarHeight + dimenToPx(overscrollPadding))
     }
-  }
-
-  private fun openRateDialog(bundle: EpisodeBundle) {
-    val context = requireContext()
-    val rateView = RateView(context).apply {
-      setPadding(context.dimenToPx(R.dimen.spaceNormal))
-      setRating(5)
-    }
-    MaterialAlertDialogBuilder(context, R.style.AlertDialog)
-      .setBackground(ContextCompat.getDrawable(context, R.drawable.bg_dialog))
-      .setView(rateView)
-      .setPositiveButton(R.string.textRate) { _, _ ->
-        parentViewModel.setWatchedEpisode(bundle)
-        viewModel.addRating(rateView.getRating(), bundle)
-      }
-      .setNegativeButton(R.string.textCancel) { _, _ -> }
-      .show()
   }
 
   override fun onEnterSearch() {
@@ -205,6 +179,15 @@ class CalendarFragment :
     progressCalendarRecycler.smoothScrollToPosition(0)
 
     setupOverscroll()
+  }
+
+  private fun handleEvent(event: Event<*>) {
+    when (event) {
+      is EpisodeCheckActionUiEvent -> {
+        if (event.isQuickRate) requireMainFragment().openRateDialog(event.episode)
+        else parentViewModel.setWatchedEpisode(event.episode)
+      }
+    }
   }
 
   private fun render(uiState: CalendarUiState) {

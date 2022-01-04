@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:parentTag="android.widget.FrameLayout"
+  tools:targetApi="m"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/viewPremiumAdListRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/gridSpacing"
+    android:background="@drawable/bg_premium_ad"
+    android:elevation="@dimen/elevationSmall"
+    android:foreground="@drawable/bg_media_view_ripple"
+    >
+
+    <ImageView
+      android:id="@+id/viewPremiumAdListLogo"
+      android:layout_width="120dp"
+      android:layout_height="120dp"
+      android:layout_gravity="start|center_vertical"
+      android:layout_marginStart="@dimen/elevationNormal"
+      android:padding="22dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_crown"
+      />
+
+    <TextView
+      android:id="@+id/viewPremiumAdListTitle"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:gravity="start"
+      android:text="@string/textPremium"
+      android:textAlignment="viewStart"
+      android:textColor="@color/colorWhite"
+      android:textSize="22sp"
+      android:textStyle="bold"
+      app:layout_constraintBottom_toTopOf="@id/viewPremiumAdListDescription"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/viewPremiumAdListLogo"
+      app:layout_constraintTop_toTopOf="@id/viewPremiumAdListLogo"
+      app:layout_constraintVertical_chainStyle="packed"
+      />
+
+    <TextView
+      android:id="@+id/viewPremiumAdListDescription"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/spaceMicro"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:gravity="start"
+      android:text="@string/textPremiumAd"
+      android:textAlignment="viewStart"
+      android:textColor="@color/colorWhite"
+      android:textSize="13sp"
+      app:layout_constraintBottom_toBottomOf="@id/viewPremiumAdListLogo"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintStart_toStartOf="@id/viewPremiumAdListTitle"
+      app:layout_constraintTop_toBottomOf="@id/viewPremiumAdListTitle"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>

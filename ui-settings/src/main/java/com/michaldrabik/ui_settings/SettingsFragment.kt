@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -92,7 +93,8 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     settingsTmdbIcon.onClick { openWebLink(Config.TMDB_URL) }
     settingsJustWatchIcon.onClick { openWebLink(Config.JUST_WATCH_URL) }
     settingsRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
-      view.updatePadding(top = padding.top + insets.systemWindowInsetTop)
+      val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+      view.updatePadding(top = padding.top + inset)
     }
   }
 
@@ -325,7 +327,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
       .setMessage(R.string.textSettingsQuickSyncConfirmationMessage)
       .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
       .setPositiveButton(R.string.textTurnOff) { _, _ ->
-        viewModel.setTraktSyncSchedule(OFF, requireAppContext())
+        viewModel.setTraktSyncSchedule(OFF)
       }
       .setNegativeButton(R.string.textNotNow) { _, _ -> }
       .show()
@@ -491,7 +493,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
       .setTitle(R.string.textSettingsLogoutTitle)
       .setMessage(R.string.textSettingsLogoutMessage)
       .setPositiveButton(R.string.textYes) { _, _ ->
-        viewModel.logoutTrakt(requireAppContext())
+        viewModel.logoutTrakt()
       }
       .setNegativeButton(R.string.textCancel) { _, _ -> }
       .show()

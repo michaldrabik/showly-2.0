@@ -5,12 +5,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.widget.ImageViewCompat
 import androidx.lifecycle.ViewModelProvider
-import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
 import com.michaldrabik.ui_base.common.sheets.context_menu.events.FinishUiEvent
 import com.michaldrabik.ui_base.common.sheets.context_menu.events.RemoveTraktUiEvent
 import com.michaldrabik.ui_base.common.sheets.context_menu.show.helpers.ShowContextItem
+import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet.Mode
 import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -105,9 +105,9 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet<ShowContextMenuViewMod
   private fun handleEvent(event: Event<*>) {
     when (val result = event.peek()) {
       is RemoveTraktUiEvent -> when {
-        result.removeProgress -> openRemoveTraktSheet(R.id.actionShowItemContextDialogToRemoveTraktProgress, Mode.SHOWS)
-        result.removeWatchlist -> openRemoveTraktSheet(R.id.actionShowItemContextDialogToRemoveTraktWatchlist, Mode.SHOWS)
-        result.removeHidden -> openRemoveTraktSheet(R.id.actionShowItemContextDialogToRemoveTraktHidden, Mode.SHOWS)
+        result.removeProgress -> openRemoveTraktSheet(R.id.actionShowItemContextDialogToRemoveTraktProgress, Mode.SHOW)
+        result.removeWatchlist -> openRemoveTraktSheet(R.id.actionShowItemContextDialogToRemoveTraktWatchlist, Mode.SHOW)
+        result.removeHidden -> openRemoveTraktSheet(R.id.actionShowItemContextDialogToRemoveTraktHidden, Mode.SHOW)
         else -> close()
       }
       is FinishUiEvent -> if (result.isSuccess) close()

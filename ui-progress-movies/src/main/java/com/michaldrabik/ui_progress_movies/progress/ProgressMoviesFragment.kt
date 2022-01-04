@@ -4,8 +4,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.core.view.setPadding
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.setFragmentResultListener
@@ -16,7 +15,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
@@ -24,8 +22,8 @@ import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
-import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.trakt.TraktSyncService
+import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -44,9 +42,9 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_SORT_ORDER
 import com.michaldrabik.ui_progress_movies.R
 import com.michaldrabik.ui_progress_movies.helpers.TopOverscrollAdapter
+import com.michaldrabik.ui_progress_movies.main.MovieCheckActionUiEvent
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainFragment
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainViewModel
-import com.michaldrabik.ui_progress_movies.progress.recycler.ProgressMovieListItem
 import com.michaldrabik.ui_progress_movies.progress.recycler.ProgressMoviesAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_progress_movies.*
@@ -96,7 +94,7 @@ class ProgressMoviesFragment :
         with(viewModel) {
           launch { uiState.collect { render(it) } }
           launch { messageChannel.collect { showSnack(it) } }
-          checkQuickRateEnabled()
+          launch { eventChannel.collect { handleEvent(it) } }
         }
       }
     }
@@ -116,16 +114,10 @@ class ProgressMoviesFragment :
       itemLongClickListener = { requireMainFragment().openMovieMenu(it.movie) },
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) },
       missingTranslationListener = { item -> viewModel.findMissingTranslation(item) },
+      checkClickListener = { viewModel.onMovieChecked(it.movie) },
       listChangeListener = {
         requireMainFragment().resetTranslations()
         layoutManager?.scrollToPosition(0)
-      },
-      checkClickListener = {
-        if (viewModel.isQuickRateEnabled) {
-          openRateDialog(it)
-        } else {
-          parentViewModel.setWatchedMovie(it.movie)
-        }
       }
     )
     progressMoviesMainRecycler.apply {
@@ -186,28 +178,11 @@ class ProgressMoviesFragment :
       return
     }
     progressMoviesMainRecycler.doOnApplyWindowInsets { view, insets, _, _ ->
-      statusBarHeight = insets.systemWindowInsetTop
+      statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
       view.updatePadding(top = statusBarHeight + dimenToPx(R.dimen.progressMoviesTabsViewPadding))
       (progressMoviesEmptyView.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarHeight + dimenToPx(R.dimen.spaceBig))
     }
-  }
-
-  private fun openRateDialog(item: ProgressMovieListItem.MovieItem) {
-    val context = requireContext()
-    val rateView = RateView(context).apply {
-      setPadding(context.dimenToPx(R.dimen.spaceNormal))
-      setRating(5)
-    }
-    MaterialAlertDialogBuilder(context, R.style.AlertDialog)
-      .setBackground(ContextCompat.getDrawable(context, R.drawable.bg_dialog))
-      .setView(rateView)
-      .setPositiveButton(R.string.textRate) { _, _ ->
-        parentViewModel.setWatchedMovie(item.movie)
-        viewModel.addRating(rateView.getRating(), item.movie)
-      }
-      .setNegativeButton(R.string.textCancel) { _, _ -> }
-      .show()
   }
 
   private fun openSortOrderDialog(order: SortOrder, type: SortType) {
@@ -264,6 +239,15 @@ class ProgressMoviesFragment :
   override fun onScrollReset() = progressMoviesMainRecycler.smoothScrollToPosition(0)
 
   override fun onSortClick() = viewModel.loadSortOrder()
+
+  private fun handleEvent(event: Event<*>) {
+    when (event) {
+      is MovieCheckActionUiEvent -> {
+        if (event.isQuickRate) requireMainFragment().openRateDialog(event.movie)
+        else parentViewModel.setWatchedMovie(event.movie)
+      }
+    }
+  }
 
   private fun render(uiState: ProgressMoviesUiState) {
     uiState.run {

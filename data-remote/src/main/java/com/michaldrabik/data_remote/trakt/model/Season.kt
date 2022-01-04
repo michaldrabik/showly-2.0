@@ -8,5 +8,6 @@ data class Season(
   val title: String?,
   val first_aired: String?,
   val overview: String?,
+  val rating: Float?,
   val episodes: List<Episode>?
 )

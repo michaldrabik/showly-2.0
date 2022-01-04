@@ -14,11 +14,10 @@ import android.view.ViewGroup.MarginLayoutParams
 import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.activity.addCallback
-import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
-import androidx.core.view.setPadding
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.clearFragmentResultListener
@@ -34,7 +33,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
-import com.michaldrabik.common.Config.INITIAL_RATING
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_base.Analytics
@@ -43,14 +41,18 @@ import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.AppCountry.UNITED_STATES
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.sheets.links.LinksBottomSheet
-import com.michaldrabik.ui_base.common.views.RateView
+import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet
+import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Operation.REMOVE
+import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Operation.SAVE
+import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Type
+import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet
+import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.copyToClipboard
 import com.michaldrabik.ui_base.utilities.extensions.crossfadeTo
-import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
@@ -111,7 +113,7 @@ import com.michaldrabik.ui_show.actors.ActorsAdapter
 import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
 import com.michaldrabik.ui_show.helpers.ShowLink
 import com.michaldrabik.ui_show.helpers.StreamingsBundle
-import com.michaldrabik.ui_show.quickSetup.QuickSetupView
+import com.michaldrabik.ui_show.quick_setup.QuickSetupView
 import com.michaldrabik.ui_show.related.RelatedListItem
 import com.michaldrabik.ui_show.related.RelatedShowAdapter
 import com.michaldrabik.ui_show.seasons.SeasonListItem
@@ -163,6 +165,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
+      { viewModel.eventChannel.collect { handleEvent(it) } },
       { viewModel.messageChannel.collect { renderSnack(it) } },
       doAfterLaunch = {
         if (!isInitialized) {
@@ -227,15 +230,16 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private fun setupStatusBar() {
     showDetailsBackArrow.doOnApplyWindowInsets { view, insets, _, _ ->
+      val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
       if (imagePadded) {
-        showDetailsMainLayout.updatePadding(top = insets.systemWindowInsetTop)
+        showDetailsMainLayout.updatePadding(top = inset)
       } else {
         (showDetailsShareButton.layoutParams as MarginLayoutParams)
-          .updateMargins(top = insets.systemWindowInsetTop)
+          .updateMargins(top = inset)
       }
       arrayOf<View>(view, showDetailsBackArrow2, showDetailsEpisodesView, showDetailsCommentsView)
         .forEach { v ->
-          (v.layoutParams as MarginLayoutParams).updateMargins(top = insets.systemWindowInsetTop)
+          (v.layoutParams as MarginLayoutParams).updateMargins(top = inset)
         }
     }
   }
@@ -274,7 +278,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     seasonsAdapter = SeasonsAdapter().apply {
       itemClickListener = { showEpisodesView(it) }
       itemCheckedListener = { item: SeasonListItem, isChecked: Boolean ->
-        viewModel.setWatchedSeason(item.season, isChecked)
+        viewModel.setSeasonWatched(item.season, isChecked, removeTrakt = true)
       }
     }
     showDetailsSeasonsRecycler.apply {
@@ -303,10 +307,13 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       }
       startAnimation(animationEnterRight)
       itemCheckedListener = { episode, season, isChecked ->
-        viewModel.setWatchedEpisode(episode, season, isChecked)
+        viewModel.setEpisodeWatched(episode, season, isChecked, removeTrakt = true)
       }
       seasonCheckedListener = { season, isChecked ->
-        viewModel.setWatchedSeason(season, isChecked)
+        viewModel.setSeasonWatched(season, isChecked, removeTrakt = true)
+      }
+      rateClickListener = { season ->
+        openRateSeasonDialog(season)
       }
     }
     showDetailsMainLayout.run {
@@ -344,6 +351,13 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     viewModel.refreshAnnouncements()
   }
 
+  private fun handleEvent(event: Event<*>) {
+    when (event) {
+      is FinishUiEvent -> requireActivity().onBackPressed()
+      is RemoveTraktUiEvent -> openRemoveTraktSheet(event)
+    }
+  }
+
   private fun render(uiState: ShowDetailsUiState) {
     uiState.run {
       show?.let { show ->
@@ -356,7 +370,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           R.string.textShowExtraInfo,
           show.network,
           year,
-          country.toUpperCase(),
+          country.uppercase(),
           show.runtime.toString(),
           getString(R.string.textMinutesShort),
           renderGenres(show.genres)
@@ -418,24 +432,13 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       streamings?.let { renderStreamings(it) }
       relatedShows?.let { renderRelatedShows(it) }
       translation?.let { renderTranslation(it) }
-      seasonTranslation?.let { item ->
-        item.consume()?.let { showDetailsEpisodesView.bindEpisodes(it.episodes, animate = false) }
-      }
       comments?.let {
         showDetailsCommentsView.bind(it, commentsDateFormat)
         if (isSignedIn) showDetailsCommentsView.showCommentButton()
       }
       ratingState?.let { renderRating(it) }
-      removeFromTrakt?.let { event ->
-        event.consume()?.let { openRemoveTraktSheet(it) }
-      }
       isPremium.let {
         showDetailsPremiumAd.visibleIf(!it)
-      }
-      isFinished?.let { event ->
-        event.consume()?.let {
-          if (it) requireActivity().onBackPressed()
-        }
       }
     }
   }
@@ -459,8 +462,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
     showDetailsRateButton.onClick {
       if (rating.rateAllowed == true) {
-        val rate = rating.userRating?.rating ?: INITIAL_RATING
-        openRateDialog(rate, rate != 0)
+        openRateDialog()
       } else {
         showSnack(MessageEvent.info(R.string.textSignBeforeRate))
       }
@@ -685,7 +687,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           bundle.containsKey(ACTION_RATING_CHANGED) -> viewModel.refreshEpisodesRatings()
           bundle.containsKey(ACTION_EPISODE_WATCHED) -> {
             val watched = bundle.getBoolean(ACTION_EPISODE_WATCHED)
-            viewModel.setWatchedEpisode(episode, season, watched)
+            viewModel.setEpisodeWatched(episode, season, watched, removeTrakt = true)
           }
           bundle.containsKey(ACTION_EPISODE_TAB_SELECTED) -> {
             val selectedEpisode = bundle.getParcelable<Episode>(ACTION_EPISODE_TAB_SELECTED)!!
@@ -750,19 +752,19 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     navigateTo(R.id.actionShowDetailsFragmentToPeopleList, bundle)
   }
 
-  private fun openRemoveTraktSheet(@IdRes action: Int) {
+  private fun openRemoveTraktSheet(event: RemoveTraktUiEvent) {
     setFragmentResultListener(REQUEST_REMOVE_TRAKT) { _, bundle ->
       if (bundle.getBoolean(NavigationArgs.RESULT, false)) {
         val text = resources.getString(R.string.textTraktSyncRemovedFromTrakt)
         (requireActivity() as SnackbarHost).provideSnackbarLayout().showInfoSnackbar(text)
 
-        if (action == R.id.actionShowDetailsFragmentToRemoveTraktProgress) {
+        if (event.actionId == R.id.actionShowDetailsFragmentToRemoveTraktProgress) {
           viewModel.launchRefreshWatchedEpisodes()
         }
       }
     }
-    val args = bundleOf(ARG_ID to showId.id, ARG_TYPE to Mode.SHOWS)
-    navigateTo(action, args)
+    val args = RemoveTraktBottomSheet.createBundle(event.traktIds, event.mode)
+    navigateTo(event.actionId, args)
   }
 
   private fun openShareSheet(show: Show) {
@@ -779,23 +781,28 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     Analytics.logShowShareClick(show)
   }
 
-  private fun openRateDialog(rating: Int, showRemove: Boolean) {
-    val context = requireContext()
-    val rateView = RateView(context).apply {
-      setPadding(context.dimenToPx(R.dimen.spaceNormal))
-      setRating(rating)
-    }
-    MaterialAlertDialogBuilder(context, R.style.AlertDialog)
-      .setBackground(ContextCompat.getDrawable(context, R.drawable.bg_dialog))
-      .setView(rateView)
-      .setPositiveButton(R.string.textRate) { _, _ -> viewModel.addRating(rateView.getRating()) }
-      .setNegativeButton(R.string.textCancel) { _, _ -> }
-      .apply {
-        if (showRemove) {
-          setNeutralButton(R.string.textRateDelete) { _, _ -> viewModel.deleteRating() }
-        }
+  private fun openRateDialog() {
+    setFragmentResultListener(NavigationArgs.REQUEST_RATING) { _, bundle ->
+      when (bundle.getParcelable<RatingsBottomSheet.Options.Operation>(NavigationArgs.RESULT)) {
+        SAVE -> renderSnack(MessageEvent.info(R.string.textRateSaved))
+        REMOVE -> renderSnack(MessageEvent.info(R.string.textRateRemoved))
       }
-      .show()
+      viewModel.loadRating()
+    }
+    val bundle = RatingsBottomSheet.createBundle(showId, Type.SHOW)
+    navigateTo(R.id.actionShowDetailsFragmentToRating, bundle)
+  }
+
+  private fun openRateSeasonDialog(season: Season) {
+    setFragmentResultListener(NavigationArgs.REQUEST_RATING) { _, bundle ->
+      when (bundle.getParcelable<RatingsBottomSheet.Options.Operation>(NavigationArgs.RESULT)) {
+        SAVE -> renderSnack(MessageEvent.info(R.string.textRateSaved))
+        REMOVE -> renderSnack(MessageEvent.info(R.string.textRateRemoved))
+      }
+      viewModel.refreshEpisodesRatings()
+    }
+    val bundle = RatingsBottomSheet.createBundle(season.ids.trakt, Type.SEASON)
+    navigateTo(R.id.actionShowDetailsFragmentToRating, bundle)
   }
 
   private fun openQuickSetupDialog(seasons: List<Season>) {

@@ -12,6 +12,7 @@ import android.view.View
 import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -142,8 +143,9 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
 
   private fun setupStatusBar() {
     artGalleryBackArrow.doOnApplyWindowInsets { view, insets, _, _ ->
-      view.updateTopMargin(insets.systemWindowInsetTop)
-      artGallerySelectButton.updateTopMargin(insets.systemWindowInsetTop)
+      val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+      view.updateTopMargin(inset)
+      artGallerySelectButton.updateTopMargin(inset)
     }
   }
 

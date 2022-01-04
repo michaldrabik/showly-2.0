@@ -3,6 +3,7 @@ package com.michaldrabik.ui_statistics_movies
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -51,7 +52,8 @@ class StatisticsMoviesFragment : BaseFragment<StatisticsMoviesViewModel>(R.layou
 
   private fun setupStatusBar() {
     statisticsMoviesRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
-      view.updatePadding(top = padding.top + insets.systemWindowInsetTop)
+      val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+      view.updatePadding(top = padding.top + inset)
     }
   }
 

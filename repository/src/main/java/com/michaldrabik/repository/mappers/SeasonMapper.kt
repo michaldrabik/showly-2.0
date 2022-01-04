@@ -22,7 +22,20 @@ class SeasonMapper @Inject constructor(
     season.title ?: "",
     if (season.first_aired.isNullOrBlank()) null else ZonedDateTime.parse(season.first_aired),
     season.overview ?: "",
+    season.rating ?: -1F,
     season.episodes?.map { episodeMapper.fromNetwork(it) } ?: emptyList()
+  )
+
+  fun toNetwork(season: Season) = SeasonNetwork(
+    ids = idsMapper.toNetwork(season.ids),
+    number = season.number,
+    episode_count = season.episodeCount,
+    aired_episodes = season.airedEpisodes,
+    title = season.title,
+    first_aired = season.firstAired.toString(),
+    overview = season.overview,
+    rating = season.rating,
+    episodes = season.episodes.map { episodeMapper.toNetwork(it) }
   )
 
   fun fromDatabase(seasonDb: SeasonDb, episodes: List<Episode> = emptyList()) = Season(
@@ -33,6 +46,7 @@ class SeasonMapper @Inject constructor(
     seasonDb.seasonTitle,
     seasonDb.seasonFirstAired,
     seasonDb.seasonOverview,
+    seasonDb.rating ?: -1F,
     episodes.map { episodeMapper.fromDatabase(it) }
   )
 
@@ -50,6 +64,7 @@ class SeasonMapper @Inject constructor(
       season.firstAired,
       season.episodeCount,
       season.airedEpisodes,
+      season.rating,
       isWatched
     )
   }

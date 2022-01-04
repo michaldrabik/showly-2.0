@@ -10,7 +10,7 @@ import com.michaldrabik.data_local.database.model.WatchlistMovie
 @Dao
 interface WatchlistMoviesDao {
 
-  @Query("SELECT movies.*, movies_see_later.updated_at FROM movies INNER JOIN movies_see_later USING(id_trakt)")
+  @Query("SELECT movies.*, movies_see_later.created_at, movies_see_later.updated_at FROM movies INNER JOIN movies_see_later USING(id_trakt)")
   suspend fun getAll(): List<Movie>
 
   @Query("SELECT movies.id_trakt FROM movies INNER JOIN movies_see_later USING(id_trakt)")

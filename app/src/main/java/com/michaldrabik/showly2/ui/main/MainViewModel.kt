@@ -74,9 +74,12 @@ class MainViewModel @Inject constructor(
   fun initialize() {
     viewModelScope.launch {
       checkInitialRun()
-      initCase.initializeFcm()
-      initCase.preloadRatings()
-      initCase.loadRemoteConfig()
+      with(initCase) {
+        initializeFcm()
+        preloadRatings()
+        loadRemoteConfig()
+        saveInstallTimestamp()
+      }
     }
   }
 

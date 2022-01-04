@@ -2,25 +2,21 @@ package com.michaldrabik.ui_progress.progress
 
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
-import com.michaldrabik.repository.RatingsRepository
-import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.UserTraktManager
-import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.Event
-import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
-import com.michaldrabik.ui_model.Episode
-import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
-import com.michaldrabik.ui_progress.R
+import com.michaldrabik.ui_progress.main.EpisodeCheckActionUiEvent
 import com.michaldrabik.ui_progress.main.ProgressMainUiState
 import com.michaldrabik.ui_progress.progress.cases.ProgressItemsCase
+import com.michaldrabik.ui_progress.progress.cases.ProgressRatingsCase
 import com.michaldrabik.ui_progress.progress.cases.ProgressSortOrderCase
 import com.michaldrabik.ui_progress.progress.recycler.ProgressListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -36,10 +32,9 @@ import javax.inject.Inject
 class ProgressViewModel @Inject constructor(
   private val itemsCase: ProgressItemsCase,
   private val sortOrderCase: ProgressSortOrderCase,
+  private val ratingsCase: ProgressRatingsCase,
   private val imagesProvider: ShowImagesProvider,
   private val userTraktManager: UserTraktManager,
-  private val ratingsRepository: RatingsRepository,
-  private val settingsRepository: SettingsRepository,
   private val translationsRepository: TranslationsRepository,
 ) : BaseViewModel() {
 
@@ -54,7 +49,6 @@ class ProgressViewModel @Inject constructor(
   private val language by lazy { translationsRepository.getLanguage() }
   private var searchQuery: String? = null
   private var timestamp = 0L
-  var isQuickRateEnabled = false
 
   fun onParentState(state: ProgressMainUiState) {
     when {
@@ -89,6 +83,14 @@ class ProgressViewModel @Inject constructor(
     }
   }
 
+  fun onEpisodeChecked(episode: ProgressListItem.Episode) {
+    viewModelScope.launch {
+      val bundle = EpisodeBundle(episode.requireEpisode(), episode.requireSeason(), episode.show)
+      val isQuickRate = ratingsCase.isQuickRateEnabled()
+      _eventChannel.send(EpisodeCheckActionUiEvent(bundle, isQuickRate))
+    }
+  }
+
   fun findMissingImage(item: ProgressListItem, force: Boolean) {
     check(item is ProgressListItem.Episode)
     viewModelScope.launch {
@@ -117,31 +119,9 @@ class ProgressViewModel @Inject constructor(
     }
   }
 
-  fun addRating(rating: Int, episode: Episode, showTraktId: IdTrakt) {
-    viewModelScope.launch {
-      try {
-        val token = userTraktManager.checkAuthorization().token
-        ratingsRepository.shows.addRating(token, episode, rating)
-        _messageChannel.send(MessageEvent.info(R.string.textRateSaved))
-        Analytics.logEpisodeRated(showTraktId.id, episode, rating)
-      } catch (error: Throwable) {
-        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
-      }
-    }
-  }
-
   fun setSortOrder(sortOrder: SortOrder, sortType: SortType) {
     sortOrderCase.setSortOrder(sortOrder, sortType)
     loadItems(resetScroll = true)
-  }
-
-  fun checkQuickRateEnabled() {
-    viewModelScope.launch {
-      val isSignedIn = userTraktManager.isAuthorized()
-      val isPremium = settingsRepository.isPremium
-      val isQuickRate = settingsRepository.load().traktQuickRateEnabled
-      isQuickRateEnabled = isPremium && isSignedIn && isQuickRate
-    }
   }
 
   private fun updateItem(new: ProgressListItem) {

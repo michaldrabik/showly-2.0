@@ -3,21 +3,19 @@ package com.michaldrabik.ui_progress.calendar
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.TranslationsRepository
-import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.ShowImagesProvider
-import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
-import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.calendar.cases.CalendarRatingsCase
 import com.michaldrabik.ui_progress.calendar.cases.items.CalendarFutureCase
 import com.michaldrabik.ui_progress.calendar.cases.items.CalendarRecentsCase
 import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarListItem
+import com.michaldrabik.ui_progress.main.EpisodeCheckActionUiEvent
 import com.michaldrabik.ui_progress.main.ProgressMainUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -47,7 +45,6 @@ class CalendarViewModel @Inject constructor(
   private var mode = CalendarMode.PRESENT_FUTURE
   private var searchQuery: String? = null
   private var timestamp = 0L
-  var isQuickRateEnabled = false
 
   fun handleParentAction(state: ProgressMainUiState) {
     when {
@@ -78,15 +75,11 @@ class CalendarViewModel @Inject constructor(
     }
   }
 
-  fun addRating(rating: Int, bundle: EpisodeBundle) {
+  fun onEpisodeChecked(episode: CalendarListItem.Episode) {
     viewModelScope.launch {
-      try {
-        ratingsCase.addRating(bundle.episode, rating)
-        _messageChannel.send(MessageEvent.info(R.string.textRateSaved))
-        Analytics.logEpisodeRated(bundle.show.traktId, bundle.episode, rating)
-      } catch (error: Throwable) {
-        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
-      }
+      val bundle = EpisodeBundle(episode.episode, episode.season, episode.show)
+      val isQuickRate = ratingsCase.isQuickRateEnabled()
+      _eventChannel.send(EpisodeCheckActionUiEvent(bundle, isQuickRate))
     }
   }
 
@@ -129,12 +122,6 @@ class CalendarViewModel @Inject constructor(
     currentItems.findReplace(new) { it.isSameAs(new) }
     itemsState.value = currentItems
     modeState.value = mode
-  }
-
-  fun checkQuickRateEnabled() {
-    viewModelScope.launch {
-      isQuickRateEnabled = ratingsCase.isQuickRateEnabled()
-    }
   }
 
   val uiState = combine(

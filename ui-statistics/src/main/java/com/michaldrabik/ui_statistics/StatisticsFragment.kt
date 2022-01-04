@@ -3,6 +3,7 @@ package com.michaldrabik.ui_statistics
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -57,7 +58,8 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
 
   private fun setupStatusBar() {
     statisticsRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
-      view.updatePadding(top = padding.top + insets.systemWindowInsetTop)
+      val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+      view.updatePadding(top = padding.top + inset)
     }
   }
 

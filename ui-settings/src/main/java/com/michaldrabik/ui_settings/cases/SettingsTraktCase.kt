@@ -1,12 +1,12 @@
 package com.michaldrabik.ui_settings.cases
 
-import android.content.Context
 import android.net.Uri
 import androidx.work.WorkManager
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_base.trakt.TraktSyncWorker
+import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_model.TraktSyncSchedule
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
@@ -43,7 +43,7 @@ class SettingsTraktCase @Inject constructor(
     }
   }
 
-  suspend fun setTraktSyncSchedule(schedule: TraktSyncSchedule, context: Context) {
+  suspend fun setTraktSyncSchedule(schedule: TraktSyncSchedule) {
     val settings = settingsRepository.load()
     settings.let {
       val new = it.copy(traktSyncSchedule = schedule)
@@ -60,25 +60,26 @@ class SettingsTraktCase @Inject constructor(
     userManager.authorize(code)
   }
 
-  suspend fun logoutTrakt(context: Context) {
+  suspend fun logoutTrakt() {
 
-    suspend fun disableTraktFeatures(context: Context) {
+    suspend fun disableTraktFeatures() {
       val settings = settingsRepository.load()
       settings.let {
+        val defaults = Settings.createInitial()
         val new = it.copy(
-          traktQuickSyncEnabled = false,
-          traktQuickRemoveEnabled = false,
-          traktQuickRateEnabled = false
+          traktQuickSyncEnabled = defaults.traktQuickSyncEnabled,
+          traktQuickRemoveEnabled = defaults.traktQuickRemoveEnabled,
+          traktQuickRateEnabled = defaults.traktQuickRateEnabled
         )
         settingsRepository.update(new)
       }
-      setTraktSyncSchedule(TraktSyncSchedule.OFF, context)
+      setTraktSyncSchedule(TraktSyncSchedule.OFF)
     }
 
     userManager.revokeToken()
     userManager.clearTraktLogs()
     ratingsRepository.clear()
-    disableTraktFeatures(context)
+    disableTraktFeatures()
     TraktSyncWorker.cancelAll(workManager)
   }
 

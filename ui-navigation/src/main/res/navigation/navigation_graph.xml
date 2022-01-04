@@ -99,6 +99,13 @@
       app:destination="@id/showItemContextDialog"
       app:launchSingleTop="true"
       />
+    <action
+      android:id="@+id/actionDiscoverFragmentToPremium"
+      app:destination="@id/premiumFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
   </fragment>
 
   <fragment
@@ -127,6 +134,13 @@
       android:id="@+id/actionDiscoverMoviesFragmentToItemMenu"
       app:destination="@id/movieItemContextDialog"
       app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionDiscoverMoviesFragmentToPremium"
+      app:destination="@id/premiumFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
       />
   </fragment>
 
@@ -183,6 +197,11 @@
       app:destination="@id/showItemContextDialog"
       app:launchSingleTop="true"
       />
+    <action
+      android:id="@+id/actionProgressFragmentToRating"
+      app:destination="@id/ratingDialog"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment
@@ -231,6 +250,11 @@
     <action
       android:id="@+id/actionProgressMoviesFragmentToItemMenu"
       app:destination="@id/movieItemContextDialog"
+      app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionProgressMoviesFragmentToRating"
+      app:destination="@id/ratingDialog"
       app:launchSingleTop="true"
       />
   </fragment>
@@ -312,6 +336,11 @@
       app:destination="@id/peopleListDialog"
       app:launchSingleTop="true"
       />
+    <action
+      android:id="@+id/actionShowDetailsFragmentToRating"
+      app:destination="@id/ratingDialog"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment
@@ -384,6 +413,11 @@
     <action
       android:id="@+id/actionMovieDetailsFragmentToPeopleList"
       app:destination="@id/peopleListDialog"
+      app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionMovieDetailsFragmentToRating"
+      app:destination="@id/ratingDialog"
       app:launchSingleTop="true"
       />
   </fragment>
@@ -723,6 +757,11 @@
       app:destination="@id/postCommentDialog"
       app:launchSingleTop="true"
       />
+    <action
+      android:id="@+id/actionEpisodeDetailsDialogToRate"
+      app:destination="@id/ratingDialog"
+      app:launchSingleTop="true"
+      />
   </dialog>
 
   <dialog
@@ -751,19 +790,19 @@
 
   <dialog
     android:id="@+id/removeTraktHiddenDialog"
-    android:name="com.michaldrabik.ui_base.common.sheets.remove_trakt_hidden.RemoveTraktHiddenBottomSheet"
+    android:name="com.michaldrabik.ui_base.common.sheets.remove_trakt.remove_trakt_hidden.RemoveTraktHiddenBottomSheet"
     android:label="dialogRemoveTraktHidden"
     />
 
   <dialog
     android:id="@+id/removeTraktWatchlistDialog"
-    android:name="com.michaldrabik.ui_base.common.sheets.remove_trakt_watchlist.RemoveTraktWatchlistBottomSheet"
+    android:name="com.michaldrabik.ui_base.common.sheets.remove_trakt.remove_trakt_watchlist.RemoveTraktWatchlistBottomSheet"
     android:label="dialogRemoveTraktWatchlist"
     />
 
   <dialog
     android:id="@+id/removeTraktProgressDialog"
-    android:name="com.michaldrabik.ui_base.common.sheets.remove_trakt_progress.RemoveTraktProgressBottomSheet"
+    android:name="com.michaldrabik.ui_base.common.sheets.remove_trakt.remove_trakt_progress.RemoveTraktProgressBottomSheet"
     android:label="dialogRemoveTraktProgress"
     />
 
@@ -828,5 +867,11 @@
       app:launchSingleTop="true"
       />
   </dialog>
+
+  <dialog
+    android:id="@+id/ratingDialog"
+    android:name="com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet"
+    android:label="dialogRating"
+    />
 
 </navigation>

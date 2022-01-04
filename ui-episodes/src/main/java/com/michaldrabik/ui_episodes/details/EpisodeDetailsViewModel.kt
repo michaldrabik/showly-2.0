@@ -6,7 +6,6 @@ import com.michaldrabik.repository.CommentsRepository
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.UserTraktManager
-import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.images.EpisodeImagesProvider
@@ -22,7 +21,6 @@ import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.RatingState
-import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -53,7 +51,6 @@ class EpisodeDetailsViewModel @Inject constructor(
   private val commentsLoadingState = MutableStateFlow(false)
   private val signedInState = MutableStateFlow(false)
   private val ratingState = MutableStateFlow<RatingState?>(null)
-  private val ratingChangeEvent = MutableStateFlow<Event<Boolean>?>(null)
   private val translationEvent = MutableStateFlow<Event<Translation>?>(null)
   private val dateFormatState = MutableStateFlow<DateTimeFormatter?>(null)
   private val commentsDateFormatState = MutableStateFlow<DateTimeFormatter?>(null)
@@ -66,11 +63,10 @@ class EpisodeDetailsViewModel @Inject constructor(
     commentsLoadingState,
     signedInState,
     ratingState,
-    ratingChangeEvent,
     translationEvent,
     dateFormatState,
     commentsDateFormatState
-  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ->
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10 ->
     EpisodeDetailsUiState(
       image = s1,
       isImageLoading = s2,
@@ -79,10 +75,9 @@ class EpisodeDetailsViewModel @Inject constructor(
       isCommentsLoading = s5,
       isSignedIn = s6,
       ratingState = s7,
-      ratingChanged = s8,
-      translation = s9,
-      dateFormat = s10,
-      commentsDateFormat = s11
+      translation = s8,
+      dateFormat = s9,
+      commentsDateFormat = s10
     )
   }.stateIn(
     scope = viewModelScope,
@@ -255,47 +250,10 @@ class EpisodeDetailsViewModel @Inject constructor(
           return@launch
         }
         ratingState.value = RatingState(rateAllowed = true, rateLoading = true)
-        val token = userTraktManager.checkAuthorization()
-        val rating = ratingsRepository.shows.loadRating(token.token, episode)
+        val rating = ratingsRepository.shows.loadRating(episode)
         ratingState.value = RatingState(rateAllowed = true, rateLoading = false, userRating = rating)
       } catch (error: Throwable) {
         ratingState.value = RatingState(rateAllowed = false, rateLoading = false)
-      }
-    }
-  }
-
-  fun addRating(rating: Int, episode: Episode, showTraktId: IdTrakt) {
-    viewModelScope.launch {
-      try {
-        val token = userTraktManager.checkAuthorization().token
-        ratingState.value = RatingState(rateAllowed = true, rateLoading = true)
-
-        ratingsRepository.shows.addRating(token, episode, rating)
-
-        _messageChannel.send(MessageEvent.info(R.string.textRateSaved))
-        ratingState.value = RatingState(rateAllowed = true, rateLoading = false, userRating = TraktRating(episode.ids.trakt, rating))
-        ratingChangeEvent.value = Event(true)
-
-        Analytics.logEpisodeRated(showTraktId.id, episode, rating)
-      } catch (error: Throwable) {
-        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
-        ratingState.value = RatingState(rateAllowed = true, rateLoading = false)
-      }
-    }
-  }
-
-  fun deleteRating(episode: Episode) {
-    viewModelScope.launch {
-      try {
-        ratingState.value = RatingState(rateAllowed = true, rateLoading = true)
-        val token = userTraktManager.checkAuthorization().token
-        ratingsRepository.shows.deleteRating(token, episode)
-        ratingState.value = RatingState(rateAllowed = true, rateLoading = false, userRating = TraktRating.EMPTY)
-        ratingChangeEvent.value = Event(true)
-        _messageChannel.send(MessageEvent.info(R.string.textShowRatingDeleted))
-      } catch (error: Throwable) {
-        ratingState.value = RatingState(rateAllowed = true, rateLoading = false)
-        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
       }
     }
   }

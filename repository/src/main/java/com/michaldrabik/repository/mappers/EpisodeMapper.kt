@@ -30,10 +30,10 @@ class EpisodeMapper @Inject constructor(
   )
 
   fun toNetwork(episode: Episode) = EpisodeNetwork(
+    ids = idsMapper.toNetwork(episode.ids),
     season = episode.season,
     number = episode.number,
     title = episode.title,
-    ids = idsMapper.toNetwork(episode.ids),
     overview = episode.overview,
     rating = episode.rating,
     votes = episode.votes,

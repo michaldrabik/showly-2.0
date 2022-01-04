@@ -3,6 +3,7 @@ package com.michaldrabik.ui_show
 import android.annotation.SuppressLint
 import android.content.Context
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_base.Analytics
@@ -10,17 +11,16 @@ import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.OnlineStatusProvider
+import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.episodes.EpisodesManager
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
-import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
-import com.michaldrabik.ui_base.utilities.extensions.replace
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.EpisodeBundle
@@ -45,20 +45,22 @@ import com.michaldrabik.ui_show.cases.ShowDetailsHiddenCase
 import com.michaldrabik.ui_show.cases.ShowDetailsListsCase
 import com.michaldrabik.ui_show.cases.ShowDetailsMainCase
 import com.michaldrabik.ui_show.cases.ShowDetailsMyShowsCase
+import com.michaldrabik.ui_show.cases.ShowDetailsQuickProgressCase
 import com.michaldrabik.ui_show.cases.ShowDetailsRatingCase
 import com.michaldrabik.ui_show.cases.ShowDetailsRelatedShowsCase
 import com.michaldrabik.ui_show.cases.ShowDetailsStreamingCase
 import com.michaldrabik.ui_show.cases.ShowDetailsTranslationCase
 import com.michaldrabik.ui_show.cases.ShowDetailsWatchlistCase
-import com.michaldrabik.ui_show.episodes.EpisodeListItem
 import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
 import com.michaldrabik.ui_show.helpers.StreamingsBundle
-import com.michaldrabik.ui_show.quickSetup.QuickSetupListItem
+import com.michaldrabik.ui_show.quick_setup.QuickSetupListItem
 import com.michaldrabik.ui_show.related.RelatedListItem
 import com.michaldrabik.ui_show.seasons.SeasonListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
@@ -86,6 +88,7 @@ class ShowDetailsViewModel @Inject constructor(
   private val listsCase: ShowDetailsListsCase,
   private val streamingsCase: ShowDetailsStreamingCase,
   private val relatedShowsCase: ShowDetailsRelatedShowsCase,
+  private val quickProgressCase: ShowDetailsQuickProgressCase,
   private val settingsRepository: SettingsRepository,
   private val userManager: UserTraktManager,
   private val episodesManager: EpisodesManager,
@@ -115,13 +118,8 @@ class ShowDetailsViewModel @Inject constructor(
   private val premiumState = MutableStateFlow(false)
   private val listsCountState = MutableStateFlow(0)
 
-  private val seasonTranslationEvent = MutableStateFlow<Event<SeasonListItem>?>(null)
-  private val removeTraktEvent = MutableStateFlow<Event<Int>?>(null)
-  private val finishedEvent = MutableStateFlow<Event<Boolean>?>(null)
-
   private var show by notNull<Show>()
   private var areSeasonsLocal = false
-  private val seasonItems = mutableListOf<SeasonListItem>()
 
   fun loadDetails(id: IdTrakt) {
     viewModelScope.launch {
@@ -156,7 +154,7 @@ class ShowDetailsViewModel @Inject constructor(
 
         loadBackgroundImage(show)
         loadListsCount(show)
-        launch { loadRating(show, isSignedIn) }
+        loadRating()
         launch { loadRatings(show) }
         launch { loadStreamings(show) }
         launch { loadCastCrew(show) }
@@ -233,19 +231,7 @@ class ShowDetailsViewModel @Inject constructor(
   private suspend fun loadSeasons(show: Show, isOnline: Boolean) = try {
     val (seasons, isLocal) = episodesCase.loadSeasons(show, isOnline)
     areSeasonsLocal = isLocal
-    val format = dateFormatProvider.loadFullHourFormat()
-    val seasonsItems = seasons
-      .map {
-        val episodes = it.episodes.map { episode ->
-          val rating = ratingsCase.loadRating(episode)
-          val translation = translationCase.loadTranslation(episode, show, onlyLocal = true)
-          EpisodeListItem(episode, it, false, translation, rating, format)
-        }
-        SeasonListItem(show, it, episodes, isWatched = false)
-      }
-      .sortedByDescending { it.season.number }
-
-    val calculated = markWatchedEpisodes(seasonsItems)
+    val calculated = markWatchedEpisodes(seasons)
     seasonsState.value = calculated
   } catch (error: Throwable) {
     seasonsState.value = emptyList()
@@ -329,9 +315,11 @@ class ShowDetailsViewModel @Inject constructor(
           }
         }
 
-        val updatedItem = seasonItem.copy(episodes = episodes)
+        val updatedItem = seasonItem.copy(episodes = episodes, updatedAt = nowUtcMillis())
+        val seasonItems = seasonsState.value?.toMutableList() ?: mutableListOf()
         seasonItems.findReplace(updatedItem) { it.id == updatedItem.id }
-        seasonTranslationEvent.value = Event(updatedItem)
+        val calculated = markWatchedEpisodes(seasonItems)
+        seasonsState.value = calculated
       } catch (error: Throwable) {
         Logger.record(error, "Source" to "ShowDetailsViewModel::loadSeasonTranslation()")
         Timber.e(error)
@@ -470,47 +458,16 @@ class ShowDetailsViewModel @Inject constructor(
     premiumState.value = settingsRepository.isPremium
   }
 
-  private suspend fun loadRating(show: Show, isSignedIn: Boolean) {
-    if (!isSignedIn) return
-    try {
-      ratingState.value = RatingState(rateLoading = true, rateAllowed = isSignedIn)
-      val rating = ratingsCase.loadRating(show)
-      ratingState.value = RatingState(rateLoading = false, rateAllowed = isSignedIn, userRating = rating ?: TraktRating.EMPTY)
-    } catch (error: Throwable) {
-      ratingState.value = RatingState(rateLoading = false, rateAllowed = isSignedIn)
-      rethrowCancellation(error)
-    }
-  }
-
-  fun addRating(rating: Int) {
+  fun loadRating() {
     viewModelScope.launch {
+      val isSignedIn = userManager.isAuthorized()
+      if (!isSignedIn) return@launch
       try {
-        ratingState.value = RatingState(rateLoading = true, rateAllowed = true)
-        ratingsCase.addRating(show, rating)
-        val userRating = TraktRating(show.ids.trakt, rating)
-        ratingState.value = RatingState(rateLoading = false, rateAllowed = true, userRating = userRating)
-        _messageChannel.send(MessageEvent.info(R.string.textRateSaved))
-        Analytics.logShowRated(show, rating)
+        ratingState.value = RatingState(rateLoading = true, rateAllowed = isSignedIn)
+        val rating = ratingsCase.loadRating(show)
+        ratingState.value = RatingState(rateLoading = false, rateAllowed = isSignedIn, userRating = rating ?: TraktRating.EMPTY)
       } catch (error: Throwable) {
-        ratingState.value = RatingState(rateLoading = false, rateAllowed = true)
-        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
-        Timber.e(error)
-        rethrowCancellation(error)
-      }
-    }
-  }
-
-  fun deleteRating() {
-    viewModelScope.launch {
-      try {
-        ratingState.value = RatingState(rateLoading = true, rateAllowed = true)
-        ratingsCase.deleteRating(show)
-        ratingState.value = RatingState(rateLoading = false, rateAllowed = true, userRating = TraktRating.EMPTY)
-        _messageChannel.send(MessageEvent.info(R.string.textShowRatingDeleted))
-      } catch (error: Throwable) {
-        ratingState.value = RatingState(rateLoading = false, rateAllowed = true)
-        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
-        Timber.e(error)
+        ratingState.value = RatingState(rateLoading = false, rateAllowed = isSignedIn)
         rethrowCancellation(error)
       }
     }
@@ -520,6 +477,7 @@ class ShowDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       if (!checkSeasonsLoaded()) return@launch
 
+      val seasonItems = seasonsState.value?.toList() ?: emptyList()
       val seasons = seasonItems.map { it.season }
       val episodes = seasonItems.flatMap { it.episodes.map { e -> e.episode } }
 
@@ -567,23 +525,25 @@ class ShowDetailsViewModel @Inject constructor(
       val showRemoveTrakt = userManager.isAuthorized() && traktQuickRemoveEnabled && !areSeasonsLocal
 
       val state = FollowedState.idle()
+      val ids = listOf(show.ids.trakt)
+      val mode = RemoveTraktBottomSheet.Mode.SHOW
       when {
         isMyShows -> {
           followedState.value = state
           if (showRemoveTrakt) {
-            removeTraktEvent.value = Event(R.id.actionShowDetailsFragmentToRemoveTraktProgress)
+            _eventChannel.send(RemoveTraktUiEvent(R.id.actionShowDetailsFragmentToRemoveTraktProgress, mode, ids))
           }
         }
         isWatchlist -> {
           followedState.value = state
           if (showRemoveTrakt) {
-            removeTraktEvent.value = Event(R.id.actionShowDetailsFragmentToRemoveTraktWatchlist)
+            _eventChannel.send(RemoveTraktUiEvent(R.id.actionShowDetailsFragmentToRemoveTraktWatchlist, mode, ids))
           }
         }
         isArchived -> {
           followedState.value = state
           if (showRemoveTrakt) {
-            removeTraktEvent.value = Event(R.id.actionShowDetailsFragmentToRemoveTraktHidden)
+            _eventChannel.send(RemoveTraktUiEvent(R.id.actionShowDetailsFragmentToRemoveTraktHidden, mode, ids))
           }
         }
         else -> error("Unexpected show state.")
@@ -601,49 +561,113 @@ class ShowDetailsViewModel @Inject constructor(
         Timber.e(error)
         rethrowCancellation(error)
       } finally {
-        finishedEvent.value = Event(true)
+        _eventChannel.send(FinishUiEvent(true))
       }
     }
   }
 
-  fun setWatchedEpisode(
+  fun setEpisodeWatched(
     episode: Episode,
     season: Season,
     isChecked: Boolean,
+    removeTrakt: Boolean = false,
+    clearProgress: Boolean = false
   ) {
     viewModelScope.launch {
       val bundle = EpisodeBundle(episode, season, show)
+      val isCollection = myShowsCase.isMyShows(show) || watchlistCase.isWatchlist(show) || hiddenCase.isHidden(show)
       when {
         isChecked -> {
           episodesManager.setEpisodeWatched(bundle)
-          if (myShowsCase.isMyShows(show) || watchlistCase.isWatchlist(show) || hiddenCase.isHidden(show)) {
-            quickSyncManager.scheduleEpisodes(listOf(episode.ids.trakt.id))
+          if (isCollection) {
+            quickSyncManager.scheduleEpisodes(
+              episodesIds = listOf(episode.ids.trakt.id),
+              showId = show.traktId,
+              clearProgress = clearProgress
+            )
           }
         }
         else -> {
           episodesManager.setEpisodeUnwatched(bundle)
           quickSyncManager.clearEpisodes(listOf(episode.ids.trakt.id))
+
+          val traktQuickRemoveEnabled = removeTrakt && settingsRepository.load().traktQuickRemoveEnabled
+          val showRemoveTrakt = userManager.isAuthorized() && traktQuickRemoveEnabled && !areSeasonsLocal && isCollection
+          if (showRemoveTrakt) {
+            val ids = listOf(episode.ids.trakt)
+            val mode = RemoveTraktBottomSheet.Mode.EPISODE
+            _eventChannel.send(RemoveTraktUiEvent(R.id.actionShowDetailsFragmentToRemoveTraktProgress, mode, ids))
+          }
         }
       }
       refreshWatchedEpisodes()
     }
   }
 
-  fun setWatchedSeason(season: Season, isChecked: Boolean) {
+  fun setSeasonWatched(
+    season: Season,
+    isChecked: Boolean,
+    removeTrakt: Boolean = false
+  ) {
     viewModelScope.launch {
       val bundle = SeasonBundle(season, show)
+      val isCollection = myShowsCase.isMyShows(show) || watchlistCase.isWatchlist(show) || hiddenCase.isHidden(show)
       when {
         isChecked -> {
           val episodesAdded = episodesManager.setSeasonWatched(bundle)
-          if (myShowsCase.isMyShows(show) || watchlistCase.isWatchlist(show) || hiddenCase.isHidden(show)) {
+          if (isCollection) {
             quickSyncManager.scheduleEpisodes(episodesAdded.map { it.ids.trakt.id })
           }
         }
         else -> {
           episodesManager.setSeasonUnwatched(bundle)
           quickSyncManager.clearEpisodes(season.episodes.map { it.ids.trakt.id })
+
+          val traktQuickRemoveEnabled = removeTrakt && settingsRepository.load().traktQuickRemoveEnabled
+          val showRemoveTrakt = userManager.isAuthorized() && traktQuickRemoveEnabled && !areSeasonsLocal && isCollection
+          if (showRemoveTrakt) {
+            val ids = season.episodes.map { it.ids.trakt }
+            val mode = RemoveTraktBottomSheet.Mode.EPISODE
+            _eventChannel.send(RemoveTraktUiEvent(R.id.actionShowDetailsFragmentToRemoveTraktProgress, mode, ids))
+          }
         }
       }
+      refreshWatchedEpisodes()
+    }
+  }
+
+  fun setQuickProgress(item: QuickSetupListItem?) {
+    viewModelScope.launch {
+      if (item == null || !checkSeasonsLoaded()) return@launch
+
+      val seasonItems = seasonsState.value?.toList() ?: emptyList()
+      quickProgressCase.setQuickProgress(item, seasonItems, show)
+
+      _messageChannel.send(MessageEvent.info(R.string.textShowQuickProgressDone))
+      refreshWatchedEpisodes()
+      Analytics.logShowQuickProgress(show)
+    }
+  }
+
+  fun refreshEpisodesRatings() {
+    viewModelScope.launch {
+      val seasonItems = seasonsState.value?.toList() ?: emptyList()
+      val items = seasonItems.map { seasonItem ->
+        val ratingSeason = ratingsCase.loadRating(seasonItem.season)
+        val episodes = seasonItem.episodes.map { episodeItem ->
+          async {
+            val ratingEpisode = ratingsCase.loadRating(episodeItem.episode)
+            episodeItem.copy(myRating = ratingEpisode)
+          }
+        }.awaitAll()
+        seasonItem.copy(episodes = episodes, userRating = seasonItem.userRating.copy(ratingSeason))
+      }
+      seasonsState.value = items
+    }
+  }
+
+  fun launchRefreshWatchedEpisodes() {
+    viewModelScope.launch {
       refreshWatchedEpisodes()
     }
   }
@@ -656,50 +680,33 @@ class ShowDetailsViewModel @Inject constructor(
     return true
   }
 
-  fun refreshEpisodesRatings() {
-    viewModelScope.launch {
-      val items = seasonItems.map { seasonItem ->
-        val episodes = seasonItem.episodes.map { episodeItem ->
-          val rating = ratingsCase.loadRating(episodeItem.episode)
-          episodeItem.copy(myRating = rating)
-        }
-        seasonItem.copy(episodes = episodes)
-      }
-      seasonItems.replace(items)
-      seasonsState.value = items
-    }
-  }
-
   private suspend fun refreshWatchedEpisodes() {
+    val seasonItems = seasonsState.value?.toList() ?: emptyList()
     val updatedSeasonItems = markWatchedEpisodes(seasonItems)
     seasonsState.value = updatedSeasonItems
   }
 
-  fun launchRefreshWatchedEpisodes() {
-    viewModelScope.launch {
-      refreshWatchedEpisodes()
-    }
-  }
+  private suspend fun markWatchedEpisodes(seasonsList: List<SeasonListItem>): List<SeasonListItem> =
+    coroutineScope {
+      val items = mutableListOf<SeasonListItem>()
 
-  private suspend fun markWatchedEpisodes(seasonsList: List<SeasonListItem>): List<SeasonListItem> {
-    val items = mutableListOf<SeasonListItem>()
+      val (watchedSeasonsIds, watchedEpisodesIds) = awaitAll(
+        async { episodesManager.getWatchedSeasonsIds(show) },
+        async { episodesManager.getWatchedEpisodesIds(show) }
+      )
 
-    val watchedSeasonsIds = episodesManager.getWatchedSeasonsIds(show)
-    val watchedEpisodesIds = episodesManager.getWatchedEpisodesIds(show)
-
-    seasonsList.forEach { item ->
-      val isSeasonWatched = watchedSeasonsIds.any { id -> id == item.id }
-      val episodes = item.episodes.map { episodeItem ->
-        val isEpisodeWatched = watchedEpisodesIds.any { id -> id == episodeItem.id }
-        episodeItem.copy(season = item.season, isWatched = isEpisodeWatched)
+      seasonsList.forEach { item ->
+        val isSeasonWatched = watchedSeasonsIds.any { id -> id == item.id }
+        val episodes = item.episodes.map { episodeItem ->
+          val isEpisodeWatched = watchedEpisodesIds.any { id -> id == episodeItem.id }
+          episodeItem.copy(season = item.season, isWatched = isEpisodeWatched)
+        }
+        val updated = item.copy(episodes = episodes, isWatched = isSeasonWatched)
+        items.add(updated)
       }
-      val updated = item.copy(episodes = episodes, isWatched = isSeasonWatched)
-      items.add(updated)
-    }
 
-    seasonItems.replace(items)
-    return items
-  }
+      items
+    }
 
   fun refreshAnnouncements() {
     viewModelScope.launch {
@@ -707,30 +714,6 @@ class ShowDetailsViewModel @Inject constructor(
       if (isFollowed) {
         announcementManager.refreshShowsAnnouncements()
       }
-    }
-  }
-
-  fun setQuickProgress(item: QuickSetupListItem?) {
-    viewModelScope.launch {
-      if (item == null || !checkSeasonsLoaded()) return@launch
-
-      episodesManager.setAllUnwatched(show.ids.trakt, skipSpecials = true)
-      val seasons = seasonItems.map { it.season }
-      seasons
-        .filter { !it.isSpecial() && it.number < item.season.number }
-        .forEach { season ->
-          setWatchedSeason(season, true)
-        }
-
-      val season = seasons.find { it.number == item.season.number }
-      season?.episodes
-        ?.filter { it.number <= item.episode.number }
-        ?.forEach { episode ->
-          setWatchedEpisode(episode, season, true)
-        }
-
-      _messageChannel.send(MessageEvent.info(R.string.textShowQuickProgressDone))
-      Analytics.logShowQuickProgress(show)
     }
   }
 
@@ -753,11 +736,8 @@ class ShowDetailsViewModel @Inject constructor(
     countryState,
     signedInState,
     premiumState,
-    listsCountState,
-    seasonTranslationEvent,
-    removeTraktEvent,
-    finishedEvent
-  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s20, s21, s22 ->
+    listsCountState
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19 ->
     ShowDetailsUiState(
       show = s1,
       showLoading = s2,
@@ -777,10 +757,7 @@ class ShowDetailsViewModel @Inject constructor(
       country = s16,
       isSignedIn = s17,
       isPremium = s18,
-      listsCount = s19,
-      seasonTranslation = s20,
-      removeFromTrakt = s21,
-      isFinished = s22
+      listsCount = s19
     )
   }.stateIn(
     scope = viewModelScope,
