@@ -235,9 +235,10 @@ class SettingsViewModel @Inject constructor(
       try {
         signingInState.value = true
         traktCase.authorizeTrakt(authData)
-        _messageChannel.send(MessageEvent.info(R.string.textTraktLoginSuccess))
+        traktCase.enableTraktQuickRemove(true)
         refreshSettings()
         preloadRatings()
+        _messageChannel.send(MessageEvent.info(R.string.textTraktLoginSuccess))
         Analytics.logTraktLogin()
       } catch (error: Throwable) {
         val message = when {
