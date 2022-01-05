@@ -18,6 +18,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.view_context_menu.*
 import kotlinx.coroutines.flow.collect
+import java.util.Locale
 
 @AndroidEntryPoint
 class ShowContextMenuBottomSheet : ContextMenuBottomSheet<ShowContextMenuViewModel>() {
@@ -76,6 +77,14 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet<ShowContextMenuViewMod
     contextMenuItemNetwork.text =
       if (item.show.year > 0) getString(R.string.textNetwork, item.show.network, item.show.year.toString())
       else String.format("%s", item.show.network)
+
+    contextMenuRating.text = String.format(Locale.ENGLISH, "%.1f", item.show.rating)
+    contextMenuRating.visibleIf(item.show.rating > 0)
+    contextMenuRatingStar.visibleIf(item.show.rating > 0)
+
+    contextMenuUserRating.text = String.format(Locale.ENGLISH, "%d", item.userRating)
+    contextMenuUserRating.visibleIf(item.userRating != null)
+    contextMenuUserRatingStar.visibleIf(item.userRating != null)
 
     contextMenuItemDescription.visibleIf(item.show.overview.isNotBlank())
     contextMenuItemNetwork.visibleIf(item.show.network.isNotBlank())

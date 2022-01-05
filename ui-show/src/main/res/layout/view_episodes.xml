@@ -89,6 +89,7 @@
     style="@style/Widget.MaterialComponents.Button.TextButton"
     android:layout_width="64dp"
     android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/spaceTiny"
     android:gravity="center"
     android:text="@string/textRate"
     android:textColor="?android:attr/textColorPrimary"

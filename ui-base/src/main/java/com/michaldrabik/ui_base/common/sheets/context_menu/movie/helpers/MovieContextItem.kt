@@ -10,6 +10,7 @@ data class MovieContextItem(
   val image: Image,
   val translation: Translation?,
   val dateFormat: DateTimeFormatter?,
+  val userRating: Int?,
   val isMyMovie: Boolean,
   val isWatchlist: Boolean,
   val isHidden: Boolean,

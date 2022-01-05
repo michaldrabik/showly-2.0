@@ -8,6 +8,7 @@ data class ShowContextItem(
   val show: Show,
   val image: Image,
   val translation: Translation?,
+  val userRating: Int?,
   val isMyShow: Boolean,
   val isWatchlist: Boolean,
   val isHidden: Boolean,

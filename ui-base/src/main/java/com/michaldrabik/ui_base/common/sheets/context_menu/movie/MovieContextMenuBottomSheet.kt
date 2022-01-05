@@ -80,6 +80,14 @@ class MovieContextMenuBottomSheet : ContextMenuBottomSheet<MovieContextMenuViewM
       else -> String.format(Locale.ENGLISH, "%d", item.movie.year)
     }
 
+    contextMenuRating.text = String.format(Locale.ENGLISH, "%.1f", item.movie.rating)
+    contextMenuRating.visibleIf(item.movie.rating > 0)
+    contextMenuRatingStar.visibleIf(item.movie.rating > 0)
+
+    contextMenuUserRating.text = String.format(Locale.ENGLISH, "%d", item.userRating)
+    contextMenuUserRating.visibleIf(item.userRating != null)
+    contextMenuUserRatingStar.visibleIf(item.userRating != null)
+
     contextMenuItemDescription.visibleIf(item.movie.overview.isNotBlank())
     contextMenuItemNetwork.visibleIf(item.movie.released != null || item.movie.year > 0)
 
