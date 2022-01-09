@@ -22,6 +22,7 @@ import com.michaldrabik.ui_base.utilities.MessageEvent.Companion.error
 import com.michaldrabik.ui_base.utilities.MessageEvent.Companion.info
 import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_model.TraktSyncSchedule
+import com.michaldrabik.ui_trakt_sync.cases.TraktSyncRatingsCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -38,6 +39,7 @@ class TraktSyncViewModel @Inject constructor(
   @Named("miscPreferences") private var miscPreferences: SharedPreferences,
   private val userManager: UserTraktManager,
   private val workManager: WorkManager,
+  private val ratingsCase: TraktSyncRatingsCase,
   private val settingsRepository: SettingsRepository,
   private val dateFormatProvider: DateFormatProvider,
   importWatchedRunner: TraktImportWatchedRunner,
@@ -88,6 +90,8 @@ class TraktSyncViewModel @Inject constructor(
         userManager.authorize(code)
         _messageChannel.send(info(R.string.textTraktLoginSuccess))
         invalidate()
+        saveTraktQuickRemove()
+        preloadRatings()
       } catch (error: Throwable) {
         val message = when {
           error is HttpException && error.code() == 423 -> R.string.errorTraktLocked
@@ -107,6 +111,27 @@ class TraktSyncViewModel @Inject constructor(
       }
       TraktSyncWorker.schedule(workManager, schedule, cancelExisting = true)
       traktSyncScheduleState.value = schedule
+    }
+  }
+
+  private fun saveTraktQuickRemove() {
+    viewModelScope.launch {
+      val settings = settingsRepository.load()
+      settings.let {
+        val new = it.copy(traktQuickRemoveEnabled = true)
+        settingsRepository.update(new)
+      }
+    }
+  }
+
+  private fun preloadRatings() {
+    viewModelScope.launch {
+      try {
+        ratingsCase.preloadRatings()
+      } catch (error: Throwable) {
+        Timber.e("Failed to preload some of ratings")
+        rethrowCancellation(error)
+      }
     }
   }
 
