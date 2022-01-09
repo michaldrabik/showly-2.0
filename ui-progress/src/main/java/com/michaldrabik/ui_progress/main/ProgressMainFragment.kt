@@ -35,6 +35,7 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.hideKeyboard
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
+import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.nextPage
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.showKeyboard
@@ -69,6 +70,7 @@ class ProgressMainFragment :
   }
 
   override val viewModel by viewModels<ProgressMainViewModel>()
+  override val navigationId = R.id.progressMainFragment
 
   private var adapter: ProgressMainAdapter? = null
 
@@ -248,11 +250,10 @@ class ProgressMainFragment :
       clearFragmentResultListener(REQUEST_ITEM_MENU)
     }
     val bundle = ContextMenuBottomSheet.createBundle(show.ids.trakt, showPinButtons = true)
-    navigateTo(R.id.actionProgressFragmentToItemMenu, bundle)
+    navigateToSafe(R.id.actionProgressFragmentToItemMenu, bundle)
   }
 
   fun openEpisodeDetails(show: Show, episode: Episode, season: Season) {
-    if (!checkNavigation(R.id.progressMainFragment)) return
     setFragmentResultListener(REQUEST_EPISODE_DETAILS) { _, bundle ->
       when {
         bundle.containsKey(ACTION_EPISODE_TAB_SELECTED) -> {
@@ -269,7 +270,7 @@ class ProgressMainFragment :
       putBoolean(EpisodeDetailsBottomSheet.ARG_SHOW_BUTTON, false)
       putBoolean(EpisodeDetailsBottomSheet.ARG_SHOW_TABS, true)
     }
-    navigateTo(R.id.actionProgressFragmentToEpisodeDetails, bundle)
+    navigateToSafe(R.id.actionProgressFragmentToEpisodeDetails, bundle)
   }
 
   fun openRateDialog(episodeBundle: EpisodeBundle) {

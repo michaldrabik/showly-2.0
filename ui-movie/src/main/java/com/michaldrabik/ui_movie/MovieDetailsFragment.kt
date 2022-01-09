@@ -56,6 +56,7 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
+import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.screenHeight
@@ -122,6 +123,7 @@ import java.util.Locale.ROOT
 class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragment_movie_details) {
 
   override val viewModel by viewModels<MovieDetailsViewModel>()
+  override val navigationId = R.id.movieDetailsFragment
 
   private val movieId by lazy { IdTrakt(requireArguments().getLong(ARG_MOVIE_ID, -1)) }
 
@@ -175,9 +177,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         ARG_FAMILY to MOVIE,
         ARG_TYPE to FANART
       )
-      if (checkNavigation(R.id.movieDetailsFragment)) {
-        navigateTo(R.id.actionMovieDetailsFragmentToArtGallery, bundle)
-      }
+      navigateToSafe(R.id.actionMovieDetailsFragmentToArtGallery, bundle)
       Analytics.logMovieGalleryClick(movieId.id)
     }
     movieDetailsCommentsButton.onClick {
@@ -576,7 +576,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       lastOpenedPerson = person
     }
     val bundle = PersonDetailsBottomSheet.createBundle(person, movieId)
-    navigateTo(R.id.actionMovieDetailsFragmentToPerson, bundle)
+    navigateToSafe(R.id.actionMovieDetailsFragmentToPerson, bundle)
   }
 
   private fun openPeopleListSheet(people: List<Person>, department: Department) {
@@ -588,7 +588,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     clearFragmentResultListener(NavigationArgs.REQUEST_PERSON_DETAILS)
     val title = movieDetailsTitle.text.toString()
     val bundle = PeopleListBottomSheet.createBundle(movieId, title, Mode.MOVIES, department)
-    navigateTo(R.id.actionMovieDetailsFragmentToPeopleList, bundle)
+    navigateToSafe(R.id.actionMovieDetailsFragmentToPeopleList, bundle)
   }
 
   private fun openShareSheet(movie: Movie) {
@@ -633,7 +633,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       ARG_ID to movieId.id,
       ARG_TYPE to Mode.MOVIES.type
     )
-    navigateTo(R.id.actionMovieDetailsFragmentToManageLists, bundle)
+    navigateToSafe(R.id.actionMovieDetailsFragmentToManageLists, bundle)
   }
 
   private fun openCustomImagesSheet(movieId: Long, isPremium: Boolean?) {
@@ -651,7 +651,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       ARG_MOVIE_ID to movieId,
       ARG_FAMILY to MOVIE
     )
-    navigateTo(R.id.actionMovieDetailsFragmentToCustomImages, bundle)
+    navigateToSafe(R.id.actionMovieDetailsFragmentToCustomImages, bundle)
   }
 
   private fun openPostCommentSheet(comment: Comment? = null) {
@@ -672,7 +672,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       )
       else -> bundleOf(ARG_MOVIE_ID to movieId.id)
     }
-    navigateTo(R.id.actionMovieDetailsFragmentToPostComment, bundle)
+    navigateToSafe(R.id.actionMovieDetailsFragmentToPostComment, bundle)
   }
 
   override fun setupBackPressed() {

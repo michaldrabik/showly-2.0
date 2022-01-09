@@ -27,6 +27,7 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.hideKeyboard
+import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.nextPage
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.showKeyboard
@@ -51,6 +52,7 @@ class FollowedShowsFragment :
   }
 
   override val viewModel by viewModels<FollowedShowsViewModel>()
+  override val navigationId = R.id.followedShowsFragment
 
   private var searchViewTranslation = 0F
   private var tabsViewTranslation = 0F
@@ -210,7 +212,7 @@ class FollowedShowsFragment :
     hideNavigation()
     followedShowsRoot.fadeOut(150) {
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.traktId) }
-      navigateTo(R.id.actionFollowedShowsFragmentToShowDetailsFragment, bundle)
+      navigateToSafe(R.id.actionFollowedShowsFragmentToShowDetailsFragment, bundle)
       exitSearch()
     }.add(animations)
   }
@@ -223,19 +225,19 @@ class FollowedShowsFragment :
       clearFragmentResultListener(REQUEST_ITEM_MENU)
     }
     val bundle = ContextMenuBottomSheet.createBundle(show.ids.trakt)
-    navigateTo(R.id.actionFollowedShowsFragmentToItemMenu, bundle)
+    navigateToSafe(R.id.actionFollowedShowsFragmentToItemMenu, bundle)
   }
 
   private fun openSettings() {
     hideNavigation()
     exitSearch()
-    navigateTo(R.id.actionFollowedShowsFragmentToSettingsFragment)
+    navigateToSafe(R.id.actionFollowedShowsFragmentToSettingsFragment)
   }
 
   private fun openStatistics() {
     hideNavigation()
     exitSearch()
-    navigateTo(R.id.actionFollowedShowsFragmentToStatisticsFragment)
+    navigateToSafe(R.id.actionFollowedShowsFragmentToStatisticsFragment)
   }
 
   override fun onTabReselected() {

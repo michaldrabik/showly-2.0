@@ -32,6 +32,7 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.hideKeyboard
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
+import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.shake
 import com.michaldrabik.ui_base.utilities.extensions.showKeyboard
@@ -63,6 +64,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
   }
 
   override val viewModel by viewModels<SearchViewModel>()
+  override val navigationId = R.id.searchFragment
 
   private var adapter: SearchAdapter? = null
   private var suggestionsAdapter: SuggestionAdapter? = null
@@ -228,7 +230,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
       viewModel.setSortOrder(sortOrder, sortType)
     }
 
-    navigateTo(R.id.actionSearchFragmentToSortOrder, args)
+    navigateToSafe(R.id.actionSearchFragmentToSortOrder, args)
   }
 
   private fun openShowDetails(item: SearchListItem) {
@@ -241,10 +243,10 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
   private fun openDetails(item: SearchListItem) {
     if (item.isShow) {
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.traktId) }
-      navigateTo(R.id.actionSearchFragmentToShowDetailsFragment, bundle)
+      navigateToSafe(R.id.actionSearchFragmentToShowDetailsFragment, bundle)
     } else if (item.isMovie) {
       val bundle = Bundle().apply { putLong(ARG_MOVIE_ID, item.movie.traktId) }
-      navigateTo(R.id.actionSearchFragmentToMovieDetailsFragment, bundle)
+      navigateToSafe(R.id.actionSearchFragmentToMovieDetailsFragment, bundle)
     }
   }
 

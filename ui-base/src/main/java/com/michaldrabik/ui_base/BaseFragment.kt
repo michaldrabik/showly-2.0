@@ -28,6 +28,7 @@ abstract class BaseFragment<T : BaseViewModel>(@LayoutRes contentLayoutId: Int) 
   TipsHost {
 
   protected abstract val viewModel: T
+  open val navigationId: Int = 0
 
   protected var isInitialized = false
 
@@ -81,9 +82,6 @@ abstract class BaseFragment<T : BaseViewModel>(@LayoutRes contentLayoutId: Int) 
   protected fun navigateTo(@IdRes destination: Int, bundle: Bundle? = null) {
     findNavControl()?.navigate(destination, bundle)
   }
-
-  protected fun checkNavigation(@IdRes origin: Int) =
-    findNavControl()?.currentDestination?.id == origin
 
   override fun isTipShown(tip: Tip) = (requireActivity() as TipsHost).isTipShown(tip)
 

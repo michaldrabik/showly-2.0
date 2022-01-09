@@ -59,6 +59,7 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
+import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.screenHeight
@@ -132,6 +133,7 @@ import java.util.Locale.ENGLISH
 class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment_show_details) {
 
   override val viewModel by viewModels<ShowDetailsViewModel>()
+  override val navigationId = R.id.showDetailsFragment
 
   private val showId by lazy { IdTrakt(requireArguments().getLong(ARG_SHOW_ID, -1)) }
 
@@ -191,9 +193,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         ARG_FAMILY to SHOW,
         ARG_TYPE to FANART
       )
-      if (checkNavigation(R.id.showDetailsFragment)) {
-        navigateTo(R.id.actionShowDetailsFragmentToArtGallery, bundle)
-      }
+      navigateToSafe(R.id.actionShowDetailsFragmentToArtGallery, bundle)
       Analytics.logShowGalleryClick(showId.id)
     }
     showDetailsCommentsButton.onClick {
@@ -680,7 +680,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     showButton: Boolean = true,
     showTabs: Boolean = true,
   ) {
-    if (!checkNavigation(R.id.showDetailsFragment)) return
     if (season !== null) {
       setFragmentResultListener(REQUEST_EPISODE_DETAILS) { _, bundle ->
         when {
@@ -706,7 +705,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       putBoolean(EpisodeDetailsBottomSheet.ARG_SHOW_BUTTON, showButton)
       putBoolean(EpisodeDetailsBottomSheet.ARG_SHOW_TABS, showTabs)
     }
-    navigateTo(R.id.actionShowDetailsFragmentEpisodeDetails, bundle)
+    navigateToSafe(R.id.actionShowDetailsFragmentEpisodeDetails, bundle)
   }
 
   private fun openPostCommentSheet(comment: Comment? = null) {
@@ -737,7 +736,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       lastOpenedPerson = person
     }
     val bundle = PersonDetailsBottomSheet.createBundle(person, showId)
-    navigateTo(R.id.actionShowDetailsFragmentToPerson, bundle)
+    navigateToSafe(R.id.actionShowDetailsFragmentToPerson, bundle)
   }
 
   private fun openPeopleListSheet(people: List<Person>, department: Person.Department) {
@@ -749,7 +748,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     clearFragmentResultListener(REQUEST_PERSON_DETAILS)
     val title = showDetailsTitle.text.toString()
     val bundle = PeopleListBottomSheet.createBundle(showId, title, Mode.SHOWS, department)
-    navigateTo(R.id.actionShowDetailsFragmentToPeopleList, bundle)
+    navigateToSafe(R.id.actionShowDetailsFragmentToPeopleList, bundle)
   }
 
   private fun openRemoveTraktSheet(event: RemoveTraktUiEvent) {
@@ -790,7 +789,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       viewModel.loadRating()
     }
     val bundle = RatingsBottomSheet.createBundle(showId, Type.SHOW)
-    navigateTo(R.id.actionShowDetailsFragmentToRating, bundle)
+    navigateToSafe(R.id.actionShowDetailsFragmentToRating, bundle)
   }
 
   private fun openRateSeasonDialog(season: Season) {
@@ -802,7 +801,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       viewModel.refreshEpisodesRatings()
     }
     val bundle = RatingsBottomSheet.createBundle(season.ids.trakt, Type.SEASON)
-    navigateTo(R.id.actionShowDetailsFragmentToRating, bundle)
+    navigateToSafe(R.id.actionShowDetailsFragmentToRating, bundle)
   }
 
   private fun openQuickSetupDialog(seasons: List<Season>) {
@@ -839,7 +838,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       ARG_ID to showId.id,
       ARG_TYPE to Mode.SHOWS.type
     )
-    navigateTo(R.id.actionShowDetailsFragmentToManageLists, bundle)
+    navigateToSafe(R.id.actionShowDetailsFragmentToManageLists, bundle)
   }
 
   private fun openCustomImagesSheet(showId: Long, isPremium: Boolean?) {
@@ -859,7 +858,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       ARG_SHOW_ID to showId,
       ARG_FAMILY to SHOW
     )
-    navigateTo(R.id.actionShowDetailsFragmentToCustomImages, bundle)
+    navigateToSafe(R.id.actionShowDetailsFragmentToCustomImages, bundle)
   }
 
   override fun setupBackPressed() {

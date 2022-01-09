@@ -36,6 +36,7 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.invisible
+import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.visible
@@ -62,6 +63,7 @@ class DiscoverFragment :
   OnTraktSyncListener {
 
   override val viewModel by viewModels<DiscoverViewModel>()
+  override val navigationId = R.id.discoverFragment
 
   private val swipeRefreshStartOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshStartOffset) }
   private val swipeRefreshEndOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshEndOffset) }
@@ -232,7 +234,7 @@ class DiscoverFragment :
   private fun openPremium() {
     disableUi()
     hideNavigation()
-    navigateTo(R.id.actionDiscoverFragmentToPremium, Bundle.EMPTY)
+    navigateToSafe(R.id.actionDiscoverFragmentToPremium, Bundle.EMPTY)
   }
 
   private fun openShowMenu(show: Show) {
@@ -243,7 +245,7 @@ class DiscoverFragment :
       clearFragmentResultListener(REQUEST_ITEM_MENU)
     }
     val bundle = ContextMenuBottomSheet.createBundle(show.ids.trakt)
-    navigateTo(R.id.actionDiscoverFragmentToItemMenu, bundle)
+    navigateToSafe(R.id.actionDiscoverFragmentToItemMenu, bundle)
   }
 
   private fun animateItemsExit(item: DiscoverListItem) {
@@ -269,7 +271,7 @@ class DiscoverFragment :
       endAction = {
         if (!isResumed) return@fadeOut
         val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.traktId) }
-        navigateTo(R.id.actionDiscoverFragmentToShowDetailsFragment, bundle)
+        navigateToSafe(R.id.actionDiscoverFragmentToShowDetailsFragment, bundle)
       }
     ).add(animations)
   }

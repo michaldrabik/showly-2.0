@@ -8,13 +8,11 @@ import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Rect
-import android.os.Build
 import android.util.TypedValue
 import android.view.TouchDelegate
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.CompoundButton
-import android.widget.ProgressBar
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.annotation.DimenRes
@@ -122,14 +120,6 @@ fun CompoundButton.setCheckedSilent(isChecked: Boolean, action: (View, Boolean) 
   setOnCheckedChangeListener { _, _ -> }
   setChecked(isChecked)
   setOnCheckedChangeListener(action)
-}
-
-fun ProgressBar.setAnimatedProgress(value: Int) {
-  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-    setProgress(value, true)
-  } else {
-    progress = value
-  }
 }
 
 fun ViewPager.nextPage() {

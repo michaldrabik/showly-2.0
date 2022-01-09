@@ -35,6 +35,7 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.hideKeyboard
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
+import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.nextPage
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.showKeyboard
@@ -61,6 +62,7 @@ class ProgressMoviesMainFragment :
   }
 
   override val viewModel by viewModels<ProgressMoviesMainViewModel>()
+  override val navigationId = R.id.progressMoviesMainFragment
 
   private var searchViewTranslation = 0F
   private var tabsTranslation = 0F
@@ -213,7 +215,7 @@ class ProgressMoviesMainFragment :
       clearFragmentResultListener(NavigationArgs.REQUEST_ITEM_MENU)
     }
     val bundle = ContextMenuBottomSheet.createBundle(movie.ids.trakt, showPinButtons)
-    navigateTo(R.id.actionProgressMoviesFragmentToItemMenu, bundle)
+    navigateToSafe(R.id.actionProgressMoviesFragmentToItemMenu, bundle)
   }
 
   fun openRateDialog(movie: Movie) {

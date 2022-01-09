@@ -32,6 +32,7 @@ import com.michaldrabik.ui_base.utilities.extensions.enableUi
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.invisible
+import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
@@ -54,6 +55,7 @@ class DiscoverMoviesFragment :
   OnTraktSyncListener {
 
   override val viewModel by viewModels<DiscoverMoviesViewModel>()
+  override val navigationId = R.id.discoverMoviesFragment
 
   private val swipeRefreshStartOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshStartOffset) }
   private val swipeRefreshEndOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshEndOffset) }
@@ -213,13 +215,13 @@ class DiscoverMoviesFragment :
       clearFragmentResultListener(NavigationArgs.REQUEST_ITEM_MENU)
     }
     val bundle = ContextMenuBottomSheet.createBundle(movie.ids.trakt)
-    navigateTo(R.id.actionDiscoverMoviesFragmentToItemMenu, bundle)
+    navigateToSafe(R.id.actionDiscoverMoviesFragmentToItemMenu, bundle)
   }
 
   private fun openPremium() {
     disableUi()
     hideNavigation()
-    navigateTo(R.id.actionDiscoverMoviesFragmentToPremium, Bundle.EMPTY)
+    navigateToSafe(R.id.actionDiscoverMoviesFragmentToPremium, Bundle.EMPTY)
   }
 
   private fun animateItemsExit(item: DiscoverMovieListItem) {
@@ -245,7 +247,7 @@ class DiscoverMoviesFragment :
       endAction = {
         if (!isResumed) return@fadeOut
         val bundle = Bundle().apply { putLong(NavigationArgs.ARG_MOVIE_ID, item.movie.traktId) }
-        navigateTo(R.id.actionDiscoverMoviesFragmentToMovieDetailsFragment, bundle)
+        navigateToSafe(R.id.actionDiscoverMoviesFragmentToMovieDetailsFragment, bundle)
       }
     ).add(animations)
   }
