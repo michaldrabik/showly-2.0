@@ -3,6 +3,7 @@ package com.michaldrabik.ui_base.common.sheets.context_menu.show
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.core.widget.ImageViewCompat
 import androidx.lifecycle.ViewModelProvider
 import com.michaldrabik.ui_base.R
@@ -15,6 +16,7 @@ import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.view_context_menu.*
 import kotlinx.coroutines.flow.collect
@@ -122,5 +124,10 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet<ShowContextMenuViewMod
       is FinishUiEvent -> if (result.isSuccess) close()
       else -> throw IllegalStateException()
     }
+  }
+
+  override fun openDetails() {
+    val bundle = bundleOf(ARG_SHOW_ID to itemId.id)
+    navigateTo(R.id.actionShowItemContextDialogToShowDetails, bundle)
   }
 }

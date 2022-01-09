@@ -24,6 +24,7 @@ import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.gone
+import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visible
@@ -66,6 +67,8 @@ abstract class ContextMenuBottomSheet<T : BaseViewModel> : BaseBottomSheetFragme
   protected val colorAccent by lazy { ContextCompat.getColor(requireContext(), R.color.colorAccent) }
   protected val colorGray by lazy { ContextCompat.getColor(requireContext(), R.color.colorGrayLight) }
 
+  protected abstract fun openDetails()
+
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -77,6 +80,9 @@ abstract class ContextMenuBottomSheet<T : BaseViewModel> : BaseBottomSheetFragme
     contextMenuItemDescription.setInitialLines(5)
     contextMenuItemPinButtonsLayout.visibleIf(showPinButtons)
     contextMenuItemSeparator2.visibleIf(showPinButtons)
+
+    contextMenuItemImage.onClick { openDetails() }
+    contextMenuItemPlaceholder.onClick { openDetails() }
   }
 
   protected fun renderImage(image: Image, tvdbId: IdTvdb) {

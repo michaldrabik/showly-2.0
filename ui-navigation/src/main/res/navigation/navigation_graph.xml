@@ -844,6 +844,11 @@
       app:destination="@id/removeTraktProgressDialog"
       app:launchSingleTop="true"
       />
+    <action
+      android:id="@+id/actionShowItemContextDialogToShowDetails"
+      app:destination="@id/showDetailsFragment"
+      app:launchSingleTop="true"
+      />
   </dialog>
 
   <dialog
@@ -864,6 +869,11 @@
     <action
       android:id="@+id/actionMovieItemContextDialogToRemoveTraktProgress"
       app:destination="@id/removeTraktProgressDialog"
+      app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionMovieItemContextDialogToMovieDetails"
+      app:destination="@id/movieDetailsFragment"
       app:launchSingleTop="true"
       />
   </dialog>
