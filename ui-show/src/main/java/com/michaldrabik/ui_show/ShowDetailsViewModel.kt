@@ -575,11 +575,12 @@ class ShowDetailsViewModel @Inject constructor(
   ) {
     viewModelScope.launch {
       val bundle = EpisodeBundle(episode, season, show)
-      val isCollection = myShowsCase.isMyShows(show) || watchlistCase.isWatchlist(show) || hiddenCase.isHidden(show)
+      val isMyShows = myShowsCase.isMyShows(show)
+      val isCollection = isMyShows || watchlistCase.isWatchlist(show) || hiddenCase.isHidden(show)
       when {
         isChecked -> {
           episodesManager.setEpisodeWatched(bundle)
-          if (isCollection) {
+          if (isMyShows) {
             quickSyncManager.scheduleEpisodes(
               episodesIds = listOf(episode.ids.trakt.id),
               showId = show.traktId,
@@ -611,11 +612,12 @@ class ShowDetailsViewModel @Inject constructor(
   ) {
     viewModelScope.launch {
       val bundle = SeasonBundle(season, show)
-      val isCollection = myShowsCase.isMyShows(show) || watchlistCase.isWatchlist(show) || hiddenCase.isHidden(show)
+      val isMyShows = myShowsCase.isMyShows(show)
+      val isCollection = isMyShows || watchlistCase.isWatchlist(show) || hiddenCase.isHidden(show)
       when {
         isChecked -> {
           val episodesAdded = episodesManager.setSeasonWatched(bundle)
-          if (isCollection) {
+          if (isMyShows) {
             quickSyncManager.scheduleEpisodes(episodesAdded.map { it.ids.trakt.id })
           }
         }
