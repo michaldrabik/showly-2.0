@@ -255,13 +255,20 @@ class ListDetailsFragment :
   }
 
   private fun render(uiState: ListDetailsUiState) {
+
+    fun renderTitle(name: String?, itemsCount: Int? = null) {
+      if (name.isNullOrBlank()) return
+      fragmentListDetailsToolbar.title = when {
+        itemsCount != null && itemsCount > 0 -> "$name ($itemsCount)"
+        else -> name
+      }
+    }
+
     uiState.run {
+      renderTitle(listDetails?.name, listItems?.size)
       listDetails?.let { details ->
-        with(fragmentListDetailsToolbar) {
-          title = details.name
-          subtitle = details.description
-        }
         val isQuickRemoveEnabled = isQuickRemoveEnabled
+        fragmentListDetailsToolbar.subtitle = details.description
         fragmentListDetailsSortButton.onClick { showSortOrderDialog(details.sortByLocal, details.sortHowLocal) }
         fragmentListDetailsMoreButton.onClick { openPopupMenu(isQuickRemoveEnabled) }
         fragmentListDetailsChipsView.setTypes(details.filterTypeLocal)
@@ -271,24 +278,25 @@ class ListDetailsFragment :
         fragmentListDetailsEmptyView.fadeIf(it.isEmpty())
         fragmentListDetailsManageButton.visibleIf(!isRealEmpty)
         fragmentListDetailsSortButton.visibleIf(!isRealEmpty)
+
         val scrollTop = resetScroll?.consume() == true
         adapter?.setItems(it, scrollTop)
       }
-      isManageMode.let { isEnabled ->
+      isManageMode.let { isManageMode ->
         if (listItems?.isEmpty() == true && listDetails?.filterTypeLocal?.containsAll(Mode.getAll()) == true) {
           return@let
         }
 
-        fragmentListDetailsSortButton.visibleIf(!isEnabled)
-        fragmentListDetailsManageButton.visibleIf(!isEnabled)
-        fragmentListDetailsMoreButton.visibleIf(!isEnabled)
+        fragmentListDetailsSortButton.visibleIf(!isManageMode)
+        fragmentListDetailsManageButton.visibleIf(!isManageMode)
+        fragmentListDetailsMoreButton.visibleIf(!isManageMode)
 
-        if (isEnabled) {
+        if (isManageMode) {
           fragmentListDetailsToolbar.title = getString(R.string.textChangeRanks)
           fragmentListDetailsToolbar.subtitle = getString(R.string.textChangeRanksSubtitle)
           fragmentListDetailsRecycler.setPadding(0, 0, 0, recyclerPaddingBottom)
         } else {
-          fragmentListDetailsToolbar.title = listDetails?.name ?: list.name
+          renderTitle(listDetails?.name ?: list.name, listItems?.size)
           fragmentListDetailsToolbar.subtitle = listDetails?.description
           fragmentListDetailsRecycler.setPadding(0, recyclerPaddingTop, 0, recyclerPaddingBottom)
         }
