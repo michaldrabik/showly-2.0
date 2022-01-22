@@ -23,6 +23,7 @@ import com.michaldrabik.common.Config.PREMIUM_LIFETIME_INAPP_PROMO
 import com.michaldrabik.common.Config.PREMIUM_MONTHLY_SUBSCRIPTION
 import com.michaldrabik.common.Config.PREMIUM_YEARLY_SUBSCRIPTION
 import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
@@ -60,9 +61,11 @@ class PremiumViewModel @Inject constructor(
             checkOwnedPurchases(billingClient)
             connectionsCount = 0
           } else {
+            Analytics.logUnsupportedSubscriptions()
             _messageChannel.trySend(MessageEvent.error(R.string.errorSubscriptionsNotAvailable))
           }
         } else {
+          Analytics.logUnsupportedSubscriptions()
           _messageChannel.trySend(MessageEvent.error(R.string.errorSubscriptionsNotAvailable))
         }
       }

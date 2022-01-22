@@ -333,4 +333,8 @@ object Analytics {
       param("version_code", versionCode)
     }
   }
+
+  fun logUnsupportedSubscriptions() {
+    firebaseAnalytics.logEvent("unsupported_subscriptions", Bundle.EMPTY)
+  }
 }
