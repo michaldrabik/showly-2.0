@@ -61,11 +61,11 @@ class PremiumViewModel @Inject constructor(
             checkOwnedPurchases(billingClient)
             connectionsCount = 0
           } else {
-            Analytics.logUnsupportedSubscriptions()
+            Analytics.logUnsupportedSubscriptions("feature_subscriptions")
             _messageChannel.trySend(MessageEvent.error(R.string.errorSubscriptionsNotAvailable))
           }
         } else {
-          Analytics.logUnsupportedSubscriptions()
+          Analytics.logUnsupportedSubscriptions("billing")
           _messageChannel.trySend(MessageEvent.error(R.string.errorSubscriptionsNotAvailable))
         }
       }

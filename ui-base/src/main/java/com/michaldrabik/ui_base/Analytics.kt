@@ -334,7 +334,9 @@ object Analytics {
     }
   }
 
-  fun logUnsupportedSubscriptions() {
-    firebaseAnalytics.logEvent("unsupported_subscriptions", Bundle.EMPTY)
+  fun logUnsupportedSubscriptions(type: String) {
+    firebaseAnalytics.logEvent("unsupported_subscriptions") {
+      param("type", type)
+    }
   }
 }
