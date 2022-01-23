@@ -5,6 +5,7 @@
   <string name="textCalendarEmpty">There are no new episodes on the way.</string>
   <string name="textRecentsEmpty">There are no recently aired episodes.</string>
 
+  <string name="textOnHold" comment="This is a header for Progress subsection. It will contain pending shows marked by user.">On Hold</string>
   <string name="textWatchlistIncoming">Upcoming</string>
   <string name="textDiscoverShows">Discover Shows</string>
   <string name="textEpisodeInfo">Details</string>

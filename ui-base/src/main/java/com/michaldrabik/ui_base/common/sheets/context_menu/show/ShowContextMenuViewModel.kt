@@ -12,6 +12,7 @@ import com.michaldrabik.ui_base.common.sheets.context_menu.events.RemoveTraktUiE
 import com.michaldrabik.ui_base.common.sheets.context_menu.show.cases.ShowContextMenuHiddenCase
 import com.michaldrabik.ui_base.common.sheets.context_menu.show.cases.ShowContextMenuLoadItemCase
 import com.michaldrabik.ui_base.common.sheets.context_menu.show.cases.ShowContextMenuMyShowsCase
+import com.michaldrabik.ui_base.common.sheets.context_menu.show.cases.ShowContextMenuOnHoldCase
 import com.michaldrabik.ui_base.common.sheets.context_menu.show.cases.ShowContextMenuPinnedCase
 import com.michaldrabik.ui_base.common.sheets.context_menu.show.cases.ShowContextMenuWatchlistCase
 import com.michaldrabik.ui_base.common.sheets.context_menu.show.helpers.ShowContextItem
@@ -40,6 +41,7 @@ class ShowContextMenuViewModel @Inject constructor(
   private val watchlistCase: ShowContextMenuWatchlistCase,
   private val hiddenCase: ShowContextMenuHiddenCase,
   private val pinnedCase: ShowContextMenuPinnedCase,
+  private val onHoldCase: ShowContextMenuOnHoldCase,
   private val imagesProvider: ShowImagesProvider,
   private val settingsRepository: SettingsRepository
 ) : BaseViewModel() {
@@ -151,6 +153,20 @@ class ShowContextMenuViewModel @Inject constructor(
   fun removeFromTopPinned() {
     viewModelScope.launch {
       pinnedCase.removeFromTopPinned(showId)
+      _eventChannel.send(Event(FinishUiEvent(true)))
+    }
+  }
+
+  fun addToOnHoldPinned() {
+    viewModelScope.launch {
+      onHoldCase.addToOnHold(showId)
+      _eventChannel.send(Event(FinishUiEvent(true)))
+    }
+  }
+
+  fun removeFromOnHoldPinned() {
+    viewModelScope.launch {
+      onHoldCase.removeFromOnHold(showId)
       _eventChannel.send(Event(FinishUiEvent(true)))
     }
   }

@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_base.common.sheets.context_menu.show.cases
 
+import com.michaldrabik.repository.OnHoldItemsRepository
 import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.SettingsRepository
@@ -19,6 +20,7 @@ import javax.inject.Inject
 class ShowContextMenuLoadItemCase @Inject constructor(
   private val showsRepository: ShowsRepository,
   private val pinnedItemsRepository: PinnedItemsRepository,
+  private val onHoldItemsRepository: OnHoldItemsRepository,
   private val imagesProvider: ShowImagesProvider,
   private val translationsRepository: TranslationsRepository,
   private val ratingsRepository: RatingsRepository,
@@ -39,6 +41,7 @@ class ShowContextMenuLoadItemCase @Inject constructor(
     val isHiddenAsync = async { showsRepository.hiddenShows.exists(traktId) }
 
     val isPinnedAsync = async { pinnedItemsRepository.isItemPinned(show) }
+    val isOnHoldAsync = async { onHoldItemsRepository.isOnHold(show) }
 
     ShowContextItem(
       show = show,
@@ -48,7 +51,8 @@ class ShowContextMenuLoadItemCase @Inject constructor(
       isMyShow = isMyShowAsync.await(),
       isWatchlist = isWatchlistAsync.await(),
       isHidden = isHiddenAsync.await(),
-      isPinnedTop = isPinnedAsync.await()
+      isPinnedTop = isPinnedAsync.await(),
+      isOnHold = isOnHoldAsync.await()
     )
   }
 }

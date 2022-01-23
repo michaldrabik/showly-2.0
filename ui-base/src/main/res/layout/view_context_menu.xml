@@ -217,6 +217,24 @@
       tools:visibility="visible"
       />
 
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/contextMenuItemAddOnHoldButton"
+      style="@style/ContextMenuItemButton.Move"
+      android:text="@string/menuAddOnHold"
+      android:visibility="gone"
+      app:icon="@drawable/ic_pause"
+      tools:visibility="visible"
+      />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/contextMenuItemRemoveOnHoldButton"
+      style="@style/ContextMenuItemButton.Move"
+      android:text="@string/menuRemoveOnHold"
+      android:visibility="gone"
+      app:icon="@drawable/ic_pause"
+      tools:visibility="visible"
+      />
+
   </LinearLayout>
 
   <View

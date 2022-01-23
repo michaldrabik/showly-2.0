@@ -9,19 +9,19 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
 @ViewModelScoped
-class ShowContextMenuPinnedCase @Inject constructor(
-  private val pinnedItemsRepository: PinnedItemsRepository,
+class ShowContextMenuOnHoldCase @Inject constructor(
   private val onHoldItemsRepository: OnHoldItemsRepository,
+  private val pinnedItemsRepository: PinnedItemsRepository,
 ) {
 
-  fun addToTopPinned(traktId: IdTrakt) {
-    val show = Show.EMPTY.copy(ids = Ids.EMPTY.copy(traktId))
-    onHoldItemsRepository.removeItem(show)
-    pinnedItemsRepository.addPinnedItem(show)
-  }
-
-  fun removeFromTopPinned(traktId: IdTrakt) {
+  fun addToOnHold(traktId: IdTrakt) {
     val show = Show.EMPTY.copy(ids = Ids.EMPTY.copy(traktId))
     pinnedItemsRepository.removePinnedItem(show)
+    onHoldItemsRepository.addItem(show)
+  }
+
+  fun removeFromOnHold(traktId: IdTrakt) {
+    val show = Show.EMPTY.copy(ids = Ids.EMPTY.copy(traktId))
+    onHoldItemsRepository.removeItem(show)
   }
 }

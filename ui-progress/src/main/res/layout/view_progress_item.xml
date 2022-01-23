@@ -107,6 +107,19 @@
       tools:visibility="visible"
       />
 
+    <ImageView
+      android:id="@+id/progressItemPause"
+      android:layout_width="20dp"
+      android:layout_height="wrap_content"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="@id/progressItemButtons"
+      app:layout_constraintStart_toStartOf="@id/progressItemProgressText"
+      app:layout_constraintTop_toTopOf="@id/progressItemButtons"
+      app:srcCompat="@drawable/ic_pause"
+      app:tint="?android:attr/textColorSecondary"
+      tools:visibility="visible"
+      />
+
     <TextView
       android:id="@+id/progressItemTitle"
       style="@style/CollectionItem.Title"

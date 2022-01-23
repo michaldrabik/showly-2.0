@@ -34,6 +34,15 @@ class PreferencesModule {
 
   @Provides
   @Singleton
+  @Named("progressOnHoldPreferences")
+  fun providesProgressShowsOnHoldPreferences(@ApplicationContext context: Context): SharedPreferences =
+    context.applicationContext.getSharedPreferences(
+      "PREFERENCES_PROGRESS_SHOWS_ON_HOLD",
+      Context.MODE_PRIVATE
+    )
+
+  @Provides
+  @Singleton
   @Named("progressMoviesPreferences")
   fun providesProgressMoviesPreferences(@ApplicationContext context: Context): SharedPreferences =
     context.applicationContext.getSharedPreferences(

@@ -89,6 +89,7 @@ class ProgressItemView : ShowView<ProgressListItem.Episode> {
     progressItemSubtitle2.text = episodeTitle
     progressItemNewBadge.visibleIf(item.isNew())
     progressItemPin.visibleIf(item.isPinned)
+    progressItemPause.visibleIf(item.isOnHold)
 
     bindProgress(item)
     bindCheckButton(item, checkClickListener, detailsClickListener)

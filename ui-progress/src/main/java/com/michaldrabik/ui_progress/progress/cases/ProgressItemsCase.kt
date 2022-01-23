@@ -4,6 +4,7 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.repository.OnHoldItemsRepository
 import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
@@ -39,6 +40,7 @@ class ProgressItemsCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
   private val imagesProvider: ShowImagesProvider,
   private val pinnedItemsRepository: PinnedItemsRepository,
+  private val onHoldItemsRepository: OnHoldItemsRepository,
   private val dateFormatProvider: DateFormatProvider,
 ) {
 
@@ -81,6 +83,7 @@ class ProgressItemsCase @Inject constructor(
           watchedCount = 0,
           isUpcoming = isUpcoming,
           isPinned = false,
+          isOnHold = false,
           dateFormat = dateFormat,
           sortOrder = sortOrder
         )
@@ -96,6 +99,7 @@ class ProgressItemsCase @Inject constructor(
         async {
           val image = imagesProvider.findCachedImage(it.show, ImageType.POSTER)
           val isPinned = pinnedItemsRepository.isItemPinned(it.show)
+          val isOnHold = onHoldItemsRepository.isOnHold(it.show)
 
           var translations: TranslationsBundle? = null
           if (language != Config.DEFAULT_LANGUAGE) {
@@ -123,6 +127,7 @@ class ProgressItemsCase @Inject constructor(
           it.copy(
             image = image,
             isPinned = isPinned,
+            isOnHold = isOnHold,
             translations = translations,
             watchedCount = watched,
             totalCount = total
@@ -151,20 +156,33 @@ class ProgressItemsCase @Inject constructor(
       .filter { it.isPinned }
       .sortedWith(sorter.sort(sortOrder, sortType))
 
-    val groupedItems = (input - pinnedItems)
-      .groupBy { !it.isUpcoming }
-
-    val aired = ((groupedItems[true] ?: emptyList()))
+    val onHoldItems = input
+      .filter { it.isOnHold }
       .sortedWith(sorter.sort(sortOrder, sortType))
 
-    val upcoming = ((groupedItems[false] ?: emptyList()))
+    val groupedItems = (input - pinnedItems.toSet() - onHoldItems.toSet())
+      .groupBy { !it.isUpcoming }
+
+    val airedItems = ((groupedItems[true] ?: emptyList()))
+      .sortedWith(sorter.sort(sortOrder, sortType))
+
+    val upcomingItems = ((groupedItems[false] ?: emptyList()))
       .sortedBy { it.episode?.firstAired?.toMillis() }
 
-    return when {
-      upcoming.isEmpty() -> (pinnedItems + aired)
-      else -> {
+    return mutableListOf<ProgressListItem>().apply {
+      if (pinnedItems.isNotEmpty()) {
+        addAll(pinnedItems)
+      }
+      if (airedItems.isNotEmpty()) {
+        addAll(airedItems)
+      }
+      if (upcomingItems.isNotEmpty()) {
         val upcomingHeader = ProgressListItem.Header.create(R.string.textWatchlistIncoming)
-        (pinnedItems + aired + upcomingHeader + upcoming)
+        addAll(listOf(upcomingHeader) + upcomingItems)
+      }
+      if (onHoldItems.isNotEmpty()) {
+        val onHoldHeader = ProgressListItem.Header.create(R.string.textOnHold)
+        addAll(listOf(onHoldHeader) + onHoldItems)
       }
     }
   }

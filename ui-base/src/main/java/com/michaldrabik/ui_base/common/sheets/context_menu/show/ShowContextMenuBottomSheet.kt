@@ -52,6 +52,8 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet<ShowContextMenuViewMod
     contextMenuItemRemoveFromHiddenButton.onClick { viewModel.removeFromHidden() }
     contextMenuItemPinButton.onClick { viewModel.addToTopPinned() }
     contextMenuItemUnpinButton.onClick { viewModel.removeFromTopPinned() }
+    contextMenuItemAddOnHoldButton.onClick { viewModel.addToOnHoldPinned() }
+    contextMenuItemRemoveOnHoldButton.onClick { viewModel.removeFromOnHoldPinned() }
   }
 
   private fun render(uiState: ShowContextMenuUiState) {
@@ -93,6 +95,8 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet<ShowContextMenuViewMod
 
     contextMenuItemPinButton.visibleIf(!item.isPinnedTop)
     contextMenuItemUnpinButton.visibleIf(item.isPinnedTop)
+    contextMenuItemAddOnHoldButton.visibleIf(!item.isOnHold)
+    contextMenuItemRemoveOnHoldButton.visibleIf(item.isOnHold)
 
     contextMenuItemMoveToMyButton.visibleIf(!item.isMyShow)
     contextMenuItemMoveToWatchlistButton.visibleIf(!item.isWatchlist)
