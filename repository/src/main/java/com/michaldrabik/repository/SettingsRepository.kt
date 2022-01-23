@@ -36,7 +36,6 @@ class SettingsRepository @Inject constructor(
     private const val MOVIES_ENABLED = "KEY_MOVIES_ENABLED"
     private const val NEWS_ENABLED = "KEY_NEWS_ENABLED"
     private const val TWITTER_AD_ENABLED = "TWITTER_AD_ENABLED"
-    private const val TWITTER_AD_TIMESTAMP = "TWITTER_AD_TIMESTAMP"
     private const val PREMIUM = "KEY_PREMIUM"
     private const val PROGRESS_PERCENT = "KEY_PROGRESS_PERCENT"
     private const val STREAMINGS_ENABLED = "KEY_STREAMINGS_ENABLED"
@@ -45,6 +44,8 @@ class SettingsRepository @Inject constructor(
     private const val THEME_WIDGET_TRANSPARENT = "KEY_THEME_WIDGET_TRANSPARENT"
     private const val USER_ID = "KEY_USER_ID"
     private const val INSTALL_TIMESTAMP = "INSTALL_TIMESTAMP"
+    private const val PROGRESS_UPCOMING_COLLAPSED = "PROGRESS_UPCOMING_COLLAPSED"
+    private const val PROGRESS_ON_HOLD_COLLAPSED = "PROGRESS_ON_HOLD_COLLAPSED"
   }
 
   suspend fun isInitialized() =
@@ -78,6 +79,9 @@ class SettingsRepository @Inject constructor(
   var language by StringPreference(preferences, LANGUAGE, DEFAULT_LANGUAGE)
   var country by StringPreference(preferences, COUNTRY, DEFAULT_COUNTRY)
   var dateFormat by StringPreference(preferences, DATE_FORMAT, DEFAULT_DATE_FORMAT)
+
+  var isProgressUpcomingCollapsed by BooleanPreference(preferences, PROGRESS_UPCOMING_COLLAPSED)
+  var isProgressOnHoldCollapsed by BooleanPreference(preferences, PROGRESS_ON_HOLD_COLLAPSED)
 
   var theme: Int
     get() {

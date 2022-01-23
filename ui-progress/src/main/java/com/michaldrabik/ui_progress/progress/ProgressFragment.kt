@@ -120,6 +120,9 @@ class ProgressFragment :
       itemClickListener = {
         requireMainFragment().openShowDetails(it.show)
       }
+      headerClickListener = {
+        viewModel.toggleHeaderCollapsed(it.type)
+      }
       itemLongClickListener = { item, _ ->
         requireMainFragment().openShowMenu(item.show)
       }

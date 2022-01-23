@@ -21,6 +21,7 @@ import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.helpers.ProgressItemsSorter
 import com.michaldrabik.ui_progress.helpers.TranslationsBundle
 import com.michaldrabik.ui_progress.progress.recycler.ProgressListItem
+import com.michaldrabik.ui_progress.progress.recycler.ProgressListItem.Header.Type
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -177,12 +178,16 @@ class ProgressItemsCase @Inject constructor(
         addAll(airedItems)
       }
       if (upcomingItems.isNotEmpty()) {
-        val upcomingHeader = ProgressListItem.Header.create(R.string.textWatchlistIncoming)
-        addAll(listOf(upcomingHeader) + upcomingItems)
+        val isCollapsed = settingsRepository.isProgressUpcomingCollapsed
+        val upcomingHeader = ProgressListItem.Header.create(Type.UPCOMING, R.string.textWatchlistIncoming, isCollapsed)
+        addAll(listOf(upcomingHeader))
+        if (!isCollapsed) addAll(upcomingItems)
       }
       if (onHoldItems.isNotEmpty()) {
-        val onHoldHeader = ProgressListItem.Header.create(R.string.textOnHold)
-        addAll(listOf(onHoldHeader) + onHoldItems)
+        val isCollapsed = settingsRepository.isProgressOnHoldCollapsed
+        val onHoldHeader = ProgressListItem.Header.create(Type.ON_HOLD, R.string.textOnHold, isCollapsed)
+        addAll(listOf(onHoldHeader))
+        if (!isCollapsed) addAll(onHoldItems)
       }
     }
   }

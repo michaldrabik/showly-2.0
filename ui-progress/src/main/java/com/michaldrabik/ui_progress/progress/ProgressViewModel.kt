@@ -15,6 +15,7 @@ import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_progress.main.EpisodeCheckActionUiEvent
 import com.michaldrabik.ui_progress.main.ProgressMainUiState
+import com.michaldrabik.ui_progress.progress.cases.ProgressHeadersCase
 import com.michaldrabik.ui_progress.progress.cases.ProgressItemsCase
 import com.michaldrabik.ui_progress.progress.cases.ProgressRatingsCase
 import com.michaldrabik.ui_progress.progress.cases.ProgressSortOrderCase
@@ -31,6 +32,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProgressViewModel @Inject constructor(
   private val itemsCase: ProgressItemsCase,
+  private val headersCase: ProgressHeadersCase,
   private val sortOrderCase: ProgressSortOrderCase,
   private val ratingsCase: ProgressRatingsCase,
   private val imagesProvider: ShowImagesProvider,
@@ -122,6 +124,11 @@ class ProgressViewModel @Inject constructor(
   fun setSortOrder(sortOrder: SortOrder, sortType: SortType) {
     sortOrderCase.setSortOrder(sortOrder, sortType)
     loadItems(resetScroll = true)
+  }
+
+  fun toggleHeaderCollapsed(headerType: ProgressListItem.Header.Type) {
+    headersCase.toggleHeaderCollapsed(headerType)
+    loadItems()
   }
 
   private fun updateItem(new: ProgressListItem) {

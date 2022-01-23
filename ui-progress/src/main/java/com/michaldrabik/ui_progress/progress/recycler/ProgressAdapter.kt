@@ -18,6 +18,7 @@ class ProgressAdapter : BaseAdapter<ProgressListItem>() {
 
   var detailsClickListener: ((ProgressListItem.Episode) -> Unit)? = null
   var checkClickListener: ((ProgressListItem.Episode) -> Unit)? = null
+  var headerClickListener: ((ProgressListItem.Header) -> Unit)? = null
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     when (viewType) {
@@ -33,14 +34,18 @@ class ProgressAdapter : BaseAdapter<ProgressListItem>() {
           missingTranslationListener = { super.missingTranslationListener.invoke(it) }
         }
       )
-      VIEW_TYPE_HEADER -> BaseViewHolder(ProgressHeaderView(parent.context))
+      VIEW_TYPE_HEADER -> BaseViewHolder(
+        ProgressHeaderView(parent.context).apply {
+          headerClickListener = { this@ProgressAdapter.headerClickListener?.invoke(it) }
+        }
+      )
       else -> throw IllegalStateException()
     }
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     when (val item = asyncDiffer.currentList[position]) {
       is ProgressListItem.Episode -> (holder.itemView as ProgressItemView).bind(item)
-      is ProgressListItem.Header -> (holder.itemView as ProgressHeaderView).bind(item.textResId)
+      is ProgressListItem.Header -> (holder.itemView as ProgressHeaderView).bind(item)
     }
   }
 

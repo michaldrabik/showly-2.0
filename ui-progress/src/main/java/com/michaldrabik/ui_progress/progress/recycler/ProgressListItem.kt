@@ -48,19 +48,31 @@ sealed class ProgressListItem(
     override val show: Show,
     override val image: Image,
     override val isLoading: Boolean = false,
+    val type: Type,
     @StringRes val textResId: Int,
+    val isCollapsed: Boolean,
   ) : ProgressListItem(show, image, isLoading) {
 
     companion object {
-      fun create(@StringRes textResId: Int) =
-        Header(
-          show = Show.EMPTY,
-          image = Image.createUnavailable(ImageType.POSTER),
-          textResId = textResId
-        )
+      fun create(
+        type: Type,
+        @StringRes textResId: Int,
+        isCollapsed: Boolean
+      ) = Header(
+        type = type,
+        show = Show.EMPTY,
+        image = Image.createUnavailable(ImageType.POSTER),
+        textResId = textResId,
+        isCollapsed = isCollapsed
+      )
     }
 
     override fun isSameAs(other: ListItem) =
       textResId == (other as? Header)?.textResId
+
+    enum class Type {
+      UPCOMING,
+      ON_HOLD
+    }
   }
 }
