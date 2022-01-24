@@ -105,6 +105,8 @@
   <string name="textPremiumAd">Diventa un sostenitore e ottieni l\'accesso alle funzionalità bonus! Clicca per saperne di più.</string>
   <string name="menuPin">Fissa in cima</string>
   <string name="menuUnpin">Rimuovi</string>
+  <string name="menuAddOnHold" comment="This is a button for Progress subsection. It will contain pending shows marked by user.">Aggiungi a \'In pausa\'</string>
+  <string name="menuRemoveOnHold" comment="This is a button for Progress subsection. It will contain pending shows marked by user.">Togli da \'In pausa\'</string>
   <string name="errorGeneral">Oops... Qualcosa è andato storto.\nPer favore contattaci se il problema persiste.</string>
   <string name="errorAuthorization">Autorizzazione fallita. Per favore contattaci se il problema persiste.</string>
   <string name="errorTraktAuthorization">Autorizzazione account Trakt fallita.\nPer favore accedi e prova di nuovo.</string>
