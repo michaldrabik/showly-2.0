@@ -105,6 +105,8 @@
   <string name="textPremiumAd">Devenez un supporteur et accédez à des fonctionnalités bonus ! Cliquez pour en savoir plus.</string>
   <string name="menuPin">Épingler en haut</string>
   <string name="menuUnpin">Désépingler du haut</string>
+  <string name="menuAddOnHold" comment="This is a button for Progress subsection. It will contain pending shows marked by user.">Épingler vers \"En attente\"</string>
+  <string name="menuRemoveOnHold" comment="This is a button for Progress subsection. It will contain pending shows marked by user.">Désépingler de \"En attente\"</string>
   <string name="errorGeneral">Oups… Quelque chose s\'est mal passé.\nVeuillez nous contacter si cela continue de se produire.</string>
   <string name="errorAuthorization">Échec de l\'autorisation. Veuillez nous contacter si cela se produit à nouveau.</string>
   <string name="errorTraktAuthorization">L\'autorisation du compte Trakt a échoué.\nVeuillez vous connecter et réessayer.</string>
