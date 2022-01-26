@@ -2,10 +2,6 @@
 buildscript {
   apply from: './versions.gradle'
 
-  ext {
-    versions.kotlin = '1.6.10'
-  }
-
   repositories {
     google()
     mavenCentral()
@@ -14,12 +10,12 @@ buildscript {
   }
 
   dependencies {
-    classpath "com.android.tools.build:gradle:$versions.gradleBuildTools"
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
+    classpath 'com.android.tools.build:gradle:7.1.0'
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10"
     classpath "com.google.gms:google-services:4.3.10"
     classpath "com.google.firebase:firebase-appdistribution-gradle:3.0.0"
     classpath 'com.google.firebase:firebase-crashlytics-gradle:2.8.1'
-    classpath 'com.google.dagger:hilt-android-gradle-plugin:2.35'
+    classpath "com.google.dagger:hilt-android-gradle-plugin:$versions.hilt"
     classpath "org.jlleitschuh.gradle:ktlint-gradle:10.2.1"
   }
 }
