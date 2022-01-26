@@ -209,15 +209,6 @@
       />
 
     <com.google.android.material.button.MaterialButton
-      android:id="@+id/contextMenuItemUnpinButton"
-      style="@style/ContextMenuItemButton.Move"
-      android:text="@string/menuUnpin"
-      android:visibility="gone"
-      app:icon="@drawable/ic_pin"
-      tools:visibility="visible"
-      />
-
-    <com.google.android.material.button.MaterialButton
       android:id="@+id/contextMenuItemAddOnHoldButton"
       style="@style/ContextMenuItemButton.Move"
       android:text="@string/menuAddOnHold"
@@ -227,8 +218,17 @@
       />
 
     <com.google.android.material.button.MaterialButton
+      android:id="@+id/contextMenuItemUnpinButton"
+      style="@style/ContextMenuItemButton.Remove"
+      android:text="@string/menuUnpin"
+      android:visibility="gone"
+      app:icon="@drawable/ic_pin"
+      tools:visibility="visible"
+      />
+
+    <com.google.android.material.button.MaterialButton
       android:id="@+id/contextMenuItemRemoveOnHoldButton"
-      style="@style/ContextMenuItemButton.Move"
+      style="@style/ContextMenuItemButton.Remove"
       android:text="@string/menuRemoveOnHold"
       android:visibility="gone"
       app:icon="@drawable/ic_pause"
