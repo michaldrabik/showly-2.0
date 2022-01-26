@@ -60,7 +60,7 @@ class ListDetailsViewModel @Inject constructor(
       listDetailsState.value = list
       listItemsState.value = listItems
       manageModeState.value = false
-      filtersVisibleState.value = listItems.isNotEmpty()
+      filtersVisibleState.value = listItems.isNotEmpty() || list.filterTypeLocal.isNotEmpty()
       quickRemoveState.value = mainCase.isQuickRemoveEnabled(list)
 
       val tip = Tip.LIST_ITEM_SWIPE_DELETE
