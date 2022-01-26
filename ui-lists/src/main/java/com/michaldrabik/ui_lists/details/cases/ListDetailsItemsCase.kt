@@ -112,7 +112,8 @@ class ListDetailsItemsCase @Inject constructor(
       listsRepository.removeFromList(list.id, IdTrakt(it.idTrakt), it.type)
     }
 
-    sortItems(items.filterNotNull(), list.sortByLocal, list.sortHowLocal, list.filterTypeLocal)
+    val sortedItems = sortItems(items.filterNotNull(), list.sortByLocal, list.sortHowLocal, list.filterTypeLocal)
+    Pair(sortedItems, listItems.count())
   }
 
   private suspend fun createListDetailsItem(

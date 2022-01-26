@@ -55,12 +55,12 @@ class ListDetailsViewModel @Inject constructor(
   fun loadDetails(id: Long) {
     viewModelScope.launch {
       val list = mainCase.loadDetails(id)
-      val listItems = itemsCase.loadItems(list)
+      val (listItems, totalCount) = itemsCase.loadItems(list)
 
       listDetailsState.value = list
       listItemsState.value = listItems
       manageModeState.value = false
-      filtersVisibleState.value = listItems.isNotEmpty() || list.filterTypeLocal.isNotEmpty()
+      filtersVisibleState.value = totalCount > 0
       quickRemoveState.value = mainCase.isQuickRemoveEnabled(list)
 
       val tip = Tip.LIST_ITEM_SWIPE_DELETE
@@ -108,14 +108,14 @@ class ListDetailsViewModel @Inject constructor(
           sortHowLocal = SortType.ASCENDING,
           filterTypeLocal = Mode.getAll()
         )
-        val listItems = itemsCase.loadItems(list).map { it.copy(isManageMode = true) }
+        val listItems = itemsCase.loadItems(list).first.map { it.copy(isManageMode = true) }
         listItemsState.value = listItems
         manageModeState.value = true
         filtersVisibleState.value = false
         scrollState.value = Event(false)
       } else {
         val list = mainCase.loadDetails(listId)
-        val listItems = itemsCase.loadItems(list).map { it.copy(isManageMode = false) }
+        val listItems = itemsCase.loadItems(list).first.map { it.copy(isManageMode = false) }
         listItemsState.value = listItems
         manageModeState.value = false
         filtersVisibleState.value = true
@@ -152,7 +152,7 @@ class ListDetailsViewModel @Inject constructor(
   fun setFilterTypes(listId: Long, types: List<Mode>) {
     viewModelScope.launch {
       val list = sortCase.setFilterTypes(listId, types)
-      val sortedItems = itemsCase.loadItems(list)
+      val (sortedItems, _) = itemsCase.loadItems(list)
 
       listDetailsState.value = list
       listItemsState.value = sortedItems
