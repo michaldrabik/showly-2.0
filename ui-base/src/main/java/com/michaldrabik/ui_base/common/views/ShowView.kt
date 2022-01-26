@@ -2,7 +2,6 @@ package com.michaldrabik.ui_base.common.views
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
 import com.bumptech.glide.Glide

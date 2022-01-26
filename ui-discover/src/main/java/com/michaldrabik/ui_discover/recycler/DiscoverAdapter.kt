@@ -8,7 +8,11 @@ import com.michaldrabik.ui_discover.views.ShowFanartView
 import com.michaldrabik.ui_discover.views.ShowPosterView
 import com.michaldrabik.ui_discover.views.ShowPremiumView
 import com.michaldrabik.ui_discover.views.ShowTwitterView
-import com.michaldrabik.ui_model.ImageType.*
+import com.michaldrabik.ui_model.ImageType.FANART
+import com.michaldrabik.ui_model.ImageType.FANART_WIDE
+import com.michaldrabik.ui_model.ImageType.POSTER
+import com.michaldrabik.ui_model.ImageType.PREMIUM
+import com.michaldrabik.ui_model.ImageType.TWITTER
 
 class DiscoverAdapter(
   itemClickListener: (DiscoverListItem) -> Unit,

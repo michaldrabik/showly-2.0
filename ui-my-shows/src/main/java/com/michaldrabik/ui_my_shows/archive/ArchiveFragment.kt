@@ -23,7 +23,10 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
-import com.michaldrabik.ui_model.SortOrder.*
+import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
+import com.michaldrabik.ui_model.SortOrder.NAME
+import com.michaldrabik.ui_model.SortOrder.NEWEST
+import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.archive.recycler.ArchiveAdapter
@@ -72,7 +75,7 @@ class ArchiveFragment :
       itemLongClickListener = { item -> openShowMenu(item.show) },
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) },
       missingTranslationListener = { viewModel.loadMissingTranslation(it) },
-        listChangeListener = {
+      listChangeListener = {
         archiveRecycler.scrollToPosition(0)
         (requireParentFragment() as FollowedShowsFragment).resetTranslations()
       }
