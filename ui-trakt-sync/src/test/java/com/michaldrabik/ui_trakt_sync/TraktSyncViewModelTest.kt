@@ -166,6 +166,7 @@ class TraktSyncViewModelTest : BaseMockTest() {
     val job2 = launch { SUT.messageChannel.toList(messagesResult) }
 
     coEvery { settingsRepository.load() } returns Settings.createInitial()
+    coEvery { settingsRepository.update(any()) } just Runs
     coEvery { userTraktManager.isAuthorized() } returns true
     coEvery { userTraktManager.authorize(any()) } just Runs
     coEvery { dateFormatProvider.loadFullHourFormat() } returns DateTimeFormatter.ISO_DATE
