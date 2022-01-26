@@ -83,13 +83,13 @@ class CalendarFragment :
 
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
-    adapter = CalendarAdapter().apply {
-      itemClickListener = { requireMainFragment().openShowDetails(it.show) }
-      detailsClickListener = { requireMainFragment().openEpisodeDetails(it.show, it.episode, it.season) }
-      missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
+    adapter = CalendarAdapter(
+      itemClickListener = { requireMainFragment().openShowDetails(it.show) },
+      missingImageListener = { item, force -> viewModel.findMissingImage(item, force) },
+      checkClickListener = { viewModel.onEpisodeChecked(it) },
+      detailsClickListener = { requireMainFragment().openEpisodeDetails(it.show, it.episode, it.season) },
       missingTranslationListener = { viewModel.findMissingTranslation(it) }
-      checkClickListener = { viewModel.onEpisodeChecked(it) }
-    }
+    )
     progressCalendarRecycler.apply {
       adapter = this@CalendarFragment.adapter
       layoutManager = this@CalendarFragment.layoutManager

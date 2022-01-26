@@ -49,6 +49,7 @@ import com.michaldrabik.ui_progress.main.EpisodeCheckActionUiEvent
 import com.michaldrabik.ui_progress.main.ProgressMainFragment
 import com.michaldrabik.ui_progress.main.ProgressMainViewModel
 import com.michaldrabik.ui_progress.progress.recycler.ProgressAdapter
+import com.michaldrabik.ui_progress.progress.recycler.ProgressListItem
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import kotlinx.android.synthetic.main.fragment_progress.*
@@ -116,28 +117,19 @@ class ProgressFragment :
 
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
-    adapter = ProgressAdapter().apply {
-      itemClickListener = {
-        requireMainFragment().openShowDetails(it.show)
-      }
-      headerClickListener = {
-        viewModel.toggleHeaderCollapsed(it.type)
-      }
-      itemLongClickListener = { item, _ ->
-        requireMainFragment().openShowMenu(item.show)
-      }
-      detailsClickListener = {
-        requireMainFragment().openEpisodeDetails(it.show, it.requireEpisode(), it.requireSeason())
-      }
-      checkClickListener = {
-        viewModel.onEpisodeChecked(it)
-      }
-      missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
-      missingTranslationListener = { viewModel.findMissingTranslation(it) }
+    adapter = ProgressAdapter(
+      itemClickListener = { requireMainFragment().openShowDetails(it.show) },
+      itemLongClickListener = { requireMainFragment().openShowMenu(it.show) },
+      headerClickListener = { viewModel.toggleHeaderCollapsed(it.type) },
+      detailsClickListener = { requireMainFragment().openEpisodeDetails(it.show, it.requireEpisode(), it.requireSeason()) },
+      checkClickListener = { viewModel.onEpisodeChecked(it) },
+      missingImageListener = { item: ProgressListItem, force -> viewModel.findMissingImage(item, force) },
+      missingTranslationListener = { viewModel.findMissingTranslation(it) },
       listChangeListener = {
         requireMainFragment().resetTranslations()
         layoutManager?.scrollToPosition(0)
       }
+    ).apply {
     }
     progressRecycler.apply {
       adapter = this@ProgressFragment.adapter
@@ -302,7 +294,6 @@ class ProgressFragment :
 
   override fun onDestroyView() {
     overscroll = null
-    adapter?.listChangeListener = null
     adapter = null
     layoutManager = null
     super.onDestroyView()

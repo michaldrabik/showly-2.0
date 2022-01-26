@@ -7,16 +7,24 @@ import com.michaldrabik.ui_base.BaseAdapter
 import com.michaldrabik.ui_search.recycler.SearchListItem
 import com.michaldrabik.ui_search.views.SearchSuggestionView
 
-class SuggestionAdapter : BaseAdapter<SearchListItem>() {
+class SuggestionAdapter(
+  itemClickListener: (SearchListItem) -> Unit,
+  missingImageListener: (SearchListItem, Boolean) -> Unit,
+  missingTranslationListener: (SearchListItem) -> Unit
+) : BaseAdapter<SearchListItem>(
+  itemClickListener = itemClickListener,
+  missingImageListener = missingImageListener,
+  missingTranslationListener = missingTranslationListener
+) {
 
   override val asyncDiffer = AsyncListDiffer(this, SuggestionItemDiffCallback())
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     BaseViewHolder(
       SearchSuggestionView(parent.context).apply {
-        itemClickListener = { super.itemClickListener.invoke(it) }
-        missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
-        missingTranslationListener = { super.missingTranslationListener.invoke(it) }
+        itemClickListener = this@SuggestionAdapter.itemClickListener
+        missingImageListener = this@SuggestionAdapter.missingImageListener
+        missingTranslationListener = this@SuggestionAdapter.missingTranslationListener
       }
     )
 

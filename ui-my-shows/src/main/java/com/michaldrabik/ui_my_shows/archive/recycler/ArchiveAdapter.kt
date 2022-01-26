@@ -6,17 +6,29 @@ import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.ui_base.BaseAdapter
 import com.michaldrabik.ui_my_shows.archive.recycler.views.ArchiveShowView
 
-class ArchiveAdapter : BaseAdapter<ArchiveListItem>() {
+class ArchiveAdapter(
+  itemClickListener: (ArchiveListItem) -> Unit,
+  itemLongClickListener: (ArchiveListItem) -> Unit,
+  missingImageListener: (ArchiveListItem, Boolean) -> Unit,
+  missingTranslationListener: (ArchiveListItem) -> Unit,
+  listChangeListener: () -> Unit,
+) : BaseAdapter<ArchiveListItem>(
+  itemClickListener = itemClickListener,
+  itemLongClickListener = itemLongClickListener,
+  missingImageListener = missingImageListener,
+  missingTranslationListener = missingTranslationListener,
+  listChangeListener = listChangeListener
+) {
 
   override val asyncDiffer = AsyncListDiffer(this, ArchiveDiffCallback())
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     BaseViewHolder(
       ArchiveShowView(parent.context).apply {
-        itemClickListener = { super.itemClickListener.invoke(it) }
-        itemLongClickListener = { item, view -> super.itemLongClickListener.invoke(item, view) }
-        missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
-        missingTranslationListener = { super.missingTranslationListener.invoke(it) }
+        itemClickListener = this@ArchiveAdapter.itemClickListener
+        itemLongClickListener = this@ArchiveAdapter.itemLongClickListener
+        missingImageListener = this@ArchiveAdapter.missingImageListener
+        missingTranslationListener = this@ArchiveAdapter.missingTranslationListener
       }
     )
 

@@ -29,7 +29,7 @@ class MyShowAllView : ShowView<MyShowsItem> {
     inflate(context, R.layout.view_my_show_all, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     myShowAllRoot.onClick { itemClickListener?.invoke(item) }
-    myShowAllRoot.onLongClick { itemLongClickListener?.invoke(item, it) }
+    myShowAllRoot.onLongClick { itemLongClickListener?.invoke(item) }
     imageLoadCompleteListener = { loadTranslation() }
   }
 

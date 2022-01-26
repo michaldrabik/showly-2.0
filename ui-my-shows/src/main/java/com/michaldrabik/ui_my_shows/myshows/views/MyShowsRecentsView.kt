@@ -31,13 +31,13 @@ class MyShowsRecentsView : FrameLayout {
 
   fun bind(
     item: MyShowsItem.RecentsSection,
-    itemClickListener: (MyShowsItem) -> Unit,
-    itemLongClickListener: (MyShowsItem, View) -> Unit
+    itemClickListener: ((MyShowsItem) -> Unit)?,
+    itemLongClickListener: ((MyShowsItem) -> Unit)?
   ) {
     myShowsRecentsContainer.removeAllViews()
 
-    val clickListener: (MyShowsItem) -> Unit = { itemClickListener.invoke(it) }
-    val longClickListener: (MyShowsItem, View) -> Unit = { i, view -> itemLongClickListener.invoke(i, view) }
+    val clickListener: (MyShowsItem) -> Unit = { itemClickListener?.invoke(it) }
+    val longClickListener: (MyShowsItem, View) -> Unit = { i, _ -> itemLongClickListener?.invoke(i) }
 
     item.items.forEachIndexed { index, showItem ->
       val view = MyShowFanartView(context).apply {

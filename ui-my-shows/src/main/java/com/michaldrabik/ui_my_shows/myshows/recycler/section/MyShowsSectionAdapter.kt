@@ -8,16 +8,26 @@ import com.michaldrabik.ui_base.BaseAdapter
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
 import com.michaldrabik.ui_my_shows.myshows.views.section.MyShowsSectionItemView
 
-open class MyShowsSectionAdapter : BaseAdapter<MyShowsItem>() {
+open class MyShowsSectionAdapter(
+  itemClickListener: (MyShowsItem) -> Unit,
+  itemLongClickListener: (MyShowsItem) -> Unit,
+  missingImageListener: (MyShowsItem, Boolean) -> Unit,
+  listChangeListener: () -> Unit,
+) : BaseAdapter<MyShowsItem>(
+  itemClickListener = itemClickListener,
+  itemLongClickListener = itemLongClickListener,
+  missingImageListener = missingImageListener,
+  listChangeListener = listChangeListener
+) {
 
   override val asyncDiffer = AsyncListDiffer(this, MyShowsSectionDiffCallback())
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     ViewHolderShow(
       MyShowsSectionItemView(parent.context).apply {
-        itemClickListener = { super.itemClickListener.invoke(it) }
-        itemLongClickListener = { item, view -> super.itemLongClickListener.invoke(item, view) }
-        missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
+        itemClickListener = this@MyShowsSectionAdapter.itemClickListener
+        itemLongClickListener = this@MyShowsSectionAdapter.itemLongClickListener
+        missingImageListener = this@MyShowsSectionAdapter.missingImageListener
       }
     )
 

@@ -148,19 +148,20 @@ class DiscoverFragment :
 
   private fun setupRecycler() {
     layoutManager = GridLayoutManager(context, MAIN_GRID_SPAN)
-    adapter = DiscoverAdapter().apply {
-      stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
-      missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
+    adapter = DiscoverAdapter(
       itemClickListener = {
         when (it.image.type) {
           ImageType.TWITTER -> openWebUrl(Config.TWITTER_URL)
           ImageType.PREMIUM -> openPremium()
           else -> openDetails(it)
         }
-      }
-      itemLongClickListener = { item, _ -> openShowMenu(item.show) }
-      listChangeListener = { discoverRecycler.scrollToPosition(0) }
+      },
+      itemLongClickListener = { item -> openShowMenu(item.show) },
+      missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) },
+      listChangeListener = { discoverRecycler.scrollToPosition(0) },
       twitterCancelClickListener = { viewModel.cancelTwitterAd() }
+    ).apply {
+      stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
     }
     discoverRecycler.apply {
       adapter = this@DiscoverFragment.adapter

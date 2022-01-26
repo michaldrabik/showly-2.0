@@ -29,7 +29,7 @@ class ArchiveShowView : ShowView<ArchiveListItem> {
     inflate(context, R.layout.view_archive_show, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     archiveShowRoot.onClick { itemClickListener?.invoke(item) }
-    archiveShowRoot.onLongClick { itemLongClickListener?.invoke(item, it) }
+    archiveShowRoot.onLongClick { itemLongClickListener?.invoke(item) }
     imageLoadCompleteListener = { loadTranslation() }
   }
 

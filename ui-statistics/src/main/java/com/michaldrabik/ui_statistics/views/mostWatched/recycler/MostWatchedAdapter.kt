@@ -7,14 +7,18 @@ import com.michaldrabik.ui_base.BaseAdapter
 import com.michaldrabik.ui_statistics.views.mostWatched.StatisticsMostWatchedItem
 import com.michaldrabik.ui_statistics.views.mostWatched.StatisticsMostWatchedItemView
 
-class MostWatchedAdapter : BaseAdapter<StatisticsMostWatchedItem>() {
+class MostWatchedAdapter(
+  itemClickListener: (StatisticsMostWatchedItem) -> Unit,
+) : BaseAdapter<StatisticsMostWatchedItem>(
+  itemClickListener = itemClickListener
+) {
 
   override val asyncDiffer = AsyncListDiffer(this, MostWatchedItemDiffCallback())
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     BaseViewHolder(
       StatisticsMostWatchedItemView(parent.context).apply {
-        itemClickListener = { super.itemClickListener.invoke(it) }
+        itemClickListener = this@MostWatchedAdapter.itemClickListener
       }
     )
 

@@ -70,16 +70,17 @@ class WatchlistFragment :
 
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
-    adapter = WatchlistAdapter().apply {
-      stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
-      missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
-      missingTranslationListener = { viewModel.loadMissingTranslation(it) }
-      itemClickListener = { openShowDetails(it.show) }
-      itemLongClickListener = { item, _ -> openShowMenu(item.show) }
+    adapter = WatchlistAdapter(
+      itemClickListener = { openShowDetails(it.show) },
+      itemLongClickListener = { item -> openShowMenu(item.show) },
+      missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) },
+      missingTranslationListener = { viewModel.loadMissingTranslation(it) },
       listChangeListener = {
         watchlistRecycler.scrollToPosition(0)
         (requireParentFragment() as FollowedShowsFragment).resetTranslations()
       }
+    ).apply {
+      stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
     }
     watchlistRecycler.apply {
       setHasFixedSize(true)

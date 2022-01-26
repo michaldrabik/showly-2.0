@@ -25,7 +25,7 @@ class MyShowsSectionView : FrameLayout {
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
   private val padding by lazy { context.dimenToPx(R.dimen.spaceMedium) }
-  private val sectionAdapter by lazy { MyShowsSectionAdapter() }
+  private lateinit var sectionAdapter: MyShowsSectionAdapter
   private val layoutManager by lazy { LinearLayoutManager(context, HORIZONTAL, false) }
 
   var scrollPositionListener: ((MyShowsSection, Pair<Int, Int>) -> Unit)? = null
@@ -43,7 +43,6 @@ class MyShowsSectionView : FrameLayout {
     myShowsSectionRecycler.apply {
       clearOnScrollListeners()
       setHasFixedSize(true)
-      adapter = sectionAdapter
       layoutManager = this@MyShowsSectionView.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
       addDivider(R.drawable.divider_my_shows_horizontal, HORIZONTAL)
@@ -61,18 +60,19 @@ class MyShowsSectionView : FrameLayout {
     section: MyShowsItem.HorizontalSection,
     scrollPosition: Pair<Int, Int>,
     notifyListsUpdate: Boolean,
-    clickListener: (MyShowsItem) -> Unit,
-    longClickListener: (MyShowsItem, View) -> Unit,
+    clickListener: ((MyShowsItem) -> Unit)?,
+    longClickListener: ((MyShowsItem) -> Unit)?,
     sectionImageListener: ((MyShowsItem, MyShowsItem.HorizontalSection, Boolean) -> Unit)?,
   ) {
     this.section = section.section
-    sectionAdapter.run {
-      setItems(section.items, notifyChange = notifyListsUpdate)
-      itemClickListener = { clickListener(it) }
-      itemLongClickListener = { item, view -> longClickListener(item, view) }
-      missingImageListener = { item, force -> sectionImageListener?.invoke(item, section, force) }
+    sectionAdapter = MyShowsSectionAdapter(
+      itemClickListener = { clickListener?.invoke(it) },
+      itemLongClickListener = { longClickListener?.invoke(it) },
+      missingImageListener = { item, force -> sectionImageListener?.invoke(item, section, force) },
       listChangeListener = { layoutManager.scrollToPosition(0) }
-    }
+    )
+    sectionAdapter.setItems(section.items, notifyChange = notifyListsUpdate)
+    myShowsSectionRecycler.adapter = sectionAdapter
     restoreScrollPosition(scrollPosition)
   }
 

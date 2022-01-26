@@ -6,15 +6,21 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.ui_base.BaseAdapter
 
-class RelatedShowAdapter : BaseAdapter<RelatedListItem>() {
+class RelatedShowAdapter(
+  itemClickListener: (RelatedListItem) -> Unit,
+  missingImageListener: (RelatedListItem, Boolean) -> Unit,
+) : BaseAdapter<RelatedListItem>(
+  itemClickListener = itemClickListener,
+  missingImageListener = missingImageListener,
+) {
 
   override val asyncDiffer = AsyncListDiffer(this, RelatedItemDiffCallback())
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     ViewHolderShow(
       RelatedShowView(parent.context).apply {
-        itemClickListener = { super.itemClickListener.invoke(it) }
-        missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
+        itemClickListener = this@RelatedShowAdapter.itemClickListener
+        missingImageListener = this@RelatedShowAdapter.missingImageListener
       }
     )
 

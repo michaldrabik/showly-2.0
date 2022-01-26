@@ -7,14 +7,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.ui_base.BaseAdapter
 import com.michaldrabik.ui_statistics.views.ratings.StatisticsRateItemView
 
-class StatisticsRatingsAdapter : BaseAdapter<StatisticsRatingItem>() {
+class StatisticsRatingsAdapter(
+  itemClickListener: (StatisticsRatingItem) -> Unit,
+) : BaseAdapter<StatisticsRatingItem>(
+  itemClickListener = itemClickListener,
+) {
 
   override val asyncDiffer = AsyncListDiffer(this, StatisticsRatingsDiffCallback())
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     ViewHolderShow(
       StatisticsRateItemView(parent.context).apply {
-        itemClickListener = { super.itemClickListener.invoke(it) }
+        itemClickListener = this@StatisticsRatingsAdapter.itemClickListener
       }
     )
 

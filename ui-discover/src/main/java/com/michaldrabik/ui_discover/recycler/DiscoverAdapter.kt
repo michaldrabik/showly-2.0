@@ -8,42 +8,47 @@ import com.michaldrabik.ui_discover.views.ShowFanartView
 import com.michaldrabik.ui_discover.views.ShowPosterView
 import com.michaldrabik.ui_discover.views.ShowPremiumView
 import com.michaldrabik.ui_discover.views.ShowTwitterView
-import com.michaldrabik.ui_model.ImageType.FANART
-import com.michaldrabik.ui_model.ImageType.FANART_WIDE
-import com.michaldrabik.ui_model.ImageType.POSTER
-import com.michaldrabik.ui_model.ImageType.PREMIUM
-import com.michaldrabik.ui_model.ImageType.TWITTER
+import com.michaldrabik.ui_model.ImageType.*
 
-class DiscoverAdapter : BaseAdapter<DiscoverListItem>() {
+class DiscoverAdapter(
+  itemClickListener: (DiscoverListItem) -> Unit,
+  itemLongClickListener: (DiscoverListItem) -> Unit,
+  missingImageListener: (DiscoverListItem, Boolean) -> Unit,
+  listChangeListener: () -> Unit,
+  var twitterCancelClickListener: (() -> Unit)?
+) : BaseAdapter<DiscoverListItem>(
+  itemClickListener = itemClickListener,
+  itemLongClickListener = itemLongClickListener,
+  missingImageListener = missingImageListener,
+  listChangeListener = listChangeListener
+) {
 
   override val asyncDiffer = AsyncListDiffer(this, DiscoverItemDiffCallback())
-
-  var twitterCancelClickListener: (() -> Unit)? = null
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
     POSTER.id -> BaseViewHolder(
       ShowPosterView(parent.context).apply {
-        itemClickListener = { super.itemClickListener.invoke(it) }
-        itemLongClickListener = { item, view -> super.itemLongClickListener.invoke(item, view) }
-        missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
+        itemClickListener = this@DiscoverAdapter.itemClickListener
+        itemLongClickListener = this@DiscoverAdapter.itemClickListener
+        missingImageListener = this@DiscoverAdapter.missingImageListener
       }
     )
     FANART.id, FANART_WIDE.id -> BaseViewHolder(
       ShowFanartView(parent.context).apply {
-        itemClickListener = { super.itemClickListener.invoke(it) }
-        itemLongClickListener = { item, view -> super.itemLongClickListener.invoke(item, view) }
-        missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
+        itemClickListener = this@DiscoverAdapter.itemClickListener
+        itemLongClickListener = this@DiscoverAdapter.itemClickListener
+        missingImageListener = this@DiscoverAdapter.missingImageListener
       }
     )
     TWITTER.id -> BaseViewHolder(
       ShowTwitterView(parent.context).apply {
-        itemClickListener = { super.itemClickListener.invoke(it) }
-        twitterCancelClickListener = { this@DiscoverAdapter.twitterCancelClickListener?.invoke() }
+        itemClickListener = this@DiscoverAdapter.itemClickListener
+        twitterCancelClickListener = this@DiscoverAdapter.twitterCancelClickListener
       }
     )
     PREMIUM.id -> BaseViewHolder(
       ShowPremiumView(parent.context).apply {
-        itemClickListener = { super.itemClickListener.invoke(it) }
+        itemClickListener = this@DiscoverAdapter.itemClickListener
       }
     )
     else -> throw IllegalStateException("Unknown view type.")

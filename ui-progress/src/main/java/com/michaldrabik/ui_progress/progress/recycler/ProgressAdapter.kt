@@ -7,7 +7,22 @@ import com.michaldrabik.ui_base.BaseAdapter
 import com.michaldrabik.ui_progress.progress.views.ProgressHeaderView
 import com.michaldrabik.ui_progress.progress.views.ProgressItemView
 
-class ProgressAdapter : BaseAdapter<ProgressListItem>() {
+class ProgressAdapter(
+  itemClickListener: (ProgressListItem) -> Unit,
+  itemLongClickListener: (ProgressListItem) -> Unit,
+  missingImageListener: (ProgressListItem, Boolean) -> Unit,
+  missingTranslationListener: (ProgressListItem) -> Unit,
+  listChangeListener: () -> Unit,
+  var detailsClickListener: ((ProgressListItem.Episode) -> Unit)?,
+  var checkClickListener: ((ProgressListItem.Episode) -> Unit)?,
+  var headerClickListener: ((ProgressListItem.Header) -> Unit)?,
+) : BaseAdapter<ProgressListItem>(
+  itemClickListener = itemClickListener,
+  itemLongClickListener = itemLongClickListener,
+  missingImageListener = missingImageListener,
+  missingTranslationListener = missingTranslationListener,
+  listChangeListener = listChangeListener
+) {
 
   companion object {
     private const val VIEW_TYPE_ITEM = 1
@@ -16,27 +31,21 @@ class ProgressAdapter : BaseAdapter<ProgressListItem>() {
 
   override val asyncDiffer = AsyncListDiffer(this, ProgressItemDiffCallback())
 
-  var detailsClickListener: ((ProgressListItem.Episode) -> Unit)? = null
-  var checkClickListener: ((ProgressListItem.Episode) -> Unit)? = null
-  var headerClickListener: ((ProgressListItem.Header) -> Unit)? = null
-
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     when (viewType) {
       VIEW_TYPE_ITEM -> BaseViewHolder(
         ProgressItemView(parent.context).apply {
-          itemClickListener = { super.itemClickListener.invoke(it) }
-          itemLongClickListener = { item, view ->
-            this@ProgressAdapter.itemLongClickListener.invoke(item, view)
-          }
-          detailsClickListener = { this@ProgressAdapter.detailsClickListener?.invoke(it) }
-          checkClickListener = { this@ProgressAdapter.checkClickListener?.invoke(it) }
-          missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
-          missingTranslationListener = { super.missingTranslationListener.invoke(it) }
+          itemClickListener = this@ProgressAdapter.itemClickListener
+          itemLongClickListener = this@ProgressAdapter.itemLongClickListener
+          missingImageListener = this@ProgressAdapter.missingImageListener
+          missingTranslationListener = this@ProgressAdapter.missingTranslationListener
+          checkClickListener = this@ProgressAdapter.checkClickListener
+          detailsClickListener = this@ProgressAdapter.detailsClickListener
         }
       )
       VIEW_TYPE_HEADER -> BaseViewHolder(
         ProgressHeaderView(parent.context).apply {
-          headerClickListener = { this@ProgressAdapter.headerClickListener?.invoke(it) }
+          headerClickListener = this@ProgressAdapter.headerClickListener
         }
       )
       else -> throw IllegalStateException()

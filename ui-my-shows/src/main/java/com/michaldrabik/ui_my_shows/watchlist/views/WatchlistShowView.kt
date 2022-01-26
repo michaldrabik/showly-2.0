@@ -29,7 +29,7 @@ class WatchlistShowView : ShowView<WatchlistListItem> {
     inflate(context, R.layout.view_watchlist_show, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     watchlistShowRoot.onClick { itemClickListener?.invoke(item) }
-    watchlistShowRoot.onLongClick { itemLongClickListener?.invoke(item, it) }
+    watchlistShowRoot.onLongClick { itemLongClickListener?.invoke(item) }
     imageLoadCompleteListener = { loadTranslation() }
   }
 

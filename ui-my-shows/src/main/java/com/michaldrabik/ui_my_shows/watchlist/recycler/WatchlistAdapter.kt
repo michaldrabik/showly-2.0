@@ -6,17 +6,29 @@ import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.ui_base.BaseAdapter
 import com.michaldrabik.ui_my_shows.watchlist.views.WatchlistShowView
 
-class WatchlistAdapter : BaseAdapter<WatchlistListItem>() {
+class WatchlistAdapter(
+  itemClickListener: (WatchlistListItem) -> Unit,
+  itemLongClickListener: (WatchlistListItem) -> Unit,
+  missingImageListener: (WatchlistListItem, Boolean) -> Unit,
+  missingTranslationListener: (WatchlistListItem) -> Unit,
+  listChangeListener: () -> Unit,
+) : BaseAdapter<WatchlistListItem>(
+  itemClickListener = itemClickListener,
+  itemLongClickListener = itemLongClickListener,
+  missingImageListener = missingImageListener,
+  missingTranslationListener = missingTranslationListener,
+  listChangeListener = listChangeListener
+) {
 
   override val asyncDiffer = AsyncListDiffer(this, WatchlistItemDiffCallback())
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     BaseViewHolder(
       WatchlistShowView(parent.context).apply {
-        itemClickListener = { super.itemClickListener.invoke(it) }
-        itemLongClickListener = { item, view -> super.itemLongClickListener.invoke(item, view) }
-        missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
-        missingTranslationListener = { super.missingTranslationListener.invoke(it) }
+        itemClickListener = this@WatchlistAdapter.itemClickListener
+        itemLongClickListener = this@WatchlistAdapter.itemLongClickListener
+        missingImageListener = this@WatchlistAdapter.missingImageListener
+        missingTranslationListener = this@WatchlistAdapter.missingTranslationListener
       }
     )
 

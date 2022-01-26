@@ -24,7 +24,7 @@ class StatisticsRatingsView : MaterialCardView {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-  private val adapter by lazy { StatisticsRatingsAdapter() }
+  private lateinit var adapter: StatisticsRatingsAdapter
   private val layoutManager by lazy { LinearLayoutManager(context, HORIZONTAL, false) }
 
   var onShowClickListener: ((ListItem) -> Unit)? = null
@@ -40,15 +40,15 @@ class StatisticsRatingsView : MaterialCardView {
   }
 
   private fun setupRecycler() {
+    adapter = StatisticsRatingsAdapter(
+      itemClickListener = { onShowClickListener?.invoke(it) }
+    )
     viewRatingsRecycler.apply {
       setHasFixedSize(true)
       adapter = this@StatisticsRatingsView.adapter
       layoutManager = this@StatisticsRatingsView.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
       addDivider(R.drawable.divider_statistics_ratings, HORIZONTAL)
-    }
-    adapter.itemClickListener = {
-      onShowClickListener?.invoke(it)
     }
   }
 

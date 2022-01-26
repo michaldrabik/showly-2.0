@@ -95,19 +95,20 @@ class MyShowsFragment :
 
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
-    adapter = MyShowsAdapter().apply {
-      stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
-      horizontalPositions = this@MyShowsFragment.horizontalPositions?.toMutableMap() ?: mutableMapOf()
-      itemClickListener = { openShowDetails(it.show) }
-      itemLongClickListener = { item, _ -> openShowMenu(item.show) }
-      missingImageListener = { item, force -> viewModel.loadMissingImage(item, force) }
-      missingTranslationListener = { viewModel.loadMissingTranslation(it) }
-      sectionMissingImageListener = { item, section, force -> viewModel.loadSectionMissingItem(item, section, force) }
-      onSortOrderClickListener = { section, order, type -> showSortOrderDialog(section, order, type) }
+    adapter = MyShowsAdapter(
+      itemClickListener = { openShowDetails(it.show) },
+      itemLongClickListener = { item -> openShowMenu(item.show) },
+      onSortOrderClickListener = { section, order, type -> showSortOrderDialog(section, order, type) },
+      missingImageListener = { item, force -> viewModel.loadMissingImage(item, force) },
+      missingTranslationListener = { viewModel.loadMissingTranslation(it) },
+      sectionMissingImageListener = { item, section, force -> viewModel.loadSectionMissingItem(item, section, force) },
       listChangeListener = {
         layoutManager?.scrollToPosition(0)
         (requireParentFragment() as FollowedShowsFragment).resetTranslations()
       }
+    ).apply {
+      stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
+      horizontalPositions = this@MyShowsFragment.horizontalPositions?.toMutableMap() ?: mutableMapOf()
     }
     myShowsRecycler.apply {
       adapter = this@MyShowsFragment.adapter

@@ -46,7 +46,7 @@ class ProgressItemView : ShowView<ProgressListItem.Episode> {
     progressItemCheckButton.expandTouch(100)
 
     onClick { itemClickListener?.invoke(item) }
-    onLongClick { itemLongClickListener?.invoke(item, it) }
+    onLongClick { itemLongClickListener?.invoke(item) }
     progressItemInfoButton.onClick { detailsClickListener?.invoke(item) }
     imageLoadCompleteListener = { loadTranslation() }
   }

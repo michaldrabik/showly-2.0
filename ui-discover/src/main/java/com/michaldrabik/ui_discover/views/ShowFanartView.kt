@@ -24,7 +24,7 @@ class ShowFanartView : ShowView<DiscoverListItem> {
   init {
     inflate(context, R.layout.view_show_fanart, this)
     showFanartRoot.onClick { itemClickListener?.invoke(item) }
-    showFanartRoot.onLongClick { itemLongClickListener?.invoke(item, this) }
+    showFanartRoot.onLongClick { itemLongClickListener?.invoke(item) }
   }
 
   override val imageView: ImageView = showFanartImage

@@ -257,15 +257,15 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   }
 
   private fun setupRelatedList() {
-    relatedAdapter = RelatedShowAdapter().apply {
-      missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
+    relatedAdapter = RelatedShowAdapter(
       itemClickListener = {
         if (findNavControl()?.currentDestination?.id == R.id.showDetailsFragment) {
           val bundle = Bundle().apply { putLong(ARG_SHOW_ID, it.show.traktId) }
           navigateTo(R.id.actionShowDetailsFragmentToSelf, bundle)
         }
-      }
-    }
+      },
+      missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
+    )
     showDetailsRelatedRecycler.apply {
       setHasFixedSize(true)
       adapter = relatedAdapter

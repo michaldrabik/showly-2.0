@@ -7,7 +7,15 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.ui_base.BaseAdapter
 import com.michaldrabik.ui_search.views.ShowSearchView
 
-class SearchAdapter : BaseAdapter<SearchListItem>() {
+class SearchAdapter(
+  itemClickListener: (SearchListItem) -> Unit,
+  missingImageListener: (SearchListItem, Boolean) -> Unit,
+  listChangeListener: () -> Unit,
+) : BaseAdapter<SearchListItem>(
+  itemClickListener = itemClickListener,
+  missingImageListener = missingImageListener,
+  listChangeListener = listChangeListener
+) {
 
   override val asyncDiffer = AsyncListDiffer(this, SearchItemDiffCallback())
 
@@ -19,8 +27,8 @@ class SearchAdapter : BaseAdapter<SearchListItem>() {
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     BaseViewHolder(
       ShowSearchView(parent.context).apply {
-        itemClickListener = { super.itemClickListener.invoke(it) }
-        missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
+        itemClickListener = this@SearchAdapter.itemClickListener
+        missingImageListener = this@SearchAdapter.missingImageListener
       }
     )
 

@@ -7,7 +7,17 @@ import com.michaldrabik.ui_base.BaseAdapter
 import com.michaldrabik.ui_progress.calendar.views.CalendarHeaderView
 import com.michaldrabik.ui_progress.calendar.views.CalendarItemView
 
-class CalendarAdapter : BaseAdapter<CalendarListItem>() {
+class CalendarAdapter(
+  itemClickListener: (CalendarListItem) -> Unit,
+  missingImageListener: (CalendarListItem, Boolean) -> Unit,
+  missingTranslationListener: (CalendarListItem) -> Unit,
+  var detailsClickListener: ((CalendarListItem.Episode) -> Unit),
+  var checkClickListener: ((CalendarListItem.Episode) -> Unit)
+) : BaseAdapter<CalendarListItem>(
+  itemClickListener = itemClickListener,
+  missingImageListener = missingImageListener,
+  missingTranslationListener = missingTranslationListener
+) {
 
   companion object {
     private const val VIEW_TYPE_ITEM = 1
@@ -16,18 +26,15 @@ class CalendarAdapter : BaseAdapter<CalendarListItem>() {
 
   override val asyncDiffer = AsyncListDiffer(this, CalendarItemDiffCallback())
 
-  var detailsClickListener: ((CalendarListItem.Episode) -> Unit)? = null
-  var checkClickListener: ((CalendarListItem.Episode) -> Unit)? = null
-
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     when (viewType) {
       VIEW_TYPE_ITEM -> BaseViewHolder(
         CalendarItemView(parent.context).apply {
-          itemClickListener = { super.itemClickListener.invoke(it) }
-          missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
-          missingTranslationListener = { super.missingTranslationListener.invoke(it) }
-          detailsClickListener = { this@CalendarAdapter.detailsClickListener?.invoke(it) }
-          checkClickListener = { this@CalendarAdapter.checkClickListener?.invoke(it) }
+          itemClickListener = this@CalendarAdapter.itemClickListener
+          missingImageListener = this@CalendarAdapter.missingImageListener
+          missingTranslationListener = this@CalendarAdapter.missingTranslationListener
+          detailsClickListener = this@CalendarAdapter.detailsClickListener
+          checkClickListener = this@CalendarAdapter.checkClickListener
         }
       )
       VIEW_TYPE_HEADER -> BaseViewHolder(CalendarHeaderView(parent.context))

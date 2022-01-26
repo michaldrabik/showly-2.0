@@ -25,7 +25,7 @@ class ShowPosterView : ShowView<DiscoverListItem> {
   init {
     inflate(context, R.layout.view_show_poster, this)
     showPosterRoot.onClick { itemClickListener?.invoke(item) }
-    showPosterRoot.onLongClick { itemLongClickListener?.invoke(item, this) }
+    showPosterRoot.onLongClick { itemLongClickListener?.invoke(item) }
   }
 
   override val imageView: ImageView = showPosterImage

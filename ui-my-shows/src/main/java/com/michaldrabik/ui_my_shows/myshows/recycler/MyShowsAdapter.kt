@@ -13,7 +13,21 @@ import com.michaldrabik.ui_my_shows.myshows.views.MyShowHeaderView
 import com.michaldrabik.ui_my_shows.myshows.views.MyShowsRecentsView
 import com.michaldrabik.ui_my_shows.myshows.views.section.MyShowsSectionView
 
-class MyShowsAdapter : BaseAdapter<MyShowsItem>() {
+class MyShowsAdapter(
+  val onSortOrderClickListener: ((MyShowsSection, SortOrder, SortType) -> Unit),
+  val sectionMissingImageListener: ((MyShowsItem, MyShowsItem.HorizontalSection, Boolean) -> Unit),
+  itemClickListener: (MyShowsItem) -> Unit,
+  itemLongClickListener: (MyShowsItem) -> Unit,
+  missingImageListener: (MyShowsItem, Boolean) -> Unit,
+  missingTranslationListener: (MyShowsItem) -> Unit,
+  listChangeListener: () -> Unit
+) : BaseAdapter<MyShowsItem>(
+  itemClickListener = itemClickListener,
+  itemLongClickListener = itemLongClickListener,
+  missingImageListener = missingImageListener,
+  missingTranslationListener = missingTranslationListener,
+  listChangeListener = listChangeListener
+) {
 
   companion object {
     private const val VIEW_TYPE_HEADER = 1
@@ -23,9 +37,6 @@ class MyShowsAdapter : BaseAdapter<MyShowsItem>() {
   }
 
   override val asyncDiffer = AsyncListDiffer(this, MyShowsItemDiffCallback())
-
-  var onSortOrderClickListener: ((MyShowsSection, SortOrder, SortType) -> Unit)? = null
-  var sectionMissingImageListener: ((MyShowsItem, MyShowsItem.HorizontalSection, Boolean) -> Unit)? = null
 
   var horizontalPositions = mutableMapOf<MyShowsSection, Pair<Int, Int>>()
   var resetScrolls = listOf<Type>()
@@ -42,10 +53,10 @@ class MyShowsAdapter : BaseAdapter<MyShowsItem>() {
       VIEW_TYPE_RECENTS_SECTION -> BaseViewHolder(MyShowsRecentsView(parent.context))
       VIEW_TYPE_SHOW_ITEM -> BaseViewHolder(
         MyShowAllView(parent.context).apply {
-          itemClickListener = { super.itemClickListener.invoke(it) }
-          itemLongClickListener = { item, view -> super.itemLongClickListener.invoke(item, view) }
-          missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
-          missingTranslationListener = { super.missingTranslationListener.invoke(it) }
+          itemClickListener = this@MyShowsAdapter.itemClickListener
+          itemLongClickListener = this@MyShowsAdapter.itemLongClickListener
+          missingImageListener = this@MyShowsAdapter.missingImageListener
+          missingTranslationListener = this@MyShowsAdapter.missingTranslationListener
         }
       )
       VIEW_TYPE_HORIZONTAL_SECTION -> BaseViewHolder(

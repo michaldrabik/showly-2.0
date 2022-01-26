@@ -30,7 +30,7 @@ class MyShowsSectionItemView : ShowView<MyShowsItem> {
     setBackgroundResource(R.drawable.bg_media_view_elevation)
     elevation = context.dimenToPx(R.dimen.elevationSmall).toFloat()
     onClick { itemClickListener?.invoke(item) }
-    onLongClick { itemLongClickListener?.invoke(item, this) }
+    onLongClick { itemLongClickListener?.invoke(item) }
   }
 
   override val imageView: ImageView = myShowImage
