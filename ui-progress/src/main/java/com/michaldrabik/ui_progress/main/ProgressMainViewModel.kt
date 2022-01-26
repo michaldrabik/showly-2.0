@@ -26,24 +26,6 @@ class ProgressMainViewModel @Inject constructor(
   private val calendarModeState = MutableStateFlow<CalendarMode?>(null)
   private val scrollState = MutableStateFlow<Event<Boolean>?>(null)
 
-  val uiState = combine(
-    timestampState,
-    searchQueryState,
-    calendarModeState,
-    scrollState
-  ) { s1, s2, s3, s4 ->
-    ProgressMainUiState(
-      timestamp = s1,
-      searchQuery = s2,
-      calendarMode = s3,
-      resetScroll = s4
-    )
-  }.stateIn(
-    scope = viewModelScope,
-    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = ProgressMainUiState()
-  )
-
   private var calendarMode = CalendarMode.PRESENT_FUTURE
 
   fun loadProgress() {
@@ -76,4 +58,22 @@ class ProgressMainViewModel @Inject constructor(
       scrollState.value = Event(false)
     }
   }
+
+  val uiState = combine(
+    timestampState,
+    searchQueryState,
+    calendarModeState,
+    scrollState
+  ) { s1, s2, s3, s4 ->
+    ProgressMainUiState(
+      timestamp = s1,
+      searchQuery = s2,
+      calendarMode = s3,
+      resetScroll = s4
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = ProgressMainUiState()
+  )
 }

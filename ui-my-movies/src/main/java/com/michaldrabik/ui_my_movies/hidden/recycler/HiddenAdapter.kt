@@ -7,16 +7,12 @@ import com.michaldrabik.ui_base.BaseMovieAdapter
 import com.michaldrabik.ui_my_movies.hidden.recycler.views.HiddenMovieView
 
 class HiddenAdapter(
-  itemClickListener: (HiddenListItem) -> Unit,
-  itemLongClickListener: (HiddenListItem) -> Unit,
-  missingImageListener: (HiddenListItem, Boolean) -> Unit,
-  missingTranslationListener: (HiddenListItem) -> Unit,
+  private val itemClickListener: (HiddenListItem) -> Unit,
+  private val itemLongClickListener: (HiddenListItem) -> Unit,
+  private val missingImageListener: (HiddenListItem, Boolean) -> Unit,
+  private val missingTranslationListener: (HiddenListItem) -> Unit,
   listChangeListener: () -> Unit,
 ) : BaseMovieAdapter<HiddenListItem>(
-  itemClickListener = itemClickListener,
-  itemLongClickListener = itemLongClickListener,
-  missingImageListener = missingImageListener,
-  missingTranslationListener = missingTranslationListener,
   listChangeListener = listChangeListener
 ) {
 
@@ -29,10 +25,10 @@ class HiddenAdapter(
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     BaseViewHolder(
       HiddenMovieView(parent.context).apply {
-        itemClickListener = { super.itemClickListener?.invoke(it) }
-        itemLongClickListener = { super.itemLongClickListener?.invoke(it) }
-        missingImageListener = { item, force -> super.missingImageListener?.invoke(item, force) }
-        missingTranslationListener = { super.missingTranslationListener?.invoke(it) }
+        itemClickListener = this@HiddenAdapter.itemClickListener
+        itemLongClickListener = this@HiddenAdapter.itemLongClickListener
+        missingImageListener = this@HiddenAdapter.missingImageListener
+        missingTranslationListener = this@HiddenAdapter.missingTranslationListener
       }
     )
 

@@ -8,14 +8,10 @@ import com.michaldrabik.ui_search.recycler.SearchListItem
 import com.michaldrabik.ui_search.views.SearchSuggestionView
 
 class SuggestionAdapter(
-  itemClickListener: (SearchListItem) -> Unit,
-  missingImageListener: (SearchListItem, Boolean) -> Unit,
-  missingTranslationListener: (SearchListItem) -> Unit
-) : BaseAdapter<SearchListItem>(
-  itemClickListener = itemClickListener,
-  missingImageListener = missingImageListener,
-  missingTranslationListener = missingTranslationListener
-) {
+  private val itemClickListener: (SearchListItem) -> Unit,
+  private val missingImageListener: (SearchListItem, Boolean) -> Unit,
+  private val missingTranslationListener: (SearchListItem) -> Unit
+) : BaseAdapter<SearchListItem>() {
 
   override val asyncDiffer = AsyncListDiffer(this, SuggestionItemDiffCallback())
 

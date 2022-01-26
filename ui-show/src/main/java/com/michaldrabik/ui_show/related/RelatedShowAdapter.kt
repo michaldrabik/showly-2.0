@@ -7,12 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.ui_base.BaseAdapter
 
 class RelatedShowAdapter(
-  itemClickListener: (RelatedListItem) -> Unit,
-  missingImageListener: (RelatedListItem, Boolean) -> Unit,
-) : BaseAdapter<RelatedListItem>(
-  itemClickListener = itemClickListener,
-  missingImageListener = missingImageListener,
-) {
+  private val itemClickListener: (RelatedListItem) -> Unit,
+  private val missingImageListener: (RelatedListItem, Boolean) -> Unit,
+) : BaseAdapter<RelatedListItem>() {
 
   override val asyncDiffer = AsyncListDiffer(this, RelatedItemDiffCallback())
 

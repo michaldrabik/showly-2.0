@@ -11,17 +11,13 @@ import com.michaldrabik.ui_my_movies.mymovies.views.MyMovieHeaderView
 import com.michaldrabik.ui_my_movies.mymovies.views.MyMoviesRecentsView
 
 class MyMoviesAdapter(
-  itemClickListener: (MyMoviesItem) -> Unit,
-  itemLongClickListener: (MyMoviesItem) -> Unit,
-  missingImageListener: (MyMoviesItem, Boolean) -> Unit,
-  missingTranslationListener: (MyMoviesItem) -> Unit,
+  private val itemClickListener: (MyMoviesItem) -> Unit,
+  private val itemLongClickListener: (MyMoviesItem) -> Unit,
+  private val missingImageListener: (MyMoviesItem, Boolean) -> Unit,
+  private val missingTranslationListener: (MyMoviesItem) -> Unit,
   listChangeListener: (() -> Unit),
   val onSortOrderClickListener: (SortOrder, SortType) -> Unit
 ) : BaseMovieAdapter<MyMoviesItem>(
-  itemClickListener = itemClickListener,
-  itemLongClickListener = itemLongClickListener,
-  missingImageListener = missingImageListener,
-  missingTranslationListener = missingTranslationListener,
   listChangeListener = listChangeListener
 ) {
 

@@ -8,10 +8,8 @@ import com.michaldrabik.ui_base.BaseMovieAdapter
 import com.michaldrabik.ui_statistics_movies.views.ratings.StatisticsMoviesRateItemView
 
 class StatisticsMoviesRatingsAdapter(
-  itemClickListener: (StatisticsMoviesRatingItem) -> Unit
-) : BaseMovieAdapter<StatisticsMoviesRatingItem>(
-  itemClickListener = itemClickListener,
-) {
+  private val itemClickListener: (StatisticsMoviesRatingItem) -> Unit
+) : BaseMovieAdapter<StatisticsMoviesRatingItem>() {
 
   override val asyncDiffer = AsyncListDiffer(this, StatisticsMoviesRatingsDiffCallback())
 

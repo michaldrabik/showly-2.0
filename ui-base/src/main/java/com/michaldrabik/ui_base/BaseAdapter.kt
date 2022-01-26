@@ -6,10 +6,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.ui_base.common.ListItem
 
 abstract class BaseAdapter<Item : ListItem>(
-  val itemClickListener: ((Item) -> Unit)? = null,
-  val itemLongClickListener: ((Item) -> Unit)? = null,
-  val missingImageListener: ((Item, Boolean) -> Unit)? = null,
-  val missingTranslationListener: ((Item) -> Unit)? = null,
   val listChangeListener: (() -> Unit)? = null
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), AsyncListDiffer.ListListener<Item> {
 

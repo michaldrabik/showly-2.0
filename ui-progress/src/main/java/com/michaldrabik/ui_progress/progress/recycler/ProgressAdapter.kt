@@ -8,19 +8,15 @@ import com.michaldrabik.ui_progress.progress.views.ProgressHeaderView
 import com.michaldrabik.ui_progress.progress.views.ProgressItemView
 
 class ProgressAdapter(
-  itemClickListener: (ProgressListItem) -> Unit,
-  itemLongClickListener: (ProgressListItem) -> Unit,
-  missingImageListener: (ProgressListItem, Boolean) -> Unit,
-  missingTranslationListener: (ProgressListItem) -> Unit,
+  private val itemClickListener: (ProgressListItem) -> Unit,
+  private val itemLongClickListener: (ProgressListItem) -> Unit,
+  private val detailsClickListener: ((ProgressListItem.Episode) -> Unit)?,
+  private val checkClickListener: ((ProgressListItem.Episode) -> Unit)?,
+  private val headerClickListener: ((ProgressListItem.Header) -> Unit)?,
+  private val missingImageListener: (ProgressListItem, Boolean) -> Unit,
+  private val missingTranslationListener: (ProgressListItem) -> Unit,
   listChangeListener: () -> Unit,
-  var detailsClickListener: ((ProgressListItem.Episode) -> Unit)?,
-  var checkClickListener: ((ProgressListItem.Episode) -> Unit)?,
-  var headerClickListener: ((ProgressListItem.Header) -> Unit)?,
 ) : BaseAdapter<ProgressListItem>(
-  itemClickListener = itemClickListener,
-  itemLongClickListener = itemLongClickListener,
-  missingImageListener = missingImageListener,
-  missingTranslationListener = missingTranslationListener,
   listChangeListener = listChangeListener
 ) {
 

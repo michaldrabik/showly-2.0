@@ -7,16 +7,12 @@ import com.michaldrabik.ui_base.BaseAdapter
 import com.michaldrabik.ui_my_shows.archive.recycler.views.ArchiveShowView
 
 class ArchiveAdapter(
-  itemClickListener: (ArchiveListItem) -> Unit,
-  itemLongClickListener: (ArchiveListItem) -> Unit,
-  missingImageListener: (ArchiveListItem, Boolean) -> Unit,
-  missingTranslationListener: (ArchiveListItem) -> Unit,
+  val itemClickListener: (ArchiveListItem) -> Unit,
+  val itemLongClickListener: (ArchiveListItem) -> Unit,
+  val missingImageListener: (ArchiveListItem, Boolean) -> Unit,
+  val missingTranslationListener: (ArchiveListItem) -> Unit,
   listChangeListener: () -> Unit,
 ) : BaseAdapter<ArchiveListItem>(
-  itemClickListener = itemClickListener,
-  itemLongClickListener = itemLongClickListener,
-  missingImageListener = missingImageListener,
-  missingTranslationListener = missingTranslationListener,
   listChangeListener = listChangeListener
 ) {
 

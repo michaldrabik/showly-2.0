@@ -8,12 +8,10 @@ import com.michaldrabik.ui_base.BaseAdapter
 import com.michaldrabik.ui_search.views.ShowSearchView
 
 class SearchAdapter(
-  itemClickListener: (SearchListItem) -> Unit,
-  missingImageListener: (SearchListItem, Boolean) -> Unit,
+  private val itemClickListener: (SearchListItem) -> Unit,
+  private val missingImageListener: (SearchListItem, Boolean) -> Unit,
   listChangeListener: () -> Unit,
 ) : BaseAdapter<SearchListItem>(
-  itemClickListener = itemClickListener,
-  missingImageListener = missingImageListener,
   listChangeListener = listChangeListener
 ) {
 

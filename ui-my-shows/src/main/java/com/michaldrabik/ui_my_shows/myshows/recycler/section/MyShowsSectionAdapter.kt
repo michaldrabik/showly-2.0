@@ -9,14 +9,11 @@ import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
 import com.michaldrabik.ui_my_shows.myshows.views.section.MyShowsSectionItemView
 
 open class MyShowsSectionAdapter(
-  itemClickListener: (MyShowsItem) -> Unit,
-  itemLongClickListener: (MyShowsItem) -> Unit,
-  missingImageListener: (MyShowsItem, Boolean) -> Unit,
+  private val itemClickListener: (MyShowsItem) -> Unit,
+  private val itemLongClickListener: (MyShowsItem) -> Unit,
+  private val missingImageListener: (MyShowsItem, Boolean) -> Unit,
   listChangeListener: () -> Unit,
 ) : BaseAdapter<MyShowsItem>(
-  itemClickListener = itemClickListener,
-  itemLongClickListener = itemLongClickListener,
-  missingImageListener = missingImageListener,
   listChangeListener = listChangeListener
 ) {
 

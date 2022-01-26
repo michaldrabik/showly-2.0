@@ -8,16 +8,12 @@ import com.michaldrabik.ui_progress.calendar.views.CalendarHeaderView
 import com.michaldrabik.ui_progress.calendar.views.CalendarItemView
 
 class CalendarAdapter(
-  itemClickListener: (CalendarListItem) -> Unit,
-  missingImageListener: (CalendarListItem, Boolean) -> Unit,
-  missingTranslationListener: (CalendarListItem) -> Unit,
+  private val itemClickListener: (CalendarListItem) -> Unit,
+  private val missingImageListener: (CalendarListItem, Boolean) -> Unit,
+  private val missingTranslationListener: (CalendarListItem) -> Unit,
   var detailsClickListener: ((CalendarListItem.Episode) -> Unit),
   var checkClickListener: ((CalendarListItem.Episode) -> Unit)
-) : BaseAdapter<CalendarListItem>(
-  itemClickListener = itemClickListener,
-  missingImageListener = missingImageListener,
-  missingTranslationListener = missingTranslationListener
-) {
+) : BaseAdapter<CalendarListItem>() {
 
   companion object {
     private const val VIEW_TYPE_ITEM = 1

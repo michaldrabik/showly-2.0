@@ -13,14 +13,11 @@ import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.ImageType.PREMIUM
 
 class DiscoverMoviesAdapter(
-  itemClickListener: (DiscoverMovieListItem) -> Unit,
-  itemLongClickListener: (DiscoverMovieListItem) -> Unit,
-  missingImageListener: (DiscoverMovieListItem, Boolean) -> Unit,
+  private val itemClickListener: (DiscoverMovieListItem) -> Unit,
+  private val itemLongClickListener: (DiscoverMovieListItem) -> Unit,
+  private val missingImageListener: (DiscoverMovieListItem, Boolean) -> Unit,
   listChangeListener: () -> Unit
 ) : BaseMovieAdapter<DiscoverMovieListItem>(
-  itemClickListener = itemClickListener,
-  itemLongClickListener = itemLongClickListener,
-  missingImageListener = missingImageListener,
   listChangeListener = listChangeListener
 ) {
 

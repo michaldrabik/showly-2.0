@@ -14,18 +14,14 @@ import com.michaldrabik.ui_my_shows.myshows.views.MyShowsRecentsView
 import com.michaldrabik.ui_my_shows.myshows.views.section.MyShowsSectionView
 
 class MyShowsAdapter(
-  val onSortOrderClickListener: ((MyShowsSection, SortOrder, SortType) -> Unit),
-  val sectionMissingImageListener: ((MyShowsItem, MyShowsItem.HorizontalSection, Boolean) -> Unit),
-  itemClickListener: (MyShowsItem) -> Unit,
-  itemLongClickListener: (MyShowsItem) -> Unit,
-  missingImageListener: (MyShowsItem, Boolean) -> Unit,
-  missingTranslationListener: (MyShowsItem) -> Unit,
+  private val itemClickListener: (MyShowsItem) -> Unit,
+  private val itemLongClickListener: (MyShowsItem) -> Unit,
+  private val onSortOrderClickListener: ((MyShowsSection, SortOrder, SortType) -> Unit),
+  private val missingImageListener: (MyShowsItem, Boolean) -> Unit,
+  private val missingTranslationListener: (MyShowsItem) -> Unit,
+  private val sectionMissingImageListener: ((MyShowsItem, MyShowsItem.HorizontalSection, Boolean) -> Unit),
   listChangeListener: () -> Unit
 ) : BaseAdapter<MyShowsItem>(
-  itemClickListener = itemClickListener,
-  itemLongClickListener = itemLongClickListener,
-  missingImageListener = missingImageListener,
-  missingTranslationListener = missingTranslationListener,
   listChangeListener = listChangeListener
 ) {
 

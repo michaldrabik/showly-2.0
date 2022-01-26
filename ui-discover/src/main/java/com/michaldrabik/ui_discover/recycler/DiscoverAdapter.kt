@@ -15,15 +15,12 @@ import com.michaldrabik.ui_model.ImageType.PREMIUM
 import com.michaldrabik.ui_model.ImageType.TWITTER
 
 class DiscoverAdapter(
-  itemClickListener: (DiscoverListItem) -> Unit,
-  itemLongClickListener: (DiscoverListItem) -> Unit,
-  missingImageListener: (DiscoverListItem, Boolean) -> Unit,
+  private val itemClickListener: (DiscoverListItem) -> Unit,
+  private val itemLongClickListener: (DiscoverListItem) -> Unit,
+  private val missingImageListener: (DiscoverListItem, Boolean) -> Unit,
+  private val twitterCancelClickListener: (() -> Unit)?,
   listChangeListener: () -> Unit,
-  var twitterCancelClickListener: (() -> Unit)?
 ) : BaseAdapter<DiscoverListItem>(
-  itemClickListener = itemClickListener,
-  itemLongClickListener = itemLongClickListener,
-  missingImageListener = missingImageListener,
   listChangeListener = listChangeListener
 ) {
 
@@ -33,14 +30,14 @@ class DiscoverAdapter(
     POSTER.id -> BaseViewHolder(
       ShowPosterView(parent.context).apply {
         itemClickListener = this@DiscoverAdapter.itemClickListener
-        itemLongClickListener = this@DiscoverAdapter.itemClickListener
+        itemLongClickListener = this@DiscoverAdapter.itemLongClickListener
         missingImageListener = this@DiscoverAdapter.missingImageListener
       }
     )
     FANART.id, FANART_WIDE.id -> BaseViewHolder(
       ShowFanartView(parent.context).apply {
         itemClickListener = this@DiscoverAdapter.itemClickListener
-        itemLongClickListener = this@DiscoverAdapter.itemClickListener
+        itemLongClickListener = this@DiscoverAdapter.itemLongClickListener
         missingImageListener = this@DiscoverAdapter.missingImageListener
       }
     )

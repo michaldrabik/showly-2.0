@@ -7,17 +7,13 @@ import com.michaldrabik.ui_base.BaseMovieAdapter
 import com.michaldrabik.ui_progress_movies.progress.views.ProgressMoviesItemView
 
 class ProgressMoviesAdapter(
-  itemClickListener: (ProgressMovieListItem.MovieItem) -> Unit,
-  itemLongClickListener: (ProgressMovieListItem.MovieItem) -> Unit,
-  missingImageListener: (ProgressMovieListItem.MovieItem, Boolean) -> Unit,
-  missingTranslationListener: (ProgressMovieListItem.MovieItem) -> Unit,
+  private val itemClickListener: (ProgressMovieListItem.MovieItem) -> Unit,
+  private val itemLongClickListener: (ProgressMovieListItem.MovieItem) -> Unit,
+  private val missingImageListener: (ProgressMovieListItem.MovieItem, Boolean) -> Unit,
+  private val missingTranslationListener: (ProgressMovieListItem.MovieItem) -> Unit,
+  private val checkClickListener: (ProgressMovieListItem.MovieItem) -> Unit,
   listChangeListener: () -> Unit,
-  val checkClickListener: (ProgressMovieListItem.MovieItem) -> Unit,
 ) : BaseMovieAdapter<ProgressMovieListItem.MovieItem>(
-  itemClickListener = itemClickListener,
-  itemLongClickListener = itemLongClickListener,
-  missingImageListener = missingImageListener,
-  missingTranslationListener = missingTranslationListener,
   listChangeListener = listChangeListener
 ) {
 

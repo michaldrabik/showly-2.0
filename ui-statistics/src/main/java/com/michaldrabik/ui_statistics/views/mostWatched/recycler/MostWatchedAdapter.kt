@@ -8,10 +8,8 @@ import com.michaldrabik.ui_statistics.views.mostWatched.StatisticsMostWatchedIte
 import com.michaldrabik.ui_statistics.views.mostWatched.StatisticsMostWatchedItemView
 
 class MostWatchedAdapter(
-  itemClickListener: (StatisticsMostWatchedItem) -> Unit,
-) : BaseAdapter<StatisticsMostWatchedItem>(
-  itemClickListener = itemClickListener
-) {
+  private val itemClickListener: (StatisticsMostWatchedItem) -> Unit,
+) : BaseAdapter<StatisticsMostWatchedItem>() {
 
   override val asyncDiffer = AsyncListDiffer(this, MostWatchedItemDiffCallback())
 

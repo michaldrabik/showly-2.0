@@ -7,16 +7,12 @@ import com.michaldrabik.ui_base.BaseMovieAdapter
 import com.michaldrabik.ui_my_movies.watchlist.views.WatchlistMovieView
 
 class WatchlistAdapter(
-  itemClickListener: (WatchlistListItem) -> Unit,
-  itemLongClickListener: (WatchlistListItem) -> Unit,
-  missingImageListener: (WatchlistListItem, Boolean) -> Unit,
-  missingTranslationListener: (WatchlistListItem) -> Unit,
+  private val itemClickListener: (WatchlistListItem) -> Unit,
+  private val itemLongClickListener: (WatchlistListItem) -> Unit,
+  private val missingImageListener: (WatchlistListItem, Boolean) -> Unit,
+  private val missingTranslationListener: (WatchlistListItem) -> Unit,
   listChangeListener: () -> Unit,
 ) : BaseMovieAdapter<WatchlistListItem>(
-  itemClickListener = itemClickListener,
-  itemLongClickListener = itemLongClickListener,
-  missingImageListener = missingImageListener,
-  missingTranslationListener = missingTranslationListener,
   listChangeListener = listChangeListener
 ) {
 
