@@ -105,6 +105,8 @@
   <string name="textPremiumAd">Werden Sie Unterstützer und erhalten Sie Zugang zu Bonusfunktionen! Klicken Sie hier, um mehr zu sehen.</string>
   <string name="menuPin">Oben anpinnen</string>
   <string name="menuUnpin">Pin von Oben lösen</string>
+  <string name="menuAddOnHold" comment="This is a button for Progress subsection. It will contain pending shows marked by user.">Pin auf \'Angehalten\'</string>
+  <string name="menuRemoveOnHold" comment="This is a button for Progress subsection. It will contain pending shows marked by user.">Pin von \'Angehalten\' lösen</string>
   <string name="errorGeneral">Hoppla… Da ging etwas schief.\nBitte kontaktiere uns, wenn dies weiterhin geschieht.</string>
   <string name="errorAuthorization">Autorisation fehlgeschlagen. Bitte kontaktiere uns, wenn dies weiterhin geschieht.</string>
   <string name="errorTraktAuthorization">Trakt.tv Authentifizierung fehlgeschlagen.\nBitte einloggen und erneut versuchen.</string>
