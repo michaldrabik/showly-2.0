@@ -105,6 +105,8 @@
   <string name="textPremiumAd">Torne-se um apoiador e tenha acesso a recursos premium! Clique para ver mais.</string>
   <string name="menuPin">Fixar no topo</string>
   <string name="menuUnpin">Desafixar do topo</string>
+  <string name="menuAddOnHold" comment="This is a button for Progress subsection. It will contain pending shows marked by user.">Fixar em \'em espera\'</string>
+  <string name="menuRemoveOnHold" comment="This is a button for Progress subsection. It will contain pending shows marked by user.">Desafixar de \'em espera\'</string>
   <string name="errorGeneral">Ops… Algo deu errado.\nEntre em contato conosco se isto continuar acontecendo.</string>
   <string name="errorAuthorization">A autorização falhou. Entre em contato conosco se isso continuar acontecendo.</string>
   <string name="errorTraktAuthorization">Falha na autorização da conta Trakt.\nPor favor, faça o login e tente novamente.</string>
