@@ -113,6 +113,8 @@
   <string name="textPremiumAd">Станьте спонсором и получите доступ к бонусным функциям! Нажмите, чтобы увидеть больше.</string>
   <string name="menuPin">Закрепить</string>
   <string name="menuUnpin">Открепить</string>
+  <string name="menuAddOnHold" comment="This is a button for Progress subsection. It will contain pending shows marked by user.">Закрепить в \'На паузе\'</string>
+  <string name="menuRemoveOnHold" comment="This is a button for Progress subsection. It will contain pending shows marked by user.">Открепить от \'На паузе\'</string>
   <string name="errorGeneral">Ой,… Что-то пошло не так.\nПожалуйста, свяжитесь с нами, если это повторится.</string>
   <string name="errorAuthorization">Авторизация не удалась. Пожалуйста, свяжитесь с нами, если это произойдет снова.</string>
   <string name="errorTraktAuthorization">Ошибка авторизации учетной записи Trakt.\nПожалуйста, войдите в систему и повторите попытку.</string>

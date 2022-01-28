@@ -4,6 +4,7 @@
   <string name="tabProgress">Progresso</string>
   <string name="textCalendarEmpty">Não há novos episódios a caminho.</string>
   <string name="textRecentsEmpty">Não há episódios recentes.</string>
+  <string name="textOnHold" comment="This is a header for Progress subsection. It will contain pending shows marked by user.">Em Espera</string>
   <string name="textWatchlistIncoming">Em breve</string>
   <string name="textDiscoverShows">Descubra séries</string>
   <string name="textEpisodeInfo">Detalhes</string>

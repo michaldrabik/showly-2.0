@@ -121,6 +121,8 @@
   <string name="textPremiumAd">إدعم تطوير التطبيق واحصل على مميزات إضافية! انقر لرؤية المزيد.</string>
   <string name="menuPin">تثبيت في الأعلى</string>
   <string name="menuUnpin">إلغاء التثبيت من الأعلى</string>
+  <string name="menuAddOnHold" comment="This is a button for Progress subsection. It will contain pending shows marked by user.">إضافة إلى \"المعلقة\"</string>
+  <string name="menuRemoveOnHold" comment="This is a button for Progress subsection. It will contain pending shows marked by user.">إزالة من \"المعلقة\"</string>
   <string name="errorGeneral">عفواً… حدث خطأ ما.\nإذا استمرت المشكلة بالحدوث، رجاءً تواصل معنا.</string>
   <string name="errorAuthorization">فشلت المصادقة. إذا استمرت المشكلة بالحدوث، رجاءً تواصل معنا.</string>
   <string name="errorTraktAuthorization">فشلت مصادقة Trakt.\nقُم بتسجيل الدخول وحاول مرة أخرى.</string>
