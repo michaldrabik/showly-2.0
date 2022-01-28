@@ -1,10 +1,8 @@
-* Added new context menus for Progress/Discover/Collection tabs items. Tap and hold item to open new menu.
+* Added 'Pin to On Hold' for Progress items. You can now pin shows to On Hold section located at the bottom, if you paused watching them and do not want to clutter your main progress list.
 
-* Added ratings for seasons.
+* Progress list sections can now be collapsed
 
-* Trakt Data Remove option will now also work with seasons and episodes.
-
-* Fixed misc. bugs reported by users.
+* Fixed misc. bugs
 
 Do you enjoy Showly app and want to support the developer?
 Become a subscriber and gain access to cool bonus features! Check Settings to learn more!
