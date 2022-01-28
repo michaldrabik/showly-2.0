@@ -12,7 +12,7 @@ class PersonGalleryAdapter(
   val onItemClickListener: () -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-  private val items = mutableListOf<Image>()
+  val items = mutableListOf<Image>()
 
   @SuppressLint("NotifyDataSetChanged")
   fun setItems(items: List<Image>) {

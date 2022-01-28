@@ -26,6 +26,7 @@ import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.nextPage
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.updateTopMargin
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
@@ -120,6 +121,11 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
       if (isPickMode == true) setFragmentResult(REQUEST_CUSTOM_IMAGE, bundleOf())
       requireActivity().onBackPressed()
     }
+    artGalleryBrowserIcon.onClick {
+      val currentIndex = artGalleryPager.currentItem
+      val image = galleryAdapter?.getItem(currentIndex)
+      image?.fullFileUrl?.let { openWebUrl(it) }
+    }
     galleryAdapter = ArtGalleryAdapter().apply {
       onItemClickListener = { artGalleryPager.nextPage() }
     }
@@ -142,9 +148,10 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
   }
 
   private fun setupStatusBar() {
-    artGalleryBackArrow.doOnApplyWindowInsets { view, insets, _, _ ->
+    requireView().doOnApplyWindowInsets { _, insets, _, _ ->
       val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
-      view.updateTopMargin(inset)
+      artGalleryBackArrow.updateTopMargin(inset)
+      artGalleryBrowserIcon.updateTopMargin(inset)
       artGallerySelectButton.updateTopMargin(inset)
     }
   }
@@ -195,6 +202,7 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
         galleryAdapter?.setItems(it, type)
         artGalleryEmptyView.visibleIf(it.isEmpty())
         artGallerySelectButton.visibleIf(it.isNotEmpty() && isPickMode == true)
+        artGalleryBrowserIcon.visibleIf(it.isNotEmpty() && isPickMode == false)
         artGalleryUrlButton.visibleIf(isPickMode == true)
 
         if (size != it.size) artGalleryPager.currentItem = 0

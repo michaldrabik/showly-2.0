@@ -67,6 +67,19 @@
     app:layout_constraintTop_toTopOf="parent"
     />
 
+  <ImageView
+    android:id="@+id/personGalleryBrowserIcon"
+    android:layout_width="@dimen/backArrowSize"
+    android:layout_height="@dimen/backArrowSize"
+    android:padding="16dp"
+    android:visibility="gone"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:srcCompat="@drawable/ic_open_browser"
+    app:tint="?android:attr/textColorPrimary"
+    tools:visibility="visible"
+    />
+
   <ProgressBar
     android:id="@+id/personGalleryImagesProgress"
     style="@style/ProgressBar"

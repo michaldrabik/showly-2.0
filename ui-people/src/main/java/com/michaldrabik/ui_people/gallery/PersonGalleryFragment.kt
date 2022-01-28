@@ -11,6 +11,7 @@ import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.nextPage
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.updateTopMargin
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.IdTmdb
@@ -57,6 +58,11 @@ class PersonGalleryFragment : BaseFragment<PersonGalleryViewModel>(R.layout.frag
     personGalleryBackArrow.onClick {
       requireActivity().onBackPressed()
     }
+    personGalleryBrowserIcon.onClick {
+      val currentIndex = personGalleryPager.currentItem
+      val image = galleryAdapter?.items?.getOrNull(currentIndex)
+      openImageInBrowser(image?.fullFileUrl)
+    }
     galleryAdapter = PersonGalleryAdapter(
       onItemClickListener = { personGalleryPager.nextPage() }
     )
@@ -69,9 +75,10 @@ class PersonGalleryFragment : BaseFragment<PersonGalleryViewModel>(R.layout.frag
   }
 
   private fun setupStatusBar() {
-    personGalleryBackArrow.doOnApplyWindowInsets { view, insets, _, _ ->
+    requireView().doOnApplyWindowInsets { _, insets, _, _ ->
       val margin = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
-      view.updateTopMargin(margin)
+      personGalleryBackArrow.updateTopMargin(margin)
+      personGalleryBrowserIcon.updateTopMargin(margin)
     }
   }
 
@@ -79,16 +86,20 @@ class PersonGalleryFragment : BaseFragment<PersonGalleryViewModel>(R.layout.frag
     uiState.run {
       images?.let {
         val size = galleryAdapter?.itemCount
-        galleryAdapter?.setItems(it)
-        personGalleryEmptyView.visibleIf(it.isEmpty())
         if (size != it.size) {
-          personGalleryPager.currentItem = 0
+          galleryAdapter?.setItems(it)
         }
+        personGalleryEmptyView.visibleIf(it.isEmpty())
+        personGalleryBrowserIcon.visibleIf(it.isNotEmpty())
       }
       isLoading.let {
         personGalleryImagesProgress.visibleIf(it)
       }
     }
+  }
+
+  private fun openImageInBrowser(url: String?) {
+    url?.let { requireContext().openWebUrl(it) }
   }
 
   override fun setupBackPressed() {

@@ -30,7 +30,7 @@ class ArtGalleryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     notifyDataSetChanged()
   }
 
-  fun getItem(position: Int) = items[position]
+  fun getItem(position: Int) = items.getOrNull(position)
 
   override fun getItemViewType(position: Int) = when (type) {
     POSTER -> VIEW_TYPE_POSTER
