@@ -3,7 +3,7 @@ package com.michaldrabik.ui_people.gallery.recycler.views
 import android.content.Context
 import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import android.widget.FrameLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -13,7 +13,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_people.R
 import kotlinx.android.synthetic.main.view_person_gallery_image.view.*
 
-class PersonGalleryImageView : FrameLayout {
+class PersonGalleryImageView : ConstraintLayout {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -24,7 +24,7 @@ class PersonGalleryImageView : FrameLayout {
     layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
   }
 
-  private val cornerRadius by lazy { context.dimenToPx(R.dimen.mediaTileCorner) }
+  private val cornerRadius by lazy { context.dimenToPx(R.dimen.galleryImageCorner) }
   var onItemClickListener: (() -> Unit)? = null
 
   fun bind(image: Image) {

@@ -24,6 +24,7 @@
   <dimen name="gridPadding">6dp</dimen>
 
   <dimen name="mediaTileCorner">4dp</dimen>
+  <dimen name="galleryImageCorner">8dp</dimen>
   <dimen name="showTilePlaceholder">40dp</dimen>
   <dimen name="movieTilePlaceholder">40dp</dimen>
 
