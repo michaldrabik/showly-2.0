@@ -9,7 +9,6 @@ import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageFamily
 import com.michaldrabik.ui_model.ImageSource.CUSTOM
-import com.michaldrabik.ui_model.ImageStatus
 import com.michaldrabik.ui_model.ImageType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,34 +28,11 @@ class ArtGalleryViewModel @Inject constructor(
   private val pickedImageState = MutableStateFlow<Event<Image>?>(null)
   private val loadingState = MutableStateFlow(false)
 
-  val uiState = combine(
-    imagesState,
-    typeState,
-    pickedImageState,
-    loadingState
-  ) { s1, s2, s3, s4 ->
-    ArtGalleryUiState(
-      images = s1,
-      type = s2,
-      pickedImage = s3,
-      isLoading = s4
-    )
-  }.stateIn(
-    scope = viewModelScope,
-    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = ArtGalleryUiState()
-  )
-
   fun loadImages(id: IdTrakt, family: ImageFamily, type: ImageType) {
     viewModelScope.launch {
-      val image = imagesCase.loadInitialImage(id, family, type)
-      if (image.status == ImageStatus.AVAILABLE) {
-        imagesState.value = listOf(image)
-        typeState.value = type
-      }
       try {
         loadingState.value = true
-        val allImages = imagesCase.loadAllImages(id, family, type, image)
+        val allImages = imagesCase.loadImages(id, family, type)
         imagesState.value = allImages
         typeState.value = type
         loadingState.value = false
@@ -82,4 +58,22 @@ class ArtGalleryViewModel @Inject constructor(
 
     imagesState.value = currentImages
   }
+
+  val uiState = combine(
+    imagesState,
+    typeState,
+    pickedImageState,
+    loadingState
+  ) { s1, s2, s3, s4 ->
+    ArtGalleryUiState(
+      images = s1,
+      type = s2,
+      pickedImage = s3,
+      isLoading = s4
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = ArtGalleryUiState()
+  )
 }

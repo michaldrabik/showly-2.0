@@ -2,8 +2,8 @@ package com.michaldrabik.ui_gallery.fanart.recycler
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
-import com.michaldrabik.ui_base.utilities.extensions.replace
 import com.michaldrabik.ui_gallery.fanart.recycler.views.ArtGalleryFanartView
 import com.michaldrabik.ui_gallery.fanart.recycler.views.ArtGalleryPosterView
 import com.michaldrabik.ui_model.Image
@@ -12,25 +12,24 @@ import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.ImageType.FANART_WIDE
 import com.michaldrabik.ui_model.ImageType.POSTER
 
-class ArtGalleryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ArtGalleryAdapter(
+  val onItemClickListener: (() -> Unit)
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   companion object {
     private const val VIEW_TYPE_POSTER = 0
     private const val VIEW_TYPE_FANART = 1
   }
 
-  var onItemClickListener: (() -> Unit)? = null
-
   private lateinit var type: ImageType
-  private val items = mutableListOf<Image>()
+  private val asyncDiffer = AsyncListDiffer(this, ImageItemDiffCallback())
 
   fun setItems(items: List<Image>, type: ImageType) {
     this.type = type
-    this.items.replace(items)
-    notifyDataSetChanged()
+    asyncDiffer.submitList(items)
   }
 
-  fun getItem(position: Int) = items.getOrNull(position)
+  fun getItem(index: Int) = asyncDiffer.currentList.getOrNull(index)
 
   override fun getItemViewType(position: Int) = when (type) {
     POSTER -> VIEW_TYPE_POSTER
@@ -55,12 +54,12 @@ class ArtGalleryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     when (val itemView = holder.itemView) {
-      is ArtGalleryPosterView -> itemView.bind(items[position])
-      is ArtGalleryFanartView -> itemView.bind(items[position])
+      is ArtGalleryPosterView -> itemView.bind(asyncDiffer.currentList[position])
+      is ArtGalleryFanartView -> itemView.bind(asyncDiffer.currentList[position])
     }
   }
 
   class ViewHolderShow(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-  override fun getItemCount() = items.size
+  override fun getItemCount() = asyncDiffer.currentList.size
 }

@@ -23,26 +23,13 @@ class ArtLoadImagesCase @Inject constructor(
   private val movieImagesProvider: MovieImagesProvider,
 ) {
 
-  suspend fun loadInitialImage(id: IdTrakt, family: ImageFamily, type: ImageType) =
-    when (family) {
-      SHOW -> {
-        val show = showsRepository.detailsShow.load(id)
-        showImagesProvider.findCachedImage(show, type)
-      }
-      MOVIE -> {
-        val movie = moviesRepository.movieDetails.load(id)
-        movieImagesProvider.findCachedImage(movie, type)
-      }
-      else -> throw IllegalStateException()
-    }
-
-  suspend fun loadAllImages(
+  suspend fun loadImages(
     id: IdTrakt,
     family: ImageFamily,
-    type: ImageType,
-    initialImage: Image,
+    type: ImageType
   ): List<Image> {
     val images = mutableListOf<Image>()
+    val initialImage = loadInitialImage(id, family, type)
     if (initialImage.status == AVAILABLE) {
       images.add(initialImage)
     }
@@ -58,6 +45,19 @@ class ArtLoadImagesCase @Inject constructor(
     images.addAll(remoteImages.filter { it.fullFileUrl != initialImage.fullFileUrl })
     return images.take(FANART_GALLERY_IMAGES_LIMIT)
   }
+
+  private suspend fun loadInitialImage(id: IdTrakt, family: ImageFamily, type: ImageType) =
+    when (family) {
+      SHOW -> {
+        val show = showsRepository.detailsShow.load(id)
+        showImagesProvider.findCachedImage(show, type)
+      }
+      MOVIE -> {
+        val movie = moviesRepository.movieDetails.load(id)
+        movieImagesProvider.findCachedImage(movie, type)
+      }
+      else -> throw IllegalStateException()
+    }
 
   suspend fun saveCustomImage(id: IdTrakt, image: Image, family: ImageFamily, type: ImageType) {
     when (family) {

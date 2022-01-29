@@ -126,9 +126,9 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
       val image = galleryAdapter?.getItem(currentIndex)
       image?.fullFileUrl?.let { openWebUrl(it) }
     }
-    galleryAdapter = ArtGalleryAdapter().apply {
+    galleryAdapter = ArtGalleryAdapter(
       onItemClickListener = { artGalleryPager.nextPage() }
-    }
+    )
     artGalleryPager.run {
       adapter = galleryAdapter
       offscreenPageLimit = 2
@@ -197,15 +197,11 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
   private fun render(uiState: ArtGalleryUiState) {
     uiState.run {
       images?.let {
-        val size = galleryAdapter?.itemCount
-
         galleryAdapter?.setItems(it, type)
         artGalleryEmptyView.visibleIf(it.isEmpty())
         artGallerySelectButton.visibleIf(it.isNotEmpty() && isPickMode == true)
         artGalleryBrowserIcon.visibleIf(it.isNotEmpty() && isPickMode == false)
         artGalleryUrlButton.visibleIf(isPickMode == true)
-
-        if (size != it.size) artGalleryPager.currentItem = 0
       }
       pickedImage?.let {
         it.consume()?.let {

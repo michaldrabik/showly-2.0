@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_people.gallery.recycler
 
-import android.annotation.SuppressLint
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -14,7 +13,6 @@ class PersonGalleryAdapter(
 
   private val asyncDiffer = AsyncListDiffer(this, ImageItemDiffCallback())
 
-  @SuppressLint("NotifyDataSetChanged")
   fun setItems(items: List<Image>) {
     asyncDiffer.submitList(items)
   }
