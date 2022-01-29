@@ -60,7 +60,7 @@ class PersonGalleryFragment : BaseFragment<PersonGalleryViewModel>(R.layout.frag
     }
     personGalleryBrowserIcon.onClick {
       val currentIndex = personGalleryPager.currentItem
-      val image = galleryAdapter?.items?.getOrNull(currentIndex)
+      val image = galleryAdapter?.getItem(currentIndex)
       openImageInBrowser(image?.fullFileUrl)
     }
     galleryAdapter = PersonGalleryAdapter(
@@ -85,10 +85,7 @@ class PersonGalleryFragment : BaseFragment<PersonGalleryViewModel>(R.layout.frag
   private fun render(uiState: PersonGalleryUiState) {
     uiState.run {
       images?.let {
-        val size = galleryAdapter?.itemCount
-        if (size != it.size) {
-          galleryAdapter?.setItems(it)
-        }
+        galleryAdapter?.setItems(it)
         personGalleryEmptyView.visibleIf(it.isEmpty())
         personGalleryBrowserIcon.visibleIf(it.isNotEmpty())
       }

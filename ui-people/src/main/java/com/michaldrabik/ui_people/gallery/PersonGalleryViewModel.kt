@@ -4,7 +4,6 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.Image
-import com.michaldrabik.ui_model.ImageStatus
 import com.michaldrabik.ui_people.gallery.cases.PersonGalleryImagesCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,13 +23,9 @@ class PersonGalleryViewModel @Inject constructor(
 
   fun loadImages(id: IdTmdb) {
     viewModelScope.launch {
-      val initialImage = imagesCase.loadInitialImage(id)
-      if (initialImage?.status == ImageStatus.AVAILABLE) {
-        imagesState.value = listOf(initialImage)
-      }
       try {
         loadingState.value = true
-        val allImages = imagesCase.loadAllImages(id, initialImage)
+        val allImages = imagesCase.loadImages(id)
         imagesState.value = allImages
         loadingState.value = false
       } catch (t: Throwable) {

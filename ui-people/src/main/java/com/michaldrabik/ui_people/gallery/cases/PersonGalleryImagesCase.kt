@@ -11,11 +11,9 @@ class PersonGalleryImagesCase @Inject constructor(
   private val imagesProvider: PeopleImagesProvider
 ) {
 
-  suspend fun loadInitialImage(id: IdTmdb) = imagesProvider.loadCachedImage(id)
-
-  suspend fun loadAllImages(id: IdTmdb, initialImage: Image?): List<Image> {
-    val initial = listOf(initialImage)
-    val images = imagesProvider.loadImages(id).filter { it.fileUrl != initialImage?.fileUrl }
-    return (initial + images).filterNotNull()
+  suspend fun loadImages(id: IdTmdb): List<Image> {
+    val initial = imagesProvider.loadCachedImage(id)
+    val images = imagesProvider.loadImages(id).filter { it.fileUrl != initial?.fileUrl }
+    return (listOf(initial) + images).filterNotNull()
   }
 }

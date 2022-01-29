@@ -1,4 +1,4 @@
-* Added 'Pin to On Hold' for Progress items. You can now pin shows to On Hold section located at the bottom, if you paused watching them and do not want to clutter your main progress list.
+* Added 'Pin to On Hold' feature for Progress items. You can now pin shows to On Hold section located at the bottom, if you paused watching them and do not want to clutter your main progress list.
 
 * Progress list sections can now be collapsed
 
