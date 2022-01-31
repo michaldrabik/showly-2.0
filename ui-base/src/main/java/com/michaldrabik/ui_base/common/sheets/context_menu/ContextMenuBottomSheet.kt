@@ -20,6 +20,7 @@ import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet
 import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet.Mode
+import com.michaldrabik.ui_base.databinding.ViewContextMenuBinding
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -40,7 +41,6 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_LIST
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_ITEM_MENU
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_REMOVE_TRAKT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.RESULT
-import kotlinx.android.synthetic.main.view_context_menu.*
 
 abstract class ContextMenuBottomSheet<T : BaseViewModel> : BaseBottomSheetFragment<T>() {
 
@@ -55,6 +55,7 @@ abstract class ContextMenuBottomSheet<T : BaseViewModel> : BaseBottomSheetFragme
   }
 
   override val layoutResId = R.layout.view_context_menu
+  protected val view by lazy { viewBinding as ViewContextMenuBinding }
 
   protected val itemId by lazy { requireArguments().getParcelable<IdTrakt>(ARG_ID)!! }
   private val showPinButtons by lazy { requireArguments().getBoolean(ARG_LIST, false) }
@@ -73,25 +74,27 @@ abstract class ContextMenuBottomSheet<T : BaseViewModel> : BaseBottomSheetFragme
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme)
-    return inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
+    val view = inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
+    return createViewBinding(ViewContextMenuBinding.bind(view))
   }
 
   protected open fun setupView() {
-    contextMenuItemDescription.setInitialLines(5)
-    contextMenuItemPinButtonsLayout.visibleIf(showPinButtons)
-    contextMenuItemSeparator2.visibleIf(showPinButtons)
-
-    contextMenuItemImage.onClick { openDetails() }
-    contextMenuItemPlaceholder.onClick { openDetails() }
+    with(view) {
+      contextMenuItemDescription.setInitialLines(5)
+      contextMenuItemPinButtonsLayout.visibleIf(showPinButtons)
+      contextMenuItemSeparator2.visibleIf(showPinButtons)
+      contextMenuItemImage.onClick { openDetails() }
+      contextMenuItemPlaceholder.onClick { openDetails() }
+    }
   }
 
   protected fun renderImage(image: Image, tvdbId: IdTvdb) {
-    Glide.with(this).clear(contextMenuItemImage)
+    Glide.with(this).clear(view.contextMenuItemImage)
     var imageUrl = image.fullFileUrl
 
     if (image.status == ImageStatus.UNAVAILABLE) {
-      contextMenuItemPlaceholder.visible()
-      contextMenuItemImage.gone()
+      view.contextMenuItemPlaceholder.visible()
+      view.contextMenuItemImage.gone()
       return
     }
 
@@ -104,21 +107,21 @@ abstract class ContextMenuBottomSheet<T : BaseViewModel> : BaseBottomSheetFragme
       .transform(centerCropTransformation, cornersTransformation)
       .transition(DrawableTransitionOptions.withCrossFade(Config.IMAGE_FADE_DURATION_MS))
       .withSuccessListener {
-        contextMenuItemPlaceholder.gone()
-        contextMenuItemImage.visible()
+        view.contextMenuItemPlaceholder.gone()
+        view.contextMenuItemImage.visible()
       }
       .withFailListener {
-        contextMenuItemPlaceholder.visible()
-        contextMenuItemImage.gone()
+        view.contextMenuItemPlaceholder.visible()
+        view.contextMenuItemImage.gone()
       }
-      .into(contextMenuItemImage)
+      .into(view.contextMenuItemImage)
   }
 
   protected fun renderSnackbar(message: MessageEvent) {
     message.consume()?.let {
       when (message.type) {
-        MessageEvent.Type.INFO -> contextMenuItemSnackbarHost.showInfoSnackbar(getString(it))
-        MessageEvent.Type.ERROR -> contextMenuItemSnackbarHost.showErrorSnackbar(getString(it))
+        MessageEvent.Type.INFO -> view.contextMenuItemSnackbarHost.showInfoSnackbar(getString(it))
+        MessageEvent.Type.ERROR -> view.contextMenuItemSnackbarHost.showErrorSnackbar(getString(it))
       }
     }
   }

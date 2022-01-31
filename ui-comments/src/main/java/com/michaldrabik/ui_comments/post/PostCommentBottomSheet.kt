@@ -21,6 +21,7 @@ import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_comments.R
+import com.michaldrabik.ui_comments.databinding.ViewPostCommentBinding
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT_ACTION
@@ -31,8 +32,6 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_REPLY_USER
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.view_post_comment.*
-import kotlinx.android.synthetic.main.view_post_comment.view.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -47,20 +46,21 @@ class PostCommentBottomSheet : BaseBottomSheetFragment<PostCommentViewModel>() {
   private val replyUser by lazy { requireArguments().getString(ARG_REPLY_USER, "") }
 
   override val layoutResId = R.layout.view_post_comment
+  private val view by lazy { viewBinding as ViewPostCommentBinding }
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme)
-    return inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
+    val view = inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
+    return createViewBinding(ViewPostCommentBinding.bind(view))
   }
 
-  override fun createViewModel() =
-    ViewModelProvider(this).get(PostCommentViewModel::class.java)
+  override fun createViewModel() = ViewModelProvider(this)[PostCommentViewModel::class.java]
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    setupView(view)
+    setupView()
 
     viewLifecycleOwner.lifecycleScope.launch {
       repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -73,8 +73,8 @@ class PostCommentBottomSheet : BaseBottomSheetFragment<PostCommentViewModel>() {
   }
 
   @SuppressLint("SetTextI18n")
-  private fun setupView(view: View) {
-    view.run {
+  private fun setupView() {
+    with(view) {
       viewPostCommentInputValue.doOnTextChanged { text, _, _, _ ->
         val isValid =
           !text?.trim().isNullOrEmpty() &&
@@ -102,13 +102,15 @@ class PostCommentBottomSheet : BaseBottomSheetFragment<PostCommentViewModel>() {
   private fun render(uiState: PostCommentUiState) {
     uiState.run {
       isLoading.let {
-        viewPostCommentInput.isEnabled = !it
-        viewPostCommentInputValue.isEnabled = !it
-        viewPostCommentSpoilersCheck.isEnabled = !it
-        viewPostCommentProgress.visibleIf(it)
-        val commentText = viewPostCommentInputValue.text.toString()
-        viewPostCommentButton.isEnabled = !it && isCommentValid(commentText)
-        viewPostCommentButton.visibleIf(!it, gone = false)
+        with(view) {
+          viewPostCommentInput.isEnabled = !it
+          viewPostCommentInputValue.isEnabled = !it
+          viewPostCommentSpoilersCheck.isEnabled = !it
+          viewPostCommentProgress.visibleIf(it)
+          val commentText = viewPostCommentInputValue.text.toString()
+          viewPostCommentButton.isEnabled = !it && isCommentValid(commentText)
+          viewPostCommentButton.visibleIf(!it, gone = false)
+        }
       }
       isSuccess?.let {
         it.consume()?.let { commentBundle ->
@@ -128,8 +130,8 @@ class PostCommentBottomSheet : BaseBottomSheetFragment<PostCommentViewModel>() {
   private fun renderSnackbar(message: MessageEvent) {
     message.consume()?.let {
       when (message.type) {
-        Type.INFO -> viewPostCommentSnackHost.showInfoSnackbar(getString(it))
-        Type.ERROR -> viewPostCommentSnackHost.showErrorSnackbar(getString(it))
+        Type.INFO -> view.viewPostCommentSnackHost.showInfoSnackbar(getString(it))
+        Type.ERROR -> view.viewPostCommentSnackHost.showErrorSnackbar(getString(it))
       }
     }
   }

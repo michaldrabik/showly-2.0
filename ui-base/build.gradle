@@ -7,10 +7,15 @@ apply from: '../versions.gradle'
 
 android {
   kotlinOptions { jvmTarget = "1.8" }
+
   compileOptions {
     coreLibraryDesugaringEnabled true
     sourceCompatibility JavaVersion.VERSION_1_8
     targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  buildFeatures {
+    viewBinding true
   }
 
   compileSdkVersion versions.compileSdk

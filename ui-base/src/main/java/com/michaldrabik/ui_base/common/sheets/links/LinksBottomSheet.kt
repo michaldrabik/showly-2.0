@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
 import com.michaldrabik.ui_base.R
+import com.michaldrabik.ui_base.databinding.ViewLinksBinding
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_model.Ids
@@ -22,7 +23,6 @@ import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.parcel.Parcelize
-import kotlinx.android.synthetic.main.view_links.*
 
 @AndroidEntryPoint
 class LinksBottomSheet : BaseBottomSheetFragment<LinksViewModel>() {
@@ -48,6 +48,7 @@ class LinksBottomSheet : BaseBottomSheetFragment<LinksViewModel>() {
   }
 
   override val layoutResId = R.layout.view_links
+  private val view by lazy { viewBinding as ViewLinksBinding }
 
   private val options by lazy { (requireArguments().getParcelable<Options>(NavigationArgs.ARG_OPTIONS))!! }
   private val ids by lazy { options.ids }
@@ -59,7 +60,8 @@ class LinksBottomSheet : BaseBottomSheetFragment<LinksViewModel>() {
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme)
-    return inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
+    val view = inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
+    return createViewBinding(ViewLinksBinding.bind(view))
   }
 
   override fun createViewModel() = ViewModelProvider(this)[LinksViewModel::class.java]
@@ -70,38 +72,40 @@ class LinksBottomSheet : BaseBottomSheetFragment<LinksViewModel>() {
   }
 
   private fun setupView() {
-    viewLinksButtonClose.onClick { closeSheet() }
+    with(view) {
+      viewLinksJustWatch.onClick {
+        val country = viewModel.loadCountry()
+        openWebUrl("https://www.justwatch.com/${country.code}/${country.justWatchQuery}?content_type=${type.type}&q=${Uri.encode(title)}")
+      }
+      viewLinksYouTube.onClick {
+        openWebUrl("https://www.youtube.com/results?search_query=${getQuery()}")
+      }
+      viewLinksWiki.onClick {
+        openWebUrl("https://en.wikipedia.org/w/index.php?search=${getQuery()}")
+      }
+      viewLinksGoogle.onClick {
+        openWebUrl("https://www.google.com/search?q=${getQuery()}")
+      }
+      viewLinksDuckDuck.onClick {
+        openWebUrl("https://duckduckgo.com/?q=${getQuery()}")
+      }
+      viewLinksGif.onClick {
+        openWebUrl("https://giphy.com/search/${getQuery()}")
+      }
+      viewLinksTwitter.onClick {
+        openWebUrl("https://twitter.com/search?q=${getQuery()}&src=typed_query")
+      }
+      viewLinksButtonClose.onClick { closeSheet() }
+    }
     setWebLink()
     setTraktLink()
     setTvdbLink()
     setTmdbLink()
     setImdbLink()
-    viewLinksJustWatch.onClick {
-      val country = viewModel.loadCountry()
-      openWebUrl("https://www.justwatch.com/${country.code}/${country.justWatchQuery}?content_type=${type.type}&q=${Uri.encode(title)}")
-    }
-    viewLinksYouTube.onClick {
-      openWebUrl("https://www.youtube.com/results?search_query=${getQuery()}")
-    }
-    viewLinksWiki.onClick {
-      openWebUrl("https://en.wikipedia.org/w/index.php?search=${getQuery()}")
-    }
-    viewLinksGoogle.onClick {
-      openWebUrl("https://www.google.com/search?q=${getQuery()}")
-    }
-    viewLinksDuckDuck.onClick {
-      openWebUrl("https://duckduckgo.com/?q=${getQuery()}")
-    }
-    viewLinksGif.onClick {
-      openWebUrl("https://giphy.com/search/${getQuery()}")
-    }
-    viewLinksTwitter.onClick {
-      openWebUrl("https://twitter.com/search?q=${getQuery()}&src=typed_query")
-    }
   }
 
   private fun setWebLink() {
-    viewLinksWebsite.run {
+    view.viewLinksWebsite.run {
       if (website.isBlank()) {
         alpha = 0.5F
         isEnabled = false
@@ -112,7 +116,7 @@ class LinksBottomSheet : BaseBottomSheetFragment<LinksViewModel>() {
   }
 
   private fun setTraktLink() {
-    viewLinksTrakt.run {
+    view.viewLinksTrakt.run {
       if (ids.trakt.id == -1L) {
         alpha = 0.5F
         isEnabled = false
@@ -123,7 +127,7 @@ class LinksBottomSheet : BaseBottomSheetFragment<LinksViewModel>() {
   }
 
   private fun setTvdbLink() {
-    viewLinksTvdb.run {
+    view.viewLinksTvdb.run {
       if (ids.tvdb.id == -1L) {
         alpha = 0.5F
         isEnabled = false
@@ -139,7 +143,7 @@ class LinksBottomSheet : BaseBottomSheetFragment<LinksViewModel>() {
   }
 
   private fun setTmdbLink() {
-    viewLinksTmdb.run {
+    view.viewLinksTmdb.run {
       if (ids.tmdb.id == -1L) {
         alpha = 0.5F
         isEnabled = false
@@ -155,7 +159,7 @@ class LinksBottomSheet : BaseBottomSheetFragment<LinksViewModel>() {
   }
 
   private fun setImdbLink() {
-    viewLinksImdb.run {
+    view.viewLinksImdb.run {
       if (ids.imdb.id.isBlank()) {
         alpha = 0.5F
         isEnabled = false

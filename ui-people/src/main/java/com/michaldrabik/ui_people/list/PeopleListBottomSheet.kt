@@ -27,12 +27,10 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TITLE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import com.michaldrabik.ui_people.R
+import com.michaldrabik.ui_people.databinding.ViewPeopleListBinding
 import com.michaldrabik.ui_people.details.PersonDetailsBottomSheet
 import com.michaldrabik.ui_people.list.recycler.PeopleListAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.view_people_list.*
-import kotlinx.android.synthetic.main.view_person_details.*
-import kotlinx.android.synthetic.main.view_person_details_info.*
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
@@ -53,6 +51,7 @@ class PeopleListBottomSheet : BaseBottomSheetFragment<PeopleListViewModel>() {
   }
 
   override val layoutResId = R.layout.view_people_list
+  private val view by lazy { viewBinding as ViewPeopleListBinding }
 
   private val mediaIdTrakt by lazy { IdTrakt(requireArguments().getLong(ARG_ID)) }
   private val mediaTitle by lazy { requireArguments().getString(ARG_TITLE)!! }
@@ -66,7 +65,8 @@ class PeopleListBottomSheet : BaseBottomSheetFragment<PeopleListViewModel>() {
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme)
-    return inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
+    val view = inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
+    return createViewBinding(ViewPeopleListBinding.bind(view))
   }
 
   override fun createViewModel() = ViewModelProvider(this)[PeopleListViewModel::class.java]
@@ -103,7 +103,7 @@ class PeopleListBottomSheet : BaseBottomSheetFragment<PeopleListViewModel>() {
     adapter = PeopleListAdapter(
       onItemClickListener = { openDetails(it) },
     )
-    with(viewPeopleListRecycler) {
+    with(view.viewPeopleListRecycler) {
       adapter = this@PeopleListBottomSheet.adapter
       layoutManager = this@PeopleListBottomSheet.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
@@ -124,8 +124,8 @@ class PeopleListBottomSheet : BaseBottomSheetFragment<PeopleListViewModel>() {
   private fun renderSnackbar(message: MessageEvent) {
     message.consume()?.let {
       when (message.type) {
-        MessageEvent.Type.INFO -> viewPeopleListRoot.showInfoSnackbar(getString(it))
-        MessageEvent.Type.ERROR -> viewPeopleListRoot.showErrorSnackbar(getString(it))
+        MessageEvent.Type.INFO -> view.viewPeopleListRoot.showInfoSnackbar(getString(it))
+        MessageEvent.Type.ERROR -> view.viewPeopleListRoot.showErrorSnackbar(getString(it))
       }
     }
   }

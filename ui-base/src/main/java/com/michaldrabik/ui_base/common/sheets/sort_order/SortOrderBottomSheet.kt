@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.sheets.sort_order.views.SortOrderItemView
+import com.michaldrabik.ui_base.databinding.ViewSortOrderBinding
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
@@ -22,8 +23,6 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SORT_ORDERS
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_SORT_ORDER
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.view_sort_order.*
-import kotlinx.android.synthetic.main.view_sort_order.view.*
 
 @AndroidEntryPoint
 class SortOrderBottomSheet : BaseBottomSheetFragment<SortOrderViewModel>() {
@@ -43,6 +42,7 @@ class SortOrderBottomSheet : BaseBottomSheetFragment<SortOrderViewModel>() {
   }
 
   override val layoutResId = R.layout.view_sort_order
+  private val view by lazy { viewBinding as ViewSortOrderBinding }
 
   private val requestKey by lazy { requireArguments().getString(ARG_REQUEST_KEY) ?: REQUEST_SORT_ORDER }
   private val initialSortOrder by lazy { requireArguments().getSerializable(ARG_SELECTED_SORT_ORDER) as SortOrder }
@@ -59,7 +59,8 @@ class SortOrderBottomSheet : BaseBottomSheetFragment<SortOrderViewModel>() {
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme)
-    return inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
+    val view = inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
+    return createViewBinding(ViewSortOrderBinding.bind(view))
   }
 
   override fun createViewModel() = ViewModelProvider(this)[SortOrderViewModel::class.java]
@@ -68,12 +69,12 @@ class SortOrderBottomSheet : BaseBottomSheetFragment<SortOrderViewModel>() {
     super.onViewCreated(view, savedInstanceState)
     selectedSortOrder = initialSortOrder
     selectedSortType = initialSortType
-    setupView(view)
+    setupView()
   }
 
   @SuppressLint("SetTextI18n")
-  private fun setupView(view: View) {
-    view.run {
+  private fun setupView() {
+    with(view) {
       viewSortOrderItemsLayout.removeAllViews()
       initialOptions.forEach { item ->
         val itemView = SortOrderItemView(requireContext()).apply {
@@ -91,9 +92,9 @@ class SortOrderBottomSheet : BaseBottomSheetFragment<SortOrderViewModel>() {
     sortOrder: SortOrder,
     sortType: SortType
   ) {
-    viewSortOrderItemsLayout.children.forEach { view ->
-      with(view as SortOrderItemView) {
-        if (sortOrder == view.sortOrder) {
+    view.viewSortOrderItemsLayout.children.forEach { child ->
+      with(child as SortOrderItemView) {
+        if (sortOrder == child.sortOrder) {
           if (sortOrder == selectedSortOrder) {
             val newSortType = if (sortType == SortType.ASCENDING) SortType.DESCENDING else SortType.ASCENDING
             selectedSortType = newSortType
@@ -103,7 +104,7 @@ class SortOrderBottomSheet : BaseBottomSheetFragment<SortOrderViewModel>() {
           }
           selectedSortOrder = sortOrder
         } else {
-          bind(view.sortOrder, view.sortType, false)
+          bind(child.sortOrder, child.sortType, false)
         }
       }
     }
