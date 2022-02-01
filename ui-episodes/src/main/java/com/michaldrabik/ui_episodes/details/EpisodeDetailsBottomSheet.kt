@@ -12,10 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
@@ -39,6 +36,7 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.gone
+import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.setTextFade
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
@@ -48,6 +46,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_comments.CommentView
 import com.michaldrabik.ui_episodes.R
+import com.michaldrabik.ui_episodes.databinding.ViewEpisodeDetailsBinding
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTmdb
@@ -64,10 +63,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_REPLY_USER
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_EPISODE_DETAILS
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.view_episode_details.*
-import kotlinx.android.synthetic.main.view_episode_details.view.*
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import java.util.Locale.ENGLISH
 
 @AndroidEntryPoint
@@ -94,38 +90,40 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
   private val cornerRadius by lazy { requireContext().dimenToPx(R.dimen.bottomSheetCorner).toFloat() }
 
   override val layoutResId = R.layout.view_episode_details
+  private val view by lazy { viewBinding as ViewEpisodeDetailsBinding }
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme)
-    return inflater.cloneInContext(contextThemeWrapper).inflate(R.layout.view_episode_details, container, false)
+    val view = inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
+    return createViewBinding(ViewEpisodeDetailsBinding.bind(view))
   }
 
-  override fun createViewModel() =
-    ViewModelProvider(this).get(EpisodeDetailsViewModel::class.java)
+  override fun createViewModel() = ViewModelProvider(this)[EpisodeDetailsViewModel::class.java]
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    setupView(view)
-    viewLifecycleOwner.lifecycleScope.launch {
-      repeatOnLifecycle(Lifecycle.State.STARTED) {
-        with(viewModel) {
-          launch { uiState.collect { render(it) } }
-          launch { messageChannel.collect { renderSnackbar(it) } }
+    setupView()
+
+    with(viewModel) {
+      launchAndRepeatStarted(
+        { uiState.collect { render(it) } },
+        { messageChannel.collect { renderSnackbar(it) } },
+        doAfterLaunch = {
           loadSeason(showTraktId, episode, seasonEpisodes)
           loadTranslation(showTraktId, episode)
           loadImage(showTmdbId, episode)
           loadRatings(episode)
         }
-      }
+      )
     }
   }
 
-  private fun setupView(view: View) {
+  private fun setupView() {
     view.run {
       episodeDetailsTitle.text = when (episode.title) {
-        "Episode ${episode.number}" -> String.format(ENGLISH, context.getString(R.string.textEpisode), episode.number)
+        "Episode ${episode.number}" -> String.format(ENGLISH, requireContext().getString(R.string.textEpisode), episode.number)
         else -> episode.title
       }
       episodeDetailsOverview.text =
@@ -185,79 +183,81 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
   @SuppressLint("SetTextI18n")
   private fun render(uiState: EpisodeDetailsUiState) {
     uiState.run {
-      dateFormat?.let {
-        val millis = episode.firstAired?.toInstant()?.toEpochMilli() ?: -1
-        val date = if (millis == -1L) {
-          getString(R.string.textTba)
-        } else {
-          it.format(dateFromMillis(millis).toLocalZone()).capitalizeWords()
-        }
-        val name = String.format(ENGLISH, requireContext().getString(R.string.textSeasonEpisodeDate), episode.season, episode.number, date)
-        episodeDetailsName.text = name
-      }
-      isImageLoading.let { episodeDetailsProgress.visibleIf(it) }
-      image?.let {
-        Glide.with(this@EpisodeDetailsBottomSheet)
-          .load("${Config.TMDB_IMAGE_BASE_STILL_URL}${it.fileUrl}")
-          .transform(CenterCrop(), GranularRoundedCorners(cornerRadius, cornerRadius, 0F, 0F))
-          .transition(DrawableTransitionOptions.withCrossFade(IMAGE_FADE_DURATION_MS))
-          .withFailListener { episodeDetailsImagePlaceholder.visible() }
-          .into(episodeDetailsImage)
-      }
-      isCommentsLoading.let {
-        episodeDetailsButtons.visibleIf(!it)
-        episodeDetailsCommentsProgress.visibleIf(it)
-      }
-      episodes?.let { renderEpisodes(it) }
-      comments?.let { comments ->
-        episodeDetailsComments.removeAllViews()
-        comments.forEach {
-          val view = CommentView(requireContext()).apply {
-            bind(it, commentsDateFormat)
-            if (it.replies > 0) {
-              onRepliesClickListener = { comment -> viewModel.loadCommentReplies(comment) }
-            }
-            if (it.isSignedIn) {
-              onReplyClickListener = { comment -> openPostCommentSheet(comment) }
-            }
-            if (it.replies == 0L && it.isMe && it.isSignedIn) {
-              onDeleteClickListener = { comment -> openDeleteCommentDialog(comment) }
-            }
-          }
-          episodeDetailsComments.addView(view)
-        }
-        episodeDetailsCommentsLabel.fadeIf(comments.isNotEmpty())
-        episodeDetailsComments.fadeIf(comments.isNotEmpty())
-        episodeDetailsCommentsEmpty.fadeIf(comments.isEmpty())
-        episodeDetailsPostCommentButton.fadeIf(isSignedIn)
-        episodeDetailsCommentsButton.isEnabled = false
-        episodeDetailsCommentsButton.text = String.format(ENGLISH, getString(R.string.textLoadCommentsCount), comments.size)
-      }
-      ratingState?.let { state ->
-        episodeDetailsRateProgress.visibleIf(state.rateLoading == true)
-        episodeDetailsRateButton.visibleIf(state.rateLoading == false)
-        episodeDetailsRateButton.onClick {
-          if (state.rateAllowed == true) {
-            openRateDialog()
+      with(view) {
+        dateFormat?.let {
+          val millis = episode.firstAired?.toInstant()?.toEpochMilli() ?: -1
+          val date = if (millis == -1L) {
+            getString(R.string.textTba)
           } else {
-            renderSnackbar(info(R.string.textSignBeforeRate))
+            it.format(dateFromMillis(millis).toLocalZone()).capitalizeWords()
+          }
+          val name = String.format(ENGLISH, requireContext().getString(R.string.textSeasonEpisodeDate), episode.season, episode.number, date)
+          episodeDetailsName.text = name
+        }
+        isImageLoading.let { episodeDetailsProgress.visibleIf(it) }
+        image?.let {
+          Glide.with(this@EpisodeDetailsBottomSheet)
+            .load("${Config.TMDB_IMAGE_BASE_STILL_URL}${it.fileUrl}")
+            .transform(CenterCrop(), GranularRoundedCorners(cornerRadius, cornerRadius, 0F, 0F))
+            .transition(DrawableTransitionOptions.withCrossFade(IMAGE_FADE_DURATION_MS))
+            .withFailListener { episodeDetailsImagePlaceholder.visible() }
+            .into(episodeDetailsImage)
+        }
+        isCommentsLoading.let {
+          episodeDetailsButtons.visibleIf(!it)
+          episodeDetailsCommentsProgress.visibleIf(it)
+        }
+        episodes?.let { renderEpisodes(it) }
+        comments?.let { comments ->
+          episodeDetailsComments.removeAllViews()
+          comments.forEach {
+            val view = CommentView(requireContext()).apply {
+              bind(it, commentsDateFormat)
+              if (it.replies > 0) {
+                onRepliesClickListener = { comment -> viewModel.loadCommentReplies(comment) }
+              }
+              if (it.isSignedIn) {
+                onReplyClickListener = { comment -> openPostCommentSheet(comment) }
+              }
+              if (it.replies == 0L && it.isMe && it.isSignedIn) {
+                onDeleteClickListener = { comment -> openDeleteCommentDialog(comment) }
+              }
+            }
+            episodeDetailsComments.addView(view)
+          }
+          episodeDetailsCommentsLabel.fadeIf(comments.isNotEmpty())
+          episodeDetailsComments.fadeIf(comments.isNotEmpty())
+          episodeDetailsCommentsEmpty.fadeIf(comments.isEmpty())
+          episodeDetailsPostCommentButton.fadeIf(isSignedIn)
+          episodeDetailsCommentsButton.isEnabled = false
+          episodeDetailsCommentsButton.text = String.format(ENGLISH, getString(R.string.textLoadCommentsCount), comments.size)
+        }
+        ratingState?.let { state ->
+          episodeDetailsRateProgress.visibleIf(state.rateLoading == true)
+          episodeDetailsRateButton.visibleIf(state.rateLoading == false)
+          episodeDetailsRateButton.onClick {
+            if (state.rateAllowed == true) {
+              openRateDialog()
+            } else {
+              renderSnackbar(info(R.string.textSignBeforeRate))
+            }
+          }
+          if (state.hasRating()) {
+            episodeDetailsRateButton.setTypeface(null, BOLD)
+            episodeDetailsRateButton.text = "${state.userRating?.rating}/10"
+          } else {
+            episodeDetailsRateButton.setTypeface(null, NORMAL)
+            episodeDetailsRateButton.setText(R.string.textRate)
           }
         }
-        if (state.hasRating()) {
-          episodeDetailsRateButton.setTypeface(null, BOLD)
-          episodeDetailsRateButton.text = "${state.userRating?.rating}/10"
-        } else {
-          episodeDetailsRateButton.setTypeface(null, NORMAL)
-          episodeDetailsRateButton.setText(R.string.textRate)
-        }
-      }
-      translation?.let { t ->
-        t.consume()?.let {
-          if (it.title.isNotBlank()) {
-            episodeDetailsTitle.setTextFade(it.title, duration = 0)
-          }
-          if (it.overview.isNotBlank()) {
-            episodeDetailsOverview.setTextFade(it.overview, duration = 0)
+        translation?.let { t ->
+          t.consume()?.let {
+            if (it.title.isNotBlank()) {
+              episodeDetailsTitle.setTextFade(it.title, duration = 0)
+            }
+            if (it.overview.isNotBlank()) {
+              episodeDetailsOverview.setTextFade(it.overview, duration = 0)
+            }
           }
         }
       }
@@ -265,7 +265,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
   }
 
   private fun renderEpisodes(episodes: List<Episode>) {
-    with(episodeDetailsTabs) {
+    with(view.episodeDetailsTabs) {
       removeAllTabs()
       removeOnTabSelectedListener(tabSelectedListener)
       episodes.forEach {
@@ -293,8 +293,8 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
   private fun renderSnackbar(message: MessageEvent) {
     message.consume()?.let {
       when (message.type) {
-        INFO -> episodeDetailsSnackbarHost.showInfoSnackbar(getString(it))
-        ERROR -> episodeDetailsSnackbarHost.showErrorSnackbar(getString(it))
+        INFO -> view.episodeDetailsSnackbarHost.showInfoSnackbar(getString(it))
+        ERROR -> view.episodeDetailsSnackbarHost.showErrorSnackbar(getString(it))
       }
     }
   }
@@ -311,7 +311,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
 
   private val tabSelectedListener = object : TabLayout.OnTabSelectedListener {
     override fun onTabSelected(tab: TabLayout.Tab?) {
-      episodeDetailsTabs?.removeOnTabSelectedListener(this)
+      view.episodeDetailsTabs?.removeOnTabSelectedListener(this)
       closeSheet()
       setFragmentResult(REQUEST_EPISODE_DETAILS, bundleOf(ACTION_EPISODE_TAB_SELECTED to tab?.tag))
     }

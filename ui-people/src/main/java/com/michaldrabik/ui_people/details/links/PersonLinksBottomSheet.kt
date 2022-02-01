@@ -18,9 +18,9 @@ import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_people.R
+import com.michaldrabik.ui_people.databinding.ViewPersonLinksBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.parcel.Parcelize
-import kotlinx.android.synthetic.main.view_person_links.*
 
 @AndroidEntryPoint
 class PersonLinksBottomSheet : BaseBottomSheetFragment<PersonLinksViewModel>() {
@@ -40,6 +40,7 @@ class PersonLinksBottomSheet : BaseBottomSheetFragment<PersonLinksViewModel>() {
   }
 
   override val layoutResId = R.layout.view_person_links
+  private val view by lazy { viewBinding as ViewPersonLinksBinding }
 
   private val options by lazy { (requireArguments().getParcelable<Options>(NavigationArgs.ARG_OPTIONS))!! }
   private val ids by lazy { options.ids }
@@ -50,7 +51,8 @@ class PersonLinksBottomSheet : BaseBottomSheetFragment<PersonLinksViewModel>() {
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme)
-    return inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
+    val view = inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
+    return createViewBinding(ViewPersonLinksBinding.bind(view))
   }
 
   override fun createViewModel() = ViewModelProvider(this)[PersonLinksViewModel::class.java]
@@ -61,29 +63,31 @@ class PersonLinksBottomSheet : BaseBottomSheetFragment<PersonLinksViewModel>() {
   }
 
   private fun setupView() {
-    viewPersonLinksButtonClose.onClick { closeSheet() }
+    with(view) {
+      viewPersonLinksYouTube.onClick {
+        openWebUrl("https://www.youtube.com/results?search_query=$name")
+      }
+      viewPersonLinksWiki.onClick {
+        openWebUrl("https://en.wikipedia.org/w/index.php?search=$name")
+      }
+      viewPersonLinksGoogle.onClick {
+        openWebUrl("https://www.google.com/search?q=$name")
+      }
+      viewPersonLinksDuckDuck.onClick {
+        openWebUrl("https://duckduckgo.com/?q=$name")
+      }
+      viewPersonLinksTwitter.onClick {
+        openWebUrl("https://twitter.com/search?q=$name&src=typed_query&f=user")
+      }
+      viewPersonLinksButtonClose.onClick { closeSheet() }
+    }
     setWebLink()
     setTmdbLink()
     setImdbLink()
-    viewPersonLinksYouTube.onClick {
-      openWebUrl("https://www.youtube.com/results?search_query=$name")
-    }
-    viewPersonLinksWiki.onClick {
-      openWebUrl("https://en.wikipedia.org/w/index.php?search=$name")
-    }
-    viewPersonLinksGoogle.onClick {
-      openWebUrl("https://www.google.com/search?q=$name")
-    }
-    viewPersonLinksDuckDuck.onClick {
-      openWebUrl("https://duckduckgo.com/?q=$name")
-    }
-    viewPersonLinksTwitter.onClick {
-      openWebUrl("https://twitter.com/search?q=$name&src=typed_query&f=user")
-    }
   }
 
   private fun setWebLink() {
-    viewPersonLinksWebsite.run {
+    view.viewPersonLinksWebsite.run {
       if (website.isNullOrBlank()) {
         alpha = 0.5F
         isEnabled = false
@@ -94,7 +98,7 @@ class PersonLinksBottomSheet : BaseBottomSheetFragment<PersonLinksViewModel>() {
   }
 
   private fun setTmdbLink() {
-    viewPersonLinksTmdb.run {
+    view.viewPersonLinksTmdb.run {
       if (ids.tmdb.id == -1L) {
         alpha = 0.5F
         isEnabled = false
@@ -107,7 +111,7 @@ class PersonLinksBottomSheet : BaseBottomSheetFragment<PersonLinksViewModel>() {
   }
 
   private fun setImdbLink() {
-    viewPersonLinksImdb.run {
+    view.viewPersonLinksImdb.run {
       if (ids.imdb.id.isBlank()) {
         alpha = 0.5F
         isEnabled = false

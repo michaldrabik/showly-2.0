@@ -35,7 +35,6 @@ class RemoveTraktWatchlistBottomSheet : RemoveTraktBottomSheet<RemoveTraktWatchl
     return createViewBinding(ViewRemoveTraktWatchlistBinding.bind(view))
   }
 
-
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     setupView()

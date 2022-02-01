@@ -20,12 +20,11 @@ import com.michaldrabik.ui_base.utilities.extensions.shake
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_lists.R
+import com.michaldrabik.ui_lists.databinding.ViewCreateListBinding
 import com.michaldrabik.ui_model.CustomList
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_LIST
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CREATE_LIST
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.view_create_list.*
-import kotlinx.android.synthetic.main.view_create_list.view.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -33,6 +32,7 @@ import kotlinx.coroutines.launch
 class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
 
   override val layoutResId = R.layout.view_create_list
+  private val view by lazy { viewBinding as ViewCreateListBinding }
 
   private val list by lazy { requireArguments().getParcelable<CustomList>(ARG_LIST) }
 
@@ -40,15 +40,15 @@ class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme)
-    return inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
+    val view = inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
+    return createViewBinding(ViewCreateListBinding.bind(view))
   }
 
-  override fun createViewModel() =
-    ViewModelProvider(this).get(CreateListViewModel::class.java)
+  override fun createViewModel() = ViewModelProvider(this)[CreateListViewModel::class.java]
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    setupView(view)
+    setupView()
 
     viewLifecycleOwner.lifecycleScope.launch {
       repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -64,8 +64,8 @@ class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
   }
 
   @SuppressLint("SetTextI18n")
-  private fun setupView(view: View) {
-    view.run {
+  private fun setupView() {
+    with(view) {
       viewCreateListButton.onClick { onCreateListClick() }
       if (isEditMode()) {
         viewCreateListTitle.setText(R.string.textEditList)
@@ -76,10 +76,10 @@ class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
   }
 
   private fun onCreateListClick() {
-    val name = viewCreateListNameValue.text?.toString() ?: ""
-    val description = viewCreateListDescriptionValue.text?.toString()
+    val name = view.viewCreateListNameValue.text?.toString() ?: ""
+    val description = view.viewCreateListDescriptionValue.text?.toString()
     if (name.trim().isBlank()) {
-      viewCreateListNameInput.shake()
+      view.viewCreateListNameInput.shake()
       return
     }
     if (isEditMode()) {
@@ -93,20 +93,22 @@ class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
   private fun render(uiState: CreateListUiState) {
     uiState.run {
       listDetails?.let {
-        viewCreateListNameValue.setText(it.name)
-        viewCreateListDescriptionValue.setText(it.description)
+        view.viewCreateListNameValue.setText(it.name)
+        view.viewCreateListDescriptionValue.setText(it.description)
       }
       isLoading?.let {
-        viewCreateListNameInput.isEnabled = !it
-        viewCreateListDescriptionInput.isEnabled = !it
-        viewCreateListButton.isEnabled = !it
-        viewCreateListButton.setText(
-          when {
-            it -> R.string.textPleaseWait
-            !it && isEditMode() -> R.string.textEditList
-            else -> R.string.textCreateList
-          }
-        )
+        with(view) {
+          viewCreateListNameInput.isEnabled = !it
+          viewCreateListDescriptionInput.isEnabled = !it
+          viewCreateListButton.isEnabled = !it
+          viewCreateListButton.setText(
+            when {
+              it -> R.string.textPleaseWait
+              !it && isEditMode() -> R.string.textEditList
+              else -> R.string.textCreateList
+            }
+          )
+        }
       }
       onListUpdated?.let {
         it.consume()?.let {
@@ -120,8 +122,8 @@ class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
   private fun renderSnackbar(message: MessageEvent) {
     message.consume()?.let {
       when (message.type) {
-        Type.INFO -> viewCreateListSnackHost.showInfoSnackbar(getString(it))
-        Type.ERROR -> viewCreateListSnackHost.showErrorSnackbar(getString(it))
+        Type.INFO -> view.viewCreateListSnackHost.showInfoSnackbar(getString(it))
+        Type.ERROR -> view.viewCreateListSnackHost.showErrorSnackbar(getString(it))
       }
     }
   }

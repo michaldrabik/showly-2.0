@@ -25,6 +25,7 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_lists.R
+import com.michaldrabik.ui_lists.databinding.ViewManageListsBinding
 import com.michaldrabik.ui_lists.manage.recycler.ManageListsAdapter
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
@@ -32,9 +33,6 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CREATE_LIST
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MANAGE_LISTS
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_lists.*
-import kotlinx.android.synthetic.main.view_manage_lists.*
-import kotlinx.android.synthetic.main.view_manage_lists.view.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -42,6 +40,7 @@ import kotlinx.coroutines.launch
 class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>(), EventObserver {
 
   override val layoutResId = R.layout.view_manage_lists
+  private val view by lazy { viewBinding as ViewManageListsBinding }
 
   private val itemId by lazy { IdTrakt(requireArguments().getLong(ARG_ID, -1)) }
   private val itemType by lazy { requireArguments().getString(ARG_TYPE)!! }
@@ -53,11 +52,11 @@ class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>(), 
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme)
-    return inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
+    val view = inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
+    return createViewBinding(ViewManageListsBinding.bind(view))
   }
 
-  override fun createViewModel() =
-    ViewModelProvider(this).get(ManageListsViewModel::class.java)
+  override fun createViewModel() = ViewModelProvider(this)[ManageListsViewModel::class.java]
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -81,7 +80,7 @@ class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>(), 
         viewModel.onListItemChecked(itemId, itemType, item, isChecked)
       }
     )
-    viewManageListsRecycler.apply {
+    view.viewManageListsRecycler.apply {
       adapter = this@ManageListsBottomSheet.adapter
       layoutManager = this@ManageListsBottomSheet.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
@@ -89,13 +88,15 @@ class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>(), 
   }
 
   private fun setupView() {
-    viewManageListsButton.onClick { closeSheet() }
-    viewManageListsCreateButton.onClick {
-      setFragmentResultListener(REQUEST_CREATE_LIST) { _, _ -> viewModel.loadLists(itemId, itemType) }
-      navigateTo(R.id.actionManageListsDialogToCreateListDialog, Bundle.EMPTY)
-    }
-    if (itemType == Mode.MOVIES.type) {
-      viewManageListsSubtitle.setText(R.string.textManageListsMovies)
+    with(view) {
+      viewManageListsButton.onClick { closeSheet() }
+      viewManageListsCreateButton.onClick {
+        setFragmentResultListener(REQUEST_CREATE_LIST) { _, _ -> viewModel.loadLists(itemId, itemType) }
+        navigateTo(R.id.actionManageListsDialogToCreateListDialog, Bundle.EMPTY)
+      }
+      if (itemType == Mode.MOVIES.type) {
+        viewManageListsSubtitle.setText(R.string.textManageListsMovies)
+      }
     }
   }
 
@@ -104,7 +105,7 @@ class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>(), 
     uiState.run {
       items?.let {
         adapter?.setItems(it)
-        viewManageListsEmptyView.visibleIf(it.isEmpty())
+        view.viewManageListsEmptyView.layoutManageListsEmpty.visibleIf(it.isEmpty())
       }
     }
   }
@@ -120,7 +121,7 @@ class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>(), 
     activity?.runOnUiThread {
       if (event is TraktQuickSyncSuccess) {
         val text = resources.getQuantityString(R.plurals.textTraktQuickSyncComplete, event.count, event.count)
-        viewManageListsSnackHost?.showInfoSnackbar(text)
+        view.viewManageListsSnackHost.showInfoSnackbar(text)
       }
     }
   }

@@ -20,7 +20,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
-import java.util.*
+import java.util.Locale
 
 @AndroidEntryPoint
 class MovieContextMenuBottomSheet : ContextMenuBottomSheet<MovieContextMenuViewModel>() {

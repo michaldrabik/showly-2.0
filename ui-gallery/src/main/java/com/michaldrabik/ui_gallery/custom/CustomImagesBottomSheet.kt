@@ -9,21 +9,20 @@ import android.widget.ImageView
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.gone
+import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
 import com.michaldrabik.ui_gallery.R
+import com.michaldrabik.ui_gallery.databinding.ViewCustomImagesBinding
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.ImageFamily
 import com.michaldrabik.ui_model.ImageStatus
@@ -38,10 +37,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.view_custom_images.*
-import kotlinx.android.synthetic.main.view_custom_images.view.*
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>() {
@@ -53,34 +49,33 @@ class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>()
   private val cornerRadius by lazy { requireContext().dimenToPx(R.dimen.customImagesCorner) }
 
   override val layoutResId = R.layout.view_custom_images
+  private val view by lazy { viewBinding as ViewCustomImagesBinding }
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme)
-    return inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
+    val view = inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
+    return createViewBinding(ViewCustomImagesBinding.bind(view))
   }
 
-  override fun createViewModel() =
-    ViewModelProvider(this).get(CustomImagesViewModel::class.java)
+  override fun createViewModel() = ViewModelProvider(this)[CustomImagesViewModel::class.java]
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    setupView(view)
+    setupView()
 
-    viewLifecycleOwner.lifecycleScope.launch {
-      repeatOnLifecycle(Lifecycle.State.STARTED) {
-        with(viewModel) {
-          launch { uiState.collect { render(it) } }
-          loadPoster(showTraktId, movieTraktId, family)
-          loadFanart(showTraktId, movieTraktId, family)
-        }
+    launchAndRepeatStarted(
+      { viewModel.uiState.collect { render(it) } },
+      doAfterLaunch = {
+        viewModel.loadPoster(showTraktId, movieTraktId, family)
+        viewModel.loadFanart(showTraktId, movieTraktId, family)
       }
-    }
+    )
   }
 
-  private fun setupView(view: View) {
-    view.run {
+  private fun setupView() {
+    with(view) {
       viewCustomImagesPosterLayout.onClick { showGallery(POSTER) }
       viewCustomImagesFanartLayout.onClick { showGallery(FANART) }
       viewCustomImagesPosterDelete.onClick { viewModel.deletePoster(showTraktId, movieTraktId, family) }
@@ -121,36 +116,38 @@ class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>()
     }
 
     uiState.run {
-      posterImage?.let {
-        if (it.status == ImageStatus.UNAVAILABLE) {
-          Glide.with(requireContext()).clear(viewCustomImagesPosterImage)
-          viewCustomImagesPosterAddButton.visible()
-          viewCustomImagesPosterDelete.gone()
-          return@let
+      with(view) {
+        posterImage?.let {
+          if (it.status == ImageStatus.UNAVAILABLE) {
+            Glide.with(requireContext()).clear(viewCustomImagesPosterImage)
+            viewCustomImagesPosterAddButton.visible()
+            viewCustomImagesPosterDelete.gone()
+            return@let
+          }
+          viewCustomImagesPosterAddButton.gone()
+          loadImage(
+            it.fullFileUrl,
+            viewCustomImagesPosterImage,
+            viewCustomImagesPosterProgress,
+            viewCustomImagesPosterDelete
+          )
         }
-        viewCustomImagesPosterAddButton.gone()
-        loadImage(
-          it.fullFileUrl,
-          viewCustomImagesPosterImage,
-          viewCustomImagesPosterProgress,
-          viewCustomImagesPosterDelete
-        )
-      }
-      fanartImage?.let {
-        if (it.status == ImageStatus.UNAVAILABLE) {
-          Glide.with(requireContext()).clear(viewCustomImagesFanartImage)
-          viewCustomImagesFanartAddButton.visible()
-          viewCustomImagesFanartDelete.gone()
-          setFragmentResult(REQUEST_CUSTOM_IMAGE, bundleOf(ARG_CUSTOM_IMAGE_CLEARED to true))
-          return@let
+        fanartImage?.let {
+          if (it.status == ImageStatus.UNAVAILABLE) {
+            Glide.with(requireContext()).clear(viewCustomImagesFanartImage)
+            viewCustomImagesFanartAddButton.visible()
+            viewCustomImagesFanartDelete.gone()
+            setFragmentResult(REQUEST_CUSTOM_IMAGE, bundleOf(ARG_CUSTOM_IMAGE_CLEARED to true))
+            return@let
+          }
+          viewCustomImagesFanartAddButton.gone()
+          loadImage(
+            it.fullFileUrl,
+            viewCustomImagesFanartImage,
+            viewCustomImagesFanartProgress,
+            viewCustomImagesFanartDelete
+          )
         }
-        viewCustomImagesFanartAddButton.gone()
-        loadImage(
-          it.fullFileUrl,
-          viewCustomImagesFanartImage,
-          viewCustomImagesFanartProgress,
-          viewCustomImagesFanartDelete
-        )
       }
     }
   }
