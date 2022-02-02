@@ -37,7 +37,10 @@
   <string name="textRateSaved">Your rating has been saved.</string>
   <string name="textRateRemoved">Your rating has been removed.</string>
   <string name="textCopiedToClipboard" translatable="false">Title copied to clipboard.</string>
-  <string name="textEpisodesLeft" comment="Number of episodes left to see">%d left</string>
+  <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
+    <item quantity="one">%d left</item>
+    <item quantity="other">%d left</item>
+  </plurals>
 
   <string name="textPeople">People:</string>
   <string name="textDirecting">Directing</string>

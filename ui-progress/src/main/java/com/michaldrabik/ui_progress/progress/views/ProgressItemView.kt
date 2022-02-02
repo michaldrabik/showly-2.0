@@ -145,7 +145,7 @@ class ProgressItemView : ShowView<ProgressListItem.Episode> {
     if (episodesLeft <= 0) {
       progressItemProgressText.text = String.format(ENGLISH, "%d/%d", item.watchedCount, item.totalCount)
     } else {
-      val episodesLeftString = context.getString(R.string.textEpisodesLeft, episodesLeft)
+      val episodesLeftString = resources.getQuantityString(R.plurals.textEpisodesLeft, episodesLeft, episodesLeft)
       progressItemProgressText.text = String.format(ENGLISH, "%d/%d ($episodesLeftString)", item.watchedCount, item.totalCount)
     }
   }
