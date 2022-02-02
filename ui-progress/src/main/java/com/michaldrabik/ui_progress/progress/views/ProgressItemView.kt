@@ -48,10 +48,12 @@ class ProgressItemView : ShowView<ProgressListItem.Episode> {
     onClick { itemClickListener?.invoke(item) }
     onLongClick { itemLongClickListener?.invoke(item) }
     progressItemInfoButton.onClick { detailsClickListener?.invoke(item) }
+    progressItemProgressText.onClick { toggleEpisodesLeft() }
     imageLoadCompleteListener = { loadTranslation() }
   }
 
   private lateinit var item: ProgressListItem.Episode
+  private var showEpisodesLeft = true
 
   override val imageView: ImageView = progressItemImage
   override val placeholderView: ImageView = progressItemPlaceholder
@@ -98,13 +100,9 @@ class ProgressItemView : ShowView<ProgressListItem.Episode> {
   }
 
   private fun bindProgress(item: ProgressListItem.Episode) {
-    var percent = 0
-    if (item.totalCount != 0) {
-      percent = ((item.watchedCount.toFloat() / item.totalCount.toFloat()) * 100).roundToInt()
-    }
     progressItemProgress.max = item.totalCount
     progressItemProgress.progress = item.watchedCount
-    progressItemProgressText.text = String.format(ENGLISH, "%d/%d (%d%%)", item.watchedCount, item.totalCount, percent)
+    renderEpisodesLeft()
   }
 
   private fun bindCheckButton(
@@ -140,6 +138,32 @@ class ProgressItemView : ShowView<ProgressListItem.Episode> {
     if (item.translations?.show == null) {
       missingTranslationListener?.invoke(item)
     }
+  }
+
+  private fun renderEpisodesLeft() {
+    val episodesLeft = item.totalCount - item.watchedCount
+    if (episodesLeft <= 0) {
+      progressItemProgressText.text = String.format(ENGLISH, "%d/%d", item.watchedCount, item.totalCount)
+    } else {
+      val episodesLeftString = context.getString(R.string.textEpisodesLeft, episodesLeft)
+      progressItemProgressText.text = String.format(ENGLISH, "%d/%d ($episodesLeftString)", item.watchedCount, item.totalCount)
+    }
+  }
+
+  private fun renderEpisodesPercentage() {
+    var percent = 0
+    if (item.totalCount != 0) {
+      percent = ((item.watchedCount.toFloat() / item.totalCount.toFloat()) * 100).roundToInt()
+    }
+    progressItemProgressText.text = String.format(ENGLISH, "%d/%d (%d%%)", item.watchedCount, item.totalCount, percent)
+  }
+
+  private fun toggleEpisodesLeft() {
+    when {
+      showEpisodesLeft -> renderEpisodesPercentage()
+      else -> renderEpisodesLeft()
+    }
+    showEpisodesLeft = !showEpisodesLeft
   }
 
   private fun clear() {
