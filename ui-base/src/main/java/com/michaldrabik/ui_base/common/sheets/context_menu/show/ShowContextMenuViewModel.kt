@@ -58,10 +58,13 @@ class ShowContextMenuViewModel @Inject constructor(
       isQuickRemoveEnabled = settingsRepository.load().traktQuickRemoveEnabled
 
       try {
+        loadingState.value = true
         val item = loadItemCase.loadItem(idTrakt)
         itemState.value = item
       } catch (error: Throwable) {
         _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
+      } finally {
+        loadingState.value = false
       }
     }
   }
@@ -185,6 +188,7 @@ class ShowContextMenuViewModel @Inject constructor(
 
   private suspend fun checkQuickRemove(event: RemoveTraktUiEvent) {
     if (isQuickRemoveEnabled) {
+      loadingState.value = false
       _eventChannel.send(Event(event))
     } else {
       _eventChannel.send(Event(FinishUiEvent(true)))

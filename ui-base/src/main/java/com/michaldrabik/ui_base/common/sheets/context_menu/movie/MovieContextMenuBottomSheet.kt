@@ -58,9 +58,12 @@ class MovieContextMenuBottomSheet : ContextMenuBottomSheet<MovieContextMenuViewM
 
   private fun render(uiState: MovieContextMenuUiState) {
     uiState.run {
-      isLoading?.let {
-        view.contextMenuItemProgress.visibleIf(it)
-        view.contextMenuItemButtonsLayout.visibleIf(!it, gone = false)
+      isLoading?.let { isLoading ->
+        when {
+          isLoading -> view.contextMenuItemProgress.show()
+          else -> view.contextMenuItemProgress.hide()
+        }
+        view.contextMenuItemButtonsLayout.visibleIf(!isLoading, gone = false)
       }
       item?.let {
         renderItem(it)

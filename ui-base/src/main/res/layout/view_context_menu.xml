@@ -321,9 +321,9 @@
 
   </LinearLayout>
 
-  <ProgressBar
+  <androidx.core.widget.ContentLoadingProgressBar
     android:id="@+id/contextMenuItemProgress"
-    style="@style/ProgressBar.Accent"
+    style="@style/ContentProgressBar.Dark"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
@@ -332,7 +332,7 @@
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="@id/contextMenuItemBarrier"
+    app:layout_constraintTop_toTopOf="parent"
     tools:visibility="visible"
     />
 

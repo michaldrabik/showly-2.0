@@ -86,6 +86,21 @@
 
   <style name="ProgressBar.Accent" parent="ProgressBar">
     <item name="android:indeterminateTint">@color/colorAccent</item>
+    <item name="colorAccent">@color/colorAccent</item>
+  </style>
+
+  <style name="ContentProgressBar" parent="Widget.AppCompat.ProgressBar">
+    <item name="android:indeterminateTintMode">src_in</item>
+  </style>
+
+  <style name="ContentProgressBar.Dark" parent="ContentProgressBar">
+    <item name="colorAccent">@color/colorGrayDark</item>
+    <item name="android:indeterminateTint">@color/colorGrayDark</item>
+  </style>
+
+  <style name="ContentProgressBar.Accent" parent="ContentProgressBar">
+    <item name="colorAccent">@color/colorAccent</item>
+    <item name="android:indeterminateTint">@color/colorAccent</item>
   </style>
 
   <!-- Scrollbars -->

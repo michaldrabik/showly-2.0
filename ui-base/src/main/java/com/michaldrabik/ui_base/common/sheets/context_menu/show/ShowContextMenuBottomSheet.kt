@@ -60,8 +60,11 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet<ShowContextMenuViewMod
   private fun render(uiState: ShowContextMenuUiState) {
     uiState.run {
       isLoading?.let {
-        view.contextMenuItemProgress.visibleIf(it)
-        view.contextMenuItemButtonsLayout.visibleIf(!it, gone = false)
+        when {
+          isLoading -> view.contextMenuItemProgress.show()
+          else -> view.contextMenuItemProgress.hide()
+        }
+        view.contextMenuItemButtonsLayout.visibleIf(!isLoading, gone = false)
       }
       item?.let {
         renderItem(it)
