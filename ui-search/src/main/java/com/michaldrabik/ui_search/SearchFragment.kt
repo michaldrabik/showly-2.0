@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import androidx.fragment.app.clearFragmentResultListener
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
 import com.michaldrabik.ui_base.common.views.exSearchViewIcon
 import com.michaldrabik.ui_base.common.views.exSearchViewInput
@@ -41,6 +43,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.RecentSearch
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
+import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_ORDER
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_TYPE
@@ -53,7 +56,6 @@ import com.michaldrabik.ui_search.utilities.TextWatcherAdapter
 import com.michaldrabik.ui_search.views.RecentSearchView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_search.*
-import kotlinx.android.synthetic.main.view_search_filters.*
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
@@ -166,6 +168,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
     layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
     adapter = SearchAdapter(
       itemClickListener = { openShowDetails(it) },
+      itemLongClickListener = { openContextMenu(it) },
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) },
       listChangeListener = { searchRecycler.scrollToPosition(0) }
     )
@@ -247,6 +250,24 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
     } else if (item.isMovie) {
       val bundle = Bundle().apply { putLong(ARG_MOVIE_ID, item.movie.traktId) }
       navigateToSafe(R.id.actionSearchFragmentToMovieDetailsFragment, bundle)
+    }
+  }
+
+  private fun openContextMenu(item: SearchListItem) {
+    setFragmentResultListener(NavigationArgs.REQUEST_ITEM_MENU) { requestKey, _ ->
+      if (requestKey == NavigationArgs.REQUEST_ITEM_MENU) {
+        exSearchViewInput.text.toString().trim().let {
+          if (it.isNotBlank()) viewModel.search(it)
+        }
+      }
+      clearFragmentResultListener(NavigationArgs.REQUEST_ITEM_MENU)
+    }
+    if (item.isShow) {
+      val bundle = ContextMenuBottomSheet.createBundle(item.show.ids.trakt)
+      navigateToSafe(R.id.actionSearchFragmentToShowItemMenu, bundle)
+    } else if (item.isMovie) {
+      val bundle = ContextMenuBottomSheet.createBundle(item.movie.ids.trakt)
+      navigateToSafe(R.id.actionSearchFragmentToMovieItemMenu, bundle)
     }
   }
 

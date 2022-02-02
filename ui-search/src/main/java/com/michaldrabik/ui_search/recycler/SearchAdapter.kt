@@ -9,6 +9,7 @@ import com.michaldrabik.ui_search.views.ShowSearchView
 
 class SearchAdapter(
   private val itemClickListener: (SearchListItem) -> Unit,
+  private val itemLongClickListener: (SearchListItem) -> Unit,
   private val missingImageListener: (SearchListItem, Boolean) -> Unit,
   listChangeListener: () -> Unit,
 ) : BaseAdapter<SearchListItem>(
@@ -26,6 +27,7 @@ class SearchAdapter(
     BaseViewHolder(
       ShowSearchView(parent.context).apply {
         itemClickListener = this@SearchAdapter.itemClickListener
+        itemLongClickListener = this@SearchAdapter.itemLongClickListener
         missingImageListener = this@SearchAdapter.missingImageListener
       }
     )

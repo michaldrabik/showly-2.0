@@ -611,6 +611,16 @@
       app:destination="@id/sortOrderDialog"
       app:launchSingleTop="true"
       />
+    <action
+      android:id="@+id/actionSearchFragmentToShowItemMenu"
+      app:destination="@id/showItemContextDialog"
+      app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionSearchFragmentToMovieItemMenu"
+      app:destination="@id/movieItemContextDialog"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment
