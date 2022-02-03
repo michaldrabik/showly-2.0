@@ -48,7 +48,7 @@ class ProgressItemView : ShowView<ProgressListItem.Episode> {
     onClick { itemClickListener?.invoke(item) }
     onLongClick { itemLongClickListener?.invoke(item) }
     progressItemInfoButton.onClick { detailsClickListener?.invoke(item) }
-    progressItemProgressText.onClick { toggleEpisodesLeft() }
+//    progressItemProgressText.onClick { toggleEpisodesLeft() } // TODO Remove if no feedback from user about percentage change
     imageLoadCompleteListener = { loadTranslation() }
   }
 
