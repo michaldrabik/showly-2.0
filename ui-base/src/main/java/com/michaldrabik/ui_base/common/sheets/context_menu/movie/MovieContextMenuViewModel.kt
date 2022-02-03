@@ -1,7 +1,6 @@
 package com.michaldrabik.ui_base.common.sheets.context_menu.movie
 
 import android.annotation.SuppressLint
-import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_base.BaseViewModel
@@ -18,7 +17,6 @@ import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_model.IdTrakt
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -30,7 +28,6 @@ import kotlin.properties.Delegates.notNull
 @SuppressLint("StaticFieldLeak")
 @HiltViewModel
 class MovieContextMenuViewModel @Inject constructor(
-  @ApplicationContext private val context: Context,
   private val loadItemCase: MovieContextMenuLoadItemCase,
   private val myMoviesCase: MovieContextMenuMyMoviesCase,
   private val watchlistCase: MovieContextMenuWatchlistCase,
@@ -65,7 +62,6 @@ class MovieContextMenuViewModel @Inject constructor(
   fun moveToMyMovies() {
     viewModelScope.launch {
       try {
-        loadingState.value = true
         val result = myMoviesCase.moveToMyMovies(movieId)
         checkQuickRemove(result)
       } catch (error: Throwable) {
@@ -77,7 +73,6 @@ class MovieContextMenuViewModel @Inject constructor(
   fun removeFromMyMovies() {
     viewModelScope.launch {
       try {
-        loadingState.value = true
         myMoviesCase.removeFromMyMovies(movieId)
         checkQuickRemove(RemoveTraktUiEvent(removeProgress = true))
       } catch (error: Throwable) {
@@ -89,7 +84,6 @@ class MovieContextMenuViewModel @Inject constructor(
   fun moveToWatchlist() {
     viewModelScope.launch {
       try {
-        loadingState.value = true
         val result = watchlistCase.moveToWatchlist(movieId)
         checkQuickRemove(result)
       } catch (error: Throwable) {
@@ -101,7 +95,6 @@ class MovieContextMenuViewModel @Inject constructor(
   fun removeFromWatchlist() {
     viewModelScope.launch {
       try {
-        loadingState.value = true
         watchlistCase.removeFromWatchlist(movieId)
         checkQuickRemove(RemoveTraktUiEvent(removeWatchlist = true))
       } catch (error: Throwable) {
@@ -113,7 +106,6 @@ class MovieContextMenuViewModel @Inject constructor(
   fun moveToHidden() {
     viewModelScope.launch {
       try {
-        loadingState.value = true
         val result = hiddenCase.moveToHidden(movieId)
         checkQuickRemove(result)
       } catch (error: Throwable) {
@@ -125,7 +117,6 @@ class MovieContextMenuViewModel @Inject constructor(
   fun removeFromHidden() {
     viewModelScope.launch {
       try {
-        loadingState.value = true
         hiddenCase.removeFromHidden(movieId)
         checkQuickRemove(RemoveTraktUiEvent(removeHidden = true))
       } catch (error: Throwable) {

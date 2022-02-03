@@ -76,7 +76,6 @@ class ShowContextMenuViewModel @Inject constructor(
         return@launch
       }
       try {
-        loadingState.value = true
         val result = myShowsCase.moveToMyShows(showId)
         preloadImage()
         checkQuickRemove(result)
@@ -89,7 +88,6 @@ class ShowContextMenuViewModel @Inject constructor(
   fun removeFromMyShows() {
     viewModelScope.launch {
       try {
-        loadingState.value = true
         myShowsCase.removeFromMyShows(showId, removeLocalData = isOnline())
         checkQuickRemove(RemoveTraktUiEvent(removeProgress = true))
       } catch (error: Throwable) {
@@ -101,7 +99,6 @@ class ShowContextMenuViewModel @Inject constructor(
   fun moveToWatchlist() {
     viewModelScope.launch {
       try {
-        loadingState.value = true
         val result = watchlistCase.moveToWatchlist(showId, removeLocalData = isOnline())
         checkQuickRemove(result)
       } catch (error: Throwable) {
@@ -113,7 +110,6 @@ class ShowContextMenuViewModel @Inject constructor(
   fun removeFromWatchlist() {
     viewModelScope.launch {
       try {
-        loadingState.value = true
         watchlistCase.removeFromWatchlist(showId)
         checkQuickRemove(RemoveTraktUiEvent(removeWatchlist = true))
       } catch (error: Throwable) {
@@ -125,7 +121,6 @@ class ShowContextMenuViewModel @Inject constructor(
   fun moveToHidden() {
     viewModelScope.launch {
       try {
-        loadingState.value = true
         val result = hiddenCase.moveToHidden(showId, removeLocalData = isOnline())
         checkQuickRemove(result)
       } catch (error: Throwable) {
@@ -137,7 +132,6 @@ class ShowContextMenuViewModel @Inject constructor(
   fun removeFromHidden() {
     viewModelScope.launch {
       try {
-        loadingState.value = true
         hiddenCase.removeFromHidden(showId)
         checkQuickRemove(RemoveTraktUiEvent(removeHidden = true))
       } catch (error: Throwable) {
