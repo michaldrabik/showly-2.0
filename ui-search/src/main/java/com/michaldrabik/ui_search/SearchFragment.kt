@@ -256,9 +256,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
   private fun openContextMenu(item: SearchListItem) {
     setFragmentResultListener(NavigationArgs.REQUEST_ITEM_MENU) { requestKey, _ ->
       if (requestKey == NavigationArgs.REQUEST_ITEM_MENU) {
-        exSearchViewInput.text.toString().trim().let {
-          if (it.isNotBlank()) viewModel.search(it)
-        }
+        viewModel.refreshFollowState(item)
       }
       clearFragmentResultListener(NavigationArgs.REQUEST_ITEM_MENU)
     }

@@ -16,6 +16,7 @@ import com.michaldrabik.ui_model.RecentSearch
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_search.cases.SearchFiltersCase
+import com.michaldrabik.ui_search.cases.SearchInvalidateItemCase
 import com.michaldrabik.ui_search.cases.SearchQueryCase
 import com.michaldrabik.ui_search.cases.SearchRecentsCase
 import com.michaldrabik.ui_search.cases.SearchSortingCase
@@ -38,6 +39,7 @@ class SearchViewModel @Inject constructor(
   private val searchFiltersCase: SearchFiltersCase,
   private val searchSortingCase: SearchSortingCase,
   private val searchTranslationsCase: SearchTranslationsCase,
+  private val searchInvalidateCase: SearchInvalidateItemCase,
   private val recentSearchesCase: SearchRecentsCase,
   private val suggestionsCase: SearchSuggestionsCase,
   private val showsImagesProvider: ShowImagesProvider,
@@ -188,16 +190,17 @@ class SearchViewModel @Inject constructor(
     suggestionsItemsState.value = emptyList()
   }
 
-  fun loadMissingImage(item: SearchListItem, force: Boolean) {
-
-    fun updateItem(new: SearchListItem) {
-      val currentItems = uiState.value.searchItems?.toMutableList()
-      currentItems?.run {
-        findReplace(new) { it.isSameAs(new) }
+  fun refreshFollowState(item: SearchListItem) {
+    val currentItems = searchItemsState.value?.toMutableList() ?: mutableListOf()
+    currentItems.find { it.id == item.id }?.let {
+      viewModelScope.launch {
+        val (isFollowed, isWatchlist) = searchInvalidateCase.checkFollowedState(it)
+        updateItem(it.copy(isFollowed = isFollowed, isWatchlist = isWatchlist))
       }
-      searchItemsState.value = currentItems
     }
+  }
 
+  fun loadMissingImage(item: SearchListItem, force: Boolean) {
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
       try {
@@ -239,6 +242,14 @@ class SearchViewModel @Inject constructor(
         Timber.e(error)
       }
     }
+  }
+
+  private fun updateItem(new: SearchListItem) {
+    val currentItems = uiState.value.searchItems?.toMutableList()
+    currentItems?.run {
+      findReplace(new) { it.isSameAs(new) }
+    }
+    searchItemsState.value = currentItems
   }
 
   private fun updateSuggestionsItem(new: SearchListItem) {
