@@ -191,8 +191,9 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
           } else {
             it.format(dateFromMillis(millis).toLocalZone()).capitalizeWords()
           }
-          val name = String.format(ENGLISH, requireContext().getString(R.string.textSeasonEpisodeDate), episode.season, episode.number, date)
-          episodeDetailsName.text = name
+          val name = String.format(ENGLISH, getString(R.string.textSeasonEpisodeDate), episode.season, episode.number, date)
+          val runtime = "${episode.runtime} ${getString(R.string.textMinutesShort)}"
+          episodeDetailsName.text = if (episode.runtime > 0) "$name | $runtime" else name
         }
         isImageLoading.let { episodeDetailsProgress.visibleIf(it) }
         image?.let {
