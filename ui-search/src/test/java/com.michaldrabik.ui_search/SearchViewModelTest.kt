@@ -17,6 +17,7 @@ import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_search.cases.SearchFiltersCase
+import com.michaldrabik.ui_search.cases.SearchInvalidateItemCase
 import com.michaldrabik.ui_search.cases.SearchQueryCase
 import com.michaldrabik.ui_search.cases.SearchRecentsCase
 import com.michaldrabik.ui_search.cases.SearchSortingCase
@@ -51,6 +52,7 @@ class SearchViewModelTest : BaseMockTest() {
   @MockK lateinit var searchQueryCase: SearchQueryCase
   @MockK lateinit var searchFiltersCase: SearchFiltersCase
   @MockK lateinit var searchSortingCase: SearchSortingCase
+  @MockK lateinit var searchInvalidateCase: SearchInvalidateItemCase
   @MockK lateinit var searchTranslationsCase: SearchTranslationsCase
   @MockK lateinit var recentSearchesCase: SearchRecentsCase
   @MockK lateinit var suggestionsCase: SearchSuggestionsCase
@@ -73,6 +75,7 @@ class SearchViewModelTest : BaseMockTest() {
       searchFiltersCase,
       searchSortingCase,
       searchTranslationsCase,
+      searchInvalidateCase,
       recentSearchesCase,
       suggestionsCase,
       showsImagesProvider,
