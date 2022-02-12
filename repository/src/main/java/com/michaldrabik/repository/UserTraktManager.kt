@@ -8,6 +8,7 @@ import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.User
 import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.ui_model.error.TraktAuthError
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 import com.michaldrabik.data_remote.trakt.model.User as UserModel
@@ -18,9 +19,7 @@ class UserTraktManager @Inject constructor(
   private val database: AppDatabase,
 ) {
 
-  companion object {
-    private const val TRAKT_TOKEN_EXPIRATION_MS = 5_184_000_000 // 2 months
-  }
+  private val traktTokenExpiration by lazy { TimeUnit.DAYS.toMillis(60) }
 
   private var traktUsername = ""
   private var traktToken: TraktAuthToken? = null
@@ -28,7 +27,6 @@ class UserTraktManager @Inject constructor(
   private var traktTokenTimestamp = 0L
 
   suspend fun checkAuthorization(): TraktAuthToken {
-    // TODO Check refreshing logic
     if (!isAuthorized()) {
       if (traktRefreshToken == null) throw TraktAuthError("Authorization needed")
       val tokens = cloud.traktApi.refreshAuthTokens(traktRefreshToken?.token!!)
@@ -55,7 +53,7 @@ class UserTraktManager @Inject constructor(
     }
     return when {
       traktToken?.token.isNullOrEmpty() -> false
-      nowUtcMillis() - traktTokenTimestamp > TRAKT_TOKEN_EXPIRATION_MS -> false
+      nowUtcMillis() - traktTokenTimestamp > traktTokenExpiration -> false
       else -> true
     }
   }
