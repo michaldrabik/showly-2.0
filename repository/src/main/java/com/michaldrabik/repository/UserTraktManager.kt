@@ -8,6 +8,7 @@ import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.User
 import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.ui_model.error.TraktAuthError
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -21,7 +22,6 @@ class UserTraktManager @Inject constructor(
 
   private val traktTokenExpiration by lazy { TimeUnit.DAYS.toMillis(60) }
 
-  private var traktUsername = ""
   private var traktToken: TraktAuthToken? = null
   private var traktRefreshToken: TraktRefreshToken? = null
   private var traktTokenTimestamp = 0L
@@ -59,68 +59,61 @@ class UserTraktManager @Inject constructor(
   }
 
   suspend fun revokeToken() {
-    database.withTransaction {
-      val user = database.userDao().get()!!
-      database.userDao().upsert(
-        user.copy(
+    with(database) {
+      withTransaction {
+        val user = userDao().get()!!
+        val userEntity = user.copy(
           traktToken = "",
           traktRefreshToken = "",
           traktTokenTimestamp = 0,
           traktUsername = ""
         )
-      )
+        userDao().upsert(userEntity)
+      }
     }
-
     try {
       traktToken?.let { cloud.traktApi.revokeAuthTokens(it.token) }
-    } catch (t: Throwable) {
-      // NOOP
+    } catch (error: Throwable) {
+      // Just log error as nothing bad really happens in case of error.
+      Timber.w("revokeToken(): $error")
     } finally {
       traktToken = null
       traktRefreshToken = null
       traktTokenTimestamp = 0
-      traktUsername = ""
     }
   }
 
-  suspend fun getUsername(): String {
-    val user = database.userDao().get()
-    user?.let {
-      traktUsername = it.traktUsername
-    }
-    return traktUsername
-  }
+  suspend fun getUsername() = database.userDao().get()?.traktUsername ?: ""
+
+  suspend fun clearTraktLogs() = database.traktSyncLogDao().deleteAll()
 
   private suspend fun saveToken(token: String, refreshToken: String, userModel: UserModel) {
     val timestamp = nowUtcMillis()
-    database.withTransaction {
-      val user = database.userDao().get()
-      database.userDao().upsert(
-        user?.copy(
-          traktToken = token,
-          traktRefreshToken = refreshToken,
-          traktTokenTimestamp = timestamp,
-          traktUsername = userModel.username
-        ) ?: User(
-          traktToken = token,
-          traktRefreshToken = refreshToken,
-          traktTokenTimestamp = timestamp,
-          traktUsername = userModel.username,
-          tvdbToken = "",
-          tvdbTokenTimestamp = 0,
-          redditToken = "",
-          redditTokenTimestamp = 0
+    with(database) {
+      withTransaction {
+        val user = userDao().get()
+        userDao().upsert(
+          user?.copy(
+            traktToken = token,
+            traktRefreshToken = refreshToken,
+            traktTokenTimestamp = timestamp,
+            traktUsername = userModel.username
+          ) ?: User(
+            traktToken = token,
+            traktRefreshToken = refreshToken,
+            traktTokenTimestamp = timestamp,
+            traktUsername = userModel.username,
+            tvdbToken = "",
+            tvdbTokenTimestamp = 0,
+            redditToken = "",
+            redditTokenTimestamp = 0
+          )
         )
-      )
+      }
     }
     traktToken = TraktAuthToken(token)
     traktRefreshToken = TraktRefreshToken(refreshToken)
     traktTokenTimestamp = timestamp
-    traktUsername = userModel.username
-  }
-
-  suspend fun clearTraktLogs() {
-    database.traktSyncLogDao().deleteAll()
   }
 }
 
