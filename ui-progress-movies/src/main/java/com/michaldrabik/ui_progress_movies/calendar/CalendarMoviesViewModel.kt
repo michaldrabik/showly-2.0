@@ -64,8 +64,8 @@ class CalendarMoviesViewModel @Inject constructor(
     loadItemsJob?.cancel()
     loadItemsJob = viewModelScope.launch {
       val items = when (mode) {
-        CalendarMode.PRESENT_FUTURE -> futureCase.loadItems(searchQuery ?: "")
-        CalendarMode.RECENTS -> recentsCase.loadItems(searchQuery ?: "")
+        CalendarMode.PRESENT_FUTURE -> futureCase.loadItems(searchQuery)
+        CalendarMode.RECENTS -> recentsCase.loadItems(searchQuery)
       }
       itemsState.value = items
       modeState.value = mode

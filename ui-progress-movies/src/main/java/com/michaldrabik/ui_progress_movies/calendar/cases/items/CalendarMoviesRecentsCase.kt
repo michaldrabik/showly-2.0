@@ -7,10 +7,10 @@ import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_progress_movies.calendar.helpers.filters.CalendarRecentsFilter
 import com.michaldrabik.ui_progress_movies.calendar.helpers.groupers.CalendarRecentsGrouper
 import com.michaldrabik.ui_progress_movies.calendar.helpers.sorter.CalendarRecentsSorter
-import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@ViewModelScoped
+@Singleton
 class CalendarMoviesRecentsCase @Inject constructor(
   moviesRepository: MoviesRepository,
   translationsRepository: TranslationsRepository,

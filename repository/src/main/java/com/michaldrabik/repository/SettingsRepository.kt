@@ -49,6 +49,7 @@ class SettingsRepository @Inject constructor(
     private const val PROGRESS_UPCOMING_COLLAPSED = "PROGRESS_UPCOMING_COLLAPSED"
     private const val PROGRESS_ON_HOLD_COLLAPSED = "PROGRESS_ON_HOLD_COLLAPSED"
     private const val WIDGET_CALENDAR_MODE = "WIDGET_CALENDAR_MODE"
+    private const val WIDGET_CALENDAR_MOVIES_MODE = "WIDGET_CALENDAR_MOVIES_MODE"
   }
 
   suspend fun isInitialized() =
@@ -83,6 +84,7 @@ class SettingsRepository @Inject constructor(
   var country by StringPreference(preferences, COUNTRY, DEFAULT_COUNTRY)
   var dateFormat by StringPreference(preferences, DATE_FORMAT, DEFAULT_DATE_FORMAT)
   var widgetCalendarMode by EnumPreference(preferences, WIDGET_CALENDAR_MODE, CalendarMode.PRESENT_FUTURE, CalendarMode::class.java)
+  var widgetCalendarMoviesMode by EnumPreference(preferences, WIDGET_CALENDAR_MOVIES_MODE, CalendarMode.PRESENT_FUTURE, CalendarMode::class.java)
 
   var isProgressUpcomingCollapsed by BooleanPreference(preferences, PROGRESS_UPCOMING_COLLAPSED)
   var isProgressOnHoldCollapsed by BooleanPreference(preferences, PROGRESS_ON_HOLD_COLLAPSED)

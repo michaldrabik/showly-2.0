@@ -11,13 +11,16 @@ import androidx.core.os.bundleOf
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.michaldrabik.common.CalendarMode
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.replace
 import com.michaldrabik.ui_model.ImageStatus
 import com.michaldrabik.ui_progress_movies.calendar.cases.items.CalendarMoviesFutureCase
+import com.michaldrabik.ui_progress_movies.calendar.cases.items.CalendarMoviesRecentsCase
 import com.michaldrabik.ui_progress_movies.calendar.recycler.CalendarMovieListItem
+import com.michaldrabik.ui_widgets.BaseWidgetProvider
 import com.michaldrabik.ui_widgets.BaseWidgetProvider.Companion.EXTRA_MOVIE_ID
 import com.michaldrabik.ui_widgets.R
 import kotlinx.coroutines.CoroutineScope
@@ -28,7 +31,8 @@ import kotlinx.coroutines.runBlocking
 
 class CalendarMoviesWidgetViewsFactory(
   private val context: Context,
-  private val itemsCase: CalendarMoviesFutureCase,
+  private val futureItemsCase: CalendarMoviesFutureCase,
+  private val recentItemsCase: CalendarMoviesRecentsCase,
   private val settingsRepository: SettingsRepository,
 ) : RemoteViewsService.RemoteViewsFactory, CoroutineScope {
 
@@ -37,10 +41,16 @@ class CalendarMoviesWidgetViewsFactory(
   private val imageCorner by lazy { context.dimenToPx(R.dimen.mediaTileCorner) }
   private val imageWidth by lazy { context.dimenToPx(R.dimen.widgetImageWidth) }
   private val imageHeight by lazy { context.dimenToPx(R.dimen.widgetImageHeight) }
-  private val adapterItems by lazy { mutableListOf<CalendarMovieListItem>() }
+  private var mode = CalendarMode.PRESENT_FUTURE
+
+  private val adapterItems = mutableListOf<CalendarMovieListItem>()
 
   private fun loadData() = runBlocking {
-    val items = itemsCase.loadItems("")
+    mode = settingsRepository.widgetCalendarMoviesMode
+    val items = when (mode) {
+      CalendarMode.PRESENT_FUTURE -> futureItemsCase.loadItems()
+      CalendarMode.RECENTS -> recentItemsCase.loadItems()
+    }
     adapterItems.replace(items)
   }
 
@@ -49,12 +59,27 @@ class CalendarMoviesWidgetViewsFactory(
   override fun getViewAt(position: Int) =
     when (val item = adapterItems[position]) {
       is CalendarMovieListItem.MovieItem -> createItemRemoteView(item)
-      is CalendarMovieListItem.Header -> createHeaderRemoteView(item)
+      is CalendarMovieListItem.Header -> createHeaderRemoteView(item, showIcon = position == 0)
     }
 
-  private fun createHeaderRemoteView(item: CalendarMovieListItem.Header) =
+  private fun createHeaderRemoteView(item: CalendarMovieListItem.Header, showIcon: Boolean) =
     RemoteViews(context.packageName, getHeaderLayout()).apply {
       setTextViewText(R.id.progressWidgetHeaderTitle, context.getString(item.textResId))
+      setViewVisibility(R.id.progressWidgetHeaderTitleIcon, if (mode == CalendarMode.RECENTS) VISIBLE else GONE)
+
+      if (showIcon) {
+        when (mode) {
+          CalendarMode.PRESENT_FUTURE -> setImageViewResource(R.id.progressWidgetHeaderIcon, R.drawable.ic_history)
+          CalendarMode.RECENTS -> setImageViewResource(R.id.progressWidgetHeaderIcon, R.drawable.ic_calendar)
+        }
+        setViewVisibility(R.id.progressWidgetHeaderIcon, VISIBLE)
+        val fillIntent = Intent().apply {
+          putExtras(bundleOf(BaseWidgetProvider.EXTRA_MODE_CLICK to true))
+        }
+        setOnClickFillInIntent(R.id.progressWidgetHeaderIcon, fillIntent)
+      } else {
+        setViewVisibility(R.id.progressWidgetHeaderIcon, GONE)
+      }
     }
 
   private fun createItemRemoteView(item: CalendarMovieListItem.MovieItem): RemoteViews {
