@@ -1,6 +1,6 @@
 package com.michaldrabik.ui_progress.calendar
 
-import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode
+import com.michaldrabik.common.CalendarMode
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarListItem
 
 data class CalendarUiState(

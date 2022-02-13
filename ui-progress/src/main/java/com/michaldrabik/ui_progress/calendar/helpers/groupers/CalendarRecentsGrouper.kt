@@ -1,9 +1,9 @@
 package com.michaldrabik.ui_progress.calendar.helpers.groupers
 
+import com.michaldrabik.common.CalendarMode
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_progress.R
-import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarListItem
 import java.time.temporal.ChronoUnit.DAYS
 import javax.inject.Inject
@@ -40,16 +40,13 @@ class CalendarRecentsGrouper @Inject constructor() : CalendarGrouper {
         put(R.string.textLast90Days, last90Days)
       }
 
-    return itemsMap.entries.fold(
-      mutableListOf(),
-      { acc, entry ->
-        acc.apply {
-          if (entry.value.isNotEmpty()) {
-            add(CalendarListItem.Header.create(entry.key, CalendarMode.RECENTS))
-            addAll(entry.value)
-          }
+    return itemsMap.entries.fold(mutableListOf()) { acc, entry ->
+      acc.apply {
+        if (entry.value.isNotEmpty()) {
+          add(CalendarListItem.Header.create(entry.key, CalendarMode.RECENTS))
+          addAll(entry.value)
         }
       }
-    )
+    }
   }
 }

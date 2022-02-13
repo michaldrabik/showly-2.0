@@ -74,7 +74,7 @@ class CalendarMoviesWidgetProvider : BaseWidgetProvider() {
     }
 
     val listClickIntent = Intent(context, CalendarMoviesWidgetProvider::class.java).apply {
-      action = ACTION_LIST_CLICK
+      action = ACTION_CLICK
       data = Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME))
     }
 
@@ -94,7 +94,8 @@ class CalendarMoviesWidgetProvider : BaseWidgetProvider() {
   }
 
   override fun onReceive(context: Context, intent: Intent) {
-    if (intent.action == ACTION_LIST_CLICK) {
+    super.onReceive(context, intent)
+    if (intent.action == ACTION_CLICK) {
       when {
         intent.extras?.containsKey(EXTRA_MOVIE_ID) == true -> {
           val movieId = intent.getLongExtra(EXTRA_MOVIE_ID, -1L)
@@ -108,6 +109,5 @@ class CalendarMoviesWidgetProvider : BaseWidgetProvider() {
         }
       }
     }
-    super.onReceive(context, intent)
   }
 }

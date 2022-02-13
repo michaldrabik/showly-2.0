@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_progress.main
 
+import com.michaldrabik.common.CalendarMode
 import com.michaldrabik.ui_base.utilities.Event
-import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode
 
 data class ProgressMainUiState(
   val timestamp: Long? = null,

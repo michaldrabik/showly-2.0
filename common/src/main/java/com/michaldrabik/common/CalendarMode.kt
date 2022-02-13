@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_progress.calendar.helpers
+package com.michaldrabik.common
 
 enum class CalendarMode {
   PRESENT_FUTURE,

@@ -1,12 +1,12 @@
 package com.michaldrabik.ui_progress.calendar.recycler
 
 import androidx.annotation.StringRes
+import com.michaldrabik.common.CalendarMode
 import com.michaldrabik.ui_base.common.ListItem
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
-import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode
 import com.michaldrabik.ui_progress.helpers.TranslationsBundle
 import java.time.format.DateTimeFormatter
 import com.michaldrabik.ui_model.Episode as EpisodeModel

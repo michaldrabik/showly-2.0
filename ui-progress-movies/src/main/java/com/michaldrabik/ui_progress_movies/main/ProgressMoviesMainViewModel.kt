@@ -1,9 +1,9 @@
 package com.michaldrabik.ui_progress_movies.main
 
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.common.CalendarMode
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_model.Movie
-import com.michaldrabik.ui_progress_movies.calendar.helpers.CalendarMode
 import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesMainCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

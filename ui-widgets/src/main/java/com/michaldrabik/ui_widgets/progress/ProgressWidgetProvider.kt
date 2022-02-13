@@ -89,7 +89,7 @@ class ProgressWidgetProvider : BaseWidgetProvider() {
     remoteViews.setOnClickPendingIntent(R.id.progressWidgetLabel, mainIntent)
 
     val listClickIntent = Intent(context, ProgressWidgetProvider::class.java).apply {
-      action = ACTION_LIST_CLICK
+      action = ACTION_CLICK
       data = Uri.parse(intent.toUri(URI_INTENT_SCHEME))
     }
     val showDetailsPendingIntent = PendingIntent.getBroadcast(context, 0, listClickIntent, PendingIntent.FLAG_UPDATE_CURRENT)
@@ -100,7 +100,8 @@ class ProgressWidgetProvider : BaseWidgetProvider() {
   }
 
   override fun onReceive(context: Context, intent: Intent) {
-    if (intent.action.equals(ACTION_LIST_CLICK)) {
+    super.onReceive(context, intent)
+    if (intent.action.equals(ACTION_CLICK)) {
       when {
         intent.extras?.containsKey(EXTRA_EPISODE_ID) == true -> {
           val episodeId = intent.getLongExtra(EXTRA_EPISODE_ID, -1L)
@@ -125,6 +126,5 @@ class ProgressWidgetProvider : BaseWidgetProvider() {
         }
       }
     }
-    super.onReceive(context, intent)
   }
 }

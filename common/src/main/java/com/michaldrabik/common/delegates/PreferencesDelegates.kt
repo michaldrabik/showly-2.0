@@ -57,6 +57,7 @@ class EnumPreference<T : Enum<T>>(
   private val clazz: Class<T>
 ) : ReadWriteProperty<Any, T> {
 
+  @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
   override fun getValue(thisRef: Any, property: KProperty<*>): T {
     val enumName = sharedPreferences.getString(key, "")
     return clazz.enumConstants.find { it.name == enumName } ?: defaultValue

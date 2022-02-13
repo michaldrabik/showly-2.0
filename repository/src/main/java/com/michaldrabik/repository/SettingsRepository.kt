@@ -4,11 +4,13 @@ import android.app.UiModeManager.MODE_NIGHT_YES
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.room.withTransaction
+import com.michaldrabik.common.CalendarMode
 import com.michaldrabik.common.Config.DEFAULT_COUNTRY
 import com.michaldrabik.common.Config.DEFAULT_DATE_FORMAT
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.delegates.BooleanPreference
+import com.michaldrabik.common.delegates.EnumPreference
 import com.michaldrabik.common.delegates.LongPreference
 import com.michaldrabik.common.delegates.StringPreference
 import com.michaldrabik.data_local.database.AppDatabase
@@ -46,6 +48,7 @@ class SettingsRepository @Inject constructor(
     private const val INSTALL_TIMESTAMP = "INSTALL_TIMESTAMP"
     private const val PROGRESS_UPCOMING_COLLAPSED = "PROGRESS_UPCOMING_COLLAPSED"
     private const val PROGRESS_ON_HOLD_COLLAPSED = "PROGRESS_ON_HOLD_COLLAPSED"
+    private const val WIDGET_CALENDAR_MODE = "WIDGET_CALENDAR_MODE"
   }
 
   suspend fun isInitialized() =
@@ -79,6 +82,7 @@ class SettingsRepository @Inject constructor(
   var language by StringPreference(preferences, LANGUAGE, DEFAULT_LANGUAGE)
   var country by StringPreference(preferences, COUNTRY, DEFAULT_COUNTRY)
   var dateFormat by StringPreference(preferences, DATE_FORMAT, DEFAULT_DATE_FORMAT)
+  var widgetCalendarMode by EnumPreference(preferences, WIDGET_CALENDAR_MODE, CalendarMode.PRESENT_FUTURE, CalendarMode::class.java)
 
   var isProgressUpcomingCollapsed by BooleanPreference(preferences, PROGRESS_UPCOMING_COLLAPSED)
   var isProgressOnHoldCollapsed by BooleanPreference(preferences, PROGRESS_ON_HOLD_COLLAPSED)
