@@ -34,6 +34,10 @@
   <string name="textLink">Link</string>
   <string name="textRateSaved">Deine Bewertung wurde gespeichert.</string>
   <string name="textRateRemoved">Deine Bewertung wurde gelöscht.</string>
+  <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
+    <item quantity="one">%d übrig</item>
+    <item quantity="other">%d übrig</item>
+  </plurals>
   <string name="textPeople">Personen:</string>
   <string name="textDirecting">Regie</string>
   <string name="textDirector">Regisseur</string>
@@ -102,7 +106,7 @@
   <string name="textRemoveFromWatchlist">Von Watchlist entfernen</string>
   <string name="textRemoveFromHidden">Von Versteckt entfernen</string>
   <string name="textWatchlist">Watchlist</string>
-  <string name="textPremiumAd">Werden Sie Unterstützer und erhalten Sie Zugang zu Bonusfunktionen! Klicken Sie hier, um mehr zu sehen.</string>
+  <string name="textPremiumAd">Werde Unterstützer und erhalte Zugang zu Bonusfunktionen! Klicke hier, um mehr zu sehen.</string>
   <string name="menuPin">Oben anpinnen</string>
   <string name="menuUnpin">Pin von Oben lösen</string>
   <string name="menuAddOnHold" comment="This is a button for Progress subsection. It will contain pending shows marked by user.">Pin auf \'Angehalten\'</string>
