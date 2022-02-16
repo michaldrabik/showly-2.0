@@ -34,6 +34,10 @@
   <string name="textLink">Link</string>
   <string name="textRateSaved">Sua avaliação foi salva.</string>
   <string name="textRateRemoved">Sua avaliação foi removida.</string>
+  <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
+    <item quantity="one">%d restante</item>
+    <item quantity="other">%d restantes</item>
+  </plurals>
   <string name="textPeople">Pessoas:</string>
   <string name="textDirecting">Direcionando</string>
   <string name="textDirector">Diretor</string>

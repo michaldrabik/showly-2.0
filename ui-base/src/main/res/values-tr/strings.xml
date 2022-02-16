@@ -34,6 +34,10 @@
   <string name="textLink">Link</string>
   <string name="textRateSaved">Oyunuz kaydedildi.</string>
   <string name="textRateRemoved">Verdiğiniz oy kaldırıldı.</string>
+  <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
+    <item quantity="one">%d kaldı</item>
+    <item quantity="other">%d kaldı</item>
+  </plurals>
   <string name="textPeople">Kişiler:</string>
   <string name="textDirecting">Reji</string>
   <string name="textDirector">Yönetmen</string>
