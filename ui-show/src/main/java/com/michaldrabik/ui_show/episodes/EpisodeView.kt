@@ -41,6 +41,8 @@ class EpisodeView : ConstraintLayout {
 
     val hasAired = item.episode.hasAired(item.season) || item.season.isSpecial()
     val episodeTitleText = String.format(ENGLISH, context.getString(R.string.textEpisode), item.episode.number)
+      .plus(item.episode.numberAbs?.let { if (it > 0 && item.isAnime) " ($it)" else "" } ?: "")
+
     episodeTitle.text = episodeTitleText
     episodeOverview.text = when {
       !item.translation?.title.isNullOrBlank() -> item.translation?.title

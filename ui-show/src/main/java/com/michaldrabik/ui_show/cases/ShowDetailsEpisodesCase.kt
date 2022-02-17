@@ -93,7 +93,7 @@ class ShowDetailsEpisodesCase @Inject constructor(
           async {
             val rating = ratingsRepository.shows.loadRating(episode)
             val translation = translationsRepository.loadTranslation(episode, show.ids.trakt, onlyLocal = true)
-            EpisodeListItem(episode, it, false, translation, rating, format)
+            EpisodeListItem(episode, it, false, translation, rating, format, isAnime = show.isAnime)
           }
         }.awaitAll()
         SeasonListItem(

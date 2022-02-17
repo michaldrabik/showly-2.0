@@ -96,6 +96,8 @@ class CalendarWidgetViewsFactory(
       context.getString(R.string.textSeasonEpisode),
       item.episode.season,
       item.episode.number
+    ).plus(
+      item.episode.numberAbs?.let { if (it > 0 && item.show.isAnime) " ($it)" else "" } ?: ""
     )
 
     val episodeTitle = when {

@@ -35,6 +35,7 @@ data class Episode(
   @ColumnInfo(name = "id_show_tmdb") var idShowTmdb: Long,
   @ColumnInfo(name = "season_number") var seasonNumber: Int,
   @ColumnInfo(name = "episode_number") var episodeNumber: Int,
+  @ColumnInfo(name = "episode_number_abs") var episodeNumberAbs: Int?,
   @ColumnInfo(name = "episode_overview") var episodeOverview: String,
   @ColumnInfo(name = "episode_title") var title: String,
   @ColumnInfo(name = "first_aired") var firstAired: ZonedDateTime?,

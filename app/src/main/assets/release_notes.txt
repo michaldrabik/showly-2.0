@@ -4,6 +4,8 @@
 
 * Added episode runtime in episode details
 
+* Added episode absolute number for Anime shows
+
 * Fixed misc. bugs
 
 Do you enjoy Showly app and want to support the developer?

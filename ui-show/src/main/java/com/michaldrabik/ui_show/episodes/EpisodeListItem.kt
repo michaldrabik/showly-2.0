@@ -13,7 +13,8 @@ data class EpisodeListItem(
   val translation: Translation? = null,
   val myRating: TraktRating? = null,
   val dateFormat: DateTimeFormatter? = null,
-  val isLocked: Boolean = true
+  val isLocked: Boolean = true,
+  val isAnime: Boolean = false
 ) {
 
   val id = episode.ids.trakt.id

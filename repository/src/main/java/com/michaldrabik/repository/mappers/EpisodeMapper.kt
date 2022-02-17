@@ -17,22 +17,24 @@ class EpisodeMapper @Inject constructor(
 ) {
 
   fun fromNetwork(episode: EpisodeNetwork) = Episode(
-    episode.season ?: -1,
-    episode.number ?: -1,
-    episode.title ?: "",
-    idsMapper.fromNetwork(episode.ids),
-    episode.overview ?: "",
-    episode.rating ?: 0F,
-    episode.votes ?: 0,
-    episode.comment_count ?: 0,
-    if (episode.first_aired.isNullOrBlank()) null else ZonedDateTime.parse(episode.first_aired),
-    episode.runtime ?: -1
+    season = episode.season ?: -1,
+    number = episode.number ?: -1,
+    title = episode.title ?: "",
+    ids = idsMapper.fromNetwork(episode.ids),
+    overview = episode.overview ?: "",
+    rating = episode.rating ?: 0F,
+    votes = episode.votes ?: 0,
+    commentCount = episode.comment_count ?: 0,
+    firstAired = if (episode.first_aired.isNullOrBlank()) null else ZonedDateTime.parse(episode.first_aired),
+    runtime = episode.runtime ?: -1,
+    numberAbs = episode.number_abs
   )
 
   fun toNetwork(episode: Episode) = EpisodeNetwork(
     ids = idsMapper.toNetwork(episode.ids),
     season = episode.season,
     number = episode.number,
+    number_abs = episode.numberAbs,
     title = episode.title,
     overview = episode.overview,
     rating = episode.rating,
@@ -48,22 +50,23 @@ class EpisodeMapper @Inject constructor(
     showId: IdTrakt,
     isWatched: Boolean
   ): EpisodeDb = EpisodeDb(
-    episode.ids.trakt.id,
-    season.ids.trakt.id,
-    showId.id,
-    episode.ids.tvdb.id,
-    episode.ids.imdb.id,
-    episode.ids.tmdb.id,
-    season.number,
-    episode.number,
-    episode.overview,
-    episode.title,
-    episode.firstAired,
-    episode.commentCount,
-    episode.rating,
-    episode.runtime,
-    episode.votes,
-    isWatched
+    idTrakt = episode.ids.trakt.id,
+    idSeason = season.ids.trakt.id,
+    idShowTrakt = showId.id,
+    idShowTvdb = episode.ids.tvdb.id,
+    idShowImdb = episode.ids.imdb.id,
+    idShowTmdb = episode.ids.tmdb.id,
+    seasonNumber = season.number,
+    episodeNumber = episode.number,
+    episodeNumberAbs = episode.numberAbs,
+    episodeOverview = episode.overview,
+    title = episode.title,
+    firstAired = episode.firstAired,
+    commentsCount = episode.commentCount,
+    rating = episode.rating,
+    runtime = episode.runtime,
+    votesCount = episode.votes,
+    isWatched = isWatched
   )
 
   fun fromDatabase(episodeDb: EpisodeDb) =
@@ -76,12 +79,13 @@ class EpisodeMapper @Inject constructor(
       ),
       title = episodeDb.title,
       number = episodeDb.episodeNumber,
+      numberAbs = episodeDb.episodeNumberAbs,
       season = episodeDb.seasonNumber,
       overview = episodeDb.episodeOverview,
       commentCount = episodeDb.commentsCount,
       firstAired = episodeDb.firstAired,
       rating = episodeDb.rating,
       runtime = episodeDb.runtime,
-      votes = episodeDb.votesCount
+      votes = episodeDb.votesCount,
     )
 }

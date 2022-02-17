@@ -27,6 +27,8 @@ data class Show(
 
   val titleNoThe = title.removePrefix("The").trim()
 
+  val isAnime get() = genres.contains(Genre.ANIME.slug)
+
   companion object {
     val EMPTY = Show(
       ids = Ids(

@@ -64,7 +64,9 @@ class ProgressWidgetViewsFactory(
     val title =
       if (item.translations?.show?.title?.isBlank() == false) item.translations?.show?.title
       else item.show.title
+
     val subtitle = String.format(ENGLISH, "S.%02d E.%02d", item.episode?.season, item.episode?.number)
+      .plus(item.episode?.numberAbs?.let { if (it > 0 && item.show.isAnime) " ($it)" else "" } ?: "")
 
     var percent = 0
     if (item.totalCount != 0) {
