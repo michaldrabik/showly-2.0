@@ -1,6 +1,8 @@
-* Added 'Pin to On Hold' feature for Progress items. You can now pin shows to On Hold section located at the bottom, if you paused watching them and do not want to clutter your main progress list.
+* Added Recents section button into Calendar widget
 
-* Progress list sections can now be collapsed
+* Added context menu for search results items
+
+* Added episode runtime in episode details
 
 * Fixed misc. bugs
 

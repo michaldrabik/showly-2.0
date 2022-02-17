@@ -139,7 +139,7 @@
             android:ellipsize="end"
             android:textColor="?android:attr/textColorSecondary"
             android:textSize="12sp"
-            tools:text="S.01 E.99 | Thursday, 23 December 2019 at 15:00"
+            tools:text="S.01 E.99 | Thursday, 23 December 2019 at 15:00 | 23 mins"
             />
 
           <LinearLayout
