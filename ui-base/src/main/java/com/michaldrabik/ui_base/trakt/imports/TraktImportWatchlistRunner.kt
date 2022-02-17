@@ -5,7 +5,7 @@ import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.WatchlistMovie
 import com.michaldrabik.data_local.database.model.WatchlistShow
 import com.michaldrabik.data_remote.Cloud
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.TraktAuthToken
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.mappers.Mappers
@@ -18,11 +18,11 @@ import javax.inject.Singleton
 
 @Singleton
 class TraktImportWatchlistRunner @Inject constructor(
-  private val cloud: Cloud,
-  private val database: AppDatabase,
-  private val mappers: Mappers,
-  private val settingsRepository: SettingsRepository,
-  userTraktManager: UserTraktManager
+    private val cloud: Cloud,
+    private val database: AppDatabase,
+    private val mappers: Mappers,
+    private val settingsRepository: SettingsRepository,
+    userTraktManager: UserTraktManager
 ) : TraktSyncRunner(userTraktManager) {
 
   override suspend fun run(): Int {

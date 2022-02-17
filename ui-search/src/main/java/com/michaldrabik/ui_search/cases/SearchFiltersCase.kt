@@ -2,7 +2,7 @@ package com.michaldrabik.ui_search.cases
 
 import com.michaldrabik.common.Mode.MOVIES
 import com.michaldrabik.common.Mode.SHOWS
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_search.recycler.SearchListItem
 import com.michaldrabik.ui_search.utilities.SearchOptions
 import dagger.hilt.android.scopes.ViewModelScoped

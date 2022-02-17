@@ -1,5 +1,7 @@
 package com.michaldrabik.ui_widgets.calendar
 
+import android.appwidget.AppWidgetManager
+import android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID
 import android.content.Context
 import android.content.Intent
 import android.view.View.GONE
@@ -14,7 +16,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.michaldrabik.common.CalendarMode.PRESENT_FUTURE
 import com.michaldrabik.common.CalendarMode.RECENTS
 import com.michaldrabik.common.extensions.toLocalZone
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.replace
@@ -30,9 +32,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.runBlocking
-import java.util.Locale
+import java.util.*
 
 class CalendarWidgetViewsFactory(
+  private val widgetId: Int,
   private val context: Context,
   private val calendarFutureCase: CalendarFutureCase,
   private val calendarRecentsCase: CalendarRecentsCase,
@@ -51,7 +54,7 @@ class CalendarWidgetViewsFactory(
   override fun onCreate() = loadData()
 
   private fun loadData() = runBlocking {
-    mode = settingsRepository.widgetCalendarMode
+    mode = settingsRepository.widgetsSettings.getWidgetCalendarMode(widgetId)
     val items = when (mode) {
       PRESENT_FUTURE -> calendarFutureCase.loadItems()
       RECENTS -> calendarRecentsCase.loadItems()
@@ -78,6 +81,7 @@ class CalendarWidgetViewsFactory(
         setViewVisibility(R.id.progressWidgetHeaderIcon, VISIBLE)
         val fillIntent = Intent().apply {
           putExtras(bundleOf(EXTRA_MODE_CLICK to true))
+          putExtras(bundleOf(EXTRA_APPWIDGET_ID to widgetId))
         }
         setOnClickFillInIntent(R.id.progressWidgetHeaderIcon, fillIntent)
       } else {
@@ -150,7 +154,7 @@ class CalendarWidgetViewsFactory(
   }
 
   private fun getItemLayout(): Int {
-    val isLight = settingsRepository.widgetsTheme == MODE_NIGHT_NO
+    val isLight = settingsRepository.widgetsSettings.widgetsTheme == MODE_NIGHT_NO
     return when {
       isLight -> R.layout.widget_calendar_item_day
       else -> R.layout.widget_calendar_item_night
@@ -158,7 +162,7 @@ class CalendarWidgetViewsFactory(
   }
 
   private fun getHeaderLayout(): Int {
-    val isLight = settingsRepository.widgetsTheme == MODE_NIGHT_NO
+    val isLight = settingsRepository.widgetsSettings.widgetsTheme == MODE_NIGHT_NO
     return when {
       isLight -> R.layout.widget_header_day
       else -> R.layout.widget_header_night

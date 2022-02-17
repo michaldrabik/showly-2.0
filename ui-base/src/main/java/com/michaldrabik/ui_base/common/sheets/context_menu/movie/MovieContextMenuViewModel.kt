@@ -2,7 +2,7 @@ package com.michaldrabik.ui_base.common.sheets.context_menu.movie
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.sheets.context_menu.events.FinishUiEvent

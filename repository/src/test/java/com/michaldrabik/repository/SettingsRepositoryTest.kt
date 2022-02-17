@@ -5,6 +5,8 @@ import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.data_local.database.dao.SettingsDao
 import com.michaldrabik.repository.common.BaseMockTest
 import com.michaldrabik.repository.mappers.SettingsMapper
+import com.michaldrabik.repository.settings.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsSortRepository
 import com.michaldrabik.ui_model.Settings
 import io.mockk.Runs
 import io.mockk.coEvery

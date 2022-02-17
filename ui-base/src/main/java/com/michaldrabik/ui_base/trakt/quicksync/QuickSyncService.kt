@@ -3,7 +3,7 @@ package com.michaldrabik.ui_base.trakt.quicksync
 import android.content.Context
 import android.content.Intent
 import android.os.IBinder
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.R

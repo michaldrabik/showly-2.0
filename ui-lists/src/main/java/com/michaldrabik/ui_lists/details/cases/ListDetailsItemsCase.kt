@@ -7,7 +7,7 @@ import com.michaldrabik.common.Mode.SHOWS
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.CustomListItem
 import com.michaldrabik.repository.ListsRepository
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.movies.MoviesRepository
@@ -37,17 +37,17 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class ListDetailsItemsCase @Inject constructor(
-  private val database: AppDatabase,
-  private val mappers: Mappers,
-  private val showsRepository: ShowsRepository,
-  private val moviesRepository: MoviesRepository,
-  private val listsRepository: ListsRepository,
-  private val showImagesProvider: ShowImagesProvider,
-  private val movieImagesProvider: MovieImagesProvider,
-  private val translationsRepository: TranslationsRepository,
-  private val settingsRepository: SettingsRepository,
-  private val quickSyncManager: QuickSyncManager,
-  private val sorter: ListDetailsSorter,
+    private val database: AppDatabase,
+    private val mappers: Mappers,
+    private val showsRepository: ShowsRepository,
+    private val moviesRepository: MoviesRepository,
+    private val listsRepository: ListsRepository,
+    private val showImagesProvider: ShowImagesProvider,
+    private val movieImagesProvider: MovieImagesProvider,
+    private val translationsRepository: TranslationsRepository,
+    private val settingsRepository: SettingsRepository,
+    private val quickSyncManager: QuickSyncManager,
+    private val sorter: ListDetailsSorter,
 ) {
 
   private val language by lazy { translationsRepository.getLanguage() }

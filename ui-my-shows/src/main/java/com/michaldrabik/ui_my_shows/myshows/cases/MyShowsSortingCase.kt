@@ -1,6 +1,6 @@
 package com.michaldrabik.ui_my_shows.myshows.cases
 
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_model.MyShowsSection
 import com.michaldrabik.ui_model.MyShowsSection.ALL
 import com.michaldrabik.ui_model.MyShowsSection.FINISHED
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class MyShowsSortingCase @Inject constructor(
-  private val settingsRepository: SettingsRepository,
+    private val settingsRepository: SettingsRepository,
 ) {
 
   fun loadSectionSortOrder(section: MyShowsSection) = when (section) {

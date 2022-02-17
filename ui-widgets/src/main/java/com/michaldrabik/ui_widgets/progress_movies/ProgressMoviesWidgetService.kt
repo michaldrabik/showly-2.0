@@ -2,7 +2,7 @@ package com.michaldrabik.ui_widgets.progress_movies
 
 import android.content.Intent
 import android.widget.RemoteViewsService
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_progress_movies.progress.cases.ProgressMoviesItemsCase
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

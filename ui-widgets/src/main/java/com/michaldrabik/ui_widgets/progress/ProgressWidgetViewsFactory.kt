@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.utilities.DurationPrinter
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.replace
@@ -157,7 +157,7 @@ class ProgressWidgetViewsFactory(
     }
 
   private fun getItemLayout(): Int {
-    val isLight = settingsRepository.widgetsTheme == MODE_NIGHT_NO
+    val isLight = settingsRepository.widgetsSettings.widgetsTheme == MODE_NIGHT_NO
     return when {
       isLight -> R.layout.widget_progress_item_day
       else -> R.layout.widget_progress_item_night
@@ -165,7 +165,7 @@ class ProgressWidgetViewsFactory(
   }
 
   private fun getHeaderLayout(): Int {
-    val isLight = settingsRepository.widgetsTheme == MODE_NIGHT_NO
+    val isLight = settingsRepository.widgetsSettings.widgetsTheme == MODE_NIGHT_NO
     return when {
       isLight -> R.layout.widget_header_day
       else -> R.layout.widget_header_night

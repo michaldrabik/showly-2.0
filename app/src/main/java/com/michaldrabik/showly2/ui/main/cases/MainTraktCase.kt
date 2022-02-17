@@ -1,7 +1,7 @@
 package com.michaldrabik.showly2.ui.main.cases
 
 import androidx.work.WorkManager
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.trakt.TraktSyncWorker
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncWorker
@@ -10,9 +10,9 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class MainTraktCase @Inject constructor(
-  private val settingsRepository: SettingsRepository,
-  private val quickSyncManager: QuickSyncManager,
-  private val workManager: WorkManager,
+    private val settingsRepository: SettingsRepository,
+    private val quickSyncManager: QuickSyncManager,
+    private val workManager: WorkManager,
 ) {
 
   suspend fun refreshTraktSyncSchedule() {

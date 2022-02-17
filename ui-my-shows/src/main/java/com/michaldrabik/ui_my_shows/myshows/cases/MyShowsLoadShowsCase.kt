@@ -4,7 +4,7 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.Season
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.images.ShowImagesProvider
@@ -25,12 +25,12 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class MyShowsLoadShowsCase @Inject constructor(
-  private val sorter: MyShowsItemSorter,
-  private val imagesProvider: ShowImagesProvider,
-  private val showsRepository: ShowsRepository,
-  private val translationsRepository: TranslationsRepository,
-  private val settingsRepository: SettingsRepository,
-  private val database: AppDatabase
+    private val sorter: MyShowsItemSorter,
+    private val imagesProvider: ShowImagesProvider,
+    private val showsRepository: ShowsRepository,
+    private val translationsRepository: TranslationsRepository,
+    private val settingsRepository: SettingsRepository,
+    private val database: AppDatabase
 ) {
 
   val language by lazy { translationsRepository.getLanguage() }

@@ -15,6 +15,7 @@ import com.michaldrabik.data_remote.tmdb.api.TmdbApi
 import com.michaldrabik.data_remote.trakt.api.TraktApi
 import com.michaldrabik.data_remote.trakt.model.PersonCredit
 import com.michaldrabik.repository.common.BaseMockTest
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Ids

@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_progress_movies.progress.cases
 
 import com.google.common.truth.Truth.assertThat
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_progress_movies.BaseMockTest

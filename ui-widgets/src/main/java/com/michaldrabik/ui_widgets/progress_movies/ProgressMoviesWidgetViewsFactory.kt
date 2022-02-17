@@ -11,7 +11,7 @@ import androidx.core.os.bundleOf
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.replace
 import com.michaldrabik.ui_model.ImageStatus
@@ -27,9 +27,9 @@ import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.runBlocking
 
 class ProgressMoviesWidgetViewsFactory(
-  private val context: Context,
-  private val loadItemsCase: ProgressMoviesItemsCase,
-  private val settingsRepository: SettingsRepository,
+    private val context: Context,
+    private val loadItemsCase: ProgressMoviesItemsCase,
+    private val settingsRepository: SettingsRepository,
 ) : RemoteViewsService.RemoteViewsFactory, CoroutineScope {
 
   override val coroutineContext = Job() + Dispatchers.Main
@@ -102,7 +102,7 @@ class ProgressMoviesWidgetViewsFactory(
   }
 
   private fun getItemLayout(): Int {
-    val isLight = settingsRepository.widgetsTheme == MODE_NIGHT_NO
+    val isLight = settingsRepository.widgetsSettings.widgetsTheme == MODE_NIGHT_NO
     return when {
       isLight -> R.layout.widget_movies_progress_item_day
       else -> R.layout.widget_movies_progress_item_night

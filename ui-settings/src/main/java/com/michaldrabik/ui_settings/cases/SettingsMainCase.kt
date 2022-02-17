@@ -6,7 +6,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.ConfigVariant
 import com.michaldrabik.common.Mode
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.dates.AppDateFormat
@@ -28,10 +28,10 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class SettingsMainCase @Inject constructor(
-  private val settingsRepository: SettingsRepository,
-  private val announcementManager: AnnouncementManager,
-  private val showsImagesProvider: ShowImagesProvider,
-  private val moviesImagesProvider: MovieImagesProvider,
+    private val settingsRepository: SettingsRepository,
+    private val announcementManager: AnnouncementManager,
+    private val showsImagesProvider: ShowImagesProvider,
+    private val moviesImagesProvider: MovieImagesProvider,
 ) {
 
   suspend fun getSettings(): Settings = settingsRepository.load()

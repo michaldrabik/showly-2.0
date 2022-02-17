@@ -16,7 +16,7 @@ import com.jakewharton.processphoenix.ProcessPhoenix
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.common.ConfigVariant
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.showly2.utilities.NetworkMonitorCallbacks
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.OnlineStatusProvider

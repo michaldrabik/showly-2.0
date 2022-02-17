@@ -2,7 +2,7 @@ package com.michaldrabik.ui_search.cases
 
 import com.michaldrabik.common.Config
 import com.michaldrabik.data_local.database.AppDatabase
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_base.images.MovieImagesProvider
@@ -23,12 +23,12 @@ import com.michaldrabik.data_local.database.model.Show as ShowDb
 
 @ViewModelScoped
 class SearchSuggestionsCase @Inject constructor(
-  private val database: AppDatabase,
-  private val mappers: Mappers,
-  private val translationsRepository: TranslationsRepository,
-  private val settingsRepository: SettingsRepository,
-  private val showsImagesProvider: ShowImagesProvider,
-  private val moviesImagesProvider: MovieImagesProvider
+    private val database: AppDatabase,
+    private val mappers: Mappers,
+    private val translationsRepository: TranslationsRepository,
+    private val settingsRepository: SettingsRepository,
+    private val showsImagesProvider: ShowImagesProvider,
+    private val moviesImagesProvider: MovieImagesProvider
 ) {
 
   val language by lazy { translationsRepository.getLanguage() }

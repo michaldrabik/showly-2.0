@@ -3,7 +3,7 @@ package com.michaldrabik.ui_widgets
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_model.Settings
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
@@ -23,7 +23,7 @@ abstract class BaseWidgetProvider : AppWidgetProvider() {
   abstract fun getLayoutResId(): Int
 
   protected fun getBackgroundResId() =
-    when (settingsRepository.widgetsTransparency) {
+    when (settingsRepository.widgetsSettings.widgetsTransparency) {
       75 -> R.drawable.bg_widget_75
       50 -> R.drawable.bg_widget_50
       25 -> R.drawable.bg_widget_25

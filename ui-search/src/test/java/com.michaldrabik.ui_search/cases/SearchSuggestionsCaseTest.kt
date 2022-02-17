@@ -4,7 +4,7 @@ import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.dao.MoviesDao
 import com.michaldrabik.data_local.database.dao.ShowsDao
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_base.images.MovieImagesProvider

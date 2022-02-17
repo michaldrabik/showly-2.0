@@ -1,6 +1,6 @@
 package com.michaldrabik.ui_base.common.sheets.links
 
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.common.AppCountry
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -11,7 +11,7 @@ import com.michaldrabik.data_local.database.model.ShowTranslation
 import com.michaldrabik.data_local.database.model.TranslationsMoviesSyncLog
 import com.michaldrabik.data_local.database.model.TranslationsSyncLog
 import com.michaldrabik.data_remote.Cloud
-import com.michaldrabik.repository.SettingsRepository.Key.LANGUAGE
+import com.michaldrabik.repository.settings.SettingsRepository.Key.LANGUAGE
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTrakt

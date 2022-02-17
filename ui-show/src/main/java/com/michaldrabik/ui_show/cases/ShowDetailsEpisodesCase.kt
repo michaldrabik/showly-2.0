@@ -4,7 +4,7 @@ import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.repository.RatingsRepository
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.mappers.Mappers
@@ -27,16 +27,16 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class ShowDetailsEpisodesCase @Inject constructor(
-  private val cloud: Cloud,
-  private val database: AppDatabase,
-  private val mappers: Mappers,
-  private val showsRepository: ShowsRepository,
-  private val settingsRepository: SettingsRepository,
-  private val ratingsRepository: RatingsRepository,
-  private val translationsRepository: TranslationsRepository,
-  private val episodesManager: EpisodesManager,
-  private val userManager: UserTraktManager,
-  private val dateFormatProvider: DateFormatProvider
+    private val cloud: Cloud,
+    private val database: AppDatabase,
+    private val mappers: Mappers,
+    private val showsRepository: ShowsRepository,
+    private val settingsRepository: SettingsRepository,
+    private val ratingsRepository: RatingsRepository,
+    private val translationsRepository: TranslationsRepository,
+    private val episodesManager: EpisodesManager,
+    private val userManager: UserTraktManager,
+    private val dateFormatProvider: DateFormatProvider
 ) {
 
   suspend fun loadNextEpisode(traktId: IdTrakt): Episode? {

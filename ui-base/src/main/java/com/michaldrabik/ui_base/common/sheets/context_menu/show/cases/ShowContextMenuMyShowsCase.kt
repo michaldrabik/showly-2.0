@@ -3,7 +3,7 @@ package com.michaldrabik.ui_base.common.sheets.context_menu.show.cases
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.repository.PinnedItemsRepository
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.common.sheets.context_menu.events.RemoveTraktUiEvent
@@ -22,13 +22,13 @@ import com.michaldrabik.data_local.database.model.Season as SeasonDb
 
 @ViewModelScoped
 class ShowContextMenuMyShowsCase @Inject constructor(
-  private val database: AppDatabase,
-  private val cloud: Cloud,
-  private val mappers: Mappers,
-  private val showsRepository: ShowsRepository,
-  private val pinnedItemsRepository: PinnedItemsRepository,
-  private val settingsRepository: SettingsRepository,
-  private val announcementManager: AnnouncementManager,
+    private val database: AppDatabase,
+    private val cloud: Cloud,
+    private val mappers: Mappers,
+    private val showsRepository: ShowsRepository,
+    private val pinnedItemsRepository: PinnedItemsRepository,
+    private val settingsRepository: SettingsRepository,
+    private val announcementManager: AnnouncementManager,
 ) {
 
   suspend fun moveToMyShows(traktId: IdTrakt) = coroutineScope {

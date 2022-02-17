@@ -2,7 +2,7 @@ package com.michaldrabik.ui_show.cases
 
 import com.michaldrabik.common.ConfigVariant
 import com.michaldrabik.common.extensions.nowUtc
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.shows.ShowStreamingsRepository
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_model.Show
@@ -12,8 +12,8 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class ShowDetailsStreamingCase @Inject constructor(
-  private val streamingsRepository: ShowStreamingsRepository,
-  private val settingsRepository: SettingsRepository,
+    private val streamingsRepository: ShowStreamingsRepository,
+    private val settingsRepository: SettingsRepository,
 ) {
 
   suspend fun getLocalStreamingServices(show: Show): List<StreamingService> {

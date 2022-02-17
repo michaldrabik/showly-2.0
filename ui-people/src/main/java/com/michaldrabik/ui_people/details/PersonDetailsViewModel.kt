@@ -3,7 +3,7 @@ package com.michaldrabik.ui_people.details
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Mode
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
@@ -29,11 +29,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PersonDetailsViewModel @Inject constructor(
-  private val loadDetailsCase: PersonDetailsLoadCase,
-  private val loadCreditsCase: PersonDetailsCreditsCase,
-  private val loadImagesCase: PersonDetailsImagesCase,
-  private val loadTranslationsCase: PersonDetailsTranslationsCase,
-  private val settingsRepository: SettingsRepository,
+    private val loadDetailsCase: PersonDetailsLoadCase,
+    private val loadCreditsCase: PersonDetailsCreditsCase,
+    private val loadImagesCase: PersonDetailsImagesCase,
+    private val loadTranslationsCase: PersonDetailsTranslationsCase,
+    private val settingsRepository: SettingsRepository,
 ) : BaseViewModel() {
 
   private val personDetailsItemsState = MutableStateFlow<List<PersonDetailsItem>?>(null)

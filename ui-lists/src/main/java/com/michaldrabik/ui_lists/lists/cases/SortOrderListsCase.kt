@@ -1,6 +1,6 @@
 package com.michaldrabik.ui_lists.lists.cases
 
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import dagger.hilt.android.scopes.ViewModelScoped

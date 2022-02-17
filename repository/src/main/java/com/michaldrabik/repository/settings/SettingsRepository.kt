@@ -1,23 +1,21 @@
-package com.michaldrabik.repository
+package com.michaldrabik.repository.settings
 
 import android.app.UiModeManager.MODE_NIGHT_YES
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.room.withTransaction
-import com.michaldrabik.common.CalendarMode
 import com.michaldrabik.common.Config.DEFAULT_COUNTRY
 import com.michaldrabik.common.Config.DEFAULT_DATE_FORMAT
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.delegates.BooleanPreference
-import com.michaldrabik.common.delegates.EnumPreference
 import com.michaldrabik.common.delegates.LongPreference
 import com.michaldrabik.common.delegates.StringPreference
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.ProgressType
 import com.michaldrabik.ui_model.Settings
-import java.util.UUID
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
@@ -25,6 +23,7 @@ import javax.inject.Singleton
 @Singleton
 class SettingsRepository @Inject constructor(
   val sortSettings: SettingsSortRepository,
+  val widgetsSettings: SettingsWidgetsRepository,
   private val database: AppDatabase,
   private val mappers: Mappers,
   @Named("miscPreferences") private var preferences: SharedPreferences
@@ -32,24 +31,20 @@ class SettingsRepository @Inject constructor(
 
   companion object Key {
     const val LANGUAGE = "KEY_LANGUAGE"
+    internal const val PREMIUM = "KEY_PREMIUM"
     private const val COUNTRY = "KEY_COUNTRY"
     private const val DATE_FORMAT = "KEY_DATE_FORMAT"
     private const val MODE = "KEY_MOVIES_MODE"
     private const val MOVIES_ENABLED = "KEY_MOVIES_ENABLED"
     private const val NEWS_ENABLED = "KEY_NEWS_ENABLED"
     private const val TWITTER_AD_ENABLED = "TWITTER_AD_ENABLED"
-    private const val PREMIUM = "KEY_PREMIUM"
     private const val PROGRESS_PERCENT = "KEY_PROGRESS_PERCENT"
     private const val STREAMINGS_ENABLED = "KEY_STREAMINGS_ENABLED"
     private const val THEME = "KEY_THEME"
-    private const val THEME_WIDGET = "KEY_THEME_WIDGET"
-    private const val THEME_WIDGET_TRANSPARENT = "KEY_THEME_WIDGET_TRANSPARENT"
     private const val USER_ID = "KEY_USER_ID"
     private const val INSTALL_TIMESTAMP = "INSTALL_TIMESTAMP"
     private const val PROGRESS_UPCOMING_COLLAPSED = "PROGRESS_UPCOMING_COLLAPSED"
     private const val PROGRESS_ON_HOLD_COLLAPSED = "PROGRESS_ON_HOLD_COLLAPSED"
-    private const val WIDGET_CALENDAR_MODE = "WIDGET_CALENDAR_MODE"
-    private const val WIDGET_CALENDAR_MOVIES_MODE = "WIDGET_CALENDAR_MOVIES_MODE"
   }
 
   suspend fun isInitialized() =
@@ -83,8 +78,6 @@ class SettingsRepository @Inject constructor(
   var language by StringPreference(preferences, LANGUAGE, DEFAULT_LANGUAGE)
   var country by StringPreference(preferences, COUNTRY, DEFAULT_COUNTRY)
   var dateFormat by StringPreference(preferences, DATE_FORMAT, DEFAULT_DATE_FORMAT)
-  var widgetCalendarMode by EnumPreference(preferences, WIDGET_CALENDAR_MODE, CalendarMode.PRESENT_FUTURE, CalendarMode::class.java)
-  var widgetCalendarMoviesMode by EnumPreference(preferences, WIDGET_CALENDAR_MOVIES_MODE, CalendarMode.PRESENT_FUTURE, CalendarMode::class.java)
 
   var isProgressUpcomingCollapsed by BooleanPreference(preferences, PROGRESS_UPCOMING_COLLAPSED)
   var isProgressOnHoldCollapsed by BooleanPreference(preferences, PROGRESS_ON_HOLD_COLLAPSED)
@@ -95,20 +88,6 @@ class SettingsRepository @Inject constructor(
       return preferences.getInt(THEME, MODE_NIGHT_YES)
     }
     set(value) = preferences.edit(true) { putInt(THEME, value) }
-
-  var widgetsTheme: Int
-    get() {
-      if (!isPremium) return MODE_NIGHT_YES
-      return preferences.getInt(THEME_WIDGET, MODE_NIGHT_YES)
-    }
-    set(value) = preferences.edit(true) { putInt(THEME_WIDGET, value) }
-
-  var widgetsTransparency: Int
-    get() {
-      if (!isPremium) return 100
-      return preferences.getInt(THEME_WIDGET_TRANSPARENT, 100)
-    }
-    set(value) = preferences.edit(true) { putInt(THEME_WIDGET_TRANSPARENT, value) }
 
   var progressPercentType: ProgressType
     get() {
@@ -132,9 +111,8 @@ class SettingsRepository @Inject constructor(
     update(settings.copy(traktQuickRateEnabled = false))
     isPremium = false
     theme = MODE_NIGHT_YES
-    widgetsTheme = MODE_NIGHT_YES
-    widgetsTransparency = 100
     isNewsEnabled = false
+    widgetsSettings.revokePremium()
   }
 
   suspend fun clearLanguageLogs() {

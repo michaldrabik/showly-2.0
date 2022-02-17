@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_progress_movies.calendar.cases
 
 import com.google.common.truth.Truth.assertThat
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_progress_movies.BaseMockTest
 import io.mockk.clearAllMocks

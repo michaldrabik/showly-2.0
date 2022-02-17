@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_my_movies.hidden.cases
 
 import com.michaldrabik.common.Config
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider

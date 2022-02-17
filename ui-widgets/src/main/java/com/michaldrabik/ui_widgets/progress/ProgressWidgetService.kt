@@ -2,7 +2,7 @@ package com.michaldrabik.ui_widgets.progress
 
 import android.content.Intent
 import android.widget.RemoteViewsService
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_progress.progress.cases.ProgressItemsCase
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

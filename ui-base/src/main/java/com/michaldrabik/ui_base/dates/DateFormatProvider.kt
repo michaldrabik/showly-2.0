@@ -1,6 +1,6 @@
 package com.michaldrabik.ui_base.dates
 
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.dates.AppDateFormat.DEFAULT_12
 import com.michaldrabik.ui_base.dates.AppDateFormat.DEFAULT_24
 import com.michaldrabik.ui_base.dates.AppDateFormat.MISC_12
@@ -14,7 +14,7 @@ import javax.inject.Singleton
 
 @Singleton
 class DateFormatProvider @Inject constructor(
-  private val settingsRepository: SettingsRepository,
+    private val settingsRepository: SettingsRepository,
 ) {
 
   companion object {

@@ -22,7 +22,7 @@ import com.michaldrabik.common.Config.PREMIUM_LIFETIME_INAPP
 import com.michaldrabik.common.Config.PREMIUM_LIFETIME_INAPP_PROMO
 import com.michaldrabik.common.Config.PREMIUM_MONTHLY_SUBSCRIPTION
 import com.michaldrabik.common.Config.PREMIUM_YEARLY_SUBSCRIPTION
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.Event
@@ -39,7 +39,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PremiumViewModel @Inject constructor(
-  private val settingsRepository: SettingsRepository,
+    private val settingsRepository: SettingsRepository,
 ) : BaseViewModel() {
 
   private val purchaseItemsState = MutableStateFlow<List<SkuDetails>?>(null)

@@ -2,7 +2,7 @@ package com.michaldrabik.ui_progress_movies.progress.cases
 
 import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.repository.PinnedItemsRepository
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider

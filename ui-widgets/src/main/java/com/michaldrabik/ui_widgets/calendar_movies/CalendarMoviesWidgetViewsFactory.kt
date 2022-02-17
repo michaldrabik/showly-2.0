@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.michaldrabik.common.CalendarMode
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.replace
@@ -46,7 +46,7 @@ class CalendarMoviesWidgetViewsFactory(
   private val adapterItems = mutableListOf<CalendarMovieListItem>()
 
   private fun loadData() = runBlocking {
-    mode = settingsRepository.widgetCalendarMoviesMode
+    mode = settingsRepository.widgetsSettings.widgetCalendarMoviesMode
     val items = when (mode) {
       CalendarMode.PRESENT_FUTURE -> futureItemsCase.loadItems()
       CalendarMode.RECENTS -> recentItemsCase.loadItems()
@@ -139,7 +139,7 @@ class CalendarMoviesWidgetViewsFactory(
   }
 
   private fun getItemLayout(): Int {
-    val isLight = settingsRepository.widgetsTheme == MODE_NIGHT_NO
+    val isLight = settingsRepository.widgetsSettings.widgetsTheme == MODE_NIGHT_NO
     return when {
       isLight -> R.layout.widget_movies_calendar_item_day
       else -> R.layout.widget_movies_calendar_item_night
@@ -147,7 +147,7 @@ class CalendarMoviesWidgetViewsFactory(
   }
 
   private fun getHeaderLayout(): Int {
-    val isLight = settingsRepository.widgetsTheme == MODE_NIGHT_NO
+    val isLight = settingsRepository.widgetsSettings.widgetsTheme == MODE_NIGHT_NO
     return when {
       isLight -> R.layout.widget_header_day
       else -> R.layout.widget_header_night

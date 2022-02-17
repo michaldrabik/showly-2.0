@@ -12,6 +12,7 @@ import com.michaldrabik.data_local.database.model.PersonShowMovie
 import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.data_remote.tmdb.model.TmdbPerson
 import com.michaldrabik.repository.mappers.Mappers
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType

@@ -3,6 +3,7 @@ package com.michaldrabik.ui_widgets.calendar
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetManager.ACTION_APPWIDGET_UPDATE
+import android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -37,7 +38,7 @@ class CalendarWidgetProvider : BaseWidgetProvider() {
   }
 
   override fun getLayoutResId(): Int {
-    val isLight = settingsRepository.widgetsTheme == MODE_NIGHT_NO
+    val isLight = settingsRepository.widgetsSettings.widgetsTheme == MODE_NIGHT_NO
     return when {
       isLight -> R.layout.widget_calendar_day
       else -> R.layout.widget_calendar_night
@@ -55,7 +56,7 @@ class CalendarWidgetProvider : BaseWidgetProvider() {
 
   private fun updateWidget(context: Context, appWidgetManager: AppWidgetManager, widgetId: Int) {
     val intent = Intent(context, CalendarWidgetService::class.java).apply {
-      putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
+      putExtra(EXTRA_APPWIDGET_ID, widgetId)
       data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
     }
 
@@ -73,7 +74,7 @@ class CalendarWidgetProvider : BaseWidgetProvider() {
       setInt(R.id.calendarWidgetNightRoot, "setBackgroundResource", getBackgroundResId())
       setInt(R.id.calendarWidgetDayRoot, "setBackgroundResource", getBackgroundResId())
 
-      when (settingsRepository.widgetCalendarMode) {
+      when (settingsRepository.widgetsSettings.getWidgetCalendarMode(widgetId)) {
         CalendarMode.PRESENT_FUTURE -> {
           setImageViewResource(R.id.calendarWidgetEmptyViewIcon, R.drawable.ic_history)
           setTextViewText(R.id.calendarWidgetEmptyViewSubtitle, context.getString(R.string.textCalendarEmpty))
@@ -100,6 +101,7 @@ class CalendarWidgetProvider : BaseWidgetProvider() {
       Intent(ACTION_CLICK).apply {
         setClass(context, this@CalendarWidgetProvider.javaClass)
         putExtra(EXTRA_MODE_CLICK, true)
+        putExtra(EXTRA_APPWIDGET_ID, widgetId)
       },
       PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
     )
@@ -117,10 +119,12 @@ class CalendarWidgetProvider : BaseWidgetProvider() {
     appWidgetManager.notifyAppWidgetViewDataChanged(widgetId, R.id.calendarWidgetList)
   }
 
-  private fun toggleCalendarMode() {
-    when (settingsRepository.widgetCalendarMode) {
-      CalendarMode.PRESENT_FUTURE -> settingsRepository.widgetCalendarMode = CalendarMode.RECENTS
-      CalendarMode.RECENTS -> settingsRepository.widgetCalendarMode = CalendarMode.PRESENT_FUTURE
+  private fun toggleCalendarMode(widgetId: Int) {
+    when (settingsRepository.widgetsSettings.getWidgetCalendarMode(widgetId)) {
+      CalendarMode.PRESENT_FUTURE ->
+        settingsRepository.widgetsSettings.setWidgetCalendarMode(widgetId, CalendarMode.RECENTS)
+      CalendarMode.RECENTS ->
+        settingsRepository.widgetsSettings.setWidgetCalendarMode(widgetId, CalendarMode.PRESENT_FUTURE)
     }
   }
 
@@ -137,8 +141,8 @@ class CalendarWidgetProvider : BaseWidgetProvider() {
       )
     }
 
-    fun onHeaderIconClick() {
-      toggleCalendarMode()
+    fun onHeaderIconClick(widgetId: Int) {
+      toggleCalendarMode(widgetId)
       requestUpdate(context.applicationContext)
     }
 
@@ -146,7 +150,10 @@ class CalendarWidgetProvider : BaseWidgetProvider() {
     if (intent.action == ACTION_CLICK) {
       when {
         intent.extras?.containsKey(EXTRA_SHOW_ID) == true -> onListItemClick()
-        intent.extras?.containsKey(EXTRA_MODE_CLICK) == true -> onHeaderIconClick()
+        intent.extras?.containsKey(EXTRA_MODE_CLICK) == true -> {
+          val widgetId = intent.extras?.getInt(EXTRA_APPWIDGET_ID) ?: 0
+          onHeaderIconClick(widgetId)
+        }
       }
     }
   }

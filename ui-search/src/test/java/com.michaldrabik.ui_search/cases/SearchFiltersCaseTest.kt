@@ -2,7 +2,7 @@ package com.michaldrabik.ui_search.cases
 
 import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.common.Mode
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_search.BaseMockTest
 import com.michaldrabik.ui_search.recycler.SearchListItem
 import com.michaldrabik.ui_search.utilities.SearchOptions

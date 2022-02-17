@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_settings.cases
 
 import android.content.Context
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_settings.helpers.AppTheme
 import com.michaldrabik.ui_settings.helpers.WidgetTransparency
@@ -20,12 +20,12 @@ class SettingsThemesCase @Inject constructor(
   fun getTheme() = AppTheme.fromCode(settingsRepository.theme)
 
   fun setWidgetsTheme(theme: AppTheme, context: Context) {
-    settingsRepository.widgetsTheme = theme.code
+    settingsRepository.widgetsSettings.widgetsTheme = theme.code
     reloadWidgets(context)
   }
 
   fun setWidgetsTransparency(transparency: WidgetTransparency, context: Context) {
-    settingsRepository.widgetsTransparency = transparency.value
+    settingsRepository.widgetsSettings.widgetsTransparency = transparency.value
     reloadWidgets(context)
   }
 
@@ -36,7 +36,7 @@ class SettingsThemesCase @Inject constructor(
     }
   }
 
-  fun getWidgetsTheme() = AppTheme.fromCode(settingsRepository.widgetsTheme)
+  fun getWidgetsTheme() = AppTheme.fromCode(settingsRepository.widgetsSettings.widgetsTheme)
 
-  fun getWidgetsTransparency() = WidgetTransparency.fromValue(settingsRepository.widgetsTransparency)
+  fun getWidgetsTransparency() = WidgetTransparency.fromValue(settingsRepository.widgetsSettings.widgetsTransparency)
 }

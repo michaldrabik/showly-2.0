@@ -5,7 +5,7 @@ import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.CustomListItem
 import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.repository.ListsRepository
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_base.utilities.extensions.runTransaction
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
@@ -16,11 +16,11 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class ListDetailsMainCase @Inject constructor(
-  private val database: AppDatabase,
-  private val cloud: Cloud,
-  private val listsRepository: ListsRepository,
-  private val settingsRepository: SettingsRepository,
-  private val userTraktManager: UserTraktManager,
+    private val database: AppDatabase,
+    private val cloud: Cloud,
+    private val listsRepository: ListsRepository,
+    private val settingsRepository: SettingsRepository,
+    private val userTraktManager: UserTraktManager,
 ) {
 
   suspend fun loadDetails(id: Long) = listsRepository.loadById(id)

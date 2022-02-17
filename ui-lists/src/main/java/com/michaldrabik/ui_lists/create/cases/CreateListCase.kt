@@ -3,7 +3,7 @@ package com.michaldrabik.ui_lists.create.cases
 import com.michaldrabik.common.Mode
 import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.repository.ListsRepository
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_base.Logger
@@ -18,11 +18,11 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class CreateListCase @Inject constructor(
-  private val cloud: Cloud,
-  private val mappers: Mappers,
-  private val listsRepository: ListsRepository,
-  private val settingsRepository: SettingsRepository,
-  private val userTraktManager: UserTraktManager
+    private val cloud: Cloud,
+    private val mappers: Mappers,
+    private val listsRepository: ListsRepository,
+    private val settingsRepository: SettingsRepository,
+    private val userTraktManager: UserTraktManager
 ) {
 
   suspend fun createList(name: String, description: String?): CustomList {

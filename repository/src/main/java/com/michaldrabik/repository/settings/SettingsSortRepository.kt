@@ -1,4 +1,4 @@
-package com.michaldrabik.repository
+package com.michaldrabik.repository.settings
 
 import android.content.SharedPreferences
 import com.michaldrabik.common.delegates.EnumPreference

@@ -3,7 +3,7 @@ package com.michaldrabik.ui_trakt_sync
 import android.content.SharedPreferences
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkManager
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.dates.DateFormatProvider
@@ -36,16 +36,16 @@ import javax.inject.Named
 
 @HiltViewModel
 class TraktSyncViewModel @Inject constructor(
-  @Named("miscPreferences") private var miscPreferences: SharedPreferences,
-  private val userManager: UserTraktManager,
-  private val workManager: WorkManager,
-  private val ratingsCase: TraktSyncRatingsCase,
-  private val settingsRepository: SettingsRepository,
-  private val dateFormatProvider: DateFormatProvider,
-  importWatchedRunner: TraktImportWatchedRunner,
-  importWatchlistRunner: TraktImportWatchlistRunner,
-  exportWatchedRunner: TraktImportWatchedRunner,
-  exportWatchlistRunner: TraktExportWatchlistRunner,
+    @Named("miscPreferences") private var miscPreferences: SharedPreferences,
+    private val userManager: UserTraktManager,
+    private val workManager: WorkManager,
+    private val ratingsCase: TraktSyncRatingsCase,
+    private val settingsRepository: SettingsRepository,
+    private val dateFormatProvider: DateFormatProvider,
+    importWatchedRunner: TraktImportWatchedRunner,
+    importWatchlistRunner: TraktImportWatchlistRunner,
+    exportWatchedRunner: TraktImportWatchedRunner,
+    exportWatchlistRunner: TraktExportWatchlistRunner,
 ) : BaseViewModel() {
 
   private val progressState = MutableStateFlow(false)

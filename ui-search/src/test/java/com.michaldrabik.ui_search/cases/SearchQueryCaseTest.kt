@@ -5,7 +5,7 @@ import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.data_remote.trakt.api.TraktApi
 import com.michaldrabik.data_remote.trakt.model.SearchResult
 import com.michaldrabik.data_remote.trakt.model.Show
-import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.movies.MoviesRepository
