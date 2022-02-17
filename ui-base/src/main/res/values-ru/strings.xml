@@ -34,6 +34,12 @@
   <string name="textLink">Ссылка</string>
   <string name="textRateSaved">Ваша оценка была сохранена.</string>
   <string name="textRateRemoved">Ваша оценка была удалена.</string>
+  <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
+    <item quantity="one">%d осталось</item>
+    <item quantity="few">%d осталось</item>
+    <item quantity="many">%d осталось</item>
+    <item quantity="other">%d осталось</item>
+  </plurals>
   <string name="textPeople">Люди:</string>
   <string name="textDirecting">Режиссура</string>
   <string name="textDirector">Режиссер</string>
