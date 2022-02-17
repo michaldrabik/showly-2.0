@@ -5,7 +5,6 @@ import android.widget.RemoteViewsService
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_progress_movies.calendar.cases.items.CalendarMoviesFutureCase
 import com.michaldrabik.ui_progress_movies.calendar.cases.items.CalendarMoviesRecentsCase
-import com.michaldrabik.ui_progress_movies.calendar.cases.items.CalendarMoviesRecentsCase_Factory
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

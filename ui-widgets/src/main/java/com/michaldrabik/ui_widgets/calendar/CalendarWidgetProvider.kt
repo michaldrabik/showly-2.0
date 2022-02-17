@@ -91,7 +91,8 @@ class CalendarWidgetProvider : BaseWidgetProvider() {
       Intent().apply { setClassName(context, Config.HOST_ACTIVITY_NAME) },
       PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
     )
-    remoteViews.setOnClickPendingIntent(R.id.calendarWidgetLabel, mainIntent)
+    remoteViews.setOnClickPendingIntent(R.id.calendarWidgetLabelImage, mainIntent)
+    remoteViews.setOnClickPendingIntent(R.id.calendarWidgetLabelText, mainIntent)
 
     val modeClickIntent = PendingIntent.getBroadcast(
       context,

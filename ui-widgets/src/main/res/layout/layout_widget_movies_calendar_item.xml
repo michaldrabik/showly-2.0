@@ -56,8 +56,10 @@
       style="@style/WidgetItem.Title"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/spaceTiny"
+      android:layout_toStartOf="@id/calendarMoviesWidgetItemDate"
       tools:ignore="RtlSymmetry"
-      tools:text="Breaking Bad"
+      tools:text="@tools:sample/lorem/random"
       />
 
     <TextView
