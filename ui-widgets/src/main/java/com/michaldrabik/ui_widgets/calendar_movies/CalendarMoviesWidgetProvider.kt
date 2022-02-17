@@ -11,6 +11,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.RemoteViews
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
+import com.michaldrabik.common.CalendarMode
 import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_widgets.BaseWidgetProvider
@@ -67,14 +68,26 @@ class CalendarMoviesWidgetProvider : BaseWidgetProvider() {
       val paddingTop = if (settings.widgetsShowLabel) context.dimenToPx(R.dimen.widgetPaddingTop) else spaceTiny
       val labelVisibility = if (settings.widgetsShowLabel) VISIBLE else GONE
       setViewPadding(R.id.calendarWidgetMoviesList, 0, paddingTop, 0, spaceTiny)
+      setViewPadding(R.id.calendarWidgetMoviesEmptyView, 0, paddingTop, 0, 0)
       setViewVisibility(R.id.calendarWidgetMoviesLabel, labelVisibility)
 
       setInt(R.id.calendarWidgetMoviesNightRoot, "setBackgroundResource", getBackgroundResId())
       setInt(R.id.calendarWidgetMoviesDayRoot, "setBackgroundResource", getBackgroundResId())
+
+      when (settingsRepository.widgetCalendarMoviesMode) {
+        CalendarMode.PRESENT_FUTURE -> {
+          setImageViewResource(R.id.calendarWidgetMoviesEmptyViewIcon, R.drawable.ic_history)
+          setTextViewText(R.id.calendarWidgetMoviesEmptyViewSubtitle, context.getString(R.string.textMoviesCalendarEmpty))
+        }
+        CalendarMode.RECENTS -> {
+          setImageViewResource(R.id.calendarWidgetMoviesEmptyViewIcon, R.drawable.ic_calendar)
+          setTextViewText(R.id.calendarWidgetMoviesEmptyViewSubtitle, context.getString(R.string.textMoviesCalendarRecentsEmpty))
+        }
+      }
     }
 
     val listClickIntent = Intent(context, CalendarMoviesWidgetProvider::class.java).apply {
-      action = ACTION_LIST_CLICK
+      action = ACTION_CLICK
       data = Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME))
     }
 
@@ -86,6 +99,17 @@ class CalendarMoviesWidgetProvider : BaseWidgetProvider() {
     )
     remoteViews.setOnClickPendingIntent(R.id.calendarWidgetMoviesLabel, mainIntent)
 
+    val modeClickIntent = PendingIntent.getBroadcast(
+      context,
+      2,
+      Intent(ACTION_CLICK).apply {
+        setClass(context, this@CalendarMoviesWidgetProvider.javaClass)
+        putExtra(EXTRA_MODE_CLICK, true)
+      },
+      PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+    )
+    remoteViews.setOnClickPendingIntent(R.id.calendarWidgetMoviesEmptyViewIcon, modeClickIntent)
+
     val listIntent = PendingIntent.getBroadcast(context, 0, listClickIntent, PendingIntent.FLAG_UPDATE_CURRENT)
     remoteViews.setPendingIntentTemplate(R.id.calendarWidgetMoviesList, listIntent)
 
@@ -93,21 +117,37 @@ class CalendarMoviesWidgetProvider : BaseWidgetProvider() {
     appWidgetManager.notifyAppWidgetViewDataChanged(widgetId, R.id.calendarWidgetMoviesList)
   }
 
+  private fun toggleCalendarMode() {
+    when (settingsRepository.widgetCalendarMoviesMode) {
+      CalendarMode.PRESENT_FUTURE -> settingsRepository.widgetCalendarMoviesMode = CalendarMode.RECENTS
+      CalendarMode.RECENTS -> settingsRepository.widgetCalendarMoviesMode = CalendarMode.PRESENT_FUTURE
+    }
+  }
+
   override fun onReceive(context: Context, intent: Intent) {
-    if (intent.action == ACTION_LIST_CLICK) {
-      when {
-        intent.extras?.containsKey(EXTRA_MOVIE_ID) == true -> {
-          val movieId = intent.getLongExtra(EXTRA_MOVIE_ID, -1L)
-          context.startActivity(
-            Intent().apply {
-              setClassName(context, Config.HOST_ACTIVITY_NAME)
-              putExtra(EXTRA_MOVIE_ID, movieId.toString())
-              flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            }
-          )
+
+    fun onListItemClick() {
+      val movieId = intent.getLongExtra(EXTRA_MOVIE_ID, -1L)
+      context.startActivity(
+        Intent().apply {
+          setClassName(context, Config.HOST_ACTIVITY_NAME)
+          putExtra(EXTRA_MOVIE_ID, movieId.toString())
+          flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
+      )
+    }
+
+    fun onHeaderIconClick() {
+      toggleCalendarMode()
+      requestUpdate(context.applicationContext)
+    }
+
+    super.onReceive(context, intent)
+    if (intent.action == ACTION_CLICK) {
+      when {
+        intent.extras?.containsKey(EXTRA_MOVIE_ID) == true -> onListItemClick()
+        intent.extras?.containsKey(EXTRA_MODE_CLICK) == true -> onHeaderIconClick()
       }
     }
-    super.onReceive(context, intent)
   }
 }

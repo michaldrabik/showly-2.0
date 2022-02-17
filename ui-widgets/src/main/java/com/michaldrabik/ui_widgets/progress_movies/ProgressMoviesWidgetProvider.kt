@@ -84,7 +84,7 @@ class ProgressMoviesWidgetProvider : BaseWidgetProvider() {
     remoteViews.setOnClickPendingIntent(R.id.progressWidgetMoviesLabel, mainIntent)
 
     val listClickIntent = Intent(context, ProgressMoviesWidgetProvider::class.java).apply {
-      action = ACTION_LIST_CLICK
+      action = ACTION_CLICK
       data = Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME))
     }
 
@@ -96,7 +96,8 @@ class ProgressMoviesWidgetProvider : BaseWidgetProvider() {
   }
 
   override fun onReceive(context: Context, intent: Intent) {
-    if (intent.action == ACTION_LIST_CLICK) {
+    super.onReceive(context, intent)
+    if (intent.action == ACTION_CLICK) {
       when {
         intent.extras?.containsKey(EXTRA_MOVIE_ID) == true -> {
           val movieId = intent.getLongExtra(EXTRA_MOVIE_ID, -1L)
@@ -117,6 +118,5 @@ class ProgressMoviesWidgetProvider : BaseWidgetProvider() {
         }
       }
     }
-    super.onReceive(context, intent)
   }
 }

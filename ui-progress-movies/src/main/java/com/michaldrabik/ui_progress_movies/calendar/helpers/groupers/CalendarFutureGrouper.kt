@@ -1,8 +1,8 @@
 package com.michaldrabik.ui_progress_movies.calendar.helpers.groupers
 
+import com.michaldrabik.common.CalendarMode
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_progress_movies.R
-import com.michaldrabik.ui_progress_movies.calendar.helpers.CalendarMode
 import com.michaldrabik.ui_progress_movies.calendar.recycler.CalendarMovieListItem
 import java.time.DayOfWeek
 import java.time.Month
@@ -61,16 +61,13 @@ class CalendarFutureGrouper @Inject constructor() : CalendarGrouper {
       }
     }
 
-    return itemsMap.entries.fold(
-      mutableListOf(),
-      { acc, entry ->
-        acc.apply {
-          if (entry.value.isNotEmpty()) {
-            add(CalendarMovieListItem.Header.create(entry.key, CalendarMode.PRESENT_FUTURE))
-            addAll(entry.value)
-          }
+    return itemsMap.entries.fold(mutableListOf()) { acc, entry ->
+      acc.apply {
+        if (entry.value.isNotEmpty()) {
+          add(CalendarMovieListItem.Header.create(entry.key, CalendarMode.PRESENT_FUTURE))
+          addAll(entry.value)
         }
       }
-    )
+    }
   }
 }

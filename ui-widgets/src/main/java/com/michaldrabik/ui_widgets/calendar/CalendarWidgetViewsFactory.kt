@@ -11,6 +11,8 @@ import androidx.core.os.bundleOf
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.michaldrabik.common.CalendarMode.PRESENT_FUTURE
+import com.michaldrabik.common.CalendarMode.RECENTS
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
@@ -18,7 +20,9 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.replace
 import com.michaldrabik.ui_model.ImageStatus
 import com.michaldrabik.ui_progress.calendar.cases.items.CalendarFutureCase
+import com.michaldrabik.ui_progress.calendar.cases.items.CalendarRecentsCase
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarListItem
+import com.michaldrabik.ui_widgets.BaseWidgetProvider.Companion.EXTRA_MODE_CLICK
 import com.michaldrabik.ui_widgets.BaseWidgetProvider.Companion.EXTRA_SHOW_ID
 import com.michaldrabik.ui_widgets.R
 import kotlinx.coroutines.CoroutineScope
@@ -30,7 +34,8 @@ import java.util.Locale
 
 class CalendarWidgetViewsFactory(
   private val context: Context,
-  private val calendarCase: CalendarFutureCase,
+  private val calendarFutureCase: CalendarFutureCase,
+  private val calendarRecentsCase: CalendarRecentsCase,
   private val settingsRepository: SettingsRepository,
 ) : RemoteViewsService.RemoteViewsFactory, CoroutineScope {
 
@@ -39,24 +44,45 @@ class CalendarWidgetViewsFactory(
   private val imageCorner by lazy { context.dimenToPx(R.dimen.mediaTileCorner) }
   private val imageWidth by lazy { context.dimenToPx(R.dimen.widgetImageWidth) }
   private val imageHeight by lazy { context.dimenToPx(R.dimen.widgetImageHeight) }
-  private val adapterItems by lazy { mutableListOf<CalendarListItem>() }
+  private var mode = PRESENT_FUTURE
+
+  private val adapterItems = mutableListOf<CalendarListItem>()
 
   override fun onCreate() = loadData()
 
   private fun loadData() = runBlocking {
-    val items = calendarCase.loadItems("")
+    mode = settingsRepository.widgetCalendarMode
+    val items = when (mode) {
+      PRESENT_FUTURE -> calendarFutureCase.loadItems()
+      RECENTS -> calendarRecentsCase.loadItems()
+    }
     adapterItems.replace(items)
   }
 
   override fun getViewAt(position: Int) =
     when (val item = adapterItems[position]) {
       is CalendarListItem.Episode -> createItemRemoteView(item)
-      is CalendarListItem.Header -> createHeaderRemoteView(item)
+      is CalendarListItem.Header -> createHeaderRemoteView(item, showIcon = position == 0)
     }
 
-  private fun createHeaderRemoteView(item: CalendarListItem.Header) =
+  private fun createHeaderRemoteView(item: CalendarListItem.Header, showIcon: Boolean) =
     RemoteViews(context.packageName, getHeaderLayout()).apply {
       setTextViewText(R.id.progressWidgetHeaderTitle, context.getString(item.textResId))
+      setViewVisibility(R.id.progressWidgetHeaderTitleIcon, if (mode == RECENTS) VISIBLE else GONE)
+
+      if (showIcon) {
+        when (mode) {
+          PRESENT_FUTURE -> setImageViewResource(R.id.progressWidgetHeaderIcon, R.drawable.ic_history)
+          RECENTS -> setImageViewResource(R.id.progressWidgetHeaderIcon, R.drawable.ic_calendar)
+        }
+        setViewVisibility(R.id.progressWidgetHeaderIcon, VISIBLE)
+        val fillIntent = Intent().apply {
+          putExtras(bundleOf(EXTRA_MODE_CLICK to true))
+        }
+        setOnClickFillInIntent(R.id.progressWidgetHeaderIcon, fillIntent)
+      } else {
+        setViewVisibility(R.id.progressWidgetHeaderIcon, GONE)
+      }
     }
 
   private fun createItemRemoteView(item: CalendarListItem.Episode): RemoteViews {

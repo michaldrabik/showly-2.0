@@ -9,10 +9,10 @@ import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_progress.calendar.helpers.filters.CalendarRecentsFilter
 import com.michaldrabik.ui_progress.calendar.helpers.groupers.CalendarRecentsGrouper
-import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@ViewModelScoped
+@Singleton
 class CalendarRecentsCase @Inject constructor(
   database: AppDatabase,
   mappers: Mappers,

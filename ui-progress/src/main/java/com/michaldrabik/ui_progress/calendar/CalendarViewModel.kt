@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_progress.calendar
 
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.common.CalendarMode
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.ui_base.BaseViewModel
@@ -13,7 +14,6 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_progress.calendar.cases.CalendarRatingsCase
 import com.michaldrabik.ui_progress.calendar.cases.items.CalendarFutureCase
 import com.michaldrabik.ui_progress.calendar.cases.items.CalendarRecentsCase
-import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarListItem
 import com.michaldrabik.ui_progress.main.EpisodeCheckActionUiEvent
 import com.michaldrabik.ui_progress.main.ProgressMainUiState
@@ -67,8 +67,8 @@ class CalendarViewModel @Inject constructor(
     loadItemsJob?.cancel()
     loadItemsJob = viewModelScope.launch {
       val items = when (mode) {
-        CalendarMode.PRESENT_FUTURE -> futureCase.loadItems(searchQuery ?: "")
-        CalendarMode.RECENTS -> recentsCase.loadItems(searchQuery ?: "")
+        CalendarMode.PRESENT_FUTURE -> futureCase.loadItems(searchQuery)
+        CalendarMode.RECENTS -> recentsCase.loadItems(searchQuery)
       }
       itemsState.value = items
       modeState.value = mode

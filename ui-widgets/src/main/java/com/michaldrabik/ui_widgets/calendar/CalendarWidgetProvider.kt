@@ -11,6 +11,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.RemoteViews
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
+import com.michaldrabik.common.CalendarMode
 import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_widgets.BaseWidgetProvider
@@ -66,10 +67,22 @@ class CalendarWidgetProvider : BaseWidgetProvider() {
       val paddingTop = if (settings.widgetsShowLabel) context.dimenToPx(R.dimen.widgetPaddingTop) else spaceTiny
       val labelVisibility = if (settings.widgetsShowLabel) VISIBLE else GONE
       setViewPadding(R.id.calendarWidgetList, 0, paddingTop, 0, spaceTiny)
+      setViewPadding(R.id.calendarWidgetEmptyView, 0, paddingTop, 0, 0)
       setViewVisibility(R.id.calendarWidgetLabel, labelVisibility)
 
       setInt(R.id.calendarWidgetNightRoot, "setBackgroundResource", getBackgroundResId())
       setInt(R.id.calendarWidgetDayRoot, "setBackgroundResource", getBackgroundResId())
+
+      when (settingsRepository.widgetCalendarMode) {
+        CalendarMode.PRESENT_FUTURE -> {
+          setImageViewResource(R.id.calendarWidgetEmptyViewIcon, R.drawable.ic_history)
+          setTextViewText(R.id.calendarWidgetEmptyViewSubtitle, context.getString(R.string.textCalendarEmpty))
+        }
+        CalendarMode.RECENTS -> {
+          setImageViewResource(R.id.calendarWidgetEmptyViewIcon, R.drawable.ic_calendar)
+          setTextViewText(R.id.calendarWidgetEmptyViewSubtitle, context.getString(R.string.textRecentsEmpty))
+        }
+      }
     }
 
     val mainIntent = PendingIntent.getActivity(
@@ -80,8 +93,19 @@ class CalendarWidgetProvider : BaseWidgetProvider() {
     )
     remoteViews.setOnClickPendingIntent(R.id.calendarWidgetLabel, mainIntent)
 
+    val modeClickIntent = PendingIntent.getBroadcast(
+      context,
+      1,
+      Intent(ACTION_CLICK).apply {
+        setClass(context, this@CalendarWidgetProvider.javaClass)
+        putExtra(EXTRA_MODE_CLICK, true)
+      },
+      PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+    )
+    remoteViews.setOnClickPendingIntent(R.id.calendarWidgetEmptyViewIcon, modeClickIntent)
+
     val listClickIntent = Intent(context, CalendarWidgetProvider::class.java).apply {
-      action = ACTION_LIST_CLICK
+      action = ACTION_CLICK
       data = Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME))
     }
 
@@ -92,21 +116,37 @@ class CalendarWidgetProvider : BaseWidgetProvider() {
     appWidgetManager.notifyAppWidgetViewDataChanged(widgetId, R.id.calendarWidgetList)
   }
 
+  private fun toggleCalendarMode() {
+    when (settingsRepository.widgetCalendarMode) {
+      CalendarMode.PRESENT_FUTURE -> settingsRepository.widgetCalendarMode = CalendarMode.RECENTS
+      CalendarMode.RECENTS -> settingsRepository.widgetCalendarMode = CalendarMode.PRESENT_FUTURE
+    }
+  }
+
   override fun onReceive(context: Context, intent: Intent) {
-    if (intent.action == ACTION_LIST_CLICK) {
-      when {
-        intent.extras?.containsKey(EXTRA_SHOW_ID) == true -> {
-          val showId = intent.getLongExtra(EXTRA_SHOW_ID, -1L)
-          context.startActivity(
-            Intent().apply {
-              setClassName(context, Config.HOST_ACTIVITY_NAME)
-              putExtra(EXTRA_SHOW_ID, showId.toString())
-              flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            }
-          )
+
+    fun onListItemClick() {
+      val showId = intent.getLongExtra(EXTRA_SHOW_ID, -1L)
+      context.startActivity(
+        Intent().apply {
+          setClassName(context, Config.HOST_ACTIVITY_NAME)
+          putExtra(EXTRA_SHOW_ID, showId.toString())
+          flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
+      )
+    }
+
+    fun onHeaderIconClick() {
+      toggleCalendarMode()
+      requestUpdate(context.applicationContext)
+    }
+
+    super.onReceive(context, intent)
+    if (intent.action == ACTION_CLICK) {
+      when {
+        intent.extras?.containsKey(EXTRA_SHOW_ID) == true -> onListItemClick()
+        intent.extras?.containsKey(EXTRA_MODE_CLICK) == true -> onHeaderIconClick()
       }
     }
-    super.onReceive(context, intent)
   }
 }

@@ -1,8 +1,8 @@
 package com.michaldrabik.ui_progress_movies.calendar.helpers.groupers
 
+import com.michaldrabik.common.CalendarMode
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_progress_movies.R
-import com.michaldrabik.ui_progress_movies.calendar.helpers.CalendarMode
 import com.michaldrabik.ui_progress_movies.calendar.recycler.CalendarMovieListItem
 import java.time.ZonedDateTime
 import javax.inject.Inject
@@ -42,16 +42,13 @@ class CalendarRecentsGrouper @Inject constructor() : CalendarGrouper {
         put(R.string.textLast90Days, last90Days)
       }
 
-    return itemsMap.entries.fold(
-      mutableListOf(),
-      { acc, entry ->
-        acc.apply {
-          if (entry.value.isNotEmpty()) {
-            add(CalendarMovieListItem.Header.create(entry.key, CalendarMode.RECENTS))
-            addAll(entry.value)
-          }
+    return itemsMap.entries.fold(mutableListOf()) { acc, entry ->
+      acc.apply {
+        if (entry.value.isNotEmpty()) {
+          add(CalendarMovieListItem.Header.create(entry.key, CalendarMode.RECENTS))
+          addAll(entry.value)
         }
       }
-    )
+    }
   }
 }

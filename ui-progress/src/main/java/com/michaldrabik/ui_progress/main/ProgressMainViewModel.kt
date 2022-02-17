@@ -1,12 +1,12 @@
 package com.michaldrabik.ui_progress.main
 
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.common.CalendarMode
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_progress.R
-import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode
 import com.michaldrabik.ui_progress.main.cases.ProgressMainEpisodesCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

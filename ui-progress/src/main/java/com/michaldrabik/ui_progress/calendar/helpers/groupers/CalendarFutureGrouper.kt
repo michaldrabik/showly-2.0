@@ -1,9 +1,9 @@
 package com.michaldrabik.ui_progress.calendar.helpers.groupers
 
+import com.michaldrabik.common.CalendarMode
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_progress.R
-import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarListItem
 import java.time.DayOfWeek
 import java.time.Month
@@ -59,16 +59,13 @@ class CalendarFutureGrouper @Inject constructor() : CalendarGrouper {
       }
     }
 
-    return itemsMap.entries.fold(
-      mutableListOf(),
-      { acc, entry ->
-        acc.apply {
-          if (entry.value.isNotEmpty()) {
-            add(CalendarListItem.Header.create(entry.key, CalendarMode.PRESENT_FUTURE))
-            addAll(entry.value)
-          }
+    return itemsMap.entries.fold(mutableListOf()) { acc, entry ->
+      acc.apply {
+        if (entry.value.isNotEmpty()) {
+          add(CalendarListItem.Header.create(entry.key, CalendarMode.PRESENT_FUTURE))
+          addAll(entry.value)
         }
       }
-    )
+    }
   }
 }

@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_progress_movies.calendar
 
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.common.CalendarMode
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.ui_base.BaseViewModel
@@ -11,7 +12,6 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_progress_movies.calendar.cases.CalendarMoviesRatingsCase
 import com.michaldrabik.ui_progress_movies.calendar.cases.items.CalendarMoviesFutureCase
 import com.michaldrabik.ui_progress_movies.calendar.cases.items.CalendarMoviesRecentsCase
-import com.michaldrabik.ui_progress_movies.calendar.helpers.CalendarMode
 import com.michaldrabik.ui_progress_movies.calendar.recycler.CalendarMovieListItem
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -64,8 +64,8 @@ class CalendarMoviesViewModel @Inject constructor(
     loadItemsJob?.cancel()
     loadItemsJob = viewModelScope.launch {
       val items = when (mode) {
-        CalendarMode.PRESENT_FUTURE -> futureCase.loadItems(searchQuery ?: "")
-        CalendarMode.RECENTS -> recentsCase.loadItems(searchQuery ?: "")
+        CalendarMode.PRESENT_FUTURE -> futureCase.loadItems(searchQuery)
+        CalendarMode.RECENTS -> recentsCase.loadItems(searchQuery)
       }
       itemsState.value = items
       modeState.value = mode

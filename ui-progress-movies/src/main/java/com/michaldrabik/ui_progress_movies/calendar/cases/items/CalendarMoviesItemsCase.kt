@@ -29,7 +29,7 @@ abstract class CalendarMoviesItemsCase constructor(
   abstract val grouper: CalendarGrouper
   abstract val sorter: CalendarSorter
 
-  suspend fun loadItems(searchQuery: String): List<CalendarMovieListItem> =
+  suspend fun loadItems(searchQuery: String? = ""): List<CalendarMovieListItem> =
     withContext(Dispatchers.Default) {
       val now = nowUtc().toLocalZone()
       val language = translationsRepository.getLanguage()
@@ -59,7 +59,7 @@ abstract class CalendarMoviesItemsCase constructor(
           }
         }.awaitAll()
 
-      val queryElements = filterByQuery(searchQuery, elements)
+      val queryElements = filterByQuery(searchQuery ?: "", elements)
       grouper.groupByTime(nowUtc(), queryElements)
     }
 
