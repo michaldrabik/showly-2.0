@@ -13,9 +13,9 @@ import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type.SHOW_WATCH
 import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.data_remote.trakt.model.SyncExportItem
 import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
-import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.TraktAuthToken
 import com.michaldrabik.repository.UserTraktManager
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.trakt.TraktSyncRunner
 import com.michaldrabik.ui_base.utilities.extensions.runTransaction
 import kotlinx.coroutines.delay
@@ -25,10 +25,10 @@ import javax.inject.Singleton
 
 @Singleton
 class QuickSyncRunner @Inject constructor(
-    private val cloud: Cloud,
-    private val database: AppDatabase,
-    private val settingsRepository: SettingsRepository,
-    userTraktManager: UserTraktManager
+  private val cloud: Cloud,
+  private val database: AppDatabase,
+  private val settingsRepository: SettingsRepository,
+  userTraktManager: UserTraktManager
 ) : TraktSyncRunner(userTraktManager) {
 
   companion object {

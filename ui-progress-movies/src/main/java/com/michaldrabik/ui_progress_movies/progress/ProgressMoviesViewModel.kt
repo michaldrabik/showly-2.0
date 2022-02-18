@@ -3,9 +3,9 @@ package com.michaldrabik.ui_progress_movies.progress
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.RatingsRepository
-import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.UserTraktManager
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
@@ -35,14 +35,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProgressMoviesViewModel @Inject constructor(
-    private val itemsCase: ProgressMoviesItemsCase,
-    private val sortCase: ProgressMoviesSortCase,
-    private val pinnedCase: ProgressMoviesPinnedCase,
-    private val imagesProvider: MovieImagesProvider,
-    private val userTraktManager: UserTraktManager,
-    private val ratingsRepository: RatingsRepository,
-    private val settingsRepository: SettingsRepository,
-    private val translationsRepository: TranslationsRepository,
+  private val itemsCase: ProgressMoviesItemsCase,
+  private val sortCase: ProgressMoviesSortCase,
+  private val pinnedCase: ProgressMoviesPinnedCase,
+  private val imagesProvider: MovieImagesProvider,
+  private val userTraktManager: UserTraktManager,
+  private val ratingsRepository: RatingsRepository,
+  private val settingsRepository: SettingsRepository,
+  private val translationsRepository: TranslationsRepository,
 ) : BaseViewModel() {
 
   private var loadItemsJob: Job? = null

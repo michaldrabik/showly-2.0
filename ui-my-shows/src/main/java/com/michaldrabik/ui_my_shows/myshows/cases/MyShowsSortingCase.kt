@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class MyShowsSortingCase @Inject constructor(
-    private val settingsRepository: SettingsRepository,
+  private val settingsRepository: SettingsRepository,
 ) {
 
   fun loadSectionSortOrder(section: MyShowsSection) = when (section) {

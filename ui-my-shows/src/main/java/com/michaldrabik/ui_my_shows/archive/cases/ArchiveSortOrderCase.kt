@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class ArchiveSortOrderCase @Inject constructor(
-    private val settingsRepository: SettingsRepository,
+  private val settingsRepository: SettingsRepository,
 ) {
 
   fun setSortOrder(sortOrder: SortOrder, sortType: SortType) {

@@ -29,11 +29,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PersonDetailsViewModel @Inject constructor(
-    private val loadDetailsCase: PersonDetailsLoadCase,
-    private val loadCreditsCase: PersonDetailsCreditsCase,
-    private val loadImagesCase: PersonDetailsImagesCase,
-    private val loadTranslationsCase: PersonDetailsTranslationsCase,
-    private val settingsRepository: SettingsRepository,
+  private val loadDetailsCase: PersonDetailsLoadCase,
+  private val loadCreditsCase: PersonDetailsCreditsCase,
+  private val loadImagesCase: PersonDetailsImagesCase,
+  private val loadTranslationsCase: PersonDetailsTranslationsCase,
+  private val settingsRepository: SettingsRepository,
 ) : BaseViewModel() {
 
   private val personDetailsItemsState = MutableStateFlow<List<PersonDetailsItem>?>(null)

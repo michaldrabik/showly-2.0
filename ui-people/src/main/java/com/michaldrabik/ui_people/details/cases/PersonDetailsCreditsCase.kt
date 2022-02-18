@@ -3,9 +3,9 @@ package com.michaldrabik.ui_people.details.cases
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Mode
 import com.michaldrabik.repository.PeopleRepository
-import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.movies.MoviesRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
@@ -23,13 +23,13 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class PersonDetailsCreditsCase @Inject constructor(
-    private val peopleRepository: PeopleRepository,
-    private val translationsRepository: TranslationsRepository,
-    private val settingsRepository: SettingsRepository,
-    private val showsRepository: ShowsRepository,
-    private val moviesRepository: MoviesRepository,
-    private val showImagesProvider: ShowImagesProvider,
-    private val movieImagesProvider: MovieImagesProvider
+  private val peopleRepository: PeopleRepository,
+  private val translationsRepository: TranslationsRepository,
+  private val settingsRepository: SettingsRepository,
+  private val showsRepository: ShowsRepository,
+  private val moviesRepository: MoviesRepository,
+  private val showImagesProvider: ShowImagesProvider,
+  private val movieImagesProvider: MovieImagesProvider
 ) {
 
   private val language by lazy { settingsRepository.language }

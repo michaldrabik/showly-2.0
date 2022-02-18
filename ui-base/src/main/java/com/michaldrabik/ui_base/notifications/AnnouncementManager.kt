@@ -13,9 +13,9 @@ import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.Episode
 import com.michaldrabik.data_local.database.model.Show
-import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.mappers.Mappers
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.fcm.NotificationChannel
 import com.michaldrabik.ui_base.images.MovieImagesProvider
@@ -44,13 +44,13 @@ import javax.inject.Singleton
 
 @Singleton
 class AnnouncementManager @Inject constructor(
-    @ApplicationContext private val context: Context,
-    private val database: AppDatabase,
-    private val settingsRepository: SettingsRepository,
-    private val showsImagesProvider: ShowImagesProvider,
-    private val moviesImagesProvider: MovieImagesProvider,
-    private val translationsRepository: TranslationsRepository,
-    private val mappers: Mappers,
+  @ApplicationContext private val context: Context,
+  private val database: AppDatabase,
+  private val settingsRepository: SettingsRepository,
+  private val showsImagesProvider: ShowImagesProvider,
+  private val moviesImagesProvider: MovieImagesProvider,
+  private val translationsRepository: TranslationsRepository,
+  private val mappers: Mappers,
 ) {
 
   companion object {

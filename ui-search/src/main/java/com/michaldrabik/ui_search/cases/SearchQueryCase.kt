@@ -2,10 +2,10 @@ package com.michaldrabik.ui_search.cases
 
 import com.michaldrabik.common.Config
 import com.michaldrabik.data_remote.Cloud
-import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.movies.MoviesRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
@@ -25,14 +25,14 @@ import com.michaldrabik.data_remote.trakt.model.SearchResult as SearchResultNetw
 
 @ViewModelScoped
 class SearchQueryCase @Inject constructor(
-    private val cloud: Cloud,
-    private val mappers: Mappers,
-    private val settingsRepository: SettingsRepository,
-    private val showsRepository: ShowsRepository,
-    private val moviesRepository: MoviesRepository,
-    private val translationsRepository: TranslationsRepository,
-    private val showsImagesProvider: ShowImagesProvider,
-    private val moviesImagesProvider: MovieImagesProvider
+  private val cloud: Cloud,
+  private val mappers: Mappers,
+  private val settingsRepository: SettingsRepository,
+  private val showsRepository: ShowsRepository,
+  private val moviesRepository: MoviesRepository,
+  private val translationsRepository: TranslationsRepository,
+  private val showsImagesProvider: ShowImagesProvider,
+  private val moviesImagesProvider: MovieImagesProvider
 ) {
 
   val language by lazy { translationsRepository.getLanguage() }

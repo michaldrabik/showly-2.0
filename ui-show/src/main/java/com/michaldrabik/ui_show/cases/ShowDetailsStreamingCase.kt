@@ -12,8 +12,8 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class ShowDetailsStreamingCase @Inject constructor(
-    private val streamingsRepository: ShowStreamingsRepository,
-    private val settingsRepository: SettingsRepository,
+  private val streamingsRepository: ShowStreamingsRepository,
+  private val settingsRepository: SettingsRepository,
 ) {
 
   suspend fun getLocalStreamingServices(show: Show): List<StreamingService> {

@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class DiscoverTwitterCase @Inject constructor(
-    private val settingsRepository: SettingsRepository,
+  private val settingsRepository: SettingsRepository,
 ) {
 
   fun cancelTwitterAd() {

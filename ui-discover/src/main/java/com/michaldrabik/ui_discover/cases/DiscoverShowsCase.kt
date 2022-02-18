@@ -3,8 +3,8 @@ package com.michaldrabik.ui_discover.cases
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.ConfigVariant
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_discover.recycler.DiscoverListItem
@@ -24,10 +24,10 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class DiscoverShowsCase @Inject constructor(
-    private val showsRepository: ShowsRepository,
-    private val imagesProvider: ShowImagesProvider,
-    private val translationsRepository: TranslationsRepository,
-    private val settingsRepository: SettingsRepository,
+  private val showsRepository: ShowsRepository,
+  private val imagesProvider: ShowImagesProvider,
+  private val translationsRepository: TranslationsRepository,
+  private val settingsRepository: SettingsRepository,
 ) {
 
   companion object {

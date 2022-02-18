@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class MainModesCase @Inject constructor(
-    private val settingsRepository: SettingsRepository,
+  private val settingsRepository: SettingsRepository,
 ) {
 
   fun setMode(mode: Mode) {

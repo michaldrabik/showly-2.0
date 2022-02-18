@@ -14,7 +14,7 @@ import javax.inject.Singleton
 
 @Singleton
 class DateFormatProvider @Inject constructor(
-    private val settingsRepository: SettingsRepository,
+  private val settingsRepository: SettingsRepository,
 ) {
 
   companion object {

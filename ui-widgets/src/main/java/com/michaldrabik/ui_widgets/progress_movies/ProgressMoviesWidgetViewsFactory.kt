@@ -27,9 +27,9 @@ import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.runBlocking
 
 class ProgressMoviesWidgetViewsFactory(
-    private val context: Context,
-    private val loadItemsCase: ProgressMoviesItemsCase,
-    private val settingsRepository: SettingsRepository,
+  private val context: Context,
+  private val loadItemsCase: ProgressMoviesItemsCase,
+  private val settingsRepository: SettingsRepository,
 ) : RemoteViewsService.RemoteViewsFactory, CoroutineScope {
 
   override val coroutineContext = Job() + Dispatchers.Main

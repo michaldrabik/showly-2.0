@@ -5,8 +5,8 @@ import com.michaldrabik.common.Mode.SHOWS
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.CustomListItem
 import com.michaldrabik.repository.ListsRepository
-import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.mappers.Mappers
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
@@ -24,14 +24,14 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class MainListsCase @Inject constructor(
-    private val database: AppDatabase,
-    private val mappers: Mappers,
-    private val listsRepository: ListsRepository,
-    private val dateProvider: DateFormatProvider,
-    private val settingsRepository: SettingsRepository,
-    private val showImagesProvider: ShowImagesProvider,
-    private val movieImagesProvider: MovieImagesProvider,
-    private val sorter: ListsSorter,
+  private val database: AppDatabase,
+  private val mappers: Mappers,
+  private val listsRepository: ListsRepository,
+  private val dateProvider: DateFormatProvider,
+  private val settingsRepository: SettingsRepository,
+  private val showImagesProvider: ShowImagesProvider,
+  private val movieImagesProvider: MovieImagesProvider,
+  private val sorter: ListsSorter,
 ) {
 
   companion object {

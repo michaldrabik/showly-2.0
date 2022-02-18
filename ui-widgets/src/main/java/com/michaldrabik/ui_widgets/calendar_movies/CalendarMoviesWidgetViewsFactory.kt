@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_widgets.calendar_movies
 
+import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
 import android.view.View.GONE
@@ -12,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.michaldrabik.common.CalendarMode
+import com.michaldrabik.common.Mode
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -30,6 +32,7 @@ import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.runBlocking
 
 class CalendarMoviesWidgetViewsFactory(
+  private val widgetId: Int,
   private val context: Context,
   private val futureItemsCase: CalendarMoviesFutureCase,
   private val recentItemsCase: CalendarMoviesRecentsCase,
@@ -46,7 +49,7 @@ class CalendarMoviesWidgetViewsFactory(
   private val adapterItems = mutableListOf<CalendarMovieListItem>()
 
   private fun loadData() = runBlocking {
-    mode = settingsRepository.widgetsSettings.widgetCalendarMoviesMode
+    mode = settingsRepository.widgetsSettings.getWidgetCalendarMode(Mode.MOVIES, widgetId)
     val items = when (mode) {
       CalendarMode.PRESENT_FUTURE -> futureItemsCase.loadItems()
       CalendarMode.RECENTS -> recentItemsCase.loadItems()
@@ -75,6 +78,7 @@ class CalendarMoviesWidgetViewsFactory(
         setViewVisibility(R.id.progressWidgetHeaderIcon, VISIBLE)
         val fillIntent = Intent().apply {
           putExtras(bundleOf(BaseWidgetProvider.EXTRA_MODE_CLICK to true))
+          putExtras(bundleOf(AppWidgetManager.EXTRA_APPWIDGET_ID to widgetId))
         }
         setOnClickFillInIntent(R.id.progressWidgetHeaderIcon, fillIntent)
       } else {

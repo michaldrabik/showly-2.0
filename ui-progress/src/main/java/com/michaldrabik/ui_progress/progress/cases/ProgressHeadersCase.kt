@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class ProgressHeadersCase @Inject constructor(
-    private val settingsRepository: SettingsRepository,
+  private val settingsRepository: SettingsRepository,
 ) {
 
   fun toggleHeaderCollapsed(type: Type) {

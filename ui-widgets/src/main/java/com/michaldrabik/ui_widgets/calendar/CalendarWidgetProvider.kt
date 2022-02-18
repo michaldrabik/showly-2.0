@@ -14,6 +14,7 @@ import android.widget.RemoteViews
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import com.michaldrabik.common.CalendarMode
 import com.michaldrabik.common.Config
+import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_widgets.BaseWidgetProvider
 import com.michaldrabik.ui_widgets.R
@@ -74,7 +75,7 @@ class CalendarWidgetProvider : BaseWidgetProvider() {
       setInt(R.id.calendarWidgetNightRoot, "setBackgroundResource", getBackgroundResId())
       setInt(R.id.calendarWidgetDayRoot, "setBackgroundResource", getBackgroundResId())
 
-      when (settingsRepository.widgetsSettings.getWidgetCalendarMode(widgetId)) {
+      when (settingsRepository.widgetsSettings.getWidgetCalendarMode(Mode.SHOWS, widgetId)) {
         CalendarMode.PRESENT_FUTURE -> {
           setImageViewResource(R.id.calendarWidgetEmptyViewIcon, R.drawable.ic_history)
           setTextViewText(R.id.calendarWidgetEmptyViewSubtitle, context.getString(R.string.textCalendarEmpty))
@@ -120,11 +121,11 @@ class CalendarWidgetProvider : BaseWidgetProvider() {
   }
 
   private fun toggleCalendarMode(widgetId: Int) {
-    when (settingsRepository.widgetsSettings.getWidgetCalendarMode(widgetId)) {
+    when (settingsRepository.widgetsSettings.getWidgetCalendarMode(Mode.SHOWS, widgetId)) {
       CalendarMode.PRESENT_FUTURE ->
-        settingsRepository.widgetsSettings.setWidgetCalendarMode(widgetId, CalendarMode.RECENTS)
+        settingsRepository.widgetsSettings.setWidgetCalendarMode(Mode.SHOWS, widgetId, CalendarMode.RECENTS)
       CalendarMode.RECENTS ->
-        settingsRepository.widgetsSettings.setWidgetCalendarMode(widgetId, CalendarMode.PRESENT_FUTURE)
+        settingsRepository.widgetsSettings.setWidgetCalendarMode(Mode.SHOWS, widgetId, CalendarMode.PRESENT_FUTURE)
     }
   }
 

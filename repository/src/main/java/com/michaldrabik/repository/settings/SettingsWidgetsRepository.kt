@@ -4,8 +4,8 @@ import android.app.UiModeManager
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.michaldrabik.common.CalendarMode
+import com.michaldrabik.common.Mode
 import com.michaldrabik.common.delegates.BooleanPreference
-import com.michaldrabik.common.delegates.EnumPreference
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
@@ -24,8 +24,6 @@ class SettingsWidgetsRepository @Inject constructor(
 
   val isPremium by BooleanPreference(preferences, SettingsRepository.PREMIUM)
 
-  var widgetCalendarMoviesMode by EnumPreference(preferences, WIDGET_CALENDAR_MOVIES_MODE, CalendarMode.PRESENT_FUTURE, CalendarMode::class.java)
-
   var widgetsTheme: Int
     get() {
       if (!isPremium) return UiModeManager.MODE_NIGHT_YES
@@ -40,14 +38,22 @@ class SettingsWidgetsRepository @Inject constructor(
     }
     set(value) = preferences.edit(true) { putInt(THEME_WIDGET_TRANSPARENT, value) }
 
-  fun getWidgetCalendarMode(widgetId: Int): CalendarMode {
+  fun getWidgetCalendarMode(mode: Mode, widgetId: Int): CalendarMode {
     val default = CalendarMode.PRESENT_FUTURE.name
-    val value = preferences.getString(WIDGET_CALENDAR_MODE + widgetId, default) ?: default
+    val key = when (mode) {
+      Mode.SHOWS -> WIDGET_CALENDAR_MODE
+      Mode.MOVIES -> WIDGET_CALENDAR_MOVIES_MODE
+    }
+    val value = preferences.getString("$key$widgetId", default) ?: default
     return CalendarMode.valueOf(value)
   }
 
-  fun setWidgetCalendarMode(widgetId: Int, mode: CalendarMode) {
-    preferences.edit(true) { putString(WIDGET_CALENDAR_MODE + widgetId, mode.name) }
+  fun setWidgetCalendarMode(mode: Mode, widgetId: Int, calendarMode: CalendarMode) {
+    val key = when (mode) {
+      Mode.SHOWS -> WIDGET_CALENDAR_MODE
+      Mode.MOVIES -> WIDGET_CALENDAR_MOVIES_MODE
+    }
+    preferences.edit(true) { putString("$key$widgetId", calendarMode.name) }
   }
 
   fun revokePremium() {

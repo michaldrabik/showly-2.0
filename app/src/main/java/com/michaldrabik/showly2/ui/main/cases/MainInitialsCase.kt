@@ -13,8 +13,8 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.repository.RatingsRepository
-import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.UserTraktManager
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.showly2.BuildConfig
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.fcm.NotificationChannel
@@ -31,11 +31,11 @@ import javax.inject.Named
 
 @ViewModelScoped
 class MainInitialsCase @Inject constructor(
-    @ApplicationContext private val context: Context,
-    private val userTraktManager: UserTraktManager,
-    private val ratingsRepository: RatingsRepository,
-    private val settingsRepository: SettingsRepository,
-    @Named("miscPreferences") private var miscPreferences: SharedPreferences,
+  @ApplicationContext private val context: Context,
+  private val userTraktManager: UserTraktManager,
+  private val ratingsRepository: RatingsRepository,
+  private val settingsRepository: SettingsRepository,
+  @Named("miscPreferences") private var miscPreferences: SharedPreferences,
 ) {
 
   suspend fun setInitialRun(value: Boolean) {

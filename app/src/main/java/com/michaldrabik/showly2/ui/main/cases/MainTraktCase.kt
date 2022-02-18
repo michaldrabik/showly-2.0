@@ -10,9 +10,9 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class MainTraktCase @Inject constructor(
-    private val settingsRepository: SettingsRepository,
-    private val quickSyncManager: QuickSyncManager,
-    private val workManager: WorkManager,
+  private val settingsRepository: SettingsRepository,
+  private val quickSyncManager: QuickSyncManager,
+  private val workManager: WorkManager,
 ) {
 
   suspend fun refreshTraktSyncSchedule() {

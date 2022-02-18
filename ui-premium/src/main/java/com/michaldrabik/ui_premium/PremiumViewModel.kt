@@ -39,7 +39,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PremiumViewModel @Inject constructor(
-    private val settingsRepository: SettingsRepository,
+  private val settingsRepository: SettingsRepository,
 ) : BaseViewModel() {
 
   private val purchaseItemsState = MutableStateFlow<List<SkuDetails>?>(null)

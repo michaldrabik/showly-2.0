@@ -3,8 +3,8 @@ package com.michaldrabik.ui_settings.cases
 import android.net.Uri
 import androidx.work.WorkManager
 import com.michaldrabik.repository.RatingsRepository
-import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.UserTraktManager
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.trakt.TraktSyncWorker
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_model.TraktSyncSchedule
@@ -13,10 +13,10 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class SettingsTraktCase @Inject constructor(
-    private val settingsRepository: SettingsRepository,
-    private val ratingsRepository: RatingsRepository,
-    private val userManager: UserTraktManager,
-    private val workManager: WorkManager
+  private val settingsRepository: SettingsRepository,
+  private val ratingsRepository: RatingsRepository,
+  private val userManager: UserTraktManager,
+  private val workManager: WorkManager
 ) {
 
   suspend fun enableTraktQuickSync(enable: Boolean) {

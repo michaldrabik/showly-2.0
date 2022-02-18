@@ -7,8 +7,8 @@ import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.TraktSyncQueue
 import com.michaldrabik.data_local.database.model.TraktSyncQueue.Operation
 import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type
-import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.UserTraktManager
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.utilities.extensions.runTransaction
 import timber.log.Timber
 import javax.inject.Inject
@@ -16,10 +16,10 @@ import javax.inject.Singleton
 
 @Singleton
 class QuickSyncManager @Inject constructor(
-    private val userTraktManager: UserTraktManager,
-    private val settingsRepository: SettingsRepository,
-    private val database: AppDatabase,
-    private val workManager: WorkManager
+  private val userTraktManager: UserTraktManager,
+  private val settingsRepository: SettingsRepository,
+  private val database: AppDatabase,
+  private val workManager: WorkManager
 ) {
 
   suspend fun scheduleEpisodes(

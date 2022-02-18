@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_widgets.calendar
 
-import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID
 import android.content.Context
 import android.content.Intent
@@ -15,6 +14,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.michaldrabik.common.CalendarMode.PRESENT_FUTURE
 import com.michaldrabik.common.CalendarMode.RECENTS
+import com.michaldrabik.common.Mode
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
@@ -32,7 +32,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.runBlocking
-import java.util.*
+import java.util.Locale
 
 class CalendarWidgetViewsFactory(
   private val widgetId: Int,
@@ -54,7 +54,7 @@ class CalendarWidgetViewsFactory(
   override fun onCreate() = loadData()
 
   private fun loadData() = runBlocking {
-    mode = settingsRepository.widgetsSettings.getWidgetCalendarMode(widgetId)
+    mode = settingsRepository.widgetsSettings.getWidgetCalendarMode(Mode.SHOWS, widgetId)
     val items = when (mode) {
       PRESENT_FUTURE -> calendarFutureCase.loadItems()
       RECENTS -> calendarRecentsCase.loadItems()

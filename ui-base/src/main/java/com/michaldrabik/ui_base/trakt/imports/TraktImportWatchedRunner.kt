@@ -10,10 +10,10 @@ import com.michaldrabik.data_local.database.model.MyShow
 import com.michaldrabik.data_local.database.model.Season
 import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.data_remote.trakt.model.SyncItem
-import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.TraktAuthToken
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.mappers.Mappers
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
@@ -30,13 +30,13 @@ import javax.inject.Singleton
 
 @Singleton
 class TraktImportWatchedRunner @Inject constructor(
-    private val cloud: Cloud,
-    private val database: AppDatabase,
-    private val mappers: Mappers,
-    private val showImagesProvider: ShowImagesProvider,
-    private val movieImagesProvider: MovieImagesProvider,
-    private val settingsRepository: SettingsRepository,
-    userTraktManager: UserTraktManager
+  private val cloud: Cloud,
+  private val database: AppDatabase,
+  private val mappers: Mappers,
+  private val showImagesProvider: ShowImagesProvider,
+  private val movieImagesProvider: MovieImagesProvider,
+  private val settingsRepository: SettingsRepository,
+  userTraktManager: UserTraktManager
 ) : TraktSyncRunner(userTraktManager) {
 
   override suspend fun run(): Int {

@@ -3,8 +3,8 @@ package com.michaldrabik.ui_base.sync.movies
 import com.michaldrabik.common.ConfigVariant.MOVIE_SYNC_COOLDOWN
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
-import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.movies.MoviesRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_model.MovieStatus.IN_PRODUCTION
 import com.michaldrabik.ui_model.MovieStatus.PLANNED
 import com.michaldrabik.ui_model.MovieStatus.POST_PRODUCTION
@@ -19,9 +19,9 @@ import javax.inject.Singleton
  */
 @Singleton
 class MoviesSyncRunner @Inject constructor(
-    private val database: AppDatabase,
-    private val moviesRepository: MoviesRepository,
-    private val settingsRepository: SettingsRepository,
+  private val database: AppDatabase,
+  private val moviesRepository: MoviesRepository,
+  private val settingsRepository: SettingsRepository,
 ) {
 
   companion object {

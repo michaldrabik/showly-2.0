@@ -28,10 +28,10 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class SettingsMainCase @Inject constructor(
-    private val settingsRepository: SettingsRepository,
-    private val announcementManager: AnnouncementManager,
-    private val showsImagesProvider: ShowImagesProvider,
-    private val moviesImagesProvider: MovieImagesProvider,
+  private val settingsRepository: SettingsRepository,
+  private val announcementManager: AnnouncementManager,
+  private val showsImagesProvider: ShowImagesProvider,
+  private val moviesImagesProvider: MovieImagesProvider,
 ) {
 
   suspend fun getSettings(): Settings = settingsRepository.load()

@@ -3,6 +3,7 @@ package com.michaldrabik.ui_widgets.calendar_movies
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetManager.ACTION_APPWIDGET_UPDATE
+import android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -13,6 +14,7 @@ import android.widget.RemoteViews
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import com.michaldrabik.common.CalendarMode
 import com.michaldrabik.common.Config
+import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_widgets.BaseWidgetProvider
 import com.michaldrabik.ui_widgets.R
@@ -57,7 +59,7 @@ class CalendarMoviesWidgetProvider : BaseWidgetProvider() {
     val spaceTiny = context.dimenToPx(R.dimen.spaceTiny)
 
     val intent = Intent(context, CalendarMoviesWidgetService::class.java).apply {
-      putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
+      putExtra(EXTRA_APPWIDGET_ID, widgetId)
       data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
     }
 
@@ -74,7 +76,7 @@ class CalendarMoviesWidgetProvider : BaseWidgetProvider() {
       setInt(R.id.calendarWidgetMoviesNightRoot, "setBackgroundResource", getBackgroundResId())
       setInt(R.id.calendarWidgetMoviesDayRoot, "setBackgroundResource", getBackgroundResId())
 
-      when (settingsRepository.widgetsSettings.widgetCalendarMoviesMode) {
+      when (settingsRepository.widgetsSettings.getWidgetCalendarMode(Mode.MOVIES, widgetId)) {
         CalendarMode.PRESENT_FUTURE -> {
           setImageViewResource(R.id.calendarWidgetMoviesEmptyViewIcon, R.drawable.ic_history)
           setTextViewText(R.id.calendarWidgetMoviesEmptyViewSubtitle, context.getString(R.string.textMoviesCalendarEmpty))
@@ -106,6 +108,7 @@ class CalendarMoviesWidgetProvider : BaseWidgetProvider() {
       Intent(ACTION_CLICK).apply {
         setClass(context, this@CalendarMoviesWidgetProvider.javaClass)
         putExtra(EXTRA_MODE_CLICK, true)
+        putExtra(EXTRA_APPWIDGET_ID, widgetId)
       },
       PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
     )
@@ -118,10 +121,12 @@ class CalendarMoviesWidgetProvider : BaseWidgetProvider() {
     appWidgetManager.notifyAppWidgetViewDataChanged(widgetId, R.id.calendarWidgetMoviesList)
   }
 
-  private fun toggleCalendarMode() {
-    when (settingsRepository.widgetsSettings.widgetCalendarMoviesMode) {
-      CalendarMode.PRESENT_FUTURE -> settingsRepository.widgetsSettings.widgetCalendarMoviesMode = CalendarMode.RECENTS
-      CalendarMode.RECENTS -> settingsRepository.widgetsSettings.widgetCalendarMoviesMode = CalendarMode.PRESENT_FUTURE
+  private fun toggleCalendarMode(widgetId: Int) {
+    when (settingsRepository.widgetsSettings.getWidgetCalendarMode(Mode.MOVIES, widgetId)) {
+      CalendarMode.PRESENT_FUTURE ->
+        settingsRepository.widgetsSettings.setWidgetCalendarMode(Mode.MOVIES, widgetId, CalendarMode.RECENTS)
+      CalendarMode.RECENTS ->
+        settingsRepository.widgetsSettings.setWidgetCalendarMode(Mode.MOVIES, widgetId, CalendarMode.PRESENT_FUTURE)
     }
   }
 
@@ -138,8 +143,8 @@ class CalendarMoviesWidgetProvider : BaseWidgetProvider() {
       )
     }
 
-    fun onHeaderIconClick() {
-      toggleCalendarMode()
+    fun onHeaderIconClick(widgetId: Int) {
+      toggleCalendarMode(widgetId)
       requestUpdate(context.applicationContext)
     }
 
@@ -147,7 +152,10 @@ class CalendarMoviesWidgetProvider : BaseWidgetProvider() {
     if (intent.action == ACTION_CLICK) {
       when {
         intent.extras?.containsKey(EXTRA_MOVIE_ID) == true -> onListItemClick()
-        intent.extras?.containsKey(EXTRA_MODE_CLICK) == true -> onHeaderIconClick()
+        intent.extras?.containsKey(EXTRA_MODE_CLICK) == true -> {
+          val widgetId = intent.extras?.getInt(EXTRA_APPWIDGET_ID) ?: 0
+          onHeaderIconClick(widgetId)
+        }
       }
     }
   }
