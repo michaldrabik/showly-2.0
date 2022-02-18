@@ -7,6 +7,7 @@ import com.michaldrabik.repository.common.BaseMockTest
 import com.michaldrabik.repository.mappers.SettingsMapper
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.settings.SettingsSortRepository
+import com.michaldrabik.repository.settings.SettingsWidgetsRepository
 import com.michaldrabik.ui_model.Settings
 import io.mockk.Runs
 import io.mockk.coEvery
@@ -24,6 +25,7 @@ class SettingsRepositoryTest : BaseMockTest() {
   @MockK lateinit var settingsDao: SettingsDao
   @MockK lateinit var sharedPreferences: SharedPreferences
   @MockK lateinit var settingsSortRepository: SettingsSortRepository
+  @MockK lateinit var settingsWidgetsRepository: SettingsWidgetsRepository
 
   private lateinit var SUT: SettingsRepository
 
@@ -31,7 +33,7 @@ class SettingsRepositoryTest : BaseMockTest() {
   override fun setUp() {
     super.setUp()
     every { database.settingsDao() } returns settingsDao
-    SUT = SettingsRepository(settingsSortRepository, database, mappers, sharedPreferences)
+    SUT = SettingsRepository(settingsSortRepository, settingsWidgetsRepository, database, mappers, sharedPreferences)
   }
 
   @Test
