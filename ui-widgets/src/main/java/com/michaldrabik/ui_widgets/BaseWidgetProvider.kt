@@ -23,7 +23,7 @@ abstract class BaseWidgetProvider : AppWidgetProvider() {
   abstract fun getLayoutResId(): Int
 
   protected fun getBackgroundResId() =
-    when (settingsRepository.widgetsSettings.widgetsTransparency) {
+    when (settingsRepository.widgets.widgetsTransparency) {
       75 -> R.drawable.bg_widget_75
       50 -> R.drawable.bg_widget_50
       25 -> R.drawable.bg_widget_25

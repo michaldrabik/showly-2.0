@@ -39,7 +39,7 @@ class CalendarMoviesWidgetProvider : BaseWidgetProvider() {
   }
 
   override fun getLayoutResId(): Int {
-    val isLight = settingsRepository.widgetsSettings.widgetsTheme == MODE_NIGHT_NO
+    val isLight = settingsRepository.widgets.widgetsTheme == MODE_NIGHT_NO
     return when {
       isLight -> R.layout.widget_movies_calendar_day
       else -> R.layout.widget_movies_calendar_night
@@ -76,7 +76,7 @@ class CalendarMoviesWidgetProvider : BaseWidgetProvider() {
       setInt(R.id.calendarWidgetMoviesNightRoot, "setBackgroundResource", getBackgroundResId())
       setInt(R.id.calendarWidgetMoviesDayRoot, "setBackgroundResource", getBackgroundResId())
 
-      when (settingsRepository.widgetsSettings.getWidgetCalendarMode(Mode.MOVIES, widgetId)) {
+      when (settingsRepository.widgets.getWidgetCalendarMode(Mode.MOVIES, widgetId)) {
         CalendarMode.PRESENT_FUTURE -> {
           setImageViewResource(R.id.calendarWidgetMoviesEmptyViewIcon, R.drawable.ic_history)
           setTextViewText(R.id.calendarWidgetMoviesEmptyViewSubtitle, context.getString(R.string.textMoviesCalendarEmpty))
@@ -122,11 +122,11 @@ class CalendarMoviesWidgetProvider : BaseWidgetProvider() {
   }
 
   private fun toggleCalendarMode(widgetId: Int) {
-    when (settingsRepository.widgetsSettings.getWidgetCalendarMode(Mode.MOVIES, widgetId)) {
+    when (settingsRepository.widgets.getWidgetCalendarMode(Mode.MOVIES, widgetId)) {
       CalendarMode.PRESENT_FUTURE ->
-        settingsRepository.widgetsSettings.setWidgetCalendarMode(Mode.MOVIES, widgetId, CalendarMode.RECENTS)
+        settingsRepository.widgets.setWidgetCalendarMode(Mode.MOVIES, widgetId, CalendarMode.RECENTS)
       CalendarMode.RECENTS ->
-        settingsRepository.widgetsSettings.setWidgetCalendarMode(Mode.MOVIES, widgetId, CalendarMode.PRESENT_FUTURE)
+        settingsRepository.widgets.setWidgetCalendarMode(Mode.MOVIES, widgetId, CalendarMode.PRESENT_FUTURE)
     }
   }
 

@@ -12,12 +12,12 @@ class ProgressMoviesSortCase @Inject constructor(
 ) {
 
   fun setSortOrder(sortOrder: SortOrder, sortType: SortType) {
-    settingsRepository.sortSettings.progressMoviesSortOrder = sortOrder
-    settingsRepository.sortSettings.progressMoviesSortType = sortType
+    settingsRepository.sorting.progressMoviesSortOrder = sortOrder
+    settingsRepository.sorting.progressMoviesSortType = sortType
   }
 
   fun loadSortOrder() = Pair(
-    settingsRepository.sortSettings.progressMoviesSortOrder,
-    settingsRepository.sortSettings.progressMoviesSortType
+    settingsRepository.sorting.progressMoviesSortOrder,
+    settingsRepository.sorting.progressMoviesSortType
   )
 }

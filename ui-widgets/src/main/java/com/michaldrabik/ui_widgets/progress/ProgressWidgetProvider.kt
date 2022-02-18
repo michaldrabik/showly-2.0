@@ -44,7 +44,7 @@ class ProgressWidgetProvider : BaseWidgetProvider() {
   }
 
   override fun getLayoutResId(): Int {
-    val isLight = settingsRepository.widgetsSettings.widgetsTheme == MODE_NIGHT_NO
+    val isLight = settingsRepository.widgets.widgetsTheme == MODE_NIGHT_NO
     return when {
       isLight -> R.layout.widget_progress_day
       else -> R.layout.widget_progress_night

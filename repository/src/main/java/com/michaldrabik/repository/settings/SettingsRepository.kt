@@ -22,8 +22,8 @@ import javax.inject.Singleton
 
 @Singleton
 class SettingsRepository @Inject constructor(
-  val sortSettings: SettingsSortRepository,
-  val widgetsSettings: SettingsWidgetsRepository,
+  val sorting: SettingsSortRepository,
+  val widgets: SettingsWidgetsRepository,
   private val database: AppDatabase,
   private val mappers: Mappers,
   @Named("miscPreferences") private var preferences: SharedPreferences
@@ -112,7 +112,7 @@ class SettingsRepository @Inject constructor(
     isPremium = false
     theme = MODE_NIGHT_YES
     isNewsEnabled = false
-    widgetsSettings.revokePremium()
+    widgets.revokePremium()
   }
 
   suspend fun clearLanguageLogs() {

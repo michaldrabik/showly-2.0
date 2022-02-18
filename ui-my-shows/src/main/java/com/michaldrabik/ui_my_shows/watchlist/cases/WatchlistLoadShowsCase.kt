@@ -1,8 +1,8 @@
 package com.michaldrabik.ui_my_shows.watchlist.cases
 
 import com.michaldrabik.common.Config
-import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
@@ -25,8 +25,8 @@ class WatchlistLoadShowsCase @Inject constructor(
       if (language == Config.DEFAULT_LANGUAGE) emptyMap()
       else translationsRepository.loadAllShowsLocal(language)
 
-    val sortOrder = settingsRepository.sortSettings.watchlistShowsSortOrder
-    val sortType = settingsRepository.sortSettings.watchlistShowsSortType
+    val sortOrder = settingsRepository.sorting.watchlistShowsSortOrder
+    val sortType = settingsRepository.sorting.watchlistShowsSortType
 
     return showsRepository.watchlistShows.loadAll()
       .map { it to translations[it.traktId] }

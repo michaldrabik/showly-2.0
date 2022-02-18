@@ -18,6 +18,7 @@ class SettingsWidgetsRepository @Inject constructor(
   companion object Key {
     private const val THEME_WIDGET = "KEY_THEME_WIDGET"
     private const val THEME_WIDGET_TRANSPARENT = "KEY_THEME_WIDGET_TRANSPARENT"
+
     private const val WIDGET_CALENDAR_MODE = "WIDGET_CALENDAR_MODE"
     private const val WIDGET_CALENDAR_MOVIES_MODE = "WIDGET_CALENDAR_MOVIES_MODE"
   }

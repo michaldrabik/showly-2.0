@@ -12,12 +12,12 @@ class ProgressSortOrderCase @Inject constructor(
 ) {
 
   fun setSortOrder(sortOrder: SortOrder, sortType: SortType) {
-    settingsRepository.sortSettings.progressShowsSortOrder = sortOrder
-    settingsRepository.sortSettings.progressShowsSortType = sortType
+    settingsRepository.sorting.progressShowsSortOrder = sortOrder
+    settingsRepository.sorting.progressShowsSortType = sortType
   }
 
   fun loadSortOrder() = Pair(
-    settingsRepository.sortSettings.progressShowsSortOrder,
-    settingsRepository.sortSettings.progressShowsSortType
+    settingsRepository.sorting.progressShowsSortOrder,
+    settingsRepository.sorting.progressShowsSortType
   )
 }

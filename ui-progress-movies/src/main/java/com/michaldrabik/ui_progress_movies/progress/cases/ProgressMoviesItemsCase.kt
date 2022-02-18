@@ -34,8 +34,8 @@ class ProgressMoviesItemsCase @Inject constructor(
     val language = translationsRepository.getLanguage()
     val dateFormat = dateFormatProvider.loadFullDayFormat()
 
-    val sortOrder = settingsRepository.sortSettings.progressMoviesSortOrder
-    val sortType = settingsRepository.sortSettings.progressMoviesSortType
+    val sortOrder = settingsRepository.sorting.progressMoviesSortOrder
+    val sortType = settingsRepository.sorting.progressMoviesSortType
 
     val watchlistMovies = moviesRepository.watchlistMovies.loadAll()
     val items = watchlistMovies.map { movie ->

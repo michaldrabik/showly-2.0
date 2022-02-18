@@ -42,8 +42,8 @@ class MainListsCase @Inject constructor(
     val lists = listsRepository.loadAll()
     val dateFormat = dateProvider.loadFullDayFormat()
     val sorting = Pair(
-      settingsRepository.sortSettings.listsAllSortOrder,
-      settingsRepository.sortSettings.listsAllSortType
+      settingsRepository.sorting.listsAllSortOrder,
+      settingsRepository.sorting.listsAllSortType
     )
 
     lists

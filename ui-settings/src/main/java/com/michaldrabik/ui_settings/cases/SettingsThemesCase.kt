@@ -20,12 +20,12 @@ class SettingsThemesCase @Inject constructor(
   fun getTheme() = AppTheme.fromCode(settingsRepository.theme)
 
   fun setWidgetsTheme(theme: AppTheme, context: Context) {
-    settingsRepository.widgetsSettings.widgetsTheme = theme.code
+    settingsRepository.widgets.widgetsTheme = theme.code
     reloadWidgets(context)
   }
 
   fun setWidgetsTransparency(transparency: WidgetTransparency, context: Context) {
-    settingsRepository.widgetsSettings.widgetsTransparency = transparency.value
+    settingsRepository.widgets.widgetsTransparency = transparency.value
     reloadWidgets(context)
   }
 
@@ -36,7 +36,7 @@ class SettingsThemesCase @Inject constructor(
     }
   }
 
-  fun getWidgetsTheme() = AppTheme.fromCode(settingsRepository.widgetsSettings.widgetsTheme)
+  fun getWidgetsTheme() = AppTheme.fromCode(settingsRepository.widgets.widgetsTheme)
 
-  fun getWidgetsTransparency() = WidgetTransparency.fromValue(settingsRepository.widgetsSettings.widgetsTransparency)
+  fun getWidgetsTransparency() = WidgetTransparency.fromValue(settingsRepository.widgets.widgetsTransparency)
 }

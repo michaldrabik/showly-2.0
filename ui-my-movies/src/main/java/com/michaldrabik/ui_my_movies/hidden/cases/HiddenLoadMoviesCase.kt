@@ -1,9 +1,9 @@
 package com.michaldrabik.ui_my_movies.hidden.cases
 
 import com.michaldrabik.common.Config
-import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.movies.MoviesRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_model.ImageType
@@ -35,8 +35,8 @@ class HiddenLoadMoviesCase @Inject constructor(
       if (language == Config.DEFAULT_LANGUAGE) emptyMap()
       else translationsRepository.loadAllMoviesLocal(language)
 
-    val sortOrder = settingsRepository.sortSettings.hiddenMoviesSortOrder
-    val sortType = settingsRepository.sortSettings.hiddenMoviesSortType
+    val sortOrder = settingsRepository.sorting.hiddenMoviesSortOrder
+    val sortType = settingsRepository.sorting.hiddenMoviesSortType
 
     moviesRepository.hiddenMovies.loadAll()
       .map { it to translations[it.traktId] }

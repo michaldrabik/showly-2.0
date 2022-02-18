@@ -54,7 +54,7 @@ class CalendarWidgetViewsFactory(
   override fun onCreate() = loadData()
 
   private fun loadData() = runBlocking {
-    mode = settingsRepository.widgetsSettings.getWidgetCalendarMode(Mode.SHOWS, widgetId)
+    mode = settingsRepository.widgets.getWidgetCalendarMode(Mode.SHOWS, widgetId)
     val items = when (mode) {
       PRESENT_FUTURE -> calendarFutureCase.loadItems()
       RECENTS -> calendarRecentsCase.loadItems()
@@ -154,7 +154,7 @@ class CalendarWidgetViewsFactory(
   }
 
   private fun getItemLayout(): Int {
-    val isLight = settingsRepository.widgetsSettings.widgetsTheme == MODE_NIGHT_NO
+    val isLight = settingsRepository.widgets.widgetsTheme == MODE_NIGHT_NO
     return when {
       isLight -> R.layout.widget_calendar_item_day
       else -> R.layout.widget_calendar_item_night
@@ -162,7 +162,7 @@ class CalendarWidgetViewsFactory(
   }
 
   private fun getHeaderLayout(): Int {
-    val isLight = settingsRepository.widgetsSettings.widgetsTheme == MODE_NIGHT_NO
+    val isLight = settingsRepository.widgets.widgetsTheme == MODE_NIGHT_NO
     return when {
       isLight -> R.layout.widget_header_day
       else -> R.layout.widget_header_night

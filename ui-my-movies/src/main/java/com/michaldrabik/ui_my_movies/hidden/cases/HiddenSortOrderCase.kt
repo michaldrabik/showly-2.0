@@ -12,12 +12,12 @@ class HiddenSortOrderCase @Inject constructor(
 ) {
 
   fun setSortOrder(sortOrder: SortOrder, sortType: SortType) {
-    settingsRepository.sortSettings.hiddenMoviesSortOrder = sortOrder
-    settingsRepository.sortSettings.hiddenMoviesSortType = sortType
+    settingsRepository.sorting.hiddenMoviesSortOrder = sortOrder
+    settingsRepository.sorting.hiddenMoviesSortType = sortType
   }
 
   fun loadSortOrder() = Pair(
-    settingsRepository.sortSettings.hiddenMoviesSortOrder,
-    settingsRepository.sortSettings.hiddenMoviesSortType
+    settingsRepository.sorting.hiddenMoviesSortOrder,
+    settingsRepository.sorting.hiddenMoviesSortType
   )
 }

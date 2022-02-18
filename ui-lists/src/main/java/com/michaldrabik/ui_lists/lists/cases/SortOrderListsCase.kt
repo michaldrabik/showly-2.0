@@ -12,12 +12,12 @@ class SortOrderListsCase @Inject constructor(
 ) {
 
   fun setSortOrder(sortOrder: SortOrder, sortType: SortType) {
-    settingsRepository.sortSettings.listsAllSortOrder = sortOrder
-    settingsRepository.sortSettings.listsAllSortType = sortType
+    settingsRepository.sorting.listsAllSortOrder = sortOrder
+    settingsRepository.sorting.listsAllSortType = sortType
   }
 
   fun loadSortOrder() = Pair(
-    settingsRepository.sortSettings.listsAllSortOrder,
-    settingsRepository.sortSettings.listsAllSortType
+    settingsRepository.sorting.listsAllSortOrder,
+    settingsRepository.sorting.listsAllSortType
   )
 }

@@ -36,21 +36,21 @@ class ProgressMoviesSortCaseTest : BaseMockTest() {
   fun `Should set sorting order properly`() = runBlockingTest {
     SUT.setSortOrder(SortOrder.RANK, SortType.DESCENDING)
 
-    coVerify { settingsRepository.sortSettings setProperty "progressMoviesSortOrder" value SortOrder.RANK }
-    coVerify { settingsRepository.sortSettings setProperty "progressMoviesSortType" value SortType.DESCENDING }
+    coVerify { settingsRepository.sorting setProperty "progressMoviesSortOrder" value SortOrder.RANK }
+    coVerify { settingsRepository.sorting setProperty "progressMoviesSortType" value SortType.DESCENDING }
   }
 
   @Test
   fun `Should load sorting order properly`() = runBlockingTest {
-    coEvery { settingsRepository.sortSettings getProperty "progressMoviesSortOrder" } returns SortOrder.RANK
-    coEvery { settingsRepository.sortSettings getProperty "progressMoviesSortType" } returns SortType.DESCENDING
+    coEvery { settingsRepository.sorting getProperty "progressMoviesSortOrder" } returns SortOrder.RANK
+    coEvery { settingsRepository.sorting getProperty "progressMoviesSortType" } returns SortType.DESCENDING
 
     val result = SUT.loadSortOrder()
 
     assertThat(result.first).isEqualTo(SortOrder.RANK)
     assertThat(result.second).isEqualTo(SortType.DESCENDING)
 
-    coVerify { settingsRepository.sortSettings getProperty "progressMoviesSortOrder" }
-    coVerify { settingsRepository.sortSettings getProperty "progressMoviesSortType" }
+    coVerify { settingsRepository.sorting getProperty "progressMoviesSortOrder" }
+    coVerify { settingsRepository.sorting getProperty "progressMoviesSortType" }
   }
 }

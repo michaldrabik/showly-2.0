@@ -1,9 +1,9 @@
 package com.michaldrabik.ui_my_movies.watchlist.cases
 
 import com.michaldrabik.common.Config
-import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.movies.MoviesRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Translation
@@ -27,8 +27,8 @@ class WatchlistLoadMoviesCase @Inject constructor(
       if (language == Config.DEFAULT_LANGUAGE) emptyMap()
       else translationsRepository.loadAllMoviesLocal(language)
 
-    val sortOrder = settingsRepository.sortSettings.watchlistMoviesSortOrder
-    val sortType = settingsRepository.sortSettings.watchlistMoviesSortType
+    val sortOrder = settingsRepository.sorting.watchlistMoviesSortOrder
+    val sortType = settingsRepository.sorting.watchlistMoviesSortType
 
     return moviesRepository.watchlistMovies.loadAll()
       .map { it to translations[it.traktId] }

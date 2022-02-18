@@ -56,8 +56,8 @@ class ProgressItemsCase @Inject constructor(
     val language = translationsRepository.getLanguage()
     val dateFormat = dateFormatProvider.loadFullHourFormat()
 
-    val sortOrder = settingsRepository.sortSettings.progressShowsSortOrder
-    val sortType = settingsRepository.sortSettings.progressShowsSortType
+    val sortOrder = settingsRepository.sorting.progressShowsSortOrder
+    val sortType = settingsRepository.sorting.progressShowsSortType
 
     val nowUtc = nowUtc()
     val upcomingLimit = nowUtc.plusMonths(UPCOMING_MONTHS_LIMIT).toMillis()

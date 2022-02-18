@@ -18,20 +18,20 @@ class MyShowsSortingCase @Inject constructor(
 
   fun loadSectionSortOrder(section: MyShowsSection) = when (section) {
     WATCHING -> Pair(
-      settingsRepository.sortSettings.myShowsWatchingSortOrder,
-      settingsRepository.sortSettings.myShowsWatchingSortType
+      settingsRepository.sorting.myShowsWatchingSortOrder,
+      settingsRepository.sorting.myShowsWatchingSortType
     )
     UPCOMING -> Pair(
-      settingsRepository.sortSettings.myShowsUpcomingSortOrder,
-      settingsRepository.sortSettings.myShowsUpcomingSortType
+      settingsRepository.sorting.myShowsUpcomingSortOrder,
+      settingsRepository.sorting.myShowsUpcomingSortType
     )
     FINISHED -> Pair(
-      settingsRepository.sortSettings.myShowsFinishedSortOrder,
-      settingsRepository.sortSettings.myShowsFinishedSortType
+      settingsRepository.sorting.myShowsFinishedSortOrder,
+      settingsRepository.sorting.myShowsFinishedSortType
     )
     ALL -> Pair(
-      settingsRepository.sortSettings.myShowsAllSortOrder,
-      settingsRepository.sortSettings.myShowsAllSortType
+      settingsRepository.sorting.myShowsAllSortOrder,
+      settingsRepository.sorting.myShowsAllSortType
     )
     else -> error("Should not be used here.")
   }
@@ -42,20 +42,20 @@ class MyShowsSortingCase @Inject constructor(
     sortType: SortType
   ) = when (section) {
     WATCHING -> {
-      settingsRepository.sortSettings.myShowsWatchingSortOrder = sortOrder
-      settingsRepository.sortSettings.myShowsWatchingSortType = sortType
+      settingsRepository.sorting.myShowsWatchingSortOrder = sortOrder
+      settingsRepository.sorting.myShowsWatchingSortType = sortType
     }
     UPCOMING -> {
-      settingsRepository.sortSettings.myShowsUpcomingSortOrder = sortOrder
-      settingsRepository.sortSettings.myShowsUpcomingSortType = sortType
+      settingsRepository.sorting.myShowsUpcomingSortOrder = sortOrder
+      settingsRepository.sorting.myShowsUpcomingSortType = sortType
     }
     FINISHED -> {
-      settingsRepository.sortSettings.myShowsFinishedSortOrder = sortOrder
-      settingsRepository.sortSettings.myShowsFinishedSortType = sortType
+      settingsRepository.sorting.myShowsFinishedSortOrder = sortOrder
+      settingsRepository.sorting.myShowsFinishedSortType = sortType
     }
     ALL -> {
-      settingsRepository.sortSettings.myShowsAllSortOrder = sortOrder
-      settingsRepository.sortSettings.myShowsAllSortType = sortType
+      settingsRepository.sorting.myShowsAllSortOrder = sortOrder
+      settingsRepository.sorting.myShowsAllSortType = sortType
     }
     else -> error("Should not be used here.")
   }

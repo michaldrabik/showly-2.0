@@ -1,8 +1,8 @@
 package com.michaldrabik.ui_my_shows.archive.cases
 
 import com.michaldrabik.common.Config
-import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
@@ -25,8 +25,8 @@ class ArchiveLoadShowsCase @Inject constructor(
       if (language == Config.DEFAULT_LANGUAGE) emptyMap()
       else translationsRepository.loadAllShowsLocal(language)
 
-    val sortOrder = settingsRepository.sortSettings.hiddenShowsSortOrder
-    val sortType = settingsRepository.sortSettings.hiddenShowsSortType
+    val sortOrder = settingsRepository.sorting.hiddenShowsSortOrder
+    val sortType = settingsRepository.sorting.hiddenShowsSortType
 
     return showsRepository.hiddenShows.loadAll()
       .map { it to translations[it.traktId] }

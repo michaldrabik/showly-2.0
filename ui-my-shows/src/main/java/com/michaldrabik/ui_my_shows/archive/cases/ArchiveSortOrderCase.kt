@@ -12,12 +12,12 @@ class ArchiveSortOrderCase @Inject constructor(
 ) {
 
   fun setSortOrder(sortOrder: SortOrder, sortType: SortType) {
-    settingsRepository.sortSettings.hiddenShowsSortOrder = sortOrder
-    settingsRepository.sortSettings.hiddenShowsSortType = sortType
+    settingsRepository.sorting.hiddenShowsSortOrder = sortOrder
+    settingsRepository.sorting.hiddenShowsSortType = sortType
   }
 
   fun loadSortOrder() = Pair(
-    settingsRepository.sortSettings.hiddenShowsSortOrder,
-    settingsRepository.sortSettings.hiddenShowsSortType
+    settingsRepository.sorting.hiddenShowsSortOrder,
+    settingsRepository.sorting.hiddenShowsSortType
   )
 }

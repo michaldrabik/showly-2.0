@@ -49,7 +49,7 @@ class CalendarMoviesWidgetViewsFactory(
   private val adapterItems = mutableListOf<CalendarMovieListItem>()
 
   private fun loadData() = runBlocking {
-    mode = settingsRepository.widgetsSettings.getWidgetCalendarMode(Mode.MOVIES, widgetId)
+    mode = settingsRepository.widgets.getWidgetCalendarMode(Mode.MOVIES, widgetId)
     val items = when (mode) {
       CalendarMode.PRESENT_FUTURE -> futureItemsCase.loadItems()
       CalendarMode.RECENTS -> recentItemsCase.loadItems()
@@ -143,7 +143,7 @@ class CalendarMoviesWidgetViewsFactory(
   }
 
   private fun getItemLayout(): Int {
-    val isLight = settingsRepository.widgetsSettings.widgetsTheme == MODE_NIGHT_NO
+    val isLight = settingsRepository.widgets.widgetsTheme == MODE_NIGHT_NO
     return when {
       isLight -> R.layout.widget_movies_calendar_item_day
       else -> R.layout.widget_movies_calendar_item_night
@@ -151,7 +151,7 @@ class CalendarMoviesWidgetViewsFactory(
   }
 
   private fun getHeaderLayout(): Int {
-    val isLight = settingsRepository.widgetsSettings.widgetsTheme == MODE_NIGHT_NO
+    val isLight = settingsRepository.widgets.widgetsTheme == MODE_NIGHT_NO
     return when {
       isLight -> R.layout.widget_header_day
       else -> R.layout.widget_header_night
