@@ -2,8 +2,10 @@ package com.michaldrabik.ui_my_shows.myshows
 
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
+import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
@@ -22,6 +24,7 @@ import com.michaldrabik.ui_my_shows.main.FollowedShowsUiState
 import com.michaldrabik.ui_my_shows.myshows.cases.MyShowsLoadShowsCase
 import com.michaldrabik.ui_my_shows.myshows.cases.MyShowsRatingsCase
 import com.michaldrabik.ui_my_shows.myshows.cases.MyShowsSortingCase
+import com.michaldrabik.ui_my_shows.myshows.cases.MyShowsTranslationsCase
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem.Type
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -41,6 +44,9 @@ class MyShowsViewModel @Inject constructor(
   private val loadShowsCase: MyShowsLoadShowsCase,
   private val sortingCase: MyShowsSortingCase,
   private val ratingsCase: MyShowsRatingsCase,
+  private val translationsCase: MyShowsTranslationsCase,
+  private val settingsRepository: SettingsRepository,
+  private val imagesProvider: ShowImagesProvider
 ) : BaseViewModel() {
 
   private var loadItemsJob: Job? = null
@@ -65,7 +71,7 @@ class MyShowsViewModel @Inject constructor(
   fun loadShows(resetScroll: List<Type>? = null) {
     loadItemsJob?.cancel()
     loadItemsJob = viewModelScope.launch {
-      val settings = loadShowsCase.loadSettings()
+      val settings = settingsRepository.load()
       val shows = loadShowsCase.loadAllShows().map { toListItemAsync(Type.ALL_SHOWS_ITEM, it) }.awaitAll()
       val seasons = loadShowsCase.loadSeasonsForShows(shows.map { it.show.traktId })
 
@@ -158,7 +164,7 @@ class MyShowsViewModel @Inject constructor(
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
       try {
-        val image = loadShowsCase.loadMissingImage(item.show, item.image.type, force)
+        val image = imagesProvider.loadRemoteImage(item.show, item.image.type, force)
         updateItem(item.copy(isLoading = false, image = image))
       } catch (t: Throwable) {
         updateItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
@@ -184,7 +190,7 @@ class MyShowsViewModel @Inject constructor(
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true), itemSection)
       try {
-        val image = loadShowsCase.loadMissingImage(item.show, item.image.type, force)
+        val image = imagesProvider.loadRemoteImage(item.show, item.image.type, force)
         updateItem(item.copy(isLoading = false, image = image), itemSection)
       } catch (t: Throwable) {
         updateItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)), itemSection)
@@ -193,10 +199,10 @@ class MyShowsViewModel @Inject constructor(
   }
 
   fun loadMissingTranslation(item: MyShowsItem) {
-    if (item.translation != null || loadShowsCase.language == Config.DEFAULT_LANGUAGE) return
+    if (item.translation != null || translationsCase.language == Config.DEFAULT_LANGUAGE) return
     viewModelScope.launch {
       try {
-        val translation = loadShowsCase.loadTranslation(item.show, false)
+        val translation = translationsCase.loadTranslation(item.show, false)
         updateItem(item.copy(translation = translation))
       } catch (error: Throwable) {
         Logger.record(error, "Source" to "MyShowsViewModel::loadMissingTranslation()")
@@ -215,8 +221,8 @@ class MyShowsViewModel @Inject constructor(
     show: Show,
     type: ImageType = POSTER,
   ) = async {
-    val image = loadShowsCase.findCachedImage(show, type)
-    val translation = loadShowsCase.loadTranslation(show, true)
+    val image = imagesProvider.findCachedImage(show, type)
+    val translation = translationsCase.loadTranslation(show, true)
     MyShowsItem(itemType, null, null, null, show, image, false, translation)
   }
 

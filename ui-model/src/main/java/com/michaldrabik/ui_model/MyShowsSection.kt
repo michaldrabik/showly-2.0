@@ -9,21 +9,21 @@ import com.michaldrabik.ui_model.ShowStatus.RETURNING
 
 enum class MyShowsSection(
   @StringRes val displayString: Int,
-  val statuses: List<ShowStatus> = emptyList()
+  val allowedStatuses: List<ShowStatus> = emptyList()
 ) {
   RECENTS(
     displayString = R.string.textHeaderRecentlyAdded
   ),
   WATCHING(
-    statuses = listOf(RETURNING),
+    allowedStatuses = listOf(RETURNING),
     displayString = R.string.textHeaderWatching
   ),
   FINISHED(
-    statuses = listOf(CANCELED, ENDED),
+    allowedStatuses = listOf(CANCELED, ENDED),
     displayString = R.string.textHeaderFinished
   ),
   UPCOMING(
-    statuses = listOf(IN_PRODUCTION, PLANNED, ShowStatus.UPCOMING),
+    allowedStatuses = listOf(IN_PRODUCTION, PLANNED, ShowStatus.UPCOMING),
     displayString = R.string.textHeaderReturning
   ),
   ALL(
