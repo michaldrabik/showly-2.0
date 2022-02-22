@@ -25,7 +25,7 @@
       android:id="@+id/statisticsToolbar"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:background="?attr/colorPrimaryBackground"
+      android:background="?android:windowBackground"
       android:elevation="@dimen/elevationNormal"
       app:contentInsetStartWithNavigation="0dp"
       app:layout_constraintBottom_toTopOf="@id/statisticsTotalTimeSpent"
