@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <attr name="colorPrimaryBackground" format="color" />
   <attr name="colorInfoSnackbar" format="color" />
   <attr name="colorErrorSnackbar" format="color" />
   <attr name="textColorInfoSnackbar" format="color" />
   <attr name="textColorErrorSnackbar" format="color" />
-
-  <attr name="colorRateAppSnackbar" format="color" />
-  <attr name="colorRateAppSnackbarTextPrimary" format="color" />
-  <attr name="colorRateAppSnackbarTextSecondary" format="color" />
 
   <attr name="colorBottomMenuBackground" format="color" />
   <attr name="colorBottomMenuItemChecked" format="color" />
@@ -21,7 +16,6 @@
   <attr name="colorSearchLocalViewBackground" format="color" />
   <attr name="colorSearchLocalViewControl" format="color" />
 
-  <attr name="colorMask" format="color" />
   <attr name="colorSeparator" format="color" />
   <attr name="colorCardBackground" format="color" />
   <attr name="colorBadgeBackground" format="color" />

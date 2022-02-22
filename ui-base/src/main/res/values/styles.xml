@@ -2,17 +2,14 @@
 
   <!-- Base app theme -->
   <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-    <item name="android:windowBackground">#131313</item>
+    <item name="android:windowBackground">@color/colorBackground</item>
     <item name="android:navigationBarColor">@color/colorPrimary</item>
     <item name="android:windowTranslucentStatus">true</item>
     <item name="toolbarNavigationButtonStyle">@style/Toolbar.Button.Navigation.Tinted</item>
 
-    <item name="colorPrimaryBackground">@color/colorBackground</item>
     <item name="colorPrimary">@color/colorPrimary</item>
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     <item name="colorAccent">@color/colorAccent</item>
-    <item name="colorError">@color/colorError</item>
-    <item name="colorMask">@color/colorBlackTranslucent</item>
 
     <item name="android:textColorPrimary">@color/colorWhite</item>
     <item name="android:textColorSecondary">@color/colorGrayLight</item>
@@ -28,10 +25,6 @@
     <item name="textColorInfoSnackbar">@color/colorBlack</item>
     <item name="colorErrorSnackbar">@color/colorError</item>
     <item name="textColorErrorSnackbar">@color/colorWhite</item>
-
-    <item name="colorRateAppSnackbar">@color/colorWhite</item>
-    <item name="colorRateAppSnackbarTextPrimary">@color/colorBlack</item>
-    <item name="colorRateAppSnackbarTextSecondary">@color/colorGrayLight</item>
 
     <item name="colorBottomMenuBackground">@color/colorPrimary</item>
     <item name="colorBottomMenuItem">#838383</item>

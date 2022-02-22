@@ -36,7 +36,7 @@
     android:id="@+id/fragmentListDetailsToolbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/colorPrimaryBackground"
+    android:background="?android:windowBackground"
     android:elevation="@dimen/elevationNormal"
     app:contentInsetStartWithNavigation="0dp"
     app:navigationIcon="@drawable/ic_arrow_back"

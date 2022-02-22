@@ -19,7 +19,6 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_lists.R
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
 import kotlinx.android.synthetic.main.view_list_details_movie_item.view.*
-import kotlinx.android.synthetic.main.view_list_details_show_item.view.*
 import java.util.Locale.ENGLISH
 import kotlin.math.abs
 
@@ -33,7 +32,7 @@ class ListDetailsMovieItemView : ListDetailsItemView {
   init {
     inflate(context, R.layout.view_list_details_movie_item, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-    setBackgroundColor(context.colorFromAttr(R.attr.colorPrimaryBackground))
+    setBackgroundColor(context.colorFromAttr(android.R.attr.windowBackground))
 
     imageLoadCompleteListener = {
       if (item.translation == null) {

@@ -8,7 +8,7 @@
   android:layout_height="wrap_content"
   android:clipToPadding="false"
   android:focusableInTouchMode="true"
-  tools:background="?attr/colorPrimaryBackground"
+  tools:background="?android:windowBackground"
   tools:ignore="UnusedAttribute"
   tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
   tools:targetApi="m"
