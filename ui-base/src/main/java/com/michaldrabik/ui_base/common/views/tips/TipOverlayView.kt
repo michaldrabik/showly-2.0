@@ -7,7 +7,6 @@ import android.widget.FrameLayout
 import androidx.dynamicanimation.animation.DynamicAnimation
 import androidx.dynamicanimation.animation.SpringAnimation
 import com.michaldrabik.ui_base.R
-import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -24,7 +23,7 @@ class TipOverlayView : FrameLayout {
   init {
     inflate(context, R.layout.view_tip_overlay, this)
     layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
-    setBackgroundColor(context.colorFromAttr(R.attr.colorMask))
+    setBackgroundResource(R.color.colorBlackTranslucent)
     setupView()
   }
 

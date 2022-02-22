@@ -11,7 +11,6 @@
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     <item name="colorAccent">@color/colorAccent</item>
     <item name="colorError">@color/colorError</item>
-    <item name="colorMask">@color/colorBlackTranslucent</item>
 
     <item name="android:textColorPrimary">@color/colorBlue</item>
     <item name="android:textColorSecondary">@color/colorBlueLight</item>
