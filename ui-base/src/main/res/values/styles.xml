@@ -27,10 +27,6 @@
     <item name="colorErrorSnackbar">@color/colorError</item>
     <item name="textColorErrorSnackbar">@color/colorWhite</item>
 
-    <item name="colorRateAppSnackbar">@color/colorWhite</item>
-    <item name="colorRateAppSnackbarTextPrimary">@color/colorBlack</item>
-    <item name="colorRateAppSnackbarTextSecondary">@color/colorGrayLight</item>
-
     <item name="colorBottomMenuBackground">@color/colorPrimary</item>
     <item name="colorBottomMenuItem">#838383</item>
     <item name="colorBottomMenuItemChecked">@color/colorWhite</item>

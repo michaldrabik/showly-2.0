@@ -5,10 +5,6 @@
   <attr name="textColorInfoSnackbar" format="color" />
   <attr name="textColorErrorSnackbar" format="color" />
 
-  <attr name="colorRateAppSnackbar" format="color" />
-  <attr name="colorRateAppSnackbarTextPrimary" format="color" />
-  <attr name="colorRateAppSnackbarTextSecondary" format="color" />
-
   <attr name="colorBottomMenuBackground" format="color" />
   <attr name="colorBottomMenuItemChecked" format="color" />
   <attr name="colorBottomMenuItem" format="color" />
