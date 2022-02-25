@@ -6,8 +6,7 @@ import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
 import com.michaldrabik.ui_model.NewsItem
-import com.michaldrabik.ui_model.NewsItem.Type.MOVIE
-import com.michaldrabik.ui_model.NewsItem.Type.SHOW
+import com.michaldrabik.ui_news.cases.NewsFiltersCase
 import com.michaldrabik.ui_news.cases.NewsLoadItemsCase
 import com.michaldrabik.ui_news.recycler.NewsListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,47 +15,33 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltViewModel
 class NewsViewModel @Inject constructor(
   private val loadNewsCase: NewsLoadItemsCase,
+  private val filtersCase: NewsFiltersCase
 ) : BaseViewModel() {
 
   private var previousRefresh = 0L
-  private var currentTypes: List<NewsItem.Type> = listOf(SHOW, MOVIE)
 
   private val itemsState = MutableStateFlow(emptyList<NewsListItem>())
+  private val filtersState = MutableStateFlow(emptyList<NewsItem.Type>())
   private val loadingState = MutableStateFlow(false)
 
-  val uiState = combine(
-    itemsState,
-    loadingState
-  ) { items, loading ->
-    NewsUiState(
-      items = items,
-      isLoading = loading
-    )
-  }.stateIn(
-    scope = viewModelScope,
-    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = NewsUiState()
-  )
-
   init {
-    loadItems()
+    val types = filtersCase.loadFilters()
+    loadItems(filters = types)
   }
 
   fun loadItems(
     forceRefresh: Boolean = false,
-    types: List<NewsItem.Type>? = null,
+    filters: List<NewsItem.Type>? = null,
   ) {
-    if (types != null) {
-      currentTypes = types.toList()
-      if (types.isEmpty()) {
-        currentTypes = listOf(SHOW, MOVIE)
-      }
+    if (filters != null) {
+      filtersCase.saveFilters(filters.toList())
     }
 
     if (forceRefresh) {
@@ -76,18 +61,23 @@ class NewsViewModel @Inject constructor(
         if (forceRefresh) {
           loadingState.value = true
         } else {
-          val cachedItems = loadNewsCase.preloadItems(currentTypes)
+          val currentFilters = filtersCase.loadFilters()
+          val cachedItems = loadNewsCase.preloadItems(currentFilters)
           itemsState.value = cachedItems
+          filtersState.value = currentFilters
         }
 
-        val items = loadNewsCase.loadItems(forceRefresh, currentTypes)
+        val currentFilters = filtersCase.loadFilters()
+        val items = loadNewsCase.loadItems(forceRefresh, currentFilters)
         itemsState.value = items
+        filtersState.value = currentFilters
         loadingState.value = false
 
         if (forceRefresh) {
           previousRefresh = nowUtcMillis()
         }
       } catch (error: Throwable) {
+        Timber.e(error)
         _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
         loadingState.value = false
         rethrowCancellation(error)
@@ -96,4 +86,20 @@ class NewsViewModel @Inject constructor(
       }
     }
   }
+
+  val uiState = combine(
+    itemsState,
+    filtersState,
+    loadingState
+  ) { items, filters, loading ->
+    NewsUiState(
+      items = items,
+      filters = filters,
+      isLoading = loading
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = NewsUiState()
+  )
 }

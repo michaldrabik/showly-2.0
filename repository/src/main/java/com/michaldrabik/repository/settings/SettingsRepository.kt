@@ -13,9 +13,10 @@ import com.michaldrabik.common.delegates.LongPreference
 import com.michaldrabik.common.delegates.StringPreference
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.repository.mappers.Mappers
+import com.michaldrabik.ui_model.NewsItem
 import com.michaldrabik.ui_model.ProgressType
 import com.michaldrabik.ui_model.Settings
-import java.util.UUID
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
@@ -45,6 +46,7 @@ class SettingsRepository @Inject constructor(
     private const val INSTALL_TIMESTAMP = "INSTALL_TIMESTAMP"
     private const val PROGRESS_UPCOMING_COLLAPSED = "PROGRESS_UPCOMING_COLLAPSED"
     private const val PROGRESS_ON_HOLD_COLLAPSED = "PROGRESS_ON_HOLD_COLLAPSED"
+    private const val NEWS_FILTERS = "NEWS_FILTERS"
   }
 
   suspend fun isInitialized() =
@@ -62,13 +64,6 @@ class SettingsRepository @Inject constructor(
     }
   }
 
-  var mode: Mode
-    get() {
-      val default = Mode.SHOWS.name
-      return Mode.valueOf(preferences.getString(MODE, default) ?: default)
-    }
-    set(value) = preferences.edit(true) { putString(MODE, value.name) }
-
   var installTimestamp by LongPreference(preferences, INSTALL_TIMESTAMP, 0L)
   var isPremium by BooleanPreference(preferences, PREMIUM)
   var streamingsEnabled by BooleanPreference(preferences, STREAMINGS_ENABLED, true)
@@ -81,6 +76,13 @@ class SettingsRepository @Inject constructor(
 
   var isProgressUpcomingCollapsed by BooleanPreference(preferences, PROGRESS_UPCOMING_COLLAPSED)
   var isProgressOnHoldCollapsed by BooleanPreference(preferences, PROGRESS_ON_HOLD_COLLAPSED)
+
+  var mode: Mode
+    get() {
+      val default = Mode.SHOWS.name
+      return Mode.valueOf(preferences.getString(MODE, default) ?: default)
+    }
+    set(value) = preferences.edit(true) { putString(MODE, value.name) }
 
   var theme: Int
     get() {
@@ -104,6 +106,18 @@ class SettingsRepository @Inject constructor(
         uuid
       }
       else -> id
+    }
+
+  var newsFilters: List<NewsItem.Type>
+    get() {
+      val filters = preferences.getString(NEWS_FILTERS, null)
+      return when {
+        filters.isNullOrBlank() -> emptyList()
+        else -> filters.split(",").map { NewsItem.Type.fromSlug(it) }
+      }
+    }
+    set(value) {
+      preferences.edit { putString(NEWS_FILTERS, value.joinToString(",") { it.slug }) }
     }
 
   suspend fun revokePremium() {

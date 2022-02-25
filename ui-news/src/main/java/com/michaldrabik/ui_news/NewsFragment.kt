@@ -37,7 +37,6 @@ import com.michaldrabik.ui_model.NewsItem
 import com.michaldrabik.ui_news.recycler.NewsAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_news.*
-import kotlinx.android.synthetic.main.view_news_filters.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -214,6 +213,7 @@ class NewsFragment :
     with(ui) {
       adapter?.setItems(items)
       fragmentNewsRecycler.fadeIf(items.isNotEmpty())
+      fragmentNewsFiltersView.setFilters(filters)
       fragmentNewsFiltersView.fadeIf(items.isNotEmpty())
       fragmentNewsEmptyView.fadeIf(items.isEmpty() && !isLoading)
 

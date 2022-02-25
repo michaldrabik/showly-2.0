@@ -17,9 +17,7 @@ class NewsFiltersView : FrameLayout, CoordinatorLayout.AttachedBehavior {
 
   init {
     inflate(context, R.layout.view_news_filters, this)
-
-    viewNewsFiltersShowsChip.setOnCheckedChangeListener { _, _ -> onChipCheckChange() }
-    viewNewsFiltersMoviesChip.setOnCheckedChangeListener { _, _ -> onChipCheckChange() }
+    setupListeners()
   }
 
   var onChipsChangeListener: ((List<NewsItem.Type>) -> Unit)? = null
@@ -33,6 +31,25 @@ class NewsFiltersView : FrameLayout, CoordinatorLayout.AttachedBehavior {
       }
     }
     onChipsChangeListener?.invoke(ids)
+  }
+
+  fun setFilters(filters: List<NewsItem.Type>) {
+    clearListeners()
+
+    viewNewsFiltersShowsChip.isChecked = filters.contains(NewsItem.Type.SHOW)
+    viewNewsFiltersMoviesChip.isChecked = filters.contains(NewsItem.Type.MOVIE)
+
+    setupListeners()
+  }
+
+  private fun setupListeners() {
+    viewNewsFiltersShowsChip.setOnCheckedChangeListener { _, _ -> onChipCheckChange() }
+    viewNewsFiltersMoviesChip.setOnCheckedChangeListener { _, _ -> onChipCheckChange() }
+  }
+
+  private fun clearListeners() {
+    viewNewsFiltersShowsChip.setOnCheckedChangeListener(null)
+    viewNewsFiltersMoviesChip.setOnCheckedChangeListener(null)
   }
 
   override fun setEnabled(enabled: Boolean) {

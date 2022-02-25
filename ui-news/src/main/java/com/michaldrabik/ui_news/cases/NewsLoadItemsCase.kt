@@ -25,14 +25,13 @@ class NewsLoadItemsCase @Inject constructor(
   suspend fun preloadItems(types: List<Type>) = coroutineScope {
     val showsNewsAsync = async {
       when {
-        types.contains(Type.SHOW) -> newsRepository.getCachedNews(Type.SHOW)
+        types.contains(Type.SHOW) || types.isEmpty() -> newsRepository.getCachedNews(Type.SHOW)
         else -> emptyList()
       }
     }
-
     val moviesNewsAsync = async {
       when {
-        types.contains(Type.MOVIE) -> newsRepository.getCachedNews(Type.MOVIE)
+        types.contains(Type.MOVIE) || types.isEmpty() -> newsRepository.getCachedNews(Type.MOVIE)
         else -> emptyList()
       }
     }
@@ -51,14 +50,14 @@ class NewsLoadItemsCase @Inject constructor(
 
     val showsNewsAsync = async {
       when {
-        types.contains(Type.SHOW) -> newsRepository.loadShowsNews(token, forceRefresh)
+        types.contains(Type.SHOW) || types.isEmpty() -> newsRepository.loadShowsNews(token, forceRefresh)
         else -> emptyList()
       }
     }
 
     val moviesNewsAsync = async {
       when {
-        types.contains(Type.MOVIE) -> newsRepository.loadMoviesNews(token, forceRefresh)
+        types.contains(Type.MOVIE) || types.isEmpty() -> newsRepository.loadMoviesNews(token, forceRefresh)
         else -> emptyList()
       }
     }
