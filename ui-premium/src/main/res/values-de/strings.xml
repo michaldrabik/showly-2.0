@@ -10,6 +10,8 @@
   <string name="textQuickRatingDesc">Vergessen Sie nie einen Film oder eine Episode zu bewerten, die Sie gerade gesehen haben. Mit Schnellbewertungsfunktion können Sie automatisch ein Werk bewerten, wenn Sie es als gesehen markieren.</string>
   <string name="textWidgetsTitle">Transparente Widgets</string>
   <string name="textWidgetsDesc">Widgets Hintergrundtransparenz so einstellen, dass sie besser zu Ihrem Startbildschirm passen.</string>
+  <string name="textRemoveAdsTitle">Werbung Entfernen</string>
+  <string name="textRemoveAdsDesc">Entferne alle Premium-Werbung in der App.</string>
   <string name="textNewsTitle">News</string>
   <string name="textNewsDesc">Aktiviere News mit den neuesten Serien und Filmen Artikel, News und Trailern. Powered by Reddit.</string>
   <string name="textPurchaseThanks">Sie sind jetzt Showly Supporter!\nVielen Dank und genießen Sie die App!</string>
