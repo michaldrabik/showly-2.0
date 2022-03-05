@@ -23,9 +23,12 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.Mode.MOVIES
 import com.michaldrabik.common.Mode.SHOWS
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.showly2.BuildConfig
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.ui.BillingActivity
+import com.michaldrabik.showly2.ui.UpdateActivity
+import com.michaldrabik.showly2.ui.main.delegates.BillingDelegate
+import com.michaldrabik.showly2.ui.main.delegates.MainBillingDelegate
 import com.michaldrabik.showly2.ui.views.WhatsNewView
 import com.michaldrabik.showly2.utilities.NetworkObserver
 import com.michaldrabik.showly2.utilities.deeplink.DeepLinkResolver
@@ -68,12 +71,13 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity :
-  BillingActivity(),
+  UpdateActivity(),
   EventObserver,
   NetworkObserver,
   SnackbarHost,
   NavigationHost,
-  TipsHost {
+  TipsHost,
+  BillingDelegate by MainBillingDelegate() {
 
   companion object {
     private const val NAVIGATION_TRANSITION_DURATION_MS = 350L
@@ -94,10 +98,13 @@ class MainActivity :
   }
 
   @Inject lateinit var deepLinkResolver: DeepLinkResolver
+  @Inject lateinit var settingsRepository: SettingsRepository
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
+
+    registerBilling(this, settingsRepository)
 
     setupBackPressed()
     setupViewModel()

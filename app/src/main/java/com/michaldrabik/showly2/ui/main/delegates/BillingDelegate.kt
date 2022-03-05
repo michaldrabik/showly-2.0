@@ -1,6 +1,10 @@
-package com.michaldrabik.showly2.ui
+package com.michaldrabik.showly2.ui.main.delegates
 
-import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle.Event.ON_CREATE
+import androidx.lifecycle.Lifecycle.Event.ON_DESTROY
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.lifecycleScope
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
@@ -8,28 +12,44 @@ import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.queryPurchasesAsync
 import com.jakewharton.processphoenix.ProcessPhoenix
 import com.michaldrabik.common.Config
-import com.michaldrabik.common.Config.PREMIUM_LIFETIME_INAPP
-import com.michaldrabik.common.Config.PREMIUM_LIFETIME_INAPP_PROMO
-import com.michaldrabik.common.Config.PREMIUM_MONTHLY_SUBSCRIPTION
-import com.michaldrabik.common.Config.PREMIUM_YEARLY_SUBSCRIPTION
-import com.michaldrabik.showly2.App
+import com.michaldrabik.repository.settings.SettingsRepository
 import org.json.JSONObject
 import timber.log.Timber
 
-abstract class BillingActivity : UpdateActivity() {
+interface BillingDelegate {
+  fun registerBilling(
+    activity: AppCompatActivity,
+    settingsRepository: SettingsRepository
+  )
+}
+
+class MainBillingDelegate : BillingDelegate, LifecycleObserver {
+
+  private lateinit var activity: AppCompatActivity
+  private lateinit var settingsRepository: SettingsRepository
 
   private val billingClient: BillingClient by lazy {
-    BillingClient.newBuilder(applicationContext)
+    BillingClient.newBuilder(activity.applicationContext)
       .setListener { _, _ -> }
       .enablePendingPurchases()
       .build()
   }
 
-  private val settingsRepository by lazy { (applicationContext as App).settingsRepository }
+  override fun registerBilling(
+    activity: AppCompatActivity,
+    settingsRepository: SettingsRepository
+  ) {
+    this.settingsRepository = settingsRepository
+    this.activity = activity
+    this.activity.lifecycle.addObserver(this)
+  }
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    if (!Config.SHOW_PREMIUM || !settingsRepository.isPremium) return
+  @OnLifecycleEvent(ON_CREATE)
+  fun onCreate() {
+    Timber.d("onCreate")
+    if (!Config.SHOW_PREMIUM || !settingsRepository.isPremium) {
+      return
+    }
 
     billingClient.startConnection(object : BillingClientStateListener {
       override fun onBillingSetupFinished(billingResult: BillingResult) {
@@ -44,22 +64,23 @@ abstract class BillingActivity : UpdateActivity() {
     })
   }
 
-  override fun onDestroy() {
+  @OnLifecycleEvent(ON_DESTROY)
+  fun onDestroy() {
     billingClient.endConnection()
-    super.onDestroy()
+    Timber.d("onDestroy")
   }
 
   private fun checkOwnedPurchases() {
-    Timber.d("Checking subscriptions...")
-    lifecycleScope.launchWhenCreated {
+    Timber.d("Checking purchases...")
+    activity.lifecycleScope.launchWhenCreated {
       try {
         val subscriptions = billingClient.queryPurchasesAsync(BillingClient.SkuType.SUBS)
         val inApps = billingClient.queryPurchasesAsync(BillingClient.SkuType.INAPP)
         val purchases = subscriptions.purchasesList + inApps.purchasesList
-        val eligibleProducts = mutableListOf(PREMIUM_MONTHLY_SUBSCRIPTION, PREMIUM_YEARLY_SUBSCRIPTION, PREMIUM_LIFETIME_INAPP)
+        val eligibleProducts = mutableListOf(Config.PREMIUM_MONTHLY_SUBSCRIPTION, Config.PREMIUM_YEARLY_SUBSCRIPTION, Config.PREMIUM_LIFETIME_INAPP)
 
         if (Config.PROMOS_ENABLED) {
-          eligibleProducts.add(PREMIUM_LIFETIME_INAPP_PROMO)
+          eligibleProducts.add(Config.PREMIUM_LIFETIME_INAPP_PROMO)
         }
 
         if (purchases.none {
@@ -71,7 +92,7 @@ abstract class BillingActivity : UpdateActivity() {
           Timber.d("No subscription found. Revoking...")
           settingsRepository.revokePremium()
           try {
-            ProcessPhoenix.triggerRebirth(applicationContext)
+            ProcessPhoenix.triggerRebirth(activity.applicationContext)
           } catch (error: Throwable) {
             Runtime.getRuntime().exit(0)
           }
