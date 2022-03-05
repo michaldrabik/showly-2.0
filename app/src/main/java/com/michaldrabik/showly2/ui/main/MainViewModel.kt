@@ -1,6 +1,7 @@
 package com.michaldrabik.showly2.ui.main
 
 import android.annotation.SuppressLint
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Mode
 import com.michaldrabik.showly2.ui.main.cases.MainDeepLinksCase
@@ -12,11 +13,12 @@ import com.michaldrabik.showly2.ui.main.cases.MainTipsCase
 import com.michaldrabik.showly2.ui.main.cases.MainTraktCase
 import com.michaldrabik.showly2.utilities.deeplink.DeepLinkBundle
 import com.michaldrabik.showly2.utilities.deeplink.DeepLinkResolver
-import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.utilities.Event
+import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
+import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -37,7 +39,7 @@ class MainViewModel @Inject constructor(
   private val modesCase: MainModesCase,
   private val rateAppCase: MainRateAppCase,
   private val linksCase: MainDeepLinksCase,
-) : BaseViewModel() {
+) : ViewModel() {
 
   private val loadingState = MutableStateFlow(false)
   private val maskState = MutableStateFlow(false)
@@ -46,30 +48,6 @@ class MainViewModel @Inject constructor(
   private val whatsNewEvent = MutableStateFlow<Event<Boolean>?>(null)
   private val rateAppEvent = MutableStateFlow<Event<Boolean>?>(null)
   private val openLinkEvent = MutableStateFlow<Event<DeepLinkBundle>?>(null)
-
-  val uiState = combine(
-    initialRunEvent,
-    initialLanguageEvent,
-    whatsNewEvent,
-    rateAppEvent,
-    openLinkEvent,
-    loadingState,
-    maskState
-  ) { s1, s2, s3, s4, s5, s6, s7 ->
-    MainUiState(
-      isInitialRun = s1,
-      initialLanguage = s2,
-      showWhatsNew = s3,
-      showRateApp = s4,
-      openLink = s5,
-      isLoading = s6,
-      showMask = s7
-    )
-  }.stateIn(
-    scope = viewModelScope,
-    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = MainUiState()
-  )
 
   fun initialize() {
     viewModelScope.launch {
@@ -170,4 +148,28 @@ class MainViewModel @Inject constructor(
     miscCase.clear()
     super.onCleared()
   }
+
+  val uiState = combine(
+    initialRunEvent,
+    initialLanguageEvent,
+    whatsNewEvent,
+    rateAppEvent,
+    openLinkEvent,
+    loadingState,
+    maskState
+  ) { s1, s2, s3, s4, s5, s6, s7 ->
+    MainUiState(
+      isInitialRun = s1,
+      initialLanguage = s2,
+      showWhatsNew = s3,
+      showRateApp = s4,
+      openLink = s5,
+      isLoading = s6,
+      showMask = s7
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = MainUiState()
+  )
 }

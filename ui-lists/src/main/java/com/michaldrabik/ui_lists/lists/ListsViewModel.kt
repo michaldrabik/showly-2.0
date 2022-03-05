@@ -1,10 +1,11 @@
 package com.michaldrabik.ui_lists.lists
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.Event
+import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_lists.lists.cases.MainListsCase
 import com.michaldrabik.ui_lists.lists.cases.SortOrderListsCase
@@ -28,7 +29,7 @@ class ListsViewModel @Inject constructor(
   private val sortCase: SortOrderListsCase,
   private val showImagesProvider: ShowImagesProvider,
   private val movieImagesProvider: MovieImagesProvider,
-) : BaseViewModel() {
+) : ViewModel() {
 
   private var loadItemsJob: Job? = null
 

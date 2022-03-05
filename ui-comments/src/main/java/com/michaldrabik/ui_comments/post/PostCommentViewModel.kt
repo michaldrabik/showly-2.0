@@ -1,10 +1,14 @@
 package com.michaldrabik.ui_comments.post
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.repository.CommentsRepository
-import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
+import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
+import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
+import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_comments.R
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Episode
@@ -25,24 +29,10 @@ import javax.inject.Inject
 @HiltViewModel
 class PostCommentViewModel @Inject constructor(
   private val commentsRepository: CommentsRepository,
-) : BaseViewModel() {
+) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val loadingState = MutableStateFlow(false)
   private val successState = MutableStateFlow<Event<Pair<String, Comment>>?>(null)
-
-  val uiState = combine(
-    loadingState,
-    successState
-  ) { loadingState, successState ->
-    PostCommentUiState(
-      isLoading = loadingState,
-      isSuccess = successState
-    )
-  }.stateIn(
-    scope = viewModelScope,
-    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = PostCommentUiState()
-  )
 
   fun postShowComment(showId: IdTrakt, commentText: String, isSpoiler: Boolean) {
     if (!isValid(commentText)) return
@@ -118,10 +108,24 @@ class PostCommentViewModel @Inject constructor(
 
   private suspend fun handleError(error: Throwable) {
     if (error is HttpException && error.code() == 422) {
-      _messageChannel.send(MessageEvent.error(R.string.errorCommentFormat))
+      messageChannel.send(MessageEvent.error(R.string.errorCommentFormat))
     } else {
-      _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
+      messageChannel.send(MessageEvent.error(R.string.errorGeneral))
     }
     loadingState.value = false
   }
+
+  val uiState = combine(
+    loadingState,
+    successState
+  ) { loadingState, successState ->
+    PostCommentUiState(
+      isLoading = loadingState,
+      isSuccess = successState
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = PostCommentUiState()
+  )
 }

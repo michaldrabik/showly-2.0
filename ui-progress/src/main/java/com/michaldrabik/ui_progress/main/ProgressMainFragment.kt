@@ -57,6 +57,7 @@ import com.michaldrabik.ui_progress.main.adapters.ProgressMainAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_progress_main.*
 import kotlinx.coroutines.flow.collect
+import timber.log.Timber
 
 @AndroidEntryPoint
 class ProgressMainFragment :
@@ -98,7 +99,7 @@ class ProgressMainFragment :
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
-      { viewModel.messageChannel.collect { showSnack(it) } },
+      { viewModel.messageFlow.collect { showSnack(it) } },
       doAfterLaunch = { viewModel.loadProgress() }
     )
   }
@@ -278,6 +279,7 @@ class ProgressMainFragment :
       when (bundle.getParcelable<Operation>(NavigationArgs.RESULT)) {
         Operation.SAVE -> showSnack(MessageEvent.info(R.string.textRateSaved))
         Operation.REMOVE -> showSnack(MessageEvent.info(R.string.textRateRemoved))
+        else -> Timber.w("Unknown result")
       }
       viewModel.setWatchedEpisode(episodeBundle)
     }
@@ -361,6 +363,7 @@ class ProgressMainFragment :
     when (uiState.calendarMode) {
       CalendarMode.PRESENT_FUTURE -> progressMainCalendarIcon.setImageResource(R.drawable.ic_history)
       CalendarMode.RECENTS -> progressMainCalendarIcon.setImageResource(R.drawable.ic_calendar)
+      else -> Unit
     }
   }
 

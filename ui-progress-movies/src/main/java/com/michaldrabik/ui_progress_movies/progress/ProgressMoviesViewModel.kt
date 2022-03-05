@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_progress_movies.progress
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.RatingsRepository
@@ -7,12 +8,14 @@ import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.Analytics
-import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
+import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
+import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.SortOrder
@@ -43,7 +46,7 @@ class ProgressMoviesViewModel @Inject constructor(
   private val ratingsRepository: RatingsRepository,
   private val settingsRepository: SettingsRepository,
   private val translationsRepository: TranslationsRepository,
-) : BaseViewModel() {
+) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private var loadItemsJob: Job? = null
 
@@ -72,7 +75,7 @@ class ProgressMoviesViewModel @Inject constructor(
   fun onMovieChecked(movie: Movie) {
     viewModelScope.launch {
       val isQuickRate = isQuickRateEnabled()
-      _eventChannel.send(MovieCheckActionUiEvent(movie, isQuickRate))
+      eventChannel.send(MovieCheckActionUiEvent(movie, isQuickRate))
     }
   }
 
@@ -140,10 +143,10 @@ class ProgressMoviesViewModel @Inject constructor(
       try {
         val token = userTraktManager.checkAuthorization().token
         ratingsRepository.movies.addRating(token, movie, rating)
-        _messageChannel.send(MessageEvent.info(R.string.textRateSaved))
+        messageChannel.send(MessageEvent.info(R.string.textRateSaved))
         Analytics.logMovieRated(movie, rating)
       } catch (error: Throwable) {
-        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
+        messageChannel.send(MessageEvent.error(R.string.errorGeneral))
       }
     }
   }

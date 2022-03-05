@@ -5,13 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.IdRes
+import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.michaldrabik.ui_base.utilities.NavigationHost
 
-abstract class BaseBottomSheetFragment<T : BaseViewModel> : BottomSheetDialogFragment() {
+abstract class BaseBottomSheetFragment<T : ViewModel> : BottomSheetDialogFragment() {
 
   protected lateinit var viewModel: T
   protected abstract val layoutResId: Int

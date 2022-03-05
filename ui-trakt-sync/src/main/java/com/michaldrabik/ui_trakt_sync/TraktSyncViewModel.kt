@@ -1,11 +1,11 @@
 package com.michaldrabik.ui_trakt_sync
 
 import android.content.SharedPreferences
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkManager
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.settings.SettingsRepository
-import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.events.Event
 import com.michaldrabik.ui_base.events.TraktSyncAuthError
@@ -20,7 +20,11 @@ import com.michaldrabik.ui_base.trakt.imports.TraktImportWatchedRunner
 import com.michaldrabik.ui_base.trakt.imports.TraktImportWatchlistRunner
 import com.michaldrabik.ui_base.utilities.MessageEvent.Companion.error
 import com.michaldrabik.ui_base.utilities.MessageEvent.Companion.info
+import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.combine
+import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
+import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
+import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.TraktSyncSchedule
 import com.michaldrabik.ui_trakt_sync.cases.TraktSyncRatingsCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -46,7 +50,7 @@ class TraktSyncViewModel @Inject constructor(
   importWatchlistRunner: TraktImportWatchlistRunner,
   exportWatchedRunner: TraktImportWatchedRunner,
   exportWatchlistRunner: TraktExportWatchlistRunner,
-) : BaseViewModel() {
+) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val progressState = MutableStateFlow(false)
   private val progressStatusState = MutableStateFlow("")
@@ -88,7 +92,7 @@ class TraktSyncViewModel @Inject constructor(
           throw IllegalStateException("Invalid Trakt authorization code.")
         }
         userManager.authorize(code)
-        _messageChannel.send(info(R.string.textTraktLoginSuccess))
+        messageChannel.send(info(R.string.textTraktLoginSuccess))
         invalidate()
         saveTraktQuickRemove()
         preloadRatings()
@@ -97,7 +101,7 @@ class TraktSyncViewModel @Inject constructor(
           error is HttpException && error.code() == 423 -> R.string.errorTraktLocked
           else -> R.string.errorAuthorization
         }
-        _messageChannel.send(error(message))
+        messageChannel.send(error(message))
       }
     }
   }
@@ -141,7 +145,7 @@ class TraktSyncViewModel @Inject constructor(
         is TraktSyncStart -> {
           progressState.value = true
           progressStatusState.value = ""
-          _messageChannel.send(info(R.string.textTraktSyncStarted))
+          messageChannel.send(info(R.string.textTraktSyncStarted))
         }
         is TraktSyncProgress -> {
           progressState.value = true
@@ -150,12 +154,12 @@ class TraktSyncViewModel @Inject constructor(
         is TraktSyncSuccess -> {
           progressState.value = false
           progressStatusState.value = ""
-          _messageChannel.send(info(R.string.textTraktSyncComplete))
+          messageChannel.send(info(R.string.textTraktSyncComplete))
         }
         is TraktSyncError -> {
           progressState.value = false
           progressStatusState.value = ""
-          _messageChannel.send(info(R.string.textTraktSyncError))
+          messageChannel.send(info(R.string.textTraktSyncError))
         }
         is TraktSyncAuthError -> {
           viewModelScope.launch {
@@ -163,7 +167,7 @@ class TraktSyncViewModel @Inject constructor(
             progressState.value = false
             progressStatusState.value = ""
             authErrorState.value = true
-            _messageChannel.send(error(R.string.errorTraktAuthorization))
+            messageChannel.send(error(R.string.errorTraktAuthorization))
           }
         }
         else -> Timber.d("Unsupported sync event")

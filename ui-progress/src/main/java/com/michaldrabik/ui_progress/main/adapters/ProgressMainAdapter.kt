@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.michaldrabik.ui_progress.main.adapters
 
 import android.content.Context
@@ -8,7 +10,6 @@ import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.calendar.CalendarFragment
 import com.michaldrabik.ui_progress.progress.ProgressFragment
 
-@Suppress("DEPRECATION")
 class ProgressMainAdapter(
   fragManager: FragmentManager,
   private val context: Context,

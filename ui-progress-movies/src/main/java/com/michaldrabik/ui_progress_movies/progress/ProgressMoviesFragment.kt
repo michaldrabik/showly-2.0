@@ -93,8 +93,8 @@ class ProgressMoviesFragment :
         }
         with(viewModel) {
           launch { uiState.collect { render(it) } }
-          launch { messageChannel.collect { showSnack(it) } }
-          launch { eventChannel.collect { handleEvent(it) } }
+          launch { messageFlow.collect { showSnack(it) } }
+          launch { eventFlow.collect { handleEvent(it) } }
         }
       }
     }

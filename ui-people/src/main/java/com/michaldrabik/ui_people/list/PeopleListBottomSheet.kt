@@ -15,11 +15,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
 import com.michaldrabik.ui_base.common.FastLinearLayoutManager
-import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.screenHeight
-import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
-import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_DEPARTMENT
@@ -77,7 +74,6 @@ class PeopleListBottomSheet : BaseBottomSheetFragment<PeopleListViewModel>() {
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
-      { viewModel.messageChannel.collect { renderSnackbar(it) } },
       doAfterLaunch = {
         viewModel.loadPeople(
           mediaIdTrakt,
@@ -118,15 +114,6 @@ class PeopleListBottomSheet : BaseBottomSheetFragment<PeopleListViewModel>() {
   private fun render(uiState: PeopleListUiState) {
     uiState.run {
       peopleItems?.let { adapter?.setItems(it) }
-    }
-  }
-
-  private fun renderSnackbar(message: MessageEvent) {
-    message.consume()?.let {
-      when (message.type) {
-        MessageEvent.Type.INFO -> view.viewPeopleListRoot.showInfoSnackbar(getString(it))
-        MessageEvent.Type.ERROR -> view.viewPeopleListRoot.showErrorSnackbar(getString(it))
-      }
     }
   }
 

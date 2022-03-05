@@ -49,6 +49,7 @@ import com.michaldrabik.ui_progress_movies.R
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_progress_main_movies.*
 import kotlinx.coroutines.flow.collect
+import timber.log.Timber
 
 @AndroidEntryPoint
 class ProgressMoviesMainFragment :
@@ -88,7 +89,6 @@ class ProgressMoviesMainFragment :
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
-      { viewModel.messageChannel.collect { showSnack(it) } },
       doAfterLaunch = { viewModel.loadProgress() }
     )
   }
@@ -223,6 +223,7 @@ class ProgressMoviesMainFragment :
       when (bundle.getParcelable<Operation>(NavigationArgs.RESULT)) {
         Operation.SAVE -> showSnack(MessageEvent.info(R.string.textRateSaved))
         Operation.REMOVE -> showSnack(MessageEvent.info(R.string.textRateRemoved))
+        else -> Timber.w("Unknown result.")
       }
       viewModel.setWatchedMovie(movie)
     }
@@ -323,6 +324,7 @@ class ProgressMoviesMainFragment :
     when (uiState.calendarMode) {
       CalendarMode.PRESENT_FUTURE -> progressMoviesCalendarIcon.setImageResource(R.drawable.ic_history)
       CalendarMode.RECENTS -> progressMoviesCalendarIcon.setImageResource(R.drawable.ic_calendar)
+      else -> Unit
     }
   }
 

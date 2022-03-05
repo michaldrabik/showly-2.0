@@ -58,7 +58,6 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_SORT_ORDER
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_list_details.*
-import kotlinx.android.synthetic.main.fragment_lists.*
 import kotlinx.android.synthetic.main.view_list_delete_confirm.view.*
 import kotlinx.coroutines.flow.collect
 
@@ -98,7 +97,7 @@ class ListDetailsFragment :
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
-      { viewModel.messageChannel.collect { showSnack(it) } },
+      { viewModel.messageFlow.collect { showSnack(it) } },
       doAfterLaunch = { viewModel.loadDetails(list.id) }
     )
   }

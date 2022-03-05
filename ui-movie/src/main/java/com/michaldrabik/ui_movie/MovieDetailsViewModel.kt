@@ -1,10 +1,10 @@
 package com.michaldrabik.ui_movie
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.Analytics
-import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.dates.DateFormatProvider
@@ -12,9 +12,13 @@ import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
+import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
+import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
+import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
@@ -70,7 +74,7 @@ class MovieDetailsViewModel @Inject constructor(
   private val imagesProvider: MovieImagesProvider,
   private val dateFormatProvider: DateFormatProvider,
   private val announcementManager: AnnouncementManager,
-) : BaseViewModel() {
+) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val movieState = MutableStateFlow<Movie?>(null)
   private val movieLoadingState = MutableStateFlow<Boolean?>(null)
@@ -140,9 +144,9 @@ class MovieDetailsViewModel @Inject constructor(
         progressJob.cancel()
         if (error is HttpException && error.code() == 404) {
           // Malformed Trakt data or duplicate show.
-          _messageChannel.send(MessageEvent.info(R.string.errorMalformedMovie))
+          messageChannel.send(MessageEvent.info(R.string.errorMalformedMovie))
         } else {
-          _messageChannel.send(MessageEvent.error(R.string.errorCouldNotLoadMovie))
+          messageChannel.send(MessageEvent.error(R.string.errorCouldNotLoadMovie))
         }
         Logger.record(error, "Source" to "MovieDetailsViewModel")
         rethrowCancellation(error)
@@ -269,7 +273,7 @@ class MovieDetailsViewModel @Inject constructor(
         commentsState.value = currentComments
       } catch (t: Throwable) {
         commentsState.value = currentComments
-        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
+        messageChannel.send(MessageEvent.error(R.string.errorGeneral))
       }
     }
   }
@@ -314,12 +318,12 @@ class MovieDetailsViewModel @Inject constructor(
         }
 
         commentsState.value = currentComments
-        _messageChannel.send(MessageEvent.info(R.string.textCommentDeleted))
+        messageChannel.send(MessageEvent.info(R.string.textCommentDeleted))
       } catch (t: Throwable) {
         if (t is HttpException && t.code() == 409) {
-          _messageChannel.send(MessageEvent.error(R.string.errorCommentDelete))
+          messageChannel.send(MessageEvent.error(R.string.errorCommentDelete))
         } else {
-          _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
+          messageChannel.send(MessageEvent.error(R.string.errorGeneral))
         }
         commentsState.value = currentComments
       }

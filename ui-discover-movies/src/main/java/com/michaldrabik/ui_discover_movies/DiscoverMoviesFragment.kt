@@ -96,7 +96,7 @@ class DiscoverMoviesFragment :
       repeatOnLifecycle(Lifecycle.State.STARTED) {
         with(viewModel) {
           launch { uiState.collect { render(it) } }
-          launch { messageChannel.collect { showSnack(it) } }
+          launch { messageFlow.collect { showSnack(it) } }
           loadMovies()
         }
       }

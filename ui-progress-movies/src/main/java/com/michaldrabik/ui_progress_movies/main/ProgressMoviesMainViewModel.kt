@@ -1,8 +1,9 @@
 package com.michaldrabik.ui_progress_movies.main
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.CalendarMode
-import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesMainCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProgressMoviesMainViewModel @Inject constructor(
   private val moviesCase: ProgressMoviesMainCase,
-) : BaseViewModel() {
+) : ViewModel() {
 
   private val timestampState = MutableStateFlow<Long?>(null)
   private val searchQueryState = MutableStateFlow<String?>(null)

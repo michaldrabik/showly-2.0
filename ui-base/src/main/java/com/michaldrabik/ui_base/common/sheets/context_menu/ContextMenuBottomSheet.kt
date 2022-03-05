@@ -10,13 +10,13 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.ViewModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
-import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet
 import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet.Mode
@@ -42,7 +42,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_ITEM_MENU
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_REMOVE_TRAKT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.RESULT
 
-abstract class ContextMenuBottomSheet<T : BaseViewModel> : BaseBottomSheetFragment<T>() {
+abstract class ContextMenuBottomSheet<T : ViewModel> : BaseBottomSheetFragment<T>() {
 
   companion object {
     fun createBundle(

@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_premium
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.billingclient.api.AcknowledgePurchaseParams
 import com.android.billingclient.api.BillingClient
@@ -24,9 +25,11 @@ import com.michaldrabik.common.Config.PREMIUM_MONTHLY_SUBSCRIPTION
 import com.michaldrabik.common.Config.PREMIUM_YEARLY_SUBSCRIPTION
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.Analytics
-import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
+import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
+import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -40,7 +43,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PremiumViewModel @Inject constructor(
   private val settingsRepository: SettingsRepository,
-) : BaseViewModel() {
+) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val purchaseItemsState = MutableStateFlow<List<SkuDetails>?>(null)
   private val purchasePendingState = MutableStateFlow(false)
@@ -62,18 +65,18 @@ class PremiumViewModel @Inject constructor(
             connectionsCount = 0
           } else {
             Analytics.logUnsupportedSubscriptions("feature_subscriptions")
-            _messageChannel.trySend(MessageEvent.error(R.string.errorSubscriptionsNotAvailable))
+            messageChannel.trySend(MessageEvent.error(R.string.errorSubscriptionsNotAvailable))
           }
         } else {
           Analytics.logUnsupportedSubscriptions("billing")
-          _messageChannel.trySend(MessageEvent.error(R.string.errorSubscriptionsNotAvailable))
+          messageChannel.trySend(MessageEvent.error(R.string.errorSubscriptionsNotAvailable))
         }
       }
 
       override fun onBillingServiceDisconnected() {
         if (connectionsCount > 3) {
           Timber.e("BillingClient Disconnected. All retries failed.")
-          _messageChannel.trySend(MessageEvent.error(R.string.errorGeneral))
+          messageChannel.trySend(MessageEvent.error(R.string.errorGeneral))
           connectionsCount = 0
         } else {
           Timber.w("BillingClient Disconnected. Retrying...")
@@ -120,7 +123,7 @@ class PremiumViewModel @Inject constructor(
       } catch (error: Throwable) {
         purchaseItemsState.value = emptyList()
         loadingState.value = false
-        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
+        messageChannel.send(MessageEvent.error(R.string.errorGeneral))
         Timber.e(error)
       }
     }
@@ -182,14 +185,14 @@ class PremiumViewModel @Inject constructor(
         Timber.e(error)
         purchaseItemsState.value = emptyList()
         loadingState.value = false
-        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
+        messageChannel.send(MessageEvent.error(R.string.errorGeneral))
       }
     }
   }
 
   private suspend fun unlockAndFinish() {
     settingsRepository.isPremium = true
-    _messageChannel.send(MessageEvent.info(R.string.textPurchaseThanks))
+    messageChannel.send(MessageEvent.info(R.string.textPurchaseThanks))
     finishEvent.value = Event(true)
   }
 

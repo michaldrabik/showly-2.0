@@ -1,9 +1,12 @@
 package com.michaldrabik.ui_gallery.custom
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
+import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
+import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
+import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageFamily
@@ -23,24 +26,10 @@ import javax.inject.Inject
 class CustomImagesViewModel @Inject constructor(
   private val showImagesProvider: ShowImagesProvider,
   private val movieImagesProvider: MovieImagesProvider,
-) : BaseViewModel() {
+) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val posterImageState = MutableStateFlow<Image?>(null)
   private val fanartImageState = MutableStateFlow<Image?>(null)
-
-  val uiState = combine(
-    posterImageState,
-    fanartImageState
-  ) { posterImageState, fanartImageState ->
-    CustomImagesUiState(
-      posterImage = posterImageState,
-      fanartImage = fanartImageState
-    )
-  }.stateIn(
-    scope = viewModelScope,
-    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = CustomImagesUiState()
-  )
 
   fun loadPoster(
     showTraktId: IdTrakt,
@@ -101,4 +90,18 @@ class CustomImagesViewModel @Inject constructor(
       fanartImageState.value = Image.createUnavailable(FANART, family)
     }
   }
+
+  val uiState = combine(
+    posterImageState,
+    fanartImageState
+  ) { posterImageState, fanartImageState ->
+    CustomImagesUiState(
+      posterImage = posterImageState,
+      fanartImage = fanartImageState
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = CustomImagesUiState()
+  )
 }

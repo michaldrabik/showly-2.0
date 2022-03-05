@@ -68,8 +68,8 @@ class RatingsBottomSheet : BaseBottomSheetFragment<RatingsSheetViewModel>() {
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
-      { viewModel.eventChannel.collect { handleEvent(it) } },
-      { viewModel.messageChannel.collect { renderSnackbar(it) } },
+      { viewModel.eventFlow.collect { handleEvent(it) } },
+      { viewModel.messageFlow.collect { renderSnackbar(it) } },
       doAfterLaunch = { viewModel.loadRating(id, type) }
     )
   }

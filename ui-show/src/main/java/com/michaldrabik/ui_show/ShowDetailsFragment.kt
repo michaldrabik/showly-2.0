@@ -125,6 +125,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_show_details.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
 import kotlinx.coroutines.flow.collect
+import timber.log.Timber
 import java.time.Duration
 import java.util.Locale.ENGLISH
 
@@ -167,8 +168,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
-      { viewModel.eventChannel.collect { handleEvent(it) } },
-      { viewModel.messageChannel.collect { renderSnack(it) } },
+      { viewModel.eventFlow.collect { handleEvent(it) } },
+      { viewModel.messageFlow.collect { renderSnack(it) } },
       doAfterLaunch = {
         if (!isInitialized) {
           viewModel.loadDetails(showId)
@@ -785,6 +786,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       when (bundle.getParcelable<RatingsBottomSheet.Options.Operation>(NavigationArgs.RESULT)) {
         SAVE -> renderSnack(MessageEvent.info(R.string.textRateSaved))
         REMOVE -> renderSnack(MessageEvent.info(R.string.textRateRemoved))
+        else -> Timber.w("Unknown result")
       }
       viewModel.loadRating()
     }
@@ -797,6 +799,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       when (bundle.getParcelable<RatingsBottomSheet.Options.Operation>(NavigationArgs.RESULT)) {
         SAVE -> renderSnack(MessageEvent.info(R.string.textRateSaved))
         REMOVE -> renderSnack(MessageEvent.info(R.string.textRateRemoved))
+        else -> Timber.w("Unknown result")
       }
       viewModel.refreshEpisodesRatings()
     }

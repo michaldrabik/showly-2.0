@@ -1,18 +1,21 @@
 package com.michaldrabik.ui_lists.details
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.Mode.MOVIES
 import com.michaldrabik.common.Mode.SHOWS
-import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
+import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
+import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_lists.R
 import com.michaldrabik.ui_lists.details.cases.ListDetailsItemsCase
 import com.michaldrabik.ui_lists.details.cases.ListDetailsMainCase
@@ -41,7 +44,7 @@ class ListDetailsViewModel @Inject constructor(
   private val tipsCase: ListDetailsTipsCase,
   private val showImagesProvider: ShowImagesProvider,
   private val movieImagesProvider: MovieImagesProvider,
-) : BaseViewModel() {
+) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val listDetailsState = MutableStateFlow<CustomList?>(null)
   private val listItemsState = MutableStateFlow<List<ListDetailsItem>?>(null)
@@ -65,7 +68,7 @@ class ListDetailsViewModel @Inject constructor(
 
       val tip = Tip.LIST_ITEM_SWIPE_DELETE
       if (listItems.isNotEmpty() && !tipsCase.isTipShown(tip)) {
-        _messageChannel.send(MessageEvent.info(tip.textResId, indefinite = true))
+        messageChannel.send(MessageEvent.info(tip.textResId, indefinite = true))
         tipsCase.setTipShown(tip)
       }
     }
@@ -172,7 +175,7 @@ class ListDetailsViewModel @Inject constructor(
         listDeleteState.value = Event(true)
       } catch (error: Throwable) {
         loadingState.value = false
-        _messageChannel.send(MessageEvent.error(R.string.errorCouldNotDeleteList))
+        messageChannel.send(MessageEvent.error(R.string.errorCouldNotDeleteList))
       }
     }
   }

@@ -2,12 +2,12 @@ package com.michaldrabik.ui_show
 
 import android.annotation.SuppressLint
 import android.content.Context
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.UserTraktManager
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.Analytics
-import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.OnlineStatusProvider
@@ -18,9 +18,13 @@ import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
+import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
+import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
+import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.EpisodeBundle
@@ -96,7 +100,7 @@ class ShowDetailsViewModel @Inject constructor(
   private val announcementManager: AnnouncementManager,
   private val imagesProvider: ShowImagesProvider,
   private val dateFormatProvider: DateFormatProvider,
-) : BaseViewModel() {
+) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val showState = MutableStateFlow<Show?>(null)
   private val showLoadingState = MutableStateFlow<Boolean?>(null)
@@ -166,9 +170,9 @@ class ShowDetailsViewModel @Inject constructor(
         progressJob.cancel()
         if (error is HttpException && error.code() == 404) {
           // Malformed Trakt data or duplicate show.
-          _messageChannel.send(MessageEvent.info(R.string.errorMalformedShow))
+          messageChannel.send(MessageEvent.info(R.string.errorMalformedShow))
         } else {
-          _messageChannel.send(MessageEvent.error(R.string.errorCouldNotLoadShow))
+          messageChannel.send(MessageEvent.error(R.string.errorCouldNotLoadShow))
         }
         Logger.record(error, "Source" to "ShowDetailsViewModel")
         Timber.e(error)
@@ -374,7 +378,7 @@ class ShowDetailsViewModel @Inject constructor(
 
         commentsState.value = currentComments
       } catch (error: Throwable) {
-        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
+        messageChannel.send(MessageEvent.error(R.string.errorGeneral))
         commentsState.value = currentComments
         Timber.e(error)
         rethrowCancellation(error)
@@ -422,12 +426,12 @@ class ShowDetailsViewModel @Inject constructor(
         }
 
         commentsState.value = currentComments
-        _messageChannel.send(MessageEvent.info(R.string.textCommentDeleted))
+        messageChannel.send(MessageEvent.info(R.string.textCommentDeleted))
       } catch (t: Throwable) {
         if (t is HttpException && t.code() == 409) {
-          _messageChannel.send(MessageEvent.error(R.string.errorCommentDelete))
+          messageChannel.send(MessageEvent.error(R.string.errorCommentDelete))
         } else {
-          _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
+          messageChannel.send(MessageEvent.error(R.string.errorGeneral))
         }
         commentsState.value = currentComments
       }
@@ -531,19 +535,19 @@ class ShowDetailsViewModel @Inject constructor(
         isMyShows -> {
           followedState.value = state
           if (showRemoveTrakt) {
-            _eventChannel.send(RemoveTraktUiEvent(R.id.actionShowDetailsFragmentToRemoveTraktProgress, mode, ids))
+            eventChannel.send(RemoveTraktUiEvent(R.id.actionShowDetailsFragmentToRemoveTraktProgress, mode, ids))
           }
         }
         isWatchlist -> {
           followedState.value = state
           if (showRemoveTrakt) {
-            _eventChannel.send(RemoveTraktUiEvent(R.id.actionShowDetailsFragmentToRemoveTraktWatchlist, mode, ids))
+            eventChannel.send(RemoveTraktUiEvent(R.id.actionShowDetailsFragmentToRemoveTraktWatchlist, mode, ids))
           }
         }
         isArchived -> {
           followedState.value = state
           if (showRemoveTrakt) {
-            _eventChannel.send(RemoveTraktUiEvent(R.id.actionShowDetailsFragmentToRemoveTraktHidden, mode, ids))
+            eventChannel.send(RemoveTraktUiEvent(R.id.actionShowDetailsFragmentToRemoveTraktHidden, mode, ids))
           }
         }
         else -> error("Unexpected show state.")
@@ -561,7 +565,7 @@ class ShowDetailsViewModel @Inject constructor(
         Timber.e(error)
         rethrowCancellation(error)
       } finally {
-        _eventChannel.send(FinishUiEvent(true))
+        eventChannel.send(FinishUiEvent(true))
       }
     }
   }
@@ -597,7 +601,7 @@ class ShowDetailsViewModel @Inject constructor(
           if (showRemoveTrakt) {
             val ids = listOf(episode.ids.trakt)
             val mode = RemoveTraktBottomSheet.Mode.EPISODE
-            _eventChannel.send(RemoveTraktUiEvent(R.id.actionShowDetailsFragmentToRemoveTraktProgress, mode, ids))
+            eventChannel.send(RemoveTraktUiEvent(R.id.actionShowDetailsFragmentToRemoveTraktProgress, mode, ids))
           }
         }
       }
@@ -630,7 +634,7 @@ class ShowDetailsViewModel @Inject constructor(
           if (showRemoveTrakt) {
             val ids = season.episodes.map { it.ids.trakt }
             val mode = RemoveTraktBottomSheet.Mode.EPISODE
-            _eventChannel.send(RemoveTraktUiEvent(R.id.actionShowDetailsFragmentToRemoveTraktProgress, mode, ids))
+            eventChannel.send(RemoveTraktUiEvent(R.id.actionShowDetailsFragmentToRemoveTraktProgress, mode, ids))
           }
         }
       }
@@ -645,7 +649,7 @@ class ShowDetailsViewModel @Inject constructor(
       val seasonItems = seasonsState.value?.toList() ?: emptyList()
       quickProgressCase.setQuickProgress(item, seasonItems, show)
 
-      _messageChannel.send(MessageEvent.info(R.string.textShowQuickProgressDone))
+      messageChannel.send(MessageEvent.info(R.string.textShowQuickProgressDone))
       refreshWatchedEpisodes()
       Analytics.logShowQuickProgress(show)
     }
@@ -676,7 +680,7 @@ class ShowDetailsViewModel @Inject constructor(
 
   private suspend fun checkSeasonsLoaded(): Boolean {
     if (seasonsState.value == null) {
-      _messageChannel.send(MessageEvent.info(R.string.errorSeasonsNotLoaded))
+      messageChannel.send(MessageEvent.info(R.string.errorSeasonsNotLoaded))
       return false
     }
     return true

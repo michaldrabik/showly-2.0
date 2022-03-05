@@ -1,8 +1,9 @@
 package com.michaldrabik.ui_people.list
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Mode
-import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_people.list.cases.PeopleListItemsCase
@@ -18,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PeopleListViewModel @Inject constructor(
   private val itemsCase: PeopleListItemsCase
-) : BaseViewModel() {
+) : ViewModel() {
 
   private val peopleListState = MutableStateFlow<List<PeopleListItem>?>(null)
 

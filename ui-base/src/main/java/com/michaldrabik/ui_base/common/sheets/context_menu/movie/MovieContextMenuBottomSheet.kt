@@ -32,8 +32,8 @@ class MovieContextMenuBottomSheet : ContextMenuBottomSheet<MovieContextMenuViewM
     setupView()
 
     launchAndRepeatStarted(
-      { viewModel.messageChannel.collect { renderSnackbar(it) } },
-      { viewModel.eventChannel.collect { handleEvent(it) } },
+      { viewModel.messageFlow.collect { renderSnackbar(it) } },
+      { viewModel.eventFlow.collect { handleEvent(it) } },
       { viewModel.uiState.collect { render(it) } },
       doAfterLaunch = { viewModel.loadMovie(itemId) }
     )

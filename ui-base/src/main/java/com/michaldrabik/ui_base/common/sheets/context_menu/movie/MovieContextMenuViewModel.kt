@@ -1,9 +1,9 @@
 package com.michaldrabik.ui_base.common.sheets.context_menu.movie
 
 import android.annotation.SuppressLint
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.repository.settings.SettingsRepository
-import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.sheets.context_menu.events.FinishUiEvent
 import com.michaldrabik.ui_base.common.sheets.context_menu.events.RemoveTraktUiEvent
@@ -15,6 +15,10 @@ import com.michaldrabik.ui_base.common.sheets.context_menu.movie.cases.MovieCont
 import com.michaldrabik.ui_base.common.sheets.context_menu.movie.helpers.MovieContextItem
 import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
+import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
+import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
+import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.IdTrakt
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,7 +38,7 @@ class MovieContextMenuViewModel @Inject constructor(
   private val hiddenCase: MovieContextMenuHiddenCase,
   private val pinnedCase: MovieContextMenuPinnedCase,
   private val settingsRepository: SettingsRepository
-) : BaseViewModel() {
+) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private var movieId by notNull<IdTrakt>()
   private var isQuickRemoveEnabled by notNull<Boolean>()
@@ -52,7 +56,7 @@ class MovieContextMenuViewModel @Inject constructor(
         val item = loadItemCase.loadItem(idTrakt)
         itemState.value = item
       } catch (error: Throwable) {
-        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
+        messageChannel.send(MessageEvent.error(R.string.errorGeneral))
       } finally {
         loadingState.value = false
       }
@@ -128,29 +132,29 @@ class MovieContextMenuViewModel @Inject constructor(
   fun addToTopPinned() {
     viewModelScope.launch {
       pinnedCase.addToTopPinned(movieId)
-      _eventChannel.send(Event(FinishUiEvent(true)))
+      eventChannel.send(Event(FinishUiEvent(true)))
     }
   }
 
   fun removeFromTopPinned() {
     viewModelScope.launch {
       pinnedCase.removeFromTopPinned(movieId)
-      _eventChannel.send(Event(FinishUiEvent(true)))
+      eventChannel.send(Event(FinishUiEvent(true)))
     }
   }
 
   private suspend fun checkQuickRemove(event: RemoveTraktUiEvent) {
     if (isQuickRemoveEnabled) {
       loadingState.value = false
-      _eventChannel.send(Event(event))
+      eventChannel.send(Event(event))
     } else {
-      _eventChannel.send(Event(FinishUiEvent(true)))
+      eventChannel.send(Event(FinishUiEvent(true)))
     }
   }
 
   private suspend fun onError(error: Throwable) {
     loadingState.value = false
-    _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
+    messageChannel.send(MessageEvent.error(R.string.errorGeneral))
     rethrowCancellation(error)
   }
 

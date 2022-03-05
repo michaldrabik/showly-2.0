@@ -51,7 +51,6 @@ import com.michaldrabik.ui_progress.main.ProgressMainViewModel
 import com.michaldrabik.ui_progress.progress.recycler.ProgressAdapter
 import com.michaldrabik.ui_progress.progress.recycler.ProgressListItem
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_calendar.*
 import kotlinx.android.synthetic.main.fragment_progress.*
 import kotlinx.android.synthetic.main.layout_progress_empty.*
 import kotlinx.coroutines.flow.collect
@@ -97,8 +96,8 @@ class ProgressFragment :
         }
         with(viewModel) {
           launch { uiState.collect { render(it) } }
-          launch { messageChannel.collect { showSnack(it) } }
-          launch { eventChannel.collect { handleEvent(it) } }
+          launch { messageFlow.collect { showSnack(it) } }
+          launch { eventFlow.collect { handleEvent(it) } }
         }
       }
     }

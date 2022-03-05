@@ -1,10 +1,13 @@
 package com.michaldrabik.ui_news
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
+import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
+import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
+import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.NewsItem
 import com.michaldrabik.ui_news.cases.NewsFiltersCase
 import com.michaldrabik.ui_news.cases.NewsLoadItemsCase
@@ -22,8 +25,8 @@ import javax.inject.Inject
 @HiltViewModel
 class NewsViewModel @Inject constructor(
   private val loadNewsCase: NewsLoadItemsCase,
-  private val filtersCase: NewsFiltersCase
-) : BaseViewModel() {
+  private val filtersCase: NewsFiltersCase,
+) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private var previousRefresh = 0L
 
@@ -78,7 +81,7 @@ class NewsViewModel @Inject constructor(
         }
       } catch (error: Throwable) {
         Timber.e(error)
-        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
+        messageChannel.send(MessageEvent.error(R.string.errorGeneral))
         loadingState.value = false
         rethrowCancellation(error)
       } finally {
@@ -99,7 +102,7 @@ class NewsViewModel @Inject constructor(
     )
   }.stateIn(
     scope = viewModelScope,
-    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    started = SharingStarted.WhileSubscribed(5000),
     initialValue = NewsUiState()
   )
 }

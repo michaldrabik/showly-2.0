@@ -1,11 +1,12 @@
 package com.michaldrabik.ui_my_movies.watchlist
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
-import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.utilities.Event
+import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType.POSTER
@@ -31,7 +32,7 @@ class WatchlistViewModel @Inject constructor(
   private val ratingsCase: WatchlistRatingsCase,
   private val loadMoviesCase: WatchlistLoadMoviesCase,
   private val imagesProvider: MovieImagesProvider,
-) : BaseViewModel() {
+) : ViewModel() {
 
   private var loadItemsJob: Job? = null
 

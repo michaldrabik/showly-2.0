@@ -115,6 +115,7 @@ import com.michaldrabik.ui_streamings.recycler.StreamingAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import kotlinx.coroutines.flow.collect
+import timber.log.Timber
 import java.util.Locale.ENGLISH
 import java.util.Locale.ROOT
 
@@ -155,7 +156,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
-      { viewModel.messageChannel.collect { renderSnack(it) } },
+      { viewModel.messageFlow.collect { renderSnack(it) } },
       doAfterLaunch = {
         if (!isInitialized) {
           viewModel.loadDetails(movieId)
@@ -610,6 +611,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       when (bundle.getParcelable<Operation>(NavigationArgs.RESULT)) {
         Operation.SAVE -> renderSnack(MessageEvent.info(R.string.textRateSaved))
         Operation.REMOVE -> renderSnack(MessageEvent.info(R.string.textRateRemoved))
+        else -> Timber.w("Unknown result.")
       }
       viewModel.loadRating()
     }

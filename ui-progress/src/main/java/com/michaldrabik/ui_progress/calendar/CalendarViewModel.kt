@@ -1,13 +1,16 @@
 package com.michaldrabik.ui_progress.calendar
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.CalendarMode
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.TranslationsRepository
-import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.ShowImagesProvider
+import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
+import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
+import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
@@ -33,7 +36,7 @@ class CalendarViewModel @Inject constructor(
   private val ratingsCase: CalendarRatingsCase,
   private val imagesProvider: ShowImagesProvider,
   private val translationsRepository: TranslationsRepository,
-) : BaseViewModel() {
+) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private var loadItemsJob: Job? = null
   private var loadTranslationJobs: MutableSet<IdTrakt> = mutableSetOf()
@@ -79,7 +82,7 @@ class CalendarViewModel @Inject constructor(
     viewModelScope.launch {
       val bundle = EpisodeBundle(episode.episode, episode.season, episode.show)
       val isQuickRate = ratingsCase.isQuickRateEnabled()
-      _eventChannel.send(EpisodeCheckActionUiEvent(bundle, isQuickRate))
+      eventChannel.send(EpisodeCheckActionUiEvent(bundle, isQuickRate))
     }
   }
 

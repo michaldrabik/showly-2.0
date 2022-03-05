@@ -64,6 +64,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_EPISODE_DETAILS
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import timber.log.Timber
 import java.util.Locale.ENGLISH
 
 @AndroidEntryPoint
@@ -109,7 +110,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
     with(viewModel) {
       launchAndRepeatStarted(
         { uiState.collect { render(it) } },
-        { messageChannel.collect { renderSnackbar(it) } },
+        { messageFlow.collect { renderSnackbar(it) } },
         doAfterLaunch = {
           loadSeason(showTraktId, episode, seasonEpisodes)
           loadTranslation(showTraktId, episode)
@@ -152,6 +153,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
       when (bundle.getParcelable<Operation>(NavigationArgs.RESULT)) {
         Operation.SAVE -> renderSnackbar(info(R.string.textRateSaved))
         Operation.REMOVE -> renderSnackbar(info(R.string.textRateRemoved))
+        else -> Timber.w("Unknown result.")
       }
       viewModel.loadRatings(episode)
       setFragmentResult(REQUEST_EPISODE_DETAILS, bundleOf(NavigationArgs.ACTION_RATING_CHANGED to true))
@@ -312,7 +314,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
 
   private val tabSelectedListener = object : TabLayout.OnTabSelectedListener {
     override fun onTabSelected(tab: TabLayout.Tab?) {
-      view.episodeDetailsTabs?.removeOnTabSelectedListener(this)
+      view.episodeDetailsTabs.removeOnTabSelectedListener(this)
       closeSheet()
       setFragmentResult(REQUEST_EPISODE_DETAILS, bundleOf(ACTION_EPISODE_TAB_SELECTED to tab?.tag))
     }

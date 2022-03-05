@@ -1,11 +1,12 @@
 package com.michaldrabik.ui_my_movies.hidden
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
-import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.utilities.Event
+import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.SortOrder
@@ -30,7 +31,7 @@ class HiddenViewModel @Inject constructor(
   private val loadMoviesCase: HiddenLoadMoviesCase,
   private val ratingsCase: HiddenRatingsCase,
   private val imagesProvider: MovieImagesProvider,
-) : BaseViewModel() {
+) : ViewModel() {
 
   private var loadItemsJob: Job? = null
 

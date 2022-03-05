@@ -99,7 +99,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
-      { viewModel.messageChannel.collect { showSnack(it) } }
+      { viewModel.messageFlow.collect { showSnack(it) } }
     )
   }
 

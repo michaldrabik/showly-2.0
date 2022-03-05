@@ -2,14 +2,18 @@ package com.michaldrabik.ui_discover
 
 import androidx.annotation.VisibleForTesting
 import androidx.annotation.VisibleForTesting.PRIVATE
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
+import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
+import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
+import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_discover.cases.DiscoverFiltersCase
 import com.michaldrabik.ui_discover.cases.DiscoverShowsCase
 import com.michaldrabik.ui_discover.cases.DiscoverTwitterCase
@@ -34,30 +38,12 @@ class DiscoverViewModel @Inject constructor(
   private val filtersCase: DiscoverFiltersCase,
   private val twitterCase: DiscoverTwitterCase,
   private val imagesProvider: ShowImagesProvider,
-) : BaseViewModel() {
+) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val itemsState = MutableStateFlow<List<DiscoverListItem>?>(null)
   private val loadingState = MutableStateFlow(false)
   private val filtersState = MutableStateFlow<DiscoverFilters?>(null)
   private val scrollState = MutableStateFlow(Event(false))
-
-  val uiState = combine(
-    itemsState,
-    loadingState,
-    filtersState,
-    scrollState
-  ) { s1, s2, s3, s4 ->
-    DiscoverUiState(
-      items = s1,
-      isLoading = s2,
-      filters = s3,
-      resetScroll = s4
-    )
-  }.stateIn(
-    scope = viewModelScope,
-    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = DiscoverUiState()
-  )
 
   @VisibleForTesting(otherwise = PRIVATE)
   var lastPullToRefreshMs = 0L
@@ -148,9 +134,27 @@ class DiscoverViewModel @Inject constructor(
 
   private suspend fun onError(error: Throwable) {
     if (error !is CancellationException) {
-      _messageChannel.send(MessageEvent.error(R.string.errorCouldNotLoadDiscover))
+      messageChannel.send(MessageEvent.error(R.string.errorCouldNotLoadDiscover))
       Timber.e(error)
     }
     rethrowCancellation(error)
   }
+
+  val uiState = combine(
+    itemsState,
+    loadingState,
+    filtersState,
+    scrollState
+  ) { s1, s2, s3, s4 ->
+    DiscoverUiState(
+      items = s1,
+      isLoading = s2,
+      filters = s3,
+      resetScroll = s4
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = DiscoverUiState()
+  )
 }

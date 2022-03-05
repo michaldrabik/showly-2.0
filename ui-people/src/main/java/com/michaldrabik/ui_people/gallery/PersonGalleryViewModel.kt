@@ -1,7 +1,8 @@
 package com.michaldrabik.ui_people.gallery
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_people.gallery.cases.PersonGalleryImagesCase
@@ -16,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PersonGalleryViewModel @Inject constructor(
   private val imagesCase: PersonGalleryImagesCase,
-) : BaseViewModel() {
+) : ViewModel() {
 
   private val imagesState = MutableStateFlow<List<Image>?>(null)
   private val loadingState = MutableStateFlow(false)

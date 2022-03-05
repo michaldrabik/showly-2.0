@@ -1,18 +1,21 @@
 package com.michaldrabik.ui_episodes.details
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.CommentsRepository
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.UserTraktManager
-import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.images.EpisodeImagesProvider
 import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
+import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
+import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_episodes.R
 import com.michaldrabik.ui_episodes.details.cases.EpisodeDetailsSeasonCase
 import com.michaldrabik.ui_model.Comment
@@ -42,7 +45,7 @@ class EpisodeDetailsViewModel @Inject constructor(
   private val translationsRepository: TranslationsRepository,
   private val commentsRepository: CommentsRepository,
   private val userTraktManager: UserTraktManager,
-) : BaseViewModel() {
+) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val imageState = MutableStateFlow<Image?>(null)
   private val imageLoadingState = MutableStateFlow(false)
@@ -54,36 +57,6 @@ class EpisodeDetailsViewModel @Inject constructor(
   private val translationEvent = MutableStateFlow<Event<Translation>?>(null)
   private val dateFormatState = MutableStateFlow<DateTimeFormatter?>(null)
   private val commentsDateFormatState = MutableStateFlow<DateTimeFormatter?>(null)
-
-  val uiState = combine(
-    imageState,
-    imageLoadingState,
-    episodesState,
-    commentsState,
-    commentsLoadingState,
-    signedInState,
-    ratingState,
-    translationEvent,
-    dateFormatState,
-    commentsDateFormatState
-  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10 ->
-    EpisodeDetailsUiState(
-      image = s1,
-      isImageLoading = s2,
-      episodes = s3,
-      comments = s4,
-      isCommentsLoading = s5,
-      isSignedIn = s6,
-      ratingState = s7,
-      translation = s8,
-      dateFormat = s9,
-      commentsDateFormat = s10
-    )
-  }.stateIn(
-    scope = viewModelScope,
-    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = EpisodeDetailsUiState()
-  )
 
   init {
     dateFormatState.value = dateFormatProvider.loadFullHourFormat()
@@ -230,12 +203,12 @@ class EpisodeDetailsViewModel @Inject constructor(
         }
 
         commentsState.value = current
-        _messageChannel.send(MessageEvent.info(R.string.textCommentDeleted))
+        messageChannel.send(MessageEvent.info(R.string.textCommentDeleted))
       } catch (t: Throwable) {
         if (t is HttpException && t.code() == 409) {
-          _messageChannel.send(MessageEvent.error(R.string.errorCommentDelete))
+          messageChannel.send(MessageEvent.error(R.string.errorCommentDelete))
         } else {
-          _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
+          messageChannel.send(MessageEvent.error(R.string.errorGeneral))
         }
         commentsState.value = current
       }
@@ -257,4 +230,34 @@ class EpisodeDetailsViewModel @Inject constructor(
       }
     }
   }
+
+  val uiState = combine(
+    imageState,
+    imageLoadingState,
+    episodesState,
+    commentsState,
+    commentsLoadingState,
+    signedInState,
+    ratingState,
+    translationEvent,
+    dateFormatState,
+    commentsDateFormatState
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10 ->
+    EpisodeDetailsUiState(
+      image = s1,
+      isImageLoading = s2,
+      episodes = s3,
+      comments = s4,
+      isCommentsLoading = s5,
+      isSignedIn = s6,
+      ratingState = s7,
+      translation = s8,
+      dateFormat = s9,
+      commentsDateFormat = s10
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = EpisodeDetailsUiState()
+  )
 }

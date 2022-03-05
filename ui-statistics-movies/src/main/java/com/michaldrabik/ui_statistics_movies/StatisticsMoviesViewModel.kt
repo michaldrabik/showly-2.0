@@ -1,8 +1,9 @@
 package com.michaldrabik.ui_statistics_movies
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.repository.movies.MoviesRepository
-import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_statistics_movies.cases.StatisticsMoviesLoadRatingsCase
@@ -20,7 +21,7 @@ import javax.inject.Inject
 class StatisticsMoviesViewModel @Inject constructor(
   private val ratingsCase: StatisticsMoviesLoadRatingsCase,
   private val moviesRepository: MoviesRepository,
-) : BaseViewModel() {
+) : ViewModel() {
 
   private val totalTimeSpentState = MutableStateFlow<Int?>(null)
   private val totalWatchedMoviesState = MutableStateFlow<Int?>(null)

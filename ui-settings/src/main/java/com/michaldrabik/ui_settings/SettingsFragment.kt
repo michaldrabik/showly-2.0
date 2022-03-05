@@ -66,7 +66,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
       repeatOnLifecycle(Lifecycle.State.STARTED) {
         with(viewModel) {
           launch { uiState.collect { render(it) } }
-          launch { messageChannel.collect { showSnack(it) } }
+          launch { messageFlow.collect { showSnack(it) } }
           loadSettings()
         }
       }

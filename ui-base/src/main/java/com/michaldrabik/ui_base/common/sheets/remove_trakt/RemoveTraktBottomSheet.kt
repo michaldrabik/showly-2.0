@@ -9,8 +9,8 @@ import android.view.ViewGroup
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
+import androidx.lifecycle.ViewModel
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
-import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_navigation.java.NavigationArgs
@@ -18,7 +18,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import kotlinx.android.parcel.Parcelize
 
-abstract class RemoveTraktBottomSheet<T : BaseViewModel> : BaseBottomSheetFragment<T>() {
+abstract class RemoveTraktBottomSheet<T : ViewModel> : BaseBottomSheetFragment<T>() {
 
   companion object {
     fun createBundle(itemIds: List<IdTrakt>, mode: Mode) = bundleOf(

@@ -1,11 +1,14 @@
 package com.michaldrabik.ui_base.common.sheets.remove_trakt.remove_trakt_progress
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet.Mode
 import com.michaldrabik.ui_base.common.sheets.remove_trakt.remove_trakt_progress.cases.RemoveTraktProgressCase
 import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
+import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
+import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.IdTrakt
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class RemoveTraktProgressViewModel @Inject constructor(
   private val removeTraktProgressCase: RemoveTraktProgressCase
-) : BaseViewModel() {
+) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val loadingState = MutableStateFlow(false)
   private val finishedState = MutableStateFlow(false)
@@ -30,7 +33,7 @@ class RemoveTraktProgressViewModel @Inject constructor(
         removeTraktProgressCase.removeTraktProgress(traktIds, mode)
         finishedState.value = true
       } catch (error: Throwable) {
-        _messageChannel.send(MessageEvent.error(R.string.errorTraktSyncGeneral))
+        messageChannel.send(MessageEvent.error(R.string.errorTraktSyncGeneral))
         loadingState.value = false
       }
     }

@@ -9,6 +9,7 @@ import androidx.activity.addCallback
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE
@@ -25,7 +26,7 @@ import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_model.Tip
 
-abstract class BaseFragment<T : BaseViewModel>(@LayoutRes contentLayoutId: Int) :
+abstract class BaseFragment<T : ViewModel>(@LayoutRes contentLayoutId: Int) :
   Fragment(contentLayoutId),
   TipsHost {
 

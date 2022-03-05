@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_base.common.sheets.ratings
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Operation
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Type
@@ -10,6 +10,10 @@ import com.michaldrabik.ui_base.common.sheets.ratings.cases.RatingsMovieCase
 import com.michaldrabik.ui_base.common.sheets.ratings.cases.RatingsSeasonCase
 import com.michaldrabik.ui_base.common.sheets.ratings.cases.RatingsShowCase
 import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
+import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
+import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
+import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.TraktRating
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,7 +30,7 @@ class RatingsSheetViewModel @Inject constructor(
   private val movieRatingsCase: RatingsMovieCase,
   private val episodeRatingsCase: RatingsEpisodeCase,
   private val seasonRatingsCase: RatingsSeasonCase,
-) : BaseViewModel() {
+) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val loadingState = MutableStateFlow(false)
   private val ratingState = MutableStateFlow<TraktRating?>(null)
@@ -53,10 +57,10 @@ class RatingsSheetViewModel @Inject constructor(
           Type.EPISODE -> episodeRatingsCase.saveRating(id, rating)
           Type.SEASON -> seasonRatingsCase.saveRating(id, rating)
         }
-        _eventChannel.send(FinishUiEvent(operation = Operation.SAVE))
+        eventChannel.send(FinishUiEvent(operation = Operation.SAVE))
       } catch (error: Throwable) {
         loadingState.value = false
-        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
+        messageChannel.send(MessageEvent.error(R.string.errorGeneral))
         rethrowCancellation(error)
       }
     }
@@ -72,10 +76,10 @@ class RatingsSheetViewModel @Inject constructor(
           Type.EPISODE -> episodeRatingsCase.deleteRating(id)
           Type.SEASON -> seasonRatingsCase.deleteRating(id)
         }
-        _eventChannel.send(FinishUiEvent(operation = Operation.REMOVE))
+        eventChannel.send(FinishUiEvent(operation = Operation.REMOVE))
       } catch (error: Throwable) {
         loadingState.value = false
-        _messageChannel.send(MessageEvent.error(R.string.errorGeneral))
+        messageChannel.send(MessageEvent.error(R.string.errorGeneral))
         rethrowCancellation(error)
       }
     }

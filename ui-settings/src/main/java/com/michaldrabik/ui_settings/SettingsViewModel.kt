@@ -2,15 +2,19 @@ package com.michaldrabik.ui_settings
 
 import android.content.Context
 import android.net.Uri
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
 import com.michaldrabik.ui_base.Analytics
-import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.dates.AppDateFormat
 import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.combine
+import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
+import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
+import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.MyMoviesSection
 import com.michaldrabik.ui_model.MyShowsSection
 import com.michaldrabik.ui_model.NotificationDelay
@@ -43,7 +47,7 @@ class SettingsViewModel @Inject constructor(
   private val themesCase: SettingsThemesCase,
   private val streamingsCase: SettingsStreamingsCase,
   private val ratingsCase: SettingsRatingsCase,
-) : BaseViewModel() {
+) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   fun loadSettings() {
     viewModelScope.launch {
@@ -238,14 +242,14 @@ class SettingsViewModel @Inject constructor(
         traktCase.enableTraktQuickRemove(true)
         refreshSettings()
         preloadRatings()
-        _messageChannel.send(MessageEvent.info(R.string.textTraktLoginSuccess))
+        messageChannel.send(MessageEvent.info(R.string.textTraktLoginSuccess))
         Analytics.logTraktLogin()
       } catch (error: Throwable) {
         val message = when {
           error is HttpException && error.code() == 423 -> R.string.errorTraktLocked
           else -> R.string.errorAuthorization
         }
-        _messageChannel.send(MessageEvent.error(message))
+        messageChannel.send(MessageEvent.error(message))
         Logger.record(error, "Source" to "SettingsViewModel::authorizeTrakt()")
       } finally {
         signingInState.value = false
@@ -256,7 +260,7 @@ class SettingsViewModel @Inject constructor(
   fun logoutTrakt() {
     viewModelScope.launch {
       traktCase.logoutTrakt()
-      _messageChannel.send(MessageEvent.info(R.string.textTraktLogoutSuccess))
+      messageChannel.send(MessageEvent.info(R.string.textTraktLogoutSuccess))
       refreshSettings()
       Analytics.logTraktLogout()
     }
@@ -278,7 +282,7 @@ class SettingsViewModel @Inject constructor(
       withContext(IO) { Glide.get(context).clearDiskCache() }
       Glide.get(context).clearMemory()
       mainCase.deleteImagesCache()
-      _messageChannel.send(MessageEvent.info(R.string.textImagesCacheCleared))
+      messageChannel.send(MessageEvent.info(R.string.textImagesCacheCleared))
     }
   }
 

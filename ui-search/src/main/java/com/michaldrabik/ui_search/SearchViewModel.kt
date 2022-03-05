@@ -1,16 +1,19 @@
 package com.michaldrabik.ui_search
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.SEARCH_RECENTS_AMOUNT
 import com.michaldrabik.common.Mode
-import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
+import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
+import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.RecentSearch
 import com.michaldrabik.ui_model.SortOrder
@@ -44,7 +47,7 @@ class SearchViewModel @Inject constructor(
   private val suggestionsCase: SearchSuggestionsCase,
   private val showsImagesProvider: ShowImagesProvider,
   private val moviesImagesProvider: MovieImagesProvider,
-) : BaseViewModel() {
+) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val searchItemsState = MutableStateFlow<List<SearchListItem>?>(null)
   private val searchItemsAnimateEvent = MutableStateFlow<Event<Boolean>?>(null)
@@ -261,7 +264,7 @@ class SearchViewModel @Inject constructor(
   private suspend fun onError() {
     searchingState.value = false
     emptyState.value = false
-    _messageChannel.send(MessageEvent.error(R.string.errorCouldNotLoadSearchResults))
+    messageChannel.send(MessageEvent.error(R.string.errorCouldNotLoadSearchResults))
   }
 
   override fun onCleared() {

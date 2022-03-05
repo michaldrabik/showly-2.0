@@ -40,7 +40,7 @@ class RemoveTraktWatchlistBottomSheet : RemoveTraktBottomSheet<RemoveTraktWatchl
     setupView()
 
     launchAndRepeatStarted(
-      { viewModel.messageChannel.collect { renderSnackbar(it) } },
+      { viewModel.messageFlow.collect { renderSnackbar(it) } },
       { viewModel.uiState.collect { render(it) } }
     )
   }

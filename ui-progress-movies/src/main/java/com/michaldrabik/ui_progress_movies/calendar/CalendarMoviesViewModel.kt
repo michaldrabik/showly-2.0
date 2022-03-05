@@ -1,12 +1,13 @@
 package com.michaldrabik.ui_progress_movies.calendar
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.CalendarMode
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.TranslationsRepository
-import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.MovieImagesProvider
+import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_progress_movies.calendar.cases.CalendarMoviesRatingsCase
@@ -30,7 +31,7 @@ class CalendarMoviesViewModel @Inject constructor(
   private val ratingsCase: CalendarMoviesRatingsCase,
   private val imagesProvider: MovieImagesProvider,
   private val translationsRepository: TranslationsRepository,
-) : BaseViewModel() {
+) : ViewModel() {
 
   private var loadItemsJob: Job? = null
 

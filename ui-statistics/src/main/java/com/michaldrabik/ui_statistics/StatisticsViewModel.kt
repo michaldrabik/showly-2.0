@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_statistics
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.data_local.database.AppDatabase
@@ -8,8 +9,8 @@ import com.michaldrabik.data_local.database.model.Season
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.shows.ShowsRepository
-import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.images.ShowImagesProvider
+import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.Image
@@ -35,7 +36,7 @@ class StatisticsViewModel @Inject constructor(
   private val imagesProvider: ShowImagesProvider,
   private val database: AppDatabase,
   private val mappers: Mappers,
-) : BaseViewModel() {
+) : ViewModel() {
 
   private val mostWatchedShowsState = MutableStateFlow<List<StatisticsMostWatchedItem>?>(null)
   private val mostWatchedTotalCountState = MutableStateFlow<Int?>(null)

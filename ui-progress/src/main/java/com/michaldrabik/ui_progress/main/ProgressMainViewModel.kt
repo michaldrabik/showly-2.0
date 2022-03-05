@@ -1,10 +1,13 @@
 package com.michaldrabik.ui_progress.main
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.CalendarMode
-import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
+import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
+import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.main.cases.ProgressMainEpisodesCase
@@ -19,7 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProgressMainViewModel @Inject constructor(
   private val episodesCase: ProgressMainEpisodesCase,
-) : BaseViewModel() {
+) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val timestampState = MutableStateFlow<Long?>(null)
   private val searchQueryState = MutableStateFlow<String?>(null)
@@ -50,7 +53,7 @@ class ProgressMainViewModel @Inject constructor(
   fun setWatchedEpisode(bundle: EpisodeBundle) {
     viewModelScope.launch {
       if (!bundle.episode.hasAired(bundle.season)) {
-        _messageChannel.send(MessageEvent.info(R.string.errorEpisodeNotAired))
+        messageChannel.send(MessageEvent.info(R.string.errorEpisodeNotAired))
         return@launch
       }
       episodesCase.setEpisodeWatched(bundle)

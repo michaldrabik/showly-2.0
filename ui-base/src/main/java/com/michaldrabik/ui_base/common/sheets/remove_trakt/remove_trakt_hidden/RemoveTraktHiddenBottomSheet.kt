@@ -41,7 +41,7 @@ class RemoveTraktHiddenBottomSheet : RemoveTraktBottomSheet<RemoveTraktHiddenVie
     setupView()
 
     launchAndRepeatStarted(
-      { viewModel.messageChannel.collect { renderSnackbar(it) } },
+      { viewModel.messageFlow.collect { renderSnackbar(it) } },
       { viewModel.uiState.collect { render(it) } }
     )
   }
