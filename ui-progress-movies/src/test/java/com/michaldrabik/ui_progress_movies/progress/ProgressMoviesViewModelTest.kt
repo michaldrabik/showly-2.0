@@ -4,9 +4,9 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.viewModelScope
 import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.repository.RatingsRepository
-import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.UserTraktManager
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
@@ -209,7 +209,7 @@ class ProgressMoviesViewModelTest : BaseMockTest() {
 
   @Test
   fun `Should check quick rate option enabled`() = runBlockingTest {
-    val job = launch { SUT.eventChannel.toList(eventsResult) }
+    val job = launch { SUT.eventFlow.toList(eventsResult) }
     coEvery { userTraktManager.isAuthorized() } returns true
     coEvery { settingsRepository.isPremium } returns true
     coEvery { settingsRepository.load() } returns Settings.createInitial().copy(traktQuickRateEnabled = true)
@@ -225,7 +225,7 @@ class ProgressMoviesViewModelTest : BaseMockTest() {
 
   @Test
   fun `Should check quick rate option not enabled`() = runBlockingTest {
-    val job = launch { SUT.eventChannel.toList(eventsResult) }
+    val job = launch { SUT.eventFlow.toList(eventsResult) }
     coEvery { userTraktManager.isAuthorized() } returns true
     coEvery { settingsRepository.isPremium } returns true
     coEvery { settingsRepository.load() } returns Settings.createInitial().copy(traktQuickRateEnabled = false)

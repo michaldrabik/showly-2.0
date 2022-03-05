@@ -140,7 +140,7 @@ class DiscoverViewModelTest : BaseMockTest() {
     val messagesResult = mutableListOf<MessageEvent>()
 
     val job = launch { SUT.uiState.toList(stateResult) }
-    val job2 = launch { SUT.messageChannel.toList(messagesResult) }
+    val job2 = launch { SUT.messageFlow.toList(messagesResult) }
 
     SUT.lastPullToRefreshMs = nowUtcMillis() - TimeUnit.SECONDS.toMillis(5)
     SUT.loadItems(pullToRefresh = true)
@@ -160,7 +160,7 @@ class DiscoverViewModelTest : BaseMockTest() {
     val messagesResult = mutableListOf<MessageEvent>()
 
     val job = launch { SUT.uiState.toList(stateResult) }
-    val job2 = launch { SUT.messageChannel.toList(messagesResult) }
+    val job2 = launch { SUT.messageFlow.toList(messagesResult) }
 
     SUT.loadItems(pullToRefresh = true)
 
@@ -179,7 +179,7 @@ class DiscoverViewModelTest : BaseMockTest() {
     val messagesResult = mutableListOf<MessageEvent>()
 
     val job = launch { SUT.uiState.toList(stateResult) }
-    val job2 = launch { SUT.messageChannel.toList(messagesResult) }
+    val job2 = launch { SUT.messageFlow.toList(messagesResult) }
 
     val cachedItem = TestData.DISCOVER_LIST_ITEM
     coEvery { showsCase.loadCachedShows(any()) } returns listOf(cachedItem)
@@ -201,7 +201,7 @@ class DiscoverViewModelTest : BaseMockTest() {
     val messagesResult = mutableListOf<MessageEvent>()
 
     val job = launch { SUT.uiState.toList(stateResult) }
-    val job2 = launch { SUT.messageChannel.toList(messagesResult) }
+    val job2 = launch { SUT.messageFlow.toList(messagesResult) }
 
     val cachedItem = TestData.DISCOVER_LIST_ITEM
     coEvery { showsCase.loadCachedShows(any()) } returns listOf(cachedItem)
@@ -223,7 +223,7 @@ class DiscoverViewModelTest : BaseMockTest() {
     val messagesResult = mutableListOf<MessageEvent>()
 
     val job = launch { SUT.uiState.toList(stateResult) }
-    val job2 = launch { SUT.messageChannel.toList(messagesResult) }
+    val job2 = launch { SUT.messageFlow.toList(messagesResult) }
 
     val cachedItem = TestData.DISCOVER_LIST_ITEM
     val remoteItem = cachedItem.copy(isFollowed = true)
@@ -247,7 +247,7 @@ class DiscoverViewModelTest : BaseMockTest() {
     val messagesResult = mutableListOf<MessageEvent>()
 
     val job = launch { SUT.uiState.toList(stateResult) }
-    val job2 = launch { SUT.messageChannel.toList(messagesResult) }
+    val job2 = launch { SUT.messageFlow.toList(messagesResult) }
 
     coEvery { showsCase.loadCachedShows(any()) } throws Error()
 

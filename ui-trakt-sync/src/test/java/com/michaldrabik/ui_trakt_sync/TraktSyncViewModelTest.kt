@@ -6,8 +6,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkManager
 import com.google.common.truth.Truth.assertThat
-import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.UserTraktManager
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.events.TraktSyncAuthError
 import com.michaldrabik.ui_base.events.TraktSyncError
@@ -116,7 +116,7 @@ class TraktSyncViewModelTest : BaseMockTest() {
     )
 
     val job = launch { SUT.uiState.toList(stateResult) }
-    val job2 = launch { SUT.messageChannel.toList(messagesResult) }
+    val job2 = launch { SUT.messageFlow.toList(messagesResult) }
 
     assertThat(stateResult.last().isProgress).isTrue()
 
@@ -127,7 +127,7 @@ class TraktSyncViewModelTest : BaseMockTest() {
   @Test
   internal fun `Should invalidate properly`() = runBlockingTest {
     val job = launch { SUT.uiState.toList(stateResult) }
-    val job2 = launch { SUT.messageChannel.toList(messagesResult) }
+    val job2 = launch { SUT.messageFlow.toList(messagesResult) }
 
     coEvery { settingsRepository.load() } returns Settings.createInitial()
     coEvery { userTraktManager.isAuthorized() } returns true
@@ -150,7 +150,7 @@ class TraktSyncViewModelTest : BaseMockTest() {
   @Test
   internal fun `Should not authorize trakt if URI is null`() = runBlockingTest {
     val job = launch { SUT.uiState.toList(stateResult) }
-    val job2 = launch { SUT.messageChannel.toList(messagesResult) }
+    val job2 = launch { SUT.messageFlow.toList(messagesResult) }
 
     SUT.authorizeTrakt(null)
     coVerify(exactly = 0) { userTraktManager.authorize(any()) }
@@ -163,7 +163,7 @@ class TraktSyncViewModelTest : BaseMockTest() {
   @Test
   internal fun `Should authorize trakt properly`() = runBlockingTest {
     val job = launch { SUT.uiState.toList(stateResult) }
-    val job2 = launch { SUT.messageChannel.toList(messagesResult) }
+    val job2 = launch { SUT.messageFlow.toList(messagesResult) }
 
     coEvery { settingsRepository.load() } returns Settings.createInitial()
     coEvery { settingsRepository.update(any()) } just Runs
@@ -183,7 +183,7 @@ class TraktSyncViewModelTest : BaseMockTest() {
   @Test
   internal fun `Should save Trakt Sync Schedule`() = runBlockingTest {
     val job = launch { SUT.uiState.toList(stateResult) }
-    val job2 = launch { SUT.messageChannel.toList(messagesResult) }
+    val job2 = launch { SUT.messageFlow.toList(messagesResult) }
 
     coEvery { settingsRepository.load() } returns Settings.createInitial()
     coEvery { settingsRepository.update(any()) } just Runs
@@ -205,7 +205,7 @@ class TraktSyncViewModelTest : BaseMockTest() {
   @Test
   internal fun `Should handle TraktSyncStart event`() = runBlockingTest {
     val job = launch { SUT.uiState.toList(stateResult) }
-    val job2 = launch { SUT.messageChannel.toList(messagesResult) }
+    val job2 = launch { SUT.messageFlow.toList(messagesResult) }
 
     SUT.handleEvent(TraktSyncStart)
 
@@ -220,7 +220,7 @@ class TraktSyncViewModelTest : BaseMockTest() {
   @Test
   internal fun `Should handle TraktSyncProgress event`() = runBlockingTest {
     val job = launch { SUT.uiState.toList(stateResult) }
-    val job2 = launch { SUT.messageChannel.toList(messagesResult) }
+    val job2 = launch { SUT.messageFlow.toList(messagesResult) }
 
     SUT.handleEvent(TraktSyncProgress("test"))
 
@@ -235,7 +235,7 @@ class TraktSyncViewModelTest : BaseMockTest() {
   @Test
   internal fun `Should handle TraktSyncSuccess event`() = runBlockingTest {
     val job = launch { SUT.uiState.toList(stateResult) }
-    val job2 = launch { SUT.messageChannel.toList(messagesResult) }
+    val job2 = launch { SUT.messageFlow.toList(messagesResult) }
 
     SUT.handleEvent(TraktSyncSuccess)
 
@@ -250,7 +250,7 @@ class TraktSyncViewModelTest : BaseMockTest() {
   @Test
   internal fun `Should handle TraktSyncError event`() = runBlockingTest {
     val job = launch { SUT.uiState.toList(stateResult) }
-    val job2 = launch { SUT.messageChannel.toList(messagesResult) }
+    val job2 = launch { SUT.messageFlow.toList(messagesResult) }
 
     SUT.handleEvent(TraktSyncError)
 
@@ -265,7 +265,7 @@ class TraktSyncViewModelTest : BaseMockTest() {
   @Test
   internal fun `Should handle TraktSyncAuthError event`() = runBlockingTest {
     val job = launch { SUT.uiState.toList(stateResult) }
-    val job2 = launch { SUT.messageChannel.toList(messagesResult) }
+    val job2 = launch { SUT.messageFlow.toList(messagesResult) }
 
     SUT.handleEvent(TraktSyncAuthError)
 

@@ -94,7 +94,6 @@ class StatisticsViewModelTest : BaseMockTest() {
     coEvery { ratingsCase.loadRatings() } returns listOf(movieItem)
 
     val job = launch { SUT.uiState.toList(stateResult) }
-    val job2 = launch { SUT.messageChannel.toList(messagesResult) }
 
     SUT.loadRatings()
 
@@ -102,7 +101,6 @@ class StatisticsViewModelTest : BaseMockTest() {
     assertThat(stateResult.last().ratings).contains(movieItem)
 
     job.cancel()
-    job2.cancel()
   }
 
   @Test
@@ -110,14 +108,12 @@ class StatisticsViewModelTest : BaseMockTest() {
     coEvery { ratingsCase.loadRatings() } throws Throwable("Test error")
 
     val job = launch { SUT.uiState.toList(stateResult) }
-    val job2 = launch { SUT.messageChannel.toList(messagesResult) }
 
     SUT.loadRatings()
 
     assertThat(stateResult.last().ratings).isEmpty()
 
     job.cancel()
-    job2.cancel()
   }
 
   @Test
@@ -145,7 +141,6 @@ class StatisticsViewModelTest : BaseMockTest() {
     )
 
     val job = launch { SUT.uiState.toList(stateResult) }
-    val job2 = launch { SUT.messageChannel.toList(messagesResult) }
 
     SUT.loadData(limit = 0, initialDelay = 0)
 
@@ -159,6 +154,5 @@ class StatisticsViewModelTest : BaseMockTest() {
     assertThat(result.topGenres).containsExactly(Genre.WAR, Genre.ANIMATION, Genre.DRAMA)
 
     job.cancel()
-    job2.cancel()
   }
 }
