@@ -26,9 +26,11 @@ import com.michaldrabik.common.Mode.SHOWS
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.showly2.BuildConfig
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.ui.UpdateActivity
+import com.michaldrabik.showly2.ui.BaseActivity
 import com.michaldrabik.showly2.ui.main.delegates.BillingDelegate
 import com.michaldrabik.showly2.ui.main.delegates.MainBillingDelegate
+import com.michaldrabik.showly2.ui.main.delegates.MainUpdateDelegate
+import com.michaldrabik.showly2.ui.main.delegates.UpdateDelegate
 import com.michaldrabik.showly2.ui.views.WhatsNewView
 import com.michaldrabik.showly2.utilities.NetworkObserver
 import com.michaldrabik.showly2.utilities.deeplink.DeepLinkResolver
@@ -71,12 +73,13 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity :
-  UpdateActivity(),
+  BaseActivity(),
   EventObserver,
   NetworkObserver,
   SnackbarHost,
   NavigationHost,
   TipsHost,
+  UpdateDelegate by MainUpdateDelegate(),
   BillingDelegate by MainBillingDelegate() {
 
   companion object {
@@ -105,6 +108,7 @@ class MainActivity :
     setContentView(R.layout.activity_main)
 
     registerBilling(this, settingsRepository)
+    registerUpdate(this) { onUpdateDownloaded(it) }
 
     setupBackPressed()
     setupViewModel()
@@ -490,13 +494,14 @@ class MainActivity :
     else -> throw IllegalStateException()
   }
 
-  override fun onUpdateDownloaded(appUpdateManager: AppUpdateManager) {
-    provideSnackbarLayout().showInfoSnackbar(getString(R.string.textUpdateDownloaded), R.string.textUpdateInstall, LENGTH_INDEFINITE) {
-      Analytics.logInAppUpdate(
-        BuildConfig.VERSION_NAME,
-        BuildConfig.VERSION_CODE.toLong()
-      )
-      appUpdateManager.completeUpdate()
+  private fun onUpdateDownloaded(manager: AppUpdateManager) {
+    provideSnackbarLayout().showInfoSnackbar(
+      message = getString(R.string.textUpdateDownloaded),
+      actionText = R.string.textUpdateInstall,
+      length = LENGTH_INDEFINITE
+    ) {
+      Analytics.logInAppUpdate(BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE.toLong())
+      manager.completeUpdate()
     }
   }
 
