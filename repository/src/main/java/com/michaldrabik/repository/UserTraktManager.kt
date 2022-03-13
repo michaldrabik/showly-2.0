@@ -28,7 +28,9 @@ class UserTraktManager @Inject constructor(
 
   suspend fun checkAuthorization(): TraktAuthToken {
     if (!isAuthorized()) {
-      if (traktRefreshToken == null) throw TraktAuthError("Authorization needed")
+      if (traktRefreshToken == null) {
+        throw TraktAuthError("Authorization needed")
+      }
       val tokens = cloud.traktApi.refreshAuthTokens(traktRefreshToken?.token!!)
       val user = cloud.traktApi.fetchMyProfile(tokens.access_token)
       saveToken(tokens.access_token, tokens.refresh_token, user)

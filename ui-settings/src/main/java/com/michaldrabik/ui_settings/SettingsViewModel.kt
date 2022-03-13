@@ -49,6 +49,23 @@ class SettingsViewModel @Inject constructor(
   private val ratingsCase: SettingsRatingsCase,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
+  private val settingsState = MutableStateFlow<Settings?>(null)
+  private val languageState = MutableStateFlow(AppLanguage.ENGLISH)
+  private val themeState = MutableStateFlow(AppTheme.DARK)
+  private val widgetThemeState = MutableStateFlow(AppTheme.DARK)
+  private val widgetTransparencyState = MutableStateFlow(WidgetTransparency.SOLID)
+  private val countryState = MutableStateFlow<AppCountry?>(null)
+  private val dateFormatState = MutableStateFlow<AppDateFormat?>(null)
+  private val moviesEnabledState = MutableStateFlow(true)
+  private val newsEnabledState = MutableStateFlow(false)
+  private val streamingsEnabledState = MutableStateFlow(true)
+  private val signedInTraktState = MutableStateFlow(false)
+  private val signingInState = MutableStateFlow(false)
+  private val premiumState = MutableStateFlow(false)
+  private val traktNameState = MutableStateFlow("")
+  private val userIdState = MutableStateFlow("")
+  private val restartAppState = MutableStateFlow(false)
+
   fun loadSettings() {
     viewModelScope.launch {
       refreshSettings()
@@ -303,23 +320,6 @@ class SettingsViewModel @Inject constructor(
     userIdState.value = mainCase.getUserId()
     restartAppState.value = restartApp
   }
-
-  private val settingsState = MutableStateFlow<Settings?>(null)
-  private val languageState = MutableStateFlow(AppLanguage.ENGLISH)
-  private val themeState = MutableStateFlow(AppTheme.DARK)
-  private val widgetThemeState = MutableStateFlow(AppTheme.DARK)
-  private val widgetTransparencyState = MutableStateFlow(WidgetTransparency.SOLID)
-  private val countryState = MutableStateFlow<AppCountry?>(null)
-  private val dateFormatState = MutableStateFlow<AppDateFormat?>(null)
-  private val moviesEnabledState = MutableStateFlow(true)
-  private val newsEnabledState = MutableStateFlow(false)
-  private val streamingsEnabledState = MutableStateFlow(true)
-  private val signedInTraktState = MutableStateFlow(false)
-  private val signingInState = MutableStateFlow(false)
-  private val premiumState = MutableStateFlow(false)
-  private val traktNameState = MutableStateFlow("")
-  private val userIdState = MutableStateFlow("")
-  private val restartAppState = MutableStateFlow(false)
 
   val uiState = combine(
     settingsState,

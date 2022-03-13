@@ -24,7 +24,7 @@ ext.versions = [
     androidWork            : '2.6.0',
     androidBrowser         : '1.3.0',
     androidDesugarLibs     : '1.1.5',
-    hilt                   : '2.38.1',
+    hilt                   : '2.39',
     circleIndicator        : '2.1.6',
     dagger                 : '2.36',
     firebaseCrashlytics    : '18.2.4',
