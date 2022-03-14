@@ -20,11 +20,13 @@ ext.versions = [
     androidSwipeRefresh    : '1.1.0',
     androidTransition      : '1.3.1',
     androidViewPager       : '1.0.0',
-    androidPlayCore        : '1.10.2',
+    androidPlayCore        : '1.10.3',
     androidWork            : '2.6.0',
     androidBrowser         : '1.3.0',
     androidDesugarLibs     : '1.1.5',
     hilt                   : '2.39',
+    hiltWork               : '1.0.0',
+    hiltCompiler           : '1.0.0',
     circleIndicator        : '2.1.6',
     dagger                 : '2.36',
     firebaseCrashlytics    : '18.2.4',
@@ -43,9 +45,9 @@ ext.versions = [
     // Testing
     junit                  : '4.13.2',
     testRunner             : '1.4.0',
-    truth                  : '1.1.2',
+    truth                  : '1.1.3',
     mockk                  : '1.12.0',
     coreTesting            : '2.1.0',
-    coroutinesTesting      : '1.5.1',
+    coroutinesTesting      : '1.5.2',
     debugDb                : '1.0.6'
 ]

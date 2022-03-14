@@ -7,6 +7,8 @@ import android.net.ConnectivityManager
 import android.os.Build
 import android.os.StrictMode
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
+import androidx.hilt.work.HiltWorkerFactory
+import androidx.work.Configuration
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
@@ -40,6 +42,7 @@ import com.michaldrabik.ui_base.fcm.NotificationChannel as AppNotificationChanne
 @HiltAndroidApp
 class App :
   Application(),
+  Configuration.Provider,
   OnlineStatusProvider,
   WidgetsProvider,
   OnTraktSyncListener {
@@ -49,6 +52,7 @@ class App :
 
   private val appScope = MainScope()
 
+  @Inject lateinit var workerFactory: HiltWorkerFactory
   @Inject lateinit var settingsRepository: SettingsRepository
 
   override fun onCreate() {
@@ -153,6 +157,11 @@ class App :
       CalendarMoviesWidgetProvider.requestUpdate(applicationContext)
     }
   }
+
+  override fun getWorkManagerConfiguration() =
+    Configuration.Builder()
+      .setWorkerFactory(workerFactory)
+      .build()
 
   override fun onTraktSyncProgress() = run { isSyncRunning = true }
   override fun onTraktSyncComplete() = run { isSyncRunning = false }

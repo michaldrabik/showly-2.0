@@ -104,6 +104,14 @@
 
     </activity>
 
+    <!--  Work Manager  -->
+
+    <provider
+      android:name="androidx.startup.InitializationProvider"
+      android:authorities="${applicationId}.androidx-startup"
+      tools:node="remove">
+    </provider>
+
     <!-- Services -->
 
     <service
@@ -114,12 +122,6 @@
         <action android:name="com.google.firebase.MESSAGING_EVENT" />
       </intent-filter>
     </service>
-
-    <service
-      android:name="com.michaldrabik.ui_base.sync.ShowsMoviesSyncService"
-      android:exported="true"
-      android:permission="android.permission.BIND_JOB_SERVICE"
-      />
 
     <!-- Meta -->
 

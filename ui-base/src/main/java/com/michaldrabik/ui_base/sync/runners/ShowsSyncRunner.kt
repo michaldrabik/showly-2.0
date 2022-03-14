@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_base.sync.shows
+package com.michaldrabik.ui_base.sync.runners
 
 import com.michaldrabik.common.ConfigVariant.SHOW_SYNC_COOLDOWN
 import com.michaldrabik.common.extensions.nowUtcMillis

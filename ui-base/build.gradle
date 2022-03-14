@@ -69,6 +69,8 @@ dependencies {
 
   implementation "com.google.dagger:hilt-android:$versions.hilt"
   kapt "com.google.dagger:hilt-compiler:$versions.hilt"
+  implementation "androidx.hilt:hilt-work:$versions.hiltWork"
+  kapt "androidx.hilt:hilt-compiler:$versions.hiltCompiler"
 
   api "com.jakewharton.timber:timber:$versions.timber"
 

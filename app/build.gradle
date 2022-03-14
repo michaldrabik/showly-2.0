@@ -103,6 +103,8 @@ dependencies {
 
   implementation "com.google.dagger:hilt-android:$versions.hilt"
   kapt "com.google.dagger:hilt-compiler:$versions.hilt"
+  implementation "androidx.hilt:hilt-work:$versions.hiltWork"
+  kapt "androidx.hilt:hilt-compiler:$versions.hiltCompiler"
 
   implementation "com.google.android.play:core:$versions.androidPlayCore"
   implementation "com.github.YarikSOffice:lingver:$versions.lingver"

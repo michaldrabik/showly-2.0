@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_base.sync.movies
+package com.michaldrabik.ui_base.sync.runners
 
 import com.michaldrabik.common.ConfigVariant.MOVIE_SYNC_COOLDOWN
 import com.michaldrabik.common.extensions.nowUtcMillis

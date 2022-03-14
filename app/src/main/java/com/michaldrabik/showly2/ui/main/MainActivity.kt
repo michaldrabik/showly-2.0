@@ -14,6 +14,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.work.WorkManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE
 import com.google.android.play.core.appupdate.AppUpdateManager
@@ -46,7 +47,7 @@ import com.michaldrabik.ui_base.events.TraktSyncError
 import com.michaldrabik.ui_base.events.TraktSyncProgress
 import com.michaldrabik.ui_base.events.TraktSyncStart
 import com.michaldrabik.ui_base.events.TraktSyncSuccess
-import com.michaldrabik.ui_base.sync.ShowsMoviesSyncService
+import com.michaldrabik.ui_base.sync.ShowsMoviesSyncWorker
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.TipsHost
@@ -100,6 +101,7 @@ class MainActivity :
     )
   }
 
+  @Inject lateinit var workManager: WorkManager
   @Inject lateinit var deepLinkResolver: DeepLinkResolver
   @Inject lateinit var settingsRepository: SettingsRepository
 
@@ -122,7 +124,7 @@ class MainActivity :
 
   override fun onStart() {
     super.onStart()
-    ShowsMoviesSyncService.initialize(applicationContext)
+    ShowsMoviesSyncWorker.schedule(workManager)
   }
 
   override fun onNewIntent(intent: Intent?) {
