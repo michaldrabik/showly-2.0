@@ -1,7 +1,7 @@
 package com.michaldrabik.repository.movies
 
 import com.michaldrabik.data_local.database.AppDatabase
-import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.StreamingsRepository
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.Movie
@@ -12,7 +12,7 @@ import javax.inject.Singleton
 
 @Singleton
 class MovieStreamingsRepository @Inject constructor(
-  private val cloud: Cloud,
+  private val remoteSource: RemoteDataSource,
   private val database: AppDatabase,
   private val mappers: Mappers,
 ) : StreamingsRepository() {
@@ -27,7 +27,7 @@ class MovieStreamingsRepository @Inject constructor(
   }
 
   suspend fun loadRemoteStreamings(movie: Movie, countryCode: String): List<StreamingService> {
-    val remoteItems = cloud.tmdbApi.fetchMovieWatchProviders(movie.ids.tmdb.id, countryCode) ?: return emptyList()
+    val remoteItems = remoteSource.tmdb.fetchMovieWatchProviders(movie.ids.tmdb.id, countryCode) ?: return emptyList()
 
     val entities = mappers.streamings.toDatabaseMovie(movie.ids, remoteItems)
     database.movieStreamingsDao().replace(movie.traktId, entities)

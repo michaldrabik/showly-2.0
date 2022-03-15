@@ -2,7 +2,7 @@ package com.michaldrabik.data_remote.reddit.api
 
 import com.michaldrabik.data_remote.reddit.model.RedditItem
 
-class RedditListingApi(private val service: RedditService) {
+internal class RedditListingApi(private val service: RedditService) {
 
   suspend fun fetchTelevision(token: String, limit: Int, pages: Int): List<RedditItem> {
     val result = mutableListOf<RedditItem>()

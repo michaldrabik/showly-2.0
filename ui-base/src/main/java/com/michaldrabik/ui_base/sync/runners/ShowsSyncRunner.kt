@@ -4,7 +4,7 @@ import com.michaldrabik.common.ConfigVariant.SHOW_SYNC_COOLDOWN
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.EpisodesSyncLog
-import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.episodes.EpisodesManager
@@ -21,7 +21,7 @@ import javax.inject.Singleton
  */
 @Singleton
 class ShowsSyncRunner @Inject constructor(
-  private val cloud: Cloud,
+  private val remoteSource: RemoteDataSource,
   private val database: AppDatabase,
   private val mappers: Mappers,
   private val episodesManager: EpisodesManager,
@@ -74,7 +74,7 @@ class ShowsSyncRunner @Inject constructor(
         try {
           Timber.i("Syncing ${show.title}(${show.ids.trakt}) episodes...")
 
-          val remoteSeasons = cloud.traktApi.fetchSeasons(show.traktId)
+          val remoteSeasons = remoteSource.trakt.fetchSeasons(show.traktId)
             .map { mappers.season.fromNetwork(it) }
           episodesManager.invalidateSeasons(show, remoteSeasons)
           syncCount++

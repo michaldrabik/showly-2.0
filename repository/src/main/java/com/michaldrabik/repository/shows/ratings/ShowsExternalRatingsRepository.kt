@@ -3,7 +3,7 @@ package com.michaldrabik.repository.shows.ratings
 import com.michaldrabik.common.ConfigVariant
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
-import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.Show
@@ -13,7 +13,7 @@ import javax.inject.Singleton
 
 @Singleton
 class ShowsExternalRatingsRepository @Inject constructor(
-  private val cloud: Cloud,
+  private val remoteSource: RemoteDataSource,
   private val database: AppDatabase,
   private val mappers: Mappers,
 ) {
@@ -26,7 +26,7 @@ class ShowsExternalRatingsRepository @Inject constructor(
       }
     }
 
-    val remoteRatings = cloud.omdbApi.fetchOmdbData(show.ids.imdb.id)
+    val remoteRatings = remoteSource.omdb.fetchOmdbData(show.ids.imdb.id)
       .let { mappers.ratings.fromNetwork(it) }
       .copy(trakt = Ratings.Value(String.format(Locale.ENGLISH, "%.1f", show.rating), false))
 

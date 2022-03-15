@@ -1,10 +1,11 @@
 package com.michaldrabik.data_remote.aws.api
 
+import com.michaldrabik.data_remote.aws.AwsRemoteDataSource
 import com.michaldrabik.data_remote.aws.model.AwsImages
 
-class AwsApi(private val service: AwsService) {
+internal class AwsApi(private val service: AwsService) : AwsRemoteDataSource {
 
-  suspend fun fetchImagesList() =
+  override suspend fun fetchImagesList() =
     try {
       service.fetchImagesList().shows
     } catch (error: Throwable) {

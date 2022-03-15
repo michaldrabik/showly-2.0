@@ -5,15 +5,15 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.DiscoverMovie
-import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.data_remote.Config.TRAKT_TRENDING_MOVIES_LIMIT
+import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.Movie
 import javax.inject.Inject
 
 class DiscoverMoviesRepository @Inject constructor(
-  private val cloud: Cloud,
+  private val remoteSource: RemoteDataSource,
   private val database: AppDatabase,
   private val mappers: Mappers
 ) {
@@ -47,17 +47,17 @@ class DiscoverMoviesRepository @Inject constructor(
     val limit =
       if (showCollection) TRAKT_TRENDING_MOVIES_LIMIT
       else TRAKT_TRENDING_MOVIES_LIMIT + (collectionSize / 2)
-    val trendingMovies = cloud.traktApi.fetchTrendingMovies(genresQuery, limit)
+    val trendingMovies = remoteSource.trakt.fetchTrendingMovies(genresQuery, limit)
       .map { mappers.movie.fromNetwork(it) }
 
     if (genres.isNotEmpty()) {
       // Wa are adding popular results for genres filtered content to add more results.
-      val popular = cloud.traktApi.fetchPopularMovies(genresQuery).map { mappers.movie.fromNetwork(it) }
+      val popular = remoteSource.trakt.fetchPopularMovies(genresQuery).map { mappers.movie.fromNetwork(it) }
       popularMovies.addAll(popular)
     }
 
     if (showAnticipated) {
-      val movies = cloud.traktApi.fetchAnticipatedMovies(genresQuery).map { mappers.movie.fromNetwork(it) }.toMutableList()
+      val movies = remoteSource.trakt.fetchAnticipatedMovies(genresQuery).map { mappers.movie.fromNetwork(it) }.toMutableList()
       anticipatedMovies.addAll(movies)
     }
 

@@ -1,26 +1,25 @@
 package com.michaldrabik.data_remote.reddit.api
 
-import com.michaldrabik.data_remote.Config
+import com.michaldrabik.data_remote.reddit.RedditRemoteDataSource
 import com.michaldrabik.data_remote.reddit.model.RedditItem
-import javax.inject.Inject
 
-class RedditApi @Inject constructor(
+internal class RedditApi(
   private val authApi: RedditAuthApi,
   private val listingApi: RedditListingApi,
-) {
+) : RedditRemoteDataSource {
 
-  suspend fun fetchAuthToken() = authApi.fetchAuthToken()
+  override suspend fun fetchAuthToken() = authApi.fetchAuthToken()
 
-  suspend fun fetchTelevisionItems(
+  override suspend fun fetchTelevisionItems(
     token: String,
-    limit: Int = Config.REDDIT_LIST_LIMIT,
-    pages: Int = Config.REDDIT_LIST_PAGES,
+    limit: Int,
+    pages: Int,
   ): List<RedditItem> =
     listingApi.fetchTelevision(token, limit, pages).filterNot { it.is_self }
 
-  suspend fun fetchMoviesItems(
+  override suspend fun fetchMoviesItems(
     token: String,
-    limit: Int = Config.REDDIT_LIST_LIMIT,
-    pages: Int = Config.REDDIT_LIST_PAGES,
+    limit: Int,
+    pages: Int,
   ) = listingApi.fetchMovies(token, limit, pages).filterNot { it.is_self }
 }

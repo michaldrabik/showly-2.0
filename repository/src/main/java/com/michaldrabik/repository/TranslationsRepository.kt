@@ -10,9 +10,9 @@ import com.michaldrabik.data_local.database.model.MovieTranslation
 import com.michaldrabik.data_local.database.model.ShowTranslation
 import com.michaldrabik.data_local.database.model.TranslationsMoviesSyncLog
 import com.michaldrabik.data_local.database.model.TranslationsSyncLog
-import com.michaldrabik.data_remote.Cloud
-import com.michaldrabik.repository.settings.SettingsRepository.Key.LANGUAGE
+import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.mappers.Mappers
+import com.michaldrabik.repository.settings.SettingsRepository.Key.LANGUAGE
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Movie
@@ -27,7 +27,7 @@ import javax.inject.Singleton
 @Singleton
 class TranslationsRepository @Inject constructor(
   @Named("miscPreferences") private var miscPreferences: SharedPreferences,
-  private val cloud: Cloud,
+  private val remoteSource: RemoteDataSource,
   private val database: AppDatabase,
   private val mappers: Mappers,
 ) {
@@ -65,7 +65,7 @@ class TranslationsRepository @Inject constructor(
     }
 
     val remoteTranslation = try {
-      cloud.traktApi.fetchShowTranslations(show.traktId, language).firstOrNull()
+      remoteSource.trakt.fetchShowTranslations(show.traktId, language).firstOrNull()
     } catch (error: Throwable) {
       null
     }
@@ -104,7 +104,7 @@ class TranslationsRepository @Inject constructor(
     }
 
     val remoteTranslation = try {
-      cloud.traktApi.fetchMovieTranslations(movie.traktId, language).firstOrNull()
+      remoteSource.trakt.fetchMovieTranslations(movie.traktId, language).firstOrNull()
     } catch (error: Throwable) {
       null
     }
@@ -146,7 +146,7 @@ class TranslationsRepository @Inject constructor(
 
     if (onlyLocal) return null
 
-    val remoteTranslations = cloud.traktApi.fetchSeasonTranslations(showId.id, episode.season, language)
+    val remoteTranslations = remoteSource.trakt.fetchSeasonTranslations(showId.id, episode.season, language)
       .map { mappers.translation.fromNetwork(it) }
 
     remoteTranslations
@@ -198,7 +198,7 @@ class TranslationsRepository @Inject constructor(
       }
     }
 
-    val remoteTranslation = cloud.traktApi.fetchSeasonTranslations(showId.id, season.number, language)
+    val remoteTranslation = remoteSource.trakt.fetchSeasonTranslations(showId.id, season.number, language)
       .map { mappers.translation.fromNetwork(it) }
 
     remoteTranslation

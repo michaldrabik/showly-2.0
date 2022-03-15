@@ -6,14 +6,14 @@ import androidx.room.withTransaction
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.User
-import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.data_remote.RemoteDataSource
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class UserRedditManager @Inject constructor(
-  private val cloud: Cloud,
+  private val remoteSource: RemoteDataSource,
   private val database: AppDatabase,
 ) {
 
@@ -39,7 +39,7 @@ class UserRedditManager @Inject constructor(
       }
     }
 
-    val authResponse = cloud.redditApi.fetchAuthToken()
+    val authResponse = remoteSource.reddit.fetchAuthToken()
     val resultToken = RedditAuthToken(authResponse.access_token)
     val resultTokenTimestamp = nowUtcMillis() + TimeUnit.SECONDS.toMillis(authResponse.expires_in - TOKEN_EXPIRE_BUFFER_SECONDS)
 

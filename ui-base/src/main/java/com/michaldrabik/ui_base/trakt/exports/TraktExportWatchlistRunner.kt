@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_base.trakt.exports
 
 import com.michaldrabik.data_local.database.AppDatabase
-import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.data_remote.trakt.model.SyncExportItem
 import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
 import com.michaldrabik.repository.TraktAuthToken
@@ -15,7 +15,7 @@ import javax.inject.Singleton
 
 @Singleton
 class TraktExportWatchlistRunner @Inject constructor(
-  private val cloud: Cloud,
+  private val remoteSource: RemoteDataSource,
   private val database: AppDatabase,
   private val settingsRepository: SettingsRepository,
   userTraktManager: UserTraktManager
@@ -64,6 +64,6 @@ class TraktExportWatchlistRunner @Inject constructor(
     Timber.d("Exporting ${shows.size} shows & ${movies.size} movies...")
 
     val request = SyncExportRequest(shows = shows, movies = movies)
-    cloud.traktApi.postSyncWatchlist(token.token, request)
+    remoteSource.trakt.postSyncWatchlist(token.token, request)
   }
 }

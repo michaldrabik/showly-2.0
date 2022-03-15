@@ -6,7 +6,7 @@ import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.PersonImage
-import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Image
@@ -20,7 +20,7 @@ import javax.inject.Singleton
 @Singleton
 class PeopleImagesProvider @Inject constructor(
   private val database: AppDatabase,
-  private val cloud: Cloud,
+  private val remoteSource: RemoteDataSource,
 ) {
 
   suspend fun loadCachedImage(personTmdbId: IdTmdb): Image? {
@@ -52,7 +52,7 @@ class PeopleImagesProvider @Inject constructor(
       }
     }
 
-    val images = (cloud.tmdbApi.fetchPersonImages(personTmdbId.id).profiles ?: emptyList())
+    val images = (remoteSource.tmdb.fetchPersonImages(personTmdbId.id).profiles ?: emptyList())
       .filter { it.file_path.isNotBlank() }
     val dbImages = images.map {
       PersonImage(

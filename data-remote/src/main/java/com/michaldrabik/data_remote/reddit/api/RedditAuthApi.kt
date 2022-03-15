@@ -4,7 +4,7 @@ import com.michaldrabik.data_remote.Config
 import com.michaldrabik.data_remote.reddit.model.RedditAuthResponse
 import okhttp3.Credentials
 
-class RedditAuthApi(private val service: RedditService) {
+internal class RedditAuthApi(private val service: RedditService) {
 
   suspend fun fetchAuthToken(): RedditAuthResponse {
     val credentials = Credentials.basic(Config.REDDIT_CLIENT_ID, "")

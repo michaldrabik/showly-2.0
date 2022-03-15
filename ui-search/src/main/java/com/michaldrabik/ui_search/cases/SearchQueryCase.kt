@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_search.cases
 
 import com.michaldrabik.common.Config
-import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.movies.MoviesRepository
@@ -25,7 +25,7 @@ import com.michaldrabik.data_remote.trakt.model.SearchResult as SearchResultNetw
 
 @ViewModelScoped
 class SearchQueryCase @Inject constructor(
-  private val cloud: Cloud,
+  private val remoteSource: RemoteDataSource,
   private val mappers: Mappers,
   private val settingsRepository: SettingsRepository,
   private val showsRepository: ShowsRepository,
@@ -44,7 +44,7 @@ class SearchQueryCase @Inject constructor(
     val myMoviesIds = moviesRepository.myMovies.loadAllIds()
     val watchlistMoviesIds = moviesRepository.watchlistMovies.loadAllIds()
 
-    val results = cloud.traktApi.fetchSearch(query, withMovies)
+    val results = remoteSource.trakt.fetchSearch(query, withMovies)
     results
       .sortedWith(
         compareByDescending<SearchResultNetwork> { it.score }

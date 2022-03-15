@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_base.common.sheets.context_menu.show.cases
 
 import com.michaldrabik.data_local.database.AppDatabase
-import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.settings.SettingsRepository
@@ -23,7 +23,7 @@ import com.michaldrabik.data_local.database.model.Season as SeasonDb
 @ViewModelScoped
 class ShowContextMenuMyShowsCase @Inject constructor(
   private val database: AppDatabase,
-  private val cloud: Cloud,
+  private val remoteSource: RemoteDataSource,
   private val mappers: Mappers,
   private val showsRepository: ShowsRepository,
   private val pinnedItemsRepository: PinnedItemsRepository,
@@ -39,7 +39,7 @@ class ShowContextMenuMyShowsCase @Inject constructor(
       async { showsRepository.hiddenShows.exists(traktId) }
     )
 
-    val seasons = cloud.traktApi.fetchSeasons(traktId.id)
+    val seasons = remoteSource.trakt.fetchSeasons(traktId.id)
       .map { mappers.season.fromNetwork(it) }
       .filter { it.episodes.isNotEmpty() }
       .filter { if (!showSpecials()) !it.isSpecial() else true }

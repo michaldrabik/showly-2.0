@@ -10,7 +10,7 @@ import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type.HIDDEN_SHO
 import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type.MOVIE
 import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type.MOVIE_WATCHLIST
 import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type.SHOW_WATCHLIST
-import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.data_remote.trakt.model.SyncExportItem
 import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
 import com.michaldrabik.repository.TraktAuthToken
@@ -25,7 +25,7 @@ import javax.inject.Singleton
 
 @Singleton
 class QuickSyncRunner @Inject constructor(
-  private val cloud: Cloud,
+  private val remoteSource: RemoteDataSource,
   private val database: AppDatabase,
   private val settingsRepository: SettingsRepository,
   userTraktManager: UserTraktManager
@@ -86,13 +86,13 @@ class QuickSyncRunner @Inject constructor(
         .filterNot { clearedProgressIds.contains(it.ids.trakt) }
 
       if (requestItems.isNotEmpty()) {
-        cloud.traktApi.postDeleteProgress(token.token, SyncExportRequest(shows = requestItems))
+        remoteSource.trakt.postDeleteProgress(token.token, SyncExportRequest(shows = requestItems))
         clearedProgressIds.addAll(requestItems.map { it.ids.trakt })
         delay(DELAY)
       }
     }
 
-    cloud.traktApi.postSyncWatched(token.token, request)
+    remoteSource.trakt.postSyncWatched(token.token, request)
     database.withTransaction {
       val ids = batch.map { it.idTrakt }
       database.traktSyncQueueDao().deleteAll(ids, EPISODE.slug)
@@ -133,7 +133,7 @@ class QuickSyncRunner @Inject constructor(
       movies = exportMovies.map { SyncExportItem.create(it.idTrakt, dateIsoStringFromMillis(it.updatedAt)) }
     )
 
-    cloud.traktApi.postSyncWatchlist(token.token, request)
+    remoteSource.trakt.postSyncWatchlist(token.token, request)
     database.withTransaction {
       val ids = items.map { it.idTrakt }
       database.traktSyncQueueDao().deleteAll(ids, MOVIE_WATCHLIST.slug)
@@ -170,7 +170,7 @@ class QuickSyncRunner @Inject constructor(
     val exportMovies = items.filter { it.type == HIDDEN_MOVIE.slug }.distinctBy { it.idTrakt }
 
     if (exportShows.isNotEmpty()) {
-      cloud.traktApi.postHiddenShows(
+      remoteSource.trakt.postHiddenShows(
         token.token,
         shows = exportShows.map { SyncExportItem.create(it.idTrakt, hiddenAt = dateIsoStringFromMillis(it.updatedAt)) }
       )
@@ -178,7 +178,7 @@ class QuickSyncRunner @Inject constructor(
     }
 
     if (exportMovies.isNotEmpty()) {
-      cloud.traktApi.postHiddenMovies(
+      remoteSource.trakt.postHiddenMovies(
         token.token,
         movies = exportMovies.map { SyncExportItem.create(it.idTrakt, hiddenAt = dateIsoStringFromMillis(it.updatedAt)) }
       )

@@ -5,7 +5,7 @@ import com.michaldrabik.common.Mode
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.CustomListItem
-import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.TraktAuthToken
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.mappers.Mappers
@@ -18,7 +18,7 @@ import javax.inject.Singleton
 
 @Singleton
 class TraktImportListsRunner @Inject constructor(
-  private val cloud: Cloud,
+  private val remoteSource: RemoteDataSource,
   private val database: AppDatabase,
   private val mappers: Mappers,
   private val settingsRepository: SettingsRepository,
@@ -63,7 +63,7 @@ class TraktImportListsRunner @Inject constructor(
 
     val localLists = database.customListsDao().getAll()
       .map { mappers.customList.fromDatabase(it) }
-    val remoteLists = cloud.traktApi.fetchSyncLists(token.token)
+    val remoteLists = remoteSource.trakt.fetchSyncLists(token.token)
       .map { mappers.customList.fromNetwork(it) }
 
     remoteLists.forEach { remoteList ->
@@ -106,7 +106,7 @@ class TraktImportListsRunner @Inject constructor(
     Timber.d("Importing list items...")
 
     val localItems = database.customListsItemsDao().getItemsById(listId)
-    val items = cloud.traktApi.fetchSyncListItems(token.token, listIdTrakt, moviesEnabled)
+    val items = remoteSource.trakt.fetchSyncListItems(token.token, listIdTrakt, moviesEnabled)
       .filter { item ->
         localItems.none {
           it.idTrakt == item.getTraktId() && it.type == item.getType()

@@ -4,7 +4,7 @@ import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.dao.ShowsDao
 import com.michaldrabik.data_local.database.model.Show
-import com.michaldrabik.data_remote.trakt.api.TraktApi
+import com.michaldrabik.data_remote.trakt.TraktRemoteDataSource
 import com.michaldrabik.repository.common.BaseMockTest
 import com.michaldrabik.repository.shows.ShowDetailsRepository
 import com.michaldrabik.ui_model.IdTrakt
@@ -24,7 +24,7 @@ import com.michaldrabik.data_remote.trakt.model.Show as ShowRemote
 
 class ShowDetailsRepositoryTest : BaseMockTest() {
 
-  @MockK lateinit var traktApi: TraktApi
+  @MockK lateinit var traktApi: TraktRemoteDataSource
   @MockK lateinit var showsDao: ShowsDao
 
   private lateinit var SUT: ShowDetailsRepository
@@ -33,7 +33,7 @@ class ShowDetailsRepositoryTest : BaseMockTest() {
   override fun setUp() {
     super.setUp()
     every { database.showsDao() } returns showsDao
-    every { cloud.traktApi } returns traktApi
+    every { cloud.trakt } returns traktApi
 
     SUT = ShowDetailsRepository(cloud, database, mappers)
   }

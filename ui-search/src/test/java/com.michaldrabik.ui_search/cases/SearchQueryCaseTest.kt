@@ -1,14 +1,14 @@
 package com.michaldrabik.ui_search.cases
 
 import com.google.common.truth.Truth.assertThat
-import com.michaldrabik.data_remote.Cloud
-import com.michaldrabik.data_remote.trakt.api.TraktApi
+import com.michaldrabik.data_remote.RemoteDataSource
+import com.michaldrabik.data_remote.trakt.TraktRemoteDataSource
 import com.michaldrabik.data_remote.trakt.model.SearchResult
 import com.michaldrabik.data_remote.trakt.model.Show
-import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.movies.MoviesRepository
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
@@ -28,8 +28,8 @@ import org.junit.Test
 @Suppress("EXPERIMENTAL_API_USAGE")
 class SearchQueryCaseTest : BaseMockTest() {
 
-  @RelaxedMockK lateinit var cloud: Cloud
-  @RelaxedMockK lateinit var traktApi: TraktApi
+  @RelaxedMockK lateinit var cloud: RemoteDataSource
+  @RelaxedMockK lateinit var traktApi: TraktRemoteDataSource
   @RelaxedMockK lateinit var mappers: Mappers
   @RelaxedMockK lateinit var settingsRepository: SettingsRepository
   @RelaxedMockK lateinit var showsRepository: ShowsRepository
@@ -44,7 +44,7 @@ class SearchQueryCaseTest : BaseMockTest() {
   override fun setUp() {
     super.setUp()
 
-    coEvery { cloud.traktApi } returns traktApi
+    coEvery { cloud.trakt } returns traktApi
     coEvery { settingsRepository.isMoviesEnabled } returns true
     coEvery { translationsRepository.getLanguage() } returns "en"
 

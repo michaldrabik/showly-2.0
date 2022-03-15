@@ -3,11 +3,11 @@ package com.michaldrabik.ui_base.images
 import com.michaldrabik.common.Mode
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.CustomImage
-import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.data_remote.tmdb.model.TmdbImage
 import com.michaldrabik.data_remote.tmdb.model.TmdbImages
-import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.mappers.Mappers
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.IdTvdb
@@ -28,7 +28,7 @@ import javax.inject.Singleton
 
 @Singleton
 class MovieImagesProvider @Inject constructor(
-  private val cloud: Cloud,
+  private val remoteSource: RemoteDataSource,
   private val database: AppDatabase,
   private val mappers: Mappers,
   private val settingsRepository: SettingsRepository
@@ -68,7 +68,7 @@ class MovieImagesProvider @Inject constructor(
       if (force && cachedImage.source == CUSTOM) return cachedImage
     }
 
-    val images = cloud.tmdbApi.fetchMovieImages(tmdbId.id)
+    val images = remoteSource.tmdb.fetchMovieImages(tmdbId.id)
     val typeImages = when (type) {
       POSTER -> images.posters ?: emptyList()
       FANART, FANART_WIDE -> images.backdrops ?: emptyList()
@@ -115,7 +115,7 @@ class MovieImagesProvider @Inject constructor(
 
   suspend fun loadRemoteImages(movie: Movie, type: ImageType): List<Image> {
     val tmdbId = movie.ids.tmdb
-    val remoteImages = cloud.tmdbApi.fetchMovieImages(tmdbId.id)
+    val remoteImages = remoteSource.tmdb.fetchMovieImages(tmdbId.id)
     val typeImages = when (type) {
       POSTER -> remoteImages.posters ?: emptyList()
       FANART, FANART_WIDE -> remoteImages.backdrops ?: emptyList()

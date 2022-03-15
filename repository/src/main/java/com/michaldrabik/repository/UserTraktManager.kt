@@ -6,7 +6,7 @@ import androidx.room.withTransaction
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.User
-import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.ui_model.error.TraktAuthError
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -16,7 +16,7 @@ import com.michaldrabik.data_remote.trakt.model.User as UserModel
 
 @Singleton
 class UserTraktManager @Inject constructor(
-  private val cloud: Cloud,
+  private val remoteSource: RemoteDataSource,
   private val database: AppDatabase,
 ) {
 
@@ -31,16 +31,16 @@ class UserTraktManager @Inject constructor(
       if (traktRefreshToken == null) {
         throw TraktAuthError("Authorization needed")
       }
-      val tokens = cloud.traktApi.refreshAuthTokens(traktRefreshToken?.token!!)
-      val user = cloud.traktApi.fetchMyProfile(tokens.access_token)
+      val tokens = remoteSource.trakt.refreshAuthTokens(traktRefreshToken?.token!!)
+      val user = remoteSource.trakt.fetchMyProfile(tokens.access_token)
       saveToken(tokens.access_token, tokens.refresh_token, user)
     }
     return traktToken!!
   }
 
   suspend fun authorize(authCode: String) {
-    val tokens = cloud.traktApi.fetchAuthTokens(authCode)
-    val user = cloud.traktApi.fetchMyProfile(tokens.access_token)
+    val tokens = remoteSource.trakt.fetchAuthTokens(authCode)
+    val user = remoteSource.trakt.fetchMyProfile(tokens.access_token)
     saveToken(tokens.access_token, tokens.refresh_token, user)
   }
 
@@ -74,7 +74,7 @@ class UserTraktManager @Inject constructor(
       }
     }
     try {
-      traktToken?.let { cloud.traktApi.revokeAuthTokens(it.token) }
+      traktToken?.let { remoteSource.trakt.revokeAuthTokens(it.token) }
     } catch (error: Throwable) {
       // Just log error as nothing bad really happens in case of error.
       Timber.w("revokeToken(): $error")

@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_base.images
 
 import com.michaldrabik.data_local.database.AppDatabase
-import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTmdb
@@ -17,7 +17,7 @@ import javax.inject.Singleton
 
 @Singleton
 class EpisodeImagesProvider @Inject constructor(
-  private val cloud: Cloud,
+  private val remoteSource: RemoteDataSource,
   private val database: AppDatabase,
   private val mappers: Mappers
 ) {
@@ -40,7 +40,7 @@ class EpisodeImagesProvider @Inject constructor(
 
     var image = Image.createUnavailable(FANART)
     runCatching {
-      val remoteImage = cloud.tmdbApi.fetchEpisodeImage(showId.id, episode.season, episode.number)
+      val remoteImage = remoteSource.tmdb.fetchEpisodeImage(showId.id, episode.season, episode.number)
       image = when (remoteImage) {
         null -> Image.createUnavailable(FANART)
         else -> Image(

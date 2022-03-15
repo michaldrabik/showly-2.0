@@ -1,7 +1,7 @@
 package com.michaldrabik.showly2.ui.main.cases.deeplink
 
 import com.michaldrabik.data_local.database.AppDatabase
-import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.movies.MovieDetailsRepository
 import com.michaldrabik.repository.shows.ShowDetailsRepository
@@ -13,7 +13,7 @@ import com.michaldrabik.ui_model.IdTmdb
 import javax.inject.Inject
 
 class TmdbDeepLinkCase @Inject constructor(
-  private val cloud: Cloud,
+  private val remoteSource: RemoteDataSource,
   private val database: AppDatabase,
   private val showDetailsRepository: ShowDetailsRepository,
   private val movieDetailsRepository: MovieDetailsRepository,
@@ -31,7 +31,7 @@ class TmdbDeepLinkCase @Inject constructor(
       return DeepLinkBundle(movie = localMovie)
     }
 
-    val searchResult = cloud.traktApi.fetchSearchId(SOURCE_TMDB, tmdbId.id.toString())
+    val searchResult = remoteSource.trakt.fetchSearchId(SOURCE_TMDB, tmdbId.id.toString())
     if (searchResult.isNotEmpty()) {
       searchResult
         .filter { it.show != null || it.movie != null }

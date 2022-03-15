@@ -4,7 +4,7 @@ import androidx.room.withTransaction
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.WatchlistMovie
 import com.michaldrabik.data_local.database.model.WatchlistShow
-import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.TraktAuthToken
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.mappers.Mappers
@@ -18,7 +18,7 @@ import javax.inject.Singleton
 
 @Singleton
 class TraktImportWatchlistRunner @Inject constructor(
-  private val cloud: Cloud,
+  private val remoteSource: RemoteDataSource,
   private val database: AppDatabase,
   private val mappers: Mappers,
   private val settingsRepository: SettingsRepository,
@@ -80,7 +80,7 @@ class TraktImportWatchlistRunner @Inject constructor(
 
   private suspend fun importShowsWatchlist(token: TraktAuthToken): Int {
     Timber.d("Importing shows watchlist...")
-    val syncResults = cloud.traktApi.fetchSyncShowsWatchlist(token.token)
+    val syncResults = remoteSource.trakt.fetchSyncShowsWatchlist(token.token)
       .filter { it.show != null }
       .distinctBy { it.show!!.ids?.trakt }
 
@@ -116,7 +116,7 @@ class TraktImportWatchlistRunner @Inject constructor(
 
   private suspend fun importMoviesWatchlist(token: TraktAuthToken): Int {
     Timber.d("Importing movies watchlist...")
-    val syncResults = cloud.traktApi.fetchSyncMoviesWatchlist(token.token)
+    val syncResults = remoteSource.trakt.fetchSyncMoviesWatchlist(token.token)
       .filter { it.movie != null }
       .distinctBy { it.movie!!.ids?.trakt }
 

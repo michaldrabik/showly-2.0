@@ -6,7 +6,7 @@ import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.Episode
 import com.michaldrabik.data_local.database.model.Movie
 import com.michaldrabik.data_local.database.model.Show
-import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.data_remote.trakt.model.SyncExportItem
 import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
 import com.michaldrabik.data_remote.trakt.model.SyncItem
@@ -24,7 +24,7 @@ import javax.inject.Singleton
 
 @Singleton
 class TraktExportWatchedRunner @Inject constructor(
-  private val cloud: Cloud,
+  private val remoteSource: RemoteDataSource,
   private val database: AppDatabase,
   private val settingsRepository: SettingsRepository,
   userTraktManager: UserTraktManager
@@ -61,7 +61,7 @@ class TraktExportWatchedRunner @Inject constructor(
   private suspend fun exportWatched(token: TraktAuthToken) {
     Timber.d("Exporting watched...")
 
-    val remoteShows = cloud.traktApi.fetchSyncWatchedShows(token.token)
+    val remoteShows = remoteSource.trakt.fetchSyncWatchedShows(token.token)
       .filter { it.show != null }
     val localMyShows = database.myShowsDao().getAll()
     val localEpisodes = batchEpisodes(localMyShows.map { it.idTrakt })
@@ -69,7 +69,7 @@ class TraktExportWatchedRunner @Inject constructor(
 
     val movies = mutableListOf<SyncExportItem>()
     if (settingsRepository.isMoviesEnabled) {
-      val remoteMovies = cloud.traktApi.fetchSyncWatchedMovies(token.token)
+      val remoteMovies = remoteSource.trakt.fetchSyncWatchedMovies(token.token)
         .filter { it.movie != null }
       val localMyMoviesIds = database.myMoviesDao().getAllTraktIds()
       val localMyMovies = batchMovies(localMyMoviesIds)
@@ -89,7 +89,7 @@ class TraktExportWatchedRunner @Inject constructor(
     )
 
     Timber.d("Exporting ${localEpisodes.size} episodes & ${movies.size} movies...")
-    cloud.traktApi.postSyncWatched(token.token, request)
+    remoteSource.trakt.postSyncWatched(token.token, request)
 
     exportHidden(token)
   }
@@ -110,13 +110,13 @@ class TraktExportWatchedRunner @Inject constructor(
 
     if (localShows.isNotEmpty()) {
       Timber.d("Exporting ${localShows.size} hidden shows...")
-      cloud.traktApi.postHiddenShows(token.token, shows = showsItems)
+      remoteSource.trakt.postHiddenShows(token.token, shows = showsItems)
       delay(1500)
     }
 
     if (localMovies.isNotEmpty()) {
       Timber.d("Exporting ${localMovies.size} hidden movies...")
-      cloud.traktApi.postHiddenMovies(token.token, movies = moviesItems)
+      remoteSource.trakt.postHiddenMovies(token.token, movies = moviesItems)
     }
   }
 

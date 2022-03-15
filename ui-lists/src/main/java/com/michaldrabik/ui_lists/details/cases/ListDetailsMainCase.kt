@@ -3,7 +3,7 @@ package com.michaldrabik.ui_lists.details.cases
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.CustomListItem
-import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.ListsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.settings.SettingsRepository
@@ -17,7 +17,7 @@ import javax.inject.Inject
 @ViewModelScoped
 class ListDetailsMainCase @Inject constructor(
   private val database: AppDatabase,
-  private val cloud: Cloud,
+  private val remoteSource: RemoteDataSource,
   private val listsRepository: ListsRepository,
   private val settingsRepository: SettingsRepository,
   private val userTraktManager: UserTraktManager,
@@ -52,7 +52,7 @@ class ListDetailsMainCase @Inject constructor(
     if (isQuickRemove && isAuthorized && removeFromTrakt && listIdTrakt != null) {
       val token = userTraktManager.checkAuthorization()
       try {
-        cloud.traktApi.deleteList(token.token, listIdTrakt)
+        remoteSource.trakt.deleteList(token.token, listIdTrakt)
       } catch (error: Throwable) {
         if (error is HttpException && error.code() == 404) {
           // NOOP List does not exist in Trakt already.

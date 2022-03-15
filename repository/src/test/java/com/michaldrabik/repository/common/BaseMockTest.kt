@@ -2,7 +2,7 @@ package com.michaldrabik.repository.common
 
 import androidx.room.withTransaction
 import com.michaldrabik.data_local.database.AppDatabase
-import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.R
 import com.michaldrabik.repository.mappers.CommentMapper
 import com.michaldrabik.repository.mappers.CustomListMapper
@@ -33,7 +33,7 @@ import org.junit.Before
 abstract class BaseMockTest {
 
   @MockK lateinit var database: AppDatabase
-  @MockK lateinit var cloud: Cloud
+  @MockK lateinit var cloud: RemoteDataSource
 
   private val idsMapper = IdsMapper()
   private val episodeMappers = EpisodeMapper(idsMapper)

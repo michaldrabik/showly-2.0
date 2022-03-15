@@ -2,7 +2,7 @@ package com.michaldrabik.ui_show.cases
 
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
-import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.UserTraktManager
@@ -27,7 +27,7 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class ShowDetailsEpisodesCase @Inject constructor(
-  private val cloud: Cloud,
+  private val remoteSource: RemoteDataSource,
   private val database: AppDatabase,
   private val mappers: Mappers,
   private val showsRepository: ShowsRepository,
@@ -40,7 +40,7 @@ class ShowDetailsEpisodesCase @Inject constructor(
 ) {
 
   suspend fun loadNextEpisode(traktId: IdTrakt): Episode? {
-    val episode = cloud.traktApi.fetchNextEpisode(traktId.id) ?: return null
+    val episode = remoteSource.trakt.fetchNextEpisode(traktId.id) ?: return null
     return mappers.episode.fromNetwork(episode)
   }
 
@@ -49,7 +49,7 @@ class ShowDetailsEpisodesCase @Inject constructor(
     try {
       if (!isOnline) loadLocalSeasons(show, showSpecialSeasons)
 
-      val remoteSeasons = cloud.traktApi.fetchSeasons(show.traktId)
+      val remoteSeasons = remoteSource.trakt.fetchSeasons(show.traktId)
         .map { mappers.season.fromNetwork(it) }
         .filter { it.episodes.isNotEmpty() }
         .filter { if (!showSpecialSeasons) !it.isSpecial() else true }

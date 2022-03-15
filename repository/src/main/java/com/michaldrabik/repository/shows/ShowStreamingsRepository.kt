@@ -1,7 +1,7 @@
 package com.michaldrabik.repository.shows
 
 import com.michaldrabik.data_local.database.AppDatabase
-import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.StreamingsRepository
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.Show
@@ -12,7 +12,7 @@ import javax.inject.Singleton
 
 @Singleton
 class ShowStreamingsRepository @Inject constructor(
-  private val cloud: Cloud,
+  private val remoteSource: RemoteDataSource,
   private val database: AppDatabase,
   private val mappers: Mappers,
 ) : StreamingsRepository() {
@@ -27,7 +27,7 @@ class ShowStreamingsRepository @Inject constructor(
   }
 
   suspend fun loadRemoteStreamings(show: Show, countryCode: String): List<StreamingService> {
-    val remoteItems = cloud.tmdbApi.fetchShowWatchProviders(show.ids.tmdb.id, countryCode) ?: return emptyList()
+    val remoteItems = remoteSource.tmdb.fetchShowWatchProviders(show.ids.tmdb.id, countryCode) ?: return emptyList()
 
     val entities = mappers.streamings.toDatabaseShow(show.ids, remoteItems)
     database.showStreamingsDao().replace(show.traktId, entities)

@@ -3,7 +3,7 @@ package com.michaldrabik.repository.movies.ratings
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.Rating
-import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.TraktRating
@@ -13,7 +13,7 @@ import javax.inject.Singleton
 @Singleton
 class MoviesRatingsRepository @Inject constructor(
   val external: MoviesExternalRatingsRepository,
-  private val cloud: Cloud,
+  private val remoteSource: RemoteDataSource,
   private val database: AppDatabase,
   private val mappers: Mappers,
 ) {
@@ -23,7 +23,7 @@ class MoviesRatingsRepository @Inject constructor(
   }
 
   suspend fun preloadRatings(token: String) {
-    val ratings = cloud.traktApi.fetchMoviesRatings(token)
+    val ratings = remoteSource.trakt.fetchMoviesRatings(token)
     val entities = ratings
       .filter { it.rated_at != null && it.movie.ids.trakt != null }
       .map { mappers.userRatingsMapper.toDatabaseMovie(it) }
@@ -49,7 +49,7 @@ class MoviesRatingsRepository @Inject constructor(
   }
 
   suspend fun addRating(token: String, movie: Movie, rating: Int) {
-    cloud.traktApi.postRating(
+    remoteSource.trakt.postRating(
       token,
       mappers.movie.toNetwork(movie),
       rating
@@ -59,7 +59,7 @@ class MoviesRatingsRepository @Inject constructor(
   }
 
   suspend fun deleteRating(token: String, movie: Movie) {
-    cloud.traktApi.deleteRating(
+    remoteSource.trakt.deleteRating(
       token,
       mappers.movie.toNetwork(movie)
     )

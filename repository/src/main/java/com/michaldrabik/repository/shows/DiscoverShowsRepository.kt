@@ -5,15 +5,15 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.DiscoverShow
-import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.data_remote.Config.TRAKT_TRENDING_SHOWS_LIMIT
+import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.Show
 import javax.inject.Inject
 
 class DiscoverShowsRepository @Inject constructor(
-  private val cloud: Cloud,
+  private val remoteSource: RemoteDataSource,
   private val database: AppDatabase,
   private val mappers: Mappers
 ) {
@@ -47,17 +47,17 @@ class DiscoverShowsRepository @Inject constructor(
     val limit =
       if (showCollection) TRAKT_TRENDING_SHOWS_LIMIT
       else TRAKT_TRENDING_SHOWS_LIMIT + (collectionSize / 2)
-    val trendingShows = cloud.traktApi.fetchTrendingShows(genresQuery, limit)
+    val trendingShows = remoteSource.trakt.fetchTrendingShows(genresQuery, limit)
       .map { mappers.show.fromNetwork(it) }
 
     if (genres.isNotEmpty()) {
       // Wa are adding popular results for genres filtered content to add more results.
-      val popular = cloud.traktApi.fetchPopularShows(genresQuery).map { mappers.show.fromNetwork(it) }
+      val popular = remoteSource.trakt.fetchPopularShows(genresQuery).map { mappers.show.fromNetwork(it) }
       popularShows.addAll(popular)
     }
 
     if (showAnticipated) {
-      val shows = cloud.traktApi.fetchAnticipatedShows(genresQuery).map { mappers.show.fromNetwork(it) }.toMutableList()
+      val shows = remoteSource.trakt.fetchAnticipatedShows(genresQuery).map { mappers.show.fromNetwork(it) }.toMutableList()
       anticipatedShows.addAll(shows)
     }
 

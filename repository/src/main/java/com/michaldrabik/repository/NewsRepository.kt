@@ -3,7 +3,7 @@ package com.michaldrabik.repository
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.data_local.database.AppDatabase
-import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.NewsItem
 import com.michaldrabik.ui_model.NewsItem.Type.MOVIE
@@ -14,7 +14,7 @@ import javax.inject.Singleton
 
 @Singleton
 class NewsRepository @Inject constructor(
-  private val cloud: Cloud,
+  private val remoteSource: RemoteDataSource,
   private val database: AppDatabase,
   private val mappers: Mappers,
 ) {
@@ -38,7 +38,7 @@ class NewsRepository @Inject constructor(
       }
     }
 
-    val remoteItems = cloud.redditApi.fetchTelevisionItems(token.token)
+    val remoteItems = remoteSource.reddit.fetchTelevisionItems(token.token)
       .map { mappers.news.fromNetwork(it, SHOW) }
 
     val dbItems = remoteItems.map { mappers.news.toDatabase(it) }
@@ -58,7 +58,7 @@ class NewsRepository @Inject constructor(
       }
     }
 
-    val remoteItems = cloud.redditApi.fetchMoviesItems(token.token)
+    val remoteItems = remoteSource.reddit.fetchMoviesItems(token.token)
       .map { mappers.news.fromNetwork(it, MOVIE) }
 
     val dbItems = remoteItems.map { mappers.news.toDatabase(it) }

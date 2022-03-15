@@ -8,7 +8,7 @@ import com.michaldrabik.data_local.database.model.Episode
 import com.michaldrabik.data_local.database.model.MyMovie
 import com.michaldrabik.data_local.database.model.MyShow
 import com.michaldrabik.data_local.database.model.Season
-import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.data_remote.trakt.model.SyncItem
 import com.michaldrabik.repository.TraktAuthToken
 import com.michaldrabik.repository.UserTraktManager
@@ -30,7 +30,7 @@ import javax.inject.Singleton
 
 @Singleton
 class TraktImportWatchedRunner @Inject constructor(
-  private val cloud: Cloud,
+  private val remoteSource: RemoteDataSource,
   private val database: AppDatabase,
   private val mappers: Mappers,
   private val showImagesProvider: ShowImagesProvider,
@@ -95,12 +95,12 @@ class TraktImportWatchedRunner @Inject constructor(
 
   private suspend fun importWatchedShows(token: String): Int {
     Timber.d("Importing watched shows...")
-    val syncResults = cloud.traktApi.fetchSyncWatchedShows(token, "full")
+    val syncResults = remoteSource.trakt.fetchSyncWatchedShows(token, "full")
       .filter { it.show != null }
       .distinctBy { it.show?.ids?.trakt }
 
     Timber.d("Importing hidden shows...")
-    val hiddenShows = cloud.traktApi.fetchHiddenShows(token)
+    val hiddenShows = remoteSource.trakt.fetchHiddenShows(token)
     hiddenShows.forEach { hiddenShow ->
       hiddenShow.show?.let {
         val show = mappers.show.fromNetwork(it)
@@ -172,7 +172,7 @@ class TraktImportWatchedRunner @Inject constructor(
   }
 
   private suspend fun loadSeasons(showId: Long, item: SyncItem): Pair<List<Season>, List<Episode>> {
-    val remoteSeasons = cloud.traktApi.fetchSeasons(showId)
+    val remoteSeasons = remoteSource.trakt.fetchSeasons(showId)
     val localSeasonsIds = database.seasonsDao().getAllWatchedIdsForShows(listOf(showId))
     val localEpisodesIds = database.episodesDao().getAllWatchedIdsForShows(listOf(showId))
 
@@ -206,13 +206,13 @@ class TraktImportWatchedRunner @Inject constructor(
   private suspend fun importWatchedMovies(token: String): Int {
     Timber.d("Importing watched movies...")
 
-    val syncResults = cloud.traktApi.fetchSyncWatchedMovies(token, "full")
+    val syncResults = remoteSource.trakt.fetchSyncWatchedMovies(token, "full")
       .filter { it.movie != null }
       .distinctBy { it.movie?.ids?.trakt }
 
     Timber.d("Importing hidden movies...")
 
-    val hiddenMovies = cloud.traktApi.fetchHiddenMovies(token)
+    val hiddenMovies = remoteSource.trakt.fetchHiddenMovies(token)
     hiddenMovies.forEach { hiddenMovie ->
       hiddenMovie.movie?.let {
         val movie = mappers.movie.fromNetwork(it)

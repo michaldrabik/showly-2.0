@@ -9,7 +9,7 @@ import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.PersonCredits
 import com.michaldrabik.data_local.database.model.PersonShowMovie
-import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.data_remote.tmdb.model.TmdbPerson
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.settings.SettingsRepository
@@ -28,7 +28,7 @@ import javax.inject.Inject
 class PeopleRepository @Inject constructor(
   private val settingsRepository: SettingsRepository,
   private val database: AppDatabase,
-  private val cloud: Cloud,
+  private val remoteSource: RemoteDataSource,
   private val mappers: Mappers
 ) {
 
@@ -44,10 +44,10 @@ class PeopleRepository @Inject constructor(
     }
 
     val language = settingsRepository.language
-    val remotePerson = cloud.tmdbApi.fetchPersonDetails(person.ids.tmdb.id)
+    val remotePerson = remoteSource.tmdb.fetchPersonDetails(person.ids.tmdb.id)
     var bioTranslation: String? = null
     if (language != Config.DEFAULT_LANGUAGE) {
-      val translations = cloud.tmdbApi.fetchPersonTranslations(person.ids.tmdb.id)
+      val translations = remoteSource.tmdb.fetchPersonTranslations(person.ids.tmdb.id)
       bioTranslation = translations[language]?.biography
     }
 
@@ -69,7 +69,7 @@ class PeopleRepository @Inject constructor(
     val localPerson = database.peopleDao().getById(idTmdb)
     idTrakt = localPerson?.idTrakt
     if (idTrakt == null) {
-      val ids = cloud.traktApi.fetchPersonIds("tmdb", idTmdb.toString())
+      val ids = remoteSource.trakt.fetchPersonIds("tmdb", idTmdb.toString())
       ids?.trakt?.let {
         idTrakt = it
         database.peopleDao().updateTraktId(it, idTmdb)
@@ -109,8 +109,8 @@ class PeopleRepository @Inject constructor(
 
     // Return remote fetched data if available and cache it locally
     val type = if (person.department == Department.ACTING) TmdbPerson.Type.CAST else TmdbPerson.Type.CREW
-    val showsCreditsAsync = async { cloud.traktApi.fetchPersonShowsCredits(idTrakt!!, type) }
-    val moviesCreditsAsync = async { cloud.traktApi.fetchPersonMoviesCredits(idTrakt!!, type) }
+    val showsCreditsAsync = async { remoteSource.trakt.fetchPersonShowsCredits(idTrakt!!, type) }
+    val moviesCreditsAsync = async { remoteSource.trakt.fetchPersonMoviesCredits(idTrakt!!, type) }
     val remoteCredits = awaitAll(showsCreditsAsync, moviesCreditsAsync)
       .flatten()
       .map {
@@ -161,7 +161,7 @@ class PeopleRepository @Inject constructor(
         .mapValues { v -> v.value.sortedWith(compareBy { it.imagePath.isNullOrBlank() }) }
     }
 
-    val remoteTmdbPeople = cloud.tmdbApi.fetchShowPeople(showIds.tmdb.id)
+    val remoteTmdbPeople = remoteSource.tmdb.fetchShowPeople(showIds.tmdb.id)
 
     val remoteTmdbActors = remoteTmdbPeople
       .getOrDefault(TmdbPerson.Type.CAST, emptyList())
@@ -226,7 +226,7 @@ class PeopleRepository @Inject constructor(
         .mapValues { v -> v.value.sortedWith(compareBy { it.imagePath.isNullOrBlank() }) }
     }
 
-    val remoteTmdbPeople = cloud.tmdbApi.fetchMoviePeople(movieIds.tmdb.id)
+    val remoteTmdbPeople = remoteSource.tmdb.fetchMoviePeople(movieIds.tmdb.id)
 
     val remoteTmdbActors = remoteTmdbPeople
       .getOrDefault(TmdbPerson.Type.CAST, emptyList())

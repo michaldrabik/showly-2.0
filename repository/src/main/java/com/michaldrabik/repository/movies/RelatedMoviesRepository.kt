@@ -5,7 +5,7 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.RelatedMovie
-import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Movie
@@ -13,7 +13,7 @@ import javax.inject.Inject
 import kotlin.math.min
 
 class RelatedMoviesRepository @Inject constructor(
-  private val cloud: Cloud,
+  private val remoteSource: RemoteDataSource,
   private val database: AppDatabase,
   private val mappers: Mappers
 ) {
@@ -28,7 +28,7 @@ class RelatedMoviesRepository @Inject constructor(
         .map { mappers.movie.fromDatabase(it) }
     }
 
-    val remote = cloud.traktApi.fetchRelatedMovies(movie.ids.trakt.id, min(0, 15))
+    val remote = remoteSource.trakt.fetchRelatedMovies(movie.ids.trakt.id, min(0, 15))
       .map { mappers.movie.fromNetwork(it) }
 
     cacheRelated(remote, movie.ids.trakt)

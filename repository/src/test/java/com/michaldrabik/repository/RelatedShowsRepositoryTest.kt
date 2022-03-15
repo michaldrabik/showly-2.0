@@ -5,7 +5,7 @@ import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.dao.RelatedShowsDao
 import com.michaldrabik.data_local.database.dao.ShowsDao
 import com.michaldrabik.data_local.database.model.RelatedShow
-import com.michaldrabik.data_remote.trakt.api.TraktApi
+import com.michaldrabik.data_remote.trakt.TraktRemoteDataSource
 import com.michaldrabik.repository.common.BaseMockTest
 import com.michaldrabik.repository.shows.RelatedShowsRepository
 import io.mockk.Runs
@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit.HOURS
 class RelatedShowsRepositoryTest : BaseMockTest() {
 
   @MockK
-  lateinit var traktApi: TraktApi
+  lateinit var traktApi: TraktRemoteDataSource
 
   @RelaxedMockK
   lateinit var relatedShowsDao: RelatedShowsDao
@@ -41,7 +41,7 @@ class RelatedShowsRepositoryTest : BaseMockTest() {
     super.setUp()
     every { database.showsDao() } returns showsDao
     every { database.relatedShowsDao() } returns relatedShowsDao
-    every { cloud.traktApi } returns traktApi
+    every { cloud.trakt } returns traktApi
 
     SUT = RelatedShowsRepository(cloud, database, mappers)
   }

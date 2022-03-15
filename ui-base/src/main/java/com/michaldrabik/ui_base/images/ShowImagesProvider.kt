@@ -3,12 +3,12 @@ package com.michaldrabik.ui_base.images
 import com.michaldrabik.common.Mode
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.CustomImage
-import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.data_remote.aws.model.AwsImages
 import com.michaldrabik.data_remote.tmdb.model.TmdbImage
 import com.michaldrabik.data_remote.tmdb.model.TmdbImages
-import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.mappers.Mappers
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.IdTvdb
@@ -30,7 +30,7 @@ import javax.inject.Singleton
 
 @Singleton
 class ShowImagesProvider @Inject constructor(
-  private val cloud: Cloud,
+  private val remoteSource: RemoteDataSource,
   private val database: AppDatabase,
   private val mappers: Mappers,
   private val settingsRepository: SettingsRepository
@@ -72,7 +72,7 @@ class ShowImagesProvider @Inject constructor(
     }
 
     var source = TMDB
-    val images = cloud.tmdbApi.fetchShowImages(tmdbId.id)
+    val images = remoteSource.tmdb.fetchShowImages(tmdbId.id)
 
     var typeImages = when (type) {
       POSTER -> images.posters ?: emptyList()
@@ -103,12 +103,12 @@ class ShowImagesProvider @Inject constructor(
         source = AWS
       } else {
         // If requested fanart is unavailable try backing up to an episode image
-        val seasons = cloud.traktApi.fetchSeasons(show.traktId)
+        val seasons = remoteSource.trakt.fetchSeasons(show.traktId)
         if (seasons.isNotEmpty()) {
           val episode = seasons[0].episodes?.firstOrNull()
           episode?.let { ep ->
             runCatching {
-              val backupImage = cloud.tmdbApi.fetchEpisodeImage(tmdbId.id, ep.season, ep.number)
+              val backupImage = remoteSource.tmdb.fetchEpisodeImage(tmdbId.id, ep.season, ep.number)
               backupImage?.let {
                 typeImages = listOf(TmdbImage(it.file_path, 0F, 0, "en"))
               }
@@ -158,7 +158,7 @@ class ShowImagesProvider @Inject constructor(
 
   suspend fun loadRemoteImages(show: Show, type: ImageType): List<Image> {
     val tmdbId = show.ids.tmdb
-    val remoteImages = cloud.tmdbApi.fetchShowImages(tmdbId.id)
+    val remoteImages = remoteSource.tmdb.fetchShowImages(tmdbId.id)
     val typeImages = when (type) {
       POSTER -> remoteImages.posters ?: emptyList()
       FANART, FANART_WIDE -> remoteImages.backdrops ?: emptyList()
@@ -173,7 +173,7 @@ class ShowImagesProvider @Inject constructor(
 
   private suspend fun loadAwsImagesCache() {
     if (awsImagesCache == null) {
-      val awsImages = cloud.awsApi.fetchImagesList()
+      val awsImages = remoteSource.aws.fetchImagesList()
       awsImagesCache = awsImages.copy()
     }
   }

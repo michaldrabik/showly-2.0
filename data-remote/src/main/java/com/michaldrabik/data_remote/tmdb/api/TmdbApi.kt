@@ -1,13 +1,14 @@
 package com.michaldrabik.data_remote.tmdb.api
 
+import com.michaldrabik.data_remote.tmdb.TmdbRemoteDataSource
 import com.michaldrabik.data_remote.tmdb.model.TmdbImages
 import com.michaldrabik.data_remote.tmdb.model.TmdbPerson
 import com.michaldrabik.data_remote.tmdb.model.TmdbStreamingCountry
 import com.michaldrabik.data_remote.tmdb.model.TmdbTranslation
 
-class TmdbApi(private val service: TmdbService) {
+internal class TmdbApi(private val service: TmdbService) : TmdbRemoteDataSource {
 
-  suspend fun fetchShowImages(tmdbId: Long) =
+  override suspend fun fetchShowImages(tmdbId: Long) =
     try {
       if (tmdbId <= 0) TmdbImages.EMPTY
       service.fetchShowImages(tmdbId)
@@ -15,7 +16,7 @@ class TmdbApi(private val service: TmdbService) {
       TmdbImages.EMPTY
     }
 
-  suspend fun fetchEpisodeImage(showTmdbId: Long?, season: Int?, episode: Int?) =
+  override suspend fun fetchEpisodeImage(showTmdbId: Long?, season: Int?, episode: Int?) =
     try {
       if (showTmdbId == null || showTmdbId <= 0) TmdbImages.EMPTY
       if (season == null || season <= 0) TmdbImages.EMPTY
@@ -26,7 +27,7 @@ class TmdbApi(private val service: TmdbService) {
       null
     }
 
-  suspend fun fetchMovieImages(tmdbId: Long) =
+  override suspend fun fetchMovieImages(tmdbId: Long) =
     try {
       if (tmdbId <= 0) TmdbImages.EMPTY
       service.fetchMovieImages(tmdbId)
@@ -34,7 +35,7 @@ class TmdbApi(private val service: TmdbService) {
       TmdbImages.EMPTY
     }
 
-  suspend fun fetchMoviePeople(tmdbId: Long): Map<TmdbPerson.Type, List<TmdbPerson>> {
+  override suspend fun fetchMoviePeople(tmdbId: Long): Map<TmdbPerson.Type, List<TmdbPerson>> {
     val result = service.fetchMoviePeople(tmdbId)
     val cast = result.cast?.toList() ?: emptyList()
     val crew = result.crew?.toList() ?: emptyList()
@@ -44,7 +45,7 @@ class TmdbApi(private val service: TmdbService) {
     )
   }
 
-  suspend fun fetchShowPeople(tmdbId: Long): Map<TmdbPerson.Type, List<TmdbPerson>> {
+  override suspend fun fetchShowPeople(tmdbId: Long): Map<TmdbPerson.Type, List<TmdbPerson>> {
     val result = service.fetchShowPeople(tmdbId)
     val cast = result.cast?.toList() ?: emptyList()
     val crew = result.crew?.toList() ?: emptyList()
@@ -54,7 +55,7 @@ class TmdbApi(private val service: TmdbService) {
     )
   }
 
-  suspend fun fetchShowWatchProviders(tmdbId: Long, countryCode: String): TmdbStreamingCountry? {
+  override suspend fun fetchShowWatchProviders(tmdbId: Long, countryCode: String): TmdbStreamingCountry? {
     val result = service.fetchShowWatchProviders(tmdbId)
     val code = when (countryCode.uppercase()) {
       "UK" -> "GB"
@@ -63,7 +64,7 @@ class TmdbApi(private val service: TmdbService) {
     return result.results[code]
   }
 
-  suspend fun fetchMovieWatchProviders(tmdbId: Long, countryCode: String): TmdbStreamingCountry? {
+  override suspend fun fetchMovieWatchProviders(tmdbId: Long, countryCode: String): TmdbStreamingCountry? {
     val result = service.fetchMovieWatchProviders(tmdbId)
     val code = when (countryCode.uppercase()) {
       "UK" -> "GB"
@@ -72,16 +73,16 @@ class TmdbApi(private val service: TmdbService) {
     return result.results[code]
   }
 
-  suspend fun fetchPersonDetails(id: Long): TmdbPerson {
+  override suspend fun fetchPersonDetails(id: Long): TmdbPerson {
     return service.fetchPersonDetails(id)
   }
 
-  suspend fun fetchPersonTranslations(id: Long): Map<String, TmdbTranslation.Data> {
+  override suspend fun fetchPersonTranslations(id: Long): Map<String, TmdbTranslation.Data> {
     val result = service.fetchPersonTranslation(id).translations ?: emptyList()
     return result.associateBy({ it.iso_639_1.lowercase() }, { it.data ?: TmdbTranslation.Data(null) })
   }
 
-  suspend fun fetchPersonImages(tmdbId: Long) =
+  override suspend fun fetchPersonImages(tmdbId: Long) =
     try {
       if (tmdbId <= 0) TmdbImages.EMPTY
       service.fetchPersonImages(tmdbId)

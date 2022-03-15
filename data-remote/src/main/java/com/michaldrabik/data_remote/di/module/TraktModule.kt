@@ -1,6 +1,7 @@
 package com.michaldrabik.data_remote.di.module
 
 import com.michaldrabik.data_remote.trakt.TraktInterceptor
+import com.michaldrabik.data_remote.trakt.TraktRemoteDataSource
 import com.michaldrabik.data_remote.trakt.api.TraktApi
 import com.michaldrabik.data_remote.trakt.api.service.TraktAuthService
 import com.michaldrabik.data_remote.trakt.api.service.TraktCommentsService
@@ -24,7 +25,7 @@ object TraktModule {
 
   @Provides
   @Singleton
-  fun providesTraktApi(@Named("retrofitTrakt") retrofit: Retrofit): TraktApi =
+  fun providesTraktApi(@Named("retrofitTrakt") retrofit: Retrofit): TraktRemoteDataSource =
     TraktApi(
       showsService = retrofit.create(TraktShowsService::class.java),
       moviesService = retrofit.create(TraktMoviesService::class.java),

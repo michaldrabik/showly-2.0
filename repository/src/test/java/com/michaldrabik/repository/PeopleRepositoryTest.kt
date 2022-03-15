@@ -11,8 +11,8 @@ import com.michaldrabik.data_local.database.dao.PeopleShowsMoviesDao
 import com.michaldrabik.data_local.database.dao.ShowsDao
 import com.michaldrabik.data_local.database.model.Movie
 import com.michaldrabik.data_local.database.model.Show
-import com.michaldrabik.data_remote.tmdb.api.TmdbApi
-import com.michaldrabik.data_remote.trakt.api.TraktApi
+import com.michaldrabik.data_remote.tmdb.TmdbRemoteDataSource
+import com.michaldrabik.data_remote.trakt.TraktRemoteDataSource
 import com.michaldrabik.data_remote.trakt.model.PersonCredit
 import com.michaldrabik.repository.common.BaseMockTest
 import com.michaldrabik.repository.settings.SettingsRepository
@@ -42,8 +42,8 @@ class PeopleRepositoryTest : BaseMockTest() {
   @RelaxedMockK lateinit var peopleShowsMoviesDao: PeopleShowsMoviesDao
   @RelaxedMockK lateinit var peopleCreditsDao: PeopleCreditsDao
   @RelaxedMockK lateinit var person: PersonDb
-  @RelaxedMockK lateinit var tmdbApi: TmdbApi
-  @RelaxedMockK lateinit var traktApi: TraktApi
+  @RelaxedMockK lateinit var tmdbApi: TmdbRemoteDataSource
+  @RelaxedMockK lateinit var traktApi: TraktRemoteDataSource
   @RelaxedMockK lateinit var settingsRepository: SettingsRepository
 
   private lateinit var SUT: PeopleRepository
@@ -57,8 +57,8 @@ class PeopleRepositoryTest : BaseMockTest() {
     coEvery { database.moviesDao() } returns moviesDao
     coEvery { database.peopleCreditsDao() } returns peopleCreditsDao
     coEvery { database.peopleShowsMoviesDao() } returns peopleShowsMoviesDao
-    coEvery { cloud.tmdbApi } returns tmdbApi
-    coEvery { cloud.traktApi } returns traktApi
+    coEvery { cloud.tmdb } returns tmdbApi
+    coEvery { cloud.trakt } returns traktApi
   }
 
   @After
