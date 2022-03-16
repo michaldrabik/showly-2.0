@@ -4,44 +4,44 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
 import com.michaldrabik.data_local.database.model.Movie
+import com.michaldrabik.data_local.sources.MoviesLocalDataSource
 
 @Dao
-interface MoviesDao : BaseDao<Movie> {
+interface MoviesDao : BaseDao<Movie>, MoviesLocalDataSource {
 
   @Query("SELECT * FROM movies")
-  suspend fun getAll(): List<Movie>
+  override suspend fun getAll(): List<Movie>
 
   @Query("SELECT * FROM movies WHERE id_trakt IN (:ids)")
-  suspend fun getAll(ids: List<Long>): List<Movie>
+  override suspend fun getAll(ids: List<Long>): List<Movie>
 
   @Transaction
-  suspend fun getAllChunked(ids: List<Long>): List<Movie> = ids
+  override suspend fun getAllChunked(ids: List<Long>): List<Movie> = ids
     .chunked(500)
     .fold(
-      mutableListOf(),
-      { acc, chunk ->
-        acc += getAll(chunk)
-        acc
-      }
-    )
+      mutableListOf()
+    ) { acc, chunk ->
+      acc += getAll(chunk)
+      acc
+    }
 
   @Query("SELECT * FROM movies WHERE id_trakt == :traktId")
-  suspend fun getById(traktId: Long): Movie?
+  override suspend fun getById(traktId: Long): Movie?
 
   @Query("SELECT * FROM movies WHERE id_tmdb == :tmdbId")
-  suspend fun getByTmdbId(tmdbId: Long): Movie?
+  override suspend fun getByTmdbId(tmdbId: Long): Movie?
 
   @Query("SELECT * FROM movies WHERE id_slug == :slug")
-  suspend fun getBySlug(slug: String): Movie?
+  override suspend fun getBySlug(slug: String): Movie?
 
   @Query("SELECT * FROM movies WHERE id_imdb == :imdbId")
-  suspend fun getById(imdbId: String): Movie?
+  override suspend fun getById(imdbId: String): Movie?
 
   @Query("DELETE FROM movies where id_trakt == :traktId")
-  suspend fun deleteById(traktId: Long)
+  override suspend fun deleteById(traktId: Long)
 
   @Transaction
-  suspend fun upsert(movies: List<Movie>) {
+  override suspend fun upsert(movies: List<Movie>) {
     val result = insert(movies)
 
     val updateList = mutableListOf<Movie>()

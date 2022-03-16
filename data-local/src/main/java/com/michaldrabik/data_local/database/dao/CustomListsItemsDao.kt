@@ -4,27 +4,28 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
 import com.michaldrabik.data_local.database.model.CustomListItem
+import com.michaldrabik.data_local.sources.CustomListsItemsLocalDataSource
 
 @Dao
-interface CustomListsItemsDao : BaseDao<CustomListItem> {
+interface CustomListsItemsDao : BaseDao<CustomListItem>, CustomListsItemsLocalDataSource {
 
   @Query("SELECT id_list FROM custom_list_item WHERE id_trakt = :idTrakt AND type = :type")
-  suspend fun getListsForItem(idTrakt: Long, type: String): List<Long>
+  override suspend fun getListsForItem(idTrakt: Long, type: String): List<Long>
 
   @Query("SELECT * FROM custom_list_item WHERE id_list = :idList AND id_trakt = :idTrakt AND type = :type")
-  suspend fun getByIdTrakt(idList: Long, idTrakt: Long, type: String): CustomListItem?
+  override suspend fun getByIdTrakt(idList: Long, idTrakt: Long, type: String): CustomListItem?
 
   @Query("SELECT * FROM custom_list_item WHERE id_list = :idList ORDER BY rank ASC")
-  suspend fun getItemsById(idList: Long): List<CustomListItem>
+  override suspend fun getItemsById(idList: Long): List<CustomListItem>
 
   @Query("SELECT * FROM custom_list_item WHERE id_list = :idList ORDER BY rank ASC LIMIT :limit")
-  suspend fun getItemsForListImages(idList: Long, limit: Int): List<CustomListItem>
+  override suspend fun getItemsForListImages(idList: Long, limit: Int): List<CustomListItem>
 
   @Query("SELECT rank FROM custom_list_item WHERE id_list = :idList ORDER BY rank DESC LIMIT 1")
-  suspend fun getRankForList(idList: Long): Long?
+  override suspend fun getRankForList(idList: Long): Long?
 
   @Transaction
-  suspend fun insertItem(item: CustomListItem) {
+  override suspend fun insertItem(item: CustomListItem) {
     val localItem = getByIdTrakt(item.idList, item.idTrakt, item.type)
     if (localItem != null) return
     val rank = getRankForList(item.idList) ?: 0L
@@ -33,5 +34,5 @@ interface CustomListsItemsDao : BaseDao<CustomListItem> {
   }
 
   @Query("DELETE FROM custom_list_item WHERE id_list = :idList AND id_trakt == :idTrakt AND type = :type")
-  suspend fun deleteItem(idList: Long, idTrakt: Long, type: String)
+  override suspend fun deleteItem(idList: Long, idTrakt: Long, type: String)
 }

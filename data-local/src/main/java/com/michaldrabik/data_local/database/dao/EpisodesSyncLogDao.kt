@@ -5,13 +5,14 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.michaldrabik.data_local.database.model.EpisodesSyncLog
+import com.michaldrabik.data_local.sources.EpisodesSyncLogLocalDataSource
 
 @Dao
-interface EpisodesSyncLogDao {
+interface EpisodesSyncLogDao : EpisodesSyncLogLocalDataSource {
 
   @Query("SELECT * from sync_episodes_log")
-  suspend fun getAll(): List<EpisodesSyncLog>
+  override suspend fun getAll(): List<EpisodesSyncLog>
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  suspend fun upsert(log: EpisodesSyncLog)
+  override suspend fun upsert(log: EpisodesSyncLog)
 }

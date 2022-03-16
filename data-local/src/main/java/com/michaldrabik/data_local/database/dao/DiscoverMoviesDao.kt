@@ -6,24 +6,25 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import com.michaldrabik.data_local.database.model.DiscoverMovie
+import com.michaldrabik.data_local.sources.DiscoverMoviesLocalDataSource
 
 @Dao
-interface DiscoverMoviesDao {
+interface DiscoverMoviesDao : DiscoverMoviesLocalDataSource {
 
   @Query("SELECT * FROM movies_discover ORDER BY id")
-  suspend fun getAll(): List<DiscoverMovie>
+  override suspend fun getAll(): List<DiscoverMovie>
 
   @Query("SELECT * from movies_discover ORDER BY created_at DESC LIMIT 1")
-  suspend fun getMostRecent(): DiscoverMovie?
+  override suspend fun getMostRecent(): DiscoverMovie?
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  suspend fun upsert(movies: List<DiscoverMovie>)
+  override suspend fun upsert(movies: List<DiscoverMovie>)
 
   @Query("DELETE FROM movies_discover")
-  suspend fun deleteAll()
+  override suspend fun deleteAll()
 
   @Transaction
-  suspend fun replace(movies: List<DiscoverMovie>) {
+  override suspend fun replace(movies: List<DiscoverMovie>) {
     deleteAll()
     upsert(movies)
   }
