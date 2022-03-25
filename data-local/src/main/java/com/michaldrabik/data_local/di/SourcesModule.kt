@@ -11,7 +11,12 @@ import com.michaldrabik.data_local.sources.DiscoverShowsLocalDataSource
 import com.michaldrabik.data_local.sources.EpisodeTranslationsLocalDataSource
 import com.michaldrabik.data_local.sources.EpisodesLocalDataSource
 import com.michaldrabik.data_local.sources.EpisodesSyncLogLocalDataSource
+import com.michaldrabik.data_local.sources.MovieImagesLocalDataSource
+import com.michaldrabik.data_local.sources.MovieRatingsLocalDataSource
+import com.michaldrabik.data_local.sources.MovieStreamingsLocalDataSource
+import com.michaldrabik.data_local.sources.MovieTranslationsLocalDataSource
 import com.michaldrabik.data_local.sources.MoviesLocalDataSource
+import com.michaldrabik.data_local.sources.MoviesSyncLogLocalDataSource
 import com.michaldrabik.data_local.sources.ShowsLocalDataSource
 import dagger.Module
 import dagger.Provides
@@ -82,4 +87,29 @@ class SourcesModule {
   @Singleton
   fun providesEpisodesTranslations(database: AppDatabase): EpisodeTranslationsLocalDataSource =
     database.episodeTranslationsDao()
+
+  @Provides
+  @Singleton
+  fun providesMovieImages(database: AppDatabase): MovieImagesLocalDataSource =
+    database.movieImagesDao()
+
+  @Provides
+  @Singleton
+  fun providesMovieRatings(database: AppDatabase): MovieRatingsLocalDataSource =
+    database.movieRatingsDao()
+
+  @Provides
+  @Singleton
+  fun providesMovieSyncLog(database: AppDatabase): MoviesSyncLogLocalDataSource =
+    database.moviesSyncLogDao()
+
+  @Provides
+  @Singleton
+  fun providesMovieStreaming(database: AppDatabase): MovieStreamingsLocalDataSource =
+    database.movieStreamingsDao()
+
+  @Provides
+  @Singleton
+  fun providesMovieTranslation(database: AppDatabase): MovieTranslationsLocalDataSource =
+    database.movieTranslationsDao()
 }

@@ -10,7 +10,12 @@ import com.michaldrabik.data_local.sources.DiscoverShowsLocalDataSource
 import com.michaldrabik.data_local.sources.EpisodeTranslationsLocalDataSource
 import com.michaldrabik.data_local.sources.EpisodesLocalDataSource
 import com.michaldrabik.data_local.sources.EpisodesSyncLogLocalDataSource
+import com.michaldrabik.data_local.sources.MovieImagesLocalDataSource
+import com.michaldrabik.data_local.sources.MovieRatingsLocalDataSource
+import com.michaldrabik.data_local.sources.MovieStreamingsLocalDataSource
+import com.michaldrabik.data_local.sources.MovieTranslationsLocalDataSource
 import com.michaldrabik.data_local.sources.MoviesLocalDataSource
+import com.michaldrabik.data_local.sources.MoviesSyncLogLocalDataSource
 import com.michaldrabik.data_local.sources.ShowsLocalDataSource
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -31,6 +36,11 @@ interface LocalDataSource {
   val episodes: EpisodesLocalDataSource
   val episodesSyncLog: EpisodesSyncLogLocalDataSource
   val episodesTranslations: EpisodeTranslationsLocalDataSource
+  val movieImages: MovieImagesLocalDataSource
+  val movieRatings: MovieRatingsLocalDataSource
+  val moviesSyncLog: MoviesSyncLogLocalDataSource
+  val movieStreamings: MovieStreamingsLocalDataSource
+  val movieTranslations: MovieTranslationsLocalDataSource
 }
 
 @Singleton
@@ -46,5 +56,10 @@ internal class MainLocalDataSource @Inject constructor(
   override val discoverMovies: DiscoverMoviesLocalDataSource,
   override val episodes: EpisodesLocalDataSource,
   override val episodesSyncLog: EpisodesSyncLogLocalDataSource,
-  override val episodesTranslations: EpisodeTranslationsLocalDataSource
+  override val episodesTranslations: EpisodeTranslationsLocalDataSource,
+  override val movieImages: MovieImagesLocalDataSource,
+  override val movieRatings: MovieRatingsLocalDataSource,
+  override val moviesSyncLog: MoviesSyncLogLocalDataSource,
+  override val movieStreamings: MovieStreamingsLocalDataSource,
+  override val movieTranslations: MovieTranslationsLocalDataSource
 ) : LocalDataSource
