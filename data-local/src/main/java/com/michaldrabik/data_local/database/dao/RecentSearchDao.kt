@@ -5,16 +5,17 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.michaldrabik.data_local.database.model.RecentSearch
+import com.michaldrabik.data_local.sources.RecentSearchLocalDataSource
 
 @Dao
-interface RecentSearchDao {
+interface RecentSearchDao : RecentSearchLocalDataSource {
 
   @Query("SELECT * FROM recent_searches ORDER BY created_at DESC LIMIT :limit")
-  suspend fun getAll(limit: Int): List<RecentSearch>
+  override suspend fun getAll(limit: Int): List<RecentSearch>
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  suspend fun upsert(searches: List<RecentSearch>)
+  override suspend fun upsert(searches: List<RecentSearch>)
 
   @Query("DELETE FROM recent_searches")
-  suspend fun deleteAll()
+  override suspend fun deleteAll()
 }

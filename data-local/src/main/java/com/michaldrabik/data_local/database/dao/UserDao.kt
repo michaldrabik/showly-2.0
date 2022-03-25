@@ -5,13 +5,14 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.michaldrabik.data_local.database.model.User
+import com.michaldrabik.data_local.sources.UserLocalDataSource
 
 @Dao
-interface UserDao {
+interface UserDao : UserLocalDataSource {
 
   @Query("SELECT * FROM user WHERE id == 1")
-  suspend fun get(): User?
+  override suspend fun get(): User?
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  suspend fun upsert(user: User)
+  override suspend fun upsert(user: User)
 }

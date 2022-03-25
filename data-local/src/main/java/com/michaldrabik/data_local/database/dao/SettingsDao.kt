@@ -5,16 +5,17 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.michaldrabik.data_local.database.model.Settings
+import com.michaldrabik.data_local.sources.SettingsLocalDataSource
 
 @Dao
-interface SettingsDao {
+interface SettingsDao : SettingsLocalDataSource {
 
   @Query("SELECT * FROM settings")
-  suspend fun getAll(): Settings
+  override suspend fun getAll(): Settings
 
   @Query("SELECT COUNT(*) FROM settings")
-  suspend fun getCount(): Int
+  override suspend fun getCount(): Int
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  suspend fun upsert(settings: Settings)
+  override suspend fun upsert(settings: Settings)
 }

@@ -4,12 +4,13 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
 import com.michaldrabik.data_local.database.model.Season
+import com.michaldrabik.data_local.sources.SeasonsLocalDataSource
 
 @Dao
-interface SeasonsDao : BaseDao<Season> {
+interface SeasonsDao : BaseDao<Season>, SeasonsLocalDataSource {
 
   @Transaction
-  suspend fun getAllByShowsIds(traktIds: List<Long>): List<Season> {
+  override suspend fun getAllByShowsIds(traktIds: List<Long>): List<Season> {
     val result = mutableListOf<Season>()
     val chunks = traktIds.chunked(50)
     chunks.forEach { chunk ->
@@ -19,22 +20,22 @@ interface SeasonsDao : BaseDao<Season> {
   }
 
   @Query("SELECT * FROM seasons WHERE id_show_trakt IN (:traktIds)")
-  suspend fun getAllByShowsIdsChunk(traktIds: List<Long>): List<Season>
+  override suspend fun getAllByShowsIdsChunk(traktIds: List<Long>): List<Season>
 
   @Query("SELECT * FROM seasons WHERE id_show_trakt IN (:traktIds) AND is_watched = 1")
-  suspend fun getAllWatchedForShows(traktIds: List<Long>): List<Season>
+  override suspend fun getAllWatchedForShows(traktIds: List<Long>): List<Season>
 
   @Query("SELECT id_trakt FROM seasons WHERE id_show_trakt IN (:traktIds) AND is_watched = 1")
-  suspend fun getAllWatchedIdsForShows(traktIds: List<Long>): List<Long>
+  override suspend fun getAllWatchedIdsForShows(traktIds: List<Long>): List<Long>
 
   @Query("SELECT * FROM seasons WHERE id_show_trakt = :traktId")
-  suspend fun getAllByShowId(traktId: Long): List<Season>
+  override suspend fun getAllByShowId(traktId: Long): List<Season>
 
   @Query("SELECT * FROM seasons WHERE id_trakt = :traktId")
-  suspend fun getById(traktId: Long): Season?
+  override suspend fun getById(traktId: Long): Season?
 
   @Transaction
-  suspend fun upsert(items: List<Season>) {
+  override suspend fun upsert(items: List<Season>) {
     val result = insert(items)
     val updateList = mutableListOf<Season>()
 
@@ -46,5 +47,5 @@ interface SeasonsDao : BaseDao<Season> {
   }
 
   @Query("DELETE FROM seasons WHERE id_show_trakt = :showTraktId")
-  suspend fun deleteAllForShow(showTraktId: Long)
+  override suspend fun deleteAllForShow(showTraktId: Long)
 }

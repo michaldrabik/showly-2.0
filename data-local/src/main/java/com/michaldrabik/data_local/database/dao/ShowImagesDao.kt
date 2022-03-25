@@ -6,18 +6,19 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import com.michaldrabik.data_local.database.model.ShowImage
+import com.michaldrabik.data_local.sources.ShowImagesLocalDataSource
 
 @Dao
-interface ShowImagesDao {
+interface ShowImagesDao : ShowImagesLocalDataSource {
 
   @Query("SELECT * FROM shows_images WHERE id_tmdb = :tmdbId AND type = :type AND family = 'show'")
-  suspend fun getByShowId(tmdbId: Long, type: String): ShowImage?
+  override suspend fun getByShowId(tmdbId: Long, type: String): ShowImage?
 
   @Query("SELECT * FROM shows_images WHERE id_tmdb = :tmdbId AND type = :type AND family = 'episode'")
-  suspend fun getByEpisodeId(tmdbId: Long, type: String): ShowImage?
+  override suspend fun getByEpisodeId(tmdbId: Long, type: String): ShowImage?
 
   @Transaction
-  suspend fun insertShowImage(image: ShowImage) {
+  override suspend fun insertShowImage(image: ShowImage) {
     val localImage = getByShowId(image.idTmdb, image.type)
     if (localImage != null) {
       val updated = image.copy(id = localImage.id)
@@ -28,7 +29,7 @@ interface ShowImagesDao {
   }
 
   @Transaction
-  suspend fun insertEpisodeImage(image: ShowImage) {
+  override suspend fun insertEpisodeImage(image: ShowImage) {
     val localImage = getByEpisodeId(image.idTmdb, image.type)
     if (localImage != null) {
       val updated = image.copy(id = localImage.id)
@@ -39,14 +40,14 @@ interface ShowImagesDao {
   }
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  suspend fun upsert(image: ShowImage)
+  override suspend fun upsert(image: ShowImage)
 
   @Query("DELETE FROM shows_images WHERE id_tmdb = :id AND type = :type AND family = 'show'")
-  suspend fun deleteByShowId(id: Long, type: String)
+  override suspend fun deleteByShowId(id: Long, type: String)
 
   @Query("DELETE FROM shows_images WHERE id_tmdb = :id AND type = :type AND family = 'episode'")
-  suspend fun deleteByEpisodeId(id: Long, type: String)
+  override suspend fun deleteByEpisodeId(id: Long, type: String)
 
   @Query("DELETE FROM shows_images WHERE type = 'poster'")
-  suspend fun deleteAll()
+  override suspend fun deleteAll()
 }

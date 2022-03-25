@@ -4,12 +4,13 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
 import com.michaldrabik.data_local.database.model.ShowRatings
+import com.michaldrabik.data_local.sources.ShowRatingsLocalDataSource
 
 @Dao
-interface ShowRatingsDao : BaseDao<ShowRatings> {
+interface ShowRatingsDao : BaseDao<ShowRatings>, ShowRatingsLocalDataSource {
 
   @Transaction
-  suspend fun upsert(entity: ShowRatings) {
+  override suspend fun upsert(entity: ShowRatings) {
     val local = getById(entity.idTrakt)
     if (local != null) {
       update(
@@ -30,5 +31,5 @@ interface ShowRatingsDao : BaseDao<ShowRatings> {
   }
 
   @Query("SELECT * FROM shows_ratings WHERE id_trakt == :traktId")
-  suspend fun getById(traktId: Long): ShowRatings?
+  override suspend fun getById(traktId: Long): ShowRatings?
 }
