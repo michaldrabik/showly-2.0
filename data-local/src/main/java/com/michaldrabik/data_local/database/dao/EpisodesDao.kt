@@ -2,6 +2,7 @@
 package com.michaldrabik.data_local.database.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
@@ -10,7 +11,7 @@ import com.michaldrabik.data_local.database.model.Episode
 import com.michaldrabik.data_local.sources.EpisodesLocalDataSource
 
 @Dao
-interface EpisodesDao : BaseDao<Episode>, EpisodesLocalDataSource {
+interface EpisodesDao : EpisodesLocalDataSource {
 
   @Insert(onConflict = REPLACE)
   override suspend fun upsert(episodes: List<Episode>)
@@ -73,4 +74,7 @@ interface EpisodesDao : BaseDao<Episode>, EpisodesLocalDataSource {
 
   @Query("DELETE FROM episodes WHERE id_show_trakt = :showTraktId")
   override suspend fun deleteAllForShow(showTraktId: Long)
+
+  @Delete
+  override suspend fun delete(items: List<Episode>)
 }

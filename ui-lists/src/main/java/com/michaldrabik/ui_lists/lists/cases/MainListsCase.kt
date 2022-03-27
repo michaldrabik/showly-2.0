@@ -2,7 +2,7 @@ package com.michaldrabik.ui_lists.lists.cases
 
 import com.michaldrabik.common.Mode.MOVIES
 import com.michaldrabik.common.Mode.SHOWS
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.CustomListItem
 import com.michaldrabik.repository.ListsRepository
 import com.michaldrabik.repository.mappers.Mappers
@@ -24,7 +24,7 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class MainListsCase @Inject constructor(
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
   private val mappers: Mappers,
   private val listsRepository: ListsRepository,
   private val dateProvider: DateFormatProvider,
@@ -51,7 +51,7 @@ class MainListsCase @Inject constructor(
       .sortedWith(sorter.sort(sorting.first, sorting.second))
       .map {
         async {
-          val items = database.customListsItemsDao().getItemsForListImages(it.id, IMAGES_LIMIT)
+          val items = localSource.customListsItems.getItemsForListImages(it.id, IMAGES_LIMIT)
           val images = mutableListOf<ListsItemImage>()
           val unavailable = ListsItemImage(Image.createUnavailable(POSTER))
           items.forEach { item ->
@@ -76,7 +76,7 @@ class MainListsCase @Inject constructor(
   private suspend fun findImage(item: CustomListItem) =
     when (item.type) {
       SHOWS.type -> {
-        val showDb = database.showsDao().getById(item.idTrakt)
+        val showDb = localSource.shows.getById(item.idTrakt)
         showDb?.let {
           val show = mappers.show.fromDatabase(it)
           val image = showImagesProvider.findCachedImage(show, POSTER)
@@ -84,7 +84,7 @@ class MainListsCase @Inject constructor(
         }
       }
       MOVIES.type -> {
-        val movieDb = database.moviesDao().getById(item.idTrakt)
+        val movieDb = localSource.movies.getById(item.idTrakt)
         movieDb?.let {
           val movie = mappers.movie.fromDatabase(movieDb)
           val image = movieImagesProvider.findCachedImage(movie, POSTER)

@@ -2,7 +2,7 @@ package com.michaldrabik.ui_base.sync.runners
 
 import com.michaldrabik.common.ConfigVariant.MOVIE_SYNC_COOLDOWN
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_model.MovieStatus.IN_PRODUCTION
@@ -19,7 +19,7 @@ import javax.inject.Singleton
  */
 @Singleton
 class MoviesSyncRunner @Inject constructor(
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
   private val moviesRepository: MoviesRepository,
   private val settingsRepository: SettingsRepository,
 ) {
@@ -46,7 +46,7 @@ class MoviesSyncRunner @Inject constructor(
     Timber.i("Movies to sync count: ${moviesToSync.size}.")
 
     var syncCount = 0
-    val syncLog = database.moviesSyncLogDao().getAll()
+    val syncLog = localSource.moviesSyncLog.getAll()
     moviesToSync.forEach { movie ->
       val lastSync = syncLog.find { it.idTrakt == movie.ids.trakt.id }?.syncedAt ?: 0
       if (nowUtcMillis() - lastSync < MOVIE_SYNC_COOLDOWN) {

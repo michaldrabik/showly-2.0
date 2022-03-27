@@ -32,8 +32,15 @@ class SettingsRepositoryTest : BaseMockTest() {
   @Before
   override fun setUp() {
     super.setUp()
-    every { database.settingsDao() } returns settingsDao
-    SUT = SettingsRepository(settingsSortRepository, settingsWidgetsRepository, database, mappers, sharedPreferences)
+    every { database.settings } returns settingsDao
+    SUT = SettingsRepository(
+      settingsSortRepository,
+      settingsWidgetsRepository,
+      database,
+      transactions,
+      mappers,
+      sharedPreferences
+    )
   }
 
   @Test

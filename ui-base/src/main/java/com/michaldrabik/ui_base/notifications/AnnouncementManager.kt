@@ -10,7 +10,7 @@ import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.nowUtcDay
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.common.extensions.toMillis
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.Episode
 import com.michaldrabik.data_local.database.model.Show
 import com.michaldrabik.repository.TranslationsRepository
@@ -45,7 +45,7 @@ import javax.inject.Singleton
 @Singleton
 class AnnouncementManager @Inject constructor(
   @ApplicationContext private val context: Context,
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
   private val settingsRepository: SettingsRepository,
   private val showsImagesProvider: ShowImagesProvider,
   private val moviesImagesProvider: MovieImagesProvider,
@@ -78,7 +78,7 @@ class AnnouncementManager @Inject constructor(
       return
     }
 
-    val myShows = database.myShowsDao().getAll()
+    val myShows = localSource.myShows.getAll()
     if (myShows.isEmpty()) {
       Timber.i("Nothing to process. Exiting...")
       return
@@ -89,7 +89,7 @@ class AnnouncementManager @Inject constructor(
     myShows.forEach { show ->
       Timber.i("Processing ${show.title} (${show.idTrakt})")
       val fromTime = if (delay.isBefore()) nowMillis else nowMillis - delay.delayMs
-      val episode = database.episodesDao().getFirstUnwatched(show.idTrakt, fromTime, limit.toMillis())
+      val episode = localSource.episodes.getFirstUnwatched(show.idTrakt, fromTime, limit.toMillis())
       episode?.firstAired?.let { airDate ->
         when {
           delay.isBefore() -> {
@@ -117,7 +117,7 @@ class AnnouncementManager @Inject constructor(
       return
     }
 
-    val movies = database.watchlistMoviesDao().getAll()
+    val movies = localSource.watchlistMovies.getAll()
       .map { mappers.movie.fromDatabase(it) }
 
     if (movies.isEmpty()) {

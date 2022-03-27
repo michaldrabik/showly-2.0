@@ -1,13 +1,13 @@
 package com.michaldrabik.ui_lists.details.cases
 
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.CustomListItem
+import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.ListsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.settings.SettingsRepository
-import com.michaldrabik.ui_base.utilities.extensions.runTransaction
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
 import com.michaldrabik.ui_model.CustomList
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -16,8 +16,9 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class ListDetailsMainCase @Inject constructor(
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
   private val remoteSource: RemoteDataSource,
+  private val transactions: TransactionsProvider,
   private val listsRepository: ListsRepository,
   private val settingsRepository: SettingsRepository,
   private val userTraktManager: UserTraktManager,
@@ -36,9 +37,9 @@ class ListDetailsMainCase @Inject constructor(
       updateItems.add(updatedItem)
       updateItemsDb.add(dbItem)
     }
-    database.runTransaction {
-      customListsItemsDao().update(updateItemsDb)
-      customListsDao().updateTimestamp(listId, now)
+    transactions.withTransaction {
+      localSource.customListsItems.update(updateItemsDb)
+      localSource.customLists.updateTimestamp(listId, now)
     }
     return updateItems
   }

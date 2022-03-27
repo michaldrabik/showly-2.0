@@ -31,9 +31,9 @@ class DiscoverShowsRepositoryTest : BaseMockTest() {
   @Before
   override fun setUp() {
     super.setUp()
-    SUT = DiscoverShowsRepository(cloud, database, mappers)
-    coEvery { database.showsDao() } returns showsDao
-    coEvery { database.discoverShowsDao() } returns discoverShowsDao
+    SUT = DiscoverShowsRepository(cloud, database, transactions, mappers)
+    coEvery { database.shows } returns showsDao
+    coEvery { database.discoverShows } returns discoverShowsDao
   }
 
   @After

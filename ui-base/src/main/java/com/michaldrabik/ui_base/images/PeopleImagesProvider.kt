@@ -1,10 +1,9 @@
 package com.michaldrabik.ui_base.images
 
-import androidx.room.withTransaction
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.PersonImage
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.ui_model.IdTmdb
@@ -19,12 +18,12 @@ import javax.inject.Singleton
 
 @Singleton
 class PeopleImagesProvider @Inject constructor(
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
   private val remoteSource: RemoteDataSource,
 ) {
 
   suspend fun loadCachedImage(personTmdbId: IdTmdb): Image? {
-    val localPerson = database.peopleDao().getById(personTmdbId.id)
+    val localPerson = localSource.people.getById(personTmdbId.id)
     return localPerson?.image?.let {
       return Image.createAvailable(
         ids = Ids.EMPTY,
@@ -37,10 +36,10 @@ class PeopleImagesProvider @Inject constructor(
   }
 
   suspend fun loadImages(personTmdbId: IdTmdb): List<Image> {
-    val localTimestamp = database.peopleImagesDao().getTimestampForPerson(personTmdbId.id) ?: 0
+    val localTimestamp = localSource.peopleImages.getTimestampForPerson(personTmdbId.id) ?: 0
     if (localTimestamp + Config.PEOPLE_IMAGES_CACHE_DURATION > nowUtcMillis()) {
       Timber.d("Returning cached result. Cache still valid for ${(localTimestamp + Config.PEOPLE_IMAGES_CACHE_DURATION) - nowUtcMillis()} ms")
-      val local = database.peopleImagesDao().getAll(personTmdbId.id)
+      val local = localSource.peopleImages.getAll(personTmdbId.id)
       return local.map {
         Image.createAvailable(
           ids = Ids.EMPTY,
@@ -64,11 +63,7 @@ class PeopleImagesProvider @Inject constructor(
       )
     }
 
-    with(database) {
-      withTransaction {
-        peopleImagesDao().insert(personTmdbId.id, dbImages)
-      }
-    }
+    localSource.peopleImages.insert(personTmdbId.id, dbImages)
 
     return images.map {
       Image.createAvailable(

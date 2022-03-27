@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.common.ConfigVariant
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.EpisodeTranslation
 import com.michaldrabik.data_local.database.model.MovieTranslation
 import com.michaldrabik.data_local.database.model.ShowTranslation
@@ -28,21 +28,21 @@ import javax.inject.Singleton
 class TranslationsRepository @Inject constructor(
   @Named("miscPreferences") private var miscPreferences: SharedPreferences,
   private val remoteSource: RemoteDataSource,
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
   private val mappers: Mappers,
 ) {
 
   fun getLanguage() = miscPreferences.getString(LANGUAGE, DEFAULT_LANGUAGE) ?: DEFAULT_LANGUAGE
 
   suspend fun loadAllShowsLocal(language: String = DEFAULT_LANGUAGE): Map<Long, Translation> {
-    val local = database.showTranslationsDao().getAll(language)
+    val local = localSource.showTranslations.getAll(language)
     return local.associate {
       Pair(it.idTrakt, mappers.translation.fromDatabase(it))
     }
   }
 
   suspend fun loadAllMoviesLocal(language: String = DEFAULT_LANGUAGE): Map<Long, Translation> {
-    val local = database.movieTranslationsDao().getAll(language)
+    val local = localSource.movieTranslations.getAll(language)
     return local.associate {
       Pair(it.idTrakt, mappers.translation.fromDatabase(it))
     }
@@ -53,13 +53,13 @@ class TranslationsRepository @Inject constructor(
     language: String = DEFAULT_LANGUAGE,
     onlyLocal: Boolean = false,
   ): Translation? {
-    val local = database.showTranslationsDao().getById(show.traktId, language)
+    val local = localSource.showTranslations.getById(show.traktId, language)
     local?.let {
       return mappers.translation.fromDatabase(it)
     }
     if (onlyLocal) return null
 
-    val timestamp = database.translationsSyncLogDao().getById(show.traktId)?.syncedAt ?: 0
+    val timestamp = localSource.translationsShowsSyncLog.getById(show.traktId)?.syncedAt ?: 0
     if (nowUtcMillis() - timestamp < ConfigVariant.TRANSLATION_SYNC_SHOW_MOVIE_COOLDOWN) {
       return Translation.EMPTY
     }
@@ -80,9 +80,9 @@ class TranslationsRepository @Inject constructor(
     )
 
     if (translationDb.overview.isNotBlank() || translationDb.title.isNotBlank()) {
-      database.showTranslationsDao().insert(translationDb)
+      localSource.showTranslations.insert(translationDb)
     }
-    database.translationsSyncLogDao().upsert(TranslationsSyncLog(show.traktId, nowUtcMillis()))
+    localSource.translationsShowsSyncLog.upsert(TranslationsSyncLog(show.traktId, nowUtcMillis()))
 
     return translation
   }
@@ -92,13 +92,13 @@ class TranslationsRepository @Inject constructor(
     language: String = DEFAULT_LANGUAGE,
     onlyLocal: Boolean = false,
   ): Translation? {
-    val local = database.movieTranslationsDao().getById(movie.traktId, language)
+    val local = localSource.movieTranslations.getById(movie.traktId, language)
     local?.let {
       return mappers.translation.fromDatabase(it)
     }
     if (onlyLocal) return null
 
-    val timestamp = database.translationsMoviesSyncLogDao().getById(movie.traktId)?.syncedAt ?: 0
+    val timestamp = localSource.translationsMoviesSyncLog.getById(movie.traktId)?.syncedAt ?: 0
     if (nowUtcMillis() - timestamp < ConfigVariant.TRANSLATION_SYNC_SHOW_MOVIE_COOLDOWN) {
       return Translation.EMPTY
     }
@@ -119,9 +119,9 @@ class TranslationsRepository @Inject constructor(
     )
 
     if (translationDb.overview.isNotBlank() || translationDb.title.isNotBlank()) {
-      database.movieTranslationsDao().insert(translationDb)
+      localSource.movieTranslations.insert(translationDb)
     }
-    database.translationsMoviesSyncLogDao().upsert(TranslationsMoviesSyncLog(movie.traktId, nowUtcMillis()))
+    localSource.translationsMoviesSyncLog.upsert(TranslationsMoviesSyncLog(movie.traktId, nowUtcMillis()))
 
     return translation
   }
@@ -133,7 +133,7 @@ class TranslationsRepository @Inject constructor(
     onlyLocal: Boolean = false,
   ): Translation? {
     val nowMillis = nowUtcMillis()
-    val local = database.episodeTranslationsDao().getById(episode.ids.trakt.id, showId.id, language)
+    val local = localSource.episodesTranslations.getById(episode.ids.trakt.id, showId.id, language)
     local?.let {
       val isCacheValid = nowMillis - it.updatedAt < ConfigVariant.TRANSLATION_SYNC_EPISODE_COOLDOWN
       if (it.title.isNotBlank() && it.overview.isNotBlank()) {
@@ -159,7 +159,7 @@ class TranslationsRepository @Inject constructor(
           language = language,
           createdAt = nowMillis
         )
-        database.episodeTranslationsDao().insert(dbItem)
+        localSource.episodesTranslations.insert(dbItem)
       }
 
     remoteTranslations
@@ -179,7 +179,7 @@ class TranslationsRepository @Inject constructor(
     val episodes = season.episodes.toList()
     val episodesIds = season.episodes.map { it.ids.trakt.id }
 
-    val local = database.episodeTranslationsDao().getByIds(episodesIds, showId.id, language)
+    val local = localSource.episodesTranslations.getByIds(episodesIds, showId.id, language)
     val hasAllTranslated = local.isNotEmpty() && local.all { it.title.isNotBlank() && it.overview.isNotBlank() }
     val isCacheValid = local.isNotEmpty() && nowUtcMillis() - local.first().updatedAt < ConfigVariant.TRANSLATION_SYNC_EPISODE_COOLDOWN
 
@@ -211,7 +211,7 @@ class TranslationsRepository @Inject constructor(
           item.overview,
           nowUtcMillis()
         )
-        database.episodeTranslationsDao().insert(dbItem)
+        localSource.episodesTranslations.insert(dbItem)
       }
 
     return episodes.map { episode ->

@@ -1,13 +1,13 @@
 package com.michaldrabik.ui_base.trakt.imports
 
-import androidx.room.withTransaction
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.ArchiveMovie
 import com.michaldrabik.data_local.database.model.ArchiveShow
 import com.michaldrabik.data_local.database.model.Episode
 import com.michaldrabik.data_local.database.model.MyMovie
 import com.michaldrabik.data_local.database.model.MyShow
 import com.michaldrabik.data_local.database.model.Season
+import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.data_remote.trakt.model.SyncItem
 import com.michaldrabik.repository.TraktAuthToken
@@ -18,7 +18,6 @@ import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.trakt.TraktSyncRunner
-import com.michaldrabik.ui_base.utilities.extensions.runTransaction
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.Movie
@@ -31,8 +30,9 @@ import javax.inject.Singleton
 @Singleton
 class TraktImportWatchedRunner @Inject constructor(
   private val remoteSource: RemoteDataSource,
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
   private val mappers: Mappers,
+  private val transactions: TransactionsProvider,
   private val showImagesProvider: ShowImagesProvider,
   private val movieImagesProvider: MovieImagesProvider,
   private val settingsRepository: SettingsRepository,
@@ -106,19 +106,21 @@ class TraktImportWatchedRunner @Inject constructor(
         val show = mappers.show.fromNetwork(it)
         val dbShow = mappers.show.toDatabase(show)
         val archiveShow = ArchiveShow.fromTraktId(show.traktId, hiddenShow.hiddenAtMillis())
-        database.runTransaction {
-          showsDao().upsert(listOf(dbShow))
-          archiveShowsDao().insert(archiveShow)
-          myShowsDao().deleteById(show.traktId)
-          watchlistShowsDao().deleteById(show.traktId)
+        transactions.withTransaction {
+          with(localSource) {
+            shows.upsert(listOf(dbShow))
+            archiveShows.insert(archiveShow)
+            myShows.deleteById(show.traktId)
+            watchlistShows.deleteById(show.traktId)
+          }
         }
       }
     }
 
-    val myShowsIds = database.myShowsDao().getAllTraktIds()
-    val watchlistShowsIds = database.watchlistShowsDao().getAllTraktIds()
-    val hiddenShowsIds = database.archiveShowsDao().getAllTraktIds()
-    val traktSyncLogs = database.traktSyncLogDao().getAllShows()
+    val myShowsIds = localSource.myShows.getAllTraktIds()
+    val watchlistShowsIds = localSource.watchlistShows.getAllTraktIds()
+    val hiddenShowsIds = localSource.archiveShows.getAllTraktIds()
+    val traktSyncLogs = localSource.traktSyncLog.getAllShows()
 
     syncResults
       .forEachIndexed { index, result ->
@@ -137,7 +139,7 @@ class TraktImportWatchedRunner @Inject constructor(
           val showId = result.show!!.ids!!.trakt!!
           val (seasons, episodes) = loadSeasons(showId, result)
 
-          database.withTransaction {
+          transactions.withTransaction {
             if (showId !in myShowsIds && showId !in hiddenShowsIds) {
               val show = mappers.show.fromNetwork(result.show!!)
               val showDb = mappers.show.toDatabase(show)
@@ -147,20 +149,20 @@ class TraktImportWatchedRunner @Inject constructor(
                 createdAt = result.lastWatchedMillis(),
                 updatedAt = result.lastWatchedMillis()
               )
-              database.showsDao().upsert(listOf(showDb))
-              database.myShowsDao().insert(listOf(myShow))
+              localSource.shows.upsert(listOf(showDb))
+              localSource.myShows.insert(listOf(myShow))
 
               loadImage(show)
 
               if (showId in watchlistShowsIds) {
-                database.watchlistShowsDao().deleteById(showId)
+                localSource.watchlistShows.deleteById(showId)
               }
             }
-            database.seasonsDao().upsert(seasons)
-            database.episodesDao().upsert(episodes)
+            localSource.seasons.upsert(seasons)
+            localSource.episodes.upsert(episodes)
 
-            database.myShowsDao().updateTimestamp(showId, result.lastWatchedMillis())
-            database.traktSyncLogDao().upsertShow(showId, result.lastUpdateMillis())
+            localSource.myShows.updateTimestamp(showId, result.lastWatchedMillis())
+            localSource.traktSyncLog.upsertShow(showId, result.lastUpdateMillis())
           }
         } catch (error: Throwable) {
           Timber.w("Processing \'${result.show!!.title}\' failed. Skipping...")
@@ -173,8 +175,8 @@ class TraktImportWatchedRunner @Inject constructor(
 
   private suspend fun loadSeasons(showId: Long, item: SyncItem): Pair<List<Season>, List<Episode>> {
     val remoteSeasons = remoteSource.trakt.fetchSeasons(showId)
-    val localSeasonsIds = database.seasonsDao().getAllWatchedIdsForShows(listOf(showId))
-    val localEpisodesIds = database.episodesDao().getAllWatchedIdsForShows(listOf(showId))
+    val localSeasonsIds = localSource.seasons.getAllWatchedIdsForShows(listOf(showId))
+    val localEpisodesIds = localSource.episodes.getAllWatchedIdsForShows(listOf(showId))
 
     val seasons = remoteSeasons
       .filterNot { localSeasonsIds.contains(it.ids?.trakt) }
@@ -218,18 +220,20 @@ class TraktImportWatchedRunner @Inject constructor(
         val movie = mappers.movie.fromNetwork(it)
         val dbMovie = mappers.movie.toDatabase(movie)
         val archiveMovie = ArchiveMovie.fromTraktId(movie.traktId, hiddenMovie.hiddenAtMillis())
-        database.runTransaction {
-          moviesDao().upsert(listOf(dbMovie))
-          archiveMoviesDao().insert(archiveMovie)
-          myMoviesDao().deleteById(movie.traktId)
-          watchlistMoviesDao().deleteById(movie.traktId)
+        transactions.withTransaction {
+          with(localSource) {
+            movies.upsert(listOf(dbMovie))
+            archiveMovies.insert(archiveMovie)
+            myMovies.deleteById(movie.traktId)
+            watchlistMovies.deleteById(movie.traktId)
+          }
         }
       }
     }
 
-    val myMoviesIds = database.myMoviesDao().getAllTraktIds()
-    val watchlistMoviesIds = database.watchlistMoviesDao().getAllTraktIds()
-    val hiddenMoviesIds = database.archiveMoviesDao().getAllTraktIds()
+    val myMoviesIds = localSource.myMovies.getAllTraktIds()
+    val watchlistMoviesIds = localSource.watchlistMovies.getAllTraktIds()
+    val hiddenMoviesIds = localSource.archiveMovies.getAllTraktIds()
 
     syncResults
       .forEachIndexed { index, result ->
@@ -240,19 +244,19 @@ class TraktImportWatchedRunner @Inject constructor(
         try {
           val movieId = result.movie!!.ids!!.trakt!!
 
-          database.withTransaction {
+          transactions.withTransaction {
             if (movieId !in myMoviesIds && movieId !in hiddenMoviesIds) {
               val movie = mappers.movie.fromNetwork(result.movie!!)
               val movieDb = mappers.movie.toDatabase(movie)
 
               val myMovie = MyMovie.fromTraktId(movieDb.idTrakt, result.lastWatchedMillis())
-              database.moviesDao().upsert(listOf(movieDb))
-              database.myMoviesDao().insert(listOf(myMovie))
+              localSource.movies.upsert(listOf(movieDb))
+              localSource.myMovies.insert(listOf(myMovie))
 
               loadImage(movie)
 
               if (movieId in watchlistMoviesIds) {
-                database.watchlistMoviesDao().deleteById(movieId)
+                localSource.watchlistMovies.deleteById(movieId)
               }
             }
           }

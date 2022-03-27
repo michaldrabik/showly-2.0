@@ -54,206 +54,206 @@ class SourcesModule {
 
   @Provides
   @Singleton
-  fun providesShows(database: AppDatabase): ShowsLocalDataSource =
+  internal fun providesShows(database: AppDatabase): ShowsLocalDataSource =
     database.showsDao()
 
   @Provides
   @Singleton
-  fun providesMovies(database: AppDatabase): MoviesLocalDataSource =
+  internal fun providesMovies(database: AppDatabase): MoviesLocalDataSource =
     database.moviesDao()
 
   @Provides
   @Singleton
-  fun providesArchivesShows(database: AppDatabase): ArchiveShowsLocalDataSource =
+  internal fun providesArchivesShows(database: AppDatabase): ArchiveShowsLocalDataSource =
     database.archiveShowsDao()
 
   @Provides
   @Singleton
-  fun providesArchivesMovies(database: AppDatabase): ArchiveMoviesLocalDataSource =
+  internal fun providesArchivesMovies(database: AppDatabase): ArchiveMoviesLocalDataSource =
     database.archiveMoviesDao()
 
   @Provides
   @Singleton
-  fun providesCustomListsItems(database: AppDatabase): CustomListsItemsLocalDataSource =
+  internal fun providesCustomListsItems(database: AppDatabase): CustomListsItemsLocalDataSource =
     database.customListsItemsDao()
 
   @Provides
   @Singleton
-  fun providesCustomImages(database: AppDatabase): CustomImagesLocalDataSource =
+  internal fun providesCustomImages(database: AppDatabase): CustomImagesLocalDataSource =
     database.customImagesDao()
 
   @Provides
   @Singleton
-  fun providesCustomLists(database: AppDatabase): CustomListsLocalDataSource =
+  internal fun providesCustomLists(database: AppDatabase): CustomListsLocalDataSource =
     database.customListsDao()
 
   @Provides
   @Singleton
-  fun providesDiscoverShows(database: AppDatabase): DiscoverShowsLocalDataSource =
+  internal fun providesDiscoverShows(database: AppDatabase): DiscoverShowsLocalDataSource =
     database.discoverShowsDao()
 
   @Provides
   @Singleton
-  fun providesDiscoverMovies(database: AppDatabase): DiscoverMoviesLocalDataSource =
+  internal fun providesDiscoverMovies(database: AppDatabase): DiscoverMoviesLocalDataSource =
     database.discoverMoviesDao()
 
   @Provides
   @Singleton
-  fun providesEpisodes(database: AppDatabase): EpisodesLocalDataSource =
+  internal fun providesEpisodes(database: AppDatabase): EpisodesLocalDataSource =
     database.episodesDao()
 
   @Provides
   @Singleton
-  fun providesEpisodesSyncLog(database: AppDatabase): EpisodesSyncLogLocalDataSource =
+  internal fun providesEpisodesSyncLog(database: AppDatabase): EpisodesSyncLogLocalDataSource =
     database.episodesSyncLogDao()
 
   @Provides
   @Singleton
-  fun providesEpisodesTranslations(database: AppDatabase): EpisodeTranslationsLocalDataSource =
+  internal fun providesEpisodesTranslations(database: AppDatabase): EpisodeTranslationsLocalDataSource =
     database.episodeTranslationsDao()
 
   @Provides
   @Singleton
-  fun providesMovieImages(database: AppDatabase): MovieImagesLocalDataSource =
+  internal fun providesMovieImages(database: AppDatabase): MovieImagesLocalDataSource =
     database.movieImagesDao()
 
   @Provides
   @Singleton
-  fun providesMovieRatings(database: AppDatabase): MovieRatingsLocalDataSource =
+  internal fun providesMovieRatings(database: AppDatabase): MovieRatingsLocalDataSource =
     database.movieRatingsDao()
 
   @Provides
   @Singleton
-  fun providesMovieSyncLog(database: AppDatabase): MoviesSyncLogLocalDataSource =
+  internal fun providesMovieSyncLog(database: AppDatabase): MoviesSyncLogLocalDataSource =
     database.moviesSyncLogDao()
 
   @Provides
   @Singleton
-  fun providesMovieStreaming(database: AppDatabase): MovieStreamingsLocalDataSource =
+  internal fun providesMovieStreaming(database: AppDatabase): MovieStreamingsLocalDataSource =
     database.movieStreamingsDao()
 
   @Provides
   @Singleton
-  fun providesMovieTranslation(database: AppDatabase): MovieTranslationsLocalDataSource =
+  internal fun providesMovieTranslation(database: AppDatabase): MovieTranslationsLocalDataSource =
     database.movieTranslationsDao()
 
   @Provides
   @Singleton
-  fun providesMyMovies(database: AppDatabase): MyMoviesLocalDataSource =
+  internal fun providesMyMovies(database: AppDatabase): MyMoviesLocalDataSource =
     database.myMoviesDao()
 
   @Provides
   @Singleton
-  fun providesMyShows(database: AppDatabase): MyShowsLocalDataSource =
+  internal fun providesMyShows(database: AppDatabase): MyShowsLocalDataSource =
     database.myShowsDao()
 
   @Provides
   @Singleton
-  fun providesNews(database: AppDatabase): NewsLocalDataSource =
+  internal fun providesNews(database: AppDatabase): NewsLocalDataSource =
     database.newsDao()
 
   @Provides
   @Singleton
-  fun providesPeopleCredits(database: AppDatabase): PeopleCreditsLocalDataSource =
+  internal fun providesPeopleCredits(database: AppDatabase): PeopleCreditsLocalDataSource =
     database.peopleCreditsDao()
 
   @Provides
   @Singleton
-  fun providesPeople(database: AppDatabase): PeopleLocalDataSource =
+  internal fun providesPeople(database: AppDatabase): PeopleLocalDataSource =
     database.peopleDao()
 
   @Provides
   @Singleton
-  fun providesPeopleImages(database: AppDatabase): PeopleImagesLocalDataSource =
+  internal fun providesPeopleImages(database: AppDatabase): PeopleImagesLocalDataSource =
     database.peopleImagesDao()
 
   @Provides
   @Singleton
-  fun providesPeopleShowsMovies(database: AppDatabase): PeopleShowsMoviesLocalDataSource =
+  internal fun providesPeopleShowsMovies(database: AppDatabase): PeopleShowsMoviesLocalDataSource =
     database.peopleShowsMoviesDao()
 
   @Provides
   @Singleton
-  fun providesRatings(database: AppDatabase): RatingsLocalDataSource =
+  internal fun providesRatings(database: AppDatabase): RatingsLocalDataSource =
     database.ratingsDao()
 
   @Provides
   @Singleton
-  fun providesRecentSearch(database: AppDatabase): RecentSearchLocalDataSource =
+  internal fun providesRecentSearch(database: AppDatabase): RecentSearchLocalDataSource =
     database.recentSearchDao()
 
   @Provides
   @Singleton
-  fun providesSeasons(database: AppDatabase): SeasonsLocalDataSource =
+  internal fun providesSeasons(database: AppDatabase): SeasonsLocalDataSource =
     database.seasonsDao()
 
   @Provides
   @Singleton
-  fun providesSettings(database: AppDatabase): SettingsLocalDataSource =
+  internal fun providesSettings(database: AppDatabase): SettingsLocalDataSource =
     database.settingsDao()
 
   @Provides
   @Singleton
-  fun providesShowImages(database: AppDatabase): ShowImagesLocalDataSource =
+  internal fun providesShowImages(database: AppDatabase): ShowImagesLocalDataSource =
     database.showImagesDao()
 
   @Provides
   @Singleton
-  fun providesShowRatings(database: AppDatabase): ShowRatingsLocalDataSource =
+  internal fun providesShowRatings(database: AppDatabase): ShowRatingsLocalDataSource =
     database.showRatingsDao()
 
   @Provides
   @Singleton
-  fun providesShowStreamings(database: AppDatabase): ShowStreamingsLocalDataSource =
+  internal fun providesShowStreamings(database: AppDatabase): ShowStreamingsLocalDataSource =
     database.showStreamingsDao()
 
   @Provides
   @Singleton
-  fun providesShowTranslations(database: AppDatabase): ShowTranslationsLocalDataSource =
+  internal fun providesShowTranslations(database: AppDatabase): ShowTranslationsLocalDataSource =
     database.showTranslationsDao()
 
   @Provides
   @Singleton
-  fun providesTraktSyncLog(database: AppDatabase): TraktSyncLogLocalDataSource =
+  internal fun providesTraktSyncLog(database: AppDatabase): TraktSyncLogLocalDataSource =
     database.traktSyncLogDao()
 
   @Provides
   @Singleton
-  fun providesTraktSyncQueue(database: AppDatabase): TraktSyncQueueLocalDataSource =
+  internal fun providesTraktSyncQueue(database: AppDatabase): TraktSyncQueueLocalDataSource =
     database.traktSyncQueueDao()
 
   @Provides
   @Singleton
-  fun providesTranslationsMovies(database: AppDatabase): TranslationsMoviesSyncLogLocalDataSource =
+  internal fun providesTranslationsMovies(database: AppDatabase): TranslationsMoviesSyncLogLocalDataSource =
     database.translationsMoviesSyncLogDao()
 
   @Provides
   @Singleton
-  fun providesTranslationsShows(database: AppDatabase): TranslationsShowsSyncLogLocalDataSource =
+  internal fun providesTranslationsShows(database: AppDatabase): TranslationsShowsSyncLogLocalDataSource =
     database.translationsSyncLogDao()
 
   @Provides
   @Singleton
-  fun providesUser(database: AppDatabase): UserLocalDataSource =
+  internal fun providesUser(database: AppDatabase): UserLocalDataSource =
     database.userDao()
 
   @Provides
   @Singleton
-  fun providesWatchlistMovies(database: AppDatabase): WatchlistMoviesLocalDataSource =
+  internal fun providesWatchlistMovies(database: AppDatabase): WatchlistMoviesLocalDataSource =
     database.watchlistMoviesDao()
 
   @Provides
   @Singleton
-  fun providesWatchlistShows(database: AppDatabase): WatchlistShowsLocalDataSource =
+  internal fun providesWatchlistShows(database: AppDatabase): WatchlistShowsLocalDataSource =
     database.watchlistShowsDao()
 
   @Provides
   @Singleton
-  fun providesRelatedMovies(database: AppDatabase): RelatedMoviesLocalDataSource =
+  internal fun providesRelatedMovies(database: AppDatabase): RelatedMoviesLocalDataSource =
     database.relatedMoviesDao()
 
   @Provides
   @Singleton
-  fun providesRelatedShows(database: AppDatabase): RelatedShowsLocalDataSource =
+  internal fun providesRelatedShows(database: AppDatabase): RelatedShowsLocalDataSource =
     database.relatedShowsDao()
 }

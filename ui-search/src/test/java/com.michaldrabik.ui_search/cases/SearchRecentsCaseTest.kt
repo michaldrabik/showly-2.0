@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_search.cases
 
 import com.google.common.truth.Truth.assertThat
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.dao.RecentSearchDao
 import com.michaldrabik.data_local.database.model.RecentSearch
 import com.michaldrabik.ui_search.BaseMockTest
@@ -21,7 +21,7 @@ import org.junit.Test
 @Suppress("EXPERIMENTAL_API_USAGE")
 class SearchRecentsCaseTest : BaseMockTest() {
 
-  @RelaxedMockK lateinit var database: AppDatabase
+  @RelaxedMockK lateinit var database: LocalDataSource
   @RelaxedMockK lateinit var recentSearchDao: RecentSearchDao
   @RelaxedMockK lateinit var recentSearch: RecentSearch
 
@@ -32,7 +32,7 @@ class SearchRecentsCaseTest : BaseMockTest() {
     super.setUp()
 
     coEvery { recentSearch.text } returnsMany listOf("1", "2", "3")
-    coEvery { database.recentSearchDao() } returns recentSearchDao
+    coEvery { database.recentSearch } returns recentSearchDao
 
     SUT = SearchRecentsCase(database)
   }

@@ -133,7 +133,7 @@ import com.michaldrabik.data_local.database.model.WatchlistShow
   ],
   exportSchema = false
 )
-abstract class AppDatabase : RoomDatabase() {
+internal abstract class AppDatabase : RoomDatabase() {
 
   abstract fun showsDao(): ShowsDao
 

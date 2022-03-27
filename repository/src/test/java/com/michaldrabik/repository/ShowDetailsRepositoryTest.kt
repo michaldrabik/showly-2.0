@@ -32,10 +32,10 @@ class ShowDetailsRepositoryTest : BaseMockTest() {
   @Before
   override fun setUp() {
     super.setUp()
-    every { database.showsDao() } returns showsDao
+    every { database.shows } returns showsDao
     every { cloud.trakt } returns traktApi
 
-    SUT = ShowDetailsRepository(cloud, database, mappers)
+    SUT = ShowDetailsRepository(cloud, database, transactions, mappers)
   }
 
   @Test

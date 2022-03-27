@@ -4,6 +4,10 @@ import com.michaldrabik.data_local.database.model.CustomList
 
 interface CustomListsLocalDataSource {
 
+  suspend fun insert(items: List<CustomList>): List<Long>
+
+  suspend fun update(items: List<CustomList>)
+
   suspend fun getAll(): List<CustomList>
 
   suspend fun getById(id: Long): CustomList?

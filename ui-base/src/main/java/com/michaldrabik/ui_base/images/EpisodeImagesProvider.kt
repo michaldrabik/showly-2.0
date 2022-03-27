@@ -1,6 +1,6 @@
 package com.michaldrabik.ui_base.images
 
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.Episode
@@ -18,12 +18,12 @@ import javax.inject.Singleton
 @Singleton
 class EpisodeImagesProvider @Inject constructor(
   private val remoteSource: RemoteDataSource,
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
   private val mappers: Mappers
 ) {
 
   private suspend fun findCachedImage(episode: Episode, type: ImageType): Image {
-    val cachedImage = database.showImagesDao().getByEpisodeId(episode.ids.tmdb.id, type.key)
+    val cachedImage = localSource.showImages.getByEpisodeId(episode.ids.tmdb.id, type.key)
     return when (cachedImage) {
       null -> Image.createUnknown(type, EPISODE)
       else -> mappers.image.fromDatabase(cachedImage).copy(type = type)
@@ -58,8 +58,8 @@ class EpisodeImagesProvider @Inject constructor(
     }
 
     when (image.status) {
-      UNAVAILABLE -> database.showImagesDao().deleteByEpisodeId(tmdbId.id, image.type.key)
-      else -> database.showImagesDao().insertEpisodeImage(mappers.image.toDatabaseShow(image))
+      UNAVAILABLE -> localSource.showImages.deleteByEpisodeId(tmdbId.id, image.type.key)
+      else -> localSource.showImages.insertEpisodeImage(mappers.image.toDatabaseShow(image))
     }
 
     return image

@@ -5,7 +5,7 @@ import TestData
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.viewModelScope
 import com.google.common.truth.Truth.assertThat
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.shows.ShowsRepository
@@ -47,7 +47,7 @@ class StatisticsViewModelTest : BaseMockTest() {
   @MockK lateinit var showsRepository: ShowsRepository
   @MockK lateinit var translationsRepository: TranslationsRepository
   @MockK lateinit var imagesProvider: ShowImagesProvider
-  @RelaxedMockK lateinit var database: AppDatabase
+  @RelaxedMockK lateinit var database: LocalDataSource
   @RelaxedMockK lateinit var mappers: Mappers
 
   private lateinit var SUT: StatisticsViewModel
@@ -133,7 +133,7 @@ class StatisticsViewModelTest : BaseMockTest() {
     coEvery { showsRepository.myShows.loadAll() } returns shows
     coEvery { showsRepository.hiddenShows.loadAll() } returns shows2
 
-    coEvery { database.episodesDao().getAllWatchedForShows(any()) } returns listOf(
+    coEvery { database.episodes.getAllWatchedForShows(any()) } returns listOf(
       TestData.createEpisode().copy(idShowTrakt = 1, runtime = 5),
       TestData.createEpisode().copy(idShowTrakt = 2, runtime = 6),
       TestData.createEpisode().copy(idShowTrakt = 3, runtime = 7),

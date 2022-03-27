@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_show.cases
 
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.TranslationsRepository
@@ -28,7 +28,7 @@ import javax.inject.Inject
 @ViewModelScoped
 class ShowDetailsEpisodesCase @Inject constructor(
   private val remoteSource: RemoteDataSource,
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
   private val mappers: Mappers,
   private val showsRepository: ShowsRepository,
   private val settingsRepository: SettingsRepository,
@@ -67,8 +67,8 @@ class ShowDetailsEpisodesCase @Inject constructor(
   }
 
   private suspend fun loadLocalSeasons(show: Show, showSpecials: Boolean): SeasonsBundle {
-    val localEpisodes = database.episodesDao().getAllByShowId(show.traktId)
-    val localSeasons = database.seasonsDao().getAllByShowId(show.traktId).map { season ->
+    val localEpisodes = localSource.episodes.getAllByShowId(show.traktId)
+    val localSeasons = localSource.seasons.getAllByShowId(show.traktId).map { season ->
       val seasonEpisodes = localEpisodes.filter { ep -> ep.idSeason == season.idTrakt }
       mappers.season.fromDatabase(season, seasonEpisodes)
     }

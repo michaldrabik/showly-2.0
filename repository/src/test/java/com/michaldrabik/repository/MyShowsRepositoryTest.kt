@@ -33,10 +33,10 @@ class MyShowsRepositoryTest : BaseMockTest() {
   @Before
   override fun setUp() {
     super.setUp()
-    SUT = MyShowsRepository(database, mappers)
-    coEvery { database.myShowsDao() } returns myShowsDao
-    coEvery { database.watchlistShowsDao() } returns watchlistShowsDao
-    coEvery { database.archiveShowsDao() } returns archiveShowsDao
+    SUT = MyShowsRepository(database, transactions, mappers)
+    coEvery { database.myShows } returns myShowsDao
+    coEvery { database.watchlistShows } returns watchlistShowsDao
+    coEvery { database.archiveShows } returns archiveShowsDao
   }
 
   @After

@@ -2,7 +2,7 @@ package com.michaldrabik.repository
 
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.common.extensions.toMillis
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.NewsItem
@@ -15,7 +15,7 @@ import javax.inject.Singleton
 @Singleton
 class NewsRepository @Inject constructor(
   private val remoteSource: RemoteDataSource,
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
   private val mappers: Mappers,
 ) {
 
@@ -24,7 +24,7 @@ class NewsRepository @Inject constructor(
   }
 
   suspend fun getCachedNews(type: NewsItem.Type) =
-    database.newsDao().getAllByType(type.slug)
+    localSource.news.getAllByType(type.slug)
       .map { mappers.news.fromDatabase(it) }
 
   suspend fun loadShowsNews(token: RedditAuthToken, forceRefresh: Boolean): List<NewsItem> {
@@ -42,7 +42,7 @@ class NewsRepository @Inject constructor(
       .map { mappers.news.fromNetwork(it, SHOW) }
 
     val dbItems = remoteItems.map { mappers.news.toDatabase(it) }
-    database.newsDao().replaceForType(dbItems, SHOW.slug)
+    localSource.news.replaceForType(dbItems, SHOW.slug)
 
     return remoteItems.toList()
   }
@@ -62,7 +62,7 @@ class NewsRepository @Inject constructor(
       .map { mappers.news.fromNetwork(it, MOVIE) }
 
     val dbItems = remoteItems.map { mappers.news.toDatabase(it) }
-    database.newsDao().replaceForType(dbItems, MOVIE.slug)
+    localSource.news.replaceForType(dbItems, MOVIE.slug)
 
     return remoteItems.toList()
   }

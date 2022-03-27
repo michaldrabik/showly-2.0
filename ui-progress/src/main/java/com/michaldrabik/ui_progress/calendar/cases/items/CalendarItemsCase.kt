@@ -3,7 +3,7 @@ package com.michaldrabik.ui_progress.calendar.cases.items
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toLocalZone
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.Episode
 import com.michaldrabik.data_local.database.model.Season
 import com.michaldrabik.repository.TranslationsRepository
@@ -23,7 +23,7 @@ import kotlinx.coroutines.withContext
 
 @Suppress("UNCHECKED_CAST")
 abstract class CalendarItemsCase constructor(
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
   private val mappers: Mappers,
   private val showsRepository: ShowsRepository,
   private val translationsRepository: TranslationsRepository,
@@ -49,13 +49,13 @@ abstract class CalendarItemsCase constructor(
       val (episodes, seasons) = awaitAll(
         async {
           showsIds.fold(mutableListOf<Episode>()) { acc, list ->
-            acc += database.episodesDao().getAllByShowsIds(list)
+            acc += localSource.episodes.getAllByShowsIds(list)
             acc
           }
         },
         async {
           showsIds.fold(mutableListOf<Season>()) { acc, list ->
-            acc += database.seasonsDao().getAllByShowsIds(list)
+            acc += localSource.seasons.getAllByShowsIds(list)
             acc
           }
         }

@@ -1,6 +1,6 @@
 package com.michaldrabik.showly2.ui.main.cases.deeplink
 
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.movies.MovieDetailsRepository
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 class TmdbDeepLinkCase @Inject constructor(
   private val remoteSource: RemoteDataSource,
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
   private val showDetailsRepository: ShowDetailsRepository,
   private val movieDetailsRepository: MovieDetailsRepository,
   private val mappers: Mappers
@@ -40,12 +40,12 @@ class TmdbDeepLinkCase @Inject constructor(
           val movie = result.movie
           if (show != null && type == TMDB_TYPE_TV) {
             val uiShow = mappers.show.fromNetwork(show)
-            database.showsDao().upsert(listOf(mappers.show.toDatabase(uiShow)))
+            localSource.shows.upsert(listOf(mappers.show.toDatabase(uiShow)))
             return DeepLinkBundle(show = uiShow)
           }
           if (movie != null && type == TMDB_TYPE_MOVIE) {
             val uiMovie = mappers.movie.fromNetwork(movie)
-            database.moviesDao().upsert(listOf(mappers.movie.toDatabase(uiMovie)))
+            localSource.movies.upsert(listOf(mappers.movie.toDatabase(uiMovie)))
             return DeepLinkBundle(movie = uiMovie)
           }
         }

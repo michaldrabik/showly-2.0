@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_base.images
 
 import com.michaldrabik.common.Mode
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.CustomImage
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.data_remote.tmdb.model.TmdbImage
@@ -29,7 +29,7 @@ import javax.inject.Singleton
 @Singleton
 class MovieImagesProvider @Inject constructor(
   private val remoteSource: RemoteDataSource,
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
   private val mappers: Mappers,
   private val settingsRepository: SettingsRepository
 ) {
@@ -38,7 +38,7 @@ class MovieImagesProvider @Inject constructor(
 
   suspend fun findCustomImage(traktId: Long, type: ImageType): Image? {
     if (!settingsRepository.isPremium) return null
-    val custom = database.customImagesDao().getById(traktId, Mode.MOVIES.type, type.key)
+    val custom = localSource.customImages.getById(traktId, Mode.MOVIES.type, type.key)
     return custom?.let { mappers.image.fromDatabase(it, type) }
   }
 
@@ -46,7 +46,7 @@ class MovieImagesProvider @Inject constructor(
     val custom = findCustomImage(movie.traktId, type)
     if (custom != null) return custom
 
-    val image = database.movieImagesDao().getByMovieId(movie.ids.tmdb.id, type.key)
+    val image = localSource.movieImages.getByMovieId(movie.ids.tmdb.id, type.key)
     return when (image) {
       null ->
         if (unavailableCache.contains(movie.ids.trakt)) {
@@ -84,10 +84,10 @@ class MovieImagesProvider @Inject constructor(
     when (image.status) {
       UNAVAILABLE -> {
         unavailableCache.add(movie.ids.trakt)
-        database.movieImagesDao().deleteByMovieId(tmdbId.id, image.type.key)
+        localSource.movieImages.deleteByMovieId(tmdbId.id, image.type.key)
       }
       else -> {
-        database.movieImagesDao().insertMovieImage(mappers.image.toDatabaseMovie(image))
+        localSource.movieImages.insertMovieImage(mappers.image.toDatabaseMovie(image))
         storeExtraImage(tmdbId, tvdbId, images, type)
       }
     }
@@ -109,7 +109,7 @@ class MovieImagesProvider @Inject constructor(
     }
     findBestImage(typeImages, extraType)?.let {
       val extraImage = Image(-1, tvdbId, tmdbId, extraType, MOVIE, it.file_path, "", AVAILABLE, TMDB)
-      database.movieImagesDao().insertMovieImage(mappers.image.toDatabaseMovie(extraImage))
+      localSource.movieImages.insertMovieImage(mappers.image.toDatabaseMovie(extraImage))
     }
   }
 
@@ -136,14 +136,14 @@ class MovieImagesProvider @Inject constructor(
 
   suspend fun saveCustomImage(traktId: IdTrakt, image: Image, imageFamily: ImageFamily, imageType: ImageType) {
     val imageDb = CustomImage(0, traktId.id, imageFamily.key, imageType.key, image.fullFileUrl)
-    database.customImagesDao().insertImage(imageDb)
+    localSource.customImages.insertImage(imageDb)
   }
 
   suspend fun deleteCustomImage(traktId: IdTrakt, imageFamily: ImageFamily, imageType: ImageType) {
-    database.customImagesDao().deleteById(traktId.id, imageFamily.key, imageType.key)
+    localSource.customImages.deleteById(traktId.id, imageFamily.key, imageType.key)
   }
 
-  suspend fun deleteLocalCache() = database.movieImagesDao().deleteAll()
+  suspend fun deleteLocalCache() = localSource.movieImages.deleteAll()
 
   fun clear() = unavailableCache.clear()
 }

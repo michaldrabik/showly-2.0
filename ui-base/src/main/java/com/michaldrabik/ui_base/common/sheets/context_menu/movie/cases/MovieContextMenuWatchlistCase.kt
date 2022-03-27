@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_base.common.sheets.context_menu.movie.cases
 
-import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.ui_base.common.sheets.context_menu.events.RemoveTraktUiEvent
@@ -17,7 +16,6 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class MovieContextMenuWatchlistCase @Inject constructor(
-  private val database: AppDatabase,
   private val moviesRepository: MoviesRepository,
   private val pinnedItemsRepository: PinnedItemsRepository,
   private val announcementManager: AnnouncementManager,

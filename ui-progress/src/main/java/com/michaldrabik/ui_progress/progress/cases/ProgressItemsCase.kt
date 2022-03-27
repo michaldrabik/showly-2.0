@@ -3,7 +3,7 @@ package com.michaldrabik.ui_progress.progress.cases
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toMillis
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.repository.OnHoldItemsRepository
 import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.TranslationsRepository
@@ -33,7 +33,7 @@ import com.michaldrabik.ui_model.Episode.Companion as EpisodeUi
 @Suppress("UNCHECKED_CAST")
 @Singleton
 class ProgressItemsCase @Inject constructor(
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
   private val mappers: Mappers,
   private val sorter: ProgressItemsSorter,
   private val showsRepository: ShowsRepository,
@@ -65,12 +65,12 @@ class ProgressItemsCase @Inject constructor(
 
     val items = shows.map { show ->
       async {
-        val nextEpisode = database.episodesDao().getFirstUnwatched(show.traktId, upcomingLimit)
+        val nextEpisode = localSource.episodes.getFirstUnwatched(show.traktId, upcomingLimit)
         val isUpcoming = nextEpisode?.firstAired?.isAfter(nowUtc) == true
 
         val episodeUi = nextEpisode?.let { mappers.episode.fromDatabase(it) }
         val seasonUi = nextEpisode?.let { ep ->
-          database.seasonsDao().getById(ep.idSeason)?.let {
+          localSource.seasons.getById(ep.idSeason)?.let {
             mappers.season.fromDatabase(it)
           }
         }
@@ -113,14 +113,14 @@ class ProgressItemsCase @Inject constructor(
           val (total, watched) = when (progressType) {
             ProgressType.AIRED -> {
               awaitAll(
-                async { database.episodesDao().getTotalCount(it.show.traktId, nowUtc.toMillis()) },
-                async { database.episodesDao().getWatchedCount(it.show.traktId, nowUtc.toMillis()) }
+                async { localSource.episodes.getTotalCount(it.show.traktId, nowUtc.toMillis()) },
+                async { localSource.episodes.getWatchedCount(it.show.traktId, nowUtc.toMillis()) }
               )
             }
             ProgressType.ALL -> {
               awaitAll(
-                async { database.episodesDao().getTotalCount(it.show.traktId) },
-                async { database.episodesDao().getWatchedCount(it.show.traktId) }
+                async { localSource.episodes.getTotalCount(it.show.traktId) },
+                async { localSource.episodes.getWatchedCount(it.show.traktId) }
               )
             }
           }

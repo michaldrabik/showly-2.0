@@ -14,8 +14,8 @@ import javax.inject.Singleton
 @Singleton
 class CommentsRepository @Inject constructor(
   private val remoteSource: RemoteDataSource,
-  val mappers: Mappers,
-  val userTraktManager: UserTraktManager
+  private val mappers: Mappers,
+  private val userTraktManager: UserTraktManager
 ) {
 
   suspend fun loadComments(show: Show, limit: Int = 100) =

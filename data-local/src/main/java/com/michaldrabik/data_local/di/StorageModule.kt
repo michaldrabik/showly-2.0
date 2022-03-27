@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.migrations.DATABASE_NAME
 import com.michaldrabik.data_local.database.migrations.Migrations.MIGRATIONS
+import com.michaldrabik.data_local.utilities.TransactionsProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,7 +20,7 @@ class StorageModule {
 
   @Provides
   @Singleton
-  fun providesDatabase(@ApplicationContext context: Context): AppDatabase {
+  internal fun providesDatabase(@ApplicationContext context: Context): AppDatabase {
     Timber.d("Creating database...")
     return Room.databaseBuilder(
       context.applicationContext,
@@ -29,4 +30,9 @@ class StorageModule {
       MIGRATIONS.forEach { addMigrations(it) }
     }.build()
   }
+
+  @Provides
+  @Singleton
+  internal fun providesTransactions(database: AppDatabase): TransactionsProvider =
+    TransactionsProvider(database)
 }

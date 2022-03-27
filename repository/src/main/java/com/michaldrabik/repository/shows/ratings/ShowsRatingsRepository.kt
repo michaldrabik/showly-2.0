@@ -1,9 +1,9 @@
 package com.michaldrabik.repository.shows.ratings
 
-import androidx.room.withTransaction
 import com.michaldrabik.common.extensions.nowUtc
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.Rating
+import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.Episode
@@ -21,7 +21,8 @@ import javax.inject.Singleton
 class ShowsRatingsRepository @Inject constructor(
   val external: ShowsExternalRatingsRepository,
   private val remoteSource: RemoteDataSource,
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
+  private val transactions: TransactionsProvider,
   private val mappers: Mappers
 ) {
 
@@ -39,7 +40,7 @@ class ShowsRatingsRepository @Inject constructor(
       val entities = ratings
         .filter { it.rated_at != null && it.show.ids.trakt != null }
         .map { mappers.userRatingsMapper.toDatabaseShow(it) }
-      database.ratingsDao().replaceAll(entities, TYPE_SHOW)
+      localSource.ratings.replaceAll(entities, TYPE_SHOW)
     }
 
     suspend fun preloadEpisodesRatings(token: String) {
@@ -47,7 +48,7 @@ class ShowsRatingsRepository @Inject constructor(
       val entities = ratings
         .filter { it.rated_at != null && it.episode.ids.trakt != null }
         .map { mappers.userRatingsMapper.toDatabaseEpisode(it) }
-      database.ratingsDao().replaceAll(entities, TYPE_EPISODE)
+      localSource.ratings.replaceAll(entities, TYPE_EPISODE)
     }
 
     suspend fun preloadSeasonsRatings(token: String) {
@@ -55,7 +56,7 @@ class ShowsRatingsRepository @Inject constructor(
       val entities = ratings
         .filter { it.rated_at != null && it.season.ids.trakt != null }
         .map { mappers.userRatingsMapper.toDatabaseSeason(it) }
-      database.ratingsDao().replaceAll(entities, TYPE_SEASON)
+      localSource.ratings.replaceAll(entities, TYPE_SEASON)
     }
 
     val errorHandler = CoroutineExceptionHandler { _, _ -> Timber.e("Failed to preload some of ratings.") }
@@ -65,7 +66,7 @@ class ShowsRatingsRepository @Inject constructor(
   }
 
   suspend fun loadShowsRatings(): List<TraktRating> {
-    val ratings = database.ratingsDao().getAllByType(TYPE_SHOW)
+    val ratings = localSource.ratings.getAllByType(TYPE_SHOW)
     return ratings.map {
       mappers.userRatingsMapper.fromDatabase(it)
     }
@@ -74,7 +75,7 @@ class ShowsRatingsRepository @Inject constructor(
   suspend fun loadRatings(shows: List<Show>): List<TraktRating> {
     val ratings = mutableListOf<Rating>()
     shows.chunked(CHUNK_SIZE).forEach { chunk ->
-      val items = database.ratingsDao().getAllByType(chunk.map { it.traktId }, TYPE_SHOW)
+      val items = localSource.ratings.getAllByType(chunk.map { it.traktId }, TYPE_SHOW)
       ratings.addAll(items)
     }
     return ratings.map {
@@ -85,7 +86,7 @@ class ShowsRatingsRepository @Inject constructor(
   suspend fun loadRatingsSeasons(seasons: List<Season>): List<TraktRating> {
     val ratings = mutableListOf<Rating>()
     seasons.chunked(CHUNK_SIZE).forEach { chunk ->
-      val items = database.ratingsDao().getAllByType(chunk.map { it.ids.trakt.id }, TYPE_SEASON)
+      val items = localSource.ratings.getAllByType(chunk.map { it.ids.trakt.id }, TYPE_SEASON)
       ratings.addAll(items)
     }
     return ratings.map {
@@ -94,14 +95,14 @@ class ShowsRatingsRepository @Inject constructor(
   }
 
   suspend fun loadRating(episode: Episode): TraktRating? {
-    val rating = database.ratingsDao().getAllByType(listOf(episode.ids.trakt.id), TYPE_EPISODE)
+    val rating = localSource.ratings.getAllByType(listOf(episode.ids.trakt.id), TYPE_EPISODE)
     return rating.firstOrNull()?.let {
       mappers.userRatingsMapper.fromDatabase(it)
     }
   }
 
   suspend fun loadRating(season: Season): TraktRating? {
-    val rating = database.ratingsDao().getAllByType(listOf(season.ids.trakt.id), TYPE_SEASON)
+    val rating = localSource.ratings.getAllByType(listOf(season.ids.trakt.id), TYPE_SEASON)
     return rating.firstOrNull()?.let {
       mappers.userRatingsMapper.fromDatabase(it)
     }
@@ -114,7 +115,7 @@ class ShowsRatingsRepository @Inject constructor(
       rating
     )
     val entity = mappers.userRatingsMapper.toDatabaseShow(show, rating, nowUtc())
-    database.ratingsDao().replace(entity)
+    localSource.ratings.replace(entity)
   }
 
   suspend fun addRating(token: String, episode: Episode, rating: Int) {
@@ -124,7 +125,7 @@ class ShowsRatingsRepository @Inject constructor(
       rating
     )
     val entity = mappers.userRatingsMapper.toDatabaseEpisode(episode, rating, nowUtc())
-    database.ratingsDao().replace(entity)
+    localSource.ratings.replace(entity)
   }
 
   suspend fun addRating(token: String, season: Season, rating: Int) {
@@ -134,7 +135,7 @@ class ShowsRatingsRepository @Inject constructor(
       rating
     )
     val entity = mappers.userRatingsMapper.toDatabaseSeason(season, rating, nowUtc())
-    database.ratingsDao().replace(entity)
+    localSource.ratings.replace(entity)
   }
 
   suspend fun deleteRating(token: String, show: Show) {
@@ -142,7 +143,7 @@ class ShowsRatingsRepository @Inject constructor(
       token,
       mappers.show.toNetwork(show)
     )
-    database.ratingsDao().deleteByType(show.traktId, TYPE_SHOW)
+    localSource.ratings.deleteByType(show.traktId, TYPE_SHOW)
   }
 
   suspend fun deleteRating(token: String, episode: Episode) {
@@ -150,7 +151,7 @@ class ShowsRatingsRepository @Inject constructor(
       token,
       mappers.episode.toNetwork(episode)
     )
-    database.ratingsDao().deleteByType(episode.ids.trakt.id, TYPE_EPISODE)
+    localSource.ratings.deleteByType(episode.ids.trakt.id, TYPE_EPISODE)
   }
 
   suspend fun deleteRating(token: String, season: Season) {
@@ -158,15 +159,15 @@ class ShowsRatingsRepository @Inject constructor(
       token,
       mappers.season.toNetwork(season)
     )
-    database.ratingsDao().deleteByType(season.ids.trakt.id, TYPE_SEASON)
+    localSource.ratings.deleteByType(season.ids.trakt.id, TYPE_SEASON)
   }
 
   suspend fun clear() {
-    with(database) {
-      withTransaction {
-        ratingsDao().deleteAllByType(TYPE_EPISODE)
-        ratingsDao().deleteAllByType(TYPE_SEASON)
-        ratingsDao().deleteAllByType(TYPE_SHOW)
+    with(localSource) {
+      transactions.withTransaction {
+        ratings.deleteAllByType(TYPE_EPISODE)
+        ratings.deleteAllByType(TYPE_SEASON)
+        ratings.deleteAllByType(TYPE_SHOW)
       }
     }
   }

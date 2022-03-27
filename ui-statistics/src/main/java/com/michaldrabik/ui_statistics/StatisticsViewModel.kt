@@ -3,7 +3,7 @@ package com.michaldrabik.ui_statistics
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.Episode
 import com.michaldrabik.data_local.database.model.Season
 import com.michaldrabik.repository.TranslationsRepository
@@ -34,7 +34,7 @@ class StatisticsViewModel @Inject constructor(
   private val showsRepository: ShowsRepository,
   private val translationsRepository: TranslationsRepository,
   private val imagesProvider: ShowImagesProvider,
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
   private val mappers: Mappers,
 ) : ViewModel() {
 
@@ -112,7 +112,7 @@ class StatisticsViewModel @Inject constructor(
     val batch = showsIds.take(500)
     if (batch.isEmpty()) return allEpisodes
 
-    val episodes = database.episodesDao().getAllWatchedForShows(batch)
+    val episodes = localSource.episodes.getAllWatchedForShows(batch)
     allEpisodes.addAll(episodes)
 
     return batchEpisodes(showsIds.filter { it !in batch }, allEpisodes)
@@ -127,7 +127,7 @@ class StatisticsViewModel @Inject constructor(
     val batch = showsIds.take(500)
     if (batch.isEmpty()) return allSeasons
 
-    val seasons = database.seasonsDao().getAllWatchedForShows(batch)
+    val seasons = localSource.seasons.getAllWatchedForShows(batch)
     allSeasons.addAll(seasons)
 
     return batchSeasons(showsIds.filter { it !in batch }, allSeasons)

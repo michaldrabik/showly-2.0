@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_base.common.sheets.context_menu.show.cases
 
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
+import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.mappers.Mappers
@@ -8,7 +9,6 @@ import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.common.sheets.context_menu.events.RemoveTraktUiEvent
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
-import com.michaldrabik.ui_base.utilities.extensions.runTransaction
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Show
@@ -22,7 +22,8 @@ import com.michaldrabik.data_local.database.model.Season as SeasonDb
 
 @ViewModelScoped
 class ShowContextMenuMyShowsCase @Inject constructor(
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
+  private val transactions: TransactionsProvider,
   private val remoteSource: RemoteDataSource,
   private val mappers: Mappers,
   private val showsRepository: ShowsRepository,
@@ -46,11 +47,11 @@ class ShowContextMenuMyShowsCase @Inject constructor(
 
     val episodes = seasons.flatMap { it.episodes }
 
-    database.runTransaction {
+    transactions.withTransaction {
       showsRepository.myShows.insert(traktId)
 
-      val localSeasons = database.seasonsDao().getAllByShowId(traktId.id)
-      val localEpisodes = database.episodesDao().getAllByShowId(traktId.id)
+      val localSeasons = localSource.seasons.getAllByShowId(traktId.id)
+      val localEpisodes = localSource.episodes.getAllByShowId(traktId.id)
 
       val seasonsToAdd = mutableListOf<SeasonDb>()
       val episodesToAdd = mutableListOf<EpisodeDb>()
@@ -67,8 +68,8 @@ class ShowContextMenuMyShowsCase @Inject constructor(
         }
       }
 
-      database.seasonsDao().upsert(seasonsToAdd)
-      database.episodesDao().upsert(episodesToAdd)
+      localSource.seasons.upsert(seasonsToAdd)
+      localSource.episodes.upsert(episodesToAdd)
     }
 
     pinnedItemsRepository.removePinnedItem(show)
@@ -79,20 +80,20 @@ class ShowContextMenuMyShowsCase @Inject constructor(
 
   suspend fun removeFromMyShows(traktId: IdTrakt, removeLocalData: Boolean) {
     val show = Show.EMPTY.copy(ids = Ids.EMPTY.copy(traktId))
-    database.runTransaction {
+    transactions.withTransaction {
       showsRepository.myShows.delete(show.ids.trakt)
 
       if (removeLocalData) {
-        episodesDao().deleteAllUnwatchedForShow(show.traktId)
-        val seasons = seasonsDao().getAllByShowId(show.traktId)
-        val episodes = episodesDao().getAllByShowId(show.traktId)
+        localSource.episodes.deleteAllUnwatchedForShow(show.traktId)
+        val seasons = localSource.seasons.getAllByShowId(show.traktId)
+        val episodes = localSource.episodes.getAllByShowId(show.traktId)
         val toDelete = mutableListOf<SeasonDb>()
         seasons.forEach { season ->
           if (episodes.none { it.idSeason == season.idTrakt }) {
             toDelete.add(season)
           }
         }
-        seasonsDao().delete(toDelete)
+        localSource.seasons.delete(toDelete)
       }
 
       pinnedItemsRepository.removePinnedItem(show)

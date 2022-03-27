@@ -2,7 +2,7 @@ package com.michaldrabik.ui_base.trakt.exports
 
 import com.michaldrabik.common.extensions.dateIsoStringFromMillis
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.Episode
 import com.michaldrabik.data_local.database.model.Movie
 import com.michaldrabik.data_local.database.model.Show
@@ -25,7 +25,7 @@ import javax.inject.Singleton
 @Singleton
 class TraktExportWatchedRunner @Inject constructor(
   private val remoteSource: RemoteDataSource,
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
   private val settingsRepository: SettingsRepository,
   userTraktManager: UserTraktManager
 ) : TraktSyncRunner(userTraktManager) {
@@ -63,7 +63,7 @@ class TraktExportWatchedRunner @Inject constructor(
 
     val remoteShows = remoteSource.trakt.fetchSyncWatchedShows(token.token)
       .filter { it.show != null }
-    val localMyShows = database.myShowsDao().getAll()
+    val localMyShows = localSource.myShows.getAll()
     val localEpisodes = batchEpisodes(localMyShows.map { it.idTrakt })
       .filter { !hasEpisodeBeenWatched(remoteShows, it) }
 
@@ -71,7 +71,7 @@ class TraktExportWatchedRunner @Inject constructor(
     if (settingsRepository.isMoviesEnabled) {
       val remoteMovies = remoteSource.trakt.fetchSyncWatchedMovies(token.token)
         .filter { it.movie != null }
-      val localMyMoviesIds = database.myMoviesDao().getAllTraktIds()
+      val localMyMoviesIds = localSource.myMovies.getAllTraktIds()
       val localMyMovies = batchMovies(localMyMoviesIds)
         .filter { movie -> remoteMovies.none { it.movie?.ids?.trakt == movie.idTrakt } }
 
@@ -97,8 +97,8 @@ class TraktExportWatchedRunner @Inject constructor(
   private suspend fun exportHidden(token: TraktAuthToken) = coroutineScope {
     Timber.d("Exporting hidden items...")
 
-    val showsAsync = async { database.archiveShowsDao().getAll() }
-    val moviesAsync = async { database.archiveMoviesDao().getAll() }
+    val showsAsync = async { localSource.archiveShows.getAll() }
+    val moviesAsync = async { localSource.archiveMovies.getAll() }
     val (localShows, localMovies) = awaitAll(showsAsync, moviesAsync)
 
     val showsItems = localShows.map {
@@ -127,7 +127,7 @@ class TraktExportWatchedRunner @Inject constructor(
     val batch = showsIds.take(500)
     if (batch.isEmpty()) return allEpisodes
 
-    val episodes = database.episodesDao().getAllWatchedForShows(batch)
+    val episodes = localSource.episodes.getAllWatchedForShows(batch)
     allEpisodes.addAll(episodes)
 
     return batchEpisodes(showsIds.filter { it !in batch }, allEpisodes)
@@ -140,7 +140,7 @@ class TraktExportWatchedRunner @Inject constructor(
     val batch = moviesIds.take(500)
     if (batch.isEmpty()) return result
 
-    val movies = database.myMoviesDao().getAll(batch)
+    val movies = localSource.myMovies.getAll(batch)
     result.addAll(movies)
 
     return batchMovies(moviesIds.filter { it !in batch }, result)

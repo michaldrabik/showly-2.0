@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_base.trakt.quicksync.runners
 
 import com.michaldrabik.common.Mode
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.TraktSyncQueue
 import com.michaldrabik.data_local.database.model.TraktSyncQueue.Operation
 import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type
@@ -21,7 +21,7 @@ import javax.inject.Singleton
 @Singleton
 class QuickSyncListsRunner @Inject constructor(
   private val remoteSource: RemoteDataSource,
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
   private val mappers: Mappers,
   private val listsRepository: ListsRepository,
   userTraktManager: UserTraktManager
@@ -40,7 +40,7 @@ class QuickSyncListsRunner @Inject constructor(
     var count = 0
     val authToken = checkAuthorization()
 
-    val items = database.traktSyncQueueDao().getAll(syncTypes)
+    val items = localSource.traktSyncQueue.getAll(syncTypes)
       .groupBy { it.idList }
       .filter { it.key != null }
 
@@ -65,11 +65,11 @@ class QuickSyncListsRunner @Inject constructor(
 
     for (syncListItem in items) {
       val listId = syncListItem.key!!
-      var localList = database.customListsDao().getById(listId)?.run {
+      var localList = localSource.customLists.getById(listId)?.run {
         mappers.customList.fromDatabase(this)
       }
       if (localList == null) {
-        database.traktSyncQueueDao().deleteAllForList(listId)
+        localSource.traktSyncQueue.deleteAllForList(listId)
         Timber.d("List with ID: $listId does not exist anymore. Skipping...")
         continue
       }
@@ -82,7 +82,7 @@ class QuickSyncListsRunner @Inject constructor(
         localList = createMissingList(localList, authToken)
       } else if (localList.idTrakt == null) {
         Timber.d("List with ID: $listId does not exist in Trakt. No need to remove items...")
-        database.traktSyncQueueDao().delete(removeItems)
+        localSource.traktSyncQueue.delete(removeItems)
         continue
       }
 
@@ -97,7 +97,7 @@ class QuickSyncListsRunner @Inject constructor(
     }
 
     // Check in case more items appeared in the meantime.
-    val itemsCheck = database.traktSyncQueueDao().getAll(syncTypes)
+    val itemsCheck = localSource.traktSyncQueue.getAll(syncTypes)
       .groupBy { it.idList }
       .filter { it.key != null }
 
@@ -124,11 +124,11 @@ class QuickSyncListsRunner @Inject constructor(
 
       if (showIds.isNotEmpty() || movieIds.isNotEmpty()) {
         remoteSource.trakt.postRemoveListItems(authToken.token, list.idTrakt!!, showIds, movieIds)
-        database.traktSyncQueueDao().delete(removeItems)
+        localSource.traktSyncQueue.delete(removeItems)
       }
     } catch (error: Throwable) {
       if (error is HttpException && error.code() == 404) {
-        database.traktSyncQueueDao().delete(removeItems)
+        localSource.traktSyncQueue.delete(removeItems)
         Timber.d("Tried to remove from list but it does not exist anymore. Skipping...")
       } else {
         throw error
@@ -152,14 +152,14 @@ class QuickSyncListsRunner @Inject constructor(
     try {
       if (showIds.isNotEmpty() || movieIds.isNotEmpty()) {
         remoteSource.trakt.postAddListItems(authToken.token, localList.idTrakt!!, showIds, movieIds)
-        database.traktSyncQueueDao().delete(addItems)
+        localSource.traktSyncQueue.delete(addItems)
       }
     } catch (error: Throwable) {
       if (error is HttpException && error.code() == 404) {
         Timber.d("Tried to add to list but it does not exist. Creating...")
         delay(TRAKT_DELAY)
         createMissingList(localList, authToken)
-        database.traktSyncQueueDao().delete(addItems)
+        localSource.traktSyncQueue.delete(addItems)
       } else {
         throw error
       }

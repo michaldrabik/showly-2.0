@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_search.cases
 
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.ui_model.RecentSearch
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
@@ -9,19 +9,19 @@ import com.michaldrabik.data_local.database.model.RecentSearch as RecentSearchDb
 
 @ViewModelScoped
 class SearchRecentsCase @Inject constructor(
-  private val database: AppDatabase
+  private val localSource: LocalDataSource
 ) {
 
   suspend fun getRecentSearches(limit: Int): List<RecentSearch> {
-    return database.recentSearchDao().getAll(limit)
+    return localSource.recentSearch.getAll(limit)
       .map { RecentSearch(it.text) }
   }
 
   suspend fun clearRecentSearches() =
-    database.recentSearchDao().deleteAll()
+    localSource.recentSearch.deleteAll()
 
   suspend fun saveRecentSearch(query: String) {
     val now = nowUtcMillis()
-    database.recentSearchDao().upsert(listOf(RecentSearchDb(0, query, now, now)))
+    localSource.recentSearch.upsert(listOf(RecentSearchDb(0, query, now, now)))
   }
 }

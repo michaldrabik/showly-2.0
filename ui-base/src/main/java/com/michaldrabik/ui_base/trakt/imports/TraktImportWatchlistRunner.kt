@@ -1,9 +1,9 @@
 package com.michaldrabik.ui_base.trakt.imports
 
-import androidx.room.withTransaction
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.WatchlistMovie
 import com.michaldrabik.data_local.database.model.WatchlistShow
+import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.TraktAuthToken
 import com.michaldrabik.repository.UserTraktManager
@@ -19,7 +19,8 @@ import javax.inject.Singleton
 @Singleton
 class TraktImportWatchlistRunner @Inject constructor(
   private val remoteSource: RemoteDataSource,
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
+  private val transactions: TransactionsProvider,
   private val mappers: Mappers,
   private val settingsRepository: SettingsRepository,
   userTraktManager: UserTraktManager
@@ -85,9 +86,9 @@ class TraktImportWatchlistRunner @Inject constructor(
       .distinctBy { it.show!!.ids?.trakt }
 
     val localShowsIds =
-      database.watchlistShowsDao().getAllTraktIds()
-        .plus(database.myShowsDao().getAllTraktIds())
-        .plus(database.archiveShowsDao().getAllTraktIds())
+      localSource.watchlistShows.getAllTraktIds()
+        .plus(localSource.myShows.getAllTraktIds())
+        .plus(localSource.archiveShows.getAllTraktIds())
         .distinct()
 
     syncResults
@@ -97,12 +98,12 @@ class TraktImportWatchlistRunner @Inject constructor(
         progressListener?.invoke(showUi.title, index, syncResults.size)
         try {
           val showId = result.show!!.ids?.trakt ?: -1
-          database.withTransaction {
+          transactions.withTransaction {
             if (showId !in localShowsIds) {
               val show = mappers.show.fromNetwork(result.show!!)
               val showDb = mappers.show.toDatabase(show)
-              database.showsDao().upsert(listOf(showDb))
-              database.watchlistShowsDao().insert(WatchlistShow.fromTraktId(showId, result.lastListedMillis()))
+              localSource.shows.upsert(listOf(showDb))
+              localSource.watchlistShows.insert(WatchlistShow.fromTraktId(showId, result.lastListedMillis()))
             }
           }
         } catch (error: Throwable) {
@@ -121,9 +122,9 @@ class TraktImportWatchlistRunner @Inject constructor(
       .distinctBy { it.movie!!.ids?.trakt }
 
     val localMoviesIds =
-      database.watchlistMoviesDao().getAllTraktIds()
-        .plus(database.myMoviesDao().getAllTraktIds())
-        .plus(database.archiveMoviesDao().getAllTraktIds())
+      localSource.watchlistMovies.getAllTraktIds()
+        .plus(localSource.myMovies.getAllTraktIds())
+        .plus(localSource.archiveMovies.getAllTraktIds())
         .distinct()
 
     syncResults
@@ -133,12 +134,12 @@ class TraktImportWatchlistRunner @Inject constructor(
         progressListener?.invoke(movieUi.title, index, syncResults.size)
         try {
           val movieId = result.movie!!.ids?.trakt ?: -1
-          database.withTransaction {
+          transactions.withTransaction {
             if (movieId !in localMoviesIds) {
               val movie = mappers.movie.fromNetwork(result.movie!!)
               val movieDb = mappers.movie.toDatabase(movie)
-              database.moviesDao().upsert(listOf(movieDb))
-              database.watchlistMoviesDao().insert(WatchlistMovie.fromTraktId(movieId, result.lastListedMillis()))
+              localSource.movies.upsert(listOf(movieDb))
+              localSource.watchlistMovies.insert(WatchlistMovie.fromTraktId(movieId, result.lastListedMillis()))
             }
           }
         } catch (error: Throwable) {

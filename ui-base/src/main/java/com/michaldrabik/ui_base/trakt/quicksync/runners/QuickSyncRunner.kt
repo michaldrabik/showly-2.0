@@ -1,8 +1,7 @@
 package com.michaldrabik.ui_base.trakt.quicksync.runners
 
-import androidx.room.withTransaction
 import com.michaldrabik.common.extensions.dateIsoStringFromMillis
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.TraktSyncQueue
 import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type.EPISODE
 import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type.HIDDEN_MOVIE
@@ -10,6 +9,7 @@ import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type.HIDDEN_SHO
 import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type.MOVIE
 import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type.MOVIE_WATCHLIST
 import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type.SHOW_WATCHLIST
+import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.data_remote.trakt.model.SyncExportItem
 import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
@@ -17,7 +17,6 @@ import com.michaldrabik.repository.TraktAuthToken
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.trakt.TraktSyncRunner
-import com.michaldrabik.ui_base.utilities.extensions.runTransaction
 import kotlinx.coroutines.delay
 import timber.log.Timber
 import javax.inject.Inject
@@ -26,7 +25,8 @@ import javax.inject.Singleton
 @Singleton
 class QuickSyncRunner @Inject constructor(
   private val remoteSource: RemoteDataSource,
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
+  private val transactions: TransactionsProvider,
   private val settingsRepository: SettingsRepository,
   userTraktManager: UserTraktManager
 ) : TraktSyncRunner(userTraktManager) {
@@ -59,7 +59,7 @@ class QuickSyncRunner @Inject constructor(
     clearedProgressIds: MutableSet<Long> = mutableSetOf()
   ): Int {
     val types = if (moviesEnabled) listOf(MOVIE, EPISODE) else listOf(EPISODE)
-    val items = database.traktSyncQueueDao().getAll(types.map { it.slug })
+    val items = localSource.traktSyncQueue.getAll(types.map { it.slug })
     if (items.isEmpty()) {
       Timber.d("Nothing to export. Cancelling..")
       return count
@@ -93,16 +93,16 @@ class QuickSyncRunner @Inject constructor(
     }
 
     remoteSource.trakt.postSyncWatched(token.token, request)
-    database.withTransaction {
+    transactions.withTransaction {
       val ids = batch.map { it.idTrakt }
-      database.traktSyncQueueDao().deleteAll(ids, EPISODE.slug)
-      database.traktSyncQueueDao().deleteAll(ids, MOVIE.slug)
+      localSource.traktSyncQueue.deleteAll(ids, EPISODE.slug)
+      localSource.traktSyncQueue.deleteAll(ids, MOVIE.slug)
     }
 
     val currentCount = count + exportEpisodes.count() + exportMovies.count()
 
     // Check for more items
-    val newItems = database.traktSyncQueueDao().getAll(types.map { it.slug })
+    val newItems = localSource.traktSyncQueue.getAll(types.map { it.slug })
     if (newItems.isNotEmpty()) {
       delay(DELAY)
       return exportHistoryItems(token, moviesEnabled, currentCount, clearedProgressIds.toMutableSet())
@@ -117,7 +117,7 @@ class QuickSyncRunner @Inject constructor(
     count: Int = 0
   ): Int {
     val types = if (moviesEnabled) listOf(MOVIE_WATCHLIST, SHOW_WATCHLIST) else listOf(SHOW_WATCHLIST)
-    val items = database.traktSyncQueueDao().getAll(types.map { it.slug }).take(BATCH_LIMIT)
+    val items = localSource.traktSyncQueue.getAll(types.map { it.slug }).take(BATCH_LIMIT)
     if (items.isEmpty()) {
       Timber.d("Nothing to export. Cancelling..")
       return count
@@ -134,16 +134,16 @@ class QuickSyncRunner @Inject constructor(
     )
 
     remoteSource.trakt.postSyncWatchlist(token.token, request)
-    database.withTransaction {
+    transactions.withTransaction {
       val ids = items.map { it.idTrakt }
-      database.traktSyncQueueDao().deleteAll(ids, MOVIE_WATCHLIST.slug)
-      database.traktSyncQueueDao().deleteAll(ids, SHOW_WATCHLIST.slug)
+      localSource.traktSyncQueue.deleteAll(ids, MOVIE_WATCHLIST.slug)
+      localSource.traktSyncQueue.deleteAll(ids, SHOW_WATCHLIST.slug)
     }
 
     val currentCount = count + exportShows.count() + exportMovies.count()
 
     // Check for more items
-    val newItems = database.traktSyncQueueDao().getAll(types.map { it.slug })
+    val newItems = localSource.traktSyncQueue.getAll(types.map { it.slug })
     if (newItems.isNotEmpty()) {
       delay(DELAY)
       return exportWatchlistItems(token, moviesEnabled, currentCount)
@@ -158,7 +158,7 @@ class QuickSyncRunner @Inject constructor(
     count: Int = 0
   ): Int {
     val types = if (moviesEnabled) listOf(HIDDEN_SHOW, HIDDEN_MOVIE) else listOf(HIDDEN_SHOW)
-    val items = database.traktSyncQueueDao().getAll(types.map { it.slug }).take(BATCH_LIMIT)
+    val items = localSource.traktSyncQueue.getAll(types.map { it.slug }).take(BATCH_LIMIT)
     if (items.isEmpty()) {
       Timber.d("Nothing to export. Cancelling..")
       return count
@@ -184,9 +184,9 @@ class QuickSyncRunner @Inject constructor(
       )
     }
 
-    database.runTransaction {
+    transactions.withTransaction {
       val ids = items.map { it.idTrakt }
-      with(traktSyncQueueDao()) {
+      with(localSource.traktSyncQueue) {
         deleteAll(ids, HIDDEN_SHOW.slug)
         deleteAll(ids, HIDDEN_MOVIE.slug)
       }
@@ -195,7 +195,7 @@ class QuickSyncRunner @Inject constructor(
     val currentCount = count + exportShows.count() + exportMovies.count()
 
     // Check for more items
-    val newItems = database.traktSyncQueueDao().getAll(types.map { it.slug })
+    val newItems = localSource.traktSyncQueue.getAll(types.map { it.slug })
     if (newItems.isNotEmpty()) {
       delay(DELAY)
       return exportHiddenItems(token, moviesEnabled, currentCount)

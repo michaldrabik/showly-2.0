@@ -1,10 +1,10 @@
 package com.michaldrabik.repository.movies
 
-import androidx.room.withTransaction
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.RelatedMovie
+import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.IdTrakt
@@ -14,17 +14,18 @@ import kotlin.math.min
 
 class RelatedMoviesRepository @Inject constructor(
   private val remoteSource: RemoteDataSource,
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
+  private val transactions: TransactionsProvider,
   private val mappers: Mappers
 ) {
 
   suspend fun loadAll(movie: Movie): List<Movie> {
-    val related = database.relatedMoviesDao().getAllById(movie.ids.trakt.id)
+    val related = localSource.relatedMovies.getAllById(movie.ids.trakt.id)
     val latest = related.maxByOrNull { it.updatedAt }
 
     if (latest != null && nowUtcMillis() - latest.updatedAt < Config.RELATED_CACHE_DURATION) {
       val relatedIds = related.map { it.idTrakt }
-      return database.moviesDao().getAll(relatedIds)
+      return localSource.movies.getAll(relatedIds)
         .map { mappers.movie.fromDatabase(it) }
     }
 
@@ -37,11 +38,15 @@ class RelatedMoviesRepository @Inject constructor(
   }
 
   private suspend fun cacheRelated(movies: List<Movie>, movieId: IdTrakt) {
-    database.withTransaction {
+    transactions.withTransaction {
       val timestamp = nowUtcMillis()
-      database.moviesDao().upsert(movies.map { mappers.movie.toDatabase(it) })
-      database.relatedMoviesDao().deleteById(movieId.id)
-      database.relatedMoviesDao().insert(movies.map { RelatedMovie.fromTraktId(it.ids.trakt.id, movieId.id, timestamp) })
+      localSource.movies.upsert(movies.map { mappers.movie.toDatabase(it) })
+      localSource.relatedMovies.deleteById(movieId.id)
+      localSource.relatedMovies.insert(
+        movies.map {
+          RelatedMovie.fromTraktId(it.ids.trakt.id, movieId.id, timestamp)
+        }
+      )
     }
   }
 }

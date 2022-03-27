@@ -16,7 +16,11 @@ interface SeasonsLocalDataSource {
 
   suspend fun getById(traktId: Long): Season?
 
+  suspend fun update(items: List<Season>)
+
   suspend fun upsert(items: List<Season>)
+
+  suspend fun delete(items: List<Season>)
 
   suspend fun deleteAllForShow(showTraktId: Long)
 }

@@ -2,7 +2,7 @@ package com.michaldrabik.repository.movies
 
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.MoviesSyncLog
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.mappers.Mappers
@@ -15,24 +15,24 @@ import javax.inject.Inject
 
 class MovieDetailsRepository @Inject constructor(
   private val remoteSource: RemoteDataSource,
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
   private val mappers: Mappers,
 ) {
 
   suspend fun load(idTrakt: IdTrakt, force: Boolean = false): Movie {
-    val local = database.moviesDao().getById(idTrakt.id)
+    val local = localSource.movies.getById(idTrakt.id)
     if (force || local == null || nowUtcMillis() - local.updatedAt > Config.MOVIE_DETAILS_CACHE_DURATION) {
       val remote = remoteSource.trakt.fetchMovie(idTrakt.id)
       val movie = mappers.movie.fromNetwork(remote)
-      database.moviesDao().upsert(listOf(mappers.movie.toDatabase(movie)))
-      database.moviesSyncLogDao().upsert(MoviesSyncLog(movie.traktId, nowUtcMillis()))
+      localSource.movies.upsert(listOf(mappers.movie.toDatabase(movie)))
+      localSource.moviesSyncLog.upsert(MoviesSyncLog(movie.traktId, nowUtcMillis()))
       return movie
     }
     return mappers.movie.fromDatabase(local)
   }
 
   suspend fun find(idImdb: IdImdb): Movie? {
-    val localMovie = database.moviesDao().getById(idImdb.id)
+    val localMovie = localSource.movies.getById(idImdb.id)
     if (localMovie != null) {
       return mappers.movie.fromDatabase(localMovie)
     }
@@ -40,7 +40,7 @@ class MovieDetailsRepository @Inject constructor(
   }
 
   suspend fun find(idTmdb: IdTmdb): Movie? {
-    val localMovie = database.moviesDao().getByTmdbId(idTmdb.id)
+    val localMovie = localSource.movies.getByTmdbId(idTmdb.id)
     if (localMovie != null) {
       return mappers.movie.fromDatabase(localMovie)
     }
@@ -48,16 +48,13 @@ class MovieDetailsRepository @Inject constructor(
   }
 
   suspend fun find(idSlug: IdSlug): Movie? {
-    val localMovie = database.moviesDao().getBySlug(idSlug.id)
+    val localMovie = localSource.movies.getBySlug(idSlug.id)
     if (localMovie != null) {
       return mappers.movie.fromDatabase(localMovie)
     }
     return null
   }
 
-  suspend fun delete(idTrakt: IdTrakt) {
-    with(database) {
-      moviesDao().deleteById(idTrakt.id)
-    }
-  }
+  suspend fun delete(idTrakt: IdTrakt) =
+    localSource.movies.deleteById(idTrakt.id)
 }

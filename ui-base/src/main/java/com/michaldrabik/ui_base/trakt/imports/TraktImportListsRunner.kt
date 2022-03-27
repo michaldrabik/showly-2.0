@@ -1,10 +1,10 @@
 package com.michaldrabik.ui_base.trakt.imports
 
-import androidx.room.withTransaction
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.CustomListItem
+import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.TraktAuthToken
 import com.michaldrabik.repository.UserTraktManager
@@ -19,7 +19,8 @@ import javax.inject.Singleton
 @Singleton
 class TraktImportListsRunner @Inject constructor(
   private val remoteSource: RemoteDataSource,
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
+  private val transactions: TransactionsProvider,
   private val mappers: Mappers,
   private val settingsRepository: SettingsRepository,
   userTraktManager: UserTraktManager,
@@ -61,7 +62,7 @@ class TraktImportListsRunner @Inject constructor(
     val nowUtcMillis = nowUtcMillis()
     val moviesEnabled = settingsRepository.isMoviesEnabled
 
-    val localLists = database.customListsDao().getAll()
+    val localLists = localSource.customLists.getAll()
       .map { mappers.customList.fromDatabase(it) }
     val remoteLists = remoteSource.trakt.fetchSyncLists(token.token)
       .map { mappers.customList.fromNetwork(it) }
@@ -69,12 +70,12 @@ class TraktImportListsRunner @Inject constructor(
     remoteLists.forEach { remoteList ->
       Timber.d("Processing '${remoteList.name}' ...")
       val local = localLists.find { it.idTrakt == remoteList.idTrakt }
-      database.withTransaction {
+      transactions.withTransaction {
         when {
           local == null -> {
             Timber.d("Local list not found. Creating...")
             val listDb = mappers.customList.toDatabase(remoteList)
-            val id = database.customListsDao().insert(listOf(listDb)).first()
+            val id = localSource.customLists.insert(listOf(listDb)).first()
             importListItems(id, remoteList.idTrakt!!, token, moviesEnabled, nowUtcMillis)
           }
           remoteList.updatedAt.isEqual(local.updatedAt).not() -> {
@@ -82,7 +83,7 @@ class TraktImportListsRunner @Inject constructor(
             if (remoteList.updatedAt.isAfter(local.updatedAt)) {
               val listDb = mappers.customList.toDatabase(remoteList)
                 .copy(id = local.id)
-              database.customListsDao().update(listOf(listDb))
+              localSource.customLists.update(listOf(listDb))
             }
             importListItems(local.id, local.idTrakt!!, token, moviesEnabled, nowUtcMillis)
           }
@@ -105,7 +106,7 @@ class TraktImportListsRunner @Inject constructor(
   ) {
     Timber.d("Importing list items...")
 
-    val localItems = database.customListsItemsDao().getItemsById(listId)
+    val localItems = localSource.customListsItems.getItemsById(listId)
     val items = remoteSource.trakt.fetchSyncListItems(token.token, listIdTrakt, moviesEnabled)
       .filter { item ->
         localItems.none {
@@ -117,13 +118,13 @@ class TraktImportListsRunner @Inject constructor(
     val shows = items
       .filter { it.show != null }
       .map { mappers.show.fromNetwork(it.show!!) }
-    database.showsDao().upsert(shows.map { mappers.show.toDatabase(it) })
+    localSource.shows.upsert(shows.map { mappers.show.toDatabase(it) })
     Timber.d("Shows to insert: ${shows.size}")
 
     val movies = items
       .filter { it.movie != null }
       .map { mappers.movie.fromNetwork(it.movie!!) }
-    database.moviesDao().upsert(movies.map { mappers.movie.toDatabase(it) })
+    localSource.movies.upsert(movies.map { mappers.movie.toDatabase(it) })
     Timber.d("Movies to insert: ${movies.size}")
 
     items.forEach { remoteItem ->
@@ -139,11 +140,11 @@ class TraktImportListsRunner @Inject constructor(
           createdAt = nowUtcMillis,
           updatedAt = nowUtcMillis
         )
-        database.customListsItemsDao().insertItem(itemDb)
+        localSource.customListsItems.insertItem(itemDb)
       }
       remoteItem.movie?.let { remoteMovie ->
         val movie = movies.first { remoteMovie.ids?.trakt == it.traktId }
-        database.moviesDao().upsert(listOf(mappers.movie.toDatabase(movie)))
+        localSource.movies.upsert(listOf(mappers.movie.toDatabase(movie)))
         val itemDb = CustomListItem(
           id = 0,
           idList = listId,
@@ -154,13 +155,13 @@ class TraktImportListsRunner @Inject constructor(
           createdAt = nowUtcMillis,
           updatedAt = nowUtcMillis
         )
-        database.customListsItemsDao().insertItem(itemDb)
+        localSource.customListsItems.insertItem(itemDb)
       }
     }
 
     if (items.isNotEmpty()) {
       Timber.d("Updating list timestamp...")
-      database.customListsDao().updateTimestamp(listId, nowUtcMillis)
+      localSource.customLists.updateTimestamp(listId, nowUtcMillis)
     }
   }
 }

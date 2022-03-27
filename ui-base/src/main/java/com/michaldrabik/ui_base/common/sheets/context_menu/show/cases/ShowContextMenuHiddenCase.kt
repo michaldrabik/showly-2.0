@@ -1,14 +1,14 @@
 package com.michaldrabik.ui_base.common.sheets.context_menu.show.cases
 
 import com.michaldrabik.common.Mode
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.Season
 import com.michaldrabik.data_local.database.model.TraktSyncQueue
+import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.common.sheets.context_menu.events.RemoveTraktUiEvent
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
-import com.michaldrabik.ui_base.utilities.extensions.runTransaction
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Show
@@ -20,7 +20,8 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class ShowContextMenuHiddenCase @Inject constructor(
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
+  private val transactions: TransactionsProvider,
   private val showsRepository: ShowsRepository,
   private val pinnedItemsRepository: PinnedItemsRepository,
   private val quickSyncManager: QuickSyncManager,
@@ -34,20 +35,20 @@ class ShowContextMenuHiddenCase @Inject constructor(
       async { showsRepository.watchlistShows.exists(traktId) }
     )
 
-    database.runTransaction {
+    transactions.withTransaction {
       showsRepository.hiddenShows.insert(show.ids.trakt)
 
       if (removeLocalData && isMyShow) {
-        episodesDao().deleteAllUnwatchedForShow(traktId.id)
-        val seasons = seasonsDao().getAllByShowId(traktId.id)
-        val episodes = episodesDao().getAllByShowId(traktId.id)
+        localSource.episodes.deleteAllUnwatchedForShow(traktId.id)
+        val seasons = localSource.seasons.getAllByShowId(traktId.id)
+        val episodes = localSource.episodes.getAllByShowId(traktId.id)
         val toDelete = mutableListOf<Season>()
         seasons.forEach { season ->
           if (episodes.none { it.idSeason == season.idTrakt }) {
             toDelete.add(season)
           }
         }
-        seasonsDao().delete(toDelete)
+        localSource.seasons.delete(toDelete)
       }
     }
 

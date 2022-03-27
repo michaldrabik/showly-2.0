@@ -51,12 +51,12 @@ class PeopleRepositoryTest : BaseMockTest() {
   @Before
   override fun setUp() {
     super.setUp()
-    SUT = PeopleRepository(settingsRepository, database, cloud, mappers)
-    coEvery { database.peopleDao() } returns peopleDao
-    coEvery { database.showsDao() } returns showsDao
-    coEvery { database.moviesDao() } returns moviesDao
-    coEvery { database.peopleCreditsDao() } returns peopleCreditsDao
-    coEvery { database.peopleShowsMoviesDao() } returns peopleShowsMoviesDao
+    SUT = PeopleRepository(settingsRepository, database, cloud, transactions, mappers)
+    coEvery { database.people } returns peopleDao
+    coEvery { database.shows } returns showsDao
+    coEvery { database.movies } returns moviesDao
+    coEvery { database.peopleCredits } returns peopleCreditsDao
+    coEvery { database.peopleShowsMovies } returns peopleShowsMoviesDao
     coEvery { cloud.tmdb } returns tmdbApi
     coEvery { cloud.trakt } returns traktApi
   }

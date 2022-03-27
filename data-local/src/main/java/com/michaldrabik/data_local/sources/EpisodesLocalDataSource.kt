@@ -7,6 +7,8 @@ interface EpisodesLocalDataSource {
 
   suspend fun upsert(episodes: List<Episode>)
 
+  suspend fun delete(items: List<Episode>)
+
   suspend fun upsertChunked(items: List<Episode>)
 
   suspend fun getAllForSeason(seasonTraktId: Long): List<Episode>

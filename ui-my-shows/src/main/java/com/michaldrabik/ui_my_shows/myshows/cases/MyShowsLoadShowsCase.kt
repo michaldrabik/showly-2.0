@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_my_shows.myshows.cases
 
 import com.michaldrabik.common.extensions.nowUtc
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.Season
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
@@ -23,7 +23,7 @@ class MyShowsLoadShowsCase @Inject constructor(
   private val sorter: MyShowsItemSorter,
   private val showsRepository: ShowsRepository,
   private val settingsRepository: SettingsRepository,
-  private val database: AppDatabase
+  private val localSource: LocalDataSource
 ) {
 
   suspend fun loadAllShows() = showsRepository.myShows.loadAll()
@@ -36,7 +36,7 @@ class MyShowsLoadShowsCase @Inject constructor(
   suspend fun loadSeasonsForShows(traktIds: List<Long>, buffer: MutableList<Season> = mutableListOf()): List<Season> {
     val batch = traktIds.take(500)
     if (batch.isEmpty()) return buffer
-    val seasons = database.seasonsDao().getAllByShowsIds(batch)
+    val seasons = localSource.seasons.getAllByShowsIds(batch)
       .filter { it.seasonNumber != 0 }
     buffer.addAll(seasons)
     return loadSeasonsForShows(traktIds.filter { it !in batch }, buffer)

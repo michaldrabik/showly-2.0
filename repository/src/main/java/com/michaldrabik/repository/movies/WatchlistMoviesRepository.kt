@@ -1,43 +1,44 @@
 package com.michaldrabik.repository.movies
 
-import androidx.room.withTransaction
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.WatchlistMovie
+import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.IdTrakt
 import javax.inject.Inject
 
 class WatchlistMoviesRepository @Inject constructor(
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
+  private val transactions: TransactionsProvider,
   private val mappers: Mappers,
 ) {
 
   suspend fun loadAll() =
-    database.watchlistMoviesDao().getAll()
+    localSource.watchlistMovies.getAll()
       .map { mappers.movie.fromDatabase(it) }
 
-  suspend fun loadAllIds() = database.watchlistMoviesDao().getAllTraktIds()
+  suspend fun loadAllIds() = localSource.watchlistMovies.getAllTraktIds()
 
   suspend fun load(id: IdTrakt) =
-    database.watchlistMoviesDao().getById(id.id)?.let {
+    localSource.watchlistMovies.getById(id.id)?.let {
       mappers.movie.fromDatabase(it)
     }
 
   suspend fun insert(id: IdTrakt) {
     val movie = WatchlistMovie.fromTraktId(id.id, nowUtcMillis())
-    database.run {
-      withTransaction {
-        watchlistMoviesDao().insert(movie)
-        myMoviesDao().deleteById(movie.idTrakt)
-        archiveMoviesDao().deleteById(movie.idTrakt)
+    transactions.withTransaction {
+      with(localSource) {
+        watchlistMovies.insert(movie)
+        myMovies.deleteById(movie.idTrakt)
+        archiveMovies.deleteById(movie.idTrakt)
       }
     }
   }
 
   suspend fun delete(id: IdTrakt) =
-    database.watchlistMoviesDao().deleteById(id.id)
+    localSource.watchlistMovies.deleteById(id.id)
 
   suspend fun exists(id: IdTrakt) =
-    database.watchlistMoviesDao().checkExists(id.id)
+    localSource.watchlistMovies.checkExists(id.id)
 }

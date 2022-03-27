@@ -1,51 +1,52 @@
 package com.michaldrabik.repository.movies
 
-import androidx.room.withTransaction
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.MyMovie
+import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.IdTrakt
 import javax.inject.Inject
 
 class MyMoviesRepository @Inject constructor(
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
+  private val transactions: TransactionsProvider,
   private val mappers: Mappers,
 ) {
 
   suspend fun load(id: IdTrakt) =
-    database.myMoviesDao().getById(id.id)?.let {
+    localSource.myMovies.getById(id.id)?.let {
       mappers.movie.fromDatabase(it)
     }
 
   suspend fun loadAll() =
-    database.myMoviesDao().getAll()
+    localSource.myMovies.getAll()
       .map { mappers.movie.fromDatabase(it) }
 
   suspend fun loadAll(ids: List<IdTrakt>) =
-    database.myMoviesDao().getAll(ids.map { it.id })
+    localSource.myMovies.getAll(ids.map { it.id })
       .map { mappers.movie.fromDatabase(it) }
 
   suspend fun loadAllRecent(amount: Int) =
-    database.myMoviesDao().getAllRecent(amount)
+    localSource.myMovies.getAllRecent(amount)
       .map { mappers.movie.fromDatabase(it) }
 
-  suspend fun loadAllIds() = database.myMoviesDao().getAllTraktIds()
+  suspend fun loadAllIds() = localSource.myMovies.getAllTraktIds()
 
   suspend fun insert(id: IdTrakt) {
     val movie = MyMovie.fromTraktId(id.id, nowUtcMillis())
-    database.run {
-      withTransaction {
-        myMoviesDao().insert(listOf(movie))
-        watchlistMoviesDao().deleteById(id.id)
-        archiveMoviesDao().deleteById(id.id)
+    transactions.withTransaction {
+      with(localSource) {
+        myMovies.insert(listOf(movie))
+        watchlistMovies.deleteById(id.id)
+        archiveMovies.deleteById(id.id)
       }
     }
   }
 
   suspend fun delete(id: IdTrakt) =
-    database.myMoviesDao().deleteById(id.id)
+    localSource.myMovies.deleteById(id.id)
 
   suspend fun exists(id: IdTrakt) =
-    database.myMoviesDao().checkExists(id.id)
+    localSource.myMovies.checkExists(id.id)
 }

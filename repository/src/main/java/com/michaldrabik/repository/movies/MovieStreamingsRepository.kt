@@ -1,6 +1,6 @@
 package com.michaldrabik.repository.movies
 
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.StreamingsRepository
 import com.michaldrabik.repository.mappers.Mappers
@@ -13,12 +13,12 @@ import javax.inject.Singleton
 @Singleton
 class MovieStreamingsRepository @Inject constructor(
   private val remoteSource: RemoteDataSource,
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
   private val mappers: Mappers,
 ) : StreamingsRepository() {
 
   suspend fun getLocalStreamings(movie: Movie, countryCode: String): Pair<List<StreamingService>, ZonedDateTime?> {
-    val localItems = database.movieStreamingsDao().getById(movie.traktId)
+    val localItems = localSource.movieStreamings.getById(movie.traktId)
     val mappedItems = mappers.streamings.fromDatabaseMovie(localItems, movie.title, countryCode)
 
     val processedItems = processItems(mappedItems, countryCode)
@@ -30,10 +30,10 @@ class MovieStreamingsRepository @Inject constructor(
     val remoteItems = remoteSource.tmdb.fetchMovieWatchProviders(movie.ids.tmdb.id, countryCode) ?: return emptyList()
 
     val entities = mappers.streamings.toDatabaseMovie(movie.ids, remoteItems)
-    database.movieStreamingsDao().replace(movie.traktId, entities)
+    localSource.movieStreamings.replace(movie.traktId, entities)
 
     return processItems(remoteItems, movie.title, countryCode)
   }
 
-  suspend fun deleteCache() = database.movieStreamingsDao().deleteAll()
+  suspend fun deleteCache() = localSource.movieStreamings.deleteAll()
 }

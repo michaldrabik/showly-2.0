@@ -1,10 +1,10 @@
 package com.michaldrabik.repository.movies
 
-import androidx.room.withTransaction
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.DiscoverMovie
+import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.data_remote.Config.TRAKT_TRENDING_MOVIES_LIMIT
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.mappers.Mappers
@@ -14,18 +14,19 @@ import javax.inject.Inject
 
 class DiscoverMoviesRepository @Inject constructor(
   private val remoteSource: RemoteDataSource,
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
+  private val transactions: TransactionsProvider,
   private val mappers: Mappers
 ) {
 
   suspend fun isCacheValid(): Boolean {
-    val stamp = database.discoverMoviesDao().getMostRecent()?.createdAt ?: 0
+    val stamp = localSource.discoverMovies.getMostRecent()?.createdAt ?: 0
     return nowUtcMillis() - stamp < Config.DISCOVER_MOVIES_CACHE_DURATION
   }
 
   suspend fun loadAllCached(): List<Movie> {
-    val cachedMovies = database.discoverMoviesDao().getAll().map { it.idTrakt }
-    val movies = database.moviesDao().getAll(cachedMovies)
+    val cachedMovies = localSource.discoverMovies.getAll().map { it.idTrakt }
+    val movies = localSource.movies.getAll(cachedMovies)
 
     return cachedMovies
       .map { id -> movies.first { it.idTrakt == id } }
@@ -78,10 +79,10 @@ class DiscoverMoviesRepository @Inject constructor(
   }
 
   suspend fun cacheDiscoverMovies(movies: List<Movie>) {
-    database.withTransaction {
+    transactions.withTransaction {
       val timestamp = nowUtcMillis()
-      database.moviesDao().upsert(movies.map { mappers.movie.toDatabase(it) })
-      database.discoverMoviesDao().replace(
+      localSource.movies.upsert(movies.map { mappers.movie.toDatabase(it) })
+      localSource.discoverMovies.replace(
         movies.map {
           DiscoverMovie(
             idTrakt = it.ids.trakt.id,

@@ -1,7 +1,7 @@
 package com.michaldrabik.repository.common
 
-import androidx.room.withTransaction
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
+import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.R
 import com.michaldrabik.repository.mappers.CommentMapper
@@ -32,7 +32,8 @@ import org.junit.Before
 @Suppress("EXPERIMENTAL_API_USAGE")
 abstract class BaseMockTest {
 
-  @MockK lateinit var database: AppDatabase
+  @MockK lateinit var database: LocalDataSource
+  @MockK lateinit var transactions: TransactionsProvider
   @MockK lateinit var cloud: RemoteDataSource
 
   private val idsMapper = IdsMapper()
@@ -62,6 +63,6 @@ abstract class BaseMockTest {
     clearAllMocks()
     mockkStatic("androidx.room.RoomDatabaseKt")
     val lambda = slot<suspend () -> R>()
-    coEvery { database.withTransaction(capture(lambda)) } coAnswers { lambda.captured.invoke() }
+    coEvery { transactions.withTransaction(capture(lambda)) } coAnswers { lambda.captured.invoke() }
   }
 }

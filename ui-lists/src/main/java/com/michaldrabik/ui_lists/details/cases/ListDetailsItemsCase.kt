@@ -4,7 +4,7 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.Mode.MOVIES
 import com.michaldrabik.common.Mode.SHOWS
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.CustomListItem
 import com.michaldrabik.repository.ListsRepository
 import com.michaldrabik.repository.TranslationsRepository
@@ -37,7 +37,7 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class ListDetailsItemsCase @Inject constructor(
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
   private val mappers: Mappers,
   private val showsRepository: ShowsRepository,
   private val moviesRepository: MoviesRepository,
@@ -58,11 +58,11 @@ class ListDetailsItemsCase @Inject constructor(
 
     val showsAsync = async {
       val ids = listItems.filter { it.type == SHOWS.type }.map { it.idTrakt }
-      database.showsDao().getAllChunked(ids)
+      localSource.shows.getAllChunked(ids)
     }
     val moviesAsync = async {
       val ids = listItems.filter { it.type == MOVIES.type }.map { it.idTrakt }
-      database.moviesDao().getAllChunked(ids)
+      localSource.movies.getAllChunked(ids)
     }
 
     val showsTranslationsAsync = async {

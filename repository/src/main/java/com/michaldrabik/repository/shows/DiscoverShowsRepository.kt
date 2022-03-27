@@ -1,10 +1,10 @@
 package com.michaldrabik.repository.shows
 
-import androidx.room.withTransaction
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.DiscoverShow
+import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.data_remote.Config.TRAKT_TRENDING_SHOWS_LIMIT
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.mappers.Mappers
@@ -14,18 +14,19 @@ import javax.inject.Inject
 
 class DiscoverShowsRepository @Inject constructor(
   private val remoteSource: RemoteDataSource,
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
+  private val transactions: TransactionsProvider,
   private val mappers: Mappers
 ) {
 
   suspend fun isCacheValid(): Boolean {
-    val stamp = database.discoverShowsDao().getMostRecent()?.createdAt ?: 0
+    val stamp = localSource.discoverShows.getMostRecent()?.createdAt ?: 0
     return nowUtcMillis() - stamp < Config.DISCOVER_SHOWS_CACHE_DURATION
   }
 
   suspend fun loadAllCached(): List<Show> {
-    val cachedShows = database.discoverShowsDao().getAll().map { it.idTrakt }
-    val shows = database.showsDao().getAll(cachedShows)
+    val cachedShows = localSource.discoverShows.getAll().map { it.idTrakt }
+    val shows = localSource.shows.getAll(cachedShows)
 
     return cachedShows
       .map { id -> shows.first { it.idTrakt == id } }
@@ -78,10 +79,10 @@ class DiscoverShowsRepository @Inject constructor(
   }
 
   suspend fun cacheDiscoverShows(shows: List<Show>) {
-    database.withTransaction {
+    transactions.withTransaction {
       val timestamp = nowUtcMillis()
-      database.showsDao().upsert(shows.map { mappers.show.toDatabase(it) })
-      database.discoverShowsDao().replace(
+      localSource.shows.upsert(shows.map { mappers.show.toDatabase(it) })
+      localSource.discoverShows.replace(
         shows.map {
           DiscoverShow(
             idTrakt = it.ids.trakt.id,

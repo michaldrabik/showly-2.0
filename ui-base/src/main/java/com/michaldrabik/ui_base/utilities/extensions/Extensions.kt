@@ -19,10 +19,8 @@ import androidx.annotation.DimenRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.room.withTransaction
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
-import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.SafeOnClickListener
 import kotlinx.coroutines.CoroutineScope
@@ -160,12 +158,6 @@ fun <T> MutableList<T>.replace(newItems: Collection<T>) {
 fun CoroutineScope.launchDelayed(delayMs: Long, action: () -> Unit): Job {
   return launch {
     delay(delayMs)
-    action()
-  }
-}
-
-suspend fun AppDatabase.runTransaction(action: suspend AppDatabase.() -> Unit) {
-  withTransaction {
     action()
   }
 }

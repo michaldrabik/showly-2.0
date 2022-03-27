@@ -3,7 +3,7 @@ package com.michaldrabik.repository.shows
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.LocalDataSource
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.IdImdb
@@ -16,7 +16,7 @@ import javax.inject.Inject
 class ShowDetailsRepository @Inject constructor(
   private val remoteSource: RemoteDataSource,
   private val localSource: LocalDataSource,
-  private val database: AppDatabase,
+  private val transactions: TransactionsProvider,
   private val mappers: Mappers,
 ) {
 
@@ -57,9 +57,11 @@ class ShowDetailsRepository @Inject constructor(
 
   suspend fun delete(idTrakt: IdTrakt) {
     with(localSource) {
-      shows.deleteById(idTrakt.id)
-      database.seasonsDao().deleteAllForShow(idTrakt.id)
-      episodes.deleteAllForShow(idTrakt.id)
+      transactions.withTransaction {
+        shows.deleteById(idTrakt.id)
+        seasons.deleteAllForShow(idTrakt.id)
+        episodes.deleteAllForShow(idTrakt.id)
+      }
     }
   }
 }

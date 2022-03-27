@@ -2,10 +2,10 @@
 
 package com.michaldrabik.repository
 
-import androidx.room.withTransaction
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.User
+import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.ui_model.error.TraktAuthError
 import timber.log.Timber
@@ -17,7 +17,8 @@ import com.michaldrabik.data_remote.trakt.model.User as UserModel
 @Singleton
 class UserTraktManager @Inject constructor(
   private val remoteSource: RemoteDataSource,
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
+  private val transactions: TransactionsProvider,
 ) {
 
   private val traktTokenExpiration by lazy { TimeUnit.DAYS.toMillis(60) }
@@ -46,7 +47,7 @@ class UserTraktManager @Inject constructor(
 
   suspend fun isAuthorized(): Boolean {
     if (traktToken == null || traktRefreshToken == null) {
-      val user = database.userDao().get()
+      val user = localSource.user.get()
       user?.let {
         traktToken = TraktAuthToken(it.traktToken)
         traktRefreshToken = TraktRefreshToken(it.traktRefreshToken)
@@ -61,16 +62,16 @@ class UserTraktManager @Inject constructor(
   }
 
   suspend fun revokeToken() {
-    with(database) {
-      withTransaction {
-        val user = userDao().get()!!
+    with(localSource) {
+      transactions.withTransaction {
+        val user = localSource.user.get()!!
         val userEntity = user.copy(
           traktToken = "",
           traktRefreshToken = "",
           traktTokenTimestamp = 0,
           traktUsername = ""
         )
-        userDao().upsert(userEntity)
+        localSource.user.upsert(userEntity)
       }
     }
     try {
@@ -85,33 +86,31 @@ class UserTraktManager @Inject constructor(
     }
   }
 
-  suspend fun getUsername() = database.userDao().get()?.traktUsername ?: ""
+  suspend fun getUsername() = localSource.user.get()?.traktUsername ?: ""
 
-  suspend fun clearTraktLogs() = database.traktSyncLogDao().deleteAll()
+  suspend fun clearTraktLogs() = localSource.traktSyncLog.deleteAll()
 
   private suspend fun saveToken(token: String, refreshToken: String, userModel: UserModel) {
     val timestamp = nowUtcMillis()
-    with(database) {
-      withTransaction {
-        val user = userDao().get()
-        userDao().upsert(
-          user?.copy(
-            traktToken = token,
-            traktRefreshToken = refreshToken,
-            traktTokenTimestamp = timestamp,
-            traktUsername = userModel.username
-          ) ?: User(
-            traktToken = token,
-            traktRefreshToken = refreshToken,
-            traktTokenTimestamp = timestamp,
-            traktUsername = userModel.username,
-            tvdbToken = "",
-            tvdbTokenTimestamp = 0,
-            redditToken = "",
-            redditTokenTimestamp = 0
-          )
+    transactions.withTransaction {
+      val user = localSource.user.get()
+      localSource.user.upsert(
+        user?.copy(
+          traktToken = token,
+          traktRefreshToken = refreshToken,
+          traktTokenTimestamp = timestamp,
+          traktUsername = userModel.username
+        ) ?: User(
+          traktToken = token,
+          traktRefreshToken = refreshToken,
+          traktTokenTimestamp = timestamp,
+          traktUsername = userModel.username,
+          tvdbToken = "",
+          tvdbTokenTimestamp = 0,
+          redditToken = "",
+          redditTokenTimestamp = 0
         )
-      }
+      )
     }
     traktToken = TraktAuthToken(token)
     traktRefreshToken = TraktRefreshToken(refreshToken)

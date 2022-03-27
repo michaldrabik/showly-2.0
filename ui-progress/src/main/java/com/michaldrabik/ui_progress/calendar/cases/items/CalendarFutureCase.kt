@@ -1,6 +1,6 @@
 package com.michaldrabik.ui_progress.calendar.cases.items
 
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.Episode
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.mappers.Mappers
@@ -14,7 +14,7 @@ import javax.inject.Singleton
 
 @Singleton
 class CalendarFutureCase @Inject constructor(
-  database: AppDatabase,
+  localSource: LocalDataSource,
   mappers: Mappers,
   showsRepository: ShowsRepository,
   translationsRepository: TranslationsRepository,
@@ -23,7 +23,7 @@ class CalendarFutureCase @Inject constructor(
   override val filter: CalendarFutureFilter,
   override val grouper: CalendarFutureGrouper,
 ) : CalendarItemsCase(
-  database,
+  localSource,
   mappers,
   showsRepository,
   translationsRepository,

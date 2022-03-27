@@ -2,7 +2,7 @@ package com.michaldrabik.repository.movies.ratings
 
 import com.michaldrabik.common.ConfigVariant
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.Movie
@@ -14,12 +14,12 @@ import javax.inject.Singleton
 @Singleton
 class MoviesExternalRatingsRepository @Inject constructor(
   private val remoteSource: RemoteDataSource,
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
   private val mappers: Mappers,
 ) {
 
   suspend fun loadRatings(movie: Movie): Ratings {
-    val localRatings = database.movieRatingsDao().getById(movie.traktId)
+    val localRatings = localSource.movieRatings.getById(movie.traktId)
     localRatings?.let {
       if (nowUtcMillis() - it.updatedAt < ConfigVariant.RATINGS_CACHE_DURATION) {
         return mappers.ratings.fromDatabase(it)
@@ -31,7 +31,7 @@ class MoviesExternalRatingsRepository @Inject constructor(
       .copy(trakt = Ratings.Value(String.format(Locale.ENGLISH, "%.1f", movie.rating), false))
 
     val dbRatings = mappers.ratings.toMovieDatabase(movie.ids.trakt, remoteRatings)
-    database.movieRatingsDao().upsert(dbRatings)
+    localSource.movieRatings.upsert(dbRatings)
 
     return remoteRatings
   }

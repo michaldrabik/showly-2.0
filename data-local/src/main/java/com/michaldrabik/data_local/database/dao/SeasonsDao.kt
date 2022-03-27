@@ -1,13 +1,26 @@
 package com.michaldrabik.data_local.database.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import com.michaldrabik.data_local.database.model.Season
 import com.michaldrabik.data_local.sources.SeasonsLocalDataSource
 
 @Dao
-interface SeasonsDao : BaseDao<Season>, SeasonsLocalDataSource {
+interface SeasonsDao : SeasonsLocalDataSource {
+
+  @Insert(onConflict = OnConflictStrategy.IGNORE)
+  suspend fun insert(items: List<Season>): List<Long>
+
+  @Update(onConflict = OnConflictStrategy.REPLACE)
+  override suspend fun update(items: List<Season>)
+
+  @Delete
+  override suspend fun delete(items: List<Season>)
 
   @Transaction
   override suspend fun getAllByShowsIds(traktIds: List<Long>): List<Season> {

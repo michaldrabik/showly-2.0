@@ -1,9 +1,9 @@
 package com.michaldrabik.repository
 
-import androidx.room.withTransaction
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.CustomListItem
+import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.CustomList
 import com.michaldrabik.ui_model.IdTrakt
@@ -12,8 +12,9 @@ import javax.inject.Singleton
 
 @Singleton
 class ListsRepository @Inject constructor(
-  private val database: AppDatabase,
-  private val mappers: Mappers
+  private val localSource: LocalDataSource,
+  private val mappers: Mappers,
+  private val transactions: TransactionsProvider
 ) {
 
   suspend fun createList(
@@ -29,7 +30,7 @@ class ListsRepository @Inject constructor(
       description = description?.trim()
     )
     val listDb = mappers.customList.toDatabase(list)
-    database.customListsDao().insert(listOf(listDb))
+    localSource.customLists.insert(listOf(listDb))
     return list
   }
 
@@ -40,7 +41,7 @@ class ListsRepository @Inject constructor(
     name: String,
     description: String?
   ): CustomList {
-    val listDb = database.customListsDao().getById(id)!!
+    val listDb = localSource.customLists.getById(id)!!
     val updated = listDb.copy(
       name = name,
       idTrakt = idTrakt ?: listDb.idTrakt,
@@ -48,11 +49,11 @@ class ListsRepository @Inject constructor(
       description = description,
       updatedAt = nowUtcMillis()
     )
-    database.customListsDao().update(listOf(updated))
+    localSource.customLists.update(listOf(updated))
     return mappers.customList.fromDatabase(updated)
   }
 
-  suspend fun deleteList(listId: Long) = database.customListsDao().deleteById(listId)
+  suspend fun deleteList(listId: Long) = localSource.customLists.deleteById(listId)
 
   suspend fun addToList(listId: Long, itemTraktId: IdTrakt, itemType: String) {
     val timestamp = nowUtcMillis()
@@ -65,35 +66,35 @@ class ListsRepository @Inject constructor(
       createdAt = timestamp,
       updatedAt = timestamp
     )
-    database.withTransaction {
-      database.customListsItemsDao().insertItem(itemDb)
-      database.customListsDao().updateTimestamp(listId, nowUtcMillis())
+    transactions.withTransaction {
+      localSource.customListsItems.insertItem(itemDb)
+      localSource.customLists.updateTimestamp(listId, nowUtcMillis())
     }
   }
 
   suspend fun removeFromList(listId: Long, itemTraktId: IdTrakt, itemType: String) {
-    database.withTransaction {
-      database.customListsItemsDao().deleteItem(listId, itemTraktId.id, itemType)
-      database.customListsDao().updateTimestamp(listId, nowUtcMillis())
+    transactions.withTransaction {
+      localSource.customListsItems.deleteItem(listId, itemTraktId.id, itemType)
+      localSource.customLists.updateTimestamp(listId, nowUtcMillis())
     }
   }
 
   suspend fun loadListIdsForItem(itemTraktId: IdTrakt, itemType: String) =
-    database.customListsItemsDao().getListsForItem(itemTraktId.id, itemType)
+    localSource.customListsItems.getListsForItem(itemTraktId.id, itemType)
 
   suspend fun loadListItemsForId(listId: Long) =
-    database.customListsItemsDao().getItemsById(listId)
+    localSource.customListsItems.getItemsById(listId)
 
   suspend fun loadById(listId: Long): CustomList {
-    val listDb = database.customListsDao().getById(listId)!!
+    val listDb = localSource.customLists.getById(listId)!!
     return mappers.customList.fromDatabase(listDb)
   }
 
   suspend fun loadItemsById(listId: Long) =
-    database.customListsItemsDao().getItemsById(listId)
+    localSource.customListsItems.getItemsById(listId)
 
   suspend fun loadAll(): List<CustomList> {
-    val listsDb = database.customListsDao().getAll()
+    val listsDb = localSource.customLists.getAll()
     return listsDb.map { mappers.customList.fromDatabase(it) }
   }
 }

@@ -1,14 +1,14 @@
 package com.michaldrabik.repository
 
-import androidx.room.withTransaction
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.common.extensions.toMillis
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.PersonCredits
 import com.michaldrabik.data_local.database.model.PersonShowMovie
+import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.data_remote.tmdb.model.TmdbPerson
 import com.michaldrabik.repository.mappers.Mappers
@@ -27,8 +27,9 @@ import javax.inject.Inject
 
 class PeopleRepository @Inject constructor(
   private val settingsRepository: SettingsRepository,
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
   private val remoteSource: RemoteDataSource,
+  private val transactions: TransactionsProvider,
   private val mappers: Mappers
 ) {
 
@@ -38,7 +39,7 @@ class PeopleRepository @Inject constructor(
   }
 
   suspend fun loadDetails(person: Person): Person {
-    val local = database.peopleDao().getById(person.ids.tmdb.id)
+    val local = localSource.people.getById(person.ids.tmdb.id)
     if (local?.detailsUpdatedAt != null) {
       return mappers.person.fromDatabase(local, person.characters)
     }
@@ -57,7 +58,7 @@ class PeopleRepository @Inject constructor(
     )
     val dbPerson = mappers.person.toDatabase(personUi, nowUtc())
 
-    database.peopleDao().upsert(listOf(dbPerson))
+    localSource.people.upsert(listOf(dbPerson))
 
     return personUi
   }
@@ -66,24 +67,24 @@ class PeopleRepository @Inject constructor(
     val idTmdb = person.ids.tmdb.id
     var idTrakt: Long?
 
-    val localPerson = database.peopleDao().getById(idTmdb)
+    val localPerson = localSource.people.getById(idTmdb)
     idTrakt = localPerson?.idTrakt
     if (idTrakt == null) {
       val ids = remoteSource.trakt.fetchPersonIds("tmdb", idTmdb.toString())
       ids?.trakt?.let {
         idTrakt = it
-        database.peopleDao().updateTraktId(it, idTmdb)
+        localSource.people.updateTraktId(it, idTmdb)
       }
     }
     if (idTrakt == null) return@coroutineScope emptyList()
 
     // Return locally cached data if available
-    val timestamp = database.peopleCreditsDao().getTimestampForPerson(idTrakt!!)
+    val timestamp = localSource.peopleCredits.getTimestampForPerson(idTrakt!!)
     if (timestamp != null && nowUtcMillis() - timestamp < Config.PEOPLE_CREDITS_CACHE_DURATION) {
       val localCredits = mutableListOf<PersonCredit>()
 
-      val showsCreditsAsync = async { database.peopleCreditsDao().getAllShowsForPerson(idTrakt!!) }
-      val moviesCreditsAsync = async { database.peopleCreditsDao().getAllMoviesForPerson(idTrakt!!) }
+      val showsCreditsAsync = async { localSource.peopleCredits.getAllShowsForPerson(idTrakt!!) }
+      val moviesCreditsAsync = async { localSource.peopleCredits.getAllMoviesForPerson(idTrakt!!) }
       val shows = showsCreditsAsync.await()
       val movies = moviesCreditsAsync.await()
 
@@ -134,14 +135,14 @@ class PeopleRepository @Inject constructor(
       )
     }
 
-    with(database) {
-      val shows = remoteCredits.filter { it.show != null }.map { it.show!! }
-      val movies = remoteCredits.filter { it.movie != null }.map { it.movie!! }
+    with(localSource) {
+      val remoteShows = remoteCredits.filter { it.show != null }.map { it.show!! }
+      val remoteMovies = remoteCredits.filter { it.movie != null }.map { it.movie!! }
 
-      withTransaction {
-        showsDao().upsert(shows.map { mappers.show.toDatabase(it) })
-        moviesDao().upsert(movies.map { mappers.movie.toDatabase(it) })
-        peopleCreditsDao().insert(idTrakt!!, localCredits)
+      transactions.withTransaction {
+        shows.upsert(remoteShows.map { mappers.show.toDatabase(it) })
+        movies.upsert(remoteMovies.map { mappers.movie.toDatabase(it) })
+        peopleCredits.insert(idTrakt!!, localCredits)
       }
     }
 
@@ -151,8 +152,8 @@ class PeopleRepository @Inject constructor(
   suspend fun loadAllForShow(showIds: Ids): Map<Department, List<Person>> {
     val timestamp = nowUtc()
 
-    val localTimestamp = database.peopleShowsMoviesDao().getTimestampForShow(showIds.trakt.id) ?: 0
-    val local = database.peopleDao().getAllForShow(showIds.trakt.id)
+    val localTimestamp = localSource.peopleShowsMovies.getTimestampForShow(showIds.trakt.id) ?: 0
+    val local = localSource.people.getAllForShow(showIds.trakt.id)
     if (local.isNotEmpty() && localTimestamp + Config.ACTORS_CACHE_DURATION > timestamp.toMillis()) {
       Timber.d("Returning cached result. Cache still valid for ${(localTimestamp + Config.ACTORS_CACHE_DURATION) - timestamp.toMillis()} ms")
       return local
@@ -202,10 +203,10 @@ class PeopleRepository @Inject constructor(
       )
     }
 
-    with(database) {
-      withTransaction {
-        peopleDao().upsert(dbTmdbPeople)
-        peopleShowsMoviesDao().insertForShow(dbTmdbPeopleShows, showIds.trakt.id)
+    with(localSource) {
+      transactions.withTransaction {
+        people.upsert(dbTmdbPeople)
+        peopleShowsMovies.insertForShow(dbTmdbPeopleShows, showIds.trakt.id)
       }
     }
 
@@ -216,8 +217,8 @@ class PeopleRepository @Inject constructor(
   suspend fun loadAllForMovie(movieIds: Ids): Map<Department, List<Person>> {
     val timestamp = nowUtc()
 
-    val localTimestamp = database.peopleShowsMoviesDao().getTimestampForMovie(movieIds.trakt.id) ?: 0
-    val local = database.peopleDao().getAllForMovie(movieIds.trakt.id)
+    val localTimestamp = localSource.peopleShowsMovies.getTimestampForMovie(movieIds.trakt.id) ?: 0
+    val local = localSource.people.getAllForMovie(movieIds.trakt.id)
     if (local.isNotEmpty() && localTimestamp + Config.ACTORS_CACHE_DURATION > timestamp.toMillis()) {
       Timber.d("Returning cached result. Cache still valid for ${(localTimestamp + Config.ACTORS_CACHE_DURATION) - timestamp.toMillis()} ms")
       return local
@@ -267,10 +268,10 @@ class PeopleRepository @Inject constructor(
       )
     }
 
-    with(database) {
-      withTransaction {
-        peopleDao().upsert(dbTmdbPeople)
-        peopleShowsMoviesDao().insertForMovie(dbTmdbPeopleMovies, movieIds.trakt.id)
+    with(localSource) {
+      transactions.withTransaction {
+        people.upsert(dbTmdbPeople)
+        peopleShowsMovies.insertForMovie(dbTmdbPeopleMovies, movieIds.trakt.id)
       }
     }
 

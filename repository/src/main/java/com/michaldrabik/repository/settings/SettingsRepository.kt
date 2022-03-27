@@ -3,7 +3,6 @@ package com.michaldrabik.repository.settings
 import android.app.UiModeManager.MODE_NIGHT_YES
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import androidx.room.withTransaction
 import com.michaldrabik.common.Config.DEFAULT_COUNTRY
 import com.michaldrabik.common.Config.DEFAULT_DATE_FORMAT
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
@@ -11,7 +10,8 @@ import com.michaldrabik.common.Mode
 import com.michaldrabik.common.delegates.BooleanPreference
 import com.michaldrabik.common.delegates.LongPreference
 import com.michaldrabik.common.delegates.StringPreference
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
+import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.NewsItem
 import com.michaldrabik.ui_model.ProgressType
@@ -25,7 +25,8 @@ import javax.inject.Singleton
 class SettingsRepository @Inject constructor(
   val sorting: SettingsSortRepository,
   val widgets: SettingsWidgetsRepository,
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
+  private val transactions: TransactionsProvider,
   private val mappers: Mappers,
   @Named("miscPreferences") private var preferences: SharedPreferences
 ) {
@@ -50,17 +51,17 @@ class SettingsRepository @Inject constructor(
   }
 
   suspend fun isInitialized() =
-    database.settingsDao().getCount() > 0
+    localSource.settings.getCount() > 0
 
   suspend fun load(): Settings {
-    val settingsDb = database.settingsDao().getAll()
+    val settingsDb = localSource.settings.getAll()
     return mappers.settings.fromDatabase(settingsDb)
   }
 
   suspend fun update(settings: Settings) {
-    database.withTransaction {
+    transactions.withTransaction {
       val settingsDb = mappers.settings.toDatabase(settings)
-      database.settingsDao().upsert(settingsDb)
+      localSource.settings.upsert(settingsDb)
     }
   }
 
@@ -130,21 +131,21 @@ class SettingsRepository @Inject constructor(
   }
 
   suspend fun clearLanguageLogs() {
-    with(database) {
-      withTransaction {
-        translationsSyncLogDao().deleteAll()
-        translationsMoviesSyncLogDao().deleteAll()
+    with(localSource) {
+      transactions.withTransaction {
+        translationsShowsSyncLog.deleteAll()
+        translationsMoviesSyncLog.deleteAll()
       }
     }
   }
 
   suspend fun clearUnusedTranslations(input: List<String>) {
-    with(database) {
-      withTransaction {
-        showTranslationsDao().deleteByLanguage(input)
-        movieTranslationsDao().deleteByLanguage(input)
-        episodeTranslationsDao().deleteByLanguage(input)
-        peopleDao().deleteTranslations()
+    with(localSource) {
+      transactions.withTransaction {
+        showTranslations.deleteByLanguage(input)
+        movieTranslations.deleteByLanguage(input)
+        episodesTranslations.deleteByLanguage(input)
+        people.deleteTranslations()
       }
     }
   }

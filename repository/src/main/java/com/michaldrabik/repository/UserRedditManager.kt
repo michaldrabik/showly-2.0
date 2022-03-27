@@ -2,10 +2,10 @@
 
 package com.michaldrabik.repository
 
-import androidx.room.withTransaction
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.User
+import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.data_remote.RemoteDataSource
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -14,7 +14,8 @@ import javax.inject.Singleton
 @Singleton
 class UserRedditManager @Inject constructor(
   private val remoteSource: RemoteDataSource,
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
+  private val transactions: TransactionsProvider,
 ) {
 
   companion object {
@@ -29,7 +30,7 @@ class UserRedditManager @Inject constructor(
       return redditToken!!
     }
 
-    val user = database.userDao().get()
+    val user = localSource.user.get()
     user?.let {
       if (nowUtcMillis() < it.redditTokenTimestamp) {
         val authToken = RedditAuthToken(it.redditToken)
@@ -43,25 +44,23 @@ class UserRedditManager @Inject constructor(
     val resultToken = RedditAuthToken(authResponse.access_token)
     val resultTokenTimestamp = nowUtcMillis() + TimeUnit.SECONDS.toMillis(authResponse.expires_in - TOKEN_EXPIRE_BUFFER_SECONDS)
 
-    with(database) {
-      withTransaction {
-        val userDb = userDao().get()
-        userDao().upsert(
-          userDb?.copy(
-            redditToken = resultToken.token,
-            redditTokenTimestamp = resultTokenTimestamp,
-          ) ?: User(
-            redditToken = resultToken.token,
-            redditTokenTimestamp = resultTokenTimestamp,
-            traktToken = "",
-            traktRefreshToken = "",
-            traktTokenTimestamp = 0,
-            traktUsername = "",
-            tvdbToken = "",
-            tvdbTokenTimestamp = 0,
-          )
+    transactions.withTransaction {
+      val userDb = localSource.user.get()
+      localSource.user.upsert(
+        userDb?.copy(
+          redditToken = resultToken.token,
+          redditTokenTimestamp = resultTokenTimestamp,
+        ) ?: User(
+          redditToken = resultToken.token,
+          redditTokenTimestamp = resultTokenTimestamp,
+          traktToken = "",
+          traktRefreshToken = "",
+          traktTokenTimestamp = 0,
+          traktUsername = "",
+          tvdbToken = "",
+          tvdbTokenTimestamp = 0,
         )
-      }
+      )
     }
 
     redditToken = resultToken

@@ -1,10 +1,10 @@
 package com.michaldrabik.repository.shows
 
-import androidx.room.withTransaction
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.RelatedShow
+import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.IdTrakt
@@ -14,17 +14,18 @@ import kotlin.math.min
 
 class RelatedShowsRepository @Inject constructor(
   private val remoteSource: RemoteDataSource,
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
+  private val transactions: TransactionsProvider,
   private val mappers: Mappers
 ) {
 
   suspend fun loadAll(show: Show, hiddenCount: Int): List<Show> {
-    val relatedShows = database.relatedShowsDao().getAllById(show.traktId)
+    val relatedShows = localSource.relatedShows.getAllById(show.traktId)
     val latest = relatedShows.maxByOrNull { it.updatedAt }
 
     if (latest != null && nowUtcMillis() - latest.updatedAt < Config.RELATED_CACHE_DURATION) {
       val relatedShowsIds = relatedShows.map { it.idTrakt }
-      return database.showsDao().getAll(relatedShowsIds)
+      return localSource.shows.getAll(relatedShowsIds)
         .map { mappers.show.fromDatabase(it) }
     }
 
@@ -37,11 +38,15 @@ class RelatedShowsRepository @Inject constructor(
   }
 
   private suspend fun cacheRelatedShows(shows: List<Show>, showId: IdTrakt) {
-    database.withTransaction {
+    transactions.withTransaction {
       val timestamp = nowUtcMillis()
-      database.showsDao().upsert(shows.map { mappers.show.toDatabase(it) })
-      database.relatedShowsDao().deleteById(showId.id)
-      database.relatedShowsDao().insert(shows.map { RelatedShow.fromTraktId(it.ids.trakt.id, showId.id, timestamp) })
+      localSource.shows.upsert(shows.map { mappers.show.toDatabase(it) })
+      localSource.relatedShows.deleteById(showId.id)
+      localSource.relatedShows.insert(
+        shows.map {
+          RelatedShow.fromTraktId(it.ids.trakt.id, showId.id, timestamp)
+        }
+      )
     }
   }
 }

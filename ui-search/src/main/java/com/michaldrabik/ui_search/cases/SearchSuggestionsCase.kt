@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_search.cases
 
 import com.michaldrabik.common.Config
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.settings.SettingsRepository
@@ -23,7 +23,7 @@ import com.michaldrabik.data_local.database.model.Show as ShowDb
 
 @ViewModelScoped
 class SearchSuggestionsCase @Inject constructor(
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
   private val mappers: Mappers,
   private val translationsRepository: TranslationsRepository,
   private val settingsRepository: SettingsRepository,
@@ -42,8 +42,8 @@ class SearchSuggestionsCase @Inject constructor(
     val language = translationsRepository.getLanguage()
     val moviesEnabled = settingsRepository.isMoviesEnabled
 
-    if (showsCache == null) showsCache = database.showsDao().getAll()
-    if (moviesEnabled && moviesCache == null) moviesCache = database.moviesDao().getAll()
+    if (showsCache == null) showsCache = localSource.shows.getAll()
+    if (moviesEnabled && moviesCache == null) moviesCache = localSource.movies.getAll()
 
     if (translationsRepository.getLanguage() != Config.DEFAULT_LANGUAGE) {
       if (showTranslationsCache == null) {

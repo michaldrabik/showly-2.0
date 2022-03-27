@@ -1,12 +1,12 @@
 package com.michaldrabik.ui_search.cases
 
 import com.google.common.truth.Truth.assertThat
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.dao.MoviesDao
 import com.michaldrabik.data_local.database.dao.ShowsDao
-import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.mappers.Mappers
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_search.BaseMockTest
@@ -22,7 +22,7 @@ import org.junit.Test
 @Suppress("EXPERIMENTAL_API_USAGE")
 class SearchSuggestionsCaseTest : BaseMockTest() {
 
-  @RelaxedMockK lateinit var database: AppDatabase
+  @RelaxedMockK lateinit var database: LocalDataSource
   @RelaxedMockK lateinit var showsDao: ShowsDao
   @RelaxedMockK lateinit var moviesDao: MoviesDao
   @RelaxedMockK lateinit var mappers: Mappers
@@ -39,8 +39,8 @@ class SearchSuggestionsCaseTest : BaseMockTest() {
 
     coEvery { settingsRepository.isMoviesEnabled } returns true
     coEvery { translationsRepository.getLanguage() } returns "en"
-    coEvery { database.showsDao() } returns showsDao
-    coEvery { database.moviesDao() } returns moviesDao
+    coEvery { database.shows } returns showsDao
+    coEvery { database.movies } returns moviesDao
 
     SUT = SearchSuggestionsCase(
       database,

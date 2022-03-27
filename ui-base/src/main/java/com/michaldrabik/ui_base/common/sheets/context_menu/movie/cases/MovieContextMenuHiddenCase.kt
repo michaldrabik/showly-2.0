@@ -1,7 +1,6 @@
 package com.michaldrabik.ui_base.common.sheets.context_menu.movie.cases
 
 import com.michaldrabik.common.Mode
-import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.TraktSyncQueue
 import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.movies.MoviesRepository
@@ -18,7 +17,6 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class MovieContextMenuHiddenCase @Inject constructor(
-  private val database: AppDatabase,
   private val moviesRepository: MoviesRepository,
   private val pinnedItemsRepository: PinnedItemsRepository,
   private val quickSyncManager: QuickSyncManager,

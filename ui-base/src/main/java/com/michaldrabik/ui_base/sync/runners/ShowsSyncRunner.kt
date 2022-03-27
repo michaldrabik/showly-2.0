@@ -2,7 +2,7 @@ package com.michaldrabik.ui_base.sync.runners
 
 import com.michaldrabik.common.ConfigVariant.SHOW_SYNC_COOLDOWN
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.EpisodesSyncLog
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.mappers.Mappers
@@ -22,7 +22,7 @@ import javax.inject.Singleton
 @Singleton
 class ShowsSyncRunner @Inject constructor(
   private val remoteSource: RemoteDataSource,
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
   private val mappers: Mappers,
   private val episodesManager: EpisodesManager,
   private val showsRepository: ShowsRepository,
@@ -49,7 +49,7 @@ class ShowsSyncRunner @Inject constructor(
     Timber.i("Shows to sync: ${showsToSync.size}.")
 
     var syncCount = 0
-    val syncLog = database.episodesSyncLogDao().getAll()
+    val syncLog = localSource.episodesSyncLog.getAll()
     showsToSync.forEach { show ->
       val isInWatchlist = show.traktId in watchlistShowsIds
 
@@ -69,7 +69,7 @@ class ShowsSyncRunner @Inject constructor(
       }
 
       if (isInWatchlist) {
-        database.episodesSyncLogDao().upsert(EpisodesSyncLog(show.traktId, nowUtcMillis()))
+        localSource.episodesSyncLog.upsert(EpisodesSyncLog(show.traktId, nowUtcMillis()))
       } else {
         try {
           Timber.i("Syncing ${show.title}(${show.ids.trakt}) episodes...")

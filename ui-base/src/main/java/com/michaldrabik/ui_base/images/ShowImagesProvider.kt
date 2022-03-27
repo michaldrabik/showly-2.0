@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_base.images
 
 import com.michaldrabik.common.Mode
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.CustomImage
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.data_remote.aws.model.AwsImages
@@ -31,7 +31,7 @@ import javax.inject.Singleton
 @Singleton
 class ShowImagesProvider @Inject constructor(
   private val remoteSource: RemoteDataSource,
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
   private val mappers: Mappers,
   private val settingsRepository: SettingsRepository
 ) {
@@ -41,7 +41,7 @@ class ShowImagesProvider @Inject constructor(
 
   suspend fun findCustomImage(traktId: Long, type: ImageType): Image? {
     if (!settingsRepository.isPremium) return null
-    val custom = database.customImagesDao().getById(traktId, Mode.SHOWS.type, type.key)
+    val custom = localSource.customImages.getById(traktId, Mode.SHOWS.type, type.key)
     return custom?.let { mappers.image.fromDatabase(it, type) }
   }
 
@@ -49,7 +49,7 @@ class ShowImagesProvider @Inject constructor(
     val custom = findCustomImage(show.traktId, type)
     if (custom != null) return custom
 
-    val image = database.showImagesDao().getByShowId(show.ids.tmdb.id, type.key)
+    val image = localSource.showImages.getByShowId(show.ids.tmdb.id, type.key)
     return when (image) {
       null ->
         if (unavailableCache.contains(show.ids.trakt)) {
@@ -127,10 +127,10 @@ class ShowImagesProvider @Inject constructor(
     when (image.status) {
       UNAVAILABLE -> {
         unavailableCache.add(show.ids.trakt)
-        database.showImagesDao().deleteByShowId(tmdbId.id, image.type.key)
+        localSource.showImages.deleteByShowId(tmdbId.id, image.type.key)
       }
       else -> {
-        database.showImagesDao().insertShowImage(mappers.image.toDatabaseShow(image))
+        localSource.showImages.insertShowImage(mappers.image.toDatabaseShow(image))
         saveExtraImage(tmdbId, tvdbId, images, type)
       }
     }
@@ -152,7 +152,7 @@ class ShowImagesProvider @Inject constructor(
     }
     findBestImage(typeImages, extraType)?.let {
       val extraImage = Image(-1, tvdbId, tmdbId, extraType, SHOW, it.file_path, "", AVAILABLE, TMDB)
-      database.showImagesDao().insertShowImage(mappers.image.toDatabaseShow(extraImage))
+      localSource.showImages.insertShowImage(mappers.image.toDatabaseShow(extraImage))
     }
   }
 
@@ -188,14 +188,14 @@ class ShowImagesProvider @Inject constructor(
 
   suspend fun saveCustomImage(traktId: IdTrakt, image: Image, imageFamily: ImageFamily, imageType: ImageType) {
     val imageDb = CustomImage(0, traktId.id, imageFamily.key, imageType.key, image.fullFileUrl)
-    database.customImagesDao().insertImage(imageDb)
+    localSource.customImages.insertImage(imageDb)
   }
 
   suspend fun deleteCustomImage(traktId: IdTrakt, imageFamily: ImageFamily, imageType: ImageType) {
-    database.customImagesDao().deleteById(traktId.id, imageFamily.key, imageType.key)
+    localSource.customImages.deleteById(traktId.id, imageFamily.key, imageType.key)
   }
 
-  suspend fun deleteLocalCache() = database.showImagesDao().deleteAll()
+  suspend fun deleteLocalCache() = localSource.showImages.deleteAll()
 
   fun clear() = unavailableCache.clear()
 }

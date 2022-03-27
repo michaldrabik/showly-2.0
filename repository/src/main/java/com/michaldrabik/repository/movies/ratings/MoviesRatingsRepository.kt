@@ -1,7 +1,7 @@
 package com.michaldrabik.repository.movies.ratings
 
 import com.michaldrabik.common.extensions.nowUtc
-import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.Rating
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.mappers.Mappers
@@ -14,7 +14,7 @@ import javax.inject.Singleton
 class MoviesRatingsRepository @Inject constructor(
   val external: MoviesExternalRatingsRepository,
   private val remoteSource: RemoteDataSource,
-  private val database: AppDatabase,
+  private val localSource: LocalDataSource,
   private val mappers: Mappers,
 ) {
 
@@ -27,11 +27,11 @@ class MoviesRatingsRepository @Inject constructor(
     val entities = ratings
       .filter { it.rated_at != null && it.movie.ids.trakt != null }
       .map { mappers.userRatingsMapper.toDatabaseMovie(it) }
-    database.ratingsDao().replaceAll(entities, TYPE_MOVIE)
+    localSource.ratings.replaceAll(entities, TYPE_MOVIE)
   }
 
   suspend fun loadMoviesRatings(): List<TraktRating> {
-    val ratings = database.ratingsDao().getAllByType(TYPE_MOVIE)
+    val ratings = localSource.ratings.getAllByType(TYPE_MOVIE)
     return ratings.map {
       mappers.userRatingsMapper.fromDatabase(it)
     }
@@ -40,7 +40,7 @@ class MoviesRatingsRepository @Inject constructor(
   suspend fun loadRatings(movies: List<Movie>): List<TraktRating> {
     val ratings = mutableListOf<Rating>()
     movies.chunked(250).forEach { chunk ->
-      val items = database.ratingsDao().getAllByType(chunk.map { it.traktId }, TYPE_MOVIE)
+      val items = localSource.ratings.getAllByType(chunk.map { it.traktId }, TYPE_MOVIE)
       ratings.addAll(items)
     }
     return ratings.map {
@@ -55,7 +55,7 @@ class MoviesRatingsRepository @Inject constructor(
       rating
     )
     val entity = mappers.userRatingsMapper.toDatabaseMovie(movie, rating, nowUtc())
-    database.ratingsDao().replace(entity)
+    localSource.ratings.replace(entity)
   }
 
   suspend fun deleteRating(token: String, movie: Movie) {
@@ -63,10 +63,10 @@ class MoviesRatingsRepository @Inject constructor(
       token,
       mappers.movie.toNetwork(movie)
     )
-    database.ratingsDao().deleteByType(movie.traktId, TYPE_MOVIE)
+    localSource.ratings.deleteByType(movie.traktId, TYPE_MOVIE)
   }
 
   suspend fun clear() {
-    database.ratingsDao().deleteAllByType(TYPE_MOVIE)
+    localSource.ratings.deleteAllByType(TYPE_MOVIE)
   }
 }

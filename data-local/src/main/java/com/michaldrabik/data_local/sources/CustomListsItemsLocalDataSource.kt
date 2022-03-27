@@ -4,6 +4,8 @@ import com.michaldrabik.data_local.database.model.CustomListItem
 
 interface CustomListsItemsLocalDataSource {
 
+  suspend fun update(items: List<CustomListItem>)
+
   suspend fun getListsForItem(idTrakt: Long, type: String): List<Long>
 
   suspend fun getByIdTrakt(idList: Long, idTrakt: Long, type: String): CustomListItem?

@@ -1,12 +1,21 @@
 package com.michaldrabik.data_local.database.dao
 
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.michaldrabik.data_local.database.model.CustomList
 import com.michaldrabik.data_local.sources.CustomListsLocalDataSource
 
 @Dao
-interface CustomListsDao : BaseDao<CustomList>, CustomListsLocalDataSource {
+interface CustomListsDao : CustomListsLocalDataSource {
+
+  @Insert(onConflict = OnConflictStrategy.IGNORE)
+  override suspend fun insert(items: List<CustomList>): List<Long>
+
+  @Update(onConflict = OnConflictStrategy.REPLACE)
+  override suspend fun update(items: List<CustomList>)
 
   @Query("SELECT * FROM custom_lists ORDER BY created_at DESC")
   override suspend fun getAll(): List<CustomList>

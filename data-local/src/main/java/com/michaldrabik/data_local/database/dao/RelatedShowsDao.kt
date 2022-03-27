@@ -1,12 +1,17 @@
 package com.michaldrabik.data_local.database.dao
 
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.michaldrabik.data_local.database.model.RelatedShow
 import com.michaldrabik.data_local.sources.RelatedShowsLocalDataSource
 
 @Dao
-interface RelatedShowsDao : BaseDao<RelatedShow>, RelatedShowsLocalDataSource {
+interface RelatedShowsDao : RelatedShowsLocalDataSource {
+
+  @Insert(onConflict = OnConflictStrategy.IGNORE)
+  override suspend fun insert(items: List<RelatedShow>): List<Long>
 
   @Query("SELECT * FROM shows_related WHERE id_trakt_related_show == :traktId")
   override suspend fun getAllById(traktId: Long): List<RelatedShow>
