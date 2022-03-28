@@ -15,9 +15,10 @@ import com.michaldrabik.ui_base.sync.runners.MoviesSyncRunner
 import com.michaldrabik.ui_base.sync.runners.ShowsSyncRunner
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 @HiltWorker
@@ -46,35 +47,33 @@ class ShowsMoviesSyncWorker @AssistedInject constructor(
     }
   }
 
-  override suspend fun doWork(): Result {
+  override suspend fun doWork() = withContext(Dispatchers.IO) {
     Timber.d("Doing work...")
 
-    coroutineScope {
-      val showsAsync = async {
-        try {
-          Timber.d("Starting shows runner...")
-          showsSyncRunner.run()
-        } catch (error: Throwable) {
-          Timber.e(error)
-          0
-        }
+    val showsAsync = async {
+      try {
+        Timber.d("Starting shows runner...")
+        showsSyncRunner.run()
+      } catch (error: Throwable) {
+        Timber.e(error)
+        0
       }
-
-      val moviesAsync = async {
-        try {
-          Timber.d("Starting movies runner...")
-          moviesSyncRunner.run()
-        } catch (error: Throwable) {
-          Timber.e(error)
-          0
-        }
-      }
-
-      val (showsCount, moviesCount) = awaitAll(showsAsync, moviesAsync)
-      EventsManager.sendEvent(ShowsMoviesSyncComplete(showsCount + moviesCount))
     }
 
-    Timber.d("Finished with success.")
-    return Result.success()
+    val moviesAsync = async {
+      try {
+        Timber.d("Starting movies runner...")
+        moviesSyncRunner.run()
+      } catch (error: Throwable) {
+        Timber.e(error)
+        0
+      }
+    }
+
+    val (showsCount, moviesCount) = awaitAll(showsAsync, moviesAsync)
+    EventsManager.sendEvent(ShowsMoviesSyncComplete(showsCount + moviesCount))
+
+    Timber.d("Work finished. Shows: $showsCount Movies: $moviesCount")
+    Result.success()
   }
 }

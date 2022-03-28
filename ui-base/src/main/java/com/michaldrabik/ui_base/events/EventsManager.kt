@@ -6,6 +6,7 @@ import timber.log.Timber
  * Very simple event bus to replace deprecated Android Local broadcasts manager.
  * At this point this bus does not care about threading at all which should not be an issue.
  */
+// TODO Refactor into SharedFlow / Channel
 object EventsManager {
 
   private val observers = mutableSetOf<EventObserver>()
