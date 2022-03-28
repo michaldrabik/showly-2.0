@@ -23,7 +23,6 @@ import com.michaldrabik.showly2.utilities.NetworkMonitorCallbacks
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.OnlineStatusProvider
 import com.michaldrabik.ui_base.common.WidgetsProvider
-import com.michaldrabik.ui_base.events.EventsActivityCallbacks
 import com.michaldrabik.ui_base.utilities.extensions.notificationManager
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_widgets.calendar.CalendarWidgetProvider
@@ -104,10 +103,8 @@ class App :
 
     fun setupLifecycleCallbacks() {
       val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-      val eventsCallbacks = EventsActivityCallbacks()
       val networkMonitorCallbacks = NetworkMonitorCallbacks(connectivityManager)
 
-      registerActivityLifecycleCallbacks(eventsCallbacks)
       registerActivityLifecycleCallbacks(networkMonitorCallbacks)
     }
 

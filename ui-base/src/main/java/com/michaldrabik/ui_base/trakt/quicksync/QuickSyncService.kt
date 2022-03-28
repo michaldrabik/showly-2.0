@@ -37,6 +37,7 @@ class QuickSyncService : TraktNotificationsService(), CoroutineScope {
   @Inject lateinit var settingsRepository: SettingsRepository
   @Inject lateinit var quickSyncRunner: QuickSyncRunner
   @Inject lateinit var quickSyncListsRunner: QuickSyncListsRunner
+  @Inject lateinit var eventsManager: EventsManager
 
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
     Timber.d("Service initialized.")
@@ -55,7 +56,7 @@ class QuickSyncService : TraktNotificationsService(), CoroutineScope {
         var count = quickSyncRunner.run()
         count += quickSyncListsRunner.run()
         if (count > 0) {
-          EventsManager.sendEvent(TraktQuickSyncSuccess(count))
+          eventsManager.sendEvent(TraktQuickSyncSuccess(count))
           Analytics.logTraktQuickSyncSuccess(count)
         }
       } catch (t: Throwable) {

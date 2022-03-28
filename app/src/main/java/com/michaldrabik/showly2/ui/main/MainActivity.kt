@@ -40,7 +40,7 @@ import com.michaldrabik.ui_base.common.OnShowsMoviesSyncedListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.events.Event
-import com.michaldrabik.ui_base.events.EventObserver
+import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.ShowsMoviesSyncComplete
 import com.michaldrabik.ui_base.events.TraktQuickSyncSuccess
 import com.michaldrabik.ui_base.events.TraktSyncError
@@ -75,7 +75,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity :
   BaseActivity(),
-  EventObserver,
   NetworkObserver,
   SnackbarHost,
   NavigationHost,
@@ -89,6 +88,8 @@ class MainActivity :
   }
 
   private val viewModel by viewModels<MainViewModel>()
+
+  @Inject lateinit var eventsManager: EventsManager
 
   private val navigationHeightPad by lazy { dimenToPx(R.dimen.bottomNavigationHeightPadded) }
   private val navigationHeight by lazy { dimenToPx(R.dimen.bottomNavigationHeight) }
@@ -143,6 +144,7 @@ class MainActivity :
           initialize()
           refreshTraktSyncSchedule()
         }
+        launch { eventsManager.events.collect { handleEvent(it) } }
       }
     }
   }
@@ -417,33 +419,31 @@ class MainActivity :
       statusView.text = getString(R.string.errorNoInternetConnection)
     }
 
-  override fun onNewEvent(event: Event) {
-    runOnUiThread {
-      when (event) {
-        is ShowsMoviesSyncComplete -> {
-          if (event.count > 0) {
-            doForFragments { (it as? OnShowsMoviesSyncedListener)?.onShowsMoviesSyncFinished() }
-          }
-          viewModel.refreshAnnouncements()
+  private fun handleEvent(event: Event) {
+    when (event) {
+      is ShowsMoviesSyncComplete -> {
+        if (event.count > 0) {
+          doForFragments { (it as? OnShowsMoviesSyncedListener)?.onShowsMoviesSyncFinished() }
         }
-        is TraktSyncSuccess -> {
-          doForFragments { (it as? OnTraktSyncListener)?.onTraktSyncComplete() }
-        }
-        is TraktSyncError -> {
-          doForFragments { (it as? OnTraktSyncListener)?.onTraktSyncComplete() }
-        }
-        is TraktSyncStart -> {
-          doForFragments { (it as? OnTraktSyncListener)?.onTraktSyncProgress() }
-        }
-        is TraktSyncProgress -> {
-          doForFragments { (it as? OnTraktSyncListener)?.onTraktSyncProgress() }
-        }
-        is TraktQuickSyncSuccess -> {
-          val text = resources.getQuantityString(R.plurals.textTraktQuickSyncComplete, event.count, event.count)
-          provideSnackbarLayout().showInfoSnackbar(text)
-        }
-        else -> Timber.d("Event ignored. Noop.")
+        viewModel.refreshAnnouncements()
       }
+      is TraktSyncSuccess -> {
+        doForFragments { (it as? OnTraktSyncListener)?.onTraktSyncComplete() }
+      }
+      is TraktSyncError -> {
+        doForFragments { (it as? OnTraktSyncListener)?.onTraktSyncComplete() }
+      }
+      is TraktSyncStart -> {
+        doForFragments { (it as? OnTraktSyncListener)?.onTraktSyncProgress() }
+      }
+      is TraktSyncProgress -> {
+        doForFragments { (it as? OnTraktSyncListener)?.onTraktSyncProgress() }
+      }
+      is TraktQuickSyncSuccess -> {
+        val text = resources.getQuantityString(R.plurals.textTraktQuickSyncComplete, event.count, event.count)
+        provideSnackbarLayout().showInfoSnackbar(text)
+      }
+      else -> Timber.d("Event ignored. Noop.")
     }
   }
 

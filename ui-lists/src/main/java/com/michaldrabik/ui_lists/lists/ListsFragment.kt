@@ -22,7 +22,7 @@ import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
 import com.michaldrabik.ui_base.common.views.exSearchLocalViewInput
 import com.michaldrabik.ui_base.events.Event
-import com.michaldrabik.ui_base.events.EventObserver
+import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.TraktListQuickSyncSuccess
 import com.michaldrabik.ui_base.events.TraktQuickSyncSuccess
 import com.michaldrabik.ui_base.utilities.NavigationHost
@@ -57,19 +57,21 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CREATE_LIST
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_lists.*
 import kotlinx.coroutines.flow.collect
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ListsFragment :
   BaseFragment<ListsViewModel>(R.layout.fragment_lists),
   OnTraktSyncListener,
-  OnTabReselectedListener,
-  EventObserver {
+  OnTabReselectedListener {
 
   companion object {
     private const val TRANSLATION_DURATION = 225L
   }
 
   override val viewModel by viewModels<ListsViewModel>()
+
+  @Inject lateinit var eventsManager: EventsManager
 
   private var adapter: ListsAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
@@ -97,6 +99,7 @@ class ListsFragment :
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
+      { eventsManager.events.collect { handleEvent(it) } },
       doAfterLaunch = { viewModel.loadItems(resetScroll = false) }
     )
   }
@@ -331,19 +334,17 @@ class ListsFragment :
     viewModel.loadItems(resetScroll = true)
   }
 
-  override fun onNewEvent(event: Event) {
-    activity?.runOnUiThread {
-      when (event) {
-        is TraktListQuickSyncSuccess -> {
-          val text = resources.getQuantityString(R.plurals.textTraktQuickSyncComplete, 1, 1)
-          fragmentListsSnackHost.showInfoSnackbar(text)
-        }
-        is TraktQuickSyncSuccess -> {
-          val text = resources.getQuantityString(R.plurals.textTraktQuickSyncComplete, event.count, event.count)
-          fragmentListsSnackHost.showInfoSnackbar(text)
-        }
-        else -> Unit
+  private fun handleEvent(event: Event) {
+    when (event) {
+      is TraktListQuickSyncSuccess -> {
+        val text = resources.getQuantityString(R.plurals.textTraktQuickSyncComplete, 1, 1)
+        fragmentListsSnackHost.showInfoSnackbar(text)
       }
+      is TraktQuickSyncSuccess -> {
+        val text = resources.getQuantityString(R.plurals.textTraktQuickSyncComplete, event.count, event.count)
+        fragmentListsSnackHost.showInfoSnackbar(text)
+      }
+      else -> Unit
     }
   }
 

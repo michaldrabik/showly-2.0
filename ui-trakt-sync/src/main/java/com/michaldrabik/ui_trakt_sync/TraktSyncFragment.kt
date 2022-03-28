@@ -8,22 +8,18 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.common.extensions.dateFromMillis
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.data_remote.Config
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTraktAuthorizeListener
-import com.michaldrabik.ui_base.events.Event
-import com.michaldrabik.ui_base.events.EventObserver
 import com.michaldrabik.ui_base.trakt.TraktSyncService
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.gone
+import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
@@ -31,13 +27,11 @@ import com.michaldrabik.ui_model.TraktSyncSchedule
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_trakt_sync.*
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class TraktSyncFragment :
   BaseFragment<TraktSyncViewModel>(R.layout.fragment_trakt_sync),
-  OnTraktAuthorizeListener,
-  EventObserver {
+  OnTraktAuthorizeListener {
 
   override val viewModel by viewModels<TraktSyncViewModel>()
 
@@ -51,15 +45,11 @@ class TraktSyncFragment :
     setupView()
     setupStatusBar()
 
-    viewLifecycleOwner.lifecycleScope.launch {
-      repeatOnLifecycle(Lifecycle.State.STARTED) {
-        with(viewModel) {
-          launch { uiState.collect { render(it) } }
-          launch { messageFlow.collect { showSnack(it) } }
-          invalidate()
-        }
-      }
-    }
+    launchAndRepeatStarted(
+      { viewModel.uiState.collect { render(it) } },
+      { viewModel.messageFlow.collect { showSnack(it) } },
+      doAfterLaunch = { viewModel.invalidate() }
+    )
   }
 
   private fun setupView() {
@@ -159,6 +149,4 @@ class TraktSyncFragment :
       }
     }
   }
-
-  override fun onNewEvent(event: Event) = viewModel.handleEvent(event)
 }

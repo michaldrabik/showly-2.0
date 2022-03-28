@@ -10,6 +10,7 @@ import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
+import com.michaldrabik.ui_base.events.Event
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.TraktSyncAuthError
 import com.michaldrabik.ui_base.events.TraktSyncError
@@ -64,6 +65,7 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
   private val runners = mutableListOf<TraktSyncRunner>()
 
   @Inject lateinit var settingsRepository: SettingsRepository
+  @Inject lateinit var eventsManager: EventsManager
 
   @Inject lateinit var importWatchedRunner: TraktImportWatchedRunner
   @Inject lateinit var importWatchlistRunner: TraktImportWatchlistRunner
@@ -109,7 +111,7 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
     launch {
       try {
         (applicationContext as OnTraktSyncListener).onTraktSyncProgress()
-        EventsManager.sendEvent(TraktSyncStart)
+        eventsManager.sendEvent(TraktSyncStart)
 
         if (isImport) {
           var resultCount = runImportWatched()
@@ -125,15 +127,15 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
 
         miscPreferences.edit().putLong(KEY_LAST_SYNC_TIMESTAMP, nowUtcMillis()).apply()
 
-        EventsManager.sendEvent(TraktSyncSuccess)
+        eventsManager.sendEvent(TraktSyncSuccess)
         (applicationContext as OnTraktSyncListener).onTraktSyncComplete()
         Analytics.logTraktFullSyncSuccess(isImport, isExport)
         if (!isSilent) {
           notificationManager().notify(SYNC_NOTIFICATION_COMPLETE_SUCCESS_ID, createSuccessNotification(theme))
         }
       } catch (t: Throwable) {
-        if (t is TraktAuthError) EventsManager.sendEvent(TraktSyncAuthError)
-        EventsManager.sendEvent(TraktSyncError)
+        if (t is TraktAuthError) eventsManager.sendEvent(TraktSyncAuthError)
+        eventsManager.sendEvent(TraktSyncError)
         (applicationContext as OnTraktSyncListener).onTraktSyncComplete()
         if (!isSilent) {
           notificationManager().notify(
@@ -161,7 +163,7 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
         setProgress(total, progress, false)
       }
       notificationManager().notify(SYNC_NOTIFICATION_PROGRESS_ID, notification.build())
-      EventsManager.sendEvent(TraktSyncProgress(status))
+      sendEvent(TraktSyncProgress(status))
     }
     return importWatchedRunner.run()
   }
@@ -175,7 +177,7 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
         setProgress(totalProgress + total, totalProgress + progress, false)
       }
       notificationManager().notify(SYNC_NOTIFICATION_PROGRESS_ID, notification.build())
-      EventsManager.sendEvent(TraktSyncProgress(status))
+      sendEvent(TraktSyncProgress(status))
     }
     return importWatchlistRunner.run()
   }
@@ -189,7 +191,7 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
         setProgress(totalProgress + total, totalProgress + progress, false)
       }
       notificationManager().notify(SYNC_NOTIFICATION_PROGRESS_ID, notification.build())
-      EventsManager.sendEvent(TraktSyncProgress(status))
+      sendEvent(TraktSyncProgress(status))
     }
     importListsRunner.run()
   }
@@ -201,7 +203,7 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
       setContentText(status)
     }
     notificationManager().notify(SYNC_NOTIFICATION_PROGRESS_ID, notification.build())
-    EventsManager.sendEvent(TraktSyncProgress(status))
+    eventsManager.sendEvent(TraktSyncProgress(status))
     exportWatchedRunner.run()
   }
 
@@ -212,7 +214,7 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
       setContentText(status)
     }
     notificationManager().notify(SYNC_NOTIFICATION_PROGRESS_ID, notification.build())
-    EventsManager.sendEvent(TraktSyncProgress(status))
+    eventsManager.sendEvent(TraktSyncProgress(status))
     exportWatchlistRunner.run()
   }
 
@@ -223,9 +225,17 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
       setContentText(status)
     }
     notificationManager().notify(SYNC_NOTIFICATION_PROGRESS_ID, notification.build())
-    EventsManager.sendEvent(TraktSyncProgress(status))
+    eventsManager.sendEvent(TraktSyncProgress(status))
     exportListsRunner.run()
   }
+
+  private fun sendEvent(event: Event) {
+    launch {
+      eventsManager.sendEvent(event)
+    }
+  }
+
+  private fun clear() = runners.forEach { it.isRunning = false }
 
   override fun onDestroy() {
     coroutineContext.cancelChildren()
@@ -234,8 +244,6 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
     importListsRunner.progressListener = null
     super.onDestroy()
   }
-
-  private fun clear() = runners.forEach { it.isRunning = false }
 
   override fun onBind(intent: Intent?): IBinder? = null
 }

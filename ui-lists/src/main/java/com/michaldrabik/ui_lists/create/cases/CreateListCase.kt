@@ -22,7 +22,8 @@ class CreateListCase @Inject constructor(
   private val mappers: Mappers,
   private val listsRepository: ListsRepository,
   private val settingsRepository: SettingsRepository,
-  private val userTraktManager: UserTraktManager
+  private val userTraktManager: UserTraktManager,
+  private val eventsManager: EventsManager,
 ) {
 
   suspend fun createList(name: String, description: String?): CustomList {
@@ -34,7 +35,7 @@ class CreateListCase @Inject constructor(
         mappers.customList.fromNetwork(this)
       }
       return listsRepository.createList(name, description, list.idTrakt, list.idSlug)
-        .also { EventsManager.sendEvent(TraktListQuickSyncSuccess) }
+        .also { eventsManager.sendEvent(TraktListQuickSyncSuccess) }
     }
     return listsRepository.createList(name, description, null, null)
   }
@@ -51,7 +52,7 @@ class CreateListCase @Inject constructor(
           mappers.customList.fromNetwork(this)
         }
         listsRepository.updateList(list.id, result.idTrakt, result.idSlug, result.name, result.description)
-          .also { EventsManager.sendEvent(TraktQuickSyncSuccess(1)) }
+          .also { eventsManager.sendEvent(TraktQuickSyncSuccess(1)) }
       } catch (error: Throwable) {
         if (error is HttpException && error.code() == 404) {
           // If list does not exist in Trakt account we need to create it and upload items as well.
@@ -69,7 +70,7 @@ class CreateListCase @Inject constructor(
           }
 
           listsRepository.updateList(list.id, result.idTrakt, result.idSlug, result.name, result.description)
-            .also { EventsManager.sendEvent(TraktQuickSyncSuccess(1)) }
+            .also { eventsManager.sendEvent(TraktQuickSyncSuccess(1)) }
         } else {
           Logger.record(error, "Source" to "CreateListCase::updateList()")
           throw error

@@ -19,8 +19,9 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
 import com.michaldrabik.ui_base.events.Event
-import com.michaldrabik.ui_base.events.EventObserver
+import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.TraktQuickSyncSuccess
+import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
@@ -35,9 +36,12 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MANAGE_LISTS
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>(), EventObserver {
+class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>() {
+
+  @Inject lateinit var eventsManager: EventsManager
 
   override val layoutResId = R.layout.view_manage_lists
   private val view by lazy { viewBinding as ViewManageListsBinding }
@@ -63,6 +67,11 @@ class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>(), 
     setupView()
     setupRecycler()
 
+    launchAndRepeatStarted(
+      { viewModel.uiState.collect { render(it) } },
+      { eventsManager.events.collect { handleEvent(it) } },
+      doAfterLaunch = { viewModel.loadLists(itemId, itemType) }
+    )
     viewLifecycleOwner.lifecycleScope.launch {
       repeatOnLifecycle(Lifecycle.State.STARTED) {
         with(viewModel) {
@@ -110,19 +119,17 @@ class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>(), 
     }
   }
 
+  private fun handleEvent(event: Event) {
+    if (event is TraktQuickSyncSuccess) {
+      val text = resources.getQuantityString(R.plurals.textTraktQuickSyncComplete, event.count, event.count)
+      view.viewManageListsSnackHost.showInfoSnackbar(text)
+    }
+  }
+
   override fun onDestroyView() {
     setFragmentResult(REQUEST_MANAGE_LISTS, bundleOf())
     adapter = null
     layoutManager = null
     super.onDestroyView()
-  }
-
-  override fun onNewEvent(event: Event) {
-    activity?.runOnUiThread {
-      if (event is TraktQuickSyncSuccess) {
-        val text = resources.getQuantityString(R.plurals.textTraktQuickSyncComplete, event.count, event.count)
-        view.viewManageListsSnackHost.showInfoSnackbar(text)
-      }
-    }
   }
 }

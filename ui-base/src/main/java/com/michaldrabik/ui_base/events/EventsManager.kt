@@ -1,28 +1,19 @@
 package com.michaldrabik.ui_base.events
 
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import timber.log.Timber
+import javax.inject.Inject
+import javax.inject.Singleton
 
-/**
- * Very simple event bus to replace deprecated Android Local broadcasts manager.
- * At this point this bus does not care about threading at all which should not be an issue.
- */
-// TODO Refactor into SharedFlow / Channel
-object EventsManager {
+@Singleton
+class EventsManager @Inject constructor() {
 
-  private val observers = mutableSetOf<EventObserver>()
+  private val _events = MutableSharedFlow<Event>(extraBufferCapacity = 10)
+  val events = _events.asSharedFlow()
 
-  fun registerObserver(observer: EventObserver) {
-    observers.add(observer)
-    Timber.d("Events observer registered: $observer")
-  }
-
-  fun removeObserver(observer: EventObserver) {
-    observers.remove(observer)
-    Timber.d("Events observer removed: $observer")
-  }
-
-  fun sendEvent(event: Event) {
-    observers.forEach { it.onNewEvent(event) }
-    Timber.d("Event sent to ${observers.size} observers. $event")
+  suspend fun sendEvent(event: Event) {
+    _events.emit(event)
+    Timber.d("Event emitted: $event")
   }
 }

@@ -8,6 +8,7 @@ import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.events.Event
+import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.TraktSyncAuthError
 import com.michaldrabik.ui_base.events.TraktSyncError
 import com.michaldrabik.ui_base.events.TraktSyncProgress
@@ -30,6 +31,7 @@ import com.michaldrabik.ui_trakt_sync.cases.TraktSyncRatingsCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -46,6 +48,7 @@ class TraktSyncViewModel @Inject constructor(
   private val ratingsCase: TraktSyncRatingsCase,
   private val settingsRepository: SettingsRepository,
   private val dateFormatProvider: DateFormatProvider,
+  private val eventsManager: EventsManager,
   importWatchedRunner: TraktImportWatchedRunner,
   importWatchlistRunner: TraktImportWatchlistRunner,
   exportWatchedRunner: TraktImportWatchedRunner,
@@ -62,6 +65,10 @@ class TraktSyncViewModel @Inject constructor(
   private val traktSyncTimestampState = MutableStateFlow(0L)
 
   init {
+    viewModelScope.launch {
+      eventsManager.events.collect { handleEvent(it) }
+    }
+
     val runners = listOf(
       importWatchedRunner,
       importWatchlistRunner,

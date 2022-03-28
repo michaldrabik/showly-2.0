@@ -9,6 +9,7 @@ import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
+import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.TraktSyncAuthError
 import com.michaldrabik.ui_base.events.TraktSyncError
 import com.michaldrabik.ui_base.events.TraktSyncProgress
@@ -50,6 +51,7 @@ class TraktSyncViewModelTest : BaseMockTest() {
   @MockK lateinit var miscPreferences: SharedPreferences
   @MockK lateinit var userTraktManager: UserTraktManager
   @MockK lateinit var settingsRepository: SettingsRepository
+  @MockK lateinit var eventsManager: EventsManager
   @MockK lateinit var ratingsCase: TraktSyncRatingsCase
   @MockK lateinit var dateFormatProvider: DateFormatProvider
   @MockK lateinit var importWatchedRunner: TraktImportWatchedRunner
@@ -80,6 +82,7 @@ class TraktSyncViewModelTest : BaseMockTest() {
       ratingsCase,
       settingsRepository,
       dateFormatProvider,
+      eventsManager,
       importWatchedRunner,
       importWatchlistRunner,
       exportWatchedRunner,
@@ -109,6 +112,7 @@ class TraktSyncViewModelTest : BaseMockTest() {
       ratingsCase,
       settingsRepository,
       dateFormatProvider,
+      eventsManager,
       importWatchedRunner,
       importWatchlistRunner,
       exportWatchedRunner,

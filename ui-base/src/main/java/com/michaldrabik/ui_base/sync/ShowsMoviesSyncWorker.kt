@@ -26,7 +26,8 @@ class ShowsMoviesSyncWorker @AssistedInject constructor(
   @Assisted val context: Context,
   @Assisted workerParams: WorkerParameters,
   private val showsSyncRunner: ShowsSyncRunner,
-  private val moviesSyncRunner: MoviesSyncRunner
+  private val moviesSyncRunner: MoviesSyncRunner,
+  private val eventsManager: EventsManager
 ) : CoroutineWorker(context, workerParams) {
 
   companion object {
@@ -71,7 +72,7 @@ class ShowsMoviesSyncWorker @AssistedInject constructor(
     }
 
     val (showsCount, moviesCount) = awaitAll(showsAsync, moviesAsync)
-    EventsManager.sendEvent(ShowsMoviesSyncComplete(showsCount + moviesCount))
+    eventsManager.sendEvent(ShowsMoviesSyncComplete(showsCount + moviesCount))
 
     Timber.d("Work finished. Shows: $showsCount Movies: $moviesCount")
     Result.success()
