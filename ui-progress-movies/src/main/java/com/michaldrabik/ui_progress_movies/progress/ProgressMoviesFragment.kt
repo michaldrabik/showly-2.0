@@ -103,7 +103,7 @@ class ProgressMoviesFragment :
   private fun setupView() {
     progressMoviesEmptyTraktButton.onClick { requireMainFragment().openTraktSync() }
     progressMoviesEmptyDiscoverButton.onClick {
-      (requireActivity() as NavigationHost).openDiscoverTab()
+      (requireActivity() as NavigationHost).navigateToDiscover()
     }
   }
 

@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_base.utilities
 
-import androidx.annotation.IdRes
 import androidx.navigation.NavController
 import com.michaldrabik.common.Mode
 
@@ -13,6 +12,5 @@ interface NavigationHost {
   fun hideNavigation(animate: Boolean)
   fun showNavigation(animate: Boolean)
 
-  fun openTab(@IdRes navigationId: Int)
-  fun openDiscoverTab()
+  fun navigateToDiscover()
 }

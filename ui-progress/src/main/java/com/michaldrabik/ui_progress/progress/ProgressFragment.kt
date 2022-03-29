@@ -106,7 +106,7 @@ class ProgressFragment :
   private fun setupView() {
     progressEmptyTraktButton.onClick { requireMainFragment().openTraktSync() }
     progressEmptyDiscoverButton.onClick {
-      (requireActivity() as NavigationHost).openDiscoverTab()
+      (requireActivity() as NavigationHost).navigateToDiscover()
     }
     progressTipItem.onClick {
       it.gone()

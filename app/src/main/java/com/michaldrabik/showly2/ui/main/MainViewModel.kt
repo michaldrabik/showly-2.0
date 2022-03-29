@@ -4,13 +4,15 @@ import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Mode
-import com.michaldrabik.showly2.ui.main.cases.MainDeepLinksCase
+import com.michaldrabik.showly2.ui.main.cases.MainAnnouncementsCase
+import com.michaldrabik.showly2.ui.main.cases.MainClearingCase
 import com.michaldrabik.showly2.ui.main.cases.MainInitialsCase
-import com.michaldrabik.showly2.ui.main.cases.MainMiscCase
 import com.michaldrabik.showly2.ui.main.cases.MainModesCase
 import com.michaldrabik.showly2.ui.main.cases.MainRateAppCase
+import com.michaldrabik.showly2.ui.main.cases.MainSettingsCase
 import com.michaldrabik.showly2.ui.main.cases.MainTipsCase
 import com.michaldrabik.showly2.ui.main.cases.MainTraktCase
+import com.michaldrabik.showly2.ui.main.cases.deeplink.MainDeepLinksCase
 import com.michaldrabik.showly2.utilities.deeplink.DeepLinkBundle
 import com.michaldrabik.showly2.utilities.deeplink.DeepLinkResolver
 import com.michaldrabik.ui_base.Logger
@@ -35,7 +37,9 @@ class MainViewModel @Inject constructor(
   private val initCase: MainInitialsCase,
   private val tipsCase: MainTipsCase,
   private val traktCase: MainTraktCase,
-  private val miscCase: MainMiscCase,
+  private val clearingCase: MainClearingCase,
+  private val settingsCase: MainSettingsCase,
+  private val announcementsCase: MainAnnouncementsCase,
   private val modesCase: MainModesCase,
   private val rateAppCase: MainRateAppCase,
   private val linksCase: MainDeepLinksCase,
@@ -92,7 +96,7 @@ class MainViewModel @Inject constructor(
 
   fun refreshAnnouncements() {
     viewModelScope.launch {
-      miscCase.refreshAnnouncements()
+      announcementsCase.refreshAnnouncements()
     }
   }
 
@@ -111,8 +115,8 @@ class MainViewModel @Inject constructor(
   fun isTipShown(tip: Tip) = tipsCase.isTipShown(tip)
   fun setTipShown(tip: Tip) = tipsCase.setTipShown(tip)
 
-  fun moviesEnabled(): Boolean = miscCase.moviesEnabled()
-  fun newsEnabled(): Boolean = miscCase.newsEnabled()
+  fun hasMoviesEnabled(): Boolean = settingsCase.hasMoviesEnabled()
+  fun hasNewsEnabled(): Boolean = settingsCase.hasNewsEnabled()
 
   fun completeAppRate() = rateAppCase.complete()
 
@@ -145,7 +149,7 @@ class MainViewModel @Inject constructor(
   }
 
   override fun onCleared() {
-    miscCase.clear()
+    clearingCase.clear()
     super.onCleared()
   }
 

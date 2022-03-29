@@ -1,8 +1,5 @@
-package com.michaldrabik.showly2.ui.main.cases
+package com.michaldrabik.showly2.ui.main.cases.deeplink
 
-import com.michaldrabik.showly2.ui.main.cases.deeplink.ImdbDeepLinkCase
-import com.michaldrabik.showly2.ui.main.cases.deeplink.TmdbDeepLinkCase
-import com.michaldrabik.showly2.ui.main.cases.deeplink.TraktDeepLinkCase
 import com.michaldrabik.ui_model.IdImdb
 import com.michaldrabik.ui_model.IdSlug
 import com.michaldrabik.ui_model.IdTmdb

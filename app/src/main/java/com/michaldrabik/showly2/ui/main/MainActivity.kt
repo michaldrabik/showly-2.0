@@ -1,12 +1,12 @@
 package com.michaldrabik.showly2.ui.main
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import androidx.activity.addCallback
 import androidx.activity.viewModels
-import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -139,14 +139,12 @@ class MainActivity :
   private fun setupViewModel() {
     lifecycleScope.launch {
       repeatOnLifecycle(Lifecycle.State.STARTED) {
-        with(viewModel) {
-          launch { uiState.collect { render(it) } }
-          initialize()
-          refreshTraktSyncSchedule()
-        }
+        launch { viewModel.uiState.collect { render(it) } }
         launch { eventsManager.events.collect { handleEvent(it) } }
       }
     }
+    viewModel.initialize()
+    viewModel.refreshTraktSyncSchedule()
   }
 
   private fun setupView() {
@@ -192,7 +190,7 @@ class MainActivity :
 
         return@setOnItemSelectedListener true
       }
-      menu.findItem(R.id.menuNews).isVisible = viewModel.newsEnabled()
+      menu.findItem(R.id.menuNews).isVisible = viewModel.hasNewsEnabled()
     }
   }
 
@@ -269,11 +267,9 @@ class MainActivity :
       .start()
   }
 
-  override fun openTab(@IdRes navigationId: Int) {
-    bottomNavigationView.selectedItemId = navigationId
+  override fun navigateToDiscover() {
+    bottomNavigationView.selectedItemId = R.id.menuDiscover
   }
-
-  override fun openDiscoverTab() = openTab(R.id.menuDiscover)
 
   override fun setMode(mode: Mode, force: Boolean) {
     if (force || viewModel.getMode() != mode) {
@@ -293,7 +289,7 @@ class MainActivity :
 
   override fun getMode() = viewModel.getMode()
 
-  override fun moviesEnabled() = viewModel.moviesEnabled()
+  override fun moviesEnabled() = viewModel.hasMoviesEnabled()
 
   private fun render(uiState: MainUiState) {
     uiState.run {
@@ -338,7 +334,7 @@ class MainActivity :
   }
 
   private fun showWelcomeDialog(language: AppLanguage) {
-    openTab(R.id.menuDiscover)
+    navigateToDiscover()
     with(welcomeView) {
       setLanguage(language)
       fadeIn()
@@ -396,6 +392,7 @@ class MainActivity :
     }
   }
 
+  @SuppressLint("MissingSuperCall")
   override fun onSaveInstanceState(outState: Bundle) {
     outState.putBoolean(ARG_NAVIGATION_VISIBLE, bottomNavigationWrapper.translationY == 0F)
     super.onSaveInstanceState(outState)
