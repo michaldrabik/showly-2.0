@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.ui_base.images.ShowImagesProvider
+import com.michaldrabik.ui_base.trakt.TraktSyncStatusProvider
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_discover.cases.DiscoverFiltersCase
 import com.michaldrabik.ui_discover.cases.DiscoverShowsCase
@@ -40,6 +41,7 @@ class DiscoverViewModelTest : BaseMockTest() {
   @MockK lateinit var filtersCase: DiscoverFiltersCase
   @MockK lateinit var twitterCase: DiscoverTwitterCase
   @MockK lateinit var imagesProvider: ShowImagesProvider
+  @MockK lateinit var syncStatusProvider: TraktSyncStatusProvider
 
   private lateinit var SUT: DiscoverViewModel
 
@@ -53,7 +55,7 @@ class DiscoverViewModelTest : BaseMockTest() {
     coEvery { showsCase.loadCachedShows(any()) } returns emptyList()
     coEvery { showsCase.loadRemoteShows(any()) } returns emptyList()
 
-    SUT = DiscoverViewModel(showsCase, filtersCase, twitterCase, imagesProvider)
+    SUT = DiscoverViewModel(showsCase, filtersCase, twitterCase, imagesProvider, syncStatusProvider)
   }
 
   @After

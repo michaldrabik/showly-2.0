@@ -4,6 +4,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.viewModelScope
 import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.common.CalendarMode
+import com.michaldrabik.ui_base.events.EventsManager
+import com.michaldrabik.ui_base.trakt.TraktSyncStatusProvider
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_progress_movies.BaseMockTest
@@ -31,6 +33,8 @@ class ProgressMoviesMainViewModelTest : BaseMockTest() {
   val instantTaskExecutorRule = InstantTaskExecutorRule()
 
   @MockK lateinit var mainCase: ProgressMoviesMainCase
+  @MockK lateinit var syncStatusProvider: TraktSyncStatusProvider
+  @MockK lateinit var eventsManager: EventsManager
 
   private lateinit var SUT: ProgressMoviesMainViewModel
 
@@ -40,7 +44,7 @@ class ProgressMoviesMainViewModelTest : BaseMockTest() {
   @Before
   override fun setUp() {
     super.setUp()
-    SUT = ProgressMoviesMainViewModel(mainCase)
+    SUT = ProgressMoviesMainViewModel(mainCase, syncStatusProvider, eventsManager)
   }
 
   @After
