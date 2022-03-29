@@ -9,7 +9,6 @@ import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.R
-import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.events.Event
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.TraktSyncAuthError
@@ -66,6 +65,7 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
 
   @Inject lateinit var settingsRepository: SettingsRepository
   @Inject lateinit var eventsManager: EventsManager
+  @Inject lateinit var syncStatusProvider: TraktSyncStatusProvider
 
   @Inject lateinit var importWatchedRunner: TraktImportWatchedRunner
   @Inject lateinit var importWatchlistRunner: TraktImportWatchlistRunner
@@ -110,7 +110,7 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
     Timber.d("Sync started.")
     launch {
       try {
-        (applicationContext as OnTraktSyncListener).onTraktSyncProgress()
+        syncStatusProvider.setSyncing(true)
         eventsManager.sendEvent(TraktSyncStart)
 
         if (isImport) {
@@ -128,15 +128,17 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
         miscPreferences.edit().putLong(KEY_LAST_SYNC_TIMESTAMP, nowUtcMillis()).apply()
 
         eventsManager.sendEvent(TraktSyncSuccess)
-        (applicationContext as OnTraktSyncListener).onTraktSyncComplete()
+        syncStatusProvider.setSyncing(false)
         Analytics.logTraktFullSyncSuccess(isImport, isExport)
         if (!isSilent) {
           notificationManager().notify(SYNC_NOTIFICATION_COMPLETE_SUCCESS_ID, createSuccessNotification(theme))
         }
       } catch (t: Throwable) {
-        if (t is TraktAuthError) eventsManager.sendEvent(TraktSyncAuthError)
+        if (t is TraktAuthError) {
+          eventsManager.sendEvent(TraktSyncAuthError)
+        }
         eventsManager.sendEvent(TraktSyncError)
-        (applicationContext as OnTraktSyncListener).onTraktSyncComplete()
+        syncStatusProvider.setSyncing(false)
         if (!isSilent) {
           notificationManager().notify(
             SYNC_NOTIFICATION_COMPLETE_ERROR_ID,

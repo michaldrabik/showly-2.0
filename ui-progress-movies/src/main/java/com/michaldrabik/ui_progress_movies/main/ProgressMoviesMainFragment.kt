@@ -18,7 +18,6 @@ import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.OnShowsMoviesSyncedListener
 import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
-import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Operation
@@ -55,8 +54,7 @@ import timber.log.Timber
 class ProgressMoviesMainFragment :
   BaseFragment<ProgressMoviesMainViewModel>(R.layout.fragment_progress_main_movies),
   OnShowsMoviesSyncedListener,
-  OnTabReselectedListener,
-  OnTraktSyncListener {
+  OnTabReselectedListener {
 
   companion object {
     private const val TRANSLATION_DURATION = 225L
@@ -142,7 +140,6 @@ class ProgressMoviesMainFragment :
       onClick { openMainSearch() }
       onSettingsClickListener = { openSettings() }
       onTraktClickListener = { navigateTo(R.id.actionProgressMoviesFragmentToTraktSyncFragment) }
-      if (isTraktSyncing()) setTraktProgress(true)
     }
 
     with(progressMoviesModeTabs) {
@@ -290,14 +287,6 @@ class ProgressMoviesMainFragment :
 
   override fun onShowsMoviesSyncFinished() = viewModel.loadProgress()
 
-  override fun onTraktSyncProgress() =
-    progressMoviesSearchView.setTraktProgress(true)
-
-  override fun onTraktSyncComplete() {
-    progressMoviesSearchView.setTraktProgress(false)
-    viewModel.loadProgress()
-  }
-
   override fun onTabReselected() {
     resetTranslations(duration = 0)
     progressMoviesPager.nextPage()
@@ -321,6 +310,7 @@ class ProgressMoviesMainFragment :
     childFragmentManager.fragments.forEach { (it as? OnScrollResetListener)?.onScrollReset() }
 
   private fun render(uiState: ProgressMoviesMainUiState) {
+    progressMoviesSearchView.setTraktProgress(uiState.isSyncing, withIcon = true)
     when (uiState.calendarMode) {
       CalendarMode.PRESENT_FUTURE -> progressMoviesCalendarIcon.setImageResource(R.drawable.ic_history)
       CalendarMode.RECENTS -> progressMoviesCalendarIcon.setImageResource(R.drawable.ic_calendar)

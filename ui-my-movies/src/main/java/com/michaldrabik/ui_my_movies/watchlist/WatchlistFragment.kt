@@ -14,7 +14,6 @@ import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.OnSortClickListener
-import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
@@ -40,7 +39,6 @@ import kotlinx.coroutines.flow.collect
 class WatchlistFragment :
   BaseFragment<WatchlistViewModel>(R.layout.fragment_watchlist_movies),
   OnScrollResetListener,
-  OnTraktSyncListener,
   OnSearchClickListener,
   OnSortClickListener {
 
@@ -148,8 +146,6 @@ class WatchlistFragment :
   override fun onSortClick() = viewModel.loadSortOrder()
 
   override fun onScrollReset() = watchlistMoviesRecycler.scrollToPosition(0)
-
-  override fun onTraktSyncComplete() = viewModel.loadMovies()
 
   override fun setupBackPressed() = Unit
 

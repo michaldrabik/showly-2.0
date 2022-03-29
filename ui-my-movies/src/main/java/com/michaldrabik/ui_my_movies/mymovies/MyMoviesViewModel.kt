@@ -4,6 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.ui_base.Logger
+import com.michaldrabik.ui_base.events.EventsManager
+import com.michaldrabik.ui_base.events.ReloadData
+import com.michaldrabik.ui_base.events.TraktSyncError
+import com.michaldrabik.ui_base.events.TraktSyncSuccess
 import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
@@ -30,17 +34,20 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
+import com.michaldrabik.ui_base.events.Event as EventSync
 
 @HiltViewModel
 class MyMoviesViewModel @Inject constructor(
   private val loadMoviesCase: MyMoviesLoadCase,
   private val ratingsCase: MyMoviesRatingsCase,
   private val sortingCase: MyMoviesSortingCase,
+  private val eventsManager: EventsManager,
 ) : ViewModel() {
 
   private var loadItemsJob: Job? = null
@@ -49,6 +56,10 @@ class MyMoviesViewModel @Inject constructor(
   private val itemsUpdateState = MutableStateFlow<Event<Boolean>?>(null)
 
   private var searchQuery: String? = null
+
+  init {
+    viewModelScope.launch { eventsManager.events.collect { onEvent(it) } }
+  }
 
   fun onParentState(state: FollowedMoviesUiState) {
     when {
@@ -154,6 +165,14 @@ class MyMoviesViewModel @Inject constructor(
     val translation = loadMoviesCase.loadTranslation(movie, true)
     MyMoviesItem(itemType, null, null, null, movie, image, false, translation, null, dateFormat)
   }
+
+  private fun onEvent(event: EventSync) =
+    when (event) {
+      is TraktSyncSuccess -> loadMovies()
+      is TraktSyncError -> loadMovies()
+      is ReloadData -> loadMovies()
+      else -> Unit
+    }
 
   val uiState = combine(
     itemsState,

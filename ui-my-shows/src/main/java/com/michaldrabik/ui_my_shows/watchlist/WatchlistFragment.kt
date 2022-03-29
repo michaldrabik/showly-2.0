@@ -15,7 +15,6 @@ import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.OnSortClickListener
-import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
@@ -36,7 +35,6 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_ORDE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_SORT_ORDER
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_my_shows.*
 import kotlinx.android.synthetic.main.fragment_watchlist.*
 import kotlinx.coroutines.flow.collect
 
@@ -44,7 +42,6 @@ import kotlinx.coroutines.flow.collect
 class WatchlistFragment :
   BaseFragment<WatchlistViewModel>(R.layout.fragment_watchlist),
   OnScrollResetListener,
-  OnTraktSyncListener,
   OnSearchClickListener,
   OnSortClickListener {
 
@@ -154,8 +151,6 @@ class WatchlistFragment :
   override fun onSortClick() = viewModel.loadSortOrder()
 
   override fun onScrollReset() = watchlistRecycler.scrollToPosition(0)
-
-  override fun onTraktSyncComplete() = viewModel.loadShows()
 
   override fun setupBackPressed() = Unit
 

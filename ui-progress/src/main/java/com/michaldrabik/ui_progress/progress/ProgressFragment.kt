@@ -19,7 +19,6 @@ import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.OnSortClickListener
-import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
 import com.michaldrabik.ui_base.trakt.TraktSyncService
@@ -59,7 +58,6 @@ import me.everything.android.ui.overscroll.IOverScrollDecor
 import me.everything.android.ui.overscroll.IOverScrollState
 import me.everything.android.ui.overscroll.OverScrollBounceEffectDecoratorBase
 import me.everything.android.ui.overscroll.VerticalOverScrollBounceEffectDecorator
-import timber.log.Timber
 
 @AndroidEntryPoint
 class ProgressFragment :
@@ -266,10 +264,6 @@ class ProgressFragment :
 
   private fun startTraktSync() {
     val context = requireAppContext()
-    if ((context as OnTraktSyncListener).isTraktSyncActive()) {
-      Timber.d("Trakt sync is already running.")
-      return
-    }
     TraktSyncService.createIntent(
       context,
       isImport = true,

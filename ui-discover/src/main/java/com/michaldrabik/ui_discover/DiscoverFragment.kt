@@ -23,7 +23,6 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.MAIN_GRID_SPAN
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
-import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
@@ -59,8 +58,7 @@ import kotlin.random.Random
 @AndroidEntryPoint
 class DiscoverFragment :
   BaseFragment<DiscoverViewModel>(R.layout.fragment_discover),
-  OnTabReselectedListener,
-  OnTraktSyncListener {
+  OnTabReselectedListener {
 
   override val viewModel by viewModels<DiscoverViewModel>()
   override val navigationId = R.id.discoverFragment
@@ -119,7 +117,6 @@ class DiscoverFragment :
       onClick { openSearch() }
       onSortClickListener = { toggleFiltersView() }
       translationY = searchViewPosition
-      if (isTraktSyncing()) setTraktProgress(true)
     }
     discoverModeTabsView.run {
       visibleIf(moviesEnabled)
@@ -311,6 +308,9 @@ class DiscoverFragment :
         discoverSwipeRefresh.isRefreshing = it
         discoverModeTabsView.isEnabled = !it
       }
+      isSyncing?.let {
+        discoverSearchView.setTraktProgress(it)
+      }
       filters?.let {
         discoverFiltersView.run {
           if (!this.isVisible) bind(it)
@@ -319,10 +319,6 @@ class DiscoverFragment :
       }
     }
   }
-
-  override fun onTraktSyncProgress() = discoverSearchView.setTraktProgress(true)
-
-  override fun onTraktSyncComplete() = discoverSearchView.setTraktProgress(false)
 
   override fun onTabReselected() = openSearch()
 

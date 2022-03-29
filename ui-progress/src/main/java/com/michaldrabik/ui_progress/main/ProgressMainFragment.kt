@@ -18,7 +18,6 @@ import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.OnShowsMoviesSyncedListener
 import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
-import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Operation
@@ -63,8 +62,7 @@ import timber.log.Timber
 class ProgressMainFragment :
   BaseFragment<ProgressMainViewModel>(R.layout.fragment_progress_main),
   OnShowsMoviesSyncedListener,
-  OnTabReselectedListener,
-  OnTraktSyncListener {
+  OnTabReselectedListener {
 
   companion object {
     private const val TRANSLATION_DURATION = 225L
@@ -153,7 +151,6 @@ class ProgressMainFragment :
       onClick { openMainSearch() }
       onSettingsClickListener = { openSettings() }
       onTraktClickListener = { navigateTo(R.id.actionProgressFragmentToTraktSyncFragment) }
-      if (isTraktSyncing()) setTraktProgress(true)
     }
 
     with(progressMainSearchLocalView) {
@@ -329,14 +326,6 @@ class ProgressMainFragment :
 
   override fun onShowsMoviesSyncFinished() = viewModel.loadProgress()
 
-  override fun onTraktSyncProgress() =
-    progressMainSearchView.setTraktProgress(true)
-
-  override fun onTraktSyncComplete() {
-    progressMainSearchView.setTraktProgress(false)
-    viewModel.loadProgress()
-  }
-
   override fun onTabReselected() {
     resetTranslations(duration = 0)
     progressMainPager.nextPage()
@@ -360,6 +349,7 @@ class ProgressMainFragment :
     childFragmentManager.fragments.forEach { (it as? OnScrollResetListener)?.onScrollReset() }
 
   private fun render(uiState: ProgressMainUiState) {
+    progressMainSearchView.setTraktProgress(uiState.isSyncing, withIcon = true)
     when (uiState.calendarMode) {
       CalendarMode.PRESENT_FUTURE -> progressMainCalendarIcon.setImageResource(R.drawable.ic_history)
       CalendarMode.RECENTS -> progressMainCalendarIcon.setImageResource(R.drawable.ic_calendar)

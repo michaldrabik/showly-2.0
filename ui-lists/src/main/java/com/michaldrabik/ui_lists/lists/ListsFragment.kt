@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
-import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
 import com.michaldrabik.ui_base.common.views.exSearchLocalViewInput
 import com.michaldrabik.ui_base.events.Event
@@ -62,7 +61,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class ListsFragment :
   BaseFragment<ListsViewModel>(R.layout.fragment_lists),
-  OnTraktSyncListener,
   OnTabReselectedListener {
 
   companion object {
@@ -127,7 +125,6 @@ class ListsFragment :
     fragmentListsSearchView.run {
       hint = getString(R.string.textSearchFor)
       onSettingsClickListener = { openSettings() }
-      if (isTraktSyncing()) setTraktProgress(true)
     }
     with(fragmentListsSearchLocalView) {
       onCloseClickListener = { exitSearch() }
@@ -280,6 +277,9 @@ class ListsFragment :
       sortOrder?.let { event ->
         event.consume()?.let { showSortOrderDialog(it) }
       }
+      isSyncing?.let {
+        fragmentListsSearchView.setTraktProgress(it)
+      }
     }
   }
 
@@ -324,14 +324,6 @@ class ListsFragment :
     ).forEach {
       it.animate().translationY(0F).setDuration(duration).add(animations)?.start()
     }
-  }
-
-  override fun onTraktSyncProgress() =
-    fragmentListsSearchView.setTraktProgress(true)
-
-  override fun onTraktSyncComplete() {
-    fragmentListsSearchView.setTraktProgress(false)
-    viewModel.loadItems(resetScroll = true)
   }
 
   private fun handleEvent(event: Event) {

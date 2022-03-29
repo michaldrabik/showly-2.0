@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
-import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
@@ -51,8 +50,7 @@ import kotlin.random.Random
 @AndroidEntryPoint
 class DiscoverMoviesFragment :
   BaseFragment<DiscoverMoviesViewModel>(R.layout.fragment_discover_movies),
-  OnTabReselectedListener,
-  OnTraktSyncListener {
+  OnTabReselectedListener {
 
   override val viewModel by viewModels<DiscoverMoviesViewModel>()
   override val navigationId = R.id.discoverMoviesFragment
@@ -111,7 +109,6 @@ class DiscoverMoviesFragment :
       onClick { openSearch() }
       onSortClickListener = { toggleFiltersView() }
       translationY = searchViewPosition
-      if (isTraktSyncing()) setTraktProgress(true)
     }
     discoverMoviesTabsView.run {
       translationY = tabsViewPosition
@@ -286,6 +283,9 @@ class DiscoverMoviesFragment :
         discoverMoviesSwipeRefresh.isRefreshing = it
         discoverMoviesTabsView.isEnabled = !it
       }
+      isSyncing?.let {
+        discoverMoviesSearchView.setTraktProgress(it)
+      }
       filters?.let {
         discoverMoviesFiltersView.run {
           if (!this.isVisible) bind(it)
@@ -294,10 +294,6 @@ class DiscoverMoviesFragment :
       }
     }
   }
-
-  override fun onTraktSyncProgress() = discoverMoviesSearchView.setTraktProgress(true)
-
-  override fun onTraktSyncComplete() = discoverMoviesSearchView.setTraktProgress(false)
 
   override fun onTabReselected() = openSearch()
 

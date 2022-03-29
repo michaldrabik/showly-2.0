@@ -8,4 +8,5 @@ data class ProgressMainUiState(
   val searchQuery: String? = null,
   val calendarMode: CalendarMode? = null,
   val resetScroll: Event<Boolean>? = null,
+  val isSyncing: Boolean = false,
 )

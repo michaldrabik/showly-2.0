@@ -15,7 +15,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE
 import com.google.android.material.snackbar.Snackbar.LENGTH_SHORT
 import com.michaldrabik.common.Mode
-import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent.Type.ERROR
 import com.michaldrabik.ui_base.utilities.MessageEvent.Type.INFO
@@ -97,8 +96,6 @@ abstract class BaseFragment<T : ViewModel>(@LayoutRes contentLayoutId: Int) :
   override fun showTip(tip: Tip) = (requireActivity() as TipsHost).showTip(tip)
 
   override fun setTipShow(tip: Tip) = (requireActivity() as TipsHost).showTip(tip)
-
-  protected fun isTraktSyncing() = (requireAppContext() as OnTraktSyncListener).isTraktSyncActive()
 
   private fun clearAnimations() {
     animations.forEach { it?.cancel() }

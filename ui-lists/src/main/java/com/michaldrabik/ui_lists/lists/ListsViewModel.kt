@@ -2,8 +2,12 @@ package com.michaldrabik.ui_lists.lists
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.ui_base.events.EventsManager
+import com.michaldrabik.ui_base.events.TraktSyncError
+import com.michaldrabik.ui_base.events.TraktSyncSuccess
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
+import com.michaldrabik.ui_base.trakt.TraktSyncStatusProvider
 import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
@@ -18,10 +22,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.michaldrabik.ui_base.events.Event as EventSync
 
 @HiltViewModel
 class ListsViewModel @Inject constructor(
@@ -29,6 +35,8 @@ class ListsViewModel @Inject constructor(
   private val sortCase: SortOrderListsCase,
   private val showImagesProvider: ShowImagesProvider,
   private val movieImagesProvider: MovieImagesProvider,
+  private val syncStatusProvider: TraktSyncStatusProvider,
+  private val eventsManager: EventsManager,
 ) : ViewModel() {
 
   private var loadItemsJob: Job? = null
@@ -36,6 +44,14 @@ class ListsViewModel @Inject constructor(
   private val itemsState = MutableStateFlow<List<ListsItem>?>(null)
   private val scrollState = MutableStateFlow(Event(false))
   private val sortOrderState = MutableStateFlow<Event<Pair<SortOrder, SortType>>?>(null)
+  private val syncingState = MutableStateFlow(false)
+
+  init {
+    with(viewModelScope) {
+      launch { eventsManager.events.collect { onEvent(it) } }
+      launch { syncStatusProvider.status.collect { syncingState.value = it } }
+    }
+  }
 
   fun loadItems(
     resetScroll: Boolean,
@@ -94,15 +110,23 @@ class ListsViewModel @Inject constructor(
     itemsState.value = currentItems
   }
 
+  private fun onEvent(event: EventSync) {
+    if (event in arrayOf(TraktSyncError, TraktSyncSuccess)) {
+      loadItems(resetScroll = true)
+    }
+  }
+
   val uiState = combine(
     itemsState,
     scrollState,
-    sortOrderState
-  ) { itemsState, scrollState, sortOrderState ->
+    sortOrderState,
+    syncingState
+  ) { s1, s2, s3, s4 ->
     ListsUiState(
-      items = itemsState,
-      resetScroll = scrollState,
-      sortOrder = sortOrderState
+      items = s1,
+      resetScroll = s2,
+      sortOrder = s3,
+      isSyncing = s4
     )
   }.stateIn(
     scope = viewModelScope,

@@ -14,7 +14,6 @@ import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.OnSortClickListener
-import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
@@ -34,14 +33,12 @@ import com.michaldrabik.ui_my_movies.main.FollowedMoviesViewModel
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_hidden_movies.*
-import kotlinx.android.synthetic.main.fragment_watchlist_movies.*
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class HiddenFragment :
   BaseFragment<HiddenViewModel>(R.layout.fragment_hidden_movies),
   OnScrollResetListener,
-  OnTraktSyncListener,
   OnSearchClickListener,
   OnSortClickListener {
 
@@ -151,8 +148,6 @@ class HiddenFragment :
   override fun onSortClick() = viewModel.loadSortOrder()
 
   override fun onScrollReset() = hiddenMoviesRecycler.scrollToPosition(0)
-
-  override fun onTraktSyncComplete() = viewModel.loadMovies()
 
   override fun setupBackPressed() = Unit
 

@@ -38,15 +38,10 @@ import com.michaldrabik.showly2.utilities.deeplink.DeepLinkResolver
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.common.OnShowsMoviesSyncedListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
-import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.events.Event
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.ShowsMoviesSyncComplete
 import com.michaldrabik.ui_base.events.TraktQuickSyncSuccess
-import com.michaldrabik.ui_base.events.TraktSyncError
-import com.michaldrabik.ui_base.events.TraktSyncProgress
-import com.michaldrabik.ui_base.events.TraktSyncStart
-import com.michaldrabik.ui_base.events.TraktSyncSuccess
 import com.michaldrabik.ui_base.sync.ShowsMoviesSyncWorker
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.SnackbarHost
@@ -423,18 +418,6 @@ class MainActivity :
           doForFragments { (it as? OnShowsMoviesSyncedListener)?.onShowsMoviesSyncFinished() }
         }
         viewModel.refreshAnnouncements()
-      }
-      is TraktSyncSuccess -> {
-        doForFragments { (it as? OnTraktSyncListener)?.onTraktSyncComplete() }
-      }
-      is TraktSyncError -> {
-        doForFragments { (it as? OnTraktSyncListener)?.onTraktSyncComplete() }
-      }
-      is TraktSyncStart -> {
-        doForFragments { (it as? OnTraktSyncListener)?.onTraktSyncProgress() }
-      }
-      is TraktSyncProgress -> {
-        doForFragments { (it as? OnTraktSyncListener)?.onTraktSyncProgress() }
       }
       is TraktQuickSyncSuccess -> {
         val text = resources.getQuantityString(R.plurals.textTraktQuickSyncComplete, event.count, event.count)

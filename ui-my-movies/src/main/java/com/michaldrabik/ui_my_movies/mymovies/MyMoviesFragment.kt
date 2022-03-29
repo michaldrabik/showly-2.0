@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
-import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
@@ -39,8 +38,7 @@ import kotlinx.coroutines.flow.collect
 class MyMoviesFragment :
   BaseFragment<MyMoviesViewModel>(R.layout.fragment_my_movies),
   OnScrollResetListener,
-  OnSearchClickListener,
-  OnTraktSyncListener {
+  OnSearchClickListener {
 
   private val parentViewModel by viewModels<FollowedMoviesViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<MyMoviesViewModel>()
@@ -142,8 +140,6 @@ class MyMoviesFragment :
   }
 
   override fun onScrollReset() = myMoviesRecycler.scrollToPosition(0)
-
-  override fun onTraktSyncComplete() = viewModel.loadMovies()
 
   override fun setupBackPressed() = Unit
 

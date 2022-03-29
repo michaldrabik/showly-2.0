@@ -5,6 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.Logger
+import com.michaldrabik.ui_base.events.EventsManager
+import com.michaldrabik.ui_base.events.ReloadData
+import com.michaldrabik.ui_base.events.TraktSyncError
+import com.michaldrabik.ui_base.events.TraktSyncSuccess
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
@@ -35,10 +39,12 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.michaldrabik.ui_base.events.Event as EventSync
 
 @HiltViewModel
 class MyShowsViewModel @Inject constructor(
@@ -47,7 +53,8 @@ class MyShowsViewModel @Inject constructor(
   private val ratingsCase: MyShowsRatingsCase,
   private val translationsCase: MyShowsTranslationsCase,
   private val settingsRepository: SettingsRepository,
-  private val imagesProvider: ShowImagesProvider
+  private val imagesProvider: ShowImagesProvider,
+  private val eventsManager: EventsManager,
 ) : ViewModel() {
 
   private var loadItemsJob: Job? = null
@@ -56,6 +63,10 @@ class MyShowsViewModel @Inject constructor(
   private val itemsUpdateState = MutableStateFlow<Event<List<Type>?>?>(null)
 
   private var searchQuery: String? = null
+
+  init {
+    viewModelScope.launch { eventsManager.events.collect { onEvent(it) } }
+  }
 
   fun onParentState(state: FollowedShowsUiState) {
     when {
@@ -226,6 +237,14 @@ class MyShowsViewModel @Inject constructor(
     val translation = translationsCase.loadTranslation(show, true)
     MyShowsItem(itemType, null, null, null, show, image, false, translation)
   }
+
+  private fun onEvent(event: EventSync) =
+    when (event) {
+      is TraktSyncSuccess -> loadShows()
+      is TraktSyncError -> loadShows()
+      is ReloadData -> loadShows()
+      else -> Unit
+    }
 
   val uiState = combine(
     itemsState,

@@ -14,7 +14,6 @@ import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
-import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
 import com.michaldrabik.ui_base.common.views.exSearchLocalViewInput
 import com.michaldrabik.ui_base.utilities.extensions.add
@@ -27,6 +26,7 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.hideKeyboard
+import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.nextPage
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -40,12 +40,12 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_followed_movies.*
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class FollowedMoviesFragment :
   BaseFragment<FollowedMoviesViewModel>(R.layout.fragment_followed_movies),
-  OnTabReselectedListener,
-  OnTraktSyncListener {
+  OnTabReselectedListener {
 
   companion object {
     private const val TRANSLATION_DURATION = 225L
@@ -74,6 +74,10 @@ class FollowedMoviesFragment :
     setupView()
     setupPager()
     setupStatusBar()
+
+    launchAndRepeatStarted(
+      { viewModel.uiState.collect { render(it) } }
+    )
   }
 
   override fun onSaveInstanceState(outState: Bundle) {
@@ -107,7 +111,6 @@ class FollowedMoviesFragment :
       onClick { openMainSearch() }
       onSettingsClickListener = { openSettings() }
       onStatsClickListener = { openStatistics() }
-      if (isTraktSyncing()) setTraktProgress(true)
     }
     with(followedMoviesSearchLocalView) {
       onCloseClickListener = { exitSearch() }
@@ -219,7 +222,7 @@ class FollowedMoviesFragment :
   fun openMovieMenu(movie: Movie) {
     setFragmentResultListener(NavigationArgs.REQUEST_ITEM_MENU) { requestKey, _ ->
       if (requestKey == NavigationArgs.REQUEST_ITEM_MENU) {
-        onTraktSyncComplete()
+        viewModel.refreshData()
       }
       clearFragmentResultListener(NavigationArgs.REQUEST_ITEM_MENU)
     }
@@ -260,14 +263,9 @@ class FollowedMoviesFragment :
     }
   }
 
-  override fun onTraktSyncProgress() =
-    followedMoviesSearchView.setTraktProgress(true)
-
-  override fun onTraktSyncComplete() {
-    followedMoviesSearchView.setTraktProgress(false)
-    followedMoviesSearchView.traktIconVisible = false
-    childFragmentManager.fragments.forEach {
-      (it as? OnTraktSyncListener)?.onTraktSyncComplete()
+  private fun render(uiState: FollowedMoviesUiState) {
+    uiState.isSyncing?.let {
+      followedMoviesSearchView.setTraktProgress(it)
     }
   }
 

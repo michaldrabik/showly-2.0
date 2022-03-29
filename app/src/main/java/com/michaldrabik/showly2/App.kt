@@ -20,7 +20,6 @@ import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.common.ConfigVariant
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.showly2.utilities.NetworkMonitorCallbacks
-import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.OnlineStatusProvider
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.utilities.extensions.notificationManager
@@ -43,16 +42,14 @@ class App :
   Application(),
   Configuration.Provider,
   OnlineStatusProvider,
-  WidgetsProvider,
-  OnTraktSyncListener {
-
-  var isAppOnline = true
-  private var isSyncRunning = false
+  WidgetsProvider {
 
   private val appScope = MainScope()
 
   @Inject lateinit var workerFactory: HiltWorkerFactory
   @Inject lateinit var settingsRepository: SettingsRepository
+
+  var isAppOnline = true
 
   override fun onCreate() {
 
@@ -159,8 +156,4 @@ class App :
     Configuration.Builder()
       .setWorkerFactory(workerFactory)
       .build()
-
-  override fun onTraktSyncProgress() = run { isSyncRunning = true }
-  override fun onTraktSyncComplete() = run { isSyncRunning = false }
-  override fun isTraktSyncActive() = isSyncRunning
 }

@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
-import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
@@ -36,15 +35,13 @@ import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsAdapter
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_my_shows.*
-import kotlinx.android.synthetic.main.fragment_watchlist.*
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class MyShowsFragment :
   BaseFragment<MyShowsViewModel>(R.layout.fragment_my_shows),
   OnScrollResetListener,
-  OnSearchClickListener,
-  OnTraktSyncListener {
+  OnSearchClickListener {
 
   private val parentViewModel by viewModels<FollowedShowsViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<MyShowsViewModel>()
@@ -181,8 +178,6 @@ class MyShowsFragment :
   }
 
   override fun onScrollReset() = myShowsRecycler.scrollToPosition(0)
-
-  override fun onTraktSyncComplete() = viewModel.loadShows()
 
   override fun setupBackPressed() = Unit
 

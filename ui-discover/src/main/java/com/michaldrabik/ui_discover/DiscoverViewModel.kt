@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.ui_base.images.ShowImagesProvider
+import com.michaldrabik.ui_base.trakt.TraktSyncStatusProvider
 import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
@@ -26,6 +27,7 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -38,15 +40,23 @@ class DiscoverViewModel @Inject constructor(
   private val filtersCase: DiscoverFiltersCase,
   private val twitterCase: DiscoverTwitterCase,
   private val imagesProvider: ShowImagesProvider,
+  private val syncStatusProvider: TraktSyncStatusProvider,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val itemsState = MutableStateFlow<List<DiscoverListItem>?>(null)
   private val loadingState = MutableStateFlow(false)
+  private val syncingState = MutableStateFlow(false)
   private val filtersState = MutableStateFlow<DiscoverFilters?>(null)
   private val scrollState = MutableStateFlow(Event(false))
 
   @VisibleForTesting(otherwise = PRIVATE)
   var lastPullToRefreshMs = 0L
+
+  init {
+    viewModelScope.launch {
+      syncStatusProvider.status.collect { syncingState.value = it }
+    }
+  }
 
   fun loadItems(
     pullToRefresh: Boolean = false,
@@ -143,14 +153,16 @@ class DiscoverViewModel @Inject constructor(
   val uiState = combine(
     itemsState,
     loadingState,
+    syncingState,
     filtersState,
     scrollState
-  ) { s1, s2, s3, s4 ->
+  ) { s1, s2, s3, s4, s5 ->
     DiscoverUiState(
       items = s1,
       isLoading = s2,
-      filters = s3,
-      resetScroll = s4
+      isSyncing = s3,
+      filters = s4,
+      resetScroll = s5
     )
   }.stateIn(
     scope = viewModelScope,

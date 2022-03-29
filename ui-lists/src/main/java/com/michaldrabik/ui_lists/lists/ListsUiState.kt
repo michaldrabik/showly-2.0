@@ -9,4 +9,5 @@ data class ListsUiState(
   val items: List<ListsItem>? = null,
   val resetScroll: Event<Boolean> = Event(false),
   val sortOrder: Event<Pair<SortOrder, SortType>>? = null,
+  val isSyncing: Boolean? = null,
 )
