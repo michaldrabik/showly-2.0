@@ -1,7 +1,5 @@
-package com.michaldrabik.showly2.utilities
+package com.michaldrabik.ui_base.network
 
-import android.app.Activity
-import android.app.Application
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET
@@ -12,22 +10,30 @@ import android.net.NetworkCapabilities.TRANSPORT_VPN
 import android.net.NetworkCapabilities.TRANSPORT_WIFI
 import android.net.NetworkRequest
 import android.os.Build
-import android.os.Bundle
-import com.michaldrabik.showly2.App
-import com.michaldrabik.showly2.ui.main.MainActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import timber.log.Timber
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class NetworkMonitorCallbacks(
+@Singleton
+class NetworkStatusProvider @Inject constructor(
   private val connectivityManager: ConnectivityManager
-) : Application.ActivityLifecycleCallbacks {
+) : LifecycleObserver {
 
-  private var foregroundActivity: Activity? = null
+  private val _status = MutableStateFlow(false)
+  val status = _status.asStateFlow()
+
   private val availableNetworksIds = mutableListOf<String>()
 
-  override fun onActivityStarted(activity: Activity) {
-    if (activity !is MainActivity) return
+  fun isOnline() = status.value
 
-    foregroundActivity = activity
+  @OnLifecycleEvent(Lifecycle.Event.ON_START)
+  fun onStart() {
     val networkRequest = NetworkRequest.Builder()
       .addTransportType(TRANSPORT_WIFI)
       .addTransportType(TRANSPORT_CELLULAR)
@@ -42,52 +48,35 @@ class NetworkMonitorCallbacks(
       connectivityManager.requestNetwork(networkRequest, networkCallback, 1000)
     }
 
-    Timber.d("Registering network callback.")
+    Timber.d("Registering network observer.")
   }
 
-  override fun onActivityStopped(activity: Activity) {
-    if (activity !is MainActivity) return
-
+  @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+  fun onStop() {
     connectivityManager.unregisterNetworkCallback(networkCallback)
     availableNetworksIds.clear()
-    foregroundActivity = null
 
-    Timber.d("Unregistering network callback.")
+    Timber.d("Unregistering network observer.")
   }
 
   private val networkCallback = object : NetworkCallbackAdapter() {
     override fun onAvailable(network: Network) {
       availableNetworksIds.add(network.toString())
-      foregroundActivity?.let {
-        (it.applicationContext as App).isAppOnline = true
-        (it as? NetworkObserver)?.onNetworkAvailableListener(true)
-      }
+      _status.update { true }
       Timber.d("Network available: $network")
     }
 
     override fun onLost(network: Network) {
       availableNetworksIds.remove(network.toString())
       if (availableNetworksIds.isEmpty()) {
-        foregroundActivity?.let {
-          (it.applicationContext as App).isAppOnline = false
-          (it as? NetworkObserver)?.onNetworkAvailableListener(false)
-        }
+        _status.update { false }
       }
       Timber.d("Network lost: $network. Available networks: ${availableNetworksIds.size}")
     }
 
     override fun onUnavailable() {
-      foregroundActivity?.let {
-        (it.applicationContext as App).isAppOnline = false
-        (it as? NetworkObserver)?.onNetworkAvailableListener(false)
-      }
+      _status.update { false }
       Timber.d("Network unavailable")
     }
   }
-
-  override fun onActivityPaused(p0: Activity) = Unit
-  override fun onActivityDestroyed(p0: Activity) = Unit
-  override fun onActivitySaveInstanceState(p0: Activity, p1: Bundle) = Unit
-  override fun onActivityCreated(p0: Activity, p1: Bundle?) = Unit
-  override fun onActivityResumed(p0: Activity) = Unit
 }

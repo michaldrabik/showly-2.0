@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.utilities
+package com.michaldrabik.ui_base.network
 
 import android.net.ConnectivityManager
 

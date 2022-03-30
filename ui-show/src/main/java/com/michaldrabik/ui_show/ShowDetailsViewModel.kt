@@ -10,7 +10,6 @@ import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.AppCountry
-import com.michaldrabik.ui_base.common.OnlineStatusProvider
 import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.episodes.EpisodesManager
@@ -165,7 +164,7 @@ class ShowDetailsViewModel @Inject constructor(
         launch { loadNextEpisode(show) }
         launch { loadTranslation(show) }
         launch { loadRelatedShows(show) }
-        launch { loadSeasons(show, (context as OnlineStatusProvider).isOnline()) }
+        launch { loadSeasons(show) }
       } catch (error: Throwable) {
         progressJob.cancel()
         if (error is HttpException && error.code() == 404) {
@@ -232,8 +231,8 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
-  private suspend fun loadSeasons(show: Show, isOnline: Boolean) = try {
-    val (seasons, isLocal) = episodesCase.loadSeasons(show, isOnline)
+  private suspend fun loadSeasons(show: Show) = try {
+    val (seasons, isLocal) = episodesCase.loadSeasons(show)
     areSeasonsLocal = isLocal
     val calculated = markWatchedEpisodes(seasons)
     seasonsState.value = calculated

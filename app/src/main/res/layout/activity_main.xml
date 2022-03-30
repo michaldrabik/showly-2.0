@@ -41,7 +41,7 @@
       android:gravity="center"
       android:text="@string/errorNoInternetConnection"
       android:textColor="?textColorOnSurface"
-      android:textSize="14sp"
+      android:textSize="12sp"
       android:visibility="gone"
       tools:visibility="visible"
       />

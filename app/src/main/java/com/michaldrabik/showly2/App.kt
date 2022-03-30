@@ -2,8 +2,6 @@ package com.michaldrabik.showly2
 
 import android.app.Application
 import android.app.NotificationChannel
-import android.content.Context
-import android.net.ConnectivityManager
 import android.os.Build
 import android.os.StrictMode
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
@@ -19,8 +17,6 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.common.ConfigVariant
 import com.michaldrabik.repository.settings.SettingsRepository
-import com.michaldrabik.showly2.utilities.NetworkMonitorCallbacks
-import com.michaldrabik.ui_base.common.OnlineStatusProvider
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.utilities.extensions.notificationManager
 import com.michaldrabik.ui_model.Settings
@@ -41,15 +37,12 @@ import com.michaldrabik.ui_base.fcm.NotificationChannel as AppNotificationChanne
 class App :
   Application(),
   Configuration.Provider,
-  OnlineStatusProvider,
   WidgetsProvider {
 
   private val appScope = MainScope()
 
   @Inject lateinit var workerFactory: HiltWorkerFactory
   @Inject lateinit var settingsRepository: SettingsRepository
-
-  var isAppOnline = true
 
   override fun onCreate() {
 
@@ -98,13 +91,6 @@ class App :
       setDefaultNightMode(theme)
     }
 
-    fun setupLifecycleCallbacks() {
-      val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-      val networkMonitorCallbacks = NetworkMonitorCallbacks(connectivityManager)
-
-      registerActivityLifecycleCallbacks(networkMonitorCallbacks)
-    }
-
     fun setupRemoteConfig() {
       with(Firebase.remoteConfig) {
         setConfigSettingsAsync(
@@ -127,7 +113,6 @@ class App :
       }
     }
 
-    setupLifecycleCallbacks()
     setupSettings()
     setupStrictMode()
     setupNotificationChannels()
@@ -135,8 +120,6 @@ class App :
     setupTheme()
     setupRemoteConfig()
   }
-
-  override fun isOnline() = isAppOnline
 
   override fun requestShowsWidgetsUpdate() {
     appScope.launch {

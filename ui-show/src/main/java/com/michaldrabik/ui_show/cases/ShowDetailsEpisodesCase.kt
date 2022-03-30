@@ -11,6 +11,7 @@ import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.episodes.EpisodesManager
+import com.michaldrabik.ui_base.network.NetworkStatusProvider
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.RatingState
@@ -36,7 +37,8 @@ class ShowDetailsEpisodesCase @Inject constructor(
   private val translationsRepository: TranslationsRepository,
   private val episodesManager: EpisodesManager,
   private val userManager: UserTraktManager,
-  private val dateFormatProvider: DateFormatProvider
+  private val dateFormatProvider: DateFormatProvider,
+  private val networkStatusProvider: NetworkStatusProvider
 ) {
 
   suspend fun loadNextEpisode(traktId: IdTrakt): Episode? {
@@ -44,27 +46,30 @@ class ShowDetailsEpisodesCase @Inject constructor(
     return mappers.episode.fromNetwork(episode)
   }
 
-  suspend fun loadSeasons(show: Show, isOnline: Boolean): SeasonsBundle = coroutineScope {
-    val showSpecialSeasons = settingsRepository.load().specialSeasonsEnabled
-    try {
-      if (!isOnline) loadLocalSeasons(show, showSpecialSeasons)
+  suspend fun loadSeasons(show: Show): SeasonsBundle =
+    coroutineScope {
+      val showSpecialSeasons = settingsRepository.load().specialSeasonsEnabled
+      try {
+        if (!networkStatusProvider.isOnline()) {
+          loadLocalSeasons(show, showSpecialSeasons)
+        }
 
-      val remoteSeasons = remoteSource.trakt.fetchSeasons(show.traktId)
-        .map { mappers.season.fromNetwork(it) }
-        .filter { it.episodes.isNotEmpty() }
-        .filter { if (!showSpecialSeasons) !it.isSpecial() else true }
+        val remoteSeasons = remoteSource.trakt.fetchSeasons(show.traktId)
+          .map { mappers.season.fromNetwork(it) }
+          .filter { it.episodes.isNotEmpty() }
+          .filter { if (!showSpecialSeasons) !it.isSpecial() else true }
 
-      val isFollowed = showsRepository.myShows.load(show.ids.trakt) != null
-      if (isFollowed) {
-        episodesManager.invalidateSeasons(show, remoteSeasons)
+        val isFollowed = showsRepository.myShows.load(show.ids.trakt) != null
+        if (isFollowed) {
+          episodesManager.invalidateSeasons(show, remoteSeasons)
+        }
+
+        val seasonsItems = mapToSeasonItems(remoteSeasons, show)
+        SeasonsBundle(seasonsItems, isLocal = false)
+      } catch (error: Throwable) {
+        loadLocalSeasons(show, showSpecialSeasons)
       }
-
-      val seasonsItems = mapToSeasonItems(remoteSeasons, show)
-      SeasonsBundle(seasonsItems, isLocal = false)
-    } catch (error: Throwable) {
-      loadLocalSeasons(show, showSpecialSeasons)
     }
-  }
 
   private suspend fun loadLocalSeasons(show: Show, showSpecials: Boolean): SeasonsBundle {
     val localEpisodes = localSource.episodes.getAllByShowId(show.traktId)

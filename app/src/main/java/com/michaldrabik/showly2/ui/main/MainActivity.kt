@@ -33,7 +33,6 @@ import com.michaldrabik.showly2.ui.main.delegates.MainBillingDelegate
 import com.michaldrabik.showly2.ui.main.delegates.MainUpdateDelegate
 import com.michaldrabik.showly2.ui.main.delegates.UpdateDelegate
 import com.michaldrabik.showly2.ui.views.WhatsNewView
-import com.michaldrabik.showly2.utilities.NetworkObserver
 import com.michaldrabik.showly2.utilities.deeplink.DeepLinkResolver
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.common.OnShowsMoviesSyncedListener
@@ -42,6 +41,7 @@ import com.michaldrabik.ui_base.events.Event
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.ShowsMoviesSyncComplete
 import com.michaldrabik.ui_base.events.TraktQuickSyncSuccess
+import com.michaldrabik.ui_base.network.NetworkStatusProvider
 import com.michaldrabik.ui_base.sync.ShowsMoviesSyncWorker
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.SnackbarHost
@@ -70,7 +70,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity :
   BaseActivity(),
-  NetworkObserver,
   SnackbarHost,
   NavigationHost,
   TipsHost,
@@ -100,6 +99,7 @@ class MainActivity :
   @Inject lateinit var workManager: WorkManager
   @Inject lateinit var deepLinkResolver: DeepLinkResolver
   @Inject lateinit var settingsRepository: SettingsRepository
+  @Inject lateinit var networkStatusProvider: NetworkStatusProvider
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -113,6 +113,7 @@ class MainActivity :
     setupNavigation()
     setupTips()
     setupView()
+    setupNetworkObserver()
 
     restoreState(savedInstanceState)
     onNewIntent(intent)
@@ -129,6 +130,11 @@ class MainActivity :
     handleNotification(intent?.extras) { hideNavigation(false) }
     handleTraktAuthorization(intent?.data)
     handleDeepLink(intent)
+  }
+
+  override fun onDestroy() {
+    lifecycle.removeObserver(networkStatusProvider)
+    super.onDestroy()
   }
 
   private fun setupViewModel() {
@@ -148,6 +154,20 @@ class MainActivity :
       onModeSelected = { setMode(it) }
     }
     viewMask.onClick { /* NOOP */ }
+  }
+
+  private fun setupNetworkObserver() {
+    lifecycle.addObserver(networkStatusProvider)
+    lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        launch {
+          networkStatusProvider.status.collect {
+            statusView.visibleIf(!it)
+            statusView.text = getString(R.string.errorNoInternetConnection)
+          }
+        }
+      }
+    }
   }
 
   private fun setupNavigation() {
@@ -404,12 +424,6 @@ class MainActivity :
       navHost?.childFragmentManager?.primaryNavigationFragment?.let { action(it) }
     }
   }
-
-  override fun onNetworkAvailableListener(isAvailable: Boolean) =
-    runOnUiThread {
-      statusView.visibleIf(!isAvailable)
-      statusView.text = getString(R.string.errorNoInternetConnection)
-    }
 
   private fun handleEvent(event: Event) {
     when (event) {

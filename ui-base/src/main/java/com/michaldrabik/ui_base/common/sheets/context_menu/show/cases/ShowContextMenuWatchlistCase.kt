@@ -25,7 +25,10 @@ class ShowContextMenuWatchlistCase @Inject constructor(
   private val quickSyncManager: QuickSyncManager,
 ) {
 
-  suspend fun moveToWatchlist(traktId: IdTrakt, removeLocalData: Boolean) = coroutineScope {
+  suspend fun moveToWatchlist(
+    traktId: IdTrakt,
+    removeLocalData: Boolean
+  ) = coroutineScope {
     val show = Show.EMPTY.copy(ids = Ids.EMPTY.copy(traktId))
 
     val (isMyShow, isHidden) = awaitAll(
