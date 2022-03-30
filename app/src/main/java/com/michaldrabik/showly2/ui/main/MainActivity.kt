@@ -83,8 +83,6 @@ class MainActivity :
 
   private val viewModel by viewModels<MainViewModel>()
 
-  @Inject lateinit var eventsManager: EventsManager
-
   private val navigationHeightPad by lazy { dimenToPx(R.dimen.bottomNavigationHeightPadded) }
   private val navigationHeight by lazy { dimenToPx(R.dimen.bottomNavigationHeight) }
   private val decelerateInterpolator by lazy { DecelerateInterpolator(2F) }
@@ -97,6 +95,7 @@ class MainActivity :
   }
 
   @Inject lateinit var workManager: WorkManager
+  @Inject lateinit var eventsManager: EventsManager
   @Inject lateinit var deepLinkResolver: DeepLinkResolver
   @Inject lateinit var settingsRepository: SettingsRepository
   @Inject lateinit var networkStatusProvider: NetworkStatusProvider
