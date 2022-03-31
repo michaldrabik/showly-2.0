@@ -16,6 +16,7 @@ import com.michaldrabik.ui_base.BaseBottomSheetFragment
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent.Type
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.optionalParcelable
 import com.michaldrabik.ui_base.utilities.extensions.shake
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
@@ -34,7 +35,7 @@ class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
   override val layoutResId = R.layout.view_create_list
   private val view by lazy { viewBinding as ViewCreateListBinding }
 
-  private val list by lazy { requireArguments().getParcelable<CustomList>(ARG_LIST) }
+  private val list: CustomList? by lazy { optionalParcelable(ARG_LIST) }
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 

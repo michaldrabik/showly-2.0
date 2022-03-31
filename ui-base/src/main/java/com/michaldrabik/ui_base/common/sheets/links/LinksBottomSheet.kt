@@ -17,6 +17,7 @@ import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.databinding.ViewLinksBinding
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
+import com.michaldrabik.ui_base.utilities.extensions.requireParcelable
 import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Show
@@ -50,7 +51,7 @@ class LinksBottomSheet : BaseBottomSheetFragment<LinksViewModel>() {
   override val layoutResId = R.layout.view_links
   private val view by lazy { viewBinding as ViewLinksBinding }
 
-  private val options by lazy { (requireArguments().getParcelable<Options>(NavigationArgs.ARG_OPTIONS))!! }
+  private val options by lazy { requireParcelable<Options>(NavigationArgs.ARG_OPTIONS) }
   private val ids by lazy { options.ids }
   private val title by lazy { options.title }
   private val website by lazy { options.website }

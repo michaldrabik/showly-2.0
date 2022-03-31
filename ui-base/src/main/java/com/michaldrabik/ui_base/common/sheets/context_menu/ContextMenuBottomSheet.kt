@@ -26,6 +26,8 @@ import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.requireBoolean
+import com.michaldrabik.ui_base.utilities.extensions.requireParcelable
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visible
@@ -57,8 +59,8 @@ abstract class ContextMenuBottomSheet<T : ViewModel> : BaseBottomSheetFragment<T
   override val layoutResId = R.layout.view_context_menu
   protected val view by lazy { viewBinding as ViewContextMenuBinding }
 
-  protected val itemId by lazy { requireArguments().getParcelable<IdTrakt>(ARG_ID)!! }
-  private val showPinButtons by lazy { requireArguments().getBoolean(ARG_LIST, false) }
+  protected val itemId by lazy { requireParcelable<IdTrakt>(ARG_ID) }
+  private val showPinButtons by lazy { requireBoolean(ARG_LIST) }
 
   private val cornerRadius by lazy { dimenToPx(R.dimen.mediaTileCorner).toFloat() }
   private val cornerBigRadius by lazy { dimenToPx(R.dimen.collectionItemCorner).toFloat() }

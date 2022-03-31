@@ -16,6 +16,9 @@ import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
 import com.michaldrabik.ui_base.common.FastLinearLayoutManager
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
+import com.michaldrabik.ui_base.utilities.extensions.requireLong
+import com.michaldrabik.ui_base.utilities.extensions.requireSerializable
+import com.michaldrabik.ui_base.utilities.extensions.requireString
 import com.michaldrabik.ui_base.utilities.extensions.screenHeight
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Person
@@ -50,10 +53,10 @@ class PeopleListBottomSheet : BaseBottomSheetFragment<PeopleListViewModel>() {
   override val layoutResId = R.layout.view_people_list
   private val view by lazy { viewBinding as ViewPeopleListBinding }
 
-  private val mediaIdTrakt by lazy { IdTrakt(requireArguments().getLong(ARG_ID)) }
-  private val mediaTitle by lazy { requireArguments().getString(ARG_TITLE)!! }
-  private val mode by lazy { Mode.fromType(requireArguments().getString(ARG_TYPE)!!) }
-  private val department by lazy { requireArguments().getSerializable(ARG_DEPARTMENT) as Person.Department }
+  private val mediaIdTrakt by lazy { IdTrakt(requireLong(ARG_ID)) }
+  private val mediaTitle by lazy { requireString(ARG_TITLE) }
+  private val mode by lazy { Mode.fromType(requireString(ARG_TYPE)) }
+  private val department by lazy { requireSerializable<Person.Department>(ARG_DEPARTMENT) }
 
   private var adapter: PeopleListAdapter? = null
   private var layoutManager: LinearLayoutManager? = null

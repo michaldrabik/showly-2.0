@@ -12,6 +12,8 @@ import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.ViewModel
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
 import com.michaldrabik.ui_base.R
+import com.michaldrabik.ui_base.utilities.extensions.requireLongArray
+import com.michaldrabik.ui_base.utilities.extensions.requireParcelable
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
@@ -29,8 +31,8 @@ abstract class RemoveTraktBottomSheet<T : ViewModel> : BaseBottomSheetFragment<T
     fun createBundle(itemId: IdTrakt, mode: Mode) = createBundle(listOf(itemId), mode)
   }
 
-  protected val itemIds: List<IdTrakt> by lazy { requireArguments().getLongArray(ARG_ID)!!.map { IdTrakt(it) } }
-  protected val itemType: Mode by lazy { requireArguments().getParcelable(ARG_TYPE)!! }
+  protected val itemIds: List<IdTrakt> by lazy { requireLongArray(ARG_ID).map { IdTrakt(it) } }
+  protected val itemType by lazy { requireParcelable<Mode>(ARG_TYPE) }
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 

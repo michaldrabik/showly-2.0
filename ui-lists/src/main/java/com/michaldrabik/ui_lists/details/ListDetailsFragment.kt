@@ -32,6 +32,7 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.requireParcelable
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_lists.R
 import com.michaldrabik.ui_lists.details.helpers.ListItemDragListener
@@ -71,7 +72,7 @@ class ListDetailsFragment :
 
   override val viewModel by viewModels<ListDetailsViewModel>()
 
-  private val list by lazy { requireArguments().getParcelable<CustomList>(ARG_LIST)!! }
+  private val list by lazy { requireParcelable<CustomList>(ARG_LIST) }
 
   private val recyclerPaddingBottom by lazy { requireContext().dimenToPx(R.dimen.spaceSmall) }
   private val recyclerPaddingTop by lazy { requireContext().dimenToPx(R.dimen.listDetailsRecyclerTopPadding) }

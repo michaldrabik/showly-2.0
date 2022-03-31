@@ -17,6 +17,7 @@ import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.requireParcelable
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visible
@@ -43,7 +44,7 @@ class RatingsBottomSheet : BaseBottomSheetFragment<RatingsSheetViewModel>() {
   override val layoutResId = R.layout.view_rate_sheet
   private val view by lazy { viewBinding as ViewRateSheetBinding }
 
-  private val options by lazy { (requireArguments().getParcelable<Options>(NavigationArgs.ARG_OPTIONS))!! }
+  private val options by lazy { requireParcelable<Options>(NavigationArgs.ARG_OPTIONS) }
   private val id by lazy { options.id }
   private val type by lazy { options.type }
 

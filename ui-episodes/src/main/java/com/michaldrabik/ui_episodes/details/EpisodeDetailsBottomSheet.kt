@@ -38,6 +38,10 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.optionalIntArray
+import com.michaldrabik.ui_base.utilities.extensions.requireBoolean
+import com.michaldrabik.ui_base.utilities.extensions.requireLong
+import com.michaldrabik.ui_base.utilities.extensions.requireParcelable
 import com.michaldrabik.ui_base.utilities.extensions.setTextFade
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
@@ -80,15 +84,15 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
     const val ARG_SHOW_TABS = "ARG_SHOW_TABS"
   }
 
-  private val showTraktId by lazy { IdTrakt(requireArguments().getLong(ARG_ID_TRAKT)) }
-  private val showTmdbId by lazy { IdTmdb(requireArguments().getLong(ARG_ID_TMDB)) }
-  private val episode by lazy { requireArguments().getParcelable<Episode>(ARG_EPISODE)!! }
-  private val seasonEpisodes by lazy { requireArguments().getIntArray(ARG_SEASON_EPISODES) }
-  private val isWatched by lazy { requireArguments().getBoolean(ARG_IS_WATCHED) }
-  private val showButton by lazy { requireArguments().getBoolean(ARG_SHOW_BUTTON) }
-  private val showTabs by lazy { requireArguments().getBoolean(ARG_SHOW_TABS) }
+  private val showTraktId by lazy { IdTrakt(requireLong(ARG_ID_TRAKT)) }
+  private val showTmdbId by lazy { IdTmdb(requireLong(ARG_ID_TMDB)) }
+  private val episode by lazy { requireParcelable<Episode>(ARG_EPISODE) }
+  private val seasonEpisodes by lazy { optionalIntArray(ARG_SEASON_EPISODES) }
+  private val isWatched by lazy { requireBoolean(ARG_IS_WATCHED) }
+  private val showButton by lazy { requireBoolean(ARG_SHOW_BUTTON) }
+  private val showTabs by lazy { requireBoolean(ARG_SHOW_TABS) }
 
-  private val cornerRadius by lazy { requireContext().dimenToPx(R.dimen.bottomSheetCorner).toFloat() }
+  private val cornerRadius by lazy { dimenToPx(R.dimen.bottomSheetCorner).toFloat() }
 
   override val layoutResId = R.layout.view_episode_details
   private val view by lazy { viewBinding as ViewEpisodeDetailsBinding }

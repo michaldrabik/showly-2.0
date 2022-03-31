@@ -62,6 +62,7 @@ import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
+import com.michaldrabik.ui_base.utilities.extensions.requireLong
 import com.michaldrabik.ui_base.utilities.extensions.screenHeight
 import com.michaldrabik.ui_base.utilities.extensions.screenWidth
 import com.michaldrabik.ui_base.utilities.extensions.setTextIfEmpty
@@ -136,7 +137,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   override val viewModel by viewModels<ShowDetailsViewModel>()
   override val navigationId = R.id.showDetailsFragment
 
-  private val showId by lazy { IdTrakt(requireArguments().getLong(ARG_SHOW_ID, -1)) }
+  private val showId by lazy { IdTrakt(requireLong(ARG_SHOW_ID)) }
 
   private var actorsAdapter: ActorsAdapter? = null
   private var relatedAdapter: RelatedShowAdapter? = null

@@ -17,6 +17,8 @@ import com.michaldrabik.ui_base.BaseBottomSheetFragment
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent.Type
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.requireLong
+import com.michaldrabik.ui_base.utilities.extensions.requireString
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
@@ -38,12 +40,12 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class PostCommentBottomSheet : BaseBottomSheetFragment<PostCommentViewModel>() {
 
-  private val showTraktId by lazy { IdTrakt(requireArguments().getLong(ARG_SHOW_ID)) }
-  private val movieTraktId by lazy { IdTrakt(requireArguments().getLong(ARG_MOVIE_ID)) }
-  private val episodeTraktId by lazy { IdTrakt(requireArguments().getLong(ARG_EPISODE_ID)) }
+  private val showTraktId by lazy { IdTrakt(requireLong(ARG_SHOW_ID)) }
+  private val movieTraktId by lazy { IdTrakt(requireLong(ARG_MOVIE_ID)) }
+  private val episodeTraktId by lazy { IdTrakt(requireLong(ARG_EPISODE_ID)) }
 
-  private val replyCommentId by lazy { IdTrakt(requireArguments().getLong(ARG_COMMENT_ID)) }
-  private val replyUser by lazy { requireArguments().getString(ARG_REPLY_USER, "") }
+  private val replyCommentId by lazy { IdTrakt(requireLong(ARG_COMMENT_ID)) }
+  private val replyUser by lazy { requireString(ARG_REPLY_USER, default = "") }
 
   override val layoutResId = R.layout.view_post_comment
   private val view by lazy { viewBinding as ViewPostCommentBinding }

@@ -24,6 +24,7 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.requireParcelable
 import com.michaldrabik.ui_base.utilities.extensions.screenHeight
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
@@ -59,8 +60,8 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>
   override val layoutResId = R.layout.view_person_details
   private val view by lazy { viewBinding as ViewPersonDetailsBinding }
 
-  private val person by lazy { requireArguments().getParcelable<Person>(ARG_PERSON) as Person }
-  private val sourceId by lazy { requireArguments().getParcelable<IdTrakt>(ARG_ID) as IdTrakt }
+  private val person by lazy { requireParcelable<Person>(ARG_PERSON) }
+  private val sourceId by lazy { requireParcelable<IdTrakt>(ARG_ID) }
 
   private var adapter: PersonDetailsAdapter? = null
   private var layoutManager: LinearLayoutManager? = null

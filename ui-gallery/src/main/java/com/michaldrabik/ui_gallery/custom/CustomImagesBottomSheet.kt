@@ -18,6 +18,7 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.requireLong
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
@@ -43,8 +44,8 @@ import kotlinx.coroutines.flow.collect
 class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>() {
 
   private val family by lazy { arguments?.getSerializable(ARG_FAMILY) as ImageFamily }
-  private val showTraktId by lazy { IdTrakt(requireArguments().getLong(ARG_SHOW_ID)) }
-  private val movieTraktId by lazy { IdTrakt(requireArguments().getLong(ARG_MOVIE_ID)) }
+  private val showTraktId by lazy { IdTrakt(requireLong(ARG_SHOW_ID)) }
+  private val movieTraktId by lazy { IdTrakt(requireLong(ARG_MOVIE_ID)) }
 
   private val cornerRadius by lazy { requireContext().dimenToPx(R.dimen.customImagesCorner) }
 

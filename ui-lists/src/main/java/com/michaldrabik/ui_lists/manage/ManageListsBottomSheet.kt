@@ -23,6 +23,8 @@ import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.TraktQuickSyncSuccess
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.requireLong
+import com.michaldrabik.ui_base.utilities.extensions.requireString
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_lists.R
@@ -46,8 +48,8 @@ class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>() {
   override val layoutResId = R.layout.view_manage_lists
   private val view by lazy { viewBinding as ViewManageListsBinding }
 
-  private val itemId by lazy { IdTrakt(requireArguments().getLong(ARG_ID, -1)) }
-  private val itemType by lazy { requireArguments().getString(ARG_TYPE)!! }
+  private val itemId by lazy { IdTrakt(requireLong(ARG_ID)) }
+  private val itemType by lazy { requireString(ARG_TYPE) }
 
   private var adapter: ManageListsAdapter? = null
   private var layoutManager: LinearLayoutManager? = null

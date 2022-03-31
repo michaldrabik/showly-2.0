@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
+import com.michaldrabik.ui_base.utilities.extensions.requireParcelable
 import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_navigation.java.NavigationArgs
@@ -42,7 +43,7 @@ class PersonLinksBottomSheet : BaseBottomSheetFragment<PersonLinksViewModel>() {
   override val layoutResId = R.layout.view_person_links
   private val view by lazy { viewBinding as ViewPersonLinksBinding }
 
-  private val options by lazy { (requireArguments().getParcelable<Options>(NavigationArgs.ARG_OPTIONS))!! }
+  private val options by lazy { requireParcelable<Options>(NavigationArgs.ARG_OPTIONS) }
   private val ids by lazy { options.ids }
   private val name by lazy { options.name }
   private val website by lazy { options.website }

@@ -59,6 +59,7 @@ import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
+import com.michaldrabik.ui_base.utilities.extensions.requireLong
 import com.michaldrabik.ui_base.utilities.extensions.screenHeight
 import com.michaldrabik.ui_base.utilities.extensions.screenWidth
 import com.michaldrabik.ui_base.utilities.extensions.setTextIfEmpty
@@ -126,7 +127,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   override val viewModel by viewModels<MovieDetailsViewModel>()
   override val navigationId = R.id.movieDetailsFragment
 
-  private val movieId by lazy { IdTrakt(requireArguments().getLong(ARG_MOVIE_ID, -1)) }
+  private val movieId by lazy { IdTrakt(requireLong(ARG_MOVIE_ID)) }
 
   private var actorsAdapter: ActorsAdapter? = null
   private var streamingAdapter: StreamingAdapter? = null

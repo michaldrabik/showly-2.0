@@ -15,6 +15,9 @@ import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.sheets.sort_order.views.SortOrderItemView
 import com.michaldrabik.ui_base.databinding.ViewSortOrderBinding
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.requireSerializable
+import com.michaldrabik.ui_base.utilities.extensions.requireString
+import com.michaldrabik.ui_base.utilities.extensions.requireStringArray
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_REQUEST_KEY
@@ -44,13 +47,10 @@ class SortOrderBottomSheet : BaseBottomSheetFragment<SortOrderViewModel>() {
   override val layoutResId = R.layout.view_sort_order
   private val view by lazy { viewBinding as ViewSortOrderBinding }
 
-  private val requestKey by lazy { requireArguments().getString(ARG_REQUEST_KEY) ?: REQUEST_SORT_ORDER }
-  private val initialSortOrder by lazy { requireArguments().getSerializable(ARG_SELECTED_SORT_ORDER) as SortOrder }
-  private val initialSortType by lazy { requireArguments().getSerializable(ARG_SELECTED_SORT_TYPE) as SortType }
-  private val initialOptions by lazy {
-    val items = requireArguments().getStringArrayList(ARG_SORT_ORDERS)
-    items?.map { SortOrder.valueOf(it) } ?: throw IllegalStateException()
-  }
+  private val requestKey by lazy { requireString(ARG_REQUEST_KEY, default = REQUEST_SORT_ORDER) }
+  private val initialSortOrder by lazy { requireSerializable<SortOrder>(ARG_SELECTED_SORT_ORDER) }
+  private val initialSortType by lazy { requireSerializable<SortType>(ARG_SELECTED_SORT_TYPE) }
+  private val initialOptions by lazy { requireStringArray(ARG_SORT_ORDERS).map { SortOrder.valueOf(it) } }
 
   private lateinit var selectedSortOrder: SortOrder
   private lateinit var selectedSortType: SortType

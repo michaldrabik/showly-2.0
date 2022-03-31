@@ -12,6 +12,7 @@ import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.nextPage
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
+import com.michaldrabik.ui_base.utilities.extensions.requireParcelable
 import com.michaldrabik.ui_base.utilities.extensions.updateTopMargin
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.IdTmdb
@@ -34,7 +35,7 @@ class PersonGalleryFragment : BaseFragment<PersonGalleryViewModel>(R.layout.frag
 
   override val viewModel by viewModels<PersonGalleryViewModel>()
 
-  private val personId by lazy { requireArguments().getParcelable<IdTmdb>(ARG_ID) as IdTmdb }
+  private val personId by lazy { requireParcelable<IdTmdb>(ARG_ID) }
 
   private var galleryAdapter: PersonGalleryAdapter? = null
 
