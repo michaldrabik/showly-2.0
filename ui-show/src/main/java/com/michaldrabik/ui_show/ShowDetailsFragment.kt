@@ -225,7 +225,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       showSnack(MessageEvent.info(R.string.textCopiedToClipboard))
     }
     showDetailsPremiumAd.onClick {
-      navigateTo(R.id.actionShowDetailsFragmentToPremium)
+      navigateToSafe(R.id.actionShowDetailsFragmentToPremium)
     }
   }
 
@@ -262,7 +262,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       itemClickListener = {
         if (findNavControl()?.currentDestination?.id == R.id.showDetailsFragment) {
           val bundle = Bundle().apply { putLong(ARG_SHOW_ID, it.show.traktId) }
-          navigateTo(R.id.actionShowDetailsFragmentToSelf, bundle)
+          navigateToSafe(R.id.actionShowDetailsFragmentToSelf, bundle)
         }
       },
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
@@ -394,7 +394,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         showDetailsCustomImagesLabel.onClick { openCustomImagesSheet(show.traktId, isPremium) }
         showDetailsLinksButton.onClick {
           val args = LinksBottomSheet.createBundle(show)
-          navigateTo(R.id.actionShowDetailsFragmentToLinks, args)
+          navigateToSafe(R.id.actionShowDetailsFragmentToLinks, args)
         }
         showDetailsAddButton.isEnabled = true
         separator4.visible()
@@ -728,7 +728,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       )
       else -> bundleOf(ARG_SHOW_ID to showId.id)
     }
-    navigateTo(R.id.actionShowDetailsFragmentToPostComment, bundle)
+    navigateToSafe(R.id.actionShowDetailsFragmentToPostComment, bundle)
   }
 
   private fun openPersonSheet(person: Person) {
@@ -764,7 +764,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       }
     }
     val args = RemoveTraktBottomSheet.createBundle(event.traktIds, event.mode)
-    navigateTo(event.actionId, args)
+    navigateToSafe(event.actionId, args)
   }
 
   private fun openShareSheet(show: Show) {
@@ -846,7 +846,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private fun openCustomImagesSheet(showId: Long, isPremium: Boolean?) {
     if (isPremium == false) {
-      navigateTo(R.id.actionShowDetailsFragmentToPremium)
+      navigateToSafe(R.id.actionShowDetailsFragmentToPremium)
       return
     }
 
