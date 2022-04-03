@@ -7,13 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.repository.EpisodesManager
 import com.michaldrabik.repository.UserTraktManager
+import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet
 import com.michaldrabik.ui_base.dates.DateFormatProvider
-import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.ui_base.utilities.MessageEvent
@@ -78,27 +78,27 @@ import kotlin.properties.Delegates.notNull
 @SuppressLint("StaticFieldLeak")
 @HiltViewModel
 class ShowDetailsViewModel @Inject constructor(
-    @ApplicationContext private val context: Context,
-    private val mainCase: ShowDetailsMainCase,
-    private val actorsCase: ShowDetailsActorsCase,
-    private val translationCase: ShowDetailsTranslationCase,
-    private val ratingsCase: ShowDetailsRatingCase,
-    private val watchlistCase: ShowDetailsWatchlistCase,
-    private val hiddenCase: ShowDetailsHiddenCase,
-    private val myShowsCase: ShowDetailsMyShowsCase,
-    private val episodesCase: ShowDetailsEpisodesCase,
-    private val commentsCase: ShowDetailsCommentsCase,
-    private val listsCase: ShowDetailsListsCase,
-    private val streamingsCase: ShowDetailsStreamingCase,
-    private val relatedShowsCase: ShowDetailsRelatedShowsCase,
-    private val quickProgressCase: ShowDetailsQuickProgressCase,
-    private val settingsRepository: SettingsRepository,
-    private val userManager: UserTraktManager,
-    private val episodesManager: EpisodesManager,
-    private val quickSyncManager: QuickSyncManager,
-    private val announcementManager: AnnouncementManager,
-    private val imagesProvider: ShowImagesProvider,
-    private val dateFormatProvider: DateFormatProvider,
+  @ApplicationContext private val context: Context,
+  private val mainCase: ShowDetailsMainCase,
+  private val actorsCase: ShowDetailsActorsCase,
+  private val translationCase: ShowDetailsTranslationCase,
+  private val ratingsCase: ShowDetailsRatingCase,
+  private val watchlistCase: ShowDetailsWatchlistCase,
+  private val hiddenCase: ShowDetailsHiddenCase,
+  private val myShowsCase: ShowDetailsMyShowsCase,
+  private val episodesCase: ShowDetailsEpisodesCase,
+  private val commentsCase: ShowDetailsCommentsCase,
+  private val listsCase: ShowDetailsListsCase,
+  private val streamingsCase: ShowDetailsStreamingCase,
+  private val relatedShowsCase: ShowDetailsRelatedShowsCase,
+  private val quickProgressCase: ShowDetailsQuickProgressCase,
+  private val settingsRepository: SettingsRepository,
+  private val userManager: UserTraktManager,
+  private val episodesManager: EpisodesManager,
+  private val quickSyncManager: QuickSyncManager,
+  private val announcementManager: AnnouncementManager,
+  private val imagesProvider: ShowImagesProvider,
+  private val dateFormatProvider: DateFormatProvider,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val showState = MutableStateFlow<Show?>(null)

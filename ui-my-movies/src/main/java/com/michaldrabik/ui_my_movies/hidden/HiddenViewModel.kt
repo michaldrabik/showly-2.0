@@ -3,12 +3,12 @@ package com.michaldrabik.ui_my_movies.hidden
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
+import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.ReloadData
 import com.michaldrabik.ui_base.events.TraktSyncError
 import com.michaldrabik.ui_base.events.TraktSyncSuccess
-import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
@@ -33,11 +33,11 @@ import com.michaldrabik.ui_base.events.Event as EventSync
 
 @HiltViewModel
 class HiddenViewModel @Inject constructor(
-  private val sortOrderCase: HiddenSortOrderCase,
-  private val loadMoviesCase: HiddenLoadMoviesCase,
-  private val ratingsCase: HiddenRatingsCase,
-  private val imagesProvider: MovieImagesProvider,
-  private val eventsManager: EventsManager,
+    private val sortOrderCase: HiddenSortOrderCase,
+    private val loadMoviesCase: HiddenLoadMoviesCase,
+    private val ratingsCase: HiddenRatingsCase,
+    private val imagesProvider: MovieImagesProvider,
+    private val eventsManager: EventsManager,
 ) : ViewModel() {
 
   private var loadItemsJob: Job? = null

@@ -12,11 +12,11 @@ import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.data_remote.trakt.model.SyncItem
 import com.michaldrabik.repository.TraktAuthToken
 import com.michaldrabik.repository.UserTraktManager
+import com.michaldrabik.repository.images.MovieImagesProvider
+import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.Logger
-import com.michaldrabik.ui_base.images.MovieImagesProvider
-import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.trakt.TraktSyncRunner
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.ImageType.FANART

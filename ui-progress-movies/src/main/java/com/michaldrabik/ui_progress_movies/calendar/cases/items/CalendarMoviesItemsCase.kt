@@ -4,9 +4,9 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.repository.TranslationsRepository
+import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
-import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_progress_movies.calendar.helpers.filters.CalendarFilter
@@ -19,10 +19,10 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
 
 abstract class CalendarMoviesItemsCase constructor(
-  private val moviesRepository: MoviesRepository,
-  private val translationsRepository: TranslationsRepository,
-  private val imagesProvider: MovieImagesProvider,
-  private val dateFormatProvider: DateFormatProvider,
+    private val moviesRepository: MoviesRepository,
+    private val translationsRepository: TranslationsRepository,
+    private val imagesProvider: MovieImagesProvider,
+    private val dateFormatProvider: DateFormatProvider,
 ) {
 
   abstract val filter: CalendarFilter

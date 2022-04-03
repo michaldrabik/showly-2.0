@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.CalendarMode
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.TranslationsRepository
+import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.ui_base.Logger
-import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
@@ -31,11 +31,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CalendarViewModel @Inject constructor(
-  private val recentsCase: CalendarRecentsCase,
-  private val futureCase: CalendarFutureCase,
-  private val ratingsCase: CalendarRatingsCase,
-  private val imagesProvider: ShowImagesProvider,
-  private val translationsRepository: TranslationsRepository,
+    private val recentsCase: CalendarRecentsCase,
+    private val futureCase: CalendarFutureCase,
+    private val ratingsCase: CalendarRatingsCase,
+    private val imagesProvider: ShowImagesProvider,
+    private val translationsRepository: TranslationsRepository,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private var loadItemsJob: Job? = null

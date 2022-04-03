@@ -3,12 +3,12 @@ package com.michaldrabik.ui_my_shows.watchlist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
+import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.ReloadData
 import com.michaldrabik.ui_base.events.TraktSyncError
 import com.michaldrabik.ui_base.events.TraktSyncSuccess
-import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
@@ -34,11 +34,11 @@ import com.michaldrabik.ui_base.events.Event as EventSync
 
 @HiltViewModel
 class WatchlistViewModel @Inject constructor(
-  private val sortOrderCase: WatchlistSortOrderCase,
-  private val loadShowsCase: WatchlistLoadShowsCase,
-  private val ratingsCase: WatchlistRatingsCase,
-  private val imagesProvider: ShowImagesProvider,
-  private val eventsManager: EventsManager,
+    private val sortOrderCase: WatchlistSortOrderCase,
+    private val loadShowsCase: WatchlistLoadShowsCase,
+    private val ratingsCase: WatchlistRatingsCase,
+    private val imagesProvider: ShowImagesProvider,
+    private val eventsManager: EventsManager,
 ) : ViewModel() {
 
   private var loadItemsJob: Job? = null

@@ -6,13 +6,13 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.ConfigVariant
 import com.michaldrabik.common.Mode
+import com.michaldrabik.repository.images.MovieImagesProvider
+import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.dates.AppDateFormat
 import com.michaldrabik.ui_base.fcm.NotificationChannel
-import com.michaldrabik.ui_base.images.MovieImagesProvider
-import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_model.MyMoviesSection
 import com.michaldrabik.ui_model.MyShowsSection

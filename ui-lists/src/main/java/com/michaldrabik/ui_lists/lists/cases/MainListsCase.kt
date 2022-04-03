@@ -5,11 +5,11 @@ import com.michaldrabik.common.Mode.SHOWS
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.CustomListItem
 import com.michaldrabik.repository.ListsRepository
+import com.michaldrabik.repository.images.MovieImagesProvider
+import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
-import com.michaldrabik.ui_base.images.MovieImagesProvider
-import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_lists.lists.helpers.ListsItemImage
 import com.michaldrabik.ui_lists.lists.helpers.ListsSorter
 import com.michaldrabik.ui_lists.lists.recycler.ListsItem

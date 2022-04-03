@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_base.images
+package com.michaldrabik.repository.images
 
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_remote.RemoteDataSource

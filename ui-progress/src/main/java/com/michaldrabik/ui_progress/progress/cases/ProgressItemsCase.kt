@@ -7,11 +7,11 @@ import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.repository.OnHoldItemsRepository
 import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.TranslationsRepository
+import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
-import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.ProgressType
@@ -33,16 +33,16 @@ import com.michaldrabik.ui_model.Episode.Companion as EpisodeUi
 @Suppress("UNCHECKED_CAST")
 @Singleton
 class ProgressItemsCase @Inject constructor(
-  private val localSource: LocalDataSource,
-  private val mappers: Mappers,
-  private val sorter: ProgressItemsSorter,
-  private val showsRepository: ShowsRepository,
-  private val translationsRepository: TranslationsRepository,
-  private val settingsRepository: SettingsRepository,
-  private val imagesProvider: ShowImagesProvider,
-  private val pinnedItemsRepository: PinnedItemsRepository,
-  private val onHoldItemsRepository: OnHoldItemsRepository,
-  private val dateFormatProvider: DateFormatProvider,
+    private val localSource: LocalDataSource,
+    private val mappers: Mappers,
+    private val sorter: ProgressItemsSorter,
+    private val showsRepository: ShowsRepository,
+    private val translationsRepository: TranslationsRepository,
+    private val settingsRepository: SettingsRepository,
+    private val imagesProvider: ShowImagesProvider,
+    private val pinnedItemsRepository: PinnedItemsRepository,
+    private val onHoldItemsRepository: OnHoldItemsRepository,
+    private val dateFormatProvider: DateFormatProvider,
 ) {
 
   companion object {

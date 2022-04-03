@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_base.images
+package com.michaldrabik.repository.images
 
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtc

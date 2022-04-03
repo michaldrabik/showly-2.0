@@ -7,10 +7,10 @@ import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.Episode
 import com.michaldrabik.data_local.database.model.Season
 import com.michaldrabik.repository.TranslationsRepository
+import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
-import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_progress.calendar.helpers.filters.CalendarFilter
 import com.michaldrabik.ui_progress.calendar.helpers.groupers.CalendarGrouper
@@ -23,12 +23,12 @@ import kotlinx.coroutines.withContext
 
 @Suppress("UNCHECKED_CAST")
 abstract class CalendarItemsCase constructor(
-  private val localSource: LocalDataSource,
-  private val mappers: Mappers,
-  private val showsRepository: ShowsRepository,
-  private val translationsRepository: TranslationsRepository,
-  private val imagesProvider: ShowImagesProvider,
-  private val dateFormatProvider: DateFormatProvider,
+    private val localSource: LocalDataSource,
+    private val mappers: Mappers,
+    private val showsRepository: ShowsRepository,
+    private val translationsRepository: TranslationsRepository,
+    private val imagesProvider: ShowImagesProvider,
+    private val dateFormatProvider: DateFormatProvider,
 ) {
 
   abstract val filter: CalendarFilter

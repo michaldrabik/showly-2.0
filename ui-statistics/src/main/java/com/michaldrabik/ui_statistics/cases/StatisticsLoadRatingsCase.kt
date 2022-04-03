@@ -2,8 +2,8 @@ package com.michaldrabik.ui_statistics.cases
 
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.UserTraktManager
+import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.repository.shows.ShowsRepository
-import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_statistics.views.ratings.recycler.StatisticsRatingItem
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -11,10 +11,10 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class StatisticsLoadRatingsCase @Inject constructor(
-  private val userTraktManager: UserTraktManager,
-  private val showsRepository: ShowsRepository,
-  private val ratingsRepository: RatingsRepository,
-  private val imagesProvider: ShowImagesProvider,
+    private val userTraktManager: UserTraktManager,
+    private val showsRepository: ShowsRepository,
+    private val ratingsRepository: RatingsRepository,
+    private val imagesProvider: ShowImagesProvider,
 ) {
 
   companion object {

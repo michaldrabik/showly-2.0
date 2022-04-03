@@ -14,12 +14,12 @@ import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.Episode
 import com.michaldrabik.data_local.database.model.Show
 import com.michaldrabik.repository.TranslationsRepository
+import com.michaldrabik.repository.images.MovieImagesProvider
+import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.fcm.NotificationChannel
-import com.michaldrabik.ui_base.images.MovieImagesProvider
-import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementWorker.Companion.DATA_CHANNEL
 import com.michaldrabik.ui_base.notifications.AnnouncementWorker.Companion.DATA_CONTENT
 import com.michaldrabik.ui_base.notifications.AnnouncementWorker.Companion.DATA_IMAGE_URL

@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_people.details.cases
 
-import com.michaldrabik.ui_base.images.MovieImagesProvider
-import com.michaldrabik.ui_base.images.ShowImagesProvider
+import com.michaldrabik.repository.images.MovieImagesProvider
+import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_people.details.recycler.PersonDetailsItem
 import dagger.hilt.android.scopes.ViewModelScoped

@@ -2,10 +2,10 @@ package com.michaldrabik.ui_my_movies.hidden.cases
 
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.TranslationsRepository
+import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
-import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Translation
@@ -19,12 +19,12 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class HiddenLoadMoviesCase @Inject constructor(
-  private val sorter: FollowedMoviesItemSorter,
-  private val moviesRepository: MoviesRepository,
-  private val translationsRepository: TranslationsRepository,
-  private val imagesProvider: MovieImagesProvider,
-  private val dateFormatProvider: DateFormatProvider,
-  private val settingsRepository: SettingsRepository
+    private val sorter: FollowedMoviesItemSorter,
+    private val moviesRepository: MoviesRepository,
+    private val translationsRepository: TranslationsRepository,
+    private val imagesProvider: MovieImagesProvider,
+    private val dateFormatProvider: DateFormatProvider,
+    private val settingsRepository: SettingsRepository
 ) {
 
   val language by lazy { translationsRepository.getLanguage() }

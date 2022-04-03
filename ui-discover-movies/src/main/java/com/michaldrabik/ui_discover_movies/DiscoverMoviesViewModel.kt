@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.ui_base.images.MovieImagesProvider
+import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.ui_base.trakt.TraktSyncStatusProvider
 import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
@@ -35,10 +35,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DiscoverMoviesViewModel @Inject constructor(
-  private val moviesCase: DiscoverMoviesCase,
-  private val filtersCase: DiscoverFiltersCase,
-  private val imagesProvider: MovieImagesProvider,
-  private val syncStatusProvider: TraktSyncStatusProvider,
+    private val moviesCase: DiscoverMoviesCase,
+    private val filtersCase: DiscoverFiltersCase,
+    private val imagesProvider: MovieImagesProvider,
+    private val syncStatusProvider: TraktSyncStatusProvider,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val itemsState = MutableStateFlow<List<DiscoverMovieListItem>?>(null)

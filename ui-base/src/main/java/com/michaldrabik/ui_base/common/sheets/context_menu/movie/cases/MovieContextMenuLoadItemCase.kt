@@ -3,11 +3,11 @@ package com.michaldrabik.ui_base.common.sheets.context_menu.movie.cases
 import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.TranslationsRepository
+import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.common.sheets.context_menu.movie.helpers.MovieContextItem
 import com.michaldrabik.ui_base.dates.DateFormatProvider
-import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.ImageType
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -18,13 +18,13 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class MovieContextMenuLoadItemCase @Inject constructor(
-  private val moviesRepository: MoviesRepository,
-  private val pinnedItemsRepository: PinnedItemsRepository,
-  private val imagesProvider: MovieImagesProvider,
-  private val translationsRepository: TranslationsRepository,
-  private val ratingsRepository: RatingsRepository,
-  private val settingsRepository: SettingsRepository,
-  private val dateFormatProvider: DateFormatProvider,
+    private val moviesRepository: MoviesRepository,
+    private val pinnedItemsRepository: PinnedItemsRepository,
+    private val imagesProvider: MovieImagesProvider,
+    private val translationsRepository: TranslationsRepository,
+    private val ratingsRepository: RatingsRepository,
+    private val settingsRepository: SettingsRepository,
+    private val dateFormatProvider: DateFormatProvider,
 ) {
 
   private val language by lazy { settingsRepository.language }

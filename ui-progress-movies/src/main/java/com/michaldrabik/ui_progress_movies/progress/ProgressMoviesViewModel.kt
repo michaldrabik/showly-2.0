@@ -6,10 +6,10 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.UserTraktManager
+import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.Logger
-import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
@@ -38,14 +38,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProgressMoviesViewModel @Inject constructor(
-  private val itemsCase: ProgressMoviesItemsCase,
-  private val sortCase: ProgressMoviesSortCase,
-  private val pinnedCase: ProgressMoviesPinnedCase,
-  private val imagesProvider: MovieImagesProvider,
-  private val userTraktManager: UserTraktManager,
-  private val ratingsRepository: RatingsRepository,
-  private val settingsRepository: SettingsRepository,
-  private val translationsRepository: TranslationsRepository,
+    private val itemsCase: ProgressMoviesItemsCase,
+    private val sortCase: ProgressMoviesSortCase,
+    private val pinnedCase: ProgressMoviesPinnedCase,
+    private val imagesProvider: MovieImagesProvider,
+    private val userTraktManager: UserTraktManager,
+    private val ratingsRepository: RatingsRepository,
+    private val settingsRepository: SettingsRepository,
+    private val translationsRepository: TranslationsRepository,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private var loadItemsJob: Job? = null

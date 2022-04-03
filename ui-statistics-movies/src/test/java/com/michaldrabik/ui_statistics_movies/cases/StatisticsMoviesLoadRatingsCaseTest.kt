@@ -5,8 +5,8 @@ import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.TraktAuthToken
 import com.michaldrabik.repository.UserTraktManager
+import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.movies.MoviesRepository
-import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Image

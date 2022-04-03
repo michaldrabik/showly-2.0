@@ -3,12 +3,12 @@ package com.michaldrabik.ui_movie
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.repository.UserTraktManager
+import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.dates.DateFormatProvider
-import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
@@ -58,22 +58,22 @@ import kotlin.properties.Delegates.notNull
 
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor(
-  private val mainCase: MovieDetailsMainCase,
-  private val relatedCase: MovieDetailsRelatedCase,
-  private val actorsCase: MovieDetailsActorsCase,
-  private val commentsCase: MovieDetailsCommentsCase,
-  private val translationCase: MovieDetailsTranslationCase,
-  private val ratingsCase: MovieDetailsRatingCase,
-  private val myMoviesCase: MovieDetailsMyMoviesCase,
-  private val watchlistCase: MovieDetailsWatchlistCase,
-  private val hiddenCase: MovieDetailsHiddenCase,
-  private val listsCase: MovieDetailsListsCase,
-  private val streamingCase: MovieDetailsStreamingCase,
-  private val settingsRepository: SettingsRepository,
-  private val userManager: UserTraktManager,
-  private val imagesProvider: MovieImagesProvider,
-  private val dateFormatProvider: DateFormatProvider,
-  private val announcementManager: AnnouncementManager,
+    private val mainCase: MovieDetailsMainCase,
+    private val relatedCase: MovieDetailsRelatedCase,
+    private val actorsCase: MovieDetailsActorsCase,
+    private val commentsCase: MovieDetailsCommentsCase,
+    private val translationCase: MovieDetailsTranslationCase,
+    private val ratingsCase: MovieDetailsRatingCase,
+    private val myMoviesCase: MovieDetailsMyMoviesCase,
+    private val watchlistCase: MovieDetailsWatchlistCase,
+    private val hiddenCase: MovieDetailsHiddenCase,
+    private val listsCase: MovieDetailsListsCase,
+    private val streamingCase: MovieDetailsStreamingCase,
+    private val settingsRepository: SettingsRepository,
+    private val userManager: UserTraktManager,
+    private val imagesProvider: MovieImagesProvider,
+    private val dateFormatProvider: DateFormatProvider,
+    private val announcementManager: AnnouncementManager,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val movieState = MutableStateFlow<Movie?>(null)

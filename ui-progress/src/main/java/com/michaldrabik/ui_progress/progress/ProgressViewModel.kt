@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.UserTraktManager
+import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.ui_base.Logger
-import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
@@ -34,13 +34,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProgressViewModel @Inject constructor(
-  private val itemsCase: ProgressItemsCase,
-  private val headersCase: ProgressHeadersCase,
-  private val sortOrderCase: ProgressSortOrderCase,
-  private val ratingsCase: ProgressRatingsCase,
-  private val imagesProvider: ShowImagesProvider,
-  private val userTraktManager: UserTraktManager,
-  private val translationsRepository: TranslationsRepository,
+    private val itemsCase: ProgressItemsCase,
+    private val headersCase: ProgressHeadersCase,
+    private val sortOrderCase: ProgressSortOrderCase,
+    private val ratingsCase: ProgressRatingsCase,
+    private val imagesProvider: ShowImagesProvider,
+    private val userTraktManager: UserTraktManager,
+    private val translationsRepository: TranslationsRepository,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private var loadItemsJob: Job? = null

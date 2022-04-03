@@ -1,6 +1,6 @@
 package com.michaldrabik.ui_people.gallery.cases
 
-import com.michaldrabik.ui_base.images.PeopleImagesProvider
+import com.michaldrabik.repository.images.PeopleImagesProvider
 import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.Image
 import dagger.hilt.android.scopes.ViewModelScoped

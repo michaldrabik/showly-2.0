@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_base.images
+package com.michaldrabik.repository.images
 
 import com.michaldrabik.common.Mode
 import com.michaldrabik.data_local.LocalDataSource

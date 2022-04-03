@@ -3,10 +3,10 @@ package com.michaldrabik.ui_progress_movies.progress.cases
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.TranslationsRepository
+import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
-import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_progress_movies.helpers.ProgressMoviesItemsSorter
@@ -21,13 +21,13 @@ import javax.inject.Singleton
 @Suppress("UNCHECKED_CAST")
 @Singleton
 class ProgressMoviesItemsCase @Inject constructor(
-  private val sorter: ProgressMoviesItemsSorter,
-  private val moviesRepository: MoviesRepository,
-  private val translationsRepository: TranslationsRepository,
-  private val settingsRepository: SettingsRepository,
-  private val imagesProvider: MovieImagesProvider,
-  private val pinnedItemsRepository: PinnedItemsRepository,
-  private val dateFormatProvider: DateFormatProvider,
+    private val sorter: ProgressMoviesItemsSorter,
+    private val moviesRepository: MoviesRepository,
+    private val translationsRepository: TranslationsRepository,
+    private val settingsRepository: SettingsRepository,
+    private val imagesProvider: MovieImagesProvider,
+    private val pinnedItemsRepository: PinnedItemsRepository,
+    private val dateFormatProvider: DateFormatProvider,
 ) {
 
   suspend fun loadItems(searchQuery: String) = withContext(Dispatchers.Default) {

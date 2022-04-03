@@ -1,7 +1,7 @@
 package com.michaldrabik.showly2.ui.main.cases
 
-import com.michaldrabik.ui_base.images.MovieImagesProvider
-import com.michaldrabik.ui_base.images.ShowImagesProvider
+import com.michaldrabik.repository.images.MovieImagesProvider
+import com.michaldrabik.repository.images.ShowImagesProvider
 import dagger.hilt.android.scopes.ViewModelScoped
 import timber.log.Timber
 import javax.inject.Inject

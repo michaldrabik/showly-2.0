@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.CalendarMode
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.TranslationsRepository
+import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.ui_base.Logger
-import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
@@ -26,11 +26,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CalendarMoviesViewModel @Inject constructor(
-  private val recentsCase: CalendarMoviesRecentsCase,
-  private val futureCase: CalendarMoviesFutureCase,
-  private val ratingsCase: CalendarMoviesRatingsCase,
-  private val imagesProvider: MovieImagesProvider,
-  private val translationsRepository: TranslationsRepository,
+    private val recentsCase: CalendarMoviesRecentsCase,
+    private val futureCase: CalendarMoviesFutureCase,
+    private val ratingsCase: CalendarMoviesRatingsCase,
+    private val imagesProvider: MovieImagesProvider,
+    private val translationsRepository: TranslationsRepository,
 ) : ViewModel() {
 
   private var loadItemsJob: Job? = null

@@ -3,10 +3,10 @@ package com.michaldrabik.ui_discover_movies.cases
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.ConfigVariant
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
+import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.movies.MoviesRepository
-import com.michaldrabik.ui_base.images.MovieImagesProvider
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_discover_movies.recycler.DiscoverMovieListItem
 import com.michaldrabik.ui_model.DiscoverFilters
 import com.michaldrabik.ui_model.DiscoverSortOrder
@@ -28,10 +28,10 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class DiscoverMoviesCase @Inject constructor(
-  private val moviesRepository: MoviesRepository,
-  private val imagesProvider: MovieImagesProvider,
-  private val translationsRepository: TranslationsRepository,
-  private val settingsRepository: SettingsRepository
+    private val moviesRepository: MoviesRepository,
+    private val imagesProvider: MovieImagesProvider,
+    private val translationsRepository: TranslationsRepository,
+    private val settingsRepository: SettingsRepository
 ) {
 
   companion object {

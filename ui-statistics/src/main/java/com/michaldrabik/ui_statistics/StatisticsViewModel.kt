@@ -7,9 +7,9 @@ import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.Episode
 import com.michaldrabik.data_local.database.model.Season
 import com.michaldrabik.repository.TranslationsRepository
+import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.shows.ShowsRepository
-import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_model.Genre
@@ -30,12 +30,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StatisticsViewModel @Inject constructor(
-  private val ratingsCase: StatisticsLoadRatingsCase,
-  private val showsRepository: ShowsRepository,
-  private val translationsRepository: TranslationsRepository,
-  private val imagesProvider: ShowImagesProvider,
-  private val localSource: LocalDataSource,
-  private val mappers: Mappers,
+    private val ratingsCase: StatisticsLoadRatingsCase,
+    private val showsRepository: ShowsRepository,
+    private val translationsRepository: TranslationsRepository,
+    private val imagesProvider: ShowImagesProvider,
+    private val localSource: LocalDataSource,
+    private val mappers: Mappers,
 ) : ViewModel() {
 
   private val mostWatchedShowsState = MutableStateFlow<List<StatisticsMostWatchedItem>?>(null)

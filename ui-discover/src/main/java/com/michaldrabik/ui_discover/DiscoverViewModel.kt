@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.ui_base.images.ShowImagesProvider
+import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.ui_base.trakt.TraktSyncStatusProvider
 import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
@@ -36,11 +36,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DiscoverViewModel @Inject constructor(
-  private val showsCase: DiscoverShowsCase,
-  private val filtersCase: DiscoverFiltersCase,
-  private val twitterCase: DiscoverTwitterCase,
-  private val imagesProvider: ShowImagesProvider,
-  private val syncStatusProvider: TraktSyncStatusProvider,
+    private val showsCase: DiscoverShowsCase,
+    private val filtersCase: DiscoverFiltersCase,
+    private val twitterCase: DiscoverTwitterCase,
+    private val imagesProvider: ShowImagesProvider,
+    private val syncStatusProvider: TraktSyncStatusProvider,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val itemsState = MutableStateFlow<List<DiscoverListItem>?>(null)
