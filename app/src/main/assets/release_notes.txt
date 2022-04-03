@@ -1,12 +1,6 @@
-* Added Recents section button into Calendar widget
+* Added option to sort by recently watched in My Shows section
 
-* Added context menu for search results items
-
-* Added episode runtime in episode details
-
-* Added episode absolute number for Anime shows
-
-* Fixed misc. bugs
+* Misc. translations fixes
 
 Do you enjoy Showly app and want to support the developer?
 Become a subscriber and gain access to cool bonus features! Check Settings to learn more!
