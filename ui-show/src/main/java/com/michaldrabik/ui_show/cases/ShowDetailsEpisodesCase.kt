@@ -3,6 +3,7 @@ package com.michaldrabik.ui_show.cases
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_remote.RemoteDataSource
+import com.michaldrabik.repository.EpisodesManager
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.UserTraktManager
@@ -10,7 +11,6 @@ import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
-import com.michaldrabik.ui_base.episodes.EpisodesManager
 import com.michaldrabik.ui_base.network.NetworkStatusProvider
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTrakt
@@ -28,17 +28,17 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class ShowDetailsEpisodesCase @Inject constructor(
-  private val remoteSource: RemoteDataSource,
-  private val localSource: LocalDataSource,
-  private val mappers: Mappers,
-  private val showsRepository: ShowsRepository,
-  private val settingsRepository: SettingsRepository,
-  private val ratingsRepository: RatingsRepository,
-  private val translationsRepository: TranslationsRepository,
-  private val episodesManager: EpisodesManager,
-  private val userManager: UserTraktManager,
-  private val dateFormatProvider: DateFormatProvider,
-  private val networkStatusProvider: NetworkStatusProvider
+    private val remoteSource: RemoteDataSource,
+    private val localSource: LocalDataSource,
+    private val mappers: Mappers,
+    private val showsRepository: ShowsRepository,
+    private val settingsRepository: SettingsRepository,
+    private val ratingsRepository: RatingsRepository,
+    private val translationsRepository: TranslationsRepository,
+    private val episodesManager: EpisodesManager,
+    private val userManager: UserTraktManager,
+    private val dateFormatProvider: DateFormatProvider,
+    private val networkStatusProvider: NetworkStatusProvider
 ) {
 
   suspend fun loadNextEpisode(traktId: IdTrakt): Episode? {

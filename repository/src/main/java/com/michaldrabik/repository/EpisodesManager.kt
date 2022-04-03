@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_base.episodes
+package com.michaldrabik.repository
 
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.LocalDataSource

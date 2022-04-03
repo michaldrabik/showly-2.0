@@ -3,9 +3,9 @@ package com.michaldrabik.ui_base.common.sheets.remove_trakt.remove_trakt_progres
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.data_remote.trakt.model.SyncExportItem
 import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
+import com.michaldrabik.repository.EpisodesManager
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet.Mode
-import com.michaldrabik.ui_base.episodes.EpisodesManager
 import com.michaldrabik.ui_model.IdTrakt
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject

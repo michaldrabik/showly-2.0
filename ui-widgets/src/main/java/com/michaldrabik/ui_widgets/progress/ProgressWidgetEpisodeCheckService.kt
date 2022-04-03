@@ -3,9 +3,9 @@ package com.michaldrabik.ui_widgets.progress
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.JobIntentService
+import com.michaldrabik.repository.EpisodesManager
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.WidgetsProvider
-import com.michaldrabik.ui_base.episodes.EpisodesManager
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.ui_model.IdTrakt
 import dagger.hilt.android.AndroidEntryPoint

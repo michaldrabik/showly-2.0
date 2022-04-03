@@ -5,9 +5,9 @@ import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.EpisodesSyncLog
 import com.michaldrabik.data_remote.RemoteDataSource
+import com.michaldrabik.repository.EpisodesManager
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.shows.ShowsRepository
-import com.michaldrabik.ui_base.episodes.EpisodesManager
 import com.michaldrabik.ui_model.ShowStatus.CANCELED
 import com.michaldrabik.ui_model.ShowStatus.ENDED
 import com.michaldrabik.ui_model.ShowStatus.UNKNOWN
@@ -21,11 +21,11 @@ import javax.inject.Singleton
  */
 @Singleton
 class ShowsSyncRunner @Inject constructor(
-  private val remoteSource: RemoteDataSource,
-  private val localSource: LocalDataSource,
-  private val mappers: Mappers,
-  private val episodesManager: EpisodesManager,
-  private val showsRepository: ShowsRepository,
+    private val remoteSource: RemoteDataSource,
+    private val localSource: LocalDataSource,
+    private val mappers: Mappers,
+    private val episodesManager: EpisodesManager,
+    private val showsRepository: ShowsRepository,
 ) {
 
   companion object {
