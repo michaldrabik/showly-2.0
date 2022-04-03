@@ -18,6 +18,6 @@ class Mappers @Inject constructor(
   val translation: TranslationMapper,
   val customList: CustomListMapper,
   val ratings: RatingsMapper,
-  val userRatingsMapper: UserRatingsMapper,
+  val userRatings: UserRatingsMapper,
   val streamings: StreamingsMapper,
 )

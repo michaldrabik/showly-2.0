@@ -26,14 +26,14 @@ class MoviesRatingsRepository @Inject constructor(
     val ratings = remoteSource.trakt.fetchMoviesRatings(token)
     val entities = ratings
       .filter { it.rated_at != null && it.movie.ids.trakt != null }
-      .map { mappers.userRatingsMapper.toDatabaseMovie(it) }
+      .map { mappers.userRatings.toDatabaseMovie(it) }
     localSource.ratings.replaceAll(entities, TYPE_MOVIE)
   }
 
   suspend fun loadMoviesRatings(): List<TraktRating> {
     val ratings = localSource.ratings.getAllByType(TYPE_MOVIE)
     return ratings.map {
-      mappers.userRatingsMapper.fromDatabase(it)
+      mappers.userRatings.fromDatabase(it)
     }
   }
 
@@ -44,7 +44,7 @@ class MoviesRatingsRepository @Inject constructor(
       ratings.addAll(items)
     }
     return ratings.map {
-      mappers.userRatingsMapper.fromDatabase(it)
+      mappers.userRatings.fromDatabase(it)
     }
   }
 
@@ -54,7 +54,7 @@ class MoviesRatingsRepository @Inject constructor(
       mappers.movie.toNetwork(movie),
       rating
     )
-    val entity = mappers.userRatingsMapper.toDatabaseMovie(movie, rating, nowUtc())
+    val entity = mappers.userRatings.toDatabaseMovie(movie, rating, nowUtc())
     localSource.ratings.replace(entity)
   }
 

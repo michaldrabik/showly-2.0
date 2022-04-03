@@ -39,7 +39,7 @@ class ShowsRatingsRepository @Inject constructor(
       val ratings = remoteSource.trakt.fetchShowsRatings(token)
       val entities = ratings
         .filter { it.rated_at != null && it.show.ids.trakt != null }
-        .map { mappers.userRatingsMapper.toDatabaseShow(it) }
+        .map { mappers.userRatings.toDatabaseShow(it) }
       localSource.ratings.replaceAll(entities, TYPE_SHOW)
     }
 
@@ -47,7 +47,7 @@ class ShowsRatingsRepository @Inject constructor(
       val ratings = remoteSource.trakt.fetchEpisodesRatings(token)
       val entities = ratings
         .filter { it.rated_at != null && it.episode.ids.trakt != null }
-        .map { mappers.userRatingsMapper.toDatabaseEpisode(it) }
+        .map { mappers.userRatings.toDatabaseEpisode(it) }
       localSource.ratings.replaceAll(entities, TYPE_EPISODE)
     }
 
@@ -55,7 +55,7 @@ class ShowsRatingsRepository @Inject constructor(
       val ratings = remoteSource.trakt.fetchSeasonsRatings(token)
       val entities = ratings
         .filter { it.rated_at != null && it.season.ids.trakt != null }
-        .map { mappers.userRatingsMapper.toDatabaseSeason(it) }
+        .map { mappers.userRatings.toDatabaseSeason(it) }
       localSource.ratings.replaceAll(entities, TYPE_SEASON)
     }
 
@@ -68,7 +68,7 @@ class ShowsRatingsRepository @Inject constructor(
   suspend fun loadShowsRatings(): List<TraktRating> {
     val ratings = localSource.ratings.getAllByType(TYPE_SHOW)
     return ratings.map {
-      mappers.userRatingsMapper.fromDatabase(it)
+      mappers.userRatings.fromDatabase(it)
     }
   }
 
@@ -79,7 +79,7 @@ class ShowsRatingsRepository @Inject constructor(
       ratings.addAll(items)
     }
     return ratings.map {
-      mappers.userRatingsMapper.fromDatabase(it)
+      mappers.userRatings.fromDatabase(it)
     }
   }
 
@@ -90,21 +90,21 @@ class ShowsRatingsRepository @Inject constructor(
       ratings.addAll(items)
     }
     return ratings.map {
-      mappers.userRatingsMapper.fromDatabase(it)
+      mappers.userRatings.fromDatabase(it)
     }
   }
 
   suspend fun loadRating(episode: Episode): TraktRating? {
     val rating = localSource.ratings.getAllByType(listOf(episode.ids.trakt.id), TYPE_EPISODE)
     return rating.firstOrNull()?.let {
-      mappers.userRatingsMapper.fromDatabase(it)
+      mappers.userRatings.fromDatabase(it)
     }
   }
 
   suspend fun loadRating(season: Season): TraktRating? {
     val rating = localSource.ratings.getAllByType(listOf(season.ids.trakt.id), TYPE_SEASON)
     return rating.firstOrNull()?.let {
-      mappers.userRatingsMapper.fromDatabase(it)
+      mappers.userRatings.fromDatabase(it)
     }
   }
 
@@ -114,7 +114,7 @@ class ShowsRatingsRepository @Inject constructor(
       mappers.show.toNetwork(show),
       rating
     )
-    val entity = mappers.userRatingsMapper.toDatabaseShow(show, rating, nowUtc())
+    val entity = mappers.userRatings.toDatabaseShow(show, rating, nowUtc())
     localSource.ratings.replace(entity)
   }
 
@@ -124,7 +124,7 @@ class ShowsRatingsRepository @Inject constructor(
       mappers.episode.toNetwork(episode),
       rating
     )
-    val entity = mappers.userRatingsMapper.toDatabaseEpisode(episode, rating, nowUtc())
+    val entity = mappers.userRatings.toDatabaseEpisode(episode, rating, nowUtc())
     localSource.ratings.replace(entity)
   }
 
@@ -134,7 +134,7 @@ class ShowsRatingsRepository @Inject constructor(
       mappers.season.toNetwork(season),
       rating
     )
-    val entity = mappers.userRatingsMapper.toDatabaseSeason(season, rating, nowUtc())
+    val entity = mappers.userRatings.toDatabaseSeason(season, rating, nowUtc())
     localSource.ratings.replace(entity)
   }
 
