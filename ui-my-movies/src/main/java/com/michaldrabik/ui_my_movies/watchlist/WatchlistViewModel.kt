@@ -34,11 +34,11 @@ import com.michaldrabik.ui_base.events.Event as EventSync
 
 @HiltViewModel
 class WatchlistViewModel @Inject constructor(
-    private val sortOrderCase: WatchlistSortOrderCase,
-    private val ratingsCase: WatchlistRatingsCase,
-    private val loadMoviesCase: WatchlistLoadMoviesCase,
-    private val imagesProvider: MovieImagesProvider,
-    private val eventsManager: EventsManager,
+  private val sortOrderCase: WatchlistSortOrderCase,
+  private val ratingsCase: WatchlistRatingsCase,
+  private val loadMoviesCase: WatchlistLoadMoviesCase,
+  private val imagesProvider: MovieImagesProvider,
+  private val eventsManager: EventsManager,
 ) : ViewModel() {
 
   private var loadItemsJob: Job? = null

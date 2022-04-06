@@ -58,22 +58,22 @@ import kotlin.properties.Delegates.notNull
 
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor(
-    private val mainCase: MovieDetailsMainCase,
-    private val relatedCase: MovieDetailsRelatedCase,
-    private val actorsCase: MovieDetailsActorsCase,
-    private val commentsCase: MovieDetailsCommentsCase,
-    private val translationCase: MovieDetailsTranslationCase,
-    private val ratingsCase: MovieDetailsRatingCase,
-    private val myMoviesCase: MovieDetailsMyMoviesCase,
-    private val watchlistCase: MovieDetailsWatchlistCase,
-    private val hiddenCase: MovieDetailsHiddenCase,
-    private val listsCase: MovieDetailsListsCase,
-    private val streamingCase: MovieDetailsStreamingCase,
-    private val settingsRepository: SettingsRepository,
-    private val userManager: UserTraktManager,
-    private val imagesProvider: MovieImagesProvider,
-    private val dateFormatProvider: DateFormatProvider,
-    private val announcementManager: AnnouncementManager,
+  private val mainCase: MovieDetailsMainCase,
+  private val relatedCase: MovieDetailsRelatedCase,
+  private val actorsCase: MovieDetailsActorsCase,
+  private val commentsCase: MovieDetailsCommentsCase,
+  private val translationCase: MovieDetailsTranslationCase,
+  private val ratingsCase: MovieDetailsRatingCase,
+  private val myMoviesCase: MovieDetailsMyMoviesCase,
+  private val watchlistCase: MovieDetailsWatchlistCase,
+  private val hiddenCase: MovieDetailsHiddenCase,
+  private val listsCase: MovieDetailsListsCase,
+  private val streamingCase: MovieDetailsStreamingCase,
+  private val settingsRepository: SettingsRepository,
+  private val userManager: UserTraktManager,
+  private val imagesProvider: MovieImagesProvider,
+  private val dateFormatProvider: DateFormatProvider,
+  private val announcementManager: AnnouncementManager,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val movieState = MutableStateFlow<Movie?>(null)

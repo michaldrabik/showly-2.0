@@ -18,12 +18,12 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class MyMoviesLoadCase @Inject constructor(
-    private val sorter: MyMoviesSorter,
-    private val imagesProvider: MovieImagesProvider,
-    private val moviesRepository: MoviesRepository,
-    private val dateFormatProvider: DateFormatProvider,
-    private val translationsRepository: TranslationsRepository,
-    private val settingsRepository: SettingsRepository
+  private val sorter: MyMoviesSorter,
+  private val imagesProvider: MovieImagesProvider,
+  private val moviesRepository: MoviesRepository,
+  private val dateFormatProvider: DateFormatProvider,
+  private val translationsRepository: TranslationsRepository,
+  private val settingsRepository: SettingsRepository
 ) {
 
   val language by lazy { translationsRepository.getLanguage() }

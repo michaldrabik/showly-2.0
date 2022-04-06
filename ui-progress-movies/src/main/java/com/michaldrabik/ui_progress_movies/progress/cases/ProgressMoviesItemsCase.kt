@@ -21,13 +21,13 @@ import javax.inject.Singleton
 @Suppress("UNCHECKED_CAST")
 @Singleton
 class ProgressMoviesItemsCase @Inject constructor(
-    private val sorter: ProgressMoviesItemsSorter,
-    private val moviesRepository: MoviesRepository,
-    private val translationsRepository: TranslationsRepository,
-    private val settingsRepository: SettingsRepository,
-    private val imagesProvider: MovieImagesProvider,
-    private val pinnedItemsRepository: PinnedItemsRepository,
-    private val dateFormatProvider: DateFormatProvider,
+  private val sorter: ProgressMoviesItemsSorter,
+  private val moviesRepository: MoviesRepository,
+  private val translationsRepository: TranslationsRepository,
+  private val settingsRepository: SettingsRepository,
+  private val imagesProvider: MovieImagesProvider,
+  private val pinnedItemsRepository: PinnedItemsRepository,
+  private val dateFormatProvider: DateFormatProvider,
 ) {
 
   suspend fun loadItems(searchQuery: String) = withContext(Dispatchers.Default) {

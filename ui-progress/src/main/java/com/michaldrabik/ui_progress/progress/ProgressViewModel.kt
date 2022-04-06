@@ -34,13 +34,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProgressViewModel @Inject constructor(
-    private val itemsCase: ProgressItemsCase,
-    private val headersCase: ProgressHeadersCase,
-    private val sortOrderCase: ProgressSortOrderCase,
-    private val ratingsCase: ProgressRatingsCase,
-    private val imagesProvider: ShowImagesProvider,
-    private val userTraktManager: UserTraktManager,
-    private val translationsRepository: TranslationsRepository,
+  private val itemsCase: ProgressItemsCase,
+  private val headersCase: ProgressHeadersCase,
+  private val sortOrderCase: ProgressSortOrderCase,
+  private val ratingsCase: ProgressRatingsCase,
+  private val imagesProvider: ShowImagesProvider,
+  private val userTraktManager: UserTraktManager,
+  private val translationsRepository: TranslationsRepository,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private var loadItemsJob: Job? = null

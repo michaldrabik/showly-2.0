@@ -13,9 +13,9 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class FollowedMoviesSearchCase @Inject constructor(
-    private val moviesRepository: MoviesRepository,
-    private val translationsRepository: TranslationsRepository,
-    private val imagesProvider: MovieImagesProvider,
+  private val moviesRepository: MoviesRepository,
+  private val translationsRepository: TranslationsRepository,
+  private val imagesProvider: MovieImagesProvider,
 ) {
 
   private val searchCache = mutableListOf<Movie>()

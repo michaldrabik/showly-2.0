@@ -33,16 +33,16 @@ import com.michaldrabik.ui_model.Episode.Companion as EpisodeUi
 @Suppress("UNCHECKED_CAST")
 @Singleton
 class ProgressItemsCase @Inject constructor(
-    private val localSource: LocalDataSource,
-    private val mappers: Mappers,
-    private val sorter: ProgressItemsSorter,
-    private val showsRepository: ShowsRepository,
-    private val translationsRepository: TranslationsRepository,
-    private val settingsRepository: SettingsRepository,
-    private val imagesProvider: ShowImagesProvider,
-    private val pinnedItemsRepository: PinnedItemsRepository,
-    private val onHoldItemsRepository: OnHoldItemsRepository,
-    private val dateFormatProvider: DateFormatProvider,
+  private val localSource: LocalDataSource,
+  private val mappers: Mappers,
+  private val sorter: ProgressItemsSorter,
+  private val showsRepository: ShowsRepository,
+  private val translationsRepository: TranslationsRepository,
+  private val settingsRepository: SettingsRepository,
+  private val imagesProvider: ShowImagesProvider,
+  private val pinnedItemsRepository: PinnedItemsRepository,
+  private val onHoldItemsRepository: OnHoldItemsRepository,
+  private val dateFormatProvider: DateFormatProvider,
 ) {
 
   companion object {

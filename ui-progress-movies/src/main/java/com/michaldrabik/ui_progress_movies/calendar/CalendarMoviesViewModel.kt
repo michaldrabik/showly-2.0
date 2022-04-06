@@ -26,11 +26,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CalendarMoviesViewModel @Inject constructor(
-    private val recentsCase: CalendarMoviesRecentsCase,
-    private val futureCase: CalendarMoviesFutureCase,
-    private val ratingsCase: CalendarMoviesRatingsCase,
-    private val imagesProvider: MovieImagesProvider,
-    private val translationsRepository: TranslationsRepository,
+  private val recentsCase: CalendarMoviesRecentsCase,
+  private val futureCase: CalendarMoviesFutureCase,
+  private val ratingsCase: CalendarMoviesRatingsCase,
+  private val imagesProvider: MovieImagesProvider,
+  private val translationsRepository: TranslationsRepository,
 ) : ViewModel() {
 
   private var loadItemsJob: Job? = null

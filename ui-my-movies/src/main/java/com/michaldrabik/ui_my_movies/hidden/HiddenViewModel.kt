@@ -33,11 +33,11 @@ import com.michaldrabik.ui_base.events.Event as EventSync
 
 @HiltViewModel
 class HiddenViewModel @Inject constructor(
-    private val sortOrderCase: HiddenSortOrderCase,
-    private val loadMoviesCase: HiddenLoadMoviesCase,
-    private val ratingsCase: HiddenRatingsCase,
-    private val imagesProvider: MovieImagesProvider,
-    private val eventsManager: EventsManager,
+  private val sortOrderCase: HiddenSortOrderCase,
+  private val loadMoviesCase: HiddenLoadMoviesCase,
+  private val ratingsCase: HiddenRatingsCase,
+  private val imagesProvider: MovieImagesProvider,
+  private val eventsManager: EventsManager,
 ) : ViewModel() {
 
   private var loadItemsJob: Job? = null

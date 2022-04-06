@@ -8,8 +8,8 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class ProgressMainEpisodesCase @Inject constructor(
-    private val episodesManager: EpisodesManager,
-    private val quickSyncManager: QuickSyncManager,
+  private val episodesManager: EpisodesManager,
+  private val quickSyncManager: QuickSyncManager,
 ) {
 
   suspend fun setEpisodeWatched(bundle: EpisodeBundle) {

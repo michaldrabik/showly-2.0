@@ -18,13 +18,13 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class ShowContextMenuLoadItemCase @Inject constructor(
-    private val showsRepository: ShowsRepository,
-    private val pinnedItemsRepository: PinnedItemsRepository,
-    private val onHoldItemsRepository: OnHoldItemsRepository,
-    private val imagesProvider: ShowImagesProvider,
-    private val translationsRepository: TranslationsRepository,
-    private val ratingsRepository: RatingsRepository,
-    private val settingsRepository: SettingsRepository
+  private val showsRepository: ShowsRepository,
+  private val pinnedItemsRepository: PinnedItemsRepository,
+  private val onHoldItemsRepository: OnHoldItemsRepository,
+  private val imagesProvider: ShowImagesProvider,
+  private val translationsRepository: TranslationsRepository,
+  private val ratingsRepository: RatingsRepository,
+  private val settingsRepository: SettingsRepository
 ) {
 
   private val language by lazy { settingsRepository.language }

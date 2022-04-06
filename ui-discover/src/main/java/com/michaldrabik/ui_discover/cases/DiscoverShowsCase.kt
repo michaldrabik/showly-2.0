@@ -24,10 +24,10 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class DiscoverShowsCase @Inject constructor(
-    private val showsRepository: ShowsRepository,
-    private val imagesProvider: ShowImagesProvider,
-    private val translationsRepository: TranslationsRepository,
-    private val settingsRepository: SettingsRepository,
+  private val showsRepository: ShowsRepository,
+  private val imagesProvider: ShowImagesProvider,
+  private val translationsRepository: TranslationsRepository,
+  private val settingsRepository: SettingsRepository,
 ) {
 
   companion object {

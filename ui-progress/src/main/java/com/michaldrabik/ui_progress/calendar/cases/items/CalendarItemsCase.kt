@@ -23,12 +23,12 @@ import kotlinx.coroutines.withContext
 
 @Suppress("UNCHECKED_CAST")
 abstract class CalendarItemsCase constructor(
-    private val localSource: LocalDataSource,
-    private val mappers: Mappers,
-    private val showsRepository: ShowsRepository,
-    private val translationsRepository: TranslationsRepository,
-    private val imagesProvider: ShowImagesProvider,
-    private val dateFormatProvider: DateFormatProvider,
+  private val localSource: LocalDataSource,
+  private val mappers: Mappers,
+  private val showsRepository: ShowsRepository,
+  private val translationsRepository: TranslationsRepository,
+  private val imagesProvider: ShowImagesProvider,
+  private val dateFormatProvider: DateFormatProvider,
 ) {
 
   abstract val filter: CalendarFilter

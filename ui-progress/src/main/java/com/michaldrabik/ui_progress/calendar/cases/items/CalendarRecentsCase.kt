@@ -14,14 +14,14 @@ import javax.inject.Singleton
 
 @Singleton
 class CalendarRecentsCase @Inject constructor(
-    localSource: LocalDataSource,
-    mappers: Mappers,
-    showsRepository: ShowsRepository,
-    translationsRepository: TranslationsRepository,
-    imagesProvider: ShowImagesProvider,
-    dateFormatProvider: DateFormatProvider,
-    override val filter: CalendarRecentsFilter,
-    override val grouper: CalendarRecentsGrouper,
+  localSource: LocalDataSource,
+  mappers: Mappers,
+  showsRepository: ShowsRepository,
+  translationsRepository: TranslationsRepository,
+  imagesProvider: ShowImagesProvider,
+  dateFormatProvider: DateFormatProvider,
+  override val filter: CalendarRecentsFilter,
+  override val grouper: CalendarRecentsGrouper,
 ) : CalendarItemsCase(
   localSource,
   mappers,

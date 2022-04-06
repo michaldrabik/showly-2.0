@@ -19,12 +19,12 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class HiddenLoadMoviesCase @Inject constructor(
-    private val sorter: FollowedMoviesItemSorter,
-    private val moviesRepository: MoviesRepository,
-    private val translationsRepository: TranslationsRepository,
-    private val imagesProvider: MovieImagesProvider,
-    private val dateFormatProvider: DateFormatProvider,
-    private val settingsRepository: SettingsRepository
+  private val sorter: FollowedMoviesItemSorter,
+  private val moviesRepository: MoviesRepository,
+  private val translationsRepository: TranslationsRepository,
+  private val imagesProvider: MovieImagesProvider,
+  private val dateFormatProvider: DateFormatProvider,
+  private val settingsRepository: SettingsRepository
 ) {
 
   val language by lazy { translationsRepository.getLanguage() }

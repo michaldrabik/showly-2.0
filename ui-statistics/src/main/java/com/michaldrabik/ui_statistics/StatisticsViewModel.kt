@@ -30,12 +30,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StatisticsViewModel @Inject constructor(
-    private val ratingsCase: StatisticsLoadRatingsCase,
-    private val showsRepository: ShowsRepository,
-    private val translationsRepository: TranslationsRepository,
-    private val imagesProvider: ShowImagesProvider,
-    private val localSource: LocalDataSource,
-    private val mappers: Mappers,
+  private val ratingsCase: StatisticsLoadRatingsCase,
+  private val showsRepository: ShowsRepository,
+  private val translationsRepository: TranslationsRepository,
+  private val imagesProvider: ShowImagesProvider,
+  private val localSource: LocalDataSource,
+  private val mappers: Mappers,
 ) : ViewModel() {
 
   private val mostWatchedShowsState = MutableStateFlow<List<StatisticsMostWatchedItem>?>(null)

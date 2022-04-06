@@ -18,13 +18,13 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class MovieContextMenuLoadItemCase @Inject constructor(
-    private val moviesRepository: MoviesRepository,
-    private val pinnedItemsRepository: PinnedItemsRepository,
-    private val imagesProvider: MovieImagesProvider,
-    private val translationsRepository: TranslationsRepository,
-    private val ratingsRepository: RatingsRepository,
-    private val settingsRepository: SettingsRepository,
-    private val dateFormatProvider: DateFormatProvider,
+  private val moviesRepository: MoviesRepository,
+  private val pinnedItemsRepository: PinnedItemsRepository,
+  private val imagesProvider: MovieImagesProvider,
+  private val translationsRepository: TranslationsRepository,
+  private val ratingsRepository: RatingsRepository,
+  private val settingsRepository: SettingsRepository,
+  private val dateFormatProvider: DateFormatProvider,
 ) {
 
   private val language by lazy { settingsRepository.language }

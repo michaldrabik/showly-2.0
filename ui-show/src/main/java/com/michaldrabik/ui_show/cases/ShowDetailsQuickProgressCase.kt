@@ -16,9 +16,9 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class ShowDetailsQuickProgressCase @Inject constructor(
-    private val showsRepository: ShowsRepository,
-    private val episodesManager: EpisodesManager,
-    private val quickSyncManager: QuickSyncManager,
+  private val showsRepository: ShowsRepository,
+  private val episodesManager: EpisodesManager,
+  private val quickSyncManager: QuickSyncManager,
 ) {
 
   suspend fun setQuickProgress(

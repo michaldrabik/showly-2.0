@@ -12,13 +12,13 @@ import javax.inject.Singleton
 
 @Singleton
 class CalendarMoviesRecentsCase @Inject constructor(
-    moviesRepository: MoviesRepository,
-    translationsRepository: TranslationsRepository,
-    imagesProvider: MovieImagesProvider,
-    dateFormatProvider: DateFormatProvider,
-    override val filter: CalendarRecentsFilter,
-    override val grouper: CalendarRecentsGrouper,
-    override val sorter: CalendarRecentsSorter,
+  moviesRepository: MoviesRepository,
+  translationsRepository: TranslationsRepository,
+  imagesProvider: MovieImagesProvider,
+  dateFormatProvider: DateFormatProvider,
+  override val filter: CalendarRecentsFilter,
+  override val grouper: CalendarRecentsGrouper,
+  override val sorter: CalendarRecentsSorter,
 ) : CalendarMoviesItemsCase(
   moviesRepository,
   translationsRepository,

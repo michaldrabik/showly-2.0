@@ -36,11 +36,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DiscoverViewModel @Inject constructor(
-    private val showsCase: DiscoverShowsCase,
-    private val filtersCase: DiscoverFiltersCase,
-    private val twitterCase: DiscoverTwitterCase,
-    private val imagesProvider: ShowImagesProvider,
-    private val syncStatusProvider: TraktSyncStatusProvider,
+  private val showsCase: DiscoverShowsCase,
+  private val filtersCase: DiscoverFiltersCase,
+  private val twitterCase: DiscoverTwitterCase,
+  private val imagesProvider: ShowImagesProvider,
+  private val syncStatusProvider: TraktSyncStatusProvider,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val itemsState = MutableStateFlow<List<DiscoverListItem>?>(null)

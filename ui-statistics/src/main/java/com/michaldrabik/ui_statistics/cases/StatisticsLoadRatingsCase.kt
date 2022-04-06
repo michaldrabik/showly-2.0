@@ -11,10 +11,10 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class StatisticsLoadRatingsCase @Inject constructor(
-    private val userTraktManager: UserTraktManager,
-    private val showsRepository: ShowsRepository,
-    private val ratingsRepository: RatingsRepository,
-    private val imagesProvider: ShowImagesProvider,
+  private val userTraktManager: UserTraktManager,
+  private val showsRepository: ShowsRepository,
+  private val ratingsRepository: RatingsRepository,
+  private val imagesProvider: ShowImagesProvider,
 ) {
 
   companion object {

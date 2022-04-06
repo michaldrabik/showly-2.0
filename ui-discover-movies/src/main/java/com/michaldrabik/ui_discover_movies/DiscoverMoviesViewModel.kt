@@ -35,10 +35,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DiscoverMoviesViewModel @Inject constructor(
-    private val moviesCase: DiscoverMoviesCase,
-    private val filtersCase: DiscoverFiltersCase,
-    private val imagesProvider: MovieImagesProvider,
-    private val syncStatusProvider: TraktSyncStatusProvider,
+  private val moviesCase: DiscoverMoviesCase,
+  private val filtersCase: DiscoverFiltersCase,
+  private val imagesProvider: MovieImagesProvider,
+  private val syncStatusProvider: TraktSyncStatusProvider,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val itemsState = MutableStateFlow<List<DiscoverMovieListItem>?>(null)

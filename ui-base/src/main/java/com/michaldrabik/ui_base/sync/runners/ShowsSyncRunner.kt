@@ -21,11 +21,11 @@ import javax.inject.Singleton
  */
 @Singleton
 class ShowsSyncRunner @Inject constructor(
-    private val remoteSource: RemoteDataSource,
-    private val localSource: LocalDataSource,
-    private val mappers: Mappers,
-    private val episodesManager: EpisodesManager,
-    private val showsRepository: ShowsRepository,
+  private val remoteSource: RemoteDataSource,
+  private val localSource: LocalDataSource,
+  private val mappers: Mappers,
+  private val episodesManager: EpisodesManager,
+  private val showsRepository: ShowsRepository,
 ) {
 
   companion object {

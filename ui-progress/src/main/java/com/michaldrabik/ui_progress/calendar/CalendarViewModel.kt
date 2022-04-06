@@ -31,11 +31,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CalendarViewModel @Inject constructor(
-    private val recentsCase: CalendarRecentsCase,
-    private val futureCase: CalendarFutureCase,
-    private val ratingsCase: CalendarRatingsCase,
-    private val imagesProvider: ShowImagesProvider,
-    private val translationsRepository: TranslationsRepository,
+  private val recentsCase: CalendarRecentsCase,
+  private val futureCase: CalendarFutureCase,
+  private val ratingsCase: CalendarRatingsCase,
+  private val imagesProvider: ShowImagesProvider,
+  private val translationsRepository: TranslationsRepository,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private var loadItemsJob: Job? = null

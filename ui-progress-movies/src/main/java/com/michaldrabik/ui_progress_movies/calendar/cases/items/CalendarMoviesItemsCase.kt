@@ -19,10 +19,10 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
 
 abstract class CalendarMoviesItemsCase constructor(
-    private val moviesRepository: MoviesRepository,
-    private val translationsRepository: TranslationsRepository,
-    private val imagesProvider: MovieImagesProvider,
-    private val dateFormatProvider: DateFormatProvider,
+  private val moviesRepository: MoviesRepository,
+  private val translationsRepository: TranslationsRepository,
+  private val imagesProvider: MovieImagesProvider,
+  private val dateFormatProvider: DateFormatProvider,
 ) {
 
   abstract val filter: CalendarFilter

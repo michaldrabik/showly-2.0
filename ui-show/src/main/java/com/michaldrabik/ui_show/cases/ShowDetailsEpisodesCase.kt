@@ -28,17 +28,17 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class ShowDetailsEpisodesCase @Inject constructor(
-    private val remoteSource: RemoteDataSource,
-    private val localSource: LocalDataSource,
-    private val mappers: Mappers,
-    private val showsRepository: ShowsRepository,
-    private val settingsRepository: SettingsRepository,
-    private val ratingsRepository: RatingsRepository,
-    private val translationsRepository: TranslationsRepository,
-    private val episodesManager: EpisodesManager,
-    private val userManager: UserTraktManager,
-    private val dateFormatProvider: DateFormatProvider,
-    private val networkStatusProvider: NetworkStatusProvider
+  private val remoteSource: RemoteDataSource,
+  private val localSource: LocalDataSource,
+  private val mappers: Mappers,
+  private val showsRepository: ShowsRepository,
+  private val settingsRepository: SettingsRepository,
+  private val ratingsRepository: RatingsRepository,
+  private val translationsRepository: TranslationsRepository,
+  private val episodesManager: EpisodesManager,
+  private val userManager: UserTraktManager,
+  private val dateFormatProvider: DateFormatProvider,
+  private val networkStatusProvider: NetworkStatusProvider
 ) {
 
   suspend fun loadNextEpisode(traktId: IdTrakt): Episode? {

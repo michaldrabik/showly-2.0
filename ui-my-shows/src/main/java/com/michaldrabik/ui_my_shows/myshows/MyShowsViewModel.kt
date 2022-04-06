@@ -48,13 +48,13 @@ import com.michaldrabik.ui_base.events.Event as EventSync
 
 @HiltViewModel
 class MyShowsViewModel @Inject constructor(
-    private val loadShowsCase: MyShowsLoadShowsCase,
-    private val sortingCase: MyShowsSortingCase,
-    private val ratingsCase: MyShowsRatingsCase,
-    private val translationsCase: MyShowsTranslationsCase,
-    private val settingsRepository: SettingsRepository,
-    private val imagesProvider: ShowImagesProvider,
-    private val eventsManager: EventsManager,
+  private val loadShowsCase: MyShowsLoadShowsCase,
+  private val sortingCase: MyShowsSortingCase,
+  private val ratingsCase: MyShowsRatingsCase,
+  private val translationsCase: MyShowsTranslationsCase,
+  private val settingsRepository: SettingsRepository,
+  private val imagesProvider: ShowImagesProvider,
+  private val eventsManager: EventsManager,
 ) : ViewModel() {
 
   private var loadItemsJob: Job? = null

@@ -37,15 +37,15 @@ import kotlin.properties.Delegates.notNull
 @SuppressLint("StaticFieldLeak")
 @HiltViewModel
 class ShowContextMenuViewModel @Inject constructor(
-    private val loadItemCase: ShowContextMenuLoadItemCase,
-    private val myShowsCase: ShowContextMenuMyShowsCase,
-    private val watchlistCase: ShowContextMenuWatchlistCase,
-    private val hiddenCase: ShowContextMenuHiddenCase,
-    private val pinnedCase: ShowContextMenuPinnedCase,
-    private val onHoldCase: ShowContextMenuOnHoldCase,
-    private val imagesProvider: ShowImagesProvider,
-    private val networkProvider: NetworkStatusProvider,
-    private val settingsRepository: SettingsRepository
+  private val loadItemCase: ShowContextMenuLoadItemCase,
+  private val myShowsCase: ShowContextMenuMyShowsCase,
+  private val watchlistCase: ShowContextMenuWatchlistCase,
+  private val hiddenCase: ShowContextMenuHiddenCase,
+  private val pinnedCase: ShowContextMenuPinnedCase,
+  private val onHoldCase: ShowContextMenuOnHoldCase,
+  private val imagesProvider: ShowImagesProvider,
+  private val networkProvider: NetworkStatusProvider,
+  private val settingsRepository: SettingsRepository
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private var showId by notNull<IdTrakt>()

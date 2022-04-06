@@ -34,11 +34,11 @@ import com.michaldrabik.ui_base.events.Event as EventSync
 
 @HiltViewModel
 class ArchiveViewModel @Inject constructor(
-    private val sortOrderCase: ArchiveSortOrderCase,
-    private val loadShowsCase: ArchiveLoadShowsCase,
-    private val ratingsCase: ArchiveRatingsCase,
-    private val imagesProvider: ShowImagesProvider,
-    private val eventsManager: EventsManager,
+  private val sortOrderCase: ArchiveSortOrderCase,
+  private val loadShowsCase: ArchiveLoadShowsCase,
+  private val ratingsCase: ArchiveRatingsCase,
+  private val imagesProvider: ShowImagesProvider,
+  private val eventsManager: EventsManager,
 ) : ViewModel() {
 
   private var loadItemsJob: Job? = null

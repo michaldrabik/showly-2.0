@@ -38,14 +38,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProgressMoviesViewModel @Inject constructor(
-    private val itemsCase: ProgressMoviesItemsCase,
-    private val sortCase: ProgressMoviesSortCase,
-    private val pinnedCase: ProgressMoviesPinnedCase,
-    private val imagesProvider: MovieImagesProvider,
-    private val userTraktManager: UserTraktManager,
-    private val ratingsRepository: RatingsRepository,
-    private val settingsRepository: SettingsRepository,
-    private val translationsRepository: TranslationsRepository,
+  private val itemsCase: ProgressMoviesItemsCase,
+  private val sortCase: ProgressMoviesSortCase,
+  private val pinnedCase: ProgressMoviesPinnedCase,
+  private val imagesProvider: MovieImagesProvider,
+  private val userTraktManager: UserTraktManager,
+  private val ratingsRepository: RatingsRepository,
+  private val settingsRepository: SettingsRepository,
+  private val translationsRepository: TranslationsRepository,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private var loadItemsJob: Job? = null

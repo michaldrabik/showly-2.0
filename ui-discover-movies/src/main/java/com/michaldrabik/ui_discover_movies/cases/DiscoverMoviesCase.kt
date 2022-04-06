@@ -28,10 +28,10 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class DiscoverMoviesCase @Inject constructor(
-    private val moviesRepository: MoviesRepository,
-    private val imagesProvider: MovieImagesProvider,
-    private val translationsRepository: TranslationsRepository,
-    private val settingsRepository: SettingsRepository
+  private val moviesRepository: MoviesRepository,
+  private val imagesProvider: MovieImagesProvider,
+  private val translationsRepository: TranslationsRepository,
+  private val settingsRepository: SettingsRepository
 ) {
 
   companion object {
