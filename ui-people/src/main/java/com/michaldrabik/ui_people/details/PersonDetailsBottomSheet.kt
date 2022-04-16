@@ -2,13 +2,10 @@ package com.michaldrabik.ui_people.details
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,6 +25,7 @@ import com.michaldrabik.ui_base.utilities.extensions.requireParcelable
 import com.michaldrabik.ui_base.utilities.extensions.screenHeight
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.Tip
@@ -45,7 +43,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
-class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>() {
+class PersonDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_person_details) {
 
   companion object {
     const val SHOW_BACK_UP_BUTTON_THRESHOLD = 25
@@ -57,8 +55,8 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>
       )
   }
 
-  override val layoutResId = R.layout.view_person_details
-  private val view by lazy { viewBinding as ViewPersonDetailsBinding }
+  private val viewModel by viewModels<PersonDetailsViewModel>()
+  private val binding by viewBinding(ViewPersonDetailsBinding::bind)
 
   private val person by lazy { requireParcelable<Person>(ARG_PERSON) }
   private val sourceId by lazy { requireParcelable<IdTrakt>(ARG_ID) }
@@ -67,14 +65,6 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>
   private var layoutManager: LinearLayoutManager? = null
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
-
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme)
-    val view = inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
-    return createViewBinding(ViewPersonDetailsBinding.bind(view))
-  }
-
-  override fun createViewModel() = ViewModelProvider(this)[PersonDetailsViewModel::class.java]
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     setupView()
@@ -89,7 +79,7 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>
   }
 
   private fun setupView() {
-    with(view) {
+    with(binding) {
       val behavior: BottomSheetBehavior<*> = (dialog as BottomSheetDialog).behavior
       with(behavior) {
         peekHeight = (screenHeight() * 0.55).toInt()
@@ -107,7 +97,7 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>
     val isShown = (requireActivity() as TipsHost).isTipShown(Tip.PERSON_DETAILS_GALLERY)
     if (!isShown && !person.imagePath.isNullOrBlank()) {
       val message = getString(Tip.PERSON_DETAILS_GALLERY.textResId)
-      view.personDetailsSnackHost.showInfoSnackbar(message, length = Snackbar.LENGTH_INDEFINITE) {
+      binding.personDetailsSnackHost.showInfoSnackbar(message, length = Snackbar.LENGTH_INDEFINITE) {
         (requireActivity() as TipsHost).setTipShow(Tip.PERSON_DETAILS_GALLERY)
       }
     }
@@ -123,7 +113,7 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>
       onTranslationMissingListener = { item -> viewModel.loadMissingTranslation(item) },
       onFiltersChangeListener = { filters -> viewModel.loadCredits(person, filters) }
     )
-    with(view.personDetailsRecycler) {
+    with(binding.personDetailsRecycler) {
       adapter = this@PersonDetailsBottomSheet.adapter
       layoutManager = this@PersonDetailsBottomSheet.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
@@ -172,8 +162,8 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>
   private fun renderSnackbar(message: MessageEvent) {
     message.consume()?.let {
       when (message.type) {
-        MessageEvent.Type.INFO -> view.viewPersonDetailsRoot.showInfoSnackbar(getString(it))
-        MessageEvent.Type.ERROR -> view.viewPersonDetailsRoot.showErrorSnackbar(getString(it))
+        MessageEvent.Type.INFO -> binding.viewPersonDetailsRoot.showInfoSnackbar(getString(it))
+        MessageEvent.Type.ERROR -> binding.viewPersonDetailsRoot.showErrorSnackbar(getString(it))
       }
     }
   }
@@ -188,9 +178,9 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment<PersonDetailsViewModel>
     override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
       if (newState != RecyclerView.SCROLL_STATE_IDLE) return
       if ((layoutManager?.findFirstVisibleItemPosition() ?: 0) >= SHOW_BACK_UP_BUTTON_THRESHOLD) {
-        view.personDetailsRecyclerFab.fadeIn(150)
+        binding.personDetailsRecyclerFab.fadeIn(150)
       } else {
-        view.personDetailsRecyclerFab.fadeOut(150)
+        binding.personDetailsRecyclerFab.fadeOut(150)
       }
     }
   }

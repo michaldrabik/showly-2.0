@@ -1,12 +1,9 @@
 package com.michaldrabik.ui_people.list
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.os.bundleOf
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -20,6 +17,7 @@ import com.michaldrabik.ui_base.utilities.extensions.requireLong
 import com.michaldrabik.ui_base.utilities.extensions.requireSerializable
 import com.michaldrabik.ui_base.utilities.extensions.requireString
 import com.michaldrabik.ui_base.utilities.extensions.screenHeight
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_DEPARTMENT
@@ -34,7 +32,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
-class PeopleListBottomSheet : BaseBottomSheetFragment<PeopleListViewModel>() {
+class PeopleListBottomSheet : BaseBottomSheetFragment(R.layout.view_people_list) {
 
   companion object {
     fun createBundle(
@@ -50,8 +48,8 @@ class PeopleListBottomSheet : BaseBottomSheetFragment<PeopleListViewModel>() {
     )
   }
 
-  override val layoutResId = R.layout.view_people_list
-  private val view by lazy { viewBinding as ViewPeopleListBinding }
+  private val viewModel by viewModels<PeopleListViewModel>()
+  private val binding by viewBinding(ViewPeopleListBinding::bind)
 
   private val mediaIdTrakt by lazy { IdTrakt(requireLong(ARG_ID)) }
   private val mediaTitle by lazy { requireString(ARG_TITLE) }
@@ -62,14 +60,6 @@ class PeopleListBottomSheet : BaseBottomSheetFragment<PeopleListViewModel>() {
   private var layoutManager: LinearLayoutManager? = null
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
-
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme)
-    val view = inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
-    return createViewBinding(ViewPeopleListBinding.bind(view))
-  }
-
-  override fun createViewModel() = ViewModelProvider(this)[PeopleListViewModel::class.java]
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     setupView()
@@ -102,7 +92,7 @@ class PeopleListBottomSheet : BaseBottomSheetFragment<PeopleListViewModel>() {
     adapter = PeopleListAdapter(
       onItemClickListener = { openDetails(it) },
     )
-    with(view.viewPeopleListRecycler) {
+    with(binding.viewPeopleListRecycler) {
       adapter = this@PeopleListBottomSheet.adapter
       layoutManager = this@PeopleListBottomSheet.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false

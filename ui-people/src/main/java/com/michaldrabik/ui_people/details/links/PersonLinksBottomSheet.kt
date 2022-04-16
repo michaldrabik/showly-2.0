@@ -5,16 +5,13 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.os.bundleOf
-import androidx.lifecycle.ViewModelProvider
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.requireParcelable
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_navigation.java.NavigationArgs
@@ -24,7 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.parcel.Parcelize
 
 @AndroidEntryPoint
-class PersonLinksBottomSheet : BaseBottomSheetFragment<PersonLinksViewModel>() {
+class PersonLinksBottomSheet : BaseBottomSheetFragment(R.layout.view_person_links) {
 
   @Parcelize
   data class Options(
@@ -40,8 +37,7 @@ class PersonLinksBottomSheet : BaseBottomSheetFragment<PersonLinksViewModel>() {
     }
   }
 
-  override val layoutResId = R.layout.view_person_links
-  private val view by lazy { viewBinding as ViewPersonLinksBinding }
+  private val binding by viewBinding(ViewPersonLinksBinding::bind)
 
   private val options by lazy { requireParcelable<Options>(NavigationArgs.ARG_OPTIONS) }
   private val ids by lazy { options.ids }
@@ -50,21 +46,13 @@ class PersonLinksBottomSheet : BaseBottomSheetFragment<PersonLinksViewModel>() {
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme)
-    val view = inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
-    return createViewBinding(ViewPersonLinksBinding.bind(view))
-  }
-
-  override fun createViewModel() = ViewModelProvider(this)[PersonLinksViewModel::class.java]
-
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
   }
 
   private fun setupView() {
-    with(view) {
+    with(binding) {
       viewPersonLinksYouTube.onClick {
         openWebUrl("https://www.youtube.com/results?search_query=$name")
       }
@@ -88,7 +76,7 @@ class PersonLinksBottomSheet : BaseBottomSheetFragment<PersonLinksViewModel>() {
   }
 
   private fun setWebLink() {
-    view.viewPersonLinksWebsite.run {
+    binding.viewPersonLinksWebsite.run {
       if (website.isNullOrBlank()) {
         alpha = 0.5F
         isEnabled = false
@@ -99,7 +87,7 @@ class PersonLinksBottomSheet : BaseBottomSheetFragment<PersonLinksViewModel>() {
   }
 
   private fun setTmdbLink() {
-    view.viewPersonLinksTmdb.run {
+    binding.viewPersonLinksTmdb.run {
       if (ids.tmdb.id == -1L) {
         alpha = 0.5F
         isEnabled = false
@@ -112,7 +100,7 @@ class PersonLinksBottomSheet : BaseBottomSheetFragment<PersonLinksViewModel>() {
   }
 
   private fun setImdbLink() {
-    view.viewPersonLinksImdb.run {
+    binding.viewPersonLinksImdb.run {
       if (ids.imdb.id.isBlank()) {
         alpha = 0.5F
         isEnabled = false

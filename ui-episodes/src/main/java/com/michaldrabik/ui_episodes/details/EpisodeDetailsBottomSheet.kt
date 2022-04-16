@@ -4,15 +4,12 @@ import android.annotation.SuppressLint
 import android.graphics.Typeface.BOLD
 import android.graphics.Typeface.NORMAL
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
@@ -48,6 +45,7 @@ import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_comments.CommentView
 import com.michaldrabik.ui_episodes.R
 import com.michaldrabik.ui_episodes.databinding.ViewEpisodeDetailsBinding
@@ -72,7 +70,7 @@ import timber.log.Timber
 import java.util.Locale.ENGLISH
 
 @AndroidEntryPoint
-class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewModel>() {
+class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_details) {
 
   companion object {
     const val ARG_ID_TRAKT = "ARG_ID_TRAKT"
@@ -84,6 +82,9 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
     const val ARG_SHOW_TABS = "ARG_SHOW_TABS"
   }
 
+  private val viewModel by viewModels<EpisodeDetailsViewModel>()
+  private val binding by viewBinding(ViewEpisodeDetailsBinding::bind)
+
   private val showTraktId by lazy { IdTrakt(requireLong(ARG_ID_TRAKT)) }
   private val showTmdbId by lazy { IdTmdb(requireLong(ARG_ID_TMDB)) }
   private val episode by lazy { requireParcelable<Episode>(ARG_EPISODE) }
@@ -94,18 +95,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
 
   private val cornerRadius by lazy { dimenToPx(R.dimen.bottomSheetCorner).toFloat() }
 
-  override val layoutResId = R.layout.view_episode_details
-  private val view by lazy { viewBinding as ViewEpisodeDetailsBinding }
-
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
-
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme)
-    val view = inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
-    return createViewBinding(ViewEpisodeDetailsBinding.bind(view))
-  }
-
-  override fun createViewModel() = ViewModelProvider(this)[EpisodeDetailsViewModel::class.java]
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -126,7 +116,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
   }
 
   private fun setupView() {
-    view.run {
+    binding.run {
       episodeDetailsTitle.text = when (episode.title) {
         "Episode ${episode.number}" -> String.format(ENGLISH, requireContext().getString(R.string.textEpisode), episode.number)
         else -> episode.title
@@ -189,7 +179,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
   @SuppressLint("SetTextI18n")
   private fun render(uiState: EpisodeDetailsUiState) {
     uiState.run {
-      with(view) {
+      with(binding) {
         dateFormat?.let {
           val millis = episode.firstAired?.toInstant()?.toEpochMilli() ?: -1
           val date = if (millis == -1L) {
@@ -272,7 +262,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
   }
 
   private fun renderEpisodes(episodes: List<Episode>) {
-    with(view.episodeDetailsTabs) {
+    with(binding.episodeDetailsTabs) {
       removeAllTabs()
       removeOnTabSelectedListener(tabSelectedListener)
       episodes.forEach {
@@ -300,8 +290,8 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
   private fun renderSnackbar(message: MessageEvent) {
     message.consume()?.let {
       when (message.type) {
-        INFO -> view.episodeDetailsSnackbarHost.showInfoSnackbar(getString(it))
-        ERROR -> view.episodeDetailsSnackbarHost.showErrorSnackbar(getString(it))
+        INFO -> binding.episodeDetailsSnackbarHost.showInfoSnackbar(getString(it))
+        ERROR -> binding.episodeDetailsSnackbarHost.showErrorSnackbar(getString(it))
       }
     }
   }
@@ -318,7 +308,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
 
   private val tabSelectedListener = object : TabLayout.OnTabSelectedListener {
     override fun onTabSelected(tab: TabLayout.Tab?) {
-      view.episodeDetailsTabs.removeOnTabSelectedListener(this)
+      binding.episodeDetailsTabs.removeOnTabSelectedListener(this)
       closeSheet()
       setFragmentResult(REQUEST_EPISODE_DETAILS, bundleOf(ACTION_EPISODE_TAB_SELECTED to tab?.tag))
     }

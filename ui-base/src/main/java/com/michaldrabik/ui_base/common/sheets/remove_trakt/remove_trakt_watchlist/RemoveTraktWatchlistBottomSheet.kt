@@ -1,12 +1,10 @@
 package com.michaldrabik.ui_base.common.sheets.remove_trakt.remove_trakt_watchlist
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet
 import com.michaldrabik.ui_base.databinding.ViewRemoveTraktWatchlistBinding
@@ -17,23 +15,17 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_REMOVE_TRAKT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.RESULT
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
-class RemoveTraktWatchlistBottomSheet : RemoveTraktBottomSheet<RemoveTraktWatchlistViewModel>() {
+class RemoveTraktWatchlistBottomSheet : RemoveTraktBottomSheet<RemoveTraktWatchlistViewModel>(R.layout.view_remove_trakt_watchlist) {
 
-  override val layoutResId = R.layout.view_remove_trakt_watchlist
-  private val view by lazy { viewBinding as ViewRemoveTraktWatchlistBinding }
-
-  override fun createViewModel() = ViewModelProvider(this)[RemoveTraktWatchlistViewModel::class.java]
-
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    val view = super.onCreateView(inflater, container, savedInstanceState)
-    return createViewBinding(ViewRemoveTraktWatchlistBinding.bind(view))
-  }
+  private val viewModel by viewModels<RemoveTraktWatchlistViewModel>()
+  private val binding by viewBinding(ViewRemoveTraktWatchlistBinding::bind)
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -46,7 +38,7 @@ class RemoveTraktWatchlistBottomSheet : RemoveTraktBottomSheet<RemoveTraktWatchl
   }
 
   private fun setupView() {
-    with(view) {
+    with(binding) {
       viewRemoveTraktWatchlistButtonNo.onClick {
         setFragmentResult(REQUEST_REMOVE_TRAKT, bundleOf(RESULT to false))
         closeSheet()
@@ -60,7 +52,7 @@ class RemoveTraktWatchlistBottomSheet : RemoveTraktBottomSheet<RemoveTraktWatchl
   private fun render(uiState: RemoveTraktWatchlistUiState) {
     uiState.run {
       isLoading?.let {
-        with(view) {
+        with(binding) {
           viewRemoveTraktWatchlistProgress.visibleIf(it)
           viewRemoveTraktWatchlistButtonNo.visibleIf(!it, gone = false)
           viewRemoveTraktWatchlistButtonNo.isClickable = !it
@@ -80,8 +72,8 @@ class RemoveTraktWatchlistBottomSheet : RemoveTraktBottomSheet<RemoveTraktWatchl
   private fun renderSnackbar(message: MessageEvent) {
     message.consume()?.let {
       when (message.type) {
-        Type.INFO -> view.viewRemoveTraktWatchlistSnackHost.showInfoSnackbar(getString(it))
-        Type.ERROR -> view.viewRemoveTraktWatchlistSnackHost.showErrorSnackbar(getString(it))
+        Type.INFO -> binding.viewRemoveTraktWatchlistSnackHost.showInfoSnackbar(getString(it))
+        Type.ERROR -> binding.viewRemoveTraktWatchlistSnackHost.showErrorSnackbar(getString(it))
       }
     }
   }

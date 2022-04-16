@@ -2,26 +2,22 @@ package com.michaldrabik.ui_comments.post
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.os.bundleOf
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.setFragmentResult
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import androidx.fragment.app.viewModels
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent.Type
+import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.requireLong
 import com.michaldrabik.ui_base.utilities.extensions.requireString
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_comments.R
 import com.michaldrabik.ui_comments.databinding.ViewPostCommentBinding
 import com.michaldrabik.ui_model.IdTrakt
@@ -35,48 +31,34 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class PostCommentBottomSheet : BaseBottomSheetFragment<PostCommentViewModel>() {
+class PostCommentBottomSheet : BaseBottomSheetFragment(R.layout.view_post_comment) {
 
   private val showTraktId by lazy { IdTrakt(requireLong(ARG_SHOW_ID)) }
   private val movieTraktId by lazy { IdTrakt(requireLong(ARG_MOVIE_ID)) }
   private val episodeTraktId by lazy { IdTrakt(requireLong(ARG_EPISODE_ID)) }
-
   private val replyCommentId by lazy { IdTrakt(requireLong(ARG_COMMENT_ID)) }
   private val replyUser by lazy { requireString(ARG_REPLY_USER, default = "") }
 
-  override val layoutResId = R.layout.view_post_comment
-  private val view by lazy { viewBinding as ViewPostCommentBinding }
+  private val binding by viewBinding(ViewPostCommentBinding::bind)
+  private val viewModel by viewModels<PostCommentViewModel>()
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
-
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme)
-    val view = inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
-    return createViewBinding(ViewPostCommentBinding.bind(view))
-  }
-
-  override fun createViewModel() = ViewModelProvider(this)[PostCommentViewModel::class.java]
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
 
-    viewLifecycleOwner.lifecycleScope.launch {
-      repeatOnLifecycle(Lifecycle.State.STARTED) {
-        with(viewModel) {
-          launch { uiState.collect { render(it) } }
-          launch { messageFlow.collect { renderSnackbar(it) } }
-        }
-      }
-    }
+    launchAndRepeatStarted(
+      { viewModel.uiState.collect { render(it) } },
+      { viewModel.messageFlow.collect { renderSnackbar(it) } },
+    )
   }
 
   @SuppressLint("SetTextI18n")
   private fun setupView() {
-    with(view) {
+    with(binding) {
       viewPostCommentInputValue.doOnTextChanged { text, _, _, _ ->
         val isValid =
           !text?.trim().isNullOrEmpty() &&
@@ -104,7 +86,7 @@ class PostCommentBottomSheet : BaseBottomSheetFragment<PostCommentViewModel>() {
   private fun render(uiState: PostCommentUiState) {
     uiState.run {
       isLoading.let {
-        with(view) {
+        with(binding) {
           viewPostCommentInput.isEnabled = !it
           viewPostCommentInputValue.isEnabled = !it
           viewPostCommentSpoilersCheck.isEnabled = !it
@@ -132,8 +114,8 @@ class PostCommentBottomSheet : BaseBottomSheetFragment<PostCommentViewModel>() {
   private fun renderSnackbar(message: MessageEvent) {
     message.consume()?.let {
       when (message.type) {
-        Type.INFO -> view.viewPostCommentSnackHost.showInfoSnackbar(getString(it))
-        Type.ERROR -> view.viewPostCommentSnackHost.showErrorSnackbar(getString(it))
+        Type.INFO -> binding.viewPostCommentSnackHost.showInfoSnackbar(getString(it))
+        Type.ERROR -> binding.viewPostCommentSnackHost.showErrorSnackbar(getString(it))
       }
     }
   }

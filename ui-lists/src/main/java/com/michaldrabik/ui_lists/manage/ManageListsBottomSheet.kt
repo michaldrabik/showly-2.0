@@ -2,15 +2,12 @@ package com.michaldrabik.ui_lists.manage
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,6 +24,7 @@ import com.michaldrabik.ui_base.utilities.extensions.requireLong
 import com.michaldrabik.ui_base.utilities.extensions.requireString
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_lists.R
 import com.michaldrabik.ui_lists.databinding.ViewManageListsBinding
 import com.michaldrabik.ui_lists.manage.recycler.ManageListsAdapter
@@ -41,12 +39,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>() {
+class ManageListsBottomSheet : BaseBottomSheetFragment(R.layout.view_manage_lists) {
 
-  @Inject lateinit var eventsManager: EventsManager
-
-  override val layoutResId = R.layout.view_manage_lists
-  private val view by lazy { viewBinding as ViewManageListsBinding }
+  private val viewModel by viewModels<ManageListsViewModel>()
+  private val binding by viewBinding(ViewManageListsBinding::bind)
 
   private val itemId by lazy { IdTrakt(requireLong(ARG_ID)) }
   private val itemType by lazy { requireString(ARG_TYPE) }
@@ -54,15 +50,9 @@ class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>() {
   private var adapter: ManageListsAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
 
+  @Inject lateinit var eventsManager: EventsManager
+
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
-
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme)
-    val view = inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
-    return createViewBinding(ViewManageListsBinding.bind(view))
-  }
-
-  override fun createViewModel() = ViewModelProvider(this)[ManageListsViewModel::class.java]
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -91,7 +81,7 @@ class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>() {
         viewModel.onListItemChecked(itemId, itemType, item, isChecked)
       }
     )
-    view.viewManageListsRecycler.apply {
+    binding.viewManageListsRecycler.apply {
       adapter = this@ManageListsBottomSheet.adapter
       layoutManager = this@ManageListsBottomSheet.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
@@ -99,7 +89,7 @@ class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>() {
   }
 
   private fun setupView() {
-    with(view) {
+    with(binding) {
       viewManageListsButton.onClick { closeSheet() }
       viewManageListsCreateButton.onClick {
         setFragmentResultListener(REQUEST_CREATE_LIST) { _, _ -> viewModel.loadLists(itemId, itemType) }
@@ -116,7 +106,7 @@ class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>() {
     uiState.run {
       items?.let {
         adapter?.setItems(it)
-        view.viewManageListsEmptyView.layoutManageListsEmpty.visibleIf(it.isEmpty())
+        binding.viewManageListsEmptyView.layoutManageListsEmpty.visibleIf(it.isEmpty())
       }
     }
   }
@@ -124,7 +114,7 @@ class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>() {
   private fun handleEvent(event: Event) {
     if (event is TraktQuickSyncSuccess) {
       val text = resources.getQuantityString(R.plurals.textTraktQuickSyncComplete, event.count, event.count)
-      view.viewManageListsSnackHost.showInfoSnackbar(text)
+      binding.viewManageListsSnackHost.showInfoSnackbar(text)
     }
   }
 

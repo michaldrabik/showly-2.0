@@ -2,14 +2,11 @@ package com.michaldrabik.ui_lists.create
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
@@ -20,6 +17,7 @@ import com.michaldrabik.ui_base.utilities.extensions.optionalParcelable
 import com.michaldrabik.ui_base.utilities.extensions.shake
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_lists.R
 import com.michaldrabik.ui_lists.databinding.ViewCreateListBinding
 import com.michaldrabik.ui_model.CustomList
@@ -30,22 +28,14 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
+class CreateListBottomSheet : BaseBottomSheetFragment(R.layout.view_create_list) {
 
-  override val layoutResId = R.layout.view_create_list
-  private val view by lazy { viewBinding as ViewCreateListBinding }
+  private val viewModel by viewModels<CreateListViewModel>()
+  private val binding by viewBinding(ViewCreateListBinding::bind)
 
   private val list: CustomList? by lazy { optionalParcelable(ARG_LIST) }
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
-
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme)
-    val view = inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
-    return createViewBinding(ViewCreateListBinding.bind(view))
-  }
-
-  override fun createViewModel() = ViewModelProvider(this)[CreateListViewModel::class.java]
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -66,7 +56,7 @@ class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
 
   @SuppressLint("SetTextI18n")
   private fun setupView() {
-    with(view) {
+    with(binding) {
       viewCreateListButton.onClick { onCreateListClick() }
       if (isEditMode()) {
         viewCreateListTitle.setText(R.string.textEditList)
@@ -77,10 +67,10 @@ class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
   }
 
   private fun onCreateListClick() {
-    val name = view.viewCreateListNameValue.text?.toString() ?: ""
-    val description = view.viewCreateListDescriptionValue.text?.toString()
+    val name = binding.viewCreateListNameValue.text?.toString() ?: ""
+    val description = binding.viewCreateListDescriptionValue.text?.toString()
     if (name.trim().isBlank()) {
-      view.viewCreateListNameInput.shake()
+      binding.viewCreateListNameInput.shake()
       return
     }
     if (isEditMode()) {
@@ -94,11 +84,11 @@ class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
   private fun render(uiState: CreateListUiState) {
     uiState.run {
       listDetails?.let {
-        view.viewCreateListNameValue.setText(it.name)
-        view.viewCreateListDescriptionValue.setText(it.description)
+        binding.viewCreateListNameValue.setText(it.name)
+        binding.viewCreateListDescriptionValue.setText(it.description)
       }
       isLoading?.let {
-        with(view) {
+        with(binding) {
           viewCreateListNameInput.isEnabled = !it
           viewCreateListDescriptionInput.isEnabled = !it
           viewCreateListButton.isEnabled = !it
@@ -123,8 +113,8 @@ class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
   private fun renderSnackbar(message: MessageEvent) {
     message.consume()?.let {
       when (message.type) {
-        Type.INFO -> view.viewCreateListSnackHost.showInfoSnackbar(getString(it))
-        Type.ERROR -> view.viewCreateListSnackHost.showErrorSnackbar(getString(it))
+        Type.INFO -> binding.viewCreateListSnackHost.showInfoSnackbar(getString(it))
+        Type.ERROR -> binding.viewCreateListSnackHost.showErrorSnackbar(getString(it))
       }
     }
   }

@@ -1,16 +1,11 @@
 package com.michaldrabik.ui_base.common.sheets.context_menu
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.annotation.IdRes
-import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
-import androidx.lifecycle.ViewModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
@@ -34,6 +29,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.IdTvdb
 import com.michaldrabik.ui_model.Image
@@ -44,7 +40,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_ITEM_MENU
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_REMOVE_TRAKT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.RESULT
 
-abstract class ContextMenuBottomSheet<T : ViewModel> : BaseBottomSheetFragment<T>() {
+abstract class ContextMenuBottomSheet : BaseBottomSheetFragment(R.layout.view_context_menu) {
 
   companion object {
     fun createBundle(
@@ -56,8 +52,7 @@ abstract class ContextMenuBottomSheet<T : ViewModel> : BaseBottomSheetFragment<T
     )
   }
 
-  override val layoutResId = R.layout.view_context_menu
-  protected val view by lazy { viewBinding as ViewContextMenuBinding }
+  protected val binding by viewBinding(ViewContextMenuBinding::bind)
 
   protected val itemId by lazy { requireParcelable<IdTrakt>(ARG_ID) }
   private val showPinButtons by lazy { requireBoolean(ARG_LIST) }
@@ -74,14 +69,8 @@ abstract class ContextMenuBottomSheet<T : ViewModel> : BaseBottomSheetFragment<T
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme)
-    val view = inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
-    return createViewBinding(ViewContextMenuBinding.bind(view))
-  }
-
   protected open fun setupView() {
-    with(view) {
+    with(binding) {
       contextMenuItemDescription.setInitialLines(5)
       contextMenuItemPinButtonsLayout.visibleIf(showPinButtons)
       contextMenuItemSeparator2.visibleIf(showPinButtons)
@@ -91,12 +80,12 @@ abstract class ContextMenuBottomSheet<T : ViewModel> : BaseBottomSheetFragment<T
   }
 
   protected fun renderImage(image: Image, tvdbId: IdTvdb) {
-    Glide.with(this).clear(view.contextMenuItemImage)
+    Glide.with(this).clear(binding.contextMenuItemImage)
     var imageUrl = image.fullFileUrl
 
     if (image.status == ImageStatus.UNAVAILABLE) {
-      view.contextMenuItemPlaceholder.visible()
-      view.contextMenuItemImage.gone()
+      binding.contextMenuItemPlaceholder.visible()
+      binding.contextMenuItemImage.gone()
       return
     }
 
@@ -109,21 +98,21 @@ abstract class ContextMenuBottomSheet<T : ViewModel> : BaseBottomSheetFragment<T
       .transform(centerCropTransformation, cornersTransformation)
       .transition(DrawableTransitionOptions.withCrossFade(Config.IMAGE_FADE_DURATION_MS))
       .withSuccessListener {
-        view.contextMenuItemPlaceholder.gone()
-        view.contextMenuItemImage.visible()
+        binding.contextMenuItemPlaceholder.gone()
+        binding.contextMenuItemImage.visible()
       }
       .withFailListener {
-        view.contextMenuItemPlaceholder.visible()
-        view.contextMenuItemImage.gone()
+        binding.contextMenuItemPlaceholder.visible()
+        binding.contextMenuItemImage.gone()
       }
-      .into(view.contextMenuItemImage)
+      .into(binding.contextMenuItemImage)
   }
 
   protected fun renderSnackbar(message: MessageEvent) {
     message.consume()?.let {
       when (message.type) {
-        MessageEvent.Type.INFO -> view.contextMenuItemSnackbarHost.showInfoSnackbar(getString(it))
-        MessageEvent.Type.ERROR -> view.contextMenuItemSnackbarHost.showErrorSnackbar(getString(it))
+        MessageEvent.Type.INFO -> binding.contextMenuItemSnackbarHost.showInfoSnackbar(getString(it))
+        MessageEvent.Type.ERROR -> binding.contextMenuItemSnackbarHost.showErrorSnackbar(getString(it))
       }
     }
   }

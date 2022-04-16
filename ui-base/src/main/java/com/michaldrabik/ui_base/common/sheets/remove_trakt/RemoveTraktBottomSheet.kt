@@ -1,12 +1,8 @@
 package com.michaldrabik.ui_base.common.sheets.remove_trakt
 
 import android.content.DialogInterface
-import android.os.Bundle
 import android.os.Parcelable
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.appcompat.view.ContextThemeWrapper
+import androidx.annotation.LayoutRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.ViewModel
@@ -20,7 +16,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import kotlinx.android.parcel.Parcelize
 
-abstract class RemoveTraktBottomSheet<T : ViewModel> : BaseBottomSheetFragment<T>() {
+abstract class RemoveTraktBottomSheet<T : ViewModel>(@LayoutRes layoutResId: Int) : BaseBottomSheetFragment(layoutResId) {
 
   companion object {
     fun createBundle(itemIds: List<IdTrakt>, mode: Mode) = bundleOf(
@@ -35,11 +31,6 @@ abstract class RemoveTraktBottomSheet<T : ViewModel> : BaseBottomSheetFragment<T
   protected val itemType by lazy { requireParcelable<Mode>(ARG_TYPE) }
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
-
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme)
-    return inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
-  }
 
   override fun onCancel(dialog: DialogInterface) {
     setFragmentResult(NavigationArgs.REQUEST_REMOVE_TRAKT, bundleOf(NavigationArgs.RESULT to false))

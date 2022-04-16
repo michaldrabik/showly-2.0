@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.widget.ImageViewCompat
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
 import com.michaldrabik.ui_base.common.sheets.context_menu.events.FinishUiEvent
@@ -22,9 +22,9 @@ import kotlinx.coroutines.flow.collect
 import java.util.Locale
 
 @AndroidEntryPoint
-class ShowContextMenuBottomSheet : ContextMenuBottomSheet<ShowContextMenuViewModel>() {
+class ShowContextMenuBottomSheet : ContextMenuBottomSheet() {
 
-  override fun createViewModel() = ViewModelProvider(this)[ShowContextMenuViewModel::class.java]
+  private val viewModel by viewModels<ShowContextMenuViewModel>()
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -40,7 +40,7 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet<ShowContextMenuViewMod
 
   override fun setupView() {
     super.setupView()
-    with(view) {
+    with(binding) {
       contextMenuItemMoveToMyButton.text = getString(R.string.textMoveToMyShows)
       contextMenuItemRemoveFromMyButton.text = getString(R.string.textRemoveFromMyShows)
 
@@ -61,10 +61,10 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet<ShowContextMenuViewMod
     uiState.run {
       isLoading?.let {
         when {
-          isLoading -> view.contextMenuItemProgress.show()
-          else -> view.contextMenuItemProgress.hide()
+          isLoading -> binding.contextMenuItemProgress.show()
+          else -> binding.contextMenuItemProgress.hide()
         }
-        view.contextMenuItemButtonsLayout.visibleIf(!isLoading, gone = false)
+        binding.contextMenuItemButtonsLayout.visibleIf(!isLoading, gone = false)
       }
       item?.let {
         renderItem(it)
@@ -74,7 +74,7 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet<ShowContextMenuViewMod
   }
 
   private fun renderItem(item: ShowContextItem) {
-    with(view) {
+    with(binding) {
       contextMenuItemTitle.text =
         if (item.translation?.title.isNullOrBlank()) item.show.title
         else item.translation?.title

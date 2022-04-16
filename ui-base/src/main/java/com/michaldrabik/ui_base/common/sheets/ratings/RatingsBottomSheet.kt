@@ -2,13 +2,10 @@ package com.michaldrabik.ui_base.common.sheets.ratings
 
 import android.os.Bundle
 import android.os.Parcelable
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.views.RateValueView.Direction
@@ -22,6 +19,7 @@ import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_navigation.java.NavigationArgs
@@ -30,7 +28,7 @@ import kotlinx.android.parcel.Parcelize
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
-class RatingsBottomSheet : BaseBottomSheetFragment<RatingsSheetViewModel>() {
+class RatingsBottomSheet : BaseBottomSheetFragment(R.layout.view_rate_sheet) {
 
   companion object {
     fun createBundle(id: IdTrakt, type: Options.Type): Bundle {
@@ -41,27 +39,19 @@ class RatingsBottomSheet : BaseBottomSheetFragment<RatingsSheetViewModel>() {
     private const val INITIAL_RATING = 5
   }
 
-  override val layoutResId = R.layout.view_rate_sheet
-  private val view by lazy { viewBinding as ViewRateSheetBinding }
+  private val viewModel by viewModels<RatingsSheetViewModel>()
+  private val binding by viewBinding(ViewRateSheetBinding::bind)
 
   private val options by lazy { requireParcelable<Options>(NavigationArgs.ARG_OPTIONS) }
   private val id by lazy { options.id }
   private val type by lazy { options.type }
 
   private val starsViews by lazy {
-    with(view) { listOf(star1, star2, star3, star4, star5, star6, star7, star8, star9, star10) }
+    with(binding) { listOf(star1, star2, star3, star4, star5, star6, star7, star8, star9, star10) }
   }
   private var selectedRating = INITIAL_RATING
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
-
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme)
-    val view = inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
-    return createViewBinding(ViewRateSheetBinding.bind(view))
-  }
-
-  override fun createViewModel() = ViewModelProvider(this)[RatingsSheetViewModel::class.java]
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -78,13 +68,13 @@ class RatingsBottomSheet : BaseBottomSheetFragment<RatingsSheetViewModel>() {
   private fun setupView() {
     renderRating(INITIAL_RATING)
     starsViews.forEach { star -> star.onClick { renderRating(it.tag.toString().toInt(), animate = true) } }
-    view.viewRateSheetSaveButton.onClick { viewModel.saveRating(selectedRating, id, type) }
-    view.viewRateSheetRemoveButton.onClick { viewModel.removeRating(id, type) }
+    binding.viewRateSheetSaveButton.onClick { viewModel.saveRating(selectedRating, id, type) }
+    binding.viewRateSheetRemoveButton.onClick { viewModel.removeRating(id, type) }
   }
 
   private fun render(uiState: RatingsUiState) {
     with(uiState) {
-      with(view) {
+      with(binding) {
         isLoading?.let {
           viewRateSheetProgress.visibleIf(it)
           viewRateSheetSaveButton.visibleIf(!it, gone = false)
@@ -114,17 +104,17 @@ class RatingsBottomSheet : BaseBottomSheetFragment<RatingsSheetViewModel>() {
     }
     if (animate && currentRating != selectedRating) {
       val direction = if (currentRating > selectedRating) Direction.RIGHT else Direction.LEFT
-      view.viewRateSheetRating.setValueAnimated(selectedRating.toString(), direction)
+      binding.viewRateSheetRating.setValueAnimated(selectedRating.toString(), direction)
     } else {
-      view.viewRateSheetRating.setValue(selectedRating.toString())
+      binding.viewRateSheetRating.setValue(selectedRating.toString())
     }
   }
 
   private fun renderSnackbar(message: MessageEvent) {
     message.consume()?.let {
       when (message.type) {
-        MessageEvent.Type.INFO -> view.viewRateSheetSnackHost.showInfoSnackbar(getString(it))
-        MessageEvent.Type.ERROR -> view.viewRateSheetSnackHost.showErrorSnackbar(getString(it))
+        MessageEvent.Type.INFO -> binding.viewRateSheetSnackHost.showInfoSnackbar(getString(it))
+        MessageEvent.Type.ERROR -> binding.viewRateSheetSnackHost.showErrorSnackbar(getString(it))
       }
     }
   }

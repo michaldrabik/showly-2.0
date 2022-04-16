@@ -2,14 +2,11 @@ package com.michaldrabik.ui_gallery.custom
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -22,6 +19,7 @@ import com.michaldrabik.ui_base.utilities.extensions.requireLong
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_gallery.R
 import com.michaldrabik.ui_gallery.databinding.ViewCustomImagesBinding
 import com.michaldrabik.ui_model.IdTrakt
@@ -41,7 +39,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
-class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>() {
+class CustomImagesBottomSheet : BaseBottomSheetFragment(R.layout.view_custom_images) {
+
+  private val viewModel by viewModels<CustomImagesViewModel>()
+  private val binding by viewBinding(ViewCustomImagesBinding::bind)
 
   private val family by lazy { arguments?.getSerializable(ARG_FAMILY) as ImageFamily }
   private val showTraktId by lazy { IdTrakt(requireLong(ARG_SHOW_ID)) }
@@ -49,18 +50,7 @@ class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>()
 
   private val cornerRadius by lazy { requireContext().dimenToPx(R.dimen.customImagesCorner) }
 
-  override val layoutResId = R.layout.view_custom_images
-  private val view by lazy { viewBinding as ViewCustomImagesBinding }
-
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
-
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme)
-    val view = inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
-    return createViewBinding(ViewCustomImagesBinding.bind(view))
-  }
-
-  override fun createViewModel() = ViewModelProvider(this)[CustomImagesViewModel::class.java]
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -76,7 +66,7 @@ class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>()
   }
 
   private fun setupView() {
-    with(view) {
+    with(binding) {
       viewCustomImagesPosterLayout.onClick { showGallery(POSTER) }
       viewCustomImagesFanartLayout.onClick { showGallery(FANART) }
       viewCustomImagesPosterDelete.onClick { viewModel.deletePoster(showTraktId, movieTraktId, family) }
@@ -117,7 +107,7 @@ class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>()
     }
 
     uiState.run {
-      with(view) {
+      with(binding) {
         posterImage?.let {
           if (it.status == ImageStatus.UNAVAILABLE) {
             Glide.with(requireContext()).clear(viewCustomImagesPosterImage)

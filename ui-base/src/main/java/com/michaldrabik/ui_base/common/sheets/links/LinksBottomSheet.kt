@@ -5,12 +5,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.os.bundleOf
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
 import com.michaldrabik.ui_base.R
@@ -18,6 +15,7 @@ import com.michaldrabik.ui_base.databinding.ViewLinksBinding
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.requireParcelable
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Show
@@ -26,7 +24,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.parcel.Parcelize
 
 @AndroidEntryPoint
-class LinksBottomSheet : BaseBottomSheetFragment<LinksViewModel>() {
+class LinksBottomSheet : BaseBottomSheetFragment(R.layout.view_links) {
 
   @Parcelize
   data class Options(
@@ -48,8 +46,8 @@ class LinksBottomSheet : BaseBottomSheetFragment<LinksViewModel>() {
     }
   }
 
-  override val layoutResId = R.layout.view_links
-  private val view by lazy { viewBinding as ViewLinksBinding }
+  private val viewModel by viewModels<LinksViewModel>()
+  private val binding by viewBinding(ViewLinksBinding::bind)
 
   private val options by lazy { requireParcelable<Options>(NavigationArgs.ARG_OPTIONS) }
   private val ids by lazy { options.ids }
@@ -59,21 +57,13 @@ class LinksBottomSheet : BaseBottomSheetFragment<LinksViewModel>() {
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme)
-    val view = inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
-    return createViewBinding(ViewLinksBinding.bind(view))
-  }
-
-  override fun createViewModel() = ViewModelProvider(this)[LinksViewModel::class.java]
-
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
   }
 
   private fun setupView() {
-    with(view) {
+    with(binding) {
       viewLinksJustWatch.onClick {
         val country = viewModel.loadCountry()
         openWebUrl("https://www.justwatch.com/${country.code}/${country.justWatchQuery}?content_type=${type.type}&q=${Uri.encode(title)}")
@@ -106,7 +96,7 @@ class LinksBottomSheet : BaseBottomSheetFragment<LinksViewModel>() {
   }
 
   private fun setWebLink() {
-    view.viewLinksWebsite.run {
+    binding.viewLinksWebsite.run {
       if (website.isBlank()) {
         alpha = 0.5F
         isEnabled = false
@@ -117,7 +107,7 @@ class LinksBottomSheet : BaseBottomSheetFragment<LinksViewModel>() {
   }
 
   private fun setTraktLink() {
-    view.viewLinksTrakt.run {
+    binding.viewLinksTrakt.run {
       if (ids.trakt.id == -1L) {
         alpha = 0.5F
         isEnabled = false
@@ -128,7 +118,7 @@ class LinksBottomSheet : BaseBottomSheetFragment<LinksViewModel>() {
   }
 
   private fun setTvdbLink() {
-    view.viewLinksTvdb.run {
+    binding.viewLinksTvdb.run {
       if (ids.tvdb.id == -1L) {
         alpha = 0.5F
         isEnabled = false
@@ -144,7 +134,7 @@ class LinksBottomSheet : BaseBottomSheetFragment<LinksViewModel>() {
   }
 
   private fun setTmdbLink() {
-    view.viewLinksTmdb.run {
+    binding.viewLinksTmdb.run {
       if (ids.tmdb.id == -1L) {
         alpha = 0.5F
         isEnabled = false
@@ -160,7 +150,7 @@ class LinksBottomSheet : BaseBottomSheetFragment<LinksViewModel>() {
   }
 
   private fun setImdbLink() {
-    view.viewLinksImdb.run {
+    binding.viewLinksImdb.run {
       if (ids.imdb.id.isBlank()) {
         alpha = 0.5F
         isEnabled = false
