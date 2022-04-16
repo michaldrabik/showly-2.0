@@ -43,6 +43,8 @@ import com.michaldrabik.ui_base.events.ShowsMoviesSyncComplete
 import com.michaldrabik.ui_base.events.TraktQuickSyncSuccess
 import com.michaldrabik.ui_base.network.NetworkStatusProvider
 import com.michaldrabik.ui_base.sync.ShowsMoviesSyncWorker
+import com.michaldrabik.ui_base.utilities.ModeHost
+import com.michaldrabik.ui_base.utilities.MoviesStatusHost
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.TipsHost
@@ -73,6 +75,8 @@ class MainActivity :
   SnackbarHost,
   NavigationHost,
   TipsHost,
+  ModeHost,
+  MoviesStatusHost,
   UpdateDelegate by MainUpdateDelegate(),
   BillingDelegate by MainBillingDelegate() {
 
@@ -149,7 +153,7 @@ class MainActivity :
 
   private fun setupView() {
     with(bottomMenuView) {
-      isModeMenuEnabled = moviesEnabled()
+      isModeMenuEnabled = hasMoviesEnabled()
       onModeSelected = { setMode(it) }
     }
     viewMask.onClick { /* NOOP */ }
@@ -303,7 +307,7 @@ class MainActivity :
 
   override fun getMode() = viewModel.getMode()
 
-  override fun moviesEnabled() = viewModel.hasMoviesEnabled()
+  override fun hasMoviesEnabled() = viewModel.hasMoviesEnabled()
 
   private fun render(uiState: MainUiState) {
     uiState.run {

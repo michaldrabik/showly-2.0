@@ -16,6 +16,8 @@ import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent.Type.ERROR
 import com.michaldrabik.ui_base.utilities.MessageEvent.Type.INFO
+import com.michaldrabik.ui_base.utilities.ModeHost
+import com.michaldrabik.ui_base.utilities.MoviesStatusHost
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.TipsHost
@@ -37,11 +39,11 @@ abstract class BaseFragment<T : ViewModel>(@LayoutRes contentLayoutId: Int) :
   protected val snackbars = mutableListOf<Snackbar?>()
 
   protected var mode: Mode
-    get() = (requireActivity() as NavigationHost).getMode()
-    set(value) = (requireActivity() as NavigationHost).setMode(value)
+    get() = (requireActivity() as ModeHost).getMode()
+    set(value) = (requireActivity() as ModeHost).setMode(value)
 
   protected val moviesEnabled: Boolean
-    get() = (requireActivity() as NavigationHost).moviesEnabled()
+    get() = (requireActivity() as MoviesStatusHost).hasMoviesEnabled()
 
   override fun onResume() {
     super.onResume()

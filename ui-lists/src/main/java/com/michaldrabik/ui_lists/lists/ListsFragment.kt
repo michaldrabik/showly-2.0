@@ -24,7 +24,7 @@ import com.michaldrabik.ui_base.events.Event
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.TraktListQuickSyncSuccess
 import com.michaldrabik.ui_base.events.TraktQuickSyncSuccess
-import com.michaldrabik.ui_base.utilities.NavigationHost
+import com.michaldrabik.ui_base.utilities.ModeHost
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.disableUi
@@ -130,7 +130,7 @@ class ListsFragment :
       onCloseClickListener = { exitSearch() }
     }
     fragmentListsModeTabs.run {
-      onModeSelected = { (requireActivity() as NavigationHost).setMode(it, force = true) }
+      onModeSelected = { (requireActivity() as ModeHost).setMode(it, force = true) }
       showMovies(moviesEnabled)
       showLists(true, anchorEnd = moviesEnabled)
       selectLists()
