@@ -3,14 +3,12 @@ package com.michaldrabik.ui_base
 import android.animation.Animator
 import android.content.Context
 import android.os.Bundle
-import android.view.View
 import android.view.ViewPropertyAnimator
 import androidx.activity.addCallback
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
-import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE
 import com.google.android.material.snackbar.Snackbar.LENGTH_SHORT
@@ -30,7 +28,6 @@ abstract class BaseFragment<T : ViewModel>(@LayoutRes contentLayoutId: Int) :
   TipsHost {
 
   protected abstract val viewModel: T
-  protected var viewBinding: ViewBinding? = null
   open val navigationId: Int = 0
 
   protected var isInitialized = false
@@ -45,11 +42,6 @@ abstract class BaseFragment<T : ViewModel>(@LayoutRes contentLayoutId: Int) :
 
   protected val moviesEnabled: Boolean
     get() = (requireActivity() as NavigationHost).moviesEnabled()
-
-  protected open fun createViewBinding(binding: ViewBinding): View? {
-    viewBinding = binding
-    return binding.root
-  }
 
   override fun onResume() {
     super.onResume()
@@ -105,7 +97,6 @@ abstract class BaseFragment<T : ViewModel>(@LayoutRes contentLayoutId: Int) :
   }
 
   override fun onDestroyView() {
-    viewBinding = null
     snackbars.forEach { it?.dismiss() }
     clearAnimations()
     super.onDestroyView()

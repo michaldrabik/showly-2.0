@@ -15,7 +15,7 @@ fun Fragment.launchAndRepeatStarted(
   doAfterLaunch: (() -> Unit)? = null
 ) {
   viewLifecycleOwner.lifecycleScope.launch {
-    repeatOnLifecycle(Lifecycle.State.STARTED) {
+    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
       launchBlock.forEach {
         launch { it.invoke() }
       }

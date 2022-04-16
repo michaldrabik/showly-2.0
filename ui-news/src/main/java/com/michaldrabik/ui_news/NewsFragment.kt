@@ -6,9 +6,7 @@ import android.content.res.Configuration
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsClient
@@ -17,9 +15,6 @@ import androidx.browser.customtabs.CustomTabsServiceConnection
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
@@ -33,14 +28,15 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.enableUi
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
+import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.updateTopMargin
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.NewsItem
 import com.michaldrabik.ui_news.databinding.FragmentNewsBinding
 import com.michaldrabik.ui_news.recycler.NewsAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class NewsFragment :
@@ -52,9 +48,7 @@ class NewsFragment :
   }
 
   override val viewModel by viewModels<NewsViewModel>()
-  private val view by lazy { viewBinding as FragmentNewsBinding }
-
-  private val swipeRefreshEndOffset by lazy { requireContext().dimenToPx(R.dimen.newsSwipeRefreshEndOffset) }
+  private val binding by viewBinding(FragmentNewsBinding::bind)
 
   private var tabsService: ServiceConnection? = null
   private var tabsClient: CustomTabsClient? = null
@@ -70,9 +64,6 @@ class NewsFragment :
     }
   }
 
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-    createViewBinding(FragmentNewsBinding.inflate(inflater, container, false))
-
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
@@ -81,14 +72,10 @@ class NewsFragment :
     setupSwipeRefresh()
     setupCustomTabs()
 
-    viewLifecycleOwner.lifecycleScope.launch {
-      repeatOnLifecycle(Lifecycle.State.STARTED) {
-        with(viewModel) {
-          launch { uiState.collect { render(it) } }
-          launch { messageFlow.collect { showSnack(it) } }
-        }
-      }
-    }
+    launchAndRepeatStarted(
+      { viewModel.uiState.collect { render(it) } },
+      { viewModel.messageFlow.collect { showSnack(it) } }
+    )
   }
 
   override fun onResume() {
@@ -98,34 +85,34 @@ class NewsFragment :
 
   override fun onSaveInstanceState(outState: Bundle) {
     super.onSaveInstanceState(outState)
-    outState.putFloat(ARG_HEADER_POSITION, view.fragmentNewsHeaderView.translationY)
+    outState.putFloat(ARG_HEADER_POSITION, binding.fragmentNewsHeaderView.translationY)
   }
 
   override fun onPause() {
     enableUi()
-    headerTranslation = view.fragmentNewsHeaderView.translationY
+    headerTranslation = binding.fragmentNewsHeaderView.translationY
     super.onPause()
   }
 
   private fun setupView() {
-    with(view.fragmentNewsHeaderView) {
+    with(binding.fragmentNewsHeaderView) {
       onSettingsClickListener = { openSettings() }
       translationY = headerTranslation
     }
-    with(view.fragmentNewsFiltersView) {
+    with(binding.fragmentNewsFiltersView) {
       onChipsChangeListener = { viewModel.loadItems(false, it) }
       translationY = headerTranslation
     }
   }
 
   private fun setupStatusBar() {
-    with(view) {
+    with(binding) {
       fragmentNewsRoot.doOnApplyWindowInsets { _, insets, _, _ ->
         val statusBarSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
         fragmentNewsRecycler.updatePadding(top = dimenToPx(R.dimen.newsRecyclerTopPadding) + statusBarSize)
         fragmentNewsHeaderView.updateTopMargin(dimenToPx(R.dimen.spaceSmall) + statusBarSize)
         fragmentNewsFiltersView.updateTopMargin(dimenToPx(R.dimen.newsFiltersTopPadding) + statusBarSize)
-        fragmentNewsSwipeRefresh.setProgressViewOffset(true, 0, swipeRefreshEndOffset + statusBarSize)
+        fragmentNewsSwipeRefresh.setProgressViewOffset(true, 0, dimenToPx(R.dimen.newsSwipeRefreshEndOffset) + statusBarSize)
       }
     }
   }
@@ -138,7 +125,7 @@ class NewsFragment :
     ).apply {
       stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
     }
-    view.fragmentNewsRecycler.apply {
+    binding.fragmentNewsRecycler.apply {
       adapter = this@NewsFragment.adapter
       layoutManager = this@NewsFragment.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
@@ -148,7 +135,7 @@ class NewsFragment :
   }
 
   private fun setupSwipeRefresh() =
-    with(view.fragmentNewsSwipeRefresh) {
+    with(binding.fragmentNewsSwipeRefresh) {
       val color = requireContext().colorFromAttr(R.attr.colorAccent)
       setProgressBackgroundColorSchemeColor(requireContext().colorFromAttr(R.attr.colorSearchViewBackground))
       setColorSchemeColors(color, color, color)
@@ -220,7 +207,7 @@ class NewsFragment :
   private fun render(ui: NewsUiState) {
     with(ui) {
       adapter?.setItems(items)
-      with(view) {
+      with(binding) {
         fragmentNewsRecycler.fadeIf(items.isNotEmpty())
         fragmentNewsFiltersView.setFilters(filters)
         fragmentNewsFiltersView.fadeIf(items.isNotEmpty())
@@ -233,7 +220,7 @@ class NewsFragment :
   }
 
   private fun scrollToTop(smooth: Boolean = true) {
-    with(view) {
+    with(binding) {
       fragmentNewsHeaderView.animate().translationY(0F).start()
       fragmentNewsFiltersView.animate().translationY(0F).start()
       when {
