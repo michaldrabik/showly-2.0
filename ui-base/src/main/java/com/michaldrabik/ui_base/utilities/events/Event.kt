@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_base.utilities
+package com.michaldrabik.ui_base.utilities.events
 
 open class Event<T>(
   private val action: T,

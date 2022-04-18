@@ -8,8 +8,8 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.ui_base.trakt.TraktSyncStatusProvider
-import com.michaldrabik.ui_base.utilities.Event
-import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.events.Event
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
@@ -144,7 +144,7 @@ class DiscoverViewModel @Inject constructor(
 
   private suspend fun onError(error: Throwable) {
     if (error !is CancellationException) {
-      messageChannel.send(MessageEvent.error(R.string.errorCouldNotLoadDiscover))
+      messageChannel.send(MessageEvent.Error(R.string.errorCouldNotLoadDiscover))
       Timber.e(error)
     }
     rethrowCancellation(error)

@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_base.viewmodel
 
-import com.michaldrabik.ui_base.utilities.Event
-import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.events.Event
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 

@@ -5,7 +5,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.viewModelScope
 import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.repository.movies.MoviesRepository
-import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Ids

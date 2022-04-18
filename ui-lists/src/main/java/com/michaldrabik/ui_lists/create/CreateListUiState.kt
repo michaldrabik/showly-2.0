@@ -1,6 +1,6 @@
 package com.michaldrabik.ui_lists.create
 
-import com.michaldrabik.ui_base.utilities.Event
+import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_model.CustomList
 
 data class CreateListUiState(

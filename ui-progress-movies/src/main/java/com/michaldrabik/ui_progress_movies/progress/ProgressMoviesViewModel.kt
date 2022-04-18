@@ -10,8 +10,8 @@ import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.Logger
-import com.michaldrabik.ui_base.utilities.Event
-import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.events.Event
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
@@ -143,10 +143,10 @@ class ProgressMoviesViewModel @Inject constructor(
       try {
         val token = userTraktManager.checkAuthorization().token
         ratingsRepository.movies.addRating(token, movie, rating)
-        messageChannel.send(MessageEvent.info(R.string.textRateSaved))
+        messageChannel.send(MessageEvent.Info(R.string.textRateSaved))
         Analytics.logMovieRated(movie, rating)
       } catch (error: Throwable) {
-        messageChannel.send(MessageEvent.error(R.string.errorGeneral))
+        messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
       }
     }
   }

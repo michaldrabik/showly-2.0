@@ -13,8 +13,8 @@ import com.michaldrabik.ui_base.common.sheets.context_menu.movie.cases.MovieCont
 import com.michaldrabik.ui_base.common.sheets.context_menu.movie.cases.MovieContextMenuPinnedCase
 import com.michaldrabik.ui_base.common.sheets.context_menu.movie.cases.MovieContextMenuWatchlistCase
 import com.michaldrabik.ui_base.common.sheets.context_menu.movie.helpers.MovieContextItem
-import com.michaldrabik.ui_base.utilities.Event
-import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.events.Event
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
 import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
@@ -56,7 +56,7 @@ class MovieContextMenuViewModel @Inject constructor(
         val item = loadItemCase.loadItem(idTrakt)
         itemState.value = item
       } catch (error: Throwable) {
-        messageChannel.send(MessageEvent.error(R.string.errorGeneral))
+        messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
       } finally {
         loadingState.value = false
       }
@@ -154,7 +154,7 @@ class MovieContextMenuViewModel @Inject constructor(
 
   private suspend fun onError(error: Throwable) {
     loadingState.value = false
-    messageChannel.send(MessageEvent.error(R.string.errorGeneral))
+    messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
     rethrowCancellation(error)
   }
 

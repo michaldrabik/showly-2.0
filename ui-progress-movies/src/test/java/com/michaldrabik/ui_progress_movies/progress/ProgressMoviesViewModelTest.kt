@@ -8,8 +8,8 @@ import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.settings.SettingsRepository
-import com.michaldrabik.ui_base.utilities.Event
-import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.events.Event
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_model.SortOrder

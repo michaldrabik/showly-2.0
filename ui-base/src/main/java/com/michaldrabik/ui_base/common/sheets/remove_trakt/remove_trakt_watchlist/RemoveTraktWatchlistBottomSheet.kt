@@ -8,8 +8,7 @@ import androidx.fragment.app.viewModels
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet
 import com.michaldrabik.ui_base.databinding.ViewRemoveTraktWatchlistBinding
-import com.michaldrabik.ui_base.utilities.MessageEvent
-import com.michaldrabik.ui_base.utilities.MessageEvent.Type
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
@@ -70,11 +69,9 @@ class RemoveTraktWatchlistBottomSheet : RemoveTraktBottomSheet<RemoveTraktWatchl
   }
 
   private fun renderSnackbar(message: MessageEvent) {
-    message.consume()?.let {
-      when (message.type) {
-        Type.INFO -> binding.viewRemoveTraktWatchlistSnackHost.showInfoSnackbar(getString(it))
-        Type.ERROR -> binding.viewRemoveTraktWatchlistSnackHost.showErrorSnackbar(getString(it))
-      }
+    when (message) {
+      is MessageEvent.Info -> binding.viewRemoveTraktWatchlistSnackHost.showInfoSnackbar(getString(message.textRestId))
+      is MessageEvent.Error -> binding.viewRemoveTraktWatchlistSnackHost.showErrorSnackbar(getString(message.textRestId))
     }
   }
 }

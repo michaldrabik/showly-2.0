@@ -2,8 +2,8 @@ package com.michaldrabik.ui_lists.create
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.ui_base.utilities.Event
-import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.events.Event
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
 import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
@@ -45,7 +45,7 @@ class CreateListViewModel @Inject constructor(
         val list = createListCase.createList(name, description)
         listUpdateState.value = Event(list)
       } catch (error: Throwable) {
-        messageChannel.send(MessageEvent.error(R.string.errorCouldNotCreateList))
+        messageChannel.send(MessageEvent.Error(R.string.errorCouldNotCreateList))
         loadingState.value = false
       }
     }
@@ -60,7 +60,7 @@ class CreateListViewModel @Inject constructor(
         val updatedList = createListCase.updateList(list)
         listUpdateState.value = Event(updatedList)
       } catch (error: Throwable) {
-        messageChannel.send(MessageEvent.error(R.string.errorCouldNotUpdateList))
+        messageChannel.send(MessageEvent.Error(R.string.errorCouldNotUpdateList))
         detailsState.value = list
         loadingState.value = false
       }

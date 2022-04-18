@@ -22,8 +22,8 @@ import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
 import com.michaldrabik.ui_base.trakt.TraktSyncService
-import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.NavigationHost
+import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets

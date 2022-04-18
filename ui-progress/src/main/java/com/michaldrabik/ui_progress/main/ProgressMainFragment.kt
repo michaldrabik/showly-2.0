@@ -22,7 +22,7 @@ import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Operation
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Type
 import com.michaldrabik.ui_base.common.views.exSearchLocalViewInput
-import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.disableUi
@@ -274,8 +274,8 @@ class ProgressMainFragment :
   fun openRateDialog(episodeBundle: EpisodeBundle) {
     setFragmentResultListener(NavigationArgs.REQUEST_RATING) { _, bundle ->
       when (bundle.getParcelable<Operation>(NavigationArgs.RESULT)) {
-        Operation.SAVE -> showSnack(MessageEvent.info(R.string.textRateSaved))
-        Operation.REMOVE -> showSnack(MessageEvent.info(R.string.textRateRemoved))
+        Operation.SAVE -> showSnack(MessageEvent.Info(R.string.textRateSaved))
+        Operation.REMOVE -> showSnack(MessageEvent.Info(R.string.textRateRemoved))
         else -> Timber.w("Unknown result")
       }
       viewModel.setWatchedEpisode(episodeBundle)

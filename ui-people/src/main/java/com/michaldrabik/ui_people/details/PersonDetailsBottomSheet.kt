@@ -15,8 +15,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
 import com.michaldrabik.ui_base.common.FastLinearLayoutManager
-import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.TipsHost
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
@@ -160,11 +160,9 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_person_de
   }
 
   private fun renderSnackbar(message: MessageEvent) {
-    message.consume()?.let {
-      when (message.type) {
-        MessageEvent.Type.INFO -> binding.viewPersonDetailsRoot.showInfoSnackbar(getString(it))
-        MessageEvent.Type.ERROR -> binding.viewPersonDetailsRoot.showErrorSnackbar(getString(it))
-      }
+    when (message) {
+      is MessageEvent.Info -> binding.viewPersonDetailsRoot.showInfoSnackbar(getString(message.textRestId))
+      is MessageEvent.Error -> binding.viewPersonDetailsRoot.showErrorSnackbar(getString(message.textRestId))
     }
   }
 

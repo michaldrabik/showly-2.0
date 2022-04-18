@@ -46,9 +46,9 @@ import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Operation.SAVE
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Type
 import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet
-import com.michaldrabik.ui_base.utilities.Event
-import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.SnackbarHost
+import com.michaldrabik.ui_base.utilities.events.Event
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.copyToClipboard
@@ -223,7 +223,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     showDetailsHideLabel.onClick { viewModel.addHiddenShow() }
     showDetailsTitle.onClick {
       requireContext().copyToClipboard(showDetailsTitle.text.toString())
-      showSnack(MessageEvent.info(R.string.textCopiedToClipboard))
+      showSnack(MessageEvent.Info(R.string.textCopiedToClipboard))
     }
     showDetailsPremiumAd.onClick {
       navigateToSafe(R.id.actionShowDetailsFragmentToPremium)
@@ -387,7 +387,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           isEnabled = show.trailer.isNotBlank()
           alpha = if (isEnabled) 1.0F else 0.35F
           onClick {
-            openWebUrl(show.trailer) ?: showSnack(MessageEvent.info(R.string.errorCouldNotFindApp))
+            openWebUrl(show.trailer) ?: showSnack(MessageEvent.Info(R.string.errorCouldNotFindApp))
             Analytics.logShowTrailerClick(show)
           }
         }
@@ -466,7 +466,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       if (rating.rateAllowed == true) {
         openRateDialog()
       } else {
-        showSnack(MessageEvent.info(R.string.textSignBeforeRate))
+        showSnack(MessageEvent.Info(R.string.textSignBeforeRate))
       }
     }
   }
@@ -581,7 +581,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       if (seasonsItems.any { !it.season.isSpecial() }) {
         openQuickSetupDialog(seasonsItems.map { it.season })
       } else {
-        showSnack(MessageEvent.info(R.string.textSeasonsEmpty))
+        showSnack(MessageEvent.Info(R.string.textSeasonsEmpty))
       }
     }
   }
@@ -638,14 +638,12 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   }
 
   private fun renderSnack(event: MessageEvent) {
-    if (event.peek() == R.string.errorMalformedShow) {
-      event.consume()?.let {
-        val host = (requireActivity() as SnackbarHost).provideSnackbarLayout()
-        val snack = host.showInfoSnackbar(getString(it), length = Snackbar.LENGTH_INDEFINITE) {
-          viewModel.removeMalformedShow(showId)
-        }
-        snackbars.add(snack)
+    if (event.textResId == R.string.errorMalformedShow) {
+      val host = (requireActivity() as SnackbarHost).provideSnackbarLayout()
+      val snack = host.showInfoSnackbar(getString(event.textResId), length = Snackbar.LENGTH_INDEFINITE) {
+        viewModel.removeMalformedShow(showId)
       }
+      snackbars.add(snack)
       return
     }
     showSnack(event)
@@ -658,7 +656,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       startActivity(i)
     } catch (e: ActivityNotFoundException) {
       // IMDb App not installed. Start in web browser
-      openWebUrl("http://www.imdb.com/$type/${id.id}") ?: showSnack(MessageEvent.info(R.string.errorCouldNotFindApp))
+      openWebUrl("http://www.imdb.com/$type/${id.id}") ?: showSnack(MessageEvent.Info(R.string.errorCouldNotFindApp))
     }
   }
 
@@ -670,7 +668,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     if (link == ShowLink.IMDB) {
       openIMDbLink(IdImdb(id), "title")
     } else {
-      openWebUrl(link.getUri(id, country)) ?: showSnack(MessageEvent.info(R.string.errorCouldNotFindApp))
+      openWebUrl(link.getUri(id, country)) ?: showSnack(MessageEvent.Info(R.string.errorCouldNotFindApp))
     }
   }
 
@@ -712,7 +710,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private fun openPostCommentSheet(comment: Comment? = null) {
     setFragmentResultListener(REQUEST_COMMENT) { _, bundle ->
-      showSnack(MessageEvent.info(R.string.textCommentPosted))
+      showSnack(MessageEvent.Info(R.string.textCommentPosted))
       when (bundle.getString(ARG_COMMENT_ACTION)) {
         ACTION_NEW_COMMENT -> {
           val newComment = bundle.getParcelable<Comment>(ARG_COMMENT)!!
@@ -785,8 +783,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private fun openRateDialog() {
     setFragmentResultListener(NavigationArgs.REQUEST_RATING) { _, bundle ->
       when (bundle.getParcelable<RatingsBottomSheet.Options.Operation>(NavigationArgs.RESULT)) {
-        SAVE -> renderSnack(MessageEvent.info(R.string.textRateSaved))
-        REMOVE -> renderSnack(MessageEvent.info(R.string.textRateRemoved))
+        SAVE -> renderSnack(MessageEvent.Info(R.string.textRateSaved))
+        REMOVE -> renderSnack(MessageEvent.Info(R.string.textRateRemoved))
         else -> Timber.w("Unknown result")
       }
       viewModel.loadRating()
@@ -798,8 +796,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private fun openRateSeasonDialog(season: Season) {
     setFragmentResultListener(NavigationArgs.REQUEST_RATING) { _, bundle ->
       when (bundle.getParcelable<RatingsBottomSheet.Options.Operation>(NavigationArgs.RESULT)) {
-        SAVE -> renderSnack(MessageEvent.info(R.string.textRateSaved))
-        REMOVE -> renderSnack(MessageEvent.info(R.string.textRateRemoved))
+        SAVE -> renderSnack(MessageEvent.Info(R.string.textRateSaved))
+        REMOVE -> renderSnack(MessageEvent.Info(R.string.textRateRemoved))
         else -> Timber.w("Unknown result")
       }
       viewModel.refreshEpisodesRatings()

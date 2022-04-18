@@ -44,8 +44,8 @@ import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Operation
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Type
 import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet
-import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.SnackbarHost
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.copyToClipboard
@@ -205,7 +205,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     movieDetailsHideLabel.onClick { viewModel.addHiddenMovie() }
     movieDetailsTitle.onClick {
       requireContext().copyToClipboard(movieDetailsTitle.text.toString())
-      showSnack(MessageEvent.info(R.string.textCopiedToClipboard))
+      showSnack(MessageEvent.Info(R.string.textCopiedToClipboard))
     }
     movieDetailsPremiumAd.onClick {
       navigateTo(R.id.actionMovieDetailsFragmentToPremium)
@@ -326,7 +326,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
           isEnabled = movie.trailer.isNotBlank()
           alpha = if (isEnabled) 1.0F else 0.35F
           onClick {
-            openWebUrl(movie.trailer) ?: showSnack(MessageEvent.info(R.string.errorCouldNotFindApp))
+            openWebUrl(movie.trailer) ?: showSnack(MessageEvent.Info(R.string.errorCouldNotFindApp))
             Analytics.logMovieTrailerClick(movie)
           }
         }
@@ -412,7 +412,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       if (rating.rateAllowed == true) {
         openRateDialog()
       } else {
-        showSnack(MessageEvent.info(R.string.textSignBeforeRateMovie))
+        showSnack(MessageEvent.Info(R.string.textSignBeforeRateMovie))
       }
     }
   }
@@ -525,7 +525,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   }
 
   private fun renderSnack(event: MessageEvent) {
-    if (event.peek() == R.string.errorMalformedMovie) {
+    if (event.textResId == R.string.errorMalformedMovie) {
       event.consume()?.let {
         val host = (requireActivity() as SnackbarHost).provideSnackbarLayout()
         val snack = host.showInfoSnackbar(getString(it), length = Snackbar.LENGTH_INDEFINITE) {
@@ -545,7 +545,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       startActivity(i)
     } catch (e: ActivityNotFoundException) {
       // IMDb App not installed. Start in web browser
-      openWebUrl("http://www.imdb.com/$type/${id.id}") ?: showSnack(MessageEvent.info(R.string.errorCouldNotFindApp))
+      openWebUrl("http://www.imdb.com/$type/${id.id}") ?: showSnack(MessageEvent.Info(R.string.errorCouldNotFindApp))
     }
   }
 
@@ -557,7 +557,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     if (link == IMDB) {
       openIMDbLink(IdImdb(id), "title")
     } else {
-      openWebUrl(link.getUri(id, country)) ?: showSnack(MessageEvent.info(R.string.errorCouldNotFindApp))
+      openWebUrl(link.getUri(id, country)) ?: showSnack(MessageEvent.Info(R.string.errorCouldNotFindApp))
     }
   }
 
@@ -610,8 +610,8 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   private fun openRateDialog() {
     setFragmentResultListener(NavigationArgs.REQUEST_RATING) { _, bundle ->
       when (bundle.getParcelable<Operation>(NavigationArgs.RESULT)) {
-        Operation.SAVE -> renderSnack(MessageEvent.info(R.string.textRateSaved))
-        Operation.REMOVE -> renderSnack(MessageEvent.info(R.string.textRateRemoved))
+        Operation.SAVE -> renderSnack(MessageEvent.Info(R.string.textRateSaved))
+        Operation.REMOVE -> renderSnack(MessageEvent.Info(R.string.textRateRemoved))
         else -> Timber.w("Unknown result.")
       }
       viewModel.loadRating()
@@ -659,7 +659,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 
   private fun openPostCommentSheet(comment: Comment? = null) {
     setFragmentResultListener(REQUEST_COMMENT) { _, bundle ->
-      showSnack(MessageEvent.info(R.string.textCommentPosted))
+      showSnack(MessageEvent.Info(R.string.textCommentPosted))
       when (bundle.getString(ARG_COMMENT_ACTION)) {
         ACTION_NEW_COMMENT -> {
           val newComment = bundle.getParcelable<Comment>(ARG_COMMENT)!!

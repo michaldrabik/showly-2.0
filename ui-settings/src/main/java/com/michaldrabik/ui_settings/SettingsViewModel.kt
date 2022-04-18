@@ -9,7 +9,7 @@ import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.dates.AppDateFormat
-import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
@@ -259,14 +259,14 @@ class SettingsViewModel @Inject constructor(
         traktCase.enableTraktQuickRemove(true)
         refreshSettings()
         preloadRatings()
-        messageChannel.send(MessageEvent.info(R.string.textTraktLoginSuccess))
+        messageChannel.send(MessageEvent.Info(R.string.textTraktLoginSuccess))
         Analytics.logTraktLogin()
       } catch (error: Throwable) {
         val message = when {
           error is HttpException && error.code() == 423 -> R.string.errorTraktLocked
           else -> R.string.errorAuthorization
         }
-        messageChannel.send(MessageEvent.error(message))
+        messageChannel.send(MessageEvent.Error(message))
         Logger.record(error, "Source" to "SettingsViewModel::authorizeTrakt()")
       } finally {
         signingInState.value = false
@@ -277,7 +277,7 @@ class SettingsViewModel @Inject constructor(
   fun logoutTrakt() {
     viewModelScope.launch {
       traktCase.logoutTrakt()
-      messageChannel.send(MessageEvent.info(R.string.textTraktLogoutSuccess))
+      messageChannel.send(MessageEvent.Info(R.string.textTraktLogoutSuccess))
       refreshSettings()
       Analytics.logTraktLogout()
     }
@@ -299,7 +299,7 @@ class SettingsViewModel @Inject constructor(
       withContext(IO) { Glide.get(context).clearDiskCache() }
       Glide.get(context).clearMemory()
       mainCase.deleteImagesCache()
-      messageChannel.send(MessageEvent.info(R.string.textImagesCacheCleared))
+      messageChannel.send(MessageEvent.Info(R.string.textImagesCacheCleared))
     }
   }
 

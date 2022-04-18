@@ -10,8 +10,8 @@ import com.michaldrabik.ui_base.BaseBottomSheetFragment
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.views.RateValueView.Direction
 import com.michaldrabik.ui_base.databinding.ViewRateSheetBinding
-import com.michaldrabik.ui_base.utilities.Event
-import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.events.Event
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.requireParcelable
@@ -59,8 +59,8 @@ class RatingsBottomSheet : BaseBottomSheetFragment(R.layout.view_rate_sheet) {
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
-      { viewModel.eventFlow.collect { handleEvent(it) } },
       { viewModel.messageFlow.collect { renderSnackbar(it) } },
+      { viewModel.eventFlow.collect { handleEvent(it) } },
       doAfterLaunch = { viewModel.loadRating(id, type) }
     )
   }
@@ -111,11 +111,9 @@ class RatingsBottomSheet : BaseBottomSheetFragment(R.layout.view_rate_sheet) {
   }
 
   private fun renderSnackbar(message: MessageEvent) {
-    message.consume()?.let {
-      when (message.type) {
-        MessageEvent.Type.INFO -> binding.viewRateSheetSnackHost.showInfoSnackbar(getString(it))
-        MessageEvent.Type.ERROR -> binding.viewRateSheetSnackHost.showErrorSnackbar(getString(it))
-      }
+    when (message) {
+      is MessageEvent.Info -> binding.viewRateSheetSnackHost.showInfoSnackbar(getString(message.textRestId))
+      is MessageEvent.Error -> binding.viewRateSheetSnackHost.showErrorSnackbar(getString(message.textRestId))
     }
   }
 

@@ -27,7 +27,7 @@ import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.OnTraktAuthorizeListener
 import com.michaldrabik.ui_base.dates.AppDateFormat
 import com.michaldrabik.ui_base.dates.DateFormatProvider
-import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.expandTouch
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
@@ -508,7 +508,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
   }
 
   private fun openWebLink(url: String) {
-    openWebUrl(url) ?: showSnack(MessageEvent.info(R.string.errorCouldNotFindApp))
+    openWebUrl(url) ?: showSnack(MessageEvent.Info(R.string.errorCouldNotFindApp))
   }
 
   override fun onAuthorizationResult(authData: Uri?) = viewModel.authorizeTrakt(authData)

@@ -6,7 +6,7 @@ import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.common.Mode
 import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.images.ShowImagesProvider
-import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageStatus
 import com.michaldrabik.ui_model.ImageType

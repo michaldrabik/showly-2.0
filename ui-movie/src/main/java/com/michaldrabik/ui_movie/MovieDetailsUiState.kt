@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_movie
 
 import com.michaldrabik.ui_base.common.AppCountry
-import com.michaldrabik.ui_base.utilities.Event
+import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Movie

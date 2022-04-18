@@ -24,10 +24,7 @@ import com.michaldrabik.ui_base.BaseBottomSheetFragment
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Operation
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Type
-import com.michaldrabik.ui_base.utilities.MessageEvent
-import com.michaldrabik.ui_base.utilities.MessageEvent.Companion.info
-import com.michaldrabik.ui_base.utilities.MessageEvent.Type.ERROR
-import com.michaldrabik.ui_base.utilities.MessageEvent.Type.INFO
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
@@ -145,8 +142,8 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
   private fun openRateDialog() {
     setFragmentResultListener(NavigationArgs.REQUEST_RATING) { _, bundle ->
       when (bundle.getParcelable<Operation>(NavigationArgs.RESULT)) {
-        Operation.SAVE -> renderSnackbar(info(R.string.textRateSaved))
-        Operation.REMOVE -> renderSnackbar(info(R.string.textRateRemoved))
+        Operation.SAVE -> renderSnackbar(MessageEvent.Info(R.string.textRateSaved))
+        Operation.REMOVE -> renderSnackbar(MessageEvent.Info(R.string.textRateRemoved))
         else -> Timber.w("Unknown result.")
       }
       viewModel.loadRatings(episode)
@@ -158,7 +155,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
 
   private fun openPostCommentSheet(comment: Comment? = null) {
     setFragmentResultListener(REQUEST_COMMENT) { _, bundle ->
-      renderSnackbar(info(R.string.textCommentPosted))
+      renderSnackbar(MessageEvent.Info(R.string.textCommentPosted))
       when (bundle.getString(ARG_COMMENT_ACTION)) {
         ACTION_NEW_COMMENT -> {
           val newComment = bundle.getParcelable<Comment>(ARG_COMMENT)!!
@@ -236,7 +233,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
             if (state.rateAllowed == true) {
               openRateDialog()
             } else {
-              renderSnackbar(info(R.string.textSignBeforeRate))
+              renderSnackbar(MessageEvent.Info(R.string.textSignBeforeRate))
             }
           }
           if (state.hasRating()) {
@@ -288,11 +285,9 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
   }
 
   private fun renderSnackbar(message: MessageEvent) {
-    message.consume()?.let {
-      when (message.type) {
-        INFO -> binding.episodeDetailsSnackbarHost.showInfoSnackbar(getString(it))
-        ERROR -> binding.episodeDetailsSnackbarHost.showErrorSnackbar(getString(it))
-      }
+    when (message) {
+      is MessageEvent.Info -> binding.episodeDetailsSnackbarHost.showInfoSnackbar(getString(message.textRestId))
+      is MessageEvent.Error -> binding.episodeDetailsSnackbarHost.showErrorSnackbar(getString(message.textRestId))
     }
   }
 

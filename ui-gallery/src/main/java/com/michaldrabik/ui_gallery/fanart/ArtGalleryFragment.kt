@@ -20,7 +20,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.michaldrabik.ui_base.BaseFragment
-import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.colorStateListFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.gone
@@ -173,14 +173,14 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
             artGallerySelectButton.visible()
           }
           .withFailListener {
-            showSnack(MessageEvent.error(R.string.textUrlDialogInvalidImage))
+            showSnack(MessageEvent.Error(R.string.textUrlDialogInvalidImage))
             artGalleryUrlProgress.gone()
             artGalleryUrlButton.visible()
             artGallerySelectButton.visible()
           }
           .preload(100, 100)
       } else {
-        showSnack(MessageEvent.error(R.string.textUrlDialogInvalidUrl))
+        showSnack(MessageEvent.Error(R.string.textUrlDialogInvalidUrl))
       }
     }
 

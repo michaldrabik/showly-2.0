@@ -16,8 +16,8 @@ import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet
 import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet.Mode
 import com.michaldrabik.ui_base.databinding.ViewContextMenuBinding
-import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.SnackbarHost
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -109,11 +109,9 @@ abstract class ContextMenuBottomSheet : BaseBottomSheetFragment(R.layout.view_co
   }
 
   protected fun renderSnackbar(message: MessageEvent) {
-    message.consume()?.let {
-      when (message.type) {
-        MessageEvent.Type.INFO -> binding.contextMenuItemSnackbarHost.showInfoSnackbar(getString(it))
-        MessageEvent.Type.ERROR -> binding.contextMenuItemSnackbarHost.showErrorSnackbar(getString(it))
-      }
+    when (message) {
+      is MessageEvent.Info -> binding.contextMenuItemSnackbarHost.showInfoSnackbar(getString(message.textRestId))
+      is MessageEvent.Error -> binding.contextMenuItemSnackbarHost.showErrorSnackbar(getString(message.textRestId))
     }
   }
 

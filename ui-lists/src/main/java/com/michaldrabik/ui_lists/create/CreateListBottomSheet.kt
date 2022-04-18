@@ -10,8 +10,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
-import com.michaldrabik.ui_base.utilities.MessageEvent
-import com.michaldrabik.ui_base.utilities.MessageEvent.Type
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.optionalParcelable
 import com.michaldrabik.ui_base.utilities.extensions.shake
@@ -111,11 +110,9 @@ class CreateListBottomSheet : BaseBottomSheetFragment(R.layout.view_create_list)
   }
 
   private fun renderSnackbar(message: MessageEvent) {
-    message.consume()?.let {
-      when (message.type) {
-        Type.INFO -> binding.viewCreateListSnackHost.showInfoSnackbar(getString(it))
-        Type.ERROR -> binding.viewCreateListSnackHost.showErrorSnackbar(getString(it))
-      }
+    when (message) {
+      is MessageEvent.Info -> binding.viewCreateListSnackHost.showInfoSnackbar(getString(message.textRestId))
+      is MessageEvent.Error -> binding.viewCreateListSnackHost.showErrorSnackbar(getString(message.textRestId))
     }
   }
 

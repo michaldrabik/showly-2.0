@@ -3,7 +3,7 @@ package com.michaldrabik.ui_news
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
 import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
@@ -82,7 +82,7 @@ class NewsViewModel @Inject constructor(
         }
       } catch (error: Throwable) {
         Timber.e(error)
-        messageChannel.send(MessageEvent.error(R.string.errorGeneral))
+        messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
         loadingState.value = false
         rethrowCancellation(error)
       } finally {

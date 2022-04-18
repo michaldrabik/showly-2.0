@@ -7,7 +7,7 @@ import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.ui_base.Logger
-import com.michaldrabik.ui_base.utilities.Event
+import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate

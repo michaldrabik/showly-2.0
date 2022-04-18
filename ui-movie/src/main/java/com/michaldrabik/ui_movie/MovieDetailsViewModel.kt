@@ -10,8 +10,8 @@ import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
-import com.michaldrabik.ui_base.utilities.Event
-import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.events.Event
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
@@ -144,9 +144,9 @@ class MovieDetailsViewModel @Inject constructor(
         progressJob.cancel()
         if (error is HttpException && error.code() == 404) {
           // Malformed Trakt data or duplicate show.
-          messageChannel.send(MessageEvent.info(R.string.errorMalformedMovie))
+          messageChannel.send(MessageEvent.Info(R.string.errorMalformedMovie))
         } else {
-          messageChannel.send(MessageEvent.error(R.string.errorCouldNotLoadMovie))
+          messageChannel.send(MessageEvent.Error(R.string.errorCouldNotLoadMovie))
         }
         Logger.record(error, "Source" to "MovieDetailsViewModel")
         rethrowCancellation(error)
@@ -273,7 +273,7 @@ class MovieDetailsViewModel @Inject constructor(
         commentsState.value = currentComments
       } catch (t: Throwable) {
         commentsState.value = currentComments
-        messageChannel.send(MessageEvent.error(R.string.errorGeneral))
+        messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
       }
     }
   }
@@ -318,12 +318,12 @@ class MovieDetailsViewModel @Inject constructor(
         }
 
         commentsState.value = currentComments
-        messageChannel.send(MessageEvent.info(R.string.textCommentDeleted))
+        messageChannel.send(MessageEvent.Info(R.string.textCommentDeleted))
       } catch (t: Throwable) {
         if (t is HttpException && t.code() == 409) {
-          messageChannel.send(MessageEvent.error(R.string.errorCommentDelete))
+          messageChannel.send(MessageEvent.Error(R.string.errorCommentDelete))
         } else {
-          messageChannel.send(MessageEvent.error(R.string.errorGeneral))
+          messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
         }
         commentsState.value = currentComments
       }

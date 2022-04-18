@@ -15,7 +15,7 @@ import com.michaldrabik.data_remote.Config
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTraktAuthorizeListener
 import com.michaldrabik.ui_base.trakt.TraktSyncService
-import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.gone
@@ -106,7 +106,7 @@ class TraktSyncFragment :
       .setSingleChoiceItems(optionsStrings, options.indexOf(currentSchedule)) { dialog, index ->
         val schedule = options[index]
         viewModel.saveTraktSyncSchedule(schedule)
-        showSnack(MessageEvent.info(schedule.confirmationStringRes))
+        showSnack(MessageEvent.Info(schedule.confirmationStringRes))
         dialog.dismiss()
       }
       .show()
@@ -143,7 +143,7 @@ class TraktSyncFragment :
       } else {
         traktSyncButton.text = getString(R.string.textSettingsTraktAuthorizeTitle)
         traktSyncButton.onClick {
-          openWebUrl(Config.TRAKT_AUTHORIZE_URL) ?: showSnack(MessageEvent.error(R.string.errorCouldNotFindApp))
+          openWebUrl(Config.TRAKT_AUTHORIZE_URL) ?: showSnack(MessageEvent.Error(R.string.errorCouldNotFindApp))
         }
         traktSyncScheduleButton.gone()
       }

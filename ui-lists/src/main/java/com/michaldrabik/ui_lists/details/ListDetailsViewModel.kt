@@ -9,8 +9,8 @@ import com.michaldrabik.common.Mode.SHOWS
 import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.ui_base.Logger
-import com.michaldrabik.ui_base.utilities.Event
-import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.events.Event
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
@@ -68,7 +68,7 @@ class ListDetailsViewModel @Inject constructor(
 
       val tip = Tip.LIST_ITEM_SWIPE_DELETE
       if (listItems.isNotEmpty() && !tipsCase.isTipShown(tip)) {
-        messageChannel.send(MessageEvent.info(tip.textResId, indefinite = true))
+        messageChannel.send(MessageEvent.Info(tip.textResId, isIndefinite = true))
         tipsCase.setTipShown(tip)
       }
     }
@@ -175,7 +175,7 @@ class ListDetailsViewModel @Inject constructor(
         listDeleteState.value = Event(true)
       } catch (error: Throwable) {
         loadingState.value = false
-        messageChannel.send(MessageEvent.error(R.string.errorCouldNotDeleteList))
+        messageChannel.send(MessageEvent.Error(R.string.errorCouldNotDeleteList))
       }
     }
   }

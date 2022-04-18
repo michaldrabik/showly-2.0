@@ -2,7 +2,7 @@ package com.michaldrabik.ui_gallery.fanart
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.ui_base.utilities.Event
+import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_gallery.fanart.cases.ArtLoadImagesCase
 import com.michaldrabik.ui_model.IdTrakt

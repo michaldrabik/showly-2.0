@@ -10,17 +10,13 @@ import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE
-import com.google.android.material.snackbar.Snackbar.LENGTH_SHORT
 import com.michaldrabik.common.Mode
-import com.michaldrabik.ui_base.utilities.MessageEvent
-import com.michaldrabik.ui_base.utilities.MessageEvent.Type.ERROR
-import com.michaldrabik.ui_base.utilities.MessageEvent.Type.INFO
 import com.michaldrabik.ui_base.utilities.ModeHost
 import com.michaldrabik.ui_base.utilities.MoviesStatusHost
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.TipsHost
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_model.Tip
@@ -60,16 +56,14 @@ abstract class BaseFragment<T : ViewModel>(@LayoutRes contentLayoutId: Int) :
     (requireActivity() as NavigationHost).showNavigation(animate)
 
   protected fun showSnack(message: MessageEvent) {
-    message.consume()?.let {
-      val host = (requireActivity() as SnackbarHost).provideSnackbarLayout()
-      when (message.type) {
-        INFO -> {
-          val length = if (message.indefinite) LENGTH_INDEFINITE else LENGTH_SHORT
-          val action = if (message.indefinite) ({}) else null
-          host.showInfoSnackbar(getString(it), length = length, action = action)
-        }
-        ERROR -> host.showErrorSnackbar(getString(it))
+    val host = (requireActivity() as SnackbarHost).provideSnackbarLayout()
+    when (message) {
+      is MessageEvent.Info -> {
+        val length = if (message.isIndefinite) Snackbar.LENGTH_INDEFINITE else Snackbar.LENGTH_SHORT
+        val action = if (message.isIndefinite) ({}) else null
+        host.showInfoSnackbar(getString(message.textRestId), length = length, action = action)
       }
+      is MessageEvent.Error -> host.showErrorSnackbar(getString(message.textRestId))
     }
   }
 

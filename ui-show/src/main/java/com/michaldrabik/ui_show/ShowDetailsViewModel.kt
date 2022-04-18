@@ -16,7 +16,7 @@ import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomShee
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
-import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
@@ -169,9 +169,9 @@ class ShowDetailsViewModel @Inject constructor(
         progressJob.cancel()
         if (error is HttpException && error.code() == 404) {
           // Malformed Trakt data or duplicate show.
-          messageChannel.send(MessageEvent.info(R.string.errorMalformedShow))
+          messageChannel.send(MessageEvent.Info(R.string.errorMalformedShow))
         } else {
-          messageChannel.send(MessageEvent.error(R.string.errorCouldNotLoadShow))
+          messageChannel.send(MessageEvent.Error(R.string.errorCouldNotLoadShow))
         }
         Logger.record(error, "Source" to "ShowDetailsViewModel")
         Timber.e(error)
@@ -377,7 +377,7 @@ class ShowDetailsViewModel @Inject constructor(
 
         commentsState.value = currentComments
       } catch (error: Throwable) {
-        messageChannel.send(MessageEvent.error(R.string.errorGeneral))
+        messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
         commentsState.value = currentComments
         Timber.e(error)
         rethrowCancellation(error)
@@ -425,12 +425,12 @@ class ShowDetailsViewModel @Inject constructor(
         }
 
         commentsState.value = currentComments
-        messageChannel.send(MessageEvent.info(R.string.textCommentDeleted))
+        messageChannel.send(MessageEvent.Info(R.string.textCommentDeleted))
       } catch (t: Throwable) {
         if (t is HttpException && t.code() == 409) {
-          messageChannel.send(MessageEvent.error(R.string.errorCommentDelete))
+          messageChannel.send(MessageEvent.Error(R.string.errorCommentDelete))
         } else {
-          messageChannel.send(MessageEvent.error(R.string.errorGeneral))
+          messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
         }
         commentsState.value = currentComments
       }
@@ -648,7 +648,7 @@ class ShowDetailsViewModel @Inject constructor(
       val seasonItems = seasonsState.value?.toList() ?: emptyList()
       quickProgressCase.setQuickProgress(item, seasonItems, show)
 
-      messageChannel.send(MessageEvent.info(R.string.textShowQuickProgressDone))
+      messageChannel.send(MessageEvent.Info(R.string.textShowQuickProgressDone))
       refreshWatchedEpisodes()
       Analytics.logShowQuickProgress(show)
     }
@@ -679,7 +679,7 @@ class ShowDetailsViewModel @Inject constructor(
 
   private suspend fun checkSeasonsLoaded(): Boolean {
     if (seasonsState.value == null) {
-      messageChannel.send(MessageEvent.info(R.string.errorSeasonsNotLoaded))
+      messageChannel.send(MessageEvent.Info(R.string.errorSeasonsNotLoaded))
       return false
     }
     return true

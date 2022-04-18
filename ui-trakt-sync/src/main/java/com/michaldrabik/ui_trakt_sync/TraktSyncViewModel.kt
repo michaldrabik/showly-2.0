@@ -19,8 +19,7 @@ import com.michaldrabik.ui_base.trakt.TraktSyncWorker
 import com.michaldrabik.ui_base.trakt.exports.TraktExportWatchlistRunner
 import com.michaldrabik.ui_base.trakt.imports.TraktImportWatchedRunner
 import com.michaldrabik.ui_base.trakt.imports.TraktImportWatchlistRunner
-import com.michaldrabik.ui_base.utilities.MessageEvent.Companion.error
-import com.michaldrabik.ui_base.utilities.MessageEvent.Companion.info
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
@@ -99,7 +98,7 @@ class TraktSyncViewModel @Inject constructor(
           throw IllegalStateException("Invalid Trakt authorization code.")
         }
         userManager.authorize(code)
-        messageChannel.send(info(R.string.textTraktLoginSuccess))
+        messageChannel.send(MessageEvent.Info(R.string.textTraktLoginSuccess))
         invalidate()
         saveTraktQuickRemove()
         preloadRatings()
@@ -108,7 +107,7 @@ class TraktSyncViewModel @Inject constructor(
           error is HttpException && error.code() == 423 -> R.string.errorTraktLocked
           else -> R.string.errorAuthorization
         }
-        messageChannel.send(error(message))
+        messageChannel.send(MessageEvent.Error(message))
       }
     }
   }
@@ -152,7 +151,7 @@ class TraktSyncViewModel @Inject constructor(
         is TraktSyncStart -> {
           progressState.value = true
           progressStatusState.value = ""
-          messageChannel.send(info(R.string.textTraktSyncStarted))
+          messageChannel.send(MessageEvent.Info(R.string.textTraktSyncStarted))
         }
         is TraktSyncProgress -> {
           progressState.value = true
@@ -161,12 +160,12 @@ class TraktSyncViewModel @Inject constructor(
         is TraktSyncSuccess -> {
           progressState.value = false
           progressStatusState.value = ""
-          messageChannel.send(info(R.string.textTraktSyncComplete))
+          messageChannel.send(MessageEvent.Info(R.string.textTraktSyncComplete))
         }
         is TraktSyncError -> {
           progressState.value = false
           progressStatusState.value = ""
-          messageChannel.send(info(R.string.textTraktSyncError))
+          messageChannel.send(MessageEvent.Info(R.string.textTraktSyncError))
         }
         is TraktSyncAuthError -> {
           viewModelScope.launch {
@@ -174,7 +173,7 @@ class TraktSyncViewModel @Inject constructor(
             progressState.value = false
             progressStatusState.value = ""
             authErrorState.value = true
-            messageChannel.send(error(R.string.errorTraktAuthorization))
+            messageChannel.send(MessageEvent.Error(R.string.errorTraktAuthorization))
           }
         }
         else -> Timber.d("Unsupported sync event")

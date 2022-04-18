@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.trakt.TraktSyncStatusProvider
-import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_model.CalendarMode
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_progress_movies.BaseMockTest

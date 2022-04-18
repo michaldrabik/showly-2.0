@@ -8,8 +8,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
-import com.michaldrabik.ui_base.utilities.MessageEvent
-import com.michaldrabik.ui_base.utilities.MessageEvent.Type
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.requireLong
@@ -112,11 +111,9 @@ class PostCommentBottomSheet : BaseBottomSheetFragment(R.layout.view_post_commen
   }
 
   private fun renderSnackbar(message: MessageEvent) {
-    message.consume()?.let {
-      when (message.type) {
-        Type.INFO -> binding.viewPostCommentSnackHost.showInfoSnackbar(getString(it))
-        Type.ERROR -> binding.viewPostCommentSnackHost.showErrorSnackbar(getString(it))
-      }
+    when (message) {
+      is MessageEvent.Info -> binding.viewPostCommentSnackHost.showInfoSnackbar(getString(message.textRestId))
+      is MessageEvent.Error -> binding.viewPostCommentSnackHost.showErrorSnackbar(getString(message.textRestId))
     }
   }
 

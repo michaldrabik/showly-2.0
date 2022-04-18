@@ -18,7 +18,7 @@ import com.michaldrabik.ui_base.events.TraktSyncSuccess
 import com.michaldrabik.ui_base.trakt.exports.TraktExportWatchlistRunner
 import com.michaldrabik.ui_base.trakt.imports.TraktImportWatchedRunner
 import com.michaldrabik.ui_base.trakt.imports.TraktImportWatchlistRunner
-import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_model.TraktSyncSchedule
 import com.michaldrabik.ui_trakt_sync.cases.TraktSyncRatingsCase

@@ -3,8 +3,8 @@ package com.michaldrabik.ui_comments.post
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.repository.CommentsRepository
-import com.michaldrabik.ui_base.utilities.Event
-import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.events.Event
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
 import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
@@ -108,9 +108,9 @@ class PostCommentViewModel @Inject constructor(
 
   private suspend fun handleError(error: Throwable) {
     if (error is HttpException && error.code() == 422) {
-      messageChannel.send(MessageEvent.error(R.string.errorCommentFormat))
+      messageChannel.send(MessageEvent.Error(R.string.errorCommentFormat))
     } else {
-      messageChannel.send(MessageEvent.error(R.string.errorGeneral))
+      messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
     }
     loadingState.value = false
   }

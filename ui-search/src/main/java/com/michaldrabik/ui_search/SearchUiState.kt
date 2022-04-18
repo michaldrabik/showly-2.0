@@ -1,6 +1,6 @@
 package com.michaldrabik.ui_search
 
-import com.michaldrabik.ui_base.utilities.Event
+import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_model.RecentSearch
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType

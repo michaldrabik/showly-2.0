@@ -6,8 +6,8 @@ import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.TraktSyncError
 import com.michaldrabik.ui_base.events.TraktSyncSuccess
 import com.michaldrabik.ui_base.trakt.TraktSyncStatusProvider
-import com.michaldrabik.ui_base.utilities.Event
-import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.events.Event
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
 import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
@@ -69,7 +69,7 @@ class ProgressMainViewModel @Inject constructor(
   fun setWatchedEpisode(bundle: EpisodeBundle) {
     viewModelScope.launch {
       if (!bundle.episode.hasAired(bundle.season)) {
-        messageChannel.send(MessageEvent.info(R.string.errorEpisodeNotAired))
+        messageChannel.send(MessageEvent.Info(R.string.errorEpisodeNotAired))
         return@launch
       }
       episodesCase.setEpisodeWatched(bundle)

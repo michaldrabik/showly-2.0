@@ -9,7 +9,7 @@ import com.michaldrabik.ui_base.common.sheets.ratings.cases.RatingsEpisodeCase
 import com.michaldrabik.ui_base.common.sheets.ratings.cases.RatingsMovieCase
 import com.michaldrabik.ui_base.common.sheets.ratings.cases.RatingsSeasonCase
 import com.michaldrabik.ui_base.common.sheets.ratings.cases.RatingsShowCase
-import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
 import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
@@ -60,7 +60,7 @@ class RatingsSheetViewModel @Inject constructor(
         eventChannel.send(FinishUiEvent(operation = Operation.SAVE))
       } catch (error: Throwable) {
         loadingState.value = false
-        messageChannel.send(MessageEvent.error(R.string.errorGeneral))
+        messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
         rethrowCancellation(error)
       }
     }
@@ -79,7 +79,7 @@ class RatingsSheetViewModel @Inject constructor(
         eventChannel.send(FinishUiEvent(operation = Operation.REMOVE))
       } catch (error: Throwable) {
         loadingState.value = false
-        messageChannel.send(MessageEvent.error(R.string.errorGeneral))
+        messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
         rethrowCancellation(error)
       }
     }

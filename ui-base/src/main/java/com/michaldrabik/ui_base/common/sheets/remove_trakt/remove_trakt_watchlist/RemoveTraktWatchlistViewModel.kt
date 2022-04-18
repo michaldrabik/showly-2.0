@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet.Mode
 import com.michaldrabik.ui_base.common.sheets.remove_trakt.remove_trakt_watchlist.cases.RemoveTraktWatchlistCase
-import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
 import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
@@ -33,7 +33,7 @@ class RemoveTraktWatchlistViewModel @Inject constructor(
         removeTraktWatchlistCase.removeTraktWatchlist(traktIds, mode)
         finishedState.value = true
       } catch (error: Throwable) {
-        messageChannel.send(MessageEvent.error(R.string.errorTraktSyncGeneral))
+        messageChannel.send(MessageEvent.Error(R.string.errorTraktSyncGeneral))
         loadingState.value = false
       }
     }

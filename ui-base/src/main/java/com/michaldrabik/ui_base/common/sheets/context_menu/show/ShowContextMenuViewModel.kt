@@ -16,8 +16,8 @@ import com.michaldrabik.ui_base.common.sheets.context_menu.show.cases.ShowContex
 import com.michaldrabik.ui_base.common.sheets.context_menu.show.cases.ShowContextMenuWatchlistCase
 import com.michaldrabik.ui_base.common.sheets.context_menu.show.helpers.ShowContextItem
 import com.michaldrabik.ui_base.network.NetworkStatusProvider
-import com.michaldrabik.ui_base.utilities.Event
-import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.events.Event
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
 import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
@@ -64,7 +64,7 @@ class ShowContextMenuViewModel @Inject constructor(
         val item = loadItemCase.loadItem(idTrakt)
         itemState.value = item
       } catch (error: Throwable) {
-        messageChannel.send(MessageEvent.error(R.string.errorGeneral))
+        messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
       } finally {
         loadingState.value = false
       }
@@ -74,7 +74,7 @@ class ShowContextMenuViewModel @Inject constructor(
   fun moveToMyShows() {
     viewModelScope.launch {
       if (!networkProvider.isOnline()) {
-        messageChannel.send(MessageEvent.error(R.string.errorNoInternetConnection))
+        messageChannel.send(MessageEvent.Error(R.string.errorNoInternetConnection))
         return@launch
       }
       try {
@@ -202,7 +202,7 @@ class ShowContextMenuViewModel @Inject constructor(
 
   private suspend fun onError(error: Throwable) {
     loadingState.value = false
-    messageChannel.send(MessageEvent.error(R.string.errorGeneral))
+    messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
     rethrowCancellation(error)
   }
 

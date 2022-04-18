@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Mode
 import com.michaldrabik.repository.settings.SettingsRepository
-import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
@@ -71,7 +71,7 @@ class PersonDetailsViewModel @Inject constructor(
 
         loadCredits(details)
       } catch (error: Throwable) {
-        messageChannel.send(MessageEvent.error(R.string.errorGeneral))
+        messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
         Timber.e(error)
         rethrowCancellation(error)
       } finally {
@@ -105,7 +105,7 @@ class PersonDetailsViewModel @Inject constructor(
           personDetailsItemsState.value = currentValue
         }
       } catch (error: Throwable) {
-        messageChannel.send(MessageEvent.error(R.string.errorGeneral))
+        messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
         Timber.e(error)
         rethrowCancellation(error)
       } finally {

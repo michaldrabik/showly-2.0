@@ -8,7 +8,7 @@ import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.ui_base.trakt.TraktSyncStatusProvider
-import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_discover.cases.DiscoverFiltersCase
 import com.michaldrabik.ui_discover.cases.DiscoverShowsCase
 import com.michaldrabik.ui_discover.cases.DiscoverTwitterCase

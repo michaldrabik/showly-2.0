@@ -7,8 +7,8 @@ import com.michaldrabik.common.Config.SEARCH_RECENTS_AMOUNT
 import com.michaldrabik.common.Mode
 import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.images.ShowImagesProvider
-import com.michaldrabik.ui_base.utilities.Event
-import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.events.Event
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
@@ -264,7 +264,7 @@ class SearchViewModel @Inject constructor(
   private suspend fun onError() {
     searchingState.value = false
     emptyState.value = false
-    messageChannel.send(MessageEvent.error(R.string.errorCouldNotLoadSearchResults))
+    messageChannel.send(MessageEvent.Error(R.string.errorCouldNotLoadSearchResults))
   }
 
   override fun onCleared() {

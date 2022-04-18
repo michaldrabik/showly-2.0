@@ -9,8 +9,8 @@ import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.images.EpisodeImagesProvider
 import com.michaldrabik.ui_base.dates.DateFormatProvider
-import com.michaldrabik.ui_base.utilities.Event
-import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.events.Event
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
@@ -203,12 +203,12 @@ class EpisodeDetailsViewModel @Inject constructor(
         }
 
         commentsState.value = current
-        messageChannel.send(MessageEvent.info(R.string.textCommentDeleted))
+        messageChannel.send(MessageEvent.Info(R.string.textCommentDeleted))
       } catch (t: Throwable) {
         if (t is HttpException && t.code() == 409) {
-          messageChannel.send(MessageEvent.error(R.string.errorCommentDelete))
+          messageChannel.send(MessageEvent.Error(R.string.errorCommentDelete))
         } else {
-          messageChannel.send(MessageEvent.error(R.string.errorGeneral))
+          messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
         }
         commentsState.value = current
       }

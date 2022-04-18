@@ -16,7 +16,7 @@ import com.michaldrabik.showly2.ui.main.cases.deeplink.MainDeepLinksCase
 import com.michaldrabik.showly2.utilities.deeplink.DeepLinkBundle
 import com.michaldrabik.showly2.utilities.deeplink.DeepLinkResolver
 import com.michaldrabik.ui_base.Logger
-import com.michaldrabik.ui_base.utilities.Event
+import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_base.utilities.extensions.launchDelayed

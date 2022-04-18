@@ -1,6 +1,6 @@
 package com.michaldrabik.ui_my_shows.myshows
 
-import com.michaldrabik.ui_base.utilities.Event
+import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
 
 data class MyShowsUiState(

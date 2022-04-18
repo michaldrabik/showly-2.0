@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
-import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -172,7 +172,7 @@ class NewsFragment :
 
   private fun openLink(item: NewsItem) {
     if (item.isVideo) {
-      openWebUrl(item.url) ?: showSnack(MessageEvent.info(R.string.errorCouldNotFindApp))
+      openWebUrl(item.url) ?: showSnack(MessageEvent.Info(R.string.errorCouldNotFindApp))
     } else {
       val context = requireActivity()
       val tabColor = context.colorFromAttr(R.attr.colorBottomMenuBackground)
