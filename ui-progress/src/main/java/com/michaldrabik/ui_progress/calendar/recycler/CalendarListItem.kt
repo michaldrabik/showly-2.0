@@ -1,8 +1,8 @@
 package com.michaldrabik.ui_progress.calendar.recycler
 
 import androidx.annotation.StringRes
-import com.michaldrabik.common.CalendarMode
 import com.michaldrabik.ui_base.common.ListItem
+import com.michaldrabik.ui_model.CalendarMode
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Season

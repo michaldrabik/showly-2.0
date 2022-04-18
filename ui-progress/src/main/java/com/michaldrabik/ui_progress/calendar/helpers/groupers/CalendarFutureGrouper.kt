@@ -1,8 +1,8 @@
 package com.michaldrabik.ui_progress.calendar.helpers.groupers
 
-import com.michaldrabik.common.CalendarMode
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toLocalZone
+import com.michaldrabik.ui_model.CalendarMode
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarListItem
 import java.time.DayOfWeek

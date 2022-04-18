@@ -3,10 +3,10 @@ package com.michaldrabik.ui_progress_movies.calendar
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.viewModelScope
 import com.google.common.truth.Truth.assertThat
-import com.michaldrabik.common.CalendarMode
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_model.CalendarMode
 import com.michaldrabik.ui_progress_movies.BaseMockTest
 import com.michaldrabik.ui_progress_movies.calendar.cases.CalendarMoviesRatingsCase
 import com.michaldrabik.ui_progress_movies.calendar.cases.items.CalendarMoviesFutureCase

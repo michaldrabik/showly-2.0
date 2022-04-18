@@ -12,12 +12,12 @@ import androidx.core.os.bundleOf
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.michaldrabik.common.CalendarMode
 import com.michaldrabik.common.Mode
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.replace
+import com.michaldrabik.ui_model.CalendarMode
 import com.michaldrabik.ui_model.ImageStatus
 import com.michaldrabik.ui_progress_movies.calendar.cases.items.CalendarMoviesFutureCase
 import com.michaldrabik.ui_progress_movies.calendar.cases.items.CalendarMoviesRecentsCase

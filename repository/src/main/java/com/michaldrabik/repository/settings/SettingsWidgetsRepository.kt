@@ -3,9 +3,9 @@ package com.michaldrabik.repository.settings
 import android.app.UiModeManager
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import com.michaldrabik.common.CalendarMode
 import com.michaldrabik.common.Mode
 import com.michaldrabik.repository.utilities.BooleanPreference
+import com.michaldrabik.ui_model.CalendarMode
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton

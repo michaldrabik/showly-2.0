@@ -7,9 +7,9 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.LinearLayout
 import androidx.core.view.updatePadding
-import com.michaldrabik.common.CalendarMode
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_model.CalendarMode
 import com.michaldrabik.ui_progress_movies.R
 import com.michaldrabik.ui_progress_movies.calendar.recycler.CalendarMovieListItem
 import kotlinx.android.synthetic.main.view_calendar_movies_header.view.*

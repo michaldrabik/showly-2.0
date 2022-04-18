@@ -2,13 +2,13 @@ package com.michaldrabik.ui_progress_movies.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.common.CalendarMode
 import com.michaldrabik.ui_base.events.Event
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.TraktSyncError
 import com.michaldrabik.ui_base.events.TraktSyncSuccess
 import com.michaldrabik.ui_base.trakt.TraktSyncStatusProvider
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
+import com.michaldrabik.ui_model.CalendarMode
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesMainCase
 import dagger.hilt.android.lifecycle.HiltViewModel
