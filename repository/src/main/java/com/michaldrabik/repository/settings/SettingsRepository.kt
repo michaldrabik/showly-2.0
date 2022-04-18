@@ -7,12 +7,12 @@ import com.michaldrabik.common.Config.DEFAULT_COUNTRY
 import com.michaldrabik.common.Config.DEFAULT_DATE_FORMAT
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.common.Mode
-import com.michaldrabik.common.delegates.BooleanPreference
-import com.michaldrabik.common.delegates.LongPreference
-import com.michaldrabik.common.delegates.StringPreference
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.repository.mappers.Mappers
+import com.michaldrabik.repository.utilities.BooleanPreference
+import com.michaldrabik.repository.utilities.LongPreference
+import com.michaldrabik.repository.utilities.StringPreference
 import com.michaldrabik.ui_model.NewsItem
 import com.michaldrabik.ui_model.ProgressType
 import com.michaldrabik.ui_model.Settings

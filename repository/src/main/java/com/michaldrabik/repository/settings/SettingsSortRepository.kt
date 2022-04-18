@@ -1,7 +1,7 @@
 package com.michaldrabik.repository.settings
 
 import android.content.SharedPreferences
-import com.michaldrabik.common.delegates.EnumPreference
+import com.michaldrabik.repository.utilities.EnumPreference
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import javax.inject.Inject

@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.michaldrabik.common.CalendarMode
 import com.michaldrabik.common.Mode
-import com.michaldrabik.common.delegates.BooleanPreference
+import com.michaldrabik.repository.utilities.BooleanPreference
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton

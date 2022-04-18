@@ -1,4 +1,4 @@
-package com.michaldrabik.common.delegates
+package com.michaldrabik.repository.utilities
 
 import android.content.SharedPreferences
 import kotlin.properties.ReadWriteProperty
