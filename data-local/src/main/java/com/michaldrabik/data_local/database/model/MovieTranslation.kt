@@ -19,13 +19,13 @@ import androidx.room.PrimaryKey
   ]
 )
 data class MovieTranslation(
-  @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long = 0,
-  @ColumnInfo(name = "id_trakt") var idTrakt: Long,
-  @ColumnInfo(name = "title") var title: String,
-  @ColumnInfo(name = "language") var language: String,
-  @ColumnInfo(name = "overview") var overview: String,
-  @ColumnInfo(name = "created_at") var createdAt: Long,
-  @ColumnInfo(name = "updated_at") var updatedAt: Long
+  @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Long = 0,
+  @ColumnInfo(name = "id_trakt") val idTrakt: Long,
+  @ColumnInfo(name = "title") val title: String,
+  @ColumnInfo(name = "language") val language: String,
+  @ColumnInfo(name = "overview") val overview: String,
+  @ColumnInfo(name = "created_at") val createdAt: Long,
+  @ColumnInfo(name = "updated_at") val updatedAt: Long
 ) {
 
   companion object {

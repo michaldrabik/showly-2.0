@@ -19,10 +19,10 @@ import androidx.room.PrimaryKey
   ]
 )
 data class ArchiveShow(
-  @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long = 0,
-  @ColumnInfo(name = "id_trakt") var idTrakt: Long,
-  @ColumnInfo(name = "created_at") var createdAt: Long,
-  @ColumnInfo(name = "updated_at") var updatedAt: Long
+  @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Long = 0,
+  @ColumnInfo(name = "id_trakt") val idTrakt: Long,
+  @ColumnInfo(name = "created_at") val createdAt: Long,
+  @ColumnInfo(name = "updated_at") val updatedAt: Long
 ) {
 
   companion object {

@@ -6,13 +6,13 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "trakt_sync_queue")
 data class TraktSyncQueue(
-  @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long,
-  @ColumnInfo(name = "id_trakt") var idTrakt: Long,
-  @ColumnInfo(name = "id_list") var idList: Long?,
-  @ColumnInfo(name = "type") var type: String,
-  @ColumnInfo(name = "operation") var operation: String,
-  @ColumnInfo(name = "created_at") var createdAt: Long,
-  @ColumnInfo(name = "updated_at") var updatedAt: Long
+  @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Long,
+  @ColumnInfo(name = "id_trakt") val idTrakt: Long,
+  @ColumnInfo(name = "id_list") val idList: Long?,
+  @ColumnInfo(name = "type") val type: String,
+  @ColumnInfo(name = "operation") val operation: String,
+  @ColumnInfo(name = "created_at") val createdAt: Long,
+  @ColumnInfo(name = "updated_at") val updatedAt: Long
 ) {
 
   companion object {

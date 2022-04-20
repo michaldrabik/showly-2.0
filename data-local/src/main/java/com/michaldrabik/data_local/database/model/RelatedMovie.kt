@@ -18,10 +18,10 @@ import androidx.room.PrimaryKey
   ]
 )
 data class RelatedMovie(
-  @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long = 0,
-  @ColumnInfo(name = "id_trakt", defaultValue = "-1") var idTrakt: Long,
-  @ColumnInfo(name = "id_trakt_related_movie", defaultValue = "-1", index = true) var idTraktRelatedMovie: Long,
-  @ColumnInfo(name = "updated_at", defaultValue = "-1") var updatedAt: Long
+  @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Long = 0,
+  @ColumnInfo(name = "id_trakt", defaultValue = "-1") val idTrakt: Long,
+  @ColumnInfo(name = "id_trakt_related_movie", defaultValue = "-1", index = true) val idTraktRelatedMovie: Long,
+  @ColumnInfo(name = "updated_at", defaultValue = "-1") val updatedAt: Long
 ) {
 
   companion object {

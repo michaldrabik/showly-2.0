@@ -16,12 +16,12 @@ import java.time.ZonedDateTime
 )
 @TypeConverters(DateConverter::class)
 data class Rating(
-  @ColumnInfo(name = "id_trakt") var idTrakt: Long,
-  @ColumnInfo(name = "type") var type: String,
-  @ColumnInfo(name = "rating") var rating: Int,
-  @ColumnInfo(name = "season_number") var seasonNumber: Int?,
-  @ColumnInfo(name = "episode_number") var episodeNumber: Int?,
-  @ColumnInfo(name = "rated_at") var ratedAt: ZonedDateTime,
-  @ColumnInfo(name = "created_at") var createdAt: ZonedDateTime,
-  @ColumnInfo(name = "updated_at") var updatedAt: ZonedDateTime
+  @ColumnInfo(name = "id_trakt") val idTrakt: Long,
+  @ColumnInfo(name = "type") val type: String,
+  @ColumnInfo(name = "rating") val rating: Int,
+  @ColumnInfo(name = "season_number") val seasonNumber: Int?,
+  @ColumnInfo(name = "episode_number") val episodeNumber: Int?,
+  @ColumnInfo(name = "rated_at") val ratedAt: ZonedDateTime,
+  @ColumnInfo(name = "created_at") val createdAt: ZonedDateTime,
+  @ColumnInfo(name = "updated_at") val updatedAt: ZonedDateTime
 )

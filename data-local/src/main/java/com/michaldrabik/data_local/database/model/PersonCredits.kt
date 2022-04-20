@@ -33,11 +33,11 @@ import java.time.ZonedDateTime
 )
 @TypeConverters(DateConverter::class)
 data class PersonCredits(
-  @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long,
-  @ColumnInfo(name = "id_trakt_person") var idTraktPerson: Long,
-  @ColumnInfo(name = "id_trakt_show") var idTraktShow: Long?,
-  @ColumnInfo(name = "id_trakt_movie") var idTraktMovie: Long?,
-  @ColumnInfo(name = "type") var type: String,
-  @ColumnInfo(name = "created_at") var createdAt: ZonedDateTime,
-  @ColumnInfo(name = "updated_at") var updatedAt: ZonedDateTime
+  @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Long,
+  @ColumnInfo(name = "id_trakt_person") val idTraktPerson: Long,
+  @ColumnInfo(name = "id_trakt_show") val idTraktShow: Long?,
+  @ColumnInfo(name = "id_trakt_movie") val idTraktMovie: Long?,
+  @ColumnInfo(name = "type") val type: String,
+  @ColumnInfo(name = "created_at") val createdAt: ZonedDateTime,
+  @ColumnInfo(name = "updated_at") val updatedAt: ZonedDateTime
 )

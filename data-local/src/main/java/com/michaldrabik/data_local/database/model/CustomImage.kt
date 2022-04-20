@@ -12,9 +12,9 @@ import androidx.room.PrimaryKey
   ]
 )
 data class CustomImage(
-  @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long = 0,
-  @ColumnInfo(name = "id_trakt") var idTrakt: Long,
-  @ColumnInfo(name = "family") var family: String,
-  @ColumnInfo(name = "type") var type: String,
-  @ColumnInfo(name = "file_url") var fileUrl: String
+  @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Long = 0,
+  @ColumnInfo(name = "id_trakt") val idTrakt: Long,
+  @ColumnInfo(name = "family") val family: String,
+  @ColumnInfo(name = "type") val type: String,
+  @ColumnInfo(name = "file_url") val fileUrl: String
 )

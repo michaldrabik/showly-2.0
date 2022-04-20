@@ -13,12 +13,12 @@ import androidx.room.PrimaryKey
 )
 
 data class ShowImage(
-  @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long = 0,
-  @ColumnInfo(name = "id_tvdb", defaultValue = "-1") var idTvdb: Long,
-  @ColumnInfo(name = "id_tmdb", defaultValue = "-1") var idTmdb: Long,
-  @ColumnInfo(name = "type", defaultValue = "") var type: String,
-  @ColumnInfo(name = "family", defaultValue = "") var family: String,
-  @ColumnInfo(name = "file_url", defaultValue = "") var fileUrl: String,
-  @ColumnInfo(name = "thumbnail_url", defaultValue = "") var thumbnailUrl: String,
-  @ColumnInfo(name = "source", defaultValue = "tvdb") var source: String
+  @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Long = 0,
+  @ColumnInfo(name = "id_tvdb", defaultValue = "-1") val idTvdb: Long,
+  @ColumnInfo(name = "id_tmdb", defaultValue = "-1") val idTmdb: Long,
+  @ColumnInfo(name = "type", defaultValue = "") val type: String,
+  @ColumnInfo(name = "family", defaultValue = "") val family: String,
+  @ColumnInfo(name = "file_url", defaultValue = "") val fileUrl: String,
+  @ColumnInfo(name = "thumbnail_url", defaultValue = "") val thumbnailUrl: String,
+  @ColumnInfo(name = "source", defaultValue = "tvdb") val source: String
 )

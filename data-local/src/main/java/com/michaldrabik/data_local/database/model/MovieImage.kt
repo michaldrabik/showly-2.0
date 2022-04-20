@@ -12,9 +12,9 @@ import androidx.room.PrimaryKey
   ]
 )
 data class MovieImage(
-  @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long = 0,
-  @ColumnInfo(name = "id_tmdb", defaultValue = "-1") var idTmdb: Long,
-  @ColumnInfo(name = "type", defaultValue = "") var type: String,
-  @ColumnInfo(name = "file_url", defaultValue = "") var fileUrl: String,
-  @ColumnInfo(name = "source", defaultValue = "tmdb") var source: String
+  @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Long = 0,
+  @ColumnInfo(name = "id_tmdb", defaultValue = "-1") val idTmdb: Long,
+  @ColumnInfo(name = "type", defaultValue = "") val type: String,
+  @ColumnInfo(name = "file_url", defaultValue = "") val fileUrl: String,
+  @ColumnInfo(name = "source", defaultValue = "tmdb") val source: String
 )

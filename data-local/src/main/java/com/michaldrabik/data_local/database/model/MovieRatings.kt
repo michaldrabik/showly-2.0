@@ -19,13 +19,13 @@ import androidx.room.PrimaryKey
   ]
 )
 data class MovieRatings(
-  @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long = 0,
-  @ColumnInfo(name = "id_trakt") var idTrakt: Long,
-  @ColumnInfo(name = "trakt") var trakt: String?,
-  @ColumnInfo(name = "imdb") var imdb: String?,
-  @ColumnInfo(name = "metascore") var metascore: String?,
-  @ColumnInfo(name = "rotten_tomatoes") var rottenTomatoes: String?,
-  @ColumnInfo(name = "rotten_tomatoes_url") var rottenTomatoesUrl: String?,
-  @ColumnInfo(name = "created_at") var createdAt: Long,
-  @ColumnInfo(name = "updated_at") var updatedAt: Long,
+  @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Long = 0,
+  @ColumnInfo(name = "id_trakt") val idTrakt: Long,
+  @ColumnInfo(name = "trakt") val trakt: String?,
+  @ColumnInfo(name = "imdb") val imdb: String?,
+  @ColumnInfo(name = "metascore") val metascore: String?,
+  @ColumnInfo(name = "rotten_tomatoes") val rottenTomatoes: String?,
+  @ColumnInfo(name = "rotten_tomatoes_url") val rottenTomatoesUrl: String?,
+  @ColumnInfo(name = "created_at") val createdAt: Long,
+  @ColumnInfo(name = "updated_at") val updatedAt: Long,
 )

@@ -8,14 +8,14 @@ import androidx.room.PrimaryKey
   tableName = "news"
 )
 data class News(
-  @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long = 0,
-  @ColumnInfo(name = "id_news") var idNews: String,
-  @ColumnInfo(name = "title") var title: String,
-  @ColumnInfo(name = "url") var url: String,
-  @ColumnInfo(name = "type") var type: String,
-  @ColumnInfo(name = "image") var image: String?,
-  @ColumnInfo(name = "score") var score: Long,
-  @ColumnInfo(name = "dated_at") var datedAt: Long,
-  @ColumnInfo(name = "created_at") var createdAt: Long,
-  @ColumnInfo(name = "updated_at") var updatedAt: Long,
+  @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Long = 0,
+  @ColumnInfo(name = "id_news") val idNews: String,
+  @ColumnInfo(name = "title") val title: String,
+  @ColumnInfo(name = "url") val url: String,
+  @ColumnInfo(name = "type") val type: String,
+  @ColumnInfo(name = "image") val image: String?,
+  @ColumnInfo(name = "score") val score: Long,
+  @ColumnInfo(name = "dated_at") val datedAt: Long,
+  @ColumnInfo(name = "created_at") val createdAt: Long,
+  @ColumnInfo(name = "updated_at") val updatedAt: Long,
 )

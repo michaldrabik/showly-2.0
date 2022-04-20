@@ -27,21 +27,21 @@ import java.time.ZonedDateTime
 )
 @TypeConverters(DateConverter::class)
 data class Episode(
-  @PrimaryKey @ColumnInfo(name = "id_trakt") var idTrakt: Long,
-  @ColumnInfo(name = "id_season") var idSeason: Long,
-  @ColumnInfo(name = "id_show_trakt") var idShowTrakt: Long,
-  @ColumnInfo(name = "id_show_tvdb") var idShowTvdb: Long,
-  @ColumnInfo(name = "id_show_imdb") var idShowImdb: String,
-  @ColumnInfo(name = "id_show_tmdb") var idShowTmdb: Long,
-  @ColumnInfo(name = "season_number") var seasonNumber: Int,
-  @ColumnInfo(name = "episode_number") var episodeNumber: Int,
-  @ColumnInfo(name = "episode_number_abs") var episodeNumberAbs: Int?,
-  @ColumnInfo(name = "episode_overview") var episodeOverview: String,
-  @ColumnInfo(name = "episode_title") var title: String,
-  @ColumnInfo(name = "first_aired") var firstAired: ZonedDateTime?,
-  @ColumnInfo(name = "comments_count") var commentsCount: Int,
-  @ColumnInfo(name = "rating") var rating: Float,
-  @ColumnInfo(name = "runtime") var runtime: Int,
-  @ColumnInfo(name = "votes_count") var votesCount: Int,
-  @ColumnInfo(name = "is_watched") var isWatched: Boolean
+  @PrimaryKey @ColumnInfo(name = "id_trakt") val idTrakt: Long,
+  @ColumnInfo(name = "id_season") val idSeason: Long,
+  @ColumnInfo(name = "id_show_trakt") val idShowTrakt: Long,
+  @ColumnInfo(name = "id_show_tvdb") val idShowTvdb: Long,
+  @ColumnInfo(name = "id_show_imdb") val idShowImdb: String,
+  @ColumnInfo(name = "id_show_tmdb") val idShowTmdb: Long,
+  @ColumnInfo(name = "season_number") val seasonNumber: Int,
+  @ColumnInfo(name = "episode_number") val episodeNumber: Int,
+  @ColumnInfo(name = "episode_number_abs") val episodeNumberAbs: Int?,
+  @ColumnInfo(name = "episode_overview") val episodeOverview: String,
+  @ColumnInfo(name = "episode_title") val title: String,
+  @ColumnInfo(name = "first_aired") val firstAired: ZonedDateTime?,
+  @ColumnInfo(name = "comments_count") val commentsCount: Int,
+  @ColumnInfo(name = "rating") val rating: Float,
+  @ColumnInfo(name = "runtime") val runtime: Int,
+  @ColumnInfo(name = "votes_count") val votesCount: Int,
+  @ColumnInfo(name = "is_watched") val isWatched: Boolean
 )
