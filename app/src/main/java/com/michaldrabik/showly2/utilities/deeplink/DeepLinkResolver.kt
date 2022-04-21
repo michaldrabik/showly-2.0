@@ -2,14 +2,13 @@ package com.michaldrabik.showly2.utilities.deeplink
 
 import android.content.Intent
 import androidx.core.os.bundleOf
-import androidx.core.text.isDigitsOnly
 import androidx.navigation.NavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.michaldrabik.showly2.R
+import com.michaldrabik.showly2.utilities.deeplink.resolvers.ImdbSourceResolver
+import com.michaldrabik.showly2.utilities.deeplink.resolvers.TmdbSourceResolver
+import com.michaldrabik.showly2.utilities.deeplink.resolvers.TraktSourceResolver
 import com.michaldrabik.ui_base.Logger
-import com.michaldrabik.ui_model.IdImdb
-import com.michaldrabik.ui_model.IdSlug
-import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_navigation.java.NavigationArgs
@@ -20,15 +19,18 @@ import javax.inject.Singleton
 class DeepLinkResolver @Inject constructor() {
 
   companion object {
-    const val SOURCE_IMDB = "imdb"
-    const val SOURCE_TMDB = "tmdb"
-
     const val TMDB_TYPE_TV = "tv"
     const val TMDB_TYPE_MOVIE = "movie"
 
     const val TRAKT_TYPE_TV = "shows"
     const val TRAKT_TYPE_MOVIE = "movies"
   }
+
+  private val sourceResolvers = setOf(
+    TraktSourceResolver(),
+    ImdbSourceResolver(),
+    TmdbSourceResolver()
+  )
 
   private val progressDestinations = arrayOf(
     R.id.progressMainFragment,
@@ -44,6 +46,11 @@ class DeepLinkResolver @Inject constructor() {
     R.id.listsFragment,
     R.id.newsFragment,
   )
+
+  fun findSource(intent: Intent?): DeepLinkSource? {
+    val path = intent?.data?.pathSegments ?: emptyList()
+    return sourceResolvers.firstNotNullOfOrNull { it.resolve(path) }
+  }
 
   fun resolveDestination(
     navController: NavController,
@@ -85,32 +92,6 @@ class DeepLinkResolver @Inject constructor() {
     }
   }
 
-  fun findSource(intent: Intent?): Source? {
-    val path = intent?.data?.pathSegments ?: emptyList()
-
-    if (path.size >= 2 && path[1].startsWith("tt") && path[1].length > 2) {
-      return ImdbSource(IdImdb(path[1]))
-    }
-
-    if (path.size >= 2 && (path[0] == TMDB_TYPE_TV || path[0] == TMDB_TYPE_MOVIE) && path[1].length > 1) {
-      val id = path[1].substringBefore("-").trim()
-      val type = path[0]
-      return if (id.isDigitsOnly()) {
-        TmdbSource(IdTmdb(id.toLong()), type)
-      } else {
-        null
-      }
-    }
-
-    if (path.size >= 2 && (path[0] == TRAKT_TYPE_TV || path[0] == TRAKT_TYPE_MOVIE)) {
-      val id = path[1]
-      val type = path[0]
-      return TraktSource(IdSlug(id), type)
-    }
-
-    return null
-  }
-
   private fun resetNavigation(navController: NavController, navigationView: BottomNavigationView) {
     while (navController.currentDestination?.id !in mainDestinations) {
       navController.popBackStack()
@@ -120,9 +101,4 @@ class DeepLinkResolver @Inject constructor() {
       navigationView.selectedItemId = R.id.menuProgress
     }
   }
-
-  sealed class Source
-  data class ImdbSource(val id: IdImdb) : Source()
-  data class TmdbSource(val id: IdTmdb, val type: String) : Source()
-  data class TraktSource(val id: IdSlug, val type: String) : Source()
 }

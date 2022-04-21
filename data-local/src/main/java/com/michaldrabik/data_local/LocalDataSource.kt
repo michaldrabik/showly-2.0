@@ -47,6 +47,7 @@ import javax.inject.Singleton
 /**
  * Provides local data sources access points.
  */
+// TODO Refactor. Split or remove this wrapper at all. Clients do not need to be exposed to everything.
 interface LocalDataSource {
   val archiveMovies: ArchiveMoviesLocalDataSource
   val archiveShows: ArchiveShowsLocalDataSource

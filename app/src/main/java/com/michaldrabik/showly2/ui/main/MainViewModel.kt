@@ -14,7 +14,7 @@ import com.michaldrabik.showly2.ui.main.cases.MainTipsCase
 import com.michaldrabik.showly2.ui.main.cases.MainTraktCase
 import com.michaldrabik.showly2.ui.main.cases.deeplink.MainDeepLinksCase
 import com.michaldrabik.showly2.utilities.deeplink.DeepLinkBundle
-import com.michaldrabik.showly2.utilities.deeplink.DeepLinkResolver
+import com.michaldrabik.showly2.utilities.deeplink.DeepLinkSource
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
@@ -124,7 +124,7 @@ class MainViewModel @Inject constructor(
     maskState.value = false
   }
 
-  fun openDeepLink(source: DeepLinkResolver.Source) {
+  fun openDeepLink(source: DeepLinkSource) {
     viewModelScope.launch {
       val progressJob = launchDelayed(750) {
         loadingState.value = true
@@ -132,9 +132,9 @@ class MainViewModel @Inject constructor(
       }
       try {
         val result = when (source) {
-          is DeepLinkResolver.ImdbSource -> linksCase.findById(source.id)
-          is DeepLinkResolver.TmdbSource -> linksCase.findById(source.id, source.type)
-          is DeepLinkResolver.TraktSource -> linksCase.findById(source.id, source.type)
+          is DeepLinkSource.ImdbSource -> linksCase.findById(source.id)
+          is DeepLinkSource.TmdbSource -> linksCase.findById(source.id, source.type)
+          is DeepLinkSource.TraktSource -> linksCase.findById(source.id, source.type)
         }
         loadingState.value = false
         maskState.value = false
