@@ -71,7 +71,6 @@ class CommentView : ConstraintLayout {
 
     commentRating.visibleIf(comment.userRating > 0)
     commentRating.text = String.format(Locale.ENGLISH, "%d", comment.userRating)
-    commentRepliesCount.text = comment.replies.toString()
     commentReplies.visibleIf(comment.replies > 0 && !comment.isLoading && !comment.hasRepliesLoaded)
     commentRepliesCount.visibleIf(comment.replies > 0 && !comment.isLoading && !comment.hasRepliesLoaded)
     commentRepliesCount.text = comment.replies.toString()
@@ -105,10 +104,6 @@ class CommentView : ConstraintLayout {
   }
 
   private fun clear() {
-    commentHeader.text = ""
-    commentDate.text = ""
-    commentRepliesCount.text = ""
-    commentText.text = ""
     commentText.setTypeface(null, Typeface.NORMAL)
     commentText.setTextColor(colorTextPrimary)
     commentDate.setTextColor(colorTextSecondary)
