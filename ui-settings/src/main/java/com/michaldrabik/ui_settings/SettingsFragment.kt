@@ -258,15 +258,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
       }
 
     settingsContactDevs.onClick {
-      val id = settingsUserId.text
-      val intent = Intent(ACTION_SENDTO).apply {
-        data = Uri.parse("mailto:")
-        putExtra(EXTRA_EMAIL, arrayOf(Config.DEVELOPER_MAIL))
-        putExtra(EXTRA_SUBJECT, "Showly Message (ID: $id)")
-      }
-      if (intent.resolveActivity(requireActivity().packageManager) != null) {
-        startActivity(intent)
-      }
+      openMailMessage()
     }
 
     settingsRateApp.onClick {
@@ -509,6 +501,18 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
 
   private fun openWebLink(url: String) {
     openWebUrl(url) ?: showSnack(MessageEvent.Info(R.string.errorCouldNotFindApp))
+  }
+
+  private fun openMailMessage() {
+    val id = settingsUserId.text
+    val intent = Intent(ACTION_SENDTO).apply {
+      data = Uri.parse("mailto:")
+      putExtra(EXTRA_EMAIL, arrayOf(Config.DEVELOPER_MAIL))
+      putExtra(EXTRA_SUBJECT, "Showly Message (ID: $id)")
+    }
+    if (intent.resolveActivity(requireActivity().packageManager) != null) {
+      startActivity(intent)
+    }
   }
 
   override fun onAuthorizationResult(authData: Uri?) = viewModel.authorizeTrakt(authData)
