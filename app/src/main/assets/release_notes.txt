@@ -1,6 +1,6 @@
-* Added option to sort by recently watched in My Shows section
+* Comments text is now selectable
 
-* Misc. translations fixes
+* Fixed issue with Contact Developers button
 
 Do you enjoy Showly app and want to support the developer?
 Become a subscriber and gain access to cool bonus features! Check Settings to learn more!
