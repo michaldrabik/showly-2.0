@@ -15,6 +15,7 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.expandTouch
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_comments.utilities.refreshTextSelection
 import com.michaldrabik.ui_model.Comment
 import kotlinx.android.synthetic.main.view_comment.view.*
 import java.time.format.DateTimeFormatter
@@ -104,6 +105,7 @@ class CommentView : ConstraintLayout {
   }
 
   private fun clear() {
+    commentText.refreshTextSelection()
     commentText.setTypeface(null, Typeface.NORMAL)
     commentText.setTextColor(colorTextPrimary)
     commentDate.setTextColor(colorTextSecondary)
