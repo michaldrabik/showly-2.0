@@ -90,8 +90,6 @@ import com.michaldrabik.ui_movie.helpers.MovieLink.IMDB
 import com.michaldrabik.ui_movie.helpers.MovieLink.METACRITIC
 import com.michaldrabik.ui_movie.helpers.MovieLink.ROTTEN
 import com.michaldrabik.ui_movie.helpers.MovieLink.TRAKT
-import com.michaldrabik.ui_movie.related.RelatedListItem
-import com.michaldrabik.ui_movie.related.RelatedMovieAdapter
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.ADD
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_HIDDEN
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_MY_MOVIES
@@ -131,7 +129,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 
   private var actorsAdapter: ActorsAdapter? = null
   private var streamingAdapter: StreamingAdapter? = null
-  private var relatedAdapter: RelatedMovieAdapter? = null
   private var lastOpenedPerson: Person? = null
 
   private val imageHeight by lazy {
@@ -252,19 +249,19 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   }
 
   private fun setupRelatedList() {
-    relatedAdapter = RelatedMovieAdapter(
-      itemClickListener = {
-        val bundle = Bundle().apply { putLong(ARG_MOVIE_ID, it.movie.ids.trakt.id) }
-        navigateTo(R.id.actionMovieDetailsFragmentToSelf, bundle)
-      },
-      missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
-    )
-    movieDetailsRelatedRecycler.apply {
-      setHasFixedSize(true)
-      adapter = relatedAdapter
-      layoutManager = LinearLayoutManager(requireContext(), HORIZONTAL, false)
-      addDivider(R.drawable.divider_horizontal_list, HORIZONTAL)
-    }
+//    relatedAdapter = RelatedMovieAdapter(
+//      itemClickListener = {
+//        val bundle = Bundle().apply { putLong(ARG_MOVIE_ID, it.movie.ids.trakt.id) }
+//        navigateTo(R.id.actionMovieDetailsFragmentToSelf, bundle)
+//      },
+//      missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
+//    )
+//    movieDetailsRelatedRecycler.apply {
+//      setHasFixedSize(true)
+//      adapter = relatedAdapter
+//      layoutManager = LinearLayoutManager(requireContext(), HORIZONTAL, false)
+//      addDivider(R.drawable.divider_horizontal_list, HORIZONTAL)
+//    }
   }
 
   private fun showCommentsView() {
@@ -362,7 +359,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       crew?.let { renderCrew(it) }
       streamings?.let { renderStreamings(it) }
       translation?.let { renderTranslation(it) }
-      relatedMovies?.let { renderRelatedMovies(it) }
       comments?.let {
         movieDetailsCommentsView.bind(it, commentsDateFormat)
         if (isSignedIn) {
@@ -506,13 +502,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     } else if (!isLocal) {
       movieDetailsStreamingsRecycler.gone()
     }
-  }
-
-  private fun renderRelatedMovies(items: List<RelatedListItem>) {
-    relatedAdapter?.setItems(items)
-    movieDetailsRelatedRecycler.visibleIf(items.isNotEmpty())
-    movieDetailsRelatedLabel.fadeIf(items.isNotEmpty(), hardware = true)
-    movieDetailsRelatedProgress.gone()
   }
 
   private fun renderTranslation(translation: Translation?) {
@@ -697,7 +686,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   override fun onDestroyView() {
     actorsAdapter = null
     streamingAdapter = null
-    relatedAdapter = null
     super.onDestroyView()
   }
 }

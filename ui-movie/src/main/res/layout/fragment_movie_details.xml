@@ -504,52 +504,15 @@
         app:layout_constraintTop_toBottomOf="@id/separator2"
         />
 
-      <TextView
-        android:id="@+id/movieDetailsRelatedLabel"
-        android:layout_width="wrap_content"
+      <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/movieDetailsRelatedFragment"
+        android:name="com.michaldrabik.ui_movie.related.MovieDetailsRelatedFragment"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="@dimen/spaceMedium"
-        android:text="@string/textMovieYouMayAlsoLike"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/movieDetailsRelatedRecycler"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/movieDetailsSeparator5"
-        />
-
-      <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/movieDetailsRelatedRecycler"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/spaceMedium"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:overScrollMode="never"
-        android:paddingStart="@dimen/spaceNormal"
-        android:paddingEnd="@dimen/spaceNormal"
-        android:visibility="invisible"
-        app:layout_constrainedHeight="true"
-        app:layout_constraintBottom_toTopOf="@id/movieDetailsCustomImagesLabel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_min="@dimen/relatedMovieHeight"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/movieDetailsRelatedLabel"
-        tools:visibility="visible"
-        />
-
-      <ProgressBar
-        android:id="@+id/movieDetailsRelatedProgress"
-        style="@style/ProgressBar.Dark"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        app:layout_constraintBottom_toBottomOf="@id/movieDetailsRelatedRecycler"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/movieDetailsRelatedRecycler"
+        tools:layout_height="100dp"
         />
 
       <TextView
@@ -570,7 +533,7 @@
         app:drawableTint="?android:attr/textColorPrimary"
         app:layout_constraintBottom_toTopOf="@id/movieDetailsPremiumAd"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/movieDetailsRelatedRecycler"
+        app:layout_constraintTop_toBottomOf="@id/movieDetailsRelatedFragment"
         app:layout_goneMarginTop="0dp"
         tools:visibility="visible"
         />
@@ -584,7 +547,7 @@
         android:layout_marginEnd="@dimen/spaceNormal"
         android:background="?attr/colorSeparator"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/movieDetailsRelatedLabel"
+        app:layout_constraintBottom_toTopOf="@id/movieDetailsRelatedFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

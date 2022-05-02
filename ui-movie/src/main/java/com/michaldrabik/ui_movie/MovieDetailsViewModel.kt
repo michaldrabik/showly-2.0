@@ -38,11 +38,9 @@ import com.michaldrabik.ui_movie.cases.MovieDetailsListsCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsMainCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsMyMoviesCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsRatingCase
-import com.michaldrabik.ui_movie.cases.MovieDetailsRelatedCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsStreamingCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsTranslationCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsWatchlistCase
-import com.michaldrabik.ui_movie.related.RelatedListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -59,7 +57,6 @@ import kotlin.properties.Delegates.notNull
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor(
   private val mainCase: MovieDetailsMainCase,
-  private val relatedCase: MovieDetailsRelatedCase,
   private val actorsCase: MovieDetailsActorsCase,
   private val commentsCase: MovieDetailsCommentsCase,
   private val translationCase: MovieDetailsTranslationCase,
@@ -82,7 +79,6 @@ class MovieDetailsViewModel @Inject constructor(
   private val imageState = MutableStateFlow<Image?>(null)
   private val actorsState = MutableStateFlow<List<Person>?>(null)
   private val crewState = MutableStateFlow<Map<Person.Department, List<Person>>?>(null)
-  private val relatedState = MutableStateFlow<List<RelatedListItem>?>(null)
   private val commentsState = MutableStateFlow<List<Comment>?>(null)
   private val commentsDateFormatState = MutableStateFlow<DateTimeFormatter?>(null)
   private val followedState = MutableStateFlow<FollowedState?>(null)
@@ -138,7 +134,6 @@ class MovieDetailsViewModel @Inject constructor(
         launch { loadRatings(movie) }
         launch { loadCastCrew(movie) }
         launch { loadStreamings(movie) }
-        launch { loadRelatedMovies(movie) }
         launch { loadTranslation(movie) }
       } catch (error: Throwable) {
         progressJob.cancel()
@@ -185,24 +180,24 @@ class MovieDetailsViewModel @Inject constructor(
     }
   }
 
-  private suspend fun loadRelatedMovies(movie: Movie) {
-    try {
-      val (myMovies, watchlistMovies) = myMoviesCase.getAllIds()
-      val related = relatedCase.loadRelatedMovies(movie).map {
-        val image = imagesProvider.findCachedImage(it, ImageType.POSTER)
-        RelatedListItem(
-          movie = it,
-          image = image,
-          isFollowed = it.traktId in myMovies,
-          isWatchlist = it.traktId in watchlistMovies
-        )
-      }
-      relatedState.value = related
-    } catch (error: Throwable) {
-      relatedState.value = emptyList()
-      rethrowCancellation(error)
-    }
-  }
+//  private suspend fun loadRelatedMovies(movie: Movie) {
+//    try {
+//      val (myMovies, watchlistMovies) = myMoviesCase.getAllIds()
+//      val related = relatedCase.loadRelatedMovies(movie).map {
+//        val image = imagesProvider.findCachedImage(it, ImageType.POSTER)
+//        RelatedListItem(
+//          movie = it,
+//          image = image,
+//          isFollowed = it.traktId in myMovies,
+//          isWatchlist = it.traktId in watchlistMovies
+//        )
+//      }
+//      relatedState.value = related
+//    } catch (error: Throwable) {
+//      relatedState.value = emptyList()
+//      rethrowCancellation(error)
+//    }
+//  }
 
   private suspend fun loadTranslation(movie: Movie) {
     try {
@@ -330,24 +325,24 @@ class MovieDetailsViewModel @Inject constructor(
     }
   }
 
-  fun loadMissingImage(item: RelatedListItem, force: Boolean) {
-
-    fun updateItem(new: RelatedListItem) {
-      val currentItems = uiState.value.relatedMovies?.toMutableList()
-      currentItems?.findReplace(new) { it isSameAs new }
-      relatedState.value = currentItems
-    }
-
-    viewModelScope.launch {
-      updateItem(item.copy(isLoading = true))
-      try {
-        val image = imagesProvider.loadRemoteImage(item.movie, item.image.type, force)
-        updateItem(item.copy(isLoading = false, image = image))
-      } catch (t: Throwable) {
-        updateItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
-      }
-    }
-  }
+//  fun loadMissingImage(item: RelatedListItem, force: Boolean) {
+//
+//    fun updateItem(new: RelatedListItem) {
+//      val currentItems = uiState.value.relatedMovies?.toMutableList()
+//      currentItems?.findReplace(new) { it isSameAs new }
+//      relatedState.value = currentItems
+//    }
+//
+//    viewModelScope.launch {
+//      updateItem(item.copy(isLoading = true))
+//      try {
+//        val image = imagesProvider.loadRemoteImage(item.movie, item.image.type, force)
+//        updateItem(item.copy(isLoading = false, image = image))
+//      } catch (t: Throwable) {
+//        updateItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
+//      }
+//    }
+//  }
 
   fun loadPremium() {
     premiumState.value = settingsRepository.isPremium
@@ -471,7 +466,6 @@ class MovieDetailsViewModel @Inject constructor(
     imageState,
     actorsState,
     crewState,
-    relatedState,
     commentsState,
     commentsDateFormatState,
     followedState,
@@ -485,7 +479,7 @@ class MovieDetailsViewModel @Inject constructor(
     listsCountState,
     removeTraktEvent,
     finishedEvent
-  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s20 ->
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19 ->
     MovieDetailsUiState(
       movie = s1,
       movieLoading = s2,
@@ -493,20 +487,19 @@ class MovieDetailsViewModel @Inject constructor(
       image = s4,
       actors = s5,
       crew = s6,
-      relatedMovies = s7,
-      comments = s8,
-      commentsDateFormat = s9,
-      followedState = s10,
-      ratingState = s11,
-      streamings = s12,
-      translation = s13,
-      country = s14,
-      dateFormat = s15,
-      isSignedIn = s16,
-      isPremium = s17,
-      listsCount = s18,
-      removeFromTrakt = s19,
-      isFinished = s20
+      comments = s7,
+      commentsDateFormat = s8,
+      followedState = s9,
+      ratingState = s10,
+      streamings = s11,
+      translation = s12,
+      country = s13,
+      dateFormat = s14,
+      isSignedIn = s15,
+      isPremium = s16,
+      listsCount = s17,
+      removeFromTrakt = s18,
+      isFinished = s19
     )
   }.stateIn(
     scope = viewModelScope,

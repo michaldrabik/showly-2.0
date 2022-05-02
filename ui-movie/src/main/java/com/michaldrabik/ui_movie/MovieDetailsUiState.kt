@@ -10,7 +10,6 @@ import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.StreamingService
 import com.michaldrabik.ui_model.Translation
-import com.michaldrabik.ui_movie.related.RelatedListItem
 import java.time.format.DateTimeFormatter
 
 data class MovieDetailsUiState(
@@ -19,7 +18,6 @@ data class MovieDetailsUiState(
   val image: Image? = null,
   val actors: List<Person>? = null,
   val crew: Map<Person.Department, List<Person>>? = null,
-  val relatedMovies: List<RelatedListItem>? = null,
   val comments: List<Comment>? = null,
   val listsCount: Int? = null,
   val followedState: FollowedState? = null,
