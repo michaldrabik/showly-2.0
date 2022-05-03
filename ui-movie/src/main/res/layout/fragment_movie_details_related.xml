@@ -36,6 +36,7 @@
     android:paddingEnd="@dimen/spaceNormal"
     android:visibility="invisible"
     app:layout_constrainedHeight="true"
+    app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHeight_min="@dimen/relatedMovieHeight"
     app:layout_constraintStart_toStartOf="parent"

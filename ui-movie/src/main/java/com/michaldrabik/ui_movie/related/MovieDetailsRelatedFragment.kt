@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
-import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_movie.MovieDetailsViewModel
@@ -31,7 +30,7 @@ class MovieDetailsRelatedFragment : BaseFragment<MovieDetailsRelatedViewModel>(R
     super.onViewCreated(view, savedInstanceState)
     setupView()
     launchAndRepeatStarted(
-      { parentViewModel.uiState.collect { viewModel.onParentState(it) } },
+      { parentViewModel.eventFlow.collect { viewModel.handleEvent(it) } },
       { viewModel.uiState.collect { render(it) } }
     )
   }
@@ -54,11 +53,15 @@ class MovieDetailsRelatedFragment : BaseFragment<MovieDetailsRelatedViewModel>(R
   }
 
   private fun render(uiState: MovieDetailsRelatedUiState) {
-    uiState.relatedMovies?.let {
-      relatedAdapter?.setItems(it)
-      movieDetailsRelatedRecycler.visibleIf(it.isNotEmpty())
-      movieDetailsRelatedLabel.fadeIf(it.isNotEmpty(), hardware = true)
-      movieDetailsRelatedProgress.gone()
+    with(uiState) {
+      relatedMovies?.let {
+        relatedAdapter?.setItems(it)
+        movieDetailsRelatedRecycler.visibleIf(it.isNotEmpty())
+        movieDetailsRelatedLabel.fadeIf(it.isNotEmpty(), hardware = true)
+      }
+      isLoading.let {
+        movieDetailsRelatedProgress.visibleIf(it)
+      }
     }
   }
 

@@ -120,6 +120,8 @@ class MovieDetailsViewModel @Inject constructor(
 
         movieState.value = movie
         movieLoadingState.value = false
+        eventChannel.send(MovieLoadedEvent(movie))
+
         followedState.value = isFollowed
         ratingState.value = RatingState(rateAllowed = isSignedIn, rateLoading = false)
         countryState.value = AppCountry.fromCode(settingsRepository.country)
