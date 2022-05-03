@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_movie.actors
+package com.michaldrabik.ui_movie.sections.actors.recycler
 
 import android.content.Context
 import android.util.AttributeSet

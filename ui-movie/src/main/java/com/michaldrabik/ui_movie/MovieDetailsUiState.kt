@@ -5,7 +5,6 @@ import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Movie
-import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.StreamingService
@@ -16,8 +15,6 @@ data class MovieDetailsUiState(
   val movie: Movie? = null,
   val movieLoading: Boolean? = null,
   val image: Image? = null,
-  val actors: List<Person>? = null,
-  val crew: Map<Person.Department, List<Person>>? = null,
   val comments: List<Comment>? = null,
   val listsCount: Int? = null,
   val followedState: FollowedState? = null,

@@ -1,9 +1,8 @@
-package com.michaldrabik.ui_movie.related
+package com.michaldrabik.ui_movie.sections.related
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.repository.images.MovieImagesProvider
-import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
@@ -12,10 +11,11 @@ import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
-import com.michaldrabik.ui_movie.MovieLoadedEvent
+import com.michaldrabik.ui_movie.MovieDetailsEvent
+import com.michaldrabik.ui_movie.MovieDetailsEvent.MovieLoadedEvent
 import com.michaldrabik.ui_movie.cases.MovieDetailsMyMoviesCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsRelatedCase
-import com.michaldrabik.ui_movie.related.recycler.RelatedListItem
+import com.michaldrabik.ui_movie.sections.related.recycler.RelatedListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -35,9 +35,10 @@ class MovieDetailsRelatedViewModel @Inject constructor(
   private val loadingState = MutableStateFlow(true)
   private val relatedItemsState = MutableStateFlow<List<RelatedListItem>?>(null)
 
-  fun handleEvent(event: Event<*>) {
+  fun handleEvent(event: MovieDetailsEvent<*>) {
     when (event) {
       is MovieLoadedEvent -> loadRelatedMovies(event.movie)
+      else -> Unit
     }
   }
 

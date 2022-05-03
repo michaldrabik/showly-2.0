@@ -24,14 +24,13 @@ import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
-import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_movie.MovieDetailsEvent.MovieLoadedEvent
 import com.michaldrabik.ui_movie.MovieDetailsUiState.FollowedState
 import com.michaldrabik.ui_movie.MovieDetailsUiState.StreamingsState
-import com.michaldrabik.ui_movie.cases.MovieDetailsActorsCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsCommentsCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsHiddenCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsListsCase
@@ -43,8 +42,10 @@ import com.michaldrabik.ui_movie.cases.MovieDetailsTranslationCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsWatchlistCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -57,7 +58,6 @@ import kotlin.properties.Delegates.notNull
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor(
   private val mainCase: MovieDetailsMainCase,
-  private val actorsCase: MovieDetailsActorsCase,
   private val commentsCase: MovieDetailsCommentsCase,
   private val translationCase: MovieDetailsTranslationCase,
   private val ratingsCase: MovieDetailsRatingCase,
@@ -73,12 +73,13 @@ class MovieDetailsViewModel @Inject constructor(
   private val announcementManager: AnnouncementManager,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
+  private val _parentEvents = MutableSharedFlow<MovieDetailsEvent<*>>()
+  val parentEvents = _parentEvents.asSharedFlow()
+
   private val movieState = MutableStateFlow<Movie?>(null)
   private val movieLoadingState = MutableStateFlow<Boolean?>(null)
   private val movieRatingsState = MutableStateFlow<Ratings?>(null)
   private val imageState = MutableStateFlow<Image?>(null)
-  private val actorsState = MutableStateFlow<List<Person>?>(null)
-  private val crewState = MutableStateFlow<Map<Person.Department, List<Person>>?>(null)
   private val commentsState = MutableStateFlow<List<Comment>?>(null)
   private val commentsDateFormatState = MutableStateFlow<DateTimeFormatter?>(null)
   private val followedState = MutableStateFlow<FollowedState?>(null)
@@ -103,6 +104,7 @@ class MovieDetailsViewModel @Inject constructor(
       }
       try {
         movie = mainCase.loadDetails(id)
+        _parentEvents.emit(MovieLoadedEvent(movie))
         Analytics.logMovieDetailsDisplay(movie)
 
         val isSignedIn = userManager.isAuthorized()
@@ -120,8 +122,6 @@ class MovieDetailsViewModel @Inject constructor(
 
         movieState.value = movie
         movieLoadingState.value = false
-        eventChannel.send(MovieLoadedEvent(movie))
-
         followedState.value = isFollowed
         ratingState.value = RatingState(rateAllowed = isSignedIn, rateLoading = false)
         countryState.value = AppCountry.fromCode(settingsRepository.country)
@@ -134,7 +134,6 @@ class MovieDetailsViewModel @Inject constructor(
         loadListsCount(movie)
         loadRating()
         launch { loadRatings(movie) }
-        launch { loadCastCrew(movie) }
         launch { loadStreamings(movie) }
         launch { loadTranslation(movie) }
       } catch (error: Throwable) {
@@ -161,24 +160,6 @@ class MovieDetailsViewModel @Inject constructor(
         Timber.e(error)
         rethrowCancellation(error)
       }
-    }
-  }
-
-  private suspend fun loadCastCrew(movie: Movie) {
-    try {
-      val people = actorsCase.loadPeople(movie)
-
-      val actors = people.getOrDefault(Person.Department.ACTING, emptyList())
-      val crew = people.filter { it.key !in arrayOf(Person.Department.ACTING, Person.Department.UNKNOWN) }
-
-      actorsState.value = actors
-      crewState.value = crew
-
-      actorsCase.preloadDetails(actors)
-    } catch (error: Throwable) {
-      actorsState.value = emptyList()
-      crewState.value = emptyMap()
-      rethrowCancellation(error)
     }
   }
 
@@ -428,8 +409,6 @@ class MovieDetailsViewModel @Inject constructor(
     movieLoadingState,
     movieRatingsState,
     imageState,
-    actorsState,
-    crewState,
     commentsState,
     commentsDateFormatState,
     followedState,
@@ -443,27 +422,25 @@ class MovieDetailsViewModel @Inject constructor(
     listsCountState,
     removeTraktEvent,
     finishedEvent
-  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19 ->
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17 ->
     MovieDetailsUiState(
       movie = s1,
       movieLoading = s2,
       ratings = s3,
       image = s4,
-      actors = s5,
-      crew = s6,
-      comments = s7,
-      commentsDateFormat = s8,
-      followedState = s9,
-      ratingState = s10,
-      streamings = s11,
-      translation = s12,
-      country = s13,
-      dateFormat = s14,
-      isSignedIn = s15,
-      isPremium = s16,
-      listsCount = s17,
-      removeFromTrakt = s18,
-      isFinished = s19
+      comments = s5,
+      commentsDateFormat = s6,
+      followedState = s7,
+      ratingState = s8,
+      streamings = s9,
+      translation = s10,
+      country = s11,
+      dateFormat = s12,
+      isSignedIn = s13,
+      isPremium = s14,
+      listsCount = s15,
+      removeFromTrakt = s16,
+      isFinished = s17
     )
   }.stateIn(
     scope = viewModelScope,

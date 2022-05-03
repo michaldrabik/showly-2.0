@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_movie.related
+package com.michaldrabik.ui_movie.sections.related
 
 import android.os.Bundle
 import android.view.View
@@ -12,7 +12,7 @@ import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_movie.MovieDetailsViewModel
 import com.michaldrabik.ui_movie.R
-import com.michaldrabik.ui_movie.related.recycler.RelatedMovieAdapter
+import com.michaldrabik.ui_movie.sections.related.recycler.RelatedMovieAdapter
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_movie_details_related.*
@@ -30,7 +30,7 @@ class MovieDetailsRelatedFragment : BaseFragment<MovieDetailsRelatedViewModel>(R
     super.onViewCreated(view, savedInstanceState)
     setupView()
     launchAndRepeatStarted(
-      { parentViewModel.eventFlow.collect { viewModel.handleEvent(it) } },
+      { parentViewModel.parentEvents.collect { viewModel.handleEvent(it) } },
       { viewModel.uiState.collect { render(it) } }
     )
   }

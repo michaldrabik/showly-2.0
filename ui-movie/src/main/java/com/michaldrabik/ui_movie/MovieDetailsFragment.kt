@@ -12,7 +12,6 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
@@ -21,7 +20,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
-import androidx.fragment.app.clearFragmentResultListener
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -64,7 +62,6 @@ import com.michaldrabik.ui_base.utilities.extensions.screenHeight
 import com.michaldrabik.ui_base.utilities.extensions.screenWidth
 import com.michaldrabik.ui_base.utilities.extensions.setTextIfEmpty
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
-import com.michaldrabik.ui_base.utilities.extensions.trimWithSuffix
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
@@ -78,13 +75,10 @@ import com.michaldrabik.ui_model.ImageFamily.MOVIE
 import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
 import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.Movie
-import com.michaldrabik.ui_model.Person
-import com.michaldrabik.ui_model.Person.Department
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_movie.MovieDetailsUiState.StreamingsState
-import com.michaldrabik.ui_movie.actors.ActorsAdapter
 import com.michaldrabik.ui_movie.helpers.MovieLink
 import com.michaldrabik.ui_movie.helpers.MovieLink.IMDB
 import com.michaldrabik.ui_movie.helpers.MovieLink.METACRITIC
@@ -108,8 +102,6 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MANAGE_LISTS
-import com.michaldrabik.ui_people.details.PersonDetailsBottomSheet
-import com.michaldrabik.ui_people.list.PeopleListBottomSheet
 import com.michaldrabik.ui_streamings.recycler.StreamingAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_movie_details.*
@@ -127,9 +119,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 
   private val movieId by lazy { IdTrakt(requireLong(ARG_MOVIE_ID)) }
 
-  private var actorsAdapter: ActorsAdapter? = null
   private var streamingAdapter: StreamingAdapter? = null
-  private var lastOpenedPerson: Person? = null
 
   private val imageHeight by lazy {
     if (resources.configuration.orientation == ORIENTATION_PORTRAIT) screenHeight()
@@ -148,7 +138,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     requireActivity().requestedOrientation = SCREEN_ORIENTATION_PORTRAIT
     setupView()
     setupStatusBar()
-    setupActorsList()
     setupStreamingsList()
 
     launchAndRepeatStarted(
@@ -160,7 +149,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
           isInitialized = true
         }
         viewModel.loadPremium()
-        lastOpenedPerson?.let { openPersonSheet(it) }
       }
     )
   }
@@ -225,18 +213,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     }
   }
 
-  private fun setupActorsList() {
-    actorsAdapter = ActorsAdapter().apply {
-      itemClickListener = { openPersonSheet(it) }
-    }
-    movieDetailsActorsRecycler.apply {
-      setHasFixedSize(true)
-      adapter = actorsAdapter
-      layoutManager = LinearLayoutManager(requireContext(), HORIZONTAL, false)
-      addDivider(R.drawable.divider_horizontal_list, HORIZONTAL)
-    }
-  }
-
   private fun setupStreamingsList() {
     streamingAdapter = StreamingAdapter()
     movieDetailsStreamingsRecycler.apply {
@@ -277,7 +253,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     uiState.run {
       movie?.let { movie ->
         movieDetailsTitle.text = movie.title
-        movieDetailsDescription.setTextIfEmpty(if (movie.overview.isNotBlank()) movie.overview else getString(R.string.textNoDescription))
+        movieDetailsDescription.setTextIfEmpty(movie.overview.ifBlank { getString(R.string.textNoDescription) })
         movieDetailsStatus.text = getString(movie.status.displayName)
 
         val releaseDate =
@@ -338,8 +314,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         (requireAppContext() as WidgetsProvider).requestMoviesWidgetsUpdate()
       }
       image?.let { renderImage(it) }
-      actors?.let { renderActors(it) }
-      crew?.let { renderCrew(it) }
       streamings?.let { renderStreamings(it) }
       translation?.let { renderTranslation(it) }
       comments?.let {
@@ -439,39 +413,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       .into(movieDetailsImage)
   }
 
-  private fun renderActors(actors: List<Person>) {
-    if (actorsAdapter?.itemCount != 0) return
-    actorsAdapter?.setItems(actors)
-    movieDetailsActorsRecycler.visibleIf(actors.isNotEmpty())
-    movieDetailsActorsEmptyView.visibleIf(actors.isEmpty())
-    movieDetailsActorsProgress.gone()
-  }
-
-  private fun renderCrew(crew: Map<Department, List<Person>>) {
-
-    fun renderPeople(labelView: View, valueView: TextView, people: List<Person>, department: Department) {
-      labelView.visibleIf(people.isNotEmpty())
-      valueView.visibleIf(people.isNotEmpty())
-      valueView.text = people
-        .take(2)
-        .joinToString("\n") { it.name.trimWithSuffix(20, "…") }
-        .plus(if (people.size > 2) "\n…" else "")
-      valueView.onClick { openPeopleListSheet(people, department) }
-    }
-
-    if (!crew.containsKey(Department.DIRECTING)) {
-      return
-    }
-
-    val directors = crew[Department.DIRECTING] ?: emptyList()
-    val writers = crew[Department.WRITING] ?: emptyList()
-    val sound = crew[Department.SOUND] ?: emptyList()
-
-    renderPeople(movieDetailsDirectingLabel, movieDetailsDirectingValue, directors, Department.DIRECTING)
-    renderPeople(movieDetailsWritingLabel, movieDetailsWritingValue, writers, Department.WRITING)
-    renderPeople(movieDetailsMusicLabel, movieDetailsMusicValue, sound, Department.SOUND)
-  }
-
   private fun renderStreamings(streamings: StreamingsState) {
     if (streamingAdapter?.itemCount != 0) return
     val (items, isLocal) = streamings
@@ -542,27 +483,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     }
     val args = RemoveTraktBottomSheet.createBundle(movieId, RemoveTraktBottomSheet.Mode.MOVIE)
     navigateTo(action, args)
-  }
-
-  private fun openPersonSheet(person: Person) {
-    lastOpenedPerson = null
-    setFragmentResultListener(NavigationArgs.REQUEST_PERSON_DETAILS) { _, _ ->
-      lastOpenedPerson = person
-    }
-    val bundle = PersonDetailsBottomSheet.createBundle(person, movieId)
-    navigateToSafe(R.id.actionMovieDetailsFragmentToPerson, bundle)
-  }
-
-  private fun openPeopleListSheet(people: List<Person>, department: Department) {
-    if (people.isEmpty()) return
-    if (people.size == 1) {
-      openPersonSheet(people.first())
-      return
-    }
-    clearFragmentResultListener(NavigationArgs.REQUEST_PERSON_DETAILS)
-    val title = movieDetailsTitle.text.toString()
-    val bundle = PeopleListBottomSheet.createBundle(movieId, title, Mode.MOVIES, department)
-    navigateToSafe(R.id.actionMovieDetailsFragmentToPeopleList, bundle)
   }
 
   private fun openShareSheet(movie: Movie) {
@@ -667,7 +587,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   }
 
   override fun onDestroyView() {
-    actorsAdapter = null
     streamingAdapter = null
     super.onDestroyView()
   }

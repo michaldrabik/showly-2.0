@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_movie.related.recycler
+package com.michaldrabik.ui_movie.sections.related.recycler
 
 import com.michaldrabik.ui_base.common.MovieListItem
 import com.michaldrabik.ui_model.Image
