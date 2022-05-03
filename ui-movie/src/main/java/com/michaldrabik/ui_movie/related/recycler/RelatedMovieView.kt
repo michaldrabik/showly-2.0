@@ -66,7 +66,6 @@ class RelatedMovieView : MovieView<RelatedListItem> {
   }
 
   private fun clear() {
-    relatedMovieTitle.text = ""
     relatedMoviePlaceholder.gone()
     relatedMovieTitle.gone()
     Glide.with(this).clear(relatedMovieImage)

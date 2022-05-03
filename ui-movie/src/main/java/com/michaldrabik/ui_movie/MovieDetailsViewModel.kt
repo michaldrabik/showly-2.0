@@ -182,25 +182,6 @@ class MovieDetailsViewModel @Inject constructor(
     }
   }
 
-//  private suspend fun loadRelatedMovies(movie: Movie) {
-//    try {
-//      val (myMovies, watchlistMovies) = myMoviesCase.getAllIds()
-//      val related = relatedCase.loadRelatedMovies(movie).map {
-//        val image = imagesProvider.findCachedImage(it, ImageType.POSTER)
-//        RelatedListItem(
-//          movie = it,
-//          image = image,
-//          isFollowed = it.traktId in myMovies,
-//          isWatchlist = it.traktId in watchlistMovies
-//        )
-//      }
-//      relatedState.value = related
-//    } catch (error: Throwable) {
-//      relatedState.value = emptyList()
-//      rethrowCancellation(error)
-//    }
-//  }
-
   private suspend fun loadTranslation(movie: Movie) {
     try {
       translationCase.loadTranslation(movie)?.let {
@@ -326,25 +307,6 @@ class MovieDetailsViewModel @Inject constructor(
       }
     }
   }
-
-//  fun loadMissingImage(item: RelatedListItem, force: Boolean) {
-//
-//    fun updateItem(new: RelatedListItem) {
-//      val currentItems = uiState.value.relatedMovies?.toMutableList()
-//      currentItems?.findReplace(new) { it isSameAs new }
-//      relatedState.value = currentItems
-//    }
-//
-//    viewModelScope.launch {
-//      updateItem(item.copy(isLoading = true))
-//      try {
-//        val image = imagesProvider.loadRemoteImage(item.movie, item.image.type, force)
-//        updateItem(item.copy(isLoading = false, image = image))
-//      } catch (t: Throwable) {
-//        updateItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
-//      }
-//    }
-//  }
 
   fun loadPremium() {
     premiumState.value = settingsRepository.isPremium

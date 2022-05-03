@@ -41,9 +41,8 @@ class MovieDetailsRelatedFragment : BaseFragment<MovieDetailsRelatedViewModel>(R
         val bundle = Bundle().apply { putLong(ARG_MOVIE_ID, it.movie.ids.trakt.id) }
         navigateTo(R.id.actionMovieDetailsFragmentToSelf, bundle)
       },
-      missingImageListener = { relatedListItem, b -> }
+      missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
     )
-//      missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
     movieDetailsRelatedRecycler.apply {
       setHasFixedSize(true)
       adapter = relatedAdapter
