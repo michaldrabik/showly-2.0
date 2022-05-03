@@ -11,16 +11,18 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_movie.MovieDetailsViewModel
 import com.michaldrabik.ui_movie.R
-import com.michaldrabik.ui_movie.related.recycler.RelatedListItem
 import com.michaldrabik.ui_movie.related.recycler.RelatedMovieAdapter
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_movie_details_related.*
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class MovieDetailsRelatedFragment : BaseFragment<MovieDetailsRelatedViewModel>(R.layout.fragment_movie_details_related) {
 
+  private val parentViewModel by viewModels<MovieDetailsViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<MovieDetailsRelatedViewModel>()
 
   private var relatedAdapter: RelatedMovieAdapter? = null
@@ -29,16 +31,8 @@ class MovieDetailsRelatedFragment : BaseFragment<MovieDetailsRelatedViewModel>(R
     super.onViewCreated(view, savedInstanceState)
     setupView()
     launchAndRepeatStarted(
-//      { viewModel.uiState.collect { render(it) } },
-//      { viewModel.messageFlow.collect { renderSnack(it) } },
-//      doAfterLaunch = {
-//        if (!isInitialized) {
-//          viewModel.loadDetails(movieId)
-//          isInitialized = true
-//        }
-//        viewModel.loadPremium()
-//        lastOpenedPerson?.let { openPersonSheet(it) }
-//      }
+      { parentViewModel.uiState.collect { viewModel.onParentState(it) } },
+      { viewModel.uiState.collect { render(it) } }
     )
   }
 
@@ -59,11 +53,13 @@ class MovieDetailsRelatedFragment : BaseFragment<MovieDetailsRelatedViewModel>(R
     }
   }
 
-  private fun renderRelatedMovies(items: List<RelatedListItem>) {
-    relatedAdapter?.setItems(items)
-    movieDetailsRelatedRecycler.visibleIf(items.isNotEmpty())
-    movieDetailsRelatedLabel.fadeIf(items.isNotEmpty(), hardware = true)
-    movieDetailsRelatedProgress.gone()
+  private fun render(uiState: MovieDetailsRelatedUiState) {
+    uiState.relatedMovies?.let {
+      relatedAdapter?.setItems(it)
+      movieDetailsRelatedRecycler.visibleIf(it.isNotEmpty())
+      movieDetailsRelatedLabel.fadeIf(it.isNotEmpty(), hardware = true)
+      movieDetailsRelatedProgress.gone()
+    }
   }
 
   override fun onDestroyView() {

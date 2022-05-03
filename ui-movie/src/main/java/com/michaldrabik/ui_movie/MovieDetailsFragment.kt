@@ -150,7 +150,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     setupStatusBar()
     setupActorsList()
     setupStreamingsList()
-    setupRelatedList()
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
@@ -246,22 +245,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       layoutManager = LinearLayoutManager(requireContext(), HORIZONTAL, false)
       addDivider(R.drawable.divider_horizontal_list, HORIZONTAL)
     }
-  }
-
-  private fun setupRelatedList() {
-//    relatedAdapter = RelatedMovieAdapter(
-//      itemClickListener = {
-//        val bundle = Bundle().apply { putLong(ARG_MOVIE_ID, it.movie.ids.trakt.id) }
-//        navigateTo(R.id.actionMovieDetailsFragmentToSelf, bundle)
-//      },
-//      missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
-//    )
-//    movieDetailsRelatedRecycler.apply {
-//      setHasFixedSize(true)
-//      adapter = relatedAdapter
-//      layoutManager = LinearLayoutManager(requireContext(), HORIZONTAL, false)
-//      addDivider(R.drawable.divider_horizontal_list, HORIZONTAL)
-//    }
   }
 
   private fun showCommentsView() {
@@ -527,14 +510,14 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     showSnack(event)
   }
 
-  private fun openIMDbLink(id: IdImdb, type: String) {
+  private fun openIMDbLink(id: IdImdb) {
     val i = Intent(Intent.ACTION_VIEW)
-    i.data = Uri.parse("imdb:///$type/${id.id}")
+    i.data = Uri.parse("imdb:///title/${id.id}")
     try {
       startActivity(i)
     } catch (e: ActivityNotFoundException) {
       // IMDb App not installed. Start in web browser
-      openWebUrl("http://www.imdb.com/$type/${id.id}") ?: showSnack(MessageEvent.Info(R.string.errorCouldNotFindApp))
+      openWebUrl("http://www.imdb.com/title/${id.id}") ?: showSnack(MessageEvent.Info(R.string.errorCouldNotFindApp))
     }
   }
 
@@ -544,7 +527,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     country: AppCountry = UNITED_STATES,
   ) {
     if (link == IMDB) {
-      openIMDbLink(IdImdb(id), "title")
+      openIMDbLink(IdImdb(id))
     } else {
       openWebUrl(link.getUri(id, country)) ?: showSnack(MessageEvent.Info(R.string.errorCouldNotFindApp))
     }
