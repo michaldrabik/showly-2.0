@@ -1,6 +1,7 @@
 package com.michaldrabik.repository
 
 import android.content.SharedPreferences
+import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Show
 import javax.inject.Inject
 import javax.inject.Named
@@ -10,6 +11,8 @@ import javax.inject.Singleton
 class OnHoldItemsRepository @Inject constructor(
   @Named("progressOnHoldPreferences") private val sharedPreferences: SharedPreferences
 ) {
+
+  fun getAll(): List<IdTrakt> = sharedPreferences.all.keys.map { IdTrakt(it.toLong()) }
 
   fun addItem(show: Show) =
     sharedPreferences.edit().putLong(show.traktId.toString(), show.traktId).apply()

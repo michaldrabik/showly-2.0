@@ -2,6 +2,7 @@ package com.michaldrabik.ui_base.common.sheets.context_menu.show.cases
 
 import com.michaldrabik.repository.OnHoldItemsRepository
 import com.michaldrabik.repository.PinnedItemsRepository
+import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Show
@@ -12,12 +13,14 @@ import javax.inject.Inject
 class ShowContextMenuPinnedCase @Inject constructor(
   private val pinnedItemsRepository: PinnedItemsRepository,
   private val onHoldItemsRepository: OnHoldItemsRepository,
+  private val announcementManager: AnnouncementManager,
 ) {
 
-  fun addToTopPinned(traktId: IdTrakt) {
+  suspend fun addToTopPinned(traktId: IdTrakt) {
     val show = Show.EMPTY.copy(ids = Ids.EMPTY.copy(traktId))
     onHoldItemsRepository.removeItem(show)
     pinnedItemsRepository.addPinnedItem(show)
+    announcementManager.refreshShowsAnnouncements()
   }
 
   fun removeFromTopPinned(traktId: IdTrakt) {

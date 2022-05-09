@@ -13,6 +13,7 @@ import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.Episode
 import com.michaldrabik.data_local.database.model.Show
+import com.michaldrabik.repository.OnHoldItemsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.images.ShowImagesProvider
@@ -50,6 +51,7 @@ class AnnouncementManager @Inject constructor(
   private val showsImagesProvider: ShowImagesProvider,
   private val moviesImagesProvider: MovieImagesProvider,
   private val translationsRepository: TranslationsRepository,
+  private val onHoldItemsRepository: OnHoldItemsRepository,
   private val mappers: Mappers,
 ) {
 
@@ -64,56 +66,64 @@ class AnnouncementManager @Inject constructor(
   private val logFormatter by lazy { DateTimeFormatter.ofPattern("EEEE, dd MMM yyyy, HH:mm") }
 
   suspend fun refreshShowsAnnouncements() {
-    Timber.i("Refreshing shows announcements")
+    Timber.d("Refreshing shows announcements")
 
     val now = nowUtc()
     val nowMillis = now.toMillis()
     val limit = now.plusMonths(3)
     WorkManager.getInstance(context).cancelAllWorkByTag(ANNOUNCEMENT_WORK_TAG)
-    Timber.i("Current time: ${logFormatter.format(now)} UTC")
+    Timber.d("Current time: ${logFormatter.format(now)} UTC")
 
     val settings = settingsRepository.load()
     if (!settings.episodesNotificationsEnabled) {
-      Timber.i("Episodes announcements are disabled. Exiting...")
+      Timber.d("Episodes announcements are disabled. Exiting...")
       return
     }
 
     val myShows = localSource.myShows.getAll()
     if (myShows.isEmpty()) {
-      Timber.i("Nothing to process. Exiting...")
+      Timber.d("Nothing to process. Exiting...")
       return
     }
 
     val language = translationsRepository.getLanguage()
     val delay = settings.episodesNotificationsDelay
-    myShows.forEach { show ->
-      Timber.i("Processing ${show.title} (${show.idTrakt})")
-      val fromTime = if (delay.isBefore()) nowMillis else nowMillis - delay.delayMs
-      val episode = localSource.episodes.getFirstUnwatched(show.idTrakt, fromTime, limit.toMillis())
-      episode?.firstAired?.let { airDate ->
-        when {
-          delay.isBefore() -> {
-            if (airDate.toMillis() + delay.delayMs >= nowMillis) {
-              scheduleAnnouncement(show, episode, delay, language)
-            } else {
-              Timber.i("Time with delay included has already passed.")
+    val onHoldIds = onHoldItemsRepository.getAll().map { it.id }
+    myShows
+      .forEach { show ->
+        Timber.d("Processing ${show.title} (${show.idTrakt})")
+
+        if (onHoldIds.contains(show.idTrakt)) {
+          Timber.d("${show.title} (${show.idTrakt}) is on hold. Skipping...")
+          return@forEach
+        }
+
+        val fromTime = if (delay.isBefore()) nowMillis else nowMillis - delay.delayMs
+        val episode = localSource.episodes.getFirstUnwatched(show.idTrakt, fromTime, limit.toMillis())
+        episode?.firstAired?.let { airDate ->
+          when {
+            delay.isBefore() -> {
+              if (airDate.toMillis() + delay.delayMs >= nowMillis) {
+                scheduleAnnouncement(show, episode, delay, language)
+              } else {
+                Timber.d("Time with delay included has already passed.")
+              }
             }
-          }
-          else -> {
-            scheduleAnnouncement(show, episode, delay, language)
+            else -> {
+              scheduleAnnouncement(show, episode, delay, language)
+            }
           }
         }
       }
-    }
   }
 
   suspend fun refreshMoviesAnnouncements() {
-    Timber.i("Refreshing movies announcements")
+    Timber.d("Refreshing movies announcements")
 
     WorkManager.getInstance(context).cancelAllWorkByTag(ANNOUNCEMENT_MOVIE_WORK_TAG)
 
     if (!settingsRepository.isMoviesEnabled) {
-      Timber.i("Movies disabled. Skipping...")
+      Timber.d("Movies disabled. Skipping...")
       return
     }
 
@@ -121,14 +131,14 @@ class AnnouncementManager @Inject constructor(
       .map { mappers.movie.fromDatabase(it) }
 
     if (movies.isEmpty()) {
-      Timber.i("Nothing to process. Exiting...")
+      Timber.d("Nothing to process. Exiting...")
       return
     }
 
     val language = translationsRepository.getLanguage()
     movies
       .filter {
-        Timber.i("Processing ${it.title} (${it.traktId})")
+        Timber.d("Processing ${it.title} (${it.traktId})")
         it.released != null &&
           (!it.hasAired() || it.isToday()) &&
           it.released!!.toEpochDay() - nowUtcDay().toEpochDay() < MOVIE_MIN_THRESHOLD_DAYS &&
@@ -188,7 +198,7 @@ class AnnouncementManager @Inject constructor(
     WorkManager.getInstance(context).enqueue(request)
 
     val logTime = logFormatter.format(dateFromMillis(nowUtcMillis() + delayed))
-    Timber.i("Notification set for ${show.title}: $logTime UTC")
+    Timber.d("Notification set for ${show.title}: $logTime UTC")
   }
 
   private suspend fun scheduleAnnouncement(
@@ -232,6 +242,6 @@ class AnnouncementManager @Inject constructor(
     WorkManager.getInstance(context).enqueue(request)
 
     val logTime = logFormatter.format(dateFromMillis(nowUtcMillis() + delayed))
-    Timber.i("Notification set for ${movie.title}: $logTime UTC")
+    Timber.d("Notification set for ${movie.title}: $logTime UTC")
   }
 }
