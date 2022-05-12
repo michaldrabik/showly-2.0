@@ -30,19 +30,19 @@ android {
 }
 
 dependencies {
-  api "androidx.room:room-runtime:$versions.room"
-  api "androidx.room:room-ktx:$versions.room"
-  kapt "androidx.room:room-compiler:$versions.room"
+  api libs.android.room
+  api libs.android.room.runtime
+  kapt libs.android.room.compiler
 
-  implementation "com.jakewharton.timber:timber:$versions.timber"
+  implementation libs.timber
 
-  implementation "com.google.dagger:hilt-android:$versions.hilt"
-  kapt "com.google.dagger:hilt-compiler:$versions.hilt"
+  implementation libs.hilt.android
+  kapt libs.hilt.compiler
 
-  testImplementation "junit:junit:$versions.junit"
-  androidTestImplementation "com.google.truth:truth:$versions.truth"
-  androidTestImplementation "androidx.test:runner:$versions.testRunner"
-  androidTestImplementation "androidx.test.ext:truth:$versions.testRunner"
+  testImplementation testLibs.junit
+  androidTestImplementation testLibs.truth
+  androidTestImplementation androidTestLibs.android.test.runner
+  androidTestImplementation androidTestLibs.android.test.truth
 
-  coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$versions.androidDesugarLibs"
+  coreLibraryDesugaring libs.android.desugar
 }

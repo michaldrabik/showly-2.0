@@ -37,8 +37,8 @@ dependencies {
   implementation project(':ui-model')
   implementation project(':ui-navigation')
 
-  implementation "com.google.dagger:hilt-android:$versions.hilt"
-  kapt "com.google.dagger:hilt-compiler:$versions.hilt"
+  implementation libs.hilt.android
+  kapt libs.hilt.compiler
 
-  coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$versions.androidDesugarLibs"
+  coreLibraryDesugaring libs.android.desugar
 }

@@ -28,8 +28,6 @@ android {
 }
 
 dependencies {
-  api "androidx.navigation:navigation-fragment-ktx:$versions.androidNavigation"
-  api "androidx.navigation:navigation-ui-ktx:$versions.androidNavigation"
-
-  coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$versions.androidDesugarLibs"
+  api libs.bundles.navigation
+  coreLibraryDesugaring libs.android.desugar
 }

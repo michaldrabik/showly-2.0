@@ -42,8 +42,8 @@ dependencies {
   implementation project(':ui-streamings')
   implementation project(':ui-people')
 
-  implementation "com.google.dagger:hilt-android:$versions.hilt"
-  kapt "com.google.dagger:hilt-compiler:$versions.hilt"
+  implementation libs.hilt.android
+  kapt libs.hilt.compiler
 
-  coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$versions.androidDesugarLibs"
+  coreLibraryDesugaring libs.android.desugar
 }
