@@ -37,6 +37,7 @@ android {
     targetSdkVersion versions.compileSdk
     versionCode versions.versionCode
     versionName versions.versionName
+    resConfigs "en", "ar", "de", "es", "fi", "fr", "it", "pl", "pt", "ru", "tr"
 
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
   }
