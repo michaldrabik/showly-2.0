@@ -20,6 +20,7 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.just
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.resetMain
@@ -54,6 +55,7 @@ class DiscoverViewModelTest : BaseMockTest() {
     coEvery { filtersCase.saveFilters(any()) } just Runs
     coEvery { showsCase.loadCachedShows(any()) } returns emptyList()
     coEvery { showsCase.loadRemoteShows(any()) } returns emptyList()
+    coEvery { syncStatusProvider.status } returns MutableStateFlow(false)
 
     SUT = DiscoverViewModel(showsCase, filtersCase, twitterCase, imagesProvider, syncStatusProvider)
   }

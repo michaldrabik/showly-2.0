@@ -17,6 +17,8 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.just
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.resetMain
@@ -44,6 +46,10 @@ class ProgressMoviesMainViewModelTest : BaseMockTest() {
   @Before
   override fun setUp() {
     super.setUp()
+
+    coEvery { syncStatusProvider.status } returns MutableStateFlow(false)
+    coEvery { eventsManager.events } returns MutableSharedFlow()
+
     SUT = ProgressMoviesMainViewModel(mainCase, syncStatusProvider, eventsManager)
   }
 
