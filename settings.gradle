@@ -1,4 +1,91 @@
-rootProject.name='Showly 2.0'
+dependencyResolutionManagement {
+  versionCatalogs {
+    libs {
+      library("android.core", "androidx.core:core-ktx:1.6.0")
+      library("android.appCompat", "androidx.appcompat:appcompat:1.3.1")
+      library("android.playCore", "com.google.android.play:core:1.10.3")
+      library("android.gridLayout", "androidx.gridlayout:gridlayout:1.0.0")
+      library("android.billing", "com.android.billingclient:billing-ktx:4.0.0")
+      library("android.browser", "androidx.browser:browser:1.3.0")
+      library("android.desugar", "com.android.tools:desugar_jdk_libs:1.1.5")
+      library("android.material", "com.google.android.material:material:1.5.0-alpha02")
+      library("android.dynamicAnimation", "androidx.dynamicanimation:dynamicanimation:1.0.0")
+      library("android.work", "androidx.work:work-runtime-ktx:2.6.0")
+      library("android.swipeRefresh", "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+      library("android.constraintLayout", "androidx.constraintlayout:constraintlayout:2.1.3")
+      library("android.recycler", "androidx.recyclerview:recyclerview:1.2.1")
+      library("android.fragment", "androidx.fragment:fragment-ktx:1.3.6")
+
+      version("navigation", "2.3.5")
+      library("android.navigation.fragment", "androidx.navigation", "navigation-fragment-ktx").versionRef("navigation")
+      library("android.navigation.ui", "androidx.navigation", "navigation-ui-ktx").versionRef("navigation")
+      bundle("navigation", ["android.navigation.fragment", "android.navigation.ui"])
+
+      version("lifecycle", "2.4.0-alpha03")
+      library("android.lifecycle.viewmodel", "androidx.lifecycle", "lifecycle-viewmodel-ktx").versionRef("lifecycle")
+      library("android.lifecycle.runtime", "androidx.lifecycle", "lifecycle-runtime-ktx").versionRef("lifecycle")
+      library("android.lifecycle.common", "androidx.lifecycle", "lifecycle-common-java8").versionRef("lifecycle")
+      bundle("lifecycle", ["android.lifecycle.viewmodel", "android.lifecycle.runtime", "android.lifecycle.common"])
+
+      version("room", "2.4.0-alpha03")
+      library("android.room", "androidx.room", "room-ktx").versionRef("room")
+      library("android.room.runtime", "androidx.room", "room-runtime").versionRef("room")
+      library("android.room.compiler", "androidx.room", "room-compiler").versionRef("room")
+
+      version("glide", "4.13.1")
+      library("glide", "com.github.bumptech.glide", "glide").versionRef("glide")
+      library("glide.compiler", "com.github.bumptech.glide", "compiler").versionRef("glide")
+
+      version("hilt", "2.39")
+      library("hilt.plugin", "com.google.dagger", "hilt-android-gradle-plugin").versionRef("hilt")
+      library("hilt.android", "com.google.dagger", "hilt-android").versionRef("hilt")
+      library("hilt.compiler", "com.google.dagger", "hilt-compiler").versionRef("hilt")
+
+      version("hiltWork", "1.0.0")
+      library("hilt.work", "androidx.hilt", "hilt-work").versionRef("hiltWork")
+      library("hilt.work.compiler", "androidx.hilt", "hilt-compiler").versionRef("hiltWork")
+
+      library("firebase.crashlytics", "com.google.firebase:firebase-crashlytics:18.2.10")
+      library("firebase.analytics", "com.google.firebase:firebase-analytics-ktx:21.0.0")
+      library("firebase.messaging", "com.google.firebase:firebase-messaging:23.0.4")
+      library("firebase.config", "com.google.firebase:firebase-config-ktx:21.1.0")
+      bundle("firebase", ["firebase.crashlytics", "firebase.analytics", "firebase.messaging", "firebase.config"])
+
+      version("retrofit", "2.9.0")
+      library("retrofit", "com.squareup.retrofit2", "retrofit").versionRef("retrofit")
+      library("retrofit.moshi", "com.squareup.retrofit2", "converter-moshi").versionRef("retrofit")
+
+      library("kotlin.coroutines", "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
+      library("phoenix", "com.jakewharton:process-phoenix:2.0.0")
+      library("lingver", "com.github.YarikSOffice:lingver:1.3.0")
+      library("timber", "com.jakewharton.timber:timber:4.7.1")
+      library("circleIndicator", "me.relex:circleindicator:2.1.6")
+      library("loggingInterceptor", "com.squareup.okhttp3:logging-interceptor:4.9.0")
+      library("overscrollDecor", "io.github.everythingme:overscroll-decor-android:1.1.1")
+    }
+
+    testLibs {
+      library("junit", "junit:junit:4.13.2")
+      library("mockk", "io.mockk:mockk:1.12.0")
+      library("truth", "com.google.truth:truth:1.1.3")
+      library("kotlin.coroutines.test", "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2")
+      library("android.test.core", "androidx.arch.core:core-testing:2.1.0")
+      bundle("testing", ["junit", "mockk", "truth", "kotlin.coroutines.test", "android.test.core"])
+    }
+
+    androidTestLibs {
+      library("android.test.runner", "androidx.test:runner:1.4.0")
+      library("android.test.truth", "androidx.test.ext:truth:1.4.0")
+    }
+  }
+}
+
+rootProject.name = 'Showly 2.0'
+include ':app'
+include ':data-remote'
+include ':data-local'
+include ':common'
+include ':repository'
 include ':ui-news'
 include ':ui-lists'
 include ':ui-premium'
@@ -22,7 +109,5 @@ include ':ui-navigation'
 include ':ui-settings'
 include ':ui-base'
 include ':ui-model'
-include ':repository'
-include ':app', ':data-remote', ':data-local', ':common'
 include ':ui-streamings'
 include ':ui-people'

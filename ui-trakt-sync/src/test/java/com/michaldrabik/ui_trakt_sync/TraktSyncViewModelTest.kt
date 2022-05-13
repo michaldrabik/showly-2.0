@@ -30,6 +30,7 @@ import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.just
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.resetMain
@@ -74,6 +75,7 @@ class TraktSyncViewModelTest : BaseMockTest() {
     coEvery { exportWatchedRunner.isRunning } returns false
     coEvery { exportWatchlistRunner.isRunning } returns false
     coEvery { userTraktManager.revokeToken() } just Runs
+    coEvery { eventsManager.events } returns MutableSharedFlow()
 
     SUT = TraktSyncViewModel(
       miscPreferences,

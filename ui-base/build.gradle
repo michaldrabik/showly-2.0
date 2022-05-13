@@ -42,38 +42,32 @@ dependencies {
   implementation project(':ui-navigation')
   implementation project(':repository')
 
-  api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.kotlinCoroutines"
+  api libs.kotlin.coroutines
 
-  api "androidx.appcompat:appcompat:$versions.androidAppCompat"
-  api "androidx.core:core-ktx:$versions.androidKtx"
-  api "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.androidLifecycle"
-  api "androidx.lifecycle:lifecycle-runtime-ktx:$versions.androidLifecycle"
-  api "androidx.lifecycle:lifecycle-common-java8:$versions.androidLifecycle"
-  api "androidx.fragment:fragment-ktx:$versions.androidFragment"
-  api "androidx.navigation:navigation-fragment-ktx:$versions.androidNavigation"
-  api "androidx.recyclerview:recyclerview:$versions.androidRecycler"
-  api "androidx.navigation:navigation-ui-ktx:$versions.androidNavigation"
-  api "androidx.constraintlayout:constraintlayout:$versions.androidConstraintLayout"
-  api "androidx.swiperefreshlayout:swiperefreshlayout:$versions.androidSwipeRefresh"
-  api "androidx.work:work-runtime-ktx:$versions.androidWork"
-  api "androidx.dynamicanimation:dynamicanimation:$versions.androidDynamicAnimation"
-  api "com.google.android.material:material:$versions.androidMaterial"
-  api 'io.github.everythingme:overscroll-decor-android:1.1.1'
+  api libs.android.appCompat
+  api libs.android.core
+  api libs.bundles.lifecycle
+  api libs.bundles.navigation
+  api libs.android.fragment
+  api libs.android.recycler
+  api libs.android.constraintLayout
+  api libs.android.swipeRefresh
+  api libs.android.work
+  api libs.android.material
+  api libs.android.dynamicAnimation
+  api libs.overscrollDecor
+  api libs.timber
 
-  api "com.google.firebase:firebase-crashlytics:$versions.firebaseCrashlytics"
-  api "com.google.firebase:firebase-analytics-ktx:$versions.firebaseAnalytics"
-  api "com.google.firebase:firebase-messaging:$versions.firebaseMessaging"
-  api "com.google.firebase:firebase-config-ktx:$versions.firebaseRemoteConfig"
+  api libs.bundles.firebase
 
-  api "com.github.bumptech.glide:glide:$versions.glide"
-  kapt "com.github.bumptech.glide:compiler:$versions.glide"
+  api libs.glide
+  kapt libs.glide.compiler
 
-  implementation "com.google.dagger:hilt-android:$versions.hilt"
-  kapt "com.google.dagger:hilt-compiler:$versions.hilt"
-  implementation "androidx.hilt:hilt-work:$versions.hiltWork"
-  kapt "androidx.hilt:hilt-compiler:$versions.hiltCompiler"
+  implementation libs.hilt.android
+  kapt libs.hilt.compiler
 
-  api "com.jakewharton.timber:timber:$versions.timber"
+  implementation libs.hilt.work
+  kapt libs.hilt.work.compiler
 
-  coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$versions.androidDesugarLibs"
+  coreLibraryDesugaring libs.android.desugar
 }

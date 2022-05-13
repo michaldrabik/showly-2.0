@@ -37,6 +37,7 @@ android {
     targetSdkVersion versions.compileSdk
     versionCode versions.versionCode
     versionName versions.versionName
+    resConfigs "en", "ar", "de", "es", "fi", "fr", "it", "pl", "pt", "ru", "tr"
 
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
   }
@@ -63,7 +64,7 @@ android {
       signingConfig signingConfigs.release
       proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
       firebaseAppDistribution {
-        appId="1:437530387781:android:7b5c191b8bc08486448a2c"
+        appId = "1:437530387781:android:7b5c191b8bc08486448a2c"
         serviceCredentialsFile = rootProject.file("app/firebase-service-key.json")
         releaseNotes = ""
         groups = "developers"
@@ -101,23 +102,17 @@ dependencies {
   implementation project(':ui-news')
   implementation project(':ui-widgets')
 
-  implementation "com.google.dagger:hilt-android:$versions.hilt"
-  kapt "com.google.dagger:hilt-compiler:$versions.hilt"
-  implementation "androidx.hilt:hilt-work:$versions.hiltWork"
-  kapt "androidx.hilt:hilt-compiler:$versions.hiltCompiler"
+  implementation libs.hilt.android
+  kapt libs.hilt.compiler
+  implementation libs.hilt.work
+  kapt libs.hilt.work.compiler
 
-  implementation "com.google.android.play:core:$versions.androidPlayCore"
-  implementation "com.github.YarikSOffice:lingver:$versions.lingver"
+  implementation libs.android.playCore
+  implementation libs.lingver
 
-  debugImplementation "com.github.amitshekhariitbhu.Android-Debug-Database:debug-db:v$versions.debugDb"
-//  debugImplementation "com.squareup.leakcanary:leakcanary-android:$versions.leakCanary"
+  testImplementation testLibs.bundles.testing
+  androidTestImplementation androidTestLibs.android.test.runner
 
-  testImplementation "junit:junit:$versions.junit"
-  testImplementation "io.mockk:mockk:$versions.mockk"
-  testImplementation "com.google.truth:truth:$versions.truth"
-  testImplementation "androidx.arch.core:core-testing:$versions.coreTesting"
-  testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$versions.coroutinesTesting"
-  androidTestImplementation "androidx.test:runner:$versions.testRunner"
-
-  coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$versions.androidDesugarLibs"
+  //  debugImplementation "com.squareup.leakcanary:leakcanary-android:$versions.leakCanary"
+  coreLibraryDesugaring libs.android.desugar
 }

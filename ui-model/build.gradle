@@ -30,7 +30,7 @@ android {
 dependencies {
   implementation project(':common')
 
-  implementation "androidx.appcompat:appcompat:$versions.androidAppCompat"
+  implementation libs.android.appCompat
 
-  coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$versions.androidDesugarLibs"
+  coreLibraryDesugaring libs.android.desugar
 }

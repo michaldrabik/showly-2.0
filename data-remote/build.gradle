@@ -12,7 +12,7 @@ android {
     sourceCompatibility JavaVersion.VERSION_1_8
     targetCompatibility JavaVersion.VERSION_1_8
   }
-  
+
   compileSdkVersion versions.compileSdk
 
   buildFeatures {
@@ -52,18 +52,17 @@ android {
 }
 
 dependencies {
-  api "com.squareup.retrofit2:retrofit:$versions.retrofit"
-  api "com.squareup.retrofit2:converter-moshi:$versions.retrofit"
-  api "com.squareup.okhttp3:logging-interceptor:$versions.okHttpLogInterceptor"
+  api libs.retrofit
+  api libs.retrofit.moshi
+  api libs.loggingInterceptor
 
-  implementation "com.jakewharton.timber:timber:$versions.timber"
+  implementation libs.timber
+  implementation libs.firebase.crashlytics
 
-  implementation "com.google.dagger:hilt-android:$versions.hilt"
-  kapt "com.google.dagger:hilt-compiler:$versions.hilt"
+  implementation libs.hilt.android
+  kapt libs.hilt.compiler
 
-  implementation "com.google.firebase:firebase-crashlytics:$versions.firebaseCrashlytics"
+  testImplementation testLibs.junit
 
-  testImplementation "junit:junit:$versions.junit"
-
-  coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$versions.androidDesugarLibs"
+  coreLibraryDesugaring libs.android.desugar
 }
