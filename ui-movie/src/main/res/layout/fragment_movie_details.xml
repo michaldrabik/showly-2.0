@@ -228,7 +228,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="@dimen/spaceNormal"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:layout_marginBottom="@dimen/spaceTiny"
         android:ellipsize="end"
@@ -240,9 +239,8 @@
         app:layout_constraintBottom_toTopOf="@id/movieDetailsActorsFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/movieDetailsStreamingsRecycler"
+        app:layout_constraintTop_toBottomOf="@+id/movieDetailsStreamingsFragment"
         app:layout_goneMarginBottom="@dimen/spaceHuge"
-        app:layout_goneMarginTop="0dp"
         tools:targetApi="o"
         tools:text="Description"
         />
@@ -255,7 +253,7 @@
         android:layout_marginTop="@dimen/spaceNormal"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:layout_marginBottom="@dimen/spaceNormal"
-        app:layout_constraintBottom_toTopOf="@+id/movieDetailsStreamingsRecycler"
+        app:layout_constraintBottom_toTopOf="@+id/movieDetailsStreamingsFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/separator4"
@@ -278,21 +276,16 @@
         app:layout_goneMarginBottom="@dimen/spaceBig"
         />
 
-      <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/movieDetailsStreamingsRecycler"
+      <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/movieDetailsStreamingsFragment"
+        android:name="com.michaldrabik.ui_movie.sections.streamings.MovieDetailsStreamingsFragment"
         android:layout_width="0dp"
-        android:layout_height="@dimen/streamingTileHeight"
-        android:layout_marginTop="@dimen/spaceMicro"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:overScrollMode="never"
-        android:paddingStart="@dimen/spaceNormal"
-        android:paddingEnd="@dimen/spaceNormal"
-        android:visibility="invisible"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/movieDetailsDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/movieDetailsRatings"
+        tools:layout_height="40dp"
         />
 
       <androidx.fragment.app.FragmentContainerView

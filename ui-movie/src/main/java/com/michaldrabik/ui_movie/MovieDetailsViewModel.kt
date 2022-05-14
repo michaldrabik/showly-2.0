@@ -30,14 +30,12 @@ import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_movie.MovieDetailsEvent.MovieLoadedEvent
 import com.michaldrabik.ui_movie.MovieDetailsUiState.FollowedState
-import com.michaldrabik.ui_movie.MovieDetailsUiState.StreamingsState
 import com.michaldrabik.ui_movie.cases.MovieDetailsCommentsCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsHiddenCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsListsCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsMainCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsMyMoviesCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsRatingCase
-import com.michaldrabik.ui_movie.cases.MovieDetailsStreamingCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsTranslationCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsWatchlistCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -65,7 +63,6 @@ class MovieDetailsViewModel @Inject constructor(
   private val watchlistCase: MovieDetailsWatchlistCase,
   private val hiddenCase: MovieDetailsHiddenCase,
   private val listsCase: MovieDetailsListsCase,
-  private val streamingCase: MovieDetailsStreamingCase,
   private val settingsRepository: SettingsRepository,
   private val userManager: UserTraktManager,
   private val imagesProvider: MovieImagesProvider,
@@ -84,7 +81,6 @@ class MovieDetailsViewModel @Inject constructor(
   private val commentsDateFormatState = MutableStateFlow<DateTimeFormatter?>(null)
   private val followedState = MutableStateFlow<FollowedState?>(null)
   private val ratingState = MutableStateFlow<RatingState?>(null)
-  private val streamingsState = MutableStateFlow<StreamingsState?>(null)
   private val translationState = MutableStateFlow<Translation?>(null)
   private val countryState = MutableStateFlow<AppCountry?>(null)
   private val dateFormatState = MutableStateFlow<DateTimeFormatter?>(null)
@@ -134,7 +130,6 @@ class MovieDetailsViewModel @Inject constructor(
         loadListsCount(movie)
         loadRating()
         launch { loadRatings(movie) }
-        launch { loadStreamings(movie) }
         launch { loadTranslation(movie) }
       } catch (error: Throwable) {
         progressJob.cancel()
@@ -177,19 +172,6 @@ class MovieDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       val count = listsCase.countLists(movie ?: this@MovieDetailsViewModel.movie)
       listsCountState.value = count
-    }
-  }
-
-  private suspend fun loadStreamings(movie: Movie) {
-    try {
-      val localStreamings = streamingCase.getLocalStreamingServices(movie)
-      streamingsState.value = StreamingsState(localStreamings, isLocal = true)
-
-      val remoteStreamings = streamingCase.loadStreamingServices(movie)
-      streamingsState.value = StreamingsState(remoteStreamings, isLocal = false)
-    } catch (error: Throwable) {
-      streamingsState.value = StreamingsState(emptyList(), isLocal = false)
-      rethrowCancellation(error)
     }
   }
 
@@ -413,7 +395,6 @@ class MovieDetailsViewModel @Inject constructor(
     commentsDateFormatState,
     followedState,
     ratingState,
-    streamingsState,
     translationState,
     countryState,
     dateFormatState,
@@ -422,7 +403,7 @@ class MovieDetailsViewModel @Inject constructor(
     listsCountState,
     removeTraktEvent,
     finishedEvent
-  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17 ->
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16 ->
     MovieDetailsUiState(
       movie = s1,
       movieLoading = s2,
@@ -432,15 +413,14 @@ class MovieDetailsViewModel @Inject constructor(
       commentsDateFormat = s6,
       followedState = s7,
       ratingState = s8,
-      streamings = s9,
-      translation = s10,
-      country = s11,
-      dateFormat = s12,
-      isSignedIn = s13,
-      isPremium = s14,
-      listsCount = s15,
-      removeFromTrakt = s16,
-      isFinished = s17
+      translation = s9,
+      country = s10,
+      dateFormat = s11,
+      isSignedIn = s12,
+      isPremium = s13,
+      listsCount = s14,
+      removeFromTrakt = s15,
+      isFinished = s16
     )
   }.stateIn(
     scope = viewModelScope,

@@ -22,8 +22,6 @@ import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
@@ -44,7 +42,6 @@ import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options
 import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet
 import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
-import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.copyToClipboard
 import com.michaldrabik.ui_base.utilities.extensions.crossfadeTo
@@ -78,7 +75,6 @@ import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.Translation
-import com.michaldrabik.ui_movie.MovieDetailsUiState.StreamingsState
 import com.michaldrabik.ui_movie.helpers.MovieLink
 import com.michaldrabik.ui_movie.helpers.MovieLink.IMDB
 import com.michaldrabik.ui_movie.helpers.MovieLink.METACRITIC
@@ -102,7 +98,6 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MANAGE_LISTS
-import com.michaldrabik.ui_streamings.recycler.StreamingAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import kotlinx.coroutines.flow.collect
@@ -118,8 +113,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   override val navigationId = R.id.movieDetailsFragment
 
   private val movieId by lazy { IdTrakt(requireLong(ARG_MOVIE_ID)) }
-
-  private var streamingAdapter: StreamingAdapter? = null
 
   private val imageHeight by lazy {
     if (resources.configuration.orientation == ORIENTATION_PORTRAIT) screenHeight()
@@ -138,7 +131,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     requireActivity().requestedOrientation = SCREEN_ORIENTATION_PORTRAIT
     setupView()
     setupStatusBar()
-    setupStreamingsList()
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
@@ -210,16 +202,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         .forEach { v ->
           (v.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(top = inset)
         }
-    }
-  }
-
-  private fun setupStreamingsList() {
-    streamingAdapter = StreamingAdapter()
-    movieDetailsStreamingsRecycler.apply {
-      setHasFixedSize(true)
-      adapter = streamingAdapter
-      layoutManager = LinearLayoutManager(requireContext(), HORIZONTAL, false)
-      addDivider(R.drawable.divider_horizontal_list, HORIZONTAL)
     }
   }
 
@@ -314,7 +296,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         (requireAppContext() as WidgetsProvider).requestMoviesWidgetsUpdate()
       }
       image?.let { renderImage(it) }
-      streamings?.let { renderStreamings(it) }
       translation?.let { renderTranslation(it) }
       comments?.let {
         movieDetailsCommentsView.bind(it, commentsDateFormat)
@@ -411,21 +392,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         movieDetailsPlaceholder.gone()
       }
       .into(movieDetailsImage)
-  }
-
-  private fun renderStreamings(streamings: StreamingsState) {
-    if (streamingAdapter?.itemCount != 0) return
-    val (items, isLocal) = streamings
-    streamingAdapter?.setItems(items)
-    if (items.isNotEmpty()) {
-      if (isLocal) {
-        movieDetailsStreamingsRecycler.visible()
-      } else {
-        movieDetailsStreamingsRecycler.fadeIn(withHardware = true)
-      }
-    } else if (!isLocal) {
-      movieDetailsStreamingsRecycler.gone()
-    }
   }
 
   private fun renderTranslation(translation: Translation?) {
@@ -584,10 +550,5 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         }
       }
     }
-  }
-
-  override fun onDestroyView() {
-    streamingAdapter = null
-    super.onDestroyView()
   }
 }

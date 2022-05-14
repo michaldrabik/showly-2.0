@@ -13,7 +13,7 @@ import com.michaldrabik.ui_movie.MovieDetailsEvent
 import com.michaldrabik.ui_movie.MovieDetailsEvent.MovieLoadedEvent
 import com.michaldrabik.ui_movie.MovieDetailsEvent.OpenPeopleSheet
 import com.michaldrabik.ui_movie.MovieDetailsEvent.OpenPersonSheet
-import com.michaldrabik.ui_movie.cases.MovieDetailsActorsCase
+import com.michaldrabik.ui_movie.sections.actors.cases.MovieDetailsActorsCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

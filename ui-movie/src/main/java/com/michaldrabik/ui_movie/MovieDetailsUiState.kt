@@ -7,7 +7,6 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Ratings
-import com.michaldrabik.ui_model.StreamingService
 import com.michaldrabik.ui_model.Translation
 import java.time.format.DateTimeFormatter
 
@@ -20,7 +19,6 @@ data class MovieDetailsUiState(
   val followedState: FollowedState? = null,
   val ratingState: RatingState? = null,
   val ratings: Ratings? = null,
-  val streamings: StreamingsState? = null,
   val removeFromTrakt: Event<Int>? = null,
   val translation: Translation? = null,
   val country: AppCountry? = null,
@@ -30,11 +28,6 @@ data class MovieDetailsUiState(
   val isPremium: Boolean = false,
   val isFinished: Event<Boolean>? = null,
 ) {
-
-  data class StreamingsState(
-    val streamings: List<StreamingService>,
-    val isLocal: Boolean,
-  )
 
   data class FollowedState(
     val isMyMovie: Boolean,

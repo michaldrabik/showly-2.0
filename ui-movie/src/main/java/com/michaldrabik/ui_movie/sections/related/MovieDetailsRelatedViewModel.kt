@@ -14,7 +14,7 @@ import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_movie.MovieDetailsEvent
 import com.michaldrabik.ui_movie.MovieDetailsEvent.MovieLoadedEvent
 import com.michaldrabik.ui_movie.cases.MovieDetailsMyMoviesCase
-import com.michaldrabik.ui_movie.cases.MovieDetailsRelatedCase
+import com.michaldrabik.ui_movie.sections.related.cases.MovieDetailsRelatedCase
 import com.michaldrabik.ui_movie.sections.related.recycler.RelatedListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
