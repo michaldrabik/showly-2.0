@@ -8,9 +8,9 @@ import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
-import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.visible
+import com.michaldrabik.ui_movie.MovieDetailsFragment
 import com.michaldrabik.ui_movie.MovieDetailsViewModel
 import com.michaldrabik.ui_movie.R
 import com.michaldrabik.ui_streamings.recycler.StreamingAdapter
@@ -58,7 +58,7 @@ class MovieDetailsStreamingsFragment : BaseFragment<MovieDetailsStreamingsViewMo
             movieDetailsStreamingsRecycler.fadeIn(withHardware = true)
           }
         } else if (!isLocal) {
-          movieDetailsStreamingsRecycler.gone()
+          (requireParentFragment() as MovieDetailsFragment).hideStreamings()
         }
       }
     }

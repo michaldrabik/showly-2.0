@@ -11,9 +11,11 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AnimationUtils
 import androidx.activity.addCallback
 import androidx.annotation.IdRes
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.WindowInsetsCompat
@@ -22,6 +24,8 @@ import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.transition.AutoTransition
+import androidx.transition.TransitionManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
@@ -215,20 +219,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       startAnimation(animationExitRight)
     }
     movieDetailsBackArrow.crossfadeTo(movieDetailsBackArrow2)
-  }
-
-  private fun hideExtraView(view: View) {
-    if (view.animation != null) return
-
-    view.run {
-      fadeOut(300)
-      startAnimation(animationExitLeft)
-    }
-    movieDetailsMainLayout.run {
-      fadeIn()
-      startAnimation(animationEnterLeft)
-    }
-    movieDetailsBackArrow2.crossfadeTo(movieDetailsBackArrow)
   }
 
   private fun render(uiState: MovieDetailsUiState) {
@@ -534,6 +524,33 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       else -> bundleOf(ARG_MOVIE_ID to movieId.id)
     }
     navigateToSafe(R.id.actionMovieDetailsFragmentToPostComment, bundle)
+  }
+
+  fun hideStreamings() {
+    val animation = ConstraintSet().apply {
+      clone(movieDetailsMainContent)
+      setVisibility(movieDetailsStreamingsFragment.id, View.GONE)
+    }
+    val transition = AutoTransition().apply {
+      interpolator = AccelerateDecelerateInterpolator()
+      duration = 100
+    }
+    TransitionManager.beginDelayedTransition(movieDetailsMainContent, transition)
+    animation.applyTo(movieDetailsMainContent)
+  }
+
+  private fun hideExtraView(view: View) {
+    if (view.animation != null) return
+
+    view.run {
+      fadeOut(300)
+      startAnimation(animationExitLeft)
+    }
+    movieDetailsMainLayout.run {
+      fadeIn()
+      startAnimation(animationEnterLeft)
+    }
+    movieDetailsBackArrow2.crossfadeTo(movieDetailsBackArrow)
   }
 
   override fun setupBackPressed() {
