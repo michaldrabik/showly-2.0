@@ -64,6 +64,8 @@ class MovieDetailsStreamingsFragment : BaseFragment<MovieDetailsStreamingsViewMo
     }
   }
 
+  override fun setupBackPressed() = Unit
+
   override fun onDestroyView() {
     streamingAdapter = null
     super.onDestroyView()

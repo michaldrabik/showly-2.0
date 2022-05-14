@@ -145,6 +145,8 @@ class MovieDetailsPeopleFragment : BaseFragment<MovieDetailsPeopleViewModel>(R.l
     }
   }
 
+  override fun setupBackPressed() = Unit
+
   override fun onDestroyView() {
     actorsAdapter = null
     super.onDestroyView()

@@ -64,6 +64,8 @@ class MovieDetailsRelatedFragment : BaseFragment<MovieDetailsRelatedViewModel>(R
     }
   }
 
+  override fun setupBackPressed() = Unit
+
   override fun onDestroyView() {
     relatedAdapter = null
     super.onDestroyView()
