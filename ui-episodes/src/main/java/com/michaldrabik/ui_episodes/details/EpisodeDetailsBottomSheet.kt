@@ -50,6 +50,7 @@ import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_TAB_SELECTED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_WATCHED
@@ -189,14 +190,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
           episodeDetailsName.text = if (episode.runtime > 0) "$name | $runtime" else name
         }
         isImageLoading.let { episodeDetailsProgress.visibleIf(it) }
-        image?.let {
-          Glide.with(this@EpisodeDetailsBottomSheet)
-            .load("${Config.TMDB_IMAGE_BASE_STILL_URL}${it.fileUrl}")
-            .transform(CenterCrop(), GranularRoundedCorners(cornerRadius, cornerRadius, 0F, 0F))
-            .transition(DrawableTransitionOptions.withCrossFade(IMAGE_FADE_DURATION_MS))
-            .withFailListener { episodeDetailsImagePlaceholder.visible() }
-            .into(episodeDetailsImage)
-        }
+        image?.let { renderImage(it) }
         isCommentsLoading.let {
           episodeDetailsButtons.visibleIf(!it)
           episodeDetailsCommentsProgress.visibleIf(it)
@@ -257,6 +251,14 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
       }
     }
   }
+
+  private fun renderImage(image: Image) =
+    Glide.with(this@EpisodeDetailsBottomSheet)
+      .load("${Config.TMDB_IMAGE_BASE_STILL_URL}${image.fileUrl}")
+      .transform(CenterCrop(), GranularRoundedCorners(cornerRadius, cornerRadius, 0F, 0F))
+      .transition(DrawableTransitionOptions.withCrossFade(IMAGE_FADE_DURATION_MS))
+      .withFailListener { binding.episodeDetailsImagePlaceholder.visible() }
+      .into(binding.episodeDetailsImage)
 
   private fun renderEpisodes(episodes: List<Episode>) {
     with(binding.episodeDetailsTabs) {
