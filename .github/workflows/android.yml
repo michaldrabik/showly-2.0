@@ -6,24 +6,31 @@ on:
       - master
 
 jobs:
-  verify:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up JDK 11
+      uses: actions/setup-java@v1
+      with:
+        java-version: 11
+    - name: Decrypt secrets
+      run: ./.github/scripts/decrypt_secrets.sh
+      env:
+        KEYSTORE_PASSPHRASE: ${{ secrets.KEYSTORE_PASSPHRASE }}
 
+  verify-lint:
+    needs: setup
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
-      - name: Set up JDK 11
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
-      - name: Decrypt secrets
-        run: ./.github/scripts/decrypt_secrets.sh
-        env:
-          KEYSTORE_PASSPHRASE: ${{ secrets.KEYSTORE_PASSPHRASE }}
-
       - name: Run ktlint
         run: curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.43.2/ktlint && chmod a+x ktlint && ./ktlint
 
+  verify-tests:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
       - name: Run Unit Tests (app)
         run: ./gradlew :app:testDebugUnitTest
       - name: Run Unit Tests (ui-repository)
@@ -41,6 +48,10 @@ jobs:
       - name: Run Unit Tests (ui-progress-movies)
         run: ./gradlew :ui-progress-movies:testDebugUnitTest
 
+  distribute:
+    needs: [verify-lint, verify-tests]
+    runs-on: ubuntu-latest
+    steps:
       - name: Build APK
         run: ./gradlew app:assembleRelease
 
@@ -52,3 +63,4 @@ jobs:
           groups: owner
           file: app/build/outputs/apk/release/app-release.apk
           releaseNotes: ""
+

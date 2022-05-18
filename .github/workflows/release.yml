@@ -54,17 +54,10 @@ jobs:
     steps:
 #      - name: Build APK
 #        run: ./gradlew app:assembleRelease
-
-      - name: Read release notes
-        id: release
-        uses: juliangruber/read-file-action@v1
-        with:
-          path: ${{ github.workspace }}app/src/main/assets/release_notes.txt
-
       - name: Github Release
         uses: softprops/action-gh-release@v1
         with:
           name: v${{ github.ref_name }}
 #          files: app/build/outputs/apk/release/app-release.apk
-          body: ${{ steps.release.outputs.content }}
+          body_path: ./app/src/main/assets/release_notes.txt
 
