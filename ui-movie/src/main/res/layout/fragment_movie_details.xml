@@ -281,6 +281,7 @@
         android:name="com.michaldrabik.ui_movie.sections.streamings.MovieDetailsStreamingsFragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/movieDetailsDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

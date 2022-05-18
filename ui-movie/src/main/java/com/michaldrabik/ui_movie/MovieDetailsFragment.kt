@@ -526,10 +526,14 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     navigateToSafe(R.id.actionMovieDetailsFragmentToPostComment, bundle)
   }
 
-  fun hideStreamings() {
+  fun showStreamingsView(animate: Boolean) {
+    if (!animate) {
+      movieDetailsStreamingsFragment.visible()
+      return
+    }
     val animation = ConstraintSet().apply {
       clone(movieDetailsMainContent)
-      setVisibility(movieDetailsStreamingsFragment.id, View.GONE)
+      setVisibility(movieDetailsStreamingsFragment.id, View.VISIBLE)
     }
     val transition = AutoTransition().apply {
       interpolator = AccelerateDecelerateInterpolator()

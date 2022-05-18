@@ -7,9 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
-import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
-import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_movie.MovieDetailsFragment
 import com.michaldrabik.ui_movie.MovieDetailsViewModel
 import com.michaldrabik.ui_movie.R
@@ -52,13 +50,7 @@ class MovieDetailsStreamingsFragment : BaseFragment<MovieDetailsStreamingsViewMo
         val (items, isLocal) = it
         streamingAdapter?.setItems(items)
         if (items.isNotEmpty()) {
-          if (isLocal) {
-            movieDetailsStreamingsRecycler.visible()
-          } else {
-            movieDetailsStreamingsRecycler.fadeIn(withHardware = true)
-          }
-        } else if (!isLocal) {
-          (requireParentFragment() as MovieDetailsFragment).hideStreamings()
+          (requireParentFragment() as MovieDetailsFragment).showStreamingsView(animate = !isLocal)
         }
       }
     }

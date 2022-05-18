@@ -18,7 +18,6 @@
     android:overScrollMode="never"
     android:paddingStart="@dimen/spaceNormal"
     android:paddingEnd="@dimen/spaceNormal"
-    android:visibility="invisible"
     app:layout_constraintBottom_toTopOf="@id/movieDetailsDescription"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
