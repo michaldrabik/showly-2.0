@@ -59,7 +59,7 @@ jobs:
         id: release
         uses: juliangruber/read-file-action@v1
         with:
-          path: app/src/main/assets/release_notes.txt
+          path: ${{ github.workspace }}app/src/main/assets/release_notes.txt
 
       - name: Github Release
         uses: softprops/action-gh-release@v1
