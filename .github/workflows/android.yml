@@ -9,7 +9,6 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
       - name: Set up JDK 11
         uses: actions/setup-java@v1
         with:
@@ -24,6 +23,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v1
       - name: Run ktlint
         run: curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.43.2/ktlint && chmod a+x ktlint && ./ktlint
 
@@ -31,6 +31,7 @@ jobs:
     needs: verify-lint
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v1
       - name: Run Unit Tests (app)
         run: ./gradlew :app:testDebugUnitTest
       - name: Run Unit Tests (ui-repository)
