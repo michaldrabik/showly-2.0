@@ -45,11 +45,11 @@ jobs:
 #      - name: Run Unit Tests (ui-progress-movies)
 #        run: ./gradlew :ui-progress-movies:testDebugUnitTest
 
-      - name: Build APK
-        run: ./gradlew app:assembleRelease
+#      - name: Build APK
+#        run: ./gradlew app:assembleRelease
 
       - name: Github Release
         uses: softprops/action-gh-release@v1
         with:
-          name: v$RELEASE_VERSION
-          files: app/build/outputs/apk/release/app-release.apk
+          name: v${{ env.RELEASE_VERSION }}
+#          files: app/build/outputs/apk/release/app-release.apk
