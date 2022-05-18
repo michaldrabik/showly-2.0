@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_movie
 
-import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Movie
@@ -17,7 +16,6 @@ data class MovieDetailsUiState(
   val followedState: FollowedState? = null,
   val ratingState: RatingState? = null,
   val translation: Translation? = null,
-  val country: AppCountry? = null,
   val dateFormat: DateTimeFormatter? = null,
   val commentsDateFormat: DateTimeFormatter? = null,
   val isSignedIn: Boolean = false,
