@@ -79,6 +79,7 @@
   <string name="textLanguageGerman" translatable="false">Deutsch</string>
   <string name="textLanguageRussian" translatable="false">Pусский</string>
   <string name="textLanguageFinnish" translatable="false">Suomi</string>
+  <string name="textLanguageChinese" translatable="false">Chinese</string>
 
   <string name="textThemeDark">Dark</string>
   <string name="textThemeLight">Light</string>
