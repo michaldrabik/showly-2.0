@@ -1,18 +1,16 @@
 package com.michaldrabik.ui_movie
 
 import android.annotation.SuppressLint
-import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.graphics.Typeface.BOLD
 import android.graphics.Typeface.NORMAL
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AnimationUtils
+import android.view.animation.DecelerateInterpolator
 import androidx.activity.addCallback
 import androidx.annotation.IdRes
 import androidx.constraintlayout.widget.ConstraintSet
@@ -36,8 +34,6 @@ import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseFragment
-import com.michaldrabik.ui_base.common.AppCountry
-import com.michaldrabik.ui_base.common.AppCountry.UNITED_STATES
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.sheets.links.LinksBottomSheet
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet
@@ -69,7 +65,6 @@ import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Genre
-import com.michaldrabik.ui_model.IdImdb
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageFamily.MOVIE
@@ -77,13 +72,7 @@ import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
 import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.RatingState
-import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.Translation
-import com.michaldrabik.ui_movie.helpers.MovieLink
-import com.michaldrabik.ui_movie.helpers.MovieLink.IMDB
-import com.michaldrabik.ui_movie.helpers.MovieLink.METACRITIC
-import com.michaldrabik.ui_movie.helpers.MovieLink.ROTTEN
-import com.michaldrabik.ui_movie.helpers.MovieLink.TRAKT
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.ADD
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_HIDDEN
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_MY_MOVIES
@@ -300,7 +289,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         movieDetailsManageListsLabel.text = text
       }
       ratingState?.let { renderRating(it) }
-      ratings?.let { renderRatings(it, movie) }
       removeFromTrakt?.let { event ->
         event.consume()?.let { openRemoveTraktSheet(it) }
       }
@@ -337,24 +325,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         openRateDialog()
       } else {
         showSnack(MessageEvent.Info(R.string.textSignBeforeRateMovie))
-      }
-    }
-  }
-
-  private fun renderRatings(ratings: Ratings, movie: Movie?) {
-    if (movieDetailsRatings.isBound()) return
-    movieDetailsRatings.bind(ratings)
-    movie?.let {
-      movieDetailsRatings.onTraktClick = { openMovieLink(TRAKT, movie.traktId.toString()) }
-      movieDetailsRatings.onImdbClick = { openMovieLink(IMDB, movie.ids.imdb.id) }
-      movieDetailsRatings.onMetaClick = { openMovieLink(METACRITIC, movie.title) }
-      movieDetailsRatings.onRottenClick = {
-        val url = it.rottenTomatoesUrl
-        if (!url.isNullOrBlank()) {
-          openWebUrl(url) ?: openMovieLink(ROTTEN, "${movie.title} ${movie.year}")
-        } else {
-          openMovieLink(ROTTEN, "${movie.title} ${movie.year}")
-        }
       }
     }
   }
@@ -407,29 +377,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     showSnack(event)
   }
 
-  private fun openIMDbLink(id: IdImdb) {
-    val i = Intent(Intent.ACTION_VIEW)
-    i.data = Uri.parse("imdb:///title/${id.id}")
-    try {
-      startActivity(i)
-    } catch (e: ActivityNotFoundException) {
-      // IMDb App not installed. Start in web browser
-      openWebUrl("http://www.imdb.com/title/${id.id}") ?: showSnack(MessageEvent.Info(R.string.errorCouldNotFindApp))
-    }
-  }
-
-  private fun openMovieLink(
-    link: MovieLink,
-    id: String,
-    country: AppCountry = UNITED_STATES,
-  ) {
-    if (link == IMDB) {
-      openIMDbLink(IdImdb(id))
-    } else {
-      openWebUrl(link.getUri(id, country)) ?: showSnack(MessageEvent.Info(R.string.errorCouldNotFindApp))
-    }
-  }
-
   private fun openRemoveTraktSheet(@IdRes action: Int) {
     setFragmentResultListener(NavigationArgs.REQUEST_REMOVE_TRAKT) { _, bundle ->
       if (bundle.getBoolean(NavigationArgs.RESULT, false)) {
@@ -462,7 +409,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         Operation.REMOVE -> renderSnack(MessageEvent.Info(R.string.textRateRemoved))
         else -> Timber.w("Unknown result.")
       }
-      viewModel.loadRating()
+      viewModel.loadUserRating()
     }
     val bundle = RatingsBottomSheet.createBundle(movieId, Type.MOVIE)
     navigateTo(R.id.actionMovieDetailsFragmentToRating, bundle)
@@ -536,8 +483,8 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       setVisibility(movieDetailsStreamingsFragment.id, View.VISIBLE)
     }
     val transition = AutoTransition().apply {
-      interpolator = AccelerateDecelerateInterpolator()
-      duration = 100
+      interpolator = DecelerateInterpolator(1.5F)
+      duration = 200
     }
     TransitionManager.beginDelayedTransition(movieDetailsMainContent, transition)
     animation.applyTo(movieDetailsMainContent)

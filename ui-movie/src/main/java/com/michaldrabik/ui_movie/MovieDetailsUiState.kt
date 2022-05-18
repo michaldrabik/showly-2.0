@@ -6,7 +6,6 @@ import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.RatingState
-import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.Translation
 import java.time.format.DateTimeFormatter
 
@@ -18,7 +17,6 @@ data class MovieDetailsUiState(
   val listsCount: Int? = null,
   val followedState: FollowedState? = null,
   val ratingState: RatingState? = null,
-  val ratings: Ratings? = null,
   val removeFromTrakt: Event<Int>? = null,
   val translation: Translation? = null,
   val country: AppCountry? = null,

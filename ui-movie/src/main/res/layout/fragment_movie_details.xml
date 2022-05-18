@@ -216,7 +216,7 @@
         android:layout_marginTop="18dp"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:background="?attr/colorSeparator"
-        app:layout_constraintBottom_toTopOf="@+id/movieDetailsRatings"
+        app:layout_constraintBottom_toTopOf="@+id/movieDetailsRatingsFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -245,8 +245,9 @@
         tools:text="Description"
         />
 
-      <com.michaldrabik.ui_base.common.views.RatingsStripView
-        android:id="@+id/movieDetailsRatings"
+      <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/movieDetailsRatingsFragment"
+        android:name="com.michaldrabik.ui_movie.sections.ratings.MovieDetailsRatingsFragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceTiny"
@@ -257,6 +258,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/separator4"
+        tools:layout="@layout/fragment_movie_details_ratings"
         />
 
       <View
@@ -285,7 +287,7 @@
         app:layout_constraintBottom_toTopOf="@id/movieDetailsDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/movieDetailsRatings"
+        app:layout_constraintTop_toBottomOf="@+id/movieDetailsRatingsFragment"
         tools:layout_height="40dp"
         />
 
@@ -299,6 +301,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/movieDetailsDescription"
+        tools:layout="@layout/fragment_movie_details_people"
         tools:layout_height="100dp"
         />
 
@@ -368,7 +371,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/movieDetailsSeparator5"
-        tools:layout_height="100dp"
+        tools:layout="@layout/fragment_movie_details_related"
         />
 
       <TextView
