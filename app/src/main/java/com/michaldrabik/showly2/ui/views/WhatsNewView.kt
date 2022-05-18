@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.ui.views
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -8,6 +9,7 @@ import com.michaldrabik.showly2.BuildConfig
 import com.michaldrabik.showly2.R
 import kotlinx.android.synthetic.main.view_whats_new.view.*
 
+@SuppressLint("SetTextI18n")
 class WhatsNewView : ScrollView {
 
   constructor(context: Context) : super(context)
@@ -22,7 +24,11 @@ class WhatsNewView : ScrollView {
       .bufferedReader()
       .use { it.readText() }
 
-    viewWhatsNewMessage.text = whatsNew
+    val whatsNewFooter = context.assets.open("release_notes_footer.txt")
+      .bufferedReader()
+      .use { it.readText() }
+
+    viewWhatsNewMessage.text = "$whatsNew\n\n$whatsNewFooter"
     viewWhatsNewSubtitle.text = context.getString(R.string.textWhatsNewSubtitle, BuildConfig.VERSION_NAME)
   }
 }
