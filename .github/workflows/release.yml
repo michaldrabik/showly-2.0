@@ -25,6 +25,7 @@ jobs:
           KEYSTORE_PASSPHRASE: ${{ secrets.KEYSTORE_PASSPHRASE }}
 
   verify:
+    needs: setup
     runs-on: ubuntu-latest
     steps:
       - name: Run ktlint
@@ -48,6 +49,7 @@ jobs:
       #        run: ./gradlew :ui-progress-movies:testDebugUnitTest
 
   release:
+    needs: [setup, verify]
     runs-on: ubuntu-latest
     steps:
 #      - name: Build APK
