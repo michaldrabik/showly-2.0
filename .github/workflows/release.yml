@@ -6,9 +6,8 @@ on:
       - '[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
-  verify:
+  setup:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v1
 
@@ -25,26 +24,32 @@ jobs:
         env:
           KEYSTORE_PASSPHRASE: ${{ secrets.KEYSTORE_PASSPHRASE }}
 
+  verify:
+    runs-on: ubuntu-latest
+    steps:
       - name: Run ktlint
         run: curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.43.2/ktlint && chmod a+x ktlint && ./ktlint
 
-#      - name: Run Unit Tests (app)
-#        run: ./gradlew :app:testDebugUnitTest
-#      - name: Run Unit Tests (ui-repository)
-#        run: ./gradlew :repository:testDebugUnitTest
-#      - name: Run Unit Tests (ui-discover)
-#        run: ./gradlew :ui-discover:testDebugUnitTest
-#      - name: Run Unit Tests (ui-trakt-sync)
-#        run: ./gradlew :ui-trakt-sync:testDebugUnitTest
-#      - name: Run Unit Tests (ui-statistics)
-#        run: ./gradlew :ui-statistics:testDebugUnitTest
-#      - name: Run Unit Tests (ui-statistics-movies)
-#        run: ./gradlew :ui-statistics-movies:testDebugUnitTest
-#      - name: Run Unit Tests (ui-search)
-#        run: ./gradlew :ui-search:testDebugUnitTest
-#      - name: Run Unit Tests (ui-progress-movies)
-#        run: ./gradlew :ui-progress-movies:testDebugUnitTest
+      #      - name: Run Unit Tests (app)
+      #        run: ./gradlew :app:testDebugUnitTest
+      #      - name: Run Unit Tests (ui-repository)
+      #        run: ./gradlew :repository:testDebugUnitTest
+      #      - name: Run Unit Tests (ui-discover)
+      #        run: ./gradlew :ui-discover:testDebugUnitTest
+      #      - name: Run Unit Tests (ui-trakt-sync)
+      #        run: ./gradlew :ui-trakt-sync:testDebugUnitTest
+      #      - name: Run Unit Tests (ui-statistics)
+      #        run: ./gradlew :ui-statistics:testDebugUnitTest
+      #      - name: Run Unit Tests (ui-statistics-movies)
+      #        run: ./gradlew :ui-statistics-movies:testDebugUnitTest
+      #      - name: Run Unit Tests (ui-search)
+      #        run: ./gradlew :ui-search:testDebugUnitTest
+      #      - name: Run Unit Tests (ui-progress-movies)
+      #        run: ./gradlew :ui-progress-movies:testDebugUnitTest
 
+  release:
+    runs-on: ubuntu-latest
+    steps:
 #      - name: Build APK
 #        run: ./gradlew app:assembleRelease
 
@@ -53,3 +58,5 @@ jobs:
         with:
           name: v${{ github.ref_name }}
 #          files: app/build/outputs/apk/release/app-release.apk
+          body_path: app/src/main/assets/release_notes.txt
+

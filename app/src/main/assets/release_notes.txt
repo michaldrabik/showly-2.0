@@ -1,6 +1,2 @@
 * Comments text is now selectable
-
 * Fixed issue with Contact Developers button
-
-Do you enjoy Showly app and want to support the developer?
-Become a subscriber and gain access to cool bonus features! Check Settings to learn more!
