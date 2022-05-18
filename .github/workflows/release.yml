@@ -49,7 +49,7 @@ jobs:
       #        run: ./gradlew :ui-progress-movies:testDebugUnitTest
 
   release:
-    needs: [setup, verify]
+    needs: verify
     runs-on: ubuntu-latest
     steps:
 #      - name: Build APK
@@ -60,5 +60,5 @@ jobs:
         with:
           name: v${{ github.ref_name }}
 #          files: app/build/outputs/apk/release/app-release.apk
-          body_path: app/src/main/assets/release_notes.txt
+          body_path: ${{ github.workspace }}/app/src/main/assets/release_notes.txt
 
