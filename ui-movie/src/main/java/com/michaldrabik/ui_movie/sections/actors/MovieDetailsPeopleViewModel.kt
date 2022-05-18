@@ -10,7 +10,7 @@ import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.Person.Department
 import com.michaldrabik.ui_movie.MovieDetailsEvent
-import com.michaldrabik.ui_movie.MovieDetailsEvent.MovieLoadedEvent
+import com.michaldrabik.ui_movie.MovieDetailsEvent.MovieLoaded
 import com.michaldrabik.ui_movie.MovieDetailsEvent.OpenPeopleSheet
 import com.michaldrabik.ui_movie.MovieDetailsEvent.OpenPersonSheet
 import com.michaldrabik.ui_movie.sections.actors.cases.MovieDetailsActorsCase
@@ -36,7 +36,7 @@ class MovieDetailsPeopleViewModel @Inject constructor(
 
   fun handleEvent(event: MovieDetailsEvent<*>) {
     when (event) {
-      is MovieLoadedEvent -> {
+      is MovieLoaded -> {
         movie = event.movie
         loadPeople(event.movie)
       }

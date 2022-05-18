@@ -10,7 +10,6 @@ import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
-import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.combine
@@ -27,7 +26,7 @@ import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
-import com.michaldrabik.ui_movie.MovieDetailsEvent.MovieLoadedEvent
+import com.michaldrabik.ui_movie.MovieDetailsEvent.MovieLoaded
 import com.michaldrabik.ui_movie.MovieDetailsUiState.FollowedState
 import com.michaldrabik.ui_movie.cases.MovieDetailsCommentsCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsHiddenCase
@@ -85,9 +84,6 @@ class MovieDetailsViewModel @Inject constructor(
   private val premiumState = MutableStateFlow(false)
   private val listsCountState = MutableStateFlow(0)
 
-  private val removeTraktEvent = MutableStateFlow<Event<Int>?>(null)
-  private val finishedEvent = MutableStateFlow<Event<Boolean>?>(null)
-
   private var movie by notNull<Movie>()
 
   fun loadDetails(id: IdTrakt) {
@@ -97,7 +93,7 @@ class MovieDetailsViewModel @Inject constructor(
       }
       try {
         movie = mainCase.loadDetails(id)
-        _parentEvents.emit(MovieLoadedEvent(movie))
+        _parentEvents.emit(MovieLoaded(movie))
         Analytics.logMovieDetailsDisplay(movie)
 
         val isSignedIn = userManager.isAuthorized()
@@ -330,24 +326,23 @@ class MovieDetailsViewModel @Inject constructor(
         isMyMovie -> {
           followedState.value = state
           if (showRemoveTrakt) {
-            removeTraktEvent.value = Event(R.id.actionMovieDetailsFragmentToRemoveTraktProgress)
+            eventChannel.send(MovieDetailsEvent.RemoveFromTrakt(R.id.actionMovieDetailsFragmentToRemoveTraktProgress))
           }
         }
         isWatchlist -> {
           followedState.value = state
           if (showRemoveTrakt) {
-            removeTraktEvent.value = Event(R.id.actionMovieDetailsFragmentToRemoveTraktWatchlist)
+            eventChannel.send(MovieDetailsEvent.RemoveFromTrakt(R.id.actionMovieDetailsFragmentToRemoveTraktWatchlist))
           }
         }
         isHidden -> {
           followedState.value = state
           if (showRemoveTrakt) {
-            removeTraktEvent.value = Event(R.id.actionMovieDetailsFragmentToRemoveTraktHidden)
+            eventChannel.send(MovieDetailsEvent.RemoveFromTrakt(R.id.actionMovieDetailsFragmentToRemoveTraktHidden))
           }
         }
         else -> error("Unexpected movie state.")
       }
-
       announcementManager.refreshMoviesAnnouncements()
     }
   }
@@ -360,7 +355,7 @@ class MovieDetailsViewModel @Inject constructor(
         Timber.e(error)
         rethrowCancellation(error)
       } finally {
-        finishedEvent.value = Event(true)
+        eventChannel.send(MovieDetailsEvent.Finish)
       }
     }
   }
@@ -378,10 +373,8 @@ class MovieDetailsViewModel @Inject constructor(
     dateFormatState,
     signedInState,
     premiumState,
-    listsCountState,
-    removeTraktEvent,
-    finishedEvent
-  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15 ->
+    listsCountState
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13 ->
     MovieDetailsUiState(
       movie = s1,
       movieLoading = s2,
@@ -395,9 +388,7 @@ class MovieDetailsViewModel @Inject constructor(
       dateFormat = s10,
       isSignedIn = s11,
       isPremium = s12,
-      listsCount = s13,
-      removeFromTrakt = s14,
-      isFinished = s15
+      listsCount = s13
     )
   }.stateIn(
     scope = viewModelScope,

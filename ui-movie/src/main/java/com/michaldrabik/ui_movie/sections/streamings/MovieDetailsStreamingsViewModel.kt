@@ -26,7 +26,7 @@ class MovieDetailsStreamingsViewModel @Inject constructor(
 
   fun handleEvent(event: MovieDetailsEvent<*>) {
     when (event) {
-      is MovieDetailsEvent.MovieLoadedEvent -> loadStreamings(event.movie)
+      is MovieDetailsEvent.MovieLoaded -> loadStreamings(event.movie)
       else -> Unit
     }
   }

@@ -12,7 +12,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_movie.MovieDetailsEvent
-import com.michaldrabik.ui_movie.MovieDetailsEvent.MovieLoadedEvent
+import com.michaldrabik.ui_movie.MovieDetailsEvent.MovieLoaded
 import com.michaldrabik.ui_movie.cases.MovieDetailsMyMoviesCase
 import com.michaldrabik.ui_movie.sections.related.cases.MovieDetailsRelatedCase
 import com.michaldrabik.ui_movie.sections.related.recycler.RelatedListItem
@@ -37,7 +37,7 @@ class MovieDetailsRelatedViewModel @Inject constructor(
 
   fun handleEvent(event: MovieDetailsEvent<*>) {
     when (event) {
-      is MovieLoadedEvent -> loadRelatedMovies(event.movie)
+      is MovieLoaded -> loadRelatedMovies(event.movie)
       else -> Unit
     }
   }

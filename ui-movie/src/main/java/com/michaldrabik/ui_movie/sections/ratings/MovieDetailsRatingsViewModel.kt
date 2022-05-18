@@ -27,7 +27,7 @@ class MovieDetailsRatingsViewModel @Inject constructor(
 
   fun handleEvent(event: MovieDetailsEvent<*>) {
     when (event) {
-      is MovieDetailsEvent.MovieLoadedEvent -> loadRatings(event.movie)
+      is MovieDetailsEvent.MovieLoaded -> loadRatings(event.movie)
       else -> Unit
     }
   }

@@ -41,6 +41,7 @@ import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Type
 import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet
 import com.michaldrabik.ui_base.utilities.SnackbarHost
+import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.copyToClipboard
@@ -128,6 +129,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
       { viewModel.messageFlow.collect { renderSnack(it) } },
+      { viewModel.eventFlow.collect { handleEvent(it) } },
       doAfterLaunch = {
         if (!isInitialized) {
           viewModel.loadDetails(movieId)
@@ -289,16 +291,8 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         movieDetailsManageListsLabel.text = text
       }
       ratingState?.let { renderRating(it) }
-      removeFromTrakt?.let { event ->
-        event.consume()?.let { openRemoveTraktSheet(it) }
-      }
       isPremium.let {
         movieDetailsPremiumAd.visibleIf(!it)
-      }
-      isFinished?.let { event ->
-        event.consume()?.let {
-          if (it) requireActivity().onBackPressed()
-        }
       }
     }
   }
@@ -375,6 +369,13 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       return
     }
     showSnack(event)
+  }
+
+  private fun handleEvent(event: Event<*>) {
+    when (event) {
+      is MovieDetailsEvent.Finish -> requireActivity().onBackPressed()
+      is MovieDetailsEvent.RemoveFromTrakt -> openRemoveTraktSheet(event.navigationId)
+    }
   }
 
   private fun openRemoveTraktSheet(@IdRes action: Int) {
