@@ -28,7 +28,7 @@ jobs:
         run: curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.43.2/ktlint && chmod a+x ktlint && ./ktlint
 
   verify-tests:
-    needs: setup
+    needs: verify-lint
     runs-on: ubuntu-latest
     steps:
       - name: Run Unit Tests (app)
