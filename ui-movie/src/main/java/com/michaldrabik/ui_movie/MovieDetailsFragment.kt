@@ -221,7 +221,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 
         val releaseDate =
           when {
-            movie.released != null -> String.format(ENGLISH, "%s", dateFormat?.format(movie.released)?.capitalizeWords())
+            movie.released != null -> String.format(ENGLISH, "%s", meta?.dateFormat?.format(movie.released)?.capitalizeWords())
             movie.year > 0 -> movie.year.toString()
             else -> ""
           }
@@ -257,7 +257,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         }
         movieDetailsSeparator5.visible()
         movieDetailsCustomImagesLabel.visibleIf(Config.SHOW_PREMIUM)
-        movieDetailsCustomImagesLabel.onClick { openCustomImagesSheet(movie.traktId, isPremium) }
+        movieDetailsCustomImagesLabel.onClick { openCustomImagesSheet(movie.traktId, meta?.isPremium) }
         movieDetailsAddButton.isEnabled = true
       }
       movieLoading?.let {
@@ -279,8 +279,8 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       image?.let { renderImage(it) }
       translation?.let { renderTranslation(it) }
       comments?.let {
-        movieDetailsCommentsView.bind(it, commentsDateFormat)
-        if (isSignedIn) {
+        movieDetailsCommentsView.bind(it, meta?.commentsDateFormat)
+        if (meta?.isSignedIn == true) {
           movieDetailsCommentsView.showCommentButton()
         }
       }
@@ -291,8 +291,8 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         movieDetailsManageListsLabel.text = text
       }
       ratingState?.let { renderRating(it) }
-      isPremium.let {
-        movieDetailsPremiumAd.visibleIf(!it)
+      meta?.isPremium.let {
+        movieDetailsPremiumAd.visibleIf(it != true)
       }
     }
   }

@@ -35,6 +35,7 @@ import com.michaldrabik.ui_movie.cases.MovieDetailsMyMoviesCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsRatingCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsTranslationCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsWatchlistCase
+import com.michaldrabik.ui_movie.helpers.MovieDetailsMeta
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -42,10 +43,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import timber.log.Timber
-import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 import kotlin.properties.Delegates.notNull
 
@@ -73,13 +74,10 @@ class MovieDetailsViewModel @Inject constructor(
   private val movieLoadingState = MutableStateFlow<Boolean?>(null)
   private val imageState = MutableStateFlow<Image?>(null)
   private val commentsState = MutableStateFlow<List<Comment>?>(null)
-  private val commentsDateFormatState = MutableStateFlow<DateTimeFormatter?>(null)
   private val followedState = MutableStateFlow<FollowedState?>(null)
   private val ratingState = MutableStateFlow<RatingState?>(null)
   private val translationState = MutableStateFlow<Translation?>(null)
-  private val dateFormatState = MutableStateFlow<DateTimeFormatter?>(null)
-  private val signedInState = MutableStateFlow(false)
-  private val premiumState = MutableStateFlow(false)
+  private val metaState = MutableStateFlow<MovieDetailsMeta?>(null)
   private val listsCountState = MutableStateFlow(0)
 
   private var movie by notNull<Movie>()
@@ -111,10 +109,12 @@ class MovieDetailsViewModel @Inject constructor(
         movieLoadingState.value = false
         followedState.value = isFollowed
         ratingState.value = RatingState(rateAllowed = isSignedIn, rateLoading = false)
-        premiumState.value = settingsRepository.isPremium
-        signedInState.value = isSignedIn
-        dateFormatState.value = dateFormatProvider.loadShortDayFormat()
-        commentsDateFormatState.value = dateFormatProvider.loadFullHourFormat()
+        metaState.value = MovieDetailsMeta(
+          dateFormat = dateFormatProvider.loadShortDayFormat(),
+          commentsDateFormat = dateFormatProvider.loadFullHourFormat(),
+          isSignedIn = isSignedIn,
+          isPremium = settingsRepository.isPremium
+        )
 
         loadBackgroundImage(movie)
         loadListsCount(movie)
@@ -261,7 +261,7 @@ class MovieDetailsViewModel @Inject constructor(
   }
 
   fun loadPremium() {
-    premiumState.value = settingsRepository.isPremium
+    metaState.update { it?.copy(isPremium = settingsRepository.isPremium) }
   }
 
   fun loadUserRating() {
@@ -362,28 +362,22 @@ class MovieDetailsViewModel @Inject constructor(
     movieLoadingState,
     imageState,
     commentsState,
-    commentsDateFormatState,
     followedState,
     ratingState,
     translationState,
-    dateFormatState,
-    signedInState,
-    premiumState,
-    listsCountState
-  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12 ->
+    listsCountState,
+    metaState
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9 ->
     MovieDetailsUiState(
       movie = s1,
       movieLoading = s2,
       image = s3,
       comments = s4,
-      commentsDateFormat = s5,
-      followedState = s6,
-      ratingState = s7,
-      translation = s8,
-      dateFormat = s9,
-      isSignedIn = s10,
-      isPremium = s11,
-      listsCount = s12
+      followedState = s5,
+      ratingState = s6,
+      translation = s7,
+      listsCount = s8,
+      meta = s9
     )
   }.stateIn(
     scope = viewModelScope,

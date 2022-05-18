@@ -5,7 +5,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Translation
-import java.time.format.DateTimeFormatter
+import com.michaldrabik.ui_movie.helpers.MovieDetailsMeta
 
 data class MovieDetailsUiState(
   val movie: Movie? = null,
@@ -16,10 +16,7 @@ data class MovieDetailsUiState(
   val followedState: FollowedState? = null,
   val ratingState: RatingState? = null,
   val translation: Translation? = null,
-  val dateFormat: DateTimeFormatter? = null,
-  val commentsDateFormat: DateTimeFormatter? = null,
-  val isSignedIn: Boolean = false,
-  val isPremium: Boolean = false
+  val meta: MovieDetailsMeta? = null
 ) {
 
   data class FollowedState(
