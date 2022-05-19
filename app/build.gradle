@@ -13,7 +13,7 @@ plugins {
 apply from: '../versions.gradle'
 
 play {
-  serviceAccountCredentials.set(file("gcp-service-key.json"))
+  serviceAccountCredentials.set(file("gpp-service-key.json"))
   track.set("internal")
 }
 
