@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
-import com.michaldrabik.ui_comments.fragment.CommentsFragment.Companion.Options
+import com.michaldrabik.ui_comments.fragment.CommentsFragment.Options
 import com.michaldrabik.ui_comments.fragment.cases.LoadCommentsCase
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.IdTrakt
