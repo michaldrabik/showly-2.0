@@ -1,12 +1,21 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'dagger.hilt.android.plugin'
-apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.appdistribution'
-apply plugin: 'com.google.firebase.crashlytics'
+plugins {
+  id 'com.github.triplet.play'
+  id 'com.android.application'
+  id 'kotlin-android'
+  id 'kotlin-android-extensions'
+  id 'kotlin-kapt'
+  id 'dagger.hilt.android.plugin'
+  id 'com.google.gms.google-services'
+  id 'com.google.firebase.appdistribution'
+  id 'com.google.firebase.crashlytics'
+}
+
 apply from: '../versions.gradle'
+
+play {
+  serviceAccountCredentials.set(file("gcp-key.json"))
+  track.set("internal")
+}
 
 android {
   kotlinOptions { jvmTarget = "1.8" }

@@ -24,11 +24,7 @@ class WhatsNewView : ScrollView {
       .bufferedReader()
       .use { it.readText() }
 
-    val whatsNewFooter = context.assets.open("release_notes_footer.txt")
-      .bufferedReader()
-      .use { it.readText() }
-
-    viewWhatsNewMessage.text = "$whatsNew\n\n$whatsNewFooter"
+    viewWhatsNewMessage.text = whatsNew
     viewWhatsNewSubtitle.text = context.getString(R.string.textWhatsNewSubtitle, BuildConfig.VERSION_NAME)
   }
 }

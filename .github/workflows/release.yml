@@ -1,4 +1,4 @@
-name: Release Flow
+name: Release Github Flow
 
 on:
   push:
@@ -69,5 +69,5 @@ jobs:
         with:
           name: v${{ github.ref_name }}
           files: app/build/outputs/apk/release/app-release.apk
-          body_path: app/src/main/assets/release_notes.txt
+          body_path: app/src/main/play/release-notes/en-US/default.txt
 
