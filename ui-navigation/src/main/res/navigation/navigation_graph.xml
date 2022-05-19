@@ -420,6 +420,11 @@
       app:destination="@id/ratingDialog"
       app:launchSingleTop="true"
       />
+    <action
+      android:id="@+id/actionMovieDetailsFragmentToComments"
+      app:destination="@id/commentsFragment"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment
@@ -671,6 +676,12 @@
       app:popExitAnim="@anim/anim_fade_out"
       />
   </fragment>
+
+  <fragment
+    android:id="@+id/commentsFragment"
+    android:name="com.michaldrabik.ui_comments.CommentsFragment"
+    android:label="fragmentComments"
+    />
 
   <fragment
     android:id="@+id/newsFragment"

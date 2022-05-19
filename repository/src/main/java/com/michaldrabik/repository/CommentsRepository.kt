@@ -1,5 +1,6 @@
 package com.michaldrabik.repository
 
+import com.michaldrabik.common.Mode
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.data_remote.trakt.model.request.CommentRequest
 import com.michaldrabik.repository.mappers.Mappers
@@ -18,15 +19,21 @@ class CommentsRepository @Inject constructor(
   private val userTraktManager: UserTraktManager
 ) {
 
-  suspend fun loadComments(show: Show, limit: Int = 100) =
-    remoteSource.trakt.fetchShowComments(show.traktId, limit)
+  suspend fun loadComments(id: IdTrakt, mode: Mode, limit: Int = 100): List<Comment> {
+    val comments = when (mode) {
+      Mode.SHOWS -> remoteSource.trakt.fetchShowComments(id.id, limit)
+      Mode.MOVIES -> remoteSource.trakt.fetchMovieComments(id.id, limit)
+    }
+    return comments
       .map { mappers.comment.fromNetwork(it) }
       .filter { it.parentId <= 0 }
+  }
+
+  suspend fun loadComments(show: Show, limit: Int = 100) =
+    loadComments(show.ids.trakt, Mode.SHOWS, limit)
 
   suspend fun loadComments(movie: Movie, limit: Int = 100) =
-    remoteSource.trakt.fetchMovieComments(movie.traktId, limit)
-      .map { mappers.comment.fromNetwork(it) }
-      .filter { it.parentId <= 0 }
+    loadComments(movie.ids.trakt, Mode.MOVIES, limit)
 
   suspend fun loadEpisodeComments(idTrakt: IdTrakt, season: Int, episode: Int) =
     remoteSource.trakt.fetchEpisodeComments(idTrakt.id, season, episode)
