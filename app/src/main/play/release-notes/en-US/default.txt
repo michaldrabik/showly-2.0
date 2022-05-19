@@ -1,4 +1,5 @@
 * Comments text is now selectable
+* Shows pinned to On Hold will no longer receive notifications
 * Fixed issue with Contact Developers button
 
 Showly is on Twitter! Follow @AppShowly for news, current app status and other important information.
