@@ -12,4 +12,4 @@ ktlint2.jar
 /app/keystore.properties
 /app/keystore
 /app/firebase-service-key.json
-/app/gpp-service-key.json
+/app/gpp-services-key.json
