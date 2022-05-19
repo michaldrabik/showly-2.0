@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge
+<androidx.constraintlayout.widget.ConstraintLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
-  android:id="@+id/fragmentCommentsRoot"
+  android:id="@+id/commentsRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
   >
 
   <TextView
-    android:id="@+id/fragmentCommentsTitle"
+    android:id="@+id/commentsTitle"
     android:layout_width="wrap_content"
     android:layout_height="@dimen/backArrowSize"
     android:layout_marginStart="@dimen/backArrowSize"
@@ -19,13 +18,13 @@
     android:textColor="?android:attr/textColorPrimary"
     android:textSize="18sp"
     android:textStyle="bold"
-    app:layout_constraintBottom_toTopOf="@id/fragmentCommentsRecycler"
+    app:layout_constraintBottom_toTopOf="@id/commentsRecycler"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     />
 
   <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/fragmentCommentsRecycler"
+    android:id="@+id/commentsRecycler"
     style="@style/ScrollbarsStyle"
     android:layout_width="0dp"
     android:layout_height="0dp"
@@ -39,22 +38,22 @@
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/fragmentCommentsTitle"
+    app:layout_constraintTop_toBottomOf="@id/commentsTitle"
     />
 
   <ProgressBar
-    android:id="@+id/fragmentCommentsProgress"
+    android:id="@+id/commentsProgress"
     style="@style/ProgressBar.Dark"
     android:layout_width="30dp"
     android:layout_height="30dp"
     android:layout_margin="@dimen/spaceNormal"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/fragmentCommentsTitle"
+    app:layout_constraintTop_toBottomOf="@id/commentsTitle"
     />
 
   <TextView
-    android:id="@+id/fragmentCommentsEmpty"
+    android:id="@+id/commentsEmpty"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/spaceNormal"
@@ -64,12 +63,12 @@
     android:visibility="gone"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/fragmentCommentsTitle"
+    app:layout_constraintTop_toBottomOf="@id/commentsTitle"
     tools:visibility="visible"
     />
 
   <com.google.android.material.floatingactionbutton.FloatingActionButton
-    android:id="@+id/fragmentCommentsPostButton"
+    android:id="@+id/commentsPostButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
@@ -83,4 +82,4 @@
     tools:visibility="visible"
     />
 
-</merge>
+</androidx.constraintlayout.widget.ConstraintLayout>

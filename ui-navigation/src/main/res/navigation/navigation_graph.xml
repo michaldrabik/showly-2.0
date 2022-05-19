@@ -679,7 +679,7 @@
 
   <fragment
     android:id="@+id/commentsFragment"
-    android:name="com.michaldrabik.ui_comments.CommentsFragment"
+    android:name="com.michaldrabik.ui_comments.fragment.CommentsFragment"
     android:label="fragmentComments"
     />
 

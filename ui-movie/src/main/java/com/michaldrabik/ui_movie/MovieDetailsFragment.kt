@@ -64,6 +64,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
+import com.michaldrabik.ui_comments.fragment.CommentsFragment
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.IdTrakt
@@ -79,17 +80,11 @@ import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_HIDDEN
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_MY_MOVIES
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_WATCHLIST
 import com.michaldrabik.ui_navigation.java.NavigationArgs
-import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_NEW_COMMENT
-import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT
-import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT_ACTION
-import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_CUSTOM_IMAGE_CLEARED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FAMILY
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
-import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_REPLY_USER
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
-import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MANAGE_LISTS
 import dagger.hilt.android.AndroidEntryPoint
@@ -153,16 +148,17 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       navigateToSafe(R.id.actionMovieDetailsFragmentToArtGallery, bundle)
       Analytics.logMovieGalleryClick(movieId.id)
     }
-    movieDetailsCommentsButton.onClick {
-      movieDetailsCommentsView.clear()
-      showCommentsView()
-      viewModel.loadComments()
-    }
+//    movieDetailsCommentsButton.onClick {
+//      movieDetailsCommentsView.clear()
+//      showCommentsView()
+//      viewModel.loadComments()
+//      navigateToSafe(R.id.actionMovieDetailsFragmentToComments, CommentsFragment.createBundle())
+//    }
     movieDetailsCommentsView.run {
-      onRepliesClickListener = { viewModel.loadCommentReplies(it) }
-      onReplyCommentClickListener = { openPostCommentSheet(comment = it) }
-      onDeleteCommentClickListener = { openDeleteCommentDialog(it) }
-      onPostCommentClickListener = { openPostCommentSheet() }
+//      onRepliesClickListener = { viewModel.loadCommentReplies(it) }
+//      onReplyCommentClickListener = { openPostCommentSheet(comment = it) }
+//      onDeleteCommentClickListener = { openDeleteCommentDialog(it) }
+//      onPostCommentClickListener = { openPostCommentSheet() }
     }
     movieDetailsAddButton.run {
       isEnabled = false
@@ -258,6 +254,9 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         movieDetailsSeparator5.visible()
         movieDetailsCustomImagesLabel.visibleIf(Config.SHOW_PREMIUM)
         movieDetailsCustomImagesLabel.onClick { openCustomImagesSheet(movie.traktId, meta?.isPremium) }
+        movieDetailsCommentsButton.onClick {
+          navigateToSafe(R.id.actionMovieDetailsFragmentToComments, CommentsFragment.createBundle(movie))
+        }
         movieDetailsAddButton.isEnabled = true
       }
       movieLoading?.let {
@@ -278,12 +277,12 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       }
       image?.let { renderImage(it) }
       translation?.let { renderTranslation(it) }
-      comments?.let {
-        movieDetailsCommentsView.bind(it, meta?.commentsDateFormat)
-        if (meta?.isSignedIn == true) {
-          movieDetailsCommentsView.showCommentButton()
-        }
-      }
+//      comments?.let {
+//        movieDetailsCommentsView.bind(it, meta?.commentsDateFormat)
+//        if (meta?.isSignedIn == true) {
+//          movieDetailsCommentsView.showCommentButton()
+//        }
+//      }
       listsCount?.let {
         val text =
           if (it > 0) getString(R.string.textMovieManageListsCount, it)
@@ -421,7 +420,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
       .setTitle(R.string.textCommentConfirmDeleteTitle)
       .setMessage(R.string.textCommentConfirmDelete)
-      .setPositiveButton(R.string.textYes) { _, _ -> viewModel.deleteComment(comment) }
+//      .setPositiveButton(R.string.textYes) { _, _ -> viewModel.deleteComment(comment) }
       .setNegativeButton(R.string.textNo) { _, _ -> }
       .show()
   }
@@ -453,26 +452,26 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     navigateToSafe(R.id.actionMovieDetailsFragmentToCustomImages, bundle)
   }
 
-  private fun openPostCommentSheet(comment: Comment? = null) {
-    setFragmentResultListener(REQUEST_COMMENT) { _, bundle ->
-      showSnack(MessageEvent.Info(R.string.textCommentPosted))
-      when (bundle.getString(ARG_COMMENT_ACTION)) {
-        ACTION_NEW_COMMENT -> {
-          val newComment = bundle.getParcelable<Comment>(ARG_COMMENT)!!
-          viewModel.addNewComment(newComment)
-          if (comment == null) movieDetailsCommentsView.resetScroll()
-        }
-      }
-    }
-    val bundle = when {
-      comment != null -> bundleOf(
-        ARG_COMMENT_ID to comment.getReplyId(),
-        ARG_REPLY_USER to comment.user.username
-      )
-      else -> bundleOf(ARG_MOVIE_ID to movieId.id)
-    }
-    navigateToSafe(R.id.actionMovieDetailsFragmentToPostComment, bundle)
-  }
+//  private fun openPostCommentSheet(comment: Comment? = null) {
+//    setFragmentResultListener(REQUEST_COMMENT) { _, bundle ->
+//      showSnack(MessageEvent.Info(R.string.textCommentPosted))
+//      when (bundle.getString(ARG_COMMENT_ACTION)) {
+//        ACTION_NEW_COMMENT -> {
+//          val newComment = bundle.getParcelable<Comment>(ARG_COMMENT)!!
+//          viewModel.addNewComment(newComment)
+//          if (comment == null) movieDetailsCommentsView.resetScroll()
+//        }
+//      }
+//    }
+//    val bundle = when {
+//      comment != null -> bundleOf(
+//        ARG_COMMENT_ID to comment.getReplyId(),
+//        ARG_REPLY_USER to comment.user.username
+//      )
+//      else -> bundleOf(ARG_MOVIE_ID to movieId.id)
+//    }
+//    navigateToSafe(R.id.actionMovieDetailsFragmentToPostComment, bundle)
+//  }
 
   fun showStreamingsView(animate: Boolean) {
     if (!animate) {

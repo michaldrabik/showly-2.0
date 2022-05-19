@@ -12,12 +12,10 @@ import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.combine
-import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
 import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
 import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
 import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
-import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
@@ -27,7 +25,6 @@ import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_movie.MovieDetailsEvent.MovieLoaded
 import com.michaldrabik.ui_movie.MovieDetailsUiState.FollowedState
-import com.michaldrabik.ui_movie.cases.MovieDetailsCommentsCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsHiddenCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsListsCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsMainCase
@@ -53,7 +50,6 @@ import kotlin.properties.Delegates.notNull
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor(
   private val mainCase: MovieDetailsMainCase,
-  private val commentsCase: MovieDetailsCommentsCase,
   private val translationCase: MovieDetailsTranslationCase,
   private val myMoviesCase: MovieDetailsMyMoviesCase,
   private val ratingsCase: MovieDetailsRatingCase,
@@ -73,7 +69,6 @@ class MovieDetailsViewModel @Inject constructor(
   private val movieState = MutableStateFlow<Movie?>(null)
   private val movieLoadingState = MutableStateFlow<Boolean?>(null)
   private val imageState = MutableStateFlow<Image?>(null)
-  private val commentsState = MutableStateFlow<List<Comment>?>(null)
   private val followedState = MutableStateFlow<FollowedState?>(null)
   private val ratingState = MutableStateFlow<RatingState?>(null)
   private val translationState = MutableStateFlow<Translation?>(null)
@@ -164,101 +159,101 @@ class MovieDetailsViewModel @Inject constructor(
     }
   }
 
-  fun loadComments() {
-    commentsState.value = null
-    viewModelScope.launch {
-      try {
-        val comments = commentsCase.loadComments(movie)
-        commentsState.value = comments
-      } catch (error: Throwable) {
-        commentsState.value = emptyList()
-        Timber.e(error)
-      }
-    }
-    Analytics.logMovieCommentsClick(movie)
-  }
+//  fun loadComments() {
+//    commentsState.value = null
+//    viewModelScope.launch {
+//      try {
+//        val comments = commentsCase.loadComments(movie)
+//        commentsState.value = comments
+//      } catch (error: Throwable) {
+//        commentsState.value = emptyList()
+//        Timber.e(error)
+//      }
+//    }
+//    Analytics.logMovieCommentsClick(movie)
+//  }
 
-  fun loadCommentReplies(comment: Comment) {
-    var currentComments = uiState.value.comments?.toMutableList() ?: mutableListOf()
-    if (currentComments.any { it.parentId == comment.id }) return
+//  fun loadCommentReplies(comment: Comment) {
+//    var currentComments = uiState.value.comments?.toMutableList() ?: mutableListOf()
+//    if (currentComments.any { it.parentId == comment.id }) return
+//
+//    viewModelScope.launch {
+//      try {
+//        val parent = currentComments.find { it.id == comment.id }
+//        parent?.let { p ->
+//          val copy = p.copy(isLoading = true)
+//          currentComments.findReplace(copy) { it.id == p.id }
+//          commentsState.value = currentComments
+//        }
+//
+//        val replies = commentsCase.loadReplies(comment)
+//
+//        currentComments = uiState.value.comments?.toMutableList() ?: mutableListOf()
+//        val parentIndex = currentComments.indexOfFirst { it.id == comment.id }
+//        if (parentIndex > -1) currentComments.addAll(parentIndex + 1, replies)
+//        parent?.let {
+//          currentComments.findReplace(parent.copy(isLoading = false, hasRepliesLoaded = true)) { it.id == comment.id }
+//        }
+//
+//        commentsState.value = currentComments
+//      } catch (t: Throwable) {
+//        commentsState.value = currentComments
+//        messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
+//      }
+//    }
+//  }
 
-    viewModelScope.launch {
-      try {
-        val parent = currentComments.find { it.id == comment.id }
-        parent?.let { p ->
-          val copy = p.copy(isLoading = true)
-          currentComments.findReplace(copy) { it.id == p.id }
-          commentsState.value = currentComments
-        }
-
-        val replies = commentsCase.loadReplies(comment)
-
-        currentComments = uiState.value.comments?.toMutableList() ?: mutableListOf()
-        val parentIndex = currentComments.indexOfFirst { it.id == comment.id }
-        if (parentIndex > -1) currentComments.addAll(parentIndex + 1, replies)
-        parent?.let {
-          currentComments.findReplace(parent.copy(isLoading = false, hasRepliesLoaded = true)) { it.id == comment.id }
-        }
-
-        commentsState.value = currentComments
-      } catch (t: Throwable) {
-        commentsState.value = currentComments
-        messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
-      }
-    }
-  }
-
-  fun addNewComment(comment: Comment) {
-    val currentComments = uiState.value.comments?.toMutableList() ?: mutableListOf()
-    if (!comment.isReply()) {
-      currentComments.add(0, comment)
-    } else {
-      val parentIndex = currentComments.indexOfLast { it.id == comment.parentId }
-      if (parentIndex > -1) {
-        val parent = currentComments[parentIndex]
-        currentComments.add(parentIndex + 1, comment)
-        val repliesCount = currentComments.count { it.parentId == parent.id }.toLong()
-        currentComments.findReplace(parent.copy(replies = repliesCount)) { it.id == comment.parentId }
-      }
-    }
-    commentsState.value = currentComments
-  }
-
-  fun deleteComment(comment: Comment) {
-    var currentComments = uiState.value.comments?.toMutableList() ?: mutableListOf()
-    val target = currentComments.find { it.id == comment.id } ?: return
-
-    viewModelScope.launch {
-      try {
-        val copy = target.copy(isLoading = true)
-        currentComments.findReplace(copy) { it.id == target.id }
-        commentsState.value = currentComments
-
-        commentsCase.delete(target)
-
-        currentComments = uiState.value.comments?.toMutableList() ?: mutableListOf()
-        val targetIndex = currentComments.indexOfFirst { it.id == target.id }
-        if (targetIndex > -1) {
-          currentComments.removeAt(targetIndex)
-          if (target.isReply()) {
-            val parent = currentComments.first { it.id == target.parentId }
-            val repliesCount = currentComments.count { it.parentId == parent.id }.toLong()
-            currentComments.findReplace(parent.copy(replies = repliesCount)) { it.id == target.parentId }
-          }
-        }
-
-        commentsState.value = currentComments
-        messageChannel.send(MessageEvent.Info(R.string.textCommentDeleted))
-      } catch (t: Throwable) {
-        if (t is HttpException && t.code() == 409) {
-          messageChannel.send(MessageEvent.Error(R.string.errorCommentDelete))
-        } else {
-          messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
-        }
-        commentsState.value = currentComments
-      }
-    }
-  }
+//  fun addNewComment(comment: Comment) {
+//    val currentComments = uiState.value.comments?.toMutableList() ?: mutableListOf()
+//    if (!comment.isReply()) {
+//      currentComments.add(0, comment)
+//    } else {
+//      val parentIndex = currentComments.indexOfLast { it.id == comment.parentId }
+//      if (parentIndex > -1) {
+//        val parent = currentComments[parentIndex]
+//        currentComments.add(parentIndex + 1, comment)
+//        val repliesCount = currentComments.count { it.parentId == parent.id }.toLong()
+//        currentComments.findReplace(parent.copy(replies = repliesCount)) { it.id == comment.parentId }
+//      }
+//    }
+//    commentsState.value = currentComments
+//  }
+//
+//  fun deleteComment(comment: Comment) {
+//    var currentComments = uiState.value.comments?.toMutableList() ?: mutableListOf()
+//    val target = currentComments.find { it.id == comment.id } ?: return
+//
+//    viewModelScope.launch {
+//      try {
+//        val copy = target.copy(isLoading = true)
+//        currentComments.findReplace(copy) { it.id == target.id }
+//        commentsState.value = currentComments
+//
+//        commentsCase.delete(target)
+//
+//        currentComments = uiState.value.comments?.toMutableList() ?: mutableListOf()
+//        val targetIndex = currentComments.indexOfFirst { it.id == target.id }
+//        if (targetIndex > -1) {
+//          currentComments.removeAt(targetIndex)
+//          if (target.isReply()) {
+//            val parent = currentComments.first { it.id == target.parentId }
+//            val repliesCount = currentComments.count { it.parentId == parent.id }.toLong()
+//            currentComments.findReplace(parent.copy(replies = repliesCount)) { it.id == target.parentId }
+//          }
+//        }
+//
+//        commentsState.value = currentComments
+//        messageChannel.send(MessageEvent.Info(R.string.textCommentDeleted))
+//      } catch (t: Throwable) {
+//        if (t is HttpException && t.code() == 409) {
+//          messageChannel.send(MessageEvent.Error(R.string.errorCommentDelete))
+//        } else {
+//          messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
+//        }
+//        commentsState.value = currentComments
+//      }
+//    }
+//  }
 
   fun loadPremium() {
     metaState.update { it?.copy(isPremium = settingsRepository.isPremium) }
@@ -361,23 +356,21 @@ class MovieDetailsViewModel @Inject constructor(
     movieState,
     movieLoadingState,
     imageState,
-    commentsState,
     followedState,
     ratingState,
     translationState,
     listsCountState,
     metaState
-  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9 ->
+  ) { s1, s2, s3, s4, s5, s6, s7, s8 ->
     MovieDetailsUiState(
       movie = s1,
       movieLoading = s2,
       image = s3,
-      comments = s4,
-      followedState = s5,
-      ratingState = s6,
-      translation = s7,
-      listsCount = s8,
-      meta = s9
+      followedState = s4,
+      ratingState = s5,
+      translation = s6,
+      listsCount = s7,
+      meta = s8
     )
   }.stateIn(
     scope = viewModelScope,

@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_movie
 
-import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.RatingState
@@ -11,7 +10,6 @@ data class MovieDetailsUiState(
   val movie: Movie? = null,
   val movieLoading: Boolean? = null,
   val image: Image? = null,
-  val comments: List<Comment>? = null,
   val listsCount: Int? = null,
   val followedState: FollowedState? = null,
   val ratingState: RatingState? = null,
