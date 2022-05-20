@@ -28,6 +28,4 @@ class LoadCommentsCase @Inject constructor(
 
     return comments.first + comments.second
   }
-
-
 }
