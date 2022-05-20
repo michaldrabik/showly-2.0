@@ -1,7 +1,6 @@
 package com.michaldrabik.ui_show
 
 import android.annotation.SuppressLint
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.extensions.nowUtcMillis
@@ -24,7 +23,6 @@ import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
 import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
 import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
 import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
-import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_model.IdTrakt
@@ -42,7 +40,6 @@ import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_show.ShowDetailsUiState.FollowedState
 import com.michaldrabik.ui_show.cases.ShowDetailsActorsCase
-import com.michaldrabik.ui_show.cases.ShowDetailsCommentsCase
 import com.michaldrabik.ui_show.cases.ShowDetailsEpisodesCase
 import com.michaldrabik.ui_show.cases.ShowDetailsHiddenCase
 import com.michaldrabik.ui_show.cases.ShowDetailsListsCase
@@ -60,7 +57,6 @@ import com.michaldrabik.ui_show.quick_setup.QuickSetupListItem
 import com.michaldrabik.ui_show.related.RelatedListItem
 import com.michaldrabik.ui_show.seasons.SeasonListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -70,7 +66,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import timber.log.Timber
-import java.time.format.DateTimeFormatter
 import java.util.Locale
 import javax.inject.Inject
 import kotlin.properties.Delegates.notNull
@@ -78,7 +73,6 @@ import kotlin.properties.Delegates.notNull
 @SuppressLint("StaticFieldLeak")
 @HiltViewModel
 class ShowDetailsViewModel @Inject constructor(
-  @ApplicationContext private val context: Context,
   private val mainCase: ShowDetailsMainCase,
   private val actorsCase: ShowDetailsActorsCase,
   private val translationCase: ShowDetailsTranslationCase,
@@ -87,7 +81,6 @@ class ShowDetailsViewModel @Inject constructor(
   private val hiddenCase: ShowDetailsHiddenCase,
   private val myShowsCase: ShowDetailsMyShowsCase,
   private val episodesCase: ShowDetailsEpisodesCase,
-  private val commentsCase: ShowDetailsCommentsCase,
   private val listsCase: ShowDetailsListsCase,
   private val streamingsCase: ShowDetailsStreamingCase,
   private val relatedShowsCase: ShowDetailsRelatedShowsCase,
@@ -110,8 +103,6 @@ class ShowDetailsViewModel @Inject constructor(
   private val seasonsState = MutableStateFlow<List<SeasonListItem>?>(null)
   private val relatedState = MutableStateFlow<List<RelatedListItem>?>(null)
   private val nextEpisodeState = MutableStateFlow<NextEpisodeBundle?>(null)
-  private val commentsState = MutableStateFlow<List<Comment>?>(null)
-  private val commentsDateFormatState = MutableStateFlow<DateTimeFormatter?>(null)
   private val followedState = MutableStateFlow<FollowedState?>(null)
   private val ratingState = MutableStateFlow<RatingState?>(null)
   private val streamingsState = MutableStateFlow<StreamingsBundle?>(null)
@@ -153,7 +144,6 @@ class ShowDetailsViewModel @Inject constructor(
         countryState.value = AppCountry.fromCode(settingsRepository.country)
         premiumState.value = settingsRepository.isPremium
         signedInState.value = isSignedIn
-        commentsDateFormatState.value = dateFormatProvider.loadFullHourFormat()
 
         loadBackgroundImage(show)
         loadListsCount(show)
@@ -335,105 +325,6 @@ class ShowDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       val count = listsCase.countLists(show ?: this@ShowDetailsViewModel.show)
       listsCountState.value = count
-    }
-  }
-
-  fun loadComments() {
-    commentsState.value = null
-    viewModelScope.launch {
-      try {
-        val comments = commentsCase.loadComments(show)
-        commentsState.value = comments
-      } catch (error: Throwable) {
-        commentsState.value = emptyList()
-        Timber.e(error)
-        rethrowCancellation(error)
-      }
-    }
-    Analytics.logShowCommentsClick(show)
-  }
-
-  fun loadCommentReplies(comment: Comment) {
-    var currentComments = uiState.value.comments?.toMutableList() ?: mutableListOf()
-    if (currentComments.any { it.parentId == comment.id }) return
-
-    viewModelScope.launch {
-      try {
-        val parent = currentComments.find { it.id == comment.id }
-        parent?.let { p ->
-          val copy = p.copy(isLoading = true)
-          currentComments.findReplace(copy) { it.id == p.id }
-          commentsState.value = currentComments
-        }
-
-        val replies = commentsCase.loadReplies(comment)
-
-        currentComments = uiState.value.comments?.toMutableList() ?: mutableListOf()
-        val parentIndex = currentComments.indexOfFirst { it.id == comment.id }
-        if (parentIndex > -1) currentComments.addAll(parentIndex + 1, replies)
-        parent?.let {
-          currentComments.findReplace(parent.copy(isLoading = false, hasRepliesLoaded = true)) { it.id == comment.id }
-        }
-
-        commentsState.value = currentComments
-      } catch (error: Throwable) {
-        messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
-        commentsState.value = currentComments
-        Timber.e(error)
-        rethrowCancellation(error)
-      }
-    }
-  }
-
-  fun addNewComment(comment: Comment) {
-    val currentComments = uiState.value.comments?.toMutableList() ?: mutableListOf()
-    if (!comment.isReply()) {
-      currentComments.add(0, comment)
-    } else {
-      val parentIndex = currentComments.indexOfLast { it.id == comment.parentId }
-      if (parentIndex > -1) {
-        val parent = currentComments[parentIndex]
-        currentComments.add(parentIndex + 1, comment)
-        val repliesCount = currentComments.count { it.parentId == parent.id }.toLong()
-        currentComments.findReplace(parent.copy(replies = repliesCount)) { it.id == comment.parentId }
-      }
-    }
-    commentsState.value = currentComments
-  }
-
-  fun deleteComment(comment: Comment) {
-    var currentComments = uiState.value.comments?.toMutableList() ?: mutableListOf()
-    val target = currentComments.find { it.id == comment.id } ?: return
-
-    viewModelScope.launch {
-      try {
-        val copy = target.copy(isLoading = true)
-        currentComments.findReplace(copy) { it.id == target.id }
-        commentsState.value = currentComments
-
-        commentsCase.delete(target)
-
-        currentComments = uiState.value.comments?.toMutableList() ?: mutableListOf()
-        val targetIndex = currentComments.indexOfFirst { it.id == target.id }
-        if (targetIndex > -1) {
-          currentComments.removeAt(targetIndex)
-          if (target.isReply()) {
-            val parent = currentComments.first { it.id == target.parentId }
-            val repliesCount = currentComments.count { it.parentId == parent.id }.toLong()
-            currentComments.findReplace(parent.copy(replies = repliesCount)) { it.id == target.parentId }
-          }
-        }
-
-        commentsState.value = currentComments
-        messageChannel.send(MessageEvent.Info(R.string.textCommentDeleted))
-      } catch (t: Throwable) {
-        if (t is HttpException && t.code() == 409) {
-          messageChannel.send(MessageEvent.Error(R.string.errorCommentDelete))
-        } else {
-          messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
-        }
-        commentsState.value = currentComments
-      }
     }
   }
 
@@ -732,8 +623,6 @@ class ShowDetailsViewModel @Inject constructor(
     crewState,
     relatedState,
     nextEpisodeState,
-    commentsState,
-    commentsDateFormatState,
     followedState,
     ratingState,
     streamingsState,
@@ -742,7 +631,7 @@ class ShowDetailsViewModel @Inject constructor(
     signedInState,
     premiumState,
     listsCountState
-  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19 ->
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17 ->
     ShowDetailsUiState(
       show = s1,
       showLoading = s2,
@@ -753,16 +642,14 @@ class ShowDetailsViewModel @Inject constructor(
       crew = s7,
       relatedShows = s8,
       nextEpisode = s9,
-      comments = s10,
-      commentsDateFormat = s11,
-      followedState = s12,
-      ratingState = s13,
-      streamings = s14,
-      translation = s15,
-      country = s16,
-      isSignedIn = s17,
-      isPremium = s18,
-      listsCount = s19
+      followedState = s10,
+      ratingState = s11,
+      streamings = s12,
+      translation = s13,
+      country = s14,
+      isSignedIn = s15,
+      isPremium = s16,
+      listsCount = s17
     )
   }.stateIn(
     scope = viewModelScope,

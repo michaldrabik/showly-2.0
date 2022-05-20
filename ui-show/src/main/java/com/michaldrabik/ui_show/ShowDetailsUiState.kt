@@ -1,7 +1,6 @@
 package com.michaldrabik.ui_show
 
 import com.michaldrabik.ui_base.common.AppCountry
-import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.RatingState
@@ -12,7 +11,6 @@ import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
 import com.michaldrabik.ui_show.helpers.StreamingsBundle
 import com.michaldrabik.ui_show.related.RelatedListItem
 import com.michaldrabik.ui_show.seasons.SeasonListItem
-import java.time.format.DateTimeFormatter
 
 data class ShowDetailsUiState(
   val show: Show? = null,
@@ -24,8 +22,6 @@ data class ShowDetailsUiState(
   val relatedShows: List<RelatedListItem>? = null,
   val streamings: StreamingsBundle? = null,
   val nextEpisode: NextEpisodeBundle? = null,
-  val comments: List<Comment>? = null,
-  val commentsDateFormat: DateTimeFormatter? = null,
   val listsCount: Int? = null,
   val followedState: FollowedState? = null,
   val ratingState: RatingState? = null,

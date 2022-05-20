@@ -72,8 +72,8 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
+import com.michaldrabik.ui_comments.fragment.CommentsFragment
 import com.michaldrabik.ui_episodes.details.EpisodeDetailsBottomSheet
-import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.IdImdb
@@ -92,18 +92,12 @@ import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_TAB_SELECTED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_WATCHED
-import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_NEW_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_RATING_CHANGED
-import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT
-import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT_ACTION
-import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_CUSTOM_IMAGE_CLEARED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FAMILY
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
-import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_REPLY_USER
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
-import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_EPISODE_DETAILS
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MANAGE_LISTS
@@ -198,17 +192,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       navigateToSafe(R.id.actionShowDetailsFragmentToArtGallery, bundle)
       Analytics.logShowGalleryClick(showId.id)
     }
-    showDetailsCommentsButton.onClick {
-      showDetailsCommentsView.clear()
-      showCommentsView()
-      viewModel.loadComments()
-    }
-    showDetailsCommentsView.run {
-      onRepliesClickListener = { viewModel.loadCommentReplies(it) }
-      onReplyCommentClickListener = { openPostCommentSheet(comment = it) }
-      onDeleteCommentClickListener = { openDeleteCommentDialog(it) }
-      onPostCommentClickListener = { openPostCommentSheet() }
-    }
     showDetailsTipGallery.onClick {
       it.gone()
       showTip(SHOW_DETAILS_GALLERY)
@@ -239,7 +222,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         (showDetailsShareButton.layoutParams as MarginLayoutParams)
           .updateMargins(top = inset)
       }
-      arrayOf<View>(view, showDetailsBackArrow2, showDetailsEpisodesView, showDetailsCommentsView)
+      arrayOf<View>(view, showDetailsBackArrow2, showDetailsEpisodesView)
         .forEach { v ->
           (v.layoutParams as MarginLayoutParams).updateMargins(top = inset)
         }
@@ -325,18 +308,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     showDetailsBackArrow.crossfadeTo(showDetailsBackArrow2)
   }
 
-  private fun showCommentsView() {
-    showDetailsCommentsView.run {
-      fadeIn(275, withHardware = true)
-      startAnimation(animationEnterRight)
-    }
-    showDetailsMainLayout.run {
-      fadeOut(200)
-      startAnimation(animationExitRight)
-    }
-    showDetailsBackArrow.crossfadeTo(showDetailsBackArrow2)
-  }
-
   private fun hideExtraView(view: View) {
     if (view.animation != null) return
 
@@ -397,11 +368,15 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           val args = LinksBottomSheet.createBundle(show)
           navigateToSafe(R.id.actionShowDetailsFragmentToLinks, args)
         }
+        showDetailsCommentsButton.onClick {
+          val bundle = CommentsFragment.createBundle(show)
+          navigateToSafe(R.id.actionShowDetailsFragmentToComments, bundle)
+        }
         showDetailsAddButton.isEnabled = true
         separator4.visible()
       }
       showLoading?.let {
-        if (!showDetailsEpisodesView.isVisible && !showDetailsCommentsView.isVisible) {
+        if (!showDetailsEpisodesView.isVisible) {
           showDetailsMainLayout.fadeIf(!it, hardware = true)
           showDetailsMainProgress.visibleIf(it)
         }
@@ -434,10 +409,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       streamings?.let { renderStreamings(it) }
       relatedShows?.let { renderRelatedShows(it) }
       translation?.let { renderTranslation(it) }
-      comments?.let {
-        showDetailsCommentsView.bind(it, commentsDateFormat)
-        if (isSignedIn) showDetailsCommentsView.showCommentButton()
-      }
       ratingState?.let { renderRating(it) }
       isPremium.let {
         showDetailsPremiumAd.visibleIf(!it)
@@ -708,28 +679,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     navigateToSafe(R.id.actionShowDetailsFragmentEpisodeDetails, bundle)
   }
 
-  private fun openPostCommentSheet(comment: Comment? = null) {
-    setFragmentResultListener(REQUEST_COMMENT) { _, bundle ->
-      showSnack(MessageEvent.Info(R.string.textCommentPosted))
-      when (bundle.getString(ARG_COMMENT_ACTION)) {
-        ACTION_NEW_COMMENT -> {
-          val newComment = bundle.getParcelable<Comment>(ARG_COMMENT)!!
-          viewModel.addNewComment(newComment)
-          if (comment == null) showDetailsCommentsView.resetScroll()
-        }
-      }
-    }
-
-    val bundle = when {
-      comment != null -> bundleOf(
-        ARG_COMMENT_ID to comment.getReplyId(),
-        ARG_REPLY_USER to comment.user.username
-      )
-      else -> bundleOf(ARG_SHOW_ID to showId.id)
-    }
-    navigateToSafe(R.id.actionShowDetailsFragmentToPostComment, bundle)
-  }
-
   private fun openPersonSheet(person: Person) {
     lastOpenedPerson = null
     setFragmentResultListener(REQUEST_PERSON_DETAILS) { _, _ ->
@@ -821,16 +770,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       .show()
   }
 
-  private fun openDeleteCommentDialog(comment: Comment) {
-    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
-      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
-      .setTitle(R.string.textCommentConfirmDeleteTitle)
-      .setMessage(R.string.textCommentConfirmDelete)
-      .setPositiveButton(R.string.textYes) { _, _ -> viewModel.deleteComment(comment) }
-      .setNegativeButton(R.string.textNo) { _, _ -> }
-      .show()
-  }
-
   private fun openListsDialog() {
     if (findNavControl()?.currentDestination?.id != R.id.showDetailsFragment) {
       return
@@ -869,10 +808,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       when {
         showDetailsEpisodesView.isVisible -> {
           hideExtraView(showDetailsEpisodesView)
-          return@addCallback
-        }
-        showDetailsCommentsView.isVisible -> {
-          hideExtraView(showDetailsCommentsView)
           return@addCallback
         }
         else -> {

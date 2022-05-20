@@ -9,15 +9,11 @@ import android.graphics.Typeface.NORMAL
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import android.view.animation.DecelerateInterpolator
-import androidx.activity.addCallback
 import androidx.annotation.IdRes
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.isVisible
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.setFragmentResultListener
@@ -27,7 +23,6 @@ import androidx.transition.TransitionManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
@@ -45,11 +40,8 @@ import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.copyToClipboard
-import com.michaldrabik.ui_base.utilities.extensions.crossfadeTo
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
-import com.michaldrabik.ui_base.utilities.extensions.fadeIn
-import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
@@ -65,7 +57,6 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
 import com.michaldrabik.ui_comments.fragment.CommentsFragment
-import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
@@ -110,11 +101,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   private val imageRatio by lazy { resources.getString(R.string.detailsImageRatio).toFloat() }
   private val imagePadded by lazy { resources.getBoolean(R.bool.detailsImagePadded) }
 
-  private val animationEnterRight by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_in_from_right) }
-  private val animationExitRight by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_right) }
-  private val animationEnterLeft by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_in_from_left) }
-  private val animationExitLeft by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_left) }
-
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     requireActivity().requestedOrientation = SCREEN_ORIENTATION_PORTRAIT
@@ -138,7 +124,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   private fun setupView() {
     hideNavigation()
     movieDetailsImageGuideline.setGuidelineBegin((imageHeight * imageRatio).toInt())
-    listOf(movieDetailsBackArrow, movieDetailsBackArrow2).onClick { requireActivity().onBackPressed() }
+    movieDetailsBackArrow.onClick { requireActivity().onBackPressed() }
     movieDetailsImage.onClick {
       val bundle = bundleOf(
         ARG_MOVIE_ID to movieId.id,
@@ -147,18 +133,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       )
       navigateToSafe(R.id.actionMovieDetailsFragmentToArtGallery, bundle)
       Analytics.logMovieGalleryClick(movieId.id)
-    }
-//    movieDetailsCommentsButton.onClick {
-//      movieDetailsCommentsView.clear()
-//      showCommentsView()
-//      viewModel.loadComments()
-//      navigateToSafe(R.id.actionMovieDetailsFragmentToComments, CommentsFragment.createBundle())
-//    }
-    movieDetailsCommentsView.run {
-//      onRepliesClickListener = { viewModel.loadCommentReplies(it) }
-//      onReplyCommentClickListener = { openPostCommentSheet(comment = it) }
-//      onDeleteCommentClickListener = { openDeleteCommentDialog(it) }
-//      onPostCommentClickListener = { openPostCommentSheet() }
     }
     movieDetailsAddButton.run {
       isEnabled = false
@@ -189,23 +163,8 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         (movieDetailsShareButton.layoutParams as ViewGroup.MarginLayoutParams)
           .updateMargins(top = inset)
       }
-      arrayOf<View>(view, movieDetailsBackArrow2, movieDetailsCommentsView)
-        .forEach { v ->
-          (v.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(top = inset)
-        }
+      (view.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(top = inset)
     }
-  }
-
-  private fun showCommentsView() {
-    movieDetailsCommentsView.run {
-      fadeIn(275)
-      startAnimation(animationEnterRight)
-    }
-    movieDetailsMainLayout.run {
-      fadeOut(200)
-      startAnimation(animationExitRight)
-    }
-    movieDetailsBackArrow.crossfadeTo(movieDetailsBackArrow2)
   }
 
   private fun render(uiState: MovieDetailsUiState) {
@@ -255,15 +214,14 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         movieDetailsCustomImagesLabel.visibleIf(Config.SHOW_PREMIUM)
         movieDetailsCustomImagesLabel.onClick { openCustomImagesSheet(movie.traktId, meta?.isPremium) }
         movieDetailsCommentsButton.onClick {
-          navigateToSafe(R.id.actionMovieDetailsFragmentToComments, CommentsFragment.createBundle(movie))
+          val bundle = CommentsFragment.createBundle(movie)
+          navigateToSafe(R.id.actionMovieDetailsFragmentToComments, bundle)
         }
         movieDetailsAddButton.isEnabled = true
       }
       movieLoading?.let {
-        if (!movieDetailsCommentsView.isVisible) {
-          movieDetailsMainLayout.fadeIf(!it, hardware = true)
-          movieDetailsMainProgress.visibleIf(it)
-        }
+        movieDetailsMainLayout.fadeIf(!it, hardware = true)
+        movieDetailsMainProgress.visibleIf(it)
       }
       followedState?.let {
         when {
@@ -277,12 +235,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       }
       image?.let { renderImage(it) }
       translation?.let { renderTranslation(it) }
-//      comments?.let {
-//        movieDetailsCommentsView.bind(it, meta?.commentsDateFormat)
-//        if (meta?.isSignedIn == true) {
-//          movieDetailsCommentsView.showCommentButton()
-//        }
-//      }
       listsCount?.let {
         val text =
           if (it > 0) getString(R.string.textMovieManageListsCount, it)
@@ -415,16 +367,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     navigateTo(R.id.actionMovieDetailsFragmentToRating, bundle)
   }
 
-  private fun openDeleteCommentDialog(comment: Comment) {
-    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
-      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
-      .setTitle(R.string.textCommentConfirmDeleteTitle)
-      .setMessage(R.string.textCommentConfirmDelete)
-//      .setPositiveButton(R.string.textYes) { _, _ -> viewModel.deleteComment(comment) }
-      .setNegativeButton(R.string.textNo) { _, _ -> }
-      .show()
-  }
-
   private fun openListsDialog() {
     setFragmentResultListener(REQUEST_MANAGE_LISTS) { _, _ -> viewModel.loadListsCount() }
     val bundle = bundleOf(
@@ -452,27 +394,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     navigateToSafe(R.id.actionMovieDetailsFragmentToCustomImages, bundle)
   }
 
-//  private fun openPostCommentSheet(comment: Comment? = null) {
-//    setFragmentResultListener(REQUEST_COMMENT) { _, bundle ->
-//      showSnack(MessageEvent.Info(R.string.textCommentPosted))
-//      when (bundle.getString(ARG_COMMENT_ACTION)) {
-//        ACTION_NEW_COMMENT -> {
-//          val newComment = bundle.getParcelable<Comment>(ARG_COMMENT)!!
-//          viewModel.addNewComment(newComment)
-//          if (comment == null) movieDetailsCommentsView.resetScroll()
-//        }
-//      }
-//    }
-//    val bundle = when {
-//      comment != null -> bundleOf(
-//        ARG_COMMENT_ID to comment.getReplyId(),
-//        ARG_REPLY_USER to comment.user.username
-//      )
-//      else -> bundleOf(ARG_MOVIE_ID to movieId.id)
-//    }
-//    navigateToSafe(R.id.actionMovieDetailsFragmentToPostComment, bundle)
-//  }
-
   fun showStreamingsView(animate: Boolean) {
     if (!animate) {
       movieDetailsStreamingsFragment.visible()
@@ -488,35 +409,5 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     }
     TransitionManager.beginDelayedTransition(movieDetailsMainContent, transition)
     animation.applyTo(movieDetailsMainContent)
-  }
-
-  private fun hideExtraView(view: View) {
-    if (view.animation != null) return
-
-    view.run {
-      fadeOut(300)
-      startAnimation(animationExitLeft)
-    }
-    movieDetailsMainLayout.run {
-      fadeIn()
-      startAnimation(animationEnterLeft)
-    }
-    movieDetailsBackArrow2.crossfadeTo(movieDetailsBackArrow)
-  }
-
-  override fun setupBackPressed() {
-    val dispatcher = requireActivity().onBackPressedDispatcher
-    dispatcher.addCallback(viewLifecycleOwner) {
-      when {
-        movieDetailsCommentsView.isVisible -> {
-          hideExtraView(movieDetailsCommentsView)
-          return@addCallback
-        }
-        else -> {
-          isEnabled = false
-          findNavControl()?.popBackStack()
-        }
-      }
-    }
   }
 }

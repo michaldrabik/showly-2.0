@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
@@ -8,6 +8,56 @@
   android:layout_height="match_parent"
   android:background="?android:windowBackground"
   >
+
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/commentsRecycler"
+    style="@style/ScrollbarsStyle"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:overScrollMode="never"
+    android:paddingStart="@dimen/spaceNormal"
+    android:paddingTop="@dimen/backArrowSize"
+    android:paddingEnd="@dimen/spaceNormal"
+    android:paddingBottom="80dp"
+    android:scrollbars="vertical"
+    />
+
+  <ProgressBar
+    android:id="@+id/commentsProgress"
+    style="@style/ProgressBar.Dark"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    />
+
+  <TextView
+    android:id="@+id/commentsEmpty"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="@dimen/spaceNormal"
+    android:gravity="center"
+    android:text="@string/textNoComments"
+    android:textColor="?android:attr/textColorPrimary"
+    android:visibility="gone"
+    tools:visibility="visible"
+    />
+
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/commentsPostButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|end"
+    android:layout_margin="16dp"
+    android:contentDescription="@string/textComment"
+    android:visibility="gone"
+    app:backgroundTint="?attr/colorAccent"
+    app:srcCompat="@drawable/ic_add_comment"
+    app:tint="?attr/textColorOnSurface"
+    tools:visibility="visible"
+    />
 
   <TextView
     android:id="@+id/commentsTitle"
@@ -19,68 +69,18 @@
     android:textColor="?android:attr/textColorPrimary"
     android:textSize="18sp"
     android:textStyle="bold"
-    app:layout_constraintBottom_toTopOf="@id/commentsRecycler"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
+    app:layout_behavior="com.michaldrabik.ui_base.common.behaviour.ScrollableViewBehaviour"
     />
 
-  <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/commentsRecycler"
-    style="@style/ScrollbarsStyle"
-    android:layout_width="0dp"
-    android:layout_height="0dp"
-    android:clipChildren="false"
-    android:clipToPadding="false"
-    android:overScrollMode="never"
-    android:paddingStart="@dimen/spaceNormal"
-    android:paddingEnd="@dimen/spaceNormal"
-    android:paddingBottom="80dp"
-    android:scrollbars="vertical"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/commentsTitle"
+  <ImageView
+    android:id="@+id/commentsBackArrow"
+    android:layout_width="@dimen/backArrowSize"
+    android:layout_height="@dimen/backArrowSize"
+    android:background="?android:attr/selectableItemBackground"
+    android:padding="@dimen/backArrowPadding"
+    app:layout_behavior="com.michaldrabik.ui_base.common.behaviour.ScrollableViewBehaviour"
+    app:srcCompat="@drawable/ic_arrow_back"
+    app:tint="?android:attr/textColorPrimary"
     />
 
-  <ProgressBar
-    android:id="@+id/commentsProgress"
-    style="@style/ProgressBar.Dark"
-    android:layout_width="30dp"
-    android:layout_height="30dp"
-    android:layout_margin="@dimen/spaceNormal"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/commentsTitle"
-    />
-
-  <TextView
-    android:id="@+id/commentsEmpty"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="@dimen/spaceNormal"
-    android:gravity="center"
-    android:text="@string/textNoComments"
-    android:textColor="?android:attr/textColorPrimary"
-    android:visibility="gone"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/commentsTitle"
-    tools:visibility="visible"
-    />
-
-  <com.google.android.material.floatingactionbutton.FloatingActionButton
-    android:id="@+id/commentsPostButton"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_margin="16dp"
-    android:contentDescription="@string/textComment"
-    android:visibility="gone"
-    app:backgroundTint="?attr/colorAccent"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:srcCompat="@drawable/ic_add_comment"
-    app:tint="?attr/textColorOnSurface"
-    tools:visibility="visible"
-    />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
