@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.fragment.app.clearFragmentResultListener
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.michaldrabik.common.Mode
@@ -41,7 +40,6 @@ class MovieDetailsPeopleFragment : BaseFragment<MovieDetailsPeopleViewModel>(R.l
   override val viewModel by viewModels<MovieDetailsPeopleViewModel>()
 
   private var actorsAdapter: ActorsAdapter? = null
-  private var lastOpenedPerson: Person? = null
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -50,9 +48,7 @@ class MovieDetailsPeopleFragment : BaseFragment<MovieDetailsPeopleViewModel>(R.l
       { parentViewModel.parentEvents.collect { viewModel.handleEvent(it) } },
       { viewModel.uiState.collect { render(it) } },
       { viewModel.eventFlow.collect { handleEvent(it) } },
-      doAfterLaunch = {
-        lastOpenedPerson?.let { viewModel.loadPersonDetails(it) }
-      }
+      doAfterLaunch = { viewModel.loadLastPerson() }
     )
   }
 
@@ -69,11 +65,6 @@ class MovieDetailsPeopleFragment : BaseFragment<MovieDetailsPeopleViewModel>(R.l
   }
 
   private fun openPersonSheet(movie: Movie, person: Person) {
-    // TODO Handle last opened person
-    lastOpenedPerson = null
-    setFragmentResultListener(NavigationArgs.REQUEST_PERSON_DETAILS) { _, _ ->
-      lastOpenedPerson = person
-    }
     val bundle = PersonDetailsBottomSheet.createBundle(person, movie.ids.trakt)
     navigateToSafe(R.id.actionMovieDetailsFragmentToPerson, bundle)
   }

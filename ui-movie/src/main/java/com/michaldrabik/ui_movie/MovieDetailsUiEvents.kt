@@ -27,5 +27,9 @@ sealed class MovieDetailsEvent<T>(action: T) : Event<T>(action) {
     @IdRes val navigationId: Int
   ) : MovieDetailsEvent<Int>(navigationId)
 
+  data class SaveOpenedPerson(
+    val person: Person
+  ) : MovieDetailsEvent<Person>(person)
+
   object Finish : MovieDetailsEvent<Unit>(Unit)
 }

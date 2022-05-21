@@ -13,6 +13,7 @@ import com.michaldrabik.ui_movie.MovieDetailsEvent
 import com.michaldrabik.ui_movie.MovieDetailsEvent.MovieLoaded
 import com.michaldrabik.ui_movie.MovieDetailsEvent.OpenPeopleSheet
 import com.michaldrabik.ui_movie.MovieDetailsEvent.OpenPersonSheet
+import com.michaldrabik.ui_movie.MovieDetailsEvent.SaveOpenedPerson
 import com.michaldrabik.ui_movie.sections.actors.cases.MovieDetailsActorsCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,12 +34,16 @@ class MovieDetailsPeopleViewModel @Inject constructor(
   private val crewState = MutableStateFlow<Map<Department, List<Person>>?>(null)
 
   private lateinit var movie: Movie
+  private var lastOpenedPerson: Person? = null
 
   fun handleEvent(event: MovieDetailsEvent<*>) {
     when (event) {
       is MovieLoaded -> {
         movie = event.movie
         loadPeople(event.movie)
+      }
+      is SaveOpenedPerson -> {
+        lastOpenedPerson = event.person
       }
       else -> Unit
     }
@@ -76,6 +81,13 @@ class MovieDetailsPeopleViewModel @Inject constructor(
   fun loadPeopleList(people: List<Person>, department: Department) {
     viewModelScope.launch {
       eventChannel.send(OpenPeopleSheet(movie, people, department))
+    }
+  }
+
+  fun loadLastPerson() {
+    lastOpenedPerson?.let {
+      loadPersonDetails(it)
+      lastOpenedPerson = null
     }
   }
 
