@@ -114,7 +114,7 @@ class MovieDetailsViewModel @Inject constructor(
         loadBackgroundImage(movie)
         loadListsCount(movie)
         loadUserRating()
-        launch { loadTranslation(movie) }
+        loadTranslation()
       } catch (error: Throwable) {
         progressJob.cancel()
         if (error is HttpException && error.code() == 404) {
@@ -142,13 +142,15 @@ class MovieDetailsViewModel @Inject constructor(
     }
   }
 
-  private suspend fun loadTranslation(movie: Movie) {
-    try {
-      translationCase.loadTranslation(movie)?.let {
-        translationState.value = it
+  private fun loadTranslation() {
+    viewModelScope.launch {
+      try {
+        translationCase.loadTranslation(movie)?.let {
+          translationState.value = it
+        }
+      } catch (error: Throwable) {
+        rethrowCancellation(error)
       }
-    } catch (error: Throwable) {
-      rethrowCancellation(error)
     }
   }
 
