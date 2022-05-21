@@ -2,6 +2,7 @@ package com.michaldrabik.ui_base.trakt.exports
 
 import com.michaldrabik.common.extensions.dateIsoStringFromMillis
 import com.michaldrabik.common.extensions.nowUtcMillis
+import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.Episode
 import com.michaldrabik.data_local.database.model.Movie
@@ -82,7 +83,13 @@ class TraktExportWatchedRunner @Inject constructor(
 
     val request = SyncExportRequest(
       episodes = localEpisodes.map { ep ->
-        val timestamp = localMyShows.find { it.idTrakt == ep.idShowTrakt }?.updatedAt ?: nowUtcMillis()
+        val showTimestamp = localMyShows.find { it.idTrakt == ep.idShowTrakt }?.updatedAt ?: 0
+        val episodeTimestamp = ep.firstAired?.toMillis() ?: 0
+        val timestamp = when {
+          showTimestamp > 0 -> showTimestamp
+          episodeTimestamp > 0 -> episodeTimestamp
+          else -> nowUtcMillis()
+        }
         SyncExportItem.create(ep.idTrakt, dateIsoStringFromMillis(timestamp))
       },
       movies = movies
