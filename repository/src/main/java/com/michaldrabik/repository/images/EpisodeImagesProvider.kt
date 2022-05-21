@@ -12,6 +12,7 @@ import com.michaldrabik.ui_model.ImageStatus.AVAILABLE
 import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.ImageType.FANART
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -39,22 +40,28 @@ class EpisodeImagesProvider @Inject constructor(
     }
 
     var image = Image.createUnavailable(FANART)
-    runCatching {
-      val remoteImage = remoteSource.tmdb.fetchEpisodeImage(showId.id, episode.season, episode.number)
+    try {
+      var remoteImage = remoteSource.tmdb.fetchEpisodeImage(showId.id, episode.season, episode.number)
+      if (remoteImage == null && (episode.numberAbs ?: 0) > 0) {
+        // Try absolute episode number if present (may happen with certain Anime series)
+        remoteImage = remoteSource.tmdb.fetchEpisodeImage(showId.id, episode.season, episode.numberAbs)
+      }
       image = when (remoteImage) {
         null -> Image.createUnavailable(FANART)
         else -> Image(
-          -1,
-          tvdbId,
-          tmdbId,
-          FANART,
-          EPISODE,
-          remoteImage.file_path,
-          "",
-          AVAILABLE,
-          ImageSource.TMDB
+          id = -1,
+          idTvdb = tvdbId,
+          idTmdb = tmdbId,
+          type = FANART,
+          family = EPISODE,
+          fileUrl = remoteImage.file_path,
+          thumbnailUrl = "",
+          status = AVAILABLE,
+          source = ImageSource.TMDB
         )
       }
+    } catch (error: Throwable) {
+      Timber.w(error)
     }
 
     when (image.status) {

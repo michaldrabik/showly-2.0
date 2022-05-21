@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_movie.related
+package com.michaldrabik.ui_movie.sections.related.recycler
 
 import android.content.Context
 import android.content.res.ColorStateList
@@ -66,7 +66,6 @@ class RelatedMovieView : MovieView<RelatedListItem> {
   }
 
   private fun clear() {
-    relatedMovieTitle.text = ""
     relatedMoviePlaceholder.gone()
     relatedMovieTitle.gone()
     Glide.with(this).clear(relatedMovieImage)

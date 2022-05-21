@@ -216,7 +216,7 @@
         android:layout_marginTop="18dp"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:background="?attr/colorSeparator"
-        app:layout_constraintBottom_toTopOf="@+id/movieDetailsRatings"
+        app:layout_constraintBottom_toTopOf="@+id/movieDetailsRatingsFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -228,7 +228,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="@dimen/spaceNormal"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:layout_marginBottom="@dimen/spaceTiny"
         android:ellipsize="end"
@@ -237,28 +236,29 @@
         android:textAlignment="viewStart"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@id/movieDetailsActorsRecycler"
+        app:layout_constraintBottom_toTopOf="@id/movieDetailsActorsFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/movieDetailsStreamingsRecycler"
+        app:layout_constraintTop_toBottomOf="@+id/movieDetailsStreamingsFragment"
         app:layout_goneMarginBottom="@dimen/spaceHuge"
-        app:layout_goneMarginTop="0dp"
         tools:targetApi="o"
         tools:text="Description"
         />
 
-      <com.michaldrabik.ui_base.common.views.RatingsStripView
-        android:id="@+id/movieDetailsRatings"
+      <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/movieDetailsRatingsFragment"
+        android:name="com.michaldrabik.ui_movie.sections.ratings.MovieDetailsRatingsFragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceTiny"
         android:layout_marginTop="@dimen/spaceNormal"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:layout_marginBottom="@dimen/spaceNormal"
-        app:layout_constraintBottom_toTopOf="@+id/movieDetailsStreamingsRecycler"
+        app:layout_constraintBottom_toTopOf="@+id/movieDetailsStreamingsFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/separator4"
+        tools:layout="@layout/fragment_movie_details_ratings"
         />
 
       <View
@@ -274,177 +274,35 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/movieDetailsCrewBarrier"
+        app:layout_constraintTop_toBottomOf="@id/movieDetailsActorsFragment"
         app:layout_goneMarginBottom="@dimen/spaceBig"
         />
 
-      <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/movieDetailsStreamingsRecycler"
+      <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/movieDetailsStreamingsFragment"
+        android:name="com.michaldrabik.ui_movie.sections.streamings.MovieDetailsStreamingsFragment"
         android:layout_width="0dp"
-        android:layout_height="@dimen/streamingTileHeight"
-        android:layout_marginTop="@dimen/spaceMicro"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:overScrollMode="never"
-        android:paddingStart="@dimen/spaceNormal"
-        android:paddingEnd="@dimen/spaceNormal"
-        android:visibility="invisible"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/movieDetailsDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/movieDetailsRatings"
+        app:layout_constraintTop_toBottomOf="@+id/movieDetailsRatingsFragment"
+        tools:layout_height="40dp"
         />
 
-      <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/movieDetailsActorsRecycler"
+      <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/movieDetailsActorsFragment"
+        android:name="com.michaldrabik.ui_movie.sections.actors.MovieDetailsPeopleFragment"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/spaceMedium"
-        android:layout_marginBottom="@dimen/spaceMicro"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:overScrollMode="never"
-        android:paddingStart="@dimen/spaceNormal"
-        android:paddingEnd="@dimen/spaceNormal"
-        android:visibility="invisible"
-        app:layout_constrainedHeight="true"
-        app:layout_constraintBottom_toTopOf="@id/movieDetailsDirectingLabel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_min="@dimen/actorMovieTileImageHeight"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/movieDetailsDescription"
-        />
-
-      <ProgressBar
-        android:id="@+id/movieDetailsActorsProgress"
-        style="@style/ProgressBar.Dark"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        app:layout_constraintBottom_toBottomOf="@id/movieDetailsActorsRecycler"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/movieDetailsActorsRecycler"
-        />
-
-      <TextView
-        android:id="@+id/movieDetailsActorsEmptyView"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/textMovieActorsEmpty"
-        android:textColor="?android:attr/textColorSecondary"
-        android:visibility="gone"
+        android:layout_marginTop="@dimen/spaceMedium"
         app:layout_constraintBottom_toTopOf="@id/separator2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/movieDetailsDescription"
-        app:layout_constraintVertical_bias="0.35"
-        tools:visibility="visible"
-        />
-
-      <TextView
-        android:id="@+id/movieDetailsDirectingLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="13dp"
-        android:gravity="center_vertical"
-        android:text="@string/textDirecting"
-        android:textColor="?android:attr/textColorSecondary"
-        android:textSize="11sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/movieDetailsDirectingValue"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/movieDetailsActorsRecycler"
-        app:layout_goneMarginTop="@dimen/spaceHuge"
-        tools:visibility="visible"
-        />
-
-      <TextView
-        android:id="@+id/movieDetailsDirectingValue"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:minWidth="50dp"
-        android:text="-"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="11sp"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="@id/movieDetailsDirectingLabel"
-        app:layout_constraintTop_toBottomOf="@id/movieDetailsDirectingLabel"
-        tools:ignore="HardcodedText"
-        tools:text="Steven"
-        tools:visibility="visible"
-        />
-
-      <TextView
-        android:id="@+id/movieDetailsWritingLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spaceBig"
-        android:text="@string/textWriting"
-        android:textColor="?android:attr/textColorSecondary"
-        android:textSize="11sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/movieDetailsDirectingLabel"
-        app:layout_constraintStart_toEndOf="@id/movieDetailsDirectingValue"
-        app:layout_constraintTop_toTopOf="@id/movieDetailsDirectingLabel"
-        tools:visibility="visible"
-        />
-
-      <TextView
-        android:id="@+id/movieDetailsWritingValue"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:minWidth="50dp"
-        android:text="-"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="11sp"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="@id/movieDetailsWritingLabel"
-        app:layout_constraintTop_toBottomOf="@id/movieDetailsWritingLabel"
-        tools:ignore="HardcodedText"
-        tools:text="Steven Spilberg\nTest"
-        tools:visibility="visible"
-        />
-
-      <TextView
-        android:id="@+id/movieDetailsMusicLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginStart="@dimen/spaceBig"
-        android:layout_marginEnd="@dimen/spaceNormal"
-        android:text="@string/textMusic"
-        android:textColor="?android:attr/textColorSecondary"
-        android:textSize="11sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/movieDetailsDirectingLabel"
-        app:layout_constraintStart_toEndOf="@id/movieDetailsWritingValue"
-        app:layout_constraintTop_toTopOf="@id/movieDetailsDirectingLabel"
-        tools:visibility="visible"
-        />
-
-      <TextView
-        android:id="@+id/movieDetailsMusicValue"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/spaceNormal"
-        android:text="-"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="11sp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/movieDetailsMusicLabel"
-        app:layout_constraintTop_toBottomOf="@id/movieDetailsMusicLabel"
-        tools:ignore="HardcodedText"
-        tools:text="Steven Spilberg"
-        tools:visibility="visible"
-        />
-
-      <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/movieDetailsCrewBarrier"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="movieDetailsDirectingValue, movieDetailsWritingValue, movieDetailsMusicValue"
+        tools:layout="@layout/fragment_movie_details_people"
+        tools:layout_height="100dp"
         />
 
       <TextView
@@ -504,52 +362,16 @@
         app:layout_constraintTop_toBottomOf="@id/separator2"
         />
 
-      <TextView
-        android:id="@+id/movieDetailsRelatedLabel"
-        android:layout_width="wrap_content"
+      <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/movieDetailsRelatedFragment"
+        android:name="com.michaldrabik.ui_movie.sections.related.MovieDetailsRelatedFragment"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spaceNormal"
         android:layout_marginTop="@dimen/spaceMedium"
-        android:text="@string/textMovieYouMayAlsoLike"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/movieDetailsRelatedRecycler"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/movieDetailsSeparator5"
-        />
-
-      <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/movieDetailsRelatedRecycler"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/spaceMedium"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:overScrollMode="never"
-        android:paddingStart="@dimen/spaceNormal"
-        android:paddingEnd="@dimen/spaceNormal"
-        android:visibility="invisible"
-        app:layout_constrainedHeight="true"
-        app:layout_constraintBottom_toTopOf="@id/movieDetailsCustomImagesLabel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_min="@dimen/relatedMovieHeight"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/movieDetailsRelatedLabel"
-        tools:visibility="visible"
-        />
-
-      <ProgressBar
-        android:id="@+id/movieDetailsRelatedProgress"
-        style="@style/ProgressBar.Dark"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        app:layout_constraintBottom_toBottomOf="@id/movieDetailsRelatedRecycler"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/movieDetailsRelatedRecycler"
+        tools:layout="@layout/fragment_movie_details_related"
         />
 
       <TextView
@@ -570,7 +392,7 @@
         app:drawableTint="?android:attr/textColorPrimary"
         app:layout_constraintBottom_toTopOf="@id/movieDetailsPremiumAd"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/movieDetailsRelatedRecycler"
+        app:layout_constraintTop_toBottomOf="@id/movieDetailsRelatedFragment"
         app:layout_goneMarginTop="0dp"
         tools:visibility="visible"
         />
@@ -584,7 +406,7 @@
         android:layout_marginEnd="@dimen/spaceNormal"
         android:background="?attr/colorSeparator"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/movieDetailsRelatedLabel"
+        app:layout_constraintBottom_toTopOf="@id/movieDetailsRelatedFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -610,14 +432,6 @@
 
   </androidx.core.widget.NestedScrollView>
 
-  <com.michaldrabik.ui_comments.CommentsView
-    android:id="@+id/movieDetailsCommentsView"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?android:windowBackground"
-    android:visibility="gone"
-    />
-
   <ProgressBar
     android:id="@+id/movieDetailsMainProgress"
     style="@style/ProgressBar.Accent"
@@ -634,17 +448,6 @@
     android:background="?android:attr/selectableItemBackground"
     android:padding="@dimen/backArrowPadding"
     app:srcCompat="@drawable/ic_arrow_back"
-    />
-
-  <ImageView
-    android:id="@+id/movieDetailsBackArrow2"
-    android:layout_width="@dimen/backArrowSize"
-    android:layout_height="@dimen/backArrowSize"
-    android:background="?android:attr/selectableItemBackground"
-    android:padding="@dimen/backArrowPadding"
-    android:visibility="gone"
-    app:srcCompat="@drawable/ic_arrow_back"
-    app:tint="?android:attr/textColorPrimary"
     />
 
 </FrameLayout>

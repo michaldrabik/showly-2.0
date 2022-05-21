@@ -7,14 +7,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.ui_model.Comment
 import java.time.format.DateTimeFormatter
 
-class CommentsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CommentsAdapter(
+  val onDeleteClickListener: ((Comment) -> Unit)? = null,
+  val onReplyClickListener: ((Comment) -> Unit)? = null,
+  val onRepliesClickListener: ((Comment) -> Unit)? = null
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   private val asyncDiffer = AsyncListDiffer(this, CommentItemDiffCallback())
   private var dateFormat: DateTimeFormatter? = null
-
-  var onRepliesClickListener: ((Comment) -> Unit)? = null
-  var onReplyClickListener: ((Comment) -> Unit)? = null
-  var onDeleteClickListener: ((Comment) -> Unit)? = null
 
   fun setItems(newItems: List<Comment>, dateFormat: DateTimeFormatter?) {
     this.dateFormat = dateFormat
@@ -24,9 +24,9 @@ class CommentsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     ViewHolderShow(
       CommentView(parent.context).apply {
-        onRepliesClickListener = { this@CommentsAdapter.onRepliesClickListener?.invoke(it) }
-        onReplyClickListener = { this@CommentsAdapter.onReplyClickListener?.invoke(it) }
-        onDeleteClickListener = { this@CommentsAdapter.onDeleteClickListener?.invoke(it) }
+        onRepliesClickListener = this@CommentsAdapter.onRepliesClickListener
+        onReplyClickListener = this@CommentsAdapter.onReplyClickListener
+        onDeleteClickListener = this@CommentsAdapter.onDeleteClickListener
       }
     )
 

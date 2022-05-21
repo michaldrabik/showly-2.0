@@ -7,68 +7,59 @@ import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.Logger
-import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
-import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.combine
-import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
 import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
 import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
 import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
-import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.RatingState
-import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_movie.MovieDetailsEvent.Finish
+import com.michaldrabik.ui_movie.MovieDetailsEvent.MovieLoaded
+import com.michaldrabik.ui_movie.MovieDetailsEvent.RemoveFromTrakt
+import com.michaldrabik.ui_movie.MovieDetailsEvent.SaveOpenedPerson
 import com.michaldrabik.ui_movie.MovieDetailsUiState.FollowedState
-import com.michaldrabik.ui_movie.MovieDetailsUiState.StreamingsState
-import com.michaldrabik.ui_movie.cases.MovieDetailsActorsCase
-import com.michaldrabik.ui_movie.cases.MovieDetailsCommentsCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsHiddenCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsListsCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsMainCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsMyMoviesCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsRatingCase
-import com.michaldrabik.ui_movie.cases.MovieDetailsRelatedCase
-import com.michaldrabik.ui_movie.cases.MovieDetailsStreamingCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsTranslationCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsWatchlistCase
-import com.michaldrabik.ui_movie.related.RelatedListItem
+import com.michaldrabik.ui_movie.helpers.MovieDetailsMeta
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import timber.log.Timber
-import java.time.format.DateTimeFormatter
-import java.util.Locale
 import javax.inject.Inject
 import kotlin.properties.Delegates.notNull
 
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor(
   private val mainCase: MovieDetailsMainCase,
-  private val relatedCase: MovieDetailsRelatedCase,
-  private val actorsCase: MovieDetailsActorsCase,
-  private val commentsCase: MovieDetailsCommentsCase,
   private val translationCase: MovieDetailsTranslationCase,
-  private val ratingsCase: MovieDetailsRatingCase,
   private val myMoviesCase: MovieDetailsMyMoviesCase,
+  private val ratingsCase: MovieDetailsRatingCase,
   private val watchlistCase: MovieDetailsWatchlistCase,
   private val hiddenCase: MovieDetailsHiddenCase,
   private val listsCase: MovieDetailsListsCase,
-  private val streamingCase: MovieDetailsStreamingCase,
   private val settingsRepository: SettingsRepository,
   private val userManager: UserTraktManager,
   private val imagesProvider: MovieImagesProvider,
@@ -76,27 +67,17 @@ class MovieDetailsViewModel @Inject constructor(
   private val announcementManager: AnnouncementManager,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
+  private val _parentEvents = MutableSharedFlow<MovieDetailsEvent<*>>()
+  val parentEvents = _parentEvents.asSharedFlow()
+
   private val movieState = MutableStateFlow<Movie?>(null)
   private val movieLoadingState = MutableStateFlow<Boolean?>(null)
-  private val movieRatingsState = MutableStateFlow<Ratings?>(null)
   private val imageState = MutableStateFlow<Image?>(null)
-  private val actorsState = MutableStateFlow<List<Person>?>(null)
-  private val crewState = MutableStateFlow<Map<Person.Department, List<Person>>?>(null)
-  private val relatedState = MutableStateFlow<List<RelatedListItem>?>(null)
-  private val commentsState = MutableStateFlow<List<Comment>?>(null)
-  private val commentsDateFormatState = MutableStateFlow<DateTimeFormatter?>(null)
   private val followedState = MutableStateFlow<FollowedState?>(null)
   private val ratingState = MutableStateFlow<RatingState?>(null)
-  private val streamingsState = MutableStateFlow<StreamingsState?>(null)
   private val translationState = MutableStateFlow<Translation?>(null)
-  private val countryState = MutableStateFlow<AppCountry?>(null)
-  private val dateFormatState = MutableStateFlow<DateTimeFormatter?>(null)
-  private val signedInState = MutableStateFlow(false)
-  private val premiumState = MutableStateFlow(false)
+  private val metaState = MutableStateFlow<MovieDetailsMeta?>(null)
   private val listsCountState = MutableStateFlow(0)
-
-  private val removeTraktEvent = MutableStateFlow<Event<Int>?>(null)
-  private val finishedEvent = MutableStateFlow<Event<Boolean>?>(null)
 
   private var movie by notNull<Movie>()
 
@@ -107,6 +88,7 @@ class MovieDetailsViewModel @Inject constructor(
       }
       try {
         movie = mainCase.loadDetails(id)
+        _parentEvents.emit(MovieLoaded(movie))
         Analytics.logMovieDetailsDisplay(movie)
 
         val isSignedIn = userManager.isAuthorized()
@@ -126,20 +108,17 @@ class MovieDetailsViewModel @Inject constructor(
         movieLoadingState.value = false
         followedState.value = isFollowed
         ratingState.value = RatingState(rateAllowed = isSignedIn, rateLoading = false)
-        countryState.value = AppCountry.fromCode(settingsRepository.country)
-        premiumState.value = settingsRepository.isPremium
-        signedInState.value = isSignedIn
-        dateFormatState.value = dateFormatProvider.loadShortDayFormat()
-        commentsDateFormatState.value = dateFormatProvider.loadFullHourFormat()
+        metaState.value = MovieDetailsMeta(
+          dateFormat = dateFormatProvider.loadShortDayFormat(),
+          commentsDateFormat = dateFormatProvider.loadFullHourFormat(),
+          isSignedIn = isSignedIn,
+          isPremium = settingsRepository.isPremium
+        )
 
         loadBackgroundImage(movie)
         loadListsCount(movie)
-        loadRating()
-        launch { loadRatings(movie) }
-        launch { loadCastCrew(movie) }
-        launch { loadStreamings(movie) }
-        launch { loadRelatedMovies(movie) }
-        launch { loadTranslation(movie) }
+        loadUserRating()
+        loadTranslation()
       } catch (error: Throwable) {
         progressJob.cancel()
         if (error is HttpException && error.code() == 404) {
@@ -167,50 +146,15 @@ class MovieDetailsViewModel @Inject constructor(
     }
   }
 
-  private suspend fun loadCastCrew(movie: Movie) {
-    try {
-      val people = actorsCase.loadPeople(movie)
-
-      val actors = people.getOrDefault(Person.Department.ACTING, emptyList())
-      val crew = people.filter { it.key !in arrayOf(Person.Department.ACTING, Person.Department.UNKNOWN) }
-
-      actorsState.value = actors
-      crewState.value = crew
-
-      actorsCase.preloadDetails(actors)
-    } catch (error: Throwable) {
-      actorsState.value = emptyList()
-      crewState.value = emptyMap()
-      rethrowCancellation(error)
-    }
-  }
-
-  private suspend fun loadRelatedMovies(movie: Movie) {
-    try {
-      val (myMovies, watchlistMovies) = myMoviesCase.getAllIds()
-      val related = relatedCase.loadRelatedMovies(movie).map {
-        val image = imagesProvider.findCachedImage(it, ImageType.POSTER)
-        RelatedListItem(
-          movie = it,
-          image = image,
-          isFollowed = it.traktId in myMovies,
-          isWatchlist = it.traktId in watchlistMovies
-        )
+  private fun loadTranslation() {
+    viewModelScope.launch {
+      try {
+        translationCase.loadTranslation(movie)?.let {
+          translationState.value = it
+        }
+      } catch (error: Throwable) {
+        rethrowCancellation(error)
       }
-      relatedState.value = related
-    } catch (error: Throwable) {
-      relatedState.value = emptyList()
-      rethrowCancellation(error)
-    }
-  }
-
-  private suspend fun loadTranslation(movie: Movie) {
-    try {
-      translationCase.loadTranslation(movie)?.let {
-        translationState.value = it
-      }
-    } catch (error: Throwable) {
-      rethrowCancellation(error)
     }
   }
 
@@ -221,156 +165,11 @@ class MovieDetailsViewModel @Inject constructor(
     }
   }
 
-  private suspend fun loadStreamings(movie: Movie) {
-    try {
-      val localStreamings = streamingCase.getLocalStreamingServices(movie)
-      streamingsState.value = StreamingsState(localStreamings, isLocal = true)
-
-      val remoteStreamings = streamingCase.loadStreamingServices(movie)
-      streamingsState.value = StreamingsState(remoteStreamings, isLocal = false)
-    } catch (error: Throwable) {
-      streamingsState.value = StreamingsState(emptyList(), isLocal = false)
-      rethrowCancellation(error)
-    }
-  }
-
-  fun loadComments() {
-    commentsState.value = null
-    viewModelScope.launch {
-      try {
-        val comments = commentsCase.loadComments(movie)
-        commentsState.value = comments
-      } catch (error: Throwable) {
-        commentsState.value = emptyList()
-        Timber.e(error)
-      }
-    }
-    Analytics.logMovieCommentsClick(movie)
-  }
-
-  fun loadCommentReplies(comment: Comment) {
-    var currentComments = uiState.value.comments?.toMutableList() ?: mutableListOf()
-    if (currentComments.any { it.parentId == comment.id }) return
-
-    viewModelScope.launch {
-      try {
-        val parent = currentComments.find { it.id == comment.id }
-        parent?.let { p ->
-          val copy = p.copy(isLoading = true)
-          currentComments.findReplace(copy) { it.id == p.id }
-          commentsState.value = currentComments
-        }
-
-        val replies = commentsCase.loadReplies(comment)
-
-        currentComments = uiState.value.comments?.toMutableList() ?: mutableListOf()
-        val parentIndex = currentComments.indexOfFirst { it.id == comment.id }
-        if (parentIndex > -1) currentComments.addAll(parentIndex + 1, replies)
-        parent?.let {
-          currentComments.findReplace(parent.copy(isLoading = false, hasRepliesLoaded = true)) { it.id == comment.id }
-        }
-
-        commentsState.value = currentComments
-      } catch (t: Throwable) {
-        commentsState.value = currentComments
-        messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
-      }
-    }
-  }
-
-  fun addNewComment(comment: Comment) {
-    val currentComments = uiState.value.comments?.toMutableList() ?: mutableListOf()
-    if (!comment.isReply()) {
-      currentComments.add(0, comment)
-    } else {
-      val parentIndex = currentComments.indexOfLast { it.id == comment.parentId }
-      if (parentIndex > -1) {
-        val parent = currentComments[parentIndex]
-        currentComments.add(parentIndex + 1, comment)
-        val repliesCount = currentComments.count { it.parentId == parent.id }.toLong()
-        currentComments.findReplace(parent.copy(replies = repliesCount)) { it.id == comment.parentId }
-      }
-    }
-    commentsState.value = currentComments
-  }
-
-  fun deleteComment(comment: Comment) {
-    var currentComments = uiState.value.comments?.toMutableList() ?: mutableListOf()
-    val target = currentComments.find { it.id == comment.id } ?: return
-
-    viewModelScope.launch {
-      try {
-        val copy = target.copy(isLoading = true)
-        currentComments.findReplace(copy) { it.id == target.id }
-        commentsState.value = currentComments
-
-        commentsCase.delete(target)
-
-        currentComments = uiState.value.comments?.toMutableList() ?: mutableListOf()
-        val targetIndex = currentComments.indexOfFirst { it.id == target.id }
-        if (targetIndex > -1) {
-          currentComments.removeAt(targetIndex)
-          if (target.isReply()) {
-            val parent = currentComments.first { it.id == target.parentId }
-            val repliesCount = currentComments.count { it.parentId == parent.id }.toLong()
-            currentComments.findReplace(parent.copy(replies = repliesCount)) { it.id == target.parentId }
-          }
-        }
-
-        commentsState.value = currentComments
-        messageChannel.send(MessageEvent.Info(R.string.textCommentDeleted))
-      } catch (t: Throwable) {
-        if (t is HttpException && t.code() == 409) {
-          messageChannel.send(MessageEvent.Error(R.string.errorCommentDelete))
-        } else {
-          messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
-        }
-        commentsState.value = currentComments
-      }
-    }
-  }
-
-  fun loadMissingImage(item: RelatedListItem, force: Boolean) {
-
-    fun updateItem(new: RelatedListItem) {
-      val currentItems = uiState.value.relatedMovies?.toMutableList()
-      currentItems?.findReplace(new) { it isSameAs new }
-      relatedState.value = currentItems
-    }
-
-    viewModelScope.launch {
-      updateItem(item.copy(isLoading = true))
-      try {
-        val image = imagesProvider.loadRemoteImage(item.movie, item.image.type, force)
-        updateItem(item.copy(isLoading = false, image = image))
-      } catch (t: Throwable) {
-        updateItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
-      }
-    }
-  }
-
   fun loadPremium() {
-    premiumState.value = settingsRepository.isPremium
+    metaState.update { it?.copy(isPremium = settingsRepository.isPremium) }
   }
 
-  private suspend fun loadRatings(movie: Movie) {
-    val traktRatings = Ratings(
-      trakt = Ratings.Value(String.format(Locale.ENGLISH, "%.1f", movie.rating), false),
-      imdb = Ratings.Value(null, true),
-      metascore = Ratings.Value(null, true),
-      rottenTomatoes = Ratings.Value(null, true)
-    )
-    try {
-      movieRatingsState.value = traktRatings
-      val ratings = ratingsCase.loadExternalRatings(movie)
-      movieRatingsState.value = ratings
-    } catch (error: Throwable) {
-      movieRatingsState.value = traktRatings
-      rethrowCancellation(error)
-    }
-  }
-
-  fun loadRating() {
+  fun loadUserRating() {
     viewModelScope.launch {
       val isSignedIn = userManager.isAuthorized()
       if (!isSignedIn) return@launch
@@ -429,24 +228,23 @@ class MovieDetailsViewModel @Inject constructor(
         isMyMovie -> {
           followedState.value = state
           if (showRemoveTrakt) {
-            removeTraktEvent.value = Event(R.id.actionMovieDetailsFragmentToRemoveTraktProgress)
+            eventChannel.send(RemoveFromTrakt(R.id.actionMovieDetailsFragmentToRemoveTraktProgress))
           }
         }
         isWatchlist -> {
           followedState.value = state
           if (showRemoveTrakt) {
-            removeTraktEvent.value = Event(R.id.actionMovieDetailsFragmentToRemoveTraktWatchlist)
+            eventChannel.send(RemoveFromTrakt(R.id.actionMovieDetailsFragmentToRemoveTraktWatchlist))
           }
         }
         isHidden -> {
           followedState.value = state
           if (showRemoveTrakt) {
-            removeTraktEvent.value = Event(R.id.actionMovieDetailsFragmentToRemoveTraktHidden)
+            eventChannel.send(RemoveFromTrakt(R.id.actionMovieDetailsFragmentToRemoveTraktHidden))
           }
         }
         else -> error("Unexpected movie state.")
       }
-
       announcementManager.refreshMoviesAnnouncements()
     }
   }
@@ -459,54 +257,36 @@ class MovieDetailsViewModel @Inject constructor(
         Timber.e(error)
         rethrowCancellation(error)
       } finally {
-        finishedEvent.value = Event(true)
+        eventChannel.send(Finish)
       }
+    }
+  }
+
+  fun onPersonDetails(person: Person) {
+    viewModelScope.launch {
+      _parentEvents.emit(SaveOpenedPerson(person))
     }
   }
 
   val uiState = combine(
     movieState,
     movieLoadingState,
-    movieRatingsState,
     imageState,
-    actorsState,
-    crewState,
-    relatedState,
-    commentsState,
-    commentsDateFormatState,
     followedState,
     ratingState,
-    streamingsState,
     translationState,
-    countryState,
-    dateFormatState,
-    signedInState,
-    premiumState,
     listsCountState,
-    removeTraktEvent,
-    finishedEvent
-  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s20 ->
+    metaState
+  ) { s1, s2, s3, s4, s5, s6, s7, s8 ->
     MovieDetailsUiState(
       movie = s1,
       movieLoading = s2,
-      ratings = s3,
-      image = s4,
-      actors = s5,
-      crew = s6,
-      relatedMovies = s7,
-      comments = s8,
-      commentsDateFormat = s9,
-      followedState = s10,
-      ratingState = s11,
-      streamings = s12,
-      translation = s13,
-      country = s14,
-      dateFormat = s15,
-      isSignedIn = s16,
-      isPremium = s17,
-      listsCount = s18,
-      removeFromTrakt = s19,
-      isFinished = s20
+      image = s3,
+      followedState = s4,
+      ratingState = s5,
+      translation = s6,
+      listsCount = s7,
+      meta = s8
     )
   }.stateIn(
     scope = viewModelScope,
