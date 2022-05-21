@@ -328,7 +328,7 @@ class ProgressMainFragment :
 
   override fun onTabReselected() {
     resetTranslations(duration = 0)
-    progressMainPager.nextPage()
+    progressMainPager?.nextPage()
     onScrollReset()
   }
 

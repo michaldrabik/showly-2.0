@@ -289,7 +289,7 @@ class ProgressMoviesMainFragment :
 
   override fun onTabReselected() {
     resetTranslations(duration = 0)
-    progressMoviesPager.nextPage()
+    progressMoviesPager?.nextPage()
     onScrollReset()
   }
 
