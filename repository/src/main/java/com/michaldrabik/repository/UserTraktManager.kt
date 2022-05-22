@@ -4,7 +4,6 @@ package com.michaldrabik.repository
 
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.model.User
-import com.michaldrabik.data_local.sources.TraktSyncLogLocalDataSource
 import com.michaldrabik.data_local.sources.UserLocalDataSource
 import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.data_remote.trakt.TraktRemoteDataSource
@@ -19,7 +18,6 @@ import com.michaldrabik.data_remote.trakt.model.User as UserModel
 class UserTraktManager @Inject constructor(
   private val remoteSource: TraktRemoteDataSource,
   private val userLocalSource: UserLocalDataSource,
-  private val traktSyncLocalSource: TraktSyncLogLocalDataSource,
   private val transactions: TransactionsProvider,
 ) {
 
@@ -91,8 +89,6 @@ class UserTraktManager @Inject constructor(
   }
 
   suspend fun getUsername() = userLocalSource.get()?.traktUsername ?: ""
-
-  suspend fun clearTraktLogs() = traktSyncLocalSource.deleteAll()
 
   private suspend fun saveToken(token: String, refreshToken: String, userModel: UserModel) {
     val timestamp = nowUtcMillis()

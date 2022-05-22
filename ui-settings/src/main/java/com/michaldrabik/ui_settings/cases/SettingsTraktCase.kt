@@ -2,6 +2,7 @@ package com.michaldrabik.ui_settings.cases
 
 import android.net.Uri
 import androidx.work.WorkManager
+import com.michaldrabik.data_local.sources.TraktSyncLogLocalDataSource
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.settings.SettingsRepository
@@ -15,6 +16,7 @@ import javax.inject.Inject
 class SettingsTraktCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
   private val ratingsRepository: RatingsRepository,
+  private val syncLogLocalSource: TraktSyncLogLocalDataSource,
   private val userManager: UserTraktManager,
   private val workManager: WorkManager
 ) {
@@ -77,7 +79,7 @@ class SettingsTraktCase @Inject constructor(
     }
 
     userManager.revokeToken()
-    userManager.clearTraktLogs()
+    syncLogLocalSource.deleteAll()
     ratingsRepository.clear()
     disableTraktFeatures()
     TraktSyncWorker.cancelAll(workManager)
