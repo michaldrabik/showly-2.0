@@ -59,6 +59,24 @@
     tools:visibility="visible"
     />
 
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/commentsUpButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|end"
+    android:layout_marginEnd="88dp"
+    android:layout_marginBottom="@dimen/spaceNormal"
+    android:rotation="270"
+    android:visibility="gone"
+    app:backgroundTint="?attr/colorAccent"
+    app:fabSize="mini"
+    app:layout_behavior="com.google.android.material.floatingactionbutton.FloatingActionButton$Behavior"
+    app:srcCompat="@drawable/ic_arrow_right"
+    app:tint="?attr/textColorOnSurface"
+    tools:ignore="ContentDescription"
+    tools:visibility="visible"
+    />
+
   <TextView
     android:id="@+id/commentsTitle"
     android:layout_width="wrap_content"

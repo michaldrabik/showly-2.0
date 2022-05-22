@@ -11,6 +11,7 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.BaseFragment
@@ -18,6 +19,8 @@ import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
+import com.michaldrabik.ui_base.utilities.extensions.fadeIn
+import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
@@ -51,6 +54,8 @@ import kotlinx.coroutines.flow.collect
 class CommentsFragment : BaseFragment<CommentsViewModel>(R.layout.fragment_comments) {
 
   companion object {
+    const val BACK_UP_BUTTON_THRESHOLD = 25
+
     fun createBundle(movie: Movie): Bundle =
       bundleOf(ARG_OPTIONS to Options(movie.ids.trakt, Mode.MOVIES))
 
@@ -81,6 +86,10 @@ class CommentsFragment : BaseFragment<CommentsViewModel>(R.layout.fragment_comme
     with(binding) {
       commentsBackArrow.onClick { requireActivity().onBackPressed() }
       commentsPostButton.onClick { openPostCommentSheet() }
+      commentsUpButton.onClick {
+        commentsUpButton.fadeOut(150)
+        resetScroll()
+      }
     }
   }
 
@@ -107,6 +116,7 @@ class CommentsFragment : BaseFragment<CommentsViewModel>(R.layout.fragment_comme
       layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
       itemAnimator = null
       addDivider(R.drawable.divider_comments_list)
+      addOnScrollListener(recyclerScrollListener)
     }
   }
 
@@ -151,6 +161,14 @@ class CommentsFragment : BaseFragment<CommentsViewModel>(R.layout.fragment_comme
       .show()
   }
 
+  private fun resetScroll() {
+    with(binding) {
+      commentsRecycler.smoothScrollToPosition(0)
+      commentsBackArrow.animate().translationY(0F).start()
+      commentsTitle.animate().translationY(0F).start()
+    }
+  }
+
   private fun render(uiState: CommentsUiState) {
     with(uiState) {
       comments?.let {
@@ -167,6 +185,20 @@ class CommentsFragment : BaseFragment<CommentsViewModel>(R.layout.fragment_comme
   override fun onDestroyView() {
     commentsAdapter = null
     super.onDestroyView()
+  }
+
+  private val recyclerScrollListener = object : RecyclerView.OnScrollListener() {
+    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+      if (newState != RecyclerView.SCROLL_STATE_IDLE) {
+        return
+      }
+      val layoutManager = (binding.commentsRecycler.layoutManager as? LinearLayoutManager)
+      if ((layoutManager?.findFirstVisibleItemPosition() ?: 0) >= BACK_UP_BUTTON_THRESHOLD) {
+        binding.commentsUpButton.fadeIn(150)
+      } else {
+        binding.commentsUpButton.fadeOut(150)
+      }
+    }
   }
 
   @Parcelize
