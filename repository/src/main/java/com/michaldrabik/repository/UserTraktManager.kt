@@ -3,10 +3,11 @@
 package com.michaldrabik.repository
 
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.User
+import com.michaldrabik.data_local.sources.TraktSyncLogLocalDataSource
+import com.michaldrabik.data_local.sources.UserLocalDataSource
 import com.michaldrabik.data_local.utilities.TransactionsProvider
-import com.michaldrabik.data_remote.RemoteDataSource
+import com.michaldrabik.data_remote.trakt.TraktRemoteDataSource
 import com.michaldrabik.ui_model.error.TraktAuthError
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -16,8 +17,9 @@ import com.michaldrabik.data_remote.trakt.model.User as UserModel
 
 @Singleton
 class UserTraktManager @Inject constructor(
-  private val remoteSource: RemoteDataSource,
-  private val localSource: LocalDataSource,
+  private val remoteSource: TraktRemoteDataSource,
+  private val userLocalSource: UserLocalDataSource,
+  private val traktSyncLocalSource: TraktSyncLogLocalDataSource,
   private val transactions: TransactionsProvider,
 ) {
 
@@ -30,28 +32,28 @@ class UserTraktManager @Inject constructor(
   suspend fun checkAuthorization(): TraktAuthToken {
     if (isAuthorized()) return traktToken!!
     if (traktRefreshToken == null) {
-      throw TraktAuthError("Authorization needed")
+      throw TraktAuthError("Authorization needed. Refresh token is null.")
     }
     try {
-      val tokens = remoteSource.trakt.refreshAuthTokens(traktRefreshToken?.token!!)
-      val user = remoteSource.trakt.fetchMyProfile(tokens.access_token)
+      val tokens = remoteSource.refreshAuthTokens(traktRefreshToken?.token!!)
+      val user = remoteSource.fetchMyProfile(tokens.access_token)
       saveToken(tokens.access_token, tokens.refresh_token, user)
       return traktToken!!
     } catch (error: Throwable) {
       revokeToken()
-      throw TraktAuthError("Authorization needed")
+      throw TraktAuthError("Authorization needed. Refreshing token failed: ${error.message}")
     }
   }
 
   suspend fun authorize(authCode: String) {
-    val tokens = remoteSource.trakt.fetchAuthTokens(authCode)
-    val user = remoteSource.trakt.fetchMyProfile(tokens.access_token)
+    val tokens = remoteSource.fetchAuthTokens(authCode)
+    val user = remoteSource.fetchMyProfile(tokens.access_token)
     saveToken(tokens.access_token, tokens.refresh_token, user)
   }
 
   suspend fun isAuthorized(): Boolean {
     if (traktToken == null || traktRefreshToken == null) {
-      val user = localSource.user.get()
+      val user = userLocalSource.get()
       user?.let {
         traktToken = TraktAuthToken(it.traktToken)
         traktRefreshToken = TraktRefreshToken(it.traktRefreshToken)
@@ -67,17 +69,17 @@ class UserTraktManager @Inject constructor(
 
   suspend fun revokeToken() {
     transactions.withTransaction {
-      val user = localSource.user.get()!!
+      val user = userLocalSource.get()!!
       val userEntity = user.copy(
         traktToken = "",
         traktRefreshToken = "",
         traktTokenTimestamp = 0,
         traktUsername = ""
       )
-      localSource.user.upsert(userEntity)
+      userLocalSource.upsert(userEntity)
     }
     try {
-      traktToken?.let { remoteSource.trakt.revokeAuthTokens(it.token) }
+      traktToken?.let { remoteSource.revokeAuthTokens(it.token) }
     } catch (error: Throwable) {
       // Just log error as nothing bad really happens in case of error.
       Timber.w("revokeToken(): $error")
@@ -88,15 +90,15 @@ class UserTraktManager @Inject constructor(
     }
   }
 
-  suspend fun getUsername() = localSource.user.get()?.traktUsername ?: ""
+  suspend fun getUsername() = userLocalSource.get()?.traktUsername ?: ""
 
-  suspend fun clearTraktLogs() = localSource.traktSyncLog.deleteAll()
+  suspend fun clearTraktLogs() = traktSyncLocalSource.deleteAll()
 
   private suspend fun saveToken(token: String, refreshToken: String, userModel: UserModel) {
     val timestamp = nowUtcMillis()
     transactions.withTransaction {
-      val user = localSource.user.get()
-      localSource.user.upsert(
+      val user = userLocalSource.get()
+      userLocalSource.upsert(
         user?.copy(
           traktToken = token,
           traktRefreshToken = refreshToken,
