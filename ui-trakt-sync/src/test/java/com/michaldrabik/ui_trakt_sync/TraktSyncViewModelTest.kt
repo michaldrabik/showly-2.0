@@ -279,7 +279,6 @@ class TraktSyncViewModelTest : BaseMockTest() {
     assertThat(stateResult.last().progressStatus).isEqualTo("")
     assertThat(stateResult.last().authError).isTrue()
     assertThat(messagesResult.last().consume()).isEqualTo(R.string.errorTraktAuthorization)
-    coVerify(exactly = 1) { userTraktManager.revokeToken() }
 
     job.cancel()
     job2.cancel()
