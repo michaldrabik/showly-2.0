@@ -62,17 +62,15 @@ class UserTraktManager @Inject constructor(
   }
 
   suspend fun revokeToken() {
-    with(localSource) {
-      transactions.withTransaction {
-        val user = localSource.user.get()!!
-        val userEntity = user.copy(
-          traktToken = "",
-          traktRefreshToken = "",
-          traktTokenTimestamp = 0,
-          traktUsername = ""
-        )
-        localSource.user.upsert(userEntity)
-      }
+    transactions.withTransaction {
+      val user = localSource.user.get()!!
+      val userEntity = user.copy(
+        traktToken = "",
+        traktRefreshToken = "",
+        traktTokenTimestamp = 0,
+        traktUsername = ""
+      )
+      localSource.user.upsert(userEntity)
     }
     try {
       traktToken?.let { remoteSource.trakt.revokeAuthTokens(it.token) }

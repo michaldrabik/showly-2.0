@@ -23,6 +23,7 @@ import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.requireParcelable
+import com.michaldrabik.ui_base.utilities.extensions.updateTopMargin
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_comments.CommentsAdapter
@@ -84,9 +85,13 @@ class CommentsFragment : BaseFragment<CommentsViewModel>(R.layout.fragment_comme
   }
 
   private fun setupStatusBar() {
-    binding.commentsRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
-      val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
-      view.updatePadding(top = padding.top + inset)
+    with(binding) {
+      commentsRecycler.doOnApplyWindowInsets { _, insets, padding, _ ->
+        val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+        commentsRecycler.updatePadding(top = padding.top + inset)
+        commentsTitle.updateTopMargin(inset)
+        commentsBackArrow.updateTopMargin(inset)
+      }
     }
   }
 
