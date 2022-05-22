@@ -28,15 +28,19 @@ class UserTraktManager @Inject constructor(
   private var traktTokenTimestamp = 0L
 
   suspend fun checkAuthorization(): TraktAuthToken {
-    if (!isAuthorized()) {
-      if (traktRefreshToken == null) {
-        throw TraktAuthError("Authorization needed")
-      }
+    if (isAuthorized()) return traktToken!!
+    if (traktRefreshToken == null) {
+      throw TraktAuthError("Authorization needed")
+    }
+    try {
       val tokens = remoteSource.trakt.refreshAuthTokens(traktRefreshToken?.token!!)
       val user = remoteSource.trakt.fetchMyProfile(tokens.access_token)
       saveToken(tokens.access_token, tokens.refresh_token, user)
+      return traktToken!!
+    } catch (error: Throwable) {
+      revokeToken()
+      throw TraktAuthError("Authorization needed")
     }
-    return traktToken!!
   }
 
   suspend fun authorize(authCode: String) {

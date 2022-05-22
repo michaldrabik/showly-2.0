@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.IBinder
 import com.michaldrabik.common.extensions.nowUtcMillis
+import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.Logger
@@ -28,14 +29,15 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
 
 @AndroidEntryPoint
-class TraktSyncService : TraktNotificationsService(), CoroutineScope {
+class TraktSyncService : TraktNotificationsService() {
 
   companion object {
     const val KEY_LAST_SYNC_TIMESTAMP = "KEY_LAST_SYNC_TIMESTAMP"
@@ -60,11 +62,12 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
     }
   }
 
-  override val coroutineContext = Job() + Dispatchers.IO
+  private val serviceScope = CoroutineScope(Dispatchers.IO + Job())
   private val runners = mutableListOf<TraktSyncRunner>()
 
   @Inject lateinit var settingsRepository: SettingsRepository
   @Inject lateinit var eventsManager: EventsManager
+  @Inject lateinit var userManager: UserTraktManager
   @Inject lateinit var syncStatusProvider: TraktSyncStatusProvider
 
   @Inject lateinit var importWatchedRunner: TraktImportWatchedRunner
@@ -75,8 +78,7 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
   @Inject lateinit var exportWatchlistRunner: TraktExportWatchlistRunner
   @Inject lateinit var exportListsRunner: TraktExportListsRunner
 
-  @Inject
-  @Named("miscPreferences")
+  @Inject @Named("miscPreferences")
   lateinit var miscPreferences: SharedPreferences
 
   override fun onCreate() {
@@ -108,7 +110,7 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
     startForeground(SYNC_NOTIFICATION_PROGRESS_ID, createProgressNotification(theme).build())
 
     Timber.d("Sync started.")
-    launch {
+    serviceScope.launch {
       try {
         syncStatusProvider.setSyncing(true)
         eventsManager.sendEvent(TraktSyncStart)
@@ -133,19 +135,8 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
         if (!isSilent) {
           notificationManager().notify(SYNC_NOTIFICATION_COMPLETE_SUCCESS_ID, createSuccessNotification(theme))
         }
-      } catch (t: Throwable) {
-        if (t is TraktAuthError) {
-          eventsManager.sendEvent(TraktSyncAuthError)
-        }
-        eventsManager.sendEvent(TraktSyncError)
-        syncStatusProvider.setSyncing(false)
-        if (!isSilent) {
-          notificationManager().notify(
-            SYNC_NOTIFICATION_COMPLETE_ERROR_ID,
-            createErrorNotification(R.string.textTraktSyncError, R.string.textTraktSyncErrorFull)
-          )
-        }
-        Logger.record(t, "Source" to "${TraktSyncService::class.simpleName}")
+      } catch (error: Throwable) {
+        handleError(error, isSilent)
       } finally {
         Timber.d("Sync completed.")
         notificationManager().cancel(SYNC_NOTIFICATION_PROGRESS_ID)
@@ -231,16 +222,39 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
     exportListsRunner.run()
   }
 
+  // TODO Refactor, create injectable error helper class and model in-app errors
+  private suspend fun handleError(error: Throwable, isSilent: Boolean) {
+    val isAuthError = error is TraktAuthError || (error is HttpException && error.code() == 401)
+    if (isAuthError) {
+      eventsManager.sendEvent(TraktSyncAuthError)
+      userManager.revokeToken()
+    }
+    eventsManager.sendEvent(TraktSyncError)
+    syncStatusProvider.setSyncing(false)
+    if (!isSilent) {
+      val message =
+        if (isAuthError) R.string.errorTraktAuthorization
+        else R.string.textTraktSyncErrorFull
+      notificationManager().notify(
+        SYNC_NOTIFICATION_COMPLETE_ERROR_ID,
+        createErrorNotification(R.string.textTraktSyncError, message)
+      )
+    }
+    Logger.record(error, "Source" to "${TraktSyncService::class.simpleName}")
+  }
+
   private fun sendEvent(event: Event) {
-    launch {
+    serviceScope.launch {
       eventsManager.sendEvent(event)
     }
   }
 
-  private fun clear() = runners.forEach { it.isRunning = false }
+  private fun clear() {
+    runners.forEach { it.isRunning = false }
+  }
 
   override fun onDestroy() {
-    coroutineContext.cancelChildren()
+    serviceScope.cancel()
     importWatchedRunner.progressListener = null
     importWatchlistRunner.progressListener = null
     importListsRunner.progressListener = null

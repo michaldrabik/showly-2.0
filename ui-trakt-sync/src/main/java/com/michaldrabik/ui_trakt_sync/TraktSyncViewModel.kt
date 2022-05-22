@@ -169,7 +169,6 @@ class TraktSyncViewModel @Inject constructor(
         }
         is TraktSyncAuthError -> {
           viewModelScope.launch {
-            userManager.revokeToken()
             progressState.value = false
             progressStatusState.value = ""
             authErrorState.value = true
