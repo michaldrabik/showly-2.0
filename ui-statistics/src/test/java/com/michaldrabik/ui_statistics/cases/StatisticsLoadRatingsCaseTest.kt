@@ -3,7 +3,6 @@ package com.michaldrabik.ui_statistics.cases
 import BaseMockTest
 import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.repository.RatingsRepository
-import com.michaldrabik.repository.TraktAuthToken
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.repository.shows.ShowsRepository
@@ -14,8 +13,10 @@ import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_statistics.views.ratings.recycler.StatisticsRatingItem
+import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
+import io.mockk.just
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Test
@@ -71,7 +72,7 @@ class StatisticsLoadRatingsCaseTest : BaseMockTest() {
 
     val image = Image.createUnknown(ImageType.POSTER)
 
-    coEvery { userTraktManager.checkAuthorization() } returns TraktAuthToken("test")
+    coEvery { userTraktManager.checkAuthorization() } just Runs
     coEvery { userTraktManager.isAuthorized() } returns true
     coEvery { ratingsRepository.shows.loadShowsRatings() } returns ratings
     coEvery { showsRepository.myShows.loadAll(any()) } returns shows

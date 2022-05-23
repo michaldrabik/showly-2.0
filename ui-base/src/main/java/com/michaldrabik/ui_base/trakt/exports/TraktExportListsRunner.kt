@@ -4,7 +4,6 @@ import com.michaldrabik.common.Mode
 import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_remote.RemoteDataSource
-import com.michaldrabik.repository.TraktAuthToken
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.settings.SettingsRepository
@@ -27,23 +26,23 @@ class TraktExportListsRunner @Inject constructor(
     Timber.d("Initialized.")
     isRunning = true
 
-    val authToken = checkAuthorization()
-    runExport(authToken)
+    checkAuthorization()
+    runExport()
 
     isRunning = false
     Timber.d("Finished with success.")
     return 0
   }
 
-  private suspend fun runExport(authToken: TraktAuthToken) {
+  private suspend fun runExport() {
     try {
-      exportLists(authToken)
+      exportLists()
     } catch (error: Throwable) {
       if (retryCount < MAX_RETRY_COUNT) {
         Timber.w("exportLists failed. Will retry in $RETRY_DELAY_MS ms... $error")
         retryCount += 1
         delay(RETRY_DELAY_MS)
-        runExport(authToken)
+        runExport()
       } else {
         isRunning = false
         throw error
@@ -51,20 +50,20 @@ class TraktExportListsRunner @Inject constructor(
     }
   }
 
-  private suspend fun exportLists(token: TraktAuthToken) {
+  private suspend fun exportLists() {
     Timber.d("Exporting lists...")
     val moviesEnabled = settingsRepository.isMoviesEnabled
 
     val localLists = localSource.customLists.getAll()
       .map { mappers.customList.fromDatabase(it) }
-    val remoteLists = remoteSource.trakt.fetchSyncLists(token.token)
+    val remoteLists = remoteSource.trakt.fetchSyncLists()
       .map { mappers.customList.fromNetwork(it) }
 
     localLists.forEach { localList ->
       Timber.d("Processing ${localList.name}...")
       if (remoteLists.none { it.idTrakt == localList.idTrakt }) {
         Timber.d("Not found in Trakt. Creating and uploading items...")
-        val listNet = remoteSource.trakt.postCreateList(token.token, localList.name, localList.description)
+        val listNet = remoteSource.trakt.postCreateList(localList.name, localList.description)
         Timber.d("List created in Trakt.")
 
         val list = mappers.customList.fromNetwork(listNet)
@@ -77,7 +76,7 @@ class TraktExportListsRunner @Inject constructor(
         if (localItems.isNotEmpty()) {
           val showsIds = localItems.filter { it.type == Mode.SHOWS.type }.map { it.idTrakt }
           val moviesIds = localItems.filter { it.type == Mode.MOVIES.type }.map { it.idTrakt }
-          remoteSource.trakt.postAddListItems(token.token, listNet.ids.trakt, showsIds, moviesIds)
+          remoteSource.trakt.postAddListItems(listNet.ids.trakt, showsIds, moviesIds)
           Timber.d("Items added into Trakt list.")
           delay(1000)
         }
@@ -91,7 +90,7 @@ class TraktExportListsRunner @Inject constructor(
             if (localList.name != remoteList.name || localList.description != remoteList.description) {
               Timber.d("Name or description are different. Updating...")
               val updateList = mappers.customList.toNetwork(localList)
-              val resultList = remoteSource.trakt.postUpdateList(token.token, updateList)
+              val resultList = remoteSource.trakt.postUpdateList(updateList)
               val listDb = mappers.customList.fromNetwork(resultList).copy(id = localList.id)
               localSource.customLists.update(listOf(mappers.customList.toDatabase(listDb)))
               delay(1000)
@@ -100,7 +99,7 @@ class TraktExportListsRunner @Inject constructor(
 
           Timber.d("Processing list items...")
           val listTraktId = localList.idTrakt!!
-          val remoteItems = remoteSource.trakt.fetchSyncListItems(token.token, listTraktId, moviesEnabled)
+          val remoteItems = remoteSource.trakt.fetchSyncListItems(listTraktId, moviesEnabled)
             .filter { it.movie != null || it.show != null }
           val localItems = localSource.customListsItems.getItemsById(localList.id)
             .filter { localItem ->
@@ -114,22 +113,22 @@ class TraktExportListsRunner @Inject constructor(
 
             val showsIds = localItems.filter { it.type == Mode.SHOWS.type }.map { it.idTrakt }
             val moviesIds = localItems.filter { it.type == Mode.MOVIES.type }.map { it.idTrakt }
-            remoteSource.trakt.postAddListItems(token.token, listTraktId, showsIds, moviesIds)
+            remoteSource.trakt.postAddListItems(listTraktId, showsIds, moviesIds)
 
             Timber.d("Exported!")
             delay(1000)
           }
 
-          updateListTimestamp(token, localList.id, listTraktId)
+          updateListTimestamp(localList.id, listTraktId)
         }
       }
     }
   }
 
-  private suspend fun updateListTimestamp(token: TraktAuthToken, listId: Long, listTraktId: Long) {
+  private suspend fun updateListTimestamp(listId: Long, listTraktId: Long) {
     try {
       Timber.d("Updating timestamp...")
-      val list = remoteSource.trakt.fetchSyncList(token.token, listTraktId)
+      val list = remoteSource.trakt.fetchSyncList(listTraktId)
         .run { mappers.customList.fromNetwork(this) }
       localSource.customLists.updateTimestamp(listId, list.updatedAt.toMillis())
       Timber.d("Local list timestamp updated.")

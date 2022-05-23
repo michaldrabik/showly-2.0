@@ -28,16 +28,16 @@ class RatingsSeasonCase @Inject constructor(
   suspend fun saveRating(idTrakt: IdTrakt, rating: Int) {
     check(rating in RATING_VALID_RANGE)
 
-    val token = userTraktManager.checkAuthorization().token
+    userTraktManager.checkAuthorization()
     val season = Season.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = idTrakt))
 
-    ratingsRepository.shows.addRating(token, season, rating)
+    ratingsRepository.shows.addRating(season, rating)
   }
 
   suspend fun deleteRating(idTrakt: IdTrakt) {
-    val token = userTraktManager.checkAuthorization().token
+    userTraktManager.checkAuthorization()
     val season = Season.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = idTrakt))
 
-    ratingsRepository.shows.deleteRating(token, season)
+    ratingsRepository.shows.deleteRating(season)
   }
 }

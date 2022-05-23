@@ -7,7 +7,6 @@ import com.michaldrabik.data_local.database.model.TraktSyncQueue.Operation
 import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.ListsRepository
-import com.michaldrabik.repository.TraktAuthToken
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_base.trakt.TraktSyncRunner
@@ -38,7 +37,7 @@ class QuickSyncListsRunner @Inject constructor(
     isRunning = true
 
     var count = 0
-    val authToken = checkAuthorization()
+    checkAuthorization()
 
     val items = localSource.traktSyncQueue.getAll(syncTypes)
       .groupBy { it.idList }
@@ -49,7 +48,7 @@ class QuickSyncListsRunner @Inject constructor(
       return count
     }
 
-    count += processItems(items, authToken, count)
+    count += processItems(items, count)
 
     isRunning = false
     Timber.d("Finished with success.")
@@ -58,7 +57,6 @@ class QuickSyncListsRunner @Inject constructor(
 
   private suspend fun processItems(
     items: Map<Long?, List<TraktSyncQueue>>,
-    authToken: TraktAuthToken,
     count: Int
   ): Int {
     var counted = count
@@ -79,7 +77,7 @@ class QuickSyncListsRunner @Inject constructor(
 
       if (localList.idTrakt == null && addItems.isNotEmpty()) {
         Timber.d("List with ID: $listId does not exist in Trakt. Creating...")
-        localList = createMissingList(localList, authToken)
+        localList = createMissingList(localList)
       } else if (localList.idTrakt == null) {
         Timber.d("List with ID: $listId does not exist in Trakt. No need to remove items...")
         localSource.traktSyncQueue.delete(removeItems)
@@ -87,10 +85,10 @@ class QuickSyncListsRunner @Inject constructor(
       }
 
       // Handle remove items operation
-      handleRemoveItems(removeItems, authToken, localList)
+      handleRemoveItems(removeItems, localList)
 
       // Handle add items operation
-      handleAddItems(addItems, authToken, localList)
+      handleAddItems(addItems, localList)
 
       counted++
       delay(TRAKT_DELAY)
@@ -102,7 +100,7 @@ class QuickSyncListsRunner @Inject constructor(
       .filter { it.key != null }
 
     if (itemsCheck.isNotEmpty()) {
-      return processItems(itemsCheck, authToken, counted)
+      return processItems(itemsCheck, counted)
     }
 
     return counted
@@ -110,7 +108,6 @@ class QuickSyncListsRunner @Inject constructor(
 
   private suspend fun handleRemoveItems(
     removeItems: List<TraktSyncQueue>,
-    authToken: TraktAuthToken,
     list: CustomList
   ) {
     try {
@@ -123,7 +120,7 @@ class QuickSyncListsRunner @Inject constructor(
         .map { it.idTrakt }
 
       if (showIds.isNotEmpty() || movieIds.isNotEmpty()) {
-        remoteSource.trakt.postRemoveListItems(authToken.token, list.idTrakt!!, showIds, movieIds)
+        remoteSource.trakt.postRemoveListItems(list.idTrakt!!, showIds, movieIds)
         localSource.traktSyncQueue.delete(removeItems)
       }
     } catch (error: Throwable) {
@@ -138,7 +135,6 @@ class QuickSyncListsRunner @Inject constructor(
 
   private suspend fun handleAddItems(
     addItems: List<TraktSyncQueue>,
-    authToken: TraktAuthToken,
     localList: CustomList
   ) {
     val showIds = addItems
@@ -151,14 +147,14 @@ class QuickSyncListsRunner @Inject constructor(
 
     try {
       if (showIds.isNotEmpty() || movieIds.isNotEmpty()) {
-        remoteSource.trakt.postAddListItems(authToken.token, localList.idTrakt!!, showIds, movieIds)
+        remoteSource.trakt.postAddListItems(localList.idTrakt!!, showIds, movieIds)
         localSource.traktSyncQueue.delete(addItems)
       }
     } catch (error: Throwable) {
       if (error is HttpException && error.code() == 404) {
         Timber.d("Tried to add to list but it does not exist. Creating...")
         delay(TRAKT_DELAY)
-        createMissingList(localList, authToken)
+        createMissingList(localList)
         localSource.traktSyncQueue.delete(addItems)
       } else {
         throw error
@@ -166,8 +162,8 @@ class QuickSyncListsRunner @Inject constructor(
     }
   }
 
-  private suspend fun createMissingList(localList: CustomList, token: TraktAuthToken): CustomList {
-    val result = remoteSource.trakt.postCreateList(token.token, localList.name, localList.description)
+  private suspend fun createMissingList(localList: CustomList): CustomList {
+    val result = remoteSource.trakt.postCreateList(localList.name, localList.description)
       .run { mappers.customList.fromNetwork(this) }
     listsRepository.updateList(localList.id, result.idTrakt, result.idSlug, result.name, result.description)
 
@@ -176,7 +172,7 @@ class QuickSyncListsRunner @Inject constructor(
       val showsIds = localItems.filter { it.type == Mode.SHOWS.type }.map { it.idTrakt }
       val moviesIds = localItems.filter { it.type == Mode.MOVIES.type }.map { it.idTrakt }
       delay(TRAKT_DELAY)
-      remoteSource.trakt.postAddListItems(token.token, result.idTrakt!!, showsIds, moviesIds)
+      remoteSource.trakt.postAddListItems(result.idTrakt!!, showsIds, moviesIds)
     }
 
     return listsRepository.updateList(localList.id, result.idTrakt, result.idSlug, result.name, result.description)

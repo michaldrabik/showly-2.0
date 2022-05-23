@@ -122,14 +122,14 @@ internal class TraktApi(
   override suspend fun fetchCommentReplies(commentId: Long) =
     commentsService.fetchCommentReplies(commentId, currentTimeMillis())
 
-  override suspend fun postComment(token: String, commentRequest: CommentRequest) =
-    commentsService.postComment("Bearer $token", commentRequest)
+  override suspend fun postComment(commentRequest: CommentRequest) =
+    commentsService.postComment(commentRequest)
 
-  override suspend fun postCommentReply(token: String, commentId: Long, commentRequest: CommentRequest) =
-    commentsService.postCommentReply("Bearer $token", commentId, commentRequest)
+  override suspend fun postCommentReply(commentId: Long, commentRequest: CommentRequest) =
+    commentsService.postCommentReply(commentId, commentRequest)
 
-  override suspend fun deleteComment(token: String, commentId: Long) =
-    commentsService.deleteComment("Bearer $token", commentId)
+  override suspend fun deleteComment(commentId: Long) =
+    commentsService.deleteComment(commentId)
 
   override suspend fun fetchShowTranslations(traktId: Long, code: String) =
     showsService.fetchShowTranslations(traktId, code)
@@ -179,45 +179,43 @@ internal class TraktApi(
     authService.revokeOAuthToken(request)
   }
 
-  override suspend fun fetchMyProfile(token: String) =
-    usersService.fetchMyProfile("Bearer $token")
+  override suspend fun fetchMyProfile() =
+    usersService.fetchMyProfile()
 
-  override suspend fun fetchHiddenShows(token: String) =
-    usersService.fetchHiddenShows("Bearer $token", pageLimit = 250)
+  override suspend fun fetchHiddenShows() =
+    usersService.fetchHiddenShows(pageLimit = 250)
 
   override suspend fun postHiddenShows(
-    token: String,
     shows: List<SyncExportItem>
   ) {
-    usersService.postHiddenShows("Bearer $token", SyncExportRequest(shows = shows))
+    usersService.postHiddenShows(SyncExportRequest(shows = shows))
   }
 
   override suspend fun postHiddenMovies(
-    token: String,
     movies: List<SyncExportItem>
   ) {
-    usersService.postHiddenMovies("Bearer $token", SyncExportRequest(movies = movies))
+    usersService.postHiddenMovies(SyncExportRequest(movies = movies))
   }
 
-  override suspend fun fetchHiddenMovies(token: String) =
-    usersService.fetchHiddenMovies("Bearer $token", pageLimit = 250)
+  override suspend fun fetchHiddenMovies() =
+    usersService.fetchHiddenMovies(pageLimit = 250)
 
-  override suspend fun fetchSyncWatchedShows(token: String, extended: String?) =
-    syncService.fetchSyncWatched("Bearer $token", "shows", extended)
+  override suspend fun fetchSyncWatchedShows(extended: String?) =
+    syncService.fetchSyncWatched("shows", extended)
 
-  override suspend fun fetchSyncWatchedMovies(token: String, extended: String?) =
-    syncService.fetchSyncWatched("Bearer $token", "movies", extended)
+  override suspend fun fetchSyncWatchedMovies(extended: String?) =
+    syncService.fetchSyncWatched("movies", extended)
 
-  override suspend fun fetchSyncShowsWatchlist(token: String) = fetchSyncWatchlist(token, "shows")
+  override suspend fun fetchSyncShowsWatchlist() = fetchSyncWatchlist("shows")
 
-  override suspend fun fetchSyncMoviesWatchlist(token: String) = fetchSyncWatchlist(token, "movies")
+  override suspend fun fetchSyncMoviesWatchlist() = fetchSyncWatchlist("movies")
 
-  override suspend fun fetchSyncWatchlist(token: String, type: String): List<SyncItem> {
+  override suspend fun fetchSyncWatchlist(type: String): List<SyncItem> {
     var page = 1
     val results = mutableListOf<SyncItem>()
 
     do {
-      val items = syncService.fetchSyncWatchlist("Bearer $token", type, page, TRAKT_SYNC_PAGE_LIMIT)
+      val items = syncService.fetchSyncWatchlist(type, page, TRAKT_SYNC_PAGE_LIMIT)
       results.addAll(items)
       page += 1
     } while (items.size >= TRAKT_SYNC_PAGE_LIMIT)
@@ -225,13 +223,13 @@ internal class TraktApi(
     return results
   }
 
-  override suspend fun fetchSyncLists(token: String) =
-    usersService.fetchSyncLists("Bearer $token")
+  override suspend fun fetchSyncLists() =
+    usersService.fetchSyncLists()
 
-  override suspend fun fetchSyncList(token: String, listId: Long) =
-    usersService.fetchSyncList("Bearer $token", listId)
+  override suspend fun fetchSyncList(listId: Long) =
+    usersService.fetchSyncList(listId)
 
-  override suspend fun fetchSyncListItems(token: String, listId: Long, withMovies: Boolean): List<SyncItem> {
+  override suspend fun fetchSyncListItems(listId: Long, withMovies: Boolean): List<SyncItem> {
     var page = 1
     val results = mutableListOf<SyncItem>()
     val types = arrayListOf("show")
@@ -239,7 +237,7 @@ internal class TraktApi(
       .joinToString(",")
 
     do {
-      val items = usersService.fetchSyncListItems("Bearer $token", listId, types, page, TRAKT_SYNC_PAGE_LIMIT)
+      val items = usersService.fetchSyncListItems(listId, types, page, TRAKT_SYNC_PAGE_LIMIT)
       results.addAll(items)
       page += 1
     } while (items.size >= TRAKT_SYNC_PAGE_LIMIT)
@@ -247,22 +245,21 @@ internal class TraktApi(
     return results
   }
 
-  override suspend fun postCreateList(token: String, name: String, description: String?): CustomList {
+  override suspend fun postCreateList(name: String, description: String?): CustomList {
     val body = CreateListRequest(name, description)
-    return usersService.postCreateList("Bearer $token", body)
+    return usersService.postCreateList(body)
   }
 
-  override suspend fun postUpdateList(token: String, customList: CustomList): CustomList {
+  override suspend fun postUpdateList(customList: CustomList): CustomList {
     val body = CreateListRequest(customList.name, customList.description)
-    return usersService.postUpdateList("Bearer $token", customList.ids.trakt, body)
+    return usersService.postUpdateList(customList.ids.trakt, body)
   }
 
-  override suspend fun deleteList(token: String, listId: Long) {
-    usersService.deleteList("Bearer $token", listId)
+  override suspend fun deleteList(listId: Long) {
+    usersService.deleteList(listId)
   }
 
   override suspend fun postAddListItems(
-    token: String,
     listTraktId: Long,
     showsIds: List<Long>,
     moviesIds: List<Long>
@@ -271,11 +268,10 @@ internal class TraktApi(
       shows = showsIds.map { SyncExportItem.create(it, null) },
       movies = moviesIds.map { SyncExportItem.create(it, null) }
     )
-    return usersService.postAddListItems("Bearer $token", listTraktId, body)
+    return usersService.postAddListItems(listTraktId, body)
   }
 
   override suspend fun postRemoveListItems(
-    token: String,
     listTraktId: Long,
     showsIds: List<Long>,
     moviesIds: List<Long>
@@ -284,84 +280,84 @@ internal class TraktApi(
       shows = showsIds.map { SyncExportItem.create(it, null) },
       movies = moviesIds.map { SyncExportItem.create(it, null) }
     )
-    return usersService.postRemoveListItems("Bearer $token", listTraktId, body)
+    return usersService.postRemoveListItems(listTraktId, body)
   }
 
-  override suspend fun postSyncWatchlist(token: String, request: SyncExportRequest) =
-    syncService.postSyncWatchlist("Bearer $token", request)
+  override suspend fun postSyncWatchlist(request: SyncExportRequest) =
+    syncService.postSyncWatchlist(request)
 
-  override suspend fun postSyncWatched(token: String, request: SyncExportRequest) =
-    syncService.postSyncWatched("Bearer $token", request)
+  override suspend fun postSyncWatched(request: SyncExportRequest) =
+    syncService.postSyncWatched(request)
 
-  override suspend fun postDeleteProgress(token: String, request: SyncExportRequest) =
-    syncService.deleteHistory("Bearer $token", request)
+  override suspend fun postDeleteProgress(request: SyncExportRequest) =
+    syncService.deleteHistory(request)
 
-  override suspend fun postDeleteWatchlist(token: String, request: SyncExportRequest) =
-    syncService.deleteWatchlist("Bearer $token", request)
+  override suspend fun postDeleteWatchlist(request: SyncExportRequest) =
+    syncService.deleteWatchlist(request)
 
-  override suspend fun deleteHiddenShow(token: String, request: SyncExportRequest) =
-    usersService.deleteHidden("Bearer $token", "progress_watched", request)
+  override suspend fun deleteHiddenShow(request: SyncExportRequest) =
+    usersService.deleteHidden("progress_watched", request)
 
-  override suspend fun deleteHiddenMovie(token: String, request: SyncExportRequest) =
-    usersService.deleteHidden("Bearer $token", "calendar", request)
+  override suspend fun deleteHiddenMovie(request: SyncExportRequest) =
+    usersService.deleteHidden("calendar", request)
 
-  override suspend fun deleteRating(token: String, show: Show) {
+  override suspend fun deleteRating(show: Show) {
     val requestValue = RatingRequestValue(0, show.ids)
     val body = RatingRequest(shows = listOf(requestValue))
-    syncService.postRemoveRating("Bearer $token", body)
+    syncService.postRemoveRating(body)
   }
 
-  override suspend fun deleteRating(token: String, movie: Movie) {
+  override suspend fun deleteRating(movie: Movie) {
     val requestValue = RatingRequestValue(0, movie.ids)
     val body = RatingRequest(movies = listOf(requestValue))
-    syncService.postRemoveRating("Bearer $token", body)
+    syncService.postRemoveRating(body)
   }
 
-  override suspend fun deleteRating(token: String, episode: Episode) {
+  override suspend fun deleteRating(episode: Episode) {
     val requestValue = RatingRequestValue(0, episode.ids)
     val body = RatingRequest(episodes = listOf(requestValue))
-    syncService.postRemoveRating("Bearer $token", body)
+    syncService.postRemoveRating(body)
   }
 
-  override suspend fun deleteRating(token: String, season: Season) {
+  override suspend fun deleteRating(season: Season) {
     val requestValue = RatingRequestValue(0, season.ids)
     val body = RatingRequest(seasons = listOf(requestValue))
-    syncService.postRemoveRating("Bearer $token", body)
+    syncService.postRemoveRating(body)
   }
 
-  override suspend fun postRating(token: String, movie: Movie, rating: Int) {
+  override suspend fun postRating(movie: Movie, rating: Int) {
     val requestValue = RatingRequestValue(rating, movie.ids)
     val body = RatingRequest(movies = listOf(requestValue))
-    syncService.postRating("Bearer $token", body)
+    syncService.postRating(body)
   }
 
-  override suspend fun postRating(token: String, show: Show, rating: Int) {
+  override suspend fun postRating(show: Show, rating: Int) {
     val requestValue = RatingRequestValue(rating, show.ids)
     val body = RatingRequest(shows = listOf(requestValue))
-    syncService.postRating("Bearer $token", body)
+    syncService.postRating(body)
   }
 
-  override suspend fun postRating(token: String, episode: Episode, rating: Int) {
+  override suspend fun postRating(episode: Episode, rating: Int) {
     val requestValue = RatingRequestValue(rating, episode.ids)
     val body = RatingRequest(episodes = listOf(requestValue))
-    syncService.postRating("Bearer $token", body)
+    syncService.postRating(body)
   }
 
-  override suspend fun postRating(token: String, season: Season, rating: Int) {
+  override suspend fun postRating(season: Season, rating: Int) {
     val requestValue = RatingRequestValue(rating, season.ids)
     val body = RatingRequest(seasons = listOf(requestValue))
-    syncService.postRating("Bearer $token", body)
+    syncService.postRating(body)
   }
 
-  override suspend fun fetchShowsRatings(token: String) =
-    syncService.fetchShowsRatings("Bearer $token")
+  override suspend fun fetchShowsRatings() =
+    syncService.fetchShowsRatings()
 
-  override suspend fun fetchMoviesRatings(token: String) =
-    syncService.fetchMoviesRatings("Bearer $token")
+  override suspend fun fetchMoviesRatings() =
+    syncService.fetchMoviesRatings()
 
-  override suspend fun fetchEpisodesRatings(token: String) =
-    syncService.fetchEpisodesRatings("Bearer $token")
+  override suspend fun fetchEpisodesRatings() =
+    syncService.fetchEpisodesRatings()
 
-  override suspend fun fetchSeasonsRatings(token: String) =
-    syncService.fetchSeasonsRatings("Bearer $token")
+  override suspend fun fetchSeasonsRatings() =
+    syncService.fetchSeasonsRatings()
 }

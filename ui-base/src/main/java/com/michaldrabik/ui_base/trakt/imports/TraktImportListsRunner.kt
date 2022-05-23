@@ -6,7 +6,6 @@ import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.CustomListItem
 import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.data_remote.RemoteDataSource
-import com.michaldrabik.repository.TraktAuthToken
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.settings.SettingsRepository
@@ -31,25 +30,25 @@ class TraktImportListsRunner @Inject constructor(
     isRunning = true
 
     var syncedCount = 0
-    val authToken = checkAuthorization()
+    checkAuthorization()
 
     resetRetries()
-    syncedCount += runLists(authToken)
+    syncedCount += runLists()
 
     isRunning = false
     Timber.d("Finished with success.")
     return syncedCount
   }
 
-  private suspend fun runLists(authToken: TraktAuthToken): Int {
+  private suspend fun runLists(): Int {
     return try {
-      importLists(authToken)
+      importLists()
     } catch (error: Throwable) {
       if (retryCount < MAX_RETRY_COUNT) {
         Timber.w("runLists HTTP failed. Will retry in $RETRY_DELAY_MS ms... $error")
         retryCount += 1
         delay(RETRY_DELAY_MS)
-        runLists(authToken)
+        runLists()
       } else {
         isRunning = false
         throw error
@@ -57,14 +56,14 @@ class TraktImportListsRunner @Inject constructor(
     }
   }
 
-  private suspend fun importLists(token: TraktAuthToken): Int {
+  private suspend fun importLists(): Int {
     Timber.d("Importing custom lists...")
     val nowUtcMillis = nowUtcMillis()
     val moviesEnabled = settingsRepository.isMoviesEnabled
 
     val localLists = localSource.customLists.getAll()
       .map { mappers.customList.fromDatabase(it) }
-    val remoteLists = remoteSource.trakt.fetchSyncLists(token.token)
+    val remoteLists = remoteSource.trakt.fetchSyncLists()
       .map { mappers.customList.fromNetwork(it) }
 
     remoteLists.forEach { remoteList ->
@@ -76,7 +75,7 @@ class TraktImportListsRunner @Inject constructor(
             Timber.d("Local list not found. Creating...")
             val listDb = mappers.customList.toDatabase(remoteList)
             val id = localSource.customLists.insert(listOf(listDb)).first()
-            importListItems(id, remoteList.idTrakt!!, token, moviesEnabled, nowUtcMillis)
+            importListItems(id, remoteList.idTrakt!!, moviesEnabled, nowUtcMillis)
           }
           remoteList.updatedAt.isEqual(local.updatedAt).not() -> {
             Timber.d("Local list found and timestamp is different. Updating...")
@@ -85,7 +84,7 @@ class TraktImportListsRunner @Inject constructor(
                 .copy(id = local.id)
               localSource.customLists.update(listOf(listDb))
             }
-            importListItems(local.id, local.idTrakt!!, token, moviesEnabled, nowUtcMillis)
+            importListItems(local.id, local.idTrakt!!, moviesEnabled, nowUtcMillis)
           }
           else -> {
             Timber.d("Local list found but timestamp is the same. Skipping...")
@@ -100,14 +99,13 @@ class TraktImportListsRunner @Inject constructor(
   private suspend fun importListItems(
     listId: Long,
     listIdTrakt: Long,
-    token: TraktAuthToken,
     moviesEnabled: Boolean,
     nowUtcMillis: Long,
   ) {
     Timber.d("Importing list items...")
 
     val localItems = localSource.customListsItems.getItemsById(listId)
-    val items = remoteSource.trakt.fetchSyncListItems(token.token, listIdTrakt, moviesEnabled)
+    val items = remoteSource.trakt.fetchSyncListItems(listIdTrakt, moviesEnabled)
       .filter { item ->
         localItems.none {
           it.idTrakt == item.getTraktId() && it.type == item.getType()

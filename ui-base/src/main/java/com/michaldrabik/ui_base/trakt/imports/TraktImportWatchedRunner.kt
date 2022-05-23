@@ -10,7 +10,6 @@ import com.michaldrabik.data_local.database.model.Season
 import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.data_remote.trakt.model.SyncItem
-import com.michaldrabik.repository.TraktAuthToken
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.images.ShowImagesProvider
@@ -44,13 +43,13 @@ class TraktImportWatchedRunner @Inject constructor(
     isRunning = true
 
     var syncedCount = 0
-    val authToken = checkAuthorization()
+    checkAuthorization()
 
     resetRetries()
-    syncedCount += runShows(authToken)
+    syncedCount += runShows()
 
     resetRetries()
-    syncedCount += runMovies(authToken)
+    syncedCount += runMovies()
 
     isRunning = false
     Timber.d("Finished with success.")
@@ -58,34 +57,34 @@ class TraktImportWatchedRunner @Inject constructor(
     return syncedCount
   }
 
-  private suspend fun runShows(authToken: TraktAuthToken): Int =
+  private suspend fun runShows(): Int =
     try {
-      importWatchedShows(authToken.token)
+      importWatchedShows()
     } catch (error: Throwable) {
       if (retryCount < MAX_RETRY_COUNT) {
         Timber.w("runShows HTTP failed. Will retry in $RETRY_DELAY_MS ms... $error")
         retryCount += 1
         delay(RETRY_DELAY_MS)
-        runShows(authToken)
+        runShows()
       } else {
         isRunning = false
         throw error
       }
     }
 
-  private suspend fun runMovies(authToken: TraktAuthToken): Int {
+  private suspend fun runMovies(): Int {
     if (!settingsRepository.isMoviesEnabled) {
       Timber.d("Movies are disabled. Exiting...")
       return 0
     }
     return try {
-      importWatchedMovies(authToken.token)
+      importWatchedMovies()
     } catch (error: Throwable) {
       if (retryCount < MAX_RETRY_COUNT) {
         Timber.w("runMovies HTTP failed. Will retry in $RETRY_DELAY_MS ms... $error")
         retryCount += 1
         delay(RETRY_DELAY_MS)
-        runMovies(authToken)
+        runMovies()
       } else {
         isRunning = false
         throw error
@@ -93,14 +92,14 @@ class TraktImportWatchedRunner @Inject constructor(
     }
   }
 
-  private suspend fun importWatchedShows(token: String): Int {
+  private suspend fun importWatchedShows(): Int {
     Timber.d("Importing watched shows...")
-    val syncResults = remoteSource.trakt.fetchSyncWatchedShows(token, "full")
+    val syncResults = remoteSource.trakt.fetchSyncWatchedShows("full")
       .filter { it.show != null }
       .distinctBy { it.show?.ids?.trakt }
 
     Timber.d("Importing hidden shows...")
-    val hiddenShows = remoteSource.trakt.fetchHiddenShows(token)
+    val hiddenShows = remoteSource.trakt.fetchHiddenShows()
     hiddenShows.forEach { hiddenShow ->
       hiddenShow.show?.let {
         val show = mappers.show.fromNetwork(it)
@@ -205,16 +204,16 @@ class TraktImportWatchedRunner @Inject constructor(
     return Pair(seasons, episodes)
   }
 
-  private suspend fun importWatchedMovies(token: String): Int {
+  private suspend fun importWatchedMovies(): Int {
     Timber.d("Importing watched movies...")
 
-    val syncResults = remoteSource.trakt.fetchSyncWatchedMovies(token, "full")
+    val syncResults = remoteSource.trakt.fetchSyncWatchedMovies("full")
       .filter { it.movie != null }
       .distinctBy { it.movie?.ids?.trakt }
 
     Timber.d("Importing hidden movies...")
 
-    val hiddenMovies = remoteSource.trakt.fetchHiddenMovies(token)
+    val hiddenMovies = remoteSource.trakt.fetchHiddenMovies()
     hiddenMovies.forEach { hiddenMovie ->
       hiddenMovie.movie?.let {
         val movie = mappers.movie.fromNetwork(it)

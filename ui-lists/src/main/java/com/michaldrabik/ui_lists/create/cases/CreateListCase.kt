@@ -30,8 +30,8 @@ class CreateListCase @Inject constructor(
     val isAuthorized = userTraktManager.isAuthorized()
     val isQuickSyncEnabled = settingsRepository.load().traktQuickSyncEnabled
     if (isAuthorized && isQuickSyncEnabled) {
-      val token = userTraktManager.checkAuthorization()
-      val list = remoteSource.trakt.postCreateList(token.token, name, description).run {
+      userTraktManager.checkAuthorization()
+      val list = remoteSource.trakt.postCreateList(name, description).run {
         mappers.customList.fromNetwork(this)
       }
       return listsRepository.createList(name, description, list.idTrakt, list.idSlug)
@@ -45,10 +45,10 @@ class CreateListCase @Inject constructor(
     val isQuickSyncEnabled = settingsRepository.load().traktQuickSyncEnabled
 
     if (isAuthorized && isQuickSyncEnabled) {
-      val token = userTraktManager.checkAuthorization()
+      userTraktManager.checkAuthorization()
       val updateList = mappers.customList.toNetwork(list)
       return try {
-        val result = remoteSource.trakt.postUpdateList(token.token, updateList).run {
+        val result = remoteSource.trakt.postUpdateList(updateList).run {
           mappers.customList.fromNetwork(this)
         }
         listsRepository.updateList(list.id, result.idTrakt, result.idSlug, result.name, result.description)
@@ -57,7 +57,7 @@ class CreateListCase @Inject constructor(
         if (error is HttpException && error.code() == 404) {
           // If list does not exist in Trakt account we need to create it and upload items as well.
           delay(1000)
-          val result = remoteSource.trakt.postCreateList(token.token, updateList.name, updateList.description)
+          val result = remoteSource.trakt.postCreateList(updateList.name, updateList.description)
             .run { mappers.customList.fromNetwork(this) }
           listsRepository.updateList(list.id, result.idTrakt, result.idSlug, result.name, result.description)
 
@@ -66,7 +66,7 @@ class CreateListCase @Inject constructor(
             val showsIds = localItems.filter { it.type == Mode.SHOWS.type }.map { it.idTrakt }
             val moviesIds = localItems.filter { it.type == Mode.MOVIES.type }.map { it.idTrakt }
             delay(1000)
-            remoteSource.trakt.postAddListItems(token.token, result.idTrakt!!, showsIds, moviesIds)
+            remoteSource.trakt.postAddListItems(result.idTrakt!!, showsIds, moviesIds)
           }
 
           listsRepository.updateList(list.id, result.idTrakt, result.idSlug, result.name, result.description)

@@ -16,7 +16,7 @@ class RemoveTraktWatchlistCase @Inject constructor(
 ) {
 
   suspend fun removeTraktWatchlist(traktIds: List<IdTrakt>, mode: Mode) {
-    val token = userManager.checkAuthorization()
+    userManager.checkAuthorization()
     val items = traktIds.map { SyncExportItem.create(it.id) }
 
     val request = when (mode) {
@@ -25,6 +25,6 @@ class RemoveTraktWatchlistCase @Inject constructor(
       else -> throw IllegalStateException()
     }
 
-    remoteSource.trakt.postDeleteWatchlist(token.token, request)
+    remoteSource.trakt.postDeleteWatchlist(request)
   }
 }

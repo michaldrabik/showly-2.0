@@ -33,26 +33,26 @@ class ShowsRatingsRepository @Inject constructor(
     private const val CHUNK_SIZE = 250
   }
 
-  suspend fun preloadRatings(token: String) = supervisorScope {
+  suspend fun preloadRatings() = supervisorScope {
 
-    suspend fun preloadShowsRatings(token: String) {
-      val ratings = remoteSource.trakt.fetchShowsRatings(token)
+    suspend fun preloadShowsRatings() {
+      val ratings = remoteSource.trakt.fetchShowsRatings()
       val entities = ratings
         .filter { it.rated_at != null && it.show.ids.trakt != null }
         .map { mappers.userRatings.toDatabaseShow(it) }
       localSource.ratings.replaceAll(entities, TYPE_SHOW)
     }
 
-    suspend fun preloadEpisodesRatings(token: String) {
-      val ratings = remoteSource.trakt.fetchEpisodesRatings(token)
+    suspend fun preloadEpisodesRatings() {
+      val ratings = remoteSource.trakt.fetchEpisodesRatings()
       val entities = ratings
         .filter { it.rated_at != null && it.episode.ids.trakt != null }
         .map { mappers.userRatings.toDatabaseEpisode(it) }
       localSource.ratings.replaceAll(entities, TYPE_EPISODE)
     }
 
-    suspend fun preloadSeasonsRatings(token: String) {
-      val ratings = remoteSource.trakt.fetchSeasonsRatings(token)
+    suspend fun preloadSeasonsRatings() {
+      val ratings = remoteSource.trakt.fetchSeasonsRatings()
       val entities = ratings
         .filter { it.rated_at != null && it.season.ids.trakt != null }
         .map { mappers.userRatings.toDatabaseSeason(it) }
@@ -60,9 +60,9 @@ class ShowsRatingsRepository @Inject constructor(
     }
 
     val errorHandler = CoroutineExceptionHandler { _, _ -> Timber.e("Failed to preload some of ratings.") }
-    launch(errorHandler) { preloadShowsRatings(token) }
-    launch(errorHandler) { preloadEpisodesRatings(token) }
-    launch(errorHandler) { preloadSeasonsRatings(token) }
+    launch(errorHandler) { preloadShowsRatings() }
+    launch(errorHandler) { preloadEpisodesRatings() }
+    launch(errorHandler) { preloadSeasonsRatings() }
   }
 
   suspend fun loadShowsRatings(): List<TraktRating> {
@@ -108,9 +108,8 @@ class ShowsRatingsRepository @Inject constructor(
     }
   }
 
-  suspend fun addRating(token: String, show: Show, rating: Int) {
+  suspend fun addRating(show: Show, rating: Int) {
     remoteSource.trakt.postRating(
-      token,
       mappers.show.toNetwork(show),
       rating
     )
@@ -118,9 +117,8 @@ class ShowsRatingsRepository @Inject constructor(
     localSource.ratings.replace(entity)
   }
 
-  suspend fun addRating(token: String, episode: Episode, rating: Int) {
+  suspend fun addRating(episode: Episode, rating: Int) {
     remoteSource.trakt.postRating(
-      token,
       mappers.episode.toNetwork(episode),
       rating
     )
@@ -128,9 +126,8 @@ class ShowsRatingsRepository @Inject constructor(
     localSource.ratings.replace(entity)
   }
 
-  suspend fun addRating(token: String, season: Season, rating: Int) {
+  suspend fun addRating(season: Season, rating: Int) {
     remoteSource.trakt.postRating(
-      token,
       mappers.season.toNetwork(season),
       rating
     )
@@ -138,25 +135,22 @@ class ShowsRatingsRepository @Inject constructor(
     localSource.ratings.replace(entity)
   }
 
-  suspend fun deleteRating(token: String, show: Show) {
+  suspend fun deleteRating(show: Show) {
     remoteSource.trakt.deleteRating(
-      token,
       mappers.show.toNetwork(show)
     )
     localSource.ratings.deleteByType(show.traktId, TYPE_SHOW)
   }
 
-  suspend fun deleteRating(token: String, episode: Episode) {
+  suspend fun deleteRating(episode: Episode) {
     remoteSource.trakt.deleteRating(
-      token,
       mappers.episode.toNetwork(episode)
     )
     localSource.ratings.deleteByType(episode.ids.trakt.id, TYPE_EPISODE)
   }
 
-  suspend fun deleteRating(token: String, season: Season) {
+  suspend fun deleteRating(season: Season) {
     remoteSource.trakt.deleteRating(
-      token,
       mappers.season.toNetwork(season)
     )
     localSource.ratings.deleteByType(season.ids.trakt.id, TYPE_SEASON)

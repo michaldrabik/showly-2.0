@@ -116,10 +116,10 @@ class MainInitialsCase @Inject constructor(
       return@supervisorScope
     }
 
-    val token = userTraktManager.checkAuthorization().token
-    launch(errorHandler) { ratingsRepository.shows.preloadRatings(token) }
+    userTraktManager.checkAuthorization()
+    launch(errorHandler) { ratingsRepository.shows.preloadRatings() }
     if (settingsRepository.isMoviesEnabled) {
-      launch(errorHandler) { ratingsRepository.movies.preloadRatings(token) }
+      launch(errorHandler) { ratingsRepository.movies.preloadRatings() }
     }
   }
 
