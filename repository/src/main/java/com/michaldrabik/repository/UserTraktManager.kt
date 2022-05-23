@@ -2,13 +2,13 @@
 
 package com.michaldrabik.repository
 
-import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.model.User
 import com.michaldrabik.data_local.sources.UserLocalDataSource
 import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.data_remote.token.TokenProvider
 import com.michaldrabik.data_remote.trakt.TraktRemoteDataSource
 import com.michaldrabik.ui_model.error.TraktAuthError
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
@@ -23,85 +23,46 @@ class UserTraktManager @Inject constructor(
 ) {
 
   fun checkAuthorization(): TraktAuthToken {
-    if (isAuthorized()) {
-      return TraktAuthToken(tokenProvider.getToken()!!)
+    tokenProvider.getToken()?.let {
+      return TraktAuthToken(it)
     }
     throw TraktAuthError("Authorization needed.")
-//    try {
-//      val tokens = remoteSource.refreshAuthTokens(traktRefreshToken?.token!!)
-//      val user = remoteSource.fetchMyProfile(tokens.access_token)
-//      saveToken(tokens.access_token, tokens.refresh_token, user)
-//      return traktToken!!
-//    } catch (error: Throwable) {
-//      revokeToken()
-//      throw TraktAuthError("Authorization needed. Refreshing token failed: ${error.message}")
-//    }
   }
 
   suspend fun authorize(authCode: String) {
     val tokens = remoteSource.fetchAuthTokens(authCode)
-    val user = remoteSource.fetchMyProfile(tokens.access_token)
-    saveToken(tokens.access_token, tokens.refresh_token, user)
+    tokenProvider.saveTokens(tokens.access_token, tokens.refresh_token)
+    val user = remoteSource.fetchMyProfile()
+    saveUser(user)
   }
 
   fun isAuthorized() = tokenProvider.getToken() != null
-//    if (traktToken == null || traktRefreshToken == null) {
-//      val user = userLocalSource.get()
-//      user?.let {
-//        traktToken = TraktAuthToken(it.traktToken)
-//        traktRefreshToken = TraktRefreshToken(it.traktRefreshToken)
-//      }
-//    }
-//    return when {
-//      traktToken?.token.isNullOrEmpty() -> false
-//      else -> true
-//    }
 
   suspend fun revokeToken() {
+    val token = tokenProvider.getToken()
     tokenProvider.revokeToken()
-    transactions.withTransaction {
-      val user = userLocalSource.get()!!
-      val userEntity = user.copy(
-        traktToken = "",
-        traktRefreshToken = "",
-        traktTokenTimestamp = 0,
-        traktUsername = ""
-      )
-      userLocalSource.upsert(userEntity)
+    try {
+      if (!token.isNullOrBlank()) {
+        remoteSource.revokeAuthTokens(token)
+      }
+    } catch (error: Throwable) {
+      // Just log error as revoke token call is fully optional.
+      Timber.w("Error while revoking token: $error")
     }
-//    try {
-//      traktToken?.let { remoteSource.revokeAuthTokens(it.token) }
-//    } catch (error: Throwable) {
-//      // Just log error as nothing bad really happens in case of error.
-//      Timber.w("revokeToken(): $error")
-//    } finally {
-//      traktToken = null
-//      traktRefreshToken = null
-//      traktTokenTimestamp = 0
-//    }
   }
 
   suspend fun getUsername() = userLocalSource.get()?.traktUsername ?: ""
 
-  private suspend fun saveToken(
-    token: String,
-    refreshToken: String,
-    userModel: UserModel
-  ) {
-    tokenProvider.saveTokens(token, refreshToken)
+  private suspend fun saveUser(userModel: UserModel) {
     transactions.withTransaction {
-      val timestamp = nowUtcMillis()
       val user = userLocalSource.get()
       userLocalSource.upsert(
         user?.copy(
-          traktToken = token,
-          traktRefreshToken = refreshToken,
-          traktTokenTimestamp = timestamp,
           traktUsername = userModel.username
         ) ?: User(
-          traktToken = token,
-          traktRefreshToken = refreshToken,
-          traktTokenTimestamp = timestamp,
+          traktToken = "",
+          traktRefreshToken = "",
+          traktTokenTimestamp = 0,
           traktUsername = userModel.username,
           tvdbToken = "",
           tvdbTokenTimestamp = 0,
@@ -110,8 +71,6 @@ class UserTraktManager @Inject constructor(
         )
       )
     }
-//    traktToken = TraktAuthToken(token)
-//    traktRefreshToken = TraktRefreshToken(refreshToken)
   }
 }
 

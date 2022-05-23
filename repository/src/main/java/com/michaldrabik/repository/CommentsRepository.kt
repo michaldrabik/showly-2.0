@@ -15,8 +15,7 @@ import javax.inject.Singleton
 @Singleton
 class CommentsRepository @Inject constructor(
   private val remoteSource: RemoteDataSource,
-  private val mappers: Mappers,
-  private val userTraktManager: UserTraktManager
+  private val mappers: Mappers
 ) {
 
   suspend fun loadComments(id: IdTrakt, mode: Mode, limit: Int = 100): List<Comment> {
@@ -29,12 +28,6 @@ class CommentsRepository @Inject constructor(
       .filter { it.parentId <= 0 }
   }
 
-  suspend fun loadComments(show: Show, limit: Int = 100) =
-    loadComments(show.ids.trakt, Mode.SHOWS, limit)
-
-  suspend fun loadComments(movie: Movie, limit: Int = 100) =
-    loadComments(movie.ids.trakt, Mode.MOVIES, limit)
-
   suspend fun loadEpisodeComments(idTrakt: IdTrakt, season: Int, episode: Int) =
     remoteSource.trakt.fetchEpisodeComments(idTrakt.id, season, episode)
       .map { mappers.comment.fromNetwork(it) }
@@ -46,42 +39,37 @@ class CommentsRepository @Inject constructor(
       .sortedBy { it.createdAt?.toEpochSecond() }
 
   suspend fun postComment(show: Show, commentText: String, isSpoiler: Boolean): Comment {
-    val token = userTraktManager.checkAuthorization().token
     val showBody = mappers.show.toNetwork(Show.EMPTY.copy(ids = show.ids))
     val request = CommentRequest(show = showBody, comment = commentText, spoiler = isSpoiler)
 
-    val comment = remoteSource.trakt.postComment(token, request)
+    val comment = remoteSource.trakt.postComment(request)
     return mappers.comment.fromNetwork(comment)
   }
 
   suspend fun postComment(movie: Movie, commentText: String, isSpoiler: Boolean): Comment {
-    val token = userTraktManager.checkAuthorization().token
     val movieBody = mappers.movie.toNetwork(Movie.EMPTY.copy(ids = movie.ids))
     val request = CommentRequest(movie = movieBody, comment = commentText, spoiler = isSpoiler)
 
-    val comment = remoteSource.trakt.postComment(token, request)
+    val comment = remoteSource.trakt.postComment(request)
     return mappers.comment.fromNetwork(comment)
   }
 
   suspend fun postComment(episode: Episode, commentText: String, isSpoiler: Boolean): Comment {
-    val token = userTraktManager.checkAuthorization().token
     val episodeBody = mappers.episode.toNetwork(Episode.EMPTY.copy(ids = episode.ids))
     val request = CommentRequest(episode = episodeBody, comment = commentText, spoiler = isSpoiler)
 
-    val comment = remoteSource.trakt.postComment(token, request)
+    val comment = remoteSource.trakt.postComment(request)
     return mappers.comment.fromNetwork(comment)
   }
 
   suspend fun postReply(commentId: Long, commentText: String, isSpoiler: Boolean): Comment {
-    val token = userTraktManager.checkAuthorization().token
     val request = CommentRequest(comment = commentText, spoiler = isSpoiler)
 
-    val comment = remoteSource.trakt.postCommentReply(token, commentId, request)
+    val comment = remoteSource.trakt.postCommentReply(commentId, request)
     return mappers.comment.fromNetwork(comment)
   }
 
   suspend fun deleteComment(commentId: Long) {
-    val token = userTraktManager.checkAuthorization().token
-    remoteSource.trakt.deleteComment(token, commentId)
+    remoteSource.trakt.deleteComment(commentId)
   }
 }

@@ -74,11 +74,11 @@ interface TraktRemoteDataSource {
 
   suspend fun fetchCommentReplies(commentId: Long): List<Comment>
 
-  suspend fun postComment(token: String, commentRequest: CommentRequest): Comment
+  suspend fun postComment(commentRequest: CommentRequest): Comment
 
-  suspend fun postCommentReply(token: String, commentId: Long, commentRequest: CommentRequest): Comment
+  suspend fun postCommentReply(commentId: Long, commentRequest: CommentRequest): Comment
 
-  suspend fun deleteComment(token: String, commentId: Long): Response<Any>
+  suspend fun deleteComment(commentId: Long): Response<Any>
 
   suspend fun fetchShowTranslations(traktId: Long, code: String): List<Translation>
 
@@ -98,91 +98,87 @@ interface TraktRemoteDataSource {
 
   suspend fun revokeAuthTokens(token: String)
 
-  suspend fun fetchMyProfile(token: String): User
+  suspend fun fetchMyProfile(): User
 
-  suspend fun fetchHiddenShows(token: String): List<HiddenItem>
+  suspend fun fetchHiddenShows(): List<HiddenItem>
 
   suspend fun postHiddenShows(
-    token: String,
     shows: List<SyncExportItem> = emptyList()
   )
 
   suspend fun postHiddenMovies(
-    token: String,
     movies: List<SyncExportItem> = emptyList()
   )
 
-  suspend fun fetchHiddenMovies(token: String): List<HiddenItem>
+  suspend fun fetchHiddenMovies(): List<HiddenItem>
 
-  suspend fun fetchSyncWatchedShows(token: String, extended: String? = null): List<SyncItem>
+  suspend fun fetchSyncWatchedShows(extended: String? = null): List<SyncItem>
 
-  suspend fun fetchSyncWatchedMovies(token: String, extended: String? = null): List<SyncItem>
+  suspend fun fetchSyncWatchedMovies(extended: String? = null): List<SyncItem>
 
-  suspend fun fetchSyncShowsWatchlist(token: String): List<SyncItem>
+  suspend fun fetchSyncShowsWatchlist(): List<SyncItem>
 
-  suspend fun fetchSyncMoviesWatchlist(token: String): List<SyncItem>
+  suspend fun fetchSyncMoviesWatchlist(): List<SyncItem>
 
-  suspend fun fetchSyncWatchlist(token: String, type: String): List<SyncItem>
+  suspend fun fetchSyncWatchlist(type: String): List<SyncItem>
 
-  suspend fun fetchSyncLists(token: String): List<CustomList>
+  suspend fun fetchSyncLists(): List<CustomList>
 
-  suspend fun fetchSyncList(token: String, listId: Long): CustomList
+  suspend fun fetchSyncList(listId: Long): CustomList
 
-  suspend fun fetchSyncListItems(token: String, listId: Long, withMovies: Boolean): List<SyncItem>
+  suspend fun fetchSyncListItems(listId: Long, withMovies: Boolean): List<SyncItem>
 
-  suspend fun postCreateList(token: String, name: String, description: String?): CustomList
+  suspend fun postCreateList(name: String, description: String?): CustomList
 
-  suspend fun postUpdateList(token: String, customList: CustomList): CustomList
+  suspend fun postUpdateList(customList: CustomList): CustomList
 
-  suspend fun deleteList(token: String, listId: Long)
+  suspend fun deleteList(listId: Long)
 
   suspend fun postAddListItems(
-    token: String,
     listTraktId: Long,
     showsIds: List<Long>,
     moviesIds: List<Long>
   ): SyncExportResult
 
   suspend fun postRemoveListItems(
-    token: String,
     listTraktId: Long,
     showsIds: List<Long>,
     moviesIds: List<Long>
   ): SyncExportResult
 
-  suspend fun postSyncWatchlist(token: String, request: SyncExportRequest): SyncExportResult
+  suspend fun postSyncWatchlist(request: SyncExportRequest): SyncExportResult
 
-  suspend fun postSyncWatched(token: String, request: SyncExportRequest): SyncExportResult
+  suspend fun postSyncWatched(request: SyncExportRequest): SyncExportResult
 
-  suspend fun postDeleteProgress(token: String, request: SyncExportRequest): SyncExportResult
+  suspend fun postDeleteProgress(request: SyncExportRequest): SyncExportResult
 
-  suspend fun postDeleteWatchlist(token: String, request: SyncExportRequest): SyncExportResult
+  suspend fun postDeleteWatchlist(request: SyncExportRequest): SyncExportResult
 
-  suspend fun deleteHiddenShow(token: String, request: SyncExportRequest): SyncExportResult
+  suspend fun deleteHiddenShow(request: SyncExportRequest): SyncExportResult
 
-  suspend fun deleteHiddenMovie(token: String, request: SyncExportRequest): SyncExportResult
+  suspend fun deleteHiddenMovie(request: SyncExportRequest): SyncExportResult
 
-  suspend fun deleteRating(token: String, show: Show)
+  suspend fun deleteRating(show: Show)
 
-  suspend fun deleteRating(token: String, movie: Movie)
+  suspend fun deleteRating(movie: Movie)
 
-  suspend fun deleteRating(token: String, episode: Episode)
+  suspend fun deleteRating(episode: Episode)
 
-  suspend fun deleteRating(token: String, season: Season)
+  suspend fun deleteRating(season: Season)
 
-  suspend fun postRating(token: String, movie: Movie, rating: Int)
+  suspend fun postRating(movie: Movie, rating: Int)
 
-  suspend fun postRating(token: String, show: Show, rating: Int)
+  suspend fun postRating(show: Show, rating: Int)
 
-  suspend fun postRating(token: String, episode: Episode, rating: Int)
+  suspend fun postRating(episode: Episode, rating: Int)
 
-  suspend fun postRating(token: String, season: Season, rating: Int)
+  suspend fun postRating(season: Season, rating: Int)
 
-  suspend fun fetchShowsRatings(token: String): List<RatingResultShow>
+  suspend fun fetchShowsRatings(): List<RatingResultShow>
 
-  suspend fun fetchMoviesRatings(token: String): List<RatingResultMovie>
+  suspend fun fetchMoviesRatings(): List<RatingResultMovie>
 
-  suspend fun fetchEpisodesRatings(token: String): List<RatingResultEpisode>
+  suspend fun fetchEpisodesRatings(): List<RatingResultEpisode>
 
-  suspend fun fetchSeasonsRatings(token: String): List<RatingResultSeason>
+  suspend fun fetchSeasonsRatings(): List<RatingResultSeason>
 }

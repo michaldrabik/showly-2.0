@@ -52,8 +52,7 @@ class TraktAuthenticator @Inject constructor(
 
           response.request
             .newBuilder()
-            .removeHeader("Authorization")
-            .addHeader("Authorization", "Bearer ${refreshedTokens.access_token}")
+            .header("Authorization", "Bearer ${refreshedTokens.access_token}")
             .build()
         } catch (error: Throwable) {
           Timber.d(error)
