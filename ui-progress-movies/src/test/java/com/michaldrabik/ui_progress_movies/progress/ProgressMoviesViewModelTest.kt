@@ -74,7 +74,6 @@ class ProgressMoviesViewModelTest : BaseMockTest() {
       pinnedCase,
       imagesProvider,
       userTraktManager,
-      ratingsRepository,
       settingsRepository,
       translationsRepository
     )

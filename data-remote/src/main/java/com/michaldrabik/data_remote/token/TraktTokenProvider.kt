@@ -22,14 +22,21 @@ internal class TraktTokenProvider(
     private const val KEY_REFRESH_TOKEN = "TRAKT_REFRESH_TOKEN"
   }
 
-  override fun getToken(): String? =
-    sharedPreferences.getString(KEY_ACCESS_TOKEN, null)
+  private var token: String? = null
+
+  override fun getToken(): String? {
+    if (token == null) {
+      token = sharedPreferences.getString(KEY_ACCESS_TOKEN, null)
+    }
+    return token
+  }
 
   override fun saveTokens(accessToken: String, refreshToken: String) {
     sharedPreferences.edit()
       .putString(KEY_ACCESS_TOKEN, accessToken)
       .putString(KEY_REFRESH_TOKEN, refreshToken)
       .commit()
+    token = null
   }
 
   override fun revokeToken() {
@@ -37,6 +44,7 @@ internal class TraktTokenProvider(
       .remove(KEY_ACCESS_TOKEN)
       .remove(KEY_REFRESH_TOKEN)
       .commit()
+    token = null
   }
 
   @Suppress("BlockingMethodInNonBlockingContext")

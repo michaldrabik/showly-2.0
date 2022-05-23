@@ -11,7 +11,6 @@ import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.data_remote.trakt.model.SyncExportItem
 import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
 import com.michaldrabik.data_remote.trakt.model.SyncItem
-import com.michaldrabik.repository.TraktAuthToken
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.trakt.TraktSyncRunner
@@ -35,23 +34,23 @@ class TraktExportWatchedRunner @Inject constructor(
     Timber.d("Initialized.")
     isRunning = true
 
-    val authToken = checkAuthorization()
-    runExport(authToken)
+    checkAuthorization()
+    runExport()
 
     isRunning = false
     Timber.d("Finished with success.")
     return 0
   }
 
-  private suspend fun runExport(authToken: TraktAuthToken) {
+  private suspend fun runExport() {
     try {
-      exportWatched(authToken)
+      exportWatched()
     } catch (error: Throwable) {
       if (retryCount < MAX_RETRY_COUNT) {
         Timber.w("exportWatched failed. Will retry in $RETRY_DELAY_MS ms... $error")
         retryCount += 1
         delay(RETRY_DELAY_MS)
-        runExport(authToken)
+        runExport()
       } else {
         isRunning = false
         throw error
@@ -59,10 +58,10 @@ class TraktExportWatchedRunner @Inject constructor(
     }
   }
 
-  private suspend fun exportWatched(token: TraktAuthToken) {
+  private suspend fun exportWatched() {
     Timber.d("Exporting watched...")
 
-    val remoteShows = remoteSource.trakt.fetchSyncWatchedShows(token.token)
+    val remoteShows = remoteSource.trakt.fetchSyncWatchedShows()
       .filter { it.show != null }
     val localMyShows = localSource.myShows.getAll()
     val localEpisodes = batchEpisodes(localMyShows.map { it.idTrakt })
@@ -70,7 +69,7 @@ class TraktExportWatchedRunner @Inject constructor(
 
     val movies = mutableListOf<SyncExportItem>()
     if (settingsRepository.isMoviesEnabled) {
-      val remoteMovies = remoteSource.trakt.fetchSyncWatchedMovies(token.token)
+      val remoteMovies = remoteSource.trakt.fetchSyncWatchedMovies()
         .filter { it.movie != null }
       val localMyMoviesIds = localSource.myMovies.getAllTraktIds()
       val localMyMovies = batchMovies(localMyMoviesIds)
@@ -96,12 +95,12 @@ class TraktExportWatchedRunner @Inject constructor(
     )
 
     Timber.d("Exporting ${localEpisodes.size} episodes & ${movies.size} movies...")
-    remoteSource.trakt.postSyncWatched(token.token, request)
+    remoteSource.trakt.postSyncWatched(request)
 
-    exportHidden(token)
+    exportHidden()
   }
 
-  private suspend fun exportHidden(token: TraktAuthToken) = coroutineScope {
+  private suspend fun exportHidden() = coroutineScope {
     Timber.d("Exporting hidden items...")
 
     val showsAsync = async { localSource.archiveShows.getAll() }
@@ -117,13 +116,13 @@ class TraktExportWatchedRunner @Inject constructor(
 
     if (localShows.isNotEmpty()) {
       Timber.d("Exporting ${localShows.size} hidden shows...")
-      remoteSource.trakt.postHiddenShows(token.token, shows = showsItems)
+      remoteSource.trakt.postHiddenShows(shows = showsItems)
       delay(1500)
     }
 
     if (localMovies.isNotEmpty()) {
       Timber.d("Exporting ${localMovies.size} hidden movies...")
-      remoteSource.trakt.postHiddenMovies(token.token, movies = moviesItems)
+      remoteSource.trakt.postHiddenMovies(movies = moviesItems)
     }
   }
 

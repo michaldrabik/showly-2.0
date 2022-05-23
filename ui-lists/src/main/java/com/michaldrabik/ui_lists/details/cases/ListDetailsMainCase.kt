@@ -51,9 +51,9 @@ class ListDetailsMainCase @Inject constructor(
     val listIdTrakt = list.idTrakt
 
     if (isQuickRemove && isAuthorized && removeFromTrakt && listIdTrakt != null) {
-      val token = userTraktManager.checkAuthorization()
+      userTraktManager.checkAuthorization()
       try {
-        remoteSource.trakt.deleteList(token.token, listIdTrakt)
+        remoteSource.trakt.deleteList(listIdTrakt)
       } catch (error: Throwable) {
         if (error is HttpException && error.code() == 404) {
           // NOOP List does not exist in Trakt already.

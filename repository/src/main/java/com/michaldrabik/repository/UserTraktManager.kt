@@ -22,11 +22,10 @@ class UserTraktManager @Inject constructor(
   @Named("traktTokenProvider") private val tokenProvider: TokenProvider
 ) {
 
-  fun checkAuthorization(): TraktAuthToken {
-    tokenProvider.getToken()?.let {
-      return TraktAuthToken(it)
+  fun checkAuthorization() {
+    if (tokenProvider.getToken() == null) {
+      throw TraktAuthError("Authorization needed.")
     }
-    throw TraktAuthError("Authorization needed.")
   }
 
   suspend fun authorize(authCode: String) {
@@ -73,6 +72,3 @@ class UserTraktManager @Inject constructor(
     }
   }
 }
-
-@JvmInline
-value class TraktAuthToken(val token: String = "")

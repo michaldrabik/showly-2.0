@@ -16,17 +16,17 @@ class RemoveTraktHiddenCase @Inject constructor(
 ) {
 
   suspend fun removeTraktHidden(traktIds: List<IdTrakt>, mode: Mode) {
-    val token = userManager.checkAuthorization()
+    userManager.checkAuthorization()
     val items = traktIds.map { SyncExportItem.create(it.id) }
 
     when (mode) {
       Mode.SHOW -> {
         val request = SyncExportRequest(shows = items)
-        remoteSource.trakt.deleteHiddenShow(token.token, request)
+        remoteSource.trakt.deleteHiddenShow(request)
       }
       Mode.MOVIE -> {
         val request = SyncExportRequest(movies = items)
-        remoteSource.trakt.deleteHiddenMovie(token.token, request)
+        remoteSource.trakt.deleteHiddenMovie(request)
       }
       else -> throw IllegalStateException()
     }

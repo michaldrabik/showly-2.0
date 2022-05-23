@@ -18,7 +18,7 @@ class RemoveTraktProgressCase @Inject constructor(
 ) {
 
   suspend fun removeTraktProgress(traktIds: List<IdTrakt>, mode: Mode) {
-    val token = userManager.checkAuthorization()
+    userManager.checkAuthorization()
     val items = traktIds.map { SyncExportItem.create(it.id) }
 
     val request = when (mode) {
@@ -27,7 +27,7 @@ class RemoveTraktProgressCase @Inject constructor(
       Mode.EPISODE -> SyncExportRequest(episodes = items)
     }
 
-    remoteSource.trakt.postDeleteProgress(token.token, request)
+    remoteSource.trakt.postDeleteProgress(request)
     if (mode == Mode.SHOW && traktIds.isNotEmpty()) {
       episodesManager.setAllUnwatched(traktIds.first())
     }

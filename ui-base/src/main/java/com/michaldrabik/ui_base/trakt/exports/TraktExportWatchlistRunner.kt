@@ -4,7 +4,6 @@ import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.data_remote.trakt.model.SyncExportItem
 import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
-import com.michaldrabik.repository.TraktAuthToken
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.trakt.TraktSyncRunner
@@ -25,23 +24,23 @@ class TraktExportWatchlistRunner @Inject constructor(
     Timber.d("Initialized.")
     isRunning = true
 
-    val authToken = checkAuthorization()
-    runExport(authToken)
+    checkAuthorization()
+    runExport()
 
     isRunning = false
     Timber.d("Finished with success.")
     return 0
   }
 
-  private suspend fun runExport(authToken: TraktAuthToken) {
+  private suspend fun runExport() {
     try {
-      exportWatchlist(authToken)
+      exportWatchlist()
     } catch (error: Throwable) {
       if (retryCount < MAX_RETRY_COUNT) {
         Timber.w("exportWatchlist failed. Will retry in $RETRY_DELAY_MS ms... $error")
         retryCount += 1
         delay(RETRY_DELAY_MS)
-        runExport(authToken)
+        runExport()
       } else {
         isRunning = false
         throw error
@@ -49,7 +48,7 @@ class TraktExportWatchlistRunner @Inject constructor(
     }
   }
 
-  private suspend fun exportWatchlist(token: TraktAuthToken) {
+  private suspend fun exportWatchlist() {
     Timber.d("Exporting watchlist...")
 
     val shows = localSource.watchlistShows.getAll()
@@ -64,6 +63,6 @@ class TraktExportWatchlistRunner @Inject constructor(
     Timber.d("Exporting ${shows.size} shows & ${movies.size} movies...")
 
     val request = SyncExportRequest(shows = shows, movies = movies)
-    remoteSource.trakt.postSyncWatchlist(token.token, request)
+    remoteSource.trakt.postSyncWatchlist(request)
   }
 }

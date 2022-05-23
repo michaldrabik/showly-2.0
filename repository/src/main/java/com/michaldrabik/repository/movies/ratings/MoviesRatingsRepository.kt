@@ -22,8 +22,8 @@ class MoviesRatingsRepository @Inject constructor(
     private const val TYPE_MOVIE = "movie"
   }
 
-  suspend fun preloadRatings(token: String) {
-    val ratings = remoteSource.trakt.fetchMoviesRatings(token)
+  suspend fun preloadRatings() {
+    val ratings = remoteSource.trakt.fetchMoviesRatings()
     val entities = ratings
       .filter { it.rated_at != null && it.movie.ids.trakt != null }
       .map { mappers.userRatings.toDatabaseMovie(it) }
@@ -48,9 +48,8 @@ class MoviesRatingsRepository @Inject constructor(
     }
   }
 
-  suspend fun addRating(token: String, movie: Movie, rating: Int) {
+  suspend fun addRating(movie: Movie, rating: Int) {
     remoteSource.trakt.postRating(
-      token,
       mappers.movie.toNetwork(movie),
       rating
     )
@@ -58,9 +57,8 @@ class MoviesRatingsRepository @Inject constructor(
     localSource.ratings.replace(entity)
   }
 
-  suspend fun deleteRating(token: String, movie: Movie) {
+  suspend fun deleteRating(movie: Movie) {
     remoteSource.trakt.deleteRating(
-      token,
       mappers.movie.toNetwork(movie)
     )
     localSource.ratings.deleteByType(movie.traktId, TYPE_MOVIE)

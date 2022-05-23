@@ -15,11 +15,11 @@ class TraktSyncRatingsCase @Inject constructor(
 
   suspend fun preloadRatings() {
     if (userTraktManager.isAuthorized()) {
-      val token = userTraktManager.checkAuthorization().token
+      userTraktManager.checkAuthorization()
       with(ratingsRepository) {
-        shows.preloadRatings(token)
+        shows.preloadRatings()
         if (settingsRepository.isMoviesEnabled) {
-          movies.preloadRatings(token)
+          movies.preloadRatings()
         }
       }
     }

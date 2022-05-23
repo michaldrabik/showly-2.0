@@ -3,15 +3,12 @@ package com.michaldrabik.ui_progress_movies.progress
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
-import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.settings.SettingsRepository
-import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.utilities.events.Event
-import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
@@ -20,7 +17,6 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
-import com.michaldrabik.ui_progress_movies.R
 import com.michaldrabik.ui_progress_movies.main.MovieCheckActionUiEvent
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainUiState
 import com.michaldrabik.ui_progress_movies.progress.cases.ProgressMoviesItemsCase
@@ -43,7 +39,6 @@ class ProgressMoviesViewModel @Inject constructor(
   private val pinnedCase: ProgressMoviesPinnedCase,
   private val imagesProvider: MovieImagesProvider,
   private val userTraktManager: UserTraktManager,
-  private val ratingsRepository: RatingsRepository,
   private val settingsRepository: SettingsRepository,
   private val translationsRepository: TranslationsRepository,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
@@ -136,19 +131,6 @@ class ProgressMoviesViewModel @Inject constructor(
       pinnedCase.addPinnedItem(item.movie)
     }
     loadItems(resetScroll = item.isPinned)
-  }
-
-  fun addRating(rating: Int, movie: Movie) {
-    viewModelScope.launch {
-      try {
-        val token = userTraktManager.checkAuthorization().token
-        ratingsRepository.movies.addRating(token, movie, rating)
-        messageChannel.send(MessageEvent.Info(R.string.textRateSaved))
-        Analytics.logMovieRated(movie, rating)
-      } catch (error: Throwable) {
-        messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
-      }
-    }
   }
 
   private suspend fun isQuickRateEnabled(): Boolean {
