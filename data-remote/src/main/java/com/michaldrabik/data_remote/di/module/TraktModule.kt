@@ -1,5 +1,7 @@
 package com.michaldrabik.data_remote.di.module
 
+import android.content.Context
+import com.michaldrabik.data_remote.trakt.TraktAuthenticator
 import com.michaldrabik.data_remote.trakt.TraktInterceptor
 import com.michaldrabik.data_remote.trakt.TraktRemoteDataSource
 import com.michaldrabik.data_remote.trakt.api.TraktApi
@@ -40,4 +42,8 @@ object TraktModule {
   @Provides
   @Singleton
   fun providesTraktInterceptor() = TraktInterceptor()
+
+  @Provides
+  @Singleton
+  fun providesTraktAuthenticator(context: Context) = TraktAuthenticator(context)
 }
