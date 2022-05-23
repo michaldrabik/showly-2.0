@@ -245,7 +245,7 @@ class FollowedShowsFragment :
 
   override fun onTabReselected() {
     resetTranslations(duration = 0)
-    followedShowsPager.nextPage()
+    followedShowsPager?.nextPage()
     childFragmentManager.fragments.forEach {
       (it as? OnScrollResetListener)?.onScrollReset()
     }
