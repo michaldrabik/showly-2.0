@@ -48,25 +48,35 @@ internal class TraktApi(
   private val peopleService: TraktPeopleService,
 ) : TraktRemoteDataSource {
 
-  override suspend fun fetchShow(traktId: Long) = showsService.fetchShow(traktId)
+  override suspend fun fetchShow(traktId: Long) =
+    showsService.fetchShow(traktId)
 
-  override suspend fun fetchShow(traktSlug: String) = showsService.fetchShow(traktSlug)
+  override suspend fun fetchShow(traktSlug: String) =
+    showsService.fetchShow(traktSlug)
 
-  override suspend fun fetchMovie(traktId: Long) = moviesService.fetchMovie(traktId)
+  override suspend fun fetchMovie(traktId: Long) =
+    moviesService.fetchMovie(traktId)
 
-  override suspend fun fetchMovie(traktSlug: String) = moviesService.fetchMovie(traktSlug)
+  override suspend fun fetchMovie(traktSlug: String) =
+    moviesService.fetchMovie(traktSlug)
 
-  override suspend fun fetchPopularShows(genres: String) = showsService.fetchPopularShows(genres)
+  override suspend fun fetchPopularShows(genres: String) =
+    showsService.fetchPopularShows(genres)
 
-  override suspend fun fetchPopularMovies(genres: String) = moviesService.fetchPopularMovies(genres)
+  override suspend fun fetchPopularMovies(genres: String) =
+    moviesService.fetchPopularMovies(genres)
 
-  override suspend fun fetchTrendingShows(genres: String, limit: Int) = showsService.fetchTrendingShows(genres, limit).map { it.show!! }
+  override suspend fun fetchTrendingShows(genres: String, limit: Int) =
+    showsService.fetchTrendingShows(genres, limit).map { it.show!! }
 
-  override suspend fun fetchTrendingMovies(genres: String, limit: Int) = moviesService.fetchTrendingMovies(genres, limit).map { it.movie!! }
+  override suspend fun fetchTrendingMovies(genres: String, limit: Int) =
+    moviesService.fetchTrendingMovies(genres, limit).map { it.movie!! }
 
-  override suspend fun fetchAnticipatedShows(genres: String) = showsService.fetchAnticipatedShows(genres).map { it.show!! }
+  override suspend fun fetchAnticipatedShows(genres: String) =
+    showsService.fetchAnticipatedShows(genres).map { it.show!! }
 
-  override suspend fun fetchAnticipatedMovies(genres: String) = moviesService.fetchAnticipatedMovies(genres).map { it.movie!! }
+  override suspend fun fetchAnticipatedMovies(genres: String) =
+    moviesService.fetchAnticipatedMovies(genres).map { it.movie!! }
 
   override suspend fun fetchRelatedShows(traktId: Long, addToLimit: Int) =
     showsService.fetchRelatedShows(traktId, Config.TRAKT_RELATED_SHOWS_LIMIT + addToLimit)
@@ -185,15 +195,11 @@ internal class TraktApi(
   override suspend fun fetchHiddenShows() =
     usersService.fetchHiddenShows(pageLimit = 250)
 
-  override suspend fun postHiddenShows(
-    shows: List<SyncExportItem>
-  ) {
+  override suspend fun postHiddenShows(shows: List<SyncExportItem>) {
     usersService.postHiddenShows(SyncExportRequest(shows = shows))
   }
 
-  override suspend fun postHiddenMovies(
-    movies: List<SyncExportItem>
-  ) {
+  override suspend fun postHiddenMovies(movies: List<SyncExportItem>) {
     usersService.postHiddenMovies(SyncExportRequest(movies = movies))
   }
 
