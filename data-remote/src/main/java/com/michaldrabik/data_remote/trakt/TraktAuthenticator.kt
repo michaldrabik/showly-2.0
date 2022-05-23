@@ -1,5 +1,8 @@
 package com.michaldrabik.data_remote.trakt
 
+import android.os.Bundle
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import com.michaldrabik.data_remote.token.TokenProvider
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
@@ -49,12 +52,26 @@ class TraktAuthenticator @Inject constructor(
             refreshToken = refreshedTokens.refresh_token
           )
 
+          Firebase.analytics.logEvent(
+            "trakt_token_refresh",
+            Bundle().apply {
+              putString("url", response.request.url.toString())
+            }
+          )
+
           response.request
             .newBuilder()
             .header("Authorization", "Bearer ${refreshedTokens.access_token}")
             .build()
         } catch (error: Throwable) {
           Timber.d(error)
+          Firebase.analytics.logEvent(
+            "trakt_token_refresh_error",
+            Bundle().apply {
+              putString("url", response.request.url.toString())
+              putString("error", error.message)
+            }
+          )
           null
         }
       }

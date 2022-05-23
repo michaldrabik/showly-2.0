@@ -59,6 +59,7 @@ dependencies {
   implementation libs.kotlin.coroutines
   implementation libs.timber
   implementation libs.firebase.crashlytics
+  implementation libs.firebase.analytics
 
   implementation libs.hilt.android
   kapt libs.hilt.compiler
