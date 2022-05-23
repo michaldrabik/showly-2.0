@@ -34,6 +34,8 @@
   <string name="textLink">Link</string>
   <string name="textRateSaved">Ocena została zapisana.</string>
   <string name="textRateRemoved">Ocena została usunięta.</string>
+  <string name="textSetCustomImages">Własne Grafiki</string>
+  <string name="textSetCustomImagesDescription">Wybierz swój własny plakat i fanart, które będą używane w aplikacji.</string>
   <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
     <item quantity="one">%d do obejrzenia</item>
     <item quantity="few">%d do obejrzenia</item>

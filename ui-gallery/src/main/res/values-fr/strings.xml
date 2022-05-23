@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textSetCustomImages">Images personnalisées</string>
-  <string name="textSetCustomImagesDescription">Choisissez vous-même l\'affiche et le fanart qui seront utilisés dans l\'application.</string>
   <string name="textPoster">Affiche</string>
   <string name="textFanart">Fanart</string>
   <string name="textGalleryEmpty">Aucune image disponible</string>

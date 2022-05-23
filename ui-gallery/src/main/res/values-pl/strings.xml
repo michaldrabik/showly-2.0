@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textSetCustomImages">Własne Grafiki</string>
-  <string name="textSetCustomImagesDescription">Wybierz swój własny plakat i fanart, które będą używane w aplikacji.</string>
   <string name="textPoster">Plakat</string>
   <string name="textFanart">Fanart</string>
   <string name="textGalleryEmpty">Brak dostępnych obrazów</string>

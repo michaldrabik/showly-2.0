@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textSetCustomImages">Imagens personalizadas</string>
-  <string name="textSetCustomImagesDescription">Escolha seu próprio pôster e fanart que serão usados em todo o aplicativo.</string>
   <string name="textPoster">Pôster</string>
   <string name="textFanart">Fanart</string>
   <string name="textGalleryEmpty">Nenhuma imagem disponível</string>

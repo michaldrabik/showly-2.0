@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textSetCustomImages">تخصيص الصور</string>
-  <string name="textSetCustomImagesDescription">اِختر المُلصق والفان أرت الذان يُعجبانك لاِستخدامهما داخل التطبيق.</string>
   <string name="textPoster">ملصق</string>
   <string name="textFanart">فان أرت</string>
   <string name="textGalleryEmpty">لا توجد صور</string>

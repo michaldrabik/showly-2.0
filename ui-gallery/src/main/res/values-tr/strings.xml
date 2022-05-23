@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textSetCustomImages">Özel Fotoğraflar</string>
-  <string name="textSetCustomImagesDescription">Uygulama genelinde kullanılacak kendi afişinizi ve hayran çalışmasını seçin.</string>
   <string name="textPoster">Afiş</string>
   <string name="textFanart">Hayran Çalışması</string>
   <string name="textGalleryEmpty">Kullanılabilir fotoğraf yok</string>

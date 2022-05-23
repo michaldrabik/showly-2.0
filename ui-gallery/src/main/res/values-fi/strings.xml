@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textSetCustomImages">Omat kuvat</string>
-  <string name="textSetCustomImagesDescription">Valitse oma juliste ja fanitaide, joita käytetään eri puolella sovellusta.</string>
   <string name="textPoster">Juliste</string>
   <string name="textFanart">Fanitaide</string>
   <string name="textGalleryEmpty">Kuvia ei ole saatavilla</string>

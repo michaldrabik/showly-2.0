@@ -34,6 +34,8 @@
   <string name="textLink">Linkki</string>
   <string name="textRateSaved">Arviosi tallennettiin.</string>
   <string name="textRateRemoved">Arviosi poistettiin.</string>
+  <string name="textSetCustomImages">Omat kuvat</string>
+  <string name="textSetCustomImagesDescription">Valitse oma juliste ja fanitaide, joita käytetään eri puolella sovellusta.</string>
   <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
     <item quantity="one">%d jäljellä</item>
     <item quantity="other">%d jäljellä</item>
