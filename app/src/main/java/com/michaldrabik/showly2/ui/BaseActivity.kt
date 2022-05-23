@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.view_bottom_menu.*
 
 abstract class BaseActivity : AppCompatActivity() {
 
-  private val showActionKeys = arrayOf(
+  private val actionKeys = arrayOf(
     FcmExtra.SHOW_ID.key,
     EXTRA_SHOW_ID,
     EXTRA_MOVIE_ID
@@ -32,9 +32,50 @@ abstract class BaseActivity : AppCompatActivity() {
       handleSearchWidgetClick(extras)
       return
     }
-    showActionKeys.forEach {
+    actionKeys.forEach {
       if (extras.containsKey(it)) {
-        handleFcmShowPush(extras, it, action)
+        handleShowMovieExtra(extras, it, action)
+      }
+    }
+  }
+
+  private fun handleShowMovieExtra(extras: Bundle, key: String, action: () -> Unit) {
+    val itemId = extras.getString(key)?.toLong() ?: -1
+    val bundle = Bundle().apply {
+      putLong(ARG_SHOW_ID, itemId)
+      putLong(ARG_MOVIE_ID, itemId)
+    }
+
+    findNavHostFragment()?.findNavController()?.run {
+      try {
+        val homeDestinations = arrayOf(
+          R.id.progressMainFragment,
+          R.id.progressMoviesMainFragment
+        )
+        while (currentDestination?.id !in homeDestinations) {
+          popBackStack()
+        }
+        when (currentDestination?.id) {
+          else -> {
+            val isShow = key in arrayOf(EXTRA_SHOW_ID, FcmExtra.SHOW_ID.key)
+            val actionId = when (currentDestination?.id) {
+              R.id.progressMainFragment -> {
+                if (isShow) R.id.actionProgressFragmentToShowDetailsFragment
+                else R.id.actionProgressFragmentToMovieDetailsFragment
+              }
+              R.id.progressMoviesMainFragment -> {
+                if (isShow) R.id.actionProgressMoviesFragmentToShowDetailsFragment
+                else R.id.actionProgressMoviesFragmentToMovieDetailsFragment
+              }
+              else -> error("Unknown actionId. Key $key, actionId: ${currentDestination?.toString()}")
+            }
+            navigate(actionId, bundle)
+          }
+        }
+        extras.clear()
+        action()
+      } catch (error: Throwable) {
+        Logger.record(error, "Source" to "BaseActivity::handleFcmShowPush()")
       }
     }
   }
@@ -56,55 +97,6 @@ abstract class BaseActivity : AppCompatActivity() {
         extras?.clear()
       } catch (error: Throwable) {
         Logger.record(error, "Source" to "BaseActivity::handleSearchWidgetClick()")
-      }
-    }
-  }
-
-  private fun handleFcmShowPush(extras: Bundle, key: String, action: () -> Unit) {
-    val itemId = extras.getString(key)?.toLong() ?: -1
-    val isShow = key in arrayOf(EXTRA_SHOW_ID, FcmExtra.SHOW_ID.key)
-
-    val bundle = Bundle().apply {
-      putLong(ARG_SHOW_ID, itemId)
-      putLong(ARG_MOVIE_ID, itemId)
-    }
-
-    findNavHostFragment()?.findNavController()?.run {
-      try {
-        if (currentDestination?.id in arrayOf(
-            R.id.showDetailsFragment,
-            R.id.movieDetailsFragment,
-            R.id.settingsFragment,
-            R.id.traktSyncFragment
-          )
-        ) {
-          popBackStack()
-        }
-        when (currentDestination?.id) {
-          R.id.showDetailsFragment -> navigate(R.id.actionShowDetailsFragmentToSelf, bundle)
-          R.id.movieDetailsFragment -> navigate(R.id.actionMovieDetailsFragmentToSelf, bundle)
-          else -> {
-            bottomNavigationView.selectedItemId = R.id.menuProgress
-            val actionId = when (currentDestination?.id) {
-              R.id.progressMainFragment -> {
-                if (isShow) R.id.actionProgressFragmentToShowDetailsFragment
-                else R.id.actionProgressFragmentToMovieDetailsFragment
-              }
-              R.id.progressMoviesMainFragment -> {
-                if (isShow) R.id.actionProgressMoviesFragmentToShowDetailsFragment
-                else R.id.actionProgressMoviesFragmentToMovieDetailsFragment
-              }
-              else -> {
-                error("Unknown actionId. Key $key, actionId: ${currentDestination?.id}")
-              }
-            }
-            navigate(actionId, bundle)
-          }
-        }
-        extras.clear()
-        action()
-      } catch (error: Throwable) {
-        Logger.record(error, "Source" to "BaseActivity::handleFcmShowPush()")
       }
     }
   }
