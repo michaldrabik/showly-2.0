@@ -7,12 +7,11 @@ import okhttp3.Interceptor
 import okhttp3.Response
 import timber.log.Timber
 import javax.inject.Inject
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Singleton
 class TraktInterceptor @Inject constructor(
-  @Named("traktTokenProvider") private val tokenProvider: TokenProvider
+  private val tokenProvider: TokenProvider
 ) : Interceptor {
 
   override fun intercept(chain: Interceptor.Chain): Response {

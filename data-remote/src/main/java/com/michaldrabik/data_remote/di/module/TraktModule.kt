@@ -42,7 +42,6 @@ object TraktModule {
 
   @Provides
   @Singleton
-  @Named("traktTokenProvider")
   fun providesTraktTokenProvider(
     @Named("networkPreferences") sharedPreferences: SharedPreferences,
     moshi: Moshi

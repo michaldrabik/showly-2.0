@@ -10,7 +10,6 @@ import com.michaldrabik.data_remote.trakt.TraktRemoteDataSource
 import com.michaldrabik.ui_model.error.TraktAuthError
 import timber.log.Timber
 import javax.inject.Inject
-import javax.inject.Named
 import javax.inject.Singleton
 import com.michaldrabik.data_remote.trakt.model.User as UserModel
 
@@ -19,7 +18,7 @@ class UserTraktManager @Inject constructor(
   private val remoteSource: TraktRemoteDataSource,
   private val userLocalSource: UserLocalDataSource,
   private val transactions: TransactionsProvider,
-  @Named("traktTokenProvider") private val tokenProvider: TokenProvider
+  private val tokenProvider: TokenProvider
 ) {
 
   fun checkAuthorization() {

@@ -11,12 +11,11 @@ import okhttp3.Response
 import okhttp3.Route
 import timber.log.Timber
 import javax.inject.Inject
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Singleton
 class TraktAuthenticator @Inject constructor(
-  @Named("traktTokenProvider") private val tokenProvider: TokenProvider
+  private val tokenProvider: TokenProvider
 ) : Authenticator {
 
   private val mutex = Mutex()
