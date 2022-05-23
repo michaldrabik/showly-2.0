@@ -1,8 +1,8 @@
 package com.michaldrabik.data_remote.di.module
 
-import android.content.Context
-import com.michaldrabik.data_remote.trakt.TraktAuthenticator
-import com.michaldrabik.data_remote.trakt.TraktInterceptor
+import android.content.SharedPreferences
+import com.michaldrabik.data_remote.token.TokenProvider
+import com.michaldrabik.data_remote.token.TraktTokenProvider
 import com.michaldrabik.data_remote.trakt.TraktRemoteDataSource
 import com.michaldrabik.data_remote.trakt.api.TraktApi
 import com.michaldrabik.data_remote.trakt.api.service.TraktAuthService
@@ -13,6 +13,7 @@ import com.michaldrabik.data_remote.trakt.api.service.TraktSearchService
 import com.michaldrabik.data_remote.trakt.api.service.TraktShowsService
 import com.michaldrabik.data_remote.trakt.api.service.TraktSyncService
 import com.michaldrabik.data_remote.trakt.api.service.TraktUsersService
+import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -41,9 +42,12 @@ object TraktModule {
 
   @Provides
   @Singleton
-  fun providesTraktInterceptor() = TraktInterceptor()
-
-  @Provides
-  @Singleton
-  fun providesTraktAuthenticator(context: Context) = TraktAuthenticator(context)
+  @Named("traktTokenProvider")
+  fun providesTraktTokenProvider(
+    @Named("networkPreferences") sharedPreferences: SharedPreferences,
+    moshi: Moshi
+  ): TokenProvider = TraktTokenProvider(
+    sharedPreferences = sharedPreferences,
+    moshi = moshi
+  )
 }

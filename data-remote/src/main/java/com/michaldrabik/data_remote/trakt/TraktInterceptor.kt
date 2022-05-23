@@ -5,8 +5,11 @@ import com.michaldrabik.data_remote.Config
 import okhttp3.Interceptor
 import okhttp3.Response
 import timber.log.Timber
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class TraktInterceptor : Interceptor {
+@Singleton
+class TraktInterceptor @Inject constructor() : Interceptor {
 
   override fun intercept(chain: Interceptor.Chain): Response {
     val request = chain.request().newBuilder()
