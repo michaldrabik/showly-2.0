@@ -34,8 +34,6 @@
   <string name="textLink">Link</string>
   <string name="textRateSaved">Oyunuz kaydedildi.</string>
   <string name="textRateRemoved">Verdiğiniz oy kaldırıldı.</string>
-  <string name="textSetCustomImages">Özel Fotoğraflar</string>
-  <string name="textSetCustomImagesDescription">Uygulama genelinde kullanılacak kendi afişinizi ve hayran çalışmasını seçin.</string>
   <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
     <item quantity="one">%d kaldı</item>
     <item quantity="other">%d kaldı</item>
@@ -48,6 +46,8 @@
   <string name="textSound">Ses</string>
   <string name="textMusic">Müzik</string>
   <string name="textActing">Oyunculuk</string>
+  <string name="textSetCustomImages">Özel Fotoğraflar</string>
+  <string name="textSetCustomImagesDescription">Uygulama genelinde kullanılacak kendi afişinizi ve hayran çalışmasını seçin.</string>
   <string name="textAiredAlready">Yayınlandı</string>
   <string name="textAirsNow">Şimdi Yayında</string>
   <plurals name="textDaysToAir">
