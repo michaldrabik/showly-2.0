@@ -34,8 +34,6 @@
   <string name="textLink">إفتح في</string>
   <string name="textRateSaved">حُفظ تقييمك.</string>
   <string name="textRateRemoved">تم حذف تقييمك.</string>
-  <string name="textSetCustomImages">تخصيص الصور</string>
-  <string name="textSetCustomImagesDescription">اِختر المُلصق والفان أرت الذان يُعجبانك لاِستخدامهما داخل التطبيق.</string>
   <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
     <item quantity="zero">بقي %d</item>
     <item quantity="one">بقي %d</item>
@@ -52,6 +50,8 @@
   <string name="textSound">الصوت</string>
   <string name="textMusic">موسيقى</string>
   <string name="textActing">التمثيل</string>
+  <string name="textSetCustomImages">تخصيص الصور</string>
+  <string name="textSetCustomImagesDescription">اِختر المُلصق والفان أرت الذان يُعجبانك لاِستخدامهما داخل التطبيق.</string>
   <string name="textAiredAlready">بُثت</string>
   <string name="textAirsNow">يُبث الآن</string>
   <plurals name="textDaysToAir">
