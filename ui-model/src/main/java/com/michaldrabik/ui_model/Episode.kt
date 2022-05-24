@@ -19,10 +19,11 @@ data class Episode(
   val firstAired: ZonedDateTime?,
   val runtime: Int,
   val numberAbs: Int?,
+  val lastWatchedAt: ZonedDateTime?
 ) : Parcelable {
 
   companion object {
-    val EMPTY = Episode(-1, -1, "", Ids.EMPTY, "", -1F, -1, -1, null, -1, -1)
+    val EMPTY = Episode(-1, -1, "", Ids.EMPTY, "", -1F, -1, -1, null, -1, -1, null)
   }
 
   fun hasAired(season: Season) =

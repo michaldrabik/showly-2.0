@@ -1,5 +1,6 @@
 package com.michaldrabik.repository.mappers
 
+import com.michaldrabik.common.extensions.toZonedDateTime
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdImdb
 import com.michaldrabik.ui_model.IdTmdb
@@ -25,9 +26,10 @@ class EpisodeMapper @Inject constructor(
     rating = episode.rating ?: 0F,
     votes = episode.votes ?: 0,
     commentCount = episode.comment_count ?: 0,
-    firstAired = if (episode.first_aired.isNullOrBlank()) null else ZonedDateTime.parse(episode.first_aired),
+    firstAired = episode.first_aired.toZonedDateTime(),
     runtime = episode.runtime ?: -1,
-    numberAbs = episode.number_abs
+    numberAbs = episode.number_abs,
+    lastWatchedAt = episode.last_watched_at.toZonedDateTime()
   )
 
   fun toNetwork(episode: Episode) = EpisodeNetwork(
@@ -41,14 +43,16 @@ class EpisodeMapper @Inject constructor(
     votes = episode.votes,
     comment_count = episode.commentCount,
     first_aired = episode.firstAired.toString(),
-    runtime = episode.runtime
+    runtime = episode.runtime,
+    last_watched_at = episode.lastWatchedAt.toString()
   )
 
   fun toDatabase(
     episode: Episode,
     season: Season,
     showId: IdTrakt,
-    isWatched: Boolean
+    isWatched: Boolean,
+    lastWatchedAt: ZonedDateTime? = null
   ): EpisodeDb = EpisodeDb(
     idTrakt = episode.ids.trakt.id,
     idSeason = season.ids.trakt.id,
@@ -66,7 +70,8 @@ class EpisodeMapper @Inject constructor(
     rating = episode.rating,
     runtime = episode.runtime,
     votesCount = episode.votes,
-    isWatched = isWatched
+    isWatched = isWatched,
+    lastWatchedAt = lastWatchedAt
   )
 
   fun fromDatabase(episodeDb: EpisodeDb) =
@@ -87,5 +92,6 @@ class EpisodeMapper @Inject constructor(
       rating = episodeDb.rating,
       runtime = episodeDb.runtime,
       votes = episodeDb.votesCount,
+      lastWatchedAt = episodeDb.lastWatchedAt
     )
 }

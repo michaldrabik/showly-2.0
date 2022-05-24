@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_base.trakt.imports
 
+import com.michaldrabik.common.extensions.toZonedDateTime
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.ArchiveMovie
 import com.michaldrabik.data_local.database.model.ArchiveShow
@@ -172,7 +173,7 @@ class TraktImportWatchedRunner @Inject constructor(
     return syncResults.size
   }
 
-  private suspend fun loadSeasons(showId: Long, item: SyncItem): Pair<List<Season>, List<Episode>> {
+  private suspend fun loadSeasons(showId: Long, syncItem: SyncItem): Pair<List<Season>, List<Episode>> {
     val remoteSeasons = remoteSource.trakt.fetchSeasons(showId)
     val localSeasonsIds = localSource.seasons.getAllWatchedIdsForShows(listOf(showId))
     val localEpisodesIds = localSource.episodes.getAllWatchedIdsForShows(listOf(showId))
@@ -181,7 +182,7 @@ class TraktImportWatchedRunner @Inject constructor(
       .filterNot { localSeasonsIds.contains(it.ids?.trakt) }
       .map { mappers.season.fromNetwork(it) }
       .map { remoteSeason ->
-        val isWatched = item.seasons?.any {
+        val isWatched = syncItem.seasons?.any {
           it.number == remoteSeason.number && it.episodes?.size == remoteSeason.episodes.size
         } ?: false
         mappers.season.toDatabase(remoteSeason, IdTrakt(showId), isWatched)
@@ -191,13 +192,16 @@ class TraktImportWatchedRunner @Inject constructor(
       season.episodes
         ?.filterNot { localEpisodesIds.contains(it.ids?.trakt) }
         ?.map { episode ->
-          val isWatched = item.seasons
+          val syncEpisode = syncItem.seasons
             ?.find { it.number == season.number }?.episodes
-            ?.find { it.number == episode.number } != null
+            ?.find { it.number == episode.number }
+
+          val isWatched = syncEpisode != null
+          val watchedAt = syncEpisode?.last_watched_at?.toZonedDateTime()
 
           val seasonDb = mappers.season.fromNetwork(season)
           val episodeDb = mappers.episode.fromNetwork(episode)
-          mappers.episode.toDatabase(episodeDb, seasonDb, IdTrakt(showId), isWatched)
+          mappers.episode.toDatabase(episodeDb, seasonDb, IdTrakt(showId), isWatched, watchedAt)
         } ?: emptyList()
     }
 

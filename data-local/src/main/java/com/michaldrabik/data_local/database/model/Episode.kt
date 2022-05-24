@@ -43,5 +43,6 @@ data class Episode(
   @ColumnInfo(name = "rating") val rating: Float,
   @ColumnInfo(name = "runtime") val runtime: Int,
   @ColumnInfo(name = "votes_count") val votesCount: Int,
-  @ColumnInfo(name = "is_watched") val isWatched: Boolean
+  @ColumnInfo(name = "is_watched") val isWatched: Boolean,
+  @ColumnInfo(name = "last_watched_at") val lastWatchedAt: ZonedDateTime?,
 )

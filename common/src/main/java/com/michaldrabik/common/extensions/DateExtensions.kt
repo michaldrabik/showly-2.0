@@ -20,3 +20,5 @@ fun dateIsoStringFromMillis(millis: Long): String = dateFromMillis(millis).forma
 fun ZonedDateTime.toMillis() = this.toInstant().toEpochMilli()
 
 fun ZonedDateTime.toLocalZone(): ZonedDateTime = this.withZoneSameInstant(ZoneId.systemDefault())
+
+fun String?.toZonedDateTime(): ZonedDateTime? = if (this.isNullOrBlank()) null else ZonedDateTime.parse(this)
