@@ -645,6 +645,15 @@ class Migrations(context: Context) {
       with(database) {
         execSQL("ALTER TABLE episodes ADD COLUMN last_watched_at INTEGER")
         execSQL("ALTER TABLE shows_my_shows ADD COLUMN last_watched_at INTEGER")
+        val cursor = database.query("SELECT id_trakt, updated_at FROM shows_my_shows")
+        while (cursor.moveToNext()) {
+          val idShow = cursor.getLong(cursor.getColumnIndexOrThrow("id_trakt"))
+          val updatedAt = cursor.getLong(cursor.getColumnIndexOrThrow("updated_at"))
+          if (updatedAt > 0) {
+            execSQL("UPDATE episodes SET last_watched_at = $updatedAt WHERE id_show_trakt == $idShow AND is_watched == 1")
+            execSQL("UPDATE shows_my_shows SET last_watched_at = $updatedAt WHERE id_trakt == $idShow")
+          }
+        }
       }
     }
   }
