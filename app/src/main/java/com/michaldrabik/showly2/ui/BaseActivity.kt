@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.ui
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -39,6 +40,7 @@ abstract class BaseActivity : AppCompatActivity() {
     }
   }
 
+  @SuppressLint("RestrictedApi")
   private fun handleShowMovieExtra(extras: Bundle, key: String, action: () -> Unit) {
     val itemId = extras.getString(key)?.toLong() ?: -1
     val bundle = Bundle().apply {
@@ -48,29 +50,11 @@ abstract class BaseActivity : AppCompatActivity() {
 
     findNavHostFragment()?.findNavController()?.run {
       try {
-        val homeDestinations = arrayOf(
-          R.id.progressMainFragment,
-          R.id.progressMoviesMainFragment
-        )
-        while (currentDestination?.id !in homeDestinations) {
-          popBackStack()
-        }
-        when (currentDestination?.id) {
-          else -> {
-            val isShow = key in arrayOf(EXTRA_SHOW_ID, FcmExtra.SHOW_ID.key)
-            val actionId = when (currentDestination?.id) {
-              R.id.progressMainFragment -> {
-                if (isShow) R.id.actionProgressFragmentToShowDetailsFragment
-                else R.id.actionProgressFragmentToMovieDetailsFragment
-              }
-              R.id.progressMoviesMainFragment -> {
-                if (isShow) R.id.actionProgressMoviesFragmentToShowDetailsFragment
-                else R.id.actionProgressMoviesFragmentToMovieDetailsFragment
-              }
-              else -> error("Unknown actionId. Key $key, actionId: ${currentDestination?.toString()}")
-            }
-            navigate(actionId, bundle)
-          }
+        val isShow = key in arrayOf(EXTRA_SHOW_ID, FcmExtra.SHOW_ID.key)
+        if (isShow) {
+          navigate(R.id.actionNavigateShowDetailsFragment, bundle)
+        } else {
+          navigate(R.id.actionNavigateMovieDetailsFragment, bundle)
         }
         extras.clear()
         action()

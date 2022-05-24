@@ -9,6 +9,16 @@
   >
 
   <action
+    android:id="@+id/actionNavigateShowDetailsFragment"
+    app:destination="@id/showDetailsFragment"
+    />
+
+  <action
+    android:id="@+id/actionNavigateMovieDetailsFragment"
+    app:destination="@id/movieDetailsFragment"
+    />
+
+  <action
     android:id="@+id/actionNavigateProgressFragment"
     app:destination="@id/progressMainFragment"
     app:launchSingleTop="true"
