@@ -1,5 +1,6 @@
 * Comments text is now selectable
 * Shows pinned to On Hold will no longer receive notifications
+* Increased NEW badge duration from 24 hours to 3 days
 * Fixed issue with Contact Developers button
 
 Do you enjoy Showly and want to support the developer?
