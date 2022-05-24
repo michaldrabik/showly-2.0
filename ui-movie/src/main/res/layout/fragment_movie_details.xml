@@ -379,7 +379,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="@dimen/spaceNormal"
         android:drawablePadding="@dimen/spaceTiny"
         android:fontFamily="sans-serif-medium"
         android:gravity="center_vertical"
