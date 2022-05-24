@@ -147,7 +147,8 @@ class TraktImportWatchedRunner @Inject constructor(
               val myShow = MyShow.fromTraktId(
                 traktId = showDb.idTrakt,
                 createdAt = result.lastWatchedMillis(),
-                updatedAt = result.lastWatchedMillis()
+                updatedAt = result.lastWatchedMillis(),
+                watchedAt = result.lastWatchedMillis()
               )
               localSource.shows.upsert(listOf(showDb))
               localSource.myShows.insert(listOf(myShow))
@@ -161,7 +162,7 @@ class TraktImportWatchedRunner @Inject constructor(
             localSource.seasons.upsert(seasons)
             localSource.episodes.upsert(episodes)
 
-            localSource.myShows.updateTimestamp(showId, result.lastWatchedMillis())
+            localSource.myShows.updateWatchedAt(showId, result.lastWatchedMillis())
             localSource.traktSyncLog.upsertShow(showId, result.lastUpdateMillis())
           }
         } catch (error: Throwable) {

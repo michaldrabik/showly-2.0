@@ -51,9 +51,9 @@ class ShowContextMenuMyShowsCase @Inject constructor(
     transactions.withTransaction {
       val localSeasons = localSource.seasons.getAllByShowId(traktId.id)
       val localEpisodes = localSource.episodes.getAllByShowId(traktId.id)
-      val updatedAt = localEpisodes.maxByOrNull { it.lastWatchedAt != null }?.lastWatchedAt?.toMillis() ?: 0L
+      val lastWatchedAt = localEpisodes.maxByOrNull { it.lastWatchedAt != null }?.lastWatchedAt?.toMillis() ?: 0L
 
-      showsRepository.myShows.insert(traktId, updatedAt)
+      showsRepository.myShows.insert(traktId, lastWatchedAt)
 
       val seasonsToAdd = mutableListOf<SeasonDb>()
       val episodesToAdd = mutableListOf<EpisodeDb>()

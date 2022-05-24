@@ -2,6 +2,7 @@ package com.michaldrabik.repository
 
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.nowUtcMillis
+import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.EpisodesSyncLog
 import com.michaldrabik.data_local.utilities.TransactionsProvider
@@ -59,7 +60,7 @@ class EpisodesManager @Inject constructor(
 
       localSource.episodes.upsert(toAdd)
       localSource.seasons.update(listOf(dbSeason))
-      localSource.myShows.updateTimestamp(show.traktId, nowUtcMillis())
+      localSource.myShows.updateWatchedAt(show.traktId, now.toMillis())
     }
     return toAdd.map { mappers.episode.fromDatabase(it) }
   }
@@ -103,8 +104,9 @@ class EpisodesManager @Inject constructor(
   suspend fun setEpisodeWatched(episodeBundle: EpisodeBundle) {
     transactions.withTransaction {
       val (episode, season, show) = episodeBundle
+      val nowUtc = nowUtc()
 
-      val dbEpisode = mappers.episode.toDatabase(episode, season, show.ids.trakt, true, nowUtc())
+      val dbEpisode = mappers.episode.toDatabase(episode, season, show.ids.trakt, true, nowUtc)
       val dbSeason = mappers.season.toDatabase(season, show.ids.trakt, false)
 
       val localSeason = localSource.seasons.getById(season.ids.trakt.id)
@@ -112,7 +114,7 @@ class EpisodesManager @Inject constructor(
         localSource.seasons.upsert(listOf(dbSeason))
       }
       localSource.episodes.upsert(listOf(dbEpisode))
-      localSource.myShows.updateTimestamp(show.traktId, nowUtcMillis())
+      localSource.myShows.updateWatchedAt(show.traktId, nowUtc.toMillis())
       onEpisodeSet(season, show)
     }
   }

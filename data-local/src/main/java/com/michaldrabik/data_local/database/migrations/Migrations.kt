@@ -642,7 +642,10 @@ class Migrations(context: Context) {
 
   private val migration34 = object : Migration(33, 34) {
     override fun migrate(database: SupportSQLiteDatabase) {
-      database.execSQL("ALTER TABLE episodes ADD COLUMN last_watched_at INTEGER")
+      with(database) {
+        execSQL("ALTER TABLE episodes ADD COLUMN last_watched_at INTEGER")
+        execSQL("ALTER TABLE shows_my_shows ADD COLUMN last_watched_at INTEGER")
+      }
     }
   }
 

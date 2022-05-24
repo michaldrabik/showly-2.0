@@ -15,7 +15,7 @@ interface MyShowsLocalDataSource {
 
   suspend fun getById(traktId: Long): Show?
 
-  suspend fun updateTimestamp(traktId: Long, updatedAt: Long)
+  suspend fun updateWatchedAt(traktId: Long, watchedAt: Long)
 
   suspend fun insert(shows: List<MyShow>)
 
