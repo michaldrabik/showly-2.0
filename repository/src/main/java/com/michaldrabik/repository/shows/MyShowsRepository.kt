@@ -33,11 +33,11 @@ class MyShowsRepository @Inject constructor(
 
   suspend fun loadAllIds() = localSource.myShows.getAllTraktIds()
 
-  suspend fun insert(id: IdTrakt) {
+  suspend fun insert(id: IdTrakt, updatedAt: Long) {
     val dbShow = MyShow.fromTraktId(
       traktId = id.id,
       createdAt = nowUtcMillis(),
-      updatedAt = 0
+      updatedAt = updatedAt
     )
     with(localSource) {
       transactions.withTransaction {

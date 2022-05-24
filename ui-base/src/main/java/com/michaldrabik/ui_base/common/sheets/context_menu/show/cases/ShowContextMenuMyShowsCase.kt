@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_base.common.sheets.context_menu.show.cases
 
+import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.data_remote.RemoteDataSource
@@ -48,10 +49,11 @@ class ShowContextMenuMyShowsCase @Inject constructor(
     val episodes = seasons.flatMap { it.episodes }
 
     transactions.withTransaction {
-      showsRepository.myShows.insert(traktId)
-
       val localSeasons = localSource.seasons.getAllByShowId(traktId.id)
       val localEpisodes = localSource.episodes.getAllByShowId(traktId.id)
+      val updatedAt = localEpisodes.maxByOrNull { it.lastWatchedAt != null }?.lastWatchedAt?.toMillis() ?: 0L
+
+      showsRepository.myShows.insert(traktId, updatedAt)
 
       val seasonsToAdd = mutableListOf<SeasonDb>()
       val episodesToAdd = mutableListOf<EpisodeDb>()
@@ -64,7 +66,7 @@ class ShowContextMenuMyShowsCase @Inject constructor(
       episodes.forEach { episode ->
         if (localEpisodes.none { it.idTrakt == episode.ids.trakt.id }) {
           val season = seasons.find { it.number == episode.season }!!
-          episodesToAdd.add(mappers.episode.toDatabase(episode, season, traktId, false))
+          episodesToAdd.add(mappers.episode.toDatabase(episode, season, traktId, false, null))
         }
       }
 

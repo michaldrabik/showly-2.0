@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_show.cases
 
+import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.repository.PinnedItemsRepository
@@ -44,10 +45,11 @@ class ShowDetailsMyShowsCase @Inject constructor(
     episodes: List<Episode>
   ) {
     transactions.withTransaction {
-      showsRepository.myShows.insert(show.ids.trakt)
-
       val localSeasons = localSource.seasons.getAllByShowId(show.traktId)
       val localEpisodes = localSource.episodes.getAllByShowId(show.traktId)
+      val updatedAt = localEpisodes.maxByOrNull { it.lastWatchedAt != null }?.lastWatchedAt?.toMillis() ?: 0L
+
+      showsRepository.myShows.insert(show.ids.trakt, updatedAt)
 
       val seasonsToAdd = mutableListOf<SeasonDb>()
       val episodesToAdd = mutableListOf<EpisodeDb>()
@@ -60,7 +62,7 @@ class ShowDetailsMyShowsCase @Inject constructor(
       episodes.forEach { episode ->
         if (localEpisodes.none { it.idTrakt == episode.ids.trakt.id }) {
           val season = seasons.find { it.number == episode.season }!!
-          episodesToAdd.add(mappers.episode.toDatabase(episode, season, show.ids.trakt, false))
+          episodesToAdd.add(mappers.episode.toDatabase(episode, season, show.ids.trakt, false, null))
         }
       }
 

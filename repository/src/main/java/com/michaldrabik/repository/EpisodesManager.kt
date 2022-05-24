@@ -1,5 +1,6 @@
 package com.michaldrabik.repository
 
+import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.EpisodesSyncLog
@@ -36,6 +37,7 @@ class EpisodesManager @Inject constructor(
     localSource.episodes.getAllWatchedIdsForShows(listOf(show.traktId))
 
   suspend fun setSeasonWatched(seasonBundle: SeasonBundle): List<Episode> {
+    val now = nowUtc()
     val toAdd = mutableListOf<EpisodeDb>()
     transactions.withTransaction {
       val (season, show) = seasonBundle
@@ -50,7 +52,7 @@ class EpisodesManager @Inject constructor(
 
       season.episodes.forEach { ep ->
         if (episodes.none { it.idTrakt == ep.ids.trakt.id }) {
-          val dbEpisode = mappers.episode.toDatabase(ep, season, show.ids.trakt, true)
+          val dbEpisode = mappers.episode.toDatabase(ep, season, show.ids.trakt, true, now)
           toAdd.add(dbEpisode)
         }
       }
@@ -102,7 +104,7 @@ class EpisodesManager @Inject constructor(
     transactions.withTransaction {
       val (episode, season, show) = episodeBundle
 
-      val dbEpisode = mappers.episode.toDatabase(episode, season, show.ids.trakt, true)
+      val dbEpisode = mappers.episode.toDatabase(episode, season, show.ids.trakt, true, nowUtc())
       val dbSeason = mappers.season.toDatabase(season, show.ids.trakt, false)
 
       val localSeason = localSource.seasons.getById(season.ids.trakt.id)
@@ -120,10 +122,10 @@ class EpisodesManager @Inject constructor(
       val (episode, season, show) = episodeBundle
 
       val isShowFollowed = showsRepository.myShows.load(show.ids.trakt) != null
-      val dbEpisode = mappers.episode.toDatabase(episode, season, show.ids.trakt, true)
+      val dbEpisode = mappers.episode.toDatabase(episode, season, show.ids.trakt, true, episode.lastWatchedAt)
 
       when {
-        isShowFollowed -> localSource.episodes.upsert(listOf(dbEpisode.copy(isWatched = false)))
+        isShowFollowed -> localSource.episodes.upsert(listOf(dbEpisode.copy(isWatched = false, lastWatchedAt = null)))
         else -> localSource.episodes.delete(listOf(dbEpisode))
       }
 
@@ -138,7 +140,7 @@ class EpisodesManager @Inject constructor(
 
       val updateEpisodes = watchedEpisodes
         .filter { if (skipSpecials) it.seasonNumber > 0 else true }
-        .map { it.copy(isWatched = false) }
+        .map { it.copy(isWatched = false, lastWatchedAt = null) }
       val updateSeasons = watchedSeasons
         .filter { if (skipSpecials) it.seasonNumber > 0 else true }
         .map { it.copy(isWatched = false) }
@@ -170,14 +172,18 @@ class EpisodesManager @Inject constructor(
         season.episodes.forEach { newEpisode ->
           val localEpisode = localEpisodes.find { it.episodeNumber == newEpisode.number && it.seasonNumber == newEpisode.season }
 
+          val lastWatchedAt = localEpisode?.lastWatchedAt
           val isWatched = localEpisode?.isWatched ?: false
-          if (!isWatched) isAnyEpisodeUnwatched = true
+          if (!isWatched) {
+            isAnyEpisodeUnwatched = true
+          }
 
           val episodeDb = mappers.episode.toDatabase(
             episode = newEpisode,
             season = season,
             showId = show.ids.trakt,
-            isWatched = isWatched
+            isWatched = isWatched,
+            lastWatchedAt = lastWatchedAt
           )
           episodesToAdd.add(episodeDb)
         }

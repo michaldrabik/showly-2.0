@@ -52,7 +52,7 @@ class EpisodeMapper @Inject constructor(
     season: Season,
     showId: IdTrakt,
     isWatched: Boolean,
-    lastWatchedAt: ZonedDateTime? = null
+    lastWatchedAt: ZonedDateTime?
   ): EpisodeDb = EpisodeDb(
     idTrakt = episode.ids.trakt.id,
     idSeason = season.ids.trakt.id,

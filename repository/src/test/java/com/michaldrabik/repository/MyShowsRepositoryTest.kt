@@ -119,7 +119,7 @@ class MyShowsRepositoryTest : BaseMockTest() {
       val slot = slot<List<MyShow>>()
       coJustRun { myShowsDao.insert(capture(slot)) }
 
-      SUT.insert(IdTrakt(10L))
+      SUT.insert(IdTrakt(10L), 0)
 
       slot.captured[0].run {
         assertThat(id).isEqualTo(0)
