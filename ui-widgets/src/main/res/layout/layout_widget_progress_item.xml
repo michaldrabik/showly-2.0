@@ -57,9 +57,12 @@
       style="@style/WidgetItem.Title"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_alignParentStart="true"
+      android:layout_marginEnd="@dimen/spaceTiny"
       android:layout_marginBottom="@dimen/spaceTiny"
+      android:layout_toStartOf="@id/progressWidgetItemDateButton"
       tools:ignore="RtlSymmetry"
-      tools:text="Breaking Bad"
+      tools:text="Title"
       />
 
     <TextView
