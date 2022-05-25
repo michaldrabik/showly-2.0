@@ -119,13 +119,14 @@ class MyShowsRepositoryTest : BaseMockTest() {
       val slot = slot<List<MyShow>>()
       coJustRun { myShowsDao.insert(capture(slot)) }
 
-      SUT.insert(IdTrakt(10L), 0)
+      SUT.insert(IdTrakt(10L), 666)
 
       slot.captured[0].run {
         assertThat(id).isEqualTo(0)
         assertThat(idTrakt).isEqualTo(10)
         assertThat(createdAt).isGreaterThan(0)
-        assertThat(updatedAt).isEqualTo(0)
+        assertThat(updatedAt).isGreaterThan(0)
+        assertThat(lastWatchedAt).isEqualTo(666)
       }
       coVerify(exactly = 1) { myShowsDao.insert(any()) }
       coVerify(exactly = 1) { watchlistShowsDao.deleteById(any()) }
