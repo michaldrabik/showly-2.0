@@ -12,10 +12,10 @@ import com.michaldrabik.data_local.sources.MyShowsLocalDataSource
 @Dao
 interface MyShowsDao : MyShowsLocalDataSource {
 
-  @Query("SELECT shows.*, shows_my_shows.created_at AS created_at, shows_my_shows.updated_at AS updated_at FROM shows INNER JOIN shows_my_shows USING(id_trakt)")
+  @Query("SELECT shows.*, shows_my_shows.created_at AS created_at, shows_my_shows.last_watched_at AS updated_at FROM shows INNER JOIN shows_my_shows USING(id_trakt)")
   override suspend fun getAll(): List<Show>
 
-  @Query("SELECT shows.*, shows_my_shows.created_at AS created_at, shows_my_shows.updated_at AS updated_at FROM shows INNER JOIN shows_my_shows USING(id_trakt) WHERE id_trakt IN (:ids)")
+  @Query("SELECT shows.*, shows_my_shows.created_at AS created_at, shows_my_shows.last_watched_at AS updated_at FROM shows INNER JOIN shows_my_shows USING(id_trakt) WHERE id_trakt IN (:ids)")
   override suspend fun getAll(ids: List<Long>): List<Show>
 
   @Query("SELECT shows.* FROM shows INNER JOIN shows_my_shows USING(id_trakt) ORDER BY shows_my_shows.created_at DESC LIMIT :limit")
@@ -27,8 +27,8 @@ interface MyShowsDao : MyShowsLocalDataSource {
   @Query("SELECT shows.* FROM shows INNER JOIN shows_my_shows USING(id_trakt) WHERE id_trakt == :traktId")
   override suspend fun getById(traktId: Long): Show?
 
-  @Query("UPDATE shows_my_shows SET updated_at = :updatedAt WHERE id_trakt == :traktId")
-  override suspend fun updateTimestamp(traktId: Long, updatedAt: Long)
+  @Query("UPDATE shows_my_shows SET last_watched_at = :watchedAt WHERE id_trakt == :traktId")
+  override suspend fun updateWatchedAt(traktId: Long, watchedAt: Long)
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   override suspend fun insert(shows: List<MyShow>)
