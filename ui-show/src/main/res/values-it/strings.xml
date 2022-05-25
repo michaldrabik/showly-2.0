@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textNextEpisode">Prossimo Episodio:</string>
+  <string name="textNextEpisode">Prossimo episodio:</string>
   <string name="textInMyShows">Aggiunto ai miei show</string>
   <string name="textInWatchlist">Aggiunta alla lista da vedere</string>
-  <string name="textInHidden">Nascosto</string>
+  <string name="textInHidden">Nascosti</string>
   <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
-  <string name="textShowQuickProgressTitle">Progresso Rapido</string>
+  <string name="textShowQuickProgressTitle">Progresso rapido</string>
   <string name="textShowQuickProgressSubTitle">Seleziona l\'ultimo episodio che hai visto per aggiornare velocemente i tuoi progressi.</string>
   <string name="textShowQuickProgressDone">I tuoi progressi sono stati aggiornati.</string>
   <string name="textEpisodeDate">Episodio %1$d | %2$s</string>
