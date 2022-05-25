@@ -34,8 +34,6 @@
   <string name="textLink">Link</string>
   <string name="textRateSaved">Deine Bewertung wurde gespeichert.</string>
   <string name="textRateRemoved">Deine Bewertung wurde gelöscht.</string>
-  <string name="textSetCustomImages">Benutzerdefinierte Bilder</string>
-  <string name="textSetCustomImagesDescription">Wählen Sie Ihr eigenes Poster und Fanart, die in der gesamten App verwendet werden.</string>
   <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
     <item quantity="one">%d übrig</item>
     <item quantity="other">%d übrig</item>
@@ -48,6 +46,8 @@
   <string name="textSound">Ton</string>
   <string name="textMusic">Musik</string>
   <string name="textActing">Darsteller</string>
+  <string name="textSetCustomImages">Benutzerdefinierte Bilder</string>
+  <string name="textSetCustomImagesDescription">Wählen Sie Ihr eigenes Poster und Fanart, die in der gesamten App verwendet werden.</string>
   <string name="textAiredAlready">Veröffentlicht</string>
   <string name="textAirsNow">Jetzt live</string>
   <plurals name="textDaysToAir">

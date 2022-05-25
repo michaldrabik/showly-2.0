@@ -34,8 +34,6 @@
   <string name="textLink">Ссылка</string>
   <string name="textRateSaved">Ваша оценка была сохранена.</string>
   <string name="textRateRemoved">Ваша оценка была удалена.</string>
-  <string name="textSetCustomImages">Пользовательские изображения</string>
-  <string name="textSetCustomImagesDescription">Выберите свой собственный постер и фанарт, который будет использоваться в приложении.</string>
   <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
     <item quantity="one">%d осталось</item>
     <item quantity="few">%d осталось</item>
@@ -50,6 +48,8 @@
   <string name="textSound">Звук</string>
   <string name="textMusic">Музыка</string>
   <string name="textActing">Фильмография</string>
+  <string name="textSetCustomImages">Пользовательские изображения</string>
+  <string name="textSetCustomImagesDescription">Выберите свой собственный постер и фанарт, который будет использоваться в приложении.</string>
   <string name="textAiredAlready">Вышло</string>
   <string name="textAirsNow">Уже вышло</string>
   <plurals name="textDaysToAir">

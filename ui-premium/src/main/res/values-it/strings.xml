@@ -12,7 +12,7 @@
   <string name="textWidgetsDesc">Imposta la trasparenza dello sfondo dei widget per abbinarli meglio alla tua schermata iniziale.</string>
   <string name="textRemoveAdsTitle">Rimuovere le pubblicità</string>
   <string name="textRemoveAdsDesc">Rimuovi tutti gli annunci premium visibili nell\'app.</string>
-  <string name="textNewsTitle">Sezione Notizie</string>
+  <string name="textNewsTitle">Sezione notizie</string>
   <string name="textNewsDesc">Attiva la sezione notizie con gli ultimi articoli di show e film, notizie e trailer. Offerto da Reddit.</string>
   <string name="textPurchaseThanks">Ora sei un sostenitore di Showly!\nGrazie e goditi l\'app!</string>
 </resources>
