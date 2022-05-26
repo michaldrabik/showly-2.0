@@ -1,4 +1,5 @@
 * Next episode in Progress will now be picked based on the last one marked as watched
+* Added check button in Movie details screen (if it is in Watchlist)
 * Comments text is now selectable
 * Shows pinned to On Hold will no longer receive notifications
 * Increased NEW badge duration from 24 hours to 3 days
