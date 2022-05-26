@@ -276,18 +276,18 @@ class TraktImportWatchedRunner @Inject constructor(
   private suspend fun loadImage(show: Show) {
     try {
       showImagesProvider.loadRemoteImage(show, FANART)
-    } catch (t: Throwable) {
-      Timber.w(t)
-      // NOOP Ignore image for now. It will be fetched later if needed.
+    } catch (error: Throwable) {
+      Timber.w(error)
+      // Ignore image for now. It will be fetched later if needed.
     }
   }
 
   private suspend fun loadImage(movie: Movie) {
     try {
       movieImagesProvider.loadRemoteImage(movie, FANART)
-    } catch (t: Throwable) {
-      Timber.w(t)
-      // NOOP Ignore image for now. It will be fetched later if needed.
+    } catch (error: Throwable) {
+      Timber.w(error)
+      // Ignore image for now. It will be fetched later if needed.
     }
   }
 }
