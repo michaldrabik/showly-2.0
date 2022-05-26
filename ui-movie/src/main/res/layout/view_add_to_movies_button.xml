@@ -29,6 +29,7 @@
       android:textColor="?android:attr/textColorPrimary"
       app:rippleColor="?android:attr/textColorPrimary"
       app:strokeColor="?android:attr/textColorPrimary"
+      tools:visibility="gone"
       />
 
     <com.google.android.material.button.MaterialButton
@@ -45,27 +46,50 @@
       android:textColor="?android:attr/textColorSecondary"
       app:rippleColor="?android:attr/textColorSecondary"
       app:strokeWidth="0dp"
+      tools:visibility="gone"
       />
 
   </LinearLayout>
 
-  <com.google.android.material.button.MaterialButton
-    android:id="@+id/addedToButton"
-    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+  <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center"
-    android:includeFontPadding="false"
-    android:text="@string/textInMyMovies"
-    android:textColor="?attr/colorAccent"
-    android:visibility="gone"
-    app:icon="@drawable/ic_bookmark_full"
-    app:iconGravity="textStart"
-    app:iconPadding="@dimen/spaceTiny"
-    app:iconTint="?attr/colorAccent"
-    app:rippleColor="?attr/colorAccent"
-    app:strokeColor="?attr/colorAccent"
-    tools:visibility="visible"
-    />
+    android:layout_gravity="center"
+    android:orientation="horizontal"
+    >
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/addedToButton"
+      style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:gravity="center"
+      android:includeFontPadding="false"
+      android:text="@string/textInMyMovies"
+      android:textColor="?attr/colorAccent"
+      android:visibility="gone"
+      app:icon="@drawable/ic_bookmark_full"
+      app:iconGravity="textStart"
+      app:iconPadding="@dimen/spaceTiny"
+      app:iconTint="?attr/colorAccent"
+      app:rippleColor="?attr/colorAccent"
+      app:strokeColor="?attr/colorAccent"
+      tools:visibility="visible"
+      />
+
+    <ImageButton
+      android:id="@+id/checkButton"
+      android:layout_width="48dp"
+      android:layout_height="48dp"
+      android:layout_marginStart="8dp"
+      android:background="@drawable/bg_check_ripple"
+      android:visibility="gone"
+      app:srcCompat="@drawable/ic_check"
+      app:tint="?android:textColorSecondary"
+      tools:visibility="visible"
+      />
+
+  </LinearLayout>
 
 </merge>

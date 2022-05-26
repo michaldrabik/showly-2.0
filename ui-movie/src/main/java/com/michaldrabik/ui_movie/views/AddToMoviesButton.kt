@@ -30,16 +30,10 @@ class AddToMoviesButton : FrameLayout {
 
   init {
     inflate(context, R.layout.view_add_to_movies_button, this)
-
-    addToMyMoviesButton.onClick {
-      if (!isAnimating) onAddMyMoviesClickListener?.invoke()
-    }
-    watchlistButton.onClick {
-      if (!isAnimating) onAddWatchLaterClickListener?.invoke()
-    }
-    addedToButton.onClick {
-      if (!isAnimating) onRemoveClickListener?.invoke()
-    }
+    addToMyMoviesButton.onClick { if (!isAnimating) onAddMyMoviesClickListener?.invoke() }
+    watchlistButton.onClick { if (!isAnimating) onAddWatchLaterClickListener?.invoke() }
+    addedToButton.onClick { if (!isAnimating) onRemoveClickListener?.invoke() }
+    checkButton.onClick { if (!isAnimating) onAddMyMoviesClickListener?.invoke() }
   }
 
   fun setState(state: State, animate: Boolean = false) {
@@ -53,6 +47,7 @@ class AddToMoviesButton : FrameLayout {
     when (state) {
       ADD -> {
         addToMyMoviesButton.setText(R.string.textAddToMyMovies)
+        checkButton.fadeOut(duration, withHardware = true)
         addedToButton.fadeOut(duration, withHardware = true)
         addToMyMoviesButton.fadeIn(duration, startDelay = startDelay, withHardware = true)
         watchlistButton.fadeIn(duration, startDelay = startDelay, withHardware = true) { isAnimating = false }
@@ -63,14 +58,17 @@ class AddToMoviesButton : FrameLayout {
 
         addToMyMoviesButton.fadeOut(duration, withHardware = true)
         watchlistButton.fadeOut(duration, withHardware = true)
-        addedToButton.run {
-          setIconResource(R.drawable.ic_bookmark_full)
-          setText(R.string.textInMyMovies)
-          setTextColor(color)
-          iconTint = colorState
-          strokeColor = colorState
-          rippleColor = colorState
-          fadeIn(duration, startDelay = startDelay, withHardware = true) { isAnimating = false }
+        checkButton.fadeOut(duration, withHardware = true)
+        addedToButton.fadeOut(duration, withHardware = true) {
+          addedToButton.run {
+            setIconResource(R.drawable.ic_bookmark_full)
+            setText(R.string.textInMyMovies)
+            setTextColor(color)
+            iconTint = colorState
+            strokeColor = colorState
+            rippleColor = colorState
+            fadeIn(duration, withHardware = true) { isAnimating = false }
+          }
         }
       }
       IN_WATCHLIST -> {
@@ -79,6 +77,7 @@ class AddToMoviesButton : FrameLayout {
 
         addToMyMoviesButton.fadeOut(duration, withHardware = true)
         watchlistButton.fadeOut(duration, withHardware = true)
+        checkButton.fadeIn(duration, startDelay = startDelay, withHardware = true)
         addedToButton.run {
           setIconResource(R.drawable.ic_bookmark_full)
           setText(R.string.textInMoviesWatchlist)
@@ -93,6 +92,7 @@ class AddToMoviesButton : FrameLayout {
         val delay = if (addToMyMoviesButton.isVisible) startDelay else 0
         addToMyMoviesButton.fadeOut(duration, withHardware = true)
         watchlistButton.fadeOut(duration, withHardware = true)
+        checkButton.fadeOut(duration, withHardware = true)
         with(addedToButton) {
           fadeOut(duration, withHardware = true) {
             val color = context.colorFromAttr(android.R.attr.textColorSecondary)
@@ -117,6 +117,8 @@ class AddToMoviesButton : FrameLayout {
     watchlistButton.isClickable = enabled
     addedToButton.isEnabled = enabled
     addedToButton.isClickable = enabled
+    checkButton.isEnabled = enabled
+    checkButton.isClickable = enabled
   }
 
   enum class State {
