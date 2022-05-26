@@ -65,7 +65,16 @@ class ProgressItemsCase @Inject constructor(
 
     val items = shows.map { show ->
       async {
-        val nextEpisode = localSource.episodes.getFirstUnwatched(show.traktId, upcomingLimit)
+        val lastWatchedEpisode = localSource.episodes.getLastWatched(show.traktId)
+        val nextEpisode = when (lastWatchedEpisode) {
+          null -> localSource.episodes.getFirstUnwatched(show.traktId, upcomingLimit)
+          else -> localSource.episodes.getFirstUnwatchedAfterEpisode(
+            show.traktId,
+            lastWatchedEpisode.seasonNumber,
+            lastWatchedEpisode.episodeNumber,
+            upcomingLimit
+          )
+        }
         val isUpcoming = nextEpisode?.firstAired?.isAfter(nowUtc) == true
 
         val episodeUi = nextEpisode?.let { mappers.episode.fromDatabase(it) }

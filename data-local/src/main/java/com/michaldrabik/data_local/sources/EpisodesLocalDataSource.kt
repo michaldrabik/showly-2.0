@@ -21,9 +21,25 @@ interface EpisodesLocalDataSource {
 
   suspend fun getAllByShowsIdsChunk(showTraktIds: List<Long>): List<Episode>
 
-  suspend fun getFirstUnwatched(showTraktId: Long, toTime: Long): Episode?
+  suspend fun getFirstUnwatched(
+    showTraktId: Long,
+    toTime: Long
+  ): Episode?
 
-  suspend fun getFirstUnwatched(showTraktId: Long, fromTime: Long, toTime: Long): Episode?
+  suspend fun getFirstUnwatched(
+    showTraktId: Long,
+    fromTime: Long,
+    toTime: Long
+  ): Episode?
+
+  suspend fun getFirstUnwatchedAfterEpisode(
+    showTraktId: Long,
+    seasonNumber: Int,
+    episodeNumber: Int,
+    toTime: Long
+  ): Episode?
+
+  suspend fun getLastWatched(showTraktId: Long): Episode?
 
   suspend fun getTotalCount(showTraktId: Long, toTime: Long): Int
 

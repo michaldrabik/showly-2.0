@@ -51,6 +51,19 @@ interface EpisodesDao : EpisodesLocalDataSource {
   @Query("SELECT * from episodes where id_show_trakt = :showTraktId AND is_watched = 0 AND season_number != 0 AND first_aired > :fromTime AND first_aired <= :toTime ORDER BY season_number ASC, episode_number ASC LIMIT 1")
   override suspend fun getFirstUnwatched(showTraktId: Long, fromTime: Long, toTime: Long): Episode?
 
+  @Query(
+    "SELECT * from episodes where id_show_trakt = :showTraktId " +
+      "AND is_watched = 0 " +
+      "AND season_number != 0 " +
+      "AND ((season_number * 10000) + episode_number) > ((:seasonNumber * 10000) + :episodeNumber) " +
+      "AND first_aired <= :toTime " +
+      "ORDER BY season_number ASC, episode_number ASC LIMIT 1"
+  )
+  override suspend fun getFirstUnwatchedAfterEpisode(showTraktId: Long, seasonNumber: Int, episodeNumber: Int, toTime: Long): Episode?
+
+  @Query("SELECT * from episodes where id_show_trakt = :showTraktId AND is_watched = 1 AND season_number != 0 ORDER BY last_watched_at DESC LIMIT 1")
+  override suspend fun getLastWatched(showTraktId: Long): Episode?
+
   @Query("SELECT COUNT(id_trakt) FROM episodes WHERE id_show_trakt = :showTraktId AND first_aired < :toTime AND season_number != 0")
   override suspend fun getTotalCount(showTraktId: Long, toTime: Long): Int
 

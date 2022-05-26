@@ -71,7 +71,7 @@ class EpisodesManager @Inject constructor(
 
       val dbSeason = mappers.season.toDatabase(season, show.ids.trakt, false)
       val watchedEpisodes = localSource.episodes.getAllForSeason(season.ids.trakt.id).filter { it.isWatched }
-      val toSet = watchedEpisodes.map { it.copy(isWatched = false) }
+      val toSet = watchedEpisodes.map { it.copy(isWatched = false, lastWatchedAt = null) }
 
       val isShowFollowed = showsRepository.myShows.load(show.ids.trakt) != null
 
