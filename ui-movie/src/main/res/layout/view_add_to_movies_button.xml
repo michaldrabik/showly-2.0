@@ -86,7 +86,7 @@
       android:background="@drawable/bg_check_ripple"
       android:visibility="gone"
       app:srcCompat="@drawable/ic_check"
-      app:tint="?android:textColorSecondary"
+      app:tint="?android:textColorPrimary"
       tools:visibility="visible"
       />
 
