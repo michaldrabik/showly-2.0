@@ -2,6 +2,9 @@ package com.michaldrabik.ui_base.common.sheets.ratings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.common.errors.ErrorHelper
+import com.michaldrabik.common.errors.ShowlyError.CoroutineCancellation
+import com.michaldrabik.common.errors.ShowlyError.UnauthorizedError
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Operation
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Type
@@ -11,7 +14,6 @@ import com.michaldrabik.ui_base.common.sheets.ratings.cases.RatingsSeasonCase
 import com.michaldrabik.ui_base.common.sheets.ratings.cases.RatingsShowCase
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
-import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
 import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
 import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.IdTrakt
@@ -37,13 +39,17 @@ class RatingsSheetViewModel @Inject constructor(
 
   fun loadRating(idTrakt: IdTrakt, type: Type) {
     viewModelScope.launch {
-      val rating = when (type) {
-        Type.SHOW -> showRatingsCase.loadRating(idTrakt)
-        Type.MOVIE -> movieRatingsCase.loadRating(idTrakt)
-        Type.EPISODE -> episodeRatingsCase.loadRating(idTrakt)
-        Type.SEASON -> seasonRatingsCase.loadRating(idTrakt)
+      try {
+        val rating = when (type) {
+          Type.SHOW -> showRatingsCase.loadRating(idTrakt)
+          Type.MOVIE -> movieRatingsCase.loadRating(idTrakt)
+          Type.EPISODE -> episodeRatingsCase.loadRating(idTrakt)
+          Type.SEASON -> seasonRatingsCase.loadRating(idTrakt)
+        }
+        ratingState.value = rating
+      } catch (error: Throwable) {
+        handleError(error)
       }
-      ratingState.value = rating
     }
   }
 
@@ -60,8 +66,7 @@ class RatingsSheetViewModel @Inject constructor(
         eventChannel.send(FinishUiEvent(operation = Operation.SAVE))
       } catch (error: Throwable) {
         loadingState.value = false
-        messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
-        rethrowCancellation(error)
+        handleError(error)
       }
     }
   }
@@ -79,9 +84,16 @@ class RatingsSheetViewModel @Inject constructor(
         eventChannel.send(FinishUiEvent(operation = Operation.REMOVE))
       } catch (error: Throwable) {
         loadingState.value = false
-        messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
-        rethrowCancellation(error)
+        handleError(error)
       }
+    }
+  }
+
+  private suspend fun handleError(error: Throwable) {
+    when (ErrorHelper.parse(error)) {
+      is CoroutineCancellation -> throw error
+      is UnauthorizedError -> messageChannel.send(MessageEvent.Error(R.string.errorTraktAuthorization))
+      else -> messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
     }
   }
 
