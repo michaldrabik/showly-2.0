@@ -3,6 +3,8 @@ package com.michaldrabik.ui_base.trakt.quicksync
 import android.content.Context
 import android.content.Intent
 import android.os.IBinder
+import com.michaldrabik.common.errors.ErrorHelper
+import com.michaldrabik.common.errors.ShowlyError
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.Logger
@@ -60,9 +62,13 @@ class QuickSyncService : TraktNotificationsService(), CoroutineScope {
           Analytics.logTraktQuickSyncSuccess(count)
         }
       } catch (t: Throwable) {
+        val notificationMessage = when (ErrorHelper.parse(t)) {
+          is ShowlyError.UnauthorizedError -> R.string.errorTraktAuthorization
+          else -> R.string.textTraktQuickSyncErrorFull
+        }
         notificationManager().notify(
           SYNC_NOTIFICATION_ERROR_ID,
-          createErrorNotification(R.string.textTraktQuickSyncError, R.string.textTraktQuickSyncErrorFull)
+          createErrorNotification(R.string.textTraktQuickSyncError, notificationMessage)
         )
         Logger.record(t, "Source" to "${QuickSyncService::class.simpleName}")
       } finally {
