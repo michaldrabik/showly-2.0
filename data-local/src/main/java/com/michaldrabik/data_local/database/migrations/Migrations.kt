@@ -649,9 +649,23 @@ class Migrations(context: Context) {
         while (cursor.moveToNext()) {
           val idShow = cursor.getLong(cursor.getColumnIndexOrThrow("id_trakt"))
           val updatedAt = cursor.getLong(cursor.getColumnIndexOrThrow("updated_at"))
-          if (updatedAt > 0) {
-            execSQL("UPDATE episodes SET last_watched_at = $updatedAt WHERE id_show_trakt == $idShow AND is_watched == 1")
-            execSQL("UPDATE shows_my_shows SET last_watched_at = $updatedAt WHERE id_trakt == $idShow")
+
+          val epCursor = database.query(
+            "SELECT season_number, episode_number FROM episodes WHERE id_show_trakt == $idShow AND is_watched == 1 " +
+              "ORDER BY season_number DESC, episode_number DESC LIMIT 1"
+          )
+          while (epCursor.moveToNext()) {
+            val episodeNumber = epCursor.getLong(epCursor.getColumnIndexOrThrow("episode_number"))
+            val seasonNumber = epCursor.getLong(epCursor.getColumnIndexOrThrow("season_number"))
+            if (updatedAt > 0 && episodeNumber > 0 && seasonNumber > 0) {
+              execSQL(
+                "UPDATE episodes SET last_watched_at = $updatedAt " +
+                  "WHERE id_show_trakt == $idShow " +
+                  "AND is_watched == 1 " +
+                  "AND episode_number == $episodeNumber AND season_number == $seasonNumber"
+              )
+              execSQL("UPDATE shows_my_shows SET last_watched_at = $updatedAt WHERE id_trakt == $idShow")
+            }
           }
         }
       }
