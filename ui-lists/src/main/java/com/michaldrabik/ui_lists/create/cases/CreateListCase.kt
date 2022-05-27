@@ -1,6 +1,8 @@
 package com.michaldrabik.ui_lists.create.cases
 
 import com.michaldrabik.common.Mode
+import com.michaldrabik.common.errors.ErrorHelper
+import com.michaldrabik.common.errors.ShowlyError.ResourceNotFoundError
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.ListsRepository
 import com.michaldrabik.repository.UserTraktManager
@@ -13,7 +15,6 @@ import com.michaldrabik.ui_base.events.TraktQuickSyncSuccess
 import com.michaldrabik.ui_model.CustomList
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.delay
-import retrofit2.HttpException
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -54,7 +55,7 @@ class CreateListCase @Inject constructor(
         listsRepository.updateList(list.id, result.idTrakt, result.idSlug, result.name, result.description)
           .also { eventsManager.sendEvent(TraktQuickSyncSuccess(1)) }
       } catch (error: Throwable) {
-        if (error is HttpException && error.code() == 404) {
+        if (ErrorHelper.parse(error) is ResourceNotFoundError) {
           // If list does not exist in Trakt account we need to create it and upload items as well.
           delay(1000)
           val result = remoteSource.trakt.postCreateList(updateList.name, updateList.description)

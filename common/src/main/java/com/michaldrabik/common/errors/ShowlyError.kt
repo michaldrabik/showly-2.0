@@ -4,6 +4,8 @@ sealed class ShowlyError(errorMessage: String?) : Throwable(errorMessage) {
 
   object ValidationError : ShowlyError("ValidationError")
 
+  object ResourceConflictError : ShowlyError("ResourceConflictError")
+
   object ResourceNotFoundError : ShowlyError("ResourceNotFoundError")
 
   object AccountLockedError : ShowlyError("AccountLockedError")

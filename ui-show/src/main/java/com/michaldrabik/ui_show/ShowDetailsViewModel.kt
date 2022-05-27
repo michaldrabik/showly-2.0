@@ -3,6 +3,9 @@ package com.michaldrabik.ui_show
 import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.common.errors.ErrorHelper
+import com.michaldrabik.common.errors.ShowlyError.CoroutineCancellation
+import com.michaldrabik.common.errors.ShowlyError.ResourceNotFoundError
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.repository.EpisodesManager
 import com.michaldrabik.repository.UserTraktManager
@@ -64,7 +67,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 import timber.log.Timber
 import java.util.Locale
 import javax.inject.Inject
@@ -156,16 +158,20 @@ class ShowDetailsViewModel @Inject constructor(
         launch { loadRelatedShows(show) }
         launch { loadSeasons(show) }
       } catch (error: Throwable) {
-        progressJob.cancel()
-        if (error is HttpException && error.code() == 404) {
-          // Malformed Trakt data or duplicate show.
-          messageChannel.send(MessageEvent.Info(R.string.errorMalformedShow))
-        } else {
-          messageChannel.send(MessageEvent.Error(R.string.errorCouldNotLoadShow))
-        }
-        Logger.record(error, "Source" to "ShowDetailsViewModel")
         Timber.e(error)
-        rethrowCancellation(error)
+        progressJob.cancel()
+        when (ErrorHelper.parse(error)) {
+          is CoroutineCancellation -> rethrowCancellation(error)
+          is ResourceNotFoundError -> {
+            // Malformed Trakt data or duplicate show.
+            messageChannel.send(MessageEvent.Info(R.string.errorMalformedShow))
+            Logger.record(error, "Source" to "ShowDetailsViewModel")
+          }
+          else -> {
+            messageChannel.send(MessageEvent.Error(R.string.errorCouldNotLoadShow))
+            Logger.record(error, "Source" to "ShowDetailsViewModel")
+          }
+        }
       }
     }
   }

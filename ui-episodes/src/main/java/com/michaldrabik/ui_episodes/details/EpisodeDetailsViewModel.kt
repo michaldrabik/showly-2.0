@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.errors.ErrorHelper
 import com.michaldrabik.common.errors.ShowlyError.CoroutineCancellation
-import com.michaldrabik.common.errors.ShowlyError.ResourceNotFoundError
+import com.michaldrabik.common.errors.ShowlyError.ResourceConflictError
 import com.michaldrabik.repository.CommentsRepository
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.TranslationsRepository
@@ -210,7 +210,7 @@ class EpisodeDetailsViewModel @Inject constructor(
       } catch (t: Throwable) {
         when (ErrorHelper.parse(t)) {
           is CoroutineCancellation -> rethrowCancellation(t)
-          is ResourceNotFoundError -> messageChannel.send(MessageEvent.Error(R.string.errorCommentDelete))
+          is ResourceConflictError -> messageChannel.send(MessageEvent.Error(R.string.errorCommentDelete))
           else -> messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
         }
         commentsState.value = current

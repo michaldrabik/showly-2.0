@@ -151,7 +151,7 @@ class CommentsViewModel @Inject constructor(
       } catch (t: Throwable) {
         when (ErrorHelper.parse(t)) {
           is ShowlyError.CoroutineCancellation -> rethrowCancellation(t)
-          is ShowlyError.ResourceNotFoundError -> messageChannel.send(MessageEvent.Error(R.string.errorCommentDelete))
+          is ShowlyError.ResourceConflictError -> messageChannel.send(MessageEvent.Error(R.string.errorCommentDelete))
           else -> messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
         }
       }

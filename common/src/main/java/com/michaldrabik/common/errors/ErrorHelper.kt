@@ -2,6 +2,7 @@ package com.michaldrabik.common.errors
 
 import com.michaldrabik.common.errors.ShowlyError.AccountLockedError
 import com.michaldrabik.common.errors.ShowlyError.CoroutineCancellation
+import com.michaldrabik.common.errors.ShowlyError.ResourceConflictError
 import com.michaldrabik.common.errors.ShowlyError.ResourceNotFoundError
 import com.michaldrabik.common.errors.ShowlyError.UnauthorizedError
 import com.michaldrabik.common.errors.ShowlyError.UnknownError
@@ -16,11 +17,12 @@ object ErrorHelper {
     when (error) {
       is CancellationException -> CoroutineCancellation
       is HttpException -> {
-        when {
-          error.code() in arrayOf(401, 403) -> UnauthorizedError(error.message)
-          error.code() == 422 -> ValidationError
-          error.code() == 409 -> ResourceNotFoundError
-          error.code() == 423 -> AccountLockedError
+        when (error.code()) {
+          in arrayOf(401, 403) -> UnauthorizedError(error.message)
+          404 -> ResourceNotFoundError
+          409 -> ResourceConflictError
+          422 -> ValidationError
+          423 -> AccountLockedError
           else -> UnknownHttpError(error.message)
         }
       }
