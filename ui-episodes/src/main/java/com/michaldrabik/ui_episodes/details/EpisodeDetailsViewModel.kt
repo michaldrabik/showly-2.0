@@ -3,6 +3,9 @@ package com.michaldrabik.ui_episodes.details
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
+import com.michaldrabik.common.errors.ErrorHelper
+import com.michaldrabik.common.errors.ShowlyError.CoroutineCancellation
+import com.michaldrabik.common.errors.ShowlyError.ResourceNotFoundError
 import com.michaldrabik.repository.CommentsRepository
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.TranslationsRepository
@@ -14,6 +17,7 @@ import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
+import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
 import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
 import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_episodes.R
@@ -31,7 +35,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 import timber.log.Timber
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -205,10 +208,10 @@ class EpisodeDetailsViewModel @Inject constructor(
         commentsState.value = current
         messageChannel.send(MessageEvent.Info(R.string.textCommentDeleted))
       } catch (t: Throwable) {
-        if (t is HttpException && t.code() == 409) {
-          messageChannel.send(MessageEvent.Error(R.string.errorCommentDelete))
-        } else {
-          messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
+        when (ErrorHelper.parse(t)) {
+          is CoroutineCancellation -> rethrowCancellation(t)
+          is ResourceNotFoundError -> messageChannel.send(MessageEvent.Error(R.string.errorCommentDelete))
+          else -> messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
         }
         commentsState.value = current
       }

@@ -3,13 +3,15 @@ package com.michaldrabik.ui_comments.fragment
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bumptech.glide.load.HttpException
 import com.michaldrabik.common.Mode
+import com.michaldrabik.common.errors.ErrorHelper
+import com.michaldrabik.common.errors.ShowlyError
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
+import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
 import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
 import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_comments.R
@@ -60,7 +62,7 @@ class CommentsViewModel @Inject constructor(
     }
   }
 
-  fun loadComments(id: IdTrakt, mode: Mode) {
+  private fun loadComments(id: IdTrakt, mode: Mode) {
     viewModelScope.launch {
       try {
         val comments = commentsCase.loadComments(id, mode)
@@ -147,11 +149,10 @@ class CommentsViewModel @Inject constructor(
         commentsState.value = currentComments
         messageChannel.send(MessageEvent.Info(R.string.textCommentDeleted))
       } catch (t: Throwable) {
-        commentsState.value = currentComments
-        if (t is HttpException && t.statusCode == 409) {
-          messageChannel.send(MessageEvent.Error(R.string.errorCommentDelete))
-        } else {
-          messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
+        when (ErrorHelper.parse(t)) {
+          is ShowlyError.CoroutineCancellation -> rethrowCancellation(t)
+          is ShowlyError.ResourceNotFoundError -> messageChannel.send(MessageEvent.Error(R.string.errorCommentDelete))
+          else -> messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
         }
       }
     }
