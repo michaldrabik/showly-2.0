@@ -1,10 +1,10 @@
 package com.michaldrabik.repository
 
 import com.google.common.truth.Truth.assertThat
-import com.michaldrabik.data_local.database.dao.ArchiveShowsDao
-import com.michaldrabik.data_local.database.dao.MyShowsDao
-import com.michaldrabik.data_local.database.dao.WatchlistShowsDao
 import com.michaldrabik.data_local.database.model.MyShow
+import com.michaldrabik.data_local.sources.ArchiveShowsLocalDataSource
+import com.michaldrabik.data_local.sources.MyShowsLocalDataSource
+import com.michaldrabik.data_local.sources.WatchlistShowsLocalDataSource
 import com.michaldrabik.repository.common.BaseMockTest
 import com.michaldrabik.repository.shows.MyShowsRepository
 import com.michaldrabik.ui_model.IdTrakt
@@ -23,9 +23,9 @@ import com.michaldrabik.data_local.database.model.Show as ShowDb
 
 class MyShowsRepositoryTest : BaseMockTest() {
 
-  @RelaxedMockK lateinit var myShowsDao: MyShowsDao
-  @RelaxedMockK lateinit var watchlistShowsDao: WatchlistShowsDao
-  @RelaxedMockK lateinit var archiveShowsDao: ArchiveShowsDao
+  @RelaxedMockK lateinit var myShowsLocalSource: MyShowsLocalDataSource
+  @RelaxedMockK lateinit var watchlistShowsLocalSource: WatchlistShowsLocalDataSource
+  @RelaxedMockK lateinit var hiddenShowsLocalDataSource: ArchiveShowsLocalDataSource
   @RelaxedMockK lateinit var showDb: ShowDb
 
   private lateinit var SUT: MyShowsRepository
@@ -33,15 +33,23 @@ class MyShowsRepositoryTest : BaseMockTest() {
   @Before
   override fun setUp() {
     super.setUp()
-    SUT = MyShowsRepository(database, transactions, mappers)
-    coEvery { database.myShows } returns myShowsDao
-    coEvery { database.watchlistShows } returns watchlistShowsDao
-    coEvery { database.archiveShows } returns archiveShowsDao
+    SUT = MyShowsRepository(
+      myShowsLocalSource,
+      watchlistShowsLocalSource,
+      hiddenShowsLocalDataSource,
+      transactions,
+      mappers
+    )
+    coEvery { database.myShows } returns myShowsLocalSource
+    coEvery { database.watchlistShows } returns watchlistShowsLocalSource
+    coEvery { database.archiveShows } returns hiddenShowsLocalDataSource
   }
 
   @After
   fun confirmSutVerified() {
-    confirmVerified(myShowsDao)
+    confirmVerified(myShowsLocalSource)
+    confirmVerified(watchlistShowsLocalSource)
+    confirmVerified(hiddenShowsLocalDataSource)
   }
 
   @Test
@@ -49,13 +57,13 @@ class MyShowsRepositoryTest : BaseMockTest() {
     runBlocking {
       val show = Show.EMPTY.copy(title = "Test")
 
-      coEvery { myShowsDao.getById(any()) } returns showDb
+      coEvery { myShowsLocalSource.getById(any()) } returns showDb
       coEvery { mappers.show.fromDatabase(any()) } returns show
 
       val testShow = SUT.load(IdTrakt(1L))
 
       assertThat(testShow?.title).isEqualTo(show.title)
-      coVerify(exactly = 1) { myShowsDao.getById(any()) }
+      coVerify(exactly = 1) { myShowsLocalSource.getById(any()) }
       coVerify(exactly = 1) { mappers.show.fromDatabase(showDb) }
     }
   }
@@ -63,12 +71,12 @@ class MyShowsRepositoryTest : BaseMockTest() {
   @Test
   fun `Should load and map all shows`() {
     runBlocking {
-      coEvery { myShowsDao.getAll() } returns listOf(showDb)
+      coEvery { myShowsLocalSource.getAll() } returns listOf(showDb)
       coEvery { mappers.show.fromDatabase(any()) } returns Show.EMPTY
 
       SUT.loadAll()
 
-      coVerify(exactly = 1) { myShowsDao.getAll() }
+      coVerify(exactly = 1) { myShowsLocalSource.getAll() }
       coVerify(exactly = 1) { mappers.show.fromDatabase(showDb) }
     }
   }
@@ -76,25 +84,25 @@ class MyShowsRepositoryTest : BaseMockTest() {
   @Test
   fun `Should load all shows ids`() {
     runBlocking {
-      coEvery { myShowsDao.getAllTraktIds() } returns listOf(1L, 2L)
+      coEvery { myShowsLocalSource.getAllTraktIds() } returns listOf(1L, 2L)
 
       val ids = SUT.loadAllIds()
 
       assertThat(ids).containsExactly(1L, 2L)
-      coVerify(exactly = 1) { myShowsDao.getAllTraktIds() }
+      coVerify(exactly = 1) { myShowsLocalSource.getAllTraktIds() }
     }
   }
 
   @Test
   fun `Should load and map all shows by Trakt Ids`() {
     runBlocking {
-      coEvery { myShowsDao.getAll(any()) } returns listOf(showDb, showDb)
+      coEvery { myShowsLocalSource.getAll(any()) } returns listOf(showDb, showDb)
       coEvery { mappers.show.fromDatabase(any()) } returns Show.EMPTY
 
       val shows = SUT.loadAll(listOf(IdTrakt(1), IdTrakt(2)))
 
       assertThat(shows).hasSize(2)
-      coVerify(exactly = 1) { myShowsDao.getAll(listOf(1, 2)) }
+      coVerify(exactly = 1) { myShowsLocalSource.getAll(listOf(1, 2)) }
       coVerify(exactly = 2) { mappers.show.fromDatabase(showDb) }
     }
   }
@@ -102,13 +110,13 @@ class MyShowsRepositoryTest : BaseMockTest() {
   @Test
   fun `Should load and map all recents shows using amount`() {
     runBlocking {
-      coEvery { myShowsDao.getAllRecent(any()) } returns listOf(showDb, showDb)
+      coEvery { myShowsLocalSource.getAllRecent(any()) } returns listOf(showDb, showDb)
       coEvery { mappers.show.fromDatabase(any()) } returns Show.EMPTY
 
       val shows = SUT.loadAllRecent(2)
 
       assertThat(shows).hasSize(2)
-      coVerify(exactly = 1) { myShowsDao.getAllRecent(2) }
+      coVerify(exactly = 1) { myShowsLocalSource.getAllRecent(2) }
       coVerify(exactly = 2) { mappers.show.fromDatabase(showDb) }
     }
   }
@@ -117,7 +125,7 @@ class MyShowsRepositoryTest : BaseMockTest() {
   fun `Should insert show into database using Trakt ID`() {
     runBlocking {
       val slot = slot<List<MyShow>>()
-      coJustRun { myShowsDao.insert(capture(slot)) }
+      coJustRun { myShowsLocalSource.insert(capture(slot)) }
 
       SUT.insert(IdTrakt(10L), 666)
 
@@ -128,9 +136,9 @@ class MyShowsRepositoryTest : BaseMockTest() {
         assertThat(updatedAt).isGreaterThan(0)
         assertThat(lastWatchedAt).isEqualTo(666)
       }
-      coVerify(exactly = 1) { myShowsDao.insert(any()) }
-      coVerify(exactly = 1) { watchlistShowsDao.deleteById(any()) }
-      coVerify(exactly = 1) { archiveShowsDao.deleteById(any()) }
+      coVerify(exactly = 1) { myShowsLocalSource.insert(any()) }
+      coVerify(exactly = 1) { watchlistShowsLocalSource.deleteById(any()) }
+      coVerify(exactly = 1) { hiddenShowsLocalDataSource.deleteById(any()) }
     }
   }
 
@@ -138,12 +146,12 @@ class MyShowsRepositoryTest : BaseMockTest() {
   fun `Should delete show from database using Trakt ID`() {
     runBlocking {
       val slot = slot<Long>()
-      coJustRun { myShowsDao.deleteById(capture(slot)) }
+      coJustRun { myShowsLocalSource.deleteById(capture(slot)) }
 
       SUT.delete(IdTrakt(10L))
 
       assertThat(slot.captured).isEqualTo(10L)
-      coVerify(exactly = 1) { myShowsDao.deleteById(10L) }
+      coVerify(exactly = 1) { myShowsLocalSource.deleteById(10L) }
     }
   }
 }
