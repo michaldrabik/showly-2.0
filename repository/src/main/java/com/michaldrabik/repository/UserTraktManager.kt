@@ -2,12 +2,12 @@
 
 package com.michaldrabik.repository
 
+import com.michaldrabik.common.errors.ShowlyError
 import com.michaldrabik.data_local.database.model.User
 import com.michaldrabik.data_local.sources.UserLocalDataSource
 import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.data_remote.token.TokenProvider
 import com.michaldrabik.data_remote.trakt.TraktRemoteDataSource
-import com.michaldrabik.ui_model.error.TraktAuthError
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -23,7 +23,7 @@ class UserTraktManager @Inject constructor(
 
   fun checkAuthorization() {
     if (tokenProvider.getToken() == null) {
-      throw TraktAuthError("Authorization needed.")
+      throw ShowlyError.UnauthorizedError("Authorization needed.")
     }
   }
 

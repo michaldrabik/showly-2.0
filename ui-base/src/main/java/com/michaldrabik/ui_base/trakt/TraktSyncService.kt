@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.IBinder
+import com.michaldrabik.common.errors.ShowlyError
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.settings.SettingsRepository
@@ -24,7 +25,6 @@ import com.michaldrabik.ui_base.trakt.imports.TraktImportListsRunner
 import com.michaldrabik.ui_base.trakt.imports.TraktImportWatchedRunner
 import com.michaldrabik.ui_base.trakt.imports.TraktImportWatchlistRunner
 import com.michaldrabik.ui_base.utilities.extensions.notificationManager
-import com.michaldrabik.ui_model.error.TraktAuthError
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -224,7 +224,7 @@ class TraktSyncService : TraktNotificationsService() {
 
   // TODO Refactor, create injectable error helper class and model in-app errors
   private suspend fun handleError(error: Throwable, isSilent: Boolean) {
-    val isAuthError = error is TraktAuthError || (error is HttpException && error.code() == 401)
+    val isAuthError = error is ShowlyError.UnauthorizedError || (error is HttpException && error.code() == 401)
     if (isAuthError) {
       eventsManager.sendEvent(TraktSyncAuthError)
       userManager.revokeToken()
