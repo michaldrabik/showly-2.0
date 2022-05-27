@@ -8,7 +8,6 @@ import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
 import com.michaldrabik.data_remote.trakt.model.SyncExportResult
 import com.michaldrabik.data_remote.trakt.model.SyncItem
 import com.michaldrabik.data_remote.trakt.model.request.RatingRequest
-import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -42,10 +41,10 @@ interface TraktSyncService {
   suspend fun deleteHistory(@Body request: SyncExportRequest): SyncExportResult
 
   @POST("sync/ratings")
-  suspend fun postRating(@Body request: RatingRequest): Response<Any>
+  suspend fun postRating(@Body request: RatingRequest)
 
   @POST("sync/ratings/remove")
-  suspend fun postRemoveRating(@Body request: RatingRequest): Response<Any>
+  suspend fun postRemoveRating(@Body request: RatingRequest)
 
   @GET("sync/ratings/shows")
   suspend fun fetchShowsRatings(): List<RatingResultShow>

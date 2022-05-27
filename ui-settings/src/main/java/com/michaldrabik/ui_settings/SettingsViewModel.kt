@@ -5,6 +5,9 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
+import com.michaldrabik.common.errors.ErrorHelper
+import com.michaldrabik.common.errors.ShowlyError.AccountLockedError
+import com.michaldrabik.common.errors.ShowlyError.CoroutineCancellation
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.AppCountry
@@ -36,7 +39,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -262,11 +264,11 @@ class SettingsViewModel @Inject constructor(
         messageChannel.send(MessageEvent.Info(R.string.textTraktLoginSuccess))
         Analytics.logTraktLogin()
       } catch (error: Throwable) {
-        val message = when {
-          error is HttpException && error.code() == 423 -> R.string.errorTraktLocked
-          else -> R.string.errorAuthorization
+        when (ErrorHelper.parse(error)) {
+          is CoroutineCancellation -> rethrowCancellation(error)
+          is AccountLockedError -> messageChannel.send(MessageEvent.Error(R.string.errorTraktLocked))
+          else -> messageChannel.send(MessageEvent.Error(R.string.errorAuthorization))
         }
-        messageChannel.send(MessageEvent.Error(message))
         Logger.record(error, "Source" to "SettingsViewModel::authorizeTrakt()")
       } finally {
         signingInState.value = false

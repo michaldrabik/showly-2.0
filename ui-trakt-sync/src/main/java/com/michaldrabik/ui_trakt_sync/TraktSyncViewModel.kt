@@ -4,6 +4,9 @@ import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkManager
+import com.michaldrabik.common.errors.ErrorHelper
+import com.michaldrabik.common.errors.ShowlyError.AccountLockedError
+import com.michaldrabik.common.errors.ShowlyError.CoroutineCancellation
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
@@ -33,7 +36,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 import timber.log.Timber
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -103,11 +105,11 @@ class TraktSyncViewModel @Inject constructor(
         saveTraktQuickRemove()
         preloadRatings()
       } catch (error: Throwable) {
-        val message = when {
-          error is HttpException && error.code() == 423 -> R.string.errorTraktLocked
-          else -> R.string.errorAuthorization
+        when (ErrorHelper.parse(error)) {
+          is CoroutineCancellation -> rethrowCancellation(error)
+          is AccountLockedError -> messageChannel.send(MessageEvent.Error(R.string.errorTraktLocked))
+          else -> messageChannel.send(MessageEvent.Error(R.string.errorAuthorization))
         }
-        messageChannel.send(MessageEvent.Error(message))
       }
     }
   }

@@ -28,5 +28,7 @@ android {
 }
 
 dependencies {
+  implementation libs.retrofit
+
   coreLibraryDesugaring libs.android.desugar
 }

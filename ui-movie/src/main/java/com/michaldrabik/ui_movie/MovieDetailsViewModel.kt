@@ -2,6 +2,9 @@ package com.michaldrabik.ui_movie
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.common.errors.ErrorHelper
+import com.michaldrabik.common.errors.ShowlyError.CoroutineCancellation
+import com.michaldrabik.common.errors.ShowlyError.ResourceNotFoundError
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.settings.SettingsRepository
@@ -46,7 +49,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.properties.Delegates.notNull
@@ -120,15 +122,20 @@ class MovieDetailsViewModel @Inject constructor(
         loadUserRating()
         loadTranslation()
       } catch (error: Throwable) {
+        Timber.e(error)
         progressJob.cancel()
-        if (error is HttpException && error.code() == 404) {
-          // Malformed Trakt data or duplicate show.
-          messageChannel.send(MessageEvent.Info(R.string.errorMalformedMovie))
-        } else {
-          messageChannel.send(MessageEvent.Error(R.string.errorCouldNotLoadMovie))
+        when (ErrorHelper.parse(error)) {
+          is CoroutineCancellation -> rethrowCancellation(error)
+          is ResourceNotFoundError -> {
+            // Malformed Trakt data or duplicate show.
+            messageChannel.send(MessageEvent.Info(R.string.errorMalformedMovie))
+            Logger.record(error, "Source" to "MovieDetailsViewModel")
+          }
+          else -> {
+            messageChannel.send(MessageEvent.Error(R.string.errorCouldNotLoadMovie))
+            Logger.record(error, "Source" to "MovieDetailsViewModel")
+          }
         }
-        Logger.record(error, "Source" to "MovieDetailsViewModel")
-        rethrowCancellation(error)
       }
     }
   }

@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_base.trakt
 
+import com.michaldrabik.common.errors.ShowlyError
 import com.michaldrabik.repository.UserTraktManager
-import com.michaldrabik.ui_model.error.TraktAuthError
 import timber.log.Timber
 
 abstract class TraktSyncRunner(
@@ -24,7 +24,7 @@ abstract class TraktSyncRunner(
     userTraktManager.checkAuthorization()
   } catch (t: Throwable) {
     isRunning = false
-    throw TraktAuthError(t.message)
+    throw ShowlyError.UnauthorizedError(t.message)
   }
 
   protected fun resetRetries() {

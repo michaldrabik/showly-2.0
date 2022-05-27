@@ -1,6 +1,8 @@
 package com.michaldrabik.ui_base.trakt.quicksync.runners
 
 import com.michaldrabik.common.Mode
+import com.michaldrabik.common.errors.ErrorHelper
+import com.michaldrabik.common.errors.ShowlyError
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.TraktSyncQueue
 import com.michaldrabik.data_local.database.model.TraktSyncQueue.Operation
@@ -12,7 +14,6 @@ import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_base.trakt.TraktSyncRunner
 import com.michaldrabik.ui_model.CustomList
 import kotlinx.coroutines.delay
-import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -124,11 +125,12 @@ class QuickSyncListsRunner @Inject constructor(
         localSource.traktSyncQueue.delete(removeItems)
       }
     } catch (error: Throwable) {
-      if (error is HttpException && error.code() == 404) {
-        localSource.traktSyncQueue.delete(removeItems)
-        Timber.d("Tried to remove from list but it does not exist anymore. Skipping...")
-      } else {
-        throw error
+      when (ErrorHelper.parse(error)) {
+        is ShowlyError.ResourceNotFoundError -> {
+          localSource.traktSyncQueue.delete(removeItems)
+          Timber.d("Tried to remove from list but it does not exist anymore. Skipping...")
+        }
+        else -> throw error
       }
     }
   }
@@ -151,13 +153,14 @@ class QuickSyncListsRunner @Inject constructor(
         localSource.traktSyncQueue.delete(addItems)
       }
     } catch (error: Throwable) {
-      if (error is HttpException && error.code() == 404) {
-        Timber.d("Tried to add to list but it does not exist. Creating...")
-        delay(TRAKT_DELAY)
-        createMissingList(localList)
-        localSource.traktSyncQueue.delete(addItems)
-      } else {
-        throw error
+      when (ErrorHelper.parse(error)) {
+        is ShowlyError.ResourceNotFoundError -> {
+          Timber.d("Tried to add to list but it does not exist. Creating...")
+          delay(TRAKT_DELAY)
+          createMissingList(localList)
+          localSource.traktSyncQueue.delete(addItems)
+        }
+        else -> throw error
       }
     }
   }

@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.IBinder
+import com.michaldrabik.common.errors.ErrorHelper
+import com.michaldrabik.common.errors.ShowlyError
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.settings.SettingsRepository
@@ -24,14 +26,12 @@ import com.michaldrabik.ui_base.trakt.imports.TraktImportListsRunner
 import com.michaldrabik.ui_base.trakt.imports.TraktImportWatchedRunner
 import com.michaldrabik.ui_base.trakt.imports.TraktImportWatchlistRunner
 import com.michaldrabik.ui_base.utilities.extensions.notificationManager
-import com.michaldrabik.ui_model.error.TraktAuthError
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
@@ -222,10 +222,9 @@ class TraktSyncService : TraktNotificationsService() {
     exportListsRunner.run()
   }
 
-  // TODO Refactor, create injectable error helper class and model in-app errors
   private suspend fun handleError(error: Throwable, isSilent: Boolean) {
-    val isAuthError = error is TraktAuthError || (error is HttpException && error.code() == 401)
-    if (isAuthError) {
+    val showlyError = ErrorHelper.parse(error)
+    if (showlyError is ShowlyError.UnauthorizedError) {
       eventsManager.sendEvent(TraktSyncAuthError)
       userManager.revokeToken()
     }
@@ -233,7 +232,7 @@ class TraktSyncService : TraktNotificationsService() {
     syncStatusProvider.setSyncing(false)
     if (!isSilent) {
       val message =
-        if (isAuthError) R.string.errorTraktAuthorization
+        if (showlyError is ShowlyError.UnauthorizedError) R.string.errorTraktAuthorization
         else R.string.textTraktSyncErrorFull
       notificationManager().notify(
         SYNC_NOTIFICATION_COMPLETE_ERROR_ID,

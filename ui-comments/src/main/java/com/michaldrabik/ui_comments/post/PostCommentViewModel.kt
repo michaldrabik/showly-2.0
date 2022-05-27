@@ -2,7 +2,12 @@ package com.michaldrabik.ui_comments.post
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.common.errors.ErrorHelper
+import com.michaldrabik.common.errors.ShowlyError.CoroutineCancellation
+import com.michaldrabik.common.errors.ShowlyError.UnauthorizedError
+import com.michaldrabik.common.errors.ShowlyError.ValidationError
 import com.michaldrabik.repository.CommentsRepository
+import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
@@ -23,12 +28,12 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 import javax.inject.Inject
 
 @HiltViewModel
 class PostCommentViewModel @Inject constructor(
   private val commentsRepository: CommentsRepository,
+  private val userTraktManager: UserTraktManager,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val loadingState = MutableStateFlow(false)
@@ -46,7 +51,6 @@ class PostCommentViewModel @Inject constructor(
         successState.value = Event(Pair(ACTION_NEW_COMMENT, comment))
       } catch (error: Throwable) {
         handleError(error)
-        rethrowCancellation(error)
       }
     }
   }
@@ -63,7 +67,6 @@ class PostCommentViewModel @Inject constructor(
         successState.value = Event(Pair(ACTION_NEW_COMMENT, comment))
       } catch (error: Throwable) {
         handleError(error)
-        rethrowCancellation(error)
       }
     }
   }
@@ -80,7 +83,6 @@ class PostCommentViewModel @Inject constructor(
         successState.value = Event(Pair(ACTION_NEW_COMMENT, comment))
       } catch (error: Throwable) {
         handleError(error)
-        rethrowCancellation(error)
       }
     }
   }
@@ -96,7 +98,6 @@ class PostCommentViewModel @Inject constructor(
         successState.value = Event(Pair(ACTION_NEW_COMMENT, comment))
       } catch (error: Throwable) {
         handleError(error)
-        rethrowCancellation(error)
       }
     }
   }
@@ -107,12 +108,16 @@ class PostCommentViewModel @Inject constructor(
     .count { it.length > 1 } >= 5
 
   private suspend fun handleError(error: Throwable) {
-    if (error is HttpException && error.code() == 422) {
-      messageChannel.send(MessageEvent.Error(R.string.errorCommentFormat))
-    } else {
-      messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
-    }
     loadingState.value = false
+    when (ErrorHelper.parse(error)) {
+      is CoroutineCancellation -> rethrowCancellation(error)
+      is ValidationError -> messageChannel.send(MessageEvent.Error(R.string.errorCommentFormat))
+      is UnauthorizedError -> {
+        messageChannel.send(MessageEvent.Error(R.string.errorTraktAuthorization))
+        userTraktManager.revokeToken()
+      }
+      else -> messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
+    }
   }
 
   val uiState = combine(

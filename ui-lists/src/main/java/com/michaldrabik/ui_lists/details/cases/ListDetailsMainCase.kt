@@ -1,5 +1,7 @@
 package com.michaldrabik.ui_lists.details.cases
 
+import com.michaldrabik.common.errors.ErrorHelper
+import com.michaldrabik.common.errors.ShowlyError
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.CustomListItem
@@ -11,7 +13,6 @@ import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
 import com.michaldrabik.ui_model.CustomList
 import dagger.hilt.android.scopes.ViewModelScoped
-import retrofit2.HttpException
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -55,10 +56,9 @@ class ListDetailsMainCase @Inject constructor(
       try {
         remoteSource.trakt.deleteList(listIdTrakt)
       } catch (error: Throwable) {
-        if (error is HttpException && error.code() == 404) {
-          // NOOP List does not exist in Trakt already.
-        } else {
-          throw error
+        when (ErrorHelper.parse(error)) {
+          is ShowlyError.ResourceNotFoundError -> Unit // NOOP List does not exist in Trakt.
+          else -> throw error
         }
       }
     }
