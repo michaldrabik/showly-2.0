@@ -6,6 +6,10 @@ sealed class ShowlyError(errorMessage: String?) : Throwable(errorMessage) {
     val errorMessage: String?
   ) : ShowlyError(errorMessage)
 
+  data class ValidationError(
+    val errorMessage: String?
+  ) : ShowlyError(errorMessage)
+
   data class UnknownHttpError(
     val errorMessage: String?
   ) : ShowlyError(errorMessage)
