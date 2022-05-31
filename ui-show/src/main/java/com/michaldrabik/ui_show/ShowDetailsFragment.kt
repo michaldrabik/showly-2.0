@@ -12,8 +12,10 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
 import android.view.animation.AnimationUtils
+import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
 import androidx.activity.addCallback
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.WindowInsetsCompat
@@ -26,6 +28,8 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
+import androidx.transition.AutoTransition
+import androidx.transition.TransitionManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
@@ -105,10 +109,11 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_PERSON_DETAILS
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_REMOVE_TRAKT
 import com.michaldrabik.ui_people.details.PersonDetailsBottomSheet
 import com.michaldrabik.ui_people.list.PeopleListBottomSheet
+import com.michaldrabik.ui_show.ShowDetailsEvent.Finish
+import com.michaldrabik.ui_show.ShowDetailsEvent.RemoveFromTrakt
 import com.michaldrabik.ui_show.actors.ActorsAdapter
 import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
 import com.michaldrabik.ui_show.helpers.ShowLink
-import com.michaldrabik.ui_show.helpers.StreamingsBundle
 import com.michaldrabik.ui_show.quick_setup.QuickSetupView
 import com.michaldrabik.ui_show.related.RelatedListItem
 import com.michaldrabik.ui_show.related.RelatedShowAdapter
@@ -159,7 +164,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     setupActorsList()
     setupRelatedList()
     setupSeasonsList()
-    setupStreamingsList()
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
@@ -273,16 +277,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
   }
 
-  private fun setupStreamingsList() {
-    streamingAdapter = StreamingAdapter()
-    showDetailsStreamingsRecycler.apply {
-      setHasFixedSize(true)
-      adapter = streamingAdapter
-      layoutManager = LinearLayoutManager(requireContext(), HORIZONTAL, false)
-      addDivider(R.drawable.divider_horizontal_list, HORIZONTAL)
-    }
-  }
-
   private fun showEpisodesView(item: SeasonListItem) {
     showDetailsEpisodesView.run {
       bind(item)
@@ -326,8 +320,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private fun handleEvent(event: Event<*>) {
     when (event) {
-      is FinishUiEvent -> requireActivity().onBackPressed()
-      is RemoveTraktUiEvent -> openRemoveTraktSheet(event)
+      is Finish -> requireActivity().onBackPressed()
+      is RemoveFromTrakt -> openRemoveTraktSheet(event)
     }
   }
 
@@ -406,7 +400,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       nextEpisode?.let { renderNextEpisode(it) }
       actors?.let { renderActors(it) }
       crew?.let { renderCrew(it) }
-      streamings?.let { renderStreamings(it) }
       relatedShows?.let { renderRelatedShows(it) }
       translation?.let { renderTranslation(it) }
       ratingState?.let { renderRating(it) }
@@ -557,21 +550,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
   }
 
-  private fun renderStreamings(streamings: StreamingsBundle) {
-    if (streamingAdapter?.itemCount != 0) return
-    val (items, isLocal) = streamings
-    streamingAdapter?.setItems(items)
-    if (items.isNotEmpty()) {
-      if (isLocal) {
-        showDetailsStreamingsRecycler.visible()
-      } else {
-        showDetailsStreamingsRecycler.fadeIn(withHardware = true)
-      }
-    } else if (!isLocal) {
-      showDetailsStreamingsRecycler.gone()
-    }
-  }
-
   private fun renderRuntimeLeft(seasonsItems: List<SeasonListItem>) {
     val runtimeLeft = seasonsItems
       .filter { !it.season.isSpecial() }
@@ -700,7 +678,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     navigateToSafe(R.id.actionShowDetailsFragmentToPeopleList, bundle)
   }
 
-  private fun openRemoveTraktSheet(event: RemoveTraktUiEvent) {
+  private fun openRemoveTraktSheet(event: RemoveFromTrakt) {
     setFragmentResultListener(REQUEST_REMOVE_TRAKT) { _, bundle ->
       if (bundle.getBoolean(NavigationArgs.RESULT, false)) {
         val text = resources.getString(R.string.textTraktSyncRemovedFromTrakt)
@@ -800,6 +778,23 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       ARG_FAMILY to SHOW
     )
     navigateToSafe(R.id.actionShowDetailsFragmentToCustomImages, bundle)
+  }
+
+  fun showStreamingsView(animate: Boolean) {
+    if (!animate) {
+      showDetailsStreamingsFragment.visible()
+      return
+    }
+    val animation = ConstraintSet().apply {
+      clone(showDetailsMainContent)
+      setVisibility(showDetailsStreamingsFragment.id, View.VISIBLE)
+    }
+    val transition = AutoTransition().apply {
+      interpolator = DecelerateInterpolator(1.5F)
+      duration = 200
+    }
+    TransitionManager.beginDelayedTransition(showDetailsMainContent, transition)
+    animation.applyTo(showDetailsMainContent)
   }
 
   override fun setupBackPressed() {

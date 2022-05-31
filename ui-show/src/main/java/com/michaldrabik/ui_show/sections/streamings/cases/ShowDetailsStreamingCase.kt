@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_show.cases
+package com.michaldrabik.ui_show.sections.streamings.cases
 
 import com.michaldrabik.common.ConfigVariant
 import com.michaldrabik.common.extensions.nowUtc

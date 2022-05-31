@@ -243,27 +243,24 @@
         android:layout_marginTop="@dimen/spaceNormal"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:layout_marginBottom="@dimen/spaceNormal"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsStreamingsRecycler"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsStreamingsFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/separator5"
         />
 
-      <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/showDetailsStreamingsRecycler"
+      <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/showDetailsStreamingsFragment"
+        android:name="com.michaldrabik.ui_show.sections.streamings.ShowDetailsStreamingsFragment"
         android:layout_width="0dp"
-        android:layout_height="@dimen/streamingTileHeight"
-        android:layout_marginTop="@dimen/spaceMicro"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:overScrollMode="never"
-        android:paddingStart="@dimen/spaceNormal"
-        android:paddingEnd="@dimen/spaceNormal"
-        android:visibility="invisible"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/showDetailsDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/showDetailsRatings"
+        tools:layout_height="40dp"
+        tools:visibility="visible"
         />
 
       <com.michaldrabik.ui_base.common.views.FoldableTextView
@@ -271,7 +268,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="@dimen/spaceNormal"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:layout_marginBottom="@dimen/spaceTiny"
         android:ellipsize="end"
@@ -283,7 +279,7 @@
         app:layout_constraintBottom_toTopOf="@id/showDetailsActorsRecycler"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsStreamingsRecycler"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsStreamingsFragment"
         app:layout_goneMarginBottom="@dimen/spaceHuge"
         app:layout_goneMarginTop="0dp"
         tools:targetApi="o"

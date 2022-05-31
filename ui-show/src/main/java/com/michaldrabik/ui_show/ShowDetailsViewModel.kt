@@ -41,6 +41,9 @@ import com.michaldrabik.ui_model.SeasonBundle
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_show.ShowDetailsEvent.Finish
+import com.michaldrabik.ui_show.ShowDetailsEvent.RemoveFromTrakt
+import com.michaldrabik.ui_show.ShowDetailsEvent.ShowLoaded
 import com.michaldrabik.ui_show.ShowDetailsUiState.FollowedState
 import com.michaldrabik.ui_show.cases.ShowDetailsActorsCase
 import com.michaldrabik.ui_show.cases.ShowDetailsEpisodesCase
@@ -51,11 +54,9 @@ import com.michaldrabik.ui_show.cases.ShowDetailsMyShowsCase
 import com.michaldrabik.ui_show.cases.ShowDetailsQuickProgressCase
 import com.michaldrabik.ui_show.cases.ShowDetailsRatingCase
 import com.michaldrabik.ui_show.cases.ShowDetailsRelatedShowsCase
-import com.michaldrabik.ui_show.cases.ShowDetailsStreamingCase
 import com.michaldrabik.ui_show.cases.ShowDetailsTranslationCase
 import com.michaldrabik.ui_show.cases.ShowDetailsWatchlistCase
 import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
-import com.michaldrabik.ui_show.helpers.StreamingsBundle
 import com.michaldrabik.ui_show.quick_setup.QuickSetupListItem
 import com.michaldrabik.ui_show.related.RelatedListItem
 import com.michaldrabik.ui_show.seasons.SeasonListItem
@@ -63,8 +64,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -84,7 +87,6 @@ class ShowDetailsViewModel @Inject constructor(
   private val myShowsCase: ShowDetailsMyShowsCase,
   private val episodesCase: ShowDetailsEpisodesCase,
   private val listsCase: ShowDetailsListsCase,
-  private val streamingsCase: ShowDetailsStreamingCase,
   private val relatedShowsCase: ShowDetailsRelatedShowsCase,
   private val quickProgressCase: ShowDetailsQuickProgressCase,
   private val settingsRepository: SettingsRepository,
@@ -95,6 +97,9 @@ class ShowDetailsViewModel @Inject constructor(
   private val imagesProvider: ShowImagesProvider,
   private val dateFormatProvider: DateFormatProvider,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+
+  private val _parentEvents = MutableSharedFlow<ShowDetailsEvent<*>>()
+  val parentEvents = _parentEvents.asSharedFlow()
 
   private val showState = MutableStateFlow<Show?>(null)
   private val showLoadingState = MutableStateFlow<Boolean?>(null)
@@ -107,7 +112,6 @@ class ShowDetailsViewModel @Inject constructor(
   private val nextEpisodeState = MutableStateFlow<NextEpisodeBundle?>(null)
   private val followedState = MutableStateFlow<FollowedState?>(null)
   private val ratingState = MutableStateFlow<RatingState?>(null)
-  private val streamingsState = MutableStateFlow<StreamingsBundle?>(null)
   private val translationState = MutableStateFlow<Translation?>(null)
   private val countryState = MutableStateFlow<AppCountry?>(null)
   private val signedInState = MutableStateFlow(false)
@@ -124,6 +128,7 @@ class ShowDetailsViewModel @Inject constructor(
       }
       try {
         show = mainCase.loadDetails(id)
+        _parentEvents.emit(ShowLoaded(show))
         Analytics.logShowDetailsDisplay(show)
 
         val isSignedIn = userManager.isAuthorized()
@@ -151,7 +156,6 @@ class ShowDetailsViewModel @Inject constructor(
         loadListsCount(show)
         loadRating()
         launch { loadRatings(show) }
-        launch { loadStreamings(show) }
         launch { loadCastCrew(show) }
         launch { loadNextEpisode(show) }
         launch { loadTranslation(show) }
@@ -262,19 +266,6 @@ class ShowDetailsViewModel @Inject constructor(
       }
     } catch (error: Throwable) {
       Logger.record(error, "Source" to "ShowDetailsViewModel::loadTranslation()")
-      rethrowCancellation(error)
-    }
-  }
-
-  private suspend fun loadStreamings(show: Show) {
-    try {
-      val localStreamings = streamingsCase.getLocalStreamingServices(show)
-      streamingsState.value = StreamingsBundle(localStreamings, isLocal = true)
-
-      val remoteStreamings = streamingsCase.loadStreamingServices(show)
-      streamingsState.value = StreamingsBundle(remoteStreamings, isLocal = false)
-    } catch (error: Throwable) {
-      streamingsState.value = StreamingsBundle(emptyList(), isLocal = false)
       rethrowCancellation(error)
     }
   }
@@ -431,19 +422,19 @@ class ShowDetailsViewModel @Inject constructor(
         isMyShows -> {
           followedState.value = state
           if (showRemoveTrakt) {
-            eventChannel.send(RemoveTraktUiEvent(R.id.actionShowDetailsFragmentToRemoveTraktProgress, mode, ids))
+            eventChannel.send(RemoveFromTrakt(R.id.actionShowDetailsFragmentToRemoveTraktProgress, mode, ids))
           }
         }
         isWatchlist -> {
           followedState.value = state
           if (showRemoveTrakt) {
-            eventChannel.send(RemoveTraktUiEvent(R.id.actionShowDetailsFragmentToRemoveTraktWatchlist, mode, ids))
+            eventChannel.send(RemoveFromTrakt(R.id.actionShowDetailsFragmentToRemoveTraktWatchlist, mode, ids))
           }
         }
         isArchived -> {
           followedState.value = state
           if (showRemoveTrakt) {
-            eventChannel.send(RemoveTraktUiEvent(R.id.actionShowDetailsFragmentToRemoveTraktHidden, mode, ids))
+            eventChannel.send(RemoveFromTrakt(R.id.actionShowDetailsFragmentToRemoveTraktHidden, mode, ids))
           }
         }
         else -> error("Unexpected show state.")
@@ -461,7 +452,7 @@ class ShowDetailsViewModel @Inject constructor(
         Timber.e(error)
         rethrowCancellation(error)
       } finally {
-        eventChannel.send(FinishUiEvent(true))
+        eventChannel.send(Finish)
       }
     }
   }
@@ -497,7 +488,7 @@ class ShowDetailsViewModel @Inject constructor(
           if (showRemoveTrakt) {
             val ids = listOf(episode.ids.trakt)
             val mode = RemoveTraktBottomSheet.Mode.EPISODE
-            eventChannel.send(RemoveTraktUiEvent(R.id.actionShowDetailsFragmentToRemoveTraktProgress, mode, ids))
+            eventChannel.send(RemoveFromTrakt(R.id.actionShowDetailsFragmentToRemoveTraktProgress, mode, ids))
           }
         }
       }
@@ -530,7 +521,7 @@ class ShowDetailsViewModel @Inject constructor(
           if (showRemoveTrakt) {
             val ids = season.episodes.map { it.ids.trakt }
             val mode = RemoveTraktBottomSheet.Mode.EPISODE
-            eventChannel.send(RemoveTraktUiEvent(R.id.actionShowDetailsFragmentToRemoveTraktProgress, mode, ids))
+            eventChannel.send(RemoveFromTrakt(R.id.actionShowDetailsFragmentToRemoveTraktProgress, mode, ids))
           }
         }
       }
@@ -631,13 +622,12 @@ class ShowDetailsViewModel @Inject constructor(
     nextEpisodeState,
     followedState,
     ratingState,
-    streamingsState,
     translationState,
     countryState,
     signedInState,
     premiumState,
     listsCountState
-  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17 ->
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16 ->
     ShowDetailsUiState(
       show = s1,
       showLoading = s2,
@@ -650,12 +640,11 @@ class ShowDetailsViewModel @Inject constructor(
       nextEpisode = s9,
       followedState = s10,
       ratingState = s11,
-      streamings = s12,
-      translation = s13,
-      country = s14,
-      isSignedIn = s15,
-      isPremium = s16,
-      listsCount = s17
+      translation = s12,
+      country = s13,
+      isSignedIn = s14,
+      isPremium = s15,
+      listsCount = s16
     )
   }.stateIn(
     scope = viewModelScope,
