@@ -242,6 +242,7 @@ class TraktSyncViewModelTest : BaseMockTest() {
   internal fun `Should handle TraktSyncSuccess event`() = runBlockingTest {
     val job = launch { SUT.uiState.toList(stateResult) }
     val job2 = launch { SUT.messageFlow.toList(messagesResult) }
+    coEvery { miscPreferences.getLong(any(), 0) } returns 0
 
     SUT.handleEvent(TraktSyncSuccess)
 
@@ -277,7 +278,6 @@ class TraktSyncViewModelTest : BaseMockTest() {
 
     assertThat(stateResult.last().isProgress).isFalse()
     assertThat(stateResult.last().progressStatus).isEqualTo("")
-    assertThat(stateResult.last().authError).isTrue()
     assertThat(messagesResult.last().consume()).isEqualTo(R.string.errorTraktAuthorization)
 
     job.cancel()

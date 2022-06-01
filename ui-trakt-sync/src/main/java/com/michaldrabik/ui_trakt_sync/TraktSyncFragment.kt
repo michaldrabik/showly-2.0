@@ -15,6 +15,7 @@ import com.michaldrabik.data_remote.Config
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTraktAuthorizeListener
 import com.michaldrabik.ui_base.trakt.TraktSyncService
+import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
@@ -47,6 +48,7 @@ class TraktSyncFragment :
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
+      { viewModel.eventFlow.collect { handleEvent(it) } },
       { viewModel.messageFlow.collect { showSnack(it) } },
       doAfterLaunch = { viewModel.invalidate() }
     )
@@ -117,9 +119,14 @@ class TraktSyncFragment :
     viewModel.authorizeTrakt(code)
   }
 
+  private fun handleEvent(event: Event<*>) {
+    when (event) {
+      TraktSyncUiEvent.Finish -> activity?.onBackPressed()
+    }
+  }
+
   private fun render(uiState: TraktSyncUiState) {
     uiState.run {
-      if (authError) findNavControl()?.popBackStack()
       isProgress.let {
         traktSyncButton.visibleIf(!it, false)
         traktSyncProgress.visibleIf(it)
