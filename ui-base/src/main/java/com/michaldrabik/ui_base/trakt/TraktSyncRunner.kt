@@ -19,12 +19,14 @@ abstract class TraktSyncRunner(
 
   abstract suspend fun run(): Int
 
-  protected fun checkAuthorization() = try {
-    Timber.d("Checking authorization...")
-    userTraktManager.checkAuthorization()
-  } catch (t: Throwable) {
-    isRunning = false
-    throw ShowlyError.UnauthorizedError(t.message)
+  protected fun checkAuthorization() {
+    try {
+      Timber.d("Checking authorization...")
+      userTraktManager.checkAuthorization()
+    } catch (t: Throwable) {
+      isRunning = false
+      throw ShowlyError.UnauthorizedError(t.message)
+    }
   }
 
   protected fun resetRetries() {
