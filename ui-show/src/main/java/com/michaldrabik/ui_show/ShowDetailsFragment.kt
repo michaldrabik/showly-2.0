@@ -115,8 +115,6 @@ import com.michaldrabik.ui_show.actors.ActorsAdapter
 import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
 import com.michaldrabik.ui_show.helpers.ShowLink
 import com.michaldrabik.ui_show.quick_setup.QuickSetupView
-import com.michaldrabik.ui_show.related.RelatedListItem
-import com.michaldrabik.ui_show.related.RelatedShowAdapter
 import com.michaldrabik.ui_show.seasons.SeasonListItem
 import com.michaldrabik.ui_show.seasons.SeasonsAdapter
 import com.michaldrabik.ui_show.views.AddToShowsButton
@@ -139,7 +137,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private val showId by lazy { IdTrakt(requireLong(ARG_SHOW_ID)) }
 
   private var actorsAdapter: ActorsAdapter? = null
-  private var relatedAdapter: RelatedShowAdapter? = null
   private var seasonsAdapter: SeasonsAdapter? = null
   private var streamingAdapter: StreamingAdapter? = null
   private var lastOpenedPerson: Person? = null
@@ -162,7 +159,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     setupView()
     setupStatusBar()
     setupActorsList()
-    setupRelatedList()
     setupSeasonsList()
 
     launchAndRepeatStarted(
@@ -240,24 +236,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     showDetailsActorsRecycler.apply {
       setHasFixedSize(true)
       adapter = actorsAdapter
-      layoutManager = LinearLayoutManager(requireContext(), HORIZONTAL, false)
-      addDivider(R.drawable.divider_horizontal_list, HORIZONTAL)
-    }
-  }
-
-  private fun setupRelatedList() {
-    relatedAdapter = RelatedShowAdapter(
-      itemClickListener = {
-        if (findNavControl()?.currentDestination?.id == R.id.showDetailsFragment) {
-          val bundle = Bundle().apply { putLong(ARG_SHOW_ID, it.show.traktId) }
-          navigateToSafe(R.id.actionShowDetailsFragmentToSelf, bundle)
-        }
-      },
-      missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
-    )
-    showDetailsRelatedRecycler.apply {
-      setHasFixedSize(true)
-      adapter = relatedAdapter
       layoutManager = LinearLayoutManager(requireContext(), HORIZONTAL, false)
       addDivider(R.drawable.divider_horizontal_list, HORIZONTAL)
     }
@@ -400,7 +378,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       nextEpisode?.let { renderNextEpisode(it) }
       actors?.let { renderActors(it) }
       crew?.let { renderCrew(it) }
-      relatedShows?.let { renderRelatedShows(it) }
       translation?.let { renderTranslation(it) }
       ratingState?.let { renderRating(it) }
       isPremium.let {
@@ -568,13 +545,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
     showDetailsRuntimeLeft.text = runtimeText
     showDetailsRuntimeLeft.fadeIf(seasonsItems.isNotEmpty() && runtimeLeft > 0, hardware = true)
-  }
-
-  private fun renderRelatedShows(items: List<RelatedListItem>) {
-    relatedAdapter?.setItems(items)
-    showDetailsRelatedRecycler.visibleIf(items.isNotEmpty())
-    showDetailsRelatedLabel.visibleIf(items.isNotEmpty())
-    showDetailsRelatedProgress.gone()
   }
 
   private fun renderTranslation(translation: Translation?) {
@@ -815,7 +785,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   override fun onDestroyView() {
     actorsAdapter = null
-    relatedAdapter = null
     seasonsAdapter = null
     streamingAdapter = null
     super.onDestroyView()

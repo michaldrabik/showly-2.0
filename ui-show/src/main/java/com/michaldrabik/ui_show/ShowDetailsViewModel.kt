@@ -31,7 +31,6 @@ import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType.FANART
-import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.Person.Department
 import com.michaldrabik.ui_model.RatingState
@@ -53,12 +52,10 @@ import com.michaldrabik.ui_show.cases.ShowDetailsMainCase
 import com.michaldrabik.ui_show.cases.ShowDetailsMyShowsCase
 import com.michaldrabik.ui_show.cases.ShowDetailsQuickProgressCase
 import com.michaldrabik.ui_show.cases.ShowDetailsRatingCase
-import com.michaldrabik.ui_show.cases.ShowDetailsRelatedShowsCase
 import com.michaldrabik.ui_show.cases.ShowDetailsTranslationCase
 import com.michaldrabik.ui_show.cases.ShowDetailsWatchlistCase
 import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
 import com.michaldrabik.ui_show.quick_setup.QuickSetupListItem
-import com.michaldrabik.ui_show.related.RelatedListItem
 import com.michaldrabik.ui_show.seasons.SeasonListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
@@ -87,7 +84,6 @@ class ShowDetailsViewModel @Inject constructor(
   private val myShowsCase: ShowDetailsMyShowsCase,
   private val episodesCase: ShowDetailsEpisodesCase,
   private val listsCase: ShowDetailsListsCase,
-  private val relatedShowsCase: ShowDetailsRelatedShowsCase,
   private val quickProgressCase: ShowDetailsQuickProgressCase,
   private val settingsRepository: SettingsRepository,
   private val userManager: UserTraktManager,
@@ -108,7 +104,6 @@ class ShowDetailsViewModel @Inject constructor(
   private val actorsState = MutableStateFlow<List<Person>?>(null)
   private val crewState = MutableStateFlow<Map<Department, List<Person>>?>(null)
   private val seasonsState = MutableStateFlow<List<SeasonListItem>?>(null)
-  private val relatedState = MutableStateFlow<List<RelatedListItem>?>(null)
   private val nextEpisodeState = MutableStateFlow<NextEpisodeBundle?>(null)
   private val followedState = MutableStateFlow<FollowedState?>(null)
   private val ratingState = MutableStateFlow<RatingState?>(null)
@@ -159,7 +154,6 @@ class ShowDetailsViewModel @Inject constructor(
         launch { loadCastCrew(show) }
         launch { loadNextEpisode(show) }
         launch { loadTranslation(show) }
-        launch { loadRelatedShows(show) }
         launch { loadSeasons(show) }
       } catch (error: Throwable) {
         Timber.e(error)
@@ -240,25 +234,6 @@ class ShowDetailsViewModel @Inject constructor(
     seasonsState.value = emptyList()
   }
 
-  private suspend fun loadRelatedShows(show: Show) {
-    try {
-      val (myShows, watchlistShows) = myShowsCase.getAllIds()
-      val relatedShows = relatedShowsCase.loadRelatedShows(show).map {
-        val image = imagesProvider.findCachedImage(it, POSTER)
-        RelatedListItem(
-          show = it,
-          image = image,
-          isFollowed = it.traktId in myShows,
-          isWatchlist = it.traktId in watchlistShows
-        )
-      }
-      relatedState.value = relatedShows
-    } catch (error: Throwable) {
-      relatedState.value = emptyList()
-      rethrowCancellation(error)
-    }
-  }
-
   private suspend fun loadTranslation(show: Show) {
     try {
       translationCase.loadTranslation(show)?.let {
@@ -322,26 +297,6 @@ class ShowDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       val count = listsCase.countLists(show ?: this@ShowDetailsViewModel.show)
       listsCountState.value = count
-    }
-  }
-
-  fun loadMissingImage(item: RelatedListItem, force: Boolean) {
-
-    fun updateItem(new: RelatedListItem) {
-      val currentItems = uiState.value.relatedShows?.toMutableList() ?: mutableListOf()
-      currentItems.findReplace(new) { it.isSameAs(new) }
-      relatedState.value = currentItems
-    }
-
-    viewModelScope.launch {
-      updateItem(item.copy(isLoading = true))
-      try {
-        val image = imagesProvider.loadRemoteImage(item.show, item.image.type, force)
-        updateItem(item.copy(isLoading = false, image = image))
-      } catch (error: Throwable) {
-        updateItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
-        rethrowCancellation(error)
-      }
     }
   }
 
@@ -618,7 +573,6 @@ class ShowDetailsViewModel @Inject constructor(
     seasonsState,
     actorsState,
     crewState,
-    relatedState,
     nextEpisodeState,
     followedState,
     ratingState,
@@ -627,7 +581,7 @@ class ShowDetailsViewModel @Inject constructor(
     signedInState,
     premiumState,
     listsCountState
-  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16 ->
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15 ->
     ShowDetailsUiState(
       show = s1,
       showLoading = s2,
@@ -636,15 +590,14 @@ class ShowDetailsViewModel @Inject constructor(
       seasons = s5,
       actors = s6,
       crew = s7,
-      relatedShows = s8,
-      nextEpisode = s9,
-      followedState = s10,
-      ratingState = s11,
-      translation = s12,
-      country = s13,
-      isSignedIn = s14,
-      isPremium = s15,
-      listsCount = s16
+      nextEpisode = s8,
+      followedState = s9,
+      ratingState = s10,
+      translation = s11,
+      country = s12,
+      isSignedIn = s13,
+      isPremium = s14,
+      listsCount = s15
     )
   }.stateIn(
     scope = viewModelScope,

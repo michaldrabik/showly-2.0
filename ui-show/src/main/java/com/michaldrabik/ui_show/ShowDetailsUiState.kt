@@ -8,7 +8,6 @@ import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
-import com.michaldrabik.ui_show.related.RelatedListItem
 import com.michaldrabik.ui_show.seasons.SeasonListItem
 
 data class ShowDetailsUiState(
@@ -18,7 +17,6 @@ data class ShowDetailsUiState(
   val seasons: List<SeasonListItem>? = null,
   val actors: List<Person>? = null,
   val crew: Map<Person.Department, List<Person>>? = null,
-  val relatedShows: List<RelatedListItem>? = null,
   val nextEpisode: NextEpisodeBundle? = null,
   val listsCount: Int? = null,
   val followedState: FollowedState? = null,

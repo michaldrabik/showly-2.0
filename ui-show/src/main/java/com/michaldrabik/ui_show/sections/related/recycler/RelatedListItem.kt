@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_show.related
+package com.michaldrabik.ui_show.sections.related.recycler
 
 import com.michaldrabik.ui_base.common.ListItem
 import com.michaldrabik.ui_model.Image

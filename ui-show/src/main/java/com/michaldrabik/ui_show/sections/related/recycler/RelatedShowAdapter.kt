@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_show.related
+package com.michaldrabik.ui_show.sections.related.recycler
 
 import android.view.View
 import android.view.ViewGroup
