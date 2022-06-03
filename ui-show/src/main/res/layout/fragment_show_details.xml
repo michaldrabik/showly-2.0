@@ -6,7 +6,7 @@
   android:id="@+id/showDetailsRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:layout_marginTop="-0dp"
+  tools:layout_marginTop="-400dp"
   tools:theme="@style/AppTheme"
   >
 
@@ -278,7 +278,7 @@
         android:textAlignment="viewStart"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsActorsRecycler"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsActorsFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsStreamingsFragment"
@@ -301,159 +301,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsCrewBarrier"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsActorsFragment"
         />
 
-      <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/showDetailsActorsRecycler"
+      <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/showDetailsActorsFragment"
+        android:name="com.michaldrabik.ui_show.sections.people.ShowDetailsPeopleFragment"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/spaceMedium"
-        android:layout_marginBottom="@dimen/spaceMicro"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:overScrollMode="never"
-        android:paddingStart="@dimen/spaceNormal"
-        android:paddingEnd="@dimen/spaceNormal"
-        android:visibility="invisible"
-        app:layout_constrainedHeight="true"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsDirectingLabel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_min="@dimen/actorTileImageHeight"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsDescription"
-        />
-
-      <ProgressBar
-        android:id="@+id/showDetailsActorsProgress"
-        style="@style/ProgressBar.Dark"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        app:layout_constraintBottom_toBottomOf="@id/showDetailsActorsRecycler"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/showDetailsActorsRecycler"
-        />
-
-      <TextView
-        android:id="@+id/showDetailsActorsEmptyView"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/textActorsEmpty"
-        android:textColor="?android:attr/textColorSecondary"
-        android:visibility="gone"
+        android:layout_marginTop="@dimen/spaceMedium"
         app:layout_constraintBottom_toTopOf="@id/separator2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsDescription"
-        app:layout_constraintVertical_bias="0.35"
-        tools:visibility="visible"
-        />
-
-      <TextView
-        android:id="@+id/showDetailsDirectingLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="13dp"
-        android:gravity="center_vertical"
-        android:text="@string/textDirecting"
-        android:textColor="?android:attr/textColorSecondary"
-        android:textSize="11sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsDirectingValue"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsActorsRecycler"
-        app:layout_goneMarginTop="@dimen/spaceHuge"
-        tools:visibility="visible"
-        />
-
-      <TextView
-        android:id="@+id/showDetailsDirectingValue"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:minWidth="50dp"
-        android:text="-"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="11sp"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="@id/showDetailsDirectingLabel"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsDirectingLabel"
-        tools:ignore="HardcodedText"
-        tools:text="Steven"
-        tools:visibility="visible"
-        />
-
-      <TextView
-        android:id="@+id/showDetailsWritingLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spaceBig"
-        android:text="@string/textWriting"
-        android:textColor="?android:attr/textColorSecondary"
-        android:textSize="11sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/showDetailsDirectingLabel"
-        app:layout_constraintStart_toEndOf="@id/showDetailsDirectingValue"
-        app:layout_constraintTop_toTopOf="@id/showDetailsDirectingLabel"
-        tools:visibility="visible"
-        />
-
-      <TextView
-        android:id="@+id/showDetailsWritingValue"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:minWidth="50dp"
-        android:text="-"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="11sp"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="@id/showDetailsWritingLabel"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsWritingLabel"
-        tools:ignore="HardcodedText"
-        tools:text="Steven Spilberg\nTest"
-        tools:visibility="visible"
-        />
-
-      <TextView
-        android:id="@+id/showDetailsMusicLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginStart="@dimen/spaceBig"
-        android:layout_marginEnd="@dimen/spaceNormal"
-        android:text="@string/textMusic"
-        android:textColor="?android:attr/textColorSecondary"
-        android:textSize="11sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/showDetailsDirectingLabel"
-        app:layout_constraintStart_toEndOf="@id/showDetailsWritingValue"
-        app:layout_constraintTop_toTopOf="@id/showDetailsDirectingLabel"
-        tools:visibility="visible"
-        />
-
-      <TextView
-        android:id="@+id/showDetailsMusicValue"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/spaceNormal"
-        android:text="-"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="11sp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/showDetailsMusicLabel"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsMusicLabel"
-        tools:ignore="HardcodedText"
-        tools:text="Steven Spilberg"
-        tools:visibility="visible"
-        />
-
-      <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/showDetailsCrewBarrier"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="showDetailsDirectingValue, showDetailsWritingValue, showDetailsMusicValue"
+        tools:layout="@layout/fragment_show_details_people"
+        tools:layout_height="100dp"
         />
 
       <include
@@ -472,7 +334,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/separator2"
         tools:layout_height="@dimen/episodeNextViewHeight"
-        tools:visibility="gone"
+        tools:visibility="visible"
         />
 
       <TextView

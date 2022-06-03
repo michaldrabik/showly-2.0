@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_show.actors
+package com.michaldrabik.ui_show.sections.people.recycler
 
 import android.view.View
 import android.view.ViewGroup

@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_show.cases
+package com.michaldrabik.ui_show.sections.people.cases
 
 import com.michaldrabik.repository.PeopleRepository
 import com.michaldrabik.ui_model.Person

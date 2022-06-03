@@ -32,7 +32,6 @@ import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.Person
-import com.michaldrabik.ui_model.Person.Department
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.SeasonBundle
@@ -43,7 +42,6 @@ import com.michaldrabik.ui_show.ShowDetailsEvent.Finish
 import com.michaldrabik.ui_show.ShowDetailsEvent.RemoveFromTrakt
 import com.michaldrabik.ui_show.ShowDetailsEvent.ShowLoaded
 import com.michaldrabik.ui_show.ShowDetailsUiState.FollowedState
-import com.michaldrabik.ui_show.cases.ShowDetailsActorsCase
 import com.michaldrabik.ui_show.cases.ShowDetailsEpisodesCase
 import com.michaldrabik.ui_show.cases.ShowDetailsHiddenCase
 import com.michaldrabik.ui_show.cases.ShowDetailsListsCase
@@ -74,7 +72,6 @@ import kotlin.properties.Delegates.notNull
 @HiltViewModel
 class ShowDetailsViewModel @Inject constructor(
   private val mainCase: ShowDetailsMainCase,
-  private val actorsCase: ShowDetailsActorsCase,
   private val translationCase: ShowDetailsTranslationCase,
   private val ratingsCase: ShowDetailsRatingCase,
   private val watchlistCase: ShowDetailsWatchlistCase,
@@ -98,8 +95,6 @@ class ShowDetailsViewModel @Inject constructor(
   private val showState = MutableStateFlow<Show?>(null)
   private val showLoadingState = MutableStateFlow<Boolean?>(null)
   private val imageState = MutableStateFlow<Image?>(null)
-  private val actorsState = MutableStateFlow<List<Person>?>(null)
-  private val crewState = MutableStateFlow<Map<Department, List<Person>>?>(null)
   private val seasonsState = MutableStateFlow<List<SeasonListItem>?>(null)
   private val nextEpisodeState = MutableStateFlow<NextEpisodeBundle?>(null)
   private val followedState = MutableStateFlow<FollowedState?>(null)
@@ -147,7 +142,6 @@ class ShowDetailsViewModel @Inject constructor(
         loadBackgroundImage(show)
         loadListsCount(show)
         loadRating()
-        launch { loadCastCrew(show) }
         launch { loadNextEpisode(show) }
         launch { loadTranslation(show) }
         launch { loadSeasons(show) }
@@ -200,24 +194,6 @@ class ShowDetailsViewModel @Inject constructor(
         Timber.e(error)
         rethrowCancellation(error)
       }
-    }
-  }
-
-  private suspend fun loadCastCrew(show: Show) {
-    try {
-      val people = actorsCase.loadPeople(show)
-
-      val actors = people.getOrDefault(Department.ACTING, emptyList())
-      val crew = people.filter { it.key !in arrayOf(Department.ACTING, Department.UNKNOWN) }
-
-      actorsState.value = actors
-      crewState.value = crew
-
-      actorsCase.preloadDetails(actors)
-    } catch (error: Throwable) {
-      actorsState.value = emptyList()
-      crewState.value = emptyMap()
-      rethrowCancellation(error)
     }
   }
 
@@ -544,13 +520,17 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
+  fun onPersonDetails(person: Person) {
+    viewModelScope.launch {
+      _parentEvents.emit(ShowDetailsEvent.SaveOpenedPerson(person))
+    }
+  }
+
   val uiState = combine(
     showState,
     showLoadingState,
     imageState,
     seasonsState,
-    actorsState,
-    crewState,
     nextEpisodeState,
     followedState,
     ratingState,
@@ -559,14 +539,12 @@ class ShowDetailsViewModel @Inject constructor(
     signedInState,
     premiumState,
     listsCountState
-  ) { s1, s2, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15 ->
+  ) { s1, s2, s4, s5, s8, s9, s10, s11, s12, s13, s14, s15 ->
     ShowDetailsUiState(
       show = s1,
       showLoading = s2,
       image = s4,
       seasons = s5,
-      actors = s6,
-      crew = s7,
       nextEpisode = s8,
       followedState = s9,
       ratingState = s10,

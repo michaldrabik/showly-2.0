@@ -2,7 +2,6 @@ package com.michaldrabik.ui_show
 
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_model.Image
-import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
@@ -14,8 +13,6 @@ data class ShowDetailsUiState(
   val showLoading: Boolean? = null,
   val image: Image? = null,
   val seasons: List<SeasonListItem>? = null,
-  val actors: List<Person>? = null,
-  val crew: Map<Person.Department, List<Person>>? = null,
   val nextEpisode: NextEpisodeBundle? = null,
   val listsCount: Int? = null,
   val followedState: FollowedState? = null,

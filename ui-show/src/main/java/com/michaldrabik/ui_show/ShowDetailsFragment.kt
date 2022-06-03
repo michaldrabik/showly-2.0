@@ -1,19 +1,16 @@
 package com.michaldrabik.ui_show
 
 import android.annotation.SuppressLint
-import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.graphics.Typeface.BOLD
 import android.graphics.Typeface.NORMAL
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
 import android.view.animation.AnimationUtils
 import android.view.animation.DecelerateInterpolator
-import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
@@ -22,11 +19,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
-import androidx.fragment.app.clearFragmentResultListener
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
@@ -41,8 +36,6 @@ import com.michaldrabik.common.Mode
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseFragment
-import com.michaldrabik.ui_base.common.AppCountry
-import com.michaldrabik.ui_base.common.AppCountry.UNITED_STATES
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.sheets.links.LinksBottomSheet
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet
@@ -53,7 +46,6 @@ import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomShee
 import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
-import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.copyToClipboard
 import com.michaldrabik.ui_base.utilities.extensions.crossfadeTo
@@ -71,7 +63,6 @@ import com.michaldrabik.ui_base.utilities.extensions.screenHeight
 import com.michaldrabik.ui_base.utilities.extensions.screenWidth
 import com.michaldrabik.ui_base.utilities.extensions.setTextIfEmpty
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
-import com.michaldrabik.ui_base.utilities.extensions.trimWithSuffix
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
@@ -80,7 +71,6 @@ import com.michaldrabik.ui_comments.fragment.CommentsFragment
 import com.michaldrabik.ui_episodes.details.EpisodeDetailsBottomSheet
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Genre
-import com.michaldrabik.ui_model.IdImdb
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageFamily.SHOW
@@ -99,6 +89,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_RATING_CHANGED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_CUSTOM_IMAGE_CLEARED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FAMILY
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_PERSON
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
@@ -106,18 +97,13 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_EPISODE_DETAIL
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MANAGE_LISTS
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_PERSON_DETAILS
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_REMOVE_TRAKT
-import com.michaldrabik.ui_people.details.PersonDetailsBottomSheet
-import com.michaldrabik.ui_people.list.PeopleListBottomSheet
 import com.michaldrabik.ui_show.ShowDetailsEvent.Finish
 import com.michaldrabik.ui_show.ShowDetailsEvent.RemoveFromTrakt
-import com.michaldrabik.ui_show.actors.ActorsAdapter
 import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
-import com.michaldrabik.ui_show.helpers.ShowLink
 import com.michaldrabik.ui_show.quick_setup.QuickSetupView
 import com.michaldrabik.ui_show.seasons.SeasonListItem
 import com.michaldrabik.ui_show.seasons.SeasonsAdapter
 import com.michaldrabik.ui_show.views.AddToShowsButton
-import com.michaldrabik.ui_streamings.recycler.StreamingAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_show_details.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
@@ -135,10 +121,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private val showId by lazy { IdTrakt(requireLong(ARG_SHOW_ID)) }
 
-  private var actorsAdapter: ActorsAdapter? = null
   private var seasonsAdapter: SeasonsAdapter? = null
-  private var streamingAdapter: StreamingAdapter? = null
-  private var lastOpenedPerson: Person? = null
 
   private val imageHeight by lazy {
     if (resources.configuration.orientation == ORIENTATION_PORTRAIT) screenHeight()
@@ -157,7 +140,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     requireActivity().requestedOrientation = SCREEN_ORIENTATION_PORTRAIT
     setupView()
     setupStatusBar()
-    setupActorsList()
     setupSeasonsList()
 
     launchAndRepeatStarted(
@@ -170,9 +152,14 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           isInitialized = true
         }
         viewModel.loadPremium()
-        lastOpenedPerson?.let { openPersonSheet(it) }
       }
     )
+
+    setFragmentResultListener(REQUEST_PERSON_DETAILS) { _, bundle ->
+      bundle.getParcelable<Person>(ARG_PERSON)?.let {
+        viewModel.onPersonDetails(it)
+      }
+    }
   }
 
   private fun setupView() {
@@ -225,18 +212,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         .forEach { v ->
           (v.layoutParams as MarginLayoutParams).updateMargins(top = inset)
         }
-    }
-  }
-
-  private fun setupActorsList() {
-    actorsAdapter = ActorsAdapter().apply {
-      itemClickListener = { openPersonSheet(it) }
-    }
-    showDetailsActorsRecycler.apply {
-      setHasFixedSize(true)
-      adapter = actorsAdapter
-      layoutManager = LinearLayoutManager(requireContext(), HORIZONTAL, false)
-      addDivider(R.drawable.divider_horizontal_list, HORIZONTAL)
     }
   }
 
@@ -374,8 +349,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
       }
       nextEpisode?.let { renderNextEpisode(it) }
-      actors?.let { renderActors(it) }
-      crew?.let { renderCrew(it) }
       translation?.let { renderTranslation(it) }
       ratingState?.let { renderRating(it) }
       isPremium.let {
@@ -457,39 +430,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
   }
 
-  private fun renderActors(actors: List<Person>) {
-    if (actorsAdapter?.itemCount != 0) return
-    actorsAdapter?.setItems(actors)
-    showDetailsActorsRecycler.visibleIf(actors.isNotEmpty())
-    showDetailsActorsEmptyView.visibleIf(actors.isEmpty())
-    showDetailsActorsProgress.gone()
-  }
-
-  private fun renderCrew(crew: Map<Person.Department, List<Person>>) {
-
-    fun renderPeople(labelView: View, valueView: TextView, people: List<Person>, department: Person.Department) {
-      labelView.visibleIf(people.isNotEmpty())
-      valueView.visibleIf(people.isNotEmpty())
-      valueView.text = people
-        .take(2)
-        .joinToString("\n") { it.name.trimWithSuffix(20, "…") }
-        .plus(if (people.size > 2) "\n…" else "")
-      valueView.onClick { openPeopleListSheet(people, department) }
-    }
-
-    if (!crew.containsKey(Person.Department.DIRECTING)) {
-      return
-    }
-
-    val directors = crew[Person.Department.DIRECTING] ?: emptyList()
-    val writers = crew[Person.Department.WRITING] ?: emptyList()
-    val sound = crew[Person.Department.SOUND] ?: emptyList()
-
-    renderPeople(showDetailsDirectingLabel, showDetailsDirectingValue, directors, Person.Department.DIRECTING)
-    renderPeople(showDetailsWritingLabel, showDetailsWritingValue, writers, Person.Department.WRITING)
-    renderPeople(showDetailsMusicLabel, showDetailsMusicValue, sound, Person.Department.SOUND)
-  }
-
   private fun renderSeasons(seasonsItems: List<SeasonListItem>) {
     seasonsAdapter?.setItems(seasonsItems)
     showDetailsEpisodesView.updateEpisodes(seasonsItems)
@@ -548,29 +488,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     showSnack(event)
   }
 
-  private fun openIMDbLink(id: IdImdb, type: String) {
-    val i = Intent(Intent.ACTION_VIEW)
-    i.data = Uri.parse("imdb:///$type/${id.id}")
-    try {
-      startActivity(i)
-    } catch (e: ActivityNotFoundException) {
-      // IMDb App not installed. Start in web browser
-      openWebUrl("http://www.imdb.com/$type/${id.id}") ?: showSnack(MessageEvent.Info(R.string.errorCouldNotFindApp))
-    }
-  }
-
-  private fun openShowLink(
-    link: ShowLink,
-    id: String,
-    country: AppCountry = UNITED_STATES,
-  ) {
-    if (link == ShowLink.IMDB) {
-      openIMDbLink(IdImdb(id), "title")
-    } else {
-      openWebUrl(link.getUri(id, country)) ?: showSnack(MessageEvent.Info(R.string.errorCouldNotFindApp))
-    }
-  }
-
   private fun openEpisodeDetails(
     show: Show,
     episode: Episode,
@@ -605,27 +522,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       putBoolean(EpisodeDetailsBottomSheet.ARG_SHOW_TABS, showTabs)
     }
     navigateToSafe(R.id.actionShowDetailsFragmentEpisodeDetails, bundle)
-  }
-
-  private fun openPersonSheet(person: Person) {
-    lastOpenedPerson = null
-    setFragmentResultListener(REQUEST_PERSON_DETAILS) { _, _ ->
-      lastOpenedPerson = person
-    }
-    val bundle = PersonDetailsBottomSheet.createBundle(person, showId)
-    navigateToSafe(R.id.actionShowDetailsFragmentToPerson, bundle)
-  }
-
-  private fun openPeopleListSheet(people: List<Person>, department: Person.Department) {
-    if (people.isEmpty()) return
-    if (people.size == 1) {
-      openPersonSheet(people.first())
-      return
-    }
-    clearFragmentResultListener(REQUEST_PERSON_DETAILS)
-    val title = showDetailsTitle.text.toString()
-    val bundle = PeopleListBottomSheet.createBundle(showId, title, Mode.SHOWS, department)
-    navigateToSafe(R.id.actionShowDetailsFragmentToPeopleList, bundle)
   }
 
   private fun openRemoveTraktSheet(event: RemoveFromTrakt) {
@@ -764,9 +660,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   }
 
   override fun onDestroyView() {
-    actorsAdapter = null
     seasonsAdapter = null
-    streamingAdapter = null
     super.onDestroyView()
   }
 }
