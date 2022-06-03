@@ -25,6 +25,8 @@ android {
       minifyEnabled false
     }
   }
+
+  namespace 'com.michaldrabik.common'
 }
 
 dependencies {

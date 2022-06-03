@@ -1,7 +1,5 @@
 <manifest
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.michaldrabik.ui_settings"
-  >
+  xmlns:android="http://schemas.android.com/apk/res/android">
 
   <queries>
     <intent>
