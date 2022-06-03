@@ -2,6 +2,7 @@ package com.michaldrabik.ui_show.quick_setup
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,8 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Season
-import com.michaldrabik.ui_show.R
-import kotlinx.android.synthetic.main.view_quick_setup.view.*
+import com.michaldrabik.ui_show.databinding.ViewQuickSetupBinding
 
 class QuickSetupView : FrameLayout {
 
@@ -18,16 +18,16 @@ class QuickSetupView : FrameLayout {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
+  private val binding = ViewQuickSetupBinding.inflate(LayoutInflater.from(context), this)
   private val quickSetupAdapter by lazy { QuickSetupAdapter() }
 
   init {
-    inflate(context, R.layout.view_quick_setup, this)
     layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
     setupRecycler()
   }
 
   private fun setupRecycler() {
-    viewQuickSetupRecycler.apply {
+    binding.viewQuickSetupRecycler.apply {
       setHasFixedSize(true)
       adapter = quickSetupAdapter
       layoutManager = LinearLayoutManager(context, VERTICAL, false)

@@ -10,16 +10,19 @@ import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_show.R
 import com.michaldrabik.ui_show.ShowDetailsViewModel
+import com.michaldrabik.ui_show.databinding.FragmentShowDetailsRelatedBinding
 import com.michaldrabik.ui_show.sections.related.recycler.RelatedShowAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_show_details_related.*
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class ShowDetailsRelatedFragment : BaseFragment<ShowDetailsRelatedViewModel>(R.layout.fragment_show_details_related) {
+
+  private val binding by viewBinding(FragmentShowDetailsRelatedBinding::bind)
 
   private val parentViewModel by viewModels<ShowDetailsViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<ShowDetailsRelatedViewModel>()
@@ -43,7 +46,7 @@ class ShowDetailsRelatedFragment : BaseFragment<ShowDetailsRelatedViewModel>(R.l
       },
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
     )
-    showDetailsRelatedRecycler.apply {
+    binding.showDetailsRelatedRecycler.apply {
       setHasFixedSize(true)
       adapter = relatedAdapter
       layoutManager = LinearLayoutManager(requireContext(), HORIZONTAL, false)
@@ -53,13 +56,15 @@ class ShowDetailsRelatedFragment : BaseFragment<ShowDetailsRelatedViewModel>(R.l
 
   private fun render(uiState: ShowDetailsRelatedUiState) {
     with(uiState) {
-      relatedShows?.let {
-        relatedAdapter?.setItems(it)
-        showDetailsRelatedRecycler.visibleIf(it.isNotEmpty())
-        showDetailsRelatedLabel.fadeIf(it.isNotEmpty(), hardware = true)
-      }
-      isLoading.let {
-        showDetailsRelatedProgress.visibleIf(it)
+      with(binding) {
+        relatedShows?.let {
+          relatedAdapter?.setItems(it)
+          showDetailsRelatedRecycler.visibleIf(it.isNotEmpty())
+          showDetailsRelatedLabel.fadeIf(it.isNotEmpty(), hardware = true)
+        }
+        isLoading.let {
+          showDetailsRelatedProgress.visibleIf(it)
+        }
       }
     }
   }

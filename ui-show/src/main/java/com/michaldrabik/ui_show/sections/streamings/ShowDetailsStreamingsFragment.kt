@@ -8,16 +8,19 @@ import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_show.R
 import com.michaldrabik.ui_show.ShowDetailsFragment
 import com.michaldrabik.ui_show.ShowDetailsViewModel
+import com.michaldrabik.ui_show.databinding.FragmentShowDetailsStreamingsBinding
 import com.michaldrabik.ui_streamings.recycler.StreamingAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_show_details_streamings.*
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class ShowDetailsStreamingsFragment : BaseFragment<ShowDetailsStreamingsViewModel>(R.layout.fragment_show_details_streamings) {
+
+  private val binding by viewBinding(FragmentShowDetailsStreamingsBinding::bind)
 
   private val parentViewModel by viewModels<ShowDetailsViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<ShowDetailsStreamingsViewModel>()
@@ -35,7 +38,7 @@ class ShowDetailsStreamingsFragment : BaseFragment<ShowDetailsStreamingsViewMode
 
   private fun setupView() {
     streamingAdapter = StreamingAdapter()
-    showDetailsStreamingsRecycler.apply {
+    binding.showDetailsStreamingsRecycler.apply {
       setHasFixedSize(true)
       adapter = streamingAdapter
       layoutManager = LinearLayoutManager(requireContext(), HORIZONTAL, false)

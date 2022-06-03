@@ -15,6 +15,7 @@ import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.trimWithSuffix
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.Person.Department
 import com.michaldrabik.ui_model.Show
@@ -23,17 +24,18 @@ import com.michaldrabik.ui_people.details.PersonDetailsBottomSheet
 import com.michaldrabik.ui_people.list.PeopleListBottomSheet
 import com.michaldrabik.ui_show.R
 import com.michaldrabik.ui_show.ShowDetailsEvent
+import com.michaldrabik.ui_show.ShowDetailsFragment
 import com.michaldrabik.ui_show.ShowDetailsViewModel
+import com.michaldrabik.ui_show.databinding.FragmentShowDetailsPeopleBinding
 import com.michaldrabik.ui_show.sections.people.recycler.ActorsAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_show_details.*
-import kotlinx.android.synthetic.main.fragment_show_details_people.*
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class ShowDetailsPeopleFragment : BaseFragment<ShowDetailsPeopleViewModel>(R.layout.fragment_show_details_people) {
 
   override val navigationId = R.id.showDetailsFragment
+  private val binding by viewBinding(FragmentShowDetailsPeopleBinding::bind)
 
   private val parentViewModel by viewModels<ShowDetailsViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<ShowDetailsPeopleViewModel>()
@@ -55,7 +57,7 @@ class ShowDetailsPeopleFragment : BaseFragment<ShowDetailsPeopleViewModel>(R.lay
     actorsAdapter = ActorsAdapter().apply {
       itemClickListener = { viewModel.loadPersonDetails(it) }
     }
-    showDetailsActorsRecycler.apply {
+    binding.showDetailsActorsRecycler.apply {
       setHasFixedSize(true)
       adapter = actorsAdapter
       layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -78,7 +80,7 @@ class ShowDetailsPeopleFragment : BaseFragment<ShowDetailsPeopleViewModel>(R.lay
     }
 
     clearFragmentResultListener(NavigationArgs.REQUEST_PERSON_DETAILS)
-    val title = requireParentFragment().showDetailsTitle.text.toString()
+    val title = (requireParentFragment() as ShowDetailsFragment).binding.showDetailsTitle.text.toString()
     val bundle = PeopleListBottomSheet.createBundle(show.ids.trakt, title, Mode.SHOWS, department)
     navigateToSafe(R.id.actionShowDetailsFragmentToPeopleList, bundle)
   }
@@ -88,12 +90,12 @@ class ShowDetailsPeopleFragment : BaseFragment<ShowDetailsPeopleViewModel>(R.lay
       actors?.let {
         if (actorsAdapter?.itemCount != 0) return@let
         actorsAdapter?.setItems(it)
-        showDetailsActorsRecycler.visibleIf(actors.isNotEmpty(), gone = false)
-        showDetailsActorsEmptyView.visibleIf(actors.isEmpty())
+        binding.showDetailsActorsRecycler.visibleIf(actors.isNotEmpty(), gone = false)
+        binding.showDetailsActorsEmptyView.visibleIf(actors.isEmpty())
       }
       crew?.let { renderCrew(it) }
       isLoading.let {
-        showDetailsActorsProgress.visibleIf(it)
+        binding.showDetailsActorsProgress.visibleIf(it)
       }
     }
   }
@@ -123,9 +125,11 @@ class ShowDetailsPeopleFragment : BaseFragment<ShowDetailsPeopleViewModel>(R.lay
     val writers = crew[Department.WRITING] ?: emptyList()
     val sound = crew[Department.SOUND] ?: emptyList()
 
-    renderPeople(showDetailsDirectingLabel, showDetailsDirectingValue, directors, Department.DIRECTING)
-    renderPeople(showDetailsWritingLabel, showDetailsWritingValue, writers, Department.WRITING)
-    renderPeople(showDetailsMusicLabel, showDetailsMusicValue, sound, Department.SOUND)
+    with(binding) {
+      renderPeople(showDetailsDirectingLabel, showDetailsDirectingValue, directors, Department.DIRECTING)
+      renderPeople(showDetailsWritingLabel, showDetailsWritingValue, writers, Department.WRITING)
+      renderPeople(showDetailsMusicLabel, showDetailsMusicValue, sound, Department.SOUND)
+    }
   }
 
   private fun handleEvent(event: Event<*>) {

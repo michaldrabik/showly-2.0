@@ -65,6 +65,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_comments.fragment.CommentsFragment
 import com.michaldrabik.ui_episodes.details.EpisodeDetailsBottomSheet
 import com.michaldrabik.ui_model.Episode
@@ -97,12 +98,12 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_PERSON_DETAILS
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_REMOVE_TRAKT
 import com.michaldrabik.ui_show.ShowDetailsEvent.Finish
 import com.michaldrabik.ui_show.ShowDetailsEvent.RemoveFromTrakt
+import com.michaldrabik.ui_show.databinding.FragmentShowDetailsBinding
 import com.michaldrabik.ui_show.quick_setup.QuickSetupView
 import com.michaldrabik.ui_show.seasons.SeasonListItem
 import com.michaldrabik.ui_show.seasons.SeasonsAdapter
 import com.michaldrabik.ui_show.views.AddToShowsButton
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_show_details.*
 import kotlinx.coroutines.flow.collect
 import timber.log.Timber
 import java.time.Duration
@@ -112,8 +113,10 @@ import java.util.Locale.ENGLISH
 @AndroidEntryPoint
 class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment_show_details) {
 
-  override val viewModel by viewModels<ShowDetailsViewModel>()
   override val navigationId = R.id.showDetailsFragment
+  val binding by viewBinding(FragmentShowDetailsBinding::bind)
+
+  override val viewModel by viewModels<ShowDetailsViewModel>()
 
   private val showId by lazy { IdTrakt(requireLong(ARG_SHOW_ID)) }
 
@@ -159,55 +162,59 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   }
 
   private fun setupView() {
-    hideNavigation()
-    showDetailsImageGuideline.setGuidelineBegin((imageHeight * imageRatio).toInt())
-    showDetailsEpisodesView.itemClickListener = { show, episode, season, isWatched ->
-      openEpisodeDetails(show, episode, season, isWatched, episode.hasAired(season))
-    }
-    listOf(showDetailsBackArrow, showDetailsBackArrow2).onClick { requireActivity().onBackPressed() }
-    showDetailsImage.onClick {
-      val bundle = bundleOf(
-        ARG_SHOW_ID to showId.id,
-        ARG_FAMILY to SHOW,
-        ARG_TYPE to FANART
-      )
-      navigateToSafe(R.id.actionShowDetailsFragmentToArtGallery, bundle)
-      Analytics.logShowGalleryClick(showId.id)
-    }
-    showDetailsTipGallery.onClick {
-      it.gone()
-      showTip(SHOW_DETAILS_GALLERY)
-    }
-    showDetailsAddButton.run {
-      isEnabled = false
-      onAddMyShowsClickListener = { viewModel.addFollowedShow() }
-      onAddWatchlistClickListener = { viewModel.addWatchlistShow() }
-      onRemoveClickListener = { viewModel.removeFromFollowed() }
-    }
-    showDetailsManageListsLabel.onClick { openListsDialog() }
-    showDetailsHideLabel.onClick { viewModel.addHiddenShow() }
-    showDetailsTitle.onClick {
-      requireContext().copyToClipboard(showDetailsTitle.text.toString())
-      showSnack(MessageEvent.Info(R.string.textCopiedToClipboard))
-    }
-    showDetailsPremiumAd.onClick {
-      navigateToSafe(R.id.actionShowDetailsFragmentToPremium)
+    with(binding) {
+      hideNavigation()
+      showDetailsImageGuideline.setGuidelineBegin((imageHeight * imageRatio).toInt())
+      showDetailsEpisodesView.itemClickListener = { show, episode, season, isWatched ->
+        openEpisodeDetails(show, episode, season, isWatched, episode.hasAired(season))
+      }
+      listOf(showDetailsBackArrow, showDetailsBackArrow2).onClick { requireActivity().onBackPressed() }
+      showDetailsImage.onClick {
+        val bundle = bundleOf(
+          ARG_SHOW_ID to showId.id,
+          ARG_FAMILY to SHOW,
+          ARG_TYPE to FANART
+        )
+        navigateToSafe(R.id.actionShowDetailsFragmentToArtGallery, bundle)
+        Analytics.logShowGalleryClick(showId.id)
+      }
+      showDetailsTipGallery.onClick {
+        it.gone()
+        showTip(SHOW_DETAILS_GALLERY)
+      }
+      showDetailsAddButton.run {
+        isEnabled = false
+        onAddMyShowsClickListener = { viewModel.addFollowedShow() }
+        onAddWatchlistClickListener = { viewModel.addWatchlistShow() }
+        onRemoveClickListener = { viewModel.removeFromFollowed() }
+      }
+      showDetailsManageListsLabel.onClick { openListsDialog() }
+      showDetailsHideLabel.onClick { viewModel.addHiddenShow() }
+      showDetailsTitle.onClick {
+        requireContext().copyToClipboard(showDetailsTitle.text.toString())
+        showSnack(MessageEvent.Info(R.string.textCopiedToClipboard))
+      }
+      showDetailsPremiumAd.onClick {
+        navigateToSafe(R.id.actionShowDetailsFragmentToPremium)
+      }
     }
   }
 
   private fun setupStatusBar() {
-    showDetailsBackArrow.doOnApplyWindowInsets { view, insets, _, _ ->
-      val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
-      if (imagePadded) {
-        showDetailsMainLayout.updatePadding(top = inset)
-      } else {
-        (showDetailsShareButton.layoutParams as MarginLayoutParams)
-          .updateMargins(top = inset)
-      }
-      arrayOf<View>(view, showDetailsBackArrow2, showDetailsEpisodesView)
-        .forEach { v ->
-          (v.layoutParams as MarginLayoutParams).updateMargins(top = inset)
+    with(binding) {
+      showDetailsBackArrow.doOnApplyWindowInsets { view, insets, _, _ ->
+        val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+        if (imagePadded) {
+          showDetailsMainLayout.updatePadding(top = inset)
+        } else {
+          (showDetailsShareButton.layoutParams as MarginLayoutParams)
+            .updateMargins(top = inset)
         }
+        arrayOf<View>(view, showDetailsBackArrow2, showDetailsEpisodesView)
+          .forEach { v ->
+            (v.layoutParams as MarginLayoutParams).updateMargins(top = inset)
+          }
+      }
     }
   }
 
@@ -218,7 +225,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         viewModel.setSeasonWatched(item.season, isChecked, removeTrakt = true)
       }
     }
-    showDetailsSeasonsRecycler.apply {
+    binding.showDetailsSeasonsRecycler.apply {
       adapter = seasonsAdapter
       layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
       itemAnimator = null
@@ -226,42 +233,46 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   }
 
   private fun showEpisodesView(item: SeasonListItem) {
-    showDetailsEpisodesView.run {
-      bind(item)
-      fadeIn(265, withHardware = true) {
-        bindEpisodes(item.episodes)
-        viewModel.loadSeasonTranslation(item)
+    with(binding) {
+      showDetailsEpisodesView.run {
+        bind(item)
+        fadeIn(265, withHardware = true) {
+          bindEpisodes(item.episodes)
+          viewModel.loadSeasonTranslation(item)
+        }
+        startAnimation(animationEnterRight)
+        itemCheckedListener = { episode, season, isChecked ->
+          viewModel.setEpisodeWatched(episode, season, isChecked, removeTrakt = true)
+        }
+        seasonCheckedListener = { season, isChecked ->
+          viewModel.setSeasonWatched(season, isChecked, removeTrakt = true)
+        }
+        rateClickListener = { season ->
+          openRateSeasonDialog(season)
+        }
       }
-      startAnimation(animationEnterRight)
-      itemCheckedListener = { episode, season, isChecked ->
-        viewModel.setEpisodeWatched(episode, season, isChecked, removeTrakt = true)
+      showDetailsMainLayout.run {
+        fadeOut(200)
+        startAnimation(animationExitRight)
       }
-      seasonCheckedListener = { season, isChecked ->
-        viewModel.setSeasonWatched(season, isChecked, removeTrakt = true)
-      }
-      rateClickListener = { season ->
-        openRateSeasonDialog(season)
-      }
+      showDetailsBackArrow.crossfadeTo(showDetailsBackArrow2)
     }
-    showDetailsMainLayout.run {
-      fadeOut(200)
-      startAnimation(animationExitRight)
-    }
-    showDetailsBackArrow.crossfadeTo(showDetailsBackArrow2)
   }
 
   private fun hideExtraView(view: View) {
     if (view.animation != null) return
-
     view.run {
       fadeOut(300)
       startAnimation(animationExitLeft)
     }
-    showDetailsMainLayout.run {
-      fadeIn(withHardware = true)
-      startAnimation(animationEnterLeft)
+
+    with(binding) {
+      showDetailsMainLayout.run {
+        fadeIn(withHardware = true)
+        startAnimation(animationEnterLeft)
+      }
+      showDetailsBackArrow2.crossfadeTo(showDetailsBackArrow)
     }
-    showDetailsBackArrow2.crossfadeTo(showDetailsBackArrow)
 
     viewModel.refreshAnnouncements()
   }
@@ -275,79 +286,81 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private fun render(uiState: ShowDetailsUiState) {
     uiState.run {
-      show?.let { show ->
-        showDetailsTitle.text = show.title
-        showDetailsDescription.setTextIfEmpty(show.overview)
-        showDetailsStatus.text = getString(show.status.displayName)
-        val year = if (show.year > 0) String.format(ENGLISH, "%d", show.year) else ""
-        val country = if (show.country.isNotBlank()) String.format(ENGLISH, "(%s)", show.country) else ""
-        showDetailsExtraInfo.text = getString(
-          R.string.textShowExtraInfo,
-          show.network,
-          year,
-          country.uppercase(),
-          show.runtime.toString(),
-          getString(R.string.textMinutesShort),
-          renderGenres(show.genres)
-        )
-        showDetailsCommentsButton.visible()
-        showDetailsShareButton.run {
-          isEnabled = show.ids.imdb.id.isNotBlank()
-          alpha = if (isEnabled) 1.0F else 0.35F
-          onClick { openShareSheet(show) }
+      with(binding) {
+        show?.let { show ->
+          showDetailsTitle.text = show.title
+          showDetailsDescription.setTextIfEmpty(show.overview)
+          showDetailsStatus.text = getString(show.status.displayName)
+          val year = if (show.year > 0) String.format(ENGLISH, "%d", show.year) else ""
+          val country = if (show.country.isNotBlank()) String.format(ENGLISH, "(%s)", show.country) else ""
+          showDetailsExtraInfo.text = getString(
+            R.string.textShowExtraInfo,
+            show.network,
+            year,
+            country.uppercase(),
+            show.runtime.toString(),
+            getString(R.string.textMinutesShort),
+            renderGenres(show.genres)
+          )
+          showDetailsCommentsButton.visible()
+          showDetailsShareButton.run {
+            isEnabled = show.ids.imdb.id.isNotBlank()
+            alpha = if (isEnabled) 1.0F else 0.35F
+            onClick { openShareSheet(show) }
+          }
+          showDetailsTrailerButton.run {
+            isEnabled = show.trailer.isNotBlank()
+            alpha = if (isEnabled) 1.0F else 0.35F
+            onClick {
+              openWebUrl(show.trailer) ?: showSnack(MessageEvent.Info(R.string.errorCouldNotFindApp))
+              Analytics.logShowTrailerClick(show)
+            }
+          }
+          showDetailsCustomImagesLabel.visibleIf(Config.SHOW_PREMIUM)
+          showDetailsCustomImagesLabel.onClick { openCustomImagesSheet(show.traktId, meta?.isPremium) }
+          showDetailsLinksButton.onClick {
+            val args = LinksBottomSheet.createBundle(show)
+            navigateToSafe(R.id.actionShowDetailsFragmentToLinks, args)
+          }
+          showDetailsCommentsButton.onClick {
+            val bundle = CommentsFragment.createBundle(show)
+            navigateToSafe(R.id.actionShowDetailsFragmentToComments, bundle)
+          }
+          showDetailsAddButton.isEnabled = true
+          separator4.visible()
         }
-        showDetailsTrailerButton.run {
-          isEnabled = show.trailer.isNotBlank()
-          alpha = if (isEnabled) 1.0F else 0.35F
-          onClick {
-            openWebUrl(show.trailer) ?: showSnack(MessageEvent.Info(R.string.errorCouldNotFindApp))
-            Analytics.logShowTrailerClick(show)
+        showLoading?.let {
+          if (!showDetailsEpisodesView.isVisible) {
+            showDetailsMainLayout.fadeIf(!it, hardware = true)
+            showDetailsMainProgress.visibleIf(it)
           }
         }
-        showDetailsCustomImagesLabel.visibleIf(Config.SHOW_PREMIUM)
-        showDetailsCustomImagesLabel.onClick { openCustomImagesSheet(show.traktId, meta?.isPremium) }
-        showDetailsLinksButton.onClick {
-          val args = LinksBottomSheet.createBundle(show)
-          navigateToSafe(R.id.actionShowDetailsFragmentToLinks, args)
+        followedState?.let {
+          when {
+            it.isMyShows -> showDetailsAddButton.setState(AddToShowsButton.State.IN_MY_SHOWS, it.withAnimation)
+            it.isWatchlist -> showDetailsAddButton.setState(AddToShowsButton.State.IN_WATCHLIST, it.withAnimation)
+            it.isHidden -> showDetailsAddButton.setState(AddToShowsButton.State.IN_HIDDEN, it.withAnimation)
+            else -> showDetailsAddButton.setState(AddToShowsButton.State.ADD, it.withAnimation)
+          }
+          showDetailsHideLabel.visibleIf(!it.isHidden)
         }
-        showDetailsCommentsButton.onClick {
-          val bundle = CommentsFragment.createBundle(show)
-          navigateToSafe(R.id.actionShowDetailsFragmentToComments, bundle)
+        listsCount?.let {
+          val text =
+            if (it > 0) getString(R.string.textShowManageListsCount, it)
+            else getString(R.string.textShowManageLists)
+          showDetailsManageListsLabel.text = text
         }
-        showDetailsAddButton.isEnabled = true
-        separator4.visible()
-      }
-      showLoading?.let {
-        if (!showDetailsEpisodesView.isVisible) {
-          showDetailsMainLayout.fadeIf(!it, hardware = true)
-          showDetailsMainProgress.visibleIf(it)
+        image?.let { renderImage(it) }
+        seasons?.let {
+          renderSeasons(it)
+          renderRuntimeLeft(it)
+          (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
         }
-      }
-      followedState?.let {
-        when {
-          it.isMyShows -> showDetailsAddButton.setState(AddToShowsButton.State.IN_MY_SHOWS, it.withAnimation)
-          it.isWatchlist -> showDetailsAddButton.setState(AddToShowsButton.State.IN_WATCHLIST, it.withAnimation)
-          it.isHidden -> showDetailsAddButton.setState(AddToShowsButton.State.IN_HIDDEN, it.withAnimation)
-          else -> showDetailsAddButton.setState(AddToShowsButton.State.ADD, it.withAnimation)
+        translation?.let { renderTranslation(it) }
+        ratingState?.let { renderRating(it) }
+        meta?.isPremium.let {
+          showDetailsPremiumAd.visibleIf(it != true)
         }
-        showDetailsHideLabel.visibleIf(!it.isHidden)
-      }
-      listsCount?.let {
-        val text =
-          if (it > 0) getString(R.string.textShowManageListsCount, it)
-          else getString(R.string.textShowManageLists)
-        showDetailsManageListsLabel.text = text
-      }
-      image?.let { renderImage(it) }
-      seasons?.let {
-        renderSeasons(it)
-        renderRuntimeLeft(it)
-        (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
-      }
-      translation?.let { renderTranslation(it) }
-      ratingState?.let { renderRating(it) }
-      meta?.isPremium.let {
-        showDetailsPremiumAd.visibleIf(it != true)
       }
     }
   }
@@ -359,64 +372,70 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       .joinToString(", ") { getString(it.displayName) }
 
   private fun renderRating(rating: RatingState) {
-    showDetailsRateButton.visibleIf(rating.rateLoading == false, gone = false)
-    showDetailsRateProgress.visibleIf(rating.rateLoading == true)
+    with(binding) {
+      showDetailsRateButton.visibleIf(rating.rateLoading == false, gone = false)
+      showDetailsRateProgress.visibleIf(rating.rateLoading == true)
 
-    showDetailsRateButton.text =
-      if (rating.hasRating()) "${rating.userRating?.rating}/10"
-      else getString(R.string.textRate)
+      showDetailsRateButton.text =
+        if (rating.hasRating()) "${rating.userRating?.rating}/10"
+        else getString(R.string.textRate)
 
-    val typeFace = if (rating.hasRating()) BOLD else NORMAL
-    showDetailsRateButton.setTypeface(null, typeFace)
+      val typeFace = if (rating.hasRating()) BOLD else NORMAL
+      showDetailsRateButton.setTypeface(null, typeFace)
 
-    showDetailsRateButton.onClick {
-      if (rating.rateAllowed == true) {
-        openRateDialog()
-      } else {
-        showSnack(MessageEvent.Info(R.string.textSignBeforeRate))
+      showDetailsRateButton.onClick {
+        if (rating.rateAllowed == true) {
+          openRateDialog()
+        } else {
+          showSnack(MessageEvent.Info(R.string.textSignBeforeRate))
+        }
       }
     }
   }
 
   private fun renderImage(image: Image) {
-    if (image.status == UNAVAILABLE) {
-      showDetailsImageProgress.gone()
-      showDetailsPlaceholder.visible()
-      showDetailsImage.isClickable = false
-      showDetailsImage.isEnabled = false
-      return
-    }
-    Glide.with(this)
-      .load(image.fullFileUrl)
-      .transform(CenterCrop())
-      .transition(withCrossFade(IMAGE_FADE_DURATION_MS))
-      .withFailListener {
+    with(binding) {
+      if (image.status == UNAVAILABLE) {
         showDetailsImageProgress.gone()
         showDetailsPlaceholder.visible()
-        showDetailsImage.isClickable = true
-        showDetailsImage.isEnabled = true
+        showDetailsImage.isClickable = false
+        showDetailsImage.isEnabled = false
+        return
       }
-      .withSuccessListener {
-        showDetailsImageProgress.gone()
-        showDetailsPlaceholder.gone()
-        showDetailsTipGallery.fadeIf(!isTipShown(SHOW_DETAILS_GALLERY))
-      }
-      .into(showDetailsImage)
+      Glide.with(this@ShowDetailsFragment)
+        .load(image.fullFileUrl)
+        .transform(CenterCrop())
+        .transition(withCrossFade(IMAGE_FADE_DURATION_MS))
+        .withFailListener {
+          showDetailsImageProgress.gone()
+          showDetailsPlaceholder.visible()
+          showDetailsImage.isClickable = true
+          showDetailsImage.isEnabled = true
+        }
+        .withSuccessListener {
+          showDetailsImageProgress.gone()
+          showDetailsPlaceholder.gone()
+          showDetailsTipGallery.fadeIf(!isTipShown(SHOW_DETAILS_GALLERY))
+        }
+        .into(showDetailsImage)
+    }
   }
 
   private fun renderSeasons(seasonsItems: List<SeasonListItem>) {
-    seasonsAdapter?.setItems(seasonsItems)
-    showDetailsEpisodesView.updateEpisodes(seasonsItems)
-    showDetailsSeasonsProgress.gone()
-    showDetailsSeasonsEmptyView.visibleIf(seasonsItems.isEmpty())
-    showDetailsSeasonsRecycler.fadeIf(seasonsItems.isNotEmpty(), hardware = true)
-    showDetailsSeasonsLabel.fadeIf(seasonsItems.isNotEmpty(), hardware = true)
-    showDetailsQuickProgress.fadeIf(seasonsItems.isNotEmpty(), hardware = true)
-    showDetailsQuickProgress.onClick {
-      if (seasonsItems.any { !it.season.isSpecial() }) {
-        openQuickSetupDialog(seasonsItems.map { it.season })
-      } else {
-        showSnack(MessageEvent.Info(R.string.textSeasonsEmpty))
+    with(binding) {
+      seasonsAdapter?.setItems(seasonsItems)
+      showDetailsEpisodesView.updateEpisodes(seasonsItems)
+      showDetailsSeasonsProgress.gone()
+      showDetailsSeasonsEmptyView.visibleIf(seasonsItems.isEmpty())
+      showDetailsSeasonsRecycler.fadeIf(seasonsItems.isNotEmpty(), hardware = true)
+      showDetailsSeasonsLabel.fadeIf(seasonsItems.isNotEmpty(), hardware = true)
+      showDetailsQuickProgress.fadeIf(seasonsItems.isNotEmpty(), hardware = true)
+      showDetailsQuickProgress.onClick {
+        if (seasonsItems.any { !it.season.isSpecial() }) {
+          openQuickSetupDialog(seasonsItems.map { it.season })
+        } else {
+          showSnack(MessageEvent.Info(R.string.textSeasonsEmpty))
+        }
       }
     }
   }
@@ -437,16 +456,20 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       hours <= 0 -> getString(R.string.textRuntimeLeftMinutes, minutes.toString())
       else -> getString(R.string.textRuntimeLeftHours, hours.toString(), minutes.toString())
     }
-    showDetailsRuntimeLeft.text = runtimeText
-    showDetailsRuntimeLeft.fadeIf(seasonsItems.isNotEmpty() && runtimeLeft > 0, hardware = true)
+    with(binding) {
+      showDetailsRuntimeLeft.text = runtimeText
+      showDetailsRuntimeLeft.fadeIf(seasonsItems.isNotEmpty() && runtimeLeft > 0, hardware = true)
+    }
   }
 
   private fun renderTranslation(translation: Translation?) {
-    if (translation?.overview?.isNotBlank() == true) {
-      showDetailsDescription.text = translation.overview
-    }
-    if (translation?.title?.isNotBlank() == true) {
-      showDetailsTitle.text = translation.title
+    with(binding) {
+      if (translation?.overview?.isNotBlank() == true) {
+        showDetailsDescription.text = translation.overview
+      }
+      if (translation?.title?.isNotBlank() == true) {
+        showDetailsTitle.text = translation.title
+      }
     }
   }
 
@@ -480,7 +503,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           }
           bundle.containsKey(ACTION_EPISODE_TAB_SELECTED) -> {
             val selectedEpisode = bundle.getParcelable<Episode>(ACTION_EPISODE_TAB_SELECTED)!!
-            showDetailsEpisodesView.selectEpisode(selectedEpisode)
+            binding.showDetailsEpisodesView.selectEpisode(selectedEpisode)
           }
         }
       }
@@ -601,28 +624,30 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   }
 
   fun showStreamingsView(animate: Boolean) {
-    if (!animate) {
-      showDetailsStreamingsFragment.visible()
-      return
+    with(binding) {
+      if (!animate) {
+        showDetailsStreamingsFragment.visible()
+        return
+      }
+      val animation = ConstraintSet().apply {
+        clone(showDetailsMainContent)
+        setVisibility(showDetailsStreamingsFragment.id, View.VISIBLE)
+      }
+      val transition = AutoTransition().apply {
+        interpolator = DecelerateInterpolator(1.5F)
+        duration = 200
+      }
+      TransitionManager.beginDelayedTransition(showDetailsMainContent, transition)
+      animation.applyTo(showDetailsMainContent)
     }
-    val animation = ConstraintSet().apply {
-      clone(showDetailsMainContent)
-      setVisibility(showDetailsStreamingsFragment.id, View.VISIBLE)
-    }
-    val transition = AutoTransition().apply {
-      interpolator = DecelerateInterpolator(1.5F)
-      duration = 200
-    }
-    TransitionManager.beginDelayedTransition(showDetailsMainContent, transition)
-    animation.applyTo(showDetailsMainContent)
   }
 
   override fun setupBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
     dispatcher.addCallback(viewLifecycleOwner) {
       when {
-        showDetailsEpisodesView.isVisible -> {
-          hideExtraView(showDetailsEpisodesView)
+        binding.showDetailsEpisodesView.isVisible -> {
+          hideExtraView(binding.showDetailsEpisodesView)
           return@addCallback
         }
         else -> {

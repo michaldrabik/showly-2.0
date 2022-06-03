@@ -10,14 +10,14 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_show.R
 import com.michaldrabik.ui_show.ShowDetailsFragment
 import com.michaldrabik.ui_show.ShowDetailsViewModel
+import com.michaldrabik.ui_show.databinding.FragmentShowDetailsNextEpisodeBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_show_details.*
-import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
 import kotlinx.coroutines.flow.collect
 import java.util.Locale
 
@@ -25,6 +25,7 @@ import java.util.Locale
 class ShowDetailsNextEpisodeFragment : BaseFragment<ShowDetailsNextEpisodeViewModel>(R.layout.fragment_show_details_next_episode) {
 
   override val navigationId = R.id.showDetailsFragment
+  private val binding by viewBinding(FragmentShowDetailsNextEpisodeBinding::bind)
 
   private val parentViewModel by viewModels<ShowDetailsViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<ShowDetailsNextEpisodeViewModel>()
@@ -39,19 +40,22 @@ class ShowDetailsNextEpisodeFragment : BaseFragment<ShowDetailsNextEpisodeViewMo
 
   private fun render(uiState: ShowDetailsNextEpisodeUiState) {
     with(uiState) {
-      nextEpisode?.let {
-        val (show, episode) = it.nextEpisode
-        showDetailsEpisodeText.text =
-          String.format(Locale.ENGLISH, getString(R.string.textEpisodeTitle), episode.season, episode.number, episode.title)
+      with(binding) {
+        nextEpisode?.let {
+          val (show, episode) = it.nextEpisode
+          showDetailsEpisodeText.text =
+            String.format(Locale.ENGLISH, getString(R.string.textEpisodeTitle), episode.season, episode.number, episode.title)
 
-        episode.firstAired?.let { date ->
-          val displayDate = it.dateFormat?.format(date.toLocalZone())?.capitalizeWords()
-          showDetailsEpisodeAirtime.visible()
-          showDetailsEpisodeAirtime.text = displayDate
+          episode.firstAired?.let { date ->
+            val displayDate = it.dateFormat?.format(date.toLocalZone())?.capitalizeWords()
+            showDetailsEpisodeAirtime.visible()
+            showDetailsEpisodeAirtime.text = displayDate
+          }
+
+          showDetailsEpisodeRoot.onClick { openDetails(show, episode) }
+          (requireParentFragment() as ShowDetailsFragment)
+            .binding.showDetailsEpisodeFragment.fadeIn(withHardware = true)
         }
-
-        showDetailsEpisodeRoot.onClick { openDetails(show, episode) }
-        requireParentFragment().showDetailsEpisodeFragment.fadeIn(withHardware = true)
       }
     }
   }

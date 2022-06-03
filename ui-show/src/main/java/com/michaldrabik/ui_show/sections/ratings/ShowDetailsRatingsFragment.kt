@@ -9,16 +9,19 @@ import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.openImdbUrl
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.IdImdb
 import com.michaldrabik.ui_show.R
 import com.michaldrabik.ui_show.ShowDetailsViewModel
+import com.michaldrabik.ui_show.databinding.FragmentShowDetailsRatingsBinding
 import com.michaldrabik.ui_show.helpers.ShowLink
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_show_details_ratings.*
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class ShowDetailsRatingsFragment : BaseFragment<ShowDetailsRatingsViewModel>(R.layout.fragment_show_details_ratings) {
+
+  private val binding by viewBinding(FragmentShowDetailsRatingsBinding::bind)
 
   private val parentViewModel by viewModels<ShowDetailsViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<ShowDetailsRatingsViewModel>()
@@ -33,19 +36,21 @@ class ShowDetailsRatingsFragment : BaseFragment<ShowDetailsRatingsViewModel>(R.l
 
   private fun render(uiState: ShowDetailsRatingsUiState) {
     with(uiState) {
-      ratings?.let {
-        if (showDetailsRatings.isBound()) return
-        showDetailsRatings.bind(ratings)
-        show?.let {
-          showDetailsRatings.onTraktClick = { openLink(ShowLink.TRAKT, show.traktId.toString()) }
-          showDetailsRatings.onImdbClick = { openLink(ShowLink.IMDB, show.ids.imdb.id) }
-          showDetailsRatings.onMetaClick = { openLink(ShowLink.METACRITIC, show.title) }
-          showDetailsRatings.onRottenClick = {
-            val url = it.rottenTomatoesUrl
-            if (!url.isNullOrBlank()) {
-              openWebUrl(url) ?: openLink(ShowLink.ROTTEN, "${show.title} ${show.year}")
-            } else {
-              openLink(ShowLink.ROTTEN, "${show.title} ${show.year}")
+      with(binding) {
+        ratings?.let {
+          if (showDetailsRatings.isBound()) return
+          showDetailsRatings.bind(ratings)
+          show?.let {
+            showDetailsRatings.onTraktClick = { openLink(ShowLink.TRAKT, show.traktId.toString()) }
+            showDetailsRatings.onImdbClick = { openLink(ShowLink.IMDB, show.ids.imdb.id) }
+            showDetailsRatings.onMetaClick = { openLink(ShowLink.METACRITIC, show.title) }
+            showDetailsRatings.onRottenClick = {
+              val url = it.rottenTomatoesUrl
+              if (!url.isNullOrBlank()) {
+                openWebUrl(url) ?: openLink(ShowLink.ROTTEN, "${show.title} ${show.year}")
+              } else {
+                openLink(ShowLink.ROTTEN, "${show.title} ${show.year}")
+              }
             }
           }
         }
