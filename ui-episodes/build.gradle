@@ -31,6 +31,8 @@ android {
       minifyEnabled false
     }
   }
+
+  namespace 'com.michaldrabik.ui_episodes'
 }
 
 dependencies {

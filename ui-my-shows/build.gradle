@@ -27,6 +27,8 @@ android {
       minifyEnabled false
     }
   }
+
+  namespace 'com.michaldrabik.ui_my_shows'
 }
 
 dependencies {

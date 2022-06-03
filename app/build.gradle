@@ -33,11 +33,6 @@ android {
     enableExperimentalClasspathAggregation = true
   }
 
-  // If the Android Gradle plugin version used in the project is less than 7.0 then checkReleaseBuilds has to be set to false
-  lintOptions {
-    checkReleaseBuilds false
-  }
-
   compileSdkVersion versions.compileSdk
 
   defaultConfig {
@@ -80,6 +75,12 @@ android {
       }
     }
   }
+
+  lint {
+    checkReleaseBuilds false
+  }
+
+  namespace 'com.michaldrabik.showly2'
 }
 
 dependencies {
