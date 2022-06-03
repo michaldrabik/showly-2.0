@@ -14,7 +14,6 @@ import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet
-import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
@@ -49,7 +48,6 @@ import com.michaldrabik.ui_show.cases.ShowDetailsMyShowsCase
 import com.michaldrabik.ui_show.cases.ShowDetailsQuickProgressCase
 import com.michaldrabik.ui_show.cases.ShowDetailsTranslationCase
 import com.michaldrabik.ui_show.cases.ShowDetailsWatchlistCase
-import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
 import com.michaldrabik.ui_show.helpers.ShowDetailsMeta
 import com.michaldrabik.ui_show.quick_setup.QuickSetupListItem
 import com.michaldrabik.ui_show.seasons.SeasonListItem
@@ -87,7 +85,6 @@ class ShowDetailsViewModel @Inject constructor(
   private val quickSyncManager: QuickSyncManager,
   private val announcementManager: AnnouncementManager,
   private val imagesProvider: ShowImagesProvider,
-  private val dateFormatProvider: DateFormatProvider,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val _parentEvents = MutableSharedFlow<ShowDetailsEvent<*>>()
@@ -97,7 +94,6 @@ class ShowDetailsViewModel @Inject constructor(
   private val showLoadingState = MutableStateFlow<Boolean?>(null)
   private val imageState = MutableStateFlow<Image?>(null)
   private val seasonsState = MutableStateFlow<List<SeasonListItem>?>(null)
-  private val nextEpisodeState = MutableStateFlow<NextEpisodeBundle?>(null)
   private val followedState = MutableStateFlow<FollowedState?>(null)
   private val ratingState = MutableStateFlow<RatingState?>(null)
   private val translationState = MutableStateFlow<Translation?>(null)
@@ -142,7 +138,6 @@ class ShowDetailsViewModel @Inject constructor(
         loadBackgroundImage(show)
         loadListsCount(show)
         loadUserRating()
-        launch { loadNextEpisode(show) }
         launch { loadTranslation(show) }
         launch { loadSeasons(show) }
       } catch (error: Throwable) {
@@ -161,26 +156,6 @@ class ShowDetailsViewModel @Inject constructor(
           }
         }
       }
-    }
-  }
-
-  private suspend fun loadNextEpisode(show: Show) {
-    try {
-      val episode = episodesCase.loadNextEpisode(show.ids.trakt)
-      val dateFormat = dateFormatProvider.loadFullHourFormat()
-      episode?.let {
-        val nextEpisode = NextEpisodeBundle(Pair(show, it), dateFormat = dateFormat)
-        nextEpisodeState.value = nextEpisode
-        val translation = translationCase.loadTranslation(episode, show)
-        if (translation?.title?.isNotBlank() == true) {
-          val translated = it.copy(title = translation.title)
-          val nextEpisodeTranslated = NextEpisodeBundle(Pair(show, translated), dateFormat = dateFormat)
-          nextEpisodeState.value = nextEpisodeTranslated
-        }
-      }
-    } catch (error: Throwable) {
-      Logger.record(error, "Source" to "ShowDetailsViewModel::loadNextEpisode()")
-      rethrowCancellation(error)
     }
   }
 
@@ -531,19 +506,17 @@ class ShowDetailsViewModel @Inject constructor(
     showLoadingState,
     imageState,
     seasonsState,
-    nextEpisodeState,
     followedState,
     ratingState,
     translationState,
     listsCountState,
     metaState
-  ) { s1, s2, s4, s5, s8, s9, s10, s11, s15, s16 ->
+  ) { s1, s2, s4, s5, s9, s10, s11, s15, s16 ->
     ShowDetailsUiState(
       show = s1,
       showLoading = s2,
       image = s4,
       seasons = s5,
-      nextEpisode = s8,
       followedState = s9,
       ratingState = s10,
       translation = s11,

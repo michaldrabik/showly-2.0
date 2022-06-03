@@ -2,7 +2,6 @@ package com.michaldrabik.ui_show.cases
 
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.repository.TranslationsRepository
-import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.SeasonTranslation
 import com.michaldrabik.ui_model.Show
@@ -19,12 +18,6 @@ class ShowDetailsTranslationCase @Inject constructor(
     val language = translationsRepository.getLanguage()
     if (language == DEFAULT_LANGUAGE) return null
     return translationsRepository.loadTranslation(show, language)
-  }
-
-  suspend fun loadTranslation(episode: Episode, show: Show, onlyLocal: Boolean = false): Translation? {
-    val language = translationsRepository.getLanguage()
-    if (language == DEFAULT_LANGUAGE) return null
-    return translationsRepository.loadTranslation(episode, show.ids.trakt, language, onlyLocal)
   }
 
   suspend fun loadTranslations(season: Season, show: Show): List<SeasonTranslation> {

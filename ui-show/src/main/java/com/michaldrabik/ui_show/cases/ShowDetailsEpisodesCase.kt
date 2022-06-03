@@ -12,8 +12,6 @@ import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.network.NetworkStatusProvider
-import com.michaldrabik.ui_model.Episode
-import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
@@ -40,11 +38,6 @@ class ShowDetailsEpisodesCase @Inject constructor(
   private val dateFormatProvider: DateFormatProvider,
   private val networkStatusProvider: NetworkStatusProvider
 ) {
-
-  suspend fun loadNextEpisode(traktId: IdTrakt): Episode? {
-    val episode = remoteSource.trakt.fetchNextEpisode(traktId.id) ?: return null
-    return mappers.episode.fromNetwork(episode)
-  }
 
   suspend fun loadSeasons(show: Show): SeasonsBundle =
     coroutineScope {

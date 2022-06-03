@@ -33,7 +33,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.common.Mode
-import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.WidgetsProvider
@@ -46,7 +45,6 @@ import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomShee
 import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
-import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.copyToClipboard
 import com.michaldrabik.ui_base.utilities.extensions.crossfadeTo
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
@@ -99,14 +97,12 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_PERSON_DETAILS
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_REMOVE_TRAKT
 import com.michaldrabik.ui_show.ShowDetailsEvent.Finish
 import com.michaldrabik.ui_show.ShowDetailsEvent.RemoveFromTrakt
-import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
 import com.michaldrabik.ui_show.quick_setup.QuickSetupView
 import com.michaldrabik.ui_show.seasons.SeasonListItem
 import com.michaldrabik.ui_show.seasons.SeasonsAdapter
 import com.michaldrabik.ui_show.views.AddToShowsButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_show_details.*
-import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
 import kotlinx.coroutines.flow.collect
 import timber.log.Timber
 import java.time.Duration
@@ -348,7 +344,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         renderRuntimeLeft(it)
         (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
       }
-      nextEpisode?.let { renderNextEpisode(it) }
       translation?.let { renderTranslation(it) }
       ratingState?.let { renderRating(it) }
       meta?.isPremium.let {
@@ -409,27 +404,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       .into(showDetailsImage)
   }
 
-  private fun renderNextEpisode(episodeBundle: NextEpisodeBundle) {
-    episodeBundle.run {
-      val (show, episode) = episodeBundle.nextEpisode
-      showDetailsEpisodeText.text =
-        String.format(ENGLISH, getString(R.string.textEpisodeTitle), episode.season, episode.number, episode.title)
-
-      with(showDetailsEpisodeCard) {
-        onClick {
-          openEpisodeDetails(show, episode, null, isWatched = false, showButton = false, showTabs = false)
-        }
-        fadeIn(withHardware = true)
-      }
-
-      episode.firstAired?.let {
-        val displayDate = episodeBundle.dateFormat?.format(it.toLocalZone())?.capitalizeWords()
-        showDetailsEpisodeAirtime.visible()
-        showDetailsEpisodeAirtime.text = displayDate
-      }
-    }
-  }
-
   private fun renderSeasons(seasonsItems: List<SeasonListItem>) {
     seasonsAdapter?.setItems(seasonsItems)
     showDetailsEpisodesView.updateEpisodes(seasonsItems)
@@ -488,7 +462,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     showSnack(event)
   }
 
-  private fun openEpisodeDetails(
+  fun openEpisodeDetails(
     show: Show,
     episode: Episode,
     season: Season?,

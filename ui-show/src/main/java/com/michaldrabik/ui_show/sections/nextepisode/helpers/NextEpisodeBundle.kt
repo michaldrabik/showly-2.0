@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_show.helpers
+package com.michaldrabik.ui_show.sections.nextepisode.helpers
 
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Show

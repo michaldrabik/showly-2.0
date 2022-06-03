@@ -297,7 +297,7 @@
         android:layout_marginEnd="@dimen/spaceNormal"
         android:layout_marginBottom="@dimen/spaceMedium"
         android:background="?attr/colorSeparator"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsEpisodeCard"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsEpisodeFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -314,14 +314,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsDescription"
-        tools:layout="@layout/fragment_show_details_people"
         tools:layout_height="100dp"
         />
 
-      <include
-        android:id="@+id/showDetailsEpisodeCard"
-        layout="@layout/fragment_show_details_next_episode"
-        android:layout_width="match_parent"
+      <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/showDetailsEpisodeFragment"
+        android:name="com.michaldrabik.ui_show.sections.nextepisode.ShowDetailsNextEpisodeFragment"
+        android:layout_width="0dp"
         android:layout_height="@dimen/episodeNextViewHeight"
         android:layout_marginLeft="@dimen/spaceNormal"
         android:layout_marginTop="@dimen/spaceTiny"
@@ -333,8 +332,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/separator2"
-        tools:layout_height="@dimen/episodeNextViewHeight"
-        tools:visibility="visible"
+        tools:layout="@layout/fragment_show_details_next_episode"
         />
 
       <TextView
@@ -349,7 +347,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/showDetailsSeasonsRecycler"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsEpisodeCard"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsEpisodeFragment"
         app:layout_goneMarginTop="@dimen/spaceMicro"
         tools:visibility="visible"
         />
