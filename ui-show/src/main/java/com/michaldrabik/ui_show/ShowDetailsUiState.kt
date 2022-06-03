@@ -1,11 +1,11 @@
 package com.michaldrabik.ui_show
 
-import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
+import com.michaldrabik.ui_show.helpers.ShowDetailsMeta
 import com.michaldrabik.ui_show.seasons.SeasonListItem
 
 data class ShowDetailsUiState(
@@ -18,9 +18,7 @@ data class ShowDetailsUiState(
   val followedState: FollowedState? = null,
   val ratingState: RatingState? = null,
   val translation: Translation? = null,
-  val country: AppCountry? = null,
-  val isPremium: Boolean = false,
-  val isSignedIn: Boolean = false
+  val meta: ShowDetailsMeta? = null
 ) {
 
   data class FollowedState(

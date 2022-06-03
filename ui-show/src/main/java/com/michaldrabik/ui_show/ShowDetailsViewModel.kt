@@ -13,7 +13,6 @@ import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.Logger
-import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
@@ -51,6 +50,7 @@ import com.michaldrabik.ui_show.cases.ShowDetailsQuickProgressCase
 import com.michaldrabik.ui_show.cases.ShowDetailsTranslationCase
 import com.michaldrabik.ui_show.cases.ShowDetailsWatchlistCase
 import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
+import com.michaldrabik.ui_show.helpers.ShowDetailsMeta
 import com.michaldrabik.ui_show.quick_setup.QuickSetupListItem
 import com.michaldrabik.ui_show.seasons.SeasonListItem
 import com.michaldrabik.ui_show.sections.ratings.cases.ShowDetailsRatingCase
@@ -63,6 +63,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -100,10 +101,8 @@ class ShowDetailsViewModel @Inject constructor(
   private val followedState = MutableStateFlow<FollowedState?>(null)
   private val ratingState = MutableStateFlow<RatingState?>(null)
   private val translationState = MutableStateFlow<Translation?>(null)
-  private val countryState = MutableStateFlow<AppCountry?>(null)
-  private val signedInState = MutableStateFlow(false)
-  private val premiumState = MutableStateFlow(false)
   private val listsCountState = MutableStateFlow(0)
+  private val metaState = MutableStateFlow<ShowDetailsMeta?>(null)
 
   private var show by notNull<Show>()
   private var areSeasonsLocal = false
@@ -135,13 +134,14 @@ class ShowDetailsViewModel @Inject constructor(
         showLoadingState.value = false
         followedState.value = isFollowed
         ratingState.value = RatingState(rateAllowed = isSignedIn, rateLoading = false)
-        countryState.value = AppCountry.fromCode(settingsRepository.country)
-        premiumState.value = settingsRepository.isPremium
-        signedInState.value = isSignedIn
+        metaState.value = ShowDetailsMeta(
+          isSignedIn = isSignedIn,
+          isPremium = settingsRepository.isPremium
+        )
 
         loadBackgroundImage(show)
         loadListsCount(show)
-        loadRating()
+        loadUserRating()
         launch { loadNextEpisode(show) }
         launch { loadTranslation(show) }
         launch { loadSeasons(show) }
@@ -256,10 +256,10 @@ class ShowDetailsViewModel @Inject constructor(
   }
 
   fun loadPremium() {
-    premiumState.value = settingsRepository.isPremium
+    metaState.update { it?.copy(isPremium = settingsRepository.isPremium) }
   }
 
-  fun loadRating() {
+  fun loadUserRating() {
     viewModelScope.launch {
       val isSignedIn = userManager.isAuthorized()
       if (!isSignedIn) return@launch
@@ -535,11 +535,9 @@ class ShowDetailsViewModel @Inject constructor(
     followedState,
     ratingState,
     translationState,
-    countryState,
-    signedInState,
-    premiumState,
-    listsCountState
-  ) { s1, s2, s4, s5, s8, s9, s10, s11, s12, s13, s14, s15 ->
+    listsCountState,
+    metaState
+  ) { s1, s2, s4, s5, s8, s9, s10, s11, s15, s16 ->
     ShowDetailsUiState(
       show = s1,
       showLoading = s2,
@@ -549,10 +547,8 @@ class ShowDetailsViewModel @Inject constructor(
       followedState = s9,
       ratingState = s10,
       translation = s11,
-      country = s12,
-      isSignedIn = s13,
-      isPremium = s14,
-      listsCount = s15
+      listsCount = s15,
+      meta = s16
     )
   }.stateIn(
     scope = viewModelScope,

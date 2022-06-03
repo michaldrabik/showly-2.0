@@ -309,7 +309,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           }
         }
         showDetailsCustomImagesLabel.visibleIf(Config.SHOW_PREMIUM)
-        showDetailsCustomImagesLabel.onClick { openCustomImagesSheet(show.traktId, isPremium) }
+        showDetailsCustomImagesLabel.onClick { openCustomImagesSheet(show.traktId, meta?.isPremium) }
         showDetailsLinksButton.onClick {
           val args = LinksBottomSheet.createBundle(show)
           navigateToSafe(R.id.actionShowDetailsFragmentToLinks, args)
@@ -351,8 +351,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       nextEpisode?.let { renderNextEpisode(it) }
       translation?.let { renderTranslation(it) }
       ratingState?.let { renderRating(it) }
-      isPremium.let {
-        showDetailsPremiumAd.visibleIf(!it)
+      meta?.isPremium.let {
+        showDetailsPremiumAd.visibleIf(it != true)
       }
     }
   }
@@ -560,7 +560,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         REMOVE -> renderSnack(MessageEvent.Info(R.string.textRateRemoved))
         else -> Timber.w("Unknown result")
       }
-      viewModel.loadRating()
+      viewModel.loadUserRating()
     }
     val bundle = RatingsBottomSheet.createBundle(showId, Type.SHOW)
     navigateToSafe(R.id.actionShowDetailsFragmentToRating, bundle)
