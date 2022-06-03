@@ -4,7 +4,6 @@ import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.RatingState
-import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
@@ -21,7 +20,6 @@ data class ShowDetailsUiState(
   val listsCount: Int? = null,
   val followedState: FollowedState? = null,
   val ratingState: RatingState? = null,
-  val ratings: Ratings? = null,
   val translation: Translation? = null,
   val country: AppCountry? = null,
   val isPremium: Boolean = false,

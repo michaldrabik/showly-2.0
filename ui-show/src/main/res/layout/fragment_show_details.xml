@@ -229,14 +229,15 @@
         android:layout_marginStart="@dimen/spaceNormal"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:background="?attr/colorSeparator"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsRatings"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsRatingsFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsManageListsLabel"
         />
 
-      <com.michaldrabik.ui_base.common.views.RatingsStripView
-        android:id="@+id/showDetailsRatings"
+      <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/showDetailsRatingsFragment"
+        android:name="com.michaldrabik.ui_show.sections.ratings.ShowDetailsRatingsFragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceTiny"
@@ -247,6 +248,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/separator5"
+        tools:layout="@layout/fragment_show_details_ratings"
         />
 
       <androidx.fragment.app.FragmentContainerView
@@ -258,7 +260,7 @@
         app:layout_constraintBottom_toTopOf="@id/showDetailsDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/showDetailsRatings"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsRatingsFragment"
         tools:layout_height="40dp"
         tools:visibility="visible"
         />

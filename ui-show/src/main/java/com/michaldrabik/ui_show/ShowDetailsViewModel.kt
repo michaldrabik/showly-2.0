@@ -34,7 +34,6 @@ import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.Person.Department
 import com.michaldrabik.ui_model.RatingState
-import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.SeasonBundle
 import com.michaldrabik.ui_model.Show
@@ -51,12 +50,12 @@ import com.michaldrabik.ui_show.cases.ShowDetailsListsCase
 import com.michaldrabik.ui_show.cases.ShowDetailsMainCase
 import com.michaldrabik.ui_show.cases.ShowDetailsMyShowsCase
 import com.michaldrabik.ui_show.cases.ShowDetailsQuickProgressCase
-import com.michaldrabik.ui_show.cases.ShowDetailsRatingCase
 import com.michaldrabik.ui_show.cases.ShowDetailsTranslationCase
 import com.michaldrabik.ui_show.cases.ShowDetailsWatchlistCase
 import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
 import com.michaldrabik.ui_show.quick_setup.QuickSetupListItem
 import com.michaldrabik.ui_show.seasons.SeasonListItem
+import com.michaldrabik.ui_show.sections.ratings.cases.ShowDetailsRatingCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -68,7 +67,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.util.Locale
 import javax.inject.Inject
 import kotlin.properties.Delegates.notNull
 
@@ -99,7 +97,6 @@ class ShowDetailsViewModel @Inject constructor(
 
   private val showState = MutableStateFlow<Show?>(null)
   private val showLoadingState = MutableStateFlow<Boolean?>(null)
-  private val showRatingsState = MutableStateFlow<Ratings?>(null)
   private val imageState = MutableStateFlow<Image?>(null)
   private val actorsState = MutableStateFlow<List<Person>?>(null)
   private val crewState = MutableStateFlow<Map<Department, List<Person>>?>(null)
@@ -150,7 +147,6 @@ class ShowDetailsViewModel @Inject constructor(
         loadBackgroundImage(show)
         loadListsCount(show)
         loadRating()
-        launch { loadRatings(show) }
         launch { loadCastCrew(show) }
         launch { loadNextEpisode(show) }
         launch { loadTranslation(show) }
@@ -241,23 +237,6 @@ class ShowDetailsViewModel @Inject constructor(
       }
     } catch (error: Throwable) {
       Logger.record(error, "Source" to "ShowDetailsViewModel::loadTranslation()")
-      rethrowCancellation(error)
-    }
-  }
-
-  private suspend fun loadRatings(show: Show) {
-    val traktRatings = Ratings(
-      trakt = Ratings.Value(String.format(Locale.ENGLISH, "%.1f", show.rating), false),
-      imdb = Ratings.Value(null, true),
-      metascore = Ratings.Value(null, true),
-      rottenTomatoes = Ratings.Value(null, true)
-    )
-    try {
-      showRatingsState.value = traktRatings
-      val ratings = ratingsCase.loadExternalRatings(show)
-      showRatingsState.value = ratings
-    } catch (error: Throwable) {
-      showRatingsState.value = traktRatings
       rethrowCancellation(error)
     }
   }
@@ -568,7 +547,6 @@ class ShowDetailsViewModel @Inject constructor(
   val uiState = combine(
     showState,
     showLoadingState,
-    showRatingsState,
     imageState,
     seasonsState,
     actorsState,
@@ -581,11 +559,10 @@ class ShowDetailsViewModel @Inject constructor(
     signedInState,
     premiumState,
     listsCountState
-  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15 ->
+  ) { s1, s2, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15 ->
     ShowDetailsUiState(
       show = s1,
       showLoading = s2,
-      ratings = s3,
       image = s4,
       seasons = s5,
       actors = s6,

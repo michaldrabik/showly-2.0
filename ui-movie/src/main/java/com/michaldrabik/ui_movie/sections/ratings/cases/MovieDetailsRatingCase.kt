@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_movie.cases
+package com.michaldrabik.ui_movie.sections.ratings.cases
 
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.ui_model.Movie

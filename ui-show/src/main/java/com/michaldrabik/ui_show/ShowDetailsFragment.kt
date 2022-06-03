@@ -88,7 +88,6 @@ import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
 import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.RatingState
-import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_GALLERY
@@ -374,7 +373,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         renderRuntimeLeft(it)
         (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
       }
-      ratings?.let { renderRatings(it, show) }
       nextEpisode?.let { renderNextEpisode(it) }
       actors?.let { renderActors(it) }
       crew?.let { renderCrew(it) }
@@ -408,24 +406,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         openRateDialog()
       } else {
         showSnack(MessageEvent.Info(R.string.textSignBeforeRate))
-      }
-    }
-  }
-
-  private fun renderRatings(ratings: Ratings, show: Show?) {
-    if (showDetailsRatings.isBound()) return
-    showDetailsRatings.bind(ratings)
-    show?.let {
-      showDetailsRatings.onTraktClick = { openShowLink(ShowLink.TRAKT, show.traktId.toString()) }
-      showDetailsRatings.onImdbClick = { openShowLink(ShowLink.IMDB, show.ids.imdb.id) }
-      showDetailsRatings.onMetaClick = { openShowLink(ShowLink.METACRITIC, show.title) }
-      showDetailsRatings.onRottenClick = {
-        val url = it.rottenTomatoesUrl
-        if (!url.isNullOrBlank()) {
-          openWebUrl(url) ?: openShowLink(ShowLink.ROTTEN, "${show.title} ${show.year}")
-        } else {
-          openShowLink(ShowLink.ROTTEN, "${show.title} ${show.year}")
-        }
       }
     }
   }
