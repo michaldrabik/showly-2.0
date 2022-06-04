@@ -9,7 +9,6 @@ import android.graphics.Typeface.NORMAL
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
-import android.view.animation.AnimationUtils
 import android.view.animation.DecelerateInterpolator
 import androidx.activity.addCallback
 import androidx.constraintlayout.widget.ConstraintSet
@@ -46,11 +45,8 @@ import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.copyToClipboard
-import com.michaldrabik.ui_base.utilities.extensions.crossfadeTo
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
-import com.michaldrabik.ui_base.utilities.extensions.fadeIn
-import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
@@ -102,6 +98,7 @@ import com.michaldrabik.ui_show.databinding.FragmentShowDetailsBinding
 import com.michaldrabik.ui_show.quick_setup.QuickSetupView
 import com.michaldrabik.ui_show.seasons.SeasonListItem
 import com.michaldrabik.ui_show.seasons.SeasonsAdapter
+import com.michaldrabik.ui_show.sections.episodes.ShowDetailsEpisodesFragment
 import com.michaldrabik.ui_show.views.AddToShowsButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -128,11 +125,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   }
   private val imageRatio by lazy { resources.getString(R.string.detailsImageRatio).toFloat() }
   private val imagePadded by lazy { resources.getBoolean(R.bool.detailsImagePadded) }
-
-  private val animationEnterRight by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_in_from_right) }
-  private val animationExitRight by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_right) }
-  private val animationEnterLeft by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_in_from_left) }
-  private val animationExitLeft by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_left) }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -233,49 +225,51 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   }
 
   private fun showEpisodesView(item: SeasonListItem) {
-    with(binding) {
-      showDetailsEpisodesView.run {
-        bind(item)
-        fadeIn(265, withHardware = true) {
-          bindEpisodes(item.episodes)
-          viewModel.loadSeasonTranslation(item)
-        }
-        startAnimation(animationEnterRight)
-        itemCheckedListener = { episode, season, isChecked ->
-          viewModel.setEpisodeWatched(episode, season, isChecked, removeTrakt = true)
-        }
-        seasonCheckedListener = { season, isChecked ->
-          viewModel.setSeasonWatched(season, isChecked, removeTrakt = true)
-        }
-        rateClickListener = { season ->
-          openRateSeasonDialog(season)
-        }
-      }
-      showDetailsMainLayout.run {
-        fadeOut(200)
-        startAnimation(animationExitRight)
-      }
-      showDetailsBackArrow.crossfadeTo(showDetailsBackArrow2)
-    }
+    val bundle = ShowDetailsEpisodesFragment.createBundle()
+    navigateToSafe(R.id.actionShowDetailsFragmentToEpisodes, bundle)
+//    with(binding) {
+//      showDetailsEpisodesView.run {
+//        bind(item)
+//        fadeIn(265, withHardware = true) {
+//          bindEpisodes(item.episodes)
+//          viewModel.loadSeasonTranslation(item)
+//        }
+//        startAnimation(animationEnterRight)
+//        itemCheckedListener = { episode, season, isChecked ->
+//          viewModel.setEpisodeWatched(episode, season, isChecked, removeTrakt = true)
+//        }
+//        seasonCheckedListener = { season, isChecked ->
+//          viewModel.setSeasonWatched(season, isChecked, removeTrakt = true)
+//        }
+//        rateClickListener = { season ->
+//          openRateSeasonDialog(season)
+//        }
+//      }
+//      showDetailsMainLayout.run {
+//        fadeOut(200)
+//        startAnimation(animationExitRight)
+//      }
+//      showDetailsBackArrow.crossfadeTo(showDetailsBackArrow2)
+//    }
   }
 
-  private fun hideExtraView(view: View) {
-    if (view.animation != null) return
-    view.run {
-      fadeOut(300)
-      startAnimation(animationExitLeft)
-    }
-
-    with(binding) {
-      showDetailsMainLayout.run {
-        fadeIn(withHardware = true)
-        startAnimation(animationEnterLeft)
-      }
-      showDetailsBackArrow2.crossfadeTo(showDetailsBackArrow)
-    }
-
-    viewModel.refreshAnnouncements()
-  }
+//  private fun hideExtraView(view: View) {
+//    if (view.animation != null) return
+//    view.run {
+//      fadeOut(300)
+//      startAnimation(animationExitLeft)
+//    }
+//
+//    with(binding) {
+//      showDetailsMainLayout.run {
+//        fadeIn(withHardware = true)
+//        startAnimation(animationEnterLeft)
+//      }
+//      showDetailsBackArrow2.crossfadeTo(showDetailsBackArrow)
+//    }
+//
+//    viewModel.refreshAnnouncements()
+//  }
 
   private fun handleEvent(event: Event<*>) {
     when (event) {
@@ -645,16 +639,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   override fun setupBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
     dispatcher.addCallback(viewLifecycleOwner) {
-      when {
-        binding.showDetailsEpisodesView.isVisible -> {
-          hideExtraView(binding.showDetailsEpisodesView)
-          return@addCallback
-        }
-        else -> {
-          isEnabled = false
-          findNavControl()?.popBackStack()
-        }
-      }
+      isEnabled = false
+      findNavControl()?.popBackStack()
     }
   }
 

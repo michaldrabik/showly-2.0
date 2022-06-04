@@ -360,6 +360,22 @@
       app:popEnterAnim="@anim/anim_in_from_left"
       app:popExitAnim="@anim/anim_out_from_left"
       />
+    <action
+      android:id="@+id/actionShowDetailsFragmentToEpisodes"
+      app:destination="@id/showDetailsEpisodesFragment"
+      app:enterAnim="@anim/anim_in_from_right"
+      app:exitAnim="@anim/anim_out_from_right"
+      app:launchSingleTop="true"
+      app:popEnterAnim="@anim/anim_in_from_left"
+      app:popExitAnim="@anim/anim_out_from_left"
+      />
+  </fragment>
+
+  <fragment
+    android:id="@+id/showDetailsEpisodesFragment"
+    android:name="com.michaldrabik.ui_show.sections.episodes.ShowDetailsEpisodesFragment"
+    android:label="fragmentEpisodes"
+    >
   </fragment>
 
   <fragment
