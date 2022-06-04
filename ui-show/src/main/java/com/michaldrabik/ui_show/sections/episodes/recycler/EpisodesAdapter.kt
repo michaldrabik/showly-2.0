@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_show.episodes
+package com.michaldrabik.ui_show.sections.episodes.recycler
 
 import android.view.View
 import android.view.ViewGroup
@@ -6,13 +6,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.ui_model.Episode
 
-class EpisodesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class EpisodesAdapter(
+  private val itemClickListener: (Episode, Boolean) -> Unit,
+  private val itemCheckedListener: (Episode, Boolean) -> Unit,
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   private val items: MutableList<EpisodeListItem> = mutableListOf()
-
-  var itemClickListener: (Episode, Boolean) -> Unit = { _, _ -> }
-  var itemCheckedListener: (Episode, Boolean) -> Unit = { _, _ -> }
-
   private var isLocked = true
 
   fun setItems(newItems: List<EpisodeListItem>) {

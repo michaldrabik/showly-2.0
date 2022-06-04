@@ -18,6 +18,7 @@ import com.michaldrabik.ui_show.sections.seasons.cases.ShowDetailsLoadSeasonsCas
 import com.michaldrabik.ui_show.sections.seasons.cases.ShowDetailsQuickProgressCase
 import com.michaldrabik.ui_show.sections.seasons.cases.ShowDetailsWatchedSeasonCase
 import com.michaldrabik.ui_show.sections.seasons.cases.ShowDetailsWatchedSeasonCase.Result
+import com.michaldrabik.ui_show.sections.seasons.helpers.SeasonsCache
 import com.michaldrabik.ui_show.sections.seasons.recycler.SeasonListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
@@ -35,6 +36,7 @@ class ShowDetailsSeasonsViewModel @Inject constructor(
   private val loadSeasonsCase: ShowDetailsLoadSeasonsCase,
   private val quickProgressCase: ShowDetailsQuickProgressCase,
   private val watchedSeasonCase: ShowDetailsWatchedSeasonCase,
+  private val seasonsCache: SeasonsCache,
   private val episodesManager: EpisodesManager,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
@@ -62,9 +64,10 @@ class ShowDetailsSeasonsViewModel @Inject constructor(
         areSeasonsLocal = isLocal
         val calculated = markWatchedEpisodes(seasons)
         seasonsState.value = calculated
-        eventChannel.send(ShowDetailsSeasonsEvent.SeasonsLoaded(calculated, isLocal))
+        seasonsCache.setSeasons(show.ids.trakt, calculated, isLocal)
       } catch (error: Throwable) {
         seasonsState.value = emptyList()
+        seasonsCache.setSeasons(show.ids.trakt, emptyList(), areSeasonsLocal)
       }
     }
   }
@@ -104,35 +107,43 @@ class ShowDetailsSeasonsViewModel @Inject constructor(
     }
   }
 
+  fun openSeasonEpisodes(season: SeasonListItem) {
+    viewModelScope.launch {
+      val event = ShowDetailsSeasonsEvent.OpenSeasonEpisodes(show.ids.trakt, season.season.ids.trakt)
+      eventChannel.send(event)
+    }
+  }
+
   fun refreshWatchedEpisodes() {
     viewModelScope.launch {
       val seasonItems = seasonsState.value?.toList() ?: emptyList()
       val calculated = markWatchedEpisodes(seasonItems)
       seasonsState.value = calculated
-      eventChannel.send(ShowDetailsSeasonsEvent.SeasonsLoaded(calculated, areSeasonsLocal))
+      seasonsCache.setSeasons(show.ids.trakt, calculated, areSeasonsLocal)
     }
   }
 
-  private suspend fun markWatchedEpisodes(seasonsList: List<SeasonListItem>): List<SeasonListItem> = coroutineScope {
-    val items = mutableListOf<SeasonListItem>()
+  private suspend fun markWatchedEpisodes(seasonsList: List<SeasonListItem>?): List<SeasonListItem> =
+    coroutineScope {
+      val items = mutableListOf<SeasonListItem>()
 
-    val (watchedSeasonsIds, watchedEpisodesIds) = awaitAll(
-      async { episodesManager.getWatchedSeasonsIds(show) },
-      async { episodesManager.getWatchedEpisodesIds(show) }
-    )
+      val (watchedSeasonsIds, watchedEpisodesIds) = awaitAll(
+        async { episodesManager.getWatchedSeasonsIds(show) },
+        async { episodesManager.getWatchedEpisodesIds(show) }
+      )
 
-    seasonsList.forEach { item ->
-      val isSeasonWatched = watchedSeasonsIds.any { id -> id == item.id }
-      val episodes = item.episodes.map { episodeItem ->
-        val isEpisodeWatched = watchedEpisodesIds.any { id -> id == episodeItem.id }
-        episodeItem.copy(season = item.season, isWatched = isEpisodeWatched)
+      seasonsList?.forEach { item ->
+        val isSeasonWatched = watchedSeasonsIds.any { id -> id == item.id }
+        val episodes = item.episodes.map { episodeItem ->
+          val isEpisodeWatched = watchedEpisodesIds.any { id -> id == episodeItem.id }
+          episodeItem.copy(season = item.season, isWatched = isEpisodeWatched)
+        }
+        val updated = item.copy(episodes = episodes, isWatched = isSeasonWatched)
+        items.add(updated)
       }
-      val updated = item.copy(episodes = episodes, isWatched = isSeasonWatched)
-      items.add(updated)
-    }
 
-    items
-  }
+      items
+    }
 
   private suspend fun checkSeasonsLoaded(): Boolean {
     if (seasonsState.value == null) {

@@ -18,6 +18,7 @@ import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_show.R
 import com.michaldrabik.ui_show.databinding.ViewEpisodesBinding
+import com.michaldrabik.ui_show.sections.episodes.recycler.EpisodeListItem
 import com.michaldrabik.ui_show.sections.seasons.recycler.SeasonListItem
 import java.util.Locale.ENGLISH
 
@@ -34,7 +35,7 @@ class EpisodesView : ConstraintLayout {
   var seasonCheckedListener: (Season, Boolean) -> Unit = { _, _ -> }
   var rateClickListener: (Season) -> Unit = { }
 
-  private val episodesAdapter by lazy { EpisodesAdapter() }
+  //  private val episodesAdapter by lazy { EpisodesAdapter() }
   private lateinit var show: Show
   private lateinit var season: Season
   private lateinit var episodes: List<EpisodeListItem>
@@ -50,7 +51,7 @@ class EpisodesView : ConstraintLayout {
     isLocked = !isLocked
     binding.episodesUnlockButton.setImageResource(if (isLocked) R.drawable.ic_locked else R.drawable.ic_unlocked)
     binding.episodesCheckbox.isEnabled = !isLocked
-    episodesAdapter.toggleEpisodesLock()
+//    episodesAdapter.toggleEpisodesLock()
   }
 
   fun bind(seasonItem: SeasonListItem) {
@@ -92,7 +93,7 @@ class EpisodesView : ConstraintLayout {
   }
 
   fun bindEpisodes(episodes: List<EpisodeListItem>, animate: Boolean = true) {
-    episodesAdapter.setItems(episodes)
+//    episodesAdapter.setItems(episodes)
     if (animate) binding.episodesRecycler.scheduleLayoutAnimation()
   }
 
@@ -107,7 +108,7 @@ class EpisodesView : ConstraintLayout {
       binding.episodesCheckbox.setCheckedSilent(it.isWatched) { _, isChecked ->
         seasonCheckedListener(season, isChecked)
       }
-      episodesAdapter.setItems(it.episodes)
+//      episodesAdapter.setItems(it.episodes)
     }
   }
 
@@ -128,17 +129,17 @@ class EpisodesView : ConstraintLayout {
   private fun setupRecycler() {
     binding.episodesRecycler.apply {
       setHasFixedSize(true)
-      adapter = episodesAdapter
+//      adapter = episodesAdapter
       layoutManager = LinearLayoutManager(context, VERTICAL, false)
       itemAnimator = null
     }
-    episodesAdapter.itemClickListener = { episode, isWatched -> itemClickListener(show, episode, season, isWatched) }
-    episodesAdapter.itemCheckedListener = { episode, isChecked -> itemCheckedListener(episode, season, isChecked) }
+//    episodesAdapter.itemClickListener = { episode, isWatched -> itemClickListener(show, episode, season, isWatched) }
+//    episodesAdapter.itemCheckedListener = { episode, isChecked -> itemCheckedListener(episode, season, isChecked) }
   }
 
   private fun clear() {
     isLocked = true
-    episodesAdapter.clearItems()
+//    episodesAdapter.clearItems()
     with(binding) {
       episodesUnlockButton.setOnClickListener(null)
       episodesUnlockButton.setImageResource(R.drawable.ic_locked)

@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_show.episodes
+package com.michaldrabik.ui_show.sections.episodes.recycler
 
 import android.content.Context
 import android.util.AttributeSet

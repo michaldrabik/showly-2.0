@@ -23,7 +23,6 @@ import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_show.R
-import com.michaldrabik.ui_show.ShowDetailsFragment
 import com.michaldrabik.ui_show.ShowDetailsViewModel
 import com.michaldrabik.ui_show.databinding.FragmentShowDetailsSeasonsBinding
 import com.michaldrabik.ui_show.quick_setup.QuickSetupView
@@ -58,13 +57,8 @@ class ShowDetailsSeasonsFragment : BaseFragment<ShowDetailsSeasonsViewModel>(R.l
 
   private fun setupView() {
     seasonsAdapter = SeasonsAdapter(
-      itemClickListener = {
-        val bundle = ShowDetailsEpisodesFragment.createBundle()
-        navigateToSafe(R.id.actionShowDetailsFragmentToEpisodes, bundle)
-      },
-      itemCheckedListener = { item: SeasonListItem, isChecked: Boolean ->
-        viewModel.setSeasonWatched(item.season, isChecked)
-      }
+      itemClickListener = { viewModel.openSeasonEpisodes(it) },
+      itemCheckedListener = { item: SeasonListItem, isChecked: Boolean -> viewModel.setSeasonWatched(item.season, isChecked) }
     )
     binding.showDetailsSeasonsRecycler.apply {
       adapter = seasonsAdapter
@@ -128,8 +122,12 @@ class ShowDetailsSeasonsFragment : BaseFragment<ShowDetailsSeasonsViewModel>(R.l
     when (event) {
       is ShowDetailsSeasonsEvent.RemoveFromTrakt ->
         openRemoveTraktSheet(event)
-      is ShowDetailsSeasonsEvent.SeasonsLoaded ->
-        (requireParentFragment() as ShowDetailsFragment).onSeasonsLoaded(event.seasons, event.areSeasonsLocal)
+      is ShowDetailsSeasonsEvent.OpenSeasonEpisodes -> {
+        val bundle = ShowDetailsEpisodesFragment.createBundle(event.showId, event.seasonId)
+        navigateToSafe(R.id.actionShowDetailsFragmentToEpisodes, bundle)
+      }
+//      is ShowDetailsSeasonsEvent.SeasonsLoaded ->
+//        (requireParentFragment() as ShowDetailsFragment).onSeasonsLoaded(event.seasons, event.areSeasonsLocal)
     }
   }
 

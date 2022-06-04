@@ -45,7 +45,7 @@ import com.michaldrabik.ui_show.cases.ShowDetailsTranslationCase
 import com.michaldrabik.ui_show.cases.ShowDetailsWatchlistCase
 import com.michaldrabik.ui_show.helpers.ShowDetailsMeta
 import com.michaldrabik.ui_show.sections.ratings.cases.ShowDetailsRatingCase
-import com.michaldrabik.ui_show.sections.seasons.recycler.SeasonListItem
+import com.michaldrabik.ui_show.sections.seasons.helpers.SeasonsCache
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -74,6 +74,7 @@ class ShowDetailsViewModel @Inject constructor(
   private val episodesManager: EpisodesManager,
   private val quickSyncManager: QuickSyncManager,
   private val announcementManager: AnnouncementManager,
+  private val seasonsCache: SeasonsCache,
   private val imagesProvider: ShowImagesProvider,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
@@ -90,8 +91,6 @@ class ShowDetailsViewModel @Inject constructor(
   private val metaState = MutableStateFlow<ShowDetailsMeta?>(null)
 
   private var show by notNull<Show>()
-  private var seasons: List<SeasonListItem>? = null
-  private var areSeasonsLocal = false
 
   fun loadDetails(id: IdTrakt) {
     viewModelScope.launch {
@@ -233,7 +232,7 @@ class ShowDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       if (!checkSeasonsLoaded()) return@launch
 
-      val seasonItems = seasons?.toList() ?: emptyList()
+      val seasonItems = seasonsCache.loadSeasons(show.ids.trakt) ?: emptyList()
       val seasons = seasonItems.map { it.season }
       val episodes = seasonItems.flatMap { it.episodes.map { e -> e.episode } }
 
@@ -257,6 +256,7 @@ class ShowDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       if (!checkSeasonsLoaded()) return@launch
 
+      val areSeasonsLocal = seasonsCache.areSeasonsLocal(show.ids.trakt)
       hiddenCase.addToHidden(show, removeLocalData = !areSeasonsLocal)
       followedState.value = FollowedState.inHidden()
       Analytics.logShowAddToArchive(show)
@@ -270,6 +270,7 @@ class ShowDetailsViewModel @Inject constructor(
       val isMyShows = myShowsCase.isMyShows(show)
       val isWatchlist = watchlistCase.isWatchlist(show)
       val isArchived = hiddenCase.isHidden(show)
+      val areSeasonsLocal = seasonsCache.areSeasonsLocal(show.ids.trakt)
 
       when {
         isMyShows -> myShowsCase.removeFromMyShows(show, removeLocalData = !areSeasonsLocal)
@@ -349,6 +350,8 @@ class ShowDetailsViewModel @Inject constructor(
           quickSyncManager.clearEpisodes(listOf(episode.ids.trakt.id))
 
           val traktQuickRemoveEnabled = removeTrakt && settingsRepository.load().traktQuickRemoveEnabled
+          val areSeasonsLocal = seasonsCache.areSeasonsLocal(show.ids.trakt)
+
           val showRemoveTrakt = userManager.isAuthorized() && traktQuickRemoveEnabled && !areSeasonsLocal && isCollection
           if (showRemoveTrakt) {
             val ids = listOf(episode.ids.trakt)
@@ -385,7 +388,7 @@ class ShowDetailsViewModel @Inject constructor(
   }
 
   private suspend fun checkSeasonsLoaded(): Boolean {
-    if (seasons == null) {
+    if (seasonsCache.hasSeasons(show.ids.trakt)) {
       messageChannel.send(MessageEvent.Info(R.string.errorSeasonsNotLoaded))
       return false
     }
@@ -413,12 +416,9 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
-  fun onSeasonsLoaded(
-    seasons: List<SeasonListItem>,
-    areSeasonsLocal: Boolean
-  ) {
-    this.seasons = seasons.toList()
-    this.areSeasonsLocal = areSeasonsLocal
+  override fun onCleared() {
+    seasonsCache.clear(show.ids.trakt)
+    super.onCleared()
   }
 
   val uiState = combine(

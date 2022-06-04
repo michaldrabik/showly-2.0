@@ -89,8 +89,6 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_REMOVE_TRAKT
 import com.michaldrabik.ui_show.ShowDetailsEvent.Finish
 import com.michaldrabik.ui_show.ShowDetailsEvent.RemoveFromTrakt
 import com.michaldrabik.ui_show.databinding.FragmentShowDetailsBinding
-import com.michaldrabik.ui_show.sections.episodes.ShowDetailsEpisodesFragment
-import com.michaldrabik.ui_show.sections.seasons.recycler.SeasonListItem
 import com.michaldrabik.ui_show.views.AddToShowsButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -196,9 +194,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
   }
 
-  private fun showEpisodesView(item: SeasonListItem) {
-    val bundle = ShowDetailsEpisodesFragment.createBundle()
-    navigateToSafe(R.id.actionShowDetailsFragmentToEpisodes, bundle)
+//  private fun showEpisodesView(item: SeasonListItem) {
+//    val bundle = ShowDetailsEpisodesFragment.createBundle()
+//    navigateToSafe(R.id.actionShowDetailsFragmentToEpisodes, bundle)
 //    with(binding) {
 //      showDetailsEpisodesView.run {
 //        bind(item)
@@ -223,7 +221,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 //      }
 //      showDetailsBackArrow.crossfadeTo(showDetailsBackArrow2)
 //    }
-  }
+//  }
 
 //  private fun hideExtraView(view: View) {
 //    if (view.animation != null) return
@@ -543,13 +541,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       TransitionManager.beginDelayedTransition(showDetailsMainContent, transition)
       animation.applyTo(showDetailsMainContent)
     }
-  }
-
-  fun onSeasonsLoaded(
-    seasons: List<SeasonListItem>,
-    areSeasonsLocal: Boolean
-  ) {
-    viewModel.onSeasonsLoaded(seasons, areSeasonsLocal)
   }
 
   override fun setupBackPressed() {

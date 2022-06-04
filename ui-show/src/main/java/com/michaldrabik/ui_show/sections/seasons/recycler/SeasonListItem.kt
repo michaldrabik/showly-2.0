@@ -3,7 +3,7 @@ package com.michaldrabik.ui_show.sections.seasons.recycler
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
-import com.michaldrabik.ui_show.episodes.EpisodeListItem
+import com.michaldrabik.ui_show.sections.episodes.recycler.EpisodeListItem
 
 data class SeasonListItem(
   val show: Show,

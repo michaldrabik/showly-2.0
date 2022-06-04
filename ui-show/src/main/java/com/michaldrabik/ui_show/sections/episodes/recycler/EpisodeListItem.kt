@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_show.episodes
+package com.michaldrabik.ui_show.sections.episodes.recycler
 
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Season
