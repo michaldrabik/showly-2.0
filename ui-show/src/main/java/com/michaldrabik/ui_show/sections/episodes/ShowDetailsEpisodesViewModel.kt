@@ -25,7 +25,6 @@ class ShowDetailsEpisodesViewModel @Inject constructor(
   fun handleEvent(event: ShowDetailsEvent<*>) {
     when (event) {
       is ShowDetailsEvent.ShowLoaded -> {
-
       }
       else -> Unit
     }

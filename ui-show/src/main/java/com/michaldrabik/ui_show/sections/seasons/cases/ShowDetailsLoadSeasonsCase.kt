@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_show.cases
+package com.michaldrabik.ui_show.sections.seasons.cases
 
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.LocalDataSource
@@ -17,7 +17,7 @@ import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_show.episodes.EpisodeListItem
 import com.michaldrabik.ui_show.helpers.SeasonsBundle
-import com.michaldrabik.ui_show.seasons.SeasonListItem
+import com.michaldrabik.ui_show.sections.seasons.recycler.SeasonListItem
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -25,7 +25,7 @@ import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
 
 @ViewModelScoped
-class ShowDetailsEpisodesCase @Inject constructor(
+class ShowDetailsLoadSeasonsCase @Inject constructor(
   private val remoteSource: RemoteDataSource,
   private val localSource: LocalDataSource,
   private val mappers: Mappers,

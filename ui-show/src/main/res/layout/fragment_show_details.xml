@@ -328,107 +328,26 @@
         android:layout_marginBottom="@dimen/spaceMedium"
         android:visibility="gone"
         app:layout_constrainedHeight="false"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsSeasonsLabel"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsSeasonsFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/separator2"
         tools:layout="@layout/fragment_show_details_next_episode"
         />
 
-      <TextView
-        android:id="@+id/showDetailsSeasonsLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginBottom="@dimen/spaceTiny"
-        android:text="@string/textSeasons"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsSeasonsRecycler"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsEpisodeFragment"
-        app:layout_goneMarginTop="@dimen/spaceMicro"
-        tools:visibility="visible"
-        />
-
-      <TextView
-        android:id="@+id/showDetailsRuntimeLeft"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginEnd="@dimen/spaceMedium"
-        android:gravity="center_vertical"
-        android:textColor="?android:attr/textColorSecondary"
-        android:textSize="13sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/showDetailsSeasonsLabel"
-        app:layout_constraintEnd_toStartOf="@id/showDetailsQuickProgress"
-        app:layout_constraintHorizontal_bias="1"
-        app:layout_constraintStart_toEndOf="@id/showDetailsSeasonsLabel"
-        app:layout_constraintTop_toTopOf="@id/showDetailsSeasonsLabel"
-        tools:text="~14h 12min of watching"
-        tools:visibility="visible"
-        />
-
-      <ImageView
-        android:id="@+id/showDetailsQuickProgress"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_gravity="center_vertical|end"
-        android:layout_marginEnd="@dimen/spaceMedium"
-        android:background="?android:attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_quick_setup"
-        android:translationY="1dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/showDetailsSeasonsLabel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1"
-        app:layout_constraintStart_toEndOf="@id/showDetailsSeasonsLabel"
-        app:layout_constraintTop_toTopOf="@id/showDetailsSeasonsLabel"
-        app:tint="?android:attr/textColorPrimary"
-        tools:visibility="visible"
-        />
-
-      <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/showDetailsSeasonsRecycler"
+      <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/showDetailsSeasonsFragment"
+        android:name="com.michaldrabik.ui_show.sections.seasons.ShowDetailsSeasonsFragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:nestedScrollingEnabled="false"
-        android:overScrollMode="never"
-        android:visibility="invisible"
-        app:layout_constrainedHeight="true"
-        app:layout_constraintBottom_toTopOf="@id/separator3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_min="48dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsSeasonsLabel"
-        tools:visibility="visible"
-        />
-
-      <ProgressBar
-        android:id="@+id/showDetailsSeasonsProgress"
-        style="@style/ProgressBar.Dark"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        app:layout_constraintBottom_toBottomOf="@id/showDetailsSeasonsRecycler"
+        android:layout_marginTop="@dimen/spaceTiny"
+        app:layout_constrainedHeight="false"
+        app:layout_constraintBottom_toBottomOf="@id/separator3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/showDetailsSeasonsRecycler"
-        />
-
-      <TextView
-        android:id="@+id/showDetailsSeasonsEmptyView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/textSeasonsEmpty"
-        android:textColor="?android:attr/textColorSecondary"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/separator3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/separator2"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsEpisodeFragment"
+        app:layout_goneMarginTop="0dp"
+        tools:layout="@layout/fragment_show_details_seasons"
         />
 
       <View
@@ -443,7 +362,7 @@
         app:layout_constraintBottom_toTopOf="@id/showDetailsCommentsButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsSeasonsRecycler"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsSeasonsFragment"
         app:layout_goneMarginBottom="@dimen/spaceMedium"
         app:layout_goneMarginTop="@dimen/spaceBig"
         />
@@ -589,14 +508,6 @@
 
   </androidx.core.widget.NestedScrollView>
 
-  <com.michaldrabik.ui_show.episodes.EpisodesView
-    android:id="@+id/showDetailsEpisodesView"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?android:windowBackground"
-    android:visibility="gone"
-    />
-
   <ProgressBar
     android:id="@+id/showDetailsMainProgress"
     style="@style/ProgressBar.Accent"
@@ -613,17 +524,6 @@
     android:background="?android:attr/selectableItemBackground"
     android:padding="@dimen/backArrowPadding"
     app:srcCompat="@drawable/ic_arrow_back"
-    />
-
-  <ImageView
-    android:id="@+id/showDetailsBackArrow2"
-    android:layout_width="@dimen/backArrowSize"
-    android:layout_height="@dimen/backArrowSize"
-    android:background="?android:attr/selectableItemBackground"
-    android:padding="@dimen/backArrowPadding"
-    android:visibility="gone"
-    app:srcCompat="@drawable/ic_arrow_back"
-    app:tint="?android:attr/textColorPrimary"
     />
 
 </FrameLayout>

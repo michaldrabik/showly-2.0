@@ -18,7 +18,7 @@ import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_show.R
 import com.michaldrabik.ui_show.databinding.ViewEpisodesBinding
-import com.michaldrabik.ui_show.seasons.SeasonListItem
+import com.michaldrabik.ui_show.sections.seasons.recycler.SeasonListItem
 import java.util.Locale.ENGLISH
 
 class EpisodesView : ConstraintLayout {
@@ -97,7 +97,9 @@ class EpisodesView : ConstraintLayout {
   }
 
   fun updateEpisodes(seasonListItems: List<SeasonListItem>) {
-    if (!this::season.isInitialized) return
+    if (!this::season.isInitialized) {
+      return
+    }
     val seasonListItem = seasonListItems.find { it.season.ids.trakt == season.ids.trakt }
     seasonListItem?.let {
       this.season = it.season.copy()

@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_show.seasons
+package com.michaldrabik.ui_show.sections.seasons.recycler
 
 import androidx.recyclerview.widget.DiffUtil
 

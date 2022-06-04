@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.collect
 @AndroidEntryPoint
 class ShowDetailsStreamingsFragment : BaseFragment<ShowDetailsStreamingsViewModel>(R.layout.fragment_show_details_streamings) {
 
+  override val navigationId = R.id.showDetailsFragment
   private val binding by viewBinding(FragmentShowDetailsStreamingsBinding::bind)
 
   private val parentViewModel by viewModels<ShowDetailsViewModel>({ requireParentFragment() })

@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.collect
 @AndroidEntryPoint
 class ShowDetailsRelatedFragment : BaseFragment<ShowDetailsRelatedViewModel>(R.layout.fragment_show_details_related) {
 
+  override val navigationId = R.id.showDetailsFragment
   private val binding by viewBinding(FragmentShowDetailsRelatedBinding::bind)
 
   private val parentViewModel by viewModels<ShowDetailsViewModel>({ requireParentFragment() })

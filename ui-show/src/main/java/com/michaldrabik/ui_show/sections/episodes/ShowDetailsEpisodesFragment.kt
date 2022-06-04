@@ -19,7 +19,6 @@ import com.michaldrabik.ui_show.R
 import com.michaldrabik.ui_show.ShowDetailsViewModel
 import com.michaldrabik.ui_show.databinding.FragmentShowDetailsEpisodesBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_comments.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.parcelize.Parcelize
 
@@ -52,7 +51,7 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
 
   private fun setupView() {
     with(binding) {
-      commentsBackArrow.onClick { requireActivity().onBackPressed() }
+      episodesBackArrow.onClick { requireActivity().onBackPressed() }
     }
   }
 
@@ -66,7 +65,6 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
   }
 
   private fun render(uiState: ShowDetailsEpisodesUiState) {
-
   }
 
   @Parcelize

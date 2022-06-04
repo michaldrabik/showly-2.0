@@ -12,29 +12,23 @@ import android.view.ViewGroup.MarginLayoutParams
 import android.view.animation.DecelerateInterpolator
 import androidx.activity.addCallback
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.isVisible
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseFragment
-import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.sheets.links.LinksBottomSheet
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Operation.REMOVE
@@ -95,15 +89,12 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_REMOVE_TRAKT
 import com.michaldrabik.ui_show.ShowDetailsEvent.Finish
 import com.michaldrabik.ui_show.ShowDetailsEvent.RemoveFromTrakt
 import com.michaldrabik.ui_show.databinding.FragmentShowDetailsBinding
-import com.michaldrabik.ui_show.quick_setup.QuickSetupView
-import com.michaldrabik.ui_show.seasons.SeasonListItem
-import com.michaldrabik.ui_show.seasons.SeasonsAdapter
 import com.michaldrabik.ui_show.sections.episodes.ShowDetailsEpisodesFragment
+import com.michaldrabik.ui_show.sections.seasons.recycler.SeasonListItem
 import com.michaldrabik.ui_show.views.AddToShowsButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import timber.log.Timber
-import java.time.Duration
 import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n", "DefaultLocale", "SourceLockedOrientationActivity")
@@ -117,8 +108,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private val showId by lazy { IdTrakt(requireLong(ARG_SHOW_ID)) }
 
-  private var seasonsAdapter: SeasonsAdapter? = null
-
   private val imageHeight by lazy {
     if (resources.configuration.orientation == ORIENTATION_PORTRAIT) screenHeight()
     else screenWidth()
@@ -131,7 +120,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     requireActivity().requestedOrientation = SCREEN_ORIENTATION_PORTRAIT
     setupView()
     setupStatusBar()
-    setupSeasonsList()
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
@@ -149,6 +137,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     setFragmentResultListener(REQUEST_PERSON_DETAILS) { _, bundle ->
       bundle.getParcelable<Person>(ARG_PERSON)?.let {
         viewModel.onPersonDetails(it)
+        bundle.clear()
       }
     }
   }
@@ -157,10 +146,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     with(binding) {
       hideNavigation()
       showDetailsImageGuideline.setGuidelineBegin((imageHeight * imageRatio).toInt())
-      showDetailsEpisodesView.itemClickListener = { show, episode, season, isWatched ->
-        openEpisodeDetails(show, episode, season, isWatched, episode.hasAired(season))
-      }
-      listOf(showDetailsBackArrow, showDetailsBackArrow2).onClick { requireActivity().onBackPressed() }
+      showDetailsBackArrow.onClick { requireActivity().onBackPressed() }
       showDetailsImage.onClick {
         val bundle = bundleOf(
           ARG_SHOW_ID to showId.id,
@@ -202,25 +188,11 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           (showDetailsShareButton.layoutParams as MarginLayoutParams)
             .updateMargins(top = inset)
         }
-        arrayOf<View>(view, showDetailsBackArrow2, showDetailsEpisodesView)
+        arrayOf(view, showDetailsBackArrow)
           .forEach { v ->
             (v.layoutParams as MarginLayoutParams).updateMargins(top = inset)
           }
       }
-    }
-  }
-
-  private fun setupSeasonsList() {
-    seasonsAdapter = SeasonsAdapter().apply {
-      itemClickListener = { showEpisodesView(it) }
-      itemCheckedListener = { item: SeasonListItem, isChecked: Boolean ->
-        viewModel.setSeasonWatched(item.season, isChecked, removeTrakt = true)
-      }
-    }
-    binding.showDetailsSeasonsRecycler.apply {
-      adapter = seasonsAdapter
-      layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
-      itemAnimator = null
     }
   }
 
@@ -324,10 +296,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           separator4.visible()
         }
         showLoading?.let {
-          if (!showDetailsEpisodesView.isVisible) {
-            showDetailsMainLayout.fadeIf(!it, hardware = true)
-            showDetailsMainProgress.visibleIf(it)
-          }
+          showDetailsMainLayout.fadeIf(!it, hardware = true)
+          showDetailsMainProgress.visibleIf(it)
         }
         followedState?.let {
           when {
@@ -345,11 +315,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           showDetailsManageListsLabel.text = text
         }
         image?.let { renderImage(it) }
-        seasons?.let {
-          renderSeasons(it)
-          renderRuntimeLeft(it)
-          (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
-        }
         translation?.let { renderTranslation(it) }
         ratingState?.let { renderRating(it) }
         meta?.isPremium.let {
@@ -415,47 +380,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
   }
 
-  private fun renderSeasons(seasonsItems: List<SeasonListItem>) {
-    with(binding) {
-      seasonsAdapter?.setItems(seasonsItems)
-      showDetailsEpisodesView.updateEpisodes(seasonsItems)
-      showDetailsSeasonsProgress.gone()
-      showDetailsSeasonsEmptyView.visibleIf(seasonsItems.isEmpty())
-      showDetailsSeasonsRecycler.fadeIf(seasonsItems.isNotEmpty(), hardware = true)
-      showDetailsSeasonsLabel.fadeIf(seasonsItems.isNotEmpty(), hardware = true)
-      showDetailsQuickProgress.fadeIf(seasonsItems.isNotEmpty(), hardware = true)
-      showDetailsQuickProgress.onClick {
-        if (seasonsItems.any { !it.season.isSpecial() }) {
-          openQuickSetupDialog(seasonsItems.map { it.season })
-        } else {
-          showSnack(MessageEvent.Info(R.string.textSeasonsEmpty))
-        }
-      }
-    }
-  }
-
-  private fun renderRuntimeLeft(seasonsItems: List<SeasonListItem>) {
-    val runtimeLeft = seasonsItems
-      .filter { !it.season.isSpecial() }
-      .flatMap { it.episodes }
-      .filterNot { it.isWatched }
-      .sumOf { it.episode.runtime }
-      .toLong()
-
-    val duration = Duration.ofMinutes(runtimeLeft)
-    val hours = duration.toHours()
-    val minutes = duration.minusHours(hours).toMinutes()
-
-    val runtimeText = when {
-      hours <= 0 -> getString(R.string.textRuntimeLeftMinutes, minutes.toString())
-      else -> getString(R.string.textRuntimeLeftHours, hours.toString(), minutes.toString())
-    }
-    with(binding) {
-      showDetailsRuntimeLeft.text = runtimeText
-      showDetailsRuntimeLeft.fadeIf(seasonsItems.isNotEmpty() && runtimeLeft > 0, hardware = true)
-    }
-  }
-
   private fun renderTranslation(translation: Translation?) {
     with(binding) {
       if (translation?.overview?.isNotBlank() == true) {
@@ -497,7 +421,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           }
           bundle.containsKey(ACTION_EPISODE_TAB_SELECTED) -> {
             val selectedEpisode = bundle.getParcelable<Episode>(ACTION_EPISODE_TAB_SELECTED)!!
-            binding.showDetailsEpisodesView.selectEpisode(selectedEpisode)
+//            binding.showDetailsEpisodesView.selectEpisode(selectedEpisode)
           }
         }
       }
@@ -570,21 +494,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     navigateToSafe(R.id.actionShowDetailsFragmentToRating, bundle)
   }
 
-  private fun openQuickSetupDialog(seasons: List<Season>) {
-    val context = requireContext()
-    val view = QuickSetupView(context).apply {
-      bind(seasons)
-    }
-    MaterialAlertDialogBuilder(context, R.style.AlertDialog)
-      .setBackground(ContextCompat.getDrawable(context, R.drawable.bg_dialog))
-      .setView(view)
-      .setPositiveButton(R.string.textSelect) { _, _ ->
-        viewModel.setQuickProgress(view.getSelectedItem())
-      }
-      .setNegativeButton(R.string.textCancel) { _, _ -> }
-      .show()
-  }
-
   private fun openListsDialog() {
     if (findNavControl()?.currentDestination?.id != R.id.showDetailsFragment) {
       return
@@ -636,16 +545,18 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
   }
 
+  fun onSeasonsLoaded(
+    seasons: List<SeasonListItem>,
+    areSeasonsLocal: Boolean
+  ) {
+    viewModel.onSeasonsLoaded(seasons, areSeasonsLocal)
+  }
+
   override fun setupBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
     dispatcher.addCallback(viewLifecycleOwner) {
       isEnabled = false
       findNavControl()?.popBackStack()
     }
-  }
-
-  override fun onDestroyView() {
-    seasonsAdapter = null
-    super.onDestroyView()
   }
 }

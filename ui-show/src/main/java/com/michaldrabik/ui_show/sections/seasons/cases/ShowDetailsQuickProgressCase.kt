@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_show.cases
+package com.michaldrabik.ui_show.sections.seasons.cases
 
 import com.michaldrabik.repository.EpisodesManager
 import com.michaldrabik.repository.shows.ShowsRepository
@@ -8,7 +8,7 @@ import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_model.SeasonBundle
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_show.quick_setup.QuickSetupListItem
-import com.michaldrabik.ui_show.seasons.SeasonListItem
+import com.michaldrabik.ui_show.sections.seasons.recycler.SeasonListItem
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope

@@ -1,16 +1,16 @@
-package com.michaldrabik.ui_show.seasons
+package com.michaldrabik.ui_show.sections.seasons.recycler
 
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
-class SeasonsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SeasonsAdapter(
+  private val itemClickListener: (SeasonListItem) -> Unit,
+  private val itemCheckedListener: (SeasonListItem, Boolean) -> Unit
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   private val items: MutableList<SeasonListItem> = mutableListOf()
-
-  var itemClickListener: (SeasonListItem) -> Unit = {}
-  var itemCheckedListener: (SeasonListItem, Boolean) -> Unit = { _, _ -> }
 
   fun setItems(newItems: List<SeasonListItem>) {
     val diffCallback = SeasonListItemDiffCallback(items, newItems)

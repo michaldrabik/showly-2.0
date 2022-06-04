@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:clipChildren="false"
+  android:clipToPadding="false"
+  >
+
+  <TextView
+    android:id="@+id/showDetailsSeasonsLabel"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceNormal"
+    android:layout_marginBottom="@dimen/spaceTiny"
+    android:text="@string/textSeasons"
+    android:textColor="?android:attr/textColorPrimary"
+    android:textSize="16sp"
+    android:textStyle="bold"
+    app:layout_constraintBottom_toTopOf="@id/showDetailsSeasonsRecycler"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_goneMarginTop="@dimen/spaceMicro"
+    tools:visibility="visible"
+    />
+
+  <TextView
+    android:id="@+id/showDetailsRuntimeLeft"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:layout_marginEnd="@dimen/spaceMedium"
+    android:gravity="center_vertical"
+    android:textColor="?android:attr/textColorSecondary"
+    android:textSize="13sp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="@id/showDetailsSeasonsLabel"
+    app:layout_constraintEnd_toStartOf="@id/showDetailsQuickProgress"
+    app:layout_constraintHorizontal_bias="1"
+    app:layout_constraintStart_toEndOf="@id/showDetailsSeasonsLabel"
+    app:layout_constraintTop_toTopOf="@id/showDetailsSeasonsLabel"
+    app:layout_constraintWidth_default="wrap"
+    tools:text="~14h 12min of watching"
+    tools:visibility="visible"
+    />
+
+  <ImageView
+    android:id="@+id/showDetailsQuickProgress"
+    android:layout_width="25dp"
+    android:layout_height="25dp"
+    android:layout_gravity="center_vertical|end"
+    android:layout_marginEnd="@dimen/spaceMedium"
+    android:background="?android:attr/selectableItemBackgroundBorderless"
+    android:src="@drawable/ic_quick_setup"
+    android:translationY="1dp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="@id/showDetailsSeasonsLabel"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="1"
+    app:layout_constraintStart_toEndOf="@id/showDetailsSeasonsLabel"
+    app:layout_constraintTop_toTopOf="@id/showDetailsSeasonsLabel"
+    app:tint="?android:attr/textColorPrimary"
+    tools:visibility="visible"
+    />
+
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/showDetailsSeasonsRecycler"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:nestedScrollingEnabled="false"
+    android:overScrollMode="never"
+    android:visibility="invisible"
+    app:layout_constrainedHeight="true"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHeight_min="48dp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/showDetailsSeasonsLabel"
+    tools:visibility="visible"
+    />
+
+  <ProgressBar
+    android:id="@+id/showDetailsSeasonsProgress"
+    style="@style/ProgressBar.Dark"
+    android:layout_width="30dp"
+    android:layout_height="30dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    />
+
+  <TextView
+    android:id="@+id/showDetailsSeasonsEmptyView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceNormal"
+    android:layout_marginTop="@dimen/spaceNormal"
+    android:layout_marginEnd="@dimen/spaceNormal"
+    android:layout_marginBottom="@dimen/spaceBig"
+    android:text="@string/textSeasonsEmpty"
+    android:textColor="?android:attr/textColorSecondary"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:visibility="visible"
+    />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_show.seasons
+package com.michaldrabik.ui_show.sections.seasons.recycler
 
 import android.annotation.SuppressLint
 import android.content.Context

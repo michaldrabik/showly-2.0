@@ -5,13 +5,11 @@ import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_show.helpers.ShowDetailsMeta
-import com.michaldrabik.ui_show.seasons.SeasonListItem
 
 data class ShowDetailsUiState(
   val show: Show? = null,
   val showLoading: Boolean? = null,
   val image: Image? = null,
-  val seasons: List<SeasonListItem>? = null,
   val listsCount: Int? = null,
   val followedState: FollowedState? = null,
   val ratingState: RatingState? = null,
