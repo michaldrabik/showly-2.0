@@ -65,10 +65,8 @@ class ShowDetailsSeasonsViewModel @Inject constructor(
         areSeasonsLocal = isLocal
         val calculated = markWatchedEpisodes(seasons)
         seasonsState.value = calculated
-        seasonsCache.setSeasons(show.ids.trakt, calculated, isLocal)
       } catch (error: Throwable) {
         seasonsState.value = emptyList()
-        seasonsCache.setSeasons(show.ids.trakt, emptyList(), areSeasonsLocal)
       }
     }
   }
@@ -110,6 +108,7 @@ class ShowDetailsSeasonsViewModel @Inject constructor(
 
   fun openSeasonEpisodes(season: SeasonListItem) {
     viewModelScope.launch {
+      seasonsCache.setSeasons(show.ids.trakt, seasonsState.value ?: emptyList(), areSeasonsLocal)
       val event = ShowDetailsSeasonsEvent.OpenSeasonEpisodes(show.ids.trakt, season.season.ids.trakt)
       eventChannel.send(event)
     }
@@ -123,7 +122,6 @@ class ShowDetailsSeasonsViewModel @Inject constructor(
       val seasonItems = seasonsState.value?.toList() ?: emptyList()
       val calculated = markWatchedEpisodes(seasonItems)
       seasonsState.value = calculated
-      seasonsCache.setSeasons(show.ids.trakt, calculated, areSeasonsLocal)
     }
   }
 

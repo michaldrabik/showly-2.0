@@ -316,15 +316,6 @@ class ShowDetailsViewModel @Inject constructor(
     return true
   }
 
-  fun refreshAnnouncements() {
-    viewModelScope.launch {
-      val isFollowed = myShowsCase.isMyShows(show)
-      if (isFollowed) {
-        announcementManager.refreshShowsAnnouncements()
-      }
-    }
-  }
-
   fun onPersonDetails(person: Person) {
     viewModelScope.launch {
       _parentEvents.emit(ShowDetailsEvent.SaveOpenedPerson(person))
