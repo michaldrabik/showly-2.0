@@ -86,11 +86,12 @@ class ShowDetailsEpisodesViewModel @Inject constructor(
       episodesState.value = season.episodes
       initialLoadState.value = true
 
-      loadTranslations(season)
+      loadRatings()
+      loadTranslations()
     }
   }
 
-  private fun loadTranslations(season: SeasonListItem) {
+  private fun loadTranslations() {
     viewModelScope.launch {
       try {
         val translations = translationCase.loadTranslations(season.season, show)
@@ -157,7 +158,13 @@ class ShowDetailsEpisodesViewModel @Inject constructor(
     }
   }
 
-  fun refreshEpisodesRatings() {
+  fun openRateSeasonDialog() {
+    viewModelScope.launch {
+      eventChannel.send(ShowDetailsEpisodesEvent.OpenRateSeason(season.season))
+    }
+  }
+
+  fun loadRatings() {
     viewModelScope.launch {
       val seasonItem = seasonState.value
       val episodeItems = episodesState.value ?: emptyList()
@@ -170,7 +177,10 @@ class ShowDetailsEpisodesViewModel @Inject constructor(
             episodeItem.copy(myRating = ratingEpisode)
           }
         }.awaitAll()
-        val updatedSeasonItem = seasonItem.copy(episodes = updatedEpisodesItems, userRating = seasonItem.userRating.copy(ratingSeason))
+        val updatedSeasonItem = seasonItem.copy(
+          episodes = updatedEpisodesItems,
+          userRating = seasonItem.userRating.copy(ratingSeason)
+        )
         seasonState.value = updatedSeasonItem
         episodesState.value = updatedEpisodesItems
         initialLoadState.value = false

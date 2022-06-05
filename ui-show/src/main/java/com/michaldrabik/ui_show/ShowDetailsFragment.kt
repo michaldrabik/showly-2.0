@@ -65,7 +65,6 @@ import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
 import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.RatingState
-import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_GALLERY
 import com.michaldrabik.ui_model.Translation
@@ -416,19 +415,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       viewModel.loadUserRating()
     }
     val bundle = RatingsBottomSheet.createBundle(showId, Type.SHOW)
-    navigateToSafe(R.id.actionShowDetailsFragmentToRating, bundle)
-  }
-
-  private fun openRateSeasonDialog(season: Season) {
-    setFragmentResultListener(NavigationArgs.REQUEST_RATING) { _, bundle ->
-      when (bundle.getParcelable<RatingsBottomSheet.Options.Operation>(NavigationArgs.RESULT)) {
-        SAVE -> renderSnack(MessageEvent.Info(R.string.textRateSaved))
-        REMOVE -> renderSnack(MessageEvent.Info(R.string.textRateRemoved))
-        else -> Timber.w("Unknown result")
-      }
-      viewModel.refreshEpisodesRatings()
-    }
-    val bundle = RatingsBottomSheet.createBundle(season.ids.trakt, Type.SEASON)
     navigateToSafe(R.id.actionShowDetailsFragmentToRating, bundle)
   }
 

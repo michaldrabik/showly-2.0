@@ -386,6 +386,11 @@
       app:destination="@id/episodeDetailsDialog"
       app:launchSingleTop="true"
       />
+    <action
+      android:id="@+id/actionEpisodesFragmentToRating"
+      app:destination="@id/ratingDialog"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment

@@ -11,8 +11,12 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.WidgetsProvider
+import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet
+import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Operation
+import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Type
 import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet
 import com.michaldrabik.ui_base.utilities.SnackbarHost
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
@@ -25,6 +29,7 @@ import com.michaldrabik.ui_episodes.details.EpisodeDetailsBottomSheet
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_show.R
 import com.michaldrabik.ui_show.databinding.FragmentShowDetailsEpisodesBinding
@@ -32,6 +37,7 @@ import com.michaldrabik.ui_show.sections.episodes.recycler.EpisodesAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.parcelize.Parcelize
+import timber.log.Timber
 import java.util.Locale
 
 @AndroidEntryPoint
@@ -76,6 +82,9 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
     with(binding) {
       episodesBackArrow.onClick { requireActivity().onBackPressed() }
       episodesUnlockButton.onClick(safe = false) { toggleEpisodesLock() }
+      listOf(episodesSeasonRateButton, episodesSeasonMyStarIcon).onClick {
+        viewModel.openRateSeasonDialog()
+      }
     }
   }
 
@@ -122,6 +131,21 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
             jumpDrawablesToCurrentState()
           }
           episodesUnlockButton.visibleIf(!it.season.isSpecial() && it.episodes.any { ep -> !ep.episode.hasAired(it.season) })
+
+          val seasonRating = season.season.rating
+          episodesStarIcon.visibleIf(seasonRating > 0F)
+          episodesSeasonRating.visibleIf(seasonRating > 0F)
+          episodesSeasonRating.text = String.format(Locale.ENGLISH, "%.1f", seasonRating)
+
+          val ratingState = season.userRating
+          val showRateButton = ratingState.rateAllowed == true && ratingState.userRating == null && episodes != null
+          episodesSeasonRateButton.visibleIf(showRateButton)
+          episodesSeasonMyStarIcon.visibleIf(ratingState.userRating != null)
+          episodesSeasonMyRating.visibleIf(ratingState.userRating != null)
+          ratingState.userRating?.let {
+            episodesSeasonMyStarIcon.isEnabled = ratingState.rateAllowed == true
+            episodesSeasonMyRating.text = String.format(Locale.ENGLISH, "%d", it.rating)
+          }
         }
         episodes?.let {
           episodesAdapter?.setItems(it)
@@ -139,6 +163,7 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
       is ShowDetailsEpisodesEvent.Finish -> requireActivity().onBackPressed()
       is ShowDetailsEpisodesEvent.RemoveFromTrakt -> openRemoveTraktSheet(event)
       is ShowDetailsEpisodesEvent.OpenEpisodeDetails -> openEpisodeDetails(event.bundle, event.isWatched)
+      is ShowDetailsEpisodesEvent.OpenRateSeason -> openRateSeasonDialog(event.season)
     }
   }
 
@@ -167,7 +192,7 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
           viewModel.openEpisodeDetails(selectedEpisode)
         }
         bundle.containsKey(NavigationArgs.ACTION_RATING_CHANGED) -> {
-          viewModel.refreshEpisodesRatings()
+          viewModel.loadRatings()
         }
       }
     }
@@ -192,6 +217,19 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
     }
     val args = RemoveTraktBottomSheet.createBundle(event.traktIds, event.mode)
     navigateToSafe(event.actionId, args)
+  }
+
+  private fun openRateSeasonDialog(season: Season) {
+    setFragmentResultListener(NavigationArgs.REQUEST_RATING) { _, bundle ->
+      when (bundle.getParcelable<Operation>(NavigationArgs.RESULT)) {
+        Operation.SAVE -> showSnack(MessageEvent.Info(R.string.textRateSaved))
+        Operation.REMOVE -> showSnack(MessageEvent.Info(R.string.textRateRemoved))
+        else -> Timber.w("Unknown result")
+      }
+      viewModel.loadRatings()
+    }
+    val bundle = RatingsBottomSheet.createBundle(season.ids.trakt, Type.SEASON)
+    navigateToSafe(R.id.actionEpisodesFragmentToRating, bundle)
   }
 
   override fun onDestroyView() {

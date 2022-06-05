@@ -94,10 +94,12 @@
     android:minWidth="64dp"
     android:text="@string/textRate"
     android:textColor="?android:attr/textColorPrimary"
+    android:visibility="gone"
     app:layout_constraintBottom_toTopOf="@id/episodesOverview"
     app:layout_constraintEnd_toStartOf="@id/episodesSeasonMyStarIcon"
     app:layout_constraintTop_toTopOf="parent"
     app:rippleColor="?android:attr/textColorPrimary"
+    tools:visibility="visible"
     />
 
   <TextView

@@ -6,6 +6,7 @@ import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomShee
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.Season
 
 sealed class ShowDetailsEpisodesEvent<T>(action: T) : Event<T>(action) {
 
@@ -13,6 +14,10 @@ sealed class ShowDetailsEpisodesEvent<T>(action: T) : Event<T>(action) {
     val bundle: EpisodeBundle,
     val isWatched: Boolean
   ) : ShowDetailsEpisodesEvent<EpisodeBundle>(bundle)
+
+  data class OpenRateSeason(
+    val season: Season,
+  ) : ShowDetailsEpisodesEvent<Season>(season)
 
   data class RemoveFromTrakt(
     @IdRes val actionId: Int,
