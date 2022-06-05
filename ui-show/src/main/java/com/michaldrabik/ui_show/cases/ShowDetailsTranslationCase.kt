@@ -2,8 +2,6 @@ package com.michaldrabik.ui_show.cases
 
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.repository.TranslationsRepository
-import com.michaldrabik.ui_model.Season
-import com.michaldrabik.ui_model.SeasonTranslation
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -18,11 +16,5 @@ class ShowDetailsTranslationCase @Inject constructor(
     val language = translationsRepository.getLanguage()
     if (language == DEFAULT_LANGUAGE) return null
     return translationsRepository.loadTranslation(show, language)
-  }
-
-  suspend fun loadTranslations(season: Season, show: Show): List<SeasonTranslation> {
-    val language = translationsRepository.getLanguage()
-    if (language == DEFAULT_LANGUAGE) return emptyList()
-    return translationsRepository.loadTranslations(season, show.ids.trakt, language)
   }
 }

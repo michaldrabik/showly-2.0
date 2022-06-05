@@ -57,8 +57,6 @@ import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
 import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_comments.fragment.CommentsFragment
-import com.michaldrabik.ui_episodes.details.EpisodeDetailsBottomSheet
-import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
@@ -72,9 +70,6 @@ import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_GALLERY
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_navigation.java.NavigationArgs
-import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_TAB_SELECTED
-import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_WATCHED
-import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_RATING_CHANGED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_CUSTOM_IMAGE_CLEARED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FAMILY
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
@@ -82,7 +77,6 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_PERSON
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
-import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_EPISODE_DETAILS
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MANAGE_LISTS
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_PERSON_DETAILS
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_REMOVE_TRAKT
@@ -221,24 +215,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 //      }
 //      showDetailsBackArrow.crossfadeTo(showDetailsBackArrow2)
 //    }
-//  }
-
-//  private fun hideExtraView(view: View) {
-//    if (view.animation != null) return
-//    view.run {
-//      fadeOut(300)
-//      startAnimation(animationExitLeft)
-//    }
-//
-//    with(binding) {
-//      showDetailsMainLayout.run {
-//        fadeIn(withHardware = true)
-//        startAnimation(animationEnterLeft)
-//      }
-//      showDetailsBackArrow2.crossfadeTo(showDetailsBackArrow)
-//    }
-//
-//    viewModel.refreshAnnouncements()
 //  }
 
   private fun handleEvent(event: Event<*>) {
@@ -401,42 +377,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     showSnack(event)
   }
 
-  fun openEpisodeDetails(
-    show: Show,
-    episode: Episode,
-    season: Season?,
-    isWatched: Boolean,
-    showButton: Boolean = true,
-    showTabs: Boolean = true,
-  ) {
-    if (season !== null) {
-      setFragmentResultListener(REQUEST_EPISODE_DETAILS) { _, bundle ->
-        when {
-          bundle.containsKey(ACTION_RATING_CHANGED) -> viewModel.refreshEpisodesRatings()
-          bundle.containsKey(ACTION_EPISODE_WATCHED) -> {
-            val watched = bundle.getBoolean(ACTION_EPISODE_WATCHED)
-            viewModel.setEpisodeWatched(episode, season, watched, removeTrakt = true)
-          }
-          bundle.containsKey(ACTION_EPISODE_TAB_SELECTED) -> {
-            val selectedEpisode = bundle.getParcelable<Episode>(ACTION_EPISODE_TAB_SELECTED)!!
-//            binding.showDetailsEpisodesView.selectEpisode(selectedEpisode)
-          }
-        }
-      }
-    }
-    val bundle = Bundle().apply {
-      val seasonEpisodes = season?.episodes?.map { it.number }?.toIntArray()
-      putLong(EpisodeDetailsBottomSheet.ARG_ID_TRAKT, show.traktId)
-      putLong(EpisodeDetailsBottomSheet.ARG_ID_TMDB, show.ids.tmdb.id)
-      putParcelable(EpisodeDetailsBottomSheet.ARG_EPISODE, episode)
-      putIntArray(EpisodeDetailsBottomSheet.ARG_SEASON_EPISODES, seasonEpisodes)
-      putBoolean(EpisodeDetailsBottomSheet.ARG_IS_WATCHED, isWatched)
-      putBoolean(EpisodeDetailsBottomSheet.ARG_SHOW_BUTTON, showButton)
-      putBoolean(EpisodeDetailsBottomSheet.ARG_SHOW_TABS, showTabs)
-    }
-    navigateToSafe(R.id.actionShowDetailsFragmentEpisodeDetails, bundle)
-  }
-
   private fun openRemoveTraktSheet(event: RemoveFromTrakt) {
     setFragmentResultListener(REQUEST_REMOVE_TRAKT) { _, bundle ->
       if (bundle.getBoolean(NavigationArgs.RESULT, false)) {
@@ -444,7 +384,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         (requireActivity() as SnackbarHost).provideSnackbarLayout().showInfoSnackbar(text)
 
         if (event.actionId == R.id.actionShowDetailsFragmentToRemoveTraktProgress) {
-          viewModel.launchRefreshWatchedEpisodes()
+          viewModel.refreshWatchedEpisodes()
         }
       }
     }

@@ -35,5 +35,7 @@ sealed class ShowDetailsEvent<T>(action: T) : Event<T>(action) {
     val person: Person
   ) : ShowDetailsEvent<Person>(person)
 
+  object RefreshSeasons : ShowDetailsEvent<Unit>(Unit)
+
   object Finish : ShowDetailsEvent<Unit>(Unit)
 }

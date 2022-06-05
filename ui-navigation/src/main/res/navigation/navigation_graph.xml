@@ -376,6 +376,16 @@
     android:name="com.michaldrabik.ui_show.sections.episodes.ShowDetailsEpisodesFragment"
     android:label="fragmentEpisodes"
     >
+    <action
+      android:id="@+id/actionEpisodesFragmentToRemoveTraktProgress"
+      app:destination="@id/removeTraktProgressDialog"
+      app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionEpisodesFragmentToEpisodesDetails"
+      app:destination="@id/episodeDetailsDialog"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment

@@ -53,6 +53,7 @@ class ShowDetailsSeasonsViewModel @Inject constructor(
         show = event.show
         loadSeasons()
       }
+      is ShowDetailsEvent.RefreshSeasons -> refreshWatchedEpisodes()
       else -> Unit
     }
   }
@@ -115,6 +116,9 @@ class ShowDetailsSeasonsViewModel @Inject constructor(
   }
 
   fun refreshWatchedEpisodes() {
+    if (!this::show.isInitialized || seasonsState.value == null) {
+      return
+    }
     viewModelScope.launch {
       val seasonItems = seasonsState.value?.toList() ?: emptyList()
       val calculated = markWatchedEpisodes(seasonItems)

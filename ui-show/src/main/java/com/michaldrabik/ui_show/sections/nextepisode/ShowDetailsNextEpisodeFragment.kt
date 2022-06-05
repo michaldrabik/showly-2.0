@@ -8,9 +8,11 @@ import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
+import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.viewBinding
+import com.michaldrabik.ui_episodes.details.EpisodeDetailsBottomSheet
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_show.R
@@ -61,15 +63,16 @@ class ShowDetailsNextEpisodeFragment : BaseFragment<ShowDetailsNextEpisodeViewMo
   }
 
   private fun openDetails(show: Show, episode: Episode) {
-    (requireParentFragment() as ShowDetailsFragment)
-      .openEpisodeDetails(
-        show = show,
-        episode = episode,
-        season = null,
-        isWatched = false,
-        showButton = false,
-        showTabs = false
-      )
+    val bundle = Bundle().apply {
+      putLong(EpisodeDetailsBottomSheet.ARG_ID_TRAKT, show.traktId)
+      putLong(EpisodeDetailsBottomSheet.ARG_ID_TMDB, show.ids.tmdb.id)
+      putParcelable(EpisodeDetailsBottomSheet.ARG_EPISODE, episode)
+      putIntArray(EpisodeDetailsBottomSheet.ARG_SEASON_EPISODES, null)
+      putBoolean(EpisodeDetailsBottomSheet.ARG_IS_WATCHED, false)
+      putBoolean(EpisodeDetailsBottomSheet.ARG_SHOW_BUTTON, false)
+      putBoolean(EpisodeDetailsBottomSheet.ARG_SHOW_TABS, false)
+    }
+    navigateToSafe(R.id.actionShowDetailsFragmentEpisodeDetails, bundle)
   }
 
   override fun setupBackPressed() = Unit

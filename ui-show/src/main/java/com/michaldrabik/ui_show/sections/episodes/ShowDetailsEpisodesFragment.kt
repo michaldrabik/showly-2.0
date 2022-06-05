@@ -10,18 +10,21 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.common.WidgetsProvider
+import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet
+import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.setCheckedSilent
+import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_episodes.details.EpisodeDetailsBottomSheet
 import com.michaldrabik.ui_model.Episode
+import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_model.IdTrakt
-import com.michaldrabik.ui_model.Season
-import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_show.R
 import com.michaldrabik.ui_show.databinding.FragmentShowDetailsEpisodesBinding
@@ -43,7 +46,9 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
     )
   }
 
+  override val navigationId = R.id.showDetailsEpisodesFragment
   private val binding by viewBinding(FragmentShowDetailsEpisodesBinding::bind)
+
   override val viewModel by viewModels<ShowDetailsEpisodesViewModel>()
 
   private var episodesAdapter: EpisodesAdapter? = null
@@ -60,6 +65,11 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
       { viewModel.uiState.collect { render(it) } },
       { viewModel.eventFlow.collect { handleEvent(it as ShowDetailsEpisodesEvent<*>) } }
     )
+  }
+
+  override fun onResume() {
+    super.onResume()
+    viewModel.launchRefreshWatchedEpisodes()
   }
 
   private fun setupView() {
@@ -80,11 +90,11 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
 
   private fun setupRecycler() {
     episodesAdapter = EpisodesAdapter(
-      itemClickListener = { episode: Episode, b: Boolean ->
-//        openEpisodeDetails()
+      itemClickListener = { episode: Episode, isWatched: Boolean ->
+        viewModel.openEpisodeDetails(episode, isWatched)
       },
       itemCheckedListener = { episode: Episode, isChecked: Boolean ->
-//        viewModel.setEpisodeWatched(episode, season, isChecked, removeTrakt = true)
+        viewModel.setEpisodeWatched(episode, isChecked)
       }
     )
     binding.episodesRecycler.apply {
@@ -115,7 +125,10 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
         }
         episodes?.let {
           episodesAdapter?.setItems(it)
-          episodesRecycler.scheduleLayoutAnimation()
+          if (isInitialLoad == true) {
+            episodesRecycler.scheduleLayoutAnimation()
+          }
+          (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
         }
       }
     }
@@ -123,7 +136,9 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
 
   private fun handleEvent(event: ShowDetailsEpisodesEvent<*>) {
     when (event) {
-      ShowDetailsEpisodesEvent.Finish -> requireActivity().onBackPressed()
+      is ShowDetailsEpisodesEvent.Finish -> requireActivity().onBackPressed()
+      is ShowDetailsEpisodesEvent.RemoveFromTrakt -> openRemoveTraktSheet(event)
+      is ShowDetailsEpisodesEvent.OpenEpisodeDetails -> openEpisodeDetails(event.bundle, event.isWatched)
     }
   }
 
@@ -136,42 +151,49 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
     episodesAdapter?.toggleEpisodesLock()
   }
 
-  fun openEpisodeDetails(
-    show: Show,
-    episode: Episode,
-    season: Season?,
-    isWatched: Boolean,
-    showButton: Boolean = true,
-    showTabs: Boolean = true,
+  private fun openEpisodeDetails(
+    episodeBundle: EpisodeBundle,
+    isWatched: Boolean
   ) {
-    if (season !== null) {
-      setFragmentResultListener(NavigationArgs.REQUEST_EPISODE_DETAILS) { _, bundle ->
-        when {
-          bundle.containsKey(NavigationArgs.ACTION_RATING_CHANGED) -> {
-//            viewModel.refreshEpisodesRatings()
-          }
-          bundle.containsKey(NavigationArgs.ACTION_EPISODE_WATCHED) -> {
-            val watched = bundle.getBoolean(NavigationArgs.ACTION_EPISODE_WATCHED)
-//            viewModel.setEpisodeWatched(episode, season, watched, removeTrakt = true)
-          }
-          bundle.containsKey(NavigationArgs.ACTION_EPISODE_TAB_SELECTED) -> {
-            val selectedEpisode = bundle.getParcelable<Episode>(NavigationArgs.ACTION_EPISODE_TAB_SELECTED)!!
-//            binding.showDetailsEpisodesView.selectEpisode(selectedEpisode)
-          }
+    val (episode, season, show) = episodeBundle
+    setFragmentResultListener(NavigationArgs.REQUEST_EPISODE_DETAILS) { _, bundle ->
+      when {
+        bundle.containsKey(NavigationArgs.ACTION_EPISODE_WATCHED) -> {
+          val watched = bundle.getBoolean(NavigationArgs.ACTION_EPISODE_WATCHED)
+          viewModel.setEpisodeWatched(episode, watched)
+        }
+        bundle.containsKey(NavigationArgs.ACTION_EPISODE_TAB_SELECTED) -> {
+          val selectedEpisode = bundle.getParcelable<Episode>(NavigationArgs.ACTION_EPISODE_TAB_SELECTED)!!
+          viewModel.openEpisodeDetails(selectedEpisode)
+        }
+        bundle.containsKey(NavigationArgs.ACTION_RATING_CHANGED) -> {
+          viewModel.refreshEpisodesRatings()
         }
       }
     }
+
     val bundle = Bundle().apply {
-      val seasonEpisodes = season?.episodes?.map { it.number }?.toIntArray()
+      val seasonEpisodes = season.episodes.map { it.number }.toIntArray()
       putLong(EpisodeDetailsBottomSheet.ARG_ID_TRAKT, show.traktId)
       putLong(EpisodeDetailsBottomSheet.ARG_ID_TMDB, show.ids.tmdb.id)
       putParcelable(EpisodeDetailsBottomSheet.ARG_EPISODE, episode)
       putIntArray(EpisodeDetailsBottomSheet.ARG_SEASON_EPISODES, seasonEpisodes)
       putBoolean(EpisodeDetailsBottomSheet.ARG_IS_WATCHED, isWatched)
-      putBoolean(EpisodeDetailsBottomSheet.ARG_SHOW_BUTTON, showButton)
-      putBoolean(EpisodeDetailsBottomSheet.ARG_SHOW_TABS, showTabs)
+      putBoolean(EpisodeDetailsBottomSheet.ARG_SHOW_BUTTON, true)
+      putBoolean(EpisodeDetailsBottomSheet.ARG_SHOW_TABS, true)
     }
-    navigateToSafe(R.id.actionShowDetailsFragmentEpisodeDetails, bundle)
+    navigateToSafe(R.id.actionEpisodesFragmentToEpisodesDetails, bundle)
+  }
+
+  private fun openRemoveTraktSheet(event: ShowDetailsEpisodesEvent.RemoveFromTrakt) {
+    setFragmentResultListener(NavigationArgs.REQUEST_REMOVE_TRAKT) { _, bundle ->
+      if (bundle.getBoolean(NavigationArgs.RESULT, false)) {
+        val text = resources.getString(R.string.textTraktSyncRemovedFromTrakt)
+        (requireActivity() as SnackbarHost).provideSnackbarLayout().showInfoSnackbar(text)
+      }
+    }
+    val args = RemoveTraktBottomSheet.createBundle(event.traktIds, event.mode)
+    navigateToSafe(event.actionId, args)
   }
 
   override fun onDestroyView() {

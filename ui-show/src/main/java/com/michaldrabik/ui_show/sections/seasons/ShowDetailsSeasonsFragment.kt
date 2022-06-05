@@ -55,6 +55,11 @@ class ShowDetailsSeasonsFragment : BaseFragment<ShowDetailsSeasonsViewModel>(R.l
     )
   }
 
+  override fun onResume() {
+    viewModel.refreshWatchedEpisodes()
+    super.onResume()
+  }
+
   private fun setupView() {
     seasonsAdapter = SeasonsAdapter(
       itemClickListener = { viewModel.openSeasonEpisodes(it) },
@@ -80,7 +85,6 @@ class ShowDetailsSeasonsFragment : BaseFragment<ShowDetailsSeasonsViewModel>(R.l
   private fun renderSeasons(seasonsItems: List<SeasonListItem>) {
     with(binding) {
       seasonsAdapter?.setItems(seasonsItems)
-//      showDetailsEpisodesView.updateEpisodes(seasonsItems)
       showDetailsSeasonsProgress.gone()
       showDetailsSeasonsEmptyView.visibleIf(seasonsItems.isEmpty())
       showDetailsSeasonsRecycler.fadeIf(seasonsItems.isNotEmpty(), hardware = true)
@@ -93,6 +97,7 @@ class ShowDetailsSeasonsFragment : BaseFragment<ShowDetailsSeasonsViewModel>(R.l
           showSnack(MessageEvent.Info(R.string.textSeasonsEmpty))
         }
       }
+      (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
     }
   }
 
@@ -126,8 +131,6 @@ class ShowDetailsSeasonsFragment : BaseFragment<ShowDetailsSeasonsViewModel>(R.l
         val bundle = ShowDetailsEpisodesFragment.createBundle(event.showId, event.seasonId)
         navigateToSafe(R.id.actionShowDetailsFragmentToEpisodes, bundle)
       }
-//      is ShowDetailsSeasonsEvent.SeasonsLoaded ->
-//        (requireParentFragment() as ShowDetailsFragment).onSeasonsLoaded(event.seasons, event.areSeasonsLocal)
     }
   }
 
