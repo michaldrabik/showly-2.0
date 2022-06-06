@@ -383,7 +383,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         (requireActivity() as SnackbarHost).provideSnackbarLayout().showInfoSnackbar(text)
 
         if (event.actionId == R.id.actionShowDetailsFragmentToRemoveTraktProgress) {
-          viewModel.refreshWatchedEpisodes()
+          viewModel.refreshSeasons()
         }
       }
     }

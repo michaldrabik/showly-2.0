@@ -53,7 +53,7 @@ class ShowDetailsSeasonsViewModel @Inject constructor(
         show = event.show
         loadSeasons()
       }
-      is ShowDetailsEvent.RefreshSeasons -> refreshWatchedEpisodes()
+      is ShowDetailsEvent.RefreshSeasons -> refreshSeasons()
       else -> Unit
     }
   }
@@ -87,7 +87,7 @@ class ShowDetailsSeasonsViewModel @Inject constructor(
         val event = ShowDetailsSeasonsEvent.RemoveFromTrakt(R.id.actionShowDetailsFragmentToRemoveTraktProgress, Mode.EPISODE, ids)
         eventChannel.send(event)
       }
-      refreshWatchedEpisodes()
+      refreshSeasons()
     }
   }
 
@@ -99,7 +99,7 @@ class ShowDetailsSeasonsViewModel @Inject constructor(
 
       val seasonItems = seasonsState.value?.toList() ?: emptyList()
       quickProgressCase.setQuickProgress(item, seasonItems, show)
-      refreshWatchedEpisodes()
+      refreshSeasons()
 
       messageChannel.send(MessageEvent.Info(R.string.textShowQuickProgressDone))
       Analytics.logShowQuickProgress(show)
@@ -114,7 +114,7 @@ class ShowDetailsSeasonsViewModel @Inject constructor(
     }
   }
 
-  fun refreshWatchedEpisodes() {
+  fun refreshSeasons() {
     if (!this::show.isInitialized || seasonsState.value == null) {
       return
     }

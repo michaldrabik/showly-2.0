@@ -56,7 +56,7 @@ class ShowDetailsSeasonsFragment : BaseFragment<ShowDetailsSeasonsViewModel>(R.l
   }
 
   override fun onResume() {
-    viewModel.refreshWatchedEpisodes()
+    viewModel.refreshSeasons()
     super.onResume()
   }
 
@@ -156,7 +156,7 @@ class ShowDetailsSeasonsFragment : BaseFragment<ShowDetailsSeasonsViewModel>(R.l
         (requireActivity() as SnackbarHost).provideSnackbarLayout().showInfoSnackbar(text)
 
         if (event.actionId == R.id.actionShowDetailsFragmentToRemoveTraktProgress) {
-          viewModel.refreshWatchedEpisodes()
+          viewModel.refreshSeasons()
         }
       }
     }
