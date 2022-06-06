@@ -1,12 +1,12 @@
-package com.michaldrabik.ui_show.quick_setup
+package com.michaldrabik.ui_show.quicksetup
 
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.ui_model.Episode
-import com.michaldrabik.ui_show.quick_setup.views.QuickSetupHeaderView
-import com.michaldrabik.ui_show.quick_setup.views.QuickSetupItemView
+import com.michaldrabik.ui_show.quicksetup.views.QuickSetupHeaderView
+import com.michaldrabik.ui_show.quicksetup.views.QuickSetupItemView
 
 class QuickSetupAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

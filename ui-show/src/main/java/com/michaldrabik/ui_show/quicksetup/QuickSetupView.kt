@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_show.quick_setup
+package com.michaldrabik.ui_show.quicksetup
 
 import android.content.Context
 import android.util.AttributeSet
