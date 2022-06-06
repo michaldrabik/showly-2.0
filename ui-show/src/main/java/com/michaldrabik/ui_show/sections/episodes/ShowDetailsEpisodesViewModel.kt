@@ -59,7 +59,6 @@ class ShowDetailsEpisodesViewModel @Inject constructor(
   private val initialLoadState = MutableStateFlow<Boolean?>(null)
 
   private var show by notNull<Show>()
-  private var season by notNull<SeasonListItem>()
 
   init {
     val (showId, seasonId) = savedStateHandle.get<Options>(ARG_OPTIONS)!!
@@ -76,7 +75,6 @@ class ShowDetailsEpisodesViewModel @Inject constructor(
         eventChannel.send(ShowDetailsEpisodesEvent.Finish)
         return@launch
       }
-      this@ShowDetailsEpisodesViewModel.season = season
       seasonState.value = season
 
       delay(265) // Let enter transition animation complete peacefully.
@@ -116,8 +114,9 @@ class ShowDetailsEpisodesViewModel @Inject constructor(
   private fun loadTranslations() {
     viewModelScope.launch {
       try {
-        val translations = translationCase.loadTranslations(season.season, show)
+        val season = seasonState.value?.season
         val episodes = episodesState.value?.toMutableList() ?: mutableListOf()
+        val translations = translationCase.loadTranslations(season, show)
 
         if (translations.isEmpty() || episodes.isEmpty()) {
           return@launch
@@ -154,28 +153,38 @@ class ShowDetailsEpisodesViewModel @Inject constructor(
     isChecked: Boolean
   ) {
     viewModelScope.launch {
-      val bundle = EpisodeBundle(episode, season.season, show)
-      val result = setWatchedCase.setEpisodeWatched(bundle, isChecked)
-      if (result == Result.REMOVE_FROM_TRAKT) {
-        val ids = listOf(episode.ids.trakt)
-        val mode = RemoveTraktBottomSheet.Mode.EPISODE
-        eventChannel.send(ShowDetailsEpisodesEvent.RemoveFromTrakt(R.id.actionEpisodesFragmentToRemoveTraktProgress, mode, ids))
+      seasonState.value?.let {
+        val bundle = EpisodeBundle(episode, it.season, show)
+        val result = setWatchedCase.setEpisodeWatched(bundle, isChecked)
+        if (result == Result.REMOVE_FROM_TRAKT) {
+          val ids = listOf(episode.ids.trakt)
+          val mode = RemoveTraktBottomSheet.Mode.EPISODE
+          eventChannel.send(ShowDetailsEpisodesEvent.RemoveFromTrakt(R.id.actionEpisodesFragmentToRemoveTraktProgress, mode, ids))
+        }
+        refreshWatchedEpisodes()
+        announcementsCase.refreshAnnouncements(show.ids.trakt)
       }
-      refreshWatchedEpisodes()
-      announcementsCase.refreshAnnouncements(show.ids.trakt)
     }
   }
 
   fun openEpisodeDetails(episode: Episode) {
-    val isWatched = episodesState.value?.find { it.id == episode.ids.trakt.id }?.isWatched!!
-    openEpisodeDetails(episode, isWatched)
+    val currentEpisode = episodesState.value?.find { it.season.number == episode.season && it.episode.number == episode.number }!!
+    openEpisodeDetails(episode, currentEpisode.isWatched)
   }
 
   fun openEpisodeDetails(episode: Episode, isWatched: Boolean) {
+    val currentSeason = seasonState.value?.season
+    val currentEpisode = episodesState.value
+      ?.find { it.season.number == episode.season && it.episode.number == episode.number }
+
+    if (currentSeason == null || currentEpisode == null) {
+      return
+    }
+
     viewModelScope.launch {
       val episodeBundle = EpisodeBundle(
-        episode = episode,
-        season = season.season,
+        episode = currentEpisode.episode,
+        season = currentSeason,
         show = show
       )
       eventChannel.send(ShowDetailsEpisodesEvent.OpenEpisodeDetails(episodeBundle, isWatched))
@@ -184,7 +193,9 @@ class ShowDetailsEpisodesViewModel @Inject constructor(
 
   fun openRateSeasonDialog() {
     viewModelScope.launch {
-      eventChannel.send(ShowDetailsEpisodesEvent.OpenRateSeason(season.season))
+      seasonState.value?.season?.let {
+        eventChannel.send(ShowDetailsEpisodesEvent.OpenRateSeason(it))
+      }
     }
   }
 
