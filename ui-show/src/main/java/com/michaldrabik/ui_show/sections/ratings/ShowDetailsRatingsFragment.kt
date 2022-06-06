@@ -14,7 +14,6 @@ import com.michaldrabik.ui_model.IdImdb
 import com.michaldrabik.ui_show.R
 import com.michaldrabik.ui_show.ShowDetailsViewModel
 import com.michaldrabik.ui_show.databinding.FragmentShowDetailsRatingsBinding
-import com.michaldrabik.ui_show.helpers.ShowLink
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 

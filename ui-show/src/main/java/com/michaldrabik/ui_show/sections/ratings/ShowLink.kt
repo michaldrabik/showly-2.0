@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_show.helpers
+package com.michaldrabik.ui_show.sections.ratings
 
 import android.net.Uri
 import com.michaldrabik.ui_base.common.AppCountry
