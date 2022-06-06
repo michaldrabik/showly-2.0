@@ -33,7 +33,9 @@ import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_show.R
 import com.michaldrabik.ui_show.databinding.FragmentShowDetailsEpisodesBinding
+import com.michaldrabik.ui_show.sections.episodes.recycler.EpisodeListItem
 import com.michaldrabik.ui_show.sections.episodes.recycler.EpisodesAdapter
+import com.michaldrabik.ui_show.sections.seasons.recycler.SeasonListItem
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.parcelize.Parcelize
@@ -132,20 +134,8 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
           }
           episodesUnlockButton.visibleIf(!it.season.isSpecial() && it.episodes.any { ep -> !ep.episode.hasAired(it.season) })
 
-          val seasonRating = season.season.rating
-          episodesStarIcon.visibleIf(seasonRating > 0F)
-          episodesSeasonRating.visibleIf(seasonRating > 0F)
-          episodesSeasonRating.text = String.format(Locale.ENGLISH, "%.1f", seasonRating)
-
-          val ratingState = season.userRating
-          val showRateButton = ratingState.rateAllowed == true && ratingState.userRating == null && episodes != null
-          episodesSeasonRateButton.visibleIf(showRateButton)
-          episodesSeasonMyStarIcon.visibleIf(ratingState.userRating != null)
-          episodesSeasonMyRating.visibleIf(ratingState.userRating != null)
-          ratingState.userRating?.let {
-            episodesSeasonMyStarIcon.isEnabled = ratingState.rateAllowed == true
-            episodesSeasonMyRating.text = String.format(Locale.ENGLISH, "%d", it.rating)
-          }
+          renderSeasonRating(season)
+          renderSeasonUserRating(season, episodes)
         }
         episodes?.let {
           episodesAdapter?.setItems(it)
@@ -154,6 +144,32 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
           }
           (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
         }
+      }
+    }
+  }
+
+  private fun renderSeasonRating(season: SeasonListItem) {
+    with(binding) {
+      val seasonRating = season.season.rating
+      episodesStarIcon.visibleIf(seasonRating > 0F)
+      episodesSeasonRating.visibleIf(seasonRating > 0F)
+      episodesSeasonRating.text = String.format(Locale.ENGLISH, "%.1f", seasonRating)
+    }
+  }
+
+  private fun renderSeasonUserRating(
+    season: SeasonListItem,
+    episodes: List<EpisodeListItem>?
+  ) {
+    with(binding) {
+      val ratingState = season.userRating
+      val showRateButton = ratingState.rateAllowed == true && ratingState.userRating == null && episodes != null
+      episodesSeasonRateButton.visibleIf(showRateButton)
+      episodesSeasonMyStarIcon.visibleIf(ratingState.userRating != null)
+      episodesSeasonMyRating.visibleIf(ratingState.userRating != null)
+      ratingState.userRating?.let {
+        episodesSeasonMyStarIcon.isEnabled = ratingState.rateAllowed == true
+        episodesSeasonMyRating.text = String.format(Locale.ENGLISH, "%d", it.rating)
       }
     }
   }
