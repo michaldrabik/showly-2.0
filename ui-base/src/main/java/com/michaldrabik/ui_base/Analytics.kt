@@ -307,6 +307,12 @@ object Analytics {
     }
   }
 
+  fun logSettingsProgressType(value: String) {
+    firebaseAnalytics.logEvent("settings_progress_next_type") {
+      param("value", value.lowercase(ROOT))
+    }
+  }
+
   fun logSettingsDateFormat(value: String) {
     firebaseAnalytics.logEvent("settings_date_format") {
       param("value", value.lowercase(ROOT))

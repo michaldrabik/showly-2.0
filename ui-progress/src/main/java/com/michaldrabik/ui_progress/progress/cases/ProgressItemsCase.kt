@@ -4,6 +4,7 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.data_local.LocalDataSource
+import com.michaldrabik.data_local.database.model.Episode
 import com.michaldrabik.repository.OnHoldItemsRepository
 import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.TranslationsRepository
@@ -14,6 +15,9 @@ import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
+import com.michaldrabik.ui_model.ProgressNextEpisodeType
+import com.michaldrabik.ui_model.ProgressNextEpisodeType.LAST_WATCHED
+import com.michaldrabik.ui_model.ProgressNextEpisodeType.OLDEST
 import com.michaldrabik.ui_model.ProgressType
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
@@ -62,20 +66,11 @@ class ProgressItemsCase @Inject constructor(
     val nowUtc = nowUtc()
     val upcomingLimit = nowUtc.plusMonths(UPCOMING_MONTHS_LIMIT).toMillis()
     val shows = showsRepository.myShows.loadAll()
+    val nextEpisodeType = settingsRepository.progressNextEpisodeType
 
     val items = shows.map { show ->
       async {
-        val lastWatchedEpisode = localSource.episodes.getLastWatched(show.traktId)
-        val nextEpisode = when (lastWatchedEpisode) {
-          null -> localSource.episodes.getFirstUnwatched(show.traktId, upcomingLimit)
-          else -> localSource.episodes.getFirstUnwatchedAfterEpisode(
-            show.traktId,
-            lastWatchedEpisode.seasonNumber,
-            lastWatchedEpisode.episodeNumber,
-            upcomingLimit
-          )
-        }
-        val isUpcoming = nextEpisode?.firstAired?.isAfter(nowUtc) == true
+        val nextEpisode = findNextEpisode(show.traktId, nextEpisodeType, upcomingLimit)
 
         val episodeUi = nextEpisode?.let { mappers.episode.fromDatabase(it) }
         val seasonUi = nextEpisode?.let { ep ->
@@ -83,6 +78,7 @@ class ProgressItemsCase @Inject constructor(
             mappers.season.fromDatabase(it)
           }
         }
+        val isUpcoming = nextEpisode?.firstAired?.isAfter(nowUtc) == true
 
         ProgressListItem.Episode(
           show = show,
@@ -147,6 +143,28 @@ class ProgressItemsCase @Inject constructor(
 
     val filteredItems = filterByQuery(searchQuery, filledItems)
     groupItems(filteredItems, sortOrder, sortType)
+  }
+
+  private suspend fun findNextEpisode(
+    showId: Long,
+    nextEpisodeType: ProgressNextEpisodeType,
+    upcomingLimit: Long
+  ): Episode? = when (nextEpisodeType) {
+    LAST_WATCHED -> {
+      val lastWatchedEpisode = localSource.episodes.getLastWatched(showId)
+      when (lastWatchedEpisode) {
+        null -> localSource.episodes.getFirstUnwatched(showId, upcomingLimit)
+        else -> localSource.episodes.getFirstUnwatchedAfterEpisode(
+          showId,
+          lastWatchedEpisode.seasonNumber,
+          lastWatchedEpisode.episodeNumber,
+          upcomingLimit
+        )
+      }
+    }
+    OLDEST -> {
+      localSource.episodes.getFirstUnwatched(showId, upcomingLimit)
+    }
   }
 
   private fun filterByQuery(query: String, items: List<ProgressListItem.Episode>) =

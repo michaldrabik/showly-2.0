@@ -67,6 +67,11 @@
   <string name="textSettingsStreamingsDisclaimer">Streaming services data is provided by</string>
   <string name="textSettingsStreamingServicesTitle">Streaming Services</string>
   <string name="textSettingsStreamingServicesMessage">Display streaming services data.</string>
+  <string name="textSettingsProgressNextEpisodeTitle">Next Episode</string>
+  <string name="textSettingsProgressNextEpisodeMessage">Calculate next episode using:</string>
+
+  <string name="textNextEpisodeLastWatched">Last watched episode</string>
+  <string name="textNextEpisodeOldest">Oldest unwatched episode</string>
 
   <string name="textLanguageEnglish" translatable="false">English</string>
   <string name="textLanguagePolish" translatable="false">Polski</string>

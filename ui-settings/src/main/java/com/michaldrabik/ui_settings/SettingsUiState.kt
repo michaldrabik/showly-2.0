@@ -2,6 +2,7 @@ package com.michaldrabik.ui_settings
 
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.dates.AppDateFormat
+import com.michaldrabik.ui_model.ProgressNextEpisodeType
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import com.michaldrabik.ui_settings.helpers.AppTheme
@@ -24,4 +25,5 @@ data class SettingsUiState(
   val newsEnabled: Boolean = false,
   val streamingsEnabled: Boolean = true,
   val restartApp: Boolean = false,
+  val progressNextType: ProgressNextEpisodeType? = null,
 )

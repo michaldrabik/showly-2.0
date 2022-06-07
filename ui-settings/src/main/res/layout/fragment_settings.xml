@@ -401,10 +401,46 @@
     <View
       android:id="@+id/settingsSeparator1"
       style="@style/Settings.Separator"
-      app:layout_constraintBottom_toTopOf="@id/settingsUpcomingSection"
+      app:layout_constraintBottom_toTopOf="@id/settingsProgressNext"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsIncludeSpecials"
+      />
+
+    <LinearLayout
+      android:id="@+id/settingsProgressNext"
+      style="@style/Settings.ItemLayoutNoRipple"
+      app:layout_constraintBottom_toTopOf="@+id/settingsUpcomingSection"
+      app:layout_constraintEnd_toStartOf="@id/settingsProgressNextValue"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsSeparator1"
+      >
+
+      <TextView
+        style="@style/Settings.Title"
+        android:text="@string/textSettingsProgressNextEpisodeTitle"
+        />
+
+      <TextView
+        style="@style/Settings.Summary"
+        android:layout_width="wrap_content"
+        android:text="@string/textSettingsProgressNextEpisodeMessage"
+        />
+
+    </LinearLayout>
+
+    <TextView
+      android:id="@+id/settingsProgressNextValue"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:gravity="end"
+      android:minWidth="50dp"
+      android:text="@string/textNextEpisodeLastWatched"
+      android:textColor="?attr/colorAccent"
+      app:layout_constraintBottom_toBottomOf="@id/settingsProgressNext"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/settingsProgressNext"
       />
 
     <LinearLayout
@@ -413,7 +449,7 @@
       app:layout_constraintBottom_toTopOf="@id/settingsMyShowsSections"
       app:layout_constraintEnd_toStartOf="@id/settingsUpcomingSectionSwitch"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/settingsSeparator1"
+      app:layout_constraintTop_toBottomOf="@+id/settingsProgressNext"
       >
 
       <TextView

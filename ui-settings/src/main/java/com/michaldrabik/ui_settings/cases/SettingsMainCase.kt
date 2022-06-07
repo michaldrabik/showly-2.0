@@ -21,6 +21,7 @@ import com.michaldrabik.ui_model.MyShowsSection.RECENTS
 import com.michaldrabik.ui_model.MyShowsSection.UPCOMING
 import com.michaldrabik.ui_model.MyShowsSection.WATCHING
 import com.michaldrabik.ui_model.NotificationDelay
+import com.michaldrabik.ui_model.ProgressNextEpisodeType
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -182,6 +183,12 @@ class SettingsMainCase @Inject constructor(
 
   fun setCountry(country: AppCountry) {
     settingsRepository.country = country.code
+  }
+
+  fun getProgressType() = settingsRepository.progressNextEpisodeType
+
+  fun setProgressType(type: ProgressNextEpisodeType) {
+    settingsRepository.progressNextEpisodeType = type
   }
 
   fun isPremium() = settingsRepository.isPremium

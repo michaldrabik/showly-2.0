@@ -21,6 +21,7 @@ import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.MyMoviesSection
 import com.michaldrabik.ui_model.MyShowsSection
 import com.michaldrabik.ui_model.NotificationDelay
+import com.michaldrabik.ui_model.ProgressNextEpisodeType
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_model.TraktSyncSchedule
 import com.michaldrabik.ui_settings.cases.SettingsMainCase
@@ -42,6 +43,7 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
+//TODO Settings are getting too big. Refactor into smaller parts.
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
   private val mainCase: SettingsMainCase,
@@ -67,6 +69,7 @@ class SettingsViewModel @Inject constructor(
   private val traktNameState = MutableStateFlow("")
   private val userIdState = MutableStateFlow("")
   private val restartAppState = MutableStateFlow(false)
+  private val progressTypeState = MutableStateFlow<ProgressNextEpisodeType?>(null)
 
   fun loadSettings() {
     viewModelScope.launch {
@@ -237,6 +240,14 @@ class SettingsViewModel @Inject constructor(
     Analytics.logSettingsCountry(country.code)
   }
 
+  fun setProgressType(type: ProgressNextEpisodeType) {
+    viewModelScope.launch {
+      mainCase.setProgressType(type)
+      refreshSettings()
+    }
+    Analytics.logSettingsProgressType(type.name)
+  }
+
   fun setDateFormat(format: AppDateFormat, context: Context) {
     viewModelScope.launch {
       mainCase.setDateFormat(format, context)
@@ -321,6 +332,7 @@ class SettingsViewModel @Inject constructor(
     traktNameState.value = traktCase.getTraktUsername()
     userIdState.value = mainCase.getUserId()
     restartAppState.value = restartApp
+    progressTypeState.value = mainCase.getProgressType()
   }
 
   val uiState = combine(
@@ -339,8 +351,9 @@ class SettingsViewModel @Inject constructor(
     traktNameState,
     userIdState,
     restartAppState,
-    signingInState
-  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16 ->
+    signingInState,
+    progressTypeState
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17 ->
     SettingsUiState(
       settings = s1,
       language = s2,
@@ -357,7 +370,8 @@ class SettingsViewModel @Inject constructor(
       traktUsername = s13,
       userId = s14,
       restartApp = s15,
-      isSigningIn = s16
+      isSigningIn = s16,
+      progressNextType = s17
     )
   }.stateIn(
     scope = viewModelScope,

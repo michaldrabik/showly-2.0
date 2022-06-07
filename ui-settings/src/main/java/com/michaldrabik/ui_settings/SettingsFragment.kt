@@ -28,6 +28,7 @@ import com.michaldrabik.ui_base.common.OnTraktAuthorizeListener
 import com.michaldrabik.ui_base.dates.AppDateFormat
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
+import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.expandTouch
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
@@ -41,6 +42,9 @@ import com.michaldrabik.ui_model.MyShowsSection.RECENTS
 import com.michaldrabik.ui_model.MyShowsSection.UPCOMING
 import com.michaldrabik.ui_model.MyShowsSection.WATCHING
 import com.michaldrabik.ui_model.NotificationDelay
+import com.michaldrabik.ui_model.ProgressNextEpisodeType
+import com.michaldrabik.ui_model.ProgressNextEpisodeType.LAST_WATCHED
+import com.michaldrabik.ui_model.ProgressNextEpisodeType.OLDEST
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_model.TraktSyncSchedule.OFF
 import com.michaldrabik.ui_settings.helpers.AppLanguage
@@ -114,6 +118,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
       themeWidgets?.let { renderWidgetsTheme(it) }
       country?.let { renderCountry(it) }
       dateFormat?.let { renderDateFormat(it) }
+      progressNextType?.let { renderProgressType(it) }
       isSigningIn.let { settingsTraktAuthorizeProgress.visibleIf(it) }
       isSignedInTrakt.let { isSignedIn ->
         settingsTraktSync.visibleIf(isSignedIn)
@@ -306,6 +311,16 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     }
   }
 
+  private fun renderProgressType(type: ProgressNextEpisodeType) {
+    settingsProgressNextValue.run {
+      text = when (type) {
+        LAST_WATCHED -> getString(R.string.textNextEpisodeLastWatched).capitalizeWords()
+        OLDEST -> getString(R.string.textNextEpisodeOldest).capitalizeWords()
+      }
+      onClick { showProgressTypeDialog(type) }
+    }
+  }
+
   private fun renderDateFormat(format: AppDateFormat) {
     settingsDateFormat.run {
       settingsDateFormatValue.text = DateFormatProvider.loadSettingsFormat(format).format(nowUtc().toLocalZone())
@@ -397,6 +412,28 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
       .setSingleChoiceItems(options.map { it.displayName }.toTypedArray(), selected) { dialog, index ->
         if (index != selected) {
           viewModel.setCountry(options[index])
+        }
+        dialog.dismiss()
+      }
+      .show()
+  }
+
+  private fun showProgressTypeDialog(type: ProgressNextEpisodeType) {
+    val options = ProgressNextEpisodeType.values()
+    val displayOptions = options.map {
+      val option = when (it) {
+        LAST_WATCHED -> R.string.textNextEpisodeLastWatched
+        OLDEST -> R.string.textNextEpisodeOldest
+      }
+      getString(option)
+    }
+    val selected = options.indexOf(type)
+
+    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
+      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
+      .setSingleChoiceItems(displayOptions.toTypedArray(), selected) { dialog, index ->
+        if (index != selected) {
+          viewModel.setProgressType(options[index])
         }
         dialog.dismiss()
       }
