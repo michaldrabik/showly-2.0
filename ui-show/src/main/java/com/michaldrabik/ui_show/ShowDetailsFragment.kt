@@ -187,35 +187,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
   }
 
-//  private fun showEpisodesView(item: SeasonListItem) {
-//    val bundle = ShowDetailsEpisodesFragment.createBundle()
-//    navigateToSafe(R.id.actionShowDetailsFragmentToEpisodes, bundle)
-//    with(binding) {
-//      showDetailsEpisodesView.run {
-//        bind(item)
-//        fadeIn(265, withHardware = true) {
-//          bindEpisodes(item.episodes)
-//          viewModel.loadSeasonTranslation(item)
-//        }
-//        startAnimation(animationEnterRight)
-//        itemCheckedListener = { episode, season, isChecked ->
-//          viewModel.setEpisodeWatched(episode, season, isChecked, removeTrakt = true)
-//        }
-//        seasonCheckedListener = { season, isChecked ->
-//          viewModel.setSeasonWatched(season, isChecked, removeTrakt = true)
-//        }
-//        rateClickListener = { season ->
-//          openRateSeasonDialog(season)
-//        }
-//      }
-//      showDetailsMainLayout.run {
-//        fadeOut(200)
-//        startAnimation(animationExitRight)
-//      }
-//      showDetailsBackArrow.crossfadeTo(showDetailsBackArrow2)
-//    }
-//  }
-
   private fun handleEvent(event: Event<*>) {
     when (event) {
       is Finish -> requireActivity().onBackPressed()

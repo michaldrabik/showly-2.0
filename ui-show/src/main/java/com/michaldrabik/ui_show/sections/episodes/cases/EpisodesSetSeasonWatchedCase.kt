@@ -4,27 +4,31 @@ import com.michaldrabik.repository.EpisodesManager
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
+import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
-import com.michaldrabik.ui_model.EpisodeBundle
+import com.michaldrabik.ui_model.Season
+import com.michaldrabik.ui_model.SeasonBundle
+import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_show.sections.seasons.helpers.SeasonsCache
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
 @ViewModelScoped
-class EpisodesSetWatchedCase @Inject constructor(
+class EpisodesSetSeasonWatchedCase @Inject constructor(
   private val showsRepository: ShowsRepository,
   private val episodesManager: EpisodesManager,
   private val quickSyncManager: QuickSyncManager,
-  private val userTraktManager: UserTraktManager,
+  private val userManager: UserTraktManager,
   private val seasonsCache: SeasonsCache,
   private val settingsRepository: SettingsRepository,
 ) {
 
-  suspend fun setEpisodeWatched(
-    episodeBundle: EpisodeBundle,
+  suspend fun setSeasonWatched(
+    show: Show,
+    season: Season,
     isChecked: Boolean
   ): Result {
-    val (episode, _, show) = episodeBundle
+    val bundle = SeasonBundle(season, show)
 
     val isMyShows = showsRepository.myShows.exists(show.ids.trakt)
     val isWatchlist = showsRepository.watchlistShows.exists(show.ids.trakt)
@@ -33,31 +37,30 @@ class EpisodesSetWatchedCase @Inject constructor(
 
     when {
       isChecked -> {
-        episodesManager.setEpisodeWatched(episodeBundle)
+        val episodesAdded = episodesManager.setSeasonWatched(bundle)
         if (isMyShows) {
-          quickSyncManager.scheduleEpisodes(
-            episodesIds = listOf(episode.ids.trakt.id),
-            showId = show.traktId,
-            clearProgress = false
-          )
+          quickSyncManager.scheduleEpisodes(episodesAdded.map { it.ids.trakt.id })
         }
         return Result.SUCCESS
       }
       else -> {
-        episodesManager.setEpisodeUnwatched(episodeBundle)
-        quickSyncManager.clearEpisodes(listOf(episode.ids.trakt.id))
+        episodesManager.setSeasonUnwatched(bundle)
+        quickSyncManager.clearEpisodes(season.episodes.map { it.ids.trakt.id })
 
         val traktQuickRemoveEnabled = settingsRepository.load().traktQuickRemoveEnabled
         val isSeasonLocal = seasonsCache.areSeasonsLocal(show.ids.trakt)
 
-        val showRemoveTrakt = userTraktManager.isAuthorized() && traktQuickRemoveEnabled && !isSeasonLocal && isCollection
+        val showRemoveTrakt = userManager.isAuthorized() && traktQuickRemoveEnabled && !isSeasonLocal && isCollection
         if (showRemoveTrakt) {
+          val ids = season.episodes.map { it.ids.trakt }
+          val mode = RemoveTraktBottomSheet.Mode.EPISODE
           return Result.REMOVE_FROM_TRAKT
+//          eventChannel.send(RemoveTraktUiEvent(R.id.actionShowDetailsFragmentToRemoveTraktProgress, mode, ids))
         }
-
         return Result.SUCCESS
       }
     }
+//      refreshWatchedEpisodes()
   }
 
   enum class Result {

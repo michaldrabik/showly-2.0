@@ -23,8 +23,10 @@ import com.michaldrabik.ui_show.sections.episodes.cases.EpisodesAnnouncementsCas
 import com.michaldrabik.ui_show.sections.episodes.cases.EpisodesLoadShowCase
 import com.michaldrabik.ui_show.sections.episodes.cases.EpisodesMarkWatchedCase
 import com.michaldrabik.ui_show.sections.episodes.cases.EpisodesRatingCase
-import com.michaldrabik.ui_show.sections.episodes.cases.EpisodesSetWatchedCase
-import com.michaldrabik.ui_show.sections.episodes.cases.EpisodesSetWatchedCase.Result
+import com.michaldrabik.ui_show.sections.episodes.cases.EpisodesSetEpisodeWatchedCase
+import com.michaldrabik.ui_show.sections.episodes.cases.EpisodesSetEpisodeWatchedCase.Result
+import com.michaldrabik.ui_show.sections.episodes.cases.EpisodesSetSeasonWatchedCase
+import com.michaldrabik.ui_show.sections.episodes.cases.EpisodesSetSeasonWatchedCase.Result.REMOVE_FROM_TRAKT
 import com.michaldrabik.ui_show.sections.episodes.cases.EpisodesTranslationCase
 import com.michaldrabik.ui_show.sections.episodes.recycler.EpisodeListItem
 import com.michaldrabik.ui_show.sections.seasons.helpers.SeasonsCache
@@ -46,7 +48,8 @@ import kotlin.properties.Delegates.notNull
 class ShowDetailsEpisodesViewModel @Inject constructor(
   savedStateHandle: SavedStateHandle,
   private val loadShowCase: EpisodesLoadShowCase,
-  private val setWatchedCase: EpisodesSetWatchedCase,
+  private val episodeWatchedCase: EpisodesSetEpisodeWatchedCase,
+  private val seasonWatchedCase: EpisodesSetSeasonWatchedCase,
   private val ratingsCase: EpisodesRatingCase,
   private val translationCase: EpisodesTranslationCase,
   private val announcementsCase: EpisodesAnnouncementsCase,
@@ -155,15 +158,34 @@ class ShowDetailsEpisodesViewModel @Inject constructor(
     viewModelScope.launch {
       seasonState.value?.let {
         val bundle = EpisodeBundle(episode, it.season, show)
-        val result = setWatchedCase.setEpisodeWatched(bundle, isChecked)
+        val result = episodeWatchedCase.setEpisodeWatched(bundle, isChecked)
         if (result == Result.REMOVE_FROM_TRAKT) {
-          val ids = listOf(episode.ids.trakt)
-          val mode = RemoveTraktBottomSheet.Mode.EPISODE
-          eventChannel.send(ShowDetailsEpisodesEvent.RemoveFromTrakt(R.id.actionEpisodesFragmentToRemoveTraktProgress, mode, ids))
+          val event = ShowDetailsEpisodesEvent.RemoveFromTrakt(
+            actionId = R.id.actionEpisodesFragmentToRemoveTraktProgress,
+            mode = RemoveTraktBottomSheet.Mode.EPISODE,
+            traktIds = listOf(episode.ids.trakt)
+          )
+          eventChannel.send(event)
         }
         refreshWatchedEpisodes()
         announcementsCase.refreshAnnouncements(show.ids.trakt)
       }
+    }
+  }
+
+  fun setSeasonWatched(season: SeasonListItem, isChecked: Boolean) {
+    viewModelScope.launch {
+      val result = seasonWatchedCase.setSeasonWatched(show, season.season, isChecked)
+      if (result == REMOVE_FROM_TRAKT) {
+        val event = ShowDetailsEpisodesEvent.RemoveFromTrakt(
+          actionId = R.id.actionEpisodesFragmentToRemoveTraktProgress,
+          mode = RemoveTraktBottomSheet.Mode.EPISODE,
+          traktIds = season.season.episodes.map { it.ids.trakt }
+        )
+        eventChannel.send(event)
+      }
+      refreshWatchedEpisodes()
+      announcementsCase.refreshAnnouncements(show.ids.trakt)
     }
   }
 

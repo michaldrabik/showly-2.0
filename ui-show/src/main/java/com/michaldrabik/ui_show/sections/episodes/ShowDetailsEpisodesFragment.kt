@@ -128,7 +128,7 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
           episodesCheckbox.run {
             isEnabled = it.episodes.all { ep -> ep.episode.hasAired(it.season) } || !isLocked
             setCheckedSilent(it.isWatched) { _, isChecked ->
-//              seasonCheckedListener(season, isChecked)
+              viewModel.setSeasonWatched(season, isChecked)
             }
             jumpDrawablesToCurrentState()
           }
