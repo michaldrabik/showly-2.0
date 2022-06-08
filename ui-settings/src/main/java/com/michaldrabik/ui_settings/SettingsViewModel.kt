@@ -43,7 +43,7 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
-//TODO Settings are getting too big. Refactor into smaller parts.
+// TODO Settings are getting too big. Refactor into smaller parts.
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
   private val mainCase: SettingsMainCase,

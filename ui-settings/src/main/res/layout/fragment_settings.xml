@@ -11,7 +11,7 @@
   android:overScrollMode="never"
   android:scrollbars="none"
   tools:background="@color/colorBackground"
-  tools:layout_marginTop="-0dp"
+  tools:layout_marginTop="-600dp"
   tools:theme="@style/AppTheme"
   >
 
@@ -410,6 +410,7 @@
     <LinearLayout
       android:id="@+id/settingsProgressNext"
       style="@style/Settings.ItemLayoutNoRipple"
+      app:layout_constrainedWidth="true"
       app:layout_constraintBottom_toTopOf="@+id/settingsUpcomingSection"
       app:layout_constraintEnd_toStartOf="@id/settingsProgressNextValue"
       app:layout_constraintStart_toStartOf="parent"
@@ -435,11 +436,12 @@
       android:layout_height="wrap_content"
       android:layout_marginEnd="@dimen/spaceNormal"
       android:gravity="end"
-      android:minWidth="50dp"
+      android:maxLines="2"
       android:text="@string/textNextEpisodeLastWatched"
       android:textColor="?attr/colorAccent"
       app:layout_constraintBottom_toBottomOf="@id/settingsProgressNext"
       app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/settingsProgressNext"
       app:layout_constraintTop_toTopOf="@id/settingsProgressNext"
       />
 
