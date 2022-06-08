@@ -1,6 +1,8 @@
 package com.michaldrabik.ui_widgets.calendar_movies
 
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_IMMUTABLE
+import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetManager.ACTION_APPWIDGET_UPDATE
 import android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID
@@ -97,7 +99,7 @@ class CalendarMoviesWidgetProvider : BaseWidgetProvider() {
       context,
       0,
       Intent().apply { setClassName(context, Config.HOST_ACTIVITY_NAME) },
-      PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+      FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT
     )
     remoteViews.setOnClickPendingIntent(R.id.calendarWidgetMoviesLabelImage, mainIntent)
     remoteViews.setOnClickPendingIntent(R.id.calendarWidgetMoviesLabelText, mainIntent)
@@ -110,11 +112,11 @@ class CalendarMoviesWidgetProvider : BaseWidgetProvider() {
         putExtra(EXTRA_MODE_CLICK, true)
         putExtra(EXTRA_APPWIDGET_ID, widgetId)
       },
-      PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+      FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT
     )
     remoteViews.setOnClickPendingIntent(R.id.calendarWidgetMoviesEmptyViewIcon, modeClickIntent)
 
-    val listIntent = PendingIntent.getBroadcast(context, 0, listClickIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+    val listIntent = PendingIntent.getBroadcast(context, 0, listClickIntent, FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT)
     remoteViews.setPendingIntentTemplate(R.id.calendarWidgetMoviesList, listIntent)
 
     appWidgetManager.updateAppWidget(widgetId, remoteViews)

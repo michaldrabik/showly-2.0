@@ -1,6 +1,8 @@
 package com.michaldrabik.ui_base.notifications
 
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_IMMUTABLE
+import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.app.UiModeManager.MODE_NIGHT_NO
 import android.app.UiModeManager.MODE_NIGHT_YES
 import android.content.Context
@@ -81,7 +83,7 @@ class AnnouncementWorker(context: Context, workerParams: WorkerParameters) : Wor
       flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
     }
     return PendingIntent.getActivity(
-      applicationContext, requestCode.toInt(), notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT
+      applicationContext, requestCode.toInt(), notifyIntent, FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT
     )
   }
 }

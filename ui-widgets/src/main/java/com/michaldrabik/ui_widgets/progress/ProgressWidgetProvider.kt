@@ -1,6 +1,8 @@
 package com.michaldrabik.ui_widgets.progress
 
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_IMMUTABLE
+import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetManager.ACTION_APPWIDGET_UPDATE
 import android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID
@@ -84,7 +86,7 @@ class ProgressWidgetProvider : BaseWidgetProvider() {
       context,
       0,
       Intent().apply { setClassName(context, HOST_ACTIVITY_NAME) },
-      PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+      FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT
     )
     remoteViews.setOnClickPendingIntent(R.id.progressWidgetLabel, mainIntent)
 
@@ -92,7 +94,7 @@ class ProgressWidgetProvider : BaseWidgetProvider() {
       action = ACTION_CLICK
       data = Uri.parse(intent.toUri(URI_INTENT_SCHEME))
     }
-    val showDetailsPendingIntent = PendingIntent.getBroadcast(context, 0, listClickIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+    val showDetailsPendingIntent = PendingIntent.getBroadcast(context, 0, listClickIntent, FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT)
     remoteViews.setPendingIntentTemplate(R.id.progressWidgetList, showDetailsPendingIntent)
 
     appWidgetManager.updateAppWidget(widgetId, remoteViews)

@@ -1,6 +1,8 @@
 package com.michaldrabik.ui_widgets.search
 
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_IMMUTABLE
+import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
@@ -34,7 +36,7 @@ class SearchWidgetProvider : AppWidgetProvider() {
         setClassName(context, HOST_ACTIVITY_NAME)
         putExtra(EXTRA_WIDGET_SEARCH_CLICK, true)
       }
-      val pendingIntent = PendingIntent.getActivity(context, 2, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+      val pendingIntent = PendingIntent.getActivity(context, 2, intent, FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT)
       setOnClickPendingIntent(R.id.searchWidgetRoot, pendingIntent)
     }
     appWidgetManager.updateAppWidget(widgetId, remoteViews)
