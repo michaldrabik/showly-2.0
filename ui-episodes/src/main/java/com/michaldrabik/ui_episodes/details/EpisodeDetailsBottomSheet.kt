@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.Typeface.BOLD
 import android.graphics.Typeface.NORMAL
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
@@ -32,9 +33,6 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
-import com.michaldrabik.ui_base.utilities.extensions.optionalIntArray
-import com.michaldrabik.ui_base.utilities.extensions.requireBoolean
-import com.michaldrabik.ui_base.utilities.extensions.requireLong
 import com.michaldrabik.ui_base.utilities.extensions.requireParcelable
 import com.michaldrabik.ui_base.utilities.extensions.setTextFade
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
@@ -48,8 +46,7 @@ import com.michaldrabik.ui_episodes.R
 import com.michaldrabik.ui_episodes.databinding.ViewEpisodeDetailsBinding
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Episode
-import com.michaldrabik.ui_model.IdTmdb
-import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_TAB_SELECTED
@@ -59,11 +56,13 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT_ACTION
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_EPISODE_ID
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_OPTIONS
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_REPLY_USER
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_EPISODE_DETAILS
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.parcelize.Parcelize
 import timber.log.Timber
 import java.util.Locale.ENGLISH
 
@@ -71,26 +70,30 @@ import java.util.Locale.ENGLISH
 class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_details) {
 
   companion object {
-    const val ARG_ID_TRAKT = "ARG_ID_TRAKT"
-    const val ARG_ID_TMDB = "ARG_ID_TMDB"
-    const val ARG_EPISODE = "ARG_EPISODE"
-    const val ARG_SEASON_EPISODES = "ARG_SEASON_EPISODES"
-    const val ARG_IS_WATCHED = "ARG_IS_WATCHED"
-    const val ARG_SHOW_BUTTON = "ARG_SHOW_BUTTON"
-    const val ARG_SHOW_TABS = "ARG_SHOW_TABS"
+    fun createBundle(
+      ids: Ids,
+      episode: Episode,
+      seasonEpisodesIds: List<Int>?,
+      isWatched: Boolean,
+      showButton: Boolean,
+      showTabs: Boolean
+    ): Bundle {
+      val options = Options(
+        ids = ids,
+        episode = episode,
+        seasonEpisodesIds = seasonEpisodesIds,
+        isWatched = isWatched,
+        showButton = showButton,
+        showTabs = showTabs
+      )
+      return bundleOf(ARG_OPTIONS to options)
+    }
   }
 
   private val viewModel by viewModels<EpisodeDetailsViewModel>()
   private val binding by viewBinding(ViewEpisodeDetailsBinding::bind)
 
-  private val showTraktId by lazy { IdTrakt(requireLong(ARG_ID_TRAKT)) }
-  private val showTmdbId by lazy { IdTmdb(requireLong(ARG_ID_TMDB)) }
-  private val episode by lazy { requireParcelable<Episode>(ARG_EPISODE) }
-  private val seasonEpisodes by lazy { optionalIntArray(ARG_SEASON_EPISODES) }
-  private val isWatched by lazy { requireBoolean(ARG_IS_WATCHED) }
-  private val showButton by lazy { requireBoolean(ARG_SHOW_BUTTON) }
-  private val showTabs by lazy { requireBoolean(ARG_SHOW_TABS) }
-
+  private val options by lazy { requireParcelable<Options>(ARG_OPTIONS) }
   private val cornerRadius by lazy { dimenToPx(R.dimen.bottomSheetCorner).toFloat() }
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
@@ -104,9 +107,10 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
         { uiState.collect { render(it) } },
         { messageFlow.collect { renderSnackbar(it) } },
         doAfterLaunch = {
-          loadSeason(showTraktId, episode, seasonEpisodes)
-          loadTranslation(showTraktId, episode)
-          loadImage(showTmdbId, episode)
+          val (ids, episode, seasonEpisodes) = options
+          loadSeason(ids.trakt, episode, seasonEpisodes?.toIntArray())
+          loadTranslation(ids.trakt, episode)
+          loadImage(ids.tmdb, episode)
           loadRatings(episode)
         }
       )
@@ -115,6 +119,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
 
   private fun setupView() {
     binding.run {
+      val (ids, episode, _, isWatched, showButton, showTabs) = options
       episodeDetailsTitle.text = when (episode.title) {
         "Episode ${episode.number}" -> String.format(ENGLISH, requireContext().getString(R.string.textEpisode), episode.number)
         else -> episode.title
@@ -122,8 +127,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
       episodeDetailsOverview.text =
         if (episode.overview.isBlank()) getString(R.string.textNoDescription) else episode.overview
       episodeDetailsButton.run {
-        visibleIf(showButton)
-        setImageResource(if (isWatched) R.drawable.ic_eye else R.drawable.ic_check)
+        visibleIf(showButton && !isWatched)
         onClick {
           setFragmentResult(REQUEST_EPISODE_DETAILS, bundleOf(ACTION_EPISODE_WATCHED to !isWatched))
           closeSheet()
@@ -134,7 +138,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
       episodeDetailsRating.text = String.format(ENGLISH, getString(R.string.textVotes), episode.rating, episode.votes)
       episodeDetailsCommentsButton.text = String.format(ENGLISH, getString(R.string.textLoadCommentsCount), episode.commentCount)
       episodeDetailsCommentsButton.onClick {
-        viewModel.loadComments(showTraktId, episode.season, episode.number)
+        viewModel.loadComments(ids.trakt, episode.season, episode.number)
       }
       episodeDetailsPostCommentButton.onClick { openPostCommentSheet() }
     }
@@ -147,10 +151,10 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
         Operation.REMOVE -> renderSnackbar(MessageEvent.Info(R.string.textRateRemoved))
         else -> Timber.w("Unknown result.")
       }
-      viewModel.loadRatings(episode)
+      viewModel.loadRatings(options.episode)
       setFragmentResult(REQUEST_EPISODE_DETAILS, bundleOf(NavigationArgs.ACTION_RATING_CHANGED to true))
     }
-    val bundle = RatingsBottomSheet.createBundle(episode.ids.trakt, Type.EPISODE)
+    val bundle = RatingsBottomSheet.createBundle(options.episode.ids.trakt, Type.EPISODE)
     navigateTo(R.id.actionEpisodeDetailsDialogToRate, bundle)
   }
 
@@ -169,7 +173,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
         ARG_COMMENT_ID to comment.getReplyId(),
         ARG_REPLY_USER to comment.user.username
       )
-      else -> bundleOf(ARG_EPISODE_ID to episode.ids.trakt.id)
+      else -> bundleOf(ARG_EPISODE_ID to options.episode.ids.trakt.id)
     }
     navigateTo(R.id.actionEpisodeDetailsDialogToPostComment, bundle)
   }
@@ -178,6 +182,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
   private fun render(uiState: EpisodeDetailsUiState) {
     uiState.run {
       with(binding) {
+        val episode = options.episode
         dateFormat?.let {
           val millis = episode.firstAired?.toInstant()?.toEpochMilli() ?: -1
           val date = if (millis == -1L) {
@@ -267,18 +272,18 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
       episodes.forEach {
         addTab(
           newTab()
-            .setText("${episode.season}x${it.number.toString().padStart(2, '0')}")
+            .setText("${options.episode.season}x${it.number.toString().padStart(2, '0')}")
             .setTag(it)
         )
       }
-      val index = episodes.indexOfFirst { it.number == episode.number }
+      val index = episodes.indexOfFirst { it.number == options.episode.number }
       // Small trick to avoid UI tab change flick
       getTabAt(index)?.select()
       post {
         getTabAt(index)?.select()
         addOnTabSelectedListener(tabSelectedListener)
       }
-      if (showTabs && episodes.isNotEmpty()) {
+      if (options.showTabs && episodes.isNotEmpty()) {
         fadeIn(duration = 200, startDelay = 100, withHardware = true)
       } else {
         gone()
@@ -313,4 +318,14 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
     override fun onTabUnselected(tab: TabLayout.Tab?) = Unit
     override fun onTabReselected(tab: TabLayout.Tab?) = Unit
   }
+
+  @Parcelize
+  private data class Options(
+    val ids: Ids,
+    val episode: Episode,
+    val seasonEpisodesIds: List<Int>?,
+    val isWatched: Boolean,
+    val showButton: Boolean,
+    val showTabs: Boolean
+  ) : Parcelable
 }

@@ -7,7 +7,7 @@ import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_movie.MovieDetailsEvent
-import com.michaldrabik.ui_movie.cases.MovieDetailsRatingCase
+import com.michaldrabik.ui_movie.sections.ratings.cases.MovieDetailsRatingCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:clipToPadding="false"
+  >
+
+  <com.michaldrabik.ui_base.common.views.RatingsStripView
+    android:id="@+id/showDetailsRatings"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    />
+
+</FrameLayout>

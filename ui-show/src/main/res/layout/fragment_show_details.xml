@@ -6,7 +6,7 @@
   android:id="@+id/showDetailsRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:layout_marginTop="-0dp"
+  tools:layout_marginTop="-400dp"
   tools:theme="@style/AppTheme"
   >
 
@@ -229,41 +229,40 @@
         android:layout_marginStart="@dimen/spaceNormal"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:background="?attr/colorSeparator"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsRatings"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsRatingsFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsManageListsLabel"
         />
 
-      <com.michaldrabik.ui_base.common.views.RatingsStripView
-        android:id="@+id/showDetailsRatings"
+      <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/showDetailsRatingsFragment"
+        android:name="com.michaldrabik.ui_show.sections.ratings.ShowDetailsRatingsFragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceTiny"
         android:layout_marginTop="@dimen/spaceNormal"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:layout_marginBottom="@dimen/spaceNormal"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsStreamingsRecycler"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsStreamingsFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/separator5"
+        tools:layout="@layout/fragment_show_details_ratings"
         />
 
-      <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/showDetailsStreamingsRecycler"
+      <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/showDetailsStreamingsFragment"
+        android:name="com.michaldrabik.ui_show.sections.streamings.ShowDetailsStreamingsFragment"
         android:layout_width="0dp"
-        android:layout_height="@dimen/streamingTileHeight"
-        android:layout_marginTop="@dimen/spaceMicro"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:overScrollMode="never"
-        android:paddingStart="@dimen/spaceNormal"
-        android:paddingEnd="@dimen/spaceNormal"
-        android:visibility="invisible"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/showDetailsDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/showDetailsRatings"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsRatingsFragment"
+        tools:layout_height="40dp"
+        tools:visibility="visible"
         />
 
       <com.michaldrabik.ui_base.common.views.FoldableTextView
@@ -271,7 +270,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="@dimen/spaceNormal"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:layout_marginBottom="@dimen/spaceTiny"
         android:ellipsize="end"
@@ -280,10 +278,10 @@
         android:textAlignment="viewStart"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsActorsRecycler"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsActorsFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsStreamingsRecycler"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsStreamingsFragment"
         app:layout_goneMarginBottom="@dimen/spaceHuge"
         app:layout_goneMarginTop="0dp"
         tools:targetApi="o"
@@ -299,169 +297,30 @@
         android:layout_marginEnd="@dimen/spaceNormal"
         android:layout_marginBottom="@dimen/spaceMedium"
         android:background="?attr/colorSeparator"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsEpisodeCard"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsEpisodeFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsCrewBarrier"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsActorsFragment"
         />
 
-      <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/showDetailsActorsRecycler"
+      <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/showDetailsActorsFragment"
+        android:name="com.michaldrabik.ui_show.sections.people.ShowDetailsPeopleFragment"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/spaceMedium"
-        android:layout_marginBottom="@dimen/spaceMicro"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:overScrollMode="never"
-        android:paddingStart="@dimen/spaceNormal"
-        android:paddingEnd="@dimen/spaceNormal"
-        android:visibility="invisible"
-        app:layout_constrainedHeight="true"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsDirectingLabel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_min="@dimen/actorTileImageHeight"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsDescription"
-        />
-
-      <ProgressBar
-        android:id="@+id/showDetailsActorsProgress"
-        style="@style/ProgressBar.Dark"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        app:layout_constraintBottom_toBottomOf="@id/showDetailsActorsRecycler"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/showDetailsActorsRecycler"
-        />
-
-      <TextView
-        android:id="@+id/showDetailsActorsEmptyView"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/textActorsEmpty"
-        android:textColor="?android:attr/textColorSecondary"
-        android:visibility="gone"
+        android:layout_marginTop="@dimen/spaceMedium"
         app:layout_constraintBottom_toTopOf="@id/separator2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsDescription"
-        app:layout_constraintVertical_bias="0.35"
-        tools:visibility="visible"
+        tools:layout_height="100dp"
         />
 
-      <TextView
-        android:id="@+id/showDetailsDirectingLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="13dp"
-        android:gravity="center_vertical"
-        android:text="@string/textDirecting"
-        android:textColor="?android:attr/textColorSecondary"
-        android:textSize="11sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsDirectingValue"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsActorsRecycler"
-        app:layout_goneMarginTop="@dimen/spaceHuge"
-        tools:visibility="visible"
-        />
-
-      <TextView
-        android:id="@+id/showDetailsDirectingValue"
+      <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/showDetailsEpisodeFragment"
+        android:name="com.michaldrabik.ui_show.sections.nextepisode.ShowDetailsNextEpisodeFragment"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:minWidth="50dp"
-        android:text="-"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="11sp"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="@id/showDetailsDirectingLabel"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsDirectingLabel"
-        tools:ignore="HardcodedText"
-        tools:text="Steven"
-        tools:visibility="visible"
-        />
-
-      <TextView
-        android:id="@+id/showDetailsWritingLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spaceBig"
-        android:text="@string/textWriting"
-        android:textColor="?android:attr/textColorSecondary"
-        android:textSize="11sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/showDetailsDirectingLabel"
-        app:layout_constraintStart_toEndOf="@id/showDetailsDirectingValue"
-        app:layout_constraintTop_toTopOf="@id/showDetailsDirectingLabel"
-        tools:visibility="visible"
-        />
-
-      <TextView
-        android:id="@+id/showDetailsWritingValue"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:minWidth="50dp"
-        android:text="-"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="11sp"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="@id/showDetailsWritingLabel"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsWritingLabel"
-        tools:ignore="HardcodedText"
-        tools:text="Steven Spilberg\nTest"
-        tools:visibility="visible"
-        />
-
-      <TextView
-        android:id="@+id/showDetailsMusicLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginStart="@dimen/spaceBig"
-        android:layout_marginEnd="@dimen/spaceNormal"
-        android:text="@string/textMusic"
-        android:textColor="?android:attr/textColorSecondary"
-        android:textSize="11sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/showDetailsDirectingLabel"
-        app:layout_constraintStart_toEndOf="@id/showDetailsWritingValue"
-        app:layout_constraintTop_toTopOf="@id/showDetailsDirectingLabel"
-        tools:visibility="visible"
-        />
-
-      <TextView
-        android:id="@+id/showDetailsMusicValue"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/spaceNormal"
-        android:text="-"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="11sp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/showDetailsMusicLabel"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsMusicLabel"
-        tools:ignore="HardcodedText"
-        tools:text="Steven Spilberg"
-        tools:visibility="visible"
-        />
-
-      <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/showDetailsCrewBarrier"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="showDetailsDirectingValue, showDetailsWritingValue, showDetailsMusicValue"
-        />
-
-      <include
-        android:id="@+id/showDetailsEpisodeCard"
-        layout="@layout/fragment_show_details_next_episode"
-        android:layout_width="match_parent"
         android:layout_height="@dimen/episodeNextViewHeight"
         android:layout_marginLeft="@dimen/spaceNormal"
         android:layout_marginTop="@dimen/spaceTiny"
@@ -469,108 +328,26 @@
         android:layout_marginBottom="@dimen/spaceMedium"
         android:visibility="gone"
         app:layout_constrainedHeight="false"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsSeasonsLabel"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsSeasonsFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/separator2"
-        tools:layout_height="@dimen/episodeNextViewHeight"
-        tools:visibility="gone"
+        tools:layout="@layout/fragment_show_details_next_episode"
         />
 
-      <TextView
-        android:id="@+id/showDetailsSeasonsLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginBottom="@dimen/spaceTiny"
-        android:text="@string/textSeasons"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsSeasonsRecycler"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsEpisodeCard"
-        app:layout_goneMarginTop="@dimen/spaceMicro"
-        tools:visibility="visible"
-        />
-
-      <TextView
-        android:id="@+id/showDetailsRuntimeLeft"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginEnd="@dimen/spaceMedium"
-        android:gravity="center_vertical"
-        android:textColor="?android:attr/textColorSecondary"
-        android:textSize="13sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/showDetailsSeasonsLabel"
-        app:layout_constraintEnd_toStartOf="@id/showDetailsQuickProgress"
-        app:layout_constraintHorizontal_bias="1"
-        app:layout_constraintStart_toEndOf="@id/showDetailsSeasonsLabel"
-        app:layout_constraintTop_toTopOf="@id/showDetailsSeasonsLabel"
-        tools:text="~14h 12min of watching"
-        tools:visibility="visible"
-        />
-
-      <ImageView
-        android:id="@+id/showDetailsQuickProgress"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_gravity="center_vertical|end"
-        android:layout_marginEnd="@dimen/spaceMedium"
-        android:background="?android:attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_quick_setup"
-        android:translationY="1dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/showDetailsSeasonsLabel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1"
-        app:layout_constraintStart_toEndOf="@id/showDetailsSeasonsLabel"
-        app:layout_constraintTop_toTopOf="@id/showDetailsSeasonsLabel"
-        app:tint="?android:attr/textColorPrimary"
-        tools:visibility="visible"
-        />
-
-      <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/showDetailsSeasonsRecycler"
+      <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/showDetailsSeasonsFragment"
+        android:name="com.michaldrabik.ui_show.sections.seasons.ShowDetailsSeasonsFragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:nestedScrollingEnabled="false"
-        android:overScrollMode="never"
-        android:visibility="invisible"
-        app:layout_constrainedHeight="true"
-        app:layout_constraintBottom_toTopOf="@id/separator3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_min="48dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsSeasonsLabel"
-        tools:visibility="visible"
-        />
-
-      <ProgressBar
-        android:id="@+id/showDetailsSeasonsProgress"
-        style="@style/ProgressBar.Dark"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        app:layout_constraintBottom_toBottomOf="@id/showDetailsSeasonsRecycler"
+        android:layout_marginTop="@dimen/spaceTiny"
+        app:layout_constrainedHeight="false"
+        app:layout_constraintBottom_toBottomOf="@id/separator3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/showDetailsSeasonsRecycler"
-        />
-
-      <TextView
-        android:id="@+id/showDetailsSeasonsEmptyView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/textSeasonsEmpty"
-        android:textColor="?android:attr/textColorSecondary"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/separator3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/separator2"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsEpisodeFragment"
+        app:layout_goneMarginTop="0dp"
+        tools:layout="@layout/fragment_show_details_seasons"
         />
 
       <View
@@ -585,7 +362,7 @@
         app:layout_constraintBottom_toTopOf="@id/showDetailsCommentsButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsSeasonsRecycler"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsSeasonsFragment"
         app:layout_goneMarginBottom="@dimen/spaceMedium"
         app:layout_goneMarginTop="@dimen/spaceBig"
         />
@@ -657,40 +434,21 @@
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsRelatedRecycler"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsRelatedFragment"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/separator4"
         />
 
-      <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/showDetailsRelatedRecycler"
+      <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/showDetailsRelatedFragment"
+        android:name="com.michaldrabik.ui_show.sections.related.ShowDetailsRelatedFragment"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spaceMedium"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:overScrollMode="never"
-        android:paddingStart="@dimen/spaceNormal"
-        android:paddingEnd="@dimen/spaceNormal"
-        android:visibility="invisible"
-        app:layout_constrainedHeight="true"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsCustomImagesLabel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_min="@dimen/relatedShowHeight"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsRelatedLabel"
-        tools:visibility="visible"
-        />
-
-      <ProgressBar
-        android:id="@+id/showDetailsRelatedProgress"
-        style="@style/ProgressBar.Dark"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        app:layout_constraintBottom_toBottomOf="@id/showDetailsRelatedRecycler"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/showDetailsRelatedRecycler"
+        app:layout_constraintTop_toBottomOf="@id/separator4"
+        tools:layout="@layout/fragment_show_details_related"
         />
 
       <View
@@ -717,7 +475,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="@dimen/spaceNormal"
         android:drawablePadding="@dimen/spaceTiny"
         android:fontFamily="sans-serif-medium"
         android:gravity="center_vertical"
@@ -730,7 +487,7 @@
         app:drawableTint="?android:attr/textColorPrimary"
         app:layout_constraintBottom_toTopOf="@id/showDetailsPremiumAd"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsRelatedRecycler"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsRelatedFragment"
         app:layout_goneMarginTop="0dp"
         tools:visibility="visible"
         />
@@ -751,14 +508,6 @@
 
   </androidx.core.widget.NestedScrollView>
 
-  <com.michaldrabik.ui_show.episodes.EpisodesView
-    android:id="@+id/showDetailsEpisodesView"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?android:windowBackground"
-    android:visibility="gone"
-    />
-
   <ProgressBar
     android:id="@+id/showDetailsMainProgress"
     style="@style/ProgressBar.Accent"
@@ -775,17 +524,6 @@
     android:background="?android:attr/selectableItemBackground"
     android:padding="@dimen/backArrowPadding"
     app:srcCompat="@drawable/ic_arrow_back"
-    />
-
-  <ImageView
-    android:id="@+id/showDetailsBackArrow2"
-    android:layout_width="@dimen/backArrowSize"
-    android:layout_height="@dimen/backArrowSize"
-    android:background="?android:attr/selectableItemBackground"
-    android:padding="@dimen/backArrowPadding"
-    android:visibility="gone"
-    app:srcCompat="@drawable/ic_arrow_back"
-    app:tint="?android:attr/textColorPrimary"
     />
 
 </FrameLayout>

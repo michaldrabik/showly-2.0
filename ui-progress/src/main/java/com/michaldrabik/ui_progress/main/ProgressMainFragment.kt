@@ -260,14 +260,14 @@ class ProgressMainFragment :
         }
       }
     }
-    val bundle = Bundle().apply {
-      putLong(EpisodeDetailsBottomSheet.ARG_ID_TRAKT, show.traktId)
-      putLong(EpisodeDetailsBottomSheet.ARG_ID_TMDB, show.ids.tmdb.id)
-      putParcelable(EpisodeDetailsBottomSheet.ARG_EPISODE, episode)
-      putBoolean(EpisodeDetailsBottomSheet.ARG_IS_WATCHED, false)
-      putBoolean(EpisodeDetailsBottomSheet.ARG_SHOW_BUTTON, false)
-      putBoolean(EpisodeDetailsBottomSheet.ARG_SHOW_TABS, true)
-    }
+    val bundle = EpisodeDetailsBottomSheet.createBundle(
+      ids = show.ids,
+      episode = episode,
+      seasonEpisodesIds = null,
+      isWatched = false,
+      showButton = false,
+      showTabs = true
+    )
     navigateToSafe(R.id.actionProgressFragmentToEpisodeDetails, bundle)
   }
 

@@ -1,35 +1,20 @@
 package com.michaldrabik.ui_show
 
-import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_model.Image
-import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.RatingState
-import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
-import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
-import com.michaldrabik.ui_show.helpers.StreamingsBundle
-import com.michaldrabik.ui_show.related.RelatedListItem
-import com.michaldrabik.ui_show.seasons.SeasonListItem
+import com.michaldrabik.ui_show.helpers.ShowDetailsMeta
 
 data class ShowDetailsUiState(
   val show: Show? = null,
   val showLoading: Boolean? = null,
   val image: Image? = null,
-  val seasons: List<SeasonListItem>? = null,
-  val actors: List<Person>? = null,
-  val crew: Map<Person.Department, List<Person>>? = null,
-  val relatedShows: List<RelatedListItem>? = null,
-  val streamings: StreamingsBundle? = null,
-  val nextEpisode: NextEpisodeBundle? = null,
   val listsCount: Int? = null,
   val followedState: FollowedState? = null,
   val ratingState: RatingState? = null,
-  val ratings: Ratings? = null,
   val translation: Translation? = null,
-  val country: AppCountry? = null,
-  val isPremium: Boolean = false,
-  val isSignedIn: Boolean = false
+  val meta: ShowDetailsMeta? = null
 ) {
 
   data class FollowedState(
