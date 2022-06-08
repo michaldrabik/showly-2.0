@@ -33,7 +33,6 @@ import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_show.R
 import com.michaldrabik.ui_show.databinding.FragmentShowDetailsEpisodesBinding
-import com.michaldrabik.ui_show.sections.episodes.recycler.EpisodeListItem
 import com.michaldrabik.ui_show.sections.episodes.recycler.EpisodesAdapter
 import com.michaldrabik.ui_show.sections.seasons.recycler.SeasonListItem
 import dagger.hilt.android.AndroidEntryPoint
@@ -135,7 +134,6 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
           episodesUnlockButton.visibleIf(!it.season.isSpecial() && it.episodes.any { ep -> !ep.episode.hasAired(it.season) })
 
           renderSeasonRating(season)
-          renderSeasonUserRating(season, episodes)
         }
         episodes?.let {
           episodesAdapter?.setItems(it)
@@ -154,17 +152,9 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
       episodesStarIcon.visibleIf(seasonRating > 0F)
       episodesSeasonRating.visibleIf(seasonRating > 0F)
       episodesSeasonRating.text = String.format(Locale.ENGLISH, "%.1f", seasonRating)
-    }
-  }
 
-  private fun renderSeasonUserRating(
-    season: SeasonListItem,
-    episodes: List<EpisodeListItem>?
-  ) {
-    with(binding) {
       val ratingState = season.userRating
-      val showRateButton = ratingState.rateAllowed == true && ratingState.userRating == null && episodes != null
-      episodesSeasonRateButton.visibleIf(showRateButton)
+      episodesSeasonRateButton.visibleIf(ratingState.rateAllowed == true && ratingState.userRating == null)
       episodesSeasonMyStarIcon.visibleIf(ratingState.userRating != null)
       episodesSeasonMyRating.visibleIf(ratingState.userRating != null)
       ratingState.userRating?.let {
@@ -208,7 +198,7 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
           viewModel.openEpisodeDetails(selectedEpisode)
         }
         bundle.containsKey(NavigationArgs.ACTION_RATING_CHANGED) -> {
-          viewModel.loadRatings()
+          viewModel.loadEpisodesRating()
         }
       }
     }
@@ -242,7 +232,7 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
         Operation.REMOVE -> showSnack(MessageEvent.Info(R.string.textRateRemoved))
         else -> Timber.w("Unknown result")
       }
-      viewModel.loadRatings()
+      viewModel.loadSeasonRating()
     }
     val bundle = RatingsBottomSheet.createBundle(season.ids.trakt, Type.SEASON)
     navigateToSafe(R.id.actionEpisodesFragmentToRating, bundle)

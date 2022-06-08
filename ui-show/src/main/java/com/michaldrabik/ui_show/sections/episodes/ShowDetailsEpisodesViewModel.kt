@@ -32,6 +32,7 @@ import com.michaldrabik.ui_show.sections.episodes.recycler.EpisodeListItem
 import com.michaldrabik.ui_show.sections.seasons.helpers.SeasonsCache
 import com.michaldrabik.ui_show.sections.seasons.recycler.SeasonListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
@@ -78,23 +79,26 @@ class ShowDetailsEpisodesViewModel @Inject constructor(
         eventChannel.send(ShowDetailsEpisodesEvent.Finish)
         return@launch
       }
-      seasonState.value = season
+      val ratingSeason = ratingsCase.loadRating(season.season)
+      seasonState.value = season.copy(
+        userRating = season.userRating.copy(ratingSeason)
+      )
 
       delay(265) // Let enter transition animation complete peacefully.
       episodesState.value = season.episodes
       initialLoadState.value = true
 
-      loadRatings()
+      loadEpisodesRating().join()
+      loadTranslations()
     }
   }
 
-  fun loadRatings() {
+  fun loadEpisodesRating(): Job =
     viewModelScope.launch {
       val seasonItem = seasonState.value
       val episodeItems = episodesState.value ?: emptyList()
 
       seasonItem?.let {
-        val ratingSeason = ratingsCase.loadRating(seasonItem.season)
         val updatedEpisodesItems = episodeItems.map { episodeItem ->
           async {
             val ratingEpisode = ratingsCase.loadRating(episodeItem.episode)
@@ -102,52 +106,60 @@ class ShowDetailsEpisodesViewModel @Inject constructor(
           }
         }.awaitAll()
         val updatedSeasonItem = seasonItem.copy(
-          episodes = updatedEpisodesItems,
-          userRating = seasonItem.userRating.copy(ratingSeason)
+          episodes = updatedEpisodesItems
         )
         seasonState.value = updatedSeasonItem
         episodesState.value = updatedEpisodesItems
         initialLoadState.value = false
       }
+    }
 
-      loadTranslations()
+  fun loadSeasonRating() {
+    viewModelScope.launch {
+      val seasonItem = seasonState.value
+      seasonItem?.let {
+        val ratingSeason = ratingsCase.loadRating(seasonItem.season)
+        val updatedSeasonItem = seasonItem.copy(
+          userRating = seasonItem.userRating.copy(ratingSeason)
+        )
+        seasonState.value = updatedSeasonItem
+        initialLoadState.value = false
+      }
     }
   }
 
-  private fun loadTranslations() {
-    viewModelScope.launch {
-      try {
-        val season = seasonState.value?.season
-        val episodes = episodesState.value?.toMutableList() ?: mutableListOf()
-        val translations = translationCase.loadTranslations(season, show)
+  private suspend fun loadTranslations() {
+    try {
+      val season = seasonState.value?.season
+      val episodes = episodesState.value?.toMutableList() ?: mutableListOf()
+      val translations = translationCase.loadTranslations(season, show)
 
-        if (translations.isEmpty() || episodes.isEmpty()) {
-          return@launch
-        }
+      if (translations.isEmpty() || episodes.isEmpty()) {
+        return
+      }
 
-        translations.forEach { translation ->
-          val episode = episodes.find { it.id == translation.ids.trakt.id }
-          episode?.let { ep ->
-            if (translation.title.isNotBlank() || translation.overview.isNotBlank()) {
-              val t = Translation(translation.title, translation.overview, translation.language)
-              val withTranslation = ep.copy(translation = t)
-              episodes.findReplace(withTranslation) { it.id == withTranslation.id }
-            }
+      translations.forEach { translation ->
+        val episode = episodes.find { it.id == translation.ids.trakt.id }
+        episode?.let { ep ->
+          if (translation.title.isNotBlank() || translation.overview.isNotBlank()) {
+            val t = Translation(translation.title, translation.overview, translation.language)
+            val withTranslation = ep.copy(translation = t)
+            episodes.findReplace(withTranslation) { it.id == withTranslation.id }
           }
         }
-
-        val updatedSeason = seasonState.value?.copy(episodes = episodes, updatedAt = nowUtcMillis())
-        updatedSeason?.let {
-          val marked = markWatchedCase.markWatchedEpisodes(show, updatedSeason)
-          seasonState.value = marked
-          episodesState.value = marked.episodes
-          initialLoadState.value = false
-        }
-      } catch (error: Throwable) {
-        Logger.record(error, "Source" to "ShowDetailsEpisodesViewModel::loadSeasonTranslation()")
-        Timber.w(error)
-        rethrowCancellation(error)
       }
+
+      val updatedSeason = seasonState.value?.copy(episodes = episodes, updatedAt = nowUtcMillis())
+      updatedSeason?.let {
+        val marked = markWatchedCase.markWatchedEpisodes(show, updatedSeason)
+        seasonState.value = marked
+        episodesState.value = marked.episodes
+        initialLoadState.value = false
+      }
+    } catch (error: Throwable) {
+      Logger.record(error, "Source" to "ShowDetailsEpisodesViewModel::loadSeasonTranslation()")
+      Timber.w(error)
+      rethrowCancellation(error)
     }
   }
 
