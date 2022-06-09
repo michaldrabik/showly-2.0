@@ -18,7 +18,7 @@ class MainTraktCase @Inject constructor(
   suspend fun refreshTraktSyncSchedule() {
     if (!settingsRepository.isInitialized()) return
     val schedule = settingsRepository.load().traktSyncSchedule
-    TraktSyncWorker.schedule(workManager, schedule, cancelExisting = false)
+    TraktSyncWorker.schedulePeriodic(workManager, schedule, cancelExisting = false)
   }
 
   suspend fun refreshTraktQuickSync() {

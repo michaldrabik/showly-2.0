@@ -51,7 +51,7 @@ class SettingsTraktCase @Inject constructor(
       val new = it.copy(traktSyncSchedule = schedule)
       settingsRepository.update(new)
     }
-    TraktSyncWorker.schedule(workManager, schedule, cancelExisting = true)
+    TraktSyncWorker.schedulePeriodic(workManager, schedule, cancelExisting = true)
   }
 
   suspend fun authorizeTrakt(authData: Uri) {
@@ -82,10 +82,10 @@ class SettingsTraktCase @Inject constructor(
     syncLogLocalSource.deleteAll()
     ratingsRepository.clear()
     disableTraktFeatures()
-    TraktSyncWorker.cancelAll(workManager)
+    TraktSyncWorker.cancelAllPeriodic(workManager)
   }
 
-  suspend fun isTraktAuthorized() = userManager.isAuthorized()
+  fun isTraktAuthorized() = userManager.isAuthorized()
 
   suspend fun getTraktUsername() = userManager.getUsername()
 }

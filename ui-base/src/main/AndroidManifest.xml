@@ -7,12 +7,6 @@
   <application android:theme="@style/AppTheme">
 
     <service
-      android:name=".trakt.TraktSyncService"
-      android:exported="true"
-      android:permission="android.permission.BIND_JOB_SERVICE"
-      />
-
-    <service
       android:name=".trakt.quicksync.QuickSyncService"
       android:exported="true"
       android:permission="android.permission.BIND_JOB_SERVICE"

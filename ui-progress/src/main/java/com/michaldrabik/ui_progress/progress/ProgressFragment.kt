@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_progress.progress
 
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +20,6 @@ import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
-import com.michaldrabik.ui_base.trakt.TraktSyncService
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.extensions.add
@@ -184,7 +182,7 @@ class ProgressFragment :
                 translationY = valueTranslation
                 if (offset >= OVERSCROLL_OFFSET && overscrollEnabled) {
                   overscrollEnabled = false
-                  startTraktSync()
+                  viewModel.startTraktSync()
                 }
               }
             }
@@ -259,21 +257,6 @@ class ProgressFragment :
         }
       }
       sortOrder?.let { event -> event.consume()?.let { openSortOrderDialog(it.first, it.second) } }
-    }
-  }
-
-  private fun startTraktSync() {
-    val context = requireAppContext()
-    TraktSyncService.createIntent(
-      context,
-      isImport = true,
-      isExport = true
-    ).run {
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        context.startForegroundService(this)
-      } else {
-        context.startService(this)
-      }
     }
   }
 

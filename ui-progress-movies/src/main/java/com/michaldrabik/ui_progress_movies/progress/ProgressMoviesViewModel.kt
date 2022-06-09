@@ -2,12 +2,14 @@ package com.michaldrabik.ui_progress_movies.progress
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.WorkManager
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.Logger
+import com.michaldrabik.ui_base.trakt.TraktSyncWorker
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
@@ -39,6 +41,7 @@ class ProgressMoviesViewModel @Inject constructor(
   private val pinnedCase: ProgressMoviesPinnedCase,
   private val imagesProvider: MovieImagesProvider,
   private val userTraktManager: UserTraktManager,
+  private val workManager: WorkManager,
   private val settingsRepository: SettingsRepository,
   private val translationsRepository: TranslationsRepository,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
@@ -131,6 +134,15 @@ class ProgressMoviesViewModel @Inject constructor(
       pinnedCase.addPinnedItem(item.movie)
     }
     loadItems(resetScroll = item.isPinned)
+  }
+
+  fun startTraktSync() {
+    TraktSyncWorker.scheduleOneOff(
+      workManager,
+      isImport = true,
+      isExport = true,
+      isSilent = false
+    )
   }
 
   private suspend fun isQuickRateEnabled(): Boolean {

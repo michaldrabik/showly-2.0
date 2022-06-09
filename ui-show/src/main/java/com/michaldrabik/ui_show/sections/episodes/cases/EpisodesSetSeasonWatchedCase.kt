@@ -4,7 +4,6 @@ import com.michaldrabik.repository.EpisodesManager
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
-import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.SeasonBundle
@@ -52,15 +51,11 @@ class EpisodesSetSeasonWatchedCase @Inject constructor(
 
         val showRemoveTrakt = userManager.isAuthorized() && traktQuickRemoveEnabled && !isSeasonLocal && isCollection
         if (showRemoveTrakt) {
-          val ids = season.episodes.map { it.ids.trakt }
-          val mode = RemoveTraktBottomSheet.Mode.EPISODE
           return Result.REMOVE_FROM_TRAKT
-//          eventChannel.send(RemoveTraktUiEvent(R.id.actionShowDetailsFragmentToRemoveTraktProgress, mode, ids))
         }
         return Result.SUCCESS
       }
     }
-//      refreshWatchedEpisodes()
   }
 
   enum class Result {

@@ -1,8 +1,8 @@
 dependencyResolutionManagement {
   versionCatalogs {
     libs {
-      library("android.core", "androidx.core:core-ktx:1.6.0")
-      library("android.appCompat", "androidx.appcompat:appcompat:1.3.1")
+      library("android.core", "androidx.core:core-ktx:1.8.0")
+      library("android.appCompat", "androidx.appcompat:appcompat:1.4.2")
       library("android.playCore", "com.google.android.play:core:1.10.3")
       library("android.gridLayout", "androidx.gridlayout:gridlayout:1.0.0")
       library("android.billing", "com.android.billingclient:billing-ktx:4.0.0")
@@ -12,9 +12,9 @@ dependencyResolutionManagement {
       library("android.dynamicAnimation", "androidx.dynamicanimation:dynamicanimation:1.0.0")
       library("android.work", "androidx.work:work-runtime-ktx:2.7.1")
       library("android.swipeRefresh", "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-      library("android.constraintLayout", "androidx.constraintlayout:constraintlayout:2.1.3")
+      library("android.constraintLayout", "androidx.constraintlayout:constraintlayout:2.1.4")
       library("android.recycler", "androidx.recyclerview:recyclerview:1.2.1")
-      library("android.fragment", "androidx.fragment:fragment-ktx:1.3.6")
+      library("android.fragment", "androidx.fragment:fragment-ktx:1.4.1")
 
       version("navigation", "2.3.5")
       library("android.navigation.fragment", "androidx.navigation", "navigation-fragment-ktx").versionRef("navigation")

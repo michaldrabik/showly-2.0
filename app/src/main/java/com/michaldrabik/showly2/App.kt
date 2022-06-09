@@ -68,12 +68,14 @@ class App :
               .penaltyLog()
               .build()
           )
-        StrictMode.setVmPolicy(
-          StrictMode.VmPolicy.Builder()
-            .detectUnsafeIntentLaunch()
-            .penaltyDeath()
-            .build()
-        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+          StrictMode.setVmPolicy(
+            StrictMode.VmPolicy.Builder()
+              .detectUnsafeIntentLaunch()
+              .penaltyDeath()
+              .build()
+          )
+        }
       }
     }
 

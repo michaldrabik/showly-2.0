@@ -1,7 +1,6 @@
 package com.michaldrabik.ui_trakt_sync
 
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -14,7 +13,6 @@ import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.data_remote.Config
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTraktAuthorizeListener
-import com.michaldrabik.ui_base.trakt.TraktSyncService
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
@@ -68,21 +66,6 @@ class TraktSyncFragment :
     traktSyncRoot.doOnApplyWindowInsets { view, insets, _, _ ->
       val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
       view.updatePadding(top = inset)
-    }
-  }
-
-  private fun startImport() {
-    val context = requireAppContext()
-    TraktSyncService.createIntent(
-      context,
-      isImport = traktSyncImportCheckbox.isChecked,
-      isExport = traktSyncExportCheckbox.isChecked
-    ).run {
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        context.startForegroundService(this)
-      } else {
-        context.startService(this)
-      }
     }
   }
 
@@ -145,7 +128,12 @@ class TraktSyncFragment :
 
       if (isAuthorized) {
         traktSyncButton.text = getString(R.string.textTraktSyncStart)
-        traktSyncButton.onClick { startImport() }
+        traktSyncButton.onClick {
+          viewModel.startImport(
+            isImport = traktSyncImportCheckbox.isChecked,
+            isExport = traktSyncExportCheckbox.isChecked
+          )
+        }
         traktSyncScheduleButton.onClick { checkScheduleImport(traktSyncSchedule, quickSyncEnabled) }
       } else {
         traktSyncButton.text = getString(R.string.textSettingsTraktAuthorizeTitle)

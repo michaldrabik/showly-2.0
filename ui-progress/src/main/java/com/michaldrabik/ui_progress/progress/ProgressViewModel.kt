@@ -2,11 +2,13 @@ package com.michaldrabik.ui_progress.progress
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.WorkManager
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.ui_base.Logger
+import com.michaldrabik.ui_base.trakt.TraktSyncWorker
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
@@ -40,6 +42,7 @@ class ProgressViewModel @Inject constructor(
   private val ratingsCase: ProgressRatingsCase,
   private val imagesProvider: ShowImagesProvider,
   private val userTraktManager: UserTraktManager,
+  private val workManager: WorkManager,
   private val translationsRepository: TranslationsRepository,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
@@ -132,6 +135,15 @@ class ProgressViewModel @Inject constructor(
   fun toggleHeaderCollapsed(headerType: ProgressListItem.Header.Type) {
     headersCase.toggleHeaderCollapsed(headerType)
     loadItems()
+  }
+
+  fun startTraktSync() {
+    TraktSyncWorker.scheduleOneOff(
+      workManager,
+      isImport = true,
+      isExport = true,
+      isSilent = false
+    )
   }
 
   private fun updateItem(new: ProgressListItem) {

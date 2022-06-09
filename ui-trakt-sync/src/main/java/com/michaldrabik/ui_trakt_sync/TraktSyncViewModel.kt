@@ -17,7 +17,6 @@ import com.michaldrabik.ui_base.events.TraktSyncError
 import com.michaldrabik.ui_base.events.TraktSyncProgress
 import com.michaldrabik.ui_base.events.TraktSyncStart
 import com.michaldrabik.ui_base.events.TraktSyncSuccess
-import com.michaldrabik.ui_base.trakt.TraktSyncService
 import com.michaldrabik.ui_base.trakt.TraktSyncWorker
 import com.michaldrabik.ui_base.trakt.exports.TraktExportWatchlistRunner
 import com.michaldrabik.ui_base.trakt.imports.TraktImportWatchedRunner
@@ -89,7 +88,7 @@ class TraktSyncViewModel @Inject constructor(
       traktSyncScheduleState.value = settings.traktSyncSchedule
       quickSyncEnabledState.value = settings.traktQuickSyncEnabled
       dateFormatState.value = dateFormatProvider.loadFullHourFormat()
-      traktSyncTimestampState.value = miscPreferences.getLong(TraktSyncService.KEY_LAST_SYNC_TIMESTAMP, 0)
+      traktSyncTimestampState.value = miscPreferences.getLong(TraktSyncWorker.KEY_LAST_SYNC_TIMESTAMP, 0)
     }
   }
 
@@ -121,7 +120,7 @@ class TraktSyncViewModel @Inject constructor(
         val new = it.copy(traktSyncSchedule = schedule)
         settingsRepository.update(new)
       }
-      TraktSyncWorker.schedule(workManager, schedule, cancelExisting = true)
+      TraktSyncWorker.schedulePeriodic(workManager, schedule, cancelExisting = true)
       traktSyncScheduleState.value = schedule
     }
   }
@@ -162,7 +161,7 @@ class TraktSyncViewModel @Inject constructor(
         is TraktSyncSuccess -> {
           progressState.value = false
           progressStatusState.value = ""
-          traktSyncTimestampState.value = miscPreferences.getLong(TraktSyncService.KEY_LAST_SYNC_TIMESTAMP, 0)
+          traktSyncTimestampState.value = miscPreferences.getLong(TraktSyncWorker.KEY_LAST_SYNC_TIMESTAMP, 0)
           messageChannel.send(MessageEvent.Info(R.string.textTraktSyncComplete))
         }
         is TraktSyncError -> {
@@ -182,6 +181,10 @@ class TraktSyncViewModel @Inject constructor(
         else -> Timber.d("Unsupported sync event")
       }
     }
+  }
+
+  fun startImport(isImport: Boolean, isExport: Boolean) {
+    TraktSyncWorker.scheduleOneOff(workManager, isImport, isExport, false)
   }
 
   val uiState = combine(

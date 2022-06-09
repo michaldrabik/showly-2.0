@@ -15,7 +15,7 @@ abstract class TraktSyncRunner(
 
   var isRunning = false
   var retryCount = 0
-  var progressListener: ((String, Int, Int) -> Unit)? = null
+  var progressListener: (suspend (String, Int, Int) -> Unit)? = null
 
   abstract suspend fun run(): Int
 
