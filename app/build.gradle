@@ -117,7 +117,8 @@ dependencies {
   implementation libs.hilt.work
   kapt libs.hilt.work.compiler
 
-  implementation libs.android.playCore
+  implementation libs.android.playReviews
+  implementation libs.android.playUpdates
   implementation libs.lingver
 
   testImplementation testLibs.bundles.testing

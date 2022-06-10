@@ -10,9 +10,8 @@ import android.net.NetworkCapabilities.TRANSPORT_VPN
 import android.net.NetworkCapabilities.TRANSPORT_WIFI
 import android.net.NetworkRequest
 import android.os.Build
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -23,7 +22,7 @@ import javax.inject.Singleton
 @Singleton
 class NetworkStatusProvider @Inject constructor(
   private val connectivityManager: ConnectivityManager
-) : LifecycleObserver {
+) : DefaultLifecycleObserver {
 
   private val _status = MutableStateFlow(false)
   val status = _status.asStateFlow()
@@ -32,8 +31,8 @@ class NetworkStatusProvider @Inject constructor(
 
   fun isOnline() = status.value
 
-  @OnLifecycleEvent(Lifecycle.Event.ON_START)
-  fun onStart() {
+  override fun onStart(owner: LifecycleOwner) {
+    super.onStart(owner)
     val networkRequest = NetworkRequest.Builder()
       .addTransportType(TRANSPORT_WIFI)
       .addTransportType(TRANSPORT_CELLULAR)
@@ -51,12 +50,11 @@ class NetworkStatusProvider @Inject constructor(
     Timber.d("Registering network observer.")
   }
 
-  @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-  fun onStop() {
+  override fun onStop(owner: LifecycleOwner) {
     connectivityManager.unregisterNetworkCallback(networkCallback)
     availableNetworksIds.clear()
-
-    Timber.d("Unregistering network observer.")
+    Timber.d("Unregistered network observer.")
+    super.onStop(owner)
   }
 
   private val networkCallback = object : NetworkCallbackAdapter() {

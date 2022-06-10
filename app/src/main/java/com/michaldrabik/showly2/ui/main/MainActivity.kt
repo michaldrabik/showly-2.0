@@ -175,13 +175,15 @@ class MainActivity :
 
   private fun setupNavigation() {
     findNavControl()?.run {
-      val graph = navInflater.inflate(R.navigation.navigation_graph)
-      graph.startDestination = when (viewModel.getMode()) {
-        SHOWS -> R.id.progressMainFragment
-        MOVIES -> R.id.progressMoviesMainFragment
-        else -> throw IllegalStateException()
+      val graph = navInflater.inflate(R.navigation.navigation_graph).apply {
+        val destination = when (viewModel.getMode()) {
+          SHOWS -> R.id.progressMainFragment
+          MOVIES -> R.id.progressMoviesMainFragment
+          else -> throw IllegalStateException()
+        }
+        setStartDestination(destination)
       }
-      setGraph(graph)
+      setGraph(graph, Bundle.EMPTY)
     }
     with(bottomNavigationView) {
       setOnItemSelectedListener { item ->

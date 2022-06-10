@@ -1,10 +1,8 @@
 package com.michaldrabik.showly2.ui.main.delegates
 
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Lifecycle.Event.ON_CREATE
-import androidx.lifecycle.Lifecycle.Event.ON_DESTROY
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
@@ -23,7 +21,7 @@ interface BillingDelegate {
   )
 }
 
-class MainBillingDelegate : BillingDelegate, LifecycleObserver {
+class MainBillingDelegate : BillingDelegate, DefaultLifecycleObserver {
 
   private lateinit var activity: AppCompatActivity
   private lateinit var settingsRepository: SettingsRepository
@@ -44,10 +42,11 @@ class MainBillingDelegate : BillingDelegate, LifecycleObserver {
     this.activity.lifecycle.addObserver(this)
   }
 
-  @OnLifecycleEvent(ON_CREATE)
-  fun onCreate() {
+  override fun onCreate(owner: LifecycleOwner) {
+    super.onCreate(owner)
     Timber.d("onCreate")
     if (!Config.SHOW_PREMIUM || !settingsRepository.isPremium) {
+      Timber.d("Premium inactive. Finishing.")
       return
     }
 
@@ -64,10 +63,10 @@ class MainBillingDelegate : BillingDelegate, LifecycleObserver {
     })
   }
 
-  @OnLifecycleEvent(ON_DESTROY)
-  fun onDestroy() {
+  override fun onDestroy(owner: LifecycleOwner) {
     billingClient.endConnection()
     Timber.d("onDestroy")
+    super.onDestroy(owner)
   }
 
   private fun checkOwnedPurchases() {

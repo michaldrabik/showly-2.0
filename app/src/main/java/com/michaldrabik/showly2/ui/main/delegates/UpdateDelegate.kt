@@ -1,10 +1,8 @@
 package com.michaldrabik.showly2.ui.main.delegates
 
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Lifecycle.Event.ON_CREATE
-import androidx.lifecycle.Lifecycle.Event.ON_DESTROY
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
@@ -22,7 +20,7 @@ interface UpdateDelegate {
   )
 }
 
-class MainUpdateDelegate : UpdateDelegate, LifecycleObserver {
+class MainUpdateDelegate : UpdateDelegate, DefaultLifecycleObserver {
 
   companion object {
     private const val REQUEST_APP_UPDATE = 5278
@@ -45,9 +43,9 @@ class MainUpdateDelegate : UpdateDelegate, LifecycleObserver {
     this.appUpdateManager = AppUpdateManagerFactory.create(activity.applicationContext)
   }
 
-  @OnLifecycleEvent(ON_CREATE)
-  fun onCreate() {
-    Timber.d("onCreate")
+  override fun onCreate(owner: LifecycleOwner) {
+    super.onCreate(owner)
+    Timber.d("onCreate()")
 
     updateListener = InstallStateUpdatedListener {
       if (it.installStatus() == InstallStatus.DOWNLOADED) {
@@ -59,6 +57,7 @@ class MainUpdateDelegate : UpdateDelegate, LifecycleObserver {
     }
 
     appUpdateManager.appUpdateInfo.addOnSuccessListener { updateInfo ->
+      Timber.d("Update info: $updateInfo")
       if (updateInfo.installStatus() == InstallStatus.DOWNLOADED) {
         onUpdateDownloaded?.invoke(appUpdateManager)
         return@addOnSuccessListener
@@ -74,11 +73,11 @@ class MainUpdateDelegate : UpdateDelegate, LifecycleObserver {
     }
   }
 
-  @OnLifecycleEvent(ON_DESTROY)
-  fun onDestroy() {
+  override fun onDestroy(owner: LifecycleOwner) {
     appUpdateManager.unregisterListener(updateListener)
     onUpdateDownloaded = null
-    Timber.d("onDestroy")
+    Timber.d("onDestroy()")
+    super.onDestroy(owner)
   }
 
   private fun startUpdate(
