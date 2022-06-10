@@ -7,7 +7,6 @@ import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
 import com.michaldrabik.ui_model.Show
-import com.michaldrabik.ui_show.ShowDetailsEvent
 import com.michaldrabik.ui_show.sections.nextepisode.cases.ShowDetailsNextEpisodeCase
 import com.michaldrabik.ui_show.sections.nextepisode.cases.ShowDetailsTranslationCase
 import com.michaldrabik.ui_show.sections.nextepisode.helpers.NextEpisodeBundle
@@ -26,17 +25,14 @@ class ShowDetailsNextEpisodeViewModel @Inject constructor(
   private val dateFormatProvider: DateFormatProvider,
 ) : ViewModel() {
 
+  private lateinit var show: Show
+
   private val nextEpisodeState = MutableStateFlow<NextEpisodeBundle?>(null)
   private val loadingState = MutableStateFlow(false)
 
-  fun handleEvent(event: ShowDetailsEvent<*>) {
-    when (event) {
-      is ShowDetailsEvent.ShowLoaded -> loadNextEpisode(event.show)
-      else -> Unit
-    }
-  }
-
-  private fun loadNextEpisode(show: Show) {
+  fun loadNextEpisode(show: Show) {
+    if (this::show.isInitialized) return
+    this.show = show
     viewModelScope.launch {
       try {
         val episode = nextEpisodeCase.loadNextEpisode(show.ids.trakt)

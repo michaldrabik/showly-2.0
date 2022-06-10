@@ -91,5 +91,4 @@ abstract class TraktNotificationWorker constructor(
     }
     return ""
   }
-
 }

@@ -293,7 +293,7 @@
 
       <androidx.fragment.app.FragmentContainerView
         android:id="@+id/movieDetailsActorsFragment"
-        android:name="com.michaldrabik.ui_movie.sections.actors.MovieDetailsPeopleFragment"
+        android:name="com.michaldrabik.ui_movie.sections.people.MovieDetailsPeopleFragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spaceMedium"

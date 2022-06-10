@@ -30,7 +30,7 @@ class MovieDetailsRelatedFragment : BaseFragment<MovieDetailsRelatedViewModel>(R
     super.onViewCreated(view, savedInstanceState)
     setupView()
     launchAndRepeatStarted(
-      { parentViewModel.parentEvents.collect { viewModel.handleEvent(it) } },
+      { parentViewModel.parentMovieState.collect { it?.let { viewModel.loadRelatedMovies(it) } } },
       { viewModel.uiState.collect { render(it) } }
     )
   }
@@ -38,7 +38,7 @@ class MovieDetailsRelatedFragment : BaseFragment<MovieDetailsRelatedViewModel>(R
   private fun setupView() {
     relatedAdapter = RelatedMovieAdapter(
       itemClickListener = {
-        val bundle = Bundle().apply { putLong(ARG_MOVIE_ID, it.movie.ids.trakt.id) }
+        val bundle = Bundle().apply { putLong(ARG_MOVIE_ID, it.movie.traktId) }
         navigateTo(R.id.actionMovieDetailsFragmentToSelf, bundle)
       },
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }

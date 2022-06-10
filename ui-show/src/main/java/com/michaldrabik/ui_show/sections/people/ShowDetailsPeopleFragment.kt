@@ -47,6 +47,7 @@ class ShowDetailsPeopleFragment : BaseFragment<ShowDetailsPeopleViewModel>(R.lay
     setupView()
     launchAndRepeatStarted(
       { parentViewModel.parentEvents.collect { viewModel.handleEvent(it) } },
+      { parentViewModel.parentShowState.collect { it?.let { viewModel.loadPeople(it) } } },
       { viewModel.uiState.collect { render(it) } },
       { viewModel.eventFlow.collect { handleEvent(it) } },
       doAfterLaunch = { viewModel.loadLastPerson() }

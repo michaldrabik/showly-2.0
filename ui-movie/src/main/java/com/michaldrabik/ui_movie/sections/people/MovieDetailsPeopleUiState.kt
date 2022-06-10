@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_movie.sections.actors
+package com.michaldrabik.ui_movie.sections.people
 
 import com.michaldrabik.ui_model.Person
 

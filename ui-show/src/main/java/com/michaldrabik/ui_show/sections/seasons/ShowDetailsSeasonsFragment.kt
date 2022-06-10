@@ -50,6 +50,7 @@ class ShowDetailsSeasonsFragment : BaseFragment<ShowDetailsSeasonsViewModel>(R.l
 
     launchAndRepeatStarted(
       { parentViewModel.parentEvents.collect { viewModel.handleEvent(it) } },
+      { parentViewModel.parentShowState.collect { it?.let { viewModel.loadSeasons(it) } } },
       { viewModel.uiState.collect { render(it) } },
       { viewModel.eventFlow.collect { handleEvent(it as ShowDetailsSeasonsEvent<*>) } }
     )

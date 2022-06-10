@@ -8,10 +8,6 @@ import com.michaldrabik.ui_model.Person
 
 sealed class MovieDetailsEvent<T>(action: T) : Event<T>(action) {
 
-  data class MovieLoaded(
-    val movie: Movie
-  ) : MovieDetailsEvent<Movie>(movie)
-
   data class OpenPersonSheet(
     val movie: Movie,
     val person: Person

@@ -155,7 +155,7 @@ fun <T> MutableList<T>.replace(newItems: Collection<T>) {
   addAll(newItems)
 }
 
-fun CoroutineScope.launchDelayed(delayMs: Long, action: () -> Unit): Job {
+fun CoroutineScope.launchDelayed(delayMs: Long, action: suspend () -> Unit): Job {
   return launch {
     delay(delayMs)
     action()

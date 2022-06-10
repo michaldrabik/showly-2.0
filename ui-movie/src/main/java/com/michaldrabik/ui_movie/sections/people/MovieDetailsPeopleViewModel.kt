@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_movie.sections.actors
+package com.michaldrabik.ui_movie.sections.people
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,11 +10,10 @@ import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.Person.Department
 import com.michaldrabik.ui_movie.MovieDetailsEvent
-import com.michaldrabik.ui_movie.MovieDetailsEvent.MovieLoaded
 import com.michaldrabik.ui_movie.MovieDetailsEvent.OpenPeopleSheet
 import com.michaldrabik.ui_movie.MovieDetailsEvent.OpenPersonSheet
 import com.michaldrabik.ui_movie.MovieDetailsEvent.SaveOpenedPerson
-import com.michaldrabik.ui_movie.sections.actors.cases.MovieDetailsActorsCase
+import com.michaldrabik.ui_movie.sections.people.cases.MovieDetailsActorsCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -29,19 +28,15 @@ class MovieDetailsPeopleViewModel @Inject constructor(
   private val actorsCase: MovieDetailsActorsCase,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
+  private lateinit var movie: Movie
+  private var lastOpenedPerson: Person? = null
+
   private val loadingState = MutableStateFlow(true)
   private val actorsState = MutableStateFlow<List<Person>?>(null)
   private val crewState = MutableStateFlow<Map<Department, List<Person>>?>(null)
 
-  private lateinit var movie: Movie
-  private var lastOpenedPerson: Person? = null
-
   fun handleEvent(event: MovieDetailsEvent<*>) {
     when (event) {
-      is MovieLoaded -> {
-        movie = event.movie
-        loadPeople(event.movie)
-      }
       is SaveOpenedPerson -> {
         lastOpenedPerson = event.person
       }
@@ -49,7 +44,10 @@ class MovieDetailsPeopleViewModel @Inject constructor(
     }
   }
 
-  private fun loadPeople(movie: Movie) {
+  fun loadPeople(movie: Movie) {
+    if (this::movie.isInitialized) return
+    this.movie = movie
+
     viewModelScope.launch {
       try {
         val people = actorsCase.loadPeople(movie)

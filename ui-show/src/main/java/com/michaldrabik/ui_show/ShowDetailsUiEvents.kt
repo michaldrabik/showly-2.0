@@ -10,10 +10,6 @@ import com.michaldrabik.ui_model.Show
 
 sealed class ShowDetailsEvent<T>(action: T) : Event<T>(action) {
 
-  data class ShowLoaded(
-    val show: Show
-  ) : ShowDetailsEvent<Show>(show)
-
   data class OpenPersonSheet(
     val show: Show,
     val person: Person

@@ -35,7 +35,7 @@ class ShowDetailsNextEpisodeFragment : BaseFragment<ShowDetailsNextEpisodeViewMo
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     launchAndRepeatStarted(
-      { parentViewModel.parentEvents.collect { viewModel.handleEvent(it) } },
+      { parentViewModel.parentShowState.collect { it?.let { viewModel.loadNextEpisode(it) } } },
       { viewModel.uiState.collect { render(it) } }
     )
   }

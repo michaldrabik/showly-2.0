@@ -32,7 +32,7 @@ class ShowDetailsStreamingsFragment : BaseFragment<ShowDetailsStreamingsViewMode
     super.onViewCreated(view, savedInstanceState)
     setupView()
     launchAndRepeatStarted(
-      { parentViewModel.parentEvents.collect { viewModel.handleEvent(it) } },
+      { parentViewModel.parentShowState.collect { it?.let { viewModel.loadStreamings(it) } } },
       { viewModel.uiState.collect { render(it) } }
     )
   }

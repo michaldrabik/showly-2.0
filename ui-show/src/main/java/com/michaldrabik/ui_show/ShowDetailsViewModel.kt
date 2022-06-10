@@ -30,7 +30,6 @@ import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_show.ShowDetailsEvent.Finish
 import com.michaldrabik.ui_show.ShowDetailsEvent.RemoveFromTrakt
-import com.michaldrabik.ui_show.ShowDetailsEvent.ShowLoaded
 import com.michaldrabik.ui_show.ShowDetailsUiState.FollowedState
 import com.michaldrabik.ui_show.cases.ShowDetailsHiddenCase
 import com.michaldrabik.ui_show.cases.ShowDetailsListsCase
@@ -47,6 +46,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -71,10 +71,13 @@ class ShowDetailsViewModel @Inject constructor(
   private val imagesProvider: ShowImagesProvider,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
-  private val _parentEvents = MutableSharedFlow<ShowDetailsEvent<*>>()
+  private var show by notNull<Show>()
+
+  private val _parentEvents = MutableSharedFlow<ShowDetailsEvent<*>>(extraBufferCapacity = 1)
   val parentEvents = _parentEvents.asSharedFlow()
 
   private val showState = MutableStateFlow<Show?>(null)
+  val parentShowState = showState.asStateFlow()
   private val showLoadingState = MutableStateFlow<Boolean?>(null)
   private val imageState = MutableStateFlow<Image?>(null)
   private val followedState = MutableStateFlow<FollowedState?>(null)
@@ -83,8 +86,6 @@ class ShowDetailsViewModel @Inject constructor(
   private val listsCountState = MutableStateFlow(0)
   private val metaState = MutableStateFlow<ShowDetailsMeta?>(null)
 
-  private var show by notNull<Show>()
-
   fun loadDetails(id: IdTrakt) {
     viewModelScope.launch {
       val progressJob = launchDelayed(700) {
@@ -92,7 +93,6 @@ class ShowDetailsViewModel @Inject constructor(
       }
       try {
         show = mainCase.loadDetails(id)
-        _parentEvents.emit(ShowLoaded(show))
         Analytics.logShowDetailsDisplay(show)
 
         val isSignedIn = userManager.isAuthorized()

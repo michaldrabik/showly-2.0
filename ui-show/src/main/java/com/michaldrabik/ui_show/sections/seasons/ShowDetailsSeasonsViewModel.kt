@@ -46,16 +46,14 @@ class ShowDetailsSeasonsViewModel @Inject constructor(
 
   fun handleEvent(event: ShowDetailsEvent<*>) {
     when (event) {
-      is ShowDetailsEvent.ShowLoaded -> {
-        show = event.show
-        loadSeasons()
-      }
       is ShowDetailsEvent.RefreshSeasons -> refreshSeasons()
       else -> Unit
     }
   }
 
-  private fun loadSeasons() {
+  fun loadSeasons(show: Show) {
+    if (this::show.isInitialized) return
+    this.show = show
     viewModelScope.launch {
       try {
         val (seasons, isLocal) = loadSeasonsCase.loadSeasons(show)

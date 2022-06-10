@@ -11,8 +11,6 @@ import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
-import com.michaldrabik.ui_movie.MovieDetailsEvent
-import com.michaldrabik.ui_movie.MovieDetailsEvent.MovieLoaded
 import com.michaldrabik.ui_movie.cases.MovieDetailsMyMoviesCase
 import com.michaldrabik.ui_movie.sections.related.cases.MovieDetailsRelatedCase
 import com.michaldrabik.ui_movie.sections.related.recycler.RelatedListItem
@@ -32,17 +30,15 @@ class MovieDetailsRelatedViewModel @Inject constructor(
   private val imagesProvider: MovieImagesProvider,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
+  private lateinit var movie: Movie
+
   private val loadingState = MutableStateFlow(true)
   private val relatedItemsState = MutableStateFlow<List<RelatedListItem>?>(null)
 
-  fun handleEvent(event: MovieDetailsEvent<*>) {
-    when (event) {
-      is MovieLoaded -> loadRelatedMovies(event.movie)
-      else -> Unit
-    }
-  }
+  fun loadRelatedMovies(movie: Movie) {
+    if (this::movie.isInitialized) return
+    this.movie = movie
 
-  private fun loadRelatedMovies(movie: Movie) {
     viewModelScope.launch {
       try {
         val (myMovies, watchlistMovies) = myMoviesCase.getAllIds()

@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
 import com.michaldrabik.ui_model.Show
-import com.michaldrabik.ui_show.ShowDetailsEvent
 import com.michaldrabik.ui_show.sections.streamings.ShowDetailsStreamingsUiState.StreamingsState
 import com.michaldrabik.ui_show.sections.streamings.cases.ShowDetailsStreamingCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,17 +20,14 @@ class ShowDetailsStreamingsViewModel @Inject constructor(
   private val streamingCase: ShowDetailsStreamingCase,
 ) : ViewModel() {
 
+  private lateinit var show: Show
+
   private val streamingsState = MutableStateFlow<StreamingsState?>(null)
   private val loadingState = MutableStateFlow(false)
 
-  fun handleEvent(event: ShowDetailsEvent<*>) {
-    when (event) {
-      is ShowDetailsEvent.ShowLoaded -> loadStreamings(event.show)
-      else -> Unit
-    }
-  }
-
-  private fun loadStreamings(show: Show) {
+  fun loadStreamings(show: Show) {
+    if (this::show.isInitialized) return
+    this.show = show
     viewModelScope.launch {
       loadingState.value = true
       try {

@@ -25,19 +25,15 @@ class ShowDetailsPeopleViewModel @Inject constructor(
   private val actorsCase: ShowDetailsActorsCase,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
+  private lateinit var show: Show
+  private var lastOpenedPerson: Person? = null
+
   private val loadingState = MutableStateFlow(true)
   private val actorsState = MutableStateFlow<List<Person>?>(null)
   private val crewState = MutableStateFlow<Map<Department, List<Person>>?>(null)
 
-  private lateinit var show: Show
-  private var lastOpenedPerson: Person? = null
-
   fun handleEvent(event: ShowDetailsEvent<*>) {
     when (event) {
-      is ShowDetailsEvent.ShowLoaded -> {
-        show = event.show
-        loadPeople(event.show)
-      }
       is ShowDetailsEvent.SaveOpenedPerson -> {
         lastOpenedPerson = event.person
       }
@@ -45,7 +41,9 @@ class ShowDetailsPeopleViewModel @Inject constructor(
     }
   }
 
-  private fun loadPeople(show: Show) {
+  fun loadPeople(show: Show) {
+    if (this::show.isInitialized) return
+    this.show = show
     viewModelScope.launch {
       try {
         val people = actorsCase.loadPeople(show)

@@ -11,7 +11,6 @@ import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Show
-import com.michaldrabik.ui_show.ShowDetailsEvent
 import com.michaldrabik.ui_show.cases.ShowDetailsMyShowsCase
 import com.michaldrabik.ui_show.sections.related.cases.ShowDetailsRelatedCase
 import com.michaldrabik.ui_show.sections.related.recycler.RelatedListItem
@@ -31,17 +30,14 @@ class ShowDetailsRelatedViewModel @Inject constructor(
   private val imagesProvider: ShowImagesProvider,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
+  private lateinit var show: Show
+
   private val loadingState = MutableStateFlow(true)
   private val relatedItemsState = MutableStateFlow<List<RelatedListItem>?>(null)
 
-  fun handleEvent(event: ShowDetailsEvent<*>) {
-    when (event) {
-      is ShowDetailsEvent.ShowLoaded -> loadRelatedShows(event.show)
-      else -> Unit
-    }
-  }
-
-  private fun loadRelatedShows(show: Show) {
+  fun loadRelatedShows(show: Show) {
+    if (this::show.isInitialized) return
+    this.show = show
     viewModelScope.launch {
       try {
         val (myShows, watchlistShows) = myShowsCase.getAllIds()

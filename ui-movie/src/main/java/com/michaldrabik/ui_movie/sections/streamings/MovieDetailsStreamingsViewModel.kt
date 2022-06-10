@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
 import com.michaldrabik.ui_model.Movie
-import com.michaldrabik.ui_movie.MovieDetailsEvent
 import com.michaldrabik.ui_movie.sections.streamings.MovieDetailsStreamingsUiState.StreamingsState
 import com.michaldrabik.ui_movie.sections.streamings.cases.MovieDetailsStreamingCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,17 +20,15 @@ class MovieDetailsStreamingsViewModel @Inject constructor(
   private val streamingCase: MovieDetailsStreamingCase,
 ) : ViewModel() {
 
+  private lateinit var movie: Movie
+
   private val streamingsState = MutableStateFlow<StreamingsState?>(null)
   private val loadingState = MutableStateFlow(false)
 
-  fun handleEvent(event: MovieDetailsEvent<*>) {
-    when (event) {
-      is MovieDetailsEvent.MovieLoaded -> loadStreamings(event.movie)
-      else -> Unit
-    }
-  }
+  fun loadStreamings(movie: Movie) {
+    if (this::movie.isInitialized) return
+    this.movie = movie
 
-  private fun loadStreamings(movie: Movie) {
     viewModelScope.launch {
       loadingState.value = true
       try {

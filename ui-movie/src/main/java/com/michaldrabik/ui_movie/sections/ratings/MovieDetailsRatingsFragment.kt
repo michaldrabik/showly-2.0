@@ -26,7 +26,7 @@ class MovieDetailsRatingsFragment : BaseFragment<MovieDetailsRatingsViewModel>(R
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     launchAndRepeatStarted(
-      { parentViewModel.parentEvents.collect { viewModel.handleEvent(it) } },
+      { parentViewModel.parentMovieState.collect { it?.let { viewModel.loadRatings(it) } } },
       { viewModel.uiState.collect { render(it) } }
     )
   }

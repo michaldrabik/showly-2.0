@@ -28,7 +28,6 @@ import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_movie.MovieDetailsEvent.Finish
-import com.michaldrabik.ui_movie.MovieDetailsEvent.MovieLoaded
 import com.michaldrabik.ui_movie.MovieDetailsEvent.RemoveFromTrakt
 import com.michaldrabik.ui_movie.MovieDetailsEvent.SaveOpenedPerson
 import com.michaldrabik.ui_movie.MovieDetailsUiState.FollowedState
@@ -46,6 +45,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -69,10 +69,13 @@ class MovieDetailsViewModel @Inject constructor(
   private val announcementManager: AnnouncementManager,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
+  private var movie by notNull<Movie>()
+
   private val _parentEvents = MutableSharedFlow<MovieDetailsEvent<*>>()
   val parentEvents = _parentEvents.asSharedFlow()
 
   private val movieState = MutableStateFlow<Movie?>(null)
+  val parentMovieState = movieState.asStateFlow()
   private val movieLoadingState = MutableStateFlow<Boolean?>(null)
   private val imageState = MutableStateFlow<Image?>(null)
   private val followedState = MutableStateFlow<FollowedState?>(null)
@@ -81,8 +84,6 @@ class MovieDetailsViewModel @Inject constructor(
   private val metaState = MutableStateFlow<MovieDetailsMeta?>(null)
   private val listsCountState = MutableStateFlow(0)
 
-  private var movie by notNull<Movie>()
-
   fun loadDetails(id: IdTrakt) {
     viewModelScope.launch {
       val progressJob = launchDelayed(700) {
@@ -90,7 +91,6 @@ class MovieDetailsViewModel @Inject constructor(
       }
       try {
         movie = mainCase.loadDetails(id)
-        _parentEvents.emit(MovieLoaded(movie))
         Analytics.logMovieDetailsDisplay(movie)
 
         val isSignedIn = userManager.isAuthorized()

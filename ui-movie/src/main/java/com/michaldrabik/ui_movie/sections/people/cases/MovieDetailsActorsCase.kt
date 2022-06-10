@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_movie.sections.actors.cases
+package com.michaldrabik.ui_movie.sections.people.cases
 
 import com.michaldrabik.repository.PeopleRepository
 import com.michaldrabik.ui_model.Movie

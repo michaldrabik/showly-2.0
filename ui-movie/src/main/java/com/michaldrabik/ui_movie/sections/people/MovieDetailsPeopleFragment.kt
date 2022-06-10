@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_movie.sections.actors
+package com.michaldrabik.ui_movie.sections.people
 
 import android.os.Bundle
 import android.view.View
@@ -22,7 +22,7 @@ import com.michaldrabik.ui_movie.MovieDetailsEvent.OpenPeopleSheet
 import com.michaldrabik.ui_movie.MovieDetailsEvent.OpenPersonSheet
 import com.michaldrabik.ui_movie.MovieDetailsViewModel
 import com.michaldrabik.ui_movie.R
-import com.michaldrabik.ui_movie.sections.actors.recycler.ActorsAdapter
+import com.michaldrabik.ui_movie.sections.people.recycler.ActorsAdapter
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_people.details.PersonDetailsBottomSheet
 import com.michaldrabik.ui_people.list.PeopleListBottomSheet
@@ -46,6 +46,7 @@ class MovieDetailsPeopleFragment : BaseFragment<MovieDetailsPeopleViewModel>(R.l
     setupView()
     launchAndRepeatStarted(
       { parentViewModel.parentEvents.collect { viewModel.handleEvent(it) } },
+      { parentViewModel.parentMovieState.collect { it?.let { viewModel.loadPeople(it) } } },
       { viewModel.uiState.collect { render(it) } },
       { viewModel.eventFlow.collect { handleEvent(it) } },
       doAfterLaunch = { viewModel.loadLastPerson() }

@@ -28,7 +28,7 @@ class MovieDetailsStreamingsFragment : BaseFragment<MovieDetailsStreamingsViewMo
     super.onViewCreated(view, savedInstanceState)
     setupView()
     launchAndRepeatStarted(
-      { parentViewModel.parentEvents.collect { viewModel.handleEvent(it) } },
+      { parentViewModel.parentMovieState.collect { it?.let { viewModel.loadStreamings(it) } } },
       { viewModel.uiState.collect { render(it) } }
     )
   }

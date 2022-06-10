@@ -29,7 +29,7 @@ class ShowDetailsRatingsFragment : BaseFragment<ShowDetailsRatingsViewModel>(R.l
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     launchAndRepeatStarted(
-      { parentViewModel.parentEvents.collect { viewModel.handleEvent(it) } },
+      { parentViewModel.parentShowState.collect { it?.let { viewModel.loadRatings(it) } } },
       { viewModel.uiState.collect { render(it) } }
     )
   }
