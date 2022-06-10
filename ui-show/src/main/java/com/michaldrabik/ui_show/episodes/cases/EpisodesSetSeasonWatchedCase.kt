@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_show.sections.episodes.cases
+package com.michaldrabik.ui_show.episodes.cases
 
 import com.michaldrabik.repository.EpisodesManager
 import com.michaldrabik.repository.UserTraktManager

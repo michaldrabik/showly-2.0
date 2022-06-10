@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_show.sections.episodes.cases
+package com.michaldrabik.ui_show.episodes.cases
 
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.notifications.AnnouncementManager

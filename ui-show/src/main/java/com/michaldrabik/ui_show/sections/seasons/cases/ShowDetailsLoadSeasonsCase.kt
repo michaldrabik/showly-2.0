@@ -15,7 +15,7 @@ import com.michaldrabik.ui_base.network.NetworkStatusProvider
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
-import com.michaldrabik.ui_show.sections.episodes.recycler.EpisodeListItem
+import com.michaldrabik.ui_show.episodes.recycler.EpisodeListItem
 import com.michaldrabik.ui_show.sections.seasons.helpers.SeasonsBundle
 import com.michaldrabik.ui_show.sections.seasons.recycler.SeasonListItem
 import dagger.hilt.android.scopes.ViewModelScoped

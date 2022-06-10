@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_show.sections.episodes
+package com.michaldrabik.ui_show.episodes
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -18,17 +18,17 @@ import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_OPTIONS
 import com.michaldrabik.ui_show.R
-import com.michaldrabik.ui_show.sections.episodes.ShowDetailsEpisodesFragment.Options
-import com.michaldrabik.ui_show.sections.episodes.cases.EpisodesAnnouncementsCase
-import com.michaldrabik.ui_show.sections.episodes.cases.EpisodesLoadShowCase
-import com.michaldrabik.ui_show.sections.episodes.cases.EpisodesMarkWatchedCase
-import com.michaldrabik.ui_show.sections.episodes.cases.EpisodesRatingCase
-import com.michaldrabik.ui_show.sections.episodes.cases.EpisodesSetEpisodeWatchedCase
-import com.michaldrabik.ui_show.sections.episodes.cases.EpisodesSetEpisodeWatchedCase.Result
-import com.michaldrabik.ui_show.sections.episodes.cases.EpisodesSetSeasonWatchedCase
-import com.michaldrabik.ui_show.sections.episodes.cases.EpisodesSetSeasonWatchedCase.Result.REMOVE_FROM_TRAKT
-import com.michaldrabik.ui_show.sections.episodes.cases.EpisodesTranslationCase
-import com.michaldrabik.ui_show.sections.episodes.recycler.EpisodeListItem
+import com.michaldrabik.ui_show.episodes.ShowDetailsEpisodesFragment.Options
+import com.michaldrabik.ui_show.episodes.cases.EpisodesAnnouncementsCase
+import com.michaldrabik.ui_show.episodes.cases.EpisodesLoadShowCase
+import com.michaldrabik.ui_show.episodes.cases.EpisodesMarkWatchedCase
+import com.michaldrabik.ui_show.episodes.cases.EpisodesRatingCase
+import com.michaldrabik.ui_show.episodes.cases.EpisodesSetEpisodeWatchedCase
+import com.michaldrabik.ui_show.episodes.cases.EpisodesSetEpisodeWatchedCase.Result
+import com.michaldrabik.ui_show.episodes.cases.EpisodesSetSeasonWatchedCase
+import com.michaldrabik.ui_show.episodes.cases.EpisodesSetSeasonWatchedCase.Result.REMOVE_FROM_TRAKT
+import com.michaldrabik.ui_show.episodes.cases.EpisodesTranslationCase
+import com.michaldrabik.ui_show.episodes.recycler.EpisodeListItem
 import com.michaldrabik.ui_show.sections.seasons.helpers.SeasonsCache
 import com.michaldrabik.ui_show.sections.seasons.recycler.SeasonListItem
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -25,8 +25,8 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_show.R
 import com.michaldrabik.ui_show.ShowDetailsViewModel
 import com.michaldrabik.ui_show.databinding.FragmentShowDetailsSeasonsBinding
+import com.michaldrabik.ui_show.episodes.ShowDetailsEpisodesFragment
 import com.michaldrabik.ui_show.quicksetup.QuickSetupView
-import com.michaldrabik.ui_show.sections.episodes.ShowDetailsEpisodesFragment
 import com.michaldrabik.ui_show.sections.seasons.recycler.SeasonListItem
 import com.michaldrabik.ui_show.sections.seasons.recycler.SeasonsAdapter
 import dagger.hilt.android.AndroidEntryPoint

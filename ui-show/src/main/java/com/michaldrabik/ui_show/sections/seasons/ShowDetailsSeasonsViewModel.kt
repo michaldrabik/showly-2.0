@@ -12,8 +12,8 @@ import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_show.R
 import com.michaldrabik.ui_show.ShowDetailsEvent
+import com.michaldrabik.ui_show.episodes.cases.EpisodesMarkWatchedCase
 import com.michaldrabik.ui_show.quicksetup.QuickSetupListItem
-import com.michaldrabik.ui_show.sections.episodes.cases.EpisodesMarkWatchedCase
 import com.michaldrabik.ui_show.sections.seasons.cases.ShowDetailsLoadSeasonsCase
 import com.michaldrabik.ui_show.sections.seasons.cases.ShowDetailsQuickProgressCase
 import com.michaldrabik.ui_show.sections.seasons.cases.ShowDetailsWatchedSeasonCase

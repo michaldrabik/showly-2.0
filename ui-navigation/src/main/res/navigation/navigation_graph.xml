@@ -373,7 +373,7 @@
 
   <fragment
     android:id="@+id/showDetailsEpisodesFragment"
-    android:name="com.michaldrabik.ui_show.sections.episodes.ShowDetailsEpisodesFragment"
+    android:name="com.michaldrabik.ui_show.episodes.ShowDetailsEpisodesFragment"
     android:label="fragmentEpisodes"
     >
     <action

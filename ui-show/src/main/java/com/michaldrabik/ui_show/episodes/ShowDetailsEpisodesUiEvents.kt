@@ -1,5 +1,5 @@
 // ktlint-disable filename
-package com.michaldrabik.ui_show.sections.episodes
+package com.michaldrabik.ui_show.episodes
 
 import androidx.annotation.IdRes
 import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet

@@ -1,6 +1,6 @@
-package com.michaldrabik.ui_show.sections.episodes
+package com.michaldrabik.ui_show.episodes
 
-import com.michaldrabik.ui_show.sections.episodes.recycler.EpisodeListItem
+import com.michaldrabik.ui_show.episodes.recycler.EpisodeListItem
 import com.michaldrabik.ui_show.sections.seasons.recycler.SeasonListItem
 
 data class ShowDetailsEpisodesUiState(

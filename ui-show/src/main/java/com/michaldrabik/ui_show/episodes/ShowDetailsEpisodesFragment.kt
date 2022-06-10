@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_show.sections.episodes
+package com.michaldrabik.ui_show.episodes
 
 import android.os.Bundle
 import android.os.Parcelable
@@ -33,7 +33,7 @@ import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_show.R
 import com.michaldrabik.ui_show.databinding.FragmentShowDetailsEpisodesBinding
-import com.michaldrabik.ui_show.sections.episodes.recycler.EpisodesAdapter
+import com.michaldrabik.ui_show.episodes.recycler.EpisodesAdapter
 import com.michaldrabik.ui_show.sections.seasons.recycler.SeasonListItem
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
