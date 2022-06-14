@@ -35,7 +35,6 @@ class QuickSyncListsRunner @Inject constructor(
 
   override suspend fun run(): Int {
     Timber.d("Initialized.")
-    isRunning = true
 
     var count = 0
     checkAuthorization()
@@ -51,7 +50,6 @@ class QuickSyncListsRunner @Inject constructor(
 
     count += processItems(items, count)
 
-    isRunning = false
     Timber.d("Finished with success.")
     return count
   }

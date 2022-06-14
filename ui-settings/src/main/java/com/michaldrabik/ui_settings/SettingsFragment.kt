@@ -12,9 +12,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jakewharton.processphoenix.ProcessPhoenix
 import com.michaldrabik.common.Config
@@ -27,11 +26,13 @@ import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.OnTraktAuthorizeListener
 import com.michaldrabik.ui_base.dates.AppDateFormat
 import com.michaldrabik.ui_base.dates.DateFormatProvider
+import com.michaldrabik.ui_base.trakt.TraktSyncWorker
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.expandTouch
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
+import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.setCheckedSilent
@@ -54,7 +55,6 @@ import com.michaldrabik.ui_settings.helpers.WidgetTransparency
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_settings.*
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import com.michaldrabik.data_remote.Config as ConfigNetwork
 
 @AndroidEntryPoint
@@ -65,16 +65,13 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
+    setupWorkManager()
 
-    viewLifecycleOwner.lifecycleScope.launch {
-      repeatOnLifecycle(Lifecycle.State.STARTED) {
-        with(viewModel) {
-          launch { uiState.collect { render(it) } }
-          launch { messageFlow.collect { showSnack(it) } }
-          loadSettings()
-        }
-      }
-    }
+    launchAndRepeatStarted(
+      { viewModel.uiState.collect { render(it) } },
+      { viewModel.messageFlow.collect { showSnack(it) } },
+      doAfterLaunch = { viewModel.loadSettings() }
+    )
   }
 
   private fun setupView() {
@@ -100,6 +97,14 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
       val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
       view.updatePadding(top = padding.top + inset)
     }
+  }
+
+  private fun setupWorkManager() {
+    WorkManager.getInstance(requireAppContext())
+      .getWorkInfosByTagLiveData(TraktSyncWorker.TAG_ID)
+      .observe(viewLifecycleOwner) {
+        settingsTraktSyncProgress.visibleIf(it.any { work -> work.state == WorkInfo.State.RUNNING })
+      }
   }
 
   private fun render(uiState: SettingsUiState) {

@@ -66,11 +66,6 @@ class QuickSyncWorker @AssistedInject constructor(
 
   override suspend fun doWork(): Result {
     Timber.d("Initialized.")
-    if (quickSyncRunner.isRunning || quickSyncListsRunner.isRunning) {
-      Timber.d("Already running. Finishing...")
-      return Result.failure()
-    }
-
     setForegroundProgress()
 
     try {
@@ -122,7 +117,6 @@ class QuickSyncWorker @AssistedInject constructor(
       quickSyncListsRunner,
     ).forEach {
       it.progressListener = null
-      it.isRunning = false
     }
   }
 }

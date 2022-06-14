@@ -2,9 +2,9 @@ package com.michaldrabik.ui_progress_movies.main
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.viewModelScope
+import androidx.work.WorkManager
 import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.ui_base.events.EventsManager
-import com.michaldrabik.ui_base.trakt.TraktSyncStatusProvider
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_model.CalendarMode
 import com.michaldrabik.ui_model.Movie
@@ -14,11 +14,11 @@ import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.just
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.resetMain
@@ -35,8 +35,8 @@ class ProgressMoviesMainViewModelTest : BaseMockTest() {
   val instantTaskExecutorRule = InstantTaskExecutorRule()
 
   @MockK lateinit var mainCase: ProgressMoviesMainCase
-  @MockK lateinit var syncStatusProvider: TraktSyncStatusProvider
   @MockK lateinit var eventsManager: EventsManager
+  @RelaxedMockK lateinit var workManager: WorkManager
 
   private lateinit var SUT: ProgressMoviesMainViewModel
 
@@ -47,10 +47,9 @@ class ProgressMoviesMainViewModelTest : BaseMockTest() {
   override fun setUp() {
     super.setUp()
 
-    coEvery { syncStatusProvider.status } returns MutableStateFlow(false)
     coEvery { eventsManager.events } returns MutableSharedFlow()
 
-    SUT = ProgressMoviesMainViewModel(mainCase, syncStatusProvider, eventsManager)
+    SUT = ProgressMoviesMainViewModel(mainCase, eventsManager, workManager)
   }
 
   @After

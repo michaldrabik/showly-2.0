@@ -2,8 +2,8 @@ package com.michaldrabik.ui_progress_movies.progress
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.viewModelScope
+import androidx.work.WorkManager
 import com.google.common.truth.Truth.assertThat
-import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.images.MovieImagesProvider
@@ -50,7 +50,7 @@ class ProgressMoviesViewModelTest : BaseMockTest() {
   @MockK lateinit var pinnedCase: ProgressMoviesPinnedCase
   @MockK lateinit var imagesProvider: MovieImagesProvider
   @MockK lateinit var userTraktManager: UserTraktManager
-  @MockK lateinit var ratingsRepository: RatingsRepository
+  @MockK lateinit var workManager: WorkManager
   @MockK lateinit var settingsRepository: SettingsRepository
   @MockK lateinit var translationsRepository: TranslationsRepository
 
@@ -74,6 +74,7 @@ class ProgressMoviesViewModelTest : BaseMockTest() {
       pinnedCase,
       imagesProvider,
       userTraktManager,
+      workManager,
       settingsRepository,
       translationsRepository
     )

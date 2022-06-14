@@ -2,10 +2,12 @@ package com.michaldrabik.ui_progress.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.TraktSyncError
 import com.michaldrabik.ui_base.events.TraktSyncSuccess
-import com.michaldrabik.ui_base.trakt.TraktSyncStatusProvider
+import com.michaldrabik.ui_base.trakt.TraktSyncWorker
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
@@ -28,8 +30,8 @@ import com.michaldrabik.ui_base.events.Event as EventSync
 @HiltViewModel
 class ProgressMainViewModel @Inject constructor(
   private val episodesCase: ProgressMainEpisodesCase,
-  private val syncStatusProvider: TraktSyncStatusProvider,
   private val eventsManager: EventsManager,
+  workManager: WorkManager,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val timestampState = MutableStateFlow<Long?>(null)
@@ -41,9 +43,11 @@ class ProgressMainViewModel @Inject constructor(
   private var calendarMode = CalendarMode.PRESENT_FUTURE
 
   init {
-    with(viewModelScope) {
-      launch { syncStatusProvider.status.collect { syncingState.value = it } }
-      launch { eventsManager.events.collect { onEvent(it) } }
+    viewModelScope.launch {
+      eventsManager.events.collect { onEvent(it) }
+    }
+    workManager.getWorkInfosByTagLiveData(TraktSyncWorker.TAG_ID).observeForever { work ->
+      syncingState.value = work.any { it.state == WorkInfo.State.RUNNING }
     }
   }
 

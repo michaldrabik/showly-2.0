@@ -27,7 +27,6 @@ class TraktImportListsRunner @Inject constructor(
 
   override suspend fun run(): Int {
     Timber.d("Initialized.")
-    isRunning = true
 
     var syncedCount = 0
     checkAuthorization()
@@ -35,7 +34,6 @@ class TraktImportListsRunner @Inject constructor(
     resetRetries()
     syncedCount += runLists()
 
-    isRunning = false
     Timber.d("Finished with success.")
     return syncedCount
   }
@@ -50,7 +48,6 @@ class TraktImportListsRunner @Inject constructor(
         delay(RETRY_DELAY_MS)
         runLists()
       } else {
-        isRunning = false
         throw error
       }
     }

@@ -4,10 +4,12 @@ import androidx.annotation.VisibleForTesting
 import androidx.annotation.VisibleForTesting.PRIVATE
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.repository.images.ShowImagesProvider
-import com.michaldrabik.ui_base.trakt.TraktSyncStatusProvider
+import com.michaldrabik.ui_base.trakt.TraktSyncWorker
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
@@ -27,7 +29,6 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -40,7 +41,7 @@ class DiscoverViewModel @Inject constructor(
   private val filtersCase: DiscoverFiltersCase,
   private val twitterCase: DiscoverTwitterCase,
   private val imagesProvider: ShowImagesProvider,
-  private val syncStatusProvider: TraktSyncStatusProvider,
+  workManager: WorkManager,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val itemsState = MutableStateFlow<List<DiscoverListItem>?>(null)
@@ -53,8 +54,8 @@ class DiscoverViewModel @Inject constructor(
   var lastPullToRefreshMs = 0L
 
   init {
-    viewModelScope.launch {
-      syncStatusProvider.status.collect { syncingState.value = it }
+    workManager.getWorkInfosByTagLiveData(TraktSyncWorker.TAG_ID).observeForever { work ->
+      syncingState.value = work.any { it.state == WorkInfo.State.RUNNING }
     }
   }
 

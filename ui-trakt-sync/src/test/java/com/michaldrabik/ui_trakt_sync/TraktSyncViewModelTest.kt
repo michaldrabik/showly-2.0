@@ -15,9 +15,6 @@ import com.michaldrabik.ui_base.events.TraktSyncError
 import com.michaldrabik.ui_base.events.TraktSyncProgress
 import com.michaldrabik.ui_base.events.TraktSyncStart
 import com.michaldrabik.ui_base.events.TraktSyncSuccess
-import com.michaldrabik.ui_base.trakt.exports.TraktExportWatchlistRunner
-import com.michaldrabik.ui_base.trakt.imports.TraktImportWatchedRunner
-import com.michaldrabik.ui_base.trakt.imports.TraktImportWatchlistRunner
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_model.TraktSyncSchedule
@@ -55,11 +52,6 @@ class TraktSyncViewModelTest : BaseMockTest() {
   @MockK lateinit var eventsManager: EventsManager
   @MockK lateinit var ratingsCase: TraktSyncRatingsCase
   @MockK lateinit var dateFormatProvider: DateFormatProvider
-  @MockK lateinit var importWatchedRunner: TraktImportWatchedRunner
-  @MockK lateinit var importWatchlistRunner: TraktImportWatchlistRunner
-  @MockK lateinit var exportWatchedRunner: TraktImportWatchedRunner
-  @MockK lateinit var exportWatchlistRunner: TraktExportWatchlistRunner
-
   private lateinit var SUT: TraktSyncViewModel
 
   private val stateResult = mutableListOf<TraktSyncUiState>()
@@ -70,10 +62,6 @@ class TraktSyncViewModelTest : BaseMockTest() {
     super.setUp()
     Dispatchers.setMain(testDispatcher)
 
-    coEvery { importWatchedRunner.isRunning } returns false
-    coEvery { importWatchlistRunner.isRunning } returns false
-    coEvery { exportWatchedRunner.isRunning } returns false
-    coEvery { exportWatchlistRunner.isRunning } returns false
     coEvery { userTraktManager.revokeToken() } just Runs
     coEvery { eventsManager.events } returns MutableSharedFlow()
 
@@ -84,11 +72,7 @@ class TraktSyncViewModelTest : BaseMockTest() {
       ratingsCase,
       settingsRepository,
       dateFormatProvider,
-      eventsManager,
-      importWatchedRunner,
-      importWatchlistRunner,
-      exportWatchedRunner,
-      exportWatchlistRunner
+      eventsManager
     )
   }
 
@@ -99,35 +83,6 @@ class TraktSyncViewModelTest : BaseMockTest() {
     SUT.viewModelScope.cancel()
     Dispatchers.resetMain() // reset main dispatcher to the original Main dispatcher
     testDispatcher.cleanupTestCoroutines()
-  }
-
-  @Test
-  internal fun `Should progress true if any of the runners is active`() = runBlockingTest {
-    SUT.viewModelScope.cancel()
-
-    coEvery { importWatchlistRunner.isRunning } returns true
-
-    SUT = TraktSyncViewModel(
-      miscPreferences,
-      userTraktManager,
-      workManager,
-      ratingsCase,
-      settingsRepository,
-      dateFormatProvider,
-      eventsManager,
-      importWatchedRunner,
-      importWatchlistRunner,
-      exportWatchedRunner,
-      exportWatchlistRunner
-    )
-
-    val job = launch { SUT.uiState.toList(stateResult) }
-    val job2 = launch { SUT.messageFlow.toList(messagesResult) }
-
-    assertThat(stateResult.last().isProgress).isTrue()
-
-    job.cancel()
-    job2.cancel()
   }
 
   @Test

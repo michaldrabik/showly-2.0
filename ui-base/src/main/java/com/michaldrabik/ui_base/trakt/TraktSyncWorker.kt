@@ -53,11 +53,11 @@ class TraktSyncWorker @AssistedInject constructor(
   private val settingsRepository: SettingsRepository,
   private val eventsManager: EventsManager,
   private val userManager: UserTraktManager,
-  private val syncStatusProvider: TraktSyncStatusProvider,
   @Named("miscPreferences") private val miscPreferences: SharedPreferences
 ) : TraktNotificationWorker(context, workerParams) {
 
   companion object {
+    const val TAG_ID = "TRAKT_SYNC_WORK_ID"
     private const val TAG = "TRAKT_SYNC_WORK"
     private const val TAG_ONE_OFF = "TRAKT_SYNC_WORK_ONE_OFF"
 
@@ -91,6 +91,7 @@ class TraktSyncWorker @AssistedInject constructor(
         )
         .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
         .setInputData(inputData)
+        .addTag(TAG_ID)
         .addTag(TAG_ONE_OFF)
         .build()
 
@@ -126,6 +127,7 @@ class TraktSyncWorker @AssistedInject constructor(
         )
         .setInputData(inputData)
         .setInitialDelay(schedule.duration, schedule.durationUnit)
+        .addTag(TAG_ID)
         .addTag(TAG)
         .build()
 
@@ -145,7 +147,6 @@ class TraktSyncWorker @AssistedInject constructor(
     val theme = settingsRepository.theme
 
     try {
-      syncStatusProvider.setSyncing(true)
       eventsManager.sendEvent(TraktSyncStart)
 
       if (isImport) {
@@ -162,7 +163,6 @@ class TraktSyncWorker @AssistedInject constructor(
       miscPreferences.edit().putLong(KEY_LAST_SYNC_TIMESTAMP, nowUtcMillis()).apply()
 
       eventsManager.sendEvent(TraktSyncSuccess)
-      syncStatusProvider.setSyncing(false)
       Analytics.logTraktFullSyncSuccess(isImport, isExport)
       if (!isSilent) {
         applicationContext.notificationManager().notify(SYNC_NOTIFICATION_COMPLETE_SUCCESS_ID, createSuccessNotification(theme))
@@ -256,7 +256,6 @@ class TraktSyncWorker @AssistedInject constructor(
       userManager.revokeToken()
     }
     eventsManager.sendEvent(TraktSyncError)
-    syncStatusProvider.setSyncing(false)
     if (!isSilent) {
       val message =
         if (showlyError is ShowlyError.UnauthorizedError) R.string.errorTraktAuthorization
@@ -280,7 +279,6 @@ class TraktSyncWorker @AssistedInject constructor(
       exportListsRunner,
     ).forEach {
       it.progressListener = null
-      it.isRunning = false
     }
   }
 }

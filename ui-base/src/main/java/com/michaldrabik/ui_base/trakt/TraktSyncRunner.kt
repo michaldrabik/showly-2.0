@@ -13,7 +13,6 @@ abstract class TraktSyncRunner(
     const val MAX_RETRY_COUNT = 3
   }
 
-  var isRunning = false
   var retryCount = 0
   var progressListener: (suspend (String, Int, Int) -> Unit)? = null
 
@@ -24,7 +23,6 @@ abstract class TraktSyncRunner(
       Timber.d("Checking authorization...")
       userTraktManager.checkAuthorization()
     } catch (t: Throwable) {
-      isRunning = false
       throw ShowlyError.UnauthorizedError(t.message)
     }
   }

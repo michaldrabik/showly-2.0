@@ -41,7 +41,6 @@ class TraktImportWatchedRunner @Inject constructor(
 
   override suspend fun run(): Int {
     Timber.d("Initialized.")
-    isRunning = true
 
     var syncedCount = 0
     checkAuthorization()
@@ -52,7 +51,6 @@ class TraktImportWatchedRunner @Inject constructor(
     resetRetries()
     syncedCount += runMovies()
 
-    isRunning = false
     Timber.d("Finished with success.")
 
     return syncedCount
@@ -68,7 +66,6 @@ class TraktImportWatchedRunner @Inject constructor(
         delay(RETRY_DELAY_MS)
         runShows()
       } else {
-        isRunning = false
         throw error
       }
     }
@@ -87,7 +84,6 @@ class TraktImportWatchedRunner @Inject constructor(
         delay(RETRY_DELAY_MS)
         runMovies()
       } else {
-        isRunning = false
         throw error
       }
     }

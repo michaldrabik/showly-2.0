@@ -32,12 +32,10 @@ class TraktExportWatchedRunner @Inject constructor(
 
   override suspend fun run(): Int {
     Timber.d("Initialized.")
-    isRunning = true
 
     checkAuthorization()
     runExport()
 
-    isRunning = false
     Timber.d("Finished with success.")
     return 0
   }
@@ -52,7 +50,6 @@ class TraktExportWatchedRunner @Inject constructor(
         delay(RETRY_DELAY_MS)
         runExport()
       } else {
-        isRunning = false
         throw error
       }
     }

@@ -2,11 +2,13 @@ package com.michaldrabik.ui_progress_movies.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import com.michaldrabik.ui_base.events.Event
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.TraktSyncError
 import com.michaldrabik.ui_base.events.TraktSyncSuccess
-import com.michaldrabik.ui_base.trakt.TraktSyncStatusProvider
+import com.michaldrabik.ui_base.trakt.TraktSyncWorker
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_model.CalendarMode
 import com.michaldrabik.ui_model.Movie
@@ -23,8 +25,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ProgressMoviesMainViewModel @Inject constructor(
   private val moviesCase: ProgressMoviesMainCase,
-  private val syncStatusProvider: TraktSyncStatusProvider,
   private val eventsManager: EventsManager,
+  workManager: WorkManager,
 ) : ViewModel() {
 
   private val timestampState = MutableStateFlow<Long?>(null)
@@ -35,9 +37,11 @@ class ProgressMoviesMainViewModel @Inject constructor(
   private var calendarMode = CalendarMode.PRESENT_FUTURE
 
   init {
-    with(viewModelScope) {
-      launch { syncStatusProvider.status.collect { syncingState.value = it } }
-      launch { eventsManager.events.collect { onEvent(it) } }
+    viewModelScope.launch {
+      eventsManager.events.collect { onEvent(it) }
+    }
+    workManager.getWorkInfosByTagLiveData(TraktSyncWorker.TAG_ID).observeForever { work ->
+      syncingState.value = work.any { it.state == WorkInfo.State.RUNNING }
     }
   }
 

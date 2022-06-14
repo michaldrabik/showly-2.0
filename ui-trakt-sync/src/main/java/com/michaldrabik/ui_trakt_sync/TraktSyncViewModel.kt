@@ -1,8 +1,10 @@
 package com.michaldrabik.ui_trakt_sync
 
 import android.content.SharedPreferences
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.michaldrabik.common.errors.ErrorHelper
 import com.michaldrabik.common.errors.ShowlyError.AccountLockedError
@@ -18,9 +20,6 @@ import com.michaldrabik.ui_base.events.TraktSyncProgress
 import com.michaldrabik.ui_base.events.TraktSyncStart
 import com.michaldrabik.ui_base.events.TraktSyncSuccess
 import com.michaldrabik.ui_base.trakt.TraktSyncWorker
-import com.michaldrabik.ui_base.trakt.exports.TraktExportWatchlistRunner
-import com.michaldrabik.ui_base.trakt.imports.TraktImportWatchedRunner
-import com.michaldrabik.ui_base.trakt.imports.TraktImportWatchlistRunner
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.combine
@@ -50,11 +49,9 @@ class TraktSyncViewModel @Inject constructor(
   private val settingsRepository: SettingsRepository,
   private val dateFormatProvider: DateFormatProvider,
   private val eventsManager: EventsManager,
-  importWatchedRunner: TraktImportWatchedRunner,
-  importWatchlistRunner: TraktImportWatchlistRunner,
-  exportWatchedRunner: TraktImportWatchedRunner,
-  exportWatchlistRunner: TraktExportWatchlistRunner,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate(),
+  Observer<MutableList<WorkInfo>> {
 
   private val progressState = MutableStateFlow(false)
   private val progressStatusState = MutableStateFlow("")
@@ -68,15 +65,8 @@ class TraktSyncViewModel @Inject constructor(
     viewModelScope.launch {
       eventsManager.events.collect { handleEvent(it) }
     }
-
-    val runners = listOf(
-      importWatchedRunner,
-      importWatchlistRunner,
-      exportWatchedRunner,
-      exportWatchlistRunner
-    )
-    if (runners.any { it.isRunning }) {
-      progressState.value = true
+    workManager.getWorkInfosByTagLiveData(TraktSyncWorker.TAG_ID).observeForever { work ->
+      progressState.value = work.any { it.state == WorkInfo.State.RUNNING }
     }
   }
 
@@ -185,6 +175,12 @@ class TraktSyncViewModel @Inject constructor(
 
   fun startImport(isImport: Boolean, isExport: Boolean) {
     TraktSyncWorker.scheduleOneOff(workManager, isImport, isExport, false)
+  }
+
+  override fun onChanged(workInfo: MutableList<WorkInfo>?) {
+    Timber.d("WorkInfo changed")
+    val isAnyRunning = workInfo?.any { it.state == WorkInfo.State.RUNNING } == true
+    progressState.value = isAnyRunning
   }
 
   val uiState = combine(

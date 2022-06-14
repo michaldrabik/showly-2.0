@@ -37,7 +37,6 @@ class QuickSyncRunner @Inject constructor(
 
   override suspend fun run(): Int {
     Timber.d("Initialized.")
-    isRunning = true
 
     checkAuthorization()
     val moviesEnabled = settingsRepository.isMoviesEnabled
@@ -46,7 +45,6 @@ class QuickSyncRunner @Inject constructor(
     val watchlistCount = exportWatchlistItems(moviesEnabled)
     val hiddenCount = exportHiddenItems(moviesEnabled)
 
-    isRunning = false
     Timber.d("Finished with success.")
     return historyCount + watchlistCount + hiddenCount
   }

@@ -4,10 +4,10 @@ import BaseMockTest
 import TestData
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.viewModelScope
+import androidx.work.WorkManager
 import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.repository.images.ShowImagesProvider
-import com.michaldrabik.ui_base.trakt.TraktSyncStatusProvider
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_discover.cases.DiscoverFiltersCase
 import com.michaldrabik.ui_discover.cases.DiscoverShowsCase
@@ -17,10 +17,10 @@ import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.just
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.resetMain
@@ -42,7 +42,7 @@ class DiscoverViewModelTest : BaseMockTest() {
   @MockK lateinit var filtersCase: DiscoverFiltersCase
   @MockK lateinit var twitterCase: DiscoverTwitterCase
   @MockK lateinit var imagesProvider: ShowImagesProvider
-  @MockK lateinit var syncStatusProvider: TraktSyncStatusProvider
+  @RelaxedMockK lateinit var workManager: WorkManager
 
   private lateinit var SUT: DiscoverViewModel
 
@@ -55,9 +55,8 @@ class DiscoverViewModelTest : BaseMockTest() {
     coEvery { filtersCase.saveFilters(any()) } just Runs
     coEvery { showsCase.loadCachedShows(any()) } returns emptyList()
     coEvery { showsCase.loadRemoteShows(any()) } returns emptyList()
-    coEvery { syncStatusProvider.status } returns MutableStateFlow(false)
 
-    SUT = DiscoverViewModel(showsCase, filtersCase, twitterCase, imagesProvider, syncStatusProvider)
+    SUT = DiscoverViewModel(showsCase, filtersCase, twitterCase, imagesProvider, workManager)
   }
 
   @After
