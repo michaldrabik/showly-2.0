@@ -221,7 +221,7 @@ class QuickSyncManager @Inject constructor(
     return true
   }
 
-  private suspend fun ensureAuthorized(): Boolean {
+  private fun ensureAuthorized(): Boolean {
     if (!userTraktManager.isAuthorized()) {
       Timber.d("User not logged into Trakt. Skipping...")
       return false

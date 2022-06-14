@@ -41,8 +41,6 @@ class QuickSyncWorker @AssistedInject constructor(
 
   companion object {
     private const val TAG = "TRAKT_QUICK_SYNC_WORK"
-
-    private const val SYNC_NOTIFICATION_PROGRESS_ID = 916
     private const val SYNC_NOTIFICATION_ERROR_ID = 917
 
     fun schedule(workManager: WorkManager) {
