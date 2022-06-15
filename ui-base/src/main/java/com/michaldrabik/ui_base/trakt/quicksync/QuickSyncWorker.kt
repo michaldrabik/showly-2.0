@@ -106,9 +106,10 @@ class QuickSyncWorker @AssistedInject constructor(
       is UnauthorizedError -> R.string.errorTraktAuthorization
       else -> R.string.textTraktQuickSyncErrorFull
     }
+    val theme = settingsRepository.theme
     applicationContext.notificationManager().notify(
       SYNC_NOTIFICATION_ERROR_ID,
-      createErrorNotification(R.string.textTraktQuickSyncError, notificationMessage)
+      createErrorNotification(theme, R.string.textTraktQuickSyncError, notificationMessage)
     )
     Logger.record(error, "Source" to "${QuickSyncWorker::class.simpleName}")
   }

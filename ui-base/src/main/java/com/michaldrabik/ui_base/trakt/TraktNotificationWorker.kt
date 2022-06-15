@@ -67,14 +67,11 @@ abstract class TraktNotificationWorker constructor(
   protected fun createErrorNotification(
     theme: Int,
     @StringRes titleTextRes: Int,
-    @StringRes bigTextRes: Int? = null
+    @StringRes bigTextRes: Int
   ) = createBaseNotification(theme)
-    .setContentText(context.getString(titleTextRes))
-    .apply {
-      bigTextRes?.let {
-        setStyle(NotificationCompat.BigTextStyle().bigText(context.getString(bigTextRes)))
-      }
-    }
+    .setContentTitle(context.getString(titleTextRes))
+    .setContentText(context.getString(bigTextRes))
+    .setStyle(NotificationCompat.BigTextStyle().bigText(context.getString(bigTextRes)))
     .setPriority(NotificationCompat.PRIORITY_HIGH)
     .build()
 

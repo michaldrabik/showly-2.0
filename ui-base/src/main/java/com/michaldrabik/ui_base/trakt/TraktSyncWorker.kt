@@ -63,6 +63,7 @@ class TraktSyncWorker @AssistedInject constructor(
 
     private const val SYNC_NOTIFICATION_COMPLETE_SUCCESS_ID = 827
     private const val SYNC_NOTIFICATION_COMPLETE_ERROR_ID = 828
+    private const val SYNC_NOTIFICATION_COMPLETE_ERROR_LISTS_ID = 832
 
     const val KEY_LAST_SYNC_TIMESTAMP = "KEY_LAST_SYNC_TIMESTAMP"
     private const val ARG_IS_IMPORT = "ARG_IS_IMPORT"
@@ -232,7 +233,11 @@ class TraktSyncWorker @AssistedInject constructor(
     val theme = settingsRepository.theme
     setForegroundProgress(theme, status, 0, 0, true)
     eventsManager.sendEvent(TraktSyncProgress(status))
-    exportListsRunner.run()
+    try {
+      exportListsRunner.run()
+    } catch (error: Throwable) {
+      handleListsError(error)
+    }
   }
 
   private suspend fun setForegroundProgress(
@@ -261,10 +266,24 @@ class TraktSyncWorker @AssistedInject constructor(
         if (showlyError is ShowlyError.UnauthorizedError) R.string.errorTraktAuthorization
         else R.string.textTraktSyncErrorFull
 
+      val theme = settingsRepository.theme
       applicationContext.notificationManager().notify(
         SYNC_NOTIFICATION_COMPLETE_ERROR_ID,
-        createErrorNotification(R.string.textTraktSyncError, message)
+        createErrorNotification(theme, R.string.textTraktSyncError, message)
       )
+    }
+  }
+
+  private fun handleListsError(error: Throwable) {
+    when (ErrorHelper.parse(error)) {
+      ShowlyError.AccountLimitsError -> {
+        val theme = settingsRepository.theme
+        applicationContext.notificationManager().notify(
+          SYNC_NOTIFICATION_COMPLETE_ERROR_LISTS_ID,
+          createErrorNotification(theme, R.string.textTraktSync, R.string.errorTraktSyncListsLimitsReached)
+        )
+      }
+      else -> throw error
     }
   }
 
