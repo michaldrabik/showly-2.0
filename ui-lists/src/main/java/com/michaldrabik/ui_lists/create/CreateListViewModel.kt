@@ -2,6 +2,8 @@ package com.michaldrabik.ui_lists.create
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.common.errors.ErrorHelper
+import com.michaldrabik.common.errors.ShowlyError.AccountLimitsError
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
@@ -45,8 +47,8 @@ class CreateListViewModel @Inject constructor(
         val list = createListCase.createList(name, description)
         listUpdateState.value = Event(list)
       } catch (error: Throwable) {
-        messageChannel.send(MessageEvent.Error(R.string.errorCouldNotCreateList))
         loadingState.value = false
+        handleError(error, R.string.errorCouldNotCreateList)
       }
     }
   }
@@ -60,10 +62,19 @@ class CreateListViewModel @Inject constructor(
         val updatedList = createListCase.updateList(list)
         listUpdateState.value = Event(updatedList)
       } catch (error: Throwable) {
-        messageChannel.send(MessageEvent.Error(R.string.errorCouldNotUpdateList))
         detailsState.value = list
         loadingState.value = false
+        handleError(error, R.string.errorCouldNotUpdateList)
       }
+    }
+  }
+
+  private suspend fun handleError(error: Throwable, defaultErrorMessage: Int) {
+    when (ErrorHelper.parse(error)) {
+      AccountLimitsError ->
+        messageChannel.send(MessageEvent.Error(R.string.errorAccountLimitsReached))
+      else ->
+        messageChannel.send(MessageEvent.Error(defaultErrorMessage))
     }
   }
 

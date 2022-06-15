@@ -10,6 +10,8 @@ sealed class ShowlyError(errorMessage: String?) : Throwable(errorMessage) {
 
   object AccountLockedError : ShowlyError("AccountLockedError")
 
+  object AccountLimitsError : ShowlyError("AccountLimitsError")
+
   data class UnauthorizedError(val errorMessage: String?) : ShowlyError(errorMessage)
 
   data class UnknownHttpError(
