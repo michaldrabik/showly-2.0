@@ -1,9 +1,5 @@
-* Next episode in Progress will now be picked based on the last one marked as watched
-* Added check button in Movie details screen (if it is in Watchlist)
-* Comments text is now selectable
-* Shows pinned to On Hold will no longer receive notifications
-* Increased NEW badge duration from 24 hours to 3 days
-* Fixed issue with Contact Developers button
+* Added setting for next episode calculation method
+* Handle Trakt account personal lists limits errors
 
 Do you enjoy Showly and want to support the developer?
 Become a premium subscriber and gain access to cool bonus features! Check Settings to learn more!
