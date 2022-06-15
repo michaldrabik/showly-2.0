@@ -72,7 +72,7 @@ class CreateListViewModel @Inject constructor(
   private suspend fun handleError(error: Throwable, defaultErrorMessage: Int) {
     when (ErrorHelper.parse(error)) {
       AccountLimitsError ->
-        messageChannel.send(MessageEvent.Error(R.string.errorAccountLimitsReached))
+        messageChannel.send(MessageEvent.Error(R.string.errorAccountListsLimitsReached))
       else ->
         messageChannel.send(MessageEvent.Error(defaultErrorMessage))
     }

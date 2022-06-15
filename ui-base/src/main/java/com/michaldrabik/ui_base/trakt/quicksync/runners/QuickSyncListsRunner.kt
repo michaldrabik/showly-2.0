@@ -28,10 +28,13 @@ class QuickSyncListsRunner @Inject constructor(
 ) : TraktSyncRunner(userTraktManager) {
 
   companion object {
-    private const val TRAKT_DELAY = 1000L
+    private const val TRAKT_DELAY = 1200L
   }
 
-  private val syncTypes = listOf(Type.LIST_ITEM_SHOW, Type.LIST_ITEM_MOVIE).map { it.slug }
+  private val syncTypes = listOf(
+    Type.LIST_ITEM_SHOW,
+    Type.LIST_ITEM_MOVIE
+  ).map { it.slug }
 
   override suspend fun run(): Int {
     Timber.d("Initialized.")
@@ -76,7 +79,7 @@ class QuickSyncListsRunner @Inject constructor(
 
       if (localList.idTrakt == null && addItems.isNotEmpty()) {
         Timber.d("List with ID: $listId does not exist in Trakt. Creating...")
-        localList = createMissingList(localList)
+        localList = createMissingList(localList, addItems)
       } else if (localList.idTrakt == null) {
         Timber.d("List with ID: $listId does not exist in Trakt. No need to remove items...")
         localSource.traktSyncQueue.delete(removeItems)
@@ -152,10 +155,15 @@ class QuickSyncListsRunner @Inject constructor(
       }
     } catch (error: Throwable) {
       when (ErrorHelper.parse(error)) {
+        is ShowlyError.AccountLimitsError -> {
+          Timber.d("Account limits for lists reached.")
+          localSource.traktSyncQueue.delete(addItems)
+          throw error
+        }
         is ShowlyError.ResourceNotFoundError -> {
           Timber.d("Tried to add to list but it does not exist. Creating...")
           delay(TRAKT_DELAY)
-          createMissingList(localList)
+          createMissingList(localList, addItems)
           localSource.traktSyncQueue.delete(addItems)
         }
         else -> throw error
@@ -163,19 +171,33 @@ class QuickSyncListsRunner @Inject constructor(
     }
   }
 
-  private suspend fun createMissingList(localList: CustomList): CustomList {
-    val result = remoteSource.trakt.postCreateList(localList.name, localList.description)
-      .run { mappers.customList.fromNetwork(this) }
-    listsRepository.updateList(localList.id, result.idTrakt, result.idSlug, result.name, result.description)
+  private suspend fun createMissingList(
+    localList: CustomList,
+    addItems: List<TraktSyncQueue>
+  ): CustomList {
+    try {
+      val result = remoteSource.trakt.postCreateList(localList.name, localList.description)
+        .run { mappers.customList.fromNetwork(this) }
 
-    val localItems = listsRepository.loadListItemsForId(localList.id)
-    if (localItems.isNotEmpty()) {
-      val showsIds = localItems.filter { it.type == Mode.SHOWS.type }.map { it.idTrakt }
-      val moviesIds = localItems.filter { it.type == Mode.MOVIES.type }.map { it.idTrakt }
-      delay(TRAKT_DELAY)
-      remoteSource.trakt.postAddListItems(result.idTrakt!!, showsIds, moviesIds)
+      listsRepository.updateList(localList.id, result.idTrakt, result.idSlug, result.name, result.description)
+
+      val localItems = listsRepository.loadListItemsForId(localList.id)
+      if (localItems.isNotEmpty()) {
+        val showsIds = localItems.filter { it.type == Mode.SHOWS.type }.map { it.idTrakt }
+        val moviesIds = localItems.filter { it.type == Mode.MOVIES.type }.map { it.idTrakt }
+        delay(TRAKT_DELAY)
+        remoteSource.trakt.postAddListItems(result.idTrakt!!, showsIds, moviesIds)
+      }
+
+      return listsRepository.updateList(localList.id, result.idTrakt, result.idSlug, result.name, result.description)
+    } catch (error: Throwable) {
+      when (ErrorHelper.parse(error)) {
+        ShowlyError.AccountLimitsError -> {
+          localSource.traktSyncQueue.delete(addItems)
+          throw error
+        }
+        else -> throw error
+      }
     }
-
-    return listsRepository.updateList(localList.id, result.idTrakt, result.idSlug, result.name, result.description)
   }
 }

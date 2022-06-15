@@ -10,6 +10,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.michaldrabik.common.errors.ErrorHelper
+import com.michaldrabik.common.errors.ShowlyError.AccountLimitsError
 import com.michaldrabik.common.errors.ShowlyError.UnauthorizedError
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.settings.SettingsRepository
@@ -101,6 +102,7 @@ class QuickSyncWorker @AssistedInject constructor(
       userManager.revokeToken()
     }
     val notificationMessage = when (showlyError) {
+      is AccountLimitsError -> R.string.errorAccountListsLimitsReached
       is UnauthorizedError -> R.string.errorTraktAuthorization
       else -> R.string.textTraktQuickSyncErrorFull
     }
