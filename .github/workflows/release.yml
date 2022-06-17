@@ -69,5 +69,5 @@ jobs:
         with:
           name: v${{ github.ref_name }}
           files: app/build/outputs/apk/release/app-release.apk
-          body_path: app/src/main/play/release-notes/en-US/default.txt
+          body_path: app/src/main/play/release-notes/en-GB/default.txt
 
