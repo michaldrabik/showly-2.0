@@ -106,17 +106,19 @@ class DiscoverFiltersView : ScrollView {
       else -> throw IllegalStateException()
     }
 
-    val genres = mutableListOf<Genre>()
-    discoverFiltersGenresChipGroup.forEach { chip ->
-      if ((chip as Chip).isChecked) {
-        genres.add(Genre.valueOf(chip.tag.toString()))
+    val genres = mutableListOf<Genre>().apply {
+      discoverFiltersGenresChipGroup.forEach { chip ->
+        if ((chip as Chip).isChecked) {
+          add(Genre.valueOf(chip.tag.toString()))
+        }
       }
     }
 
-    val networks = mutableListOf<Network>()
-    discoverFiltersNetworksChipGroup.forEach { chip ->
-      if ((chip as Chip).isChecked) {
-        networks.add(Network.valueOf(chip.tag.toString()))
+    val networks = mutableListOf<Network>().apply {
+      discoverFiltersNetworksChipGroup.forEach { chip ->
+        if ((chip as Chip).isChecked) {
+          add(Network.valueOf(chip.tag.toString()))
+        }
       }
     }
 
