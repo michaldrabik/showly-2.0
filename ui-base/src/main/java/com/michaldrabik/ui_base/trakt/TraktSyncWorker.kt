@@ -2,6 +2,7 @@ package com.michaldrabik.ui_base.trakt
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.annotation.StringRes
 import androidx.hilt.work.HiltWorker
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
@@ -225,7 +226,11 @@ class TraktSyncWorker @AssistedInject constructor(
     val theme = settingsRepository.theme
     setForegroundProgress(theme, status, 0, 0, true)
     eventsManager.sendEvent(TraktSyncProgress(status))
-    exportWatchlistRunner.run()
+    try {
+      exportWatchlistRunner.run()
+    } catch (error: Throwable) {
+      handleListsError(error, R.string.errorTraktSyncWatchlistLimitsReached)
+    }
   }
 
   private suspend fun runExportLists() {
@@ -236,7 +241,7 @@ class TraktSyncWorker @AssistedInject constructor(
     try {
       exportListsRunner.run()
     } catch (error: Throwable) {
-      handleListsError(error)
+      handleListsError(error, R.string.errorTraktSyncListsLimitsReached)
     }
   }
 
@@ -274,13 +279,16 @@ class TraktSyncWorker @AssistedInject constructor(
     }
   }
 
-  private fun handleListsError(error: Throwable) {
+  private fun handleListsError(
+    error: Throwable,
+    @StringRes notificationMessageResId: Int
+  ) {
     when (ErrorHelper.parse(error)) {
       ShowlyError.AccountLimitsError -> {
         val theme = settingsRepository.theme
         applicationContext.notificationManager().notify(
           SYNC_NOTIFICATION_COMPLETE_ERROR_LISTS_ID,
-          createErrorNotification(theme, R.string.textTraktSync, R.string.errorTraktSyncListsLimitsReached)
+          createErrorNotification(theme, R.string.textTraktSync, notificationMessageResId)
         )
       }
       else -> throw error

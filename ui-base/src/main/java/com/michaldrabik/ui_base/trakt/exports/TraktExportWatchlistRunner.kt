@@ -1,5 +1,7 @@
 package com.michaldrabik.ui_base.trakt.exports
 
+import com.michaldrabik.common.errors.ErrorHelper
+import com.michaldrabik.common.errors.ShowlyError
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.data_remote.trakt.model.SyncExportItem
@@ -34,14 +36,7 @@ class TraktExportWatchlistRunner @Inject constructor(
     try {
       exportWatchlist()
     } catch (error: Throwable) {
-      if (retryCount < MAX_RETRY_COUNT) {
-        Timber.w("exportWatchlist failed. Will retry in $RETRY_DELAY_MS ms... $error")
-        retryCount += 1
-        delay(RETRY_DELAY_MS)
-        runExport()
-      } else {
-        throw error
-      }
+      handleError(error)
     }
   }
 
@@ -61,5 +56,22 @@ class TraktExportWatchlistRunner @Inject constructor(
 
     val request = SyncExportRequest(shows = shows, movies = movies)
     remoteSource.trakt.postSyncWatchlist(request)
+  }
+
+  private suspend fun handleError(error: Throwable) {
+    val showlyError = ErrorHelper.parse(error)
+    when {
+      showlyError == ShowlyError.AccountLimitsError -> {
+        Timber.w("Account limits reached for Watchlist.")
+        throw error
+      }
+      retryCount < MAX_RETRY_COUNT -> {
+        Timber.w("exportWatchlist failed. Will retry in $RETRY_DELAY_MS ms... $error")
+        retryCount += 1
+        delay(RETRY_DELAY_MS)
+        runExport()
+      }
+      else -> throw error
+    }
   }
 }

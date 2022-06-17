@@ -150,5 +150,6 @@
   <string name="errorCouldNotFindApp" translatable="false">Sorry, we could not find app on this device that could handle this link.</string>
   <string name="errorAccountListsLimitsReached" translatable="false">Sorry, you have reached your Trakt account limit for personal lists!\n\nPlease contact us if you need more assistance.</string>
   <string name="errorTraktSyncListsLimitsReached" translatable="false">You have reached your Trakt account limit for personal lists! Not all of your personal lists were synchronized.</string>
+  <string name="errorTraktSyncWatchlistLimitsReached" translatable="false">You have reached your Trakt account limit for watchlist items! Please contact us if you need more assistance.</string>
 
 </resources>
