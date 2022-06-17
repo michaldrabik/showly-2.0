@@ -66,6 +66,10 @@
   <string name="textSettingsStreamingsDisclaimer">Данные сервисов вещания предоставляются</string>
   <string name="textSettingsStreamingServicesTitle">Стриминговые сервисы</string>
   <string name="textSettingsStreamingServicesMessage">Отображать данные потоковых служб.</string>
+  <string name="textSettingsProgressNextEpisodeTitle">Следующая серия</string>
+  <string name="textSettingsProgressNextEpisodeMessage">Вычислить следующий эпизод с помощью:</string>
+  <string name="textNextEpisodeLastWatched">Последняя просмотренная серия</string>
+  <string name="textNextEpisodeOldest">Ранее непросмотренная серия</string>
   <string name="textThemeDark">Темная</string>
   <string name="textThemeLight">Светлая</string>
   <string name="textThemeSystem">Системная</string>

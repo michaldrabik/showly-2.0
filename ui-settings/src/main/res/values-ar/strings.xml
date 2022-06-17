@@ -66,6 +66,10 @@
   <string name="textSettingsStreamingsDisclaimer">يتم توفير بيانات خدمات البث بواسطة</string>
   <string name="textSettingsStreamingServicesTitle">خدمات البث</string>
   <string name="textSettingsStreamingServicesMessage">إظهار بيانات خدمات البث.</string>
+  <string name="textSettingsProgressNextEpisodeTitle">الحلقة التالية</string>
+  <string name="textSettingsProgressNextEpisodeMessage">حساب الحلقة التالية باِستخدام:</string>
+  <string name="textNextEpisodeLastWatched">آخر حلقة شاهدتها</string>
+  <string name="textNextEpisodeOldest">أقدم حلقة لم تشاهدها</string>
   <string name="textThemeDark">داكن</string>
   <string name="textThemeLight">فاتح</string>
   <string name="textThemeSystem">إستخدم مظهر النظام</string>
