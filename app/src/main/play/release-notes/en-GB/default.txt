@@ -1,2 +1,2 @@
 * Added setting for next episode calculation method
-* Handle Trakt account personal lists limits errors
+* Handle Trakt account lists limits errors
