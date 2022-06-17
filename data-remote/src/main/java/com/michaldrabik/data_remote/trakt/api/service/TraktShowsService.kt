@@ -1,6 +1,5 @@
 package com.michaldrabik.data_remote.trakt.api.service
 
-import com.michaldrabik.data_remote.Config
 import com.michaldrabik.data_remote.trakt.model.Comment
 import com.michaldrabik.data_remote.trakt.model.Episode
 import com.michaldrabik.data_remote.trakt.model.Season
@@ -21,20 +20,25 @@ interface TraktShowsService {
   @GET("shows/{traktSlug}?extended=full")
   suspend fun fetchShow(@Path("traktSlug") traktSlug: String): Show
 
-  @GET("shows/popular?extended=full&limit=${Config.TRAKT_POPULAR_SHOWS_LIMIT}")
+  @GET("shows/popular?extended=full")
   suspend fun fetchPopularShows(
-    @Query("genres") genres: String
+    @Query("genres") genres: String,
+    @Query("networks") networks: String,
+    @Query("limit") limit: Int
   ): List<Show>
 
   @GET("shows/trending?extended=full")
   suspend fun fetchTrendingShows(
     @Query("genres") genres: String,
+    @Query("networks") networks: String,
     @Query("limit") limit: Int
   ): List<ShowResult>
 
-  @GET("shows/anticipated?extended=full&limit=${Config.TRAKT_ANTICIPATED_SHOWS_LIMIT}")
+  @GET("shows/anticipated?extended=full")
   suspend fun fetchAnticipatedShows(
-    @Query("genres") genres: String
+    @Query("genres") genres: String,
+    @Query("networks") networks: String,
+    @Query("limit") limit: Int
   ): List<ShowResult>
 
   @GET("shows/{traktId}/related?extended=full")

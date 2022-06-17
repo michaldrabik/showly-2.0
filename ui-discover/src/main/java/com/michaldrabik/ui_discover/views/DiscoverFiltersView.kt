@@ -15,6 +15,7 @@ import com.michaldrabik.ui_model.DiscoverSortOrder.HOT
 import com.michaldrabik.ui_model.DiscoverSortOrder.NEWEST
 import com.michaldrabik.ui_model.DiscoverSortOrder.RATING
 import com.michaldrabik.ui_model.Genre
+import com.michaldrabik.ui_model.Network
 import kotlinx.android.synthetic.main.view_discover_filters.view.*
 
 class DiscoverFiltersView : ScrollView {
@@ -45,11 +46,13 @@ class DiscoverFiltersView : ScrollView {
     discoverFiltersAnticipatedSwitch.isChecked = filters.hideAnticipated
     discoverFiltersCollectionSwitch.isChecked = filters.hideCollection
     bindGenres(filters.genres)
+    bindNetworks(filters.networks)
   }
 
   private fun bindGenres(genres: List<Genre>) {
-    val genresNames = genres.map { it.name }
     discoverFiltersGenresChipGroup.removeAllViews()
+
+    val genresNames = genres.map { it.name }
     Genre.values()
       .sortedBy { context.getString(it.displayName) }
       .forEach { genre ->
@@ -66,6 +69,29 @@ class DiscoverFiltersView : ScrollView {
           isChecked = genre.name in genresNames
         }
         discoverFiltersGenresChipGroup.addView(chip)
+      }
+  }
+
+  private fun bindNetworks(networks: List<Network>) {
+    discoverFiltersNetworksChipGroup.removeAllViews()
+
+    val networksNames = networks.map { it.name }
+    Network.values()
+      .sortedBy { it.name }
+      .forEach { network ->
+        val chip = Chip(context).apply {
+          tag = network.name
+          text = network.channels.first()
+          isCheckable = true
+          isCheckedIconVisible = false
+          setEnsureMinTouchTargetSize(false)
+          chipBackgroundColor = ContextCompat.getColorStateList(context, R.color.selector_discover_chip_background)
+          setChipStrokeColorResource(R.color.selector_discover_chip_text)
+          setChipStrokeWidthResource(R.dimen.discoverFilterChipStroke)
+          setTextColor(ContextCompat.getColorStateList(context, R.color.selector_discover_chip_text))
+          isChecked = network.name in networksNames
+        }
+        discoverFiltersNetworksChipGroup.addView(chip)
       }
   }
 
@@ -87,7 +113,21 @@ class DiscoverFiltersView : ScrollView {
       }
     }
 
-    val filters = DiscoverFilters(feedOrder, hideAnticipated, hideCollection, genres.toList())
+    val networks = mutableListOf<Network>()
+    discoverFiltersNetworksChipGroup.forEach { chip ->
+      if ((chip as Chip).isChecked) {
+        networks.add(Network.valueOf(chip.tag.toString()))
+      }
+    }
+
+    val filters = DiscoverFilters(
+      feedOrder = feedOrder,
+      hideAnticipated = hideAnticipated,
+      hideCollection = hideCollection,
+      genres = genres.toList(),
+      networks = networks.toList()
+    )
+
     onApplyClickListener?.invoke(filters)
   }
 }

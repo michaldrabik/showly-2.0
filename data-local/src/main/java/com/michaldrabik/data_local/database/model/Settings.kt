@@ -26,6 +26,7 @@ data class Settings(
   @ColumnInfo(name = "see_later_shows_sort_by", defaultValue = "NAME") val seeLaterShowsSortBy: String,
   @ColumnInfo(name = "show_anticipated_shows", defaultValue = "1") val showAnticipatedShows: Boolean,
   @ColumnInfo(name = "discover_filter_genres", defaultValue = "") val discoverFilterGenres: String,
+  @ColumnInfo(name = "discover_filter_networks", defaultValue = "") val discoverFilterNetworks: String,
   @ColumnInfo(name = "discover_filter_feed", defaultValue = "HOT") val discoverFilterFeed: String,
   @ColumnInfo(name = "trakt_sync_schedule", defaultValue = "OFF") val traktSyncSchedule: String,
   @ColumnInfo(name = "trakt_quick_sync_enabled", defaultValue = "0") val traktQuickSyncEnabled: Boolean,

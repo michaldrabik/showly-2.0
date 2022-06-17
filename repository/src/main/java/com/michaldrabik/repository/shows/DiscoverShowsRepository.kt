@@ -9,6 +9,7 @@ import com.michaldrabik.data_remote.Config.TRAKT_TRENDING_SHOWS_LIMIT
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.Genre
+import com.michaldrabik.ui_model.Network
 import com.michaldrabik.ui_model.Show
 import javax.inject.Inject
 
@@ -38,27 +39,31 @@ class DiscoverShowsRepository @Inject constructor(
     showAnticipated: Boolean,
     showCollection: Boolean,
     collectionSize: Int,
-    genres: List<Genre>
+    genres: List<Genre>,
+    networks: List<Network>
   ): List<Show> {
     val remoteShows = mutableListOf<Show>()
     val anticipatedShows = mutableListOf<Show>()
     val popularShows = mutableListOf<Show>()
+
     val genresQuery = genres.joinToString(",") { it.slug }
+    val networksQuery = networks.joinToString(",") { it.channels.joinToString(",") }
 
     val limit =
       if (showCollection) TRAKT_TRENDING_SHOWS_LIMIT
       else TRAKT_TRENDING_SHOWS_LIMIT + (collectionSize / 2)
-    val trendingShows = remoteSource.trakt.fetchTrendingShows(genresQuery, limit)
+    val trendingShows = remoteSource.trakt.fetchTrendingShows(genresQuery, networksQuery, limit)
       .map { mappers.show.fromNetwork(it) }
 
-    if (genres.isNotEmpty()) {
-      // Wa are adding popular results for genres filtered content to add more results.
-      val popular = remoteSource.trakt.fetchPopularShows(genresQuery).map { mappers.show.fromNetwork(it) }
+    if (genres.isNotEmpty() || networks.isNotEmpty()) {
+      // Wa are adding popular results for genres/networks filtered content to add more results.
+      val popular = remoteSource.trakt.fetchPopularShows(genresQuery, networksQuery)
+        .map { mappers.show.fromNetwork(it) }
       popularShows.addAll(popular)
     }
 
     if (showAnticipated) {
-      val shows = remoteSource.trakt.fetchAnticipatedShows(genresQuery).map { mappers.show.fromNetwork(it) }.toMutableList()
+      val shows = remoteSource.trakt.fetchAnticipatedShows(genresQuery, networksQuery).map { mappers.show.fromNetwork(it) }.toMutableList()
       anticipatedShows.addAll(shows)
     }
 

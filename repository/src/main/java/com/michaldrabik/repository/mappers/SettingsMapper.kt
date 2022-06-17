@@ -1,6 +1,7 @@
 package com.michaldrabik.repository.mappers
 
 import com.michaldrabik.ui_model.Genre
+import com.michaldrabik.ui_model.Network
 import com.michaldrabik.ui_model.NotificationDelay
 import com.michaldrabik.ui_model.Settings
 import javax.inject.Inject
@@ -31,6 +32,7 @@ class SettingsMapper @Inject constructor() {
     showAnticipatedShows = settings.showAnticipatedShows,
     discoverFilterFeed = enumValueOf(settings.discoverFilterFeed),
     discoverFilterGenres = settings.discoverFilterGenres.split(",").filter { it.isNotBlank() }.map { Genre.valueOf(it) },
+    discoverFilterNetworks = settings.discoverFilterNetworks.split(",").filter { it.isNotBlank() }.map { Network.valueOf(it) },
     traktSyncSchedule = enumValueOf(settings.traktSyncSchedule),
     traktQuickSyncEnabled = settings.traktQuickSyncEnabled,
     traktQuickRemoveEnabled = settings.traktQuickRemoveEnabled,
@@ -74,6 +76,7 @@ class SettingsMapper @Inject constructor() {
     showAnticipatedShows = settings.showAnticipatedShows,
     discoverFilterFeed = settings.discoverFilterFeed.name,
     discoverFilterGenres = settings.discoverFilterGenres.joinToString(",") { it.name },
+    discoverFilterNetworks = settings.discoverFilterNetworks.joinToString(",") { it.name },
     traktSyncSchedule = settings.traktSyncSchedule.name,
     traktQuickSyncEnabled = settings.traktQuickSyncEnabled,
     traktQuickRemoveEnabled = settings.traktQuickRemoveEnabled,

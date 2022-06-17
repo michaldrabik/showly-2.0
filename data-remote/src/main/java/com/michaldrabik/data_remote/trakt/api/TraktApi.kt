@@ -1,6 +1,7 @@
 package com.michaldrabik.data_remote.trakt.api
 
 import com.michaldrabik.data_remote.Config
+import com.michaldrabik.data_remote.Config.TRAKT_ANTICIPATED_SHOWS_LIMIT
 import com.michaldrabik.data_remote.Config.TRAKT_CLIENT_ID
 import com.michaldrabik.data_remote.Config.TRAKT_CLIENT_SECRET
 import com.michaldrabik.data_remote.Config.TRAKT_REDIRECT_URL
@@ -60,20 +61,20 @@ internal class TraktApi(
   override suspend fun fetchMovie(traktSlug: String) =
     moviesService.fetchMovie(traktSlug)
 
-  override suspend fun fetchPopularShows(genres: String) =
-    showsService.fetchPopularShows(genres)
+  override suspend fun fetchPopularShows(genres: String, networks: String) =
+    showsService.fetchPopularShows(genres, networks, Config.TRAKT_POPULAR_SHOWS_LIMIT)
 
   override suspend fun fetchPopularMovies(genres: String) =
     moviesService.fetchPopularMovies(genres)
 
-  override suspend fun fetchTrendingShows(genres: String, limit: Int) =
-    showsService.fetchTrendingShows(genres, limit).map { it.show!! }
+  override suspend fun fetchTrendingShows(genres: String, networks: String, limit: Int): List<Show> =
+    showsService.fetchTrendingShows(genres, networks, limit).map { it.show!! }
 
   override suspend fun fetchTrendingMovies(genres: String, limit: Int) =
     moviesService.fetchTrendingMovies(genres, limit).map { it.movie!! }
 
-  override suspend fun fetchAnticipatedShows(genres: String) =
-    showsService.fetchAnticipatedShows(genres).map { it.show!! }
+  override suspend fun fetchAnticipatedShows(genres: String, networks: String): List<Show> =
+    showsService.fetchAnticipatedShows(genres, networks, TRAKT_ANTICIPATED_SHOWS_LIMIT).map { it.show!! }
 
   override suspend fun fetchAnticipatedMovies(genres: String) =
     moviesService.fetchAnticipatedMovies(genres).map { it.movie!! }

@@ -42,15 +42,13 @@ class DiscoverShowsCase @Inject constructor(
     val watchlistShowsIds = async { showsRepository.watchlistShows.loadAllIds() }
     val archiveShowsIds = async { showsRepository.hiddenShows.loadAllIds() }
     val cachedShows = async { showsRepository.discoverShows.loadAllCached() }
-    val language = translationsRepository.getLanguage()
 
     prepareItems(
-      cachedShows.await(),
-      myShowsIds.await(),
-      watchlistShowsIds.await(),
-      archiveShowsIds.await(),
-      filters,
-      language
+      shows = cachedShows.await(),
+      myShowsIds = myShowsIds.await(),
+      watchlistShowsIds = watchlistShowsIds.await(),
+      hiddenShowsIds = archiveShowsIds.await(),
+      filters = filters
     )
   }
 
@@ -58,34 +56,47 @@ class DiscoverShowsCase @Inject constructor(
     val showAnticipated = !filters.hideAnticipated
     val showCollection = !filters.hideCollection
     val genres = filters.genres.toList()
+    val networks = filters.networks.toList()
 
     val myAsync = async { showsRepository.myShows.loadAllIds() }
     val watchlistSync = async { showsRepository.watchlistShows.loadAllIds() }
     val archiveAsync = async { showsRepository.hiddenShows.loadAllIds() }
-    val (myIds, watchlistIds, archiveIds) = awaitAll(myAsync, watchlistSync, archiveAsync)
-    val collectionSize = myIds.size + watchlistIds.size + archiveIds.size
+    val (myIds, watchlistIds, hiddenIds) = awaitAll(myAsync, watchlistSync, archiveAsync)
+    val collectionSize = myIds.size + watchlistIds.size + hiddenIds.size
 
-    val remoteShows = showsRepository.discoverShows.loadAllRemote(showAnticipated, showCollection, collectionSize, genres)
-    val language = translationsRepository.getLanguage()
+    val remoteShows = showsRepository.discoverShows.loadAllRemote(
+      showAnticipated,
+      showCollection,
+      collectionSize,
+      genres,
+      networks
+    )
 
     showsRepository.discoverShows.cacheDiscoverShows(remoteShows)
-    prepareItems(remoteShows, myIds, watchlistIds, archiveIds, filters, language)
+
+    prepareItems(
+      shows = remoteShows,
+      myShowsIds = myIds,
+      watchlistShowsIds = watchlistIds,
+      hiddenShowsIds = hiddenIds,
+      filters = filters
+    )
   }
 
   private suspend fun prepareItems(
     shows: List<Show>,
     myShowsIds: List<Long>,
     watchlistShowsIds: List<Long>,
-    archiveShowsIds: List<Long>,
-    filters: DiscoverFilters?,
-    language: String
+    hiddenShowsIds: List<Long>,
+    filters: DiscoverFilters?
   ) = coroutineScope {
-    val collectionIds = myShowsIds + watchlistShowsIds + archiveShowsIds
+    val language = translationsRepository.getLanguage()
+    val collectionIds = myShowsIds + watchlistShowsIds + hiddenShowsIds
     shows
-      .filter { !archiveShowsIds.contains(it.traktId) }
+      .filter { it.traktId !in hiddenShowsIds }
       .filter {
         if (filters?.hideCollection == false) true
-        else !collectionIds.contains(it.traktId)
+        else it.traktId !in collectionIds
       }
       .sortedBy(filters?.feedOrder ?: HOT)
       .mapIndexed { index, show ->

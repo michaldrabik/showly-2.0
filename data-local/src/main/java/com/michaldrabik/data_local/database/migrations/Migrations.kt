@@ -5,7 +5,7 @@ import android.content.Context.MODE_PRIVATE
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-const val DATABASE_VERSION = 34
+const val DATABASE_VERSION = 35
 const val DATABASE_NAME = "SHOWLY2_DB_2"
 
 class Migrations(context: Context) {
@@ -672,6 +672,12 @@ class Migrations(context: Context) {
     }
   }
 
+  private val migration35 = object : Migration(34, 35) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+      database.execSQL("ALTER TABLE settings ADD COLUMN discover_filter_networks TEXT NOT NULL DEFAULT ''")
+    }
+  }
+
   fun getAll() = listOf(
     migration2,
     migration3,
@@ -705,6 +711,7 @@ class Migrations(context: Context) {
     migration31,
     migration32,
     migration33,
-    migration34
+    migration34,
+    migration35
   )
 }

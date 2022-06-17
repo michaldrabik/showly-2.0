@@ -120,7 +120,7 @@
       android:layout_height="34dp"
       android:layout_marginBottom="@dimen/spaceSmall"
       android:translationX="-4dp"
-      app:layout_constraintBottom_toTopOf="@id/discoverFiltersGenresTitle"
+      app:layout_constraintBottom_toTopOf="@id/discoverFiltersNetworksTitle"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/discoverFiltersAnticipatedSwitch"
       />
@@ -140,6 +140,35 @@
       />
 
     <TextView
+      android:id="@+id/discoverFiltersNetworksTitle"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:text="@string/textNetworks"
+      android:textAllCaps="true"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="18sp"
+      android:textStyle="bold"
+      app:layout_constraintBottom_toTopOf="@id/discoverFiltersNetworksChipGroup"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/discoverFiltersCollectionSwitch"
+      />
+
+    <com.google.android.material.chip.ChipGroup
+      android:id="@+id/discoverFiltersNetworksChipGroup"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/spaceNormal"
+      android:layout_marginBottom="@dimen/spaceNormal"
+      app:layout_constraintBottom_toTopOf="@id/discoverFiltersGenresTitle"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/discoverFiltersNetworksTitle"
+      app:lineSpacing="10dp"
+      app:singleSelection="true"
+      />
+
+    <TextView
       android:id="@+id/discoverFiltersGenresTitle"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
@@ -151,7 +180,7 @@
       app:layout_constraintBottom_toTopOf="@id/discoverFiltersGenresChipGroup"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/discoverFiltersCollectionSwitch"
+      app:layout_constraintTop_toBottomOf="@id/discoverFiltersNetworksChipGroup"
       />
 
     <com.google.android.material.chip.ChipGroup

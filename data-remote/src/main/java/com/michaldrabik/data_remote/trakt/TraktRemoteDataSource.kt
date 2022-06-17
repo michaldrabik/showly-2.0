@@ -38,15 +38,15 @@ interface TraktRemoteDataSource {
 
   suspend fun fetchMovie(traktSlug: String): Movie
 
-  suspend fun fetchPopularShows(genres: String): List<Show>
+  suspend fun fetchPopularShows(genres: String, networks: String): List<Show>
 
   suspend fun fetchPopularMovies(genres: String): List<Movie>
 
-  suspend fun fetchTrendingShows(genres: String, limit: Int): List<Show>
+  suspend fun fetchTrendingShows(genres: String, networks: String, limit: Int): List<Show>
 
   suspend fun fetchTrendingMovies(genres: String, limit: Int): List<Movie>
 
-  suspend fun fetchAnticipatedShows(genres: String): List<Show>
+  suspend fun fetchAnticipatedShows(genres: String, networks: String): List<Show>
 
   suspend fun fetchAnticipatedMovies(genres: String): List<Movie>
 
