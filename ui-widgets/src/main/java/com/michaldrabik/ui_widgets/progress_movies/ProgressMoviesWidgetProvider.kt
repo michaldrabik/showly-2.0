@@ -2,6 +2,7 @@ package com.michaldrabik.ui_widgets.progress_movies
 
 import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_IMMUTABLE
+import android.app.PendingIntent.FLAG_MUTABLE
 import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetManager.ACTION_APPWIDGET_UPDATE
@@ -90,7 +91,7 @@ class ProgressMoviesWidgetProvider : BaseWidgetProvider() {
       data = Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME))
     }
 
-    val listIntent = PendingIntent.getBroadcast(context, 0, listClickIntent, FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT)
+    val listIntent = PendingIntent.getBroadcast(context, 0, listClickIntent, FLAG_MUTABLE or FLAG_UPDATE_CURRENT)
     remoteViews.setPendingIntentTemplate(R.id.progressWidgetMoviesList, listIntent)
 
     appWidgetManager.updateAppWidget(widgetId, remoteViews)

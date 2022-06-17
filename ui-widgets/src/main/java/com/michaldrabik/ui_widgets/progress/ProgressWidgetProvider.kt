@@ -2,6 +2,7 @@ package com.michaldrabik.ui_widgets.progress
 
 import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_IMMUTABLE
+import android.app.PendingIntent.FLAG_MUTABLE
 import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetManager.ACTION_APPWIDGET_UPDATE
@@ -94,7 +95,7 @@ class ProgressWidgetProvider : BaseWidgetProvider() {
       action = ACTION_CLICK
       data = Uri.parse(intent.toUri(URI_INTENT_SCHEME))
     }
-    val showDetailsPendingIntent = PendingIntent.getBroadcast(context, 0, listClickIntent, FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT)
+    val showDetailsPendingIntent = PendingIntent.getBroadcast(context, 0, listClickIntent, FLAG_MUTABLE or FLAG_UPDATE_CURRENT)
     remoteViews.setPendingIntentTemplate(R.id.progressWidgetList, showDetailsPendingIntent)
 
     appWidgetManager.updateAppWidget(widgetId, remoteViews)
