@@ -66,6 +66,10 @@
   <string name="textSettingsStreamingsDisclaimer">Akış hizmetleri verileri tarafından sağlanır</string>
   <string name="textSettingsStreamingServicesTitle">Yayın Servisleri</string>
   <string name="textSettingsStreamingServicesMessage">Yayın hizmetleri verilerini görüntüleyin.</string>
+  <string name="textSettingsProgressNextEpisodeTitle">Sonraki Bölüm</string>
+  <string name="textSettingsProgressNextEpisodeMessage">Sonraki bölümü hesapla:</string>
+  <string name="textNextEpisodeLastWatched">İzlenen son bölüm</string>
+  <string name="textNextEpisodeOldest">İzlenmeyen en eski bölüm</string>
   <string name="textThemeDark">Karanlık</string>
   <string name="textThemeLight">Aydınlık</string>
   <string name="textThemeSystem">Sistem</string>

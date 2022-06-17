@@ -66,6 +66,10 @@
   <string name="textSettingsStreamingsDisclaimer">Suoratoistopalveluiden tiedot tarjoaa</string>
   <string name="textSettingsStreamingServicesTitle">Suoratoistopalvelut</string>
   <string name="textSettingsStreamingServicesMessage">Näytä suoratoistopalveluiden tiedot.</string>
+  <string name="textSettingsProgressNextEpisodeTitle">Seuraava jakso</string>
+  <string name="textSettingsProgressNextEpisodeMessage">Seuraavan jakson laskentaperuste:</string>
+  <string name="textNextEpisodeLastWatched">Viimeksi katsottu jakso</string>
+  <string name="textNextEpisodeOldest">Vanhin katsomaton jakso</string>
   <string name="textThemeDark">Tumma</string>
   <string name="textThemeLight">Vaalea</string>
   <string name="textThemeSystem">Järjestelmä</string>
