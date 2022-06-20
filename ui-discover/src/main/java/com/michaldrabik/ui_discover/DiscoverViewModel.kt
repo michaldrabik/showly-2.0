@@ -82,21 +82,18 @@ class DiscoverViewModel @Inject constructor(
       }
 
       try {
-        newFilters?.let { filtersCase.saveFilters(it) }
         val filters = filtersCase.loadFilters()
         filtersState.value = filters
 
         if (!pullToRefresh && !skipCache) {
           val shows = showsCase.loadCachedShows(filters)
           itemsState.value = shows
-          filtersState.value = filters
           scrollState.value = Event(scrollToTop)
         }
 
         if (pullToRefresh || skipCache || !showsCase.isCacheValid()) {
           val shows = showsCase.loadRemoteShows(filters)
           itemsState.value = shows
-          filtersState.value = filters
           scrollState.value = Event(scrollToTop)
         }
 

@@ -110,6 +110,11 @@
       app:launchSingleTop="true"
       />
     <action
+      android:id="@+id/actionDiscoverFragmentToFilters"
+      app:destination="@id/discoverFiltersDialog"
+      app:launchSingleTop="true"
+      />
+    <action
       android:id="@+id/actionDiscoverFragmentToPremium"
       app:destination="@id/premiumFragment"
       app:enterAnim="@anim/anim_fade_in"
@@ -963,6 +968,12 @@
     android:id="@+id/ratingDialog"
     android:name="com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet"
     android:label="dialogRating"
+    />
+
+  <dialog
+    android:id="@+id/discoverFiltersDialog"
+    android:name="com.michaldrabik.ui_discover.filters.DiscoverFiltersBottomSheet"
+    android:label="dialogDiscoverFilters"
     />
 
 </navigation>

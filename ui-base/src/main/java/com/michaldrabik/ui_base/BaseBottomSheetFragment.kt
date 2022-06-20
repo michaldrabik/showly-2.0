@@ -27,6 +27,7 @@ abstract class BaseBottomSheetFragment(@LayoutRes val layoutResId: Int) : Bottom
     super.onViewCreated(view, savedInstanceState)
     val behavior: BottomSheetBehavior<*> = (dialog as BottomSheetDialog).behavior
     behavior.state = BottomSheetBehavior.STATE_EXPANDED
+    behavior.skipCollapsed = true
   }
 
   protected fun navigateTo(@IdRes destination: Int, bundle: Bundle? = null) =

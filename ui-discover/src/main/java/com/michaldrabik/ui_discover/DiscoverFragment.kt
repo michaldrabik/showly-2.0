@@ -2,20 +2,14 @@ package com.michaldrabik.ui_discover
 
 import android.os.Bundle
 import android.view.View
-import android.view.ViewAnimationUtils
 import android.view.ViewGroup.MarginLayoutParams
 import androidx.activity.addCallback
-import androidx.core.animation.doOnEnd
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.isVisible
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.clearFragmentResultListener
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -34,13 +28,13 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
-import com.michaldrabik.ui_base.utilities.extensions.invisible
+import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
-import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
+import com.michaldrabik.ui_discover.filters.DiscoverFiltersBottomSheet.Companion.REQUEST_DISCOVER_FILTERS
 import com.michaldrabik.ui_discover.recycler.DiscoverAdapter
 import com.michaldrabik.ui_discover.recycler.DiscoverListItem
 import com.michaldrabik.ui_model.ImageType
@@ -51,8 +45,6 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_ITEM_MENU
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_discover.*
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
-import kotlin.math.hypot
 import kotlin.random.Random
 
 @AndroidEntryPoint
@@ -98,15 +90,11 @@ class DiscoverFragment :
     setupSwipeRefresh()
     setupStatusBar()
 
-    viewLifecycleOwner.lifecycleScope.launch {
-      repeatOnLifecycle(Lifecycle.State.STARTED) {
-        with(viewModel) {
-          launch { uiState.collect { render(it) } }
-          launch { messageFlow.collect { showSnack(it) } }
-          loadItems()
-        }
-      }
-    }
+    launchAndRepeatStarted(
+      { viewModel.uiState.collect { render(it) } },
+      { viewModel.messageFlow.collect { showSnack(it) } },
+      doAfterLaunch = { viewModel.loadItems() }
+    )
   }
 
   private fun setupView() {
@@ -115,7 +103,7 @@ class DiscoverFragment :
       settingsIconVisible = false
       isClickable = false
       onClick { openSearch() }
-      onSortClickListener = { toggleFiltersView() }
+      onSortClickListener = { navigateTo(R.id.actionDiscoverFragmentToFilters) }
       translationY = searchViewPosition
     }
     discoverModeTabsView.run {
@@ -124,22 +112,16 @@ class DiscoverFragment :
       onModeSelected = { mode = it }
       selectShows()
     }
-    discoverMask.onClick { toggleFiltersView() }
-    discoverFiltersView.onApplyClickListener = {
-      toggleFiltersView()
-      viewModel.loadItems(
-        scrollToTop = true,
-        skipCache = true,
-        instantProgress = true,
-        newFilters = it
-      )
-    }
     discoverTipFilters.run {
       fadeIf(!isTipShown(Tip.DISCOVER_FILTERS))
       onClick {
         it.gone()
         showTip(Tip.DISCOVER_FILTERS)
       }
+    }
+
+    setFragmentResultListener(REQUEST_DISCOVER_FILTERS) { _, _ ->
+      viewModel.loadItems(scrollToTop = true, skipCache = true, instantProgress = true)
     }
   }
 
@@ -192,8 +174,6 @@ class DiscoverFragment :
         .updatePadding(top = statusBarSize + dimenToPx(recyclerPadding))
       (discoverSearchView.layoutParams as MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceSmall))
-      (discoverFiltersView.layoutParams as MarginLayoutParams)
-        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.searchViewHeight))
       (discoverModeTabsView.layoutParams as MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.collectionTabsMargin))
       discoverTipFilters.translationY = statusBarSize.toFloat()
@@ -216,7 +196,6 @@ class DiscoverFragment :
   private fun openSearch() {
     disableUi()
     hideNavigation()
-    discoverFiltersView.fadeOut().add(animations)
     discoverModeTabsView.fadeOut(duration = 200).add(animations)
     discoverRecycler.fadeOut(duration = 200) {
       super.navigateTo(R.id.actionDiscoverFragmentToSearchFragment, null)
@@ -249,7 +228,6 @@ class DiscoverFragment :
   private fun animateItemsExit(item: DiscoverListItem) {
     discoverSearchView.fadeOut().add(animations)
     discoverModeTabsView.fadeOut().add(animations)
-    discoverFiltersView.fadeOut().add(animations)
 
     val clickedIndex = adapter?.indexOf(item) ?: 0
     val itemsCount = adapter?.itemCount ?: 0
@@ -274,25 +252,6 @@ class DiscoverFragment :
     ).add(animations)
   }
 
-  private fun toggleFiltersView() {
-    val delta = dimenToPx(R.dimen.searchViewHeight)
-    val cx = discoverFiltersView.width
-    val cy = discoverFiltersView.height + dimenToPx(R.dimen.searchViewHeight)
-    val radius = hypot(cx.toDouble(), cy.toDouble()).toFloat()
-    if (!discoverFiltersView.isVisible) {
-      val anim = ViewAnimationUtils.createCircularReveal(discoverFiltersView, cx, -delta, 0F, radius)
-      discoverFiltersView.visible()
-      discoverMask.fadeIn()
-      anim.start()
-    } else {
-      ViewAnimationUtils.createCircularReveal(discoverFiltersView, cx, -delta, radius, 0F).apply {
-        doOnEnd { discoverFiltersView?.invisible() }
-        start()
-      }.add(animators)
-      discoverMask.fadeOut().add(animations)
-    }
-  }
-
   private fun render(uiState: DiscoverUiState) {
     uiState.run {
       items?.let {
@@ -312,9 +271,6 @@ class DiscoverFragment :
         discoverSearchView.setTraktProgress(it)
       }
       filters?.let {
-        discoverFiltersView.run {
-          if (!this.isVisible) bind(it)
-        }
         discoverSearchView.iconBadgeVisible = !it.isDefault()
       }
     }
