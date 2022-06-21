@@ -52,7 +52,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
-import kotlin.properties.Delegates.notNull
 
 @SuppressLint("StaticFieldLeak")
 @HiltViewModel
@@ -71,7 +70,7 @@ class ShowDetailsViewModel @Inject constructor(
   private val imagesProvider: ShowImagesProvider,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
-  private var show by notNull<Show>()
+  private lateinit var show: Show
 
   private val _parentEvents = MutableSharedFlow<ShowDetailsEvent<*>>(extraBufferCapacity = 1)
   val parentEvents = _parentEvents.asSharedFlow()
@@ -306,7 +305,9 @@ class ShowDetailsViewModel @Inject constructor(
   }
 
   override fun onCleared() {
-    seasonsCache.clear(show.ids.trakt)
+    if (this::show.isInitialized) {
+      seasonsCache.clear(show.ids.trakt)
+    }
     super.onCleared()
   }
 
