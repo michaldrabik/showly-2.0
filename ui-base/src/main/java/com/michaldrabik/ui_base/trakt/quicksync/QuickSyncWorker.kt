@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.Constraints
 import androidx.work.ExistingWorkPolicy.REPLACE
-import androidx.work.ForegroundInfo
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
@@ -58,11 +57,6 @@ class QuickSyncWorker @AssistedInject constructor(
       workManager.enqueueUniqueWork(TAG, REPLACE, request)
       Timber.i("Trakt QuickSync scheduled.")
     }
-  }
-
-  override suspend fun getForegroundInfo(): ForegroundInfo {
-    val theme = settingsRepository.theme
-    return createProgressNotification(theme, null, 0, 0, true)
   }
 
   override suspend fun doWork(): Result {
