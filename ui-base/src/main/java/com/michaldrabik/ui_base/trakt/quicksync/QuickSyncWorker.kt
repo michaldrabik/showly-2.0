@@ -83,7 +83,7 @@ class QuickSyncWorker @AssistedInject constructor(
   private suspend fun setForegroundProgress() {
     try {
       val theme = settingsRepository.theme
-      setForeground(createProgressNotification(theme, null, 0, 0, true))
+      setForeground(createProgressNotificationInfo(theme, null, 0, 0, true))
     } catch (error: IllegalStateException) {
       Timber.w(error)
     }

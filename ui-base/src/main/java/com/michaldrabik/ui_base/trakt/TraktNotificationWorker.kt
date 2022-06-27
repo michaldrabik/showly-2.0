@@ -23,7 +23,7 @@ abstract class TraktNotificationWorker constructor(
 ) : CoroutineWorker(context, workerParams) {
 
   companion object {
-    private const val NOTIFICATION_ID = 2801
+    private const val PROGRESS_NOTIFICATION_ID = 2801
   }
 
   private fun createBaseNotification(theme: Int): NotificationCompat.Builder {
@@ -46,15 +46,24 @@ abstract class TraktNotificationWorker constructor(
     maxProgress: Int,
     progress: Int,
     isIntermediate: Boolean
-  ): ForegroundInfo {
-    val notification = createBaseNotification(theme)
+  ): Notification =
+    createBaseNotification(theme)
       .setContentText(content ?: context.getString(R.string.textTraktSyncRunning))
       .setCategory(NotificationCompat.CATEGORY_SERVICE)
       .setOngoing(true)
       .setAutoCancel(false)
       .setProgress(maxProgress, progress, isIntermediate)
       .build()
-    return ForegroundInfo(NOTIFICATION_ID, notification)
+
+  protected fun createProgressNotificationInfo(
+    theme: Int,
+    content: String?,
+    maxProgress: Int,
+    progress: Int,
+    isIntermediate: Boolean
+  ): ForegroundInfo {
+    val notification = createProgressNotification(theme, content, maxProgress, progress, isIntermediate)
+    return ForegroundInfo(PROGRESS_NOTIFICATION_ID, notification)
   }
 
   protected fun createSuccessNotification(theme: Int) =

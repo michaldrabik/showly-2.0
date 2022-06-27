@@ -180,7 +180,7 @@ class TraktSyncWorker @AssistedInject constructor(
 
   override suspend fun getForegroundInfo(): ForegroundInfo {
     val theme = settingsRepository.theme
-    return createProgressNotification(theme, null, 0, 0, true)
+    return createProgressNotificationInfo(theme, null, 0, 0, true)
   }
 
   private suspend fun runImportWatched(): Int {
@@ -253,7 +253,7 @@ class TraktSyncWorker @AssistedInject constructor(
     isIntermediate: Boolean
   ) {
     try {
-      setForeground(createProgressNotification(theme, content, maxProgress, progress, isIntermediate))
+      setForeground(createProgressNotificationInfo(theme, content, maxProgress, progress, isIntermediate))
     } catch (error: IllegalStateException) {
       Timber.w(error)
     }
