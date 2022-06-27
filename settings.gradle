@@ -11,7 +11,7 @@ dependencyResolutionManagement {
       library("android.desugar", "com.android.tools:desugar_jdk_libs:1.1.5")
       library("android.material", "com.google.android.material:material:1.6.1")
       library("android.dynamicAnimation", "androidx.dynamicanimation:dynamicanimation:1.0.0")
-      library("android.work", "androidx.work:work-runtime-ktx:2.7.1")
+      library("android.work", "androidx.work:work-runtime-ktx:2.8.0-alpha02")
       library("android.swipeRefresh", "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
       library("android.constraintLayout", "androidx.constraintlayout:constraintlayout:2.1.4")
       library("android.recycler", "androidx.recyclerview:recyclerview:1.2.1")
