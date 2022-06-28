@@ -41,6 +41,7 @@ class QuickSyncWorker @AssistedInject constructor(
 
   companion object {
     private const val TAG = "TRAKT_QUICK_SYNC_WORK"
+    private const val SYNC_NOTIFICATION_PROGRESS_ID = 916
     private const val SYNC_NOTIFICATION_ERROR_ID = 917
 
     fun schedule(workManager: WorkManager) {
@@ -61,7 +62,12 @@ class QuickSyncWorker @AssistedInject constructor(
 
   override suspend fun doWork(): Result {
     Timber.d("Initialized.")
-    setForegroundProgress()
+    val theme = settingsRepository.theme
+
+    notificationManager().notify(
+      SYNC_NOTIFICATION_PROGRESS_ID,
+      createProgressNotification(theme, null, 0, 0, true)
+    )
 
     try {
       var count = quickSyncRunner.run()
@@ -74,19 +80,11 @@ class QuickSyncWorker @AssistedInject constructor(
       handleError(error)
     } finally {
       clearRunners()
+      notificationManager().cancel(SYNC_NOTIFICATION_PROGRESS_ID)
       Timber.d("Quick Sync completed.")
     }
 
     return Result.success()
-  }
-
-  private suspend fun setForegroundProgress() {
-    try {
-      val theme = settingsRepository.theme
-      setForeground(createProgressNotificationInfo(theme, null, 0, 0, true))
-    } catch (error: IllegalStateException) {
-      Timber.w(error)
-    }
   }
 
   private suspend fun handleError(error: Throwable) {

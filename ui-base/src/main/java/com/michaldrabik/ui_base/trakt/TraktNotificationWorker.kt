@@ -11,7 +11,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE
 import androidx.core.content.ContextCompat
 import androidx.work.CoroutineWorker
-import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.utilities.extensions.notificationManager
@@ -21,10 +20,6 @@ abstract class TraktNotificationWorker constructor(
   val context: Context,
   workerParams: WorkerParameters
 ) : CoroutineWorker(context, workerParams) {
-
-  companion object {
-    private const val PROGRESS_NOTIFICATION_ID = 2801
-  }
 
   private fun createBaseNotification(theme: Int): NotificationCompat.Builder {
     val color = when (theme) {
@@ -54,17 +49,6 @@ abstract class TraktNotificationWorker constructor(
       .setAutoCancel(false)
       .setProgress(maxProgress, progress, isIntermediate)
       .build()
-
-  protected fun createProgressNotificationInfo(
-    theme: Int,
-    content: String?,
-    maxProgress: Int,
-    progress: Int,
-    isIntermediate: Boolean
-  ): ForegroundInfo {
-    val notification = createProgressNotification(theme, content, maxProgress, progress, isIntermediate)
-    return ForegroundInfo(PROGRESS_NOTIFICATION_ID, notification)
-  }
 
   protected fun createSuccessNotification(theme: Int) =
     createBaseNotification(theme)
