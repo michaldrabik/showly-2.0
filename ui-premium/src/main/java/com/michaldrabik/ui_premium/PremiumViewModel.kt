@@ -11,8 +11,10 @@ import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.Purchase.PurchaseState.PENDING
 import com.android.billingclient.api.Purchase.PurchaseState.PURCHASED
+import com.android.billingclient.api.PurchasesResult
 import com.android.billingclient.api.SkuDetails
 import com.android.billingclient.api.SkuDetailsParams
+import com.android.billingclient.api.SkuDetailsResult
 import com.android.billingclient.api.acknowledgePurchase
 import com.android.billingclient.api.queryPurchasesAsync
 import com.android.billingclient.api.querySkuDetails
@@ -58,17 +60,17 @@ class PremiumViewModel @Inject constructor(
     billingClient.startConnection(object : BillingClientStateListener {
       override fun onBillingSetupFinished(billingResult: BillingResult) {
         Timber.d("BillingClient Setup Finished ${billingResult.debugMessage}")
+
         if (billingResult.responseCode == BillingResponseCode.OK) {
+          connectionsCount = 0
           val featureResult = billingClient.isFeatureSupported(BillingClient.FeatureType.SUBSCRIPTIONS)
-          if (featureResult.responseCode == BillingResponseCode.OK) {
-            checkOwnedPurchases(billingClient)
-            connectionsCount = 0
-          } else {
-            Analytics.logUnsupportedSubscriptions("feature_subscriptions")
-            messageChannel.trySend(MessageEvent.Error(R.string.errorSubscriptionsNotAvailable))
+          val subscriptionsAvailable = featureResult.responseCode == BillingResponseCode.OK
+          checkOwnedPurchases(billingClient, subscriptionsAvailable)
+          if (!subscriptionsAvailable) {
+            Analytics.logUnsupportedSubscriptions()
           }
         } else {
-          Analytics.logUnsupportedSubscriptions("billing")
+          Analytics.logUnsupportedBilling()
           messageChannel.trySend(MessageEvent.Error(R.string.errorSubscriptionsNotAvailable))
         }
       }
@@ -86,13 +88,18 @@ class PremiumViewModel @Inject constructor(
     })
   }
 
-  private fun checkOwnedPurchases(billingClient: BillingClient) {
+  private fun checkOwnedPurchases(
+    billingClient: BillingClient,
+    subscriptionsAvailable: Boolean
+  ) {
     Timber.d("checkOwnedPurchases")
     viewModelScope.launch {
       loadingState.value = true
 
       try {
-        val subscriptions = billingClient.queryPurchasesAsync(SkuType.SUBS)
+        val subscriptions =
+          if (subscriptionsAvailable) billingClient.queryPurchasesAsync(SkuType.SUBS)
+          else PurchasesResult(BillingResult(), emptyList())
         val inApps = billingClient.queryPurchasesAsync(SkuType.INAPP)
         val purchases = subscriptions.purchasesList + inApps.purchasesList
 
@@ -118,7 +125,7 @@ class PremiumViewModel @Inject constructor(
             purchasePendingState.value = true
             loadingState.value = false
           }
-          else -> loadPurchases(billingClient)
+          else -> loadPurchases(billingClient, subscriptionsAvailable)
         }
       } catch (error: Throwable) {
         purchaseItemsState.value = emptyList()
@@ -156,7 +163,10 @@ class PremiumViewModel @Inject constructor(
     }
   }
 
-  private fun loadPurchases(billingClient: BillingClient) {
+  private fun loadPurchases(
+    billingClient: BillingClient,
+    subscriptionsAvailable: Boolean
+  ) {
     viewModelScope.launch {
       try {
         loadingState.value = true
@@ -173,7 +183,9 @@ class PremiumViewModel @Inject constructor(
           .setType(SkuType.INAPP)
           .build()
 
-        val subsDetails = billingClient.querySkuDetails(paramsSubs)
+        val subsDetails =
+          if (subscriptionsAvailable) billingClient.querySkuDetails(paramsSubs)
+          else SkuDetailsResult(BillingResult(), emptyList())
         val inAppsDetails = billingClient.querySkuDetails(paramsInApps)
 
         val subsItems = subsDetails.skuDetailsList ?: emptyList()
