@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
+import androidx.work.CoroutineWorker
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.SafeOnClickListener
 import kotlinx.coroutines.CoroutineScope
@@ -30,6 +31,8 @@ import kotlinx.coroutines.launch
 import java.util.Locale
 
 fun Context.notificationManager() = (applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
+
+fun CoroutineWorker.notificationManager() = applicationContext.notificationManager()
 
 fun View.onClick(safe: Boolean = true, action: (View) -> Unit) = setOnClickListener(SafeOnClickListener(safe, action))
 
