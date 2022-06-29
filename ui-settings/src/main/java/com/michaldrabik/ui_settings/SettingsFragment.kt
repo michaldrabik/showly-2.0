@@ -546,11 +546,11 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
   }
 
   private fun openMailMessage() {
-    val id = settingsUserId.text
+    val id = "${settingsUserId.text}, ${settingsVersion.text}"
     val intent = Intent(ACTION_SENDTO).apply {
       data = Uri.parse("mailto:")
       putExtra(EXTRA_EMAIL, arrayOf(Config.DEVELOPER_MAIL))
-      putExtra(EXTRA_SUBJECT, "Showly Message (ID: $id)")
+      putExtra(EXTRA_SUBJECT, "Showly Message/Issue (Version: $id)")
     }
     if (intent.resolveActivity(requireActivity().packageManager) != null) {
       startActivity(intent)
