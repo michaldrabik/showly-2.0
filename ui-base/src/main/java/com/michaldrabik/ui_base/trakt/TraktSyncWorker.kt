@@ -21,6 +21,7 @@ import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.Analytics
+import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.TraktSyncAuthError
@@ -279,6 +280,7 @@ class TraktSyncWorker @AssistedInject constructor(
         createErrorNotification(theme, R.string.textTraktSyncError, message)
       )
     }
+    Logger.record(error, "Source" to "TraktSyncWorker::handleError()")
   }
 
   private fun handleListsError(
