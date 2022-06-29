@@ -105,21 +105,38 @@ class TraktExportWatchedRunner @Inject constructor(
     val (localShows, localMovies) = awaitAll(showsAsync, moviesAsync)
 
     val showsItems = localShows.map {
-      (it as Show).let { show -> SyncExportItem.create(show.idTrakt, hiddenAt = dateIsoStringFromMillis(show.updatedAt)) }
+      (it as Show).let { show ->
+        SyncExportItem.create(
+          traktId = show.idTrakt,
+          hiddenAt = dateIsoStringFromMillis(show.updatedAt)
+        )
+      }
     }
     val moviesItems = localMovies.map {
-      (it as Movie).let { movie -> SyncExportItem.create(movie.idTrakt, hiddenAt = dateIsoStringFromMillis(movie.updatedAt)) }
+      (it as Movie).let { movie ->
+        SyncExportItem.create(
+          traktId = movie.idTrakt,
+          hiddenAt = dateIsoStringFromMillis(movie.updatedAt)
+        )
+      }
     }
 
     if (localShows.isNotEmpty()) {
       Timber.d("Exporting ${localShows.size} hidden shows...")
-      remoteSource.trakt.postHiddenShows(shows = showsItems)
-      delay(1500)
+      showsItems.chunked(500).forEach { chunk ->
+        remoteSource.trakt.postHiddenShows(shows = chunk)
+        delay(1000)
+      }
+      delay(1200)
     }
 
     if (localMovies.isNotEmpty()) {
       Timber.d("Exporting ${localMovies.size} hidden movies...")
-      remoteSource.trakt.postHiddenMovies(movies = moviesItems)
+      moviesItems.chunked(500).forEach { chunk ->
+        remoteSource.trakt.postHiddenMovies(movies = chunk)
+        delay(1000)
+      }
+      delay(1200)
     }
   }
 

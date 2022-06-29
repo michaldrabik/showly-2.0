@@ -102,13 +102,9 @@ interface TraktRemoteDataSource {
 
   suspend fun fetchHiddenShows(): List<HiddenItem>
 
-  suspend fun postHiddenShows(
-    shows: List<SyncExportItem> = emptyList()
-  )
+  suspend fun postHiddenShows(shows: List<SyncExportItem> = emptyList())
 
-  suspend fun postHiddenMovies(
-    movies: List<SyncExportItem> = emptyList()
-  )
+  suspend fun postHiddenMovies(movies: List<SyncExportItem> = emptyList())
 
   suspend fun fetchHiddenMovies(): List<HiddenItem>
 
