@@ -77,21 +77,19 @@ class TraktExportWatchedRunner @Inject constructor(
       }
     }
 
-    val request = SyncExportRequest(
-      episodes = localEpisodes.map { ep ->
-        val episodeTimestamp = ep.lastWatchedAt?.toMillis() ?: 0
-        val showTimestamp = localMyShows.find { it.idTrakt == ep.idShowTrakt }?.updatedAt ?: 0
-        val timestamp = when {
-          episodeTimestamp > 0 -> episodeTimestamp
-          showTimestamp > 0 -> showTimestamp
-          else -> nowUtcMillis()
-        }
-        SyncExportItem.create(ep.idTrakt, dateIsoStringFromMillis(timestamp))
-      },
-      movies = movies
-    )
+    val episodes = localEpisodes.map { ep ->
+      val episodeTimestamp = ep.lastWatchedAt?.toMillis() ?: 0
+      val showTimestamp = localMyShows.find { it.idTrakt == ep.idShowTrakt }?.updatedAt ?: 0
+      val timestamp = when {
+        episodeTimestamp > 0 -> episodeTimestamp
+        showTimestamp > 0 -> showTimestamp
+        else -> nowUtcMillis()
+      }
+      SyncExportItem.create(ep.idTrakt, dateIsoStringFromMillis(timestamp))
+    }
 
-    Timber.d("Exporting ${localEpisodes.size} episodes & ${movies.size} movies...")
+    Timber.d("Exporting ${episodes.size} episodes & ${movies.size} movies...")
+    val request = SyncExportRequest(episodes = episodes, movies = movies)
     remoteSource.trakt.postSyncWatched(request)
 
     exportHidden()
