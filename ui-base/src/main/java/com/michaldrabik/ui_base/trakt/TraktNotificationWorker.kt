@@ -50,7 +50,7 @@ abstract class TraktNotificationWorker constructor(
       .setProgress(maxProgress, progress, isIntermediate)
       .build()
 
-  protected fun createSuccessNotification(theme: Int) =
+  protected fun createSuccessNotification(theme: Int): Notification =
     createBaseNotification(theme)
       .setTimeoutAfter(TimeUnit.SECONDS.toMillis(3))
       .setContentText(context.getString(R.string.textTraktSyncComplete))
@@ -61,12 +61,13 @@ abstract class TraktNotificationWorker constructor(
     theme: Int,
     @StringRes titleTextRes: Int,
     @StringRes bigTextRes: Int
-  ) = createBaseNotification(theme)
-    .setContentTitle(context.getString(titleTextRes))
-    .setContentText(context.getString(bigTextRes))
-    .setStyle(NotificationCompat.BigTextStyle().bigText(context.getString(bigTextRes)))
-    .setPriority(NotificationCompat.PRIORITY_HIGH)
-    .build()
+  ): Notification =
+    createBaseNotification(theme)
+      .setContentTitle(context.getString(titleTextRes))
+      .setContentText(context.getString(bigTextRes))
+      .setStyle(NotificationCompat.BigTextStyle().bigText(context.getString(bigTextRes)))
+      .setPriority(NotificationCompat.PRIORITY_HIGH)
+      .build()
 
   private fun createNotificationChannel(): String {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
