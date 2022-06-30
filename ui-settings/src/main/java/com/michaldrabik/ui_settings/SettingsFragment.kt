@@ -546,7 +546,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
   }
 
   private fun openMailMessage() {
-    val id = "${settingsUserId.text}, ${settingsVersion.text}"
+    val id = "${settingsVersion.text}, ${settingsUserId.text}"
     val intent = Intent(ACTION_SENDTO).apply {
       data = Uri.parse("mailto:")
       putExtra(EXTRA_EMAIL, arrayOf(Config.DEVELOPER_MAIL))
