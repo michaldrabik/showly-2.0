@@ -1,8 +1,14 @@
 package com.michaldrabik.ui_base.trakt
 
+import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_IMMUTABLE
+import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import androidx.annotation.StringRes
+import androidx.core.app.NotificationCompat
 import androidx.hilt.work.HiltWorker
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
@@ -42,6 +48,7 @@ import dagger.assisted.AssistedInject
 import timber.log.Timber
 import javax.inject.Named
 
+
 @HiltWorker
 class TraktSyncWorker @AssistedInject constructor(
   @Assisted context: Context,
@@ -72,6 +79,8 @@ class TraktSyncWorker @AssistedInject constructor(
     private const val ARG_IS_IMPORT = "ARG_IS_IMPORT"
     private const val ARG_IS_EXPORT = "ARG_IS_EXPORT"
     private const val ARG_IS_SILENT = "ARG_IS_SILENT"
+
+    private const val TRAKT_LISTS_INFO_URL = "https://twitter.com/trakt/status/1536751362943332352?s=20&t=bdlxpzlDIclkLqdihaAXqw"
 
     fun scheduleOneOff(
       workManager: WorkManager,
@@ -290,9 +299,14 @@ class TraktSyncWorker @AssistedInject constructor(
     when (ErrorHelper.parse(error)) {
       ShowlyError.AccountLimitsError -> {
         val theme = settingsRepository.theme
+
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(TRAKT_LISTS_INFO_URL))
+        val pendingIntent = PendingIntent.getActivity(context, 0, intent, FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT)
+        val action = NotificationCompat.Action(R.drawable.ic_info, "More Info", pendingIntent)
+
         notificationManager().notify(
           SYNC_NOTIFICATION_COMPLETE_ERROR_LISTS_ID,
-          createErrorNotification(theme, R.string.textTraktSync, notificationMessageResId)
+          createErrorNotification(theme, R.string.textTraktSync, notificationMessageResId, action)
         )
       }
       else -> throw error
