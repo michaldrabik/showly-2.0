@@ -48,7 +48,6 @@ import dagger.assisted.AssistedInject
 import timber.log.Timber
 import javax.inject.Named
 
-
 @HiltWorker
 class TraktSyncWorker @AssistedInject constructor(
   @Assisted context: Context,
