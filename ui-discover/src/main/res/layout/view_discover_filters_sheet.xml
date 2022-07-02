@@ -20,6 +20,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:clipChildren="false"
       android:clipToPadding="false"
       android:paddingStart="@dimen/spaceNormal"
       android:paddingTop="@dimen/spaceMedium"
@@ -128,7 +129,7 @@
         android:layout_height="34dp"
         android:layout_marginBottom="@dimen/spaceSmall"
         android:translationX="-4dp"
-        app:layout_constraintBottom_toTopOf="@+id/discoverFiltersGenresTitle"
+        app:layout_constraintBottom_toTopOf="@+id/discoverFiltersNetworksTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/discoverFiltersAnticipatedSwitch"
         />
@@ -156,25 +157,36 @@
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/discoverFiltersNetworksChipGroup"
+        app:layout_constraintBottom_toTopOf="@+id/discoverFiltersNetworksLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/discoverFiltersGenresChipGroup"
+        app:layout_constraintTop_toBottomOf="@id/discoverFiltersCollectionSwitch"
         />
 
-      <com.google.android.material.chip.ChipGroup
-        android:id="@+id/discoverFiltersNetworksChipGroup"
+      <HorizontalScrollView
+        android:id="@+id/discoverFiltersNetworksLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spaceNormal"
         android:layout_marginBottom="@dimen/spaceNormal"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toTopOf="@+id/discoverFiltersGenresTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/discoverFiltersNetworksTitle"
-        app:lineSpacing="10dp"
-        app:singleSelection="true"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/discoverFiltersNetworksTitle"
+        >
+
+        <com.google.android.material.chip.ChipGroup
+          android:id="@+id/discoverFiltersNetworksChipGroup"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          app:lineSpacing="10dp"
+          app:singleLine="true"
+          app:singleSelection="true"
+          />
+
+      </HorizontalScrollView>
 
       <TextView
         android:id="@+id/discoverFiltersGenresTitle"
@@ -188,7 +200,7 @@
         app:layout_constraintBottom_toTopOf="@+id/discoverFiltersGenresChipGroup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/discoverFiltersCollectionSwitch"
+        app:layout_constraintTop_toBottomOf="@+id/discoverFiltersNetworksLayout"
         />
 
       <com.google.android.material.chip.ChipGroup
@@ -197,7 +209,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spaceNormal"
         android:layout_marginBottom="@dimen/spaceNormal"
-        app:layout_constraintBottom_toTopOf="@id/discoverFiltersNetworksTitle"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/discoverFiltersGenresTitle"

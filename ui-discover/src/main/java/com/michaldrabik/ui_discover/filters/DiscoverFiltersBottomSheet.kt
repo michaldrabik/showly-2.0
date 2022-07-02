@@ -18,12 +18,14 @@ import com.michaldrabik.ui_base.utilities.extensions.screenHeight
 import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_discover.R
 import com.michaldrabik.ui_discover.databinding.ViewDiscoverFiltersSheetBinding
+import com.michaldrabik.ui_discover.filters.helpers.NetworkIconProvider
 import com.michaldrabik.ui_model.DiscoverFilters
 import com.michaldrabik.ui_model.DiscoverSortOrder
 import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.Network
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import javax.inject.Inject
 
 @AndroidEntryPoint
 internal class DiscoverFiltersBottomSheet : BaseBottomSheetFragment(R.layout.view_discover_filters_sheet) {
@@ -34,6 +36,8 @@ internal class DiscoverFiltersBottomSheet : BaseBottomSheetFragment(R.layout.vie
 
   private val viewModel by viewModels<DiscoverFiltersViewModel>()
   private val binding by viewBinding(ViewDiscoverFiltersSheetBinding::bind)
+
+  @Inject lateinit var networkIconProvider: NetworkIconProvider
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
@@ -145,12 +149,14 @@ internal class DiscoverFiltersBottomSheet : BaseBottomSheetFragment(R.layout.vie
     Network.values()
       .sortedBy { it.name }
       .forEach { network ->
+        val icon = networkIconProvider.getIcon(network)
         val chip = Chip(requireContext()).apply {
           tag = network.name
           text = network.channels.first()
           isCheckable = true
           isCheckedIconVisible = false
           setEnsureMinTouchTargetSize(false)
+          setChipIconResource(icon)
           chipBackgroundColor = ContextCompat.getColorStateList(requireContext(), R.color.selector_discover_chip_background)
           setChipStrokeColorResource(R.color.selector_discover_chip_text)
           setChipStrokeWidthResource(R.dimen.discoverFilterChipStroke)
