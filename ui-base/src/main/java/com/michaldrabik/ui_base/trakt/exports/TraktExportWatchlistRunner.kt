@@ -45,6 +45,7 @@ class TraktExportWatchlistRunner @Inject constructor(
 
     val shows = localSource.watchlistShows.getAll()
       .map { SyncExportItem.create(it.idTrakt) }
+      .toMutableList()
 
     val movies = mutableListOf<SyncExportItem>()
     if (settingsRepository.isMoviesEnabled) {
@@ -54,8 +55,22 @@ class TraktExportWatchlistRunner @Inject constructor(
 
     Timber.d("Exporting ${shows.size} shows & ${movies.size} movies...")
 
-    val request = SyncExportRequest(shows = shows, movies = movies)
-    remoteSource.trakt.postSyncWatchlist(request)
+    while (true) {
+      val showsChunk = shows.take(250)
+      val moviesChunk = movies.take(250)
+      if (showsChunk.isEmpty() && moviesChunk.isEmpty()) {
+        Timber.d("No more chunks. Breaking.")
+        break
+      }
+      Timber.d("Exporting chunk of ${showsChunk.size} shows & ${moviesChunk.size} movies...")
+      val request = SyncExportRequest(shows = showsChunk, movies = moviesChunk)
+      remoteSource.trakt.postSyncWatchlist(request)
+
+      shows.removeAll(showsChunk)
+      movies.removeAll(moviesChunk)
+
+      delay(1100)
+    }
   }
 
   private suspend fun handleError(error: Throwable) {

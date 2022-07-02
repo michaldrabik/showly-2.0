@@ -2,12 +2,12 @@ package com.michaldrabik.ui_news.views
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.michaldrabik.ui_base.common.behaviour.ScrollableViewBehaviour
 import com.michaldrabik.ui_model.NewsItem
-import com.michaldrabik.ui_news.R
-import kotlinx.android.synthetic.main.view_news_filters.view.*
+import com.michaldrabik.ui_news.databinding.ViewNewsFiltersBinding
 
 class NewsFiltersView : FrameLayout, CoordinatorLayout.AttachedBehavior {
 
@@ -15,18 +15,19 @@ class NewsFiltersView : FrameLayout, CoordinatorLayout.AttachedBehavior {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
+  private val binding = ViewNewsFiltersBinding.inflate(LayoutInflater.from(context), this)
+
   init {
-    inflate(context, R.layout.view_news_filters, this)
     setupListeners()
   }
 
   var onChipsChangeListener: ((List<NewsItem.Type>) -> Unit)? = null
 
   private fun onChipCheckChange() {
-    val ids = viewNewsFiltersChipGroup.checkedChipIds.map {
+    val ids = binding.viewNewsFiltersChipGroup.checkedChipIds.map {
       when (it) {
-        viewNewsFiltersShowsChip.id -> NewsItem.Type.SHOW
-        viewNewsFiltersMoviesChip.id -> NewsItem.Type.MOVIE
+        binding.viewNewsFiltersShowsChip.id -> NewsItem.Type.SHOW
+        binding.viewNewsFiltersMoviesChip.id -> NewsItem.Type.MOVIE
         else -> throw IllegalStateException()
       }
     }
@@ -36,25 +37,25 @@ class NewsFiltersView : FrameLayout, CoordinatorLayout.AttachedBehavior {
   fun setFilters(filters: List<NewsItem.Type>) {
     clearListeners()
 
-    viewNewsFiltersShowsChip.isChecked = filters.contains(NewsItem.Type.SHOW)
-    viewNewsFiltersMoviesChip.isChecked = filters.contains(NewsItem.Type.MOVIE)
+    binding.viewNewsFiltersShowsChip.isChecked = filters.contains(NewsItem.Type.SHOW)
+    binding.viewNewsFiltersMoviesChip.isChecked = filters.contains(NewsItem.Type.MOVIE)
 
     setupListeners()
   }
 
   private fun setupListeners() {
-    viewNewsFiltersShowsChip.setOnCheckedChangeListener { _, _ -> onChipCheckChange() }
-    viewNewsFiltersMoviesChip.setOnCheckedChangeListener { _, _ -> onChipCheckChange() }
+    binding.viewNewsFiltersShowsChip.setOnCheckedChangeListener { _, _ -> onChipCheckChange() }
+    binding.viewNewsFiltersMoviesChip.setOnCheckedChangeListener { _, _ -> onChipCheckChange() }
   }
 
   private fun clearListeners() {
-    viewNewsFiltersShowsChip.setOnCheckedChangeListener(null)
-    viewNewsFiltersMoviesChip.setOnCheckedChangeListener(null)
+    binding.viewNewsFiltersShowsChip.setOnCheckedChangeListener(null)
+    binding.viewNewsFiltersMoviesChip.setOnCheckedChangeListener(null)
   }
 
   override fun setEnabled(enabled: Boolean) {
-    viewNewsFiltersShowsChip.isEnabled = enabled
-    viewNewsFiltersMoviesChip.isEnabled = enabled
+    binding.viewNewsFiltersShowsChip.isEnabled = enabled
+    binding.viewNewsFiltersMoviesChip.isEnabled = enabled
   }
 
   override fun getBehavior() = ScrollableViewBehaviour()

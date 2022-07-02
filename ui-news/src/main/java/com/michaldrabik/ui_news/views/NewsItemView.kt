@@ -7,6 +7,7 @@ import android.os.Build.VERSION_CODES
 import android.text.Html
 import android.text.format.DateUtils
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
@@ -29,8 +30,8 @@ import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
 import com.michaldrabik.ui_model.NewsItem.Type
 import com.michaldrabik.ui_news.R
+import com.michaldrabik.ui_news.databinding.ViewNewsItemBinding
 import com.michaldrabik.ui_news.recycler.NewsListItem
-import kotlinx.android.synthetic.main.view_news_item.view.*
 import java.util.Locale
 
 @SuppressLint("SetTextI18n")
@@ -44,13 +45,16 @@ class NewsItemView : FrameLayout {
 
   var itemClickListener: ((NewsListItem) -> Unit)? = null
 
+  private val binding = ViewNewsItemBinding.inflate(LayoutInflater.from(context), this)
+
   init {
-    inflate(context, R.layout.view_news_item, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
 
-    newsItemRoot.onClick { itemClickListener?.invoke(item) }
-    newsItemImage.onClick { itemClickListener?.invoke(item) }
-    newsItemPlaceholder.onClick { itemClickListener?.invoke(item) }
+    with(binding) {
+      newsItemRoot.onClick { itemClickListener?.invoke(item) }
+      newsItemImage.onClick { itemClickListener?.invoke(item) }
+      newsItemPlaceholder.onClick { itemClickListener?.invoke(item) }
+    }
   }
 
   private lateinit var item: NewsListItem
@@ -64,46 +68,49 @@ class NewsItemView : FrameLayout {
       Type.SHOW -> R.drawable.ic_television
       Type.MOVIE -> R.drawable.ic_film
     }
-    newsItemHeaderIcon.setImageResource(icon)
-    newsItemPlaceholder.setImageResource(icon)
 
-    newsItemTitle.text = when {
-      Build.VERSION.SDK_INT >= VERSION_CODES.N -> Html.fromHtml(item.item.title, Html.FROM_HTML_MODE_LEGACY)
-      else -> Html.fromHtml(item.item.title)
+    with(binding) {
+      newsItemHeaderIcon.setImageResource(icon)
+      newsItemPlaceholder.setImageResource(icon)
+
+      newsItemTitle.text = when {
+        Build.VERSION.SDK_INT >= VERSION_CODES.N -> Html.fromHtml(item.item.title, Html.FROM_HTML_MODE_LEGACY)
+        else -> Html.fromHtml(item.item.title)
+      }
+
+      val relativeTime = DateUtils.getRelativeTimeSpanString(item.item.datedAt.toMillis()).toString().lowercase(Locale.ROOT)
+      newsItemHeader.text = item.dateFormat.format(item.item.datedAt.toLocalZone()).capitalizeWords()
+      newsItemSubheader.text = "~ $relativeTime"
     }
-
-    val relativeTime = DateUtils.getRelativeTimeSpanString(item.item.datedAt.toMillis()).toString().lowercase(Locale.ROOT)
-    newsItemHeader.text = item.dateFormat.format(item.item.datedAt.toLocalZone()).capitalizeWords()
-    newsItemSubheader.text = "~ $relativeTime"
 
     loadImage(item)
   }
 
   private fun loadImage(item: NewsListItem) {
     if (item.item.image == null) {
-      newsItemPlaceholder.visible()
-      newsItemImage.invisible()
+      binding.newsItemPlaceholder.visible()
+      binding.newsItemImage.invisible()
       return
     }
 
-    Glide.with(this)
+    Glide.with(this@NewsItemView)
       .load(item.item.image)
       .transform(CenterCrop(), RoundedCorners(cornerRadius))
       .transition(withCrossFade(Config.IMAGE_FADE_DURATION_MS))
       .withSuccessListener {
-        newsItemPlayIcon.visibleIf(item.item.isVideo)
+        binding.newsItemPlayIcon.visibleIf(item.item.isVideo)
       }
       .withFailListener {
-        newsItemPlaceholder.fadeIn()
-        newsItemImage.invisible()
+        binding.newsItemPlaceholder.fadeIn()
+        binding.newsItemImage.invisible()
       }
-      .into(newsItemImage)
+      .into(binding.newsItemImage)
   }
 
   private fun clear() {
-    Glide.with(this).clear(newsItemImage)
-    newsItemPlayIcon.gone()
-    newsItemPlaceholder.gone()
-    newsItemImage.visible()
+    Glide.with(this@NewsItemView).clear(binding.newsItemImage)
+    binding.newsItemPlayIcon.gone()
+    binding.newsItemPlaceholder.gone()
+    binding.newsItemImage.visible()
   }
 }

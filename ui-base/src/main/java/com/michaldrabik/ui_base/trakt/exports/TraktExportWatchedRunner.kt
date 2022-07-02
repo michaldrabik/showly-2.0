@@ -77,21 +77,19 @@ class TraktExportWatchedRunner @Inject constructor(
       }
     }
 
-    val request = SyncExportRequest(
-      episodes = localEpisodes.map { ep ->
-        val episodeTimestamp = ep.lastWatchedAt?.toMillis() ?: 0
-        val showTimestamp = localMyShows.find { it.idTrakt == ep.idShowTrakt }?.updatedAt ?: 0
-        val timestamp = when {
-          episodeTimestamp > 0 -> episodeTimestamp
-          showTimestamp > 0 -> showTimestamp
-          else -> nowUtcMillis()
-        }
-        SyncExportItem.create(ep.idTrakt, dateIsoStringFromMillis(timestamp))
-      },
-      movies = movies
-    )
+    val episodes = localEpisodes.map { ep ->
+      val episodeTimestamp = ep.lastWatchedAt?.toMillis() ?: 0
+      val showTimestamp = localMyShows.find { it.idTrakt == ep.idShowTrakt }?.updatedAt ?: 0
+      val timestamp = when {
+        episodeTimestamp > 0 -> episodeTimestamp
+        showTimestamp > 0 -> showTimestamp
+        else -> nowUtcMillis()
+      }
+      SyncExportItem.create(ep.idTrakt, dateIsoStringFromMillis(timestamp))
+    }
 
-    Timber.d("Exporting ${localEpisodes.size} episodes & ${movies.size} movies...")
+    Timber.d("Exporting ${episodes.size} episodes & ${movies.size} movies...")
+    val request = SyncExportRequest(episodes = episodes, movies = movies)
     remoteSource.trakt.postSyncWatched(request)
 
     exportHidden()
@@ -105,21 +103,38 @@ class TraktExportWatchedRunner @Inject constructor(
     val (localShows, localMovies) = awaitAll(showsAsync, moviesAsync)
 
     val showsItems = localShows.map {
-      (it as Show).let { show -> SyncExportItem.create(show.idTrakt, hiddenAt = dateIsoStringFromMillis(show.updatedAt)) }
+      (it as Show).let { show ->
+        SyncExportItem.create(
+          traktId = show.idTrakt,
+          hiddenAt = dateIsoStringFromMillis(show.updatedAt)
+        )
+      }
     }
     val moviesItems = localMovies.map {
-      (it as Movie).let { movie -> SyncExportItem.create(movie.idTrakt, hiddenAt = dateIsoStringFromMillis(movie.updatedAt)) }
+      (it as Movie).let { movie ->
+        SyncExportItem.create(
+          traktId = movie.idTrakt,
+          hiddenAt = dateIsoStringFromMillis(movie.updatedAt)
+        )
+      }
     }
 
     if (localShows.isNotEmpty()) {
       Timber.d("Exporting ${localShows.size} hidden shows...")
-      remoteSource.trakt.postHiddenShows(shows = showsItems)
-      delay(1500)
+      showsItems.chunked(500).forEach { chunk ->
+        remoteSource.trakt.postHiddenShows(shows = chunk)
+        delay(1000)
+      }
+      delay(1200)
     }
 
     if (localMovies.isNotEmpty()) {
       Timber.d("Exporting ${localMovies.size} hidden movies...")
-      remoteSource.trakt.postHiddenMovies(movies = moviesItems)
+      moviesItems.chunked(500).forEach { chunk ->
+        remoteSource.trakt.postHiddenMovies(movies = chunk)
+        delay(1000)
+      }
+      delay(1200)
     }
   }
 

@@ -1,8 +1,14 @@
 package com.michaldrabik.ui_base.trakt
 
+import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_IMMUTABLE
+import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import androidx.annotation.StringRes
+import androidx.core.app.NotificationCompat
 import androidx.hilt.work.HiltWorker
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
@@ -21,6 +27,7 @@ import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.Analytics
+import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.TraktSyncAuthError
@@ -63,6 +70,7 @@ class TraktSyncWorker @AssistedInject constructor(
     private const val TAG_ONE_OFF = "TRAKT_SYNC_WORK_ONE_OFF"
 
     private const val SYNC_NOTIFICATION_COMPLETE_SUCCESS_ID = 827
+    private const val SYNC_NOTIFICATION_COMPLETE_PROGRESS_ID = 823
     private const val SYNC_NOTIFICATION_COMPLETE_ERROR_ID = 828
     private const val SYNC_NOTIFICATION_COMPLETE_ERROR_LISTS_ID = 832
 
@@ -70,6 +78,8 @@ class TraktSyncWorker @AssistedInject constructor(
     private const val ARG_IS_IMPORT = "ARG_IS_IMPORT"
     private const val ARG_IS_EXPORT = "ARG_IS_EXPORT"
     private const val ARG_IS_SILENT = "ARG_IS_SILENT"
+
+    private const val TRAKT_LISTS_INFO_URL = "https://twitter.com/trakt/status/1536751362943332352?s=20&t=bdlxpzlDIclkLqdihaAXqw"
 
     fun scheduleOneOff(
       workManager: WorkManager,
@@ -167,27 +177,29 @@ class TraktSyncWorker @AssistedInject constructor(
       eventsManager.sendEvent(TraktSyncSuccess)
       Analytics.logTraktFullSyncSuccess(isImport, isExport)
       if (!isSilent) {
-        applicationContext.notificationManager().notify(SYNC_NOTIFICATION_COMPLETE_SUCCESS_ID, createSuccessNotification(theme))
+        notificationManager().notify(SYNC_NOTIFICATION_COMPLETE_SUCCESS_ID, createSuccessNotification(theme))
       }
-      clearRunners()
       return Result.success()
     } catch (error: Throwable) {
-      clearRunners()
       handleError(error, isSilent)
       return Result.failure()
+    } finally {
+      clearRunners()
+      notificationManager().cancel(SYNC_NOTIFICATION_COMPLETE_PROGRESS_ID)
     }
   }
 
   override suspend fun getForegroundInfo(): ForegroundInfo {
     val theme = settingsRepository.theme
-    return createProgressNotification(theme, null, 0, 0, true)
+    val notification = createProgressNotification(theme, null, 0, 0, true)
+    return ForegroundInfo(SYNC_NOTIFICATION_COMPLETE_PROGRESS_ID, notification)
   }
 
   private suspend fun runImportWatched(): Int {
     val theme = settingsRepository.theme
     importWatchedRunner.progressListener = { title: String, progress: Int, total: Int ->
       val status = "Importing \'$title\'..."
-      setForegroundProgress(theme, status, total, progress, false)
+      setProgressNotification(theme, status, total, progress, false)
       eventsManager.sendEvent(TraktSyncProgress(status))
     }
     return importWatchedRunner.run()
@@ -197,7 +209,7 @@ class TraktSyncWorker @AssistedInject constructor(
     val theme = settingsRepository.theme
     importWatchlistRunner.progressListener = { title: String, progress: Int, total: Int ->
       val status = "Importing \'$title\'..."
-      setForegroundProgress(theme, status, totalProgress + total, totalProgress + progress, false)
+      setProgressNotification(theme, status, totalProgress + total, totalProgress + progress, false)
       eventsManager.sendEvent(TraktSyncProgress(status))
     }
     return importWatchlistRunner.run()
@@ -207,7 +219,7 @@ class TraktSyncWorker @AssistedInject constructor(
     val theme = settingsRepository.theme
     importListsRunner.progressListener = { title: String, progress: Int, total: Int ->
       val status = "Importing \'$title\'..."
-      setForegroundProgress(theme, status, totalProgress + total, totalProgress + progress, false)
+      setProgressNotification(theme, status, totalProgress + total, totalProgress + progress, false)
       eventsManager.sendEvent(TraktSyncProgress(status))
     }
     importListsRunner.run()
@@ -216,7 +228,7 @@ class TraktSyncWorker @AssistedInject constructor(
   private suspend fun runExportWatched() {
     val status = "Exporting progress..."
     val theme = settingsRepository.theme
-    setForegroundProgress(theme, status, 0, 0, true)
+    setProgressNotification(theme, status, 0, 0, true)
     eventsManager.sendEvent(TraktSyncProgress(status))
     exportWatchedRunner.run()
   }
@@ -224,7 +236,7 @@ class TraktSyncWorker @AssistedInject constructor(
   private suspend fun runExportWatchlist() {
     val status = "Exporting watchlist..."
     val theme = settingsRepository.theme
-    setForegroundProgress(theme, status, 0, 0, true)
+    setProgressNotification(theme, status, 0, 0, true)
     eventsManager.sendEvent(TraktSyncProgress(status))
     try {
       exportWatchlistRunner.run()
@@ -236,7 +248,7 @@ class TraktSyncWorker @AssistedInject constructor(
   private suspend fun runExportLists() {
     val status = "Exporting custom lists..."
     val theme = settingsRepository.theme
-    setForegroundProgress(theme, status, 0, 0, true)
+    setProgressNotification(theme, status, 0, 0, true)
     eventsManager.sendEvent(TraktSyncProgress(status))
     try {
       exportListsRunner.run()
@@ -245,18 +257,17 @@ class TraktSyncWorker @AssistedInject constructor(
     }
   }
 
-  private suspend fun setForegroundProgress(
+  private fun setProgressNotification(
     theme: Int,
     content: String?,
     maxProgress: Int,
     progress: Int,
     isIntermediate: Boolean
   ) {
-    try {
-      setForeground(createProgressNotification(theme, content, maxProgress, progress, isIntermediate))
-    } catch (error: IllegalStateException) {
-      Timber.w(error)
-    }
+    notificationManager().notify(
+      SYNC_NOTIFICATION_COMPLETE_PROGRESS_ID,
+      createProgressNotification(theme, content, maxProgress, progress, isIntermediate)
+    )
   }
 
   private suspend fun handleError(error: Throwable, isSilent: Boolean) {
@@ -272,11 +283,12 @@ class TraktSyncWorker @AssistedInject constructor(
         else R.string.textTraktSyncErrorFull
 
       val theme = settingsRepository.theme
-      applicationContext.notificationManager().notify(
+      notificationManager().notify(
         SYNC_NOTIFICATION_COMPLETE_ERROR_ID,
         createErrorNotification(theme, R.string.textTraktSyncError, message)
       )
     }
+    Logger.record(error, "Source" to "TraktSyncWorker::handleError()")
   }
 
   private fun handleListsError(
@@ -286,9 +298,14 @@ class TraktSyncWorker @AssistedInject constructor(
     when (ErrorHelper.parse(error)) {
       ShowlyError.AccountLimitsError -> {
         val theme = settingsRepository.theme
-        applicationContext.notificationManager().notify(
+
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(TRAKT_LISTS_INFO_URL))
+        val pendingIntent = PendingIntent.getActivity(context, 0, intent, FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT)
+        val action = NotificationCompat.Action(R.drawable.ic_info, "More Info", pendingIntent)
+
+        notificationManager().notify(
           SYNC_NOTIFICATION_COMPLETE_ERROR_LISTS_ID,
-          createErrorNotification(theme, R.string.textTraktSync, notificationMessageResId)
+          createErrorNotification(theme, R.string.textTraktSync, notificationMessageResId, action)
         )
       }
       else -> throw error

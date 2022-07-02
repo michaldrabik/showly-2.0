@@ -5,22 +5,19 @@ import android.view.View
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingFlowParams
 import com.android.billingclient.api.PurchasesUpdatedListener
 import com.android.billingclient.api.SkuDetails
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
+import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_premium.views.PurchaseItemView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_premium.*
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class PremiumFragment : BaseFragment<PremiumViewModel>(R.layout.fragment_premium) {
@@ -42,15 +39,11 @@ class PremiumFragment : BaseFragment<PremiumViewModel>(R.layout.fragment_premium
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
-    viewLifecycleOwner.lifecycleScope.launch {
-      repeatOnLifecycle(Lifecycle.State.STARTED) {
-        with(viewModel) {
-          launch { uiState.collect { render(it) } }
-          launch { messageFlow.collect { showSnack(it) } }
-          loadBilling(billingClient)
-        }
-      }
-    }
+    launchAndRepeatStarted(
+      { viewModel.uiState.collect { render(it) } },
+      { viewModel.messageFlow.collect { showSnack(it) } },
+      doAfterLaunch = { viewModel.loadBilling(billingClient) }
+    )
   }
 
   private fun setupView() {
