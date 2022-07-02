@@ -2,39 +2,22 @@ package com.michaldrabik.ui_discover_movies
 
 import android.os.Bundle
 import android.view.View
-import android.view.ViewAnimationUtils
 import android.view.ViewGroup
 import androidx.activity.addCallback
-import androidx.core.animation.doOnEnd
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.isVisible
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.clearFragmentResultListener
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
-import com.michaldrabik.ui_base.utilities.extensions.add
-import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
-import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
-import com.michaldrabik.ui_base.utilities.extensions.disableUi
-import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
-import com.michaldrabik.ui_base.utilities.extensions.enableUi
-import com.michaldrabik.ui_base.utilities.extensions.fadeIn
-import com.michaldrabik.ui_base.utilities.extensions.fadeOut
-import com.michaldrabik.ui_base.utilities.extensions.invisible
-import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
-import com.michaldrabik.ui_base.utilities.extensions.onClick
-import com.michaldrabik.ui_base.utilities.extensions.visible
-import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
+import com.michaldrabik.ui_base.utilities.extensions.*
+import com.michaldrabik.ui_discover_movies.filters.DiscoverMoviesFiltersBottomSheet.Companion.REQUEST_DISCOVER_FILTERS
 import com.michaldrabik.ui_discover_movies.recycler.DiscoverMovieListItem
 import com.michaldrabik.ui_discover_movies.recycler.DiscoverMoviesAdapter
 import com.michaldrabik.ui_model.ImageType
@@ -43,8 +26,6 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_discover_movies.*
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
-import kotlin.math.hypot
 import kotlin.random.Random
 
 @AndroidEntryPoint
@@ -90,14 +71,14 @@ class DiscoverMoviesFragment :
     setupRecycler()
     setupSwipeRefresh()
 
-    viewLifecycleOwner.lifecycleScope.launch {
-      repeatOnLifecycle(Lifecycle.State.STARTED) {
-        with(viewModel) {
-          launch { uiState.collect { render(it) } }
-          launch { messageFlow.collect { showSnack(it) } }
-          loadMovies()
-        }
-      }
+    launchAndRepeatStarted(
+      { viewModel.uiState.collect { render(it) } },
+      { viewModel.messageFlow.collect { showSnack(it) } },
+      doAfterLaunch = { viewModel.loadMovies() }
+    )
+
+    setFragmentResultListener(REQUEST_DISCOVER_FILTERS) { _, _ ->
+      viewModel.loadMovies(resetScroll = true, skipCache = true, instantProgress = true)
     }
   }
 
@@ -107,23 +88,13 @@ class DiscoverMoviesFragment :
       settingsIconVisible = false
       isClickable = false
       onClick { openSearch() }
-      onSortClickListener = { toggleFiltersView() }
+      onSortClickListener = { navigateToSafe(R.id.actionDiscoverMoviesFragmentToFilters) }
       translationY = searchViewPosition
     }
     discoverMoviesTabsView.run {
       translationY = tabsViewPosition
       onModeSelected = { mode = it }
       selectMovies()
-    }
-    discoverMoviesMask.onClick { toggleFiltersView() }
-    discoverMoviesFiltersView.onApplyClickListener = {
-      toggleFiltersView()
-      viewModel.loadMovies(
-        resetScroll = true,
-        skipCache = true,
-        instantProgress = true,
-        newFilters = it
-      )
     }
   }
 
@@ -134,8 +105,6 @@ class DiscoverMoviesFragment :
         .updatePadding(top = statusBarSize + dimenToPx(R.dimen.discoverRecyclerPadding))
       (discoverMoviesSearchView.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceSmall))
-      (discoverMoviesFiltersView.layoutParams as ViewGroup.MarginLayoutParams)
-        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.searchViewHeight))
       (discoverMoviesTabsView.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.collectionTabsMargin))
       discoverMoviesSwipeRefresh.setProgressViewOffset(
@@ -191,7 +160,6 @@ class DiscoverMoviesFragment :
   private fun openSearch() {
     disableUi()
     hideNavigation()
-    discoverMoviesFiltersView.fadeOut().add(animations)
     discoverMoviesTabsView.fadeOut(duration = 200).add(animations)
     discoverMoviesRecycler.fadeOut(duration = 200) {
       super.navigateTo(R.id.actionDiscoverMoviesFragmentToSearchFragment, null)
@@ -224,7 +192,6 @@ class DiscoverMoviesFragment :
   private fun animateItemsExit(item: DiscoverMovieListItem) {
     discoverMoviesSearchView.fadeOut().add(animations)
     discoverMoviesTabsView.fadeOut().add(animations)
-    discoverMoviesFiltersView.fadeOut().add(animations)
 
     val clickedIndex = adapter?.indexOf(item) ?: 0
     val itemCount = adapter?.itemCount ?: 0
@@ -249,25 +216,6 @@ class DiscoverMoviesFragment :
     ).add(animations)
   }
 
-  private fun toggleFiltersView() {
-    val delta = dimenToPx(R.dimen.searchViewHeight)
-    val cx = discoverMoviesFiltersView.width
-    val cy = discoverMoviesFiltersView.height + dimenToPx(R.dimen.searchViewHeight)
-    val radius = hypot(cx.toDouble(), cy.toDouble()).toFloat()
-    if (!discoverMoviesFiltersView.isVisible) {
-      val anim = ViewAnimationUtils.createCircularReveal(discoverMoviesFiltersView, cx, -delta, 0F, radius)
-      discoverMoviesFiltersView.visible()
-      discoverMoviesMask.fadeIn()
-      anim.start()
-    } else {
-      ViewAnimationUtils.createCircularReveal(discoverMoviesFiltersView, cx, -delta, radius, 0F).apply {
-        doOnEnd { discoverMoviesFiltersView?.invisible() }
-        start()
-      }.add(animators)
-      discoverMoviesMask.fadeOut().add(animations)
-    }
-  }
-
   private fun render(uiState: DiscoverMoviesUiState) {
     uiState.run {
       items?.let {
@@ -287,9 +235,6 @@ class DiscoverMoviesFragment :
         discoverMoviesSearchView.setTraktProgress(it)
       }
       filters?.let {
-        discoverMoviesFiltersView.run {
-          if (!this.isVisible) bind(it)
-        }
         discoverMoviesSearchView.iconBadgeVisible = !it.isDefault()
       }
     }

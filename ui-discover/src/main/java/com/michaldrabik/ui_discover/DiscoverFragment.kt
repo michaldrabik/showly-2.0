@@ -95,6 +95,10 @@ class DiscoverFragment :
       { viewModel.messageFlow.collect { showSnack(it) } },
       doAfterLaunch = { viewModel.loadItems() }
     )
+
+    setFragmentResultListener(REQUEST_DISCOVER_FILTERS) { _, _ ->
+      viewModel.loadItems(scrollToTop = true, skipCache = true, instantProgress = true)
+    }
   }
 
   private fun setupView() {
@@ -103,7 +107,7 @@ class DiscoverFragment :
       settingsIconVisible = false
       isClickable = false
       onClick { openSearch() }
-      onSortClickListener = { navigateTo(R.id.actionDiscoverFragmentToFilters) }
+      onSortClickListener = { navigateToSafe(R.id.actionDiscoverFragmentToFilters) }
       translationY = searchViewPosition
     }
     discoverModeTabsView.run {
@@ -118,10 +122,6 @@ class DiscoverFragment :
         it.gone()
         showTip(Tip.DISCOVER_FILTERS)
       }
-    }
-
-    setFragmentResultListener(REQUEST_DISCOVER_FILTERS) { _, _ ->
-      viewModel.loadItems(scrollToTop = true, skipCache = true, instantProgress = true)
     }
   }
 
