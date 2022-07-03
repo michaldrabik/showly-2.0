@@ -1,7 +1,6 @@
 package com.michaldrabik.ui_discover_movies.cases
 
 import com.michaldrabik.repository.settings.SettingsRepository
-import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_model.DiscoverFilters
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
@@ -10,19 +9,6 @@ import javax.inject.Inject
 class DiscoverFiltersCase @Inject constructor(
   private val settingsRepository: SettingsRepository
 ) {
-
-  suspend fun saveFilters(filters: DiscoverFilters) {
-    val settings = settingsRepository.load()
-    settingsRepository.update(
-      settings.copy(
-        discoverMoviesFilterFeed = filters.feedOrder,
-        discoverMoviesFilterGenres = filters.genres,
-        showAnticipatedMovies = !filters.hideAnticipated,
-        showCollectionMovies = !filters.hideCollection
-      )
-    )
-    Analytics.logDiscoverMoviesFiltersApply(filters)
-  }
 
   suspend fun loadFilters(): DiscoverFilters {
     val settings = settingsRepository.load()

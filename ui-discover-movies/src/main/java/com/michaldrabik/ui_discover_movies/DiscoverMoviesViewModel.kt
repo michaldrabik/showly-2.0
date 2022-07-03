@@ -61,8 +61,7 @@ class DiscoverMoviesViewModel @Inject constructor(
     pullToRefresh: Boolean = false,
     resetScroll: Boolean = false,
     skipCache: Boolean = false,
-    instantProgress: Boolean = false,
-    newFilters: DiscoverFilters? = null,
+    instantProgress: Boolean = false
   ) {
     loadingState.value = true
 
@@ -80,7 +79,6 @@ class DiscoverMoviesViewModel @Inject constructor(
       }
 
       try {
-        newFilters?.let { filtersCase.saveFilters(it) }
         val filters = filtersCase.loadFilters()
         filtersState.value = filters
 

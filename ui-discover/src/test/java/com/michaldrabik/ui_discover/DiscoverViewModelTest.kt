@@ -13,12 +13,10 @@ import com.michaldrabik.ui_discover.cases.DiscoverFiltersCase
 import com.michaldrabik.ui_discover.cases.DiscoverShowsCase
 import com.michaldrabik.ui_discover.cases.DiscoverTwitterCase
 import com.michaldrabik.ui_model.DiscoverFilters
-import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
-import io.mockk.just
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.toList
@@ -52,7 +50,6 @@ class DiscoverViewModelTest : BaseMockTest() {
     Dispatchers.setMain(testDispatcher)
 
     coEvery { filtersCase.loadFilters() } returns DiscoverFilters()
-    coEvery { filtersCase.saveFilters(any()) } just Runs
     coEvery { showsCase.loadCachedShows(any()) } returns emptyList()
     coEvery { showsCase.loadRemoteShows(any()) } returns emptyList()
 
