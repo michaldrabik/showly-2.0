@@ -37,7 +37,8 @@ internal class DiscoverFiltersBottomSheet : BaseBottomSheetFragment(R.layout.vie
   private val viewModel by viewModels<DiscoverFiltersViewModel>()
   private val binding by viewBinding(ViewDiscoverFiltersSheetBinding::bind)
 
-  @Inject lateinit var networkIconProvider: NetworkIconProvider
+  @Inject
+  lateinit var networkIconProvider: NetworkIconProvider
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
@@ -147,7 +148,7 @@ internal class DiscoverFiltersBottomSheet : BaseBottomSheetFragment(R.layout.vie
 
     val networksNames = networks.map { it.name }
     Network.values()
-      .sortedBy { it.name }
+      .sortedWith(compareByDescending<Network> { it.name in networksNames } then compareBy { it.name })
       .forEach { network ->
         val icon = networkIconProvider.getIcon(network)
         val chip = Chip(requireContext()).apply {
