@@ -31,7 +31,7 @@
   <string name="textNoDescription">Aperçu non disponible.</string>
   <string name="textPleaseWait">Veuillez patienter…</string>
   <string name="textRate">Noter</string>
-  <string name="textLink">Lien</string>
+  <string name="textLink">Liens</string>
   <string name="textRateSaved">Votre évaluation a été enregistrée.</string>
   <string name="textRateRemoved">Votre évaluation a été supprimée.</string>
   <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
