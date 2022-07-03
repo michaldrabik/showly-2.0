@@ -1,2 +1,1 @@
-* Added setting for next episode calculation method
-* Handle Trakt account lists limits errors
+* Added networks filter for shows Discover section
