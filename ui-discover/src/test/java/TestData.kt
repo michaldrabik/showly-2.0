@@ -27,7 +27,7 @@ object TestData {
         tmdb = IdTmdb(id = 0),
         tvrage = IdTvRage(id = 0)
       ),
-      title = "",
+      title = "DISCOVER_LIST_ITEM",
       year = 0,
       overview = "",
       firstAired = "",
