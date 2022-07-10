@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_progress_movies.progress
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkManager
 import com.google.common.truth.Truth.assertThat
@@ -28,22 +27,18 @@ import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import io.mockk.just
 import io.mockk.mockk
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 
-@Suppress("EXPERIMENTAL_API_USAGE")
+@OptIn(ExperimentalCoroutinesApi::class)
 class ProgressMoviesViewModelTest : BaseMockTest() {
-
-  @get:Rule
-  val instantTaskExecutorRule = InstantTaskExecutorRule()
 
   @MockK lateinit var itemsCase: ProgressMoviesItemsCase
   @MockK lateinit var sortCase: ProgressMoviesSortCase
@@ -85,13 +80,11 @@ class ProgressMoviesViewModelTest : BaseMockTest() {
     stateResult.clear()
     messagesResult.clear()
     SUT.viewModelScope.cancel()
-    Dispatchers.resetMain() // reset main dispatcher to the original Main dispatcher
-    testDispatcher.cleanupTestCoroutines()
   }
 
   @Test
-  fun `Should load items if parent timestamp changed`() = runBlockingTest {
-    val job = launch { SUT.uiState.toList(stateResult) }
+  fun `Should load items if parent timestamp changed`() = runTest {
+    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
     val item = mockk<ProgressMovieListItem.MovieItem>()
     coEvery { itemsCase.loadItems(any()) } returns listOf(item)
 
@@ -103,8 +96,8 @@ class ProgressMoviesViewModelTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should not reload items if parent timestamp is the same`() = runBlockingTest {
-    val job = launch { SUT.uiState.toList(stateResult) }
+  fun `Should not reload items if parent timestamp is the same`() = runTest {
+    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
     val item = mockk<ProgressMovieListItem.MovieItem>()
     coEvery { itemsCase.loadItems(any()) } returns listOf(item)
 
@@ -116,8 +109,8 @@ class ProgressMoviesViewModelTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should load items if search query changed`() = runBlockingTest {
-    val job = launch { SUT.uiState.toList(stateResult) }
+  fun `Should load items if search query changed`() = runTest {
+    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
     val item = mockk<ProgressMovieListItem.MovieItem>()
     coEvery { itemsCase.loadItems(any()) } returns listOf(item)
 
@@ -129,8 +122,8 @@ class ProgressMoviesViewModelTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should not reload items if parent search query is the same`() = runBlockingTest {
-    val job = launch { SUT.uiState.toList(stateResult) }
+  fun `Should not reload items if parent search query is the same`() = runTest {
+    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
     val item = mockk<ProgressMovieListItem.MovieItem>()
     coEvery { itemsCase.loadItems(any()) } returns listOf(item)
 
@@ -143,8 +136,8 @@ class ProgressMoviesViewModelTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should load sort order if there are items`() = runBlockingTest {
-    val job = launch { SUT.uiState.toList(stateResult) }
+  fun `Should load sort order if there are items`() = runTest {
+    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
     coEvery { sortCase.loadSortOrder() } returns Pair(SortOrder.NAME, SortType.ASCENDING)
     coEvery { itemsCase.loadItems(any()) } returns listOf(mockk())
 
@@ -157,8 +150,8 @@ class ProgressMoviesViewModelTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should not load sort order if there are no items`() = runBlockingTest {
-    val job = launch { SUT.uiState.toList(stateResult) }
+  fun `Should not load sort order if there are no items`() = runTest {
+    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
     coEvery { sortCase.loadSortOrder() } returns Pair(SortOrder.NAME, SortType.ASCENDING)
 
     SUT.loadSortOrder()
@@ -168,8 +161,8 @@ class ProgressMoviesViewModelTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should toggle pinned item if pinned`() = runBlockingTest {
-    val job = launch { SUT.uiState.toList(stateResult) }
+  fun `Should toggle pinned item if pinned`() = runTest {
+    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
     coEvery { pinnedCase.addPinnedItem(any()) } just Runs
     coEvery { pinnedCase.removePinnedItem(any()) } just Runs
     coEvery { itemsCase.loadItems(any()) } returns listOf(mockk())
@@ -188,8 +181,8 @@ class ProgressMoviesViewModelTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should toggle pinned item if not pinned`() = runBlockingTest {
-    val job = launch { SUT.uiState.toList(stateResult) }
+  fun `Should toggle pinned item if not pinned`() = runTest {
+    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
     coEvery { pinnedCase.addPinnedItem(any()) } just Runs
     coEvery { pinnedCase.removePinnedItem(any()) } just Runs
     coEvery { itemsCase.loadItems(any()) } returns listOf(mockk())
@@ -208,8 +201,8 @@ class ProgressMoviesViewModelTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should check quick rate option enabled`() = runBlockingTest {
-    val job = launch { SUT.eventFlow.toList(eventsResult) }
+  fun `Should check quick rate option enabled`() = runTest {
+    val job = launch(UnconfinedTestDispatcher()) { SUT.eventFlow.toList(eventsResult) }
     coEvery { userTraktManager.isAuthorized() } returns true
     coEvery { settingsRepository.isPremium } returns true
     coEvery { settingsRepository.load() } returns Settings.createInitial().copy(traktQuickRateEnabled = true)
@@ -224,8 +217,8 @@ class ProgressMoviesViewModelTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should check quick rate option not enabled`() = runBlockingTest {
-    val job = launch { SUT.eventFlow.toList(eventsResult) }
+  fun `Should check quick rate option not enabled`() = runTest {
+    val job = launch(UnconfinedTestDispatcher()) { SUT.eventFlow.toList(eventsResult) }
     coEvery { userTraktManager.isAuthorized() } returns true
     coEvery { settingsRepository.isPremium } returns true
     coEvery { settingsRepository.load() } returns Settings.createInitial().copy(traktQuickRateEnabled = false)

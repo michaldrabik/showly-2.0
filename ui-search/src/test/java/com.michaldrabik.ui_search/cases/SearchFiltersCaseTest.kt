@@ -11,11 +11,13 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.impl.annotations.RelaxedMockK
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @Suppress("EXPERIMENTAL_API_USAGE")
 class SearchFiltersCaseTest : BaseMockTest() {
 
@@ -38,21 +40,21 @@ class SearchFiltersCaseTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should pass shows and movies if filters are empty`() = runBlockingTest {
+  fun `Should pass shows and movies if filters are empty`() = runTest {
     val options = SearchOptions()
     val result = SUT.filter(options, item)
     assertThat(result).isTrue()
   }
 
   @Test
-  fun `Should pass shows and movies if filters contain shows and movies`() = runBlockingTest {
+  fun `Should pass shows and movies if filters contain shows and movies`() = runTest {
     val options = SearchOptions(filters = listOf(Mode.SHOWS, Mode.MOVIES))
     val result = SUT.filter(options, item)
     assertThat(result).isTrue()
   }
 
   @Test
-  fun `Should not pass shows if filters contain only movie`() = runBlockingTest {
+  fun `Should not pass shows if filters contain only movie`() = runTest {
     val options = SearchOptions(filters = listOf(Mode.MOVIES))
     coEvery { item.isShow } returns true
     coEvery { item.isMovie } returns false
@@ -64,7 +66,7 @@ class SearchFiltersCaseTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should not pass movies if filters contain only show`() = runBlockingTest {
+  fun `Should not pass movies if filters contain only show`() = runTest {
     val options = SearchOptions(filters = listOf(Mode.SHOWS))
     coEvery { item.isShow } returns false
     coEvery { item.isMovie } returns true
@@ -76,7 +78,7 @@ class SearchFiltersCaseTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should not pass movies if movies are disabled`() = runBlockingTest {
+  fun `Should not pass movies if movies are disabled`() = runTest {
     val options = SearchOptions(filters = listOf(Mode.MOVIES))
     coEvery { settingsRepository.isMoviesEnabled } returns false
 

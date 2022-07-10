@@ -1,20 +1,19 @@
 package com.michaldrabik.ui_progress_movies
 
+import MainDispatcherRule
 import io.mockk.MockKAnnotations
 import io.mockk.mockkStatic
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.setMain
 import org.junit.Before
+import org.junit.Rule
 
 @Suppress("EXPERIMENTAL_API_USAGE")
 abstract class BaseMockTest {
 
-  protected val testDispatcher = TestCoroutineDispatcher()
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
 
   @Before
   open fun setUp() {
-    Dispatchers.setMain(testDispatcher)
     MockKAnnotations.init(this)
     mockkStatic("androidx.room.RoomDatabaseKt")
   }

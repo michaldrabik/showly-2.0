@@ -2,7 +2,6 @@ package com.michaldrabik.ui_statistics
 
 import BaseMockTest
 import TestData
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.viewModelScope
 import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.data_local.LocalDataSource
@@ -25,23 +24,19 @@ import com.michaldrabik.ui_statistics.views.ratings.recycler.StatisticsRatingIte
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runBlockingTest
-import kotlinx.coroutines.test.setMain
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @Suppress("EXPERIMENTAL_API_USAGE")
 class StatisticsViewModelTest : BaseMockTest() {
-
-  @get:Rule
-  val instantTaskExecutorRule = InstantTaskExecutorRule()
 
   @MockK lateinit var ratingsCase: StatisticsLoadRatingsCase
   @MockK lateinit var showsRepository: ShowsRepository
@@ -58,7 +53,6 @@ class StatisticsViewModelTest : BaseMockTest() {
   @Before
   override fun setUp() {
     super.setUp()
-    Dispatchers.setMain(testDispatcher)
 
     coEvery { translationsRepository.getLanguage() } returns "en"
     coEvery { imagesProvider.findCachedImage(any(), any()) } returns Image.createAvailable(
@@ -84,16 +78,14 @@ class StatisticsViewModelTest : BaseMockTest() {
     stateResult.clear()
     messagesResult.clear()
     SUT.viewModelScope.cancel()
-    Dispatchers.resetMain() // reset main dispatcher to the original Main dispatcher
-    testDispatcher.cleanupTestCoroutines()
   }
 
   @Test
-  internal fun `Should load ratings`() = runBlockingTest {
+  internal fun `Should load ratings`() = runTest {
     val movieItem = StatisticsRatingItem(Show.EMPTY, Image.createUnknown(ImageType.POSTER), false, TraktRating.EMPTY)
     coEvery { ratingsCase.loadRatings() } returns listOf(movieItem)
 
-    val job = launch { SUT.uiState.toList(stateResult) }
+    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
 
     SUT.loadRatings()
 
@@ -104,10 +96,10 @@ class StatisticsViewModelTest : BaseMockTest() {
   }
 
   @Test
-  internal fun `Should load empty ratings in case of error`() = runBlockingTest {
+  internal fun `Should load empty ratings in case of error`() = runTest {
     coEvery { ratingsCase.loadRatings() } throws Throwable("Test error")
 
-    val job = launch { SUT.uiState.toList(stateResult) }
+    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
 
     SUT.loadRatings()
 
@@ -117,7 +109,7 @@ class StatisticsViewModelTest : BaseMockTest() {
   }
 
   @Test
-  internal fun `Should load statistics properly`() = runBlockingTest {
+  internal fun `Should load statistics properly`() = runTest {
     val shows = listOf(
       Show.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(1)), runtime = 1, genres = listOf("war", "drama")),
       Show.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(2)), runtime = 2, genres = listOf("war", "animation")),
@@ -140,7 +132,7 @@ class StatisticsViewModelTest : BaseMockTest() {
       TestData.createEpisode().copy(idShowTrakt = 3, runtime = 7),
     )
 
-    val job = launch { SUT.uiState.toList(stateResult) }
+    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
 
     SUT.loadData(limit = 0, initialDelay = 0)
 

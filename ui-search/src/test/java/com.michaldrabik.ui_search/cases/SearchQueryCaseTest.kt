@@ -20,11 +20,13 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.mockk
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @Suppress("EXPERIMENTAL_API_USAGE")
 class SearchQueryCaseTest : BaseMockTest() {
 
@@ -74,7 +76,7 @@ class SearchQueryCaseTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should run search query and return results sorted by score`() = runBlockingTest {
+  fun `Should run search query and return results sorted by score`() = runTest {
     val show = mockk<Show> {
       coEvery { votes } returnsMany listOf(10, 20, 30)
     }

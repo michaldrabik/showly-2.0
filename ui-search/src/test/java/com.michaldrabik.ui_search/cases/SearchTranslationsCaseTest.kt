@@ -12,12 +12,13 @@ import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.mockk
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
-@Suppress("EXPERIMENTAL_API_USAGE")
+@OptIn(ExperimentalCoroutinesApi::class)
 class SearchTranslationsCaseTest : BaseMockTest() {
 
   @RelaxedMockK lateinit var translationsRepository: TranslationsRepository
@@ -36,7 +37,7 @@ class SearchTranslationsCaseTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should return empty show translation if language is default`() = runBlockingTest {
+  fun `Should return empty show translation if language is default`() = runTest {
     coEvery { translationsRepository.getLanguage() } returns "en"
 
     val item = mockk<Show>()
@@ -48,7 +49,7 @@ class SearchTranslationsCaseTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should return empty movie translation if language is default`() = runBlockingTest {
+  fun `Should return empty movie translation if language is default`() = runTest {
     coEvery { translationsRepository.getLanguage() } returns "en"
 
     val item = mockk<Movie>()
@@ -60,7 +61,7 @@ class SearchTranslationsCaseTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should return show translation if language is not default`() = runBlockingTest {
+  fun `Should return show translation if language is not default`() = runTest {
     coEvery { translationsRepository.getLanguage() } returns "pl"
     coEvery { translationsRepository.loadTranslation(any<Show>(), any(), any()) } returns Translation.EMPTY
 
@@ -74,7 +75,7 @@ class SearchTranslationsCaseTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should return movie translation if language is not default`() = runBlockingTest {
+  fun `Should return movie translation if language is not default`() = runTest {
     coEvery { translationsRepository.getLanguage() } returns "pl"
     coEvery { translationsRepository.loadTranslation(any<Movie>(), any(), any()) } returns Translation.EMPTY
 

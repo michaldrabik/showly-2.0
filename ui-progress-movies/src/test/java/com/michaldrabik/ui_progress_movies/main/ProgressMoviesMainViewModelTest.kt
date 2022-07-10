@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_progress_movies.main
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkManager
 import com.google.common.truth.Truth.assertThat
@@ -16,23 +15,19 @@ import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.just
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 
-@Suppress("EXPERIMENTAL_API_USAGE")
+@OptIn(ExperimentalCoroutinesApi::class)
 class ProgressMoviesMainViewModelTest : BaseMockTest() {
-
-  @get:Rule
-  val instantTaskExecutorRule = InstantTaskExecutorRule()
 
   @MockK lateinit var mainCase: ProgressMoviesMainCase
   @MockK lateinit var eventsManager: EventsManager
@@ -57,13 +52,11 @@ class ProgressMoviesMainViewModelTest : BaseMockTest() {
     stateResult.clear()
     messagesResult.clear()
     SUT.viewModelScope.cancel()
-    Dispatchers.resetMain() // reset main dispatcher to the original Main dispatcher
-    testDispatcher.cleanupTestCoroutines()
   }
 
   @Test
-  fun `Should emit current timestamp and calendar mode`() = runBlockingTest {
-    val job = launch { SUT.uiState.toList(stateResult) }
+  fun `Should emit current timestamp and calendar mode`() = runTest {
+    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
 
     SUT.loadProgress()
 
@@ -76,8 +69,8 @@ class ProgressMoviesMainViewModelTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should emit search query`() = runBlockingTest {
-    val job = launch { SUT.uiState.toList(stateResult) }
+  fun `Should emit search query`() = runTest {
+    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
 
     SUT.onSearchQuery("test")
 
@@ -89,8 +82,8 @@ class ProgressMoviesMainViewModelTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should toggle calendar mode properly`() = runBlockingTest {
-    val job = launch { SUT.uiState.toList(stateResult) }
+  fun `Should toggle calendar mode properly`() = runTest {
+    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
 
     SUT.toggleCalendarMode()
     SUT.toggleCalendarMode()
@@ -103,8 +96,8 @@ class ProgressMoviesMainViewModelTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should set watched movie properly and update timestamp`() = runBlockingTest {
-    val job = launch { SUT.uiState.toList(stateResult) }
+  fun `Should set watched movie properly and update timestamp`() = runTest {
+    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
     coEvery { mainCase.addToMyMovies(any<Movie>()) } just Runs
 
     SUT.setWatchedMovie(Movie.EMPTY)

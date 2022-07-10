@@ -1,11 +1,13 @@
+import com.michaldrabik.ui_statistics_movies.MainDispatcherRule
 import io.mockk.MockKAnnotations
-import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Before
+import org.junit.Rule
 
 @Suppress("EXPERIMENTAL_API_USAGE")
 abstract class BaseMockTest {
 
-  protected val testDispatcher = TestCoroutineDispatcher()
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
 
   @Before
   open fun setUp() {

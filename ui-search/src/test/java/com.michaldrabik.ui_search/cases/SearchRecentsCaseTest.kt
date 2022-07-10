@@ -13,12 +13,14 @@ import io.mockk.confirmVerified
 import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.just
 import io.mockk.slot
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
-@Suppress("EXPERIMENTAL_API_USAGE")
+@OptIn(ExperimentalCoroutinesApi::class)
 class SearchRecentsCaseTest : BaseMockTest() {
 
   @RelaxedMockK lateinit var database: LocalDataSource
@@ -44,7 +46,7 @@ class SearchRecentsCaseTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should return recent searches with a limit properly`() = runBlockingTest {
+  fun `Should return recent searches with a limit properly`() = runTest {
     val limit = 3
     coEvery { recentSearchDao.getAll(any()) } returns listOf(recentSearch, recentSearch, recentSearch)
 

@@ -10,13 +10,14 @@ import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_search.BaseMockTest
 import com.michaldrabik.ui_search.recycler.SearchListItem
 import com.michaldrabik.ui_search.utilities.SearchOptions
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Test
-import java.util.UUID
+import java.util.*
 
-@Suppress("EXPERIMENTAL_API_USAGE")
+@OptIn(ExperimentalCoroutinesApi::class)
 class SearchSortingCaseTest : BaseMockTest() {
 
   private lateinit var SUT: SearchSortingCase
@@ -42,7 +43,7 @@ class SearchSortingCaseTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should properly sort ascending by name`() = runBlockingTest {
+  fun `Should properly sort ascending by name`() = runTest {
     val options = SearchOptions(sortOrder = SortOrder.NAME, sortType = SortType.ASCENDING)
 
     val result = testList.sortedWith(SUT.sort(options))
@@ -53,7 +54,7 @@ class SearchSortingCaseTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should properly sort descending by name`() = runBlockingTest {
+  fun `Should properly sort descending by name`() = runTest {
     val options = SearchOptions(sortOrder = SortOrder.NAME, sortType = SortType.DESCENDING)
 
     val result = testList.sortedWith(SUT.sort(options))
@@ -64,7 +65,7 @@ class SearchSortingCaseTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should properly sort ascending by rank`() = runBlockingTest {
+  fun `Should properly sort ascending by rank`() = runTest {
     val options = SearchOptions(sortOrder = SortOrder.RANK, sortType = SortType.ASCENDING)
 
     val result = testList.sortedWith(SUT.sort(options))
@@ -75,7 +76,7 @@ class SearchSortingCaseTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should properly sort descending by rank`() = runBlockingTest {
+  fun `Should properly sort descending by rank`() = runTest {
     val options = SearchOptions(sortOrder = SortOrder.RANK, sortType = SortType.DESCENDING)
 
     val result = testList.sortedWith(SUT.sort(options))
@@ -86,7 +87,7 @@ class SearchSortingCaseTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should properly sort ascending by release date`() = runBlockingTest {
+  fun `Should properly sort ascending by release date`() = runTest {
     val options = SearchOptions(sortOrder = SortOrder.NEWEST, sortType = SortType.ASCENDING)
 
     val result = testList.sortedWith(SUT.sort(options))
@@ -97,7 +98,7 @@ class SearchSortingCaseTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should properly sort descending by release date`() = runBlockingTest {
+  fun `Should properly sort descending by release date`() = runTest {
     val options = SearchOptions(sortOrder = SortOrder.NEWEST, sortType = SortType.DESCENDING)
 
     val result = testList.sortedWith(SUT.sort(options))
@@ -108,7 +109,7 @@ class SearchSortingCaseTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should fail if unsupported sort order`() = runBlockingTest {
+  fun `Should fail if unsupported sort order`() = runTest {
     val options = SearchOptions(sortOrder = SortOrder.RECENTLY_WATCHED)
     assertThrows(IllegalStateException::class.java) {
       testList.sortedWith(SUT.sort(options))

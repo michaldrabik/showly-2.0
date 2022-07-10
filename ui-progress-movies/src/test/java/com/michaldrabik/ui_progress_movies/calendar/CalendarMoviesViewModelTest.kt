@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_progress_movies.calendar
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.viewModelScope
 import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.repository.TranslationsRepository
@@ -18,22 +17,18 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 
-@Suppress("EXPERIMENTAL_API_USAGE")
+@OptIn(ExperimentalCoroutinesApi::class)
 class CalendarMoviesViewModelTest : BaseMockTest() {
-
-  @get:Rule
-  val instantTaskExecutorRule = InstantTaskExecutorRule()
 
   @MockK lateinit var recentsCase: CalendarMoviesRecentsCase
   @MockK lateinit var futureCase: CalendarMoviesFutureCase
@@ -67,13 +62,11 @@ class CalendarMoviesViewModelTest : BaseMockTest() {
     stateResult.clear()
     messagesResult.clear()
     SUT.viewModelScope.cancel()
-    Dispatchers.resetMain() // reset main dispatcher to the original Main dispatcher
-    testDispatcher.cleanupTestCoroutines()
   }
 
   @Test
-  fun `Should load items if parent timestamp changed`() = runBlockingTest {
-    val job = launch { SUT.uiState.toList(stateResult) }
+  fun `Should load items if parent timestamp changed`() = runTest {
+    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
     val item = mockk<CalendarMovieListItem.MovieItem>()
     coEvery { futureCase.loadItems(any()) } returns listOf(item)
 
@@ -86,8 +79,8 @@ class CalendarMoviesViewModelTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should not reload items if parent timestamp is the same`() = runBlockingTest {
-    val job = launch { SUT.uiState.toList(stateResult) }
+  fun `Should not reload items if parent timestamp is the same`() = runTest {
+    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
     val item = mockk<CalendarMovieListItem.MovieItem>()
     coEvery { futureCase.loadItems(any()) } returns listOf(item)
 
@@ -99,8 +92,8 @@ class CalendarMoviesViewModelTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should load items if calendar mode changed`() = runBlockingTest {
-    val job = launch { SUT.uiState.toList(stateResult) }
+  fun `Should load items if calendar mode changed`() = runTest {
+    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
     val item = mockk<CalendarMovieListItem.MovieItem>()
     coEvery { recentsCase.loadItems(any()) } returns listOf(item)
 
@@ -113,8 +106,8 @@ class CalendarMoviesViewModelTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should load items if search query changed`() = runBlockingTest {
-    val job = launch { SUT.uiState.toList(stateResult) }
+  fun `Should load items if search query changed`() = runTest {
+    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
     val item = mockk<CalendarMovieListItem.MovieItem>()
     coEvery { futureCase.loadItems(any()) } returns listOf(item)
 
@@ -127,8 +120,8 @@ class CalendarMoviesViewModelTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should not reload items if parent search query is the same`() = runBlockingTest {
-    val job = launch { SUT.uiState.toList(stateResult) }
+  fun `Should not reload items if parent search query is the same`() = runTest {
+    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
     val item = mockk<CalendarMovieListItem.MovieItem>()
     coEvery { futureCase.loadItems(any()) } returns listOf(item)
 
@@ -142,8 +135,8 @@ class CalendarMoviesViewModelTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should check quick rate option enabled`() = runBlockingTest {
-    val job = launch { SUT.uiState.toList(stateResult) }
+  fun `Should check quick rate option enabled`() = runTest {
+    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
     coEvery { ratingsCase.isQuickRateEnabled() } returns true
     assertThat(SUT.isQuickRateEnabled).isFalse()
 

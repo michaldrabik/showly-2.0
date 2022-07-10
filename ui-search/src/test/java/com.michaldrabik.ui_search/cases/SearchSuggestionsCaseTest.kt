@@ -14,12 +14,13 @@ import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
-@Suppress("EXPERIMENTAL_API_USAGE")
+@OptIn(ExperimentalCoroutinesApi::class)
 class SearchSuggestionsCaseTest : BaseMockTest() {
 
   @RelaxedMockK lateinit var database: LocalDataSource
@@ -58,21 +59,21 @@ class SearchSuggestionsCaseTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should skip preload local shows cache if already loaded`() = runBlockingTest {
+  fun `Should skip preload local shows cache if already loaded`() = runTest {
     SUT.preloadCache() // Initial preload. Db data should be loaded
     SUT.preloadCache() // Further preload. Db data should not be loaded
     coVerify(exactly = 1) { showsDao.getAll() }
   }
 
   @Test
-  fun `Should skip preload local movies cache if already loaded`() = runBlockingTest {
+  fun `Should skip preload local movies cache if already loaded`() = runTest {
     SUT.preloadCache() // Initial preload. Db data should be loaded
     SUT.preloadCache() // Further preload. Db data should not be loaded
     coVerify(exactly = 1) { moviesDao.getAll() }
   }
 
   @Test
-  fun `Should skip preload local movies cache if movies disabled`() = runBlockingTest {
+  fun `Should skip preload local movies cache if movies disabled`() = runTest {
     coEvery { settingsRepository.isMoviesEnabled } returns false
 
     SUT.preloadCache()
@@ -80,20 +81,20 @@ class SearchSuggestionsCaseTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should skip preload local shows translations cache if default language`() = runBlockingTest {
+  fun `Should skip preload local shows translations cache if default language`() = runTest {
     SUT.preloadCache()
     coVerify(exactly = 0) { translationsRepository.loadAllShowsLocal(any()) }
   }
 
   @Test
-  fun `Should skip preload local movies translations cache if default language`() = runBlockingTest {
+  fun `Should skip preload local movies translations cache if default language`() = runTest {
     SUT.preloadCache()
     coVerify(exactly = 0) { translationsRepository.loadAllMoviesLocal(any()) }
   }
 
   @Test
   fun `Should skip preload local movies translations cache if not default language but movies are disabled`() =
-    runBlockingTest {
+    runTest {
       coEvery { translationsRepository.getLanguage() } returns "br"
       coEvery { settingsRepository.isMoviesEnabled } returns false
 
@@ -102,14 +103,14 @@ class SearchSuggestionsCaseTest : BaseMockTest() {
     }
 
   @Test
-  fun `Should preload local cache`() = runBlockingTest {
+  fun `Should preload local cache`() = runTest {
     SUT.preloadCache()
     coVerify(exactly = 1) { showsDao.getAll() }
     coVerify(exactly = 1) { moviesDao.getAll() }
   }
 
   @Test
-  fun `Should preload local translations cache`() = runBlockingTest {
+  fun `Should preload local translations cache`() = runTest {
     coEvery { translationsRepository.getLanguage() } returns "br"
 
     SUT.preloadCache()
@@ -119,7 +120,7 @@ class SearchSuggestionsCaseTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should return empty list if query is blank`() = runBlockingTest {
+  fun `Should return empty list if query is blank`() = runTest {
     val result = SUT.loadSuggestions("   ")
 
     assertThat(result).isEmpty()
@@ -128,7 +129,7 @@ class SearchSuggestionsCaseTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should clear local caches properly`() = runBlockingTest {
+  fun `Should clear local caches properly`() = runTest {
     coEvery { translationsRepository.getLanguage() } returns "br"
 
     SUT.preloadCache()

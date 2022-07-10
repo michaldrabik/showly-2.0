@@ -23,7 +23,6 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
@@ -34,20 +33,11 @@ import java.util.concurrent.TimeUnit
 @Suppress("EXPERIMENTAL_API_USAGE")
 class DiscoverViewModelTest : BaseMockTest() {
 
-  @MockK
-  lateinit var showsCase: DiscoverShowsCase
-
-  @MockK
-  lateinit var filtersCase: DiscoverFiltersCase
-
-  @MockK
-  lateinit var twitterCase: DiscoverTwitterCase
-
-  @MockK
-  lateinit var imagesProvider: ShowImagesProvider
-
-  @RelaxedMockK
-  lateinit var workManager: WorkManager
+  @MockK lateinit var showsCase: DiscoverShowsCase
+  @MockK lateinit var filtersCase: DiscoverFiltersCase
+  @MockK lateinit var twitterCase: DiscoverTwitterCase
+  @MockK lateinit var imagesProvider: ShowImagesProvider
+  @RelaxedMockK lateinit var workManager: WorkManager
 
   private lateinit var SUT: DiscoverViewModel
 
@@ -262,7 +252,7 @@ class DiscoverViewModelTest : BaseMockTest() {
 
     SUT.loadItems()
 
-    assertThat(messagesResult.last().consume()).isEqualTo(R.string.errorCouldNotLoadDiscover)
+    assertThat(messagesResult.last().consume()).isEqualTo(com.michaldrabik.ui_base.R.string.errorCouldNotLoadDiscover)
 
     job.cancel()
     job2.cancel()
