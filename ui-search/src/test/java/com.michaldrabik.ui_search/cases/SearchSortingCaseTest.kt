@@ -15,7 +15,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Test
-import java.util.*
+import java.util.UUID
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class SearchSortingCaseTest : BaseMockTest() {

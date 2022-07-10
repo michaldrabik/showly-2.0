@@ -5,7 +5,7 @@ import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_search.recycler.SearchListItem
-import java.util.*
+import java.util.UUID
 
 object TestData {
 
