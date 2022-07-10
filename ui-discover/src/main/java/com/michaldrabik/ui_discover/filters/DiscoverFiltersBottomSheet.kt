@@ -15,6 +15,7 @@ import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.screenHeight
+import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_discover.R
 import com.michaldrabik.ui_discover.databinding.ViewDiscoverFiltersSheetBinding
@@ -24,7 +25,6 @@ import com.michaldrabik.ui_model.DiscoverSortOrder
 import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.Network
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -60,6 +60,7 @@ internal class DiscoverFiltersBottomSheet : BaseBottomSheetFragment(R.layout.vie
 
     with(binding) {
       discoverFiltersApplyButton.onClick { saveFilters() }
+      discoverFiltersClearButton.onClick { renderFilters(DiscoverFilters()) }
     }
   }
 
@@ -105,18 +106,23 @@ internal class DiscoverFiltersBottomSheet : BaseBottomSheetFragment(R.layout.vie
 
   @SuppressLint("SetTextI18n")
   private fun render(uiState: DiscoverFiltersUiState) {
-    with(binding) {
-      with(uiState) {
-        filters?.run {
-          discoverFiltersChipHot.isChecked = feedOrder == DiscoverSortOrder.HOT
-          discoverFiltersChipTopRated.isChecked = feedOrder == DiscoverSortOrder.RATING
-          discoverFiltersChipMostRecent.isChecked = feedOrder == DiscoverSortOrder.NEWEST
-          discoverFiltersAnticipatedSwitch.isChecked = hideAnticipated
-          discoverFiltersCollectionSwitch.isChecked = hideCollection
-          renderGenres(genres)
-          renderNetworks(networks)
-        }
+    with(uiState) {
+      filters?.run {
+        renderFilters(this)
       }
+    }
+  }
+
+  private fun renderFilters(discoverFilters: DiscoverFilters) {
+    with(binding) {
+      discoverFiltersChipHot.isChecked = discoverFilters.feedOrder == DiscoverSortOrder.HOT
+      discoverFiltersChipTopRated.isChecked = discoverFilters.feedOrder == DiscoverSortOrder.RATING
+      discoverFiltersChipMostRecent.isChecked = discoverFilters.feedOrder == DiscoverSortOrder.NEWEST
+      discoverFiltersAnticipatedSwitch.isChecked = discoverFilters.hideAnticipated
+      discoverFiltersCollectionSwitch.isChecked = discoverFilters.hideCollection
+      discoverFiltersClearButton.visibleIf(!discoverFilters.isDefault())
+      renderGenres(discoverFilters.genres)
+      renderNetworks(discoverFilters.networks)
     }
   }
 
