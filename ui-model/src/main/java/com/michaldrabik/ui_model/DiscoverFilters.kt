@@ -8,9 +8,9 @@ data class DiscoverFilters(
   val networks: List<Network> = emptyList()
 ) {
 
-  fun isDefault() = feedOrder == DiscoverSortOrder.HOT
-    && hideAnticipated
-    && !hideCollection
-    && genres.isEmpty()
-    && networks.isEmpty()
+  fun isDefault() = feedOrder == DiscoverSortOrder.HOT &&
+    hideAnticipated &&
+    !hideCollection &&
+    genres.isEmpty() &&
+    networks.isEmpty()
 }
