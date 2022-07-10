@@ -64,7 +64,6 @@ class DiscoverViewModel @Inject constructor(
     scrollToTop: Boolean = false,
     skipCache: Boolean = false,
     instantProgress: Boolean = false,
-    newFilters: DiscoverFilters? = null,
   ) {
     loadingState.value = true
 

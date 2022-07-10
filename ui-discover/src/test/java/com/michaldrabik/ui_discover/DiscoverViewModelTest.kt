@@ -16,16 +16,15 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -35,11 +34,20 @@ import java.util.concurrent.TimeUnit
 @Suppress("EXPERIMENTAL_API_USAGE")
 class DiscoverViewModelTest : BaseMockTest() {
 
-  @MockK lateinit var showsCase: DiscoverShowsCase
-  @MockK lateinit var filtersCase: DiscoverFiltersCase
-  @MockK lateinit var twitterCase: DiscoverTwitterCase
-  @MockK lateinit var imagesProvider: ShowImagesProvider
-  @RelaxedMockK lateinit var workManager: WorkManager
+  @MockK
+  lateinit var showsCase: DiscoverShowsCase
+
+  @MockK
+  lateinit var filtersCase: DiscoverFiltersCase
+
+  @MockK
+  lateinit var twitterCase: DiscoverTwitterCase
+
+  @MockK
+  lateinit var imagesProvider: ShowImagesProvider
+
+  @RelaxedMockK
+  lateinit var workManager: WorkManager
 
   private lateinit var SUT: DiscoverViewModel
 
@@ -215,20 +223,24 @@ class DiscoverViewModelTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should post cached results and then fresh remote results`() = runBlockingTest {
+  fun `Should post cached results and then fresh remote results`() = runTest {
     val stateResult = mutableListOf<DiscoverUiState>()
     val messagesResult = mutableListOf<MessageEvent>()
 
-    val job = launch { SUT.uiState.toList(stateResult) }
-    val job2 = launch { SUT.messageFlow.toList(messagesResult) }
+    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+    val job2 = launch(UnconfinedTestDispatcher()) { SUT.messageFlow.toList(messagesResult) }
 
     val cachedItem = TestData.DISCOVER_LIST_ITEM
     val remoteItem = cachedItem.copy(isFollowed = true)
     coEvery { showsCase.loadCachedShows(any()) } returns listOf(cachedItem)
-    coEvery { showsCase.loadRemoteShows(any()) } returns listOf(remoteItem)
+    coEvery { showsCase.loadRemoteShows(any()) } coAnswers {
+      delay(1000)
+      listOf(remoteItem)
+    }
     coEvery { showsCase.isCacheValid() } returns false
 
     SUT.loadItems()
+    advanceUntilIdle()
 
     assertThat(stateResult.any { it.items?.contains(cachedItem) == true }).isTrue()
     assertThat(stateResult.last().items?.contains(remoteItem)).isTrue()
