@@ -9,5 +9,5 @@
   <dimen name="newsItemImageSize">92dp</dimen>
 
   <dimen name="newsCardCornerRadius">8dp</dimen>
-  <dimen name="newsCardImageHeight">200dp</dimen>
+  <dimen name="newsCardImageHeight">220dp</dimen>
 </resources>
