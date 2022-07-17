@@ -67,7 +67,7 @@
   <string name="textSettingsStreamingServicesTitle">Yayın Servisleri</string>
   <string name="textSettingsStreamingServicesMessage">Yayın hizmetleri verilerini görüntüleyin.</string>
   <string name="textSettingsProgressNextEpisodeTitle">Sonraki Bölüm</string>
-  <string name="textSettingsProgressNextEpisodeMessage">Sonraki bölümü hesapla:</string>
+  <string name="textSettingsProgressNextEpisodeMessage">Sonraki bölümü hesaplamakta şunu kullan:</string>
   <string name="textNextEpisodeLastWatched">İzlenen son bölüm</string>
   <string name="textNextEpisodeOldest">İzlenmeyen en eski bölüm</string>
   <string name="textThemeDark">Karanlık</string>
