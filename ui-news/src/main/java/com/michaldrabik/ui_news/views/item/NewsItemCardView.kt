@@ -69,6 +69,9 @@ class NewsItemCardView : FrameLayout {
 
     with(binding) {
       newsItemHeaderIcon.setImageResource(icon)
+      if (icon == R.drawable.ic_television) {
+        newsItemHeaderIcon.translationY = -2F
+      }
       newsItemPlaceholder.setImageResource(icon)
 
       newsItemTitle.text = when {
@@ -106,9 +109,12 @@ class NewsItemCardView : FrameLayout {
   }
 
   private fun clear() {
-    Glide.with(this@NewsItemCardView).clear(binding.newsItemImage)
-    binding.newsItemPlayIcon.gone()
-    binding.newsItemPlaceholder.gone()
-    binding.newsItemImage.visible()
+    with(binding) {
+      Glide.with(this@NewsItemCardView).clear(newsItemImage)
+      newsItemPlayIcon.gone()
+      newsItemPlaceholder.gone()
+      newsItemImage.visible()
+      newsItemHeaderIcon.translationY = 0f
+    }
   }
 }

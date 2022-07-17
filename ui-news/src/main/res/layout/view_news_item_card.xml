@@ -98,10 +98,9 @@
         tools:text="@tools:sample/lorem/random"
         />
 
-
       <ImageView
         android:id="@+id/newsItemHeaderIcon"
-        android:layout_width="20dp"
+        android:layout_width="14dp"
         android:layout_height="0dp"
         android:layout_marginStart="14dp"
         android:translationX="-1dp"
