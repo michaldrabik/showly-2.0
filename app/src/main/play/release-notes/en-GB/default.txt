@@ -1,1 +1,2 @@
 * Added Discover shows filter for most popular networks
+* Added Card view type for News section (Premium)
