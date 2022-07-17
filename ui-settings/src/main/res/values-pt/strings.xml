@@ -66,6 +66,10 @@
   <string name="textSettingsStreamingsDisclaimer">Dados de serviços de streaming são fornecidos por</string>
   <string name="textSettingsStreamingServicesTitle">Serviços de streaming</string>
   <string name="textSettingsStreamingServicesMessage">Exibir dados de serviços de streaming.</string>
+  <string name="textSettingsProgressNextEpisodeTitle">Próximo Episódio</string>
+  <string name="textSettingsProgressNextEpisodeMessage">Calcular próximo episódio usando:</string>
+  <string name="textNextEpisodeLastWatched">Último episódio assistido</string>
+  <string name="textNextEpisodeOldest">Episódio mais antigo não assistido</string>
   <string name="textThemeDark">Escuro</string>
   <string name="textThemeLight">Claro</string>
   <string name="textThemeSystem">Sistema</string>
