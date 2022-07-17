@@ -7,4 +7,7 @@
 
   <dimen name="newsItemPaddingHorizontal">12dp</dimen>
   <dimen name="newsItemImageSize">92dp</dimen>
+
+  <dimen name="newsCardCornerRadius">8dp</dimen>
+  <dimen name="newsCardImageHeight">200dp</dimen>
 </resources>

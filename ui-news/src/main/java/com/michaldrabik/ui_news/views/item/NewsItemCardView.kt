@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_news.views
+package com.michaldrabik.ui_news.views.item
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -30,31 +30,29 @@ import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
 import com.michaldrabik.ui_model.NewsItem.Type
 import com.michaldrabik.ui_news.R
-import com.michaldrabik.ui_news.databinding.ViewNewsItemBinding
+import com.michaldrabik.ui_news.databinding.ViewNewsItemCardBinding
 import com.michaldrabik.ui_news.recycler.NewsListItem
 import java.util.Locale
 
 @SuppressLint("SetTextI18n")
-class NewsItemView : FrameLayout {
+class NewsItemCardView : FrameLayout {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-  private val cornerRadius by lazy { context.dimenToPx(R.dimen.mediaTileCorner) }
+  private val cornerRadius by lazy { context.dimenToPx(R.dimen.newsCardCornerRadius) }
 
   var itemClickListener: ((NewsListItem) -> Unit)? = null
 
-  private val binding = ViewNewsItemBinding.inflate(LayoutInflater.from(context), this)
+  private val binding = ViewNewsItemCardBinding.inflate(LayoutInflater.from(context), this)
 
   init {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+    clipChildren = false
+    clipToPadding = false
 
-    with(binding) {
-      newsItemRoot.onClick { itemClickListener?.invoke(item) }
-      newsItemImage.onClick { itemClickListener?.invoke(item) }
-      newsItemPlaceholder.onClick { itemClickListener?.invoke(item) }
-    }
+    binding.newsItemRoot.onClick { itemClickListener?.invoke(item) }
   }
 
   private lateinit var item: NewsListItem
@@ -93,7 +91,7 @@ class NewsItemView : FrameLayout {
       return
     }
 
-    Glide.with(this@NewsItemView)
+    Glide.with(this@NewsItemCardView)
       .load(item.item.image)
       .transform(CenterCrop(), RoundedCorners(cornerRadius))
       .transition(withCrossFade(Config.IMAGE_FADE_DURATION_MS))
@@ -108,7 +106,7 @@ class NewsItemView : FrameLayout {
   }
 
   private fun clear() {
-    Glide.with(this@NewsItemView).clear(binding.newsItemImage)
+    Glide.with(this@NewsItemCardView).clear(binding.newsItemImage)
     binding.newsItemPlayIcon.gone()
     binding.newsItemPlaceholder.gone()
     binding.newsItemImage.visible()
