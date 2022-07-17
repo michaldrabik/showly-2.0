@@ -35,7 +35,6 @@ import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.NewsItem
 import com.michaldrabik.ui_news.databinding.FragmentNewsBinding
 import com.michaldrabik.ui_news.recycler.NewsAdapter
-import com.michaldrabik.ui_news.views.item.NewsItemViewType
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -207,7 +206,11 @@ class NewsFragment :
 
   private fun render(ui: NewsUiState) {
     with(ui) {
-      adapter?.setItems(items, NewsItemViewType.CARD)
+      adapter?.run {
+        setViewType(viewType)
+        setItems(items)
+      }
+
       with(binding) {
         fragmentNewsRecycler.fadeIf(items.isNotEmpty())
         fragmentNewsFiltersView.setFilters(filters)

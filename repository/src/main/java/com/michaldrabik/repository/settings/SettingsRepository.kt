@@ -6,6 +6,7 @@ import androidx.core.content.edit
 import com.michaldrabik.common.Config.DEFAULT_COUNTRY
 import com.michaldrabik.common.Config.DEFAULT_DATE_FORMAT
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
+import com.michaldrabik.common.Config.DEFAULT_NEWS_VIEW_TYPE
 import com.michaldrabik.common.Mode
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.utilities.TransactionsProvider
@@ -31,7 +32,7 @@ class SettingsRepository @Inject constructor(
   private val localSource: LocalDataSource,
   private val transactions: TransactionsProvider,
   private val mappers: Mappers,
-  @Named("miscPreferences") private var preferences: SharedPreferences
+  @Named("miscPreferences") private var preferences: SharedPreferences,
 ) {
 
   companion object Key {
@@ -52,6 +53,7 @@ class SettingsRepository @Inject constructor(
     private const val PROGRESS_ON_HOLD_COLLAPSED = "PROGRESS_ON_HOLD_COLLAPSED"
     private const val PROGRESS_NEXT_EPISODE_TYPE = "PROGRESS_NEXT_EPISODE_TYPE"
     private const val NEWS_FILTERS = "NEWS_FILTERS"
+    private const val NEWS_VIEW_TYPE = "NEWS_VIEW_TYPE"
   }
 
   suspend fun isInitialized() =
@@ -82,6 +84,7 @@ class SettingsRepository @Inject constructor(
   var isProgressUpcomingCollapsed by BooleanPreference(preferences, PROGRESS_UPCOMING_COLLAPSED)
   var isProgressOnHoldCollapsed by BooleanPreference(preferences, PROGRESS_ON_HOLD_COLLAPSED)
   var progressNextEpisodeType by EnumPreference(preferences, PROGRESS_NEXT_EPISODE_TYPE, LAST_WATCHED, ProgressNextEpisodeType::class.java)
+  var newsViewType by StringPreference(preferences, NEWS_VIEW_TYPE, DEFAULT_NEWS_VIEW_TYPE)
 
   var mode: Mode
     get() {

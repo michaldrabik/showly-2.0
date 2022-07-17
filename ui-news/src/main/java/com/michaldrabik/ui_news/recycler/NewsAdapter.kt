@@ -16,13 +16,15 @@ class NewsAdapter(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), AsyncListDiffer.ListListener<NewsListItem> {
 
   private val asyncDiffer = AsyncListDiffer(this, NewsListItemDiffCallback())
-  private var viewType: NewsItemViewType = CARD
+  private var viewType: NewsItemViewType = ROW
+
+  fun setViewType(viewType: NewsItemViewType) {
+    this.viewType = viewType
+  }
 
   fun setItems(
     newItems: List<NewsListItem>,
-    viewType: NewsItemViewType,
   ) {
-    this.viewType = viewType
     with(asyncDiffer) {
       removeListListener(this@NewsAdapter)
       addListListener(this@NewsAdapter)

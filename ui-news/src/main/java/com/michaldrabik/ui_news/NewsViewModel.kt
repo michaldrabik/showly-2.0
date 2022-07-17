@@ -12,7 +12,9 @@ import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.NewsItem
 import com.michaldrabik.ui_news.cases.NewsFiltersCase
 import com.michaldrabik.ui_news.cases.NewsLoadItemsCase
+import com.michaldrabik.ui_news.cases.NewsViewTypeCase
 import com.michaldrabik.ui_news.recycler.NewsListItem
+import com.michaldrabik.ui_news.views.item.NewsItemViewType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -27,17 +29,19 @@ import javax.inject.Inject
 class NewsViewModel @Inject constructor(
   private val loadNewsCase: NewsLoadItemsCase,
   private val filtersCase: NewsFiltersCase,
+  private val viewTypeCase: NewsViewTypeCase,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private var previousRefresh = 0L
 
   private val itemsState = MutableStateFlow(emptyList<NewsListItem>())
   private val filtersState = MutableStateFlow(emptyList<NewsItem.Type>())
+  private val viewTypeState = MutableStateFlow(NewsItemViewType.ROW)
   private val loadingState = MutableStateFlow(false)
 
   init {
-    val types = filtersCase.loadFilters()
-    loadItems(filters = types)
+    viewTypeState.value = viewTypeCase.loadViewType()
+    loadItems(filters = filtersCase.loadFilters())
   }
 
   fun loadItems(
@@ -93,12 +97,13 @@ class NewsViewModel @Inject constructor(
 
   val uiState = combine(
     itemsState,
-    filtersState,
+    filtersState, viewTypeState,
     loadingState
-  ) { items, filters, loading ->
+  ) { items, filters, viewType, loading ->
     NewsUiState(
       items = items,
       filters = filters,
+      viewType = viewType,
       isLoading = loading
     )
   }.stateIn(
