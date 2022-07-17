@@ -33,7 +33,6 @@ import com.michaldrabik.ui_my_movies.watchlist.recycler.WatchlistAdapter
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_watchlist_movies.*
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class WatchlistFragment :

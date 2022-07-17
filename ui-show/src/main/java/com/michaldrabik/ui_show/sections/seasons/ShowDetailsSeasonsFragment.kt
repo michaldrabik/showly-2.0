@@ -30,7 +30,6 @@ import com.michaldrabik.ui_show.quicksetup.QuickSetupView
 import com.michaldrabik.ui_show.sections.seasons.recycler.SeasonListItem
 import com.michaldrabik.ui_show.sections.seasons.recycler.SeasonsAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import java.time.Duration
 
 @AndroidEntryPoint

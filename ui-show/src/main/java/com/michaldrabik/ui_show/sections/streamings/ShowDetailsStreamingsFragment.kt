@@ -15,7 +15,6 @@ import com.michaldrabik.ui_show.ShowDetailsViewModel
 import com.michaldrabik.ui_show.databinding.FragmentShowDetailsStreamingsBinding
 import com.michaldrabik.ui_streamings.recycler.StreamingAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class ShowDetailsStreamingsFragment : BaseFragment<ShowDetailsStreamingsViewModel>(R.layout.fragment_show_details_streamings) {

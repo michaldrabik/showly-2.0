@@ -33,7 +33,6 @@ import com.michaldrabik.ui_my_movies.main.FollowedMoviesViewModel
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_hidden_movies.*
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class HiddenFragment :

@@ -36,7 +36,6 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_SORT_ORDER
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_watchlist.*
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class WatchlistFragment :

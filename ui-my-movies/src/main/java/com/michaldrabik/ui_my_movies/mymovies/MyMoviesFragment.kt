@@ -32,7 +32,6 @@ import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesAdapter
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_my_movies.*
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class MyMoviesFragment :

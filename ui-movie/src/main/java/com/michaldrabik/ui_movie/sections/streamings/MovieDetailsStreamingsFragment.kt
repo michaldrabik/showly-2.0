@@ -14,7 +14,6 @@ import com.michaldrabik.ui_movie.R
 import com.michaldrabik.ui_streamings.recycler.StreamingAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_movie_details_streamings.*
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class MovieDetailsStreamingsFragment : BaseFragment<MovieDetailsStreamingsViewModel>(R.layout.fragment_movie_details_streamings) {

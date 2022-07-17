@@ -61,7 +61,6 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_REPLY_USER
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_EPISODE_DETAILS
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.parcelize.Parcelize
 import timber.log.Timber
 import java.util.Locale.ENGLISH

@@ -54,7 +54,6 @@ import com.michaldrabik.ui_settings.helpers.PlayStoreHelper
 import com.michaldrabik.ui_settings.helpers.WidgetTransparency
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_settings.*
-import kotlinx.coroutines.flow.collect
 import com.michaldrabik.data_remote.Config as ConfigNetwork
 
 @AndroidEntryPoint

@@ -29,7 +29,6 @@ import com.michaldrabik.ui_show.ShowDetailsViewModel
 import com.michaldrabik.ui_show.databinding.FragmentShowDetailsPeopleBinding
 import com.michaldrabik.ui_show.sections.people.recycler.ActorsAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class ShowDetailsPeopleFragment : BaseFragment<ShowDetailsPeopleViewModel>(R.layout.fragment_show_details_people) {

@@ -36,7 +36,6 @@ import com.michaldrabik.ui_show.databinding.FragmentShowDetailsEpisodesBinding
 import com.michaldrabik.ui_show.episodes.recycler.EpisodesAdapter
 import com.michaldrabik.ui_show.sections.seasons.recycler.SeasonListItem
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.parcelize.Parcelize
 import timber.log.Timber
 import java.util.Locale

@@ -20,7 +20,6 @@ import com.michaldrabik.ui_show.ShowDetailsFragment
 import com.michaldrabik.ui_show.ShowDetailsViewModel
 import com.michaldrabik.ui_show.databinding.FragmentShowDetailsNextEpisodeBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import java.util.Locale
 
 @AndroidEntryPoint

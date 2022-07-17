@@ -36,7 +36,6 @@ import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_discover_movies.*
-import kotlinx.coroutines.flow.collect
 import kotlin.random.Random
 
 @AndroidEntryPoint

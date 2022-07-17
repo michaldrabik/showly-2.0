@@ -15,6 +15,7 @@ import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.screenHeight
+import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_discover_movies.R
 import com.michaldrabik.ui_discover_movies.databinding.ViewDiscoverMoviesFiltersSheetBinding
@@ -22,7 +23,6 @@ import com.michaldrabik.ui_model.DiscoverFilters
 import com.michaldrabik.ui_model.DiscoverSortOrder
 import com.michaldrabik.ui_model.Genre
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 internal class DiscoverMoviesFiltersBottomSheet : BaseBottomSheetFragment(R.layout.view_discover_movies_filters_sheet) {
@@ -54,6 +54,7 @@ internal class DiscoverMoviesFiltersBottomSheet : BaseBottomSheetFragment(R.layo
 
     with(binding) {
       applyButton.onClick { saveFilters() }
+      clearButton.onClick { renderFilters(DiscoverFilters()) }
     }
   }
 
@@ -93,15 +94,20 @@ internal class DiscoverMoviesFiltersBottomSheet : BaseBottomSheetFragment(R.layo
     with(binding) {
       with(uiState) {
         filters?.run {
-          feedChipHot.isChecked = feedOrder == DiscoverSortOrder.HOT
-          feedChipTopRated.isChecked = feedOrder == DiscoverSortOrder.RATING
-          feedChipRecent.isChecked = feedOrder == DiscoverSortOrder.NEWEST
-          anticipatedSwitch.isChecked = hideAnticipated
-          collectionSwitch.isChecked = hideCollection
-          renderGenres(genres)
+          renderFilters(this)
         }
       }
     }
+  }
+
+  private fun renderFilters(discoverFilters: DiscoverFilters) {
+    binding.feedChipHot.isChecked = discoverFilters.feedOrder == DiscoverSortOrder.HOT
+    binding.feedChipTopRated.isChecked = discoverFilters.feedOrder == DiscoverSortOrder.RATING
+    binding.feedChipRecent.isChecked = discoverFilters.feedOrder == DiscoverSortOrder.NEWEST
+    binding.anticipatedSwitch.isChecked = discoverFilters.hideAnticipated
+    binding.collectionSwitch.isChecked = discoverFilters.hideCollection
+    binding.clearButton.visibleIf(!discoverFilters.isDefault())
+    renderGenres(discoverFilters.genres)
   }
 
   private fun renderGenres(genres: List<Genre>) {

@@ -15,7 +15,6 @@ import com.michaldrabik.ui_movie.R
 import com.michaldrabik.ui_movie.helpers.MovieLink
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_movie_details_ratings.*
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class MovieDetailsRatingsFragment : BaseFragment<MovieDetailsRatingsViewModel>(R.layout.fragment_movie_details_ratings) {

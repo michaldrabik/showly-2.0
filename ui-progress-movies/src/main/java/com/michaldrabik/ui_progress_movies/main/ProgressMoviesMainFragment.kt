@@ -47,7 +47,6 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_progress_movies.R
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_progress_main_movies.*
-import kotlinx.coroutines.flow.collect
 import timber.log.Timber
 
 @AndroidEntryPoint

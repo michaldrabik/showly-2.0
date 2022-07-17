@@ -84,7 +84,6 @@ import com.michaldrabik.ui_show.ShowDetailsEvent.RemoveFromTrakt
 import com.michaldrabik.ui_show.databinding.FragmentShowDetailsBinding
 import com.michaldrabik.ui_show.views.AddToShowsButton
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import timber.log.Timber
 import java.util.Locale.ENGLISH
 

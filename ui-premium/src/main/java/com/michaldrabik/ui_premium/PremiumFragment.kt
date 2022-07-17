@@ -17,7 +17,6 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_premium.views.PurchaseItemView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_premium.*
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class PremiumFragment : BaseFragment<PremiumViewModel>(R.layout.fragment_premium) {

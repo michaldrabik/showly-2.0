@@ -56,7 +56,6 @@ import com.michaldrabik.ui_search.utilities.TextWatcherAdapter
 import com.michaldrabik.ui_search.views.RecentSearchView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_search.*
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), TextWatcherAdapter {

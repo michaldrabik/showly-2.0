@@ -29,7 +29,6 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_REPLY_USER
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class PostCommentBottomSheet : BaseBottomSheetFragment(R.layout.view_post_comment) {

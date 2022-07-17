@@ -16,7 +16,6 @@ import com.michaldrabik.ui_movie.sections.related.recycler.RelatedMovieAdapter
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_movie_details_related.*
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class MovieDetailsRelatedFragment : BaseFragment<MovieDetailsRelatedViewModel>(R.layout.fragment_movie_details_related) {

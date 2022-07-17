@@ -55,7 +55,6 @@ import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.main.adapters.ProgressMainAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_progress_main.*
-import kotlinx.coroutines.flow.collect
 import timber.log.Timber
 
 @AndroidEntryPoint

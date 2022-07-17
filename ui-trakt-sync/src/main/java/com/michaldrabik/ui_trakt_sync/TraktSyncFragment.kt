@@ -25,7 +25,6 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.TraktSyncSchedule
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_trakt_sync.*
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class TraktSyncFragment :

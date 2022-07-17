@@ -83,7 +83,6 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MANAGE_LISTS
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_PERSON_DETAILS
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_movie_details.*
-import kotlinx.coroutines.flow.collect
 import timber.log.Timber
 import java.util.Locale.ENGLISH
 import java.util.Locale.ROOT

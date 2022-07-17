@@ -22,7 +22,6 @@ import com.michaldrabik.ui_people.R
 import com.michaldrabik.ui_people.gallery.recycler.PersonGalleryAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_person_gallery.*
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class PersonGalleryFragment : BaseFragment<PersonGalleryViewModel>(R.layout.fragment_person_gallery) {

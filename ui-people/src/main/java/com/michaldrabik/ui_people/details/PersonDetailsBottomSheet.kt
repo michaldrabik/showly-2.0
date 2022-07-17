@@ -40,7 +40,6 @@ import com.michaldrabik.ui_people.details.recycler.PersonDetailsAdapter
 import com.michaldrabik.ui_people.details.recycler.PersonDetailsItem
 import com.michaldrabik.ui_people.gallery.PersonGalleryFragment
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class PersonDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_person_details) {

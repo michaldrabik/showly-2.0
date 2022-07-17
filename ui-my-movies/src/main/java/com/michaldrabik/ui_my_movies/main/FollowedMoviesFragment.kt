@@ -40,7 +40,6 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_followed_movies.*
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class FollowedMoviesFragment :

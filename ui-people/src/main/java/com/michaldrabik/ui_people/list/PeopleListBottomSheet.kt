@@ -29,7 +29,6 @@ import com.michaldrabik.ui_people.databinding.ViewPeopleListBinding
 import com.michaldrabik.ui_people.details.PersonDetailsBottomSheet
 import com.michaldrabik.ui_people.list.recycler.PeopleListAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class PeopleListBottomSheet : BaseBottomSheetFragment(R.layout.view_people_list) {

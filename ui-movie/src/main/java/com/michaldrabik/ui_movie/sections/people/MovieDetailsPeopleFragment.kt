@@ -29,7 +29,6 @@ import com.michaldrabik.ui_people.list.PeopleListBottomSheet
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import kotlinx.android.synthetic.main.fragment_movie_details_people.*
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class MovieDetailsPeopleFragment : BaseFragment<MovieDetailsPeopleViewModel>(R.layout.fragment_movie_details_people) {

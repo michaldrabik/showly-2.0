@@ -35,7 +35,6 @@ import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsAdapter
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_my_shows.*
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class MyShowsFragment :

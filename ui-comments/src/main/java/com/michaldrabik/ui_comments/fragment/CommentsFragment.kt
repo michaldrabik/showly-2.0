@@ -47,7 +47,6 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.parcel.Parcelize
-import kotlinx.coroutines.flow.collect
 
 @SuppressLint("SetTextI18n", "DefaultLocale", "SourceLockedOrientationActivity")
 @AndroidEntryPoint

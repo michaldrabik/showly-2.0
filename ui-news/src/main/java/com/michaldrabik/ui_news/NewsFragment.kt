@@ -36,7 +36,6 @@ import com.michaldrabik.ui_model.NewsItem
 import com.michaldrabik.ui_news.databinding.FragmentNewsBinding
 import com.michaldrabik.ui_news.recycler.NewsAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class NewsFragment :

@@ -18,7 +18,6 @@ import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_REMOVE_TRAKT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.RESULT
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class RemoveTraktWatchlistBottomSheet : RemoveTraktBottomSheet<RemoveTraktWatchlistViewModel>(R.layout.view_remove_trakt_watchlist) {
