@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_news.recycler
 
+import android.annotation.SuppressLint
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -18,8 +19,12 @@ class NewsAdapter(
   private val asyncDiffer = AsyncListDiffer(this, NewsListItemDiffCallback())
   private var viewType: NewsItemViewType = ROW
 
+  @SuppressLint("NotifyDataSetChanged")
   fun setViewType(viewType: NewsItemViewType) {
-    this.viewType = viewType
+    if (this.viewType != viewType) {
+      this.viewType = viewType
+      notifyDataSetChanged()
+    }
   }
 
   fun setItems(
@@ -33,24 +38,27 @@ class NewsAdapter(
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-    val itemView = when (this.viewType) {
-      ROW -> NewsItemRowView(parent.context).apply {
+    val itemView = when (viewType) {
+      ROW.ordinal -> NewsItemRowView(parent.context).apply {
         itemClickListener = { this@NewsAdapter.itemClickListener(it) }
       }
-      CARD -> NewsItemCardView(parent.context).apply {
+      CARD.ordinal -> NewsItemCardView(parent.context).apply {
         itemClickListener = { this@NewsAdapter.itemClickListener(it) }
       }
+      else -> throw IllegalStateException()
     }
     return ViewHolder(itemView)
   }
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     val item = asyncDiffer.currentList[position]
-    when (this.viewType) {
-      ROW -> (holder.itemView as NewsItemRowView).bind(item)
-      CARD -> (holder.itemView as NewsItemCardView).bind(item)
+    when (holder.itemViewType) {
+      ROW.ordinal -> (holder.itemView as NewsItemRowView).bind(item)
+      CARD.ordinal -> (holder.itemView as NewsItemCardView).bind(item)
     }
   }
+
+  override fun getItemViewType(position: Int): Int = this.viewType.ordinal
 
   override fun getItemCount() = asyncDiffer.currentList.size
 

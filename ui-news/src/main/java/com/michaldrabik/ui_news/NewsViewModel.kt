@@ -95,6 +95,13 @@ class NewsViewModel @Inject constructor(
     }
   }
 
+  fun toggleViewType() {
+    viewModelScope.launch {
+      val newType = viewTypeCase.toggleViewType()
+      viewTypeState.value = newType
+    }
+  }
+
   val uiState = combine(
     itemsState,
     filtersState, viewTypeState,

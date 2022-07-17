@@ -2,6 +2,8 @@ package com.michaldrabik.ui_news.cases
 
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_news.views.item.NewsItemViewType
+import com.michaldrabik.ui_news.views.item.NewsItemViewType.CARD
+import com.michaldrabik.ui_news.views.item.NewsItemViewType.ROW
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
@@ -15,7 +17,12 @@ class NewsViewTypeCase @Inject constructor(
     return NewsItemViewType.valueOf(viewType)
   }
 
-  fun saveViewType(viewType: NewsItemViewType) {
-    settingsRepository.newsViewType = viewType.name
+  fun toggleViewType(): NewsItemViewType {
+    val newType = when (loadViewType()) {
+      ROW -> CARD
+      CARD -> ROW
+    }
+    settingsRepository.newsViewType = newType.name
+    return newType
   }
 }

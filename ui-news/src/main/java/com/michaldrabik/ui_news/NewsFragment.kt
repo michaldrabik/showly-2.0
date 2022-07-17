@@ -97,6 +97,7 @@ class NewsFragment :
   private fun setupView() {
     with(binding.fragmentNewsHeaderView) {
       onSettingsClickListener = { openSettings() }
+      onViewTypeClickListener = { viewModel.toggleViewType() }
       translationY = headerTranslation
     }
     with(binding.fragmentNewsFiltersView) {
@@ -216,6 +217,7 @@ class NewsFragment :
         fragmentNewsFiltersView.setFilters(filters)
         fragmentNewsFiltersView.fadeIf(items.isNotEmpty())
         fragmentNewsEmptyView.root.fadeIf(items.isEmpty() && !isLoading)
+        fragmentNewsHeaderView.setViewType(viewType)
 
         fragmentNewsSwipeRefresh.isRefreshing = isLoading
         fragmentNewsFiltersView.isEnabled = !isLoading
