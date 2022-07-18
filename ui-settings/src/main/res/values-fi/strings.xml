@@ -30,9 +30,9 @@
   <string name="textSettingsThemeTitle">Teema</string>
   <string name="textSettingsThemeSummary">Valitse pääteema.</string>
   <string name="textSettingsThemeWidgetsTitle">Teema</string>
-  <string name="textSettingsThemeWidgetsSummary">Valitse pienoisohjelmien teema.</string>
+  <string name="textSettingsThemeWidgetsSummary">Valitse widgettien teema.</string>
   <string name="textSettingsWidgetsTransparencyTitle">Tausta</string>
-  <string name="textSettingsWidgetsTransparencySummary">Aseta pienoisohjelmien taustan läpinäkyvyys.</string>
+  <string name="textSettingsWidgetsTransparencySummary">Aseta widgettien taustan läpinäkyvyys.</string>
   <string name="textSettingsMyShowsCountryTitle">Sijainti</string>
   <string name="textSettingsMyShowsCountrySummary">Valitse suoratoistopalveluiden tiedoille käytettävä sijainti.</string>
   <string name="textSettingsMyShowsLanguageTitle">Kieli</string>
@@ -51,7 +51,7 @@
   <string name="textSettingsRateAppTitle">Anna palautetta</string>
   <string name="textSettingsRateAppSummary">Nautitko Showlysta? Kirjoita arvostelu Play Kaupassa. Kiitos!</string>
   <string name="textSettingsDeleteCacheTitle">Tyhjennä kuvavälimuisti</string>
-  <string name="textSettingsDeleteCacheSummary">Napauta tyhjentääksesi paikallinen kuvavälimuisti. Tämä saattaa auttaa, jos sarjojen kuvat eivät lataudu oikein.</string>
+  <string name="textSettingsDeleteCacheSummary">Tyhjennä paikallinen kuvavälimuisti napauttamalla. Tämä saattaa auttaa, jos sarjojen kuvat eivät lataudu oikein.</string>
   <string name="textSettingsQuickSyncConfirmationTitle">Poista automaattinen synkronointi käytöstä</string>
   <string name="textSettingsQuickSyncConfirmationMessage">\nAutomaattinen synkronointi näyttäisi olevan jo käytössä.\n\nHaluatko poistaa sen käytöstä ennen pikasynkronoinnin käyttöönottoa (suositeltavaa)?\n</string>
   <string name="textSettingsLogoutTitle">Trakt.tv-uloskirjaus</string>
@@ -60,9 +60,9 @@
   <string name="textSettingsMoviesEnabledSummary">Ota elokuvat käyttöön/poista ne käytöstä. Sovellus käynnistyy uudelleen.</string>
   <string name="textSettingsNewsEnabledTitle">Uutiset</string>
   <string name="textSettingsNewsEnabledSummary">Ota uutiset käyttöön/poista ne käytöstä. Sovellus käynnistyy uudelleen.</string>
-  <string name="textSettingsWidgets">Pienoisohjelmat</string>
+  <string name="textSettingsWidgets">Widgetit</string>
   <string name="textSettingsWidgetsLabelsTitle">Nimet</string>
-  <string name="textSettingsWidgetsLabelsSummary">Näytä läpikuultavat pienoisohjelmien nimet.</string>
+  <string name="textSettingsWidgetsLabelsSummary">Näytä läpikuultavat widgettien nimet.</string>
   <string name="textSettingsStreamingsDisclaimer">Suoratoistopalveluiden tiedot tarjoaa</string>
   <string name="textSettingsStreamingServicesTitle">Suoratoistopalvelut</string>
   <string name="textSettingsStreamingServicesMessage">Näytä suoratoistopalveluiden tiedot.</string>
