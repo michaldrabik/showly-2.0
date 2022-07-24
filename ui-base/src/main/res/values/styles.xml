@@ -6,6 +6,7 @@
     <item name="android:navigationBarColor">@color/colorPrimary</item>
     <item name="android:windowTranslucentStatus">true</item>
     <item name="toolbarNavigationButtonStyle">@style/Toolbar.Button.Navigation.Tinted</item>
+    <item name="switchStyle">@style/ShowlySwitch</item>
 
     <item name="colorPrimary">@color/colorPrimary</item>
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -287,6 +288,15 @@
 
   <style name="ShowlyBottomBar.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
     <item name="android:color">?colorBottomMenuIndicator</item>
+  </style>
+
+  <style name="ShowlySwitch" parent="Widget.Material3.CompoundButton.Switch">
+    <item name="materialThemeOverlay">@style/ShowlySwitch.Overlay</item>
+  </style>
+
+  <style name="ShowlySwitch.Overlay" parent="">
+    <item name="colorPrimary">@color/colorAccent</item>
+    <item name="colorPrimaryContainer">#4DF44336</item>
   </style>
 
 </resources>
