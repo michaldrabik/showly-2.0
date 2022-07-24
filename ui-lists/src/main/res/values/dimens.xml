@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <dimen name="listsRecyclerPaddingTop">158dp</dimen>
-  <dimen name="listsIconsPadding">100dp</dimen>
+  <dimen name="listsIconsPadding">104dp</dimen>
   <dimen name="listsBottomPadding">84dp</dimen>
   <dimen name="listsFabBottomPadding">75dp</dimen>
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <dimen name="myShowsTabsTranslation">-7dp</dimen>
-  <dimen name="myShowsSearchViewPadding">100dp</dimen>
+  <dimen name="myShowsSearchViewPadding">104dp</dimen>
   <dimen name="myShowsTabsViewPadding">128dp</dimen>
 
   <dimen name="myShowsSearchLocalViewPadding">150dp</dimen>
