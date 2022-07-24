@@ -3,18 +3,18 @@
   <dimen name="progressTabsViewTranslation">-7dp</dimen>
   <dimen name="progressHeaderTextSize">22sp</dimen>
 
-  <dimen name="progressSearchViewPaddingNoModes">60dp</dimen>
-  <dimen name="progressSearchViewPadding">96dp</dimen>
+  <dimen name="progressSearchViewPaddingNoModes">64dp</dimen>
+  <dimen name="progressSearchViewPadding">100dp</dimen>
 
-  <dimen name="progressSearchLocalViewPaddingNoModes">110dp</dimen>
-  <dimen name="progressSearchLocalViewPadding">146dp</dimen>
+  <dimen name="progressSearchLocalViewPaddingNoModes">114dp</dimen>
+  <dimen name="progressSearchLocalViewPadding">150dp</dimen>
   <dimen name="progressSearchLocalOffset">40dp</dimen>
 
-  <dimen name="progressTabsViewPaddingNoModes">108dp</dimen>
-  <dimen name="progressTabsViewPadding">144dp</dimen>
+  <dimen name="progressTabsViewPaddingNoModes">112dp</dimen>
+  <dimen name="progressTabsViewPadding">148dp</dimen>
 
-  <dimen name="progressCalendarTabsViewPaddingNoModes">92dp</dimen>
-  <dimen name="progressCalendarTabsViewPadding">128dp</dimen>
+  <dimen name="progressCalendarTabsViewPaddingNoModes">96dp</dimen>
+  <dimen name="progressCalendarTabsViewPadding">132dp</dimen>
 
   <dimen name="progressOverscrollIconPadding">132dp</dimen>
   <dimen name="progressOverscrollIconPaddingNoModes">96dp</dimen>

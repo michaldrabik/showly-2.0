@@ -21,7 +21,7 @@
   <dimen name="backArrowPadding">16dp</dimen>
 
   <dimen name="gridSpacing">3dp</dimen>
-  <dimen name="gridPadding">6dp</dimen>
+  <dimen name="gridPadding">8dp</dimen>
 
   <dimen name="mediaTileCorner">4dp</dimen>
   <dimen name="galleryImageCorner">8dp</dimen>
@@ -45,8 +45,8 @@
   <dimen name="searchLocalViewHeight">32dp</dimen>
 
   <dimen name="discoverFilterChipStroke">1dp</dimen>
-  <dimen name="discoverRecyclerPadding">106dp</dimen>
-  <dimen name="discoverRecyclerPaddingNoTabs">64dp</dimen>
+  <dimen name="discoverRecyclerPadding">110dp</dimen>
+  <dimen name="discoverRecyclerPaddingNoTabs">68dp</dimen>
 
   <dimen name="linkItemTileHeight">42dp</dimen>
   <dimen name="linkItemImageWidth">50dp</dimen>
@@ -55,7 +55,7 @@
   <dimen name="swipeRefreshStartOffset">8dp</dimen>
   <dimen name="swipeRefreshEndOffset">140dp</dimen>
 
-  <dimen name="collectionTabsMargin">64dp</dimen>
+  <dimen name="collectionTabsMargin">70dp</dimen>
   <dimen name="commentViewSpace">16dp</dimen>
   <dimen name="tutorialTipSize">28dp</dimen>
   <dimen name="scrollBarWidth">3dp</dimen>

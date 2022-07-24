@@ -3,21 +3,21 @@
   <dimen name="progressMoviesTabsViewTranslation">-7dp</dimen>
 
   <dimen name="progressMoviesHeaderTextSize">22sp</dimen>
-  <dimen name="progressMoviesSearchViewPadding">96dp</dimen>
-  <dimen name="progressMoviesTabsViewPadding">144dp</dimen>
-  <dimen name="progressMoviesCalendarTabsViewPadding">128dp</dimen>
+  <dimen name="progressMoviesSearchViewPadding">100dp</dimen>
+  <dimen name="progressMoviesTabsViewPadding">148dp</dimen>
+  <dimen name="progressMoviesCalendarTabsViewPadding">132dp</dimen>
 
   <dimen name="progressMoviesImageHeight">120dp</dimen>
   <dimen name="progressMoviesImageWidth">80dp</dimen>
 
-  <dimen name="progressMoviesSearchLocalViewPaddingNoModes">110dp</dimen>
-  <dimen name="progressMoviesSearchLocalViewPadding">146dp</dimen>
+  <dimen name="progressMoviesSearchLocalViewPaddingNoModes">114dp</dimen>
+  <dimen name="progressMoviesSearchLocalViewPadding">150dp</dimen>
   <dimen name="progressMoviesSearchLocalOffset">40dp</dimen>
 
-  <dimen name="progressMoviesOverscrollIconPadding">156dp</dimen>
+  <dimen name="progressMoviesOverscrollIconPadding">160dp</dimen>
   <dimen name="progressMoviesOverscrollIcon">36dp</dimen>
 
-  <dimen name="progressMoviesCalendarOverscrollIconPadding">158dp</dimen>
+  <dimen name="progressMoviesCalendarOverscrollIconPadding">162dp</dimen>
   <dimen name="progressMoviesCalendarOverscrollIcon">36dp</dimen>
 
   <dimen name="progressMoviesItemCheckButtonWidth">72dp</dimen>
