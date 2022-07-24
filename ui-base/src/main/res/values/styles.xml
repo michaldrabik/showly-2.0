@@ -223,7 +223,7 @@
     <item name="android:textSize">12sp</item>
   </style>
 
-  <style name="ContextMenuItemButton.Move" parent="Widget.MaterialComponents.Button.OutlinedButton">
+  <style name="ContextMenuItemButton.Move" parent="RoundOutlinedButton">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:gravity">center</item>
@@ -237,7 +237,7 @@
     <item name="strokeColor">?android:attr/textColorPrimary</item>
   </style>
 
-  <style name="ContextMenuItemButton.Remove" parent="Widget.MaterialComponents.Button.TextButton">
+  <style name="ContextMenuItemButton.Remove" parent="RoundTextButton">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:gravity">center</item>
@@ -252,7 +252,19 @@
     <item name="strokeColor">?android:attr/textColorPrimary</item>
   </style>
 
-  <style name="DeclineOutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+  <style name="RoundMaterialButton" parent="Widget.MaterialComponents.Button">
+    <item name="cornerRadius">100dp</item>
+  </style>
+
+  <style name="RoundTextButton" parent="Widget.MaterialComponents.Button.TextButton">
+    <item name="cornerRadius">100dp</item>
+  </style>
+
+  <style name="RoundOutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+    <item name="cornerRadius">100dp</item>
+  </style>
+
+  <style name="DeclineOutlinedButton" parent="RoundOutlinedButton">
     <item name="strokeColor">@color/colorGrayLight</item>
   </style>
 

@@ -34,7 +34,7 @@
 
   <dimen name="searchViewHeight">48dp</dimen>
   <dimen name="searchViewHeightPadded">64dp</dimen>
-  <dimen name="searchViewCorner">4dp</dimen>
+  <dimen name="searchViewCorner">100dp</dimen>
   <dimen name="searchViewDotTranslation">-10dp</dimen>
   <dimen name="searchViewImageWidth">67dp</dimen>
   <dimen name="searchViewImageHeight">100dp</dimen>

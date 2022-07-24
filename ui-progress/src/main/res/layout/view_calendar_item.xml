@@ -143,7 +143,7 @@
 
       <com.google.android.material.button.MaterialButton
         android:id="@+id/calendarItemInfoButton"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        style="@style/RoundOutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/progressItemButtonHeight"
         android:gravity="center"
@@ -156,7 +156,7 @@
 
       <com.google.android.material.button.MaterialButton
         android:id="@+id/calendarItemCheckButton"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        style="@style/RoundOutlinedButton"
         android:layout_width="@dimen/progressItemCheckButtonWidth"
         android:layout_height="@dimen/progressItemButtonHeight"
         android:layout_marginStart="@dimen/spaceTiny"

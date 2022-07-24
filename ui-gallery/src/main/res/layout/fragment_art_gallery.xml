@@ -82,7 +82,7 @@
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/artGallerySelectButton"
-    style="@style/Widget.MaterialComponents.Button"
+    style="@style/RoundMaterialButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginEnd="@dimen/spaceNormal"

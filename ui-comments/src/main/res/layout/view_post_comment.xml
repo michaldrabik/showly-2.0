@@ -93,7 +93,7 @@
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/viewPostCommentButton"
-    style="@style/Widget.MaterialComponents.Button"
+    style="@style/RoundMaterialButton"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/spaceMedium"

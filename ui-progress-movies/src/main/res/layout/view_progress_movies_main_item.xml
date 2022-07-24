@@ -140,7 +140,7 @@
 
       <com.google.android.material.button.MaterialButton
         android:id="@+id/progressMovieItemCheckButton"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        style="@style/RoundOutlinedButton"
         android:layout_width="@dimen/progressMoviesItemCheckButtonWidth"
         android:layout_height="@dimen/progressMoviesItemButtonHeight"
         android:gravity="center"
