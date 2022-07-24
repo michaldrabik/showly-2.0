@@ -9,6 +9,7 @@
   app:cardBackgroundColor="?attr/colorSearchLocalViewBackground"
   app:cardCornerRadius="@dimen/searchViewCorner"
   app:cardElevation="@dimen/elevationSmall"
+  app:strokeWidth="0dp"
   >
 
   <FrameLayout

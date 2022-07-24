@@ -1,7 +1,7 @@
 <resources>
 
   <!-- Base app theme -->
-  <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+  <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
     <item name="android:windowBackground">@color/colorBackground</item>
     <item name="android:navigationBarColor">@color/colorPrimary</item>
     <item name="android:windowTranslucentStatus">true</item>
@@ -30,6 +30,7 @@
     <item name="colorBottomMenuItem">#838383</item>
     <item name="colorBottomMenuItemChecked">@color/colorWhite</item>
     <item name="colorBottomMenuSeparator">#464646</item>
+    <item name="colorBottomMenuIndicator">#32343A</item>
 
     <item name="colorSearchViewBackground">@color/colorPrimary</item>
     <item name="colorSearchViewControl">@color/colorGrayLight</item>
@@ -108,7 +109,7 @@
 
   <!-- Dialogs -->
 
-  <style name="AlertDialog" parent="@style/Theme.MaterialComponents.Dialog">
+  <style name="AlertDialog" parent="@style/Theme.Material3.DayNight.Dialog">
     <item name="colorAccent">@color/colorAccent</item>
     <item name="colorPrimary">@color/colorAccent</item>
     <item name="buttonBarNegativeButtonStyle">@style/AlertDialog.NegativeButton</item>
@@ -253,20 +254,39 @@
     <item name="strokeColor">?android:attr/textColorPrimary</item>
   </style>
 
-  <style name="RoundMaterialButton" parent="Widget.MaterialComponents.Button">
+  <style name="RoundMaterialButton" parent="Widget.Material3.Button">
     <item name="cornerRadius">100dp</item>
+    <item name="android:textAllCaps">true</item>
+    <item name="android:letterSpacing">0.05</item>
   </style>
 
-  <style name="RoundTextButton" parent="Widget.MaterialComponents.Button.TextButton">
+  <style name="RoundTextButton" parent="Widget.Material3.Button.TextButton">
     <item name="cornerRadius">100dp</item>
+    <item name="android:textAllCaps">true</item>
+    <item name="android:letterSpacing">0.05</item>
   </style>
 
-  <style name="RoundOutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+  <style name="RoundOutlinedButton" parent="Widget.Material3.Button.OutlinedButton">
     <item name="cornerRadius">100dp</item>
+    <item name="android:textAllCaps">true</item>
+    <item name="android:letterSpacing">0.05</item>
   </style>
 
   <style name="DeclineOutlinedButton" parent="RoundOutlinedButton">
     <item name="strokeColor">@color/colorGrayLight</item>
+  </style>
+
+  <style name="ShowlyBottomBar" parent="Widget.Material3.BottomNavigationView">
+    <item name="itemTextAppearanceInactive">@style/ShowlyBottomBar.Text</item>
+    <item name="itemTextAppearanceActive">@style/ShowlyBottomBar.Text</item>
+  </style>
+
+  <style name="ShowlyBottomBar.Text" parent="TextAppearance.Material3.LabelMedium">
+    <item name="android:textSize">13sp</item>
+  </style>
+
+  <style name="ShowlyBottomBar.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+    <item name="android:color">?colorBottomMenuIndicator</item>
   </style>
 
 </resources>

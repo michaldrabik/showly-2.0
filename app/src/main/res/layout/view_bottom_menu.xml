@@ -10,9 +10,12 @@
 
   <com.google.android.material.bottomnavigation.BottomNavigationView
     android:id="@+id/bottomNavigationView"
+    style="@style/ShowlyBottomBar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorBottomMenuBackground"
+    app:elevation="0dp"
+    app:itemActiveIndicatorStyle="@style/ShowlyBottomBar.Indicator"
     app:itemIconTint="@drawable/selector_bottom_menu"
     app:itemTextColor="@drawable/selector_bottom_menu"
     app:labelVisibilityMode="labeled"

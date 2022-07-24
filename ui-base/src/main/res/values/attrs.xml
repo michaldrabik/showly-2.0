@@ -9,6 +9,7 @@
   <attr name="colorBottomMenuItemChecked" format="color" />
   <attr name="colorBottomMenuItem" format="color" />
   <attr name="colorBottomMenuSeparator" format="color" />
+  <attr name="colorBottomMenuIndicator" format="color" />
 
   <attr name="colorSearchViewBackground" format="color" />
   <attr name="colorSearchViewControl" format="color" />

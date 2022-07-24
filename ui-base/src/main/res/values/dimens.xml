@@ -13,8 +13,8 @@
   <dimen name="elevationNormal">0dp</dimen>
   <dimen name="elevationSuggestions">1dp</dimen>
 
-  <dimen name="bottomNavigationHeight">56dp</dimen>
-  <dimen name="bottomNavigationHeightPadded">64dp</dimen>
+  <dimen name="bottomNavigationHeight">76dp</dimen>
+  <dimen name="bottomNavigationHeightPadded">84dp</dimen>
   <dimen name="bottomNoInternetViewHeight">24dp</dimen>
 
   <dimen name="backArrowSize">56dp</dimen>

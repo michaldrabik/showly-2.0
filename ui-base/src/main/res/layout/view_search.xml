@@ -9,6 +9,7 @@
   app:cardBackgroundColor="?attr/colorSearchViewBackground"
   app:cardCornerRadius="@dimen/searchViewCorner"
   app:cardElevation="@dimen/elevationSmall"
+  app:strokeWidth="0dp"
   >
 
   <LinearLayout
