@@ -67,6 +67,7 @@
 
   <style name="AlertDialog.NegativeButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
     <item name="android:textColor">@color/colorGrayLight</item>
+    <item name="cornerRadius">100dp</item>
   </style>
 
 </resources>
