@@ -32,7 +32,7 @@
     android:visibility="gone"
     />
 
-  <androidx.appcompat.widget.Toolbar
+  <com.google.android.material.appbar.MaterialToolbar
     android:id="@+id/fragmentListDetailsToolbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -81,7 +81,7 @@
       tools:visibility="visible"
       />
 
-  </androidx.appcompat.widget.Toolbar>
+  </com.google.android.material.appbar.MaterialToolbar>
 
   <include
     android:id="@+id/fragmentListDetailsEmptyView"

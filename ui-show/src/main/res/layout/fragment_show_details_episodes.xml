@@ -22,11 +22,12 @@
     tools:text="Season 2"
     />
 
-  <androidx.appcompat.widget.AppCompatCheckBox
+  <com.google.android.material.checkbox.MaterialCheckBox
     android:id="@+id/episodesCheckbox"
     android:layout_width="32dp"
     android:layout_height="wrap_content"
     android:layout_marginEnd="@dimen/spaceNormal"
+    app:buttonTint="@color/selector_main_checkbox"
     app:layout_constraintBottom_toTopOf="@id/episodesOverview"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toTopOf="parent"

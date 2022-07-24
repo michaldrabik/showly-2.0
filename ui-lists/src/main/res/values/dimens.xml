@@ -2,8 +2,8 @@
 <resources>
   <dimen name="listsRecyclerPaddingTop">158dp</dimen>
   <dimen name="listsIconsPadding">100dp</dimen>
-  <dimen name="listsBottomPadding">64dp</dimen>
-  <dimen name="listsFabBottomPadding">57dp</dimen>
+  <dimen name="listsBottomPadding">84dp</dimen>
+  <dimen name="listsFabBottomPadding">75dp</dimen>
 
   <dimen name="listsSearchLocalViewPadding">150dp</dimen>
   <dimen name="listsSearchLocalOffset">56dp</dimen>

@@ -63,7 +63,13 @@
     <item name="android:textColorSecondary">@color/colorBlueLight</item>
     <item name="textColorAlertDialogListItem">@color/colorBlue</item>
     <item name="android:textColorPrimary">@color/colorBlue</item>
+    <item name="buttonBarPositiveButtonStyle">@style/AlertDialog.PositiveButton</item>
     <item name="buttonBarNegativeButtonStyle">@style/AlertDialog.NegativeButton</item>
+  </style>
+
+  <style name="AlertDialog.PositiveButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+    <item name="android:textColor">@color/colorAccent</item>
+    <item name="cornerRadius">100dp</item>
   </style>
 
   <style name="AlertDialog.NegativeButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">

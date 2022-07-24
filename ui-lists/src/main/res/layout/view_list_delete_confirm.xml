@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge
   xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   tools:parentTag="android.widget.FrameLayout"
   >
 
-  <androidx.appcompat.widget.AppCompatCheckBox
+  <com.google.android.material.checkbox.MaterialCheckBox
     android:id="@+id/viewListDeleteConfirmCheckbox"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -17,6 +18,7 @@
     android:gravity="center"
     android:text="@string/textRemoveFromTrakt"
     android:textColor="?android:attr/textColorPrimary"
+    app:buttonTint="@color/selector_main_checkbox"
     />
 
 </merge>

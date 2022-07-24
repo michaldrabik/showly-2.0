@@ -10,7 +10,7 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_statistics_movies.R
 import kotlinx.android.synthetic.main.view_statistics_movies_card_total_movies.view.*
 import java.text.NumberFormat
-import java.util.Locale
+import java.util.*
 
 @SuppressLint("SetTextI18n")
 class StatisticsMoviesTotalMoviesView : MaterialCardView {
@@ -24,6 +24,7 @@ class StatisticsMoviesTotalMoviesView : MaterialCardView {
     layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
     setCardBackgroundColor(context.colorFromAttr(R.attr.colorCardBackground))
     cardElevation = context.dimenToPx(R.dimen.elevationSmall).toFloat()
+    strokeWidth = 0
   }
 
   fun bind(moviesCount: Int) {

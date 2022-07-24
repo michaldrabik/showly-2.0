@@ -4,7 +4,7 @@
 
   <dimen name="myMoviesSearchViewPadding">100dp</dimen>
   <dimen name="myMoviesTabsViewPadding">128dp</dimen>
-  <dimen name="myMoviesBottomPadding">68dp</dimen>
+  <dimen name="myMoviesBottomPadding">84dp</dimen>
   <dimen name="myMoviesFanartCorner">4dp</dimen>
   <dimen name="myMoviesFanartHeight">126dp</dimen>
 

@@ -26,6 +26,7 @@ class StatisticsMoviesTopGenresView : MaterialCardView {
     layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
     setCardBackgroundColor(context.colorFromAttr(R.attr.colorCardBackground))
     cardElevation = context.dimenToPx(R.dimen.elevationSmall).toFloat()
+    strokeWidth = 0
     onClick {
       showGenres(10)
       isClickable = false

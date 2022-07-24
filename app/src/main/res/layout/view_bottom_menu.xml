@@ -17,6 +17,7 @@
     app:elevation="0dp"
     app:itemActiveIndicatorStyle="@style/ShowlyBottomBar.Indicator"
     app:itemIconTint="@drawable/selector_bottom_menu"
+    app:itemRippleColor="@color/colorPrimary"
     app:itemTextColor="@drawable/selector_bottom_menu"
     app:labelVisibilityMode="labeled"
     app:menu="@menu/bottom_navigation_menu"
