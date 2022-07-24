@@ -170,7 +170,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private fun setupStatusBar() {
     with(binding) {
-      showDetailsBackArrow.doOnApplyWindowInsets { view, insets, _, _ ->
+      showDetailsBackArrow.doOnApplyWindowInsets { _, insets, _, _ ->
         val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
         if (imagePadded) {
           showDetailsMainLayout.updatePadding(top = inset)
@@ -178,10 +178,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           (showDetailsShareButton.layoutParams as MarginLayoutParams)
             .updateMargins(top = inset)
         }
-        arrayOf(view, showDetailsBackArrow)
-          .forEach { v ->
-            (v.layoutParams as MarginLayoutParams).updateMargins(top = inset)
-          }
+        (showDetailsBackArrow.layoutParams as MarginLayoutParams).updateMargins(top = inset)
       }
     }
   }
