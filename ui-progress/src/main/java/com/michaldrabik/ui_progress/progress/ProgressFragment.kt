@@ -50,7 +50,6 @@ import com.michaldrabik.ui_progress.progress.recycler.ProgressListItem
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_progress.*
 import kotlinx.android.synthetic.main.layout_progress_empty.*
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import me.everything.android.ui.overscroll.IOverScrollDecor
 import me.everything.android.ui.overscroll.IOverScrollState
@@ -86,7 +85,7 @@ class ProgressFragment :
     setupStatusBar()
 
     viewLifecycleOwner.lifecycleScope.launch {
-      repeatOnLifecycle(Lifecycle.State.STARTED) {
+      viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
         with(parentViewModel) {
           launch { uiState.collect { viewModel.onParentState(it) } }
         }

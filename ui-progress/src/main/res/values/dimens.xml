@@ -20,9 +20,6 @@
   <dimen name="progressOverscrollIconPaddingNoModes">96dp</dimen>
   <dimen name="progressOverscrollIcon">36dp</dimen>
 
-  <dimen name="progressCalendarOverscrollIconPadding">158dp</dimen>
-  <dimen name="progressCalendarOverscrollIcon">36dp</dimen>
-
   <dimen name="progressImageHeight">120dp</dimen>
   <dimen name="progressImageWidth">80dp</dimen>
 

@@ -48,10 +48,10 @@
 
   <ImageView
     android:id="@+id/progressCalendarOverscrollIcon"
-    android:layout_width="@dimen/progressCalendarOverscrollIcon"
-    android:layout_height="@dimen/progressCalendarOverscrollIcon"
+    android:layout_width="@dimen/progressOverscrollIcon"
+    android:layout_height="@dimen/progressOverscrollIcon"
     android:layout_gravity="center_horizontal"
-    android:layout_marginTop="@dimen/progressCalendarOverscrollIconPadding"
+    android:layout_marginTop="@dimen/progressOverscrollIconPadding"
     android:alpha="0"
     android:scaleX="0"
     android:scaleY="0"
