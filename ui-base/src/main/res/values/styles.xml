@@ -277,7 +277,7 @@
     <item name="strokeColor">@color/colorGrayLight</item>
   </style>
 
-  <style name="ShowlyBottomBar" parent="Widget.Material3.BottomNavigationView">
+  <style name="ShowlyBottomBar" parent="Widget.MaterialComponents.BottomNavigationView">
     <item name="itemTextAppearanceInactive">@style/ShowlyBottomBar.Text</item>
     <item name="itemTextAppearanceActive">@style/ShowlyBottomBar.Text</item>
   </style>
