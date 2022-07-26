@@ -283,7 +283,7 @@
   </style>
 
   <style name="ShowlyBottomBar.Text" parent="TextAppearance.Material3.LabelMedium">
-    <item name="android:textSize">13sp</item>
+    <item name="android:textSize">12sp</item>
   </style>
 
   <style name="ShowlyBottomBar.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
