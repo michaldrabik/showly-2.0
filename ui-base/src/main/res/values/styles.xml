@@ -31,7 +31,7 @@
     <item name="colorBottomMenuItem">#838383</item>
     <item name="colorBottomMenuItemChecked">@color/colorWhite</item>
     <item name="colorBottomMenuSeparator">#464646</item>
-    <item name="colorBottomMenuIndicator">#32343A</item>
+    <item name="colorBottomMenuIndicator">#D8323339</item>
 
     <item name="colorSearchViewBackground">@color/colorPrimary</item>
     <item name="colorSearchViewControl">@color/colorGrayLight</item>
