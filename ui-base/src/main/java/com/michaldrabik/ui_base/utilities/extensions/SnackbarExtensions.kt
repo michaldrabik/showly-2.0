@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_base.utilities.extensions
 
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.annotation.ColorInt
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE
 import com.google.android.material.snackbar.Snackbar.LENGTH_SHORT
@@ -11,16 +11,14 @@ fun ViewGroup.showSnackbar(
   message: String,
   actionText: Int,
   textColor: Int,
-  backgroundRes: Int,
+  @ColorInt backgroundColor: Int,
   length: Int,
   action: (() -> Unit)? = null,
 ): Snackbar {
   return Snackbar.make(this, message, length).apply {
-    view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)?.let {
-      it.maxLines = 5
-    }
-    view.setBackgroundResource(backgroundRes)
+    setTextMaxLines(5)
     setTextColor(textColor)
+    setBackgroundTint(backgroundColor)
     setActionTextColor(textColor)
     if (action != null) {
       setAction(actionText) {
@@ -38,8 +36,14 @@ fun ViewGroup.showInfoSnackbar(
   length: Int = LENGTH_SHORT,
   action: (() -> Unit)? = null,
 ): Snackbar {
-  val textColor = context.colorFromAttr(R.attr.textColorInfoSnackbar)
-  return showSnackbar(message, actionText, textColor, R.drawable.bg_snackbar_info, length, action)
+  return showSnackbar(
+    message = message,
+    actionText = actionText,
+    textColor = context.colorFromAttr(R.attr.textColorInfoSnackbar),
+    backgroundColor = context.colorFromAttr(R.attr.colorInfoSnackbar),
+    length = length,
+    action = action
+  )
 }
 
 fun ViewGroup.showErrorSnackbar(
@@ -47,6 +51,12 @@ fun ViewGroup.showErrorSnackbar(
   actionText: Int = R.string.textOk,
   action: () -> Unit = {},
 ): Snackbar {
-  val textColor = context.colorFromAttr(R.attr.textColorErrorSnackbar)
-  return showSnackbar(message, actionText, textColor, R.drawable.bg_snackbar_error, LENGTH_INDEFINITE, action)
+  return showSnackbar(
+    message = message,
+    actionText = actionText,
+    textColor = context.colorFromAttr(R.attr.textColorErrorSnackbar),
+    backgroundColor = context.colorFromAttr(R.attr.colorErrorSnackbar),
+    length = LENGTH_INDEFINITE,
+    action = action
+  )
 }
