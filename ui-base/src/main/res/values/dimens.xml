@@ -54,7 +54,7 @@
   <dimen name="linkItemImageHeight">26dp</dimen>
 
   <dimen name="swipeRefreshStartOffset">8dp</dimen>
-  <dimen name="swipeRefreshEndOffset">140dp</dimen>
+  <dimen name="swipeRefreshEndOffset">148dp</dimen>
 
   <dimen name="collectionTabsMargin">70dp</dimen>
   <dimen name="commentViewSpace">16dp</dimen>
