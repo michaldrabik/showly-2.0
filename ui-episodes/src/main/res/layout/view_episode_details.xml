@@ -136,6 +136,7 @@
             android:id="@+id/episodeDetailsName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="48dp"
             android:ellipsize="end"
             android:textColor="?android:attr/textColorSecondary"
             android:textSize="12sp"
@@ -182,7 +183,7 @@
           android:layout_height="wrap_content"
           android:layout_gravity="center_vertical|end"
           app:backgroundTint="?attr/colorAccent"
-          app:fabSize="mini"
+          app:fabCustomSize="42dp"
           app:srcCompat="@drawable/ic_check"
           app:tint="?attr/textColorOnSurface"
           />
