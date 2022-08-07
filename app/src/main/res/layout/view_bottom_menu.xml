@@ -5,15 +5,20 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  tools:layout_height="wrap_content"
   tools:parentTag="android.widget.FrameLayout"
   >
 
   <com.google.android.material.bottomnavigation.BottomNavigationView
     android:id="@+id/bottomNavigationView"
+    style="@style/ShowlyBottomBar"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?attr/colorBottomMenuBackground"
+    android:layout_height="@dimen/bottomNavigationHeight"
+    app:backgroundTint="?attr/colorBottomMenuBackground"
+    app:elevation="0dp"
+    app:itemActiveIndicatorStyle="@style/ShowlyBottomBar.Indicator"
     app:itemIconTint="@drawable/selector_bottom_menu"
+    app:itemRippleColor="@null"
     app:itemTextColor="@drawable/selector_bottom_menu"
     app:labelVisibilityMode="labeled"
     app:menu="@menu/bottom_navigation_menu"
@@ -26,7 +31,7 @@
     android:orientation="horizontal"
     android:translationZ="10dp"
     android:visibility="gone"
-    tools:visibility="visible"
+    tools:visibility="gone"
     >
 
     <TextView

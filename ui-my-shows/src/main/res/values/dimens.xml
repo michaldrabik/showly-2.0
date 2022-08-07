@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <dimen name="myShowsTabsTranslation">-7dp</dimen>
-  <dimen name="myShowsSearchViewPadding">96dp</dimen>
-  <dimen name="myShowsTabsViewPadding">124dp</dimen>
+  <dimen name="myShowsSearchViewPadding">104dp</dimen>
+  <dimen name="myShowsTabsViewPadding">128dp</dimen>
 
-  <dimen name="myShowsSearchLocalViewPadding">146dp</dimen>
+  <dimen name="myShowsSearchLocalViewPadding">150dp</dimen>
   <dimen name="myShowsSearchLocalOffset">40dp</dimen>
 
-  <dimen name="myShowsBottomPadding">68dp</dimen>
+  <dimen name="myShowsBottomPadding">76dp</dimen>
   <dimen name="myShowsFanartCorner">4dp</dimen>
   <dimen name="myShowsFanartHeight">126dp</dimen>
   <dimen name="myShowsPosterHeight">120dp</dimen>
@@ -17,12 +17,12 @@
   <dimen name="myShowAllImageWidth">80dp</dimen>
   <dimen name="myShowAllMarginHorizontal">12dp</dimen>
 
-  <dimen name="watchlistTabsViewPadding">144dp</dimen>
+  <dimen name="watchlistTabsViewPadding">148dp</dimen>
   <dimen name="watchlistImageHeight">120dp</dimen>
   <dimen name="watchlistImageWidth">80dp</dimen>
   <dimen name="watchlistMarginHorizontal">12dp</dimen>
 
-  <dimen name="archiveTabsViewPadding">144dp</dimen>
+  <dimen name="archiveTabsViewPadding">148dp</dimen>
   <dimen name="archiveImageHeight">120dp</dimen>
   <dimen name="archiveImageWidth">80dp</dimen>
   <dimen name="archiveMarginHorizontal">12dp</dimen>

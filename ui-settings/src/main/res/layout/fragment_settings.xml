@@ -23,7 +23,7 @@
     tools:visibility="visible"
     >
 
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
       android:id="@+id/settingsToolbar"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
@@ -169,7 +169,7 @@
 
     </LinearLayout>
 
-    <androidx.appcompat.widget.SwitchCompat
+    <com.google.android.material.switchmaterial.SwitchMaterial
       android:id="@+id/settingsTraktQuickSyncSwitch"
       android:layout_width="wrap_content"
       android:layout_height="0dp"
@@ -201,7 +201,7 @@
 
     </LinearLayout>
 
-    <androidx.appcompat.widget.SwitchCompat
+    <com.google.android.material.switchmaterial.SwitchMaterial
       android:id="@+id/settingsTraktQuickRemoveSwitch"
       android:layout_width="wrap_content"
       android:layout_height="0dp"
@@ -233,7 +233,7 @@
 
     </LinearLayout>
 
-    <androidx.appcompat.widget.SwitchCompat
+    <com.google.android.material.switchmaterial.SwitchMaterial
       android:id="@+id/settingsTraktQuickRateSwitch"
       android:layout_width="wrap_content"
       android:layout_height="0dp"
@@ -346,7 +346,7 @@
 
     </LinearLayout>
 
-    <androidx.appcompat.widget.SwitchCompat
+    <com.google.android.material.switchmaterial.SwitchMaterial
       android:id="@+id/settingsMoviesEnabledSwitch"
       android:layout_width="wrap_content"
       android:layout_height="0dp"
@@ -378,7 +378,7 @@
 
     </LinearLayout>
 
-    <androidx.appcompat.widget.SwitchCompat
+    <com.google.android.material.switchmaterial.SwitchMaterial
       android:id="@+id/settingsNewsEnabledSwitch"
       android:layout_width="wrap_content"
       android:layout_height="0dp"
@@ -479,7 +479,7 @@
 
     </LinearLayout>
 
-    <androidx.appcompat.widget.SwitchCompat
+    <com.google.android.material.switchmaterial.SwitchMaterial
       android:id="@+id/settingsUpcomingSectionSwitch"
       android:layout_width="wrap_content"
       android:layout_height="0dp"
@@ -574,7 +574,7 @@
 
     </LinearLayout>
 
-    <androidx.appcompat.widget.SwitchCompat
+    <com.google.android.material.switchmaterial.SwitchMaterial
       android:id="@+id/settingsIncludeSpecialsSwitch"
       android:layout_width="wrap_content"
       android:layout_height="0dp"
@@ -606,7 +606,7 @@
 
     </LinearLayout>
 
-    <androidx.appcompat.widget.SwitchCompat
+    <com.google.android.material.switchmaterial.SwitchMaterial
       android:id="@+id/settingsStreamingsSwitch"
       android:layout_width="wrap_content"
       android:layout_height="0dp"
@@ -681,7 +681,7 @@
 
     </LinearLayout>
 
-    <androidx.appcompat.widget.SwitchCompat
+    <com.google.android.material.switchmaterial.SwitchMaterial
       android:id="@+id/settingsPushNotificationsSwitch"
       android:layout_width="wrap_content"
       android:layout_height="0dp"
@@ -713,7 +713,7 @@
 
     </LinearLayout>
 
-    <androidx.appcompat.widget.SwitchCompat
+    <com.google.android.material.switchmaterial.SwitchMaterial
       android:id="@+id/settingsShowsNotificationsSwitch"
       android:layout_width="wrap_content"
       android:layout_height="0dp"
@@ -787,7 +787,7 @@
 
     </LinearLayout>
 
-    <androidx.appcompat.widget.SwitchCompat
+    <com.google.android.material.switchmaterial.SwitchMaterial
       android:id="@+id/settingsWidgetsLabelsSwitch"
       android:layout_width="wrap_content"
       android:layout_height="0dp"

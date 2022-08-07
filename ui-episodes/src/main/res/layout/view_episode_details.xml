@@ -136,6 +136,7 @@
             android:id="@+id/episodeDetailsName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="48dp"
             android:ellipsize="end"
             android:textColor="?android:attr/textColorSecondary"
             android:textSize="12sp"
@@ -182,7 +183,7 @@
           android:layout_height="wrap_content"
           android:layout_gravity="center_vertical|end"
           app:backgroundTint="?attr/colorAccent"
-          app:fabSize="mini"
+          app:fabCustomSize="42dp"
           app:srcCompat="@drawable/ic_check"
           app:tint="?attr/textColorOnSurface"
           />
@@ -220,7 +221,7 @@
 
         <com.google.android.material.button.MaterialButton
           android:id="@+id/episodeDetailsCommentsButton"
-          style="@style/Widget.MaterialComponents.Button"
+          style="@style/RoundMaterialButton"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_marginEnd="@dimen/spaceTiny"
@@ -234,7 +235,7 @@
 
         <com.google.android.material.button.MaterialButton
           android:id="@+id/episodeDetailsRateButton"
-          style="@style/Widget.MaterialComponents.Button.TextButton"
+          style="@style/RoundTextButton"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_marginStart="@dimen/spaceTiny"

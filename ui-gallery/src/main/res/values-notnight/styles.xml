@@ -1,6 +1,6 @@
 <resources>
 
-  <style name="UrlInputDialog" parent="@style/Theme.MaterialComponents.Dialog">
+  <style name="UrlInputDialog" parent="@style/Theme.Material3.DayNight.Dialog">
     <item name="android:windowBackground">@color/colorPrimary</item>
     <item name="android:textColor">@color/colorBlue</item>
     <item name="colorAccent">@color/colorAccent</item>
@@ -12,5 +12,6 @@
 
   <style name="UrlInputDialog.NegativeButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
     <item name="android:textColor">@color/colorGrayLight</item>
+    <item name="cornerRadius">100dp</item>
   </style>
 </resources>

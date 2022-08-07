@@ -39,6 +39,7 @@ class StatisticsMoviesRatingsView : MaterialCardView {
     clipToPadding = false
     clipChildren = false
     cardElevation = context.dimenToPx(R.dimen.elevationSmall).toFloat()
+    strokeWidth = 0
     setCardBackgroundColor(context.colorFromAttr(R.attr.colorCardBackground))
     setupRecycler()
   }

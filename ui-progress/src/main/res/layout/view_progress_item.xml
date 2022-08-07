@@ -236,7 +236,7 @@
 
       <com.google.android.material.button.MaterialButton
         android:id="@+id/progressItemInfoButton"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        style="@style/RoundTextButton"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/progressItemButtonHeight"
         android:layout_marginStart="@dimen/spaceTiny"
@@ -251,7 +251,7 @@
 
       <com.google.android.material.button.MaterialButton
         android:id="@+id/progressItemCheckButton"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        style="@style/RoundOutlinedButton"
         android:layout_width="@dimen/progressItemCheckButtonWidth"
         android:layout_height="@dimen/progressItemButtonHeight"
         android:gravity="center"
@@ -261,6 +261,7 @@
         app:icon="@drawable/ic_check"
         app:iconGravity="textStart"
         app:iconPadding="0dp"
+        app:iconSize="21dp"
         app:iconTint="?android:attr/textColorPrimary"
         app:rippleColor="?android:attr/textColorPrimary"
         app:strokeColor="?android:attr/textColorPrimary"

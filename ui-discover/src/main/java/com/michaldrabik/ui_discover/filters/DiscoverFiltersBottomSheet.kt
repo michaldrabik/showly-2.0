@@ -139,6 +139,9 @@ internal class DiscoverFiltersBottomSheet : BaseBottomSheetFragment(R.layout.vie
           isCheckable = true
           isCheckedIconVisible = false
           setEnsureMinTouchTargetSize(false)
+          shapeAppearanceModel = shapeAppearanceModel.toBuilder()
+            .setAllCornerSizes(100f)
+            .build()
           chipBackgroundColor = ContextCompat.getColorStateList(context, R.color.selector_discover_chip_background)
           setChipStrokeColorResource(R.color.selector_discover_chip_text)
           setChipStrokeWidthResource(R.dimen.discoverFilterChipStroke)
@@ -162,6 +165,9 @@ internal class DiscoverFiltersBottomSheet : BaseBottomSheetFragment(R.layout.vie
           text = network.channels.first()
           isCheckable = true
           isCheckedIconVisible = false
+          shapeAppearanceModel = shapeAppearanceModel.toBuilder()
+            .setAllCornerSizes(100f)
+            .build()
           setEnsureMinTouchTargetSize(false)
           setChipIconResource(icon)
           chipBackgroundColor = ContextCompat.getColorStateList(requireContext(), R.color.selector_discover_chip_background)

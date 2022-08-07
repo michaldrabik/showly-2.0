@@ -29,7 +29,7 @@
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/progressMoviesEmptyDiscoverButton"
-    style="@style/Widget.MaterialComponents.Button"
+    style="@style/RoundMaterialButton"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
@@ -43,7 +43,7 @@
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/progressMoviesEmptyTraktButton"
-    style="@style/Widget.MaterialComponents.Button.TextButton"
+    style="@style/RoundTextButton"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"

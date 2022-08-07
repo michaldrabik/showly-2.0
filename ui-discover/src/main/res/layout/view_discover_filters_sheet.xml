@@ -59,7 +59,7 @@
 
         <com.google.android.material.chip.Chip
           android:id="@+id/discoverFiltersChipHot"
-          style="@style/Widget.MaterialComponents.Chip.Choice"
+          style="@style/Widget.Material3.Chip.Suggestion"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:checked="true"
@@ -67,39 +67,42 @@
           android:textColor="@color/selector_discover_chip_text"
           app:checkedIconTint="@color/selector_discover_chip_text"
           app:chipBackgroundColor="@color/selector_discover_chip_background"
+          app:chipCornerRadius="100dp"
           app:chipStrokeColor="@color/selector_discover_chip_text"
           app:chipStrokeWidth="1dp"
           />
 
         <com.google.android.material.chip.Chip
           android:id="@+id/discoverFiltersChipTopRated"
-          style="@style/Widget.MaterialComponents.Chip.Choice"
+          style="@style/Widget.Material3.Chip.Suggestion"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="@string/textSortRated"
           android:textColor="@color/selector_discover_chip_text"
           app:checkedIconTint="@color/selector_discover_chip_text"
           app:chipBackgroundColor="@color/selector_discover_chip_background"
+          app:chipCornerRadius="100dp"
           app:chipStrokeColor="@color/selector_discover_chip_text"
           app:chipStrokeWidth="1dp"
           />
 
         <com.google.android.material.chip.Chip
           android:id="@+id/discoverFiltersChipMostRecent"
-          style="@style/Widget.MaterialComponents.Chip.Choice"
+          style="@style/Widget.Material3.Chip.Suggestion"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="@string/textSortNewest"
           android:textColor="@color/selector_discover_chip_text"
           app:checkedIconTint="@color/selector_discover_chip_text"
           app:chipBackgroundColor="@color/selector_discover_chip_background"
+          app:chipCornerRadius="100dp"
           app:chipStrokeColor="@color/selector_discover_chip_text"
           app:chipStrokeWidth="1dp"
           />
 
       </com.google.android.material.chip.ChipGroup>
 
-      <androidx.appcompat.widget.SwitchCompat
+      <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/discoverFiltersAnticipatedSwitch"
         android:layout_width="wrap_content"
         android:layout_height="34dp"
@@ -123,7 +126,7 @@
         app:layout_constraintTop_toTopOf="@id/discoverFiltersAnticipatedSwitch"
         />
 
-      <androidx.appcompat.widget.SwitchCompat
+      <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/discoverFiltersCollectionSwitch"
         android:layout_width="wrap_content"
         android:layout_height="34dp"
@@ -208,7 +211,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spaceNormal"
-        android:layout_marginBottom="@dimen/spaceNormal"
+        android:layout_marginBottom="@dimen/spaceSmall"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -241,7 +244,7 @@
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/discoverFiltersApplyButton"
-      style="@style/Widget.MaterialComponents.Button"
+      style="@style/RoundMaterialButton"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:backgroundTint="?attr/colorAccent"

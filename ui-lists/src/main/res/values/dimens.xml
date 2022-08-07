@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <dimen name="listsRecyclerPaddingTop">154dp</dimen>
-  <dimen name="listsIconsPadding">96dp</dimen>
-  <dimen name="listsBottomPadding">64dp</dimen>
-  <dimen name="listsFabBottomPadding">57dp</dimen>
+  <dimen name="listsRecyclerPaddingTop">158dp</dimen>
+  <dimen name="listsIconsPadding">104dp</dimen>
+  <dimen name="listsBottomPadding">78dp</dimen>
+  <dimen name="listsFabBottomPadding">68dp</dimen>
 
-  <dimen name="listsSearchLocalViewPadding">146dp</dimen>
+  <dimen name="listsSearchLocalViewPadding">150dp</dimen>
   <dimen name="listsSearchLocalOffset">56dp</dimen>
 
   <dimen name="listsImageHeight">120dp</dimen>

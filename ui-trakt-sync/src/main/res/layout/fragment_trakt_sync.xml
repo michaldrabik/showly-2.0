@@ -19,7 +19,7 @@
     android:clipToPadding="false"
     >
 
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
       android:id="@+id/traktSyncToolbar"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
       app:layout_constraintTop_toBottomOf="@id/traktSyncTitle"
       />
 
-    <androidx.appcompat.widget.AppCompatCheckBox
+    <com.google.android.material.checkbox.MaterialCheckBox
       android:id="@+id/traktSyncImportCheckbox"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -117,13 +117,14 @@
       android:checked="true"
       android:gravity="center"
       android:text="@string/textTraktSyncFromTraktToShowly"
+      app:buttonTint="@color/selector_main_checkbox"
       app:layout_constraintBottom_toTopOf="@id/traktSyncExportCheckbox"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/traktSyncDescription"
       />
 
-    <androidx.appcompat.widget.AppCompatCheckBox
+    <com.google.android.material.checkbox.MaterialCheckBox
       android:id="@+id/traktSyncExportCheckbox"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -132,6 +133,7 @@
       android:checked="true"
       android:gravity="center"
       android:text="@string/textTraktSyncFromShowlyToTrakt"
+      app:buttonTint="@color/selector_main_checkbox"
       app:layout_constraintBottom_toTopOf="@id/traktSyncButton"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
@@ -140,7 +142,7 @@
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/traktSyncButton"
-      style="@style/Widget.MaterialComponents.Button"
+      style="@style/RoundMaterialButton"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="@dimen/spaceNormal"
@@ -158,7 +160,7 @@
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/traktSyncScheduleButton"
-      style="@style/Widget.MaterialComponents.Button.TextButton"
+      style="@style/RoundTextButton"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:minWidth="200dp"

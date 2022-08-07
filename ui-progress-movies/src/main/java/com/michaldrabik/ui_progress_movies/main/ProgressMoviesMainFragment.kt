@@ -170,7 +170,7 @@ class ProgressMoviesMainFragment :
     progressMoviesRoot.doOnApplyWindowInsets { _, insets, _, _ ->
       val statusBarSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
       (progressMoviesSearchView.layoutParams as ViewGroup.MarginLayoutParams)
-        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceSmall))
+        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceMedium))
       (progressMoviesModeTabs.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.collectionTabsMargin))
       (progressMoviesSearchLocalView.layoutParams as ViewGroup.MarginLayoutParams)

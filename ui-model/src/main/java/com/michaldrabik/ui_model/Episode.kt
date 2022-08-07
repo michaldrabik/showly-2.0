@@ -1,8 +1,7 @@
 package com.michaldrabik.ui_model
 
 import android.os.Parcelable
-import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.common.extensions.toMillis
+import com.michaldrabik.common.extensions.nowUtc
 import kotlinx.android.parcel.Parcelize
 import java.time.ZonedDateTime
 
@@ -26,9 +25,13 @@ data class Episode(
     val EMPTY = Episode(-1, -1, "", Ids.EMPTY, "", -1F, -1, -1, null, -1, -1, null)
   }
 
-  fun hasAired(season: Season) =
-    when (firstAired) {
-      null -> season.episodes.any { it.number > number && it.firstAired != null }
-      else -> nowUtcMillis() >= firstAired.toMillis()
+  fun hasAired(season: Season): Boolean {
+    val nowUtc = nowUtc()
+    return when (firstAired) {
+      null -> season.episodes.any {
+        it.number > number && (it.firstAired != null && nowUtc.isAfter(it.firstAired))
+      }
+      else -> nowUtc.isAfter(firstAired)
     }
+  }
 }

@@ -13,15 +13,15 @@
   <dimen name="elevationNormal">0dp</dimen>
   <dimen name="elevationSuggestions">1dp</dimen>
 
-  <dimen name="bottomNavigationHeight">56dp</dimen>
-  <dimen name="bottomNavigationHeightPadded">64dp</dimen>
+  <dimen name="bottomNavigationHeight">68dp</dimen>
+  <dimen name="bottomNavigationHeightPadded">76dp</dimen>
   <dimen name="bottomNoInternetViewHeight">24dp</dimen>
 
   <dimen name="backArrowSize">56dp</dimen>
   <dimen name="backArrowPadding">16dp</dimen>
 
   <dimen name="gridSpacing">3dp</dimen>
-  <dimen name="gridPadding">6dp</dimen>
+  <dimen name="gridPadding">8dp</dimen>
 
   <dimen name="mediaTileCorner">4dp</dimen>
   <dimen name="galleryImageCorner">8dp</dimen>
@@ -34,7 +34,7 @@
 
   <dimen name="searchViewHeight">48dp</dimen>
   <dimen name="searchViewHeightPadded">64dp</dimen>
-  <dimen name="searchViewCorner">4dp</dimen>
+  <dimen name="searchViewCorner">24dp</dimen>
   <dimen name="searchViewDotTranslation">-10dp</dimen>
   <dimen name="searchViewImageWidth">67dp</dimen>
   <dimen name="searchViewImageHeight">100dp</dimen>
@@ -43,19 +43,20 @@
   <dimen name="searchViewItemPaddingHorizontal">12dp</dimen>
 
   <dimen name="searchLocalViewHeight">32dp</dimen>
+  <dimen name="searchLocalViewCorner">16dp</dimen>
 
   <dimen name="discoverFilterChipStroke">1dp</dimen>
-  <dimen name="discoverRecyclerPadding">106dp</dimen>
-  <dimen name="discoverRecyclerPaddingNoTabs">64dp</dimen>
+  <dimen name="discoverRecyclerPadding">112dp</dimen>
+  <dimen name="discoverRecyclerPaddingNoTabs">70dp</dimen>
 
   <dimen name="linkItemTileHeight">42dp</dimen>
   <dimen name="linkItemImageWidth">50dp</dimen>
   <dimen name="linkItemImageHeight">26dp</dimen>
 
   <dimen name="swipeRefreshStartOffset">8dp</dimen>
-  <dimen name="swipeRefreshEndOffset">140dp</dimen>
+  <dimen name="swipeRefreshEndOffset">148dp</dimen>
 
-  <dimen name="collectionTabsMargin">64dp</dimen>
+  <dimen name="collectionTabsMargin">70dp</dimen>
   <dimen name="commentViewSpace">16dp</dimen>
   <dimen name="tutorialTipSize">28dp</dimen>
   <dimen name="scrollBarWidth">3dp</dimen>

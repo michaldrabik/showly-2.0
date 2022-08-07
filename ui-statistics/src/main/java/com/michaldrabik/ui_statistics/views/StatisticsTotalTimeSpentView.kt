@@ -25,6 +25,7 @@ class StatisticsTotalTimeSpentView : MaterialCardView {
     layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
     setCardBackgroundColor(context.colorFromAttr(R.attr.colorCardBackground))
     cardElevation = context.dimenToPx(R.dimen.elevationSmall).toFloat()
+    strokeWidth = 0
   }
 
   fun bind(timeMinutes: Int) {

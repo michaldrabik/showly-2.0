@@ -16,18 +16,7 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
-import com.michaldrabik.ui_base.utilities.extensions.add
-import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
-import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
-import com.michaldrabik.ui_base.utilities.extensions.disableUi
-import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
-import com.michaldrabik.ui_base.utilities.extensions.enableUi
-import com.michaldrabik.ui_base.utilities.extensions.fadeIn
-import com.michaldrabik.ui_base.utilities.extensions.fadeOut
-import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
-import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
-import com.michaldrabik.ui_base.utilities.extensions.onClick
-import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
+import com.michaldrabik.ui_base.utilities.extensions.*
 import com.michaldrabik.ui_discover_movies.filters.DiscoverMoviesFiltersBottomSheet.Companion.REQUEST_DISCOVER_FILTERS
 import com.michaldrabik.ui_discover_movies.recycler.DiscoverMovieListItem
 import com.michaldrabik.ui_discover_movies.recycler.DiscoverMoviesAdapter
@@ -114,7 +103,7 @@ class DiscoverMoviesFragment :
       discoverMoviesRecycler
         .updatePadding(top = statusBarSize + dimenToPx(R.dimen.discoverRecyclerPadding))
       (discoverMoviesSearchView.layoutParams as ViewGroup.MarginLayoutParams)
-        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceSmall))
+        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceMedium))
       (discoverMoviesTabsView.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.collectionTabsMargin))
       discoverMoviesSwipeRefresh.setProgressViewOffset(

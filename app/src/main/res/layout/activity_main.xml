@@ -57,7 +57,6 @@
       android:id="@+id/bottomMenuView"
       android:layout_width="match_parent"
       android:layout_height="@dimen/bottomNavigationHeight"
-      android:background="?attr/colorBottomMenuBackground"
       />
 
   </LinearLayout>
@@ -76,7 +75,7 @@
     android:id="@+id/tutorialTipModeMenu"
     android:layout_width="@dimen/tutorialTipSize"
     android:layout_height="@dimen/tutorialTipSize"
-    android:layout_marginBottom="44dp"
+    android:layout_marginBottom="54dp"
     app:layout_constraintBottom_toBottomOf="@id/bottomNavigationWrapper"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="0.2"
@@ -87,7 +86,7 @@
     android:id="@+id/tutorialTipDiscover"
     android:layout_width="@dimen/tutorialTipSize"
     android:layout_height="@dimen/tutorialTipSize"
-    android:layout_marginBottom="44dp"
+    android:layout_marginBottom="54dp"
     android:translationZ="10dp"
     app:layout_constraintBottom_toBottomOf="@id/bottomNavigationWrapper"
     app:layout_constraintEnd_toEndOf="parent"
@@ -99,7 +98,7 @@
     android:id="@+id/tutorialTipMyShows"
     android:layout_width="@dimen/tutorialTipSize"
     android:layout_height="@dimen/tutorialTipSize"
-    android:layout_marginBottom="44dp"
+    android:layout_marginBottom="54dp"
     android:translationZ="10dp"
     app:layout_constraintBottom_toBottomOf="@id/bottomNavigationWrapper"
     app:layout_constraintEnd_toEndOf="parent"

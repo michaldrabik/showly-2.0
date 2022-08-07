@@ -51,7 +51,7 @@
       tools:text="@tools:sample/lorem"
       />
 
-    <androidx.appcompat.widget.AppCompatRadioButton
+    <com.google.android.material.radiobutton.MaterialRadioButton
       android:id="@+id/viewQuickSetupItemRadio"
       android:layout_width="30dp"
       android:layout_height="wrap_content"
@@ -59,6 +59,7 @@
       android:ellipsize="end"
       android:maxLines="1"
       android:textColor="?android:attr/textColorPrimary"
+      app:buttonTint="@color/selector_main_checkbox"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"

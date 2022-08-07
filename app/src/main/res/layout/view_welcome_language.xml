@@ -62,7 +62,7 @@
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/viewWelcomeLanguageYesButton"
-      style="@style/Widget.MaterialComponents.Button.TextButton"
+      style="@style/RoundTextButton"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spaceSmall"
@@ -74,7 +74,7 @@
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/viewWelcomeLanguageLeaveButton"
-      style="@style/Widget.MaterialComponents.Button.TextButton"
+      style="@style/RoundTextButton"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spaceSmall"

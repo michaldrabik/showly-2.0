@@ -2,7 +2,9 @@ package com.michaldrabik.ui_progress_movies.calendar
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -28,7 +30,6 @@ import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_calendar_movies.*
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import me.everything.android.ui.overscroll.IOverScrollDecor
 import me.everything.android.ui.overscroll.IOverScrollState
@@ -63,7 +64,7 @@ class CalendarMoviesFragment :
     setupStatusBar()
 
     viewLifecycleOwner.lifecycleScope.launch {
-      repeatOnLifecycle(Lifecycle.State.STARTED) {
+      viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
         with(parentViewModel) {
           launch { uiState.collect { viewModel.onParentState(it) } }
         }
@@ -144,6 +145,8 @@ class CalendarMoviesFragment :
     progressMoviesCalendarRecycler.doOnApplyWindowInsets { view, insets, _, _ ->
       statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
       view.updatePadding(top = statusBarHeight + dimenToPx(R.dimen.progressMoviesCalendarTabsViewPadding))
+      (progressMoviesCalendarOverscrollIcon.layoutParams as ViewGroup.MarginLayoutParams)
+        .updateMargins(top = statusBarHeight + dimenToPx(R.dimen.progressMoviesOverscrollIconPadding))
     }
   }
 

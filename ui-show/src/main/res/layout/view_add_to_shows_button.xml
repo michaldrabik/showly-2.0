@@ -18,7 +18,7 @@
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/addToMyShowsButton"
-      style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+      style="@style/RoundOutlinedButton"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginEnd="@dimen/spaceTiny"
@@ -33,7 +33,7 @@
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/watchlistButton"
-      style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+      style="@style/RoundOutlinedButton"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spaceTiny"
@@ -57,7 +57,7 @@
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/addedToButton"
-      style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+      style="@style/RoundOutlinedButton"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_weight="1"

@@ -9,6 +9,7 @@
   app:cardBackgroundColor="?attr/colorSearchViewBackground"
   app:cardCornerRadius="@dimen/searchViewCorner"
   app:cardElevation="@dimen/elevationSmall"
+  app:strokeWidth="0dp"
   >
 
   <LinearLayout
@@ -32,6 +33,7 @@
     <FrameLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
+      android:paddingEnd="@dimen/spaceTiny"
       >
 
       <TextView

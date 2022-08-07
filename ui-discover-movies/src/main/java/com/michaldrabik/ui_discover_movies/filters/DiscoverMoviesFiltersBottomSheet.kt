@@ -123,6 +123,9 @@ internal class DiscoverMoviesFiltersBottomSheet : BaseBottomSheetFragment(R.layo
           isCheckable = true
           isCheckedIconVisible = false
           setEnsureMinTouchTargetSize(false)
+          shapeAppearanceModel = shapeAppearanceModel.toBuilder()
+            .setAllCornerSizes(100f)
+            .build()
           chipBackgroundColor = ContextCompat.getColorStateList(context, R.color.selector_discover_chip_background)
           setChipStrokeColorResource(R.color.selector_discover_chip_text)
           setChipStrokeWidthResource(R.dimen.discoverFilterChipStroke)

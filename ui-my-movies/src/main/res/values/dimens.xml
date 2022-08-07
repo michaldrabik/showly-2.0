@@ -2,25 +2,25 @@
 <resources>
   <dimen name="myMoviesTabsTranslation">-7dp</dimen>
 
-  <dimen name="myMoviesSearchViewPadding">96dp</dimen>
-  <dimen name="myMoviesTabsViewPadding">124dp</dimen>
-  <dimen name="myMoviesBottomPadding">68dp</dimen>
+  <dimen name="myMoviesSearchViewPadding">104dp</dimen>
+  <dimen name="myMoviesTabsViewPadding">128dp</dimen>
+  <dimen name="myMoviesBottomPadding">76dp</dimen>
   <dimen name="myMoviesFanartCorner">4dp</dimen>
   <dimen name="myMoviesFanartHeight">126dp</dimen>
 
-  <dimen name="myMoviesSearchLocalViewPadding">146dp</dimen>
+  <dimen name="myMoviesSearchLocalViewPadding">150dp</dimen>
   <dimen name="myMoviesSearchLocalOffset">40dp</dimen>
 
   <dimen name="myMovieAllImageHeight">120dp</dimen>
   <dimen name="myMovieAllImageWidth">80dp</dimen>
   <dimen name="myMovieAllMarginHorizontal">12dp</dimen>
 
-  <dimen name="watchlistMoviesTabsViewPadding">144dp</dimen>
+  <dimen name="watchlistMoviesTabsViewPadding">148dp</dimen>
   <dimen name="watchlistMoviesImageHeight">120dp</dimen>
   <dimen name="watchlistMoviesImageWidth">80dp</dimen>
   <dimen name="watchlistMoviesMarginHorizontal">12dp</dimen>
 
-  <dimen name="hiddenTabsViewPadding">144dp</dimen>
+  <dimen name="hiddenTabsViewPadding">148dp</dimen>
   <dimen name="hiddenImageHeight">120dp</dimen>
   <dimen name="hiddenImageWidth">80dp</dimen>
   <dimen name="hiddenMarginHorizontal">12dp</dimen>

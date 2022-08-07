@@ -184,7 +184,7 @@ class ProgressMainFragment :
       val progressTabsMargin = if (moviesEnabled) R.dimen.progressSearchViewPadding else R.dimen.progressSearchViewPaddingNoModes
       val progressMainSearchLocalMargin = if (moviesEnabled) R.dimen.progressSearchLocalViewPadding else R.dimen.progressSearchLocalViewPaddingNoModes
       (progressMainSearchView.layoutParams as ViewGroup.MarginLayoutParams)
-        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceSmall))
+        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceMedium))
       (progressMainSearchLocalView.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(progressMainSearchLocalMargin))
       (progressMainPagerModeTabs.layoutParams as ViewGroup.MarginLayoutParams)

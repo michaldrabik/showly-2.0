@@ -72,6 +72,7 @@
     app:backgroundTint="?attr/colorAccent"
     app:fabSize="mini"
     app:layout_behavior="com.google.android.material.floatingactionbutton.FloatingActionButton$Behavior"
+    app:maxImageSize="30dp"
     app:srcCompat="@drawable/ic_arrow_right"
     app:tint="?attr/textColorOnSurface"
     tools:ignore="ContentDescription"

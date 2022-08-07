@@ -9,6 +9,7 @@
   app:cardBackgroundColor="?attr/colorCardBackground"
   app:cardCornerRadius="6dp"
   app:cardElevation="@dimen/elevationSmall"
+  app:strokeWidth="0dp"
   >
 
   <LinearLayout
