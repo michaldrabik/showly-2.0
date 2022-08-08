@@ -46,10 +46,10 @@ dependencyResolutionManagement {
       library("hilt.work", "androidx.hilt", "hilt-work").versionRef("hiltWork")
       library("hilt.work.compiler", "androidx.hilt", "hilt-compiler").versionRef("hiltWork")
 
-      library("firebase.crashlytics", "com.google.firebase:firebase-crashlytics:18.2.10")
-      library("firebase.analytics", "com.google.firebase:firebase-analytics-ktx:21.0.0")
-      library("firebase.messaging", "com.google.firebase:firebase-messaging:23.0.4")
-      library("firebase.config", "com.google.firebase:firebase-config-ktx:21.1.0")
+      library("firebase.crashlytics", "com.google.firebase:firebase-crashlytics:18.2.12")
+      library("firebase.analytics", "com.google.firebase:firebase-analytics-ktx:21.1.0")
+      library("firebase.messaging", "com.google.firebase:firebase-messaging:23.0.6")
+      library("firebase.config", "com.google.firebase:firebase-config-ktx:21.1.1")
       bundle("firebase", ["firebase.crashlytics", "firebase.analytics", "firebase.messaging", "firebase.config"])
 
       version("retrofit", "2.9.0")
