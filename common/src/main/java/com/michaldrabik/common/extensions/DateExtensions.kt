@@ -6,6 +6,7 @@ import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit.DAYS
 
 fun nowUtc(): ZonedDateTime = ZonedDateTime.now(ZoneOffset.UTC)
 
@@ -20,5 +21,8 @@ fun dateIsoStringFromMillis(millis: Long): String = dateFromMillis(millis).forma
 fun ZonedDateTime.toMillis() = this.toInstant().toEpochMilli()
 
 fun ZonedDateTime.toLocalZone(): ZonedDateTime = this.withZoneSameInstant(ZoneId.systemDefault())
+
+fun ZonedDateTime.isSameDayOrAfter(date: ZonedDateTime): Boolean =
+  this.isEqual(date.truncatedTo(DAYS)) || this.isAfter(date.truncatedTo(DAYS))
 
 fun String?.toZonedDateTime(): ZonedDateTime? = if (this.isNullOrBlank()) null else ZonedDateTime.parse(this)

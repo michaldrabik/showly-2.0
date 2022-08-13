@@ -5,6 +5,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
+  android:clipChildren="false"
   tools:ignore="SmallSp"
   tools:parentTag="android.widget.LinearLayout"
   >
@@ -39,6 +40,17 @@
       android:visibility="gone"
       app:tint="?attr/colorPlaceholderIcon"
       tools:ignore="UseAppTint"
+      tools:visibility="visible"
+      />
+
+    <ImageView
+      android:id="@+id/calendarWidgetItemImageBadge"
+      style="@style/Badge.Watchlist"
+      android:layout_width="16dp"
+      android:layout_height="16dp"
+      android:layout_marginEnd="1dp"
+      android:src="@drawable/ic_bookmark_full"
+      android:translationY="-2dp"
       tools:visibility="visible"
       />
 

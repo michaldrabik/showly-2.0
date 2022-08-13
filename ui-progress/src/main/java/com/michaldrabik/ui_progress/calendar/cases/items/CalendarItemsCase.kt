@@ -1,8 +1,10 @@
 package com.michaldrabik.ui_progress.calendar.cases.items
 
 import com.michaldrabik.common.Config
+import com.michaldrabik.common.extensions.isSameDayOrAfter
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toLocalZone
+import com.michaldrabik.common.extensions.toZonedDateTime
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.Episode
 import com.michaldrabik.data_local.database.model.Season
@@ -12,6 +14,7 @@ import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_model.ImageType
+import com.michaldrabik.ui_progress.calendar.helpers.WatchlistAppender
 import com.michaldrabik.ui_progress.calendar.helpers.filters.CalendarFilter
 import com.michaldrabik.ui_progress.calendar.helpers.groupers.CalendarGrouper
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarListItem
@@ -19,7 +22,9 @@ import com.michaldrabik.ui_progress.helpers.TranslationsBundle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
+import java.time.temporal.ChronoUnit.DAYS
 
 @Suppress("UNCHECKED_CAST")
 abstract class CalendarItemsCase constructor(
@@ -29,6 +34,7 @@ abstract class CalendarItemsCase constructor(
   private val translationsRepository: TranslationsRepository,
   private val imagesProvider: ShowImagesProvider,
   private val dateFormatProvider: DateFormatProvider,
+  private val watchlistAppender: WatchlistAppender,
 ) {
 
   abstract val filter: CalendarFilter
@@ -40,10 +46,23 @@ abstract class CalendarItemsCase constructor(
   suspend fun loadItems(searchQuery: String? = "") =
     withContext(Dispatchers.Default) {
       val now = nowUtc().toLocalZone()
+
       val language = translationsRepository.getLanguage()
       val dateFormat = dateFormatProvider.loadFullHourFormat()
 
-      val shows = showsRepository.myShows.loadAll()
+      val (myShowsAsync, watchlistShowsAsync) = coroutineScope {
+        val async1 = async { showsRepository.myShows.loadAll() }
+        val async2 = async { showsRepository.watchlistShows.loadAll() }
+        awaitAll(async1, async2)
+      }
+
+      val watchlistShows = watchlistShowsAsync.filter {
+        val releaseDay = it.firstAired.toZonedDateTime()?.toLocalZone()?.truncatedTo(DAYS)
+        releaseDay?.isSameDayOrAfter(now) == true
+      }
+      val watchlistShowsIds = watchlistShows.map { it.traktId }
+
+      val shows = myShowsAsync + watchlistShows
       val showsIds = shows.map { it.traktId }.chunked(250)
 
       val (episodes, seasons) = awaitAll(
@@ -61,10 +80,17 @@ abstract class CalendarItemsCase constructor(
         }
       )
 
-      val filteredSeasons = (seasons as List<Season>).filter { it.seasonNumber != 0 }
-      val filteredEpisodes = (episodes as List<Episode>).filter { it.seasonNumber != 0 && filter.filter(now, it) }
+      val filteredSeasons = (seasons as List<Season>).filter { it.seasonNumber != 0 }.toMutableList()
+      val filteredEpisodes = (episodes as List<Episode>).filter { it.seasonNumber != 0 }.toMutableList()
+
+      watchlistAppender.appendWatchlistShows(
+        watchlistShows,
+        filteredSeasons,
+        filteredEpisodes
+      )
 
       val elements = filteredEpisodes
+        .filter { filter.filter(now, it) }
         .sortedWith(sortEpisodes())
         .map { episode ->
           async {
@@ -93,6 +119,7 @@ abstract class CalendarItemsCase constructor(
               episode = episodeUi,
               season = seasonUi,
               isWatched = isWatched(episode),
+              isWatchlist = show.traktId in watchlistShowsIds,
               dateFormat = dateFormat,
               translations = translations
             )

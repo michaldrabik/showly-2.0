@@ -7,6 +7,7 @@ import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
+import com.michaldrabik.ui_progress.calendar.helpers.WatchlistAppender
 import com.michaldrabik.ui_progress.calendar.helpers.filters.CalendarRecentsFilter
 import com.michaldrabik.ui_progress.calendar.helpers.groupers.CalendarRecentsGrouper
 import javax.inject.Inject
@@ -20,6 +21,7 @@ class CalendarRecentsCase @Inject constructor(
   translationsRepository: TranslationsRepository,
   imagesProvider: ShowImagesProvider,
   dateFormatProvider: DateFormatProvider,
+  watchlistAppender: WatchlistAppender,
   override val filter: CalendarRecentsFilter,
   override val grouper: CalendarRecentsGrouper,
 ) : CalendarItemsCase(
@@ -28,7 +30,8 @@ class CalendarRecentsCase @Inject constructor(
   showsRepository,
   translationsRepository,
   imagesProvider,
-  dateFormatProvider
+  dateFormatProvider,
+  watchlistAppender
 ) {
 
   override fun sortEpisodes() =

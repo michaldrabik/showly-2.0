@@ -24,6 +24,7 @@ sealed class CalendarListItem(
     val episode: EpisodeModel,
     val season: Season,
     val isWatched: Boolean,
+    val isWatchlist: Boolean,
     val translations: TranslationsBundle? = null,
     val dateFormat: DateTimeFormatter? = null,
   ) : CalendarListItem(show, image, isLoading) {

@@ -20,17 +20,17 @@ class CalendarItemDiffCallback : DiffUtil.ItemCallback<CalendarListItem>() {
     }
   }
 
-  override fun areContentsTheSame(oldItem: CalendarListItem, newItem: CalendarListItem) =
-    when (oldItem) {
-      is CalendarListItem.Episode -> areContentsTheSame(oldItem, (newItem as CalendarListItem.Episode))
-      is CalendarListItem.Header -> areContentsTheSame(oldItem, (newItem as CalendarListItem.Header))
-    }
-
   private fun areItemsTheSame(oldItem: CalendarListItem.Episode, newItem: CalendarListItem.Episode) =
     oldItem.episode.ids.trakt == newItem.episode.ids.trakt
 
   private fun areItemsTheSame(oldItem: CalendarListItem.Header, newItem: CalendarListItem.Header) =
     oldItem.textResId == newItem.textResId
+
+  override fun areContentsTheSame(oldItem: CalendarListItem, newItem: CalendarListItem) =
+    when (oldItem) {
+      is CalendarListItem.Episode -> areContentsTheSame(oldItem, (newItem as CalendarListItem.Episode))
+      is CalendarListItem.Header -> areContentsTheSame(oldItem, (newItem as CalendarListItem.Header))
+    }
 
   private fun areContentsTheSame(oldItem: CalendarListItem.Episode, newItem: CalendarListItem.Episode) =
     oldItem.episode == newItem.episode &&

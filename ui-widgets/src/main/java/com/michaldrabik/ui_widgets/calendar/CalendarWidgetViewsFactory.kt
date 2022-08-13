@@ -90,40 +90,51 @@ class CalendarWidgetViewsFactory(
     }
 
   private fun createItemRemoteView(item: CalendarListItem.Episode): RemoteViews {
-    val translatedTitle = item.translations?.show?.title
-    val title =
-      if (translatedTitle?.isBlank() == false) translatedTitle
-      else item.show.title
-
-    val episodeBadgeText = String.format(
-      Locale.ENGLISH,
-      context.getString(R.string.textSeasonEpisode),
-      item.episode.season,
-      item.episode.number
-    ).plus(
-      item.episode.numberAbs?.let { if (it > 0 && item.show.isAnime) " ($it)" else "" } ?: ""
-    )
-
-    val episodeTitle = when {
-      item.episode.title.isBlank() -> context.getString(R.string.textTba)
-      item.translations?.episode?.title?.isBlank() == false -> item.translations?.episode?.title
-      item.episode.title == "Episode ${item.episode.number}" ->
-        String.format(Locale.ENGLISH, context.getString(R.string.textEpisode), item.episode.number)
-      else -> item.episode.title
-    }
-
-    val date = item.episode.firstAired?.toLocalZone()?.let { item.dateFormat?.format(it)?.capitalizeWords() }
 
     val remoteView = RemoteViews(context.packageName, getItemLayout()).apply {
+      val translatedTitle = item.translations?.show?.title
+      val title =
+        if (translatedTitle?.isBlank() == false) translatedTitle
+        else item.show.title
       setTextViewText(R.id.calendarWidgetItemTitle, title)
-      setTextViewText(R.id.calendarWidgetItemOverview, episodeTitle)
-      setTextViewText(R.id.calendarWidgetItemBadge, episodeBadgeText)
+
+      val date = item.episode.firstAired?.toLocalZone()?.let { item.dateFormat?.format(it)?.capitalizeWords() }
       setTextViewText(R.id.calendarWidgetItemDate, date)
+
+      val isNewSeason = item.episode.number == 1
+      if (isNewSeason) {
+        setTextViewText(R.id.calendarWidgetItemOverview, String.format(Locale.ENGLISH, context.getString(R.string.textSeason), item.episode.season))
+        setTextViewText(R.id.calendarWidgetItemBadge, context.getString(R.string.textNewSeason))
+      } else {
+        val episodeTitle = when {
+          item.episode.title.isBlank() -> context.getString(R.string.textTba)
+          item.translations?.episode?.title?.isBlank() == false -> item.translations?.episode?.title
+          item.episode.title == "Episode ${item.episode.number}" -> String.format(
+            Locale.ENGLISH,
+            context.getString(R.string.textEpisode),
+            item.episode.number
+          )
+          else -> item.episode.title
+        }
+        val badgeTitle = String.format(
+          Locale.ENGLISH,
+          context.getString(com.michaldrabik.ui_progress.R.string.textSeasonEpisode),
+          item.episode.season,
+          item.episode.number
+        ).plus(
+          item.episode.numberAbs?.let { if (it > 0 && item.show.isAnime) " ($it)" else "" } ?: ""
+        )
+
+        setTextViewText(R.id.calendarWidgetItemOverview, episodeTitle)
+        setTextViewText(R.id.calendarWidgetItemBadge, badgeTitle)
+      }
 
       val fillIntent = Intent().apply {
         putExtras(bundleOf(EXTRA_SHOW_ID to item.show.traktId))
       }
       setOnClickFillInIntent(R.id.calendarWidgetItem, fillIntent)
+
+      setViewVisibility(R.id.calendarWidgetItemImageBadge, if (item.isWatchlist) VISIBLE else GONE)
     }
 
     if (item.image.status != ImageStatus.AVAILABLE) {

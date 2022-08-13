@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_progress.calendar.helpers.filters
 
+import com.michaldrabik.common.extensions.isSameDayOrAfter
 import com.michaldrabik.common.extensions.toLocalZone
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit.DAYS
@@ -12,7 +13,6 @@ class CalendarFutureFilter @Inject constructor() : CalendarFilter {
 
   override fun filter(now: ZonedDateTime, episode: EpisodeDb): Boolean {
     val dateDays = episode.firstAired?.toLocalZone()?.truncatedTo(DAYS)
-    val isTodayOrFuture = dateDays?.isEqual(now.truncatedTo(DAYS)) == true || dateDays?.isAfter(now.truncatedTo(DAYS)) == true
-    return episode.seasonNumber != 0 && isTodayOrFuture
+    return episode.seasonNumber != 0 && dateDays?.isSameDayOrAfter(now) == true
   }
 }
