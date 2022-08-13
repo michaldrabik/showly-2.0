@@ -7,7 +7,9 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.ui_base.common.views.ShowView
+import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.onLongClick
@@ -36,6 +38,7 @@ class WatchlistShowView : ShowView<WatchlistListItem> {
   override val imageView: ImageView = watchlistShowImage
   override val placeholderView: ImageView = watchlistShowPlaceholder
 
+  private var nowUtc = nowUtc()
   private lateinit var item: WatchlistListItem
 
   override fun bind(item: WatchlistListItem) {
@@ -57,6 +60,12 @@ class WatchlistShowView : ShowView<WatchlistListItem> {
     watchlistShowRating.text = String.format(ENGLISH, "%.1f", item.show.rating)
     watchlistShowDescription.visibleIf(item.show.overview.isNotBlank())
     watchlistShowNetwork.visibleIf(item.show.network.isNotBlank())
+
+    with(watchlistShowReleaseDate) {
+      val releaseDate = item.getReleaseDate()
+      visibleIf(releaseDate != null && releaseDate.isAfter(nowUtc))
+      text = item.dateFormat.format(releaseDate).capitalizeWords()
+    }
 
     item.userRating?.let {
       watchlistShowUserStarIcon.visible()

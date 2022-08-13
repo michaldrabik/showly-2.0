@@ -25,7 +25,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -65,10 +64,17 @@ class WatchlistViewModel @Inject constructor(
   fun loadShows(resetScroll: Boolean = false) {
     loadItemsJob?.cancel()
     loadItemsJob = viewModelScope.launch {
+      val dateFormat = loadShowsCase.loadDateFormat()
       val items = loadShowsCase.loadShows(searchQuery ?: "")
         .map {
           val image = imagesProvider.findCachedImage(it.first, POSTER)
-          WatchlistListItem(it.first, image, false, it.second)
+          WatchlistListItem(
+            show = it.first,
+            translation = it.second,
+            image = image,
+            dateFormat = dateFormat,
+            isLoading = false
+          )
         }
       itemsState.value = items
       scrollState.value = Event(resetScroll)

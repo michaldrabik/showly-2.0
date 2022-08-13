@@ -8,7 +8,8 @@ class WatchlistItemDiffCallback : DiffUtil.ItemCallback<WatchlistListItem>() {
     oldItem.show.ids.trakt == newItem.show.ids.trakt
 
   override fun areContentsTheSame(oldItem: WatchlistListItem, newItem: WatchlistListItem) =
-    oldItem.image == newItem.image &&
+    oldItem.show.firstAired == newItem.show.firstAired &&
+      oldItem.image == newItem.image &&
       oldItem.isLoading == newItem.isLoading &&
       oldItem.translation == newItem.translation &&
       oldItem.userRating == newItem.userRating

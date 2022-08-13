@@ -4,6 +4,7 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
+import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_my_shows.helpers.FollowedShowsItemSorter
@@ -15,7 +16,8 @@ class WatchlistLoadShowsCase @Inject constructor(
   private val sorter: FollowedShowsItemSorter,
   private val showsRepository: ShowsRepository,
   private val translationsRepository: TranslationsRepository,
-  private val settingsRepository: SettingsRepository
+  private val settingsRepository: SettingsRepository,
+  private val dateFormatProvider: DateFormatProvider,
 ) {
 
   val language by lazy { translationsRepository.getLanguage() }
@@ -44,4 +46,6 @@ class WatchlistLoadShowsCase @Inject constructor(
     if (language == Config.DEFAULT_LANGUAGE) return Translation.EMPTY
     return translationsRepository.loadTranslation(show, language, onlyLocal)
   }
+
+  fun loadDateFormat() = dateFormatProvider.loadFullDayFormat()
 }

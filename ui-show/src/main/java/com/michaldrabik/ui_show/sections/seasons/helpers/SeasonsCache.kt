@@ -26,7 +26,7 @@ class SeasonsCache @Inject constructor() {
     seasonsCache[showId]?.seasons
 
   fun hasSeasons(showId: IdTrakt): Boolean =
-    seasonsCache[showId]?.seasons == null
+    seasonsCache[showId]?.seasons != null
 
   fun areSeasonsLocal(showId: IdTrakt): Boolean =
     seasonsCache[showId]?.isLocal ?: false
