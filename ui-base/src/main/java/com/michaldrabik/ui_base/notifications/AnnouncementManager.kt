@@ -1,64 +1,40 @@
 package com.michaldrabik.ui_base.notifications
 
 import android.content.Context
-import androidx.work.Data
-import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
-import com.michaldrabik.common.Config
-import com.michaldrabik.common.extensions.dateFromMillis
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.nowUtcDay
-import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.common.extensions.toMillis
+import com.michaldrabik.common.extensions.toZonedDateTime
 import com.michaldrabik.data_local.LocalDataSource
-import com.michaldrabik.data_local.database.model.Episode
-import com.michaldrabik.data_local.database.model.Show
 import com.michaldrabik.repository.OnHoldItemsRepository
 import com.michaldrabik.repository.TranslationsRepository
-import com.michaldrabik.repository.images.MovieImagesProvider
-import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.settings.SettingsRepository
-import com.michaldrabik.ui_base.R
-import com.michaldrabik.ui_base.fcm.NotificationChannel
-import com.michaldrabik.ui_base.notifications.AnnouncementWorker.Companion.DATA_CHANNEL
-import com.michaldrabik.ui_base.notifications.AnnouncementWorker.Companion.DATA_CONTENT
-import com.michaldrabik.ui_base.notifications.AnnouncementWorker.Companion.DATA_IMAGE_URL
-import com.michaldrabik.ui_base.notifications.AnnouncementWorker.Companion.DATA_MOVIE_ID
-import com.michaldrabik.ui_base.notifications.AnnouncementWorker.Companion.DATA_SHOW_ID
-import com.michaldrabik.ui_base.notifications.AnnouncementWorker.Companion.DATA_THEME
-import com.michaldrabik.ui_base.notifications.AnnouncementWorker.Companion.DATA_TITLE
-import com.michaldrabik.ui_model.ImageStatus.AVAILABLE
-import com.michaldrabik.ui_model.ImageType.FANART
-import com.michaldrabik.ui_model.ImageType.POSTER
-import com.michaldrabik.ui_model.Movie
-import com.michaldrabik.ui_model.NotificationDelay
-import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_base.notifications.schedulers.MovieAnnouncementScheduler
+import com.michaldrabik.ui_base.notifications.schedulers.MovieAnnouncementScheduler.Companion.ANNOUNCEMENT_MOVIE_WORK_TAG
+import com.michaldrabik.ui_base.notifications.schedulers.ShowAnnouncementScheduler
+import com.michaldrabik.ui_base.notifications.schedulers.ShowAnnouncementScheduler.Companion.ANNOUNCEMENT_WORK_TAG
 import dagger.hilt.android.qualifiers.ApplicationContext
 import timber.log.Timber
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
-import java.util.concurrent.TimeUnit
-import java.util.concurrent.TimeUnit.MILLISECONDS
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class AnnouncementManager @Inject constructor(
   @ApplicationContext private val context: Context,
+  private val mappers: Mappers,
   private val localSource: LocalDataSource,
   private val settingsRepository: SettingsRepository,
-  private val showsImagesProvider: ShowImagesProvider,
-  private val moviesImagesProvider: MovieImagesProvider,
   private val translationsRepository: TranslationsRepository,
   private val onHoldItemsRepository: OnHoldItemsRepository,
-  private val mappers: Mappers,
+  private val showAnnouncementScheduler: ShowAnnouncementScheduler,
+  private val movieAnnouncementScheduler: MovieAnnouncementScheduler,
 ) {
 
   companion object {
-    private const val ANNOUNCEMENT_WORK_TAG = "ANNOUNCEMENT_WORK_TAG"
-    private const val ANNOUNCEMENT_MOVIE_WORK_TAG = "ANNOUNCEMENT_MOVIE_WORK_TAG"
-    private const val ANNOUNCEMENT_STATIC_DELAY_MS = 60000 // 1 min
     private const val MOVIE_MIN_THRESHOLD_DAYS = 30
     private const val MOVIE_THRESHOLD_HOUR = 12
   }
@@ -81,7 +57,8 @@ class AnnouncementManager @Inject constructor(
     }
 
     val myShows = localSource.myShows.getAll()
-    if (myShows.isEmpty()) {
+    val watchlistShows = localSource.watchlistShows.getAll()
+    if (myShows.isEmpty() && watchlistShows.isEmpty()) {
       Timber.d("Nothing to process. Exiting...")
       return
     }
@@ -89,6 +66,7 @@ class AnnouncementManager @Inject constructor(
     val language = translationsRepository.getLanguage()
     val delay = settings.episodesNotificationsDelay
     val onHoldIds = onHoldItemsRepository.getAll().map { it.id }
+
     myShows
       .forEach { show ->
         Timber.d("Processing ${show.title} (${show.idTrakt})")
@@ -104,21 +82,73 @@ class AnnouncementManager @Inject constructor(
           when {
             delay.isBefore() -> {
               if (airDate.toMillis() + delay.delayMs >= nowMillis) {
-                scheduleAnnouncement(show, episode, delay, language)
+                showAnnouncementScheduler.scheduleAnnouncement(
+                  showDb = show,
+                  episodeNumber = episode.episodeNumber,
+                  episodeSeasonNumber = episode.seasonNumber,
+                  episodeDate = episode.firstAired!!,
+                  delay = delay,
+                  language = language
+                )
               } else {
                 Timber.d("Time with delay included has already passed.")
               }
             }
             else -> {
-              scheduleAnnouncement(show, episode, delay, language)
+              showAnnouncementScheduler.scheduleAnnouncement(
+                showDb = show,
+                episodeNumber = episode.episodeNumber,
+                episodeSeasonNumber = episode.seasonNumber,
+                episodeDate = episode.firstAired!!,
+                delay = delay,
+                language = language
+              )
             }
           }
         }
       }
+
+    for (show in watchlistShows) {
+      Timber.d("Processing Watchlist ${show.title} (${show.idTrakt})")
+
+      val fromTime = if (delay.isBefore()) nowMillis else nowMillis - delay.delayMs
+      val airDate = show.firstAired.toZonedDateTime() ?: ZonedDateTime.now().minusYears(1)
+
+      if (airDate.toMillis() <= fromTime) {
+        continue
+      }
+
+      if (delay.isBefore()) {
+        if (airDate.toMillis() + delay.delayMs >= nowMillis) {
+          showAnnouncementScheduler.scheduleAnnouncement(
+            showDb = show,
+            episodeNumber = 1,
+            episodeSeasonNumber = 1,
+            episodeDate = airDate,
+            delay = delay,
+            language = language
+          )
+        } else {
+          Timber.d("Time with delay included has already passed.")
+        }
+      } else {
+        showAnnouncementScheduler.scheduleAnnouncement(
+          showDb = show,
+          episodeNumber = 1,
+          episodeSeasonNumber = 1,
+          episodeDate = airDate,
+          delay = delay,
+          language = language
+        )
+      }
+    }
   }
 
   suspend fun refreshMoviesAnnouncements() {
     Timber.d("Refreshing movies announcements")
+
+    val now = nowUtc()
+    Timber.d("Current time: ${logFormatter.format(now)} UTC")
 
     WorkManager.getInstance(context).cancelAllWorkByTag(ANNOUNCEMENT_MOVIE_WORK_TAG)
 
@@ -145,103 +175,7 @@ class AnnouncementManager @Inject constructor(
           ZonedDateTime.now().hour < MOVIE_THRESHOLD_HOUR // We want movies notifications to come out the release day at 12:00 local time
       }
       .forEach {
-        scheduleAnnouncement(context, it, language)
+        movieAnnouncementScheduler.scheduleAnnouncement(context, it, language)
       }
-  }
-
-  private suspend fun scheduleAnnouncement(
-    showDb: Show,
-    episodeDb: Episode,
-    delay: NotificationDelay,
-    language: String,
-  ) {
-    val show = mappers.show.fromDatabase(showDb)
-
-    var translation: Translation? = null
-    if (language != Config.DEFAULT_LANGUAGE) {
-      translation = translationsRepository.loadTranslation(show, language, onlyLocal = true)
-    }
-
-    val data = Data.Builder().apply {
-      val title = if (translation?.hasTitle == true) translation.title else show.title
-      val episode = context.getString(R.string.textSeasonEpisode, episodeDb.seasonNumber, episodeDb.episodeNumber)
-
-      putLong(DATA_SHOW_ID, showDb.idTrakt)
-      putString(DATA_TITLE, "$title - $episode")
-      putInt(DATA_THEME, settingsRepository.theme)
-      putString(DATA_CHANNEL, NotificationChannel.EPISODES_ANNOUNCEMENTS.name)
-
-      val stringResId = when (episodeDb.episodeNumber) {
-        1 -> if (delay.isBefore()) R.string.textNewSeasonAvailableSoon else R.string.textNewSeasonAvailable
-        else -> if (delay.isBefore()) R.string.textNewEpisodeAvailableSoon else R.string.textNewEpisodeAvailable
-      }
-      putString(DATA_CONTENT, context.getString(stringResId))
-
-      val posterImage = showsImagesProvider.findCachedImage(show, POSTER)
-      if (posterImage.status == AVAILABLE) {
-        putString(DATA_IMAGE_URL, posterImage.fullFileUrl)
-      } else {
-        val fanartImage = showsImagesProvider.findCachedImage(show, FANART)
-        if (fanartImage.status == AVAILABLE) {
-          putString(DATA_IMAGE_URL, fanartImage.fullFileUrl)
-        }
-      }
-    }
-
-    val delayed = (episodeDb.firstAired!!.toMillis() - nowUtcMillis()) + delay.delayMs + ANNOUNCEMENT_STATIC_DELAY_MS
-    val request = OneTimeWorkRequestBuilder<AnnouncementWorker>()
-      .setInputData(data.build())
-      .setInitialDelay(delayed, MILLISECONDS)
-      .addTag(ANNOUNCEMENT_WORK_TAG)
-      .build()
-
-    WorkManager.getInstance(context).enqueue(request)
-
-    val logTime = logFormatter.format(dateFromMillis(nowUtcMillis() + delayed))
-    Timber.d("Notification set for ${show.title}: $logTime UTC")
-  }
-
-  private suspend fun scheduleAnnouncement(
-    context: Context,
-    movie: Movie,
-    language: String,
-  ) {
-    var translation: Translation? = null
-    if (language != Config.DEFAULT_LANGUAGE) {
-      translation = translationsRepository.loadTranslation(movie, language, onlyLocal = true)
-    }
-
-    val data = Data.Builder().apply {
-      putLong(DATA_MOVIE_ID, movie.traktId)
-      putString(DATA_CHANNEL, NotificationChannel.MOVIES_ANNOUNCEMENTS.name)
-      putString(DATA_TITLE, if (translation?.hasTitle == true) translation.title else movie.title)
-      putString(DATA_CONTENT, context.getString(R.string.textNewMovieAvailable))
-      putInt(DATA_THEME, settingsRepository.theme)
-
-      val posterImage = moviesImagesProvider.findCachedImage(movie, POSTER)
-      if (posterImage.status == AVAILABLE) {
-        putString(DATA_IMAGE_URL, posterImage.fullFileUrl)
-      } else {
-        val fanartImage = moviesImagesProvider.findCachedImage(movie, FANART)
-        if (fanartImage.status == AVAILABLE) {
-          putString(DATA_IMAGE_URL, fanartImage.fullFileUrl)
-        }
-      }
-    }
-
-    val now = ZonedDateTime.now()
-    val days = movie.released!!.toEpochDay() - nowUtcDay().toEpochDay()
-    val offset = now.withHour(MOVIE_THRESHOLD_HOUR).withMinute(0).toMillis() - now.toMillis()
-    val delayed = (days * TimeUnit.DAYS.toMillis(1)) + offset
-    val request = OneTimeWorkRequestBuilder<AnnouncementWorker>()
-      .setInputData(data.build())
-      .setInitialDelay(delayed, MILLISECONDS)
-      .addTag(ANNOUNCEMENT_MOVIE_WORK_TAG)
-      .build()
-
-    WorkManager.getInstance(context).enqueue(request)
-
-    val logTime = logFormatter.format(dateFromMillis(nowUtcMillis() + delayed))
-    Timber.d("Notification set for ${movie.title}: $logTime UTC")
   }
 }

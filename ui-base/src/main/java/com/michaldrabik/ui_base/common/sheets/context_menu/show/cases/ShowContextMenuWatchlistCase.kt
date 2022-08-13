@@ -6,6 +6,7 @@ import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.common.sheets.context_menu.events.RemoveTraktUiEvent
+import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Ids
@@ -23,11 +24,12 @@ class ShowContextMenuWatchlistCase @Inject constructor(
   private val showsRepository: ShowsRepository,
   private val pinnedItemsRepository: PinnedItemsRepository,
   private val quickSyncManager: QuickSyncManager,
+  private val announcementManager: AnnouncementManager,
 ) {
 
   suspend fun moveToWatchlist(
     traktId: IdTrakt,
-    removeLocalData: Boolean
+    removeLocalData: Boolean,
   ) = coroutineScope {
     val show = Show.EMPTY.copy(ids = Ids.EMPTY.copy(traktId))
 
@@ -54,6 +56,7 @@ class ShowContextMenuWatchlistCase @Inject constructor(
     }
 
     pinnedItemsRepository.removePinnedItem(show)
+    announcementManager.refreshShowsAnnouncements()
     with(quickSyncManager) {
       clearHiddenShows(listOf(traktId.id))
       scheduleShowsWatchlist(listOf(traktId.id))
@@ -64,6 +67,7 @@ class ShowContextMenuWatchlistCase @Inject constructor(
 
   suspend fun removeFromWatchlist(traktId: IdTrakt) {
     showsRepository.watchlistShows.delete(traktId)
+    announcementManager.refreshShowsAnnouncements()
     quickSyncManager.clearWatchlistShows(listOf(traktId.id))
   }
 }

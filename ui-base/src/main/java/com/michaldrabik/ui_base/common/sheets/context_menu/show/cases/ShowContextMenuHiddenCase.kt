@@ -8,6 +8,7 @@ import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.common.sheets.context_menu.events.RemoveTraktUiEvent
+import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Ids
@@ -25,6 +26,7 @@ class ShowContextMenuHiddenCase @Inject constructor(
   private val showsRepository: ShowsRepository,
   private val pinnedItemsRepository: PinnedItemsRepository,
   private val quickSyncManager: QuickSyncManager,
+  private val announcementManager: AnnouncementManager,
 ) {
 
   suspend fun moveToHidden(traktId: IdTrakt, removeLocalData: Boolean) = coroutineScope {
@@ -53,6 +55,7 @@ class ShowContextMenuHiddenCase @Inject constructor(
     }
 
     pinnedItemsRepository.removePinnedItem(show)
+    announcementManager.refreshShowsAnnouncements()
     with(quickSyncManager) {
       clearWatchlistShows(listOf(traktId.id))
       scheduleHidden(traktId.id, Mode.SHOWS, TraktSyncQueue.Operation.ADD)
@@ -63,6 +66,7 @@ class ShowContextMenuHiddenCase @Inject constructor(
 
   suspend fun removeFromHidden(traktId: IdTrakt) {
     showsRepository.hiddenShows.delete(traktId)
+    announcementManager.refreshShowsAnnouncements()
     quickSyncManager.clearHiddenShows(listOf(traktId.id))
   }
 }

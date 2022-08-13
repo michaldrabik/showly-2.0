@@ -12,7 +12,6 @@ import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet
-import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.combine
@@ -65,7 +64,6 @@ class ShowDetailsViewModel @Inject constructor(
   private val listsCase: ShowDetailsListsCase,
   private val settingsRepository: SettingsRepository,
   private val userManager: UserTraktManager,
-  private val announcementManager: AnnouncementManager,
   private val seasonsCache: SeasonsCache,
   private val imagesProvider: ShowImagesProvider,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
@@ -266,8 +264,6 @@ class ShowDetailsViewModel @Inject constructor(
         }
         else -> error("Unexpected show state.")
       }
-
-      announcementManager.refreshShowsAnnouncements()
     }
   }
 

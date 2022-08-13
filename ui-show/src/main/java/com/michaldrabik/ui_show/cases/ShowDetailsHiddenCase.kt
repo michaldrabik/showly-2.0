@@ -7,6 +7,7 @@ import com.michaldrabik.data_local.database.model.TraktSyncQueue
 import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
+import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.ui_model.Show
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -19,7 +20,8 @@ class ShowDetailsHiddenCase @Inject constructor(
   private val showsRepository: ShowsRepository,
   private val pinnedItemsRepository: PinnedItemsRepository,
   private val quickSyncManager: QuickSyncManager,
-) {
+  private val announcementManager: AnnouncementManager,
+  ) {
 
   suspend fun isHidden(show: Show) =
     showsRepository.hiddenShows.exists(show.ids.trakt)
@@ -42,12 +44,14 @@ class ShowDetailsHiddenCase @Inject constructor(
       }
     }
     pinnedItemsRepository.removePinnedItem(show)
+    announcementManager.refreshShowsAnnouncements()
     quickSyncManager.scheduleHidden(show.traktId, Mode.SHOWS, TraktSyncQueue.Operation.ADD)
   }
 
   suspend fun removeFromHidden(show: Show) {
     showsRepository.hiddenShows.delete(show.ids.trakt)
     pinnedItemsRepository.removePinnedItem(show)
+    announcementManager.refreshShowsAnnouncements()
     quickSyncManager.clearHiddenShows(listOf(show.traktId))
   }
 }

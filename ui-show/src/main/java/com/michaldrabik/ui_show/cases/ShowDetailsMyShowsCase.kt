@@ -92,6 +92,7 @@ class ShowDetailsMyShowsCase @Inject constructor(
       }
 
       pinnedItemsRepository.removePinnedItem(show)
+      announcementManager.refreshShowsAnnouncements()
     }
   }
 }

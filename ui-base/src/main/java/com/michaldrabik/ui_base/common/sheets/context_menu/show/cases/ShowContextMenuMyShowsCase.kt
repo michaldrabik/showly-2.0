@@ -99,6 +99,7 @@ class ShowContextMenuMyShowsCase @Inject constructor(
       }
 
       pinnedItemsRepository.removePinnedItem(show)
+      announcementManager.refreshShowsAnnouncements()
     }
   }
 
