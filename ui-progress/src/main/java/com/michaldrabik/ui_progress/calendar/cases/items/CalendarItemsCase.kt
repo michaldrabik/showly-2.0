@@ -1,10 +1,8 @@
 package com.michaldrabik.ui_progress.calendar.cases.items
 
 import com.michaldrabik.common.Config
-import com.michaldrabik.common.extensions.isSameDayOrAfter
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toLocalZone
-import com.michaldrabik.common.extensions.toZonedDateTime
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.Episode
 import com.michaldrabik.data_local.database.model.Season
@@ -24,7 +22,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
-import java.time.temporal.ChronoUnit.DAYS
 
 @Suppress("UNCHECKED_CAST")
 abstract class CalendarItemsCase constructor(
@@ -50,20 +47,16 @@ abstract class CalendarItemsCase constructor(
       val language = translationsRepository.getLanguage()
       val dateFormat = dateFormatProvider.loadFullHourFormat()
 
-      val (myShowsAsync, watchlistShowsAsync) = coroutineScope {
+      val (myShows, watchlistShows) = coroutineScope {
         val async1 = async { showsRepository.myShows.loadAll() }
         val async2 = async { showsRepository.watchlistShows.loadAll() }
         awaitAll(async1, async2)
       }
 
-      val watchlistShows = watchlistShowsAsync.filter {
-        val releaseDay = it.firstAired.toZonedDateTime()?.toLocalZone()?.truncatedTo(DAYS)
-        releaseDay?.isSameDayOrAfter(now) == true
-      }
-      val watchlistShowsIds = watchlistShows.map { it.traktId }
+      val shows = myShows + watchlistShows
 
-      val shows = myShowsAsync + watchlistShows
       val showsIds = shows.map { it.traktId }.chunked(250)
+      val watchlistShowsIds = watchlistShows.map { it.traktId }
 
       val (episodes, seasons) = awaitAll(
         async {

@@ -82,7 +82,7 @@ class CalendarItemView : ShowView<CalendarListItem.Episode> {
       )
     }
 
-    calendarItemCheckButton.visibleIf(!item.isWatched)
+    calendarItemCheckButton.visibleIf(!item.isWatched && !item.isWatchlist)
     calendarItemInfoButton.visibleIf(!item.isWatchlist)
     calendarItemBadge.visibleIf(item.isWatchlist)
 
