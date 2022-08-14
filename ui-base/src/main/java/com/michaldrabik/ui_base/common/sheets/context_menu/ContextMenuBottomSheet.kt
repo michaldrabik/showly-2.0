@@ -45,7 +45,7 @@ abstract class ContextMenuBottomSheet : BaseBottomSheetFragment(R.layout.view_co
   companion object {
     fun createBundle(
       idTrakt: IdTrakt,
-      showPinButtons: Boolean = false
+      showPinButtons: Boolean = false,
     ) = bundleOf(
       ARG_ID to idTrakt,
       ARG_LIST to showPinButtons

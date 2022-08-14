@@ -33,7 +33,7 @@ class ShowImagesProvider @Inject constructor(
   private val remoteSource: RemoteDataSource,
   private val localSource: LocalDataSource,
   private val mappers: Mappers,
-  private val settingsRepository: SettingsRepository
+  private val settingsRepository: SettingsRepository,
 ) {
 
   private val unavailableCache = mutableSetOf<IdTrakt>()
@@ -67,8 +67,9 @@ class ShowImagesProvider @Inject constructor(
 
     val cachedImage = findCachedImage(show, type)
     if (cachedImage.status in arrayOf(AVAILABLE, UNAVAILABLE)) {
-      if (!force) return cachedImage
-      if (force && cachedImage.source == CUSTOM) return cachedImage
+      if (!force || cachedImage.source == CUSTOM) {
+        return cachedImage
+      }
     }
 
     var source = TMDB
@@ -142,7 +143,7 @@ class ShowImagesProvider @Inject constructor(
     tmdbId: IdTmdb,
     tvdbId: IdTvdb,
     images: TmdbImages,
-    targetType: ImageType
+    targetType: ImageType,
   ) {
     val extraType = if (targetType == POSTER) FANART else POSTER
     val typeImages = when (extraType) {

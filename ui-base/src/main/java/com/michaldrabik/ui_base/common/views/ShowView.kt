@@ -10,8 +10,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.common.Config.MAIN_GRID_SPAN
-import com.michaldrabik.common.Config.TVDB_IMAGE_BASE_FANART_URL
-import com.michaldrabik.common.Config.TVDB_IMAGE_BASE_POSTER_URL
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.ListItem
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -22,7 +20,6 @@ import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
 import com.michaldrabik.ui_model.ImageStatus.AVAILABLE
 import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
 import com.michaldrabik.ui_model.ImageStatus.UNKNOWN
-import com.michaldrabik.ui_model.ImageType.POSTER
 
 abstract class ShowView<Item : ListItem> : FrameLayout {
 
@@ -63,23 +60,13 @@ abstract class ShowView<Item : ListItem> : FrameLayout {
       return
     }
 
-    if (item.image.status == UNKNOWN && item.show.ids.tvdb.id <= 0) {
+    if (item.image.status == UNKNOWN) {
       onImageLoadFail(item)
       return
     }
 
-    val unknownBase = when (item.image.type) {
-      POSTER -> TVDB_IMAGE_BASE_POSTER_URL
-      else -> TVDB_IMAGE_BASE_FANART_URL
-    }
-    val url = when (item.image.status) {
-      UNKNOWN -> "${unknownBase}${item.show.ids.tvdb.id}-1.jpg"
-      AVAILABLE -> item.image.fullFileUrl
-      else -> error("Should not handle other statuses.")
-    }
-
     Glide.with(this)
-      .load(url)
+      .load(item.image.fullFileUrl)
       .transform(centerCropTransformation, cornersTransformation)
       .transition(withCrossFade(IMAGE_FADE_DURATION_MS))
       .withSuccessListener { onImageLoadSuccess() }

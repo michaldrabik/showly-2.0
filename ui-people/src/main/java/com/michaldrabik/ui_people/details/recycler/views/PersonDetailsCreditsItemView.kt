@@ -19,11 +19,9 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
 import com.michaldrabik.ui_model.ImageStatus
-import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_people.R
 import com.michaldrabik.ui_people.details.recycler.PersonDetailsItem
-import kotlinx.android.synthetic.main.view_person_details.view.*
 import kotlinx.android.synthetic.main.view_person_details_credits_item.view.*
 
 class PersonDetailsCreditsItemView : FrameLayout {
@@ -104,35 +102,19 @@ class PersonDetailsCreditsItemView : FrameLayout {
       else -> throw IllegalArgumentException()
     }
 
-    val ids = when (item) {
-      is PersonDetailsItem.CreditsShowItem -> item.show.ids
-      is PersonDetailsItem.CreditsMovieItem -> item.movie.ids
-      else -> throw IllegalArgumentException()
-    }
-
     if (image.status == ImageStatus.UNAVAILABLE) {
       viewPersonCreditsItemImage.gone()
       viewPersonCreditsItemPlaceholder.fadeIn(Config.IMAGE_FADE_DURATION_MS.toLong())
       return
     }
 
-    if (image.status == ImageStatus.UNKNOWN && ids.tvdb.id <= 0) {
+    if (image.status == ImageStatus.UNKNOWN) {
       onImageMissingListener?.invoke(item, true)
       return
     }
 
-    val unknownBase = when (image.type) {
-      ImageType.POSTER -> Config.TVDB_IMAGE_BASE_POSTER_URL
-      else -> Config.TVDB_IMAGE_BASE_FANART_URL
-    }
-    val url = when (image.status) {
-      ImageStatus.UNKNOWN -> "${unknownBase}${ids.tvdb.id}-1.jpg"
-      ImageStatus.AVAILABLE -> image.fullFileUrl
-      else -> error("Should not handle other statuses.")
-    }
-
     Glide.with(this)
-      .load(url)
+      .load(image.fullFileUrl)
       .transform(centerCropTransformation, cornersTransformation)
       .transition(DrawableTransitionOptions.withCrossFade(Config.IMAGE_FADE_DURATION_MS))
       .withSuccessListener {
@@ -146,8 +128,7 @@ class PersonDetailsCreditsItemView : FrameLayout {
           loadTranslation(item)
           return@withFailListener
         }
-        val force = (image.status == ImageStatus.UNKNOWN)
-        onImageMissingListener?.invoke(item, force)
+        onImageMissingListener?.invoke(item, false)
       }
       .into(viewPersonCreditsItemImage)
   }

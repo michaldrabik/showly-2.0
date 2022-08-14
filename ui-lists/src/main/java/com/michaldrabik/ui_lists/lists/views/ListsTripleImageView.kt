@@ -21,7 +21,6 @@ import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
 import com.michaldrabik.ui_lists.R
 import com.michaldrabik.ui_lists.lists.helpers.ListsItemImage
 import com.michaldrabik.ui_model.ImageStatus
-import com.michaldrabik.ui_model.ImageType
 import kotlinx.android.synthetic.main.view_triple_image.view.*
 
 @SuppressLint("SetTextI18n")
@@ -44,6 +43,7 @@ class ListsTripleImageView : FrameLayout {
     clear()
     if (images.all { it.image.status == ImageStatus.UNAVAILABLE }) {
       viewTripleImagePlaceholder1.visible()
+      viewTripleImagePlaceholder1.visible()
       viewTripleImagePlaceholder2.visible()
       viewTripleImagePlaceholder3.visible()
       viewTripleImage1.gone()
@@ -60,30 +60,20 @@ class ListsTripleImageView : FrameLayout {
   private fun loadImage(
     itemImage: ListsItemImage,
     imageView: ImageView,
-    placeholderView: ImageView
+    placeholderView: ImageView,
   ) {
     if (itemImage.image.status == ImageStatus.UNAVAILABLE) {
       imageView.invisible()
       placeholderView.visible()
       return
     }
-    if (itemImage.image.status == ImageStatus.UNKNOWN && itemImage.getIds()?.tvdb?.id ?: 0 <= 0) {
+    if (itemImage.image.status == ImageStatus.UNKNOWN) {
       missingImageListener?.invoke(itemImage, true)
       return
     }
 
-    val unknownBase = when (itemImage.image.type) {
-      ImageType.POSTER -> Config.TVDB_IMAGE_BASE_POSTER_URL
-      else -> Config.TVDB_IMAGE_BASE_FANART_URL
-    }
-    val url = when (itemImage.image.status) {
-      ImageStatus.UNKNOWN -> "${unknownBase}${itemImage.getIds()?.tvdb?.id}-1.jpg"
-      ImageStatus.AVAILABLE -> itemImage.image.fullFileUrl
-      else -> error("Should not handle other statuses.")
-    }
-
     Glide.with(this)
-      .load(url)
+      .load(itemImage.image.fullFileUrl)
       .transform(CenterCrop(), RoundedCorners(cornerRadius))
       .transition(DrawableTransitionOptions.withCrossFade(Config.IMAGE_FADE_DURATION_MS))
       .withSuccessListener {
