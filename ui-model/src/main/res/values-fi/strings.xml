@@ -4,6 +4,7 @@
   <string name="textSortName">Nimi</string>
   <string name="textSortNewest">Viimeisimmät</string>
   <string name="textSortRated">Arvostetuimmat</string>
+  <string name="textSortRatedUser">Oma arvio</string>
   <string name="textSortDateAdded">Lisätty hiljattain</string>
   <string name="textSortDateUpdated">Hiljattain päivitetyt</string>
   <string name="textSortRecentlyWatched">Katseltu hiljattain</string>
