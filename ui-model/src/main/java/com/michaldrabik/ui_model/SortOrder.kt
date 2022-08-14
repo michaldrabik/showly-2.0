@@ -8,6 +8,7 @@ enum class SortOrder(
   NAME("title", R.string.textSortName),
   NEWEST("released", R.string.textSortNewest),
   RATING("percentage", R.string.textSortRated),
+  USER_RATING("user_rating", R.string.textSortRatedUser),
   DATE_ADDED("added", R.string.textSortDateAdded),
   DATE_UPDATED("updated", R.string.textSortDateUpdated),
   RECENTLY_WATCHED("recently_watched", R.string.textSortRecentlyWatched),

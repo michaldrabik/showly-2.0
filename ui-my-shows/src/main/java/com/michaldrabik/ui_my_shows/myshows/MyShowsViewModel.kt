@@ -25,6 +25,7 @@ import com.michaldrabik.ui_model.MyShowsSection.WATCHING
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
+import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_my_shows.main.FollowedShowsUiState
 import com.michaldrabik.ui_my_shows.myshows.cases.MyShowsLoadShowsCase
 import com.michaldrabik.ui_my_shows.myshows.cases.MyShowsRatingsCase
@@ -39,7 +40,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -84,7 +84,12 @@ class MyShowsViewModel @Inject constructor(
     loadItemsJob?.cancel()
     loadItemsJob = viewModelScope.launch {
       val settings = settingsRepository.load()
-      val shows = loadShowsCase.loadAllShows().map { toListItemAsync(Type.ALL_SHOWS_ITEM, it) }.awaitAll()
+      val ratings = ratingsCase.loadRatings()
+
+      val shows = loadShowsCase.loadAllShows()
+        .map { toListItemAsync(Type.ALL_SHOWS_ITEM, it, POSTER, ratings[it.ids.trakt]) }
+        .awaitAll()
+
       val seasons = loadShowsCase.loadSeasonsForShows(shows.map { it.show.traktId })
 
       val sortingOrder = sortingCase.loadSectionSortOrder(ALL)
@@ -115,7 +120,7 @@ class MyShowsViewModel @Inject constructor(
         }
 
       val recentShows = if (settings.myShowsRecentIsEnabled) {
-        loadShowsCase.loadRecentShows().map { toListItemAsync(Type.RECENT_SHOWS, it, ImageType.FANART) }.awaitAll()
+        loadShowsCase.loadRecentShows().map { toListItemAsync(Type.RECENT_SHOWS, it, ImageType.FANART, ratings[it.ids.trakt]) }.awaitAll()
       } else {
         emptyList()
       }
@@ -147,21 +152,6 @@ class MyShowsViewModel @Inject constructor(
 
       itemsState.value = listItems
       itemsUpdateState.value = Event(resetScroll)
-
-      loadRatings(listItems, resetScroll)
-    }
-  }
-
-  private fun loadRatings(items: List<MyShowsItem>, resetScroll: List<Type>?) {
-    if (items.isEmpty()) return
-    viewModelScope.launch {
-      try {
-        val listItems = ratingsCase.loadRatings(items)
-        itemsState.value = listItems
-        itemsUpdateState.value = Event(resetScroll)
-      } catch (error: Throwable) {
-        Logger.record(error, "Source" to "MyShowsViewModel::loadRatings()")
-      }
     }
   }
 
@@ -232,10 +222,11 @@ class MyShowsViewModel @Inject constructor(
     itemType: Type,
     show: Show,
     type: ImageType = POSTER,
+    userRating: TraktRating?,
   ) = async {
     val image = imagesProvider.findCachedImage(show, type)
     val translation = translationsCase.loadTranslation(show, true)
-    MyShowsItem(itemType, null, null, null, show, image, false, translation)
+    MyShowsItem(itemType, null, null, null, show, image, false, translation, userRating?.rating)
   }
 
   private fun onEvent(event: EventSync) =

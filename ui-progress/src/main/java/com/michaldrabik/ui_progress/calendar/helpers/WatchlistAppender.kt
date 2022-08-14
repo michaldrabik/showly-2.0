@@ -5,9 +5,7 @@ import com.michaldrabik.data_local.database.model.Episode
 import com.michaldrabik.data_local.database.model.Season
 import com.michaldrabik.ui_model.Show
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class WatchlistAppender @Inject constructor() {
 
   fun appendWatchlistShows(

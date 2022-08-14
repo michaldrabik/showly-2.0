@@ -6,6 +6,7 @@ import com.michaldrabik.ui_model.SortOrder.NAME
 import com.michaldrabik.ui_model.SortOrder.NEWEST
 import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_model.SortOrder.RECENTLY_WATCHED
+import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.SortType.ASCENDING
 import com.michaldrabik.ui_model.SortType.DESCENDING
@@ -21,23 +22,43 @@ class MyShowsItemSorter @Inject constructor() {
     DESCENDING -> sortDescending(sortOrder)
   }
 
-  private fun sortAscending(sortOrder: SortOrder) = when (sortOrder) {
-    NAME -> compareBy { getTitle(it) }
-    RATING -> compareBy { it.show.rating }
-    DATE_ADDED -> compareBy { it.show.createdAt }
-    RECENTLY_WATCHED -> compareBy { it.show.updatedAt }
-    NEWEST -> compareBy<MyShowsItem> { it.show.year }.thenBy { it.show.firstAired }
-    else -> throw IllegalStateException("Invalid sort order")
-  }
+  private fun sortAscending(sortOrder: SortOrder): Comparator<MyShowsItem> =
+    when (sortOrder) {
+      NAME ->
+        compareBy { getTitle(it) }
+      RATING ->
+        compareBy { it.show.rating }
+      USER_RATING ->
+        compareByDescending<MyShowsItem> { it.userRating != null }
+          .thenBy { it.userRating }
+          .thenBy { getTitle(it) }
+      DATE_ADDED ->
+        compareBy { it.show.createdAt }
+      RECENTLY_WATCHED ->
+        compareBy { it.show.updatedAt }
+      NEWEST ->
+        compareBy<MyShowsItem> { it.show.year }.thenBy { it.show.firstAired }
+      else -> throw IllegalStateException("Invalid sort order")
+    }
 
-  private fun sortDescending(sortOrder: SortOrder) = when (sortOrder) {
-    NAME -> compareByDescending { getTitle(it) }
-    RATING -> compareByDescending { it.show.rating }
-    DATE_ADDED -> compareByDescending { it.show.createdAt }
-    RECENTLY_WATCHED -> compareByDescending { it.show.updatedAt }
-    NEWEST -> compareByDescending<MyShowsItem> { it.show.year }.thenByDescending { it.show.firstAired }
-    else -> throw IllegalStateException("Invalid sort order")
-  }
+  private fun sortDescending(sortOrder: SortOrder): Comparator<MyShowsItem> =
+    when (sortOrder) {
+      NAME ->
+        compareByDescending { getTitle(it) }
+      RATING ->
+        compareByDescending { it.show.rating }
+      USER_RATING ->
+        compareByDescending<MyShowsItem> { it.userRating != null }
+          .thenByDescending { it.userRating }
+          .thenBy { getTitle(it) }
+      DATE_ADDED ->
+        compareByDescending { it.show.createdAt }
+      RECENTLY_WATCHED ->
+        compareByDescending { it.show.updatedAt }
+      NEWEST ->
+        compareByDescending<MyShowsItem> { it.show.year }.thenByDescending { it.show.firstAired }
+      else -> throw IllegalStateException("Invalid sort order")
+    }
 
   private fun getTitle(item: MyShowsItem): String {
     val translatedTitle =

@@ -23,7 +23,7 @@ class MyShowsLoadShowsCase @Inject constructor(
   private val sorter: MyShowsItemSorter,
   private val showsRepository: ShowsRepository,
   private val settingsRepository: SettingsRepository,
-  private val localSource: LocalDataSource
+  private val localSource: LocalDataSource,
 ) {
 
   suspend fun loadAllShows() = showsRepository.myShows.loadAll()
@@ -47,7 +47,7 @@ class MyShowsLoadShowsCase @Inject constructor(
     allSeasons: List<Season>,
     section: MyShowsSection,
     sortOrder: Pair<SortOrder, SortType>,
-    searchQuery: String? = null
+    searchQuery: String? = null,
   ): List<MyShowsItem> {
     val shows = allShows
       .filter {
