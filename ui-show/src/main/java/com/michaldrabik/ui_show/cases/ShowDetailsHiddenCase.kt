@@ -21,7 +21,7 @@ class ShowDetailsHiddenCase @Inject constructor(
   private val pinnedItemsRepository: PinnedItemsRepository,
   private val quickSyncManager: QuickSyncManager,
   private val announcementManager: AnnouncementManager,
-  ) {
+) {
 
   suspend fun isHidden(show: Show) =
     showsRepository.hiddenShows.exists(show.ids.trakt)

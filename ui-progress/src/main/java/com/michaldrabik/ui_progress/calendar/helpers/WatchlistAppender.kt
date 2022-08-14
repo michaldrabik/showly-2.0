@@ -39,7 +39,6 @@ class WatchlistAppender @Inject constructor() {
         seasons.add(season)
         episodes.add(episode)
       }
-
   }
 
   private fun createWatchlistSeason(
