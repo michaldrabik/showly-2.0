@@ -2,22 +2,21 @@ package com.michaldrabik.ui_my_movies.mymovies.cases
 
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.UserTraktManager
-import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem
+import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.TraktRating
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
 @ViewModelScoped
 class MyMoviesRatingsCase @Inject constructor(
   private val ratingsRepository: RatingsRepository,
-  private val userTraktManager: UserTraktManager
+  private val userTraktManager: UserTraktManager,
 ) {
 
-  suspend fun loadRatings(items: MutableList<MyMoviesItem>): List<MyMoviesItem> {
-    if (!userTraktManager.isAuthorized()) return items
-
-    val ratings = ratingsRepository.movies.loadRatings(items.map { it.movie })
-    return items.map { item ->
-      item.copy(userRating = ratings.find { item.movie.traktId == it.idTrakt.id }?.rating)
+  suspend fun loadRatings(): Map<IdTrakt, TraktRating?> {
+    if (!userTraktManager.isAuthorized()) {
+      return emptyMap()
     }
+    return ratingsRepository.movies.loadMoviesRatings().associateBy { it.idTrakt }
   }
 }

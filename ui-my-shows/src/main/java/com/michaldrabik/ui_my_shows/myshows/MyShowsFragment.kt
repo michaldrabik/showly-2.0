@@ -96,7 +96,7 @@ class MyShowsFragment :
     adapter = MyShowsAdapter(
       itemClickListener = { openShowDetails(it.show) },
       itemLongClickListener = { item -> openShowMenu(item.show) },
-      onSortOrderClickListener = { section, order, type -> showSortOrderDialog(section, order, type) },
+      onSortOrderClickListener = { section, order, type -> openSortOrderDialog(section, order, type) },
       missingImageListener = { item, force -> viewModel.loadMissingImage(item, force) },
       missingTranslationListener = { viewModel.loadMissingTranslation(it) },
       sectionMissingImageListener = { item, section, force -> viewModel.loadSectionMissingItem(item, section, force) },
@@ -129,22 +129,6 @@ class MyShowsFragment :
     }
   }
 
-  private fun showSortOrderDialog(section: MyShowsSection, order: SortOrder, type: SortType) {
-    val options = listOf(NAME, RATING, USER_RATING, NEWEST, DATE_ADDED, RECENTLY_WATCHED)
-    val key = NavigationArgs.requestSortOrderSection(section.name)
-    val args = SortOrderBottomSheet.createBundle(options, order, type, key)
-
-    requireParentFragment().setFragmentResultListener(key) { requestKey, bundle ->
-      val sortOrder = bundle.getSerializable(NavigationArgs.ARG_SELECTED_SORT_ORDER) as SortOrder
-      val sortType = bundle.getSerializable(NavigationArgs.ARG_SELECTED_SORT_TYPE) as SortType
-      MyShowsSection.values()
-        .find { NavigationArgs.requestSortOrderSection(it.name) == requestKey }
-        ?.let { viewModel.setSectionSortOrder(it, sortOrder, sortType) }
-    }
-
-    navigateTo(R.id.actionFollowedShowsFragmentToSortOrder, args)
-  }
-
   private fun render(uiState: MyShowsUiState) {
     uiState.run {
       items?.let {
@@ -161,6 +145,26 @@ class MyShowsFragment :
 
   private fun openShowMenu(show: Show) {
     (requireParentFragment() as? FollowedShowsFragment)?.openShowMenu(show)
+  }
+
+  private fun openSortOrderDialog(
+    section: MyShowsSection,
+    order: SortOrder,
+    type: SortType,
+  ) {
+    val options = listOf(NAME, RATING, USER_RATING, NEWEST, DATE_ADDED, RECENTLY_WATCHED)
+    val key = NavigationArgs.requestSortOrderSection(section.name)
+    val args = SortOrderBottomSheet.createBundle(options, order, type, key)
+
+    requireParentFragment().setFragmentResultListener(key) { requestKey, bundle ->
+      val sortOrder = bundle.getSerializable(NavigationArgs.ARG_SELECTED_SORT_ORDER) as SortOrder
+      val sortType = bundle.getSerializable(NavigationArgs.ARG_SELECTED_SORT_TYPE) as SortType
+      MyShowsSection.values()
+        .find { NavigationArgs.requestSortOrderSection(it.name) == requestKey }
+        ?.let { viewModel.setSectionSortOrder(it, sortOrder, sortType) }
+    }
+
+    navigateTo(R.id.actionFollowedShowsFragmentToSortOrder, args)
   }
 
   override fun onEnterSearch() {

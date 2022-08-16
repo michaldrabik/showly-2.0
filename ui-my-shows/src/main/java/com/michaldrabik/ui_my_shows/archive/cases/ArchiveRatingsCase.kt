@@ -2,7 +2,8 @@ package com.michaldrabik.ui_my_shows.archive.cases
 
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.UserTraktManager
-import com.michaldrabik.ui_my_shows.archive.recycler.ArchiveListItem
+import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.TraktRating
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
@@ -12,14 +13,10 @@ class ArchiveRatingsCase @Inject constructor(
   private val userTraktManager: UserTraktManager
 ) {
 
-  suspend fun loadRatings(items: List<ArchiveListItem>): List<ArchiveListItem> {
+  suspend fun loadRatings(): Map<IdTrakt, TraktRating?> {
     if (!userTraktManager.isAuthorized()) {
-      return items
+      return emptyMap()
     }
-
-    val ratings = ratingsRepository.shows.loadRatings(items.map { it.show })
-    return items.map { item ->
-      item.copy(userRating = ratings.find { item.show.traktId == it.idTrakt.id }?.rating)
-    }
+    return ratingsRepository.shows.loadShowsRatings().associateBy { it.idTrakt }
   }
 }

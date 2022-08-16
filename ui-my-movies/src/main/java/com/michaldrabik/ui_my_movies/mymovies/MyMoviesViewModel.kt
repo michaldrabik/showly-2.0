@@ -19,6 +19,7 @@ import com.michaldrabik.ui_model.MyMoviesSection.ALL
 import com.michaldrabik.ui_model.MyMoviesSection.RECENTS
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
+import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesUiState
 import com.michaldrabik.ui_my_movies.mymovies.cases.MyMoviesLoadCase
 import com.michaldrabik.ui_my_movies.mymovies.cases.MyMoviesRatingsCase
@@ -34,7 +35,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -75,12 +75,18 @@ class MyMoviesViewModel @Inject constructor(
     loadItemsJob = viewModelScope.launch {
       val settings = loadMoviesCase.loadSettings()
       val dateFormat = loadMoviesCase.loadDateFormat()
-      val movies = loadMoviesCase.loadAll().map { toListItemAsync(ALL_MOVIES_ITEM, it, dateFormat) }.awaitAll()
+      val ratings = ratingsCase.loadRatings()
       val sortOrder = sortingCase.loadSortOrder()
+
+      val movies = loadMoviesCase.loadAll().map {
+        toListItemAsync(ALL_MOVIES_ITEM, it, dateFormat, POSTER, ratings[it.ids.trakt])
+      }.awaitAll()
 
       val allMovies = loadMoviesCase.filterSectionMovies(movies, sortOrder, searchQuery)
       val recentMovies = if (settings.myMoviesRecentIsEnabled) {
-        loadMoviesCase.loadRecentMovies().map { toListItemAsync(RECENT_MOVIE, it, dateFormat, ImageType.FANART) }.awaitAll()
+        loadMoviesCase.loadRecentMovies().map {
+          toListItemAsync(RECENT_MOVIE, it, dateFormat, ImageType.FANART, ratings[it.ids.trakt])
+        }.awaitAll()
       } else {
         emptyList()
       }
@@ -100,21 +106,6 @@ class MyMoviesViewModel @Inject constructor(
 
       itemsState.value = listItems
       itemsUpdateState.value = Event(notifyListsUpdate)
-
-      loadRatings(listItems, notifyListsUpdate)
-    }
-  }
-
-  private fun loadRatings(items: MutableList<MyMoviesItem>, notifyListsUpdate: Boolean) {
-    if (items.isEmpty()) return
-    viewModelScope.launch {
-      try {
-        val listItems = ratingsCase.loadRatings(items)
-        itemsState.value = listItems
-        itemsUpdateState.value = Event(notifyListsUpdate)
-      } catch (error: Throwable) {
-        Logger.record(error, "Source" to "MyMoviesViewModel::loadRatings()")
-      }
     }
   }
 
@@ -160,10 +151,11 @@ class MyMoviesViewModel @Inject constructor(
     movie: Movie,
     dateFormat: DateTimeFormatter,
     type: ImageType = POSTER,
+    userRating: TraktRating?,
   ) = async {
     val image = loadMoviesCase.findCachedImage(movie, type)
     val translation = loadMoviesCase.loadTranslation(movie, true)
-    MyMoviesItem(itemType, null, null, null, movie, image, false, translation, null, dateFormat)
+    MyMoviesItem(itemType, null, null, null, movie, image, false, translation, userRating?.rating, dateFormat)
   }
 
   private fun onEvent(event: EventSync) =

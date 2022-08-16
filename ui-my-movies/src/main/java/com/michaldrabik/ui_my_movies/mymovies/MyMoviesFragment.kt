@@ -24,6 +24,7 @@ import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
 import com.michaldrabik.ui_model.SortOrder.NAME
 import com.michaldrabik.ui_model.SortOrder.NEWEST
 import com.michaldrabik.ui_model.SortOrder.RATING
+import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_movies.R
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesFragment
@@ -66,7 +67,7 @@ class MyMoviesFragment :
       itemLongClickListener = { openMovieMenu(it.movie) },
       missingImageListener = { item, force -> viewModel.loadMissingImage(item, force) },
       missingTranslationListener = { viewModel.loadMissingTranslation(it) },
-      onSortOrderClickListener = { order, type -> showSortOrderDialog(order, type) },
+      onSortOrderClickListener = { order, type -> openSortOrderDialog(order, type) },
       listChangeListener = {
         layoutManager?.scrollToPosition(0)
         (requireParentFragment() as FollowedMoviesFragment).resetTranslations()
@@ -91,19 +92,6 @@ class MyMoviesFragment :
     }
   }
 
-  private fun showSortOrderDialog(order: SortOrder, type: SortType) {
-    val options = listOf(NAME, RATING, NEWEST, DATE_ADDED)
-    val args = SortOrderBottomSheet.createBundle(options, order, type)
-
-    requireParentFragment().setFragmentResultListener(NavigationArgs.REQUEST_SORT_ORDER) { _, bundle ->
-      val sortOrder = bundle.getSerializable(NavigationArgs.ARG_SELECTED_SORT_ORDER) as SortOrder
-      val sortType = bundle.getSerializable(NavigationArgs.ARG_SELECTED_SORT_TYPE) as SortType
-      viewModel.setSortOrder(sortOrder, sortType)
-    }
-
-    navigateTo(R.id.actionFollowedMoviesFragmentToSortOrder, args)
-  }
-
   private fun render(uiState: MyMoviesUiState) {
     uiState.run {
       items?.let {
@@ -120,6 +108,19 @@ class MyMoviesFragment :
 
   private fun openMovieMenu(movie: Movie) {
     (requireParentFragment() as? FollowedMoviesFragment)?.openMovieMenu(movie)
+  }
+
+  private fun openSortOrderDialog(order: SortOrder, type: SortType) {
+    val options = listOf(NAME, RATING, USER_RATING, NEWEST, DATE_ADDED)
+    val args = SortOrderBottomSheet.createBundle(options, order, type)
+
+    requireParentFragment().setFragmentResultListener(NavigationArgs.REQUEST_SORT_ORDER) { _, bundle ->
+      val sortOrder = bundle.getSerializable(NavigationArgs.ARG_SELECTED_SORT_ORDER) as SortOrder
+      val sortType = bundle.getSerializable(NavigationArgs.ARG_SELECTED_SORT_TYPE) as SortType
+      viewModel.setSortOrder(sortOrder, sortType)
+    }
+
+    navigateTo(R.id.actionFollowedMoviesFragmentToSortOrder, args)
   }
 
   override fun onEnterSearch() {

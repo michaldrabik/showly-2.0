@@ -26,6 +26,7 @@ import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
 import com.michaldrabik.ui_model.SortOrder.NAME
 import com.michaldrabik.ui_model.SortOrder.NEWEST
 import com.michaldrabik.ui_model.SortOrder.RATING
+import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.main.FollowedShowsFragment
@@ -99,19 +100,6 @@ class WatchlistFragment :
     }
   }
 
-  private fun showSortOrderDialog(order: SortOrder, type: SortType) {
-    val options = listOf(NAME, RATING, NEWEST, DATE_ADDED)
-    val args = SortOrderBottomSheet.createBundle(options, order, type)
-
-    requireParentFragment().setFragmentResultListener(REQUEST_SORT_ORDER) { _, bundle ->
-      val sortOrder = bundle.getSerializable(ARG_SELECTED_SORT_ORDER) as SortOrder
-      val sortType = bundle.getSerializable(ARG_SELECTED_SORT_TYPE) as SortType
-      viewModel.setSortOrder(sortOrder, sortType)
-    }
-
-    navigateTo(R.id.actionFollowedShowsFragmentToSortOrder, args)
-  }
-
   private fun render(uiState: WatchlistUiState) {
     uiState.run {
       items.let {
@@ -120,7 +108,7 @@ class WatchlistFragment :
         watchlistEmptyView.fadeIf(it.isEmpty() && !isSearching)
       }
       sortOrder?.let { event ->
-        event.consume()?.let { showSortOrderDialog(it.first, it.second) }
+        event.consume()?.let { openSortOrderDialog(it.first, it.second) }
       }
     }
   }
@@ -131,6 +119,19 @@ class WatchlistFragment :
 
   private fun openShowMenu(show: Show) {
     (requireParentFragment() as? FollowedShowsFragment)?.openShowMenu(show)
+  }
+
+  private fun openSortOrderDialog(order: SortOrder, type: SortType) {
+    val options = listOf(NAME, RATING, USER_RATING, NEWEST, DATE_ADDED)
+    val args = SortOrderBottomSheet.createBundle(options, order, type)
+
+    requireParentFragment().setFragmentResultListener(REQUEST_SORT_ORDER) { _, bundle ->
+      val sortOrder = bundle.getSerializable(ARG_SELECTED_SORT_ORDER) as SortOrder
+      val sortType = bundle.getSerializable(ARG_SELECTED_SORT_TYPE) as SortType
+      viewModel.setSortOrder(sortOrder, sortType)
+    }
+
+    navigateTo(R.id.actionFollowedShowsFragmentToSortOrder, args)
   }
 
   override fun onEnterSearch() {
