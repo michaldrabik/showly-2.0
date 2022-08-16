@@ -4,6 +4,7 @@
   <string name="textSortName">الاسم</string>
   <string name="textSortNewest">الأحدث</string>
   <string name="textSortRated">الأعلى تقييمًا</string>
+  <string name="textSortRatedUser">تقييمي</string>
   <string name="textSortDateAdded">أُضيف مؤخرًا</string>
   <string name="textSortDateUpdated">حُدث مؤخرًا</string>
   <string name="textSortRecentlyWatched">شوهد مؤخرًا</string>
