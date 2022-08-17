@@ -7,7 +7,7 @@
   <string name="textMovieTrailer">Bande\nAnnonce</string>
   <string name="textMovieRate">Noter</string>
   <string name="textMovieComments2">Commentaires</string>
-  <string name="textMovieYouMayAlsoLike">Vous pourriez aussi aimer:</string>
+  <string name="textMovieYouMayAlsoLike">Vous pourriez aussi aimer :</string>
   <string name="textMovieExtraInfo">%s %s | %s %s | %s</string>
   <string name="textMovieManageLists">Gérer les listes</string>
   <string name="textMovieManageListsCount">Gérer les listes (%d)</string>
