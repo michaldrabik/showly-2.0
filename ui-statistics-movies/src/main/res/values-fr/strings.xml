@@ -12,5 +12,5 @@
   <string name="textStatisticsMoviesTopGenre">Genres principaux</string>
   <string name="textStatisticsMoviesTopGenreSubValue">semblent être votre tasse de thé. Appuyez pour en voir plus.</string>
   <string name="textStatisticsMoviesTopGenreSubValue2">semblent être votre tasse de thé.</string>
-  <string name="textStatisticsMoviesRatings">Évaluations récentes</string>
+  <string name="textStatisticsMoviesRatings">Notations récentes</string>
 </resources>
