@@ -6,8 +6,8 @@
   <string name="textLightThemeDesc">Rejoignez le côté lumineux de la force avec un thème clair supplémentaire pour l\'application principale et les widgets.</string>
   <string name="textCustomImagesTitle">Images personnalisées</string>
   <string name="textCustomImagesDesc">Définissez vos propres affiches et fanarts pour les émissions et les films. Sélectionnez une image dans la galerie ou téléversez une image à partir d\'une URL.</string>
-  <string name="textQuickRatingTitle">Évaluations rapides</string>
-  <string name="textQuickRatingDesc">N\'oubliez jamais d\'évaluer un film ou un épisode que vous venez de regarder. Grâce à la fonctionnalité d\'évaluation rapide, vous pourrez automatiquement évaluer un élément chaque fois que vous le marquerez comme visionné.</string>
+  <string name="textQuickRatingTitle">Notations rapides</string>
+  <string name="textQuickRatingDesc">N\'oubliez jamais de noter un film ou un épisode que vous venez de regarder. Grâce à la fonctionnalité de notation rapide, vous pourrez automatiquement noter un élément chaque fois que vous le marquerez comme vu.</string>
   <string name="textWidgetsTitle">Widgets transparents</string>
   <string name="textWidgetsDesc">Définissez un niveau de transparence pour vos widgets afin qu\'ils s\'intègrent mieux à votre écran accueil.</string>
   <string name="textRemoveAdsTitle">Supprimer les publicités</string>
