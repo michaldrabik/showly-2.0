@@ -22,12 +22,12 @@ import com.michaldrabik.ui_base.utilities.extensions.onLongClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Season
-import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortOrder.RATING
+import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.progress.recycler.ProgressListItem
 import kotlinx.android.synthetic.main.view_progress_item.view.*
 import java.util.Locale.ENGLISH
-import kotlin.math.roundToInt
 
 @SuppressLint("SetTextI18n")
 class ProgressItemView : ShowView<ProgressListItem.Episode> {
@@ -48,12 +48,10 @@ class ProgressItemView : ShowView<ProgressListItem.Episode> {
     onClick { itemClickListener?.invoke(item) }
     onLongClick { itemLongClickListener?.invoke(item) }
     progressItemInfoButton.onClick { detailsClickListener?.invoke(item) }
-//    progressItemProgressText.onClick { toggleEpisodesLeft() } // TODO Remove if no feedback from user about percentage change
     imageLoadCompleteListener = { loadTranslation() }
   }
 
   private lateinit var item: ProgressListItem.Episode
-  private var showEpisodesLeft = true
 
   override val imageView: ImageView = progressItemImage
   override val placeholderView: ImageView = progressItemPlaceholder
@@ -86,19 +84,40 @@ class ProgressItemView : ShowView<ProgressListItem.Episode> {
       item.episode?.title == "Episode ${item.episode?.number}" -> String.format(ENGLISH, context.getString(R.string.textEpisode), item.episode.number)
       else -> item.episode?.title
     }
-    val showRating = item.sortOrder == SortOrder.RATING && !item.isNew() && !item.isUpcoming
-    progressItemRating.visibleIf(showRating)
-    progressItemRatingStar.visibleIf(showRating)
-    progressItemRating.text = String.format(ENGLISH, "%.1f", item.show.rating)
     progressItemSubtitle2.text = episodeTitle
     progressItemNewBadge.visibleIf(item.isNew())
     progressItemPin.visibleIf(item.isPinned)
     progressItemPause.visibleIf(item.isOnHold)
 
     bindProgress(item)
+    bindRating(item)
     bindCheckButton(item, checkClickListener, detailsClickListener)
 
     loadImage(item)
+  }
+
+  private fun bindRating(episodeItem: ProgressListItem.Episode) {
+    val isNew = episodeItem.isNew()
+    val isUpcoming = episodeItem.isUpcoming
+    when (episodeItem.sortOrder) {
+      RATING -> {
+        progressItemRating.visibleIf(!isNew && !isUpcoming)
+        progressItemRatingStar.visibleIf(!isNew && !isUpcoming)
+        progressItemRatingStar.imageTintList = context.colorStateListFromAttr(android.R.attr.colorAccent)
+        progressItemRating.text = String.format(ENGLISH, "%.1f", episodeItem.show.rating)
+      }
+      USER_RATING -> {
+        val hasRating = episodeItem.userRating != null
+        progressItemRating.visibleIf(!isNew && !isUpcoming && hasRating)
+        progressItemRatingStar.visibleIf(!isNew && !isUpcoming && hasRating)
+        progressItemRatingStar.imageTintList = context.colorStateListFromAttr(android.R.attr.textColorPrimary)
+        progressItemRating.text = String.format(ENGLISH, "%d", episodeItem.userRating)
+      }
+      else -> {
+        progressItemRating.gone()
+        progressItemRatingStar.gone()
+      }
+    }
   }
 
   private fun bindProgress(item: ProgressListItem.Episode) {
@@ -150,22 +169,6 @@ class ProgressItemView : ShowView<ProgressListItem.Episode> {
       val episodesLeftString = resources.getQuantityString(R.plurals.textEpisodesLeft, episodesLeft, episodesLeft)
       progressItemProgressText.text = String.format(ENGLISH, "%d/%d ($episodesLeftString)", item.watchedCount, item.totalCount)
     }
-  }
-
-  private fun renderEpisodesPercentage() {
-    var percent = 0
-    if (item.totalCount != 0) {
-      percent = ((item.watchedCount.toFloat() / item.totalCount.toFloat()) * 100).roundToInt()
-    }
-    progressItemProgressText.text = String.format(ENGLISH, "%d/%d (%d%%)", item.watchedCount, item.totalCount, percent)
-  }
-
-  private fun toggleEpisodesLeft() {
-    when {
-      showEpisodesLeft -> renderEpisodesPercentage()
-      else -> renderEpisodesLeft()
-    }
-    showEpisodesLeft = !showEpisodesLeft
   }
 
   private fun clear() {

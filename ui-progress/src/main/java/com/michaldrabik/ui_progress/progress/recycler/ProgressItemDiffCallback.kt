@@ -44,6 +44,7 @@ class ProgressItemDiffCallback : DiffUtil.ItemCallback<ProgressListItem>() {
       oldItem.isUpcoming == newItem.isUpcoming &&
       oldItem.sortOrder == newItem.sortOrder &&
       oldItem.isOnHold == newItem.isOnHold &&
+      oldItem.userRating == newItem.userRating &&
       oldItem.isPinned == newItem.isPinned
 
   private fun areContentsTheSame(oldItem: ProgressListItem.Header, newItem: ProgressListItem.Header) =

@@ -35,6 +35,7 @@ sealed class ProgressListItem(
     val translations: TranslationsBundle? = null,
     val dateFormat: DateTimeFormatter? = null,
     val sortOrder: SortOrder? = null,
+    val userRating: Int? = null,
   ) : ProgressListItem(show, image, isLoading) {
 
     fun isNew() = episode?.firstAired?.isBefore(nowUtc()) ?: false &&
@@ -57,7 +58,7 @@ sealed class ProgressListItem(
       fun create(
         type: Type,
         @StringRes textResId: Int,
-        isCollapsed: Boolean
+        isCollapsed: Boolean,
       ) = Header(
         type = type,
         show = Show.EMPTY,

@@ -7,6 +7,7 @@ import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.Episode
 import com.michaldrabik.repository.OnHoldItemsRepository
 import com.michaldrabik.repository.PinnedItemsRepository
+import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.repository.mappers.Mappers
@@ -46,6 +47,7 @@ class ProgressItemsCase @Inject constructor(
   private val imagesProvider: ShowImagesProvider,
   private val pinnedItemsRepository: PinnedItemsRepository,
   private val onHoldItemsRepository: OnHoldItemsRepository,
+  private val ratingsRepository: RatingsRepository,
   private val dateFormatProvider: DateFormatProvider,
 ) {
 
@@ -104,6 +106,7 @@ class ProgressItemsCase @Inject constructor(
       .map {
         async {
           val image = imagesProvider.findCachedImage(it.show, ImageType.POSTER)
+          val rating = ratingsRepository.shows.loadRatings(listOf(it.show))
           val isPinned = pinnedItemsRepository.isItemPinned(it.show)
           val isOnHold = onHoldItemsRepository.isOnHold(it.show)
 
@@ -135,6 +138,7 @@ class ProgressItemsCase @Inject constructor(
             isPinned = isPinned,
             isOnHold = isOnHold,
             translations = translations,
+            userRating = rating.firstOrNull()?.rating,
             watchedCount = watched,
             totalCount = total
           )
@@ -148,7 +152,7 @@ class ProgressItemsCase @Inject constructor(
   private suspend fun findNextEpisode(
     showId: Long,
     nextEpisodeType: ProgressNextEpisodeType,
-    upcomingLimit: Long
+    upcomingLimit: Long,
   ): Episode? = when (nextEpisodeType) {
     LAST_WATCHED -> {
       val lastWatchedEpisode = localSource.episodes.getLastWatched(showId)
