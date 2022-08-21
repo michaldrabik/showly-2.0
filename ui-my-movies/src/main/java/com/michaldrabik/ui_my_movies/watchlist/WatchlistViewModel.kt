@@ -13,19 +13,16 @@ import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
-import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesUiState
 import com.michaldrabik.ui_my_movies.watchlist.cases.WatchlistLoadMoviesCase
-import com.michaldrabik.ui_my_movies.watchlist.cases.WatchlistRatingsCase
 import com.michaldrabik.ui_my_movies.watchlist.cases.WatchlistSortOrderCase
 import com.michaldrabik.ui_my_movies.watchlist.recycler.WatchlistListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -35,7 +32,6 @@ import com.michaldrabik.ui_base.events.Event as EventSync
 @HiltViewModel
 class WatchlistViewModel @Inject constructor(
   private val sortOrderCase: WatchlistSortOrderCase,
-  private val ratingsCase: WatchlistRatingsCase,
   private val loadMoviesCase: WatchlistLoadMoviesCase,
   private val imagesProvider: MovieImagesProvider,
   private val eventsManager: EventsManager,
@@ -65,28 +61,8 @@ class WatchlistViewModel @Inject constructor(
   fun loadMovies(resetScroll: Boolean = false) {
     loadItemsJob?.cancel()
     loadItemsJob = viewModelScope.launch {
-      val dateFormat = loadMoviesCase.loadDateFormat()
-      val items = loadMoviesCase.loadMovies(searchQuery ?: "")
-        .map {
-          val image = imagesProvider.findCachedImage(it.first, POSTER)
-          WatchlistListItem(it.first, image, false, it.second, null, dateFormat)
-        }
-      itemsState.value = items
+      itemsState.value = loadMoviesCase.loadMovies(searchQuery ?: "")
       scrollState.value = Event(resetScroll)
-      loadRatings(items, resetScroll)
-    }
-  }
-
-  private fun loadRatings(items: List<WatchlistListItem>, resetScroll: Boolean) {
-    if (items.isEmpty()) return
-    viewModelScope.launch {
-      try {
-        val listItems = ratingsCase.loadRatings(items)
-        itemsState.value = listItems
-        scrollState.value = Event(resetScroll)
-      } catch (error: Throwable) {
-        Logger.record(error, "Source" to "WatchlistViewModel::loadRatings()")
-      }
     }
   }
 

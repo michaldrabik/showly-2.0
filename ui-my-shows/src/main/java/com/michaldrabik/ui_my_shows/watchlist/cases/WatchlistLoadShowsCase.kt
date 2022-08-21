@@ -17,6 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -34,6 +35,7 @@ class WatchlistLoadShowsCase @Inject constructor(
 
   suspend fun loadShows(searchQuery: String): List<WatchlistListItem> = coroutineScope {
     val ratings = ratingsCase.loadRatings()
+    val dateFormat = dateFormatProvider.loadFullDayFormat()
     val translations =
       if (language == Config.DEFAULT_LANGUAGE) emptyMap()
       else translationsRepository.loadAllShowsLocal(language)
@@ -46,7 +48,8 @@ class WatchlistLoadShowsCase @Inject constructor(
         toListItemAsync(
           show = it,
           translation = translations[it.traktId],
-          userRating = ratings[it.ids.trakt]
+          userRating = ratings[it.ids.trakt],
+          dateFormat = dateFormat
         )
       }
       .awaitAll()
@@ -64,13 +67,14 @@ class WatchlistLoadShowsCase @Inject constructor(
     show: Show,
     translation: Translation?,
     userRating: TraktRating?,
+    dateFormat: DateTimeFormatter,
   ) = async {
     val image = imagesProvider.findCachedImage(show, ImageType.POSTER)
     WatchlistListItem(
       isLoading = false,
       show = show,
       image = image,
-      dateFormat = dateFormatProvider.loadFullDayFormat(),
+      dateFormat = dateFormat,
       translation = translation,
       userRating = userRating?.rating
     )

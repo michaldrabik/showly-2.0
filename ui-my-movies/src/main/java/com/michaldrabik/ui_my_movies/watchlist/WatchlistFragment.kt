@@ -25,6 +25,7 @@ import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
 import com.michaldrabik.ui_model.SortOrder.NAME
 import com.michaldrabik.ui_model.SortOrder.NEWEST
 import com.michaldrabik.ui_model.SortOrder.RATING
+import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_movies.R
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesFragment
@@ -94,8 +95,21 @@ class WatchlistFragment :
     }
   }
 
-  private fun showSortOrderDialog(order: SortOrder, type: SortType) {
-    val options = listOf(NAME, RATING, NEWEST, DATE_ADDED)
+  private fun render(uiState: WatchlistUiState) {
+    uiState.run {
+      items.let {
+        val notifyChange = resetScroll?.consume() == true
+        adapter?.setItems(it, notifyChange = notifyChange)
+        watchlistMoviesEmptyView.fadeIf(it.isEmpty() && !isSearching)
+      }
+      sortOrder?.let { event ->
+        event.consume()?.let { openSortOrderDialog(it.first, it.second) }
+      }
+    }
+  }
+
+  private fun openSortOrderDialog(order: SortOrder, type: SortType) {
+    val options = listOf(NAME, RATING, USER_RATING, NEWEST, DATE_ADDED)
     val args = SortOrderBottomSheet.createBundle(options, order, type)
 
     requireParentFragment().setFragmentResultListener(NavigationArgs.REQUEST_SORT_ORDER) { _, bundle ->
@@ -105,19 +119,6 @@ class WatchlistFragment :
     }
 
     navigateTo(R.id.actionFollowedMoviesFragmentToSortOrder, args)
-  }
-
-  private fun render(uiState: WatchlistUiState) {
-    uiState.run {
-      items.let {
-        val notifyChange = resetScroll?.consume() == true
-        adapter?.setItems(it, notifyChange = notifyChange)
-        watchlistMoviesEmptyView.fadeIf(it.isEmpty() && !isSearching)
-      }
-      sortOrder?.let { event ->
-        event.consume()?.let { showSortOrderDialog(it.first, it.second) }
-      }
-    }
   }
 
   private fun openMovieDetails(movie: Movie) {
