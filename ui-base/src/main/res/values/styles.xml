@@ -299,4 +299,18 @@
     <item name="colorPrimaryContainer">#4DF44336</item>
   </style>
 
+  <style name="ShowlyChip" parent="Widget.Material3.Chip.Suggestion">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">30dp</item>
+    <item name="android:textColor">?android:textColorPrimary</item>
+    <item name="chipBackgroundColor">?android:windowBackground</item>
+    <item name="chipMinTouchTargetSize">0dp</item>
+    <item name="chipStrokeColor">?android:textColorSecondary</item>
+    <item name="closeIcon">@drawable/ic_arrow_alt_up</item>
+    <item name="closeIconEndPadding">0dp</item>
+    <item name="closeIconTint">?android:textColorPrimary</item>
+    <item name="closeIconVisible">true</item>
+    <item name="textStartPadding">@dimen/spaceSmall</item>
+  </style>
+
 </resources>

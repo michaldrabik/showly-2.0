@@ -59,7 +59,11 @@ class HiddenLoadMoviesCase @Inject constructor(
       .filterByQuery(searchQuery)
       .sortedWith(sorter.sort(sortOrder, sortType))
 
-    listOf(filtersItem) + moviesItems
+    if (moviesItems.isNotEmpty()) {
+      listOf(filtersItem) + moviesItems
+    } else {
+      moviesItems
+    }
   }
 
   private fun loadFiltersItem(

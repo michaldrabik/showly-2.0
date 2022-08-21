@@ -28,18 +28,14 @@
       tools:text="Section Label"
       />
 
-    <ImageView
+    <com.google.android.material.chip.Chip
       android:id="@+id/myMoviesHeaderSortButton"
-      android:layout_width="24dp"
-      android:layout_height="0dp"
-      android:layout_marginEnd="@dimen/spaceNormal"
-      android:visibility="gone"
+      style="@style/ShowlyChip"
+      android:layout_marginEnd="@dimen/spaceMedium"
+      android:text="@string/textSortName"
       app:layout_constraintBottom_toBottomOf="@id/myMoviesHeaderLabel"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="@id/myMoviesHeaderLabel"
-      app:srcCompat="@drawable/ic_sort"
-      app:tint="?android:attr/textColorPrimary"
-      tools:visibility="visible"
       />
 
   </androidx.constraintlayout.widget.ConstraintLayout>

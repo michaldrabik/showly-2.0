@@ -48,18 +48,6 @@
     >
 
     <com.michaldrabik.ui_base.common.views.ScrollableImageView
-      android:id="@+id/followedMoviesSortIcon"
-      android:layout_width="36dp"
-      android:layout_height="36dp"
-      android:layout_marginEnd="38dp"
-      android:paddingStart="12dp"
-      android:visibility="gone"
-      app:srcCompat="@drawable/ic_sort"
-      app:tint="?android:attr/textColorPrimary"
-      tools:visibility="visible"
-      />
-
-    <com.michaldrabik.ui_base.common.views.ScrollableImageView
       android:id="@+id/followedMoviesSearchIcon"
       android:layout_width="36dp"
       android:layout_height="36dp"
