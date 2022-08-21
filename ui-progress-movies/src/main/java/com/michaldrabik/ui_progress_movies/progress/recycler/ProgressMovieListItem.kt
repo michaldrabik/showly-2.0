@@ -6,6 +6,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.Translation
 import java.time.format.DateTimeFormatter
 
@@ -45,4 +46,13 @@ sealed class ProgressMovieListItem(
     override fun isSameAs(other: MovieListItem) =
       textResId == (other as? Header)?.textResId
   }
+
+  data class FiltersItem(
+    val sortOrder: SortOrder,
+    val sortType: SortType,
+  ) : ProgressMovieListItem(
+    movie = Movie.EMPTY,
+    image = Image.createUnknown(ImageType.POSTER),
+    isLoading = false
+  )
 }

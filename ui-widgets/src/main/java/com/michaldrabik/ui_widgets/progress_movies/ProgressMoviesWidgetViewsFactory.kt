@@ -37,16 +37,20 @@ class ProgressMoviesWidgetViewsFactory(
   private val imageCorner by lazy { context.dimenToPx(R.dimen.mediaTileCorner) }
   private val imageWidth by lazy { context.dimenToPx(R.dimen.widgetImageWidth) }
   private val imageHeight by lazy { context.dimenToPx(R.dimen.widgetImageHeight) }
-  private val adapterItems by lazy { mutableListOf<ProgressMovieListItem.MovieItem>() }
+  private val adapterItems by lazy { mutableListOf<ProgressMovieListItem>() }
 
   private fun loadData() = runBlocking {
     val items = loadItemsCase.loadItems("")
+      .filterIsInstance<ProgressMovieListItem.MovieItem>()
     adapterItems.replace(items)
   }
 
   override fun onCreate() = loadData()
 
-  override fun getViewAt(position: Int) = createItemRemoteView(adapterItems[position])
+  override fun getViewAt(position: Int): RemoteViews {
+    val item = adapterItems[position] as ProgressMovieListItem.MovieItem
+    return createItemRemoteView(item)
+  }
 
   private fun createItemRemoteView(item: ProgressMovieListItem.MovieItem): RemoteViews {
     val translatedTitle = item.translation?.title

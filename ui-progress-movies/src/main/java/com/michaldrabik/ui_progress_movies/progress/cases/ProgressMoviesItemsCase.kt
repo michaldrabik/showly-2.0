@@ -9,6 +9,8 @@ import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_model.ImageType
+import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_progress_movies.helpers.ProgressMoviesItemsSorter
 import com.michaldrabik.ui_progress_movies.progress.recycler.ProgressMovieListItem
@@ -63,7 +65,24 @@ class ProgressMoviesItemsCase @Inject constructor(
 
     val filtered = filterItems(searchQuery, items)
     val sorted = filtered.sortedWith(sorter.sort(sortOrder, sortType))
-    prepareItems(sorted)
+    val preparedItems = prepareItems(sorted)
+
+    if (preparedItems.isNotEmpty()) {
+      val filtersItem = loadFiltersItem(sortOrder, sortType)
+      listOf(filtersItem) + preparedItems
+    } else {
+      preparedItems
+    }
+  }
+
+  private fun loadFiltersItem(
+    sortOrder: SortOrder,
+    sortType: SortType,
+  ): ProgressMovieListItem.FiltersItem {
+    return ProgressMovieListItem.FiltersItem(
+      sortOrder = sortOrder,
+      sortType = sortType
+    )
   }
 
   private fun filterItems(query: String, items: List<ProgressMovieListItem.MovieItem>) =

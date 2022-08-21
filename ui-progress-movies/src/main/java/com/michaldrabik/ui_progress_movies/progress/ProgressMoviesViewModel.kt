@@ -48,7 +48,7 @@ class ProgressMoviesViewModel @Inject constructor(
 
   private var loadItemsJob: Job? = null
 
-  private val itemsState = MutableStateFlow<List<ProgressMovieListItem.MovieItem>?>(null)
+  private val itemsState = MutableStateFlow<List<ProgressMovieListItem>?>(null)
   private val scrollState = MutableStateFlow(Event(false))
   private val sortOrderState = MutableStateFlow<Event<Pair<SortOrder, SortType>>?>(null)
   private val overscrollState = MutableStateFlow(false)

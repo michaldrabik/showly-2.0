@@ -15,7 +15,6 @@ import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.OnShowsMoviesSyncedListener
-import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet
@@ -117,11 +116,6 @@ class ProgressMoviesMainFragment :
   }
 
   private fun setupView() {
-    with(progressMoviesSortIcon) {
-      visibleIf(currentPage == 0)
-      onClick { childFragmentManager.fragments.forEach { (it as? OnSortClickListener)?.onSortClick() } }
-    }
-
     with(progressMoviesCalendarIcon) {
       visibleIf(currentPage == 1)
       onClick { toggleCalendarMode() }
@@ -321,7 +315,6 @@ class ProgressMoviesMainFragment :
     override fun onPageSelected(position: Int) {
       if (currentPage == position) return
 
-      progressMoviesSortIcon.fadeIf(position == 0, duration = 150)
       progressMoviesCalendarIcon.fadeIf(position == 1, duration = 150)
       if (progressMoviesTabs.translationY != 0F) {
         resetTranslations()

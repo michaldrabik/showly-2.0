@@ -45,7 +45,6 @@ class HiddenLoadMoviesCase @Inject constructor(
     val sortOrder = settingsRepository.sorting.hiddenMoviesSortOrder
     val sortType = settingsRepository.sorting.hiddenMoviesSortType
 
-    val filtersItem = loadFiltersItem(sortOrder, sortType)
     val moviesItems = moviesRepository.hiddenMovies.loadAll()
       .map {
         toListItemAsync(
@@ -60,6 +59,7 @@ class HiddenLoadMoviesCase @Inject constructor(
       .sortedWith(sorter.sort(sortOrder, sortType))
 
     if (moviesItems.isNotEmpty()) {
+      val filtersItem = loadFiltersItem(sortOrder, sortType)
       listOf(filtersItem) + moviesItems
     } else {
       moviesItems

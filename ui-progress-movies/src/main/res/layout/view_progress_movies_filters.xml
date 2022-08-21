@@ -10,7 +10,7 @@
   >
 
   <com.google.android.material.chip.ChipGroup
-    android:id="@+id/watchlistMoviesChips"
+    android:id="@+id/progressFiltersChips"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/spaceMedium"
@@ -21,7 +21,7 @@
     >
 
     <com.google.android.material.chip.Chip
-      android:id="@+id/watchlistMoviesSortingChip"
+      android:id="@+id/progressFiltersSortingChip"
       style="@style/ShowlyChip"
       android:text="@string/textSortName"
       />

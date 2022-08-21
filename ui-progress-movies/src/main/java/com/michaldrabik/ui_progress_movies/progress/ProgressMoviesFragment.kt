@@ -108,8 +108,9 @@ class ProgressMoviesFragment :
     adapter = ProgressMoviesAdapter(
       itemClickListener = { requireMainFragment().openMovieDetails(it.movie) },
       itemLongClickListener = { requireMainFragment().openMovieMenu(it.movie) },
-      missingImageListener = { item, force -> viewModel.findMissingImage(item, force) },
-      missingTranslationListener = { item -> viewModel.findMissingTranslation(item) },
+      sortChipClickListener = ::openSortOrderDialog,
+      missingImageListener = viewModel::findMissingImage,
+      missingTranslationListener = viewModel::findMissingTranslation,
       checkClickListener = { viewModel.onMovieChecked(it.movie) },
       listChangeListener = {
         requireMainFragment().resetTranslations()

@@ -45,7 +45,6 @@ class WatchlistLoadMoviesCase @Inject constructor(
     val sortOrder = settingsRepository.sorting.watchlistMoviesSortOrder
     val sortType = settingsRepository.sorting.watchlistMoviesSortType
 
-    val filtersItem = loadFiltersItem(sortOrder, sortType)
     val moviesItems = moviesRepository.watchlistMovies.loadAll()
       .map {
         toListItemAsync(
@@ -60,6 +59,7 @@ class WatchlistLoadMoviesCase @Inject constructor(
       .sortedWith(sorter.sort(sortOrder, sortType))
 
     if (moviesItems.isNotEmpty()) {
+      val filtersItem = loadFiltersItem(sortOrder, sortType)
       listOf(filtersItem) + moviesItems
     } else {
       moviesItems
