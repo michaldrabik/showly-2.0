@@ -16,7 +16,6 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_movies.hidden.cases.HiddenLoadMoviesCase
-import com.michaldrabik.ui_my_movies.hidden.cases.HiddenRatingsCase
 import com.michaldrabik.ui_my_movies.hidden.cases.HiddenSortOrderCase
 import com.michaldrabik.ui_my_movies.hidden.recycler.HiddenListItem
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesUiState
@@ -24,7 +23,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -35,7 +33,6 @@ import com.michaldrabik.ui_base.events.Event as EventSync
 class HiddenViewModel @Inject constructor(
   private val sortOrderCase: HiddenSortOrderCase,
   private val loadMoviesCase: HiddenLoadMoviesCase,
-  private val ratingsCase: HiddenRatingsCase,
   private val imagesProvider: MovieImagesProvider,
   private val eventsManager: EventsManager,
 ) : ViewModel() {
@@ -64,23 +61,8 @@ class HiddenViewModel @Inject constructor(
   fun loadMovies(resetScroll: Boolean = false) {
     loadItemsJob?.cancel()
     loadItemsJob = viewModelScope.launch {
-      val items = loadMoviesCase.loadMovies(searchQuery ?: "")
-      itemsState.value = items
+      itemsState.value = loadMoviesCase.loadMovies(searchQuery ?: "")
       scrollState.value = Event(resetScroll)
-      loadRatings(items, resetScroll)
-    }
-  }
-
-  private fun loadRatings(items: List<HiddenListItem>, resetScroll: Boolean) {
-    if (items.isEmpty()) return
-    viewModelScope.launch {
-      try {
-        val listItems = ratingsCase.loadRatings(items)
-        itemsState.value = listItems
-        scrollState.value = Event(resetScroll)
-      } catch (error: Throwable) {
-        Logger.record(error, "Source" to "HiddenViewModel::loadRatings()")
-      }
     }
   }
 

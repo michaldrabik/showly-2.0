@@ -8,28 +8,34 @@ import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
+import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_my_movies.hidden.helpers.HiddenItemSorter
 import com.michaldrabik.ui_my_movies.hidden.recycler.HiddenListItem
-import com.michaldrabik.ui_my_movies.utilities.FollowedMoviesItemSorter
+import com.michaldrabik.ui_my_movies.watchlist.cases.WatchlistRatingsCase
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @ViewModelScoped
 class HiddenLoadMoviesCase @Inject constructor(
-  private val sorter: FollowedMoviesItemSorter,
+  private val ratingsCase: WatchlistRatingsCase,
+  private val sorter: HiddenItemSorter,
   private val moviesRepository: MoviesRepository,
   private val translationsRepository: TranslationsRepository,
-  private val imagesProvider: MovieImagesProvider,
   private val dateFormatProvider: DateFormatProvider,
-  private val settingsRepository: SettingsRepository
+  private val imagesProvider: MovieImagesProvider,
+  private val settingsRepository: SettingsRepository,
 ) {
 
   val language by lazy { translationsRepository.getLanguage() }
 
   suspend fun loadMovies(searchQuery: String): List<HiddenListItem> = coroutineScope {
+    val ratings = ratingsCase.loadRatings()
     val dateFormat = dateFormatProvider.loadShortDayFormat()
     val translations =
       if (language == Config.DEFAULT_LANGUAGE) emptyMap()
@@ -39,31 +45,44 @@ class HiddenLoadMoviesCase @Inject constructor(
     val sortType = settingsRepository.sorting.hiddenMoviesSortType
 
     moviesRepository.hiddenMovies.loadAll()
-      .map { it to translations[it.traktId] }
+      .map {
+        toListItemAsync(
+          movie = it,
+          translation = translations[it.traktId],
+          userRating = ratings[it.ids.trakt],
+          dateFormat = dateFormat
+        )
+      }
+      .awaitAll()
       .filterByQuery(searchQuery)
       .sortedWith(sorter.sort(sortOrder, sortType))
-      .map {
-        async {
-          val image = imagesProvider.findCachedImage(it.first, ImageType.POSTER)
-          HiddenListItem(
-            movie = it.first,
-            image = image,
-            translation = it.second,
-            isLoading = false,
-            dateFormat = dateFormat
-          )
-        }
-      }.awaitAll()
   }
 
-  private fun List<Pair<Movie, Translation?>>.filterByQuery(query: String) =
+  private fun List<HiddenListItem>.filterByQuery(query: String) =
     this.filter {
-      it.first.title.contains(query, true) ||
-        it.second?.title?.contains(query, true) == true
+      it.movie.title.contains(query, true) ||
+        it.translation?.title?.contains(query, true) == true
     }
 
   suspend fun loadTranslation(movie: Movie, onlyLocal: Boolean): Translation? {
     if (language == Config.DEFAULT_LANGUAGE) return Translation.EMPTY
     return translationsRepository.loadTranslation(movie, language, onlyLocal)
+  }
+
+  private fun CoroutineScope.toListItemAsync(
+    movie: Movie,
+    translation: Translation?,
+    userRating: TraktRating?,
+    dateFormat: DateTimeFormatter,
+  ) = async {
+    val image = imagesProvider.findCachedImage(movie, ImageType.POSTER)
+    HiddenListItem(
+      isLoading = false,
+      movie = movie,
+      image = image,
+      dateFormat = dateFormat,
+      translation = translation,
+      userRating = userRating?.rating
+    )
   }
 }
