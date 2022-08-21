@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.view_watchlist_movie.view.*
 import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n")
-class WatchlistMovieView : MovieView<WatchlistListItem> {
+class WatchlistMovieView : MovieView<WatchlistListItem.MovieItem> {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -39,9 +39,9 @@ class WatchlistMovieView : MovieView<WatchlistListItem> {
   override val imageView: ImageView = watchlistMoviesImage
   override val placeholderView: ImageView = watchlistMoviesPlaceholder
 
-  private lateinit var item: WatchlistListItem
+  private lateinit var item: WatchlistListItem.MovieItem
 
-  override fun bind(item: WatchlistListItem) {
+  override fun bind(item: WatchlistListItem.MovieItem) {
     clear()
     this.item = item
     watchlistMoviesProgress.visibleIf(item.isLoading)

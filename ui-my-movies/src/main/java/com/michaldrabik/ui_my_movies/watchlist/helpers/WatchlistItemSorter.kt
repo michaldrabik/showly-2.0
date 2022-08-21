@@ -23,11 +23,11 @@ class WatchlistItemSorter @Inject constructor() {
     NAME -> compareBy { getTitle(it) }
     RATING -> compareBy { it.movie.rating }
     USER_RATING ->
-      compareByDescending<WatchlistListItem> { it.userRating != null }
+      compareByDescending<WatchlistListItem.MovieItem> { it.userRating != null }
         .thenBy { it.userRating }
         .thenBy { getTitle(it) }
     DATE_ADDED -> compareBy { it.movie.createdAt }
-    NEWEST -> compareBy<WatchlistListItem> { it.movie.released }.thenBy { it.movie.year }
+    NEWEST -> compareBy<WatchlistListItem.MovieItem> { it.movie.released }.thenBy { it.movie.year }
     else -> throw IllegalStateException("Invalid sort order")
   }
 
@@ -35,15 +35,15 @@ class WatchlistItemSorter @Inject constructor() {
     NAME -> compareByDescending { getTitle(it) }
     RATING -> compareByDescending { it.movie.rating }
     USER_RATING ->
-      compareByDescending<WatchlistListItem> { it.userRating != null }
+      compareByDescending<WatchlistListItem.MovieItem> { it.userRating != null }
         .thenByDescending { it.userRating }
         .thenBy { getTitle(it) }
     DATE_ADDED -> compareByDescending { it.movie.createdAt }
-    NEWEST -> compareByDescending<WatchlistListItem> { it.movie.released }.thenByDescending { it.movie.year }
+    NEWEST -> compareByDescending<WatchlistListItem.MovieItem> { it.movie.released }.thenByDescending { it.movie.year }
     else -> throw IllegalStateException("Invalid sort order")
   }
 
-  private fun getTitle(item: WatchlistListItem): String {
+  private fun getTitle(item: WatchlistListItem.MovieItem): String {
     val translatedTitle =
       if (item.translation?.hasTitle == true) item.translation.title
       else item.movie.titleNoThe

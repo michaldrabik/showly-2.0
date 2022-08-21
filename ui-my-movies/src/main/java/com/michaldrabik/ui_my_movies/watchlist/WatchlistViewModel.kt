@@ -19,6 +19,7 @@ import com.michaldrabik.ui_my_movies.main.FollowedMoviesUiState
 import com.michaldrabik.ui_my_movies.watchlist.cases.WatchlistLoadMoviesCase
 import com.michaldrabik.ui_my_movies.watchlist.cases.WatchlistSortOrderCase
 import com.michaldrabik.ui_my_movies.watchlist.recycler.WatchlistListItem
+import com.michaldrabik.ui_my_movies.watchlist.recycler.WatchlistListItem.MovieItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -81,6 +82,7 @@ class WatchlistViewModel @Inject constructor(
   }
 
   fun loadMissingImage(item: WatchlistListItem, force: Boolean) {
+    check(item is MovieItem)
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
       try {
@@ -93,6 +95,7 @@ class WatchlistViewModel @Inject constructor(
   }
 
   fun loadMissingTranslation(item: WatchlistListItem) {
+    check(item is MovieItem)
     if (item.translation != null || loadMoviesCase.language == DEFAULT_LANGUAGE) return
     viewModelScope.launch {
       try {
@@ -104,9 +107,9 @@ class WatchlistViewModel @Inject constructor(
     }
   }
 
-  private fun updateItem(new: WatchlistListItem) {
+  private fun updateItem(item: WatchlistListItem) {
     val currentItems = uiState.value.items.toMutableList()
-    currentItems.findReplace(new) { it isSameAs new }
+    currentItems.findReplace(item) { it isSameAs item }
     itemsState.value = currentItems
   }
 

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  tools:theme="@style/AppTheme"
+  >
+
+  <com.google.android.material.chip.ChipGroup
+    android:id="@+id/watchlistMoviesChips"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceMedium"
+    android:layout_marginEnd="@dimen/spaceMedium"
+    android:paddingTop="6dp"
+    android:paddingBottom="@dimen/spaceSmall"
+    app:singleLine="true"
+    >
+
+    <com.google.android.material.chip.Chip
+      android:id="@+id/watchlistMoviesSortingChip"
+      style="@style/Widget.Material3.Chip.Suggestion"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/textSortName"
+      android:textColor="?android:textColorPrimary"
+      app:chipBackgroundColor="?android:windowBackground"
+      app:chipMinTouchTargetSize="0dp"
+      app:chipStrokeColor="?android:textColorSecondary"
+      app:closeIcon="@drawable/ic_arrow_alt_up"
+      app:closeIconTint="?android:textColorPrimary"
+      app:closeIconVisible="true"
+      />
+
+  </com.google.android.material.chip.ChipGroup>
+
+</merge>
