@@ -10,12 +10,15 @@ import com.bumptech.glide.Glide
 import com.michaldrabik.ui_base.common.views.MovieView
 import com.michaldrabik.ui_base.utilities.extensions.addRipple
 import com.michaldrabik.ui_base.utilities.extensions.bump
+import com.michaldrabik.ui_base.utilities.extensions.colorStateListFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.expandTouch
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.onLongClick
+import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
-import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortOrder.RATING
+import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_progress_movies.R
 import com.michaldrabik.ui_progress_movies.progress.recycler.ProgressMovieListItem
 import kotlinx.android.synthetic.main.view_progress_movies_main_item.view.*
@@ -64,16 +67,36 @@ class ProgressMoviesItemView : MovieView<ProgressMovieListItem.MovieItem> {
         else -> translationOverview
       }
 
-    progressMovieItemRating.visibleIf(item.sortOrder == SortOrder.RATING)
-    progressMovieItemRatingStar.visibleIf(item.sortOrder == SortOrder.RATING)
-    progressMovieItemRating.text = String.format(Locale.ENGLISH, "%.1f", item.movie.rating)
     progressMovieItemPin.visibleIf(item.isPinned)
 
     progressMovieItemCheckButton.onClick {
       it.bump { checkClickListener?.invoke(item) }
     }
 
+    bindRating(item)
     loadImage(item)
+  }
+
+  private fun bindRating(item: ProgressMovieListItem.MovieItem) {
+    when (item.sortOrder) {
+      RATING -> {
+        progressMovieItemRating.visible()
+        progressMovieItemRatingStar.visible()
+        progressMovieItemRatingStar.imageTintList = context.colorStateListFromAttr(android.R.attr.colorAccent)
+        progressMovieItemRating.text = String.format(Locale.ENGLISH, "%.1f", item.movie.rating)
+      }
+      USER_RATING -> {
+        val hasRating = item.userRating != null
+        progressMovieItemRating.visibleIf(hasRating)
+        progressMovieItemRatingStar.visibleIf(hasRating)
+        progressMovieItemRatingStar.imageTintList = context.colorStateListFromAttr(android.R.attr.textColorPrimary)
+        progressMovieItemRating.text = String.format(Locale.ENGLISH, "%d", item.userRating)
+      }
+      else -> {
+        progressMovieItemRating.gone()
+        progressMovieItemRatingStar.gone()
+      }
+    }
   }
 
   private fun loadTranslation() {

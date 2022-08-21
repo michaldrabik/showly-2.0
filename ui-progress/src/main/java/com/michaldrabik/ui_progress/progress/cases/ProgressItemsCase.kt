@@ -40,15 +40,15 @@ import com.michaldrabik.ui_model.Episode.Companion as EpisodeUi
 class ProgressItemsCase @Inject constructor(
   private val localSource: LocalDataSource,
   private val mappers: Mappers,
-  private val sorter: ProgressItemsSorter,
   private val showsRepository: ShowsRepository,
   private val translationsRepository: TranslationsRepository,
   private val settingsRepository: SettingsRepository,
-  private val imagesProvider: ShowImagesProvider,
   private val pinnedItemsRepository: PinnedItemsRepository,
   private val onHoldItemsRepository: OnHoldItemsRepository,
   private val ratingsRepository: RatingsRepository,
+  private val imagesProvider: ShowImagesProvider,
   private val dateFormatProvider: DateFormatProvider,
+  private val sorter: ProgressItemsSorter,
 ) {
 
   companion object {

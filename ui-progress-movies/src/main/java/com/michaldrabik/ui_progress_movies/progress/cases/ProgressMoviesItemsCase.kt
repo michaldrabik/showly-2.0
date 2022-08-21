@@ -2,6 +2,7 @@ package com.michaldrabik.ui_progress_movies.progress.cases
 
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.PinnedItemsRepository
+import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.movies.MoviesRepository
@@ -21,13 +22,14 @@ import javax.inject.Singleton
 @Suppress("UNCHECKED_CAST")
 @Singleton
 class ProgressMoviesItemsCase @Inject constructor(
-  private val sorter: ProgressMoviesItemsSorter,
   private val moviesRepository: MoviesRepository,
   private val translationsRepository: TranslationsRepository,
+  private val ratingsRepository: RatingsRepository,
   private val settingsRepository: SettingsRepository,
-  private val imagesProvider: MovieImagesProvider,
   private val pinnedItemsRepository: PinnedItemsRepository,
+  private val imagesProvider: MovieImagesProvider,
   private val dateFormatProvider: DateFormatProvider,
+  private val sorter: ProgressMoviesItemsSorter,
 ) {
 
   suspend fun loadItems(searchQuery: String) = withContext(Dispatchers.Default) {
@@ -40,6 +42,7 @@ class ProgressMoviesItemsCase @Inject constructor(
     val watchlistMovies = moviesRepository.watchlistMovies.loadAll()
     val items = watchlistMovies.map { movie ->
       async {
+        val rating = ratingsRepository.movies.loadRatings(listOf(movie))
         var translation: Translation? = null
         if (language != Config.DEFAULT_LANGUAGE) {
           translation = translationsRepository.loadTranslation(movie, language, onlyLocal = true)
@@ -52,7 +55,8 @@ class ProgressMoviesItemsCase @Inject constructor(
           isPinned = pinnedItemsRepository.isItemPinned(movie),
           translation = translation,
           dateFormat = dateFormat,
-          sortOrder = sortOrder
+          sortOrder = sortOrder,
+          userRating = rating.firstOrNull()?.rating
         )
       }
     }.awaitAll()

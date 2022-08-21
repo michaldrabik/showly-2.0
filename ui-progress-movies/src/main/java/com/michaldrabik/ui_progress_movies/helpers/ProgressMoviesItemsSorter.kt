@@ -5,6 +5,7 @@ import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
 import com.michaldrabik.ui_model.SortOrder.NAME
 import com.michaldrabik.ui_model.SortOrder.NEWEST
 import com.michaldrabik.ui_model.SortOrder.RATING
+import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.SortType.ASCENDING
 import com.michaldrabik.ui_model.SortType.DESCENDING
@@ -23,16 +24,28 @@ class ProgressMoviesItemsSorter @Inject constructor() {
   private fun sortAscending(sortOrder: SortOrder) = when (sortOrder) {
     NAME -> compareBy { getTitle(it) }
     RATING -> compareBy { it.movie.rating }
+    USER_RATING ->
+      compareByDescending<ProgressMovieListItem.MovieItem> { it.userRating != null }
+        .thenBy { it.userRating }
+        .thenBy { getTitle(it) }
     DATE_ADDED -> compareBy { it.movie.updatedAt }
-    NEWEST -> compareBy<ProgressMovieListItem.MovieItem> { it.movie.released }.thenBy { it.movie.year }
+    NEWEST ->
+      compareBy<ProgressMovieListItem.MovieItem> { it.movie.released }
+        .thenBy { it.movie.year }
     else -> throw IllegalStateException("Invalid sort order")
   }
 
   private fun sortDescending(sortOrder: SortOrder) = when (sortOrder) {
     NAME -> compareByDescending { getTitle(it) }
     RATING -> compareByDescending { it.movie.rating }
+    USER_RATING ->
+      compareByDescending<ProgressMovieListItem.MovieItem> { it.userRating != null }
+        .thenByDescending { it.userRating }
+        .thenBy { getTitle(it) }
     DATE_ADDED -> compareByDescending { it.movie.updatedAt }
-    NEWEST -> compareByDescending<ProgressMovieListItem.MovieItem> { it.movie.released }.thenByDescending { it.movie.year }
+    NEWEST ->
+      compareByDescending<ProgressMovieListItem.MovieItem> { it.movie.released }
+        .thenByDescending { it.movie.year }
     else -> throw IllegalStateException("Invalid sort order")
   }
 
