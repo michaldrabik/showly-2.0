@@ -2,6 +2,7 @@ package com.michaldrabik.ui_progress_movies.progress.cases
 
 import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.repository.PinnedItemsRepository
+import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.movies.MoviesRepository
@@ -31,6 +32,7 @@ class ProgressMoviesItemsCaseTest : BaseMockTest() {
   @RelaxedMockK lateinit var sorter: ProgressMoviesItemsSorter
   @RelaxedMockK lateinit var moviesRepository: MoviesRepository
   @RelaxedMockK lateinit var translationsRepository: TranslationsRepository
+  @RelaxedMockK lateinit var ratingsRepository: RatingsRepository
   @RelaxedMockK lateinit var settingsRepository: SettingsRepository
   @RelaxedMockK lateinit var imagesProvider: MovieImagesProvider
   @RelaxedMockK lateinit var pinnedItemsRepository: PinnedItemsRepository
@@ -52,13 +54,14 @@ class ProgressMoviesItemsCaseTest : BaseMockTest() {
     coEvery { pinnedItemsRepository.isItemPinned(any<Movie>()) } returns false
 
     SUT = ProgressMoviesItemsCase(
-      sorter,
       moviesRepository,
       translationsRepository,
+      ratingsRepository,
       settingsRepository,
-      imagesProvider,
       pinnedItemsRepository,
-      dateFormatProvider
+      imagesProvider,
+      dateFormatProvider,
+      sorter
     )
   }
 

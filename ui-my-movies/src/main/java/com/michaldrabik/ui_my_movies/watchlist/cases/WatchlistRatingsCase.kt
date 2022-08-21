@@ -20,4 +20,3 @@ class WatchlistRatingsCase @Inject constructor(
     return ratingsRepository.movies.loadMoviesRatings().associateBy { it.idTrakt }
   }
 }
-
