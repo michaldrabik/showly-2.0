@@ -4,6 +4,7 @@
   <string name="textSortName">Titolo</string>
   <string name="textSortNewest">Più recenti</string>
   <string name="textSortRated">Più votati</string>
+  <string name="textSortRatedUser">La mia valutazione</string>
   <string name="textSortDateAdded">Aggiunti di recente</string>
   <string name="textSortDateUpdated">Aggiornati di recente</string>
   <string name="textSortRecentlyWatched">Visti di recente</string>

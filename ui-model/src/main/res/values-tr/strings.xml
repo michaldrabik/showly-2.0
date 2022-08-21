@@ -4,6 +4,7 @@
   <string name="textSortName">Başlık</string>
   <string name="textSortNewest">En Yeni</string>
   <string name="textSortRated">En Yüksek Puan Alan</string>
+  <string name="textSortRatedUser">Benim Puanlamam</string>
   <string name="textSortDateAdded">Son Eklenen</string>
   <string name="textSortDateUpdated">Son Güncellenen</string>
   <string name="textSortRecentlyWatched">Son İzlenen</string>

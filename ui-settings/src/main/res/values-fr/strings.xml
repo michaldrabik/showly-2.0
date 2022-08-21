@@ -16,7 +16,7 @@
   <string name="textSettingsTraktQuickSyncSummary">Téléversement instantané des données vers Trakt.tv après les avoir ajoutées dans l\'application.</string>
   <string name="textSettingsTraktQuickRemoveTitle">Suppression des données Trakt.tv</string>
   <string name="textSettingsTraktQuickRemoveSummary">Proposer de supprimer les données de votre compte Trakt.tv après les avoir supprimés dans l\'application.</string>
-  <string name="textSettingsTraktQuickRateTitle">Évaluation rapide sur Trakt.tv</string>
+  <string name="textSettingsTraktQuickRateTitle">Notation rapide sur Trakt.tv</string>
   <string name="textSettingsTraktQuickRateSummary">Évaluez les épisodes et les films chaque fois que vous les marquez comme visionnés dans l\'écran « Progression ».</string>
   <string name="textSettingsGeneral">Général &amp; Expérience utilisateur</string>
   <string name="textSettingsRecentShowsTitle">Nombre d\'éléments récents</string>
@@ -49,7 +49,7 @@
   <string name="textSettingsContactDevsTitle">Contacter les développeurs</string>
   <string name="textSettingsContactDevsSummary">Un problème? Envoyez-nous un courriel (showlyapp@gmail.com).</string>
   <string name="textSettingsRateAppTitle">Donner un avis</string>
-  <string name="textSettingsRateAppSummary">Vous aimez Showly ? Évaluez-nous sur le Play Store. Merci !</string>
+  <string name="textSettingsRateAppSummary">Vous aimez Showly ? Laissez-nous un avis sur le Play Store. Merci !</string>
   <string name="textSettingsDeleteCacheTitle">Vider la mémoire cache des images</string>
   <string name="textSettingsDeleteCacheSummary">Cliquez pour vider la mémoire cache des images. Cela peut aider si les images des séries ne se chargent pas correctement.</string>
   <string name="textSettingsQuickSyncConfirmationTitle">Désactiver la Synchronisation Automatique</string>

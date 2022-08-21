@@ -4,6 +4,7 @@
   <string name="textSortName">Название</string>
   <string name="textSortNewest">Новизне</string>
   <string name="textSortRated">Оценкам</string>
+  <string name="textSortRatedUser">Моя оценка</string>
   <string name="textSortDateAdded">Недавно добавленные</string>
   <string name="textSortDateUpdated">Недавно обновленные</string>
   <string name="textSortRecentlyWatched">Недавно просмотренные</string>
