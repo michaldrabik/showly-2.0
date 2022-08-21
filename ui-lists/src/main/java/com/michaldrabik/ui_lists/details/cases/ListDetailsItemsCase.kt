@@ -7,6 +7,7 @@ import com.michaldrabik.common.Mode.SHOWS
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.CustomListItem
 import com.michaldrabik.repository.ListsRepository
+import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.images.ShowImagesProvider
@@ -24,6 +25,7 @@ import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
+import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
@@ -45,6 +47,7 @@ class ListDetailsItemsCase @Inject constructor(
   private val showImagesProvider: ShowImagesProvider,
   private val movieImagesProvider: MovieImagesProvider,
   private val translationsRepository: TranslationsRepository,
+  private val ratingsRepository: RatingsRepository,
   private val settingsRepository: SettingsRepository,
   private val quickSyncManager: QuickSyncManager,
   private val sorter: ListDetailsSorter,
@@ -74,8 +77,16 @@ class ListDetailsItemsCase @Inject constructor(
       else translationsRepository.loadAllMoviesLocal(language)
     }
 
+    val showsRatingsAsync = async {
+      ratingsRepository.shows.loadShowsRatings()
+    }
+    val moviesRatingsAsync = async {
+      ratingsRepository.movies.loadMoviesRatings()
+    }
+
     val (shows, movies) = Pair(showsAsync.await(), moviesAsync.await())
     val (showsTranslations, moviesTranslations) = Pair(showsTranslationsAsync.await(), moviesTranslationsAsync.await())
+    val (showsRatings, moviesRatings) = Pair(showsRatingsAsync.await(), moviesRatingsAsync.await())
 
     val isRankSort = list.sortByLocal == SortOrder.RANK
     val itemsToDelete = Collections.synchronizedList(mutableListOf<CustomListItem>())
@@ -91,7 +102,8 @@ class ListDetailsItemsCase @Inject constructor(
             }
             val show = mappers.show.fromDatabase(listShow)
             val translation = showsTranslations[show.traktId]
-            createListDetailsItem(show, listItem, translation, isRankSort, listedAt)
+            val rating = showsRatings.find { it.idTrakt == show.ids.trakt }
+            createListDetailsItem(show, listItem, translation, rating, isRankSort, listedAt)
           }
           MOVIES.type -> {
             val listMovie = movies.firstOrNull { it.idTrakt == listItem.idTrakt }
@@ -101,7 +113,8 @@ class ListDetailsItemsCase @Inject constructor(
             }
             val movie = mappers.movie.fromDatabase(listMovie)
             val translation = moviesTranslations[movie.traktId]
-            createListDetailsItem(movie, listItem, translation, isRankSort, listedAt, moviesEnabled)
+            val rating = moviesRatings.find { it.idTrakt == movie.ids.trakt }
+            createListDetailsItem(movie, listItem, translation, rating, isRankSort, listedAt, moviesEnabled)
           }
           else -> throw IllegalStateException("Unsupported list item type.")
         }
@@ -120,9 +133,10 @@ class ListDetailsItemsCase @Inject constructor(
     movie: Movie,
     listItem: CustomListItem,
     translation: Translation?,
+    userRating: TraktRating?,
     isRankSort: Boolean,
     listedAt: ZonedDateTime,
-    moviesEnabled: Boolean
+    moviesEnabled: Boolean,
   ): ListDetailsItem {
     val image = movieImagesProvider.findCachedImage(movie, ImageType.POSTER)
     return ListDetailsItem(
@@ -133,6 +147,7 @@ class ListDetailsItemsCase @Inject constructor(
       movie = movie,
       image = image,
       translation = translation,
+      userRating = userRating?.rating,
       isLoading = false,
       isRankDisplayed = isRankSort,
       isManageMode = false,
@@ -147,8 +162,9 @@ class ListDetailsItemsCase @Inject constructor(
     show: Show,
     listItem: CustomListItem,
     translation: Translation?,
+    userRating: TraktRating?,
     isRankSort: Boolean,
-    listedAt: ZonedDateTime
+    listedAt: ZonedDateTime,
   ): ListDetailsItem {
     val image = showImagesProvider.findCachedImage(show, ImageType.POSTER)
     return ListDetailsItem(
@@ -159,6 +175,7 @@ class ListDetailsItemsCase @Inject constructor(
       movie = null,
       image = image,
       translation = translation,
+      userRating = userRating?.rating,
       isLoading = false,
       isRankDisplayed = isRankSort,
       isManageMode = false,

@@ -49,6 +49,7 @@ import com.michaldrabik.ui_model.SortOrder.NAME
 import com.michaldrabik.ui_model.SortOrder.NEWEST
 import com.michaldrabik.ui_model.SortOrder.RANK
 import com.michaldrabik.ui_model.SortOrder.RATING
+import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_LIST
@@ -181,8 +182,8 @@ class ListDetailsFragment :
     }
   }
 
-  private fun showSortOrderDialog(order: SortOrder, type: SortType) {
-    val options = listOf(RANK, NAME, NEWEST, RATING, DATE_ADDED)
+  private fun openSortOrderDialog(order: SortOrder, type: SortType) {
+    val options = listOf(RANK, NAME, RATING, USER_RATING, NEWEST, DATE_ADDED)
     val args = SortOrderBottomSheet.createBundle(options, order, type)
 
     setFragmentResultListener(REQUEST_SORT_ORDER) { _, bundle ->
@@ -194,7 +195,7 @@ class ListDetailsFragment :
     navigateTo(R.id.actionListDetailsFragmentToSortOrder, args)
   }
 
-  private fun showDeleteDialog(quickRemoveEnabled: Boolean) {
+  private fun openDeleteDialog(quickRemoveEnabled: Boolean) {
     val view = ListDetailsDeleteConfirmView(requireContext())
     MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
       .apply { if (quickRemoveEnabled) setView(view) }
@@ -209,7 +210,7 @@ class ListDetailsFragment :
       .show()
   }
 
-  private fun showEditDialog() {
+  private fun openEditDialog() {
     setFragmentResultListener(NavigationArgs.REQUEST_CREATE_LIST) { _, _ ->
       viewModel.loadDetails(list.id)
     }
@@ -239,8 +240,8 @@ class ListDetailsFragment :
       inflate(R.menu.menu_list_details)
       setOnMenuItemClickListener { menuItem ->
         when (menuItem.itemId) {
-          R.id.menuListDetailsEdit -> showEditDialog()
-          R.id.menuListDetailsDelete -> showDeleteDialog(quickRemoveEnabled)
+          R.id.menuListDetailsEdit -> openEditDialog()
+          R.id.menuListDetailsDelete -> openDeleteDialog(quickRemoveEnabled)
         }
         true
       }
@@ -268,7 +269,7 @@ class ListDetailsFragment :
       listDetails?.let { details ->
         val isQuickRemoveEnabled = isQuickRemoveEnabled
         fragmentListDetailsToolbar.subtitle = details.description
-        fragmentListDetailsSortButton.onClick { showSortOrderDialog(details.sortByLocal, details.sortHowLocal) }
+        fragmentListDetailsSortButton.onClick { openSortOrderDialog(details.sortByLocal, details.sortHowLocal) }
         fragmentListDetailsMoreButton.onClick { openPopupMenu(isQuickRemoveEnabled) }
         fragmentListDetailsChipsView.setTypes(details.filterTypeLocal)
       }

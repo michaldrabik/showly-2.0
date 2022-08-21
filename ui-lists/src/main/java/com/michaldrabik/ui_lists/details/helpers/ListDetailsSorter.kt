@@ -7,13 +7,12 @@ import com.michaldrabik.ui_model.SortOrder.NAME
 import com.michaldrabik.ui_model.SortOrder.NEWEST
 import com.michaldrabik.ui_model.SortOrder.RANK
 import com.michaldrabik.ui_model.SortOrder.RATING
+import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.SortType.ASCENDING
 import com.michaldrabik.ui_model.SortType.DESCENDING
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class ListDetailsSorter @Inject constructor() {
 
   fun sort(sortOrder: SortOrder, sortType: SortType) = when (sortType) {
@@ -27,6 +26,10 @@ class ListDetailsSorter @Inject constructor() {
       NAME -> compareBy { getTitle(it) }
       NEWEST -> compareBy<ListDetailsItem> { it.getYear() }.thenBy { it.getDate() }
       RATING -> compareBy { it.getRating() }
+      USER_RATING ->
+        compareByDescending<ListDetailsItem> { it.userRating != null }
+          .thenBy { it.userRating }
+          .thenBy { getTitle(it) }
       DATE_ADDED -> compareBy { it.listedAt }
       else -> throw IllegalStateException("Invalid sort order")
     }
@@ -37,6 +40,10 @@ class ListDetailsSorter @Inject constructor() {
       NAME -> compareByDescending { getTitle(it) }
       NEWEST -> compareByDescending<ListDetailsItem> { it.getYear() }.thenByDescending { it.getDate() }
       RATING -> compareByDescending { it.getRating() }
+      USER_RATING ->
+        compareByDescending<ListDetailsItem> { it.userRating != null }
+          .thenByDescending { it.userRating }
+          .thenBy { getTitle(it) }
       DATE_ADDED -> compareByDescending { it.listedAt }
       else -> throw IllegalStateException("Invalid sort order")
     }

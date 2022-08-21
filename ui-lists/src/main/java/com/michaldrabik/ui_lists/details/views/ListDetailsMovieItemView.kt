@@ -92,6 +92,7 @@ class ListDetailsMovieItemView : ListDetailsItemView {
 
     listDetailsMovieHeader.text = String.format(ENGLISH, "%d", movie.year)
     listDetailsMovieRating.text = String.format(ENGLISH, "%.1f", movie.rating)
+    listDetailsMovieUserRating.text = String.format(ENGLISH, "%d", item.userRating)
 
     listDetailsMovieRank.visibleIf(item.isRankDisplayed)
     listDetailsMovieRank.text = String.format(ENGLISH, "%d", item.rankDisplay)
@@ -99,6 +100,8 @@ class ListDetailsMovieItemView : ListDetailsItemView {
     listDetailsMovieHandle.visibleIf(item.isManageMode)
     listDetailsMovieStarIcon.visibleIf(!item.isManageMode)
     listDetailsMovieRating.visibleIf(!item.isManageMode)
+    listDetailsMovieUserStarIcon.visibleIf(!item.isManageMode && item.userRating != null)
+    listDetailsMovieUserRating.visibleIf(!item.isManageMode && item.userRating != null)
 
     with(listDetailsMovieHeaderBadge) {
       val inCollection = item.isWatched || item.isWatchlist

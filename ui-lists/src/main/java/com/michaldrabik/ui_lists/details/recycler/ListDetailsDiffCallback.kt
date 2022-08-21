@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.DiffUtil
 
 class ListDetailsDiffCallback(
   private val oldItems: List<ListDetailsItem>,
-  private val newItems: List<ListDetailsItem>
+  private val newItems: List<ListDetailsItem>,
 ) : DiffUtil.Callback() {
 
   override fun areItemsTheSame(oldPos: Int, newPos: Int) =
@@ -23,6 +23,7 @@ class ListDetailsDiffCallback(
           oldItem.isWatched == newItem.isWatched &&
           oldItem.isManageMode == newItem.isManageMode &&
           oldItem.translation == newItem.translation &&
+          oldItem.userRating == newItem.userRating &&
           oldItem.image == newItem.image &&
           oldItem.listedAt == newItem.listedAt &&
           oldItem.rankDisplay == newItem.rankDisplay &&
@@ -37,6 +38,7 @@ class ListDetailsDiffCallback(
           oldItem.isWatched == newItem.isWatched &&
           oldItem.isEnabled == newItem.isEnabled &&
           oldItem.translation == newItem.translation &&
+          oldItem.userRating == newItem.userRating &&
           oldItem.image == newItem.image &&
           oldItem.listedAt == newItem.listedAt &&
           oldItem.rankDisplay == newItem.rankDisplay &&

@@ -17,13 +17,14 @@ data class ListDetailsItem(
   val movie: Movie?,
   val image: Image,
   val translation: Translation?,
+  val userRating: Int?,
   val isLoading: Boolean,
   val isRankDisplayed: Boolean,
   val isManageMode: Boolean,
   val isEnabled: Boolean,
   val isWatched: Boolean,
   val isWatchlist: Boolean,
-  val listedAt: ZonedDateTime
+  val listedAt: ZonedDateTime,
 ) {
 
   fun getTitleNoThe(): String {

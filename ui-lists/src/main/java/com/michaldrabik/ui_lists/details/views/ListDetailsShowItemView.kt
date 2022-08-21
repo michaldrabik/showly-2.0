@@ -96,6 +96,7 @@ class ListDetailsShowItemView : ListDetailsItemView {
       else String.format("%s", show.network)
 
     listDetailsShowRating.text = String.format(ENGLISH, "%.1f", show.rating)
+    listDetailsShowUserRating.text = String.format(ENGLISH, "%d", item.userRating)
 
     listDetailsShowRank.visibleIf(item.isRankDisplayed)
     listDetailsShowRank.text = String.format(ENGLISH, "%d", item.rankDisplay)
@@ -103,6 +104,8 @@ class ListDetailsShowItemView : ListDetailsItemView {
     listDetailsShowHandle.visibleIf(item.isManageMode)
     listDetailsShowStarIcon.visibleIf(!item.isManageMode)
     listDetailsShowRating.visibleIf(!item.isManageMode)
+    listDetailsShowUserStarIcon.visibleIf(!item.isManageMode && item.userRating != null)
+    listDetailsShowUserRating.visibleIf(!item.isManageMode && item.userRating != null)
 
     with(listDetailsShowHeaderBadge) {
       val inCollection = item.isWatched || item.isWatchlist
