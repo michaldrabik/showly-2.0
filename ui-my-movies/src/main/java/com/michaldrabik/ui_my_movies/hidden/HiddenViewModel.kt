@@ -46,7 +46,9 @@ class HiddenViewModel @Inject constructor(
   private var searchQuery: String? = null
 
   init {
-    viewModelScope.launch { eventsManager.events.collect { onEvent(it) } }
+    viewModelScope.launch {
+      eventsManager.events.collect { onEvent(it) }
+    }
   }
 
   fun onParentState(state: FollowedMoviesUiState) {
@@ -81,6 +83,7 @@ class HiddenViewModel @Inject constructor(
   }
 
   fun loadMissingImage(item: HiddenListItem, force: Boolean) {
+    check(item is HiddenListItem.MovieItem)
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
       try {
@@ -93,6 +96,7 @@ class HiddenViewModel @Inject constructor(
   }
 
   fun loadMissingTranslation(item: HiddenListItem) {
+    check(item is HiddenListItem.MovieItem)
     if (item.translation != null || loadMoviesCase.language == Config.DEFAULT_LANGUAGE) return
     viewModelScope.launch {
       try {

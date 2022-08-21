@@ -67,8 +67,9 @@ class HiddenFragment :
     adapter = HiddenAdapter(
       itemClickListener = { openMovieDetails(it.movie) },
       itemLongClickListener = { openMovieMenu(it.movie) },
-      missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) },
-      missingTranslationListener = { viewModel.loadMissingTranslation(it) },
+      sortChipClickListener = ::openSortOrderDialog,
+      missingImageListener = viewModel::loadMissingImage,
+      missingTranslationListener = viewModel::loadMissingTranslation,
       listChangeListener = {
         hiddenMoviesRecycler.scrollToPosition(0)
         (requireParentFragment() as FollowedMoviesFragment).resetTranslations()

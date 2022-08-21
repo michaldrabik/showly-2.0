@@ -8,11 +8,12 @@ import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
+import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_my_movies.hidden.helpers.HiddenItemSorter
 import com.michaldrabik.ui_my_movies.hidden.recycler.HiddenListItem
-import com.michaldrabik.ui_my_movies.watchlist.cases.WatchlistRatingsCase
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
@@ -23,7 +24,7 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class HiddenLoadMoviesCase @Inject constructor(
-  private val ratingsCase: WatchlistRatingsCase,
+  private val ratingsCase: HiddenRatingsCase,
   private val sorter: HiddenItemSorter,
   private val moviesRepository: MoviesRepository,
   private val translationsRepository: TranslationsRepository,
@@ -44,7 +45,8 @@ class HiddenLoadMoviesCase @Inject constructor(
     val sortOrder = settingsRepository.sorting.hiddenMoviesSortOrder
     val sortType = settingsRepository.sorting.hiddenMoviesSortType
 
-    moviesRepository.hiddenMovies.loadAll()
+    val filtersItem = loadFiltersItem(sortOrder, sortType)
+    val moviesItems = moviesRepository.hiddenMovies.loadAll()
       .map {
         toListItemAsync(
           movie = it,
@@ -56,9 +58,21 @@ class HiddenLoadMoviesCase @Inject constructor(
       .awaitAll()
       .filterByQuery(searchQuery)
       .sortedWith(sorter.sort(sortOrder, sortType))
+
+    listOf(filtersItem) + moviesItems
   }
 
-  private fun List<HiddenListItem>.filterByQuery(query: String) =
+  private fun loadFiltersItem(
+    sortOrder: SortOrder,
+    sortType: SortType,
+  ): HiddenListItem.FiltersItem {
+    return HiddenListItem.FiltersItem(
+      sortOrder = sortOrder,
+      sortType = sortType
+    )
+  }
+
+  private fun List<HiddenListItem.MovieItem>.filterByQuery(query: String) =
     this.filter {
       it.movie.title.contains(query, true) ||
         it.translation?.title?.contains(query, true) == true
@@ -76,7 +90,7 @@ class HiddenLoadMoviesCase @Inject constructor(
     dateFormat: DateTimeFormatter,
   ) = async {
     val image = imagesProvider.findCachedImage(movie, ImageType.POSTER)
-    HiddenListItem(
+    HiddenListItem.MovieItem(
       isLoading = false,
       movie = movie,
       image = image,

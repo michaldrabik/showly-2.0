@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.view_hidden_show.view.*
 import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n")
-class HiddenMovieView : MovieView<HiddenListItem> {
+class HiddenMovieView : MovieView<HiddenListItem.MovieItem> {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -37,9 +37,9 @@ class HiddenMovieView : MovieView<HiddenListItem> {
   override val imageView: ImageView = hiddenMovieImage
   override val placeholderView: ImageView = hiddenMoviePlaceholder
 
-  private lateinit var item: HiddenListItem
+  private lateinit var item: HiddenListItem.MovieItem
 
-  override fun bind(item: HiddenListItem) {
+  override fun bind(item: HiddenListItem.MovieItem) {
     clear()
     this.item = item
     hiddenMovieProgress.visibleIf(item.isLoading)
@@ -50,8 +50,9 @@ class HiddenMovieView : MovieView<HiddenListItem> {
     hiddenMovieDescription.text =
       when {
         item.translation?.overview.isNullOrBlank() -> {
-          if (item.movie.overview.isNotBlank()) item.movie.overview
-          else context.getString(R.string.textNoDescription)
+          item.movie.overview.ifBlank {
+            context.getString(R.string.textNoDescription)
+          }
         }
         else -> item.translation?.overview
       }

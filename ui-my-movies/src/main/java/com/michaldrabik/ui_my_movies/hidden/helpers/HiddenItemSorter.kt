@@ -23,11 +23,11 @@ class HiddenItemSorter @Inject constructor() {
     NAME -> compareBy { getTitle(it) }
     RATING -> compareBy { it.movie.rating }
     USER_RATING ->
-      compareByDescending<HiddenListItem> { it.userRating != null }
+      compareByDescending<HiddenListItem.MovieItem> { it.userRating != null }
         .thenBy { it.userRating }
         .thenBy { getTitle(it) }
     DATE_ADDED -> compareBy { it.movie.createdAt }
-    NEWEST -> compareBy<HiddenListItem> { it.movie.released }.thenBy { it.movie.year }
+    NEWEST -> compareBy<HiddenListItem.MovieItem> { it.movie.released }.thenBy { it.movie.year }
     else -> throw IllegalStateException("Invalid sort order")
   }
 
@@ -35,15 +35,15 @@ class HiddenItemSorter @Inject constructor() {
     NAME -> compareByDescending { getTitle(it) }
     RATING -> compareByDescending { it.movie.rating }
     USER_RATING ->
-      compareByDescending<HiddenListItem> { it.userRating != null }
+      compareByDescending<HiddenListItem.MovieItem> { it.userRating != null }
         .thenByDescending { it.userRating }
         .thenBy { getTitle(it) }
     DATE_ADDED -> compareByDescending { it.movie.createdAt }
-    NEWEST -> compareByDescending<HiddenListItem> { it.movie.released }.thenByDescending { it.movie.year }
+    NEWEST -> compareByDescending<HiddenListItem.MovieItem> { it.movie.released }.thenByDescending { it.movie.year }
     else -> throw IllegalStateException("Invalid sort order")
   }
 
-  private fun getTitle(item: HiddenListItem): String {
+  private fun getTitle(item: HiddenListItem.MovieItem): String {
     val translatedTitle =
       if (item.translation?.hasTitle == true) item.translation.title
       else item.movie.titleNoThe

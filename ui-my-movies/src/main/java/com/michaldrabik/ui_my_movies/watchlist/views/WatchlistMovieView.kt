@@ -52,8 +52,9 @@ class WatchlistMovieView : MovieView<WatchlistListItem.MovieItem> {
     watchlistMoviesDescription.text =
       when {
         item.translation?.overview.isNullOrBlank() -> {
-          if (item.movie.overview.isNotBlank()) item.movie.overview
-          else context.getString(R.string.textNoDescription)
+          item.movie.overview.ifBlank {
+            context.getString(R.string.textNoDescription)
+          }
         }
         else -> item.translation?.overview
       }
