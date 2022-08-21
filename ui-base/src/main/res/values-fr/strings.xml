@@ -32,8 +32,8 @@
   <string name="textPleaseWait">Veuillez patienter…</string>
   <string name="textRate">Noter</string>
   <string name="textLink">Liens</string>
-  <string name="textRateSaved">Votre évaluation a été enregistrée.</string>
-  <string name="textRateRemoved">Votre évaluation a été supprimée.</string>
+  <string name="textRateSaved">Votre note a été enregistrée.</string>
+  <string name="textRateRemoved">Votre note a été supprimée.</string>
   <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
     <item quantity="one">%d restant</item>
     <item quantity="other">%d restants</item>
@@ -55,7 +55,7 @@
     <item quantity="other">Diffusé dans %d jours</item>
   </plurals>
   <plurals name="textHoursToAir">
-    <item quantity="one">Diffusion dans 1 heure</item>
+    <item quantity="one">Diffusé dans 1 heure</item>
     <item quantity="other">Diffusé dans %d heures</item>
   </plurals>
   <plurals name="textMinutesToAir">
