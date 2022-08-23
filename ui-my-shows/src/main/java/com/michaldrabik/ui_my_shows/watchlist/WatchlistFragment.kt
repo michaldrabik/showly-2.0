@@ -70,8 +70,9 @@ class WatchlistFragment :
     adapter = WatchlistAdapter(
       itemClickListener = { openShowDetails(it.show) },
       itemLongClickListener = { item -> openShowMenu(item.show) },
-      missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) },
-      missingTranslationListener = { viewModel.loadMissingTranslation(it) },
+      sortChipClickListener = ::openSortOrderDialog,
+      missingImageListener = viewModel::loadMissingImage,
+      missingTranslationListener = viewModel::loadMissingTranslation,
       listChangeListener = {
         watchlistRecycler.scrollToPosition(0)
         (requireParentFragment() as FollowedShowsFragment).resetTranslations()

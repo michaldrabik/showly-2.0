@@ -10,7 +10,7 @@
   >
 
   <com.google.android.material.chip.ChipGroup
-    android:id="@+id/followedMoviesChips"
+    android:id="@+id/followedShowsChips"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/spaceMedium"
@@ -21,7 +21,7 @@
     >
 
     <com.google.android.material.chip.Chip
-      android:id="@+id/followedMoviesSortingChip"
+      android:id="@+id/followedShowsSortingChip"
       style="@style/ShowlyChip"
       android:text="@string/textSortName"
       />

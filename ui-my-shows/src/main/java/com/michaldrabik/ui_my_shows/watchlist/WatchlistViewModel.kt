@@ -20,6 +20,7 @@ import com.michaldrabik.ui_my_shows.watchlist.cases.WatchlistLoadShowsCase
 import com.michaldrabik.ui_my_shows.watchlist.cases.WatchlistSortOrderCase
 import com.michaldrabik.ui_my_shows.watchlist.cases.WatchlistTranslationsCase
 import com.michaldrabik.ui_my_shows.watchlist.recycler.WatchlistListItem
+import com.michaldrabik.ui_my_shows.watchlist.recycler.WatchlistListItem.ShowItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -83,6 +84,7 @@ class WatchlistViewModel @Inject constructor(
   }
 
   fun loadMissingImage(item: WatchlistListItem, force: Boolean) {
+    check(item is ShowItem)
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
       try {
@@ -95,6 +97,7 @@ class WatchlistViewModel @Inject constructor(
   }
 
   fun loadMissingTranslation(item: WatchlistListItem) {
+    check(item is ShowItem)
     if (item.translation != null || loadShowsCase.language == Config.DEFAULT_LANGUAGE) return
     viewModelScope.launch {
       try {

@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_my_movies.filters
+package com.michaldrabik.ui_my_shows.filters
 
 import android.content.Context
 import android.util.AttributeSet
@@ -12,17 +12,16 @@ import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.SortType.ASCENDING
 import com.michaldrabik.ui_model.SortType.DESCENDING
-import com.michaldrabik.ui_my_movies.R
-import com.michaldrabik.ui_my_movies.databinding.ViewMoviesFiltersBinding
-import kotlinx.android.synthetic.main.view_movies_filters.view.*
+import com.michaldrabik.ui_my_shows.R
+import com.michaldrabik.ui_my_shows.databinding.ViewShowsFiltersBinding
 
-class FollowedMoviesFiltersView : FrameLayout {
+class FollowedShowsFiltersView : FrameLayout {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-  private val binding = ViewMoviesFiltersBinding.inflate(LayoutInflater.from(context), this)
+  private val binding = ViewShowsFiltersBinding.inflate(LayoutInflater.from(context), this)
 
   var onSortChipClicked: ((SortOrder, SortType) -> Unit)? = null
 
@@ -39,10 +38,10 @@ class FollowedMoviesFiltersView : FrameLayout {
         ASCENDING -> R.drawable.ic_arrow_alt_up
         DESCENDING -> R.drawable.ic_arrow_alt_down
       }
-      followedMoviesSortingChip.closeIcon = ContextCompat.getDrawable(context, sortIcon)
-      followedMoviesSortingChip.text = context.getText(sortOrder.displayString)
+      followedShowsSortingChip.closeIcon = ContextCompat.getDrawable(context, sortIcon)
+      followedShowsSortingChip.text = context.getText(sortOrder.displayString)
 
-      followedMoviesSortingChip.onClick { onSortChipClicked?.invoke(sortOrder, sortType) }
+      followedShowsSortingChip.onClick { onSortChipClicked?.invoke(sortOrder, sortType) }
     }
   }
 }

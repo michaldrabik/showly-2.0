@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.view_watchlist_show.view.*
 import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n")
-class WatchlistShowView : ShowView<WatchlistListItem> {
+class WatchlistShowView : ShowView<WatchlistListItem.ShowItem> {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -39,9 +39,9 @@ class WatchlistShowView : ShowView<WatchlistListItem> {
   override val placeholderView: ImageView = watchlistShowPlaceholder
 
   private var nowUtc = nowUtc()
-  private lateinit var item: WatchlistListItem
+  private lateinit var item: WatchlistListItem.ShowItem
 
-  override fun bind(item: WatchlistListItem) {
+  override fun bind(item: WatchlistListItem.ShowItem) {
     clear()
     this.item = item
     watchlistShowProgress.visibleIf(item.isLoading)
