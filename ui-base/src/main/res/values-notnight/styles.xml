@@ -17,9 +17,9 @@
     <item name="textColorOnSurface">@color/colorWhite</item>
     <item name="textColorTab">@color/colorBlueLight2x</item>
     <item name="textColorTabSelected">@color/colorBlue</item>
-    <item name="textColorChip">@color/colorBlueLight</item>
-    <item name="textColorChipSelected">@color/colorBlue</item>
-    <item name="colorBackgroundChipSelected">@color/colorPrimaryDark</item>
+    <item name="textColorChip">?android:textColorPrimary</item>
+    <item name="textColorChipSelected">?android:textColorPrimary</item>
+    <item name="colorBackgroundChipSelected">#D9E2EC</item>
     <item name="colorProgressTrack">#D3D3D3</item>
 
     <item name="colorInfoSnackbar">@color/colorAccent</item>

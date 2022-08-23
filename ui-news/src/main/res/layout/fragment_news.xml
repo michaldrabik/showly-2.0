@@ -63,6 +63,7 @@
     android:layout_marginTop="@dimen/newsFiltersTopPadding"
     android:layout_marginEnd="@dimen/spaceMedium"
     android:visibility="gone"
+    tools:visibility="visible"
     />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

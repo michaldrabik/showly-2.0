@@ -17,9 +17,9 @@
     <item name="textColorOnSurface">@color/colorWhite</item>
     <item name="textColorTab">#A1A1A1</item>
     <item name="textColorTabSelected">@color/colorWhite</item>
-    <item name="textColorChip">@color/colorWhite</item>
+    <item name="textColorChip">?android:textColorPrimary</item>
     <item name="textColorChipSelected">@color/colorAccent</item>
-    <item name="colorBackgroundChipSelected">?attr/colorSearchViewBackground</item>
+    <item name="colorBackgroundChipSelected">@color/colorBackground</item>
     <item name="colorProgressTrack">#3C3C3C</item>
 
     <item name="colorInfoSnackbar">@color/colorWhite</item>
@@ -302,15 +302,25 @@
   <style name="ShowlyChip" parent="Widget.Material3.Chip.Suggestion">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">30dp</item>
+    <item name="chipMinTouchTargetSize">0dp</item>
+  </style>
+
+  <style name="ShowlyChip.Sort" parent="ShowlyChip">
     <item name="android:textColor">?android:textColorPrimary</item>
     <item name="chipBackgroundColor">?android:windowBackground</item>
-    <item name="chipMinTouchTargetSize">0dp</item>
     <item name="chipStrokeColor">?android:textColorSecondary</item>
     <item name="closeIcon">@drawable/ic_arrow_alt_up</item>
     <item name="closeIconEndPadding">0dp</item>
     <item name="closeIconTint">?android:textColorPrimary</item>
     <item name="closeIconVisible">true</item>
     <item name="textStartPadding">@dimen/spaceSmall</item>
+  </style>
+
+  <style name="ShowlyChip.Filter" parent="ShowlyChip">
+    <item name="android:textColor">@color/selector_chip_text</item>
+    <item name="chipBackgroundColor">@color/selector_chip_background</item>
+    <item name="chipStrokeColor">@color/selector_chip_stroke</item>
+    <item name="closeIconVisible">false</item>
   </style>
 
 </resources>

@@ -14,36 +14,24 @@
     android:id="@+id/viewNewsFiltersChipGroup"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:chipSpacingHorizontal="@dimen/spaceSmall"
     app:layout_behavior="com.michaldrabik.ui_base.common.behaviour.ScrollableViewBehaviour"
     >
 
     <com.google.android.material.chip.Chip
       android:id="@+id/viewNewsFiltersShowsChip"
-      style="@style/Widget.MaterialComponents.Chip.Choice"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
+      style="@style/ShowlyChip.Filter"
       android:text="@string/textShows"
-      android:textColor="@color/selector_news_chip_text"
-      android:textSize="16sp"
-      app:checkedIconTint="@color/selector_news_chip_text"
-      app:chipBackgroundColor="@color/selector_news_chip_background"
-      app:chipStrokeColor="@color/selector_news_chip_text"
-      app:chipStrokeWidth="1dp"
+      app:chipBackgroundColor="@color/selector_chip_background"
+      app:chipStrokeColor="@color/selector_chip_stroke"
       />
 
     <com.google.android.material.chip.Chip
       android:id="@+id/viewNewsFiltersMoviesChip"
-      style="@style/Widget.MaterialComponents.Chip.Choice"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
+      style="@style/ShowlyChip.Filter"
       android:text="@string/textMovies"
-      android:textColor="@color/selector_news_chip_text"
-      android:textSize="16sp"
-      app:checkedIconTint="@color/selector_news_chip_text"
-      app:chipBackgroundColor="@color/selector_news_chip_background"
-      app:chipStrokeColor="@color/selector_news_chip_text"
-      app:chipStrokeWidth="1dp"
+      android:textColor="@color/selector_chip_text"
+      app:chipBackgroundColor="@color/selector_chip_background"
+      app:chipStrokeColor="@color/selector_chip_stroke"
       />
 
   </com.google.android.material.chip.ChipGroup>

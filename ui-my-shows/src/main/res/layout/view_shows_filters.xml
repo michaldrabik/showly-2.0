@@ -22,7 +22,7 @@
 
     <com.google.android.material.chip.Chip
       android:id="@+id/followedShowsSortingChip"
-      style="@style/ShowlyChip"
+      style="@style/ShowlyChip.Sort"
       android:text="@string/textSortName"
       />
 
