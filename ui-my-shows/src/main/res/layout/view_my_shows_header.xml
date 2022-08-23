@@ -28,17 +28,15 @@
       tools:text="Section Label"
       />
 
-    <ImageView
+    <com.google.android.material.chip.Chip
       android:id="@+id/myShowsHeaderSortButton"
-      android:layout_width="24dp"
-      android:layout_height="0dp"
-      android:layout_marginEnd="@dimen/spaceNormal"
+      style="@style/ShowlyChip"
+      android:layout_marginEnd="@dimen/spaceMedium"
+      android:text="@string/textSortName"
       android:visibility="gone"
       app:layout_constraintBottom_toBottomOf="@id/myShowsHeaderLabel"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="@id/myShowsHeaderLabel"
-      app:srcCompat="@drawable/ic_sort"
-      app:tint="?android:attr/textColorPrimary"
       tools:visibility="visible"
       />
 

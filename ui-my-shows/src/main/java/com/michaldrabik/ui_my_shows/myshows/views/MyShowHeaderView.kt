@@ -2,9 +2,11 @@ package com.michaldrabik.ui_my_shows.myshows.views
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
+import androidx.core.content.ContextCompat
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.MyShowsSection
@@ -12,8 +14,8 @@ import com.michaldrabik.ui_model.MyShowsSection.RECENTS
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_shows.R
+import com.michaldrabik.ui_my_shows.databinding.ViewMyShowsHeaderBinding
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
-import kotlinx.android.synthetic.main.view_my_shows_header.view.*
 import java.util.Locale.ENGLISH
 
 class MyShowHeaderView : FrameLayout {
@@ -22,27 +24,38 @@ class MyShowHeaderView : FrameLayout {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
+  private val binding = ViewMyShowsHeaderBinding.inflate(LayoutInflater.from(context), this)
+
   init {
-    inflate(context, R.layout.view_my_shows_header, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     clipChildren = false
     clipToPadding = false
   }
 
-  fun bind(item: MyShowsItem.Header, sortClickListener: ((MyShowsSection, SortOrder, SortType) -> Unit)?) {
+  fun bind(
+    item: MyShowsItem.Header,
+    sortClickListener: ((MyShowsSection, SortOrder, SortType) -> Unit)?,
+  ) {
     bindLabel(item)
-
-    myShowsHeaderSortButton.visibleIf(item.sortOrder != null)
-    item.sortOrder?.let { sortOrder ->
-      myShowsHeaderSortButton.onClick {
-        sortClickListener?.invoke(item.section, sortOrder.first, sortOrder.second)
+    with(binding) {
+      myShowsHeaderSortButton.visibleIf(item.sortOrder != null)
+      item.sortOrder?.let { sortOrder ->
+        myShowsHeaderSortButton.text = context.getString(sortOrder.first.displayString)
+        myShowsHeaderSortButton.onClick {
+          sortClickListener?.invoke(item.section, sortOrder.first, sortOrder.second)
+        }
+        val sortIcon = when (sortOrder.second) {
+          SortType.ASCENDING -> R.drawable.ic_arrow_alt_up
+          SortType.DESCENDING -> R.drawable.ic_arrow_alt_down
+        }
+        myShowsHeaderSortButton.closeIcon = ContextCompat.getDrawable(context, sortIcon)
       }
     }
   }
 
   private fun bindLabel(item: MyShowsItem.Header) {
     val headerLabel = context.getString(item.section.displayString)
-    myShowsHeaderLabel.text = when (item.section) {
+    binding.myShowsHeaderLabel.text = when (item.section) {
       RECENTS -> headerLabel
       else -> String.format(ENGLISH, "%s (%d)", headerLabel, item.itemCount)
     }

@@ -20,7 +20,7 @@ data class MyMoviesItem(
   override val isLoading: Boolean,
   val translation: Translation? = null,
   val userRating: Int? = null,
-  val dateFormat: DateTimeFormatter? = null
+  val dateFormat: DateTimeFormatter? = null,
 ) : MovieListItem {
 
   enum class Type {
@@ -33,23 +33,24 @@ data class MyMoviesItem(
   data class Header(
     val section: MyMoviesSection,
     val itemCount: Int,
-    val sortOrder: Pair<SortOrder, SortType>?
+    val sortOrder: Pair<SortOrder, SortType>?,
   )
 
   data class RecentsSection(
-    val items: List<MyMoviesItem>
+    val items: List<MyMoviesItem>,
   )
 
   data class HorizontalSection(
     val section: MyMoviesSection,
-    val items: List<MyMoviesItem>
+    val items: List<MyMoviesItem>,
   )
 
   companion object {
+
     fun createHeader(
       section: MyMoviesSection,
       itemCount: Int,
-      sortOrder: Pair<SortOrder, SortType>?
+      sortOrder: Pair<SortOrder, SortType>?,
     ) = MyMoviesItem(
       Type.HEADER,
       Header(section, itemCount, sortOrder),
@@ -61,7 +62,7 @@ data class MyMoviesItem(
     )
 
     fun createRecentsSection(
-      movies: List<MyMoviesItem>
+      movies: List<MyMoviesItem>,
     ) = MyMoviesItem(
       Type.RECENT_MOVIE,
       null,
@@ -75,7 +76,7 @@ data class MyMoviesItem(
     fun createSearchItem(
       movie: Movie,
       image: Image,
-      translation: Translation? = null
+      translation: Translation? = null,
     ) = MyMoviesItem(
       Type.SEARCH_MOVIES_ITEM,
       null,

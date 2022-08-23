@@ -10,6 +10,7 @@
   <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/myShowsSectionRecycler"
     style="@style/MyShows.RecyclerHorizontal"
+    android:layout_marginTop="@dimen/spaceMicro"
     />
 
 </merge>
