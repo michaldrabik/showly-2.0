@@ -11,6 +11,7 @@ import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_progress.helpers.TranslationsBundle
 import java.time.format.DateTimeFormatter
 import com.michaldrabik.ui_model.Episode as EpisodeModel
@@ -76,4 +77,13 @@ sealed class ProgressListItem(
       ON_HOLD
     }
   }
+
+  data class Filters(
+    val sortOrder: SortOrder,
+    val sortType: SortType,
+  ) : ProgressListItem(
+    show = Show.EMPTY,
+    image = Image.createUnknown(ImageType.POSTER),
+    isLoading = false
+  )
 }

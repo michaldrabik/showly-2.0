@@ -118,6 +118,7 @@ class ProgressFragment :
       headerClickListener = { viewModel.toggleHeaderCollapsed(it.type) },
       detailsClickListener = { requireMainFragment().openEpisodeDetails(it.show, it.requireEpisode(), it.requireSeason()) },
       checkClickListener = { viewModel.onEpisodeChecked(it) },
+      sortChipClickListener = { order, type -> openSortOrderDialog(order, type) },
       missingImageListener = { item: ProgressListItem, force -> viewModel.findMissingImage(item, force) },
       missingTranslationListener = { viewModel.findMissingTranslation(it) },
       listChangeListener = {

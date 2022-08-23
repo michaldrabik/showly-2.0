@@ -49,6 +49,7 @@ class ProgressWidgetViewsFactory(
 
   private fun loadData() = runBlocking {
     val items = itemsCase.loadItems("")
+      .filterNot { it is ProgressListItem.Filters }
     adapterItems.replace(items)
   }
 
@@ -58,6 +59,7 @@ class ProgressWidgetViewsFactory(
     when (val item = adapterItems[position]) {
       is ProgressListItem.Episode -> createItemRemoteView(item)
       is ProgressListItem.Header -> createHeaderRemoteView(item)
+      else -> throw IllegalStateException()
     }
 
   private fun createItemRemoteView(item: ProgressListItem.Episode): RemoteViews {

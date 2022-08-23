@@ -146,7 +146,14 @@ class ProgressItemsCase @Inject constructor(
       }.awaitAll()
 
     val filteredItems = filterByQuery(searchQuery, filledItems)
-    groupItems(filteredItems, sortOrder, sortType)
+    val groupedItems = groupItems(filteredItems, sortOrder, sortType)
+
+    if (groupedItems.isNotEmpty()) {
+      val filtersItem = loadFiltersItem(sortOrder, sortType)
+      listOf(filtersItem) + groupedItems
+    } else {
+      groupedItems
+    }
   }
 
   private suspend fun findNextEpisode(
@@ -221,5 +228,15 @@ class ProgressItemsCase @Inject constructor(
         if (!isCollapsed) addAll(onHoldItems)
       }
     }
+  }
+
+  private fun loadFiltersItem(
+    sortOrder: SortOrder,
+    sortType: SortType,
+  ): ProgressListItem.Filters {
+    return ProgressListItem.Filters(
+      sortOrder = sortOrder,
+      sortType = sortType
+    )
   }
 }

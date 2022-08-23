@@ -4,12 +4,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.ui_base.BaseAdapter
+import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortType
+import com.michaldrabik.ui_progress.progress.views.ProgressFiltersView
 import com.michaldrabik.ui_progress.progress.views.ProgressHeaderView
 import com.michaldrabik.ui_progress.progress.views.ProgressItemView
 
 class ProgressAdapter(
   private val itemClickListener: (ProgressListItem) -> Unit,
   private val itemLongClickListener: (ProgressListItem) -> Unit,
+  private val sortChipClickListener: (SortOrder, SortType) -> Unit,
   private val detailsClickListener: ((ProgressListItem.Episode) -> Unit)?,
   private val checkClickListener: ((ProgressListItem.Episode) -> Unit)?,
   private val headerClickListener: ((ProgressListItem.Header) -> Unit)?,
@@ -23,6 +27,7 @@ class ProgressAdapter(
   companion object {
     private const val VIEW_TYPE_ITEM = 1
     private const val VIEW_TYPE_HEADER = 2
+    private const val VIEW_TYPE_FILTERS = 3
   }
 
   override val asyncDiffer = AsyncListDiffer(this, ProgressItemDiffCallback())
@@ -44,6 +49,11 @@ class ProgressAdapter(
           headerClickListener = this@ProgressAdapter.headerClickListener
         }
       )
+      VIEW_TYPE_FILTERS -> BaseViewHolder(
+        ProgressFiltersView(parent.context).apply {
+          onSortChipClicked = this@ProgressAdapter.sortChipClickListener
+        }
+      )
       else -> throw IllegalStateException()
     }
 
@@ -51,6 +61,7 @@ class ProgressAdapter(
     when (val item = asyncDiffer.currentList[position]) {
       is ProgressListItem.Episode -> (holder.itemView as ProgressItemView).bind(item)
       is ProgressListItem.Header -> (holder.itemView as ProgressHeaderView).bind(item)
+      is ProgressListItem.Filters -> (holder.itemView as ProgressFiltersView).bind(item.sortOrder, item.sortType)
     }
   }
 
@@ -58,6 +69,7 @@ class ProgressAdapter(
     when (asyncDiffer.currentList[position]) {
       is ProgressListItem.Header -> VIEW_TYPE_HEADER
       is ProgressListItem.Episode -> VIEW_TYPE_ITEM
+      is ProgressListItem.Filters -> VIEW_TYPE_FILTERS
       else -> throw IllegalStateException()
     }
 }

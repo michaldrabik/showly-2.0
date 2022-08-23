@@ -47,16 +47,6 @@
     >
 
     <com.michaldrabik.ui_base.common.views.ScrollableImageView
-      android:id="@+id/progressMainSortIcon"
-      android:layout_width="36dp"
-      android:layout_height="36dp"
-      android:layout_marginEnd="38dp"
-      android:paddingStart="12dp"
-      app:srcCompat="@drawable/ic_sort"
-      app:tint="?android:attr/textColorPrimary"
-      />
-
-    <com.michaldrabik.ui_base.common.views.ScrollableImageView
       android:id="@+id/progressMainCalendarIcon"
       android:layout_width="36dp"
       android:layout_height="36dp"
