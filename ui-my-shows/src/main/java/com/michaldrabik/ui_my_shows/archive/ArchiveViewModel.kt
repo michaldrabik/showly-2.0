@@ -19,6 +19,7 @@ import com.michaldrabik.ui_my_shows.archive.cases.ArchiveLoadShowsCase
 import com.michaldrabik.ui_my_shows.archive.cases.ArchiveSortOrderCase
 import com.michaldrabik.ui_my_shows.archive.cases.ArchiveTranslationsCase
 import com.michaldrabik.ui_my_shows.archive.recycler.ArchiveListItem
+import com.michaldrabik.ui_my_shows.archive.recycler.ArchiveListItem.ShowItem
 import com.michaldrabik.ui_my_shows.main.FollowedShowsUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -83,6 +84,7 @@ class ArchiveViewModel @Inject constructor(
   }
 
   fun loadMissingImage(item: ArchiveListItem, force: Boolean) {
+    check(item is ShowItem)
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
       try {
@@ -95,6 +97,7 @@ class ArchiveViewModel @Inject constructor(
   }
 
   fun loadMissingTranslation(item: ArchiveListItem) {
+    check(item is ShowItem)
     if (item.translation != null || loadShowsCase.language == Config.DEFAULT_LANGUAGE) return
     viewModelScope.launch {
       try {

@@ -7,6 +7,8 @@ import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_my_shows.archive.helpers.ArchiveItemSorter
@@ -39,7 +41,7 @@ class ArchiveLoadShowsCase @Inject constructor(
     val sortOrder = settingsRepository.sorting.hiddenShowsSortOrder
     val sortType = settingsRepository.sorting.hiddenShowsSortType
 
-    showsRepository.hiddenShows.loadAll()
+    val hiddenItems = showsRepository.hiddenShows.loadAll()
       .map {
         toListItemAsync(
           show = it,
@@ -50,13 +52,30 @@ class ArchiveLoadShowsCase @Inject constructor(
       .awaitAll()
       .filterByQuery(searchQuery)
       .sortedWith(sorter.sort(sortOrder, sortType))
+
+    if (hiddenItems.isNotEmpty()) {
+      val filtersItem = loadFiltersItem(sortOrder, sortType)
+      listOf(filtersItem) + hiddenItems
+    } else {
+      hiddenItems
+    }
   }
 
-  private fun List<ArchiveListItem>.filterByQuery(query: String) =
+  private fun List<ArchiveListItem.ShowItem>.filterByQuery(query: String) =
     this.filter {
       it.show.title.contains(query, true) ||
         it.translation?.title?.contains(query, true) == true
     }
+
+  private fun loadFiltersItem(
+    sortOrder: SortOrder,
+    sortType: SortType,
+  ): ArchiveListItem.FiltersItem {
+    return ArchiveListItem.FiltersItem(
+      sortOrder = sortOrder,
+      sortType = sortType
+    )
+  }
 
   private fun CoroutineScope.toListItemAsync(
     show: Show,
@@ -64,7 +83,7 @@ class ArchiveLoadShowsCase @Inject constructor(
     userRating: TraktRating?,
   ) = async {
     val image = imagesProvider.findCachedImage(show, ImageType.POSTER)
-    ArchiveListItem(
+    ArchiveListItem.ShowItem(
       isLoading = false,
       show = show,
       image = image,

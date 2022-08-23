@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.view_archive_show.view.*
 import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n")
-class ArchiveShowView : ShowView<ArchiveListItem> {
+class ArchiveShowView : ShowView<ArchiveListItem.ShowItem> {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -36,9 +36,9 @@ class ArchiveShowView : ShowView<ArchiveListItem> {
   override val imageView: ImageView = archiveShowImage
   override val placeholderView: ImageView = archiveShowPlaceholder
 
-  private lateinit var item: ArchiveListItem
+  private lateinit var item: ArchiveListItem.ShowItem
 
-  override fun bind(item: ArchiveListItem) {
+  override fun bind(item: ArchiveListItem.ShowItem) {
     clear()
     this.item = item
     archiveShowProgress.visibleIf(item.isLoading)

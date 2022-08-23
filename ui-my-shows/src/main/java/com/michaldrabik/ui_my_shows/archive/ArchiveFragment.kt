@@ -70,8 +70,9 @@ class ArchiveFragment :
     adapter = ArchiveAdapter(
       itemClickListener = { openShowDetails(it.show) },
       itemLongClickListener = { item -> openShowMenu(item.show) },
-      missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) },
-      missingTranslationListener = { viewModel.loadMissingTranslation(it) },
+      sortChipClickListener = ::openSortOrderDialog,
+      missingImageListener = viewModel::loadMissingImage,
+      missingTranslationListener = viewModel::loadMissingTranslation,
       listChangeListener = {
         archiveRecycler.scrollToPosition(0)
         (requireParentFragment() as FollowedShowsFragment).resetTranslations()
@@ -100,7 +101,7 @@ class ArchiveFragment :
     }
   }
 
-  private fun showSortOrderDialog(order: SortOrder, type: SortType) {
+  private fun openSortOrderDialog(order: SortOrder, type: SortType) {
     val options = listOf(NAME, RATING, USER_RATING, NEWEST, DATE_ADDED)
     val args = SortOrderBottomSheet.createBundle(options, order, type)
 
@@ -121,7 +122,7 @@ class ArchiveFragment :
         archiveEmptyView.fadeIf(it.isEmpty() && !isSearching)
       }
       sortOrder?.let { event ->
-        event.consume()?.let { showSortOrderDialog(it.first, it.second) }
+        event.consume()?.let { openSortOrderDialog(it.first, it.second) }
       }
     }
   }
