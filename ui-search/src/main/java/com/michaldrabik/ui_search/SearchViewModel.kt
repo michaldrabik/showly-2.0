@@ -60,7 +60,6 @@ class SearchViewModel @Inject constructor(
   private val filtersVisibleState = MutableStateFlow(false)
   private val moviesEnabledState = MutableStateFlow(true)
   private val resetScrollEvent = MutableStateFlow<Event<Boolean>?>(null)
-  private val sortOrderEvent = MutableStateFlow<Event<Pair<SortOrder, SortType>>?>(null)
 
   private var isSearching = false
   private var suggestionsJob: Job? = null
@@ -168,11 +167,6 @@ class SearchViewModel @Inject constructor(
       ?.filter { searchFiltersCase.filter(newOptions, it) }
       ?.sortedWith(searchSortingCase.sort(newOptions))
     resetScrollEvent.value = Event(true)
-  }
-
-  fun loadSortOrder() {
-    val (_, order, type) = searchOptionsState.value
-    sortOrderEvent.value = Event(Pair(order, type))
   }
 
   fun loadSuggestions(query: String) {
@@ -283,9 +277,8 @@ class SearchViewModel @Inject constructor(
     moviesEnabledState,
     resetScrollEvent,
     searchOptionsState,
-    sortOrderEvent,
     filtersVisibleState
-  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12 ->
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ->
     SearchUiState(
       searchItems = s1,
       searchItemsAnimate = s2,
@@ -297,8 +290,7 @@ class SearchViewModel @Inject constructor(
       isMoviesEnabled = s8,
       resetScroll = s9,
       searchOptions = s10,
-      sortOrder = s11,
-      isFiltersVisible = s12
+      isFiltersVisible = s11
     )
   }.stateIn(
     scope = viewModelScope,

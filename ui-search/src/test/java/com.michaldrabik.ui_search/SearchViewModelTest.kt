@@ -233,22 +233,6 @@ class SearchViewModelTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should load sort order properly`() = runTest {
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
-
-    SUT.setSortOrder(SortOrder.NEWEST, SortType.DESCENDING)
-    SUT.loadSortOrder()
-
-    with(stateResult.last()) {
-      val event = sortOrder?.consume()
-      assertThat(event?.first).isEqualTo(SortOrder.NEWEST)
-      assertThat(event?.second).isEqualTo(SortType.DESCENDING)
-    }
-
-    job.cancel()
-  }
-
-  @Test
   fun `Should clear suggestions properly`() = runTest {
     val item = mockk<SearchListItem>()
     coEvery { suggestionsCase.loadSuggestions(any()) } returns listOf(item)

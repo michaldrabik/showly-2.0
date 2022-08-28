@@ -154,11 +154,8 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
       requireActivity().onBackPressed()
     }
     with(searchFiltersView) {
-      onChipsChangeListener = { viewModel.setFilters(it) }
-      translationY = headerTranslation
-    }
-    with(searchSortButton) {
-      onClick { viewModel.loadSortOrder() }
+      onChipsChangeListener = viewModel::setFilters
+      onSortClickListener = ::openSortingDialog
       translationY = headerTranslation
     }
   }
@@ -181,7 +178,6 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
           val value = searchFiltersView.translationY - dy
           searchFiltersView.translationY = value.coerceAtMost(0F)
-          searchSortButton.translationY = value.coerceAtMost(0F)
         }
       })
     }
@@ -278,7 +274,6 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
         }
         if (resetScroll) {
           searchFiltersView.translationY = 0F
-          searchSortButton.translationY = 0F
         }
       }
       recentSearchItems?.let { renderRecentSearches(it) }
@@ -288,6 +283,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
       }
       searchOptions?.let {
         searchFiltersView.setTypes(it.filters)
+        searchFiltersView.setSorting(it.sortOrder, it.sortType)
       }
       isSearching.let {
         searchSwipeRefresh.isRefreshing = it
@@ -305,7 +301,6 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
       searchEmptyView.fadeIf(isEmpty)
       searchInitialView.fadeIf(isInitial)
       searchFiltersView.visibleIf(isFiltersVisible)
-      searchSortButton.visibleIf(isFiltersVisible)
     }
   }
 
