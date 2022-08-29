@@ -37,7 +37,7 @@ class SearchFiltersView : FrameLayout, CoordinatorLayout.AttachedBehavior {
   private fun onChipCheckChange() {
     with(binding) {
       val ids = viewSearchFiltersChipGroup.checkedChipIds
-        .filterNot { it != viewSearchFiltersShowsChip.id }
+        .filterNot { it == viewSearchFiltersSortChip.id }
         .map {
           when (it) {
             viewSearchFiltersShowsChip.id -> Mode.SHOWS
