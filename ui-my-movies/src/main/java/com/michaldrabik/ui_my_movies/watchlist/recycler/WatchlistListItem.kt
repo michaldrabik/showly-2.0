@@ -18,6 +18,7 @@ sealed class WatchlistListItem(
   data class FiltersItem(
     val sortOrder: SortOrder,
     val sortType: SortType,
+    val isUpcoming: Boolean,
   ) : WatchlistListItem(
     movie = Movie.EMPTY,
     image = Image.createUnknown(POSTER),

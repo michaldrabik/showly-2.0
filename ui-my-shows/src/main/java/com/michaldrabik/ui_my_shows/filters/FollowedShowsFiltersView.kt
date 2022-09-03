@@ -15,7 +15,6 @@ import com.michaldrabik.ui_model.SortType.ASCENDING
 import com.michaldrabik.ui_model.SortType.DESCENDING
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.databinding.ViewShowsFiltersBinding
-import kotlinx.android.synthetic.main.view_shows_filters.view.*
 
 class FollowedShowsFiltersView : FrameLayout {
 
@@ -33,9 +32,9 @@ class FollowedShowsFiltersView : FrameLayout {
   }
 
   var isUpcomingChipVisible: Boolean
-    get() = followedShowsUpcomingChip.visibility == VISIBLE
+    get() = binding.followedShowsUpcomingChip.visibility == VISIBLE
     set(value) {
-      followedShowsUpcomingChip.visibleIf(value)
+      binding.followedShowsUpcomingChip.visibleIf(value)
     }
 
   fun bind(

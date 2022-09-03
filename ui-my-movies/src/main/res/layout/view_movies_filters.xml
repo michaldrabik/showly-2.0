@@ -26,6 +26,14 @@
       android:text="@string/textSortName"
       />
 
+    <com.google.android.material.chip.Chip
+      android:id="@+id/followedMoviesUpcomingChip"
+      style="@style/ShowlyChip.Filter"
+      android:text="@string/textWatchlistIncoming"
+      android:visibility="gone"
+      tools:visibility="visible"
+      />
+
   </com.google.android.material.chip.ChipGroup>
 
 </merge>

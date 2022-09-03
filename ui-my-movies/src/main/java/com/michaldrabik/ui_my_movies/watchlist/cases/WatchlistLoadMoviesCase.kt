@@ -8,10 +8,9 @@ import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
-import com.michaldrabik.ui_model.SortOrder
-import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_my_movies.watchlist.helpers.WatchlistItemFilter
 import com.michaldrabik.ui_my_movies.watchlist.helpers.WatchlistItemSorter
 import com.michaldrabik.ui_my_movies.watchlist.recycler.WatchlistListItem
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -26,6 +25,7 @@ import javax.inject.Inject
 class WatchlistLoadMoviesCase @Inject constructor(
   private val ratingsCase: WatchlistRatingsCase,
   private val sorter: WatchlistItemSorter,
+  private val filters: WatchlistItemFilter,
   private val moviesRepository: MoviesRepository,
   private val translationsRepository: TranslationsRepository,
   private val dateFormatProvider: DateFormatProvider,
@@ -43,9 +43,7 @@ class WatchlistLoadMoviesCase @Inject constructor(
       if (language == Config.DEFAULT_LANGUAGE) emptyMap()
       else translationsRepository.loadAllMoviesLocal(language)
 
-    val sortOrder = settingsRepository.sorting.watchlistMoviesSortOrder
-    val sortType = settingsRepository.sorting.watchlistMoviesSortType
-
+    val filtersItem = loadFiltersItem()
     val moviesItems = moviesRepository.watchlistMovies.loadAll()
       .map {
         toListItemAsync(
@@ -56,33 +54,26 @@ class WatchlistLoadMoviesCase @Inject constructor(
           fullDateFormat = fullDateFormat
         )
       }
-      .awaitAll()
-      .filterByQuery(searchQuery)
-      .sortedWith(sorter.sort(sortOrder, sortType))
+      .awaitAll().filter {
+        filters.filterByQuery(it, searchQuery) &&
+          filters.filterUpcoming(it, filtersItem.isUpcoming)
+      }
+      .sortedWith(sorter.sort(filtersItem.sortOrder, filtersItem.sortType))
 
-    if (moviesItems.isNotEmpty()) {
-      val filtersItem = loadFiltersItem(sortOrder, sortType)
+    if (moviesItems.isNotEmpty() || filtersItem.isUpcoming) {
       listOf(filtersItem) + moviesItems
     } else {
       moviesItems
     }
   }
 
-  private fun loadFiltersItem(
-    sortOrder: SortOrder,
-    sortType: SortType,
-  ): WatchlistListItem.FiltersItem {
+  private fun loadFiltersItem(): WatchlistListItem.FiltersItem {
     return WatchlistListItem.FiltersItem(
-      sortOrder = sortOrder,
-      sortType = sortType
+      sortOrder = settingsRepository.sorting.watchlistMoviesSortOrder,
+      sortType = settingsRepository.sorting.watchlistMoviesSortType,
+      isUpcoming = settingsRepository.filters.watchlistMoviesUpcoming
     )
   }
-
-  private fun List<WatchlistListItem.MovieItem>.filterByQuery(query: String) =
-    this.filter {
-      it.movie.title.contains(query, true) ||
-        it.translation?.title?.contains(query, true) == true
-    }
 
   suspend fun loadTranslation(movie: Movie, onlyLocal: Boolean): Translation? {
     if (language == Config.DEFAULT_LANGUAGE) return Translation.EMPTY
