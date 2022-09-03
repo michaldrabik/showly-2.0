@@ -61,7 +61,6 @@ class WatchlistMovieView : MovieView<WatchlistListItem.MovieItem> {
         else -> item.translation?.overview
       }
 
-
     val releaseDate = item.movie.released
     val isUpcoming = releaseDate?.let { it.toEpochDay() > nowUtc.toEpochDay() } ?: false
 
@@ -81,7 +80,9 @@ class WatchlistMovieView : MovieView<WatchlistListItem.MovieItem> {
 
     with(watchlistMovieReleaseDate) {
       visibleIf(isUpcoming)
-      text = item.fullDateFormat?.format(releaseDate)?.capitalizeWords()
+      releaseDate?.let {
+        text = item.fullDateFormat?.format(it)?.capitalizeWords()
+      }
     }
 
     watchlistMoviesRating.text = String.format(ENGLISH, "%.1f", item.movie.rating)
