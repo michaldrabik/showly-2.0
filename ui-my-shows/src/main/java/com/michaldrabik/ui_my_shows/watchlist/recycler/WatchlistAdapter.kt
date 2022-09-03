@@ -14,6 +14,7 @@ class WatchlistAdapter(
   private val itemClickListener: (WatchlistListItem) -> Unit,
   private val itemLongClickListener: (WatchlistListItem) -> Unit,
   private val sortChipClickListener: (SortOrder, SortType) -> Unit,
+  private val upcomingChipClickListener: (Boolean) -> Unit,
   private val missingImageListener: (WatchlistListItem, Boolean) -> Unit,
   private val missingTranslationListener: (WatchlistListItem) -> Unit,
   listChangeListener: () -> Unit,
@@ -41,6 +42,8 @@ class WatchlistAdapter(
       VIEW_TYPE_FILTERS -> BaseMovieAdapter.BaseViewHolder(
         FollowedShowsFiltersView(parent.context).apply {
           onSortChipClicked = this@WatchlistAdapter.sortChipClickListener
+          onFilterUpcomingClicked = this@WatchlistAdapter.upcomingChipClickListener
+          isUpcomingChipVisible = true
         }
       )
       else -> throw IllegalStateException()
@@ -49,7 +52,11 @@ class WatchlistAdapter(
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     when (val item = asyncDiffer.currentList[position]) {
       is WatchlistListItem.FiltersItem ->
-        (holder.itemView as FollowedShowsFiltersView).bind(item.sortOrder, item.sortType)
+        (holder.itemView as FollowedShowsFiltersView).bind(
+          item.sortOrder,
+          item.sortType,
+          item.isUpcoming
+        )
       is WatchlistListItem.ShowItem ->
         (holder.itemView as WatchlistShowView).bind(item)
     }

@@ -71,6 +71,7 @@ class WatchlistFragment :
       itemClickListener = { openShowDetails(it.show) },
       itemLongClickListener = { item -> openShowMenu(item.show) },
       sortChipClickListener = ::openSortOrderDialog,
+      upcomingChipClickListener = viewModel::setFilters,
       missingImageListener = viewModel::loadMissingImage,
       missingTranslationListener = viewModel::loadMissingTranslation,
       listChangeListener = {

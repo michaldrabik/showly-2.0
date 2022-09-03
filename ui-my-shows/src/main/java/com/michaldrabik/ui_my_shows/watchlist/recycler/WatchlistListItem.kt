@@ -35,6 +35,7 @@ sealed class WatchlistListItem(
   data class FiltersItem(
     val sortOrder: SortOrder,
     val sortType: SortType,
+    val isUpcoming: Boolean,
   ) : WatchlistListItem(
     show = Show.EMPTY,
     image = Image.createUnknown(ImageType.POSTER),

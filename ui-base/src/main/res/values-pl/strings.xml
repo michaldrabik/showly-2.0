@@ -118,6 +118,7 @@
   <string name="textRemoveFromWatchlist">Usuń z \'Na Później\'</string>
   <string name="textRemoveFromHidden">Usuń z ukrytych</string>
   <string name="textWatchlist">Na Później</string>
+  <string name="textWatchlistIncoming">Nadchodzące</string>
   <string name="textPremiumAd">Zostań subskrybentem i uzyskaj dostęp do dodatkowych funkcji! Kliknij, aby zobaczyć więcej.</string>
   <string name="menuPin">Przypnij u góry</string>
   <string name="menuUnpin">Odepnij z góry</string>

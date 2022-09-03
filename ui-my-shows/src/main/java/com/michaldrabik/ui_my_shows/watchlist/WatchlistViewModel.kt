@@ -16,6 +16,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_shows.main.FollowedShowsUiState
+import com.michaldrabik.ui_my_shows.watchlist.cases.WatchlistFiltersCase
 import com.michaldrabik.ui_my_shows.watchlist.cases.WatchlistLoadShowsCase
 import com.michaldrabik.ui_my_shows.watchlist.cases.WatchlistSortOrderCase
 import com.michaldrabik.ui_my_shows.watchlist.cases.WatchlistTranslationsCase
@@ -34,6 +35,7 @@ import com.michaldrabik.ui_base.events.Event as EventSync
 @HiltViewModel
 class WatchlistViewModel @Inject constructor(
   private val sortOrderCase: WatchlistSortOrderCase,
+  private val filtersCase: WatchlistFiltersCase,
   private val loadShowsCase: WatchlistLoadShowsCase,
   private val translationsCase: WatchlistTranslationsCase,
   private val imagesProvider: ShowImagesProvider,
@@ -79,6 +81,13 @@ class WatchlistViewModel @Inject constructor(
   fun setSortOrder(sortOrder: SortOrder, sortType: SortType) {
     viewModelScope.launch {
       sortOrderCase.setSortOrder(sortOrder, sortType)
+      loadShows(resetScroll = true)
+    }
+  }
+
+  fun setFilters(isUpcoming: Boolean) {
+    viewModelScope.launch {
+      filtersCase.setIsUpcoming(isUpcoming)
       loadShows(resetScroll = true)
     }
   }

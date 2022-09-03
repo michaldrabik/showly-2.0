@@ -128,6 +128,7 @@
   <string name="textRemoveFromWatchlist">إزالة من قائمة المشاهدة</string>
   <string name="textRemoveFromHidden">إزالة من المخفية</string>
   <string name="textWatchlist">قائمة المشاهدة</string>
+  <string name="textWatchlistIncoming">المسلسلات القادمة</string>
   <string name="textPremiumAd">إدعم تطوير التطبيق واحصل على مميزات إضافية! انقر لرؤية المزيد.</string>
   <string name="menuPin">تثبيت في الأعلى</string>
   <string name="menuUnpin">إلغاء التثبيت من الأعلى</string>

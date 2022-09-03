@@ -108,6 +108,7 @@
   <string name="textRemoveFromWatchlist">Supprimer de la Watchlist</string>
   <string name="textRemoveFromHidden">Supprimer des éléments Masqués</string>
   <string name="textWatchlist">Watchlist</string>
+  <string name="textWatchlistIncoming">À venir</string>
   <string name="textPremiumAd">Devenez un supporteur et accédez à des fonctionnalités bonus ! Cliquez pour en savoir plus.</string>
   <string name="menuPin">Épingler en haut</string>
   <string name="menuUnpin">Désépingler du haut</string>

@@ -5,7 +5,6 @@
   <string name="textCalendarEmpty">Es gibt keine neuen Folgen.</string>
   <string name="textRecentsEmpty">Es gibt keine kürzlich ausgestrahlten Folgen.</string>
   <string name="textOnHold" comment="This is a header for Progress subsection. It will contain pending shows marked by user.">Angehalten</string>
-  <string name="textWatchlistIncoming">Demnächst</string>
   <string name="textDiscoverShows">Shows entdecken</string>
   <string name="textEpisodeInfo">Details</string>
   <string name="textTraktSynchronize">Von Trakt.tv importieren</string>

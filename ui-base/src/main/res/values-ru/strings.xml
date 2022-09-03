@@ -118,6 +118,7 @@
   <string name="textRemoveFromWatchlist">Удалить из Буду Смотреть</string>
   <string name="textRemoveFromHidden">Удалить из Скрытое</string>
   <string name="textWatchlist">Буду смотреть</string>
+  <string name="textWatchlistIncoming">Предстоящие</string>
   <string name="textPremiumAd">Станьте спонсором и получите доступ к бонусным функциям! Нажмите, чтобы увидеть больше.</string>
   <string name="menuPin">Закрепить</string>
   <string name="menuUnpin">Открепить</string>

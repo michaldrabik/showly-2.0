@@ -8,10 +8,9 @@ import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Show
-import com.michaldrabik.ui_model.SortOrder
-import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_my_shows.watchlist.helpers.WatchlistItemFilter
 import com.michaldrabik.ui_my_shows.watchlist.helpers.WatchlistItemSorter
 import com.michaldrabik.ui_my_shows.watchlist.recycler.WatchlistListItem
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -26,6 +25,7 @@ import javax.inject.Inject
 class WatchlistLoadShowsCase @Inject constructor(
   private val ratingsCase: WatchlistRatingsCase,
   private val sorter: WatchlistItemSorter,
+  private val filters: WatchlistItemFilter,
   private val showsRepository: ShowsRepository,
   private val translationsRepository: TranslationsRepository,
   private val settingsRepository: SettingsRepository,
@@ -42,9 +42,7 @@ class WatchlistLoadShowsCase @Inject constructor(
       if (language == Config.DEFAULT_LANGUAGE) emptyMap()
       else translationsRepository.loadAllShowsLocal(language)
 
-    val sortOrder = settingsRepository.sorting.watchlistShowsSortOrder
-    val sortType = settingsRepository.sorting.watchlistShowsSortType
-
+    val filtersItem = loadFiltersItem()
     val showsItems = showsRepository.watchlistShows.loadAll()
       .map {
         toListItemAsync(
@@ -55,30 +53,24 @@ class WatchlistLoadShowsCase @Inject constructor(
         )
       }
       .awaitAll()
-      .filterByQuery(searchQuery)
-      .sortedWith(sorter.sort(sortOrder, sortType))
+      .filter {
+        filters.filterByQuery(it, searchQuery) &&
+          filters.filterUpcoming(it, filtersItem.isUpcoming)
+      }
+      .sortedWith(sorter.sort(filtersItem.sortOrder, filtersItem.sortType))
 
-    if (showsItems.isNotEmpty()) {
-      val filtersItem = loadFiltersItem(sortOrder, sortType)
+    if (showsItems.isNotEmpty() || filtersItem.isUpcoming) {
       listOf(filtersItem) + showsItems
     } else {
       showsItems
     }
   }
 
-  private fun List<WatchlistListItem.ShowItem>.filterByQuery(query: String) =
-    this.filter {
-      it.show.title.contains(query, true) ||
-        it.translation?.title?.contains(query, true) == true
-    }
-
-  private fun loadFiltersItem(
-    sortOrder: SortOrder,
-    sortType: SortType,
-  ): WatchlistListItem.FiltersItem {
+  private fun loadFiltersItem(): WatchlistListItem.FiltersItem {
     return WatchlistListItem.FiltersItem(
-      sortOrder = sortOrder,
-      sortType = sortType
+      sortOrder = settingsRepository.sorting.watchlistShowsSortOrder,
+      sortType = settingsRepository.sorting.watchlistShowsSortType,
+      isUpcoming = settingsRepository.filters.watchlistShowsUpcoming
     )
   }
 

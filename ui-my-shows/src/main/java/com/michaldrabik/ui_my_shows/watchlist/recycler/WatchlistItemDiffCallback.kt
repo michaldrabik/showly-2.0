@@ -47,7 +47,8 @@ class WatchlistItemDiffCallback : DiffUtil.ItemCallback<WatchlistListItem>() {
     oldItem: WatchlistListItem.FiltersItem,
     newItem: WatchlistListItem.FiltersItem,
   ): Boolean {
-    return oldItem.sortOrder == newItem.sortOrder &&
+    return oldItem.isUpcoming == newItem.isUpcoming &&
+      oldItem.sortOrder == newItem.sortOrder &&
       oldItem.sortType == newItem.sortType
   }
 }

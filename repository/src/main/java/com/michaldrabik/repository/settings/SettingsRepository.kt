@@ -28,6 +28,7 @@ import javax.inject.Singleton
 @Singleton
 class SettingsRepository @Inject constructor(
   val sorting: SettingsSortRepository,
+  val filters: SettingsFiltersRepository,
   val widgets: SettingsWidgetsRepository,
   private val localSource: LocalDataSource,
   private val transactions: TransactionsProvider,
