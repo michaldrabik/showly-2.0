@@ -31,6 +31,7 @@ sealed class WatchlistListItem(
     val translation: Translation? = null,
     val userRating: Int? = null,
     val dateFormat: DateTimeFormatter? = null,
+    val fullDateFormat: DateTimeFormatter? = null,
   ) : WatchlistListItem(
     movie = movie,
     image = image,

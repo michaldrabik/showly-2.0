@@ -87,7 +87,7 @@
       app:layout_constraintStart_toEndOf="@id/watchlistMoviesImage"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintVertical_chainStyle="packed"
-      tools:text="Netflix"
+      tools:text="24 Mar 2022"
       />
 
     <ImageView
@@ -149,11 +149,40 @@
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spaceMedium"
-      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintBottom_toTopOf="@id/watchlistMovieReleaseDate"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/watchlistMoviesImage"
       app:layout_constraintTop_toBottomOf="@id/watchlistMoviesTitle"
       tools:text="Lorem Ipsum"
+      />
+
+    <TextView
+      android:id="@+id/watchlistMovieReleaseDate"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceMedium"
+      android:layout_marginTop="@dimen/spaceSmall"
+      android:layout_marginBottom="@dimen/spaceTiny"
+      android:background="@drawable/bg_badge"
+      android:drawablePadding="@dimen/spaceTiny"
+      android:elevation="@dimen/elevationTiny"
+      android:gravity="start|center_vertical"
+      android:includeFontPadding="false"
+      android:paddingStart="4dp"
+      android:paddingTop="4dp"
+      android:paddingEnd="6dp"
+      android:paddingBottom="4dp"
+      android:textAlignment="gravity"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="13sp"
+      android:visibility="gone"
+      app:drawableStartCompat="@drawable/ic_clock_small"
+      app:drawableTint="?android:attr/textColorPrimary"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toEndOf="@id/watchlistMoviesImage"
+      app:layout_constraintTop_toBottomOf="@id/watchlistMoviesDescription"
+      tools:text="Wednesday, 27 June 2019"
+      tools:visibility="visible"
       />
 
   </androidx.constraintlayout.widget.ConstraintLayout>

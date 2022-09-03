@@ -38,6 +38,7 @@ class WatchlistLoadMoviesCase @Inject constructor(
   suspend fun loadMovies(searchQuery: String): List<WatchlistListItem> = coroutineScope {
     val ratings = ratingsCase.loadRatings()
     val dateFormat = dateFormatProvider.loadShortDayFormat()
+    val fullDateFormat = dateFormatProvider.loadFullDayFormat()
     val translations =
       if (language == Config.DEFAULT_LANGUAGE) emptyMap()
       else translationsRepository.loadAllMoviesLocal(language)
@@ -51,7 +52,8 @@ class WatchlistLoadMoviesCase @Inject constructor(
           movie = it,
           translation = translations[it.traktId],
           userRating = ratings[it.ids.trakt],
-          dateFormat = dateFormat
+          dateFormat = dateFormat,
+          fullDateFormat = fullDateFormat
         )
       }
       .awaitAll()
@@ -92,6 +94,7 @@ class WatchlistLoadMoviesCase @Inject constructor(
     translation: Translation?,
     userRating: TraktRating?,
     dateFormat: DateTimeFormatter,
+    fullDateFormat: DateTimeFormatter,
   ) = async {
     val image = imagesProvider.findCachedImage(movie, ImageType.POSTER)
     WatchlistListItem.MovieItem(
@@ -99,6 +102,7 @@ class WatchlistLoadMoviesCase @Inject constructor(
       movie = movie,
       image = image,
       dateFormat = dateFormat,
+      fullDateFormat = fullDateFormat,
       translation = translation,
       userRating = userRating?.rating
     )
