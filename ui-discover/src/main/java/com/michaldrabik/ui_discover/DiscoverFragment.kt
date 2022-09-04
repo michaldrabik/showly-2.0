@@ -2,7 +2,6 @@ package com.michaldrabik.ui_discover
 
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
 import androidx.activity.addCallback
 import androidx.core.view.WindowInsetsCompat
@@ -35,7 +34,6 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
-import com.michaldrabik.ui_discover.filters.DiscoverFiltersBottomSheet.Companion.REQUEST_DISCOVER_FILTERS
 import com.michaldrabik.ui_discover.recycler.DiscoverAdapter
 import com.michaldrabik.ui_discover.recycler.DiscoverListItem
 import com.michaldrabik.ui_model.ImageType
@@ -51,6 +49,10 @@ import kotlin.random.Random
 class DiscoverFragment :
   BaseFragment<DiscoverViewModel>(R.layout.fragment_discover),
   OnTabReselectedListener {
+
+  companion object {
+    const val REQUEST_DISCOVER_FILTERS = "REQUEST_DISCOVER_FILTERS"
+  }
 
   override val viewModel by viewModels<DiscoverViewModel>()
   override val navigationId = R.id.discoverFragment
@@ -123,7 +125,7 @@ class DiscoverFragment :
     }
     discoverFiltersView.run {
       translationY = filtersViewPosition
-//      onGenresChipClick = { navigateToSafe(R.id.actionDiscoverFragmentToFiltersGenres) }
+      onGenresChipClick = { navigateToSafe(R.id.actionDiscoverFragmentToFiltersGenres) }
 //      onFeedChipClick = { navigateToSafe(R.id.actionDiscoverFragmentToFiltersFeed) }
       onHideAnticipatedChipClick = { viewModel.toggleAnticipated() }
       onHideCollectionChipClick = { viewModel.toggleCollection() }
@@ -192,7 +194,7 @@ class DiscoverFragment :
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceMedium))
       (discoverModeTabsView.layoutParams as MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.collectionTabsMargin))
-      (discoverFiltersView.layoutParams as ViewGroup.MarginLayoutParams)
+      (discoverFiltersView.layoutParams as MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(filtersPadding))
       discoverTipFilters.translationY = statusBarSize.toFloat()
       discoverSwipeRefresh.setProgressViewOffset(
@@ -222,18 +224,21 @@ class DiscoverFragment :
   }
 
   private fun openDetails(item: DiscoverListItem) {
+    if (discoverRecycler?.isEnabled == false) return
     disableUi()
     hideNavigation()
     animateItemsExit(item)
   }
 
   private fun openPremium() {
+    if (discoverRecycler?.isEnabled == false) return
     disableUi()
     hideNavigation()
     navigateToSafe(R.id.actionDiscoverFragmentToPremium, Bundle.EMPTY)
   }
 
   private fun openShowMenu(show: Show) {
+    if (discoverRecycler?.isEnabled == false) return
     setFragmentResultListener(REQUEST_ITEM_MENU) { requestKey, _ ->
       if (requestKey == REQUEST_ITEM_MENU) {
         viewModel.loadShows()
@@ -290,6 +295,7 @@ class DiscoverFragment :
         discoverSwipeRefresh.isRefreshing = it
         discoverModeTabsView.isEnabled = !it
         discoverFiltersView.isEnabled = !it
+        discoverRecycler.isEnabled = !it
       }
       filters?.let {
         if (discoverFiltersView.visibility != View.VISIBLE) {

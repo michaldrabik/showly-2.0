@@ -196,12 +196,14 @@ class DiscoverMoviesFragment :
   }
 
   private fun openDetails(item: DiscoverMovieListItem) {
+    if (discoverMoviesRecycler?.isEnabled == false) return
     disableUi()
     hideNavigation()
     animateItemsExit(item)
   }
 
   private fun openMovieMenu(movie: Movie) {
+    if (discoverMoviesRecycler?.isEnabled == false) return
     setFragmentResultListener(NavigationArgs.REQUEST_ITEM_MENU) { requestKey, _ ->
       if (requestKey == NavigationArgs.REQUEST_ITEM_MENU) {
         viewModel.loadMovies()
@@ -213,6 +215,7 @@ class DiscoverMoviesFragment :
   }
 
   private fun openPremium() {
+    if (discoverMoviesRecycler?.isEnabled == false) return
     disableUi()
     hideNavigation()
     navigateToSafe(R.id.actionDiscoverMoviesFragmentToPremium, Bundle.EMPTY)
@@ -264,6 +267,7 @@ class DiscoverMoviesFragment :
         discoverMoviesSearchView.sortIconClickable = !it
         discoverMoviesTabsView.isEnabled = !it
         discoverMoviesFiltersView.isEnabled = !it
+        discoverMoviesRecycler.isEnabled = !it
       }
       filters?.let {
         if (discoverMoviesFiltersView.visibility != VISIBLE) {
