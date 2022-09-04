@@ -60,7 +60,7 @@ class DiscoverViewModelTest : BaseMockTest() {
   @Test
   fun `Should not pull to refresh data too often`() = runTest {
     SUT.lastPullToRefreshMs = nowUtcMillis() - TimeUnit.SECONDS.toMillis(5)
-    SUT.loadItems(pullToRefresh = true)
+    SUT.loadShows(pullToRefresh = true)
 
     coVerify(exactly = 0) { showsCase.loadCachedShows(any()) }
     coVerify(exactly = 0) { showsCase.loadRemoteShows(any()) }
@@ -70,7 +70,7 @@ class DiscoverViewModelTest : BaseMockTest() {
   fun `Should load cached data and not load remote data if cache is valid`() {
     coEvery { showsCase.isCacheValid() } returns true
 
-    SUT.loadItems()
+    SUT.loadShows()
 
     coVerify(exactly = 1) { showsCase.loadCachedShows(any()) }
     coVerify(exactly = 0) { showsCase.loadRemoteShows(any()) }
@@ -80,7 +80,7 @@ class DiscoverViewModelTest : BaseMockTest() {
   fun `Should load cached data and load remote data if cache is no longer valid`() {
     coEvery { showsCase.isCacheValid() } returns false
 
-    SUT.loadItems()
+    SUT.loadShows()
 
     coVerify(exactly = 1) { showsCase.loadCachedShows(any()) }
     coVerify(exactly = 1) { showsCase.loadRemoteShows(any()) }
@@ -90,7 +90,7 @@ class DiscoverViewModelTest : BaseMockTest() {
   fun `Should load remote data only if pull to refresh`() {
     coEvery { showsCase.isCacheValid() } returns true
 
-    SUT.loadItems(pullToRefresh = true)
+    SUT.loadShows(pullToRefresh = true)
 
     coVerify(exactly = 0) { showsCase.loadCachedShows(any()) }
     coVerify(exactly = 1) { showsCase.loadRemoteShows(any()) }
@@ -100,7 +100,7 @@ class DiscoverViewModelTest : BaseMockTest() {
   fun `Should load remote data only if skipping cache`() {
     coEvery { showsCase.isCacheValid() } returns true
 
-    SUT.loadItems(skipCache = true)
+    SUT.loadShows(skipCache = true)
 
     coVerify(exactly = 0) { showsCase.loadCachedShows(any()) }
     coVerify(exactly = 1) { showsCase.loadRemoteShows(any()) }
@@ -108,7 +108,7 @@ class DiscoverViewModelTest : BaseMockTest() {
 
   @Test
   fun `Should not load cached data if skipping cache`() {
-    SUT.loadItems(skipCache = true)
+    SUT.loadShows(skipCache = true)
     coVerify(exactly = 0) { showsCase.loadCachedShows(any()) }
   }
 
@@ -116,7 +116,7 @@ class DiscoverViewModelTest : BaseMockTest() {
   fun `Should update last PTR stamp if PTR`() = runTest {
     coEvery { showsCase.isCacheValid() } returns false
 
-    SUT.loadItems(pullToRefresh = true)
+    SUT.loadShows(pullToRefresh = true)
     assertThat(SUT.lastPullToRefreshMs).isGreaterThan(nowUtcMillis() - TimeUnit.MINUTES.toMillis(1))
   }
 
@@ -124,7 +124,7 @@ class DiscoverViewModelTest : BaseMockTest() {
   fun `Should not update last PTR stamp if was not PTR`() {
     coEvery { showsCase.isCacheValid() } returns false
 
-    SUT.loadItems(pullToRefresh = false)
+    SUT.loadShows(pullToRefresh = false)
     assertThat(SUT.lastPullToRefreshMs).isEqualTo(0)
   }
 
@@ -137,7 +137,7 @@ class DiscoverViewModelTest : BaseMockTest() {
     val job2 = launch(UnconfinedTestDispatcher()) { SUT.messageFlow.toList(messagesResult) }
 
     SUT.lastPullToRefreshMs = nowUtcMillis() - TimeUnit.SECONDS.toMillis(5)
-    SUT.loadItems(pullToRefresh = true)
+    SUT.loadShows(pullToRefresh = true)
 
     assertThat(stateResult[0].isLoading).isNull()
     assertThat(stateResult[1].isLoading).isFalse()
@@ -157,7 +157,7 @@ class DiscoverViewModelTest : BaseMockTest() {
     val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
     val job2 = launch(UnconfinedTestDispatcher()) { SUT.messageFlow.toList(messagesResult) }
 
-    SUT.loadItems(pullToRefresh = true)
+    SUT.loadShows(pullToRefresh = true)
 
     assertThat(stateResult[0].isLoading).isNull()
     assertThat(stateResult[1].isLoading).isFalse()
@@ -179,7 +179,7 @@ class DiscoverViewModelTest : BaseMockTest() {
     val cachedItem = TestData.DISCOVER_LIST_ITEM
     coEvery { showsCase.loadCachedShows(any()) } returns listOf(cachedItem)
 
-    SUT.loadItems(pullToRefresh = true)
+    SUT.loadShows(pullToRefresh = true)
 
     stateResult.forEach {
       assertThat(it.items.isNullOrEmpty()).isTrue()
@@ -201,7 +201,7 @@ class DiscoverViewModelTest : BaseMockTest() {
     val cachedItem = TestData.DISCOVER_LIST_ITEM
     coEvery { showsCase.loadCachedShows(any()) } returns listOf(cachedItem)
 
-    SUT.loadItems(skipCache = true)
+    SUT.loadShows(skipCache = true)
 
     stateResult.forEach {
       assertThat(it.items.isNullOrEmpty()).isTrue()
@@ -229,7 +229,7 @@ class DiscoverViewModelTest : BaseMockTest() {
     }
     coEvery { showsCase.isCacheValid() } returns false
 
-    SUT.loadItems()
+    SUT.loadShows()
     advanceUntilIdle()
 
     assertThat(stateResult.any { it.items?.contains(cachedItem) == true }).isTrue()
@@ -250,7 +250,7 @@ class DiscoverViewModelTest : BaseMockTest() {
 
     coEvery { showsCase.loadCachedShows(any()) } throws Error()
 
-    SUT.loadItems()
+    SUT.loadShows()
 
     assertThat(messagesResult.last().consume()).isEqualTo(com.michaldrabik.ui_base.R.string.errorCouldNotLoadDiscover)
 

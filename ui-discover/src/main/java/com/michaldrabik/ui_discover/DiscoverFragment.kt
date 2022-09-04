@@ -2,6 +2,7 @@ package com.michaldrabik.ui_discover
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
 import androidx.activity.addCallback
 import androidx.core.view.WindowInsetsCompat
@@ -62,12 +63,14 @@ class DiscoverFragment :
 
   private var searchViewPosition = 0F
   private var tabsViewPosition = 0F
+  private var filtersViewPosition = 0F
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     savedInstanceState?.let {
       searchViewPosition = it.getFloat("ARG_SEARCH_POS", 0F)
       tabsViewPosition = it.getFloat("ARG_TABS_POS", 0F)
+      filtersViewPosition = it.getFloat("ARG_FILTERS_POS", 0F)
     }
   }
 
@@ -75,6 +78,7 @@ class DiscoverFragment :
     super.onSaveInstanceState(outState)
     outState.putFloat("ARG_SEARCH_POS", discoverSearchView?.translationY ?: 0F)
     outState.putFloat("ARG_TABS_POS", discoverModeTabsView?.translationY ?: 0F)
+    outState.putFloat("ARG_FILTERS_POS", discoverFiltersView?.translationY ?: 0F)
   }
 
   override fun onResume() {
@@ -92,21 +96,23 @@ class DiscoverFragment :
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
       { viewModel.messageFlow.collect { showSnack(it) } },
-      doAfterLaunch = { viewModel.loadItems() }
+      doAfterLaunch = { viewModel.loadShows() }
     )
 
     setFragmentResultListener(REQUEST_DISCOVER_FILTERS) { _, _ ->
-      viewModel.loadItems(scrollToTop = true, skipCache = true, instantProgress = true)
+      viewModel.loadShows(scrollToTop = true, skipCache = true, instantProgress = true)
     }
   }
 
   private fun setupView() {
     discoverSearchView.run {
-      sortIconVisible = true
-      settingsIconVisible = false
-      isClickable = false
+      settingsIconVisible = true
+      isEnabled = false
       onClick { openSearch() }
-      onSortClickListener = { navigateToSafe(R.id.actionDiscoverFragmentToFilters) }
+      onSettingsClickListener = {
+        hideNavigation()
+        navigateToSafe(R.id.actionDiscoverFragmentToSettingsFragment)
+      }
       translationY = searchViewPosition
     }
     discoverModeTabsView.run {
@@ -114,6 +120,13 @@ class DiscoverFragment :
       translationY = tabsViewPosition
       onModeSelected = { mode = it }
       selectShows()
+    }
+    discoverFiltersView.run {
+      translationY = filtersViewPosition
+//      onGenresChipClick = { navigateToSafe(R.id.actionDiscoverFragmentToFiltersGenres) }
+//      onFeedChipClick = { navigateToSafe(R.id.actionDiscoverFragmentToFiltersFeed) }
+      onHideAnticipatedChipClick = { viewModel.toggleAnticipated() }
+      onHideCollectionChipClick = { viewModel.toggleCollection() }
     }
     discoverTipFilters.run {
       fadeIf(!isTipShown(Tip.DISCOVER_FILTERS))
@@ -157,7 +170,7 @@ class DiscoverFragment :
       setOnRefreshListener {
         searchViewPosition = 0F
         tabsViewPosition = 0F
-        viewModel.loadItems(pullToRefresh = true)
+        viewModel.loadShows(pullToRefresh = true)
       }
     }
   }
@@ -169,12 +182,18 @@ class DiscoverFragment :
         if (moviesEnabled) R.dimen.discoverRecyclerPadding
         else R.dimen.discoverRecyclerPaddingNoTabs
 
+      val filtersPadding =
+        if (moviesEnabled) R.dimen.collectionFiltersMargin
+        else R.dimen.collectionFiltersMarginNoTabs
+
       discoverRecycler
         .updatePadding(top = statusBarSize + dimenToPx(recyclerPadding))
       (discoverSearchView.layoutParams as MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceMedium))
       (discoverModeTabsView.layoutParams as MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.collectionTabsMargin))
+      (discoverFiltersView.layoutParams as ViewGroup.MarginLayoutParams)
+        .updateMargins(top = statusBarSize + dimenToPx(filtersPadding))
       discoverTipFilters.translationY = statusBarSize.toFloat()
       discoverSwipeRefresh.setProgressViewOffset(
         true,
@@ -196,6 +215,7 @@ class DiscoverFragment :
     disableUi()
     hideNavigation()
     discoverModeTabsView.fadeOut(duration = 200).add(animations)
+    discoverFiltersView.fadeOut(duration = 200).add(animations)
     discoverRecycler.fadeOut(duration = 200) {
       super.navigateTo(R.id.actionDiscoverFragmentToSearchFragment, null)
     }.add(animations)
@@ -216,7 +236,7 @@ class DiscoverFragment :
   private fun openShowMenu(show: Show) {
     setFragmentResultListener(REQUEST_ITEM_MENU) { requestKey, _ ->
       if (requestKey == REQUEST_ITEM_MENU) {
-        viewModel.loadItems()
+        viewModel.loadShows()
       }
       clearFragmentResultListener(REQUEST_ITEM_MENU)
     }
@@ -227,6 +247,7 @@ class DiscoverFragment :
   private fun animateItemsExit(item: DiscoverListItem) {
     discoverSearchView.fadeOut().add(animations)
     discoverModeTabsView.fadeOut().add(animations)
+    discoverFiltersView.fadeOut().add(animations)
 
     val clickedIndex = adapter?.indexOf(item) ?: 0
     val itemsCount = adapter?.itemCount ?: 0
@@ -268,9 +289,13 @@ class DiscoverFragment :
         discoverSearchView.isEnabled = !it
         discoverSwipeRefresh.isRefreshing = it
         discoverModeTabsView.isEnabled = !it
+        discoverFiltersView.isEnabled = !it
       }
       filters?.let {
-        discoverSearchView.iconBadgeVisible = !it.isDefault()
+        if (discoverFiltersView.visibility != View.VISIBLE) {
+          discoverFiltersView.fadeIn(duration = 300)
+        }
+        discoverFiltersView.bind(it)
       }
     }
   }
@@ -281,6 +306,7 @@ class DiscoverFragment :
     enableUi()
     searchViewPosition = discoverSearchView.translationY
     tabsViewPosition = discoverModeTabsView.translationY
+    filtersViewPosition = discoverFiltersView.translationY
     super.onPause()
   }
 

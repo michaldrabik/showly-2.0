@@ -267,7 +267,7 @@ class DiscoverMoviesFragment :
       }
       filters?.let {
         if (discoverMoviesFiltersView.visibility != VISIBLE) {
-          discoverMoviesFiltersView.fadeIn()
+          discoverMoviesFiltersView.fadeIn(duration = 300)
         }
         discoverMoviesFiltersView.bind(it)
       }

@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class DiscoverFiltersCase @Inject constructor(
-  private val settingsRepository: SettingsRepository
+  private val settingsRepository: SettingsRepository,
 ) {
 
   suspend fun loadFilters(): DiscoverFilters {
@@ -18,6 +18,20 @@ class DiscoverFiltersCase @Inject constructor(
       hideCollection = !settings.showCollectionShows,
       genres = settings.discoverFilterGenres.toList(),
       networks = settings.discoverFilterNetworks.toList()
+    )
+  }
+
+  suspend fun toggleAnticipated() {
+    val settings = settingsRepository.load()
+    settingsRepository.update(
+      settings.copy(showAnticipatedShows = !settings.showAnticipatedShows)
+    )
+  }
+
+  suspend fun toggleCollection() {
+    val settings = settingsRepository.load()
+    settingsRepository.update(
+      settings.copy(showCollectionShows = !settings.showCollectionShows)
     )
   }
 }

@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_discover_movies.filters.views
+package com.michaldrabik.ui_discover.filters.views
 
 import android.content.Context
 import android.util.AttributeSet
@@ -8,25 +8,27 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import androidx.core.view.children
 import com.michaldrabik.ui_base.utilities.extensions.onClick
-import com.michaldrabik.ui_discover_movies.R
-import com.michaldrabik.ui_discover_movies.databinding.ViewDiscoverMoviesFiltersBinding
+import com.michaldrabik.ui_discover.R
+import com.michaldrabik.ui_discover.databinding.ViewDiscoverFiltersBinding
 import com.michaldrabik.ui_model.DiscoverFilters
 import com.michaldrabik.ui_model.DiscoverSortOrder
 import com.michaldrabik.ui_model.DiscoverSortOrder.HOT
 import com.michaldrabik.ui_model.DiscoverSortOrder.NEWEST
 import com.michaldrabik.ui_model.DiscoverSortOrder.RATING
 import com.michaldrabik.ui_model.Genre
+import com.michaldrabik.ui_model.Network
 
-class DiscoverMoviesFiltersView : FrameLayout {
+class DiscoverFiltersView : FrameLayout {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-  private val binding = ViewDiscoverMoviesFiltersBinding.inflate(LayoutInflater.from(context), this)
+  private val binding = ViewDiscoverFiltersBinding.inflate(LayoutInflater.from(context), this)
 
   var onFeedChipClick: (() -> Unit)? = null
   var onGenresChipClick: (() -> Unit)? = null
+  var onNetworksChipClick: (() -> Unit)? = null
   var onHideCollectionChipClick: (() -> Unit)? = null
   var onHideAnticipatedChipClick: (() -> Unit)? = null
 
@@ -35,17 +37,22 @@ class DiscoverMoviesFiltersView : FrameLayout {
   init {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     with(binding) {
-      discoverMoviesGenresChip.text = discoverMoviesGenresChip.text.toString().filter { it.isLetter() }
-      discoverMoviesGenresChip.onClick {
-        discoverMoviesGenresChip.isChecked = filters.genres.isNotEmpty()
+      discoverGenresChip.text = discoverGenresChip.text.toString().filter { it.isLetter() }
+      discoverGenresChip.onClick {
+        discoverGenresChip.isChecked = filters.genres.isNotEmpty()
         onGenresChipClick?.invoke()
       }
-      discoverMoviesFeedChip.onClick {
-        discoverMoviesFeedChip.isChecked = true
+      discoverNetworksChip.text = discoverNetworksChip.text.toString().filter { it.isLetter() }
+      discoverNetworksChip.onClick {
+        discoverNetworksChip.isChecked = filters.networks.isNotEmpty()
+        onNetworksChipClick?.invoke()
+      }
+      discoverFeedChip.onClick {
+        discoverFeedChip.isChecked = true
         onFeedChipClick?.invoke()
       }
-      discoverMoviesCollectionChip.onClick { onHideCollectionChipClick?.invoke() }
-      discoverMoviesAnticipatedChip.onClick { onHideAnticipatedChipClick?.invoke() }
+      discoverCollectionChip.onClick { onHideCollectionChipClick?.invoke() }
+      discoverAnticipatedChip.onClick { onHideAnticipatedChipClick?.invoke() }
     }
   }
 
@@ -53,16 +60,17 @@ class DiscoverMoviesFiltersView : FrameLayout {
     this.filters = filters
     bindFeed(filters.feedOrder)
     bindGenres(filters.genres)
+    bindNetworks(filters.networks)
     with(binding) {
-      discoverMoviesCollectionChip.isChecked = filters.hideCollection
-      discoverMoviesAnticipatedChip.isChecked = filters.hideAnticipated
+      discoverCollectionChip.isChecked = filters.hideCollection
+      discoverAnticipatedChip.isChecked = filters.hideAnticipated
     }
   }
 
   private fun bindFeed(feed: DiscoverSortOrder) {
     with(binding) {
-      discoverMoviesFeedChip.isChecked = true
-      discoverMoviesFeedChip.text = when (feed) {
+      discoverFeedChip.isChecked = true
+      discoverFeedChip.text = when (feed) {
         HOT -> context.getString(R.string.textHot)
         RATING -> context.getString(R.string.textSortRated)
         NEWEST -> context.getString(R.string.textSortNewest)
@@ -72,9 +80,9 @@ class DiscoverMoviesFiltersView : FrameLayout {
 
   private fun bindGenres(genres: List<Genre>) {
     with(binding) {
-      discoverMoviesGenresChip.isChecked = genres.isNotEmpty()
-      discoverMoviesGenresChip.text = when {
-        genres.isEmpty() -> context.getString(R.string.textGenresMovies).filter { it.isLetter() }
+      discoverGenresChip.isChecked = genres.isNotEmpty()
+      discoverGenresChip.text = when {
+        genres.isEmpty() -> context.getString(R.string.textGenres).filter { it.isLetter() }
         genres.size == 1 -> context.getString(genres.first().displayName)
         genres.size == 2 -> "${context.getString(genres[0].displayName)}, ${context.getString(genres[1].displayName)}"
         else -> "${context.getString(genres[0].displayName)}, ${context.getString(genres[1].displayName)} + ${genres.size - 2}"
@@ -82,7 +90,18 @@ class DiscoverMoviesFiltersView : FrameLayout {
     }
   }
 
+  private fun bindNetworks(networks: List<Network>) {
+    with(binding) {
+      discoverNetworksChip.isChecked = networks.isNotEmpty()
+      discoverNetworksChip.text = when {
+        networks.isEmpty() -> context.getString(R.string.textNetworks).filter { it.isLetter() }
+        networks.size == 1 -> networks[0].channels.first()
+        else -> throw IllegalStateException()
+      }
+    }
+  }
+
   override fun setEnabled(enabled: Boolean) {
-    binding.discoverMoviesChips.children.forEach { it.isEnabled = enabled }
+    binding.discoverChips.children.forEach { it.isEnabled = enabled }
   }
 }

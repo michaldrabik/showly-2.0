@@ -59,7 +59,7 @@ class DiscoverViewModel @Inject constructor(
     }
   }
 
-  fun loadItems(
+  fun loadShows(
     pullToRefresh: Boolean = false,
     scrollToTop: Boolean = false,
     skipCache: Boolean = false,
@@ -136,7 +136,21 @@ class DiscoverViewModel @Inject constructor(
 
   fun cancelTwitterAd() {
     twitterCase.cancelTwitterAd()
-    loadItems()
+    loadShows()
+  }
+
+  fun toggleAnticipated() {
+    viewModelScope.launch {
+      filtersCase.toggleAnticipated()
+      loadShows(scrollToTop = true, skipCache = true, instantProgress = true)
+    }
+  }
+
+  fun toggleCollection() {
+    viewModelScope.launch {
+      filtersCase.toggleCollection()
+      loadShows(scrollToTop = true, skipCache = true, instantProgress = true)
+    }
   }
 
   private suspend fun onError(error: Throwable) {

@@ -47,7 +47,7 @@
 
   <dimen name="discoverFilterChipStroke">1dp</dimen>
   <dimen name="discoverRecyclerPadding">159dp</dimen>
-  <dimen name="discoverRecyclerPaddingNoTabs">70dp</dimen>
+  <dimen name="discoverRecyclerPaddingNoTabs">116dp</dimen>
 
   <dimen name="linkItemTileHeight">42dp</dimen>
   <dimen name="linkItemImageWidth">50dp</dimen>
@@ -58,6 +58,7 @@
 
   <dimen name="collectionTabsMargin">70dp</dimen>
   <dimen name="collectionFiltersMargin">106dp</dimen>
+  <dimen name="collectionFiltersMarginNoTabs">66dp</dimen>
   <dimen name="commentViewSpace">16dp</dimen>
   <dimen name="tutorialTipSize">28dp</dimen>
   <dimen name="scrollBarWidth">3dp</dimen>
