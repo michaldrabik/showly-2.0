@@ -17,6 +17,7 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.screenHeight
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.viewBinding
+import com.michaldrabik.ui_discover_movies.DiscoverMoviesFragment.Companion.REQUEST_DISCOVER_FILTERS
 import com.michaldrabik.ui_discover_movies.R
 import com.michaldrabik.ui_discover_movies.databinding.ViewDiscoverMoviesFiltersGenresBinding
 import com.michaldrabik.ui_discover_movies.filters.genres.DiscoverMoviesFiltersGenresUiEvent.ApplyFilters
@@ -26,10 +27,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 internal class DiscoverMoviesFiltersGenresBottomSheet : BaseBottomSheetFragment(R.layout.view_discover_movies_filters_genres) {
-
-  companion object {
-    const val REQUEST_DISCOVER_GENRES_FILTERS = "REQUEST_DISCOVER_GENRES_FILTERS"
-  }
 
   private val viewModel by viewModels<DiscoverMoviesFiltersGenresViewModel>()
   private val binding by viewBinding(ViewDiscoverMoviesFiltersGenresBinding::bind)
@@ -107,7 +104,7 @@ internal class DiscoverMoviesFiltersGenresBottomSheet : BaseBottomSheetFragment(
   private fun handleEvent(event: Event<*>) {
     when (event) {
       is ApplyFilters -> {
-        setFragmentResult(REQUEST_DISCOVER_GENRES_FILTERS, Bundle.EMPTY)
+        setFragmentResult(REQUEST_DISCOVER_FILTERS, Bundle.EMPTY)
         closeSheet()
       }
       is CloseFilters -> closeSheet()

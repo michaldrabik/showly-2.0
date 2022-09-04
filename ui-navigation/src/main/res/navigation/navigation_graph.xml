@@ -151,8 +151,8 @@
       app:launchSingleTop="true"
       />
     <action
-      android:id="@+id/actionDiscoverMoviesFragmentToFilters"
-      app:destination="@id/discoverMoviesFiltersDialog"
+      android:id="@+id/actionDiscoverMoviesFragmentToFiltersFeed"
+      app:destination="@id/discoverMoviesFiltersFeedDialog"
       app:launchSingleTop="true"
       />
     <action
@@ -987,8 +987,8 @@
     />
 
   <dialog
-    android:id="@+id/discoverMoviesFiltersDialog"
-    android:name="com.michaldrabik.ui_discover_movies.filters.DiscoverMoviesFiltersBottomSheet"
+    android:id="@+id/discoverMoviesFiltersFeedDialog"
+    android:name="com.michaldrabik.ui_discover_movies.filters.feed.DiscoverMoviesFiltersFeedBottomSheet"
     android:label="dialogDiscoverMoviesFilters"
     />
 

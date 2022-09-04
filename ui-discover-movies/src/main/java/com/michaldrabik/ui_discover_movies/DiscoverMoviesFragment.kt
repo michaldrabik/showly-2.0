@@ -29,7 +29,6 @@ import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
-import com.michaldrabik.ui_discover_movies.filters.genres.DiscoverMoviesFiltersGenresBottomSheet.Companion.REQUEST_DISCOVER_GENRES_FILTERS
 import com.michaldrabik.ui_discover_movies.recycler.DiscoverMovieListItem
 import com.michaldrabik.ui_discover_movies.recycler.DiscoverMoviesAdapter
 import com.michaldrabik.ui_model.ImageType
@@ -43,6 +42,10 @@ import kotlin.random.Random
 class DiscoverMoviesFragment :
   BaseFragment<DiscoverMoviesViewModel>(R.layout.fragment_discover_movies),
   OnTabReselectedListener {
+
+  companion object {
+    const val REQUEST_DISCOVER_FILTERS = "REQUEST_DISCOVER_FILTERS"
+  }
 
   override val viewModel by viewModels<DiscoverMoviesViewModel>()
   override val navigationId = R.id.discoverMoviesFragment
@@ -91,7 +94,7 @@ class DiscoverMoviesFragment :
       doAfterLaunch = { viewModel.loadMovies() }
     )
 
-    setFragmentResultListener(REQUEST_DISCOVER_GENRES_FILTERS) { _, _ ->
+    setFragmentResultListener(REQUEST_DISCOVER_FILTERS) { _, _ ->
       viewModel.loadMovies(resetScroll = true, skipCache = true, instantProgress = true)
     }
   }
@@ -115,7 +118,7 @@ class DiscoverMoviesFragment :
     discoverMoviesFiltersView.run {
       translationY = filtersViewPosition
       onGenresChipClick = { navigateToSafe(R.id.actionDiscoverMoviesFragmentToFiltersGenres) }
-      onFeedChipClick = { navigateToSafe(R.id.actionDiscoverMoviesFragmentToFilters) }
+      onFeedChipClick = { navigateToSafe(R.id.actionDiscoverMoviesFragmentToFiltersFeed) }
       onHideAnticipatedChipClick = { viewModel.toggleAnticipated() }
       onHideCollectionChipClick = { viewModel.toggleCollection() }
     }
