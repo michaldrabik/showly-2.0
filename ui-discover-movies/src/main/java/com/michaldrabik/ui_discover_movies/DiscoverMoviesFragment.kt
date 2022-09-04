@@ -2,6 +2,7 @@ package com.michaldrabik.ui_discover_movies
 
 import android.os.Bundle
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.core.view.WindowInsetsCompat
@@ -28,7 +29,7 @@ import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
-import com.michaldrabik.ui_discover_movies.filters.DiscoverMoviesFiltersBottomSheet.Companion.REQUEST_DISCOVER_FILTERS
+import com.michaldrabik.ui_discover_movies.filters.genres.DiscoverMoviesFiltersGenresBottomSheet.Companion.REQUEST_DISCOVER_GENRES_FILTERS
 import com.michaldrabik.ui_discover_movies.recycler.DiscoverMovieListItem
 import com.michaldrabik.ui_discover_movies.recycler.DiscoverMoviesAdapter
 import com.michaldrabik.ui_model.ImageType
@@ -54,12 +55,14 @@ class DiscoverMoviesFragment :
 
   private var searchViewPosition = 0F
   private var tabsViewPosition = 0F
+  private var filtersViewPosition = 0F
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     savedInstanceState?.let {
       searchViewPosition = it.getFloat("ARG_SEARCH_POS", 0F)
       tabsViewPosition = it.getFloat("ARG_TABS_POS", 0F)
+      filtersViewPosition = it.getFloat("ARG_FILTERS_POS", 0F)
     }
   }
 
@@ -67,6 +70,7 @@ class DiscoverMoviesFragment :
     super.onSaveInstanceState(outState)
     outState.putFloat("ARG_SEARCH_POS", discoverMoviesSearchView?.translationY ?: 0F)
     outState.putFloat("ARG_TABS_POS", discoverMoviesTabsView?.translationY ?: 0F)
+    outState.putFloat("ARG_FILTERS_POS", discoverMoviesFiltersView?.translationY ?: 0F)
   }
 
   override fun onResume() {
@@ -87,24 +91,33 @@ class DiscoverMoviesFragment :
       doAfterLaunch = { viewModel.loadMovies() }
     )
 
-    setFragmentResultListener(REQUEST_DISCOVER_FILTERS) { _, _ ->
+    setFragmentResultListener(REQUEST_DISCOVER_GENRES_FILTERS) { _, _ ->
       viewModel.loadMovies(resetScroll = true, skipCache = true, instantProgress = true)
     }
   }
 
   private fun setupView() {
     discoverMoviesSearchView.run {
-      sortIconVisible = true
-      settingsIconVisible = false
-      isClickable = false
-      onClick { openSearch() }
-      onSortClickListener = { navigateToSafe(R.id.actionDiscoverMoviesFragmentToFilters) }
       translationY = searchViewPosition
+      settingsIconVisible = true
+      isEnabled = false
+      onClick { openSearch() }
+      onSettingsClickListener = {
+        hideNavigation()
+        navigateToSafe(R.id.actionDiscoverMoviesFragmentToSettingsFragment)
+      }
     }
     discoverMoviesTabsView.run {
       translationY = tabsViewPosition
       onModeSelected = { mode = it }
       selectMovies()
+    }
+    discoverMoviesFiltersView.run {
+      translationY = filtersViewPosition
+      onGenresChipClick = { navigateToSafe(R.id.actionDiscoverMoviesFragmentToFiltersGenres) }
+      onFeedChipClick = { navigateToSafe(R.id.actionDiscoverMoviesFragmentToFilters) }
+      onHideAnticipatedChipClick = { viewModel.toggleAnticipated() }
+      onHideCollectionChipClick = { viewModel.toggleCollection() }
     }
   }
 
@@ -117,6 +130,8 @@ class DiscoverMoviesFragment :
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceMedium))
       (discoverMoviesTabsView.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.collectionTabsMargin))
+      (discoverMoviesFiltersView.layoutParams as ViewGroup.MarginLayoutParams)
+        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.collectionFiltersMargin))
       discoverMoviesSwipeRefresh.setProgressViewOffset(
         true,
         swipeRefreshStartOffset + statusBarSize,
@@ -171,6 +186,7 @@ class DiscoverMoviesFragment :
     disableUi()
     hideNavigation()
     discoverMoviesTabsView.fadeOut(duration = 200).add(animations)
+    discoverMoviesFiltersView.fadeOut(duration = 200).add(animations)
     discoverMoviesRecycler.fadeOut(duration = 200) {
       super.navigateTo(R.id.actionDiscoverMoviesFragmentToSearchFragment, null)
     }.add(animations)
@@ -202,6 +218,7 @@ class DiscoverMoviesFragment :
   private fun animateItemsExit(item: DiscoverMovieListItem) {
     discoverMoviesSearchView.fadeOut().add(animations)
     discoverMoviesTabsView.fadeOut().add(animations)
+    discoverMoviesFiltersView.fadeOut().add(animations)
 
     val clickedIndex = adapter?.indexOf(item) ?: 0
     val itemCount = adapter?.itemCount ?: 0
@@ -234,18 +251,22 @@ class DiscoverMoviesFragment :
         layoutManager?.withSpanSizeLookup { pos -> adapter?.getItems()?.get(pos)?.image?.type?.spanSize!! }
         discoverMoviesRecycler.fadeIn()
       }
-      isLoading?.let {
-        discoverMoviesSearchView.isClickable = !it
-        discoverMoviesSearchView.sortIconClickable = !it
-        discoverMoviesSearchView.isEnabled = !it
-        discoverMoviesSwipeRefresh.isRefreshing = it
-        discoverMoviesTabsView.isEnabled = !it
-      }
       isSyncing?.let {
         discoverMoviesSearchView.setTraktProgress(it)
+        discoverMoviesSearchView.isEnabled = !it
+      }
+      isLoading?.let {
+        discoverMoviesSwipeRefresh.isRefreshing = it
+        discoverMoviesSearchView.isEnabled = !it
+        discoverMoviesSearchView.sortIconClickable = !it
+        discoverMoviesTabsView.isEnabled = !it
+        discoverMoviesFiltersView.isEnabled = !it
       }
       filters?.let {
-        discoverMoviesSearchView.iconBadgeVisible = !it.isDefault()
+        if (discoverMoviesFiltersView.visibility != VISIBLE) {
+          discoverMoviesFiltersView.fadeIn()
+        }
+        discoverMoviesFiltersView.bind(it)
       }
     }
   }
@@ -256,6 +277,7 @@ class DiscoverMoviesFragment :
     enableUi()
     searchViewPosition = discoverMoviesSearchView.translationY
     tabsViewPosition = discoverMoviesTabsView.translationY
+    filtersViewPosition = discoverMoviesFiltersView.translationY
     super.onPause()
   }
 

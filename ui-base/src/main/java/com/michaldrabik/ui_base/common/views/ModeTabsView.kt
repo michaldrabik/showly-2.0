@@ -5,18 +5,16 @@ import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.LinearLayout
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.Mode.MOVIES
 import com.michaldrabik.common.Mode.SHOWS
 import com.michaldrabik.ui_base.R
-import com.michaldrabik.ui_base.common.behaviour.ScrollableViewBehaviour
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.view_mode_tabs.view.*
 
-class ModeTabsView : LinearLayout, CoordinatorLayout.AttachedBehavior {
+class ModeTabsView : LinearLayout {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -65,6 +63,4 @@ class ModeTabsView : LinearLayout, CoordinatorLayout.AttachedBehavior {
     viewMovies.isEnabled = enabled
     viewLists.isEnabled = enabled
   }
-
-  override fun getBehavior() = ScrollableViewBehaviour()
 }

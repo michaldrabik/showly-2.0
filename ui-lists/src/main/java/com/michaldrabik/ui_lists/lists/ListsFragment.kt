@@ -278,6 +278,7 @@ class ListsFragment :
       }
       isSyncing?.let {
         fragmentListsSearchView.setTraktProgress(it)
+        fragmentListsSearchView.isEnabled = !it
       }
     }
   }

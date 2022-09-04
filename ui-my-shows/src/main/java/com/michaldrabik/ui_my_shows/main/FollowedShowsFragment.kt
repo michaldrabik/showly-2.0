@@ -256,6 +256,7 @@ class FollowedShowsFragment :
   private fun render(uiState: FollowedShowsUiState) {
     uiState.isSyncing?.let {
       followedShowsSearchView.setTraktProgress(it)
+      followedShowsSearchView.isEnabled = !it
     }
   }
 

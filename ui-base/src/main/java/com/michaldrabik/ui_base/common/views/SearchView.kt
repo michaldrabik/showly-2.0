@@ -109,14 +109,7 @@ class SearchView : FrameLayout, CoordinatorLayout.AttachedBehavior {
     super.setEnabled(enabled)
   }
 
-  override fun setClickable(clickable: Boolean) {
-    searchViewInput.isClickable = clickable
-    super.setClickable(clickable)
-  }
-
   fun setTraktProgress(isProgress: Boolean, withIcon: Boolean = false) {
-    isEnabled = !isProgress
-    isClickable = !isProgress
     searchViewIcon.visibleIf(!isProgress)
     searchViewText.visibleIf(!isProgress)
     searchTraktIcon.visibleIf(!isProgress && withIcon)

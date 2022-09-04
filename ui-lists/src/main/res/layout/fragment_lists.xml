@@ -72,6 +72,7 @@
     android:layout_marginStart="@dimen/spaceMedium"
     android:layout_marginTop="@dimen/collectionTabsMargin"
     android:layout_marginEnd="@dimen/spaceMedium"
+    app:layout_behavior="com.michaldrabik.ui_base.common.behaviour.ScrollableViewBehaviour"
     />
 
   <com.michaldrabik.ui_base.common.views.SearchLocalView

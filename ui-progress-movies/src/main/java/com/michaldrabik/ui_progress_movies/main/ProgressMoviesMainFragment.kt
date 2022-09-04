@@ -304,6 +304,7 @@ class ProgressMoviesMainFragment :
 
   private fun render(uiState: ProgressMoviesMainUiState) {
     progressMoviesSearchView.setTraktProgress(uiState.isSyncing, withIcon = true)
+    progressMoviesSearchView.isEnabled = !uiState.isSyncing
     when (uiState.calendarMode) {
       CalendarMode.PRESENT_FUTURE -> progressMoviesCalendarIcon.setImageResource(R.drawable.ic_history)
       CalendarMode.RECENTS -> progressMoviesCalendarIcon.setImageResource(R.drawable.ic_calendar)

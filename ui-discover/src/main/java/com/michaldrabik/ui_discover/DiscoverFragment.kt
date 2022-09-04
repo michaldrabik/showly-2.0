@@ -259,15 +259,15 @@ class DiscoverFragment :
         layoutManager?.withSpanSizeLookup { pos -> adapter?.getItems()?.get(pos)?.image?.type?.spanSize!! }
         discoverRecycler.fadeIn()
       }
+      isSyncing?.let {
+        discoverSearchView.setTraktProgress(it)
+        discoverSearchView.isEnabled = !it
+      }
       isLoading?.let {
-        discoverSearchView.isClickable = !it
         discoverSearchView.sortIconClickable = !it
         discoverSearchView.isEnabled = !it
         discoverSwipeRefresh.isRefreshing = it
         discoverModeTabsView.isEnabled = !it
-      }
-      isSyncing?.let {
-        discoverSearchView.setTraktProgress(it)
       }
       filters?.let {
         discoverSearchView.iconBadgeVisible = !it.isDefault()

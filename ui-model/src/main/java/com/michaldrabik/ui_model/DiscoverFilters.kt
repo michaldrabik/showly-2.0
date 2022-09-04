@@ -9,7 +9,7 @@ data class DiscoverFilters(
 ) {
 
   fun isDefault() = feedOrder == DiscoverSortOrder.HOT &&
-    hideAnticipated &&
+    !hideAnticipated &&
     !hideCollection &&
     genres.isEmpty() &&
     networks.isEmpty()

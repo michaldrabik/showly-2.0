@@ -61,7 +61,7 @@ class DiscoverMoviesViewModel @Inject constructor(
     pullToRefresh: Boolean = false,
     resetScroll: Boolean = false,
     skipCache: Boolean = false,
-    instantProgress: Boolean = false
+    instantProgress: Boolean = false,
   ) {
     loadingState.value = true
 
@@ -131,6 +131,20 @@ class DiscoverMoviesViewModel @Inject constructor(
       } finally {
         loadingJob.cancel()
       }
+    }
+  }
+
+  fun toggleAnticipated() {
+    viewModelScope.launch {
+      filtersCase.toggleAnticipated()
+      loadMovies(resetScroll = true, skipCache = true, instantProgress = true)
+    }
+  }
+
+  fun toggleCollection() {
+    viewModelScope.launch {
+      filtersCase.toggleCollection()
+      loadMovies(resetScroll = true, skipCache = true, instantProgress = true)
     }
   }
 

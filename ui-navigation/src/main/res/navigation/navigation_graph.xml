@@ -156,6 +156,11 @@
       app:launchSingleTop="true"
       />
     <action
+      android:id="@+id/actionDiscoverMoviesFragmentToFiltersGenres"
+      app:destination="@id/discoverMoviesFiltersGenresDialog"
+      app:launchSingleTop="true"
+      />
+    <action
       android:id="@+id/actionDiscoverMoviesFragmentToPremium"
       app:destination="@id/premiumFragment"
       app:enterAnim="@anim/anim_fade_in"
@@ -985,6 +990,12 @@
     android:id="@+id/discoverMoviesFiltersDialog"
     android:name="com.michaldrabik.ui_discover_movies.filters.DiscoverMoviesFiltersBottomSheet"
     android:label="dialogDiscoverMoviesFilters"
+    />
+
+  <dialog
+    android:id="@+id/discoverMoviesFiltersGenresDialog"
+    android:name="com.michaldrabik.ui_discover_movies.filters.genres.DiscoverMoviesFiltersGenresBottomSheet"
+    android:label="dialogDiscoverMoviesFiltersGenres"
     />
 
 </navigation>

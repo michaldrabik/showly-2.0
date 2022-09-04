@@ -344,6 +344,7 @@ class ProgressMainFragment :
 
   private fun render(uiState: ProgressMainUiState) {
     progressMainSearchView.setTraktProgress(uiState.isSyncing, withIcon = true)
+    progressMainSearchView.isEnabled = !uiState.isSyncing
     when (uiState.calendarMode) {
       CalendarMode.PRESENT_FUTURE -> progressMainCalendarIcon.setImageResource(R.drawable.ic_history)
       CalendarMode.RECENTS -> progressMainCalendarIcon.setImageResource(R.drawable.ic_calendar)
