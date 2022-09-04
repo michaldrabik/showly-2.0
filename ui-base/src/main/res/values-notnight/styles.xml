@@ -20,6 +20,7 @@
     <item name="textColorChip">?android:textColorPrimary</item>
     <item name="textColorChipSelected">?android:textColorPrimary</item>
     <item name="colorBackgroundChipSelected">#D9E2EC</item>
+    <item name="colorBackgroundChipSelectedLight">#D9E2EC</item>
     <item name="colorProgressTrack">#D3D3D3</item>
 
     <item name="colorInfoSnackbar">@color/colorAccent</item>

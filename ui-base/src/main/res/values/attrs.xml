@@ -30,6 +30,7 @@
   <attr name="textColorChip" format="color" />
   <attr name="textColorChipSelected" format="color" />
   <attr name="colorBackgroundChipSelected" format="color" />
+  <attr name="colorBackgroundChipSelectedLight" format="color" />
   <attr name="colorProgressTrack" format="color" />
 
   <attr name="textColorTab" format="color" />
