@@ -28,19 +28,21 @@
       <com.google.android.material.chip.Chip
         android:id="@+id/discoverFeedChip"
         style="@style/ShowlyChip.Filter"
-        android:checked="true"
+        android:checkable="false"
         android:text="@string/textHot"
         />
 
       <com.google.android.material.chip.Chip
         android:id="@+id/discoverGenresChip"
         style="@style/ShowlyChip.Filter"
+        android:checkable="false"
         android:text="@string/textGenres"
         />
 
       <com.google.android.material.chip.Chip
         android:id="@+id/discoverNetworksChip"
         style="@style/ShowlyChip.Filter"
+        android:checkable="false"
         android:text="@string/textNetworks"
         />
 

@@ -28,13 +28,14 @@
       <com.google.android.material.chip.Chip
         android:id="@+id/discoverMoviesFeedChip"
         style="@style/ShowlyChip.Filter"
-        android:checked="true"
+        android:checkable="false"
         android:text="@string/textHot"
         />
 
       <com.google.android.material.chip.Chip
         android:id="@+id/discoverMoviesGenresChip"
         style="@style/ShowlyChip.Filter"
+        android:checkable="false"
         android:text="@string/textGenresMovies"
         />
 

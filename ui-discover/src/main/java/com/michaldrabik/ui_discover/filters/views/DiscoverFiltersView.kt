@@ -38,19 +38,11 @@ class DiscoverFiltersView : FrameLayout {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     with(binding) {
       discoverGenresChip.text = discoverGenresChip.text.toString().filter { it.isLetter() }
-      discoverGenresChip.onClick {
-        discoverGenresChip.isChecked = filters.genres.isNotEmpty()
-        onGenresChipClick?.invoke()
-      }
+      discoverGenresChip.onClick { onGenresChipClick?.invoke() }
       discoverNetworksChip.text = discoverNetworksChip.text.toString().filter { it.isLetter() }
-      discoverNetworksChip.onClick {
-        discoverNetworksChip.isChecked = filters.networks.isNotEmpty()
-        onNetworksChipClick?.invoke()
-      }
-      discoverFeedChip.onClick {
-        discoverFeedChip.isChecked = true
-        onFeedChipClick?.invoke()
-      }
+      discoverNetworksChip.onClick { onNetworksChipClick?.invoke() }
+      discoverFeedChip.isSelected = true
+      discoverFeedChip.onClick { onFeedChipClick?.invoke() }
       discoverCollectionChip.onClick { onHideCollectionChipClick?.invoke() }
       discoverAnticipatedChip.onClick { onHideAnticipatedChipClick?.invoke() }
     }
@@ -69,7 +61,6 @@ class DiscoverFiltersView : FrameLayout {
 
   private fun bindFeed(feed: DiscoverSortOrder) {
     with(binding) {
-      discoverFeedChip.isChecked = true
       discoverFeedChip.text = when (feed) {
         HOT -> context.getString(R.string.textHot)
         RATING -> context.getString(R.string.textSortRated)
@@ -80,7 +71,7 @@ class DiscoverFiltersView : FrameLayout {
 
   private fun bindGenres(genres: List<Genre>) {
     with(binding) {
-      discoverGenresChip.isChecked = genres.isNotEmpty()
+      discoverGenresChip.isSelected = genres.isNotEmpty()
       discoverGenresChip.text = when {
         genres.isEmpty() -> context.getString(R.string.textGenres).filter { it.isLetter() }
         genres.size == 1 -> context.getString(genres.first().displayName)
@@ -92,7 +83,7 @@ class DiscoverFiltersView : FrameLayout {
 
   private fun bindNetworks(networks: List<Network>) {
     with(binding) {
-      discoverNetworksChip.isChecked = networks.isNotEmpty()
+      discoverNetworksChip.isSelected = networks.isNotEmpty()
       discoverNetworksChip.text = when {
         networks.isEmpty() -> context.getString(R.string.textNetworks).filter { it.isLetter() }
         networks.size == 1 -> networks[0].channels.first()

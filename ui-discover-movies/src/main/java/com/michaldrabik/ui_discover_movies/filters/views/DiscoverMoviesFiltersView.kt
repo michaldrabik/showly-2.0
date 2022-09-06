@@ -36,14 +36,9 @@ class DiscoverMoviesFiltersView : FrameLayout {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     with(binding) {
       discoverMoviesGenresChip.text = discoverMoviesGenresChip.text.toString().filter { it.isLetter() }
-      discoverMoviesGenresChip.onClick {
-        discoverMoviesGenresChip.isChecked = filters.genres.isNotEmpty()
-        onGenresChipClick?.invoke()
-      }
-      discoverMoviesFeedChip.onClick {
-        discoverMoviesFeedChip.isChecked = true
-        onFeedChipClick?.invoke()
-      }
+      discoverMoviesGenresChip.onClick { onGenresChipClick?.invoke() }
+      discoverMoviesFeedChip.isSelected = true
+      discoverMoviesFeedChip.onClick { onFeedChipClick?.invoke() }
       discoverMoviesCollectionChip.onClick { onHideCollectionChipClick?.invoke() }
       discoverMoviesAnticipatedChip.onClick { onHideAnticipatedChipClick?.invoke() }
     }
@@ -61,7 +56,6 @@ class DiscoverMoviesFiltersView : FrameLayout {
 
   private fun bindFeed(feed: DiscoverSortOrder) {
     with(binding) {
-      discoverMoviesFeedChip.isChecked = true
       discoverMoviesFeedChip.text = when (feed) {
         HOT -> context.getString(R.string.textHot)
         RATING -> context.getString(R.string.textSortRated)
@@ -72,7 +66,7 @@ class DiscoverMoviesFiltersView : FrameLayout {
 
   private fun bindGenres(genres: List<Genre>) {
     with(binding) {
-      discoverMoviesGenresChip.isChecked = genres.isNotEmpty()
+      discoverMoviesGenresChip.isSelected = genres.isNotEmpty()
       discoverMoviesGenresChip.text = when {
         genres.isEmpty() -> context.getString(R.string.textGenresMovies).filter { it.isLetter() }
         genres.size == 1 -> context.getString(genres.first().displayName)
