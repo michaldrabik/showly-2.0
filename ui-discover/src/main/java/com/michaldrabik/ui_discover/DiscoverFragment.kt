@@ -126,7 +126,7 @@ class DiscoverFragment :
     discoverFiltersView.run {
       translationY = filtersViewPosition
       onGenresChipClick = { navigateToSafe(R.id.actionDiscoverFragmentToFiltersGenres) }
-//      onFeedChipClick = { navigateToSafe(R.id.actionDiscoverFragmentToFiltersFeed) }
+      onFeedChipClick = { navigateToSafe(R.id.actionDiscoverFragmentToFiltersFeed) }
       onHideAnticipatedChipClick = { viewModel.toggleAnticipated() }
       onHideCollectionChipClick = { viewModel.toggleCollection() }
     }
