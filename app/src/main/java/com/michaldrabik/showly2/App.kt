@@ -96,8 +96,7 @@ class App :
     }
 
     fun setupTheme() {
-      val theme = settingsRepository.theme
-      setDefaultNightMode(theme)
+      setDefaultNightMode(settingsRepository.theme)
     }
 
     fun setupRemoteConfig() {
@@ -118,7 +117,8 @@ class App :
     if (BuildConfig.DEBUG) {
       Timber.plant(Timber.DebugTree())
       FirebaseMessaging.getInstance().token.addOnCompleteListener {
-        Timber.d("FCM Token: ${it.result}")
+        val fcmToken = runCatching { it.result }.onFailure { Timber.w("Missing FCM Token") }
+        Timber.d("FCM Token: $fcmToken")
       }
     }
 
