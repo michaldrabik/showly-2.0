@@ -110,13 +110,13 @@
       app:launchSingleTop="true"
       />
     <action
-      android:id="@+id/actionDiscoverFragmentToFilters"
-      app:destination="@id/discoverFiltersDialog"
+      android:id="@+id/actionDiscoverFragmentToFiltersGenres"
+      app:destination="@id/discoverFiltersGenresDialog"
       app:launchSingleTop="true"
       />
     <action
-      android:id="@+id/actionDiscoverFragmentToFiltersGenres"
-      app:destination="@id/discoverFiltersGenresDialog"
+      android:id="@+id/actionDiscoverFragmentToFiltersNetworks"
+      app:destination="@id/discoverFiltersNetworksDialog"
       app:launchSingleTop="true"
       />
     <action
@@ -991,12 +991,6 @@
     />
 
   <dialog
-    android:id="@+id/discoverFiltersDialog"
-    android:name="com.michaldrabik.ui_discover.filters.DiscoverFiltersBottomSheet"
-    android:label="dialogDiscoverFilters"
-    />
-
-  <dialog
     android:id="@+id/discoverFiltersFeedDialog"
     android:name="com.michaldrabik.ui_discover.filters.feed.DiscoverFiltersFeedBottomSheet"
     android:label="dialogMoviesFilters"
@@ -1012,6 +1006,12 @@
     android:id="@+id/discoverFiltersGenresDialog"
     android:name="com.michaldrabik.ui_discover.filters.genres.DiscoverFiltersGenresBottomSheet"
     android:label="dialogDiscoverFiltersGenres"
+    />
+
+  <dialog
+    android:id="@+id/discoverFiltersNetworksDialog"
+    android:name="com.michaldrabik.ui_discover.filters.networks.DiscoverFiltersNetworksBottomSheet"
+    android:label="dialogDiscoverFiltersNetworks"
     />
 
   <dialog

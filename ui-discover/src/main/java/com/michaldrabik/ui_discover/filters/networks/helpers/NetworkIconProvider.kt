@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_discover.filters.helpers
+package com.michaldrabik.ui_discover.filters.networks.helpers
 
 import androidx.annotation.DrawableRes
 import com.michaldrabik.ui_discover.R
