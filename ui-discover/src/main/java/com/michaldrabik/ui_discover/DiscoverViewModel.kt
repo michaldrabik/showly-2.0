@@ -50,12 +50,15 @@ class DiscoverViewModel @Inject constructor(
   private val filtersState = MutableStateFlow<DiscoverFilters?>(null)
   private val scrollState = MutableStateFlow(Event(false))
 
-  @VisibleForTesting(otherwise = PRIVATE)
-  var lastPullToRefreshMs = 0L
+  @VisibleForTesting(otherwise = PRIVATE) var lastPullToRefreshMs = 0L
+  private var initialFilters: DiscoverFilters? = null
 
   init {
     workManager.getWorkInfosByTagLiveData(TraktSyncWorker.TAG_ID).observeForever { work ->
       syncingState.value = work.any { it.state == WorkInfo.State.RUNNING }
+    }
+    viewModelScope.launch {
+      initialFilters = filtersCase.loadFilters()
     }
   }
 
@@ -94,6 +97,7 @@ class DiscoverViewModel @Inject constructor(
           val shows = showsCase.loadRemoteShows(filters)
           itemsState.value = shows
           scrollState.value = Event(scrollToTop)
+          initialFilters = filters
         }
 
         if (pullToRefresh) {
@@ -159,6 +163,14 @@ class DiscoverViewModel @Inject constructor(
       Timber.e(error)
     }
     rethrowCancellation(error)
+  }
+
+  override fun onCleared() {
+    filtersCase.revertFilters(
+      initialFilters = initialFilters,
+      currentFilters = filtersState.value
+    )
+    super.onCleared()
   }
 
   val uiState = combine(

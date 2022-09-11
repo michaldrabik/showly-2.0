@@ -5,12 +5,5 @@ data class DiscoverFilters(
   val hideAnticipated: Boolean = true,
   val hideCollection: Boolean = false,
   val genres: List<Genre> = emptyList(),
-  val networks: List<Network> = emptyList()
-) {
-
-  fun isDefault() = feedOrder == DiscoverSortOrder.HOT &&
-    !hideAnticipated &&
-    !hideCollection &&
-    genres.isEmpty() &&
-    networks.isEmpty()
-}
+  val networks: List<Network> = emptyList(),
+)

@@ -17,6 +17,7 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.common.ConfigVariant
 import com.michaldrabik.repository.settings.SettingsRepository
+import com.michaldrabik.ui_base.common.AppScopeProvider
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.utilities.extensions.notificationManager
 import com.michaldrabik.ui_model.Settings
@@ -36,10 +37,11 @@ import com.michaldrabik.ui_base.fcm.NotificationChannel as AppNotificationChanne
 @HiltAndroidApp
 class App :
   Application(),
+  AppScopeProvider,
   Configuration.Provider,
   WidgetsProvider {
 
-  private val appScope = MainScope()
+  override val appScope = MainScope()
 
   @Inject lateinit var workerFactory: HiltWorkerFactory
   @Inject lateinit var settingsRepository: SettingsRepository

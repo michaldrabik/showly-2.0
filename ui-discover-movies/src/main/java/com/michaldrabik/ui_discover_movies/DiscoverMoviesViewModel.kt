@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_discover_movies
 
 import androidx.annotation.VisibleForTesting
+import androidx.annotation.VisibleForTesting.PRIVATE
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkInfo
@@ -48,12 +49,15 @@ class DiscoverMoviesViewModel @Inject constructor(
   private val filtersState = MutableStateFlow<DiscoverFilters?>(null)
   private val scrollState = MutableStateFlow(Event(false))
 
-  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-  var lastPullToRefreshMs = 0L
+  @VisibleForTesting(otherwise = PRIVATE) var lastPullToRefreshMs = 0L
+  private var initialFilters: DiscoverFilters? = null
 
   init {
     workManager.getWorkInfosByTagLiveData(TraktSyncWorker.TAG_ID).observeForever { work ->
       syncingState.value = work.any { it.state == WorkInfo.State.RUNNING }
+    }
+    viewModelScope.launch {
+      initialFilters = filtersCase.loadFilters()
     }
   }
 
@@ -85,14 +89,13 @@ class DiscoverMoviesViewModel @Inject constructor(
         if (!pullToRefresh && !skipCache) {
           val movies = moviesCase.loadCachedMovies(filters)
           itemsState.value = movies
-          filtersState.value = filters
           scrollState.value = Event(resetScroll)
         }
 
         if (pullToRefresh || skipCache || !moviesCase.isCacheValid()) {
           val movies = moviesCase.loadRemoteMovies(filters)
           itemsState.value = movies
-          filtersState.value = filters
+          initialFilters = filters
           scrollState.value = Event(resetScroll)
         }
 
@@ -154,6 +157,14 @@ class DiscoverMoviesViewModel @Inject constructor(
       Timber.e(error)
     }
     rethrowCancellation(error)
+  }
+
+  override fun onCleared() {
+    filtersCase.revertFilters(
+      initialFilters = initialFilters,
+      currentFilters = filtersState.value
+    )
+    super.onCleared()
   }
 
   val uiState = combine(
