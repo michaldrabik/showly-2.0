@@ -5,6 +5,7 @@ import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.data_local.database.dao.SettingsDao
 import com.michaldrabik.repository.common.BaseMockTest
 import com.michaldrabik.repository.mappers.SettingsMapper
+import com.michaldrabik.repository.settings.SettingsFiltersRepository
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.settings.SettingsSortRepository
 import com.michaldrabik.repository.settings.SettingsWidgetsRepository
@@ -25,6 +26,7 @@ class SettingsRepositoryTest : BaseMockTest() {
   @MockK lateinit var settingsDao: SettingsDao
   @MockK lateinit var sharedPreferences: SharedPreferences
   @MockK lateinit var settingsSortRepository: SettingsSortRepository
+  @MockK lateinit var settingsFilterRepository: SettingsFiltersRepository
   @MockK lateinit var settingsWidgetsRepository: SettingsWidgetsRepository
 
   private lateinit var SUT: SettingsRepository
@@ -35,6 +37,7 @@ class SettingsRepositoryTest : BaseMockTest() {
     every { database.settings } returns settingsDao
     SUT = SettingsRepository(
       settingsSortRepository,
+      settingsFilterRepository,
       settingsWidgetsRepository,
       database,
       transactions,

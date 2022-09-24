@@ -22,14 +22,15 @@
     android:paddingBottom="@dimen/spaceSmall"
     />
 
-  <com.michaldrabik.ui_lists.details.views.ListDetailsChipsView
-    android:id="@+id/fragmentListDetailsChipsView"
+  <com.michaldrabik.ui_lists.details.views.ListDetailsFilterView
+    android:id="@+id/fragmentListDetailsFiltersView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/spaceMedium"
     android:layout_marginTop="@dimen/listDetailsChipsTopPadding"
     android:layout_marginEnd="@dimen/spaceMedium"
     android:visibility="gone"
+    tools:visibility="visible"
     />
 
   <com.google.android.material.appbar.MaterialToolbar
@@ -64,19 +65,6 @@
       android:padding="8dp"
       android:visibility="gone"
       app:srcCompat="@drawable/ic_reorder"
-      app:tint="?android:attr/textColorPrimary"
-      tools:visibility="visible"
-      />
-
-    <ImageView
-      android:id="@+id/fragmentListDetailsSortButton"
-      android:layout_width="40dp"
-      android:layout_height="match_parent"
-      android:layout_gravity="end"
-      android:layout_marginEnd="@dimen/spaceTiny"
-      android:padding="8dp"
-      android:visibility="gone"
-      app:srcCompat="@drawable/ic_sort"
       app:tint="?android:attr/textColorPrimary"
       tools:visibility="visible"
       />

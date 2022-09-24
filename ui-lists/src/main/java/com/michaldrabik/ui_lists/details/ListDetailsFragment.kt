@@ -110,7 +110,7 @@ class ListDetailsFragment :
 
   override fun onPause() {
     enableUi()
-    headerTranslation = fragmentListDetailsChipsView.translationY
+    headerTranslation = fragmentListDetailsFiltersView.translationY
     super.onPause()
   }
 
@@ -127,8 +127,9 @@ class ListDetailsFragment :
         else activity?.onBackPressed()
       }
     }
-    with(fragmentListDetailsChipsView) {
-      onChipsChangeListener = { viewModel.setFilterTypes(list.id, it) }
+    with(fragmentListDetailsFiltersView) {
+      onTypesChangeListener = { viewModel.setFilterTypes(list.id, it) }
+      onSortClickListener = { order, type -> openSortOrderDialog(order, type) }
       translationY = headerTranslation
     }
     fragmentListDetailsManageButton.onClick { toggleReorderMode() }
@@ -146,7 +147,7 @@ class ListDetailsFragment :
       },
       itemsChangedListener = {
         fragmentListDetailsRecycler.scrollToPosition(0)
-        fragmentListDetailsChipsView.translationY = 0F
+        fragmentListDetailsFiltersView.translationY = 0F
       },
       itemsClearedListener = {
         if (isReorderMode) viewModel.updateRanks(list.id, it)
@@ -269,15 +270,13 @@ class ListDetailsFragment :
       listDetails?.let { details ->
         val isQuickRemoveEnabled = isQuickRemoveEnabled
         fragmentListDetailsToolbar.subtitle = details.description
-        fragmentListDetailsSortButton.onClick { openSortOrderDialog(details.sortByLocal, details.sortHowLocal) }
         fragmentListDetailsMoreButton.onClick { openPopupMenu(isQuickRemoveEnabled) }
-        fragmentListDetailsChipsView.setTypes(details.filterTypeLocal)
+        fragmentListDetailsFiltersView.setFilters(details.filterTypeLocal, details.sortByLocal, details.sortHowLocal)
       }
       listItems?.let {
         val isRealEmpty = it.isEmpty() && listDetails?.filterTypeLocal?.containsAll(Mode.getAll()) == true
         fragmentListDetailsEmptyView.fadeIf(it.isEmpty())
         fragmentListDetailsManageButton.visibleIf(!isRealEmpty)
-        fragmentListDetailsSortButton.visibleIf(!isRealEmpty)
 
         val scrollTop = resetScroll?.consume() == true
         adapter?.setItems(it, scrollTop)
@@ -287,7 +286,6 @@ class ListDetailsFragment :
           return@let
         }
 
-        fragmentListDetailsSortButton.visibleIf(!isManageMode)
         fragmentListDetailsManageButton.visibleIf(!isManageMode)
         fragmentListDetailsMoreButton.visibleIf(!isManageMode)
 
@@ -303,11 +301,11 @@ class ListDetailsFragment :
 
         if (resetScroll?.consume() == true) {
           fragmentListDetailsRecycler.scrollToPosition(0)
-          fragmentListDetailsChipsView.translationY = 0F
+          fragmentListDetailsFiltersView.translationY = 0F
         }
       }
       isFiltersVisible.let {
-        fragmentListDetailsChipsView.visibleIf(it)
+        fragmentListDetailsFiltersView.visibleIf(it)
       }
       isLoading.let {
         fragmentListDetailsLoadingView.visibleIf(it)
@@ -327,7 +325,7 @@ class ListDetailsFragment :
 
   override fun onSaveInstanceState(outState: Bundle) {
     super.onSaveInstanceState(outState)
-    outState.putFloat(ARG_HEADER_TRANSLATION, fragmentListDetailsChipsView?.translationY ?: 0F)
+    outState.putFloat(ARG_HEADER_TRANSLATION, fragmentListDetailsFiltersView?.translationY ?: 0F)
   }
 
   override fun onDestroyView() {
