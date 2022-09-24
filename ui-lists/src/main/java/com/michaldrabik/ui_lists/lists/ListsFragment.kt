@@ -8,6 +8,7 @@ import androidx.activity.addCallback
 import androidx.core.os.bundleOf
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.postDelayed
+import androidx.core.view.updatePadding
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -138,8 +139,8 @@ class ListsFragment :
       if (!isFabHidden) fadeIn()
       onClick { openCreateList() }
     }
-    fragmentListsSortButton.onClick {
-      viewModel.loadSortOrder()
+    fragmentListsFilters.onSortClickListener = { sortOrder, sortType ->
+      showSortOrderDialog(sortOrder, sortType)
     }
     fragmentListsSearchButton.run {
       onClick { if (!isSearching) enterSearch() else exitSearch() }
@@ -154,6 +155,8 @@ class ListsFragment :
   private fun setupStatusBar() {
     fragmentListsRoot.doOnApplyWindowInsets { _, insets, _, _ ->
       val statusBarSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+      fragmentListsRecycler
+        .updatePadding(top = statusBarSize + dimenToPx(R.dimen.listsRecyclerPaddingTop))
       fragmentListsSearchView.applyWindowInsetBehaviour(dimenToPx(R.dimen.spaceNormal) + statusBarSize)
       fragmentListsSearchView.updateTopMargin(dimenToPx(R.dimen.spaceMedium) + statusBarSize)
       fragmentListsModeTabs.updateTopMargin(dimenToPx(R.dimen.collectionTabsMargin) + statusBarSize)
@@ -219,7 +222,7 @@ class ListsFragment :
   private fun enterSearch() {
     resetTranslations()
     fragmentListsSearchLocalView.fadeIn(150)
-    fragmentListsRecycler.translationY = dimenToPx(R.dimen.listsSearchLocalOffset).toFloat()
+    fragmentListsIcons.gone()
     fragmentListsRecycler.smoothScrollToPosition(0)
     with(exSearchLocalViewInput) {
       setText("")
@@ -240,6 +243,7 @@ class ListsFragment :
     isSearching = false
     resetTranslations()
     fragmentListsSearchLocalView.gone()
+    fragmentListsIcons.visible()
     fragmentListsRecycler.translationY = 0F
     fragmentListsRecycler.postDelayed(200) { layoutManager?.scrollToPosition(0) }
     with(exSearchLocalViewInput) {
@@ -250,14 +254,14 @@ class ListsFragment :
     }
   }
 
-  private fun showSortOrderDialog(sorting: Pair<SortOrder, SortType>) {
+  private fun showSortOrderDialog(sortOrder: SortOrder, sortType: SortType) {
     val options = listOf(NAME, NEWEST, DATE_UPDATED)
-    val args = SortOrderBottomSheet.createBundle(options, sorting.first, sorting.second)
+    val args = SortOrderBottomSheet.createBundle(options, sortOrder, sortType)
 
     setFragmentResultListener(NavigationArgs.REQUEST_SORT_ORDER) { _, bundle ->
-      val sortOrder = bundle.getSerializable(NavigationArgs.ARG_SELECTED_SORT_ORDER) as SortOrder
-      val sortType = bundle.getSerializable(NavigationArgs.ARG_SELECTED_SORT_TYPE) as SortType
-      viewModel.setSortOrder(sortOrder, sortType)
+      val order = bundle.getSerializable(NavigationArgs.ARG_SELECTED_SORT_ORDER) as SortOrder
+      val type = bundle.getSerializable(NavigationArgs.ARG_SELECTED_SORT_TYPE) as SortType
+      viewModel.setSortOrder(order, type)
     }
 
     navigateTo(R.id.actionListsFragmentToSortOrder, args)
@@ -267,14 +271,13 @@ class ListsFragment :
     uiState.run {
       items?.let {
         fragmentListsEmptyView.fadeIf(it.isEmpty() && !isSearching)
-        fragmentListsSortButton.visibleIf(it.isNotEmpty() || isSearching)
         fragmentListsSearchButton.visibleIf(it.isNotEmpty() || isSearching)
 
         val resetScroll = resetScroll.consume() == true
         adapter?.setItems(it, resetScroll)
       }
-      sortOrder?.let { event ->
-        event.consume()?.let { showSortOrderDialog(it) }
+      sortOrder?.let {
+        fragmentListsFilters.setSorting(it.first, it.second)
       }
       isSyncing?.let {
         fragmentListsSearchView.setTraktProgress(it)
@@ -332,10 +335,12 @@ class ListsFragment :
         val text = resources.getQuantityString(R.plurals.textTraktQuickSyncComplete, 1, 1)
         fragmentListsSnackHost.showInfoSnackbar(text)
       }
+
       is TraktQuickSyncSuccess -> {
         val text = resources.getQuantityString(R.plurals.textTraktQuickSyncComplete, event.count, event.count)
         fragmentListsSnackHost.showInfoSnackbar(text)
       }
+
       else -> Unit
     }
   }

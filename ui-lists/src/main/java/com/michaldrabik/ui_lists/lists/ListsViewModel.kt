@@ -24,7 +24,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -45,7 +44,7 @@ class ListsViewModel @Inject constructor(
 
   private val itemsState = MutableStateFlow<List<ListsItem>?>(null)
   private val scrollState = MutableStateFlow(Event(false))
-  private val sortOrderState = MutableStateFlow<Event<Pair<SortOrder, SortType>>?>(null)
+  private val sortOrderState = MutableStateFlow<Pair<SortOrder, SortType>?>(null)
   private val syncingState = MutableStateFlow(false)
 
   init {
@@ -59,20 +58,13 @@ class ListsViewModel @Inject constructor(
 
   fun loadItems(
     resetScroll: Boolean,
-    searchQuery: String? = null
+    searchQuery: String? = null,
   ) {
     loadItemsJob?.cancel()
     loadItemsJob = viewModelScope.launch {
-      val items = mainCase.loadLists(searchQuery)
-      itemsState.value = items
+      sortOrderState.value = sortCase.loadSortOrder()
+      itemsState.value = mainCase.loadLists(searchQuery)
       scrollState.value = Event(resetScroll)
-    }
-  }
-
-  fun loadSortOrder() {
-    viewModelScope.launch {
-      val sortOrder = sortCase.loadSortOrder()
-      sortOrderState.value = Event(sortOrder)
     }
   }
 
