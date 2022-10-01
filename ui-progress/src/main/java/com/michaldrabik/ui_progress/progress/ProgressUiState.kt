@@ -10,5 +10,5 @@ data class ProgressUiState(
   val isLoading: Boolean = false,
   val isOverScrollEnabled: Boolean = false,
   val scrollReset: Event<Boolean>? = null,
-  val sortOrder: Event<Pair<SortOrder, SortType>>? = null,
+  val sortOrder: Event<Triple<SortOrder, SortType, Boolean>>? = null,
 )

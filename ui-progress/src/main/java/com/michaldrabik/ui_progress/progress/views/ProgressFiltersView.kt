@@ -23,7 +23,7 @@ class ProgressFiltersView : FrameLayout {
 
   private val binding = ViewProgressFiltersBinding.inflate(LayoutInflater.from(context), this)
 
-  var onSortChipClicked: ((SortOrder, SortType) -> Unit)? = null
+  var onSortChipClicked: (() -> Unit)? = null
 
   init {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
@@ -41,7 +41,7 @@ class ProgressFiltersView : FrameLayout {
       progressFiltersSortingChip.closeIcon = ContextCompat.getDrawable(context, sortIcon)
       progressFiltersSortingChip.text = context.getText(sortOrder.displayString)
       progressFiltersSortingChip.onClick {
-        onSortChipClicked?.invoke(sortOrder, sortType)
+        onSortChipClicked?.invoke()
       }
     }
   }

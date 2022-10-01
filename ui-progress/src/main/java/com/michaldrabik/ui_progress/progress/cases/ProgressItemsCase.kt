@@ -64,6 +64,7 @@ class ProgressItemsCase @Inject constructor(
 
     val sortOrder = settingsRepository.sorting.progressShowsSortOrder
     val sortType = settingsRepository.sorting.progressShowsSortType
+    val newAtTop = settingsRepository.sorting.progressShowsNewAtTop
 
     val nowUtc = nowUtc()
     val upcomingLimit = nowUtc.plusMonths(UPCOMING_MONTHS_LIMIT).toMillis()
@@ -125,6 +126,7 @@ class ProgressItemsCase @Inject constructor(
                 async { localSource.episodes.getWatchedCount(it.show.traktId, nowUtc.toMillis()) }
               )
             }
+
             ProgressType.ALL -> {
               awaitAll(
                 async { localSource.episodes.getTotalCount(it.show.traktId) },
@@ -146,7 +148,7 @@ class ProgressItemsCase @Inject constructor(
       }.awaitAll()
 
     val filteredItems = filterByQuery(searchQuery, filledItems)
-    val groupedItems = groupItems(filteredItems, sortOrder, sortType)
+    val groupedItems = groupItems(filteredItems, sortOrder, sortType, newAtTop)
 
     if (groupedItems.isNotEmpty()) {
       val filtersItem = loadFiltersItem(sortOrder, sortType)
@@ -190,16 +192,26 @@ class ProgressItemsCase @Inject constructor(
     input: List<ProgressListItem.Episode>,
     sortOrder: SortOrder,
     sortType: SortType,
+    newAtTop: Boolean,
   ): List<ProgressListItem> {
+    val newItems =
+      if (newAtTop) {
+        input
+          .filter { it.isNew() && !it.isOnHold && !it.isPinned }
+          .sortedWith(sorter.sort(sortOrder, sortType))
+      } else {
+        emptyList()
+      }
+
     val pinnedItems = input
       .filter { it.isPinned }
-      .sortedWith(sorter.sort(sortOrder, sortType))
+      .sortedWith(compareByDescending<ProgressListItem.Episode> { it.isNew() } then sorter.sort(sortOrder, sortType))
 
     val onHoldItems = input
       .filter { it.isOnHold }
-      .sortedWith(sorter.sort(sortOrder, sortType))
+      .sortedWith(compareByDescending<ProgressListItem.Episode> { it.isNew() } then sorter.sort(sortOrder, sortType))
 
-    val groupedItems = (input - pinnedItems.toSet() - onHoldItems.toSet())
+    val groupedItems = (input - newItems.toSet() - pinnedItems.toSet() - onHoldItems.toSet())
       .groupBy { !it.isUpcoming }
 
     val airedItems = ((groupedItems[true] ?: emptyList()))
@@ -211,6 +223,9 @@ class ProgressItemsCase @Inject constructor(
     return mutableListOf<ProgressListItem>().apply {
       if (pinnedItems.isNotEmpty()) {
         addAll(pinnedItems)
+      }
+      if (newItems.isNotEmpty()) {
+        addAll(newItems)
       }
       if (airedItems.isNotEmpty()) {
         addAll(airedItems)

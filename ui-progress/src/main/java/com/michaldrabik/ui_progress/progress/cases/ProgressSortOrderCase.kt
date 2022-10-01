@@ -8,16 +8,18 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class ProgressSortOrderCase @Inject constructor(
-  private val settingsRepository: SettingsRepository
+  private val settingsRepository: SettingsRepository,
 ) {
 
-  fun setSortOrder(sortOrder: SortOrder, sortType: SortType) {
+  fun setSortOrder(sortOrder: SortOrder, sortType: SortType, newAtTop: Boolean) {
     settingsRepository.sorting.progressShowsSortOrder = sortOrder
     settingsRepository.sorting.progressShowsSortType = sortType
+    settingsRepository.sorting.progressShowsNewAtTop = newAtTop
   }
 
-  fun loadSortOrder() = Pair(
+  fun loadSortOrder() = Triple(
     settingsRepository.sorting.progressShowsSortOrder,
-    settingsRepository.sorting.progressShowsSortType
+    settingsRepository.sorting.progressShowsSortType,
+    settingsRepository.sorting.progressShowsNewAtTop
   )
 }

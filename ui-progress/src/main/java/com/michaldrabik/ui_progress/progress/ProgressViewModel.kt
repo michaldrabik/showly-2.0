@@ -52,7 +52,7 @@ class ProgressViewModel @Inject constructor(
   private val loadingState = MutableStateFlow(false)
   private val overscrollState = MutableStateFlow(false)
   private val scrollState = MutableStateFlow(Event(false))
-  private val sortOrderState = MutableStateFlow<Event<Pair<SortOrder, SortType>>?>(null)
+  private val sortOrderState = MutableStateFlow<Event<Triple<SortOrder, SortType, Boolean>>?>(null)
 
   private val language by lazy { translationsRepository.getLanguage() }
   private var searchQuery: String? = null
@@ -127,8 +127,8 @@ class ProgressViewModel @Inject constructor(
     }
   }
 
-  fun setSortOrder(sortOrder: SortOrder, sortType: SortType) {
-    sortOrderCase.setSortOrder(sortOrder, sortType)
+  fun setSortOrder(sortOrder: SortOrder, sortType: SortType, newAtTop: Boolean) {
+    sortOrderCase.setSortOrder(sortOrder, sortType, newAtTop)
     loadItems(resetScroll = true)
   }
 

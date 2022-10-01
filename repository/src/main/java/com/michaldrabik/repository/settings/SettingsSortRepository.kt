@@ -1,6 +1,7 @@
 package com.michaldrabik.repository.settings
 
 import android.content.SharedPreferences
+import com.michaldrabik.repository.utilities.BooleanPreference
 import com.michaldrabik.repository.utilities.EnumPreference
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.NAME
@@ -18,6 +19,7 @@ class SettingsSortRepository @Inject constructor(
   companion object Key {
     private const val PROGRESS_SHOWS_SORT_ORDER = "PROGRESS_SHOWS_SORT_ORDER"
     private const val PROGRESS_SHOWS_SORT_TYPE = "PROGRESS_SHOWS_SORT_TYPE"
+    private const val PROGRESS_SHOWS_NEW_AT_TOP = "PROGRESS_SHOWS_NEW_AT_TOP"
     private const val WATCHLIST_SHOWS_SORT_ORDER = "WATCHLIST_SHOWS_SORT_ORDER"
     private const val WATCHLIST_SHOWS_SORT_TYPE = "WATCHLIST_SHOWS_SORT_TYPE"
     private const val HIDDEN_SHOWS_SORT_ORDER = "HIDDEN_SHOWS_SORT_ORDER"
@@ -44,6 +46,7 @@ class SettingsSortRepository @Inject constructor(
     private const val LISTS_SORT_TYPE = "LISTS_SORT_TYPE"
   }
 
+  var progressShowsNewAtTop by BooleanPreference(preferences, PROGRESS_SHOWS_NEW_AT_TOP, false)
   var progressShowsSortOrder by EnumPreference(preferences, PROGRESS_SHOWS_SORT_ORDER, NAME, SortOrder::class.java)
   var progressShowsSortType by EnumPreference(preferences, PROGRESS_SHOWS_SORT_TYPE, ASCENDING, SortType::class.java)
   var watchlistShowsSortOrder by EnumPreference(preferences, WATCHLIST_SHOWS_SORT_ORDER, NAME, SortOrder::class.java)

@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
-import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
 import com.michaldrabik.ui_base.utilities.NavigationHost
@@ -38,6 +37,7 @@ import com.michaldrabik.ui_model.SortOrder.RECENTLY_WATCHED
 import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.Tip
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_NEW_AT_TOP
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_ORDER
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_SORT_ORDER
@@ -60,7 +60,6 @@ import me.everything.android.ui.overscroll.VerticalOverScrollBounceEffectDecorat
 @AndroidEntryPoint
 class ProgressFragment :
   BaseFragment<ProgressViewModel>(R.layout.fragment_progress),
-  OnSortClickListener,
   OnSearchClickListener,
   OnScrollResetListener {
 
@@ -118,7 +117,7 @@ class ProgressFragment :
       headerClickListener = { viewModel.toggleHeaderCollapsed(it.type) },
       detailsClickListener = { requireMainFragment().openEpisodeDetails(it.show, it.requireEpisode(), it.requireSeason()) },
       checkClickListener = { viewModel.onEpisodeChecked(it) },
-      sortChipClickListener = { order, type -> openSortOrderDialog(order, type) },
+      sortChipClickListener = { viewModel.loadSortOrder() },
       missingImageListener = { item: ProgressListItem, force -> viewModel.findMissingImage(item, force) },
       missingTranslationListener = { viewModel.findMissingTranslation(it) },
       listChangeListener = {
@@ -198,14 +197,15 @@ class ProgressFragment :
     }
   }
 
-  private fun openSortOrderDialog(order: SortOrder, type: SortType) {
+  private fun openSortOrderDialog(order: SortOrder, type: SortType, newAtTop: Boolean) {
     val options = listOf(NAME, RATING, USER_RATING, NEWEST, RECENTLY_WATCHED, EPISODES_LEFT)
-    val args = SortOrderBottomSheet.createBundle(options, order, type)
+    val args = SortOrderBottomSheet.createBundle(options, order, type, newAtTop = Pair(true, newAtTop))
 
     requireParentFragment().setFragmentResultListener(REQUEST_SORT_ORDER) { _, bundle ->
       val sortOrder = bundle.getSerializable(ARG_SELECTED_SORT_ORDER) as SortOrder
       val sortType = bundle.getSerializable(ARG_SELECTED_SORT_TYPE) as SortType
-      viewModel.setSortOrder(sortOrder, sortType)
+      val newTop = bundle.getBoolean(ARG_SELECTED_NEW_AT_TOP)
+      viewModel.setSortOrder(sortOrder, sortType, newTop)
     }
 
     navigateTo(R.id.actionProgressFragmentToSortOrder, args)
@@ -257,11 +257,13 @@ class ProgressFragment :
           overscroll = null
         }
       }
-      sortOrder?.let { event -> event.consume()?.let { openSortOrderDialog(it.first, it.second) } }
+      sortOrder?.let { event ->
+        event.consume()?.let {
+          openSortOrderDialog(it.first, it.second, it.third)
+        }
+      }
     }
   }
-
-  override fun onSortClick() = viewModel.loadSortOrder()
 
   override fun onScrollReset() = progressRecycler.smoothScrollToPosition(0)
 

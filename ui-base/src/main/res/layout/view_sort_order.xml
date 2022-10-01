@@ -44,13 +44,32 @@
     app:layout_constraintTop_toBottomOf="@id/viewSortOrderTitle"
     />
 
+  <com.google.android.material.checkbox.MaterialCheckBox
+    android:id="@+id/viewSortOrderNewCheckbox"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceMedium"
+    android:layout_marginEnd="@dimen/spaceMedium"
+    android:paddingStart="@dimen/spaceSmall"
+    android:paddingEnd="@dimen/spaceSmall"
+    android:text="@string/textNewAlwaysAtTop"
+    android:textColor="?android:textColorSecondary"
+    android:textSize="16sp"
+    android:translationX="-2dp"
+    app:buttonTint="@color/selector_main_checkbox"
+    app:layout_constraintBottom_toTopOf="@id/viewSortOrderButtonApply"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/viewSortOrderItemsLayout"
+    />
+
   <com.google.android.material.button.MaterialButton
     android:id="@+id/viewSortOrderButtonApply"
     style="@style/RoundMaterialButton"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/spaceNormal"
-    android:layout_marginTop="@dimen/spaceNormal"
+    android:layout_marginTop="@dimen/spaceSmall"
     android:layout_marginEnd="@dimen/spaceNormal"
     android:backgroundTint="@color/selector_main_button"
     android:gravity="center"
@@ -59,7 +78,8 @@
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/viewSortOrderItemsLayout"
+    app:layout_constraintTop_toBottomOf="@id/viewSortOrderNewCheckbox"
+    app:layout_goneMarginTop="@dimen/spaceNormal"
     app:rippleColor="?android:attr/textColorPrimary"
     />
 

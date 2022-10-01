@@ -124,6 +124,7 @@
   <string name="textRemoveFromHidden">Remove from Hidden</string>
   <string name="textWatchlist">Watchlist</string>
   <string name="textWatchlistIncoming">Upcoming</string>
+  <string name="textNewAlwaysAtTop">New episodes always first</string>
 
   <string name="textPremium" translatable="false">Showly Premium</string>
   <string name="textPremiumAd">Become a supporter and get access to bonus features! Click to see more.</string>

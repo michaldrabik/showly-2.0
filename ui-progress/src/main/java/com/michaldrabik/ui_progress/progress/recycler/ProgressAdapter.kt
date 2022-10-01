@@ -4,8 +4,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.ui_base.BaseAdapter
-import com.michaldrabik.ui_model.SortOrder
-import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_progress.progress.views.ProgressFiltersView
 import com.michaldrabik.ui_progress.progress.views.ProgressHeaderView
 import com.michaldrabik.ui_progress.progress.views.ProgressItemView
@@ -13,7 +11,7 @@ import com.michaldrabik.ui_progress.progress.views.ProgressItemView
 class ProgressAdapter(
   private val itemClickListener: (ProgressListItem) -> Unit,
   private val itemLongClickListener: (ProgressListItem) -> Unit,
-  private val sortChipClickListener: (SortOrder, SortType) -> Unit,
+  private val sortChipClickListener: () -> Unit,
   private val detailsClickListener: ((ProgressListItem.Episode) -> Unit)?,
   private val checkClickListener: ((ProgressListItem.Episode) -> Unit)?,
   private val headerClickListener: ((ProgressListItem.Header) -> Unit)?,
