@@ -109,6 +109,7 @@
   <string name="textRemoveFromHidden">Eliminar de Ocultos</string>
   <string name="textWatchlist">Pendientes</string>
   <string name="textWatchlistIncoming">Próximamente</string>
+  <string name="textNewAlwaysAtTop">Nuevos episodios siempre primero</string>
   <string name="textPremiumAd">¡Conviértete en un seguidor y consigue acceso a funciones extra! Haz clic para ver más.</string>
   <string name="menuPin">Anclar a la parte superior</string>
   <string name="menuUnpin">Desanclar de la parte superior</string>
