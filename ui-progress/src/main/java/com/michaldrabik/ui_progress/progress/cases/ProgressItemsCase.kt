@@ -30,12 +30,12 @@ import com.michaldrabik.ui_progress.progress.recycler.ProgressListItem.Header.Ty
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 import com.michaldrabik.ui_model.Episode.Companion as EpisodeUi
 
-@Suppress("UNCHECKED_CAST")
 @Singleton
 class ProgressItemsCase @Inject constructor(
   private val localSource: LocalDataSource,
@@ -164,8 +164,7 @@ class ProgressItemsCase @Inject constructor(
     upcomingLimit: Long,
   ): Episode? = when (nextEpisodeType) {
     LAST_WATCHED -> {
-      val lastWatchedEpisode = localSource.episodes.getLastWatched(showId)
-      when (lastWatchedEpisode) {
+      when (val lastWatchedEpisode = localSource.episodes.getLastWatched(showId)) {
         null -> localSource.episodes.getFirstUnwatched(showId, upcomingLimit)
         else -> localSource.episodes.getFirstUnwatchedAfterEpisode(
           showId,
@@ -188,39 +187,49 @@ class ProgressItemsCase @Inject constructor(
         it.translations?.episode?.title?.contains(query, true) == true
     }
 
-  private fun groupItems(
+  private suspend fun groupItems(
     input: List<ProgressListItem.Episode>,
     sortOrder: SortOrder,
     sortType: SortType,
     newAtTop: Boolean,
-  ): List<ProgressListItem> {
-    val newItems =
-      if (newAtTop) {
+  ): List<ProgressListItem> = coroutineScope {
+    val (newItems, pinnedItems, onHoldItems) = awaitAll(
+      async {
+        if (newAtTop) {
+          input
+            .filter { it.isNew() && !it.isOnHold && !it.isPinned }
+            .sortedWith(sorter.sort(sortOrder, sortType))
+        } else {
+          emptyList()
+        }
+      },
+      async {
         input
-          .filter { it.isNew() && !it.isOnHold && !it.isPinned }
-          .sortedWith(sorter.sort(sortOrder, sortType))
-      } else {
-        emptyList()
+          .filter { it.isPinned }
+          .sortedWith(compareByDescending<ProgressListItem.Episode> { it.isNew() } then sorter.sort(sortOrder, sortType))
+      },
+      async {
+        input
+          .filter { it.isOnHold }
+          .sortedWith(compareByDescending<ProgressListItem.Episode> { it.isNew() } then sorter.sort(sortOrder, sortType))
       }
-
-    val pinnedItems = input
-      .filter { it.isPinned }
-      .sortedWith(compareByDescending<ProgressListItem.Episode> { it.isNew() } then sorter.sort(sortOrder, sortType))
-
-    val onHoldItems = input
-      .filter { it.isOnHold }
-      .sortedWith(compareByDescending<ProgressListItem.Episode> { it.isNew() } then sorter.sort(sortOrder, sortType))
+    )
 
     val groupedItems = (input - newItems.toSet() - pinnedItems.toSet() - onHoldItems.toSet())
       .groupBy { !it.isUpcoming }
 
-    val airedItems = ((groupedItems[true] ?: emptyList()))
-      .sortedWith(sorter.sort(sortOrder, sortType))
+    val (airedItems, upcomingItems) = awaitAll(
+      async {
+        ((groupedItems[true] ?: emptyList()))
+          .sortedWith(sorter.sort(sortOrder, sortType))
+      },
+      async {
+        ((groupedItems[false] ?: emptyList()))
+          .sortedBy { it.episode?.firstAired?.toMillis() }
+      }
+    )
 
-    val upcomingItems = ((groupedItems[false] ?: emptyList()))
-      .sortedBy { it.episode?.firstAired?.toMillis() }
-
-    return mutableListOf<ProgressListItem>().apply {
+    mutableListOf<ProgressListItem>().apply {
       if (pinnedItems.isNotEmpty()) {
         addAll(pinnedItems)
       }
