@@ -109,6 +109,7 @@
   <string name="textRemoveFromHidden">Poista piilotetuista</string>
   <string name="textWatchlist">Katselulista</string>
   <string name="textWatchlistIncoming">Tulossa</string>
+  <string name="textNewAlwaysAtTop">Uudet jaksot aina ensin</string>
   <string name="textPremiumAd">Ryhdy tukijaksi, niin saat käyttöösi lisäominaisuuksia! Napauta nähdäksesi lisää.</string>
   <string name="menuPin">Kiinnitä listan ylälaitaan</string>
   <string name="menuUnpin">Irrota listan ylälaidasta</string>
