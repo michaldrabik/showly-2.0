@@ -63,8 +63,12 @@ class WatchlistShowView : ShowView<WatchlistListItem.ShowItem> {
 
     with(watchlistShowReleaseDate) {
       val releaseDate = item.getReleaseDate()
-      visibleIf(releaseDate != null && releaseDate.isAfter(nowUtc))
-      text = item.dateFormat.format(releaseDate).capitalizeWords()
+      if (releaseDate != null) {
+        visibleIf(releaseDate.isAfter(nowUtc))
+        text = item.dateFormat.format(releaseDate).capitalizeWords()
+      } else {
+        gone()
+      }
     }
 
     item.userRating?.let {
