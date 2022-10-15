@@ -7,6 +7,6 @@
   android:minResizeHeight="20dp"
   android:previewImage="@drawable/ic_showly_round"
   android:resizeMode="horizontal|vertical"
-  android:updatePeriodMillis="3600000"
+  android:updatePeriodMillis="900000"
   android:widgetCategory="home_screen"
   />

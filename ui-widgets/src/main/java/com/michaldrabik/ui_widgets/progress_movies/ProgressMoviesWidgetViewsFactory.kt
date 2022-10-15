@@ -20,32 +20,26 @@ import com.michaldrabik.ui_progress_movies.progress.recycler.ProgressMovieListIt
 import com.michaldrabik.ui_widgets.BaseWidgetProvider.Companion.EXTRA_MOVIE_ID
 import com.michaldrabik.ui_widgets.R
 import com.michaldrabik.ui_widgets.progress_movies.ProgressMoviesWidgetProvider.Companion.EXTRA_CHECK_MOVIE_ID
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.runBlocking
 
 class ProgressMoviesWidgetViewsFactory(
   private val context: Context,
   private val loadItemsCase: ProgressMoviesItemsCase,
   private val settingsRepository: SettingsRepository,
-) : RemoteViewsService.RemoteViewsFactory, CoroutineScope {
-
-  override val coroutineContext = Job() + Dispatchers.Main
+) : RemoteViewsService.RemoteViewsFactory {
 
   private val imageCorner by lazy { context.dimenToPx(R.dimen.mediaTileCorner) }
   private val imageWidth by lazy { context.dimenToPx(R.dimen.widgetImageWidth) }
   private val imageHeight by lazy { context.dimenToPx(R.dimen.widgetImageHeight) }
   private val adapterItems by lazy { mutableListOf<ProgressMovieListItem>() }
 
-  private fun loadData() = runBlocking {
-    val items = loadItemsCase.loadItems("")
-      .filterIsInstance<ProgressMovieListItem.MovieItem>()
-    adapterItems.replace(items)
+  override fun onDataSetChanged() {
+    runBlocking {
+      val items = loadItemsCase.loadItems("")
+        .filterIsInstance<ProgressMovieListItem.MovieItem>()
+      adapterItems.replace(items)
+    }
   }
-
-  override fun onCreate() = loadData()
 
   override fun getViewAt(position: Int): RemoteViews {
     val item = adapterItems[position] as ProgressMovieListItem.MovieItem
@@ -115,10 +109,7 @@ class ProgressMoviesWidgetViewsFactory(
 
   override fun getItemId(position: Int) = adapterItems[position].movie.traktId
 
-  override fun onDataSetChanged() = loadData()
-
-  override fun getLoadingView() =
-    RemoteViews(context.packageName, R.layout.widget_loading_item)
+  override fun getLoadingView() = RemoteViews(context.packageName, R.layout.widget_loading_item)
 
   override fun getCount() = adapterItems.size
 
@@ -126,5 +117,7 @@ class ProgressMoviesWidgetViewsFactory(
 
   override fun getViewTypeCount() = 2
 
-  override fun onDestroy() = coroutineContext.cancelChildren()
+  override fun onCreate() = Unit
+
+  override fun onDestroy() = Unit
 }

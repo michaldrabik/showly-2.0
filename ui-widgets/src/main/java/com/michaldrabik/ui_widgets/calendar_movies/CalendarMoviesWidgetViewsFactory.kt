@@ -25,10 +25,6 @@ import com.michaldrabik.ui_progress_movies.calendar.recycler.CalendarMovieListIt
 import com.michaldrabik.ui_widgets.BaseWidgetProvider
 import com.michaldrabik.ui_widgets.BaseWidgetProvider.Companion.EXTRA_MOVIE_ID
 import com.michaldrabik.ui_widgets.R
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.runBlocking
 
 class CalendarMoviesWidgetViewsFactory(
@@ -37,9 +33,7 @@ class CalendarMoviesWidgetViewsFactory(
   private val futureItemsCase: CalendarMoviesFutureCase,
   private val recentItemsCase: CalendarMoviesRecentsCase,
   private val settingsRepository: SettingsRepository,
-) : RemoteViewsService.RemoteViewsFactory, CoroutineScope {
-
-  override val coroutineContext = Job() + Dispatchers.Main
+) : RemoteViewsService.RemoteViewsFactory {
 
   private val imageCorner by lazy { context.dimenToPx(R.dimen.mediaTileCorner) }
   private val imageWidth by lazy { context.dimenToPx(R.dimen.widgetImageWidth) }
@@ -48,16 +42,16 @@ class CalendarMoviesWidgetViewsFactory(
 
   private val adapterItems = mutableListOf<CalendarMovieListItem>()
 
-  private fun loadData() = runBlocking {
-    mode = settingsRepository.widgets.getWidgetCalendarMode(Mode.MOVIES, widgetId)
-    val items = when (mode) {
-      CalendarMode.PRESENT_FUTURE -> futureItemsCase.loadItems()
-      CalendarMode.RECENTS -> recentItemsCase.loadItems()
+  override fun onDataSetChanged() {
+    runBlocking {
+      mode = settingsRepository.widgets.getWidgetCalendarMode(Mode.MOVIES, widgetId)
+      val items = when (mode) {
+        CalendarMode.PRESENT_FUTURE -> futureItemsCase.loadItems()
+        CalendarMode.RECENTS -> recentItemsCase.loadItems()
+      }
+      adapterItems.replace(items)
     }
-    adapterItems.replace(items)
   }
-
-  override fun onCreate() = loadData()
 
   override fun getViewAt(position: Int) =
     when (val item = adapterItems[position]) {
@@ -160,8 +154,6 @@ class CalendarMoviesWidgetViewsFactory(
 
   override fun getItemId(position: Int) = adapterItems[position].movie.traktId
 
-  override fun onDataSetChanged() = loadData()
-
   override fun getLoadingView() =
     RemoteViews(context.packageName, R.layout.widget_loading_item)
 
@@ -171,5 +163,7 @@ class CalendarMoviesWidgetViewsFactory(
 
   override fun getViewTypeCount() = 4
 
-  override fun onDestroy() = coroutineContext.cancelChildren()
+  override fun onCreate() = Unit
+
+  override fun onDestroy() = Unit
 }

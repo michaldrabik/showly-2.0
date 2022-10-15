@@ -27,10 +27,6 @@ import com.michaldrabik.ui_progress.calendar.recycler.CalendarListItem
 import com.michaldrabik.ui_widgets.BaseWidgetProvider.Companion.EXTRA_MODE_CLICK
 import com.michaldrabik.ui_widgets.BaseWidgetProvider.Companion.EXTRA_SHOW_ID
 import com.michaldrabik.ui_widgets.R
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.runBlocking
 import java.util.Locale
 
@@ -40,9 +36,7 @@ class CalendarWidgetViewsFactory(
   private val calendarFutureCase: CalendarFutureCase,
   private val calendarRecentsCase: CalendarRecentsCase,
   private val settingsRepository: SettingsRepository,
-) : RemoteViewsService.RemoteViewsFactory, CoroutineScope {
-
-  override val coroutineContext = Job() + Dispatchers.Main
+) : RemoteViewsService.RemoteViewsFactory {
 
   private val imageCorner by lazy { context.dimenToPx(R.dimen.mediaTileCorner) }
   private val imageWidth by lazy { context.dimenToPx(R.dimen.widgetImageWidth) }
@@ -51,15 +45,15 @@ class CalendarWidgetViewsFactory(
 
   private val adapterItems = mutableListOf<CalendarListItem>()
 
-  override fun onCreate() = loadData()
-
-  private fun loadData() = runBlocking {
-    mode = settingsRepository.widgets.getWidgetCalendarMode(Mode.SHOWS, widgetId)
-    val items = when (mode) {
-      PRESENT_FUTURE -> calendarFutureCase.loadItems()
-      RECENTS -> calendarRecentsCase.loadItems()
+  override fun onDataSetChanged() {
+    runBlocking {
+      mode = settingsRepository.widgets.getWidgetCalendarMode(Mode.SHOWS, widgetId)
+      val items = when (mode) {
+        PRESENT_FUTURE -> calendarFutureCase.loadItems()
+        RECENTS -> calendarRecentsCase.loadItems()
+      }
+      adapterItems.replace(items)
     }
-    adapterItems.replace(items)
   }
 
   override fun getViewAt(position: Int) =
@@ -182,8 +176,6 @@ class CalendarWidgetViewsFactory(
 
   override fun getItemId(position: Int) = adapterItems[position].show.traktId
 
-  override fun onDataSetChanged() = loadData()
-
   override fun getLoadingView() = RemoteViews(context.packageName, R.layout.widget_loading_item)
 
   override fun getCount() = adapterItems.size
@@ -192,5 +184,7 @@ class CalendarWidgetViewsFactory(
 
   override fun getViewTypeCount() = 4
 
-  override fun onDestroy() = coroutineContext.cancelChildren()
+  override fun onCreate() = Unit
+
+  override fun onDestroy() = Unit
 }
