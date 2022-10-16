@@ -2,6 +2,9 @@ package com.michaldrabik.ui_settings.cases
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
+import android.os.Build.VERSION_CODES.TIRAMISU
+import androidx.appcompat.app.AppCompatDelegate
 import com.google.firebase.messaging.FirebaseMessaging
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.ConfigVariant
@@ -166,7 +169,20 @@ class SettingsMainCase @Inject constructor(
     }
   }
 
-  fun getLanguage() = AppLanguage.fromCode(settingsRepository.language)
+  suspend fun getLanguage(): AppLanguage {
+    if (Build.VERSION.SDK_INT >= TIRAMISU) {
+      val locales = AppCompatDelegate.getApplicationLocales()
+      if (!locales.isEmpty) {
+        val locale = locales.get(0)!!.language
+        val language = AppLanguage.fromCode(locale)
+        if (settingsRepository.language != locale) {
+          setLanguage(language)
+        }
+        return language
+      }
+    }
+    return AppLanguage.fromCode(settingsRepository.language)
+  }
 
   suspend fun setLanguage(language: AppLanguage) {
     settingsRepository.run {
