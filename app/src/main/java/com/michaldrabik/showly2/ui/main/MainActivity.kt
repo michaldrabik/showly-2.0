@@ -362,6 +362,7 @@ class MainActivity : BaseActivity(), SnackbarHost, NavigationHost, TipsHost, Mod
         showMask(false)
       }
       onNoClick = {
+        viewModel.setLanguage(AppLanguage.ENGLISH)
         fadeOut()
         showMask(false)
       }

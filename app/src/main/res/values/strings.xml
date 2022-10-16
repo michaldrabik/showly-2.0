@@ -16,6 +16,7 @@
   <string name="textDisclaimerConfirmText">OK, I understand</string>
   <string name="textLanguagesChoose2" translatable="false">Language can always be changed later via Settings.</string>
   <string name="textLeaveEnglish" translatable="false">No, I prefer English</string>
+  <string name="textChangeLanguage" translatable="false">Yes</string>
 
   <string name="textWhatsNewTitle">What\'s New</string>
   <string name="textWhatsNewSubtitle">Version %s</string>

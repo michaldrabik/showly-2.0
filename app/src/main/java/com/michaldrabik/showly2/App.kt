@@ -51,14 +51,10 @@ class App :
     fun setupSettings() = runBlocking {
       if (!settingsRepository.isInitialized()) {
         settingsRepository.update(Settings.createInitial())
+        val locales = LocaleListCompat.forLanguageTags(Config.DEFAULT_LANGUAGE)
+        AppCompatDelegate.setApplicationLocales(locales)
       }
       FirebaseCrashlytics.getInstance().setUserId(settingsRepository.userId)
-    }
-
-    fun setupLanguage() {
-//      val language = settingsRepository.language
-//      val locales = LocaleListCompat.forLanguageTags(language)
-//      AppCompatDelegate.setApplicationLocales(locales)
     }
 
     fun setupStrictMode() {
@@ -127,7 +123,6 @@ class App :
     setupSettings()
     setupStrictMode()
     setupNotificationChannels()
-    setupLanguage()
     setupTheme()
     setupRemoteConfig()
   }

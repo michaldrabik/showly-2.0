@@ -70,7 +70,6 @@ class MainViewModel @Inject constructor(
     if (isInitialRun) {
       initCase.setInitialRun(false)
       initCase.setInitialCountry()
-      initCase.setLanguage(AppLanguage.ENGLISH)
     }
 
     val showWhatsNew = initCase.showWhatsNew(isInitialRun)

@@ -66,7 +66,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spaceSmall"
-      android:text="@string/textYes"
+      android:text="@string/textChangeLanguage"
       android:textColor="?android:attr/textColorPrimary"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"

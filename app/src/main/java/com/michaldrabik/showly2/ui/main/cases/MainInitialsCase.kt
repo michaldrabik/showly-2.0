@@ -94,13 +94,23 @@ class MainInitialsCase @Inject constructor(
 
   fun checkInitialLanguage(): AppLanguage {
     val locales = LocaleListCompat.getAdjustedDefault()
-    if (locales.size() >= 1 && !locales[0]?.language.equals(Locale("en").language)) {
+
+    if (locales.size() == 1 && !locales[0]?.language.equals(Locale("en").language)) {
       AppLanguage.values().forEach { appLanguage ->
         if (appLanguage.code.equals(locales[0]?.language, ignoreCase = true)) {
           return appLanguage
         }
       }
     }
+
+    if (locales.size() > 1 && !locales[1]?.language.equals(Locale("en").language)) {
+      AppLanguage.values().forEach { appLanguage ->
+        if (appLanguage.code.equals(locales[1]?.language, ignoreCase = true)) {
+          return appLanguage
+        }
+      }
+    }
+
     return AppLanguage.ENGLISH
   }
 
