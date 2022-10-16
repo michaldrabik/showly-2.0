@@ -131,7 +131,7 @@ class FollowedShowsFragment :
   private fun setupPager() {
     followedShowsPager.run {
       offscreenPageLimit = FollowedPagesAdapter.PAGES_COUNT
-      adapter = FollowedPagesAdapter(childFragmentManager, requireAppContext())
+      adapter = FollowedPagesAdapter(childFragmentManager, requireContext())
       addOnPageChangeListener(pageChangeListener)
     }
     followedShowsTabs.setupWithViewPager(followedShowsPager)

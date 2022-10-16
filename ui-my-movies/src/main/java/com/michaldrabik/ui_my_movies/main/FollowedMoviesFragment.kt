@@ -130,7 +130,7 @@ class FollowedMoviesFragment :
   private fun setupPager() {
     followedMoviesPager.run {
       offscreenPageLimit = FollowedPagesAdapter.PAGES_COUNT
-      adapter = FollowedPagesAdapter(childFragmentManager, requireAppContext())
+      adapter = FollowedPagesAdapter(childFragmentManager, requireContext())
       addOnPageChangeListener(pageChangeListener)
     }
     followedMoviesTabs.setupWithViewPager(followedMoviesPager)
