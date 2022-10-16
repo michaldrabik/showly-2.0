@@ -103,7 +103,7 @@ class BottomMenuView : FrameLayout {
     with(animations) {
       forEach {
         it?.setListener(object : AnimatorListenerAdapter() {
-          override fun onAnimationCancel(animation: Animator?) {
+          override fun onAnimationCancel(animation: Animator) {
             bottomNavigationView.visible()
             bottomNavigationView.alpha = 1F
           }

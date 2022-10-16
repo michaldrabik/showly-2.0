@@ -38,7 +38,9 @@ android {
   defaultConfig {
     applicationId "com.michaldrabik.showly2"
     minSdkVersion versions.minSdk
-    targetSdkVersion versions.compileSdk
+    targetSdkVersion versions.targetSdk
+    compileSdkVersion versions.compileSdk
+    compileSdkVersion versions.compileSdk
     versionCode versions.versionCode
     versionName versions.versionName
     resConfigs "en", "ar", "de", "es", "fi", "fr", "it", "pl", "pt", "ru", "tr"
