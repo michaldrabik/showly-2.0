@@ -4,7 +4,9 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.os.Build
 import android.os.StrictMode
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
+import androidx.core.os.LocaleListCompat
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -14,7 +16,6 @@ import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.jakewharton.processphoenix.ProcessPhoenix
 import com.michaldrabik.common.Config
-import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.common.ConfigVariant
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.common.AppScopeProvider
@@ -25,7 +26,6 @@ import com.michaldrabik.ui_widgets.calendar.CalendarWidgetProvider
 import com.michaldrabik.ui_widgets.calendar_movies.CalendarMoviesWidgetProvider
 import com.michaldrabik.ui_widgets.progress.ProgressWidgetProvider
 import com.michaldrabik.ui_widgets.progress_movies.ProgressMoviesWidgetProvider
-import com.yariksoffice.lingver.Lingver
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -56,9 +56,9 @@ class App :
     }
 
     fun setupLanguage() {
-      Lingver.init(this, DEFAULT_LANGUAGE)
-      val language = settingsRepository.language
-      Lingver.getInstance().setLocale(this, language)
+//      val language = settingsRepository.language
+//      val locales = LocaleListCompat.forLanguageTags(language)
+//      AppCompatDelegate.setApplicationLocales(locales)
     }
 
     fun setupStrictMode() {

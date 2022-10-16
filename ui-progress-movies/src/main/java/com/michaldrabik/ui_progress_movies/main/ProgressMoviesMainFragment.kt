@@ -154,7 +154,7 @@ class ProgressMoviesMainFragment :
   private fun setupPager() {
     progressMoviesPager.run {
       offscreenPageLimit = ProgressMoviesMainAdapter.PAGES_COUNT
-      adapter = ProgressMoviesMainAdapter(childFragmentManager, requireAppContext())
+      adapter = ProgressMoviesMainAdapter(childFragmentManager, requireContext())
       addOnPageChangeListener(pageChangeListener)
     }
     progressMoviesTabs.setupWithViewPager(progressMoviesPager)

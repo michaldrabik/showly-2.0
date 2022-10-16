@@ -2,6 +2,8 @@ package com.michaldrabik.ui_settings
 
 import android.content.Context
 import android.net.Uri
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
@@ -202,8 +204,8 @@ class SettingsViewModel @Inject constructor(
   fun setLanguage(language: AppLanguage) {
     viewModelScope.launch {
       mainCase.setLanguage(language)
-      delay(300)
-      refreshSettings(restartApp = true)
+      val locales = LocaleListCompat.forLanguageTags(language.code)
+      AppCompatDelegate.setApplicationLocales(locales)
     }
     Analytics.logSettingsLanguage(language.code)
   }
@@ -374,8 +376,6 @@ class SettingsViewModel @Inject constructor(
       progressNextType = s17
     )
   }.stateIn(
-    scope = viewModelScope,
-    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = SettingsUiState()
+    scope = viewModelScope, started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT), initialValue = SettingsUiState()
   )
 }

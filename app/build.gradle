@@ -121,7 +121,6 @@ dependencies {
 
   implementation libs.android.playReviews
   implementation libs.android.playUpdates
-  implementation libs.lingver
 
   testImplementation testLibs.bundles.testing
   androidTestImplementation androidTestLibs.android.test.runner

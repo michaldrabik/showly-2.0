@@ -70,6 +70,7 @@ class MainViewModel @Inject constructor(
     if (isInitialRun) {
       initCase.setInitialRun(false)
       initCase.setInitialCountry()
+      initCase.setLanguage(AppLanguage.ENGLISH)
     }
 
     val showWhatsNew = initCase.showWhatsNew(isInitialRun)
@@ -83,8 +84,7 @@ class MainViewModel @Inject constructor(
     rateAppEvent.value = Event(showRateApp)
   }
 
-  fun setLanguage(appLanguage: AppLanguage) =
-    initCase.setLanguage(appLanguage)
+  fun setLanguage(appLanguage: AppLanguage) = initCase.setLanguage(appLanguage)
 
   fun checkInitialLanguage() {
     viewModelScope.launch {

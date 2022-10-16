@@ -19,7 +19,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.review.ReviewManagerFactory
-import com.jakewharton.processphoenix.ProcessPhoenix
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.Mode.MOVIES
@@ -64,20 +63,12 @@ import com.michaldrabik.ui_settings.helpers.AppLanguage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.view_bottom_menu.*
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity :
-  BaseActivity(),
-  SnackbarHost,
-  NavigationHost,
-  TipsHost,
-  ModeHost,
-  MoviesStatusHost,
-  UpdateDelegate by MainUpdateDelegate(),
+class MainActivity : BaseActivity(), SnackbarHost, NavigationHost, TipsHost, ModeHost, MoviesStatusHost, UpdateDelegate by MainUpdateDelegate(),
   BillingDelegate by MainBillingDelegate() {
 
   companion object {
@@ -92,9 +83,7 @@ class MainActivity :
   private val decelerateInterpolator by lazy { DecelerateInterpolator(2F) }
   private val tips by lazy {
     mapOf(
-      MENU_DISCOVER to tutorialTipDiscover,
-      MENU_MY_SHOWS to tutorialTipMyShows,
-      MENU_MODES to tutorialTipModeMenu
+      MENU_DISCOVER to tutorialTipDiscover, MENU_MY_SHOWS to tutorialTipMyShows, MENU_MODES to tutorialTipModeMenu
     )
   }
 
@@ -266,11 +255,8 @@ class MainActivity :
     }
     tips.values.forEach { it.gone() }
     snackbarHost.translationY = navigationHeight.toFloat()
-    bottomNavigationWrapper.animate()
-      .translationYBy(navigationHeightPad.toFloat())
-      .setDuration(if (animate) NAVIGATION_TRANSITION_DURATION_MS else 0)
-      .setInterpolator(decelerateInterpolator)
-      .start()
+    bottomNavigationWrapper.animate().translationYBy(navigationHeightPad.toFloat()).setDuration(if (animate) NAVIGATION_TRANSITION_DURATION_MS else 0)
+      .setInterpolator(decelerateInterpolator).start()
   }
 
   override fun showNavigation(animate: Boolean) {
@@ -280,11 +266,8 @@ class MainActivity :
     }
     tips.entries.forEach { (tip, view) -> view.visibleIf(!isTipShown(tip)) }
     snackbarHost.translationY = 0F
-    bottomNavigationWrapper.animate()
-      .translationY(0F)
-      .setDuration(if (animate) NAVIGATION_TRANSITION_DURATION_MS else 0)
-      .setInterpolator(decelerateInterpolator)
-      .start()
+    bottomNavigationWrapper.animate().translationY(0F).setDuration(if (animate) NAVIGATION_TRANSITION_DURATION_MS else 0)
+      .setInterpolator(decelerateInterpolator).start()
   }
 
   override fun navigateToDiscover() {
@@ -377,16 +360,6 @@ class MainActivity :
         viewModel.setLanguage(language)
         fadeOut()
         showMask(false)
-        postDelayed(
-          {
-            try {
-              ProcessPhoenix.triggerRebirth(applicationContext)
-            } catch (error: Throwable) {
-              Runtime.getRuntime().exit(0)
-            }
-          },
-          300
-        )
       }
       onNoClick = {
         fadeOut()
@@ -449,12 +422,9 @@ class MainActivity :
   private fun handleAppShortcut(intent: Intent?) {
     when {
       intent == null -> return
-      intent.extras?.containsKey("extraShortcutProgress") == true ->
-        bottomNavigationView.selectedItemId = R.id.menuProgress
-      intent.extras?.containsKey("extraShortcutDiscover") == true ->
-        bottomNavigationView.selectedItemId = R.id.menuDiscover
-      intent.extras?.containsKey("extraShortcutCollection") == true ->
-        bottomNavigationView.selectedItemId = R.id.menuCollection
+      intent.extras?.containsKey("extraShortcutProgress") == true -> bottomNavigationView.selectedItemId = R.id.menuProgress
+      intent.extras?.containsKey("extraShortcutDiscover") == true -> bottomNavigationView.selectedItemId = R.id.menuDiscover
+      intent.extras?.containsKey("extraShortcutCollection") == true -> bottomNavigationView.selectedItemId = R.id.menuCollection
       intent.extras?.containsKey("extraShortcutSearch") == true -> {
         bottomNavigationView.selectedItemId = R.id.menuDiscover
         val action = when (viewModel.getMode()) {
@@ -468,13 +438,9 @@ class MainActivity :
   }
 
   private fun showWhatsNewDialog() {
-    MaterialAlertDialogBuilder(this, R.style.AlertDialog)
-      .setBackground(ContextCompat.getDrawable(this, R.drawable.bg_dialog))
-      .setView(WhatsNewView(this))
-      .setCancelable(false)
-      .setPositiveButton(R.string.textClose) { _, _ -> }
-      .setNeutralButton("Twitter") { _, _ -> openWebUrl(Config.TWITTER_URL) }
-      .show()
+    MaterialAlertDialogBuilder(this, R.style.AlertDialog).setBackground(ContextCompat.getDrawable(this, R.drawable.bg_dialog))
+      .setView(WhatsNewView(this)).setCancelable(false).setPositiveButton(R.string.textClose) { _, _ -> }
+      .setNeutralButton("Twitter") { _, _ -> openWebUrl(Config.TWITTER_URL) }.show()
   }
 
   private fun getMenuDiscoverAction() = when (viewModel.getMode()) {
@@ -497,9 +463,7 @@ class MainActivity :
 
   private fun onUpdateDownloaded(manager: AppUpdateManager) {
     provideSnackbarLayout().showInfoSnackbar(
-      message = getString(R.string.textUpdateDownloaded),
-      actionText = R.string.textUpdateInstall,
-      length = LENGTH_INDEFINITE
+      message = getString(R.string.textUpdateDownloaded), actionText = R.string.textUpdateInstall, length = LENGTH_INDEFINITE
     ) {
       Analytics.logInAppUpdate(BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE.toLong())
       manager.completeUpdate()

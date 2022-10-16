@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.telephony.TelephonyManager
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
 import androidx.core.os.LocaleListCompat
 import com.google.firebase.ktx.Firebase
@@ -87,25 +88,19 @@ class MainInitialsCase @Inject constructor(
 
   fun setLanguage(appLanguage: AppLanguage) {
     settingsRepository.language = appLanguage.code
+    val locales = LocaleListCompat.forLanguageTags(appLanguage.code)
+    AppCompatDelegate.setApplicationLocales(locales)
   }
 
   fun checkInitialLanguage(): AppLanguage {
-    val locale = LocaleListCompat.getAdjustedDefault()
-    if (locale.size() == 1 && !locale[0]?.language.equals(Locale("en").language)) {
+    val locales = LocaleListCompat.getAdjustedDefault()
+    if (locales.size() >= 1 && !locales[0]?.language.equals(Locale("en").language)) {
       AppLanguage.values().forEach { appLanguage ->
-        if (appLanguage.code.equals(locale[0]?.language, ignoreCase = true)) {
+        if (appLanguage.code.equals(locales[0]?.language, ignoreCase = true)) {
           return appLanguage
         }
       }
     }
-    if (locale.size() > 1 && !locale[1]?.language.equals(Locale("en").language)) {
-      AppLanguage.values().forEach { appLanguage ->
-        if (appLanguage.code.equals(locale[1]?.language, ignoreCase = true)) {
-          return appLanguage
-        }
-      }
-    }
-
     return AppLanguage.ENGLISH
   }
 
@@ -159,12 +154,7 @@ class MainInitialsCase @Inject constructor(
       putString(keyAppVersionName, BuildConfig.VERSION_NAME).apply()
     }
 
-    if (Config.SHOW_WHATS_NEW &&
-      BuildConfig.VERSION_CODE > version &&
-      BuildConfig.VERSION_NAME != name &&
-      !isInitialRun &&
-      !isPatchUpdate()
-    ) {
+    if (Config.SHOW_WHATS_NEW && BuildConfig.VERSION_CODE > version && BuildConfig.VERSION_NAME != name && !isInitialRun && !isPatchUpdate()) {
       return true
     }
     return false

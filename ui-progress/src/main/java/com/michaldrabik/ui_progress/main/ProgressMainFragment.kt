@@ -164,7 +164,7 @@ class ProgressMainFragment :
   }
 
   private fun setupPager() {
-    adapter = ProgressMainAdapter(childFragmentManager, requireAppContext())
+    adapter = ProgressMainAdapter(childFragmentManager, requireContext())
     progressMainPager.run {
       adapter = this@ProgressMainFragment.adapter
       offscreenPageLimit = ProgressMainAdapter.PAGES_COUNT
