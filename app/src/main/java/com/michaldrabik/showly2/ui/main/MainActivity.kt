@@ -68,7 +68,14 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity(), SnackbarHost, NavigationHost, TipsHost, ModeHost, MoviesStatusHost, UpdateDelegate by MainUpdateDelegate(),
+class MainActivity :
+  BaseActivity(),
+  SnackbarHost,
+  NavigationHost,
+  TipsHost,
+  ModeHost,
+  MoviesStatusHost,
+  UpdateDelegate by MainUpdateDelegate(),
   BillingDelegate by MainBillingDelegate() {
 
   companion object {
