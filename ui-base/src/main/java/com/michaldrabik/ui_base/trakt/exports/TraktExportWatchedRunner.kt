@@ -104,43 +104,58 @@ class TraktExportWatchedRunner @Inject constructor(
   private suspend fun exportHidden() = coroutineScope {
     Timber.d("Exporting hidden items...")
 
+    val remoteShowsAsync = async { remoteSource.trakt.fetchHiddenShows() }
+    val remoteMoviesAsync = async { remoteSource.trakt.fetchHiddenMovies() }
+    val (remoteShows, remoteMovies) = awaitAll(remoteShowsAsync, remoteMoviesAsync)
+
     val showsAsync = async { localSource.archiveShows.getAll() }
     val moviesAsync = async { localSource.archiveMovies.getAll() }
     val (localShows, localMovies) = awaitAll(showsAsync, moviesAsync)
 
-    val showsItems = localShows.map {
-      (it as Show).let { show ->
-        SyncExportItem.create(
-          traktId = show.idTrakt,
-          hiddenAt = dateIsoStringFromMillis(show.updatedAt)
-        )
-      }
-    }
-    val moviesItems = localMovies.map {
-      (it as Movie).let { movie ->
-        SyncExportItem.create(
-          traktId = movie.idTrakt,
-          hiddenAt = dateIsoStringFromMillis(movie.updatedAt)
-        )
-      }
-    }
+    val remoteShowsIds = remoteShows.mapNotNull { it.show?.ids?.trakt }
+    val remoteMoviesIds = remoteMovies.mapNotNull { it.movie?.ids?.trakt }
 
-    if (localShows.isNotEmpty()) {
-      Timber.d("Exporting ${localShows.size} hidden shows...")
+    val showsItems = localShows
+      .filter { (it as Show).idTrakt !in remoteShowsIds }
+      .map {
+        (it as Show).let { show ->
+          SyncExportItem.create(
+            traktId = show.idTrakt,
+            hiddenAt = dateIsoStringFromMillis(show.updatedAt)
+          )
+        }
+      }
+    val moviesItems = localMovies
+      .filter { (it as Movie).idTrakt !in remoteMoviesIds }
+      .map {
+        (it as Movie).let { movie ->
+          SyncExportItem.create(
+            traktId = movie.idTrakt,
+            hiddenAt = dateIsoStringFromMillis(movie.updatedAt)
+          )
+        }
+      }
+
+    Timber.d("Exporting ${showsItems.size} hidden shows...")
+    if (showsItems.isNotEmpty()) {
       showsItems.chunked(500).forEach { chunk ->
         remoteSource.trakt.postHiddenShows(shows = chunk)
         delay(TRAKT_LIMIT_DELAY_MS)
       }
       delay(TRAKT_LIMIT_DELAY_MS)
+    } else {
+      Timber.d("Nothing to export. Skipping...")
     }
 
-    if (localMovies.isNotEmpty()) {
-      Timber.d("Exporting ${localMovies.size} hidden movies...")
+    Timber.d("Exporting ${moviesItems.size} hidden movies...")
+    if (moviesItems.isNotEmpty()) {
       moviesItems.chunked(500).forEach { chunk ->
         remoteSource.trakt.postHiddenMovies(movies = chunk)
         delay(TRAKT_LIMIT_DELAY_MS)
       }
       delay(TRAKT_LIMIT_DELAY_MS)
+    } else {
+      Timber.d("Nothing to export. Skipping...")
     }
   }
 
