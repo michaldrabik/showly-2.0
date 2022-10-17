@@ -5,10 +5,11 @@ import com.michaldrabik.repository.UserTraktManager
 import timber.log.Timber
 
 abstract class TraktSyncRunner(
-  private val userTraktManager: UserTraktManager
+  private val userTraktManager: UserTraktManager,
 ) {
 
   companion object {
+    const val TRAKT_LIMIT_DELAY_MS = 1100L
     const val RETRY_DELAY_MS = 2000L
     const val MAX_RETRY_COUNT = 3
   }

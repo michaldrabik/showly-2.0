@@ -27,7 +27,7 @@ class TraktExportWatchedRunner @Inject constructor(
   private val remoteSource: RemoteDataSource,
   private val localSource: LocalDataSource,
   private val settingsRepository: SettingsRepository,
-  userTraktManager: UserTraktManager
+  userTraktManager: UserTraktManager,
 ) : TraktSyncRunner(userTraktManager) {
 
   override suspend fun run(): Int {
@@ -60,6 +60,7 @@ class TraktExportWatchedRunner @Inject constructor(
 
     val remoteShows = remoteSource.trakt.fetchSyncWatchedShows()
       .filter { it.show != null }
+
     val localMyShows = localSource.myShows.getAll()
     val localEpisodes = batchEpisodes(localMyShows.map { it.idTrakt })
       .filter { !hasEpisodeBeenWatched(remoteShows, it) }
@@ -89,9 +90,14 @@ class TraktExportWatchedRunner @Inject constructor(
     }
 
     Timber.d("Exporting ${episodes.size} episodes & ${movies.size} movies...")
-    val request = SyncExportRequest(episodes = episodes, movies = movies)
-    remoteSource.trakt.postSyncWatched(request)
+    if (episodes.isNotEmpty() || movies.isNotEmpty()) {
+      val request = SyncExportRequest(episodes = episodes, movies = movies)
+      remoteSource.trakt.postSyncWatched(request)
+    } else {
+      Timber.d("Nothing to export. Skipping...")
+    }
 
+    delay(TRAKT_LIMIT_DELAY_MS)
     exportHidden()
   }
 
@@ -123,24 +129,24 @@ class TraktExportWatchedRunner @Inject constructor(
       Timber.d("Exporting ${localShows.size} hidden shows...")
       showsItems.chunked(500).forEach { chunk ->
         remoteSource.trakt.postHiddenShows(shows = chunk)
-        delay(1000)
+        delay(TRAKT_LIMIT_DELAY_MS)
       }
-      delay(1200)
+      delay(TRAKT_LIMIT_DELAY_MS)
     }
 
     if (localMovies.isNotEmpty()) {
       Timber.d("Exporting ${localMovies.size} hidden movies...")
       moviesItems.chunked(500).forEach { chunk ->
         remoteSource.trakt.postHiddenMovies(movies = chunk)
-        delay(1000)
+        delay(TRAKT_LIMIT_DELAY_MS)
       }
-      delay(1200)
+      delay(TRAKT_LIMIT_DELAY_MS)
     }
   }
 
   private suspend fun batchEpisodes(
     showsIds: List<Long>,
-    allEpisodes: MutableList<Episode> = mutableListOf()
+    allEpisodes: MutableList<Episode> = mutableListOf(),
   ): List<Episode> {
     val batch = showsIds.take(500)
     if (batch.isEmpty()) return allEpisodes
@@ -153,7 +159,7 @@ class TraktExportWatchedRunner @Inject constructor(
 
   private suspend fun batchMovies(
     moviesIds: List<Long>,
-    result: MutableList<Movie> = mutableListOf()
+    result: MutableList<Movie> = mutableListOf(),
   ): List<Movie> {
     val batch = moviesIds.take(500)
     if (batch.isEmpty()) return result

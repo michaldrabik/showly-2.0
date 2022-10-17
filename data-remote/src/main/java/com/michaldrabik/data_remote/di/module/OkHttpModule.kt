@@ -5,6 +5,7 @@ import com.michaldrabik.data_remote.omdb.OmdbInterceptor
 import com.michaldrabik.data_remote.tmdb.TmdbInterceptor
 import com.michaldrabik.data_remote.trakt.TraktAuthenticator
 import com.michaldrabik.data_remote.trakt.TraktInterceptor
+import com.michaldrabik.data_remote.trakt.TraktRetryInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,12 +28,14 @@ object OkHttpModule {
   fun providesTraktOkHttp(
     httpLoggingInterceptor: HttpLoggingInterceptor,
     traktInterceptor: TraktInterceptor,
+    traktRetryInterceptor: TraktRetryInterceptor,
     traktAuthenticator: TraktAuthenticator,
   ): OkHttpClient {
     val client = createBaseOkHttpClient()
       .authenticator(traktAuthenticator)
-      .addInterceptor(httpLoggingInterceptor)
       .addInterceptor(traktInterceptor)
+      .addInterceptor(traktRetryInterceptor)
+      .addInterceptor(httpLoggingInterceptor)
       .build()
     traktAuthenticator.setHttpClient(client)
     return client

@@ -22,12 +22,8 @@ class TraktExportListsRunner @Inject constructor(
   private val localSource: LocalDataSource,
   private val mappers: Mappers,
   private val settingsRepository: SettingsRepository,
-  userTraktManager: UserTraktManager
+  userTraktManager: UserTraktManager,
 ) : TraktSyncRunner(userTraktManager) {
-
-  companion object {
-    private const val TRAKT_DELAY = 1100L
-  }
 
   private var hasAccountLimitsOccurred = false
 
@@ -101,7 +97,7 @@ class TraktExportListsRunner @Inject constructor(
     val listDb = mappers.customList.toDatabase(list).copy(id = localList.id)
 
     localSource.customLists.update(listOf(listDb))
-    delay(TRAKT_DELAY)
+    delay(TRAKT_LIMIT_DELAY_MS)
 
     val localItems = localSource.customListsItems.getItemsById(localList.id)
     if (localItems.isNotEmpty()) {
@@ -109,13 +105,13 @@ class TraktExportListsRunner @Inject constructor(
       val moviesIds = localItems.filter { it.type == Mode.MOVIES.type }.map { it.idTrakt }
       remoteSource.postAddListItems(listNet.ids.trakt, showsIds, moviesIds)
       Timber.d("Items added into Trakt list.")
-      delay(TRAKT_DELAY)
+      delay(TRAKT_LIMIT_DELAY_MS)
     }
   }
 
   private suspend fun exportExistingList(
     remoteLists: List<CustomList>,
-    localList: CustomList
+    localList: CustomList,
   ) {
     val moviesEnabled = settingsRepository.isMoviesEnabled
 
@@ -134,7 +130,7 @@ class TraktExportListsRunner @Inject constructor(
         val resultList = remoteSource.postUpdateList(updateList)
         val listDb = mappers.customList.fromNetwork(resultList).copy(id = localList.id)
         localSource.customLists.update(listOf(mappers.customList.toDatabase(listDb)))
-        delay(TRAKT_DELAY)
+        delay(TRAKT_LIMIT_DELAY_MS)
       }
     }
 
@@ -157,7 +153,7 @@ class TraktExportListsRunner @Inject constructor(
       remoteSource.postAddListItems(listTraktId, showsIds, moviesIds)
 
       Timber.d("Exported!")
-      delay(TRAKT_DELAY)
+      delay(TRAKT_LIMIT_DELAY_MS)
     }
 
     updateListTimestamp(localList.id, listTraktId)

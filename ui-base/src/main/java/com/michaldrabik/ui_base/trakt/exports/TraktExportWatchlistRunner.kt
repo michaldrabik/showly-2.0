@@ -69,7 +69,7 @@ class TraktExportWatchlistRunner @Inject constructor(
       shows.removeAll(showsChunk)
       movies.removeAll(moviesChunk)
 
-      delay(1100)
+      delay(TRAKT_LIMIT_DELAY_MS)
     }
   }
 
