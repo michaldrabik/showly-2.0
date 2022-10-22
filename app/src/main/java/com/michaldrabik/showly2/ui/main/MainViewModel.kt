@@ -1,9 +1,12 @@
 package com.michaldrabik.showly2.ui.main
 
 import android.annotation.SuppressLint
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Mode
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.showly2.ui.main.cases.MainAnnouncementsCase
 import com.michaldrabik.showly2.ui.main.cases.MainClearingCase
 import com.michaldrabik.showly2.ui.main.cases.MainInitialsCase
@@ -43,6 +46,7 @@ class MainViewModel @Inject constructor(
   private val modesCase: MainModesCase,
   private val rateAppCase: MainRateAppCase,
   private val linksCase: MainDeepLinksCase,
+  private val settingsRepository: SettingsRepository,
 ) : ViewModel() {
 
   private val loadingState = MutableStateFlow(false)
@@ -62,6 +66,7 @@ class MainViewModel @Inject constructor(
         loadRemoteConfig()
         saveInstallTimestamp()
       }
+      checkLocale()
     }
   }
 
@@ -90,6 +95,16 @@ class MainViewModel @Inject constructor(
       val initialLanguage = initCase.checkInitialLanguage()
       initialLanguageEvent.value = Event(initialLanguage)
       maskState.value = true
+    }
+  }
+
+  private fun checkLocale() {
+    val locales = AppCompatDelegate.getApplicationLocales()
+    val settingsLocale = settingsRepository.language
+    val language = locales.get(0)?.language
+    if (!settingsLocale.equals(language, ignoreCase = true)) {
+      val locale = LocaleListCompat.forLanguageTags(settingsLocale)
+      AppCompatDelegate.setApplicationLocales(locale)
     }
   }
 
