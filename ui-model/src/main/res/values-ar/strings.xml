@@ -29,7 +29,6 @@
   <string name="textTipDiscover">اُنقر نقرًا مزدوجًا على زر صفحة \"اكتشف\" لِفتح صفحة البحث بسرعة.</string>
   <string name="textTipMyShows">اُنقر نقرًا مزدوجًا على زر صفحة \"المجموعة\" للتنقل بين النوافذ بسرعة.</string>
   <string name="textTipShowDetailsGallery">انقر على أي صورة لفتح معرض الصور.</string>
-  <string name="textTipDiscoverFilters">استخدم الفلاتر لفلترة محتويات صفحة \"اكتشف\".</string>
   <string name="textTipWatchlistPinItem">اضغط مطولًا على أي عنصر لتثبيته في الأعلى.</string>
   <string name="textTipBottomModeMenu">مرر أسفل القائمة لليسار أو لليمين للتنقل بين المسلسلات والأفلام.</string>
   <string name="textTipListSwipeToDelete">اسحب أي عنصر لحذفه من القائمة.</string>
