@@ -10,7 +10,6 @@ enum class Tip(
   MENU_MY_SHOWS(R.string.textTipMyShows),
   SHOW_DETAILS_GALLERY(R.string.textTipShowDetailsGallery),
   PERSON_DETAILS_GALLERY(R.string.textTipShowDetailsGallery),
-  DISCOVER_FILTERS(R.string.textTipDiscoverFilters),
   WATCHLIST_ITEM_PIN(R.string.textTipWatchlistPinItem),
   LIST_ITEM_SWIPE_DELETE(R.string.textTipListSwipeToDelete)
 }

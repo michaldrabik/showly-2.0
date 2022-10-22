@@ -67,15 +67,4 @@
     android:layout_marginRight="@dimen/spaceMedium"
     />
 
-  <com.michaldrabik.ui_base.common.views.tips.TipView
-    android:id="@+id/discoverTipFilters"
-    android:layout_width="@dimen/tutorialTipSize"
-    android:layout_height="@dimen/tutorialTipSize"
-    android:layout_gravity="end"
-    android:layout_marginTop="22dp"
-    android:layout_marginEnd="54dp"
-    android:visibility="gone"
-    tools:visibility="visible"
-    />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

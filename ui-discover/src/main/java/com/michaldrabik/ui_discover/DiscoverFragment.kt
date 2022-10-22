@@ -24,10 +24,8 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.disableUi
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.enableUi
-import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
-import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -38,7 +36,6 @@ import com.michaldrabik.ui_discover.recycler.DiscoverAdapter
 import com.michaldrabik.ui_discover.recycler.DiscoverListItem
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Show
-import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_ITEM_MENU
 import dagger.hilt.android.AndroidEntryPoint
@@ -131,13 +128,6 @@ class DiscoverFragment :
       onHideAnticipatedChipClick = { viewModel.toggleAnticipated() }
       onHideCollectionChipClick = { viewModel.toggleCollection() }
     }
-    discoverTipFilters.run {
-      fadeIf(!isTipShown(Tip.DISCOVER_FILTERS))
-      onClick {
-        it.gone()
-        showTip(Tip.DISCOVER_FILTERS)
-      }
-    }
   }
 
   private fun setupRecycler() {
@@ -197,7 +187,6 @@ class DiscoverFragment :
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.collectionTabsMargin))
       (discoverFiltersView.layoutParams as MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(filtersPadding))
-      discoverTipFilters.translationY = statusBarSize.toFloat()
       discoverSwipeRefresh.setProgressViewOffset(
         true,
         swipeRefreshStartOffset + statusBarSize,

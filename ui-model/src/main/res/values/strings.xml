@@ -32,7 +32,6 @@
   <string name="textTipDiscover">Double tap \'Discover\' menu button to quickly open search screen.</string>
   <string name="textTipMyShows">Double tap \'Collection\' menu button to quickly switch between tabs.</string>
   <string name="textTipShowDetailsGallery">Tap image to open gallery.</string>
-  <string name="textTipDiscoverFilters">Use filters view to refine your Discover feed.</string>
   <string name="textTipWatchlistPinItem">Tap and hold list item to pin it to the top.</string>
   <string name="textTipBottomModeMenu">Swipe bottom menu left or right to quickly change mode.</string>
   <string name="textTipListSwipeToDelete">Swipe list items to remove them from the list.</string>
