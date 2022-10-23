@@ -107,7 +107,6 @@ class MainActivity :
     registerBilling(this, settingsRepository)
     registerUpdate(this) { onUpdateDownloaded(it) }
 
-    setupBackPressed()
     setupViewModel()
     setupNavigation()
     setupTips()
@@ -121,6 +120,11 @@ class MainActivity :
   override fun onStart() {
     super.onStart()
     ShowsMoviesSyncWorker.schedule(workManager)
+  }
+
+  override fun onResume() {
+    super.onResume()
+    setupBackPressed()
   }
 
   override fun onNewIntent(intent: Intent?) {
