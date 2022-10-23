@@ -55,6 +55,7 @@ class SettingsRepository @Inject constructor(
     private const val PROGRESS_NEXT_EPISODE_TYPE = "PROGRESS_NEXT_EPISODE_TYPE"
     private const val NEWS_FILTERS = "NEWS_FILTERS"
     private const val NEWS_VIEW_TYPE = "NEWS_VIEW_TYPE"
+    private const val LOCALE_INITIALISED = "LOCALE_INITIALISED"
   }
 
   suspend fun isInitialized() =
@@ -86,6 +87,7 @@ class SettingsRepository @Inject constructor(
   var isProgressOnHoldCollapsed by BooleanPreference(preferences, PROGRESS_ON_HOLD_COLLAPSED)
   var progressNextEpisodeType by EnumPreference(preferences, PROGRESS_NEXT_EPISODE_TYPE, LAST_WATCHED, ProgressNextEpisodeType::class.java)
   var newsViewType by StringPreference(preferences, NEWS_VIEW_TYPE, DEFAULT_NEWS_VIEW_TYPE)
+  var isLocaleInitialised by BooleanPreference(preferences, LOCALE_INITIALISED, false)
 
   var mode: Mode
     get() {

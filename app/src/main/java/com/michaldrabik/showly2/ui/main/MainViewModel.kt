@@ -66,7 +66,7 @@ class MainViewModel @Inject constructor(
         loadRemoteConfig()
         saveInstallTimestamp()
       }
-      checkLocale()
+      checkApi13Locale()
     }
   }
 
@@ -98,12 +98,10 @@ class MainViewModel @Inject constructor(
     }
   }
 
-  private fun checkLocale() {
-    val locales = AppCompatDelegate.getApplicationLocales()
-    val settingsLocale = settingsRepository.language
-    val language = locales.get(0)?.language
-    if (!settingsLocale.equals(language, ignoreCase = true)) {
-      val locale = LocaleListCompat.forLanguageTags(settingsLocale)
+  private fun checkApi13Locale() {
+    if (!settingsRepository.isLocaleInitialised) {
+      settingsRepository.isLocaleInitialised = true
+      val locale = LocaleListCompat.forLanguageTags(settingsRepository.language)
       AppCompatDelegate.setApplicationLocales(locale)
     }
   }
