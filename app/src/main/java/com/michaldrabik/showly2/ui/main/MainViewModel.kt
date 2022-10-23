@@ -59,18 +59,18 @@ class MainViewModel @Inject constructor(
 
   fun initialize() {
     viewModelScope.launch {
-      checkInitialRun()
+      val isInitialRun = checkInitialRun()
       with(initCase) {
         initializeFcm()
         preloadRatings()
         loadRemoteConfig()
         saveInstallTimestamp()
       }
-      checkApi13Locale()
+      checkApi13Locale(isInitialRun)
     }
   }
 
-  private suspend fun checkInitialRun() {
+  private suspend fun checkInitialRun(): Boolean {
     val isInitialRun = initCase.isInitialRun()
     if (isInitialRun) {
       initCase.setInitialRun(false)
@@ -81,6 +81,8 @@ class MainViewModel @Inject constructor(
 
     initialRunEvent.value = Event(isInitialRun)
     whatsNewEvent.value = Event(showWhatsNew)
+
+    return isInitialRun
   }
 
   fun checkRateApp() {
@@ -98,8 +100,8 @@ class MainViewModel @Inject constructor(
     }
   }
 
-  private fun checkApi13Locale() {
-    if (!settingsRepository.isLocaleInitialised) {
+  private fun checkApi13Locale(isInitialRun: Boolean) {
+    if (!isInitialRun && !settingsRepository.isLocaleInitialised) {
       settingsRepository.isLocaleInitialised = true
       val locale = LocaleListCompat.forLanguageTags(settingsRepository.language)
       AppCompatDelegate.setApplicationLocales(locale)

@@ -4,9 +4,7 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.os.Build
 import android.os.StrictMode
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
-import androidx.core.os.LocaleListCompat
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -51,8 +49,6 @@ class App :
     fun setupSettings() = runBlocking {
       if (!settingsRepository.isInitialized()) {
         settingsRepository.update(Settings.createInitial())
-        val locales = LocaleListCompat.forLanguageTags(Config.DEFAULT_LANGUAGE)
-        AppCompatDelegate.setApplicationLocales(locales)
       }
       FirebaseCrashlytics.getInstance().setUserId(settingsRepository.userId)
     }
