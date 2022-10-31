@@ -48,7 +48,7 @@ class ShowDetailsNextEpisodeViewModel @Inject constructor(
           }
         }
       } catch (error: Throwable) {
-        Logger.record(error, "Source" to "ShowDetailsViewModel::loadNextEpisode()")
+        Logger.record(error, "ShowDetailsViewModel::loadNextEpisode()")
         rethrowCancellation(error)
       }
     }

@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.repository.settings.SettingsRepository
-import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.ReloadData
 import com.michaldrabik.ui_base.events.TraktSyncError
@@ -43,6 +42,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 import com.michaldrabik.ui_base.events.Event as EventSync
 
@@ -207,7 +207,7 @@ class MyShowsViewModel @Inject constructor(
         val translation = translationsCase.loadTranslation(item.show, false)
         updateItem(item.copy(translation = translation))
       } catch (error: Throwable) {
-        Logger.record(error, "Source" to "MyShowsViewModel::loadMissingTranslation()")
+        Timber.e(error)
       }
     }
   }

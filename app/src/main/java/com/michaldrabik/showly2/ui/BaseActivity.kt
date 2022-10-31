@@ -59,7 +59,7 @@ abstract class BaseActivity : AppCompatActivity() {
         extras.clear()
         action()
       } catch (error: Throwable) {
-        Logger.record(error, "Source" to "BaseActivity::handleFcmShowPush()")
+        Logger.record(error, "BaseActivity::handleShowMovieExtra()")
       }
     }
   }
@@ -80,7 +80,7 @@ abstract class BaseActivity : AppCompatActivity() {
         }
         extras?.clear()
       } catch (error: Throwable) {
-        Logger.record(error, "Source" to "BaseActivity::handleSearchWidgetClick()")
+        Logger.record(error, "BaseActivity::handleSearchWidgetClick()")
       }
     }
   }

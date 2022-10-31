@@ -61,7 +61,7 @@ class TraktSyncWorker @AssistedInject constructor(
   private val settingsRepository: SettingsRepository,
   private val eventsManager: EventsManager,
   private val userManager: UserTraktManager,
-  @Named("miscPreferences") private val miscPreferences: SharedPreferences
+  @Named("miscPreferences") private val miscPreferences: SharedPreferences,
 ) : TraktNotificationWorker(context, workerParams) {
 
   companion object {
@@ -85,7 +85,7 @@ class TraktSyncWorker @AssistedInject constructor(
       workManager: WorkManager,
       isImport: Boolean,
       isExport: Boolean,
-      isSilent: Boolean
+      isSilent: Boolean,
     ) {
       val inputData = workDataOf(
         ARG_IS_IMPORT to isImport,
@@ -262,7 +262,7 @@ class TraktSyncWorker @AssistedInject constructor(
     content: String?,
     maxProgress: Int,
     progress: Int,
-    isIntermediate: Boolean
+    isIntermediate: Boolean,
   ) {
     notificationManager().notify(
       SYNC_NOTIFICATION_COMPLETE_PROGRESS_ID,
@@ -288,12 +288,12 @@ class TraktSyncWorker @AssistedInject constructor(
         createErrorNotification(theme, R.string.textTraktSyncError, message)
       )
     }
-    Logger.record(error, "Source" to "TraktSyncWorker::handleError()")
+    Logger.record(error, "TraktSyncWorker::handleError()")
   }
 
   private fun handleListsError(
     error: Throwable,
-    @StringRes notificationMessageResId: Int
+    @StringRes notificationMessageResId: Int,
   ) {
     when (ErrorHelper.parse(error)) {
       ShowlyError.AccountLimitsError -> {

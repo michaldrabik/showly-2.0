@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.ShowImagesProvider
-import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
@@ -27,6 +26,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -112,7 +112,7 @@ class CalendarViewModel @Inject constructor(
         val translations = item.translations?.copy(show = translation)
         updateItem(item.copy(translations = translations))
       } catch (error: Throwable) {
-        Logger.record(error, "Source" to "CalendarViewModel::findMissingTranslation()")
+        Timber.e(error)
       } finally {
         loadTranslationJobs.remove(showId)
       }

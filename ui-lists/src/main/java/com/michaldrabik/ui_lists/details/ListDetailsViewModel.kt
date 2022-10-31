@@ -8,7 +8,6 @@ import com.michaldrabik.common.Mode.MOVIES
 import com.michaldrabik.common.Mode.SHOWS
 import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.images.ShowImagesProvider
-import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
@@ -33,6 +32,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -98,7 +98,7 @@ class ListDetailsViewModel @Inject constructor(
         val translation = translationsCase.loadTranslation(item, false)
         updateItem(item.copy(translation = translation))
       } catch (error: Throwable) {
-        Logger.record(error, "Source" to "ListDetailsViewModel::loadMissingTranslation()")
+        Timber.e(error)
       }
     }
   }

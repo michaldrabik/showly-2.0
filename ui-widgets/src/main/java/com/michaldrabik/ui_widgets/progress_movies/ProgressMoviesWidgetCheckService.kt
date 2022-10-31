@@ -40,8 +40,8 @@ class ProgressMoviesWidgetCheckService : JobIntentService(), CoroutineScope {
   override fun onHandleWork(intent: Intent) {
     val movieId = intent.getLongExtra(EXTRA_MOVIE_ID, -1)
     if (movieId == -1L) {
-      val error = Throwable("${ProgressMoviesWidgetCheckService::class.simpleName} error. Invalid ID.")
-      Logger.record(error)
+      val error = Throwable("Invalid ID.")
+      Logger.record(error, "ProgressMoviesWidgetCheckService::onHandleWork()")
       return
     }
 

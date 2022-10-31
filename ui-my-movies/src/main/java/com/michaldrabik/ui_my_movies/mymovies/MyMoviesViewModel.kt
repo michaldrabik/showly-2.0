@@ -3,7 +3,6 @@ package com.michaldrabik.ui_my_movies.mymovies
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
-import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.ReloadData
 import com.michaldrabik.ui_base.events.TraktSyncError
@@ -38,6 +37,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 import com.michaldrabik.ui_base.events.Event as EventSync
@@ -135,7 +135,7 @@ class MyMoviesViewModel @Inject constructor(
         val translation = loadMoviesCase.loadTranslation(item.movie, false)
         updateItem(item.copy(translation = translation))
       } catch (error: Throwable) {
-        Logger.record(error, "Source" to "MyMoviesViewModel::loadMissingTranslation()")
+        Timber.e(error)
       }
     }
   }

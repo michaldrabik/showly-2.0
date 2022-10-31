@@ -1,19 +1,56 @@
 package com.michaldrabik.ui_base
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import timber.log.Timber
+import okhttp3.RequestBody
+import okio.Buffer
+import retrofit2.HttpException
 import kotlin.coroutines.cancellation.CancellationException
 
 object Logger {
 
-  fun record(error: Throwable, key: Pair<String, String>? = null) {
-    Timber.e(error)
+  fun record(error: Throwable, source: String) {
     if (error is CancellationException) {
       return
     }
+    if (error is HttpException) {
+      recordHttpError(error, source)
+      return
+    }
     FirebaseCrashlytics.getInstance().run {
-      key?.let { setCustomKey(it.first, it.second) }
+      setCustomKey("Source", source)
       recordException(error)
+    }
+  }
+
+  private fun recordHttpError(error: HttpException, source: String) {
+    val params = mutableListOf("Source" to source)
+
+    val responseString = error.response()?.raw()?.toString() ?: ""
+    val requestString = error.response()?.raw()?.request?.toString() ?: ""
+    val requestBody = error.response()?.raw()?.request?.body?.asString()
+    val token = requestString.substringAfter("Bearer").trim().substringBefore("]")
+
+    params.add("Response" to responseString)
+    params.add("Request" to requestString.replace(token, "***"))
+    if (requestBody != null) {
+      params.add("RequestBody" to requestBody)
+    }
+
+    FirebaseCrashlytics.getInstance().run {
+      params.forEach {
+        setCustomKey(it.first, it.second)
+      }
+      recordException(error)
+    }
+  }
+
+  private fun RequestBody.asString(): String? {
+    return try {
+      val buffer = Buffer()
+      this.writeTo(buffer)
+      buffer.readUtf8()
+    } catch (error: Throwable) {
+      null
     }
   }
 }

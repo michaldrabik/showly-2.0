@@ -36,7 +36,7 @@ class TraktImportWatchedRunner @Inject constructor(
   private val showImagesProvider: ShowImagesProvider,
   private val movieImagesProvider: MovieImagesProvider,
   private val settingsRepository: SettingsRepository,
-  userTraktManager: UserTraktManager
+  userTraktManager: UserTraktManager,
 ) : TraktSyncRunner(userTraktManager) {
 
   override suspend fun run(): Int {
@@ -163,7 +163,7 @@ class TraktImportWatchedRunner @Inject constructor(
           }
         } catch (error: Throwable) {
           Timber.w("Processing \'${result.show!!.title}\' failed. Skipping...")
-          Logger.record(error, "Source" to "Import Shows Watched")
+          Logger.record(error, "TraktImportWatchedRunner::importWatchedShows()")
         }
       }
 
@@ -262,7 +262,7 @@ class TraktImportWatchedRunner @Inject constructor(
           }
         } catch (error: Throwable) {
           Timber.w("Processing \'${result.movie!!.title}\' failed. Skipping...")
-          Logger.record(error, "Source" to "Import Movies Watched")
+          Logger.record(error, "TraktImportWatchedRunner::importWatchedMovies()")
         }
       }
 

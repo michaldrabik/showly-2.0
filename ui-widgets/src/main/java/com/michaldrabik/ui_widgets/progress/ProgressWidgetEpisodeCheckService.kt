@@ -54,8 +54,8 @@ class ProgressWidgetEpisodeCheckService : JobIntentService(), CoroutineScope {
     val showId = intent.getLongExtra(EXTRA_SHOW_ID, -1)
 
     if (episodeId == -1L || seasonId == -1L || showId == -1L) {
-      val error = Throwable("${ProgressWidgetEpisodeCheckService::class.simpleName} error. Invalid ID.")
-      Logger.record(error)
+      val error = Throwable("Invalid ID.")
+      Logger.record(error, "ProgressWidgetEpisodeCheckService::onHandleWork()")
       return
     }
 

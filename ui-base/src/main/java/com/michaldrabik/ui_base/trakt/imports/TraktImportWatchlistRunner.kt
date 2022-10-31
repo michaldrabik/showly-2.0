@@ -103,7 +103,7 @@ class TraktImportWatchlistRunner @Inject constructor(
           }
         } catch (error: Throwable) {
           Timber.w("Processing \'${result.show!!.title}\' failed. Skipping...")
-          Logger.record(error, "Source" to "Import Shows Watchlist")
+          Logger.record(error, "TraktImportWatchlistRunner::importShowsWatchlist()")
         }
       }
 
@@ -139,7 +139,7 @@ class TraktImportWatchlistRunner @Inject constructor(
           }
         } catch (error: Throwable) {
           Timber.w("Processing \'${result.movie!!.title}\' failed. Skipping...")
-          Logger.record(error, "Source" to "Import Movies Watchlist")
+          Logger.record(error, "TraktImportWatchlistRunner::importMoviesWatchlist()")
         }
       }
 

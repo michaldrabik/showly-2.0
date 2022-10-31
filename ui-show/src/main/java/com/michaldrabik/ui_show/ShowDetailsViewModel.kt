@@ -126,11 +126,11 @@ class ShowDetailsViewModel @Inject constructor(
           is ResourceNotFoundError -> {
             // Malformed Trakt data or duplicate show.
             messageChannel.send(MessageEvent.Info(R.string.errorMalformedShow))
-            Logger.record(error, "Source" to "ShowDetailsViewModel")
+            Logger.record(error, "ShowDetailsViewModel::loadDetails(${id.id})")
           }
           else -> {
             messageChannel.send(MessageEvent.Error(R.string.errorCouldNotLoadShow))
-            Logger.record(error, "Source" to "ShowDetailsViewModel")
+            Logger.record(error, "ShowDetailsViewModel::loadDetails(${id.id})")
           }
         }
       }
@@ -156,7 +156,7 @@ class ShowDetailsViewModel @Inject constructor(
         translationState.value = it
       }
     } catch (error: Throwable) {
-      Logger.record(error, "Source" to "ShowDetailsViewModel::loadTranslation()")
+      Timber.e(error)
       rethrowCancellation(error)
     }
   }

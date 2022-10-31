@@ -154,7 +154,7 @@ class MainViewModel @Inject constructor(
         maskState.value = false
         openLinkEvent.value = Event(result)
       } catch (error: Throwable) {
-        Logger.record(error, "Source" to "MainViewModel::openDeepLink:$source")
+        Logger.record(error, "MainViewModel::openDeepLink:$source")
         rethrowCancellation(error)
       } finally {
         progressJob.cancelAndJoin()

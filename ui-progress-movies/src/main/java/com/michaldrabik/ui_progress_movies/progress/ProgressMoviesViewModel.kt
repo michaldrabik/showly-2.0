@@ -8,7 +8,6 @@ import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.settings.SettingsRepository
-import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.trakt.TraktSyncWorker
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
@@ -32,6 +31,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -115,7 +115,7 @@ class ProgressMoviesViewModel @Inject constructor(
         val translation = translationsRepository.loadTranslation(item.movie, language)
         updateItem(item.copy(translation = translation))
       } catch (error: Throwable) {
-        Logger.record(error, "Source" to "ProgressMoviesViewModel::findMissingTranslation()")
+        Timber.e(error)
       }
     }
   }

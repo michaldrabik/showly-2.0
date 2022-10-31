@@ -282,7 +282,7 @@ class SettingsViewModel @Inject constructor(
           is AccountLockedError -> messageChannel.send(MessageEvent.Error(R.string.errorTraktLocked))
           else -> messageChannel.send(MessageEvent.Error(R.string.errorAuthorization))
         }
-        Logger.record(error, "Source" to "SettingsViewModel::authorizeTrakt()")
+        Logger.record(error, "SettingsViewModel::authorizeTrakt()")
       } finally {
         signingInState.value = false
       }

@@ -36,7 +36,7 @@ class QuickSyncWorker @AssistedInject constructor(
   private val quickSyncListsRunner: QuickSyncListsRunner,
   private val settingsRepository: SettingsRepository,
   private val userManager: UserTraktManager,
-  private val eventsManager: EventsManager
+  private val eventsManager: EventsManager,
 ) : TraktNotificationWorker(context, workerParams) {
 
   companion object {
@@ -103,7 +103,7 @@ class QuickSyncWorker @AssistedInject constructor(
       SYNC_NOTIFICATION_ERROR_ID,
       createErrorNotification(theme, R.string.textTraktQuickSyncError, notificationMessage)
     )
-    Logger.record(error, "Source" to "${QuickSyncWorker::class.simpleName}")
+    Logger.record(error, "QuickSyncWorker::handleError()")
   }
 
   private fun clearRunners() {

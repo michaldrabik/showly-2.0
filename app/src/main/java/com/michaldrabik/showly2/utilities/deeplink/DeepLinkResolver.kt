@@ -55,7 +55,7 @@ class DeepLinkResolver @Inject constructor() {
   fun resolveDestination(
     navController: NavController,
     navigationView: BottomNavigationView,
-    show: Show
+    show: Show,
   ) {
     try {
       resetNavigation(navController, navigationView)
@@ -68,14 +68,14 @@ class DeepLinkResolver @Inject constructor() {
       }
       navController.navigate(actionId, navBundle)
     } catch (error: Throwable) {
-      Logger.record(error, "Source" to "DeepLinkResolver::resolveDestination(show:${show.traktId})")
+      Logger.record(error, "DeepLinkResolver::resolveDestination(show:${show.traktId})")
     }
   }
 
   fun resolveDestination(
     navController: NavController,
     navigationView: BottomNavigationView,
-    movie: Movie
+    movie: Movie,
   ) {
     try {
       resetNavigation(navController, navigationView)
@@ -88,7 +88,7 @@ class DeepLinkResolver @Inject constructor() {
       }
       navController.navigate(actionId, navBundle)
     } catch (error: Throwable) {
-      Logger.record(error, "Source" to "DeepLinkResolver::resolveDestination(movie:${movie.traktId})")
+      Logger.record(error, "DeepLinkResolver::resolveDestination(movie:${movie.traktId})")
     }
   }
 

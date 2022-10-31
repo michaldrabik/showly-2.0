@@ -73,7 +73,7 @@ class CreateListCase @Inject constructor(
           listsRepository.updateList(list.id, result.idTrakt, result.idSlug, result.name, result.description)
             .also { eventsManager.sendEvent(TraktQuickSyncSuccess(1)) }
         } else {
-          Logger.record(error, "Source" to "CreateListCase::updateList()")
+          Logger.record(error, "CreateListCase::updateList()")
           throw error
         }
       }

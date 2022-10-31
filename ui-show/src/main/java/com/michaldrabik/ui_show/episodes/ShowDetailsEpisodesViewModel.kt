@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
@@ -55,7 +54,7 @@ class ShowDetailsEpisodesViewModel @Inject constructor(
   private val translationCase: EpisodesTranslationCase,
   private val announcementsCase: EpisodesAnnouncementsCase,
   private val markWatchedCase: EpisodesMarkWatchedCase,
-  private val seasonsCache: SeasonsCache
+  private val seasonsCache: SeasonsCache,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val seasonState = MutableStateFlow<SeasonListItem?>(null)
@@ -157,15 +156,14 @@ class ShowDetailsEpisodesViewModel @Inject constructor(
         initialLoadState.value = false
       }
     } catch (error: Throwable) {
-      Logger.record(error, "Source" to "ShowDetailsEpisodesViewModel::loadSeasonTranslation()")
-      Timber.w(error)
+      Timber.e(error)
       rethrowCancellation(error)
     }
   }
 
   fun setEpisodeWatched(
     episode: Episode,
-    isChecked: Boolean
+    isChecked: Boolean,
   ) {
     viewModelScope.launch {
       seasonState.value?.let {
