@@ -5,16 +5,24 @@ import android.content.SharedPreferences
 import com.michaldrabik.data_remote.Config
 import com.michaldrabik.data_remote.trakt.model.OAuthResponse
 import com.squareup.moshi.Moshi
+import kotlinx.coroutines.suspendCancellableCoroutine
+import okhttp3.Call
+import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.Response
 import org.json.JSONObject
+import timber.log.Timber
+import java.io.IOException
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
 @SuppressLint("ApplySharedPref")
 internal class TraktTokenProvider(
   private val sharedPreferences: SharedPreferences,
-  private val moshi: Moshi
+  private val moshi: Moshi,
 ) : TokenProvider {
 
   companion object {
@@ -47,10 +55,9 @@ internal class TraktTokenProvider(
     token = null
   }
 
-  @Suppress("BlockingMethodInNonBlockingContext")
   override suspend fun refreshToken(httpClient: OkHttpClient): OAuthResponse {
     val refreshToken = sharedPreferences.getString("TRAKT_REFRESH_TOKEN", null)
-      ?: throw Throwable("Refresh token is not available")
+      ?: throw Error("Refresh token is not available")
 
     val body = JSONObject()
       .put("refresh_token", refreshToken)
@@ -62,16 +69,33 @@ internal class TraktTokenProvider(
 
     val request = Request.Builder()
       .url("${Config.TRAKT_BASE_URL}oauth/token")
+      .addHeader("Content-Type", "application/json")
       .post(body.toRequestBody("application/json".toMediaType()))
       .build()
 
-    httpClient.newCall(request).execute().use { response ->
-      if (!response.isSuccessful) {
-        throw Throwable("Refresh token call failed. ${response.message}")
-      } else {
-        val responseSource = response.body!!.source()
-        return moshi.adapter(OAuthResponse::class.java).fromJson(responseSource)!!
+    Timber.d("Making refresh token call...")
+
+    return suspendCancellableCoroutine {
+      val callback = object : Callback {
+        override fun onFailure(call: Call, e: IOException) {
+          Timber.d("Refresh token call failed. $e")
+          it.resumeWithException(Error("Refresh token call failed. $e"))
+        }
+
+        override fun onResponse(call: Call, response: Response) {
+          if (response.isSuccessful) {
+            Timber.d("Refresh token success!")
+            val responseSource = response.body!!.source()
+            val result = moshi.adapter(OAuthResponse::class.java).fromJson(responseSource)!!
+            it.resume(result)
+          } else {
+            it.resumeWithException(Error("Refresh token call failed. ${response.code}"))
+          }
+        }
       }
+      val call = httpClient.newCall(request)
+      it.invokeOnCancellation { call.cancel() }
+      call.enqueue(callback)
     }
   }
 }
