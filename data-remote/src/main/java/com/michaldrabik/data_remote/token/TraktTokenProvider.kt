@@ -67,7 +67,7 @@ internal class TraktTokenProvider(
 
   override suspend fun shouldRefresh(): Boolean {
     val now = System.currentTimeMillis()
-    if (lastRefreshCheck > 0L && now - lastRefreshCheck > TRAKT_TOKEN_REFRESH_COOLDOWN.toMillis()) {
+    if (lastRefreshCheck > 0L && now - lastRefreshCheck < TRAKT_TOKEN_REFRESH_COOLDOWN.toMillis()) {
       return false
     }
     lastRefreshCheck = now
