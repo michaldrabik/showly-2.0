@@ -3,10 +3,11 @@ package com.michaldrabik.data_remote.di.module
 import com.michaldrabik.data_remote.BuildConfig
 import com.michaldrabik.data_remote.omdb.OmdbInterceptor
 import com.michaldrabik.data_remote.tmdb.TmdbInterceptor
-import com.michaldrabik.data_remote.trakt.TraktAuthenticator
-import com.michaldrabik.data_remote.trakt.TraktAuthorizationInterceptor
-import com.michaldrabik.data_remote.trakt.TraktHeadersInterceptor
-import com.michaldrabik.data_remote.trakt.TraktRetryInterceptor
+import com.michaldrabik.data_remote.trakt.interceptors.TraktAuthenticator
+import com.michaldrabik.data_remote.trakt.interceptors.TraktAuthorizationInterceptor
+import com.michaldrabik.data_remote.trakt.interceptors.TraktHeadersInterceptor
+import com.michaldrabik.data_remote.trakt.interceptors.TraktRefreshTokenInterceptor
+import com.michaldrabik.data_remote.trakt.interceptors.TraktRetryInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,13 +31,18 @@ object OkHttpModule {
     httpLoggingInterceptor: HttpLoggingInterceptor,
     traktAuthorizationInterceptor: TraktAuthorizationInterceptor,
     traktHeadersInterceptor: TraktHeadersInterceptor,
+    traktRefreshTokenInterceptor: TraktRefreshTokenInterceptor,
     traktRetryInterceptor: TraktRetryInterceptor,
     traktAuthenticator: TraktAuthenticator,
   ): OkHttpClient {
-    val baseClient = createBaseOkHttpClient()
-    traktAuthenticator.setHttpClient(baseClient.build())
+    val baseClient = createBaseOkHttpClient().apply {
+      val built = this.build()
+      traktAuthenticator.setHttpClient(built)
+      traktRefreshTokenInterceptor.setHttpClient(built)
+    }
     return baseClient
       .addInterceptor(traktHeadersInterceptor)
+      .addInterceptor(traktRefreshTokenInterceptor)
       .addInterceptor(traktAuthorizationInterceptor)
       .addInterceptor(traktRetryInterceptor)
       .addInterceptor(httpLoggingInterceptor)

@@ -1,4 +1,4 @@
-package com.michaldrabik.data_remote.trakt
+package com.michaldrabik.data_remote.trakt.interceptors
 
 import android.os.Bundle
 import com.google.firebase.analytics.ktx.analytics

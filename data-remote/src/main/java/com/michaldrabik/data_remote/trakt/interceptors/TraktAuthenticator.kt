@@ -1,4 +1,4 @@
-package com.michaldrabik.data_remote.trakt
+package com.michaldrabik.data_remote.trakt.interceptors
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.data_remote.token.TokenProvider
@@ -40,7 +40,6 @@ class TraktAuthenticator @Inject constructor(
       try {
         Timber.d("Refreshing access token...")
         val refreshedTokens = tokenProvider.refreshToken(httpClient)
-        Timber.d("Refreshed...")
 
         tokenProvider.saveTokens(
           accessToken = refreshedTokens.access_token,
@@ -56,7 +55,6 @@ class TraktAuthenticator @Inject constructor(
         FirebaseCrashlytics.getInstance().run { recordException(error) }
         null
       }
-
     }
 
   private fun isRequestAuthorized(response: Response): Boolean {

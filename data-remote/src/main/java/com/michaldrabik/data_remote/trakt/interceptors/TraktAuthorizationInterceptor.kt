@@ -1,4 +1,4 @@
-package com.michaldrabik.data_remote.trakt
+package com.michaldrabik.data_remote.trakt.interceptors
 
 import com.michaldrabik.data_remote.token.TokenProvider
 import okhttp3.Interceptor
