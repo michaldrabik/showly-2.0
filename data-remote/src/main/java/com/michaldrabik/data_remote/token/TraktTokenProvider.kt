@@ -74,9 +74,9 @@ internal class TraktTokenProvider(
       return false
     }
     lastRefreshCheck = now
-    val timestamp = sharedPreferences.getLong(KEY_TIMESTAMP, 0)
+    val timestamp = sharedPreferences.getLong(KEY_TIMESTAMP, 0L)
     if (timestamp == 0L) {
-      return false
+      return true
     }
     if (now - timestamp > Config.TRAKT_TOKEN_REFRESH_DURATION.toMillis()) {
       return true
