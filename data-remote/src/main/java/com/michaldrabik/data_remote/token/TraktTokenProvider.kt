@@ -13,10 +13,12 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
+import okhttp3.internal.closeQuietly
 import org.json.JSONObject
 import timber.log.Timber
 import java.io.IOException
 import java.time.Duration
+import javax.inject.Named
 import javax.inject.Singleton
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -26,6 +28,7 @@ import kotlin.coroutines.resumeWithException
 internal class TraktTokenProvider(
   private val sharedPreferences: SharedPreferences,
   private val moshi: Moshi,
+  @Named("okHttpBase") private val okHttpClient: OkHttpClient,
 ) : TokenProvider {
 
   companion object {
@@ -81,7 +84,7 @@ internal class TraktTokenProvider(
     return false
   }
 
-  override suspend fun refreshToken(httpClient: OkHttpClient): OAuthResponse {
+  override suspend fun refreshToken(): OAuthResponse {
     val refreshToken = sharedPreferences.getString(KEY_REFRESH_TOKEN, null)
       ?: throw Error("Refresh token is not available")
 
@@ -117,9 +120,10 @@ internal class TraktTokenProvider(
           } else {
             it.resumeWithException(Error("Refresh token call failed. ${response.code}"))
           }
+          response.closeQuietly()
         }
       }
-      val call = httpClient.newCall(request)
+      val call = okHttpClient.newCall(request)
       it.invokeOnCancellation { call.cancel() }
       call.enqueue(callback)
     }

@@ -26,6 +26,13 @@ object OkHttpModule {
 
   @Provides
   @Singleton
+  @Named("okHttpBase")
+  fun providesBaseOkHttp(): OkHttpClient {
+    return createBaseOkHttpClient().build()
+  }
+
+  @Provides
+  @Singleton
   @Named("okHttpTrakt")
   fun providesTraktOkHttp(
     httpLoggingInterceptor: HttpLoggingInterceptor,
@@ -35,12 +42,7 @@ object OkHttpModule {
     traktRetryInterceptor: TraktRetryInterceptor,
     traktAuthenticator: TraktAuthenticator,
   ): OkHttpClient {
-    val baseClient = createBaseOkHttpClient().apply {
-      val built = this.build()
-      traktAuthenticator.setHttpClient(built)
-      traktRefreshTokenInterceptor.setHttpClient(built)
-    }
-    return baseClient
+    return createBaseOkHttpClient()
       .addInterceptor(traktHeadersInterceptor)
       .addInterceptor(traktRefreshTokenInterceptor)
       .addInterceptor(traktAuthorizationInterceptor)

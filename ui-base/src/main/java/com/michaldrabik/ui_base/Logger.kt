@@ -2,6 +2,7 @@ package com.michaldrabik.ui_base
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import okhttp3.RequestBody
+import okhttp3.internal.closeQuietly
 import okio.Buffer
 import retrofit2.HttpException
 import kotlin.coroutines.cancellation.CancellationException
@@ -45,12 +46,14 @@ object Logger {
   }
 
   private fun RequestBody.asString(): String? {
+    val buffer = Buffer()
     return try {
-      val buffer = Buffer()
       this.writeTo(buffer)
       buffer.readUtf8()
     } catch (error: Throwable) {
       null
+    } finally {
+      buffer.closeQuietly()
     }
   }
 }

@@ -1,10 +1,10 @@
 dependencyResolutionManagement {
   versionCatalogs {
     libs {
-      library("android.core", "androidx.core:core-ktx:1.8.0")
+      library("android.core", "androidx.core:core-ktx:1.9.0")
       library("android.appCompat", "androidx.appcompat:appcompat:1.7.0-alpha01")
-      library("android.playReviews", "com.google.android.play:review:2.0.0")
-      library("android.playUpdates", "com.google.android.play:app-update:2.0.0")
+      library("android.playReviews", "com.google.android.play:review:2.0.1")
+      library("android.playUpdates", "com.google.android.play:app-update:2.0.1")
       library("android.gridLayout", "androidx.gridlayout:gridlayout:1.0.0")
       library("android.billing", "com.android.billingclient:billing-ktx:4.0.0")
       library("android.browser", "androidx.browser:browser:1.4.0")
@@ -15,29 +15,29 @@ dependencyResolutionManagement {
       library("android.swipeRefresh", "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
       library("android.constraintLayout", "androidx.constraintlayout:constraintlayout:2.1.4")
       library("android.recycler", "androidx.recyclerview:recyclerview:1.2.1")
-      library("android.fragment", "androidx.fragment:fragment-ktx:1.4.1")
+      library("android.fragment", "androidx.fragment:fragment-ktx:1.5.4")
 
-      version("navigation", "2.4.2")
+      version("navigation", "2.5.3")
       library("android.navigation.fragment", "androidx.navigation", "navigation-fragment-ktx").versionRef("navigation")
       library("android.navigation.ui", "androidx.navigation", "navigation-ui-ktx").versionRef("navigation")
       bundle("navigation", ["android.navigation.fragment", "android.navigation.ui"])
 
-      version("lifecycle", "2.4.1")
+      version("lifecycle", "2.5.1")
       library("android.lifecycle.viewmodel", "androidx.lifecycle", "lifecycle-viewmodel-ktx").versionRef("lifecycle")
       library("android.lifecycle.runtime", "androidx.lifecycle", "lifecycle-runtime-ktx").versionRef("lifecycle")
       library("android.lifecycle.common", "androidx.lifecycle", "lifecycle-common-java8").versionRef("lifecycle")
       bundle("lifecycle", ["android.lifecycle.viewmodel", "android.lifecycle.runtime", "android.lifecycle.common"])
 
-      version("room", "2.4.2")
+      version("room", "2.4.3")
       library("android.room", "androidx.room", "room-ktx").versionRef("room")
       library("android.room.runtime", "androidx.room", "room-runtime").versionRef("room")
       library("android.room.compiler", "androidx.room", "room-compiler").versionRef("room")
 
-      version("glide", "4.13.2")
+      version("glide", "4.14.2")
       library("glide", "com.github.bumptech.glide", "glide").versionRef("glide")
       library("glide.compiler", "com.github.bumptech.glide", "compiler").versionRef("glide")
 
-      version("hilt", "2.39")
+      version("hilt", "2.44")
       library("hilt.plugin", "com.google.dagger", "hilt-android-gradle-plugin").versionRef("hilt")
       library("hilt.android", "com.google.dagger", "hilt-android").versionRef("hilt")
       library("hilt.compiler", "com.google.dagger", "hilt-compiler").versionRef("hilt")
@@ -46,21 +46,21 @@ dependencyResolutionManagement {
       library("hilt.work", "androidx.hilt", "hilt-work").versionRef("hiltWork")
       library("hilt.work.compiler", "androidx.hilt", "hilt-compiler").versionRef("hiltWork")
 
-      library("firebase.crashlytics", "com.google.firebase:firebase-crashlytics:18.2.12")
-      library("firebase.analytics", "com.google.firebase:firebase-analytics-ktx:21.1.0")
-      library("firebase.messaging", "com.google.firebase:firebase-messaging:23.0.6")
-      library("firebase.config", "com.google.firebase:firebase-config-ktx:21.1.1")
+      library("firebase.crashlytics", "com.google.firebase:firebase-crashlytics:18.3.1")
+      library("firebase.analytics", "com.google.firebase:firebase-analytics-ktx:21.2.0")
+      library("firebase.messaging", "com.google.firebase:firebase-messaging:23.1.0")
+      library("firebase.config", "com.google.firebase:firebase-config-ktx:21.2.0")
       bundle("firebase", ["firebase.crashlytics", "firebase.analytics", "firebase.messaging", "firebase.config"])
 
       version("retrofit", "2.9.0")
       library("retrofit", "com.squareup.retrofit2", "retrofit").versionRef("retrofit")
       library("retrofit.moshi", "com.squareup.retrofit2", "converter-moshi").versionRef("retrofit")
 
-      library("kotlin.coroutines", "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.3")
-      library("phoenix", "com.jakewharton:process-phoenix:2.0.0")
-      library("timber", "com.jakewharton.timber:timber:4.7.1")
+      library("kotlin.coroutines", "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+      library("phoenix", "com.jakewharton:process-phoenix:2.1.2")
+      library("timber", "com.jakewharton.timber:timber:5.0.1")
       library("circleIndicator", "me.relex:circleindicator:2.1.6")
-      library("loggingInterceptor", "com.squareup.okhttp3:logging-interceptor:4.9.0")
+      library("loggingInterceptor", "com.squareup.okhttp3:logging-interceptor:4.10.0")
       library("overscrollDecor", "io.github.everythingme:overscroll-decor-android:1.1.1")
     }
 
@@ -68,7 +68,7 @@ dependencyResolutionManagement {
       library("junit", "junit:junit:4.13.2")
       library("mockk", "io.mockk:mockk:1.12.0")
       library("truth", "com.google.truth:truth:1.1.3")
-      library("kotlin.coroutines.test", "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.3")
+      library("kotlin.coroutines.test", "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
       library("android.test.core", "androidx.arch.core:core-testing:2.1.0")
       bundle("testing", ["junit", "mockk", "truth", "kotlin.coroutines.test", "android.test.core"])
     }

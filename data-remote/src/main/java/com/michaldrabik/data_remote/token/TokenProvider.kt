@@ -1,7 +1,6 @@
 package com.michaldrabik.data_remote.token
 
 import com.michaldrabik.data_remote.trakt.model.OAuthResponse
-import okhttp3.OkHttpClient
 
 interface TokenProvider {
 
@@ -23,7 +22,7 @@ interface TokenProvider {
   /**
    * Tries to refresh current access token or throws if failure.
    */
-  suspend fun refreshToken(httpClient: OkHttpClient): OAuthResponse
+  suspend fun refreshToken(): OAuthResponse
 
   suspend fun shouldRefresh(): Boolean
 }

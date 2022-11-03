@@ -18,6 +18,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import javax.inject.Named
 import javax.inject.Singleton
@@ -44,9 +45,11 @@ object TraktModule {
   @Singleton
   fun providesTraktTokenProvider(
     @Named("networkPreferences") sharedPreferences: SharedPreferences,
-    moshi: Moshi
+    @Named("okHttpBase") okHttpClient: OkHttpClient,
+    moshi: Moshi,
   ): TokenProvider = TraktTokenProvider(
     sharedPreferences = sharedPreferences,
-    moshi = moshi
+    moshi = moshi,
+    okHttpClient = okHttpClient
   )
 }

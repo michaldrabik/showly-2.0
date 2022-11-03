@@ -4,7 +4,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.data_remote.token.TokenProvider
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
-import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.Route
@@ -16,12 +15,6 @@ import javax.inject.Singleton
 class TraktAuthenticator @Inject constructor(
   private val tokenProvider: TokenProvider,
 ) : Authenticator {
-
-  private lateinit var httpClient: OkHttpClient
-
-  fun setHttpClient(httpClient: OkHttpClient) {
-    this.httpClient = httpClient
-  }
 
   override fun authenticate(route: Route?, response: Response): Request? =
     runBlocking {
@@ -39,7 +32,7 @@ class TraktAuthenticator @Inject constructor(
 
       try {
         Timber.d("Refreshing access token...")
-        val refreshedTokens = tokenProvider.refreshToken(httpClient)
+        val refreshedTokens = tokenProvider.refreshToken()
 
         tokenProvider.saveTokens(
           accessToken = refreshedTokens.access_token,
