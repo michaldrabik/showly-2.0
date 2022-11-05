@@ -23,7 +23,6 @@ Available on the Google Play Store and soon also on F-Droid.
    <img src="assets/screenshots/github2.jpg" width="150" alt="Screenshot 1">
    <img src="assets/screenshots/github3.jpg" width="150" alt="Screenshot 1">
    <img src="assets/screenshots/github4.jpg" width="150" alt="Screenshot 1">
-   <img src="assets/screenshots/github5.jpg" width="150" alt="Screenshot 1">
 </div>
 
 ## Project Setup
