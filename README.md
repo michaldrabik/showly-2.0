@@ -19,11 +19,10 @@ Available on the Google Play Store and soon also on F-Droid.
 ## Screenshots
 
 <div>
-   <img src="assets/screenshots/github1.jpg" width="150" alt="Screenshot 1">
-   <img src="assets/screenshots/github2.jpg" width="150" alt="Screenshot 1">
-   <img src="assets/screenshots/github3.jpg" width="150" alt="Screenshot 1">
-   <img src="assets/screenshots/github4.jpg" width="150" alt="Screenshot 1">
-   <img src="assets/screenshots/github5.jpg" width="150" alt="Screenshot 1">
+   <img src="assets/screenshots/github1a.jpg" width="150" alt="Screenshot 1">
+   <img src="assets/screenshots/github2a.jpg" width="150" alt="Screenshot 2">
+   <img src="assets/screenshots/github3a.jpg" width="150" alt="Screenshot 3">
+   <img src="assets/screenshots/github4a.jpg" width="150" alt="Screenshot 4">
 </div>
 
 ## Project Setup
