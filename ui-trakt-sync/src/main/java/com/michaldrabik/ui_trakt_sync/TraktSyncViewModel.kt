@@ -29,10 +29,8 @@ import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.TraktSyncSchedule
 import com.michaldrabik.ui_trakt_sync.cases.TraktSyncRatingsCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -160,13 +158,10 @@ class TraktSyncViewModel @Inject constructor(
           messageChannel.send(MessageEvent.Info(R.string.textTraktSyncError))
         }
         is TraktSyncAuthError -> {
-          viewModelScope.launch {
-            progressState.value = false
-            progressStatusState.value = ""
-            messageChannel.send(MessageEvent.Error(R.string.errorTraktAuthorization))
-            delay(250)
-            eventChannel.send(TraktSyncUiEvent.Finish)
-          }
+          progressState.value = false
+          progressStatusState.value = ""
+          messageChannel.send(MessageEvent.Error(R.string.errorTraktAuthorization))
+          eventChannel.send(TraktSyncUiEvent.Finish)
         }
         else -> Timber.d("Unsupported sync event")
       }

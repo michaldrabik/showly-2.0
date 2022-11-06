@@ -6,6 +6,7 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.michaldrabik.ui_base.events.Event
 import com.michaldrabik.ui_base.events.EventsManager
+import com.michaldrabik.ui_base.events.TraktSyncAuthError
 import com.michaldrabik.ui_base.events.TraktSyncError
 import com.michaldrabik.ui_base.events.TraktSyncSuccess
 import com.michaldrabik.ui_base.trakt.TraktSyncWorker
@@ -16,7 +17,6 @@ import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesMainCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -72,7 +72,7 @@ class ProgressMoviesMainViewModel @Inject constructor(
   }
 
   private fun onEvent(event: Event) {
-    if (event in arrayOf(TraktSyncError, TraktSyncSuccess)) {
+    if (event in arrayOf(TraktSyncError, TraktSyncAuthError, TraktSyncSuccess)) {
       loadProgress()
     }
   }

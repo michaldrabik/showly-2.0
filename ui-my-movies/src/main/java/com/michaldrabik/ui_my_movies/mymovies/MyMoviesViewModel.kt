@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.ReloadData
+import com.michaldrabik.ui_base.events.TraktSyncAuthError
 import com.michaldrabik.ui_base.events.TraktSyncError
 import com.michaldrabik.ui_base.events.TraktSyncSuccess
 import com.michaldrabik.ui_base.utilities.events.Event
@@ -162,6 +163,7 @@ class MyMoviesViewModel @Inject constructor(
     when (event) {
       is TraktSyncSuccess -> loadMovies()
       is TraktSyncError -> loadMovies()
+      is TraktSyncAuthError -> loadMovies()
       is ReloadData -> loadMovies()
       else -> Unit
     }

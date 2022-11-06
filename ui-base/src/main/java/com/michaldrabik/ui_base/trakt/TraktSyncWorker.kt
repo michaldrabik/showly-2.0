@@ -275,8 +275,9 @@ class TraktSyncWorker @AssistedInject constructor(
     if (showlyError is ShowlyError.UnauthorizedError) {
       eventsManager.sendEvent(TraktSyncAuthError)
       userManager.revokeToken()
+    } else {
+      eventsManager.sendEvent(TraktSyncError)
     }
-    eventsManager.sendEvent(TraktSyncError)
     if (!isSilent) {
       val message =
         if (showlyError is ShowlyError.UnauthorizedError) R.string.errorTraktAuthorization
@@ -308,6 +309,7 @@ class TraktSyncWorker @AssistedInject constructor(
           createErrorNotification(theme, R.string.textTraktSync, notificationMessageResId, action)
         )
       }
+
       else -> throw error
     }
   }

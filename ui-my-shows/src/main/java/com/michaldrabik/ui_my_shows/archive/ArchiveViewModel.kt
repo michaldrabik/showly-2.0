@@ -6,6 +6,7 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.ReloadData
+import com.michaldrabik.ui_base.events.TraktSyncAuthError
 import com.michaldrabik.ui_base.events.TraktSyncError
 import com.michaldrabik.ui_base.events.TraktSyncSuccess
 import com.michaldrabik.ui_base.utilities.events.Event
@@ -119,6 +120,7 @@ class ArchiveViewModel @Inject constructor(
     when (event) {
       is TraktSyncSuccess -> loadShows()
       is TraktSyncError -> loadShows()
+      is TraktSyncAuthError -> loadShows()
       is ReloadData -> loadShows()
       else -> Unit
     }
