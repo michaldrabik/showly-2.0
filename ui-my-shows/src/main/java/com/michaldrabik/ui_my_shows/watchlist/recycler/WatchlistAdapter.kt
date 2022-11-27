@@ -5,12 +5,16 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.ui_base.BaseAdapter
 import com.michaldrabik.ui_base.BaseMovieAdapter
+import com.michaldrabik.ui_base.common.ListViewMode
 import com.michaldrabik.ui_base.common.ListViewMode.COMPACT
+import com.michaldrabik.ui_base.common.ListViewMode.GRID
 import com.michaldrabik.ui_base.common.ListViewMode.NORMAL
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
+import com.michaldrabik.ui_my_shows.filters.FollowedShowsFiltersGridView
 import com.michaldrabik.ui_my_shows.filters.FollowedShowsFiltersView
 import com.michaldrabik.ui_my_shows.watchlist.views.WatchlistShowCompactView
+import com.michaldrabik.ui_my_shows.watchlist.views.WatchlistShowGridView
 import com.michaldrabik.ui_my_shows.watchlist.views.WatchlistShowView
 
 class WatchlistAdapter(
@@ -32,12 +36,19 @@ class WatchlistAdapter(
 
   override val asyncDiffer = AsyncListDiffer(this, WatchlistItemDiffCallback())
 
+  var listViewMode: ListViewMode = GRID
+    set(value) {
+      field = value
+      notifyItemRangeChanged(0, asyncDiffer.currentList.size)
+    }
+
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     when (viewType) {
       VIEW_TYPE_SHOW -> BaseMovieAdapter.BaseViewHolder(
         when (listViewMode) {
           NORMAL -> WatchlistShowView(parent.context)
           COMPACT -> WatchlistShowCompactView(parent.context)
+          GRID -> WatchlistShowGridView(parent.context)
         }.apply {
           itemClickListener = this@WatchlistAdapter.itemClickListener
           itemLongClickListener = this@WatchlistAdapter.itemLongClickListener
@@ -46,10 +57,17 @@ class WatchlistAdapter(
         }
       )
       VIEW_TYPE_FILTERS -> BaseMovieAdapter.BaseViewHolder(
-        FollowedShowsFiltersView(parent.context).apply {
-          onSortChipClicked = this@WatchlistAdapter.sortChipClickListener
-          onFilterUpcomingClicked = this@WatchlistAdapter.upcomingChipClickListener
-          isUpcomingChipVisible = true
+        when (listViewMode) {
+          NORMAL, COMPACT -> FollowedShowsFiltersView(parent.context).apply {
+            onSortChipClicked = this@WatchlistAdapter.sortChipClickListener
+            onFilterUpcomingClicked = this@WatchlistAdapter.upcomingChipClickListener
+            isUpcomingChipVisible = true
+          }
+          GRID -> FollowedShowsFiltersGridView(parent.context).apply {
+            onSortChipClicked = this@WatchlistAdapter.sortChipClickListener
+            onFilterUpcomingClicked = this@WatchlistAdapter.upcomingChipClickListener
+            isUpcomingChipVisible = true
+          }
         }
       )
       else -> throw IllegalStateException()
@@ -58,15 +76,17 @@ class WatchlistAdapter(
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     when (val item = asyncDiffer.currentList[position]) {
       is WatchlistListItem.FiltersItem ->
-        (holder.itemView as FollowedShowsFiltersView).bind(
-          item.sortOrder,
-          item.sortType,
-          item.isUpcoming
-        )
+        when (listViewMode) {
+          NORMAL, COMPACT ->
+            (holder.itemView as FollowedShowsFiltersView).bind(item.sortOrder, item.sortType, item.isUpcoming)
+          GRID ->
+            (holder.itemView as FollowedShowsFiltersGridView).bind(item.sortOrder, item.sortType, item.isUpcoming)
+        }
       is WatchlistListItem.ShowItem ->
         when (listViewMode) {
           NORMAL -> (holder.itemView as WatchlistShowView).bind(item)
           COMPACT -> (holder.itemView as WatchlistShowCompactView).bind(item)
+          GRID -> (holder.itemView as WatchlistShowGridView).bind(item)
         }
     }
   }

@@ -1,5 +1,7 @@
 package com.michaldrabik.ui_model
 
+import com.michaldrabik.common.Config
+
 enum class ImageType(
   val id: Int,
   val spanSize: Int,
@@ -10,5 +12,6 @@ enum class ImageType(
   FANART_WIDE(3, 3, "fanart"),
   TWITTER(4, 3, "twitterAd"),
   PREMIUM(5, 3, "premiumAd"),
-  PROFILE(6, 1, "profile")
+  PROFILE(6, 1, "profile"),
+  FILTERS(7, Config.LISTS_GRID_SPAN, "filters")
 }

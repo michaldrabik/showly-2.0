@@ -7,10 +7,11 @@ import androidx.core.view.postDelayed
 import androidx.core.view.updatePadding
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.michaldrabik.common.Config.LISTS_GRID_SPAN
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
@@ -20,6 +21,7 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
+import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
@@ -36,7 +38,9 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_ORDE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_SORT_ORDER
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_watchlist.*
+import kotlinx.android.synthetic.main.fragment_watchlist.watchlistContent
+import kotlinx.android.synthetic.main.fragment_watchlist.watchlistEmptyView
+import kotlinx.android.synthetic.main.fragment_watchlist.watchlistRecycler
 
 @AndroidEntryPoint
 class WatchlistFragment :
@@ -49,7 +53,7 @@ class WatchlistFragment :
   override val viewModel by viewModels<WatchlistViewModel>()
 
   private var adapter: WatchlistAdapter? = null
-  private var layoutManager: LinearLayoutManager? = null
+  private var layoutManager: LayoutManager? = null
   private var statusBarHeight = 0
   private var isSearching = false
 
@@ -66,7 +70,8 @@ class WatchlistFragment :
   }
 
   private fun setupRecycler() {
-    layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
+//    layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
+    layoutManager = GridLayoutManager(context, LISTS_GRID_SPAN)
     adapter = WatchlistAdapter(
       itemClickListener = { openShowDetails(it.show) },
       itemLongClickListener = { item -> openShowMenu(item.show) },
@@ -86,6 +91,12 @@ class WatchlistFragment :
       adapter = this@WatchlistFragment.adapter
       layoutManager = this@WatchlistFragment.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+      if (layoutManager is GridLayoutManager) {
+        updatePadding(
+          left = dimenToPx(R.dimen.spaceMedium),
+          right = dimenToPx(R.dimen.spaceMedium)
+        )
+      }
     }
   }
 
@@ -107,6 +118,9 @@ class WatchlistFragment :
       items.let {
         val notifyChange = resetScroll?.consume() == true
         adapter?.setItems(it, notifyChange = notifyChange)
+        (layoutManager as? GridLayoutManager)?.withSpanSizeLookup { pos ->
+          adapter?.getItems()?.get(pos)?.image?.type?.spanSize!!
+        }
         watchlistEmptyView.fadeIf(it.isEmpty() && !isSearching)
       }
       sortOrder?.let { event ->

@@ -22,6 +22,7 @@
 
   <dimen name="gridSpacing">3dp</dimen>
   <dimen name="gridPadding">8dp</dimen>
+  <dimen name="gridListsPadding">12dp</dimen>
 
   <dimen name="mediaTileCorner">4dp</dimen>
   <dimen name="galleryImageCorner">8dp</dimen>

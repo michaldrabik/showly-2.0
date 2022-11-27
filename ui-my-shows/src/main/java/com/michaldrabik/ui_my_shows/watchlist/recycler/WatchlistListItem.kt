@@ -38,7 +38,7 @@ sealed class WatchlistListItem(
     val isUpcoming: Boolean,
   ) : WatchlistListItem(
     show = Show.EMPTY,
-    image = Image.createUnknown(ImageType.POSTER),
+    image = Image.createUnknown(ImageType.FILTERS),
     isLoading = false
   )
 }
