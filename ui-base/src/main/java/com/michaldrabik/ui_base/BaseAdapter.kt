@@ -4,6 +4,7 @@ import android.view.View
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.ui_base.common.ListItem
+import com.michaldrabik.ui_base.common.ListViewMode
 
 abstract class BaseAdapter<Item : ListItem>(
   val listChangeListener: (() -> Unit)? = null
@@ -12,6 +13,11 @@ abstract class BaseAdapter<Item : ListItem>(
   abstract val asyncDiffer: AsyncListDiffer<Item>
 
   protected var notifyChange = false
+  var listViewMode: ListViewMode = ListViewMode.COMPACT
+    set(value) {
+      field = value
+      notifyItemRangeChanged(0, asyncDiffer.currentList.size)
+    }
 
   open fun setItems(newItems: List<Item>, notifyChange: Boolean = false) {
     this.notifyChange = notifyChange

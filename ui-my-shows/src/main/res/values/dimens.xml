@@ -22,6 +22,9 @@
   <dimen name="watchlistImageWidth">80dp</dimen>
   <dimen name="watchlistMarginHorizontal">12dp</dimen>
 
+  <dimen name="watchlistImageCompactHeight">64dp</dimen>
+  <dimen name="watchlistImageCompactWidth">43dp</dimen>
+
   <dimen name="archiveTabsViewPadding">148dp</dimen>
   <dimen name="archiveImageHeight">120dp</dimen>
   <dimen name="archiveImageWidth">80dp</dimen>

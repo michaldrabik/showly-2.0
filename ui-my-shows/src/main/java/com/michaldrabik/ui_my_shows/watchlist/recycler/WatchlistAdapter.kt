@@ -5,9 +5,12 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.ui_base.BaseAdapter
 import com.michaldrabik.ui_base.BaseMovieAdapter
+import com.michaldrabik.ui_base.common.ListViewMode.COMPACT
+import com.michaldrabik.ui_base.common.ListViewMode.NORMAL
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_shows.filters.FollowedShowsFiltersView
+import com.michaldrabik.ui_my_shows.watchlist.views.WatchlistShowCompactView
 import com.michaldrabik.ui_my_shows.watchlist.views.WatchlistShowView
 
 class WatchlistAdapter(
@@ -32,7 +35,10 @@ class WatchlistAdapter(
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     when (viewType) {
       VIEW_TYPE_SHOW -> BaseMovieAdapter.BaseViewHolder(
-        WatchlistShowView(parent.context).apply {
+        when (listViewMode) {
+          NORMAL -> WatchlistShowView(parent.context)
+          COMPACT -> WatchlistShowCompactView(parent.context)
+        }.apply {
           itemClickListener = this@WatchlistAdapter.itemClickListener
           itemLongClickListener = this@WatchlistAdapter.itemLongClickListener
           missingImageListener = this@WatchlistAdapter.missingImageListener
@@ -58,7 +64,10 @@ class WatchlistAdapter(
           item.isUpcoming
         )
       is WatchlistListItem.ShowItem ->
-        (holder.itemView as WatchlistShowView).bind(item)
+        when (listViewMode) {
+          NORMAL -> (holder.itemView as WatchlistShowView).bind(item)
+          COMPACT -> (holder.itemView as WatchlistShowCompactView).bind(item)
+        }
     }
   }
 
