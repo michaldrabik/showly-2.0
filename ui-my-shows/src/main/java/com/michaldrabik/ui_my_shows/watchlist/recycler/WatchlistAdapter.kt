@@ -36,7 +36,7 @@ class WatchlistAdapter(
 
   override val asyncDiffer = AsyncListDiffer(this, WatchlistItemDiffCallback())
 
-  var listViewMode: ListViewMode = GRID
+  var listViewMode: ListViewMode = NORMAL
     set(value) {
       field = value
       notifyItemRangeChanged(0, asyncDiffer.currentList.size)

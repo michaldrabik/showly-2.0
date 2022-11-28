@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.images.ShowImagesProvider
+import com.michaldrabik.ui_base.common.ListViewMode
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.ReloadData
 import com.michaldrabik.ui_base.events.TraktSyncAuthError
@@ -20,6 +21,7 @@ import com.michaldrabik.ui_my_shows.watchlist.cases.WatchlistFiltersCase
 import com.michaldrabik.ui_my_shows.watchlist.cases.WatchlistLoadShowsCase
 import com.michaldrabik.ui_my_shows.watchlist.cases.WatchlistSortOrderCase
 import com.michaldrabik.ui_my_shows.watchlist.cases.WatchlistTranslationsCase
+import com.michaldrabik.ui_my_shows.watchlist.cases.WatchlistViewModeCase
 import com.michaldrabik.ui_my_shows.watchlist.recycler.WatchlistListItem
 import com.michaldrabik.ui_my_shows.watchlist.recycler.WatchlistListItem.ShowItem
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -39,6 +41,7 @@ class WatchlistViewModel @Inject constructor(
   private val filtersCase: WatchlistFiltersCase,
   private val loadShowsCase: WatchlistLoadShowsCase,
   private val translationsCase: WatchlistTranslationsCase,
+  private val viewModeCase: WatchlistViewModeCase,
   private val imagesProvider: ShowImagesProvider,
   private val eventsManager: EventsManager,
 ) : ViewModel() {
@@ -46,6 +49,7 @@ class WatchlistViewModel @Inject constructor(
   private var loadItemsJob: Job? = null
 
   private val itemsState = MutableStateFlow<List<WatchlistListItem>>(emptyList())
+  private val viewModeState = MutableStateFlow(ListViewMode.NORMAL)
   private val sortOrderState = MutableStateFlow<Event<Pair<SortOrder, SortType>>?>(null)
   private val scrollState = MutableStateFlow<Event<Boolean>?>(null)
 
@@ -67,6 +71,7 @@ class WatchlistViewModel @Inject constructor(
   fun loadShows(resetScroll: Boolean = false) {
     loadItemsJob?.cancel()
     loadItemsJob = viewModelScope.launch {
+      viewModeState.value = viewModeCase.getListViewMode()
       itemsState.value = loadShowsCase.loadShows(searchQuery ?: "")
       scrollState.value = Event(resetScroll)
     }
@@ -91,6 +96,12 @@ class WatchlistViewModel @Inject constructor(
       filtersCase.setIsUpcoming(isUpcoming)
       loadShows(resetScroll = true)
     }
+  }
+
+  fun setListViewMode(viewMode: ListViewMode) {
+    val viewMode1 = ListViewMode.values().random()
+    viewModeCase.setListViewMode(viewMode1)
+    viewModeState.value = viewMode1
   }
 
   fun loadMissingImage(item: WatchlistListItem, force: Boolean) {
@@ -137,12 +148,14 @@ class WatchlistViewModel @Inject constructor(
   val uiState = combine(
     itemsState,
     sortOrderState,
-    scrollState
-  ) { itemsState, sortOrderState, scrollState ->
+    scrollState,
+    viewModeState
+  ) { s1, s2, s3, s4 ->
     WatchlistUiState(
-      items = itemsState,
-      sortOrder = sortOrderState,
-      resetScroll = scrollState
+      items = s1,
+      sortOrder = s2,
+      resetScroll = s3,
+      viewMode = s4
     )
   }.stateIn(
     scope = viewModelScope,

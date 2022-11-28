@@ -30,6 +30,7 @@ class SettingsRepository @Inject constructor(
   val sorting: SettingsSortRepository,
   val filters: SettingsFiltersRepository,
   val widgets: SettingsWidgetsRepository,
+  val viewMode: SettingsViewModeRepository,
   private val localSource: LocalDataSource,
   private val transactions: TransactionsProvider,
   private val mappers: Mappers,

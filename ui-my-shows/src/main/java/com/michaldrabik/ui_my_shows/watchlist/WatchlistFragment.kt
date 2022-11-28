@@ -8,11 +8,16 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.common.Config.LISTS_GRID_SPAN
 import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.common.ListViewMode.COMPACT
+import com.michaldrabik.ui_base.common.ListViewMode.GRID
+import com.michaldrabik.ui_base.common.ListViewMode.NORMAL
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.OnSortClickListener
@@ -38,9 +43,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_ORDE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_SORT_ORDER
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_watchlist.watchlistContent
-import kotlinx.android.synthetic.main.fragment_watchlist.watchlistEmptyView
-import kotlinx.android.synthetic.main.fragment_watchlist.watchlistRecycler
+import kotlinx.android.synthetic.main.fragment_watchlist.*
 
 @AndroidEntryPoint
 class WatchlistFragment :
@@ -70,10 +73,10 @@ class WatchlistFragment :
   }
 
   private fun setupRecycler() {
-//    layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
-    layoutManager = GridLayoutManager(context, LISTS_GRID_SPAN)
+    layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
     adapter = WatchlistAdapter(
-      itemClickListener = { openShowDetails(it.show) },
+//      itemClickListener = { openShowDetails(it.show) },
+      itemClickListener = { viewModel.setListViewMode(GRID) },
       itemLongClickListener = { item -> openShowMenu(item.show) },
       sortChipClickListener = ::openSortOrderDialog,
       upcomingChipClickListener = viewModel::setFilters,
@@ -91,12 +94,21 @@ class WatchlistFragment :
       adapter = this@WatchlistFragment.adapter
       layoutManager = this@WatchlistFragment.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-      if (layoutManager is GridLayoutManager) {
-        updatePadding(
-          left = dimenToPx(R.dimen.spaceMedium),
-          right = dimenToPx(R.dimen.spaceMedium)
-        )
-      }
+    }
+    setupRecyclerPaddings()
+  }
+
+  private fun setupRecyclerPaddings() {
+    if (layoutManager is GridLayoutManager) {
+      watchlistRecycler.updatePadding(
+        left = dimenToPx(R.dimen.spaceMedium),
+        right = dimenToPx(R.dimen.spaceMedium)
+      )
+    } else {
+      watchlistRecycler.updatePadding(
+        left = 0,
+        right = 0
+      )
     }
   }
 
@@ -115,6 +127,20 @@ class WatchlistFragment :
 
   private fun render(uiState: WatchlistUiState) {
     uiState.run {
+      viewMode.let {
+        if (adapter?.listViewMode != it) {
+          layoutManager = when (it) {
+            NORMAL, COMPACT -> LinearLayoutManager(requireContext(), VERTICAL, false)
+            GRID -> GridLayoutManager(context, LISTS_GRID_SPAN)
+          }
+          adapter?.listViewMode = it
+          watchlistRecycler?.let { recycler ->
+            recycler.layoutManager = layoutManager
+            recycler.adapter = adapter
+          }
+          setupRecyclerPaddings()
+        }
+      }
       items.let {
         val notifyChange = resetScroll?.consume() == true
         adapter?.setItems(it, notifyChange = notifyChange)
