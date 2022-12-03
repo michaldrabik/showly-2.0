@@ -282,7 +282,7 @@
       style="@style/ContextMenuItemButton.Move"
       android:text="@string/textMoveToWatchlist"
       android:visibility="gone"
-      app:icon="@drawable/ic_bookmark_full"
+      app:icon="@drawable/ic_bookmark"
       tools:visibility="visible"
       />
 
