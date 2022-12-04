@@ -69,13 +69,6 @@ class HiddenViewModel @Inject constructor(
     }
   }
 
-  fun loadSortOrder() {
-    viewModelScope.launch {
-      val sortOrder = sortOrderCase.loadSortOrder()
-      sortOrderState.value = Event(sortOrder)
-    }
-  }
-
   fun setSortOrder(sortOrder: SortOrder, sortType: SortType) {
     viewModelScope.launch {
       sortOrderCase.setSortOrder(sortOrder, sortType)

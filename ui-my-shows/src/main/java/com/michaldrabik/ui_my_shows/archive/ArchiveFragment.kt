@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
-import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
@@ -42,8 +41,7 @@ import kotlinx.android.synthetic.main.fragment_archive.*
 class ArchiveFragment :
   BaseFragment<ArchiveViewModel>(R.layout.fragment_archive),
   OnScrollResetListener,
-  OnSearchClickListener,
-  OnSortClickListener {
+  OnSearchClickListener {
 
   private val parentViewModel by viewModels<FollowedShowsViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<ArchiveViewModel>()
@@ -148,8 +146,6 @@ class ArchiveFragment :
       postDelayed(200) { layoutManager?.scrollToPosition(0) }
     }
   }
-
-  override fun onSortClick() = viewModel.loadSortOrder()
 
   override fun onScrollReset() = archiveRecycler.scrollToPosition(0)
 

@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
-import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
@@ -39,8 +38,7 @@ import kotlinx.android.synthetic.main.fragment_hidden_movies.*
 class HiddenFragment :
   BaseFragment<HiddenViewModel>(R.layout.fragment_hidden_movies),
   OnScrollResetListener,
-  OnSearchClickListener,
-  OnSortClickListener {
+  OnSearchClickListener {
 
   private val parentViewModel by viewModels<FollowedMoviesViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<HiddenViewModel>()
@@ -145,8 +143,6 @@ class HiddenFragment :
       postDelayed(200) { layoutManager?.scrollToPosition(0) }
     }
   }
-
-  override fun onSortClick() = viewModel.loadSortOrder()
 
   override fun onScrollReset() = hiddenMoviesRecycler.scrollToPosition(0)
 

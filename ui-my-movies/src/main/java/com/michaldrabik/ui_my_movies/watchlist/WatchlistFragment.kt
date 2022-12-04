@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
-import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
@@ -39,8 +38,7 @@ import kotlinx.android.synthetic.main.fragment_watchlist_movies.*
 class WatchlistFragment :
   BaseFragment<WatchlistViewModel>(R.layout.fragment_watchlist_movies),
   OnScrollResetListener,
-  OnSearchClickListener,
-  OnSortClickListener {
+  OnSearchClickListener {
 
   private val parentViewModel by viewModels<FollowedMoviesViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<WatchlistViewModel>()
@@ -144,8 +142,6 @@ class WatchlistFragment :
       postDelayed(200) { layoutManager?.scrollToPosition(0) }
     }
   }
-
-  override fun onSortClick() = viewModel.loadSortOrder()
 
   override fun onScrollReset() = watchlistMoviesRecycler.scrollToPosition(0)
 

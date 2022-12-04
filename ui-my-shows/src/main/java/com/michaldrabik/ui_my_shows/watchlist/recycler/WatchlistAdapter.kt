@@ -8,12 +8,14 @@ import com.michaldrabik.ui_base.BaseMovieAdapter
 import com.michaldrabik.ui_base.common.ListViewMode
 import com.michaldrabik.ui_base.common.ListViewMode.COMPACT
 import com.michaldrabik.ui_base.common.ListViewMode.GRID
+import com.michaldrabik.ui_base.common.ListViewMode.GRID_TITLE
 import com.michaldrabik.ui_base.common.ListViewMode.NORMAL
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_shows.filters.FollowedShowsFiltersGridView
 import com.michaldrabik.ui_my_shows.filters.FollowedShowsFiltersView
 import com.michaldrabik.ui_my_shows.watchlist.views.WatchlistShowCompactView
+import com.michaldrabik.ui_my_shows.watchlist.views.WatchlistShowGridTitleView
 import com.michaldrabik.ui_my_shows.watchlist.views.WatchlistShowGridView
 import com.michaldrabik.ui_my_shows.watchlist.views.WatchlistShowView
 
@@ -49,6 +51,7 @@ class WatchlistAdapter(
           NORMAL -> WatchlistShowView(parent.context)
           COMPACT -> WatchlistShowCompactView(parent.context)
           GRID -> WatchlistShowGridView(parent.context)
+          GRID_TITLE -> WatchlistShowGridTitleView(parent.context)
         }.apply {
           itemClickListener = this@WatchlistAdapter.itemClickListener
           itemLongClickListener = this@WatchlistAdapter.itemLongClickListener
@@ -63,7 +66,7 @@ class WatchlistAdapter(
             onFilterUpcomingClicked = this@WatchlistAdapter.upcomingChipClickListener
             isUpcomingChipVisible = true
           }
-          GRID -> FollowedShowsFiltersGridView(parent.context).apply {
+          GRID, GRID_TITLE -> FollowedShowsFiltersGridView(parent.context).apply {
             onSortChipClicked = this@WatchlistAdapter.sortChipClickListener
             onFilterUpcomingClicked = this@WatchlistAdapter.upcomingChipClickListener
             isUpcomingChipVisible = true
@@ -81,12 +84,15 @@ class WatchlistAdapter(
             (holder.itemView as FollowedShowsFiltersView).bind(item.sortOrder, item.sortType, item.isUpcoming)
           GRID ->
             (holder.itemView as FollowedShowsFiltersGridView).bind(item.sortOrder, item.sortType, item.isUpcoming)
+          GRID_TITLE ->
+            (holder.itemView as FollowedShowsFiltersGridView).bind(item.sortOrder, item.sortType, item.isUpcoming)
         }
       is WatchlistListItem.ShowItem ->
         when (listViewMode) {
           NORMAL -> (holder.itemView as WatchlistShowView).bind(item)
           COMPACT -> (holder.itemView as WatchlistShowCompactView).bind(item)
           GRID -> (holder.itemView as WatchlistShowGridView).bind(item)
+          GRID_TITLE -> (holder.itemView as WatchlistShowGridTitleView).bind(item)
         }
     }
   }

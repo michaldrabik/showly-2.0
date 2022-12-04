@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
-import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
 import com.michaldrabik.ui_base.utilities.NavigationHost
@@ -57,7 +56,6 @@ import me.everything.android.ui.overscroll.VerticalOverScrollBounceEffectDecorat
 @AndroidEntryPoint
 class ProgressMoviesFragment :
   BaseFragment<ProgressMoviesViewModel>(R.layout.fragment_progress_movies),
-  OnSortClickListener,
   OnSearchClickListener,
   OnScrollResetListener {
 
@@ -217,8 +215,6 @@ class ProgressMoviesFragment :
   }
 
   override fun onScrollReset() = progressMoviesMainRecycler.smoothScrollToPosition(0)
-
-  override fun onSortClick() = viewModel.loadSortOrder()
 
   private fun handleEvent(event: Event<*>) {
     when (event) {

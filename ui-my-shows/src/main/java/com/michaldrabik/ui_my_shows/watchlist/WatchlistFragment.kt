@@ -17,10 +17,10 @@ import com.michaldrabik.common.Config.LISTS_GRID_SPAN
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.ListViewMode.COMPACT
 import com.michaldrabik.ui_base.common.ListViewMode.GRID
+import com.michaldrabik.ui_base.common.ListViewMode.GRID_TITLE
 import com.michaldrabik.ui_base.common.ListViewMode.NORMAL
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
-import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
@@ -49,8 +49,7 @@ import kotlinx.android.synthetic.main.fragment_watchlist.*
 class WatchlistFragment :
   BaseFragment<WatchlistViewModel>(R.layout.fragment_watchlist),
   OnScrollResetListener,
-  OnSearchClickListener,
-  OnSortClickListener {
+  OnSearchClickListener {
 
   private val parentViewModel by viewModels<FollowedShowsViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<WatchlistViewModel>()
@@ -131,7 +130,7 @@ class WatchlistFragment :
         if (adapter?.listViewMode != it) {
           layoutManager = when (it) {
             NORMAL, COMPACT -> LinearLayoutManager(requireContext(), VERTICAL, false)
-            GRID -> GridLayoutManager(context, LISTS_GRID_SPAN)
+            GRID, GRID_TITLE -> GridLayoutManager(context, LISTS_GRID_SPAN)
           }
           adapter?.listViewMode = it
           watchlistRecycler?.let { recycler ->
@@ -189,8 +188,6 @@ class WatchlistFragment :
       postDelayed(200) { layoutManager?.scrollToPosition(0) }
     }
   }
-
-  override fun onSortClick() = viewModel.loadSortOrder()
 
   override fun onScrollReset() = watchlistRecycler.scrollToPosition(0)
 

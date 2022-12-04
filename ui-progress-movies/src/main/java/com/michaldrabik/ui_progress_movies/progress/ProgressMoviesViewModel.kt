@@ -87,14 +87,6 @@ class ProgressMoviesViewModel @Inject constructor(
     }
   }
 
-  fun loadSortOrder() {
-    if (itemsState.value.isNullOrEmpty()) return
-    viewModelScope.launch {
-      val sortOrder = sortCase.loadSortOrder()
-      sortOrderState.value = Event(sortOrder)
-    }
-  }
-
   fun findMissingImage(item: ProgressMovieListItem.MovieItem, force: Boolean) {
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
