@@ -114,13 +114,13 @@ class WatchlistFragment :
   private fun setupStatusBar() {
     if (statusBarHeight != 0) {
       watchlistContent.updatePadding(top = watchlistContent.paddingTop + statusBarHeight)
-      watchlistRecycler.updatePadding(top = dimenToPx(R.dimen.watchlistTabsViewPadding))
+      watchlistRecycler.updatePadding(top = dimenToPx(R.dimen.collectionTabsViewPadding))
       return
     }
     watchlistContent.doOnApplyWindowInsets { view, insets, padding, _ ->
       statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
       view.updatePadding(top = padding.top + statusBarHeight)
-      watchlistRecycler.updatePadding(top = dimenToPx(R.dimen.watchlistTabsViewPadding))
+      watchlistRecycler.updatePadding(top = dimenToPx(R.dimen.collectionTabsViewPadding))
     }
   }
 

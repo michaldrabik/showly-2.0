@@ -15,7 +15,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
-import kotlinx.android.synthetic.main.view_my_show_all.view.*
+import kotlinx.android.synthetic.main.view_collection_show.view.*
 import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n")
@@ -26,42 +26,42 @@ class MyShowAllView : ShowView<MyShowsItem> {
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
   init {
-    inflate(context, R.layout.view_my_show_all, this)
+    inflate(context, R.layout.view_collection_show, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-    myShowAllRoot.onClick { itemClickListener?.invoke(item) }
-    myShowAllRoot.onLongClick { itemLongClickListener?.invoke(item) }
+    collectionShowRoot.onClick { itemClickListener?.invoke(item) }
+    collectionShowRoot.onLongClick { itemLongClickListener?.invoke(item) }
     imageLoadCompleteListener = { loadTranslation() }
   }
 
-  override val imageView: ImageView = myShowAllImage
-  override val placeholderView: ImageView = myShowAllPlaceholder
+  override val imageView: ImageView = collectionShowImage
+  override val placeholderView: ImageView = collectionShowPlaceholder
 
   private lateinit var item: MyShowsItem
 
   override fun bind(item: MyShowsItem) {
     clear()
     this.item = item
-    myShowAllProgress.visibleIf(item.isLoading)
-    myShowAllTitle.text =
+    collectionShowProgress.visibleIf(item.isLoading)
+    collectionShowTitle.text =
       if (item.translation?.title.isNullOrBlank()) item.show.title
       else item.translation?.title
 
-    myShowAllDescription.text =
+    collectionShowDescription.text =
       if (item.translation?.overview.isNullOrBlank()) item.show.overview
       else item.translation?.overview
 
-    myShowAllNetwork.text =
+    collectionShowNetwork.text =
       if (item.show.year > 0) context.getString(R.string.textNetwork, item.show.network, item.show.year.toString())
       else String.format("%s", item.show.network)
 
-    myShowAllRating.text = String.format(ENGLISH, "%.1f", item.show.rating)
-    myShowAllDescription.visibleIf(item.show.overview.isNotBlank())
-    myShowAllNetwork.visibleIf(item.show.network.isNotBlank())
+    collectionShowRating.text = String.format(ENGLISH, "%.1f", item.show.rating)
+    collectionShowDescription.visibleIf(item.show.overview.isNotBlank())
+    collectionShowNetwork.visibleIf(item.show.network.isNotBlank())
 
     item.userRating?.let {
-      myShowAllUserStarIcon.visible()
-      myShowAllUserRating.visible()
-      myShowAllUserRating.text = String.format(ENGLISH, "%d", it)
+      collectionShowUserStarIcon.visible()
+      collectionShowUserRating.visible()
+      collectionShowUserRating.text = String.format(ENGLISH, "%d", it)
     }
 
     loadImage(item)
@@ -74,13 +74,13 @@ class MyShowAllView : ShowView<MyShowsItem> {
   }
 
   private fun clear() {
-    myShowAllTitle.text = ""
-    myShowAllDescription.text = ""
-    myShowAllNetwork.text = ""
-    myShowAllRating.text = ""
-    myShowAllPlaceholder.gone()
-    myShowAllUserStarIcon.gone()
-    myShowAllUserRating.gone()
-    Glide.with(this).clear(myShowAllImage)
+    collectionShowTitle.text = ""
+    collectionShowDescription.text = ""
+    collectionShowNetwork.text = ""
+    collectionShowRating.text = ""
+    collectionShowPlaceholder.gone()
+    collectionShowUserStarIcon.gone()
+    collectionShowUserRating.gone()
+    Glide.with(this).clear(collectionShowImage)
   }
 }

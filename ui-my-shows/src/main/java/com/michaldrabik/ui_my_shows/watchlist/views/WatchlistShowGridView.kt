@@ -16,7 +16,7 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.onLongClick
 import com.michaldrabik.ui_base.utilities.extensions.screenWidth
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
-import com.michaldrabik.ui_my_shows.databinding.ViewWatchlistShowGridBinding
+import com.michaldrabik.ui_my_shows.databinding.ViewCollectionShowGridBinding
 import com.michaldrabik.ui_my_shows.watchlist.recycler.WatchlistListItem
 
 @SuppressLint("SetTextI18n")
@@ -26,7 +26,7 @@ class WatchlistShowGridView : ShowView<WatchlistListItem.ShowItem> {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-  private val binding = ViewWatchlistShowGridBinding.inflate(LayoutInflater.from(context), this)
+  private val binding = ViewCollectionShowGridBinding.inflate(LayoutInflater.from(context), this)
 
   private val gridPadding by lazy { context.dimenToPx(R.dimen.gridListsPadding) }
   private val width by lazy { (screenWidth().toFloat() - (2.0 * gridPadding)) / Config.LISTS_GRID_SPAN }
@@ -34,13 +34,13 @@ class WatchlistShowGridView : ShowView<WatchlistListItem.ShowItem> {
 
   init {
     layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
-    binding.watchlistShowRoot.onClick { itemClickListener?.invoke(item) }
-    binding.watchlistShowRoot.onLongClick { itemLongClickListener?.invoke(item) }
+    binding.collectionShowRoot.onClick { itemClickListener?.invoke(item) }
+    binding.collectionShowRoot.onLongClick { itemLongClickListener?.invoke(item) }
     imageLoadCompleteListener = { loadTranslation() }
   }
 
-  override val imageView: ImageView = binding.watchlistShowImage
-  override val placeholderView: ImageView = binding.watchlistShowPlaceholder
+  override val imageView: ImageView = binding.collectionShowImage
+  override val placeholderView: ImageView = binding.collectionShowPlaceholder
 
   private lateinit var item: WatchlistListItem.ShowItem
 
@@ -54,8 +54,8 @@ class WatchlistShowGridView : ShowView<WatchlistListItem.ShowItem> {
     this.item = item
 
     with(binding) {
-      watchlistShowProgress.visibleIf(item.isLoading)
-      watchlistShowTitle.text =
+      collectionShowProgress.visibleIf(item.isLoading)
+      collectionShowTitle.text =
         if (item.translation?.title.isNullOrBlank()) item.show.title
         else item.translation?.title
     }
@@ -71,9 +71,9 @@ class WatchlistShowGridView : ShowView<WatchlistListItem.ShowItem> {
 
   private fun clear() {
     with(binding) {
-      watchlistShowTitle.text = ""
-      watchlistShowPlaceholder.gone()
-      Glide.with(this@WatchlistShowGridView).clear(watchlistShowImage)
+      collectionShowTitle.text = ""
+      collectionShowPlaceholder.gone()
+      Glide.with(this@WatchlistShowGridView).clear(collectionShowImage)
     }
   }
 }

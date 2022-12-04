@@ -17,16 +17,15 @@
   <dimen name="myShowAllImageWidth">80dp</dimen>
   <dimen name="myShowAllMarginHorizontal">12dp</dimen>
 
-  <dimen name="watchlistTabsViewPadding">148dp</dimen>
-  <dimen name="watchlistImageHeight">120dp</dimen>
-  <dimen name="watchlistImageWidth">80dp</dimen>
-  <dimen name="watchlistMarginHorizontal">12dp</dimen>
-
-  <dimen name="watchlistImageCompactHeight">64dp</dimen>
-  <dimen name="watchlistImageCompactWidth">43dp</dimen>
-
   <dimen name="archiveTabsViewPadding">148dp</dimen>
   <dimen name="archiveImageHeight">120dp</dimen>
   <dimen name="archiveImageWidth">80dp</dimen>
   <dimen name="archiveMarginHorizontal">12dp</dimen>
+
+  <dimen name="collectionTabsViewPadding">148dp</dimen>
+  <dimen name="collectionMarginHorizontal">12dp</dimen>
+  <dimen name="collectionImageHeight">120dp</dimen>
+  <dimen name="collectionImageWidth">80dp</dimen>
+  <dimen name="collectionImageCompactHeight">64dp</dimen>
+  <dimen name="collectionImageCompactWidth">43dp</dimen>
 </resources>

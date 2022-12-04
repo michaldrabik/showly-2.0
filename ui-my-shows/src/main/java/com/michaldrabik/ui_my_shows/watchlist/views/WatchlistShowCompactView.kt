@@ -17,7 +17,7 @@ import com.michaldrabik.ui_base.utilities.extensions.onLongClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_my_shows.R
-import com.michaldrabik.ui_my_shows.databinding.ViewWatchlistShowCompactBinding
+import com.michaldrabik.ui_my_shows.databinding.ViewCollectionShowCompactBinding
 import com.michaldrabik.ui_my_shows.watchlist.recycler.WatchlistListItem
 import java.util.Locale.ENGLISH
 
@@ -28,17 +28,17 @@ class WatchlistShowCompactView : ShowView<WatchlistListItem.ShowItem> {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-  private val binding = ViewWatchlistShowCompactBinding.inflate(LayoutInflater.from(context), this)
+  private val binding = ViewCollectionShowCompactBinding.inflate(LayoutInflater.from(context), this)
 
   init {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-    binding.watchlistShowRoot.onClick { itemClickListener?.invoke(item) }
-    binding.watchlistShowRoot.onLongClick { itemLongClickListener?.invoke(item) }
+    binding.collectionShowRoot.onClick { itemClickListener?.invoke(item) }
+    binding.collectionShowRoot.onLongClick { itemLongClickListener?.invoke(item) }
     imageLoadCompleteListener = { loadTranslation() }
   }
 
-  override val imageView: ImageView = binding.watchlistShowImage
-  override val placeholderView: ImageView = binding.watchlistShowPlaceholder
+  override val imageView: ImageView = binding.collectionShowImage
+  override val placeholderView: ImageView = binding.collectionShowPlaceholder
 
   private var nowUtc = nowUtc()
   private lateinit var item: WatchlistListItem.ShowItem
@@ -48,19 +48,19 @@ class WatchlistShowCompactView : ShowView<WatchlistListItem.ShowItem> {
     this.item = item
 
     with(binding) {
-      watchlistShowProgress.visibleIf(item.isLoading)
-      watchlistShowTitle.text =
+      collectionShowProgress.visibleIf(item.isLoading)
+      collectionShowTitle.text =
         if (item.translation?.title.isNullOrBlank()) item.show.title
         else item.translation?.title
 
-      watchlistShowNetwork.text =
+      collectionShowNetwork.text =
         if (item.show.year > 0) context.getString(R.string.textNetwork, item.show.network, item.show.year.toString())
         else String.format("%s", item.show.network)
 
-      watchlistShowRating.text = String.format(ENGLISH, "%.1f", item.show.rating)
-      watchlistShowNetwork.visibleIf(item.show.network.isNotBlank())
+      collectionShowRating.text = String.format(ENGLISH, "%.1f", item.show.rating)
+      collectionShowNetwork.visibleIf(item.show.network.isNotBlank())
 
-      with(watchlistShowReleaseDate) {
+      with(collectionShowReleaseDate) {
         val releaseDate = item.getReleaseDate()
         if (releaseDate != null) {
           visibleIf(releaseDate.isAfter(nowUtc))
@@ -71,9 +71,9 @@ class WatchlistShowCompactView : ShowView<WatchlistListItem.ShowItem> {
       }
 
       item.userRating?.let {
-        watchlistShowUserStarIcon.visible()
-        watchlistShowUserRating.visible()
-        watchlistShowUserRating.text = String.format(ENGLISH, "%d", it)
+        collectionShowUserStarIcon.visible()
+        collectionShowUserRating.visible()
+        collectionShowUserRating.text = String.format(ENGLISH, "%d", it)
       }
     }
 
@@ -88,13 +88,13 @@ class WatchlistShowCompactView : ShowView<WatchlistListItem.ShowItem> {
 
   private fun clear() {
     with(binding) {
-      watchlistShowTitle.text = ""
-      watchlistShowNetwork.text = ""
-      watchlistShowRating.text = ""
-      watchlistShowPlaceholder.gone()
-      watchlistShowUserRating.gone()
-      watchlistShowUserStarIcon.gone()
-      Glide.with(this@WatchlistShowCompactView).clear(watchlistShowImage)
+      collectionShowTitle.text = ""
+      collectionShowNetwork.text = ""
+      collectionShowRating.text = ""
+      collectionShowPlaceholder.gone()
+      collectionShowUserRating.gone()
+      collectionShowUserStarIcon.gone()
+      Glide.with(this@WatchlistShowCompactView).clear(collectionShowImage)
     }
   }
 }

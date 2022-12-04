@@ -17,7 +17,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.watchlist.recycler.WatchlistListItem
-import kotlinx.android.synthetic.main.view_watchlist_show.view.*
+import kotlinx.android.synthetic.main.view_collection_show.view.*
 import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n")
@@ -28,15 +28,15 @@ class WatchlistShowView : ShowView<WatchlistListItem.ShowItem> {
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
   init {
-    inflate(context, R.layout.view_watchlist_show, this)
+    inflate(context, R.layout.view_collection_show, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-    watchlistShowRoot.onClick { itemClickListener?.invoke(item) }
-    watchlistShowRoot.onLongClick { itemLongClickListener?.invoke(item) }
+    collectionShowRoot.onClick { itemClickListener?.invoke(item) }
+    collectionShowRoot.onLongClick { itemLongClickListener?.invoke(item) }
     imageLoadCompleteListener = { loadTranslation() }
   }
 
-  override val imageView: ImageView = watchlistShowImage
-  override val placeholderView: ImageView = watchlistShowPlaceholder
+  override val imageView: ImageView = collectionShowImage
+  override val placeholderView: ImageView = collectionShowPlaceholder
 
   private var nowUtc = nowUtc()
   private lateinit var item: WatchlistListItem.ShowItem
@@ -44,24 +44,24 @@ class WatchlistShowView : ShowView<WatchlistListItem.ShowItem> {
   override fun bind(item: WatchlistListItem.ShowItem) {
     clear()
     this.item = item
-    watchlistShowProgress.visibleIf(item.isLoading)
-    watchlistShowTitle.text =
+    collectionShowProgress.visibleIf(item.isLoading)
+    collectionShowTitle.text =
       if (item.translation?.title.isNullOrBlank()) item.show.title
       else item.translation?.title
 
-    watchlistShowDescription.text =
+    collectionShowDescription.text =
       if (item.translation?.overview.isNullOrBlank()) item.show.overview
       else item.translation?.overview
 
-    watchlistShowNetwork.text =
+    collectionShowNetwork.text =
       if (item.show.year > 0) context.getString(R.string.textNetwork, item.show.network, item.show.year.toString())
       else String.format("%s", item.show.network)
 
-    watchlistShowRating.text = String.format(ENGLISH, "%.1f", item.show.rating)
-    watchlistShowDescription.visibleIf(item.show.overview.isNotBlank())
-    watchlistShowNetwork.visibleIf(item.show.network.isNotBlank())
+    collectionShowRating.text = String.format(ENGLISH, "%.1f", item.show.rating)
+    collectionShowDescription.visibleIf(item.show.overview.isNotBlank())
+    collectionShowNetwork.visibleIf(item.show.network.isNotBlank())
 
-    with(watchlistShowReleaseDate) {
+    with(collectionShowReleaseDate) {
       val releaseDate = item.getReleaseDate()
       if (releaseDate != null) {
         visibleIf(releaseDate.isAfter(nowUtc))
@@ -72,9 +72,9 @@ class WatchlistShowView : ShowView<WatchlistListItem.ShowItem> {
     }
 
     item.userRating?.let {
-      watchlistShowUserStarIcon.visible()
-      watchlistShowUserRating.visible()
-      watchlistShowUserRating.text = String.format(ENGLISH, "%d", it)
+      collectionShowUserStarIcon.visible()
+      collectionShowUserRating.visible()
+      collectionShowUserRating.text = String.format(ENGLISH, "%d", it)
     }
 
     loadImage(item)
@@ -87,13 +87,13 @@ class WatchlistShowView : ShowView<WatchlistListItem.ShowItem> {
   }
 
   private fun clear() {
-    watchlistShowTitle.text = ""
-    watchlistShowDescription.text = ""
-    watchlistShowNetwork.text = ""
-    watchlistShowRating.text = ""
-    watchlistShowPlaceholder.gone()
-    watchlistShowUserRating.gone()
-    watchlistShowUserStarIcon.gone()
-    Glide.with(this).clear(watchlistShowImage)
+    collectionShowTitle.text = ""
+    collectionShowDescription.text = ""
+    collectionShowNetwork.text = ""
+    collectionShowRating.text = ""
+    collectionShowPlaceholder.gone()
+    collectionShowUserRating.gone()
+    collectionShowUserStarIcon.gone()
+    Glide.with(this).clear(collectionShowImage)
   }
 }
