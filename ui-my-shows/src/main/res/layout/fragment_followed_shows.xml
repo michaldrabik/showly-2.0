@@ -59,17 +59,6 @@
       app:tint="?android:attr/textColorPrimary"
       />
 
-    <com.michaldrabik.ui_base.common.views.ScrollableImageView
-      android:id="@+id/followedShowsListIcon"
-      android:layout_width="36dp"
-      android:layout_height="36dp"
-      android:layout_gravity="end"
-      android:layout_marginEnd="40dp"
-      android:paddingStart="14dp"
-      app:srcCompat="@drawable/ic_view_list"
-      app:tint="?android:attr/textColorPrimary"
-      />
-
   </FrameLayout>
 
   <com.michaldrabik.ui_base.common.views.SearchLocalView

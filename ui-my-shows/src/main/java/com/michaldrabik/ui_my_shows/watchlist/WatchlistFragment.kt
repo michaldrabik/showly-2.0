@@ -74,11 +74,11 @@ class WatchlistFragment :
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
     adapter = WatchlistAdapter(
-//      itemClickListener = { openShowDetails(it.show) },
-      itemClickListener = { viewModel.setListViewMode(GRID) },
+      itemClickListener = { openShowDetails(it.show) },
       itemLongClickListener = { item -> openShowMenu(item.show) },
       sortChipClickListener = ::openSortOrderDialog,
       upcomingChipClickListener = viewModel::setFilters,
+      listViewChipClickListener = viewModel::setNextViewMode,
       missingImageListener = viewModel::loadMissingImage,
       missingTranslationListener = viewModel::loadMissingTranslation,
       listChangeListener = {
@@ -100,8 +100,8 @@ class WatchlistFragment :
   private fun setupRecyclerPaddings() {
     if (layoutManager is GridLayoutManager) {
       watchlistRecycler.updatePadding(
-        left = dimenToPx(R.dimen.spaceMedium),
-        right = dimenToPx(R.dimen.spaceMedium)
+        left = dimenToPx(R.dimen.gridRecyclerPadding),
+        right = dimenToPx(R.dimen.gridRecyclerPadding)
       )
     } else {
       watchlistRecycler.updatePadding(

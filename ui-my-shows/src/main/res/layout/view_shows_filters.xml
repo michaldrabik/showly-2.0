@@ -9,31 +9,48 @@
   tools:theme="@style/AppTheme"
   >
 
-  <com.google.android.material.chip.ChipGroup
-    android:id="@+id/followedShowsChips"
+  <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/spaceMedium"
     android:layout_marginEnd="@dimen/spaceMedium"
-    android:paddingTop="@dimen/spaceSmall"
-    android:paddingBottom="@dimen/spaceSmall"
-    app:singleLine="true"
+    android:orientation="horizontal"
     >
 
-    <com.google.android.material.chip.Chip
-      android:id="@+id/followedShowsSortingChip"
-      style="@style/ShowlyChip.Sort"
-      android:text="@string/textSortName"
+    <com.google.android.material.chip.ChipGroup
+      android:id="@+id/followedShowsChips"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingTop="@dimen/spaceSmall"
+      android:paddingBottom="@dimen/spaceSmall"
+      app:singleLine="true"
+      >
+
+      <com.google.android.material.chip.Chip
+        android:id="@+id/followedShowsSortingChip"
+        style="@style/ShowlyChip.Sort"
+        android:text="@string/textSortName"
+        />
+
+      <com.google.android.material.chip.Chip
+        android:id="@+id/followedShowsUpcomingChip"
+        style="@style/ShowlyChip.Filter"
+        android:text="@string/textWatchlistIncoming"
+        android:visibility="gone"
+        tools:visibility="visible"
+        />
+
+    </com.google.android.material.chip.ChipGroup>
+
+    <ImageView
+      android:id="@+id/followedShowsListIcon"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:layout_marginStart="@dimen/spaceSmall"
+      app:srcCompat="@drawable/ic_view_list"
+      app:tint="?android:attr/textColorPrimary"
       />
 
-    <com.google.android.material.chip.Chip
-      android:id="@+id/followedShowsUpcomingChip"
-      style="@style/ShowlyChip.Filter"
-      android:text="@string/textWatchlistIncoming"
-      android:visibility="gone"
-      tools:visibility="visible"
-      />
-
-  </com.google.android.material.chip.ChipGroup>
+  </LinearLayout>
 
 </merge>

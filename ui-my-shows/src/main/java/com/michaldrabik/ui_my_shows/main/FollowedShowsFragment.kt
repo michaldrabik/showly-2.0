@@ -13,7 +13,6 @@ import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
-import com.michaldrabik.ui_base.common.OnViewModeClickListener
 import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
 import com.michaldrabik.ui_base.common.views.exSearchLocalViewInput
 import com.michaldrabik.ui_base.utilities.extensions.add
@@ -122,10 +121,6 @@ class FollowedShowsFragment :
     followedShowsSearchIcon.onClick {
       if (!isSearching) enterSearch() else exitSearch()
     }
-    followedShowsListIcon.onClick {
-      childFragmentManager.fragments.forEach { (it as? OnViewModeClickListener)?.onViewModeClick() }
-    }
-
     followedShowsSearchView.translationY = searchViewTranslation
     followedShowsTabs.translationY = tabsViewTranslation
     followedShowsModeTabs.translationY = tabsViewTranslation

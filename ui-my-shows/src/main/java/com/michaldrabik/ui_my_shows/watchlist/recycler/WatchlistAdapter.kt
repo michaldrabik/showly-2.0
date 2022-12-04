@@ -24,6 +24,7 @@ class WatchlistAdapter(
   private val itemLongClickListener: (WatchlistListItem) -> Unit,
   private val sortChipClickListener: (SortOrder, SortType) -> Unit,
   private val upcomingChipClickListener: (Boolean) -> Unit,
+  private val listViewChipClickListener: () -> Unit,
   private val missingImageListener: (WatchlistListItem, Boolean) -> Unit,
   private val missingTranslationListener: (WatchlistListItem) -> Unit,
   listChangeListener: () -> Unit,
@@ -64,11 +65,13 @@ class WatchlistAdapter(
           NORMAL, COMPACT -> FollowedShowsFiltersView(parent.context).apply {
             onSortChipClicked = this@WatchlistAdapter.sortChipClickListener
             onFilterUpcomingClicked = this@WatchlistAdapter.upcomingChipClickListener
+            onListViewModeClicked = this@WatchlistAdapter.listViewChipClickListener
             isUpcomingChipVisible = true
           }
           GRID, GRID_TITLE -> FollowedShowsFiltersGridView(parent.context).apply {
             onSortChipClicked = this@WatchlistAdapter.sortChipClickListener
             onFilterUpcomingClicked = this@WatchlistAdapter.upcomingChipClickListener
+            onListViewModeClicked = this@WatchlistAdapter.listViewChipClickListener
             isUpcomingChipVisible = true
           }
         }

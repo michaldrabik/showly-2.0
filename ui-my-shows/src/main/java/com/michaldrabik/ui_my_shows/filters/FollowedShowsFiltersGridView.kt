@@ -26,6 +26,7 @@ class FollowedShowsFiltersGridView : FrameLayout {
 
   var onSortChipClicked: ((SortOrder, SortType) -> Unit)? = null
   var onFilterUpcomingClicked: ((Boolean) -> Unit)? = null
+  var onListViewModeClicked: (() -> Unit)? = null
 
   init {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
@@ -53,6 +54,7 @@ class FollowedShowsFiltersGridView : FrameLayout {
 
       followedShowsSortingChip.onClick { onSortChipClicked?.invoke(sortOrder, sortType) }
       followedShowsUpcomingChip.onClick { onFilterUpcomingClicked?.invoke(followedShowsUpcomingChip.isChecked) }
+      followedShowsListIcon.onClick { onListViewModeClicked?.invoke() }
     }
   }
 }

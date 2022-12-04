@@ -10,8 +10,12 @@ class WatchlistViewModeCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
 ) {
 
-  fun setListViewMode(viewMode: ListViewMode) {
-    settingsRepository.viewMode.watchlistShowsViewMode = viewMode.name
+  fun setNextViewMode(): ListViewMode {
+    val viewModes = ListViewMode.values()
+    val index = viewModes.indexOf(getListViewMode()) + 1
+    val nextIndex = if (index >= viewModes.size) 0 else index
+    settingsRepository.viewMode.watchlistShowsViewMode = viewModes[nextIndex].name
+    return viewModes[nextIndex]
   }
 
   fun getListViewMode(): ListViewMode {

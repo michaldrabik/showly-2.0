@@ -91,10 +91,8 @@ class WatchlistViewModel @Inject constructor(
     }
   }
 
-  fun setListViewMode(viewMode: ListViewMode) {
-    val viewMode1 = ListViewMode.values().random()
-    viewModeCase.setListViewMode(viewMode1)
-    viewModeState.value = viewMode1
+  fun setNextViewMode() {
+    viewModeState.value = viewModeCase.setNextViewMode()
   }
 
   fun loadMissingImage(item: WatchlistListItem, force: Boolean) {
