@@ -55,9 +55,6 @@ class WatchlistShowGridView : ShowView<WatchlistListItem.ShowItem> {
 
     with(binding) {
       collectionShowProgress.visibleIf(item.isLoading)
-      collectionShowTitle.text =
-        if (item.translation?.title.isNullOrBlank()) item.show.title
-        else item.translation?.title
     }
 
     loadImage(item)
@@ -71,7 +68,6 @@ class WatchlistShowGridView : ShowView<WatchlistListItem.ShowItem> {
 
   private fun clear() {
     with(binding) {
-      collectionShowTitle.text = ""
       collectionShowPlaceholder.gone()
       Glide.with(this@WatchlistShowGridView).clear(collectionShowImage)
     }

@@ -26,6 +26,7 @@
   <attr name="colorPlaceholderIcon" format="color" />
 
   <attr name="textColorOnSurface" format="color" />
+  <attr name="textColorGridTitle" format="color" />
 
   <attr name="textColorChip" format="color" />
   <attr name="textColorChipSelected" format="color" />

@@ -15,6 +15,7 @@
     <item name="android:textColorPrimary">@color/colorWhite</item>
     <item name="android:textColorSecondary">@color/colorGrayLight</item>
     <item name="textColorOnSurface">@color/colorWhite</item>
+    <item name="textColorGridTitle">@color/colorWhite</item>
     <item name="textColorTab">#A1A1A1</item>
     <item name="textColorTabSelected">@color/colorWhite</item>
     <item name="textColorChip">?android:textColorPrimary</item>
@@ -140,6 +141,12 @@
     <item name="android:shadowDy">3</item>
     <item name="android:shadowRadius">1</item>
     <item name="android:textColor">?attr/textColorOnSurface</item>
+    <item name="android:ellipsize">end</item>
+  </style>
+
+  <style name="ImageTitleGrid" parent="ImageTitle">
+    <item name="android:shadowColor">@color/colorBlack</item>
+    <item name="android:textColor">?attr/textColorGridTitle</item>
     <item name="android:ellipsize">end</item>
   </style>
 

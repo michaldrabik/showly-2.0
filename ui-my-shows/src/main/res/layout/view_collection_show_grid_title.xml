@@ -51,7 +51,7 @@
 
   <TextView
     android:id="@+id/collectionShowTitle"
-    style="@style/ImageTitle"
+    style="@style/ImageTitleGrid"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom|start"

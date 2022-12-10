@@ -16,6 +16,7 @@
     <item name="android:textColorPrimary">@color/colorBlue</item>
     <item name="android:textColorSecondary">@color/colorBlueLight</item>
     <item name="textColorOnSurface">@color/colorWhite</item>
+    <item name="textColorGridTitle">@color/colorBlue</item>
     <item name="textColorTab">@color/colorBlueLight2x</item>
     <item name="textColorTabSelected">@color/colorBlue</item>
     <item name="textColorChip">?android:textColorPrimary</item>

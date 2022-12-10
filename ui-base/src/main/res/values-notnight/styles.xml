@@ -15,6 +15,7 @@
     <item name="android:textColorPrimary">@color/colorBlue</item>
     <item name="android:textColorSecondary">@color/colorBlueLight</item>
     <item name="textColorOnSurface">@color/colorWhite</item>
+    <item name="textColorGridTitle">@color/colorBlue</item>
     <item name="textColorTab">@color/colorBlueLight2x</item>
     <item name="textColorTabSelected">@color/colorBlue</item>
     <item name="textColorChip">?android:textColorPrimary</item>
@@ -82,6 +83,12 @@
   <style name="ShowlySwitch.Overlay" parent="">
     <item name="colorPrimary">@color/colorAccent</item>
     <item name="colorPrimaryContainer">#4D4B6383</item>
+  </style>
+
+  <style name="ImageTitleGrid" parent="ImageTitle">
+    <item name="android:shadowColor">@color/colorTransparent</item>
+    <item name="android:textColor">?attr/textColorGridTitle</item>
+    <item name="fontFamily">sans-serif-medium</item>
   </style>
 
 </resources>
