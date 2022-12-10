@@ -41,16 +41,17 @@
         tools:visibility="visible"
         />
 
-    </com.google.android.material.chip.ChipGroup>
+      <com.google.android.material.chip.Chip
+        android:id="@+id/followedShowsListViewChip"
+        style="@style/ShowlyChip"
+        app:chipIcon="@drawable/ic_view_list"
+        app:chipIconEnabled="true"
+        app:chipIconTint="?android:textColorPrimary"
+        app:iconEndPadding="-14dp"
+        app:iconStartPadding="2dp"
+        />
 
-    <ImageView
-      android:id="@+id/followedShowsListIcon"
-      android:layout_width="wrap_content"
-      android:layout_height="match_parent"
-      android:layout_marginStart="@dimen/spaceSmall"
-      app:srcCompat="@drawable/ic_view_list"
-      app:tint="?android:attr/textColorPrimary"
-      />
+    </com.google.android.material.chip.ChipGroup>
 
   </LinearLayout>
 

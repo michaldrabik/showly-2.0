@@ -54,7 +54,7 @@ class FollowedShowsFiltersView : FrameLayout {
 
       followedShowsSortingChip.onClick { onSortChipClicked?.invoke(sortOrder, sortType) }
       followedShowsUpcomingChip.onClick { onFilterUpcomingClicked?.invoke(followedShowsUpcomingChip.isChecked) }
-      followedShowsListIcon.onClick { onListViewModeClicked?.invoke() }
+      followedShowsListViewChip.onClick { onListViewModeClicked?.invoke() }
     }
   }
 }
