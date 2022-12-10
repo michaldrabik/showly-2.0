@@ -26,6 +26,7 @@ sealed class WatchlistListItem(
     val dateFormat: DateTimeFormatter,
     val translation: Translation? = null,
     val userRating: Int? = null,
+    val sortOrder: SortOrder? = null,
   ) : WatchlistListItem(
     show = show,
     image = image,

@@ -40,6 +40,7 @@ class WatchlistItemDiffCallback : DiffUtil.ItemCallback<WatchlistListItem>() {
       oldItem.image == newItem.image &&
       oldItem.isLoading == newItem.isLoading &&
       oldItem.translation == newItem.translation &&
+      oldItem.sortOrder == newItem.sortOrder &&
       oldItem.userRating == newItem.userRating
   }
 

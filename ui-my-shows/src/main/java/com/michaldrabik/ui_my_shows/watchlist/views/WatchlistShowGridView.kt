@@ -15,9 +15,14 @@ import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.onLongClick
 import com.michaldrabik.ui_base.utilities.extensions.screenWidth
+import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_model.SortOrder.RATING
+import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_my_shows.databinding.ViewCollectionShowGridBinding
 import com.michaldrabik.ui_my_shows.watchlist.recycler.WatchlistListItem
+import kotlinx.android.synthetic.main.view_collection_show.view.*
+import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n")
 class WatchlistShowGridView : ShowView<WatchlistListItem.ShowItem> {
@@ -55,6 +60,16 @@ class WatchlistShowGridView : ShowView<WatchlistListItem.ShowItem> {
 
     with(binding) {
       collectionShowProgress.visibleIf(item.isLoading)
+
+      if (item.sortOrder == RATING) {
+        collectionShowRating.visible()
+        collectionShowRating.text = String.format(ENGLISH, "%.1f", item.show.rating)
+      } else if (item.sortOrder == USER_RATING && item.userRating != null) {
+        collectionShowRating.visible()
+        collectionShowRating.text = String.format(ENGLISH, "%d", item.userRating)
+      } else {
+        collectionShowRating.gone()
+      }
     }
 
     loadImage(item)

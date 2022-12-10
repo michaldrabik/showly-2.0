@@ -8,6 +8,7 @@ import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_my_shows.watchlist.helpers.WatchlistItemFilter
@@ -49,7 +50,8 @@ class WatchlistLoadShowsCase @Inject constructor(
           show = it,
           translation = translations[it.traktId],
           userRating = ratings[it.ids.trakt],
-          dateFormat = dateFormat
+          dateFormat = dateFormat,
+          sortOrder = filtersItem.sortOrder
         )
       }
       .awaitAll()
@@ -79,6 +81,7 @@ class WatchlistLoadShowsCase @Inject constructor(
     translation: Translation?,
     userRating: TraktRating?,
     dateFormat: DateTimeFormatter,
+    sortOrder: SortOrder,
   ) = async {
     val image = imagesProvider.findCachedImage(show, ImageType.POSTER)
     WatchlistListItem.ShowItem(
@@ -87,7 +90,8 @@ class WatchlistLoadShowsCase @Inject constructor(
       image = image,
       dateFormat = dateFormat,
       translation = translation,
-      userRating = userRating?.rating
+      userRating = userRating?.rating,
+      sortOrder = sortOrder
     )
   }
 }

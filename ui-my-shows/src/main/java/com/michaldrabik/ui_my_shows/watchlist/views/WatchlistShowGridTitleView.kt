@@ -15,9 +15,12 @@ import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.onLongClick
 import com.michaldrabik.ui_base.utilities.extensions.screenWidth
+import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_my_shows.databinding.ViewCollectionShowGridTitleBinding
 import com.michaldrabik.ui_my_shows.watchlist.recycler.WatchlistListItem
+import java.util.Locale
 
 @SuppressLint("SetTextI18n")
 class WatchlistShowGridTitleView : ShowView<WatchlistListItem.ShowItem> {
@@ -55,9 +58,20 @@ class WatchlistShowGridTitleView : ShowView<WatchlistListItem.ShowItem> {
 
     with(binding) {
       collectionShowProgress.visibleIf(item.isLoading)
+
       collectionShowTitle.text =
         if (item.translation?.title.isNullOrBlank()) item.show.title
         else item.translation?.title
+
+      if (item.sortOrder == SortOrder.RATING) {
+        collectionShowRating.visible()
+        collectionShowRating.text = String.format(Locale.ENGLISH, "%.1f", item.show.rating)
+      } else if (item.sortOrder == SortOrder.USER_RATING && item.userRating != null) {
+        collectionShowRating.visible()
+        collectionShowRating.text = String.format(Locale.ENGLISH, "%d", item.userRating)
+      } else {
+        collectionShowRating.gone()
+      }
     }
 
     loadImage(item)
