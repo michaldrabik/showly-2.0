@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_my_shows.watchlist.views
+package com.michaldrabik.ui_my_shows.views
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -17,23 +17,25 @@ import com.michaldrabik.ui_base.utilities.extensions.onLongClick
 import com.michaldrabik.ui_base.utilities.extensions.screenWidth
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
-import com.michaldrabik.ui_model.SortOrder
-import com.michaldrabik.ui_my_shows.databinding.ViewCollectionShowGridTitleBinding
-import com.michaldrabik.ui_my_shows.watchlist.recycler.WatchlistListItem
-import java.util.Locale
+import com.michaldrabik.ui_model.SortOrder.RATING
+import com.michaldrabik.ui_model.SortOrder.USER_RATING
+import com.michaldrabik.ui_my_shows.databinding.ViewCollectionShowGridBinding
+import com.michaldrabik.ui_my_shows.views.recycler.CollectionListItem
+import kotlinx.android.synthetic.main.view_collection_show.view.*
+import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n")
-class WatchlistShowGridTitleView : ShowView<WatchlistListItem.ShowItem> {
+class CollectionShowGridView : ShowView<CollectionListItem.ShowItem> {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-  private val binding = ViewCollectionShowGridTitleBinding.inflate(LayoutInflater.from(context), this)
+  private val binding = ViewCollectionShowGridBinding.inflate(LayoutInflater.from(context), this)
 
   private val gridPadding by lazy { context.dimenToPx(R.dimen.gridListsPadding) }
   private val width by lazy { (screenWidth().toFloat() - (2.0 * gridPadding)) / Config.LISTS_GRID_SPAN }
-  private val height by lazy { width * 1.7305 }
+  private val height by lazy { width * ASPECT_RATIO }
 
   init {
     layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
@@ -45,9 +47,9 @@ class WatchlistShowGridTitleView : ShowView<WatchlistListItem.ShowItem> {
   override val imageView: ImageView = binding.collectionShowImage
   override val placeholderView: ImageView = binding.collectionShowPlaceholder
 
-  private lateinit var item: WatchlistListItem.ShowItem
+  private lateinit var item: CollectionListItem.ShowItem
 
-  override fun bind(item: WatchlistListItem.ShowItem) {
+  override fun bind(item: CollectionListItem.ShowItem) {
     layoutParams = LayoutParams(
       (width * item.image.type.spanSize.toFloat()).toInt(),
       height.toInt()
@@ -59,16 +61,12 @@ class WatchlistShowGridTitleView : ShowView<WatchlistListItem.ShowItem> {
     with(binding) {
       collectionShowProgress.visibleIf(item.isLoading)
 
-      collectionShowTitle.text =
-        if (item.translation?.title.isNullOrBlank()) item.show.title
-        else item.translation?.title
-
-      if (item.sortOrder == SortOrder.RATING) {
+      if (item.sortOrder == RATING) {
         collectionShowRating.visible()
-        collectionShowRating.text = String.format(Locale.ENGLISH, "%.1f", item.show.rating)
-      } else if (item.sortOrder == SortOrder.USER_RATING && item.userRating != null) {
+        collectionShowRating.text = String.format(ENGLISH, "%.1f", item.show.rating)
+      } else if (item.sortOrder == USER_RATING && item.userRating != null) {
         collectionShowRating.visible()
-        collectionShowRating.text = String.format(Locale.ENGLISH, "%d", item.userRating)
+        collectionShowRating.text = String.format(ENGLISH, "%d", item.userRating)
       } else {
         collectionShowRating.gone()
       }
@@ -85,9 +83,8 @@ class WatchlistShowGridTitleView : ShowView<WatchlistListItem.ShowItem> {
 
   private fun clear() {
     with(binding) {
-      collectionShowTitle.text = ""
       collectionShowPlaceholder.gone()
-      Glide.with(this@WatchlistShowGridTitleView).clear(collectionShowImage)
+      Glide.with(this@CollectionShowGridView).clear(collectionShowImage)
     }
   }
 }

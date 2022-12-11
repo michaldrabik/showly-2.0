@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_my_shows.watchlist.recycler
+package com.michaldrabik.ui_my_shows.views.recycler
 
 import com.michaldrabik.common.extensions.toZonedDateTime
 import com.michaldrabik.ui_base.common.ListItem
@@ -11,7 +11,7 @@ import com.michaldrabik.ui_model.Translation
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
-sealed class WatchlistListItem(
+sealed class CollectionListItem(
   override val show: Show,
   override val image: Image,
   override val isLoading: Boolean = false,
@@ -27,7 +27,7 @@ sealed class WatchlistListItem(
     val translation: Translation? = null,
     val userRating: Int? = null,
     val sortOrder: SortOrder? = null,
-  ) : WatchlistListItem(
+  ) : CollectionListItem(
     show = show,
     image = image,
     isLoading = isLoading
@@ -37,7 +37,7 @@ sealed class WatchlistListItem(
     val sortOrder: SortOrder,
     val sortType: SortType,
     val isUpcoming: Boolean,
-  ) : WatchlistListItem(
+  ) : CollectionListItem(
     show = Show.EMPTY,
     image = Image.createUnknown(ImageType.FILTERS),
     isLoading = false

@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_my_shows.watchlist.recycler
+package com.michaldrabik.ui_my_shows.views.recycler
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -14,21 +14,21 @@ import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_shows.filters.FollowedShowsFiltersGridView
 import com.michaldrabik.ui_my_shows.filters.FollowedShowsFiltersView
-import com.michaldrabik.ui_my_shows.watchlist.views.WatchlistShowCompactView
-import com.michaldrabik.ui_my_shows.watchlist.views.WatchlistShowGridTitleView
-import com.michaldrabik.ui_my_shows.watchlist.views.WatchlistShowGridView
-import com.michaldrabik.ui_my_shows.watchlist.views.WatchlistShowView
+import com.michaldrabik.ui_my_shows.views.CollectionShowCompactView
+import com.michaldrabik.ui_my_shows.views.CollectionShowGridTitleView
+import com.michaldrabik.ui_my_shows.views.CollectionShowGridView
+import com.michaldrabik.ui_my_shows.views.CollectionShowView
 
-class WatchlistAdapter(
-  private val itemClickListener: (WatchlistListItem) -> Unit,
-  private val itemLongClickListener: (WatchlistListItem) -> Unit,
+class CollectionAdapter(
+  private val itemClickListener: (CollectionListItem) -> Unit,
+  private val itemLongClickListener: (CollectionListItem) -> Unit,
   private val sortChipClickListener: (SortOrder, SortType) -> Unit,
   private val upcomingChipClickListener: (Boolean) -> Unit,
   private val listViewChipClickListener: () -> Unit,
-  private val missingImageListener: (WatchlistListItem, Boolean) -> Unit,
-  private val missingTranslationListener: (WatchlistListItem) -> Unit,
+  private val missingImageListener: (CollectionListItem, Boolean) -> Unit,
+  private val missingTranslationListener: (CollectionListItem) -> Unit,
   listChangeListener: () -> Unit,
-) : BaseAdapter<WatchlistListItem>(
+) : BaseAdapter<CollectionListItem>(
   listChangeListener = listChangeListener
 ) {
 
@@ -37,7 +37,7 @@ class WatchlistAdapter(
     private const val VIEW_TYPE_FILTERS = 2
   }
 
-  override val asyncDiffer = AsyncListDiffer(this, WatchlistItemDiffCallback())
+  override val asyncDiffer = AsyncListDiffer(this, CollectionItemDiffCallback())
 
   var listViewMode: ListViewMode = NORMAL
     set(value) {
@@ -49,29 +49,29 @@ class WatchlistAdapter(
     when (viewType) {
       VIEW_TYPE_SHOW -> BaseMovieAdapter.BaseViewHolder(
         when (listViewMode) {
-          NORMAL -> WatchlistShowView(parent.context)
-          COMPACT -> WatchlistShowCompactView(parent.context)
-          GRID -> WatchlistShowGridView(parent.context)
-          GRID_TITLE -> WatchlistShowGridTitleView(parent.context)
+          NORMAL -> CollectionShowView(parent.context)
+          COMPACT -> CollectionShowCompactView(parent.context)
+          GRID -> CollectionShowGridView(parent.context)
+          GRID_TITLE -> CollectionShowGridTitleView(parent.context)
         }.apply {
-          itemClickListener = this@WatchlistAdapter.itemClickListener
-          itemLongClickListener = this@WatchlistAdapter.itemLongClickListener
-          missingImageListener = this@WatchlistAdapter.missingImageListener
-          missingTranslationListener = this@WatchlistAdapter.missingTranslationListener
+          itemClickListener = this@CollectionAdapter.itemClickListener
+          itemLongClickListener = this@CollectionAdapter.itemLongClickListener
+          missingImageListener = this@CollectionAdapter.missingImageListener
+          missingTranslationListener = this@CollectionAdapter.missingTranslationListener
         }
       )
       VIEW_TYPE_FILTERS -> BaseMovieAdapter.BaseViewHolder(
         when (listViewMode) {
           NORMAL, COMPACT -> FollowedShowsFiltersView(parent.context).apply {
-            onSortChipClicked = this@WatchlistAdapter.sortChipClickListener
-            onFilterUpcomingClicked = this@WatchlistAdapter.upcomingChipClickListener
-            onListViewModeClicked = this@WatchlistAdapter.listViewChipClickListener
+            onSortChipClicked = this@CollectionAdapter.sortChipClickListener
+            onFilterUpcomingClicked = this@CollectionAdapter.upcomingChipClickListener
+            onListViewModeClicked = this@CollectionAdapter.listViewChipClickListener
             isUpcomingChipVisible = true
           }
           GRID, GRID_TITLE -> FollowedShowsFiltersGridView(parent.context).apply {
-            onSortChipClicked = this@WatchlistAdapter.sortChipClickListener
-            onFilterUpcomingClicked = this@WatchlistAdapter.upcomingChipClickListener
-            onListViewModeClicked = this@WatchlistAdapter.listViewChipClickListener
+            onSortChipClicked = this@CollectionAdapter.sortChipClickListener
+            onFilterUpcomingClicked = this@CollectionAdapter.upcomingChipClickListener
+            onListViewModeClicked = this@CollectionAdapter.listViewChipClickListener
             isUpcomingChipVisible = true
           }
         }
@@ -81,7 +81,7 @@ class WatchlistAdapter(
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     when (val item = asyncDiffer.currentList[position]) {
-      is WatchlistListItem.FiltersItem ->
+      is CollectionListItem.FiltersItem ->
         when (listViewMode) {
           NORMAL, COMPACT ->
             (holder.itemView as FollowedShowsFiltersView).bind(item.sortOrder, item.sortType, item.isUpcoming)
@@ -90,20 +90,20 @@ class WatchlistAdapter(
           GRID_TITLE ->
             (holder.itemView as FollowedShowsFiltersGridView).bind(item.sortOrder, item.sortType, item.isUpcoming)
         }
-      is WatchlistListItem.ShowItem ->
+      is CollectionListItem.ShowItem ->
         when (listViewMode) {
-          NORMAL -> (holder.itemView as WatchlistShowView).bind(item)
-          COMPACT -> (holder.itemView as WatchlistShowCompactView).bind(item)
-          GRID -> (holder.itemView as WatchlistShowGridView).bind(item)
-          GRID_TITLE -> (holder.itemView as WatchlistShowGridTitleView).bind(item)
+          NORMAL -> (holder.itemView as CollectionShowView).bind(item)
+          COMPACT -> (holder.itemView as CollectionShowCompactView).bind(item)
+          GRID -> (holder.itemView as CollectionShowGridView).bind(item)
+          GRID_TITLE -> (holder.itemView as CollectionShowGridTitleView).bind(item)
         }
     }
   }
 
   override fun getItemViewType(position: Int) =
     when (asyncDiffer.currentList[position]) {
-      is WatchlistListItem.ShowItem -> VIEW_TYPE_SHOW
-      is WatchlistListItem.FiltersItem -> VIEW_TYPE_FILTERS
+      is CollectionListItem.ShowItem -> VIEW_TYPE_SHOW
+      is CollectionListItem.FiltersItem -> VIEW_TYPE_FILTERS
       else -> throw IllegalStateException()
     }
 }

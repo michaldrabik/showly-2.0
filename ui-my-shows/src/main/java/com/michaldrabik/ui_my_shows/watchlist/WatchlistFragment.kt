@@ -38,7 +38,7 @@ import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.main.FollowedShowsFragment
 import com.michaldrabik.ui_my_shows.main.FollowedShowsViewModel
-import com.michaldrabik.ui_my_shows.watchlist.recycler.WatchlistAdapter
+import com.michaldrabik.ui_my_shows.views.recycler.CollectionAdapter
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_ORDER
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_SORT_ORDER
@@ -54,7 +54,7 @@ class WatchlistFragment :
   private val parentViewModel by viewModels<FollowedShowsViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<WatchlistViewModel>()
 
-  private var adapter: WatchlistAdapter? = null
+  private var adapter: CollectionAdapter? = null
   private var layoutManager: LayoutManager? = null
   private var statusBarHeight = 0
   private var isSearching = false
@@ -73,7 +73,7 @@ class WatchlistFragment :
 
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
-    adapter = WatchlistAdapter(
+    adapter = CollectionAdapter(
       itemClickListener = { openShowDetails(it.show) },
       itemLongClickListener = { item -> openShowMenu(item.show) },
       sortChipClickListener = ::openSortOrderDialog,

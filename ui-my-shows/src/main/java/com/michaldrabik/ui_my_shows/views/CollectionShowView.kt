@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_my_shows.watchlist.views
+package com.michaldrabik.ui_my_shows.views
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -16,12 +16,12 @@ import com.michaldrabik.ui_base.utilities.extensions.onLongClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_my_shows.R
-import com.michaldrabik.ui_my_shows.watchlist.recycler.WatchlistListItem
+import com.michaldrabik.ui_my_shows.views.recycler.CollectionListItem
 import kotlinx.android.synthetic.main.view_collection_show.view.*
 import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n")
-class WatchlistShowView : ShowView<WatchlistListItem.ShowItem> {
+class CollectionShowView : ShowView<CollectionListItem.ShowItem> {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -39,9 +39,9 @@ class WatchlistShowView : ShowView<WatchlistListItem.ShowItem> {
   override val placeholderView: ImageView = collectionShowPlaceholder
 
   private var nowUtc = nowUtc()
-  private lateinit var item: WatchlistListItem.ShowItem
+  private lateinit var item: CollectionListItem.ShowItem
 
-  override fun bind(item: WatchlistListItem.ShowItem) {
+  override fun bind(item: CollectionListItem.ShowItem) {
     clear()
     this.item = item
     collectionShowProgress.visibleIf(item.isLoading)

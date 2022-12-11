@@ -17,13 +17,13 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_shows.main.FollowedShowsUiState
+import com.michaldrabik.ui_my_shows.views.recycler.CollectionListItem
+import com.michaldrabik.ui_my_shows.views.recycler.CollectionListItem.ShowItem
 import com.michaldrabik.ui_my_shows.watchlist.cases.WatchlistFiltersCase
 import com.michaldrabik.ui_my_shows.watchlist.cases.WatchlistLoadShowsCase
 import com.michaldrabik.ui_my_shows.watchlist.cases.WatchlistSortOrderCase
 import com.michaldrabik.ui_my_shows.watchlist.cases.WatchlistTranslationsCase
 import com.michaldrabik.ui_my_shows.watchlist.cases.WatchlistViewModeCase
-import com.michaldrabik.ui_my_shows.watchlist.recycler.WatchlistListItem
-import com.michaldrabik.ui_my_shows.watchlist.recycler.WatchlistListItem.ShowItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -48,7 +48,7 @@ class WatchlistViewModel @Inject constructor(
 
   private var loadItemsJob: Job? = null
 
-  private val itemsState = MutableStateFlow<List<WatchlistListItem>>(emptyList())
+  private val itemsState = MutableStateFlow<List<CollectionListItem>>(emptyList())
   private val viewModeState = MutableStateFlow(ListViewMode.NORMAL)
   private val sortOrderState = MutableStateFlow<Event<Pair<SortOrder, SortType>>?>(null)
   private val scrollState = MutableStateFlow<Event<Boolean>?>(null)
@@ -95,7 +95,7 @@ class WatchlistViewModel @Inject constructor(
     viewModeState.value = viewModeCase.setNextViewMode()
   }
 
-  fun loadMissingImage(item: WatchlistListItem, force: Boolean) {
+  fun loadMissingImage(item: CollectionListItem, force: Boolean) {
     check(item is ShowItem)
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
@@ -108,7 +108,7 @@ class WatchlistViewModel @Inject constructor(
     }
   }
 
-  fun loadMissingTranslation(item: WatchlistListItem) {
+  fun loadMissingTranslation(item: CollectionListItem) {
     check(item is ShowItem)
     if (item.translation != null || loadShowsCase.language == Config.DEFAULT_LANGUAGE) return
     viewModelScope.launch {
@@ -121,7 +121,7 @@ class WatchlistViewModel @Inject constructor(
     }
   }
 
-  private fun updateItem(new: WatchlistListItem) {
+  private fun updateItem(new: CollectionListItem) {
     val currentItems = uiState.value.items.toMutableList()
     currentItems.findReplace(new) { it.isSameAs(new) }
     itemsState.value = currentItems

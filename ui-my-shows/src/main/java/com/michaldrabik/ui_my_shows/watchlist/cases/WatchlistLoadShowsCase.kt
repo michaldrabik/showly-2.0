@@ -11,9 +11,9 @@ import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_my_shows.views.recycler.CollectionListItem
 import com.michaldrabik.ui_my_shows.watchlist.helpers.WatchlistItemFilter
 import com.michaldrabik.ui_my_shows.watchlist.helpers.WatchlistItemSorter
-import com.michaldrabik.ui_my_shows.watchlist.recycler.WatchlistListItem
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
@@ -36,7 +36,7 @@ class WatchlistLoadShowsCase @Inject constructor(
 
   val language by lazy { translationsRepository.getLanguage() }
 
-  suspend fun loadShows(searchQuery: String): List<WatchlistListItem> = coroutineScope {
+  suspend fun loadShows(searchQuery: String): List<CollectionListItem> = coroutineScope {
     val ratings = ratingsCase.loadRatings()
     val dateFormat = dateFormatProvider.loadFullDayFormat()
     val translations =
@@ -68,8 +68,8 @@ class WatchlistLoadShowsCase @Inject constructor(
     }
   }
 
-  private fun loadFiltersItem(): WatchlistListItem.FiltersItem {
-    return WatchlistListItem.FiltersItem(
+  private fun loadFiltersItem(): CollectionListItem.FiltersItem {
+    return CollectionListItem.FiltersItem(
       sortOrder = settingsRepository.sorting.watchlistShowsSortOrder,
       sortType = settingsRepository.sorting.watchlistShowsSortType,
       isUpcoming = settingsRepository.filters.watchlistShowsUpcoming
@@ -84,7 +84,7 @@ class WatchlistLoadShowsCase @Inject constructor(
     sortOrder: SortOrder,
   ) = async {
     val image = imagesProvider.findCachedImage(show, ImageType.POSTER)
-    WatchlistListItem.ShowItem(
+    CollectionListItem.ShowItem(
       isLoading = false,
       show = show,
       image = image,

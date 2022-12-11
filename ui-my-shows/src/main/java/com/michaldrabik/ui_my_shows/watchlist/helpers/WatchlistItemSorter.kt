@@ -9,7 +9,7 @@ import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.SortType.ASCENDING
 import com.michaldrabik.ui_model.SortType.DESCENDING
-import com.michaldrabik.ui_my_shows.watchlist.recycler.WatchlistListItem
+import com.michaldrabik.ui_my_shows.views.recycler.CollectionListItem
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -25,11 +25,11 @@ class WatchlistItemSorter @Inject constructor() {
     NAME -> compareBy { getTitle(it) }
     RATING -> compareBy { it.show.rating }
     USER_RATING ->
-      compareByDescending<WatchlistListItem.ShowItem> { it.userRating != null }
+      compareByDescending<CollectionListItem.ShowItem> { it.userRating != null }
         .thenBy { it.userRating }
         .thenBy { getTitle(it) }
     DATE_ADDED -> compareBy { it.show.createdAt }
-    NEWEST -> compareBy<WatchlistListItem.ShowItem> { it.show.firstAired }.thenBy { it.show.year }
+    NEWEST -> compareBy<CollectionListItem.ShowItem> { it.show.firstAired }.thenBy { it.show.year }
     else -> throw IllegalStateException("Invalid sort order")
   }
 
@@ -37,15 +37,15 @@ class WatchlistItemSorter @Inject constructor() {
     NAME -> compareByDescending { getTitle(it) }
     RATING -> compareByDescending { it.show.rating }
     USER_RATING ->
-      compareByDescending<WatchlistListItem.ShowItem> { it.userRating != null }
+      compareByDescending<CollectionListItem.ShowItem> { it.userRating != null }
         .thenByDescending { it.userRating }
         .thenBy { getTitle(it) }
     DATE_ADDED -> compareByDescending { it.show.createdAt }
-    NEWEST -> compareByDescending<WatchlistListItem.ShowItem> { it.show.firstAired }.thenByDescending { it.show.year }
+    NEWEST -> compareByDescending<CollectionListItem.ShowItem> { it.show.firstAired }.thenByDescending { it.show.year }
     else -> throw IllegalStateException("Invalid sort order")
   }
 
-  private fun getTitle(item: WatchlistListItem.ShowItem): String {
+  private fun getTitle(item: CollectionListItem.ShowItem): String {
     val translatedTitle =
       if (item.translation?.hasTitle == true) item.translation.title
       else item.show.titleNoThe
