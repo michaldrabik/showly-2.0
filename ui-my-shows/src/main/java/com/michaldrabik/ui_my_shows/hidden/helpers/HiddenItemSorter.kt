@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_my_shows.archive.helpers
+package com.michaldrabik.ui_my_shows.hidden.helpers
 
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
@@ -15,7 +15,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ArchiveItemSorter @Inject constructor() {
+class HiddenItemSorter @Inject constructor() {
 
   fun sort(sortOrder: SortOrder, sortType: SortType) = when (sortType) {
     ASCENDING -> sortAscending(sortOrder)

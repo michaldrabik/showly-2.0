@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_my_shows.archive.cases
+package com.michaldrabik.ui_my_shows.hidden.cases
 
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.TranslationsRepository
@@ -8,7 +8,7 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
 @ViewModelScoped
-class ArchiveTranslationsCase @Inject constructor(
+class HiddenTranslationsCase @Inject constructor(
   private val translationsRepository: TranslationsRepository,
 ) {
 

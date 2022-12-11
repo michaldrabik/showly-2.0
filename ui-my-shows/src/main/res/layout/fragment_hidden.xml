@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  android:id="@+id/archiveContent"
+  android:id="@+id/hiddenContent"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:clipChildren="false"
@@ -9,7 +9,7 @@
   >
 
   <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/archiveRecycler"
+    android:id="@+id/hiddenRecycler"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
@@ -20,7 +20,7 @@
     />
 
   <include
-    android:id="@+id/archiveEmptyView"
+    android:id="@+id/hiddenEmptyView"
     layout="@layout/layout_archive_empty"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"

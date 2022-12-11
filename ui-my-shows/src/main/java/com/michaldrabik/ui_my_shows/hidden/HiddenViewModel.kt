@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_my_shows.archive
+package com.michaldrabik.ui_my_shows.hidden
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,11 +15,11 @@ import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
-import com.michaldrabik.ui_my_shows.archive.cases.ArchiveLoadShowsCase
-import com.michaldrabik.ui_my_shows.archive.cases.ArchiveSortOrderCase
-import com.michaldrabik.ui_my_shows.archive.cases.ArchiveTranslationsCase
 import com.michaldrabik.ui_my_shows.common.recycler.CollectionListItem
 import com.michaldrabik.ui_my_shows.common.recycler.CollectionListItem.ShowItem
+import com.michaldrabik.ui_my_shows.hidden.cases.HiddenLoadShowsCase
+import com.michaldrabik.ui_my_shows.hidden.cases.HiddenSortOrderCase
+import com.michaldrabik.ui_my_shows.hidden.cases.HiddenTranslationsCase
 import com.michaldrabik.ui_my_shows.main.FollowedShowsUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -33,10 +33,10 @@ import javax.inject.Inject
 import com.michaldrabik.ui_base.events.Event as EventSync
 
 @HiltViewModel
-class ArchiveViewModel @Inject constructor(
-  private val sortOrderCase: ArchiveSortOrderCase,
-  private val loadShowsCase: ArchiveLoadShowsCase,
-  private val translationsCase: ArchiveTranslationsCase,
+class HiddenViewModel @Inject constructor(
+  private val sortOrderCase: HiddenSortOrderCase,
+  private val loadShowsCase: HiddenLoadShowsCase,
+  private val translationsCase: HiddenTranslationsCase,
   private val imagesProvider: ShowImagesProvider,
   private val eventsManager: EventsManager,
 ) : ViewModel() {
@@ -123,7 +123,7 @@ class ArchiveViewModel @Inject constructor(
     sortOrderState,
     scrollState
   ) { itemsState, sortOrderState, scrollState ->
-    ArchiveUiState(
+    HiddenUiState(
       items = itemsState,
       sortOrder = sortOrderState,
       resetScroll = scrollState
@@ -131,6 +131,6 @@ class ArchiveViewModel @Inject constructor(
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = ArchiveUiState()
+    initialValue = HiddenUiState()
   )
 }

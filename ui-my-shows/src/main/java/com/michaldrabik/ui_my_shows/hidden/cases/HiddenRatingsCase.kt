@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_my_shows.archive.cases
+package com.michaldrabik.ui_my_shows.hidden.cases
 
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.UserTraktManager
@@ -8,7 +8,7 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
 @ViewModelScoped
-class ArchiveRatingsCase @Inject constructor(
+class HiddenRatingsCase @Inject constructor(
   private val ratingsRepository: RatingsRepository,
   private val userTraktManager: UserTraktManager
 ) {

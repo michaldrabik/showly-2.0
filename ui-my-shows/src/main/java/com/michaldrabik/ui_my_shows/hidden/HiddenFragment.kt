@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_my_shows.archive
+package com.michaldrabik.ui_my_shows.hidden
 
 import android.os.Bundle
 import android.view.View
@@ -35,16 +35,16 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_ORDE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_SORT_ORDER
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_archive.*
+import kotlinx.android.synthetic.main.fragment_hidden.*
 
 @AndroidEntryPoint
-class ArchiveFragment :
-  BaseFragment<ArchiveViewModel>(R.layout.fragment_archive),
+class HiddenFragment :
+  BaseFragment<HiddenViewModel>(R.layout.fragment_hidden),
   OnScrollResetListener,
   OnSearchClickListener {
 
   private val parentViewModel by viewModels<FollowedShowsViewModel>({ requireParentFragment() })
-  override val viewModel by viewModels<ArchiveViewModel>()
+  override val viewModel by viewModels<HiddenViewModel>()
 
   private var adapter: CollectionAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
@@ -74,31 +74,31 @@ class ArchiveFragment :
       upcomingChipClickListener = {},
       listViewChipClickListener = {},
       listChangeListener = {
-        archiveRecycler.scrollToPosition(0)
+        hiddenRecycler.scrollToPosition(0)
         (requireParentFragment() as FollowedShowsFragment).resetTranslations()
       },
       upcomingChipVisible = false
     ).apply {
       stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
     }
-    archiveRecycler.apply {
+    hiddenRecycler.apply {
       setHasFixedSize(true)
-      adapter = this@ArchiveFragment.adapter
-      layoutManager = this@ArchiveFragment.layoutManager
+      adapter = this@HiddenFragment.adapter
+      layoutManager = this@HiddenFragment.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
     }
   }
 
   private fun setupStatusBar() {
     if (statusBarHeight != 0) {
-      archiveContent.updatePadding(top = archiveContent.paddingTop + statusBarHeight)
-      archiveRecycler.updatePadding(top = dimenToPx(R.dimen.archiveTabsViewPadding))
+      hiddenContent.updatePadding(top = hiddenContent.paddingTop + statusBarHeight)
+      hiddenRecycler.updatePadding(top = dimenToPx(R.dimen.archiveTabsViewPadding))
       return
     }
-    archiveContent.doOnApplyWindowInsets { view, insets, padding, _ ->
+    hiddenContent.doOnApplyWindowInsets { view, insets, padding, _ ->
       statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
       view.updatePadding(top = padding.top + statusBarHeight)
-      archiveRecycler.updatePadding(top = dimenToPx(R.dimen.archiveTabsViewPadding))
+      hiddenRecycler.updatePadding(top = dimenToPx(R.dimen.archiveTabsViewPadding))
     }
   }
 
@@ -115,12 +115,12 @@ class ArchiveFragment :
     navigateTo(R.id.actionFollowedShowsFragmentToSortOrder, args)
   }
 
-  private fun render(uiState: ArchiveUiState) {
+  private fun render(uiState: HiddenUiState) {
     uiState.run {
       items.let {
         val notifyChange = resetScroll?.consume() == true
         adapter?.setItems(it, notifyChange = notifyChange)
-        archiveEmptyView.fadeIf(it.isEmpty() && !isSearching)
+        hiddenEmptyView.fadeIf(it.isEmpty() && !isSearching)
       }
       sortOrder?.let { event ->
         event.consume()?.let { openSortOrderDialog(it.first, it.second) }
@@ -138,19 +138,19 @@ class ArchiveFragment :
 
   override fun onEnterSearch() {
     isSearching = true
-    archiveRecycler.translationY = dimenToPx(R.dimen.myShowsSearchLocalOffset).toFloat()
-    archiveRecycler.smoothScrollToPosition(0)
+    hiddenRecycler.translationY = dimenToPx(R.dimen.myShowsSearchLocalOffset).toFloat()
+    hiddenRecycler.smoothScrollToPosition(0)
   }
 
   override fun onExitSearch() {
     isSearching = false
-    with(archiveRecycler) {
+    with(hiddenRecycler) {
       translationY = 0F
       postDelayed(200) { layoutManager?.scrollToPosition(0) }
     }
   }
 
-  override fun onScrollReset() = archiveRecycler.scrollToPosition(0)
+  override fun onScrollReset() = hiddenRecycler.scrollToPosition(0)
 
   override fun setupBackPressed() = Unit
 

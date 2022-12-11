@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_my_shows.archive.cases
+package com.michaldrabik.ui_my_shows.hidden.cases
 
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_model.SortOrder
@@ -7,7 +7,7 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
 @ViewModelScoped
-class ArchiveSortOrderCase @Inject constructor(
+class HiddenSortOrderCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
 ) {
 

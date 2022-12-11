@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_my_shows.archive.cases
+package com.michaldrabik.ui_my_shows.hidden.cases
 
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.TranslationsRepository
@@ -12,8 +12,8 @@ import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
-import com.michaldrabik.ui_my_shows.archive.helpers.ArchiveItemSorter
 import com.michaldrabik.ui_my_shows.common.recycler.CollectionListItem
+import com.michaldrabik.ui_my_shows.hidden.helpers.HiddenItemSorter
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
@@ -23,9 +23,9 @@ import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @ViewModelScoped
-class ArchiveLoadShowsCase @Inject constructor(
-  private val ratingsCase: ArchiveRatingsCase,
-  private val sorter: ArchiveItemSorter,
+class HiddenLoadShowsCase @Inject constructor(
+  private val ratingsCase: HiddenRatingsCase,
+  private val sorter: HiddenItemSorter,
   private val showsRepository: ShowsRepository,
   private val translationsRepository: TranslationsRepository,
   private val settingsRepository: SettingsRepository,
