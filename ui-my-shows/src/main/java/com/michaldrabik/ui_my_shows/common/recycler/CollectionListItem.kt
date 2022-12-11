@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_my_shows.views.recycler
+package com.michaldrabik.ui_my_shows.common.recycler
 
 import com.michaldrabik.common.extensions.toZonedDateTime
 import com.michaldrabik.ui_base.common.ListItem

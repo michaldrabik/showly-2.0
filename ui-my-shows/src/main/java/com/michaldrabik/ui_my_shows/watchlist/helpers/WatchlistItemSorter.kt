@@ -9,7 +9,7 @@ import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.SortType.ASCENDING
 import com.michaldrabik.ui_model.SortType.DESCENDING
-import com.michaldrabik.ui_my_shows.views.recycler.CollectionListItem
+import com.michaldrabik.ui_my_shows.common.recycler.CollectionListItem
 import javax.inject.Inject
 import javax.inject.Singleton
 

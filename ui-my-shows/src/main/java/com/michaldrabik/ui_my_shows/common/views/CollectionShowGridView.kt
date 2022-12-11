@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_my_shows.views
+package com.michaldrabik.ui_my_shows.common.views
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -19,8 +19,8 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_model.SortOrder.USER_RATING
+import com.michaldrabik.ui_my_shows.common.recycler.CollectionListItem
 import com.michaldrabik.ui_my_shows.databinding.ViewCollectionShowGridBinding
-import com.michaldrabik.ui_my_shows.views.recycler.CollectionListItem
 import kotlinx.android.synthetic.main.view_collection_show.view.*
 import java.util.Locale.ENGLISH
 

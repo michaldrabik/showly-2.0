@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_my_shows.views.recycler
+package com.michaldrabik.ui_my_shows.common.recycler
 
 import androidx.recyclerview.widget.DiffUtil
 

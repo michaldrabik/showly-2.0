@@ -16,9 +16,9 @@ import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
+import com.michaldrabik.ui_my_shows.common.recycler.CollectionListItem
+import com.michaldrabik.ui_my_shows.common.recycler.CollectionListItem.ShowItem
 import com.michaldrabik.ui_my_shows.main.FollowedShowsUiState
-import com.michaldrabik.ui_my_shows.views.recycler.CollectionListItem
-import com.michaldrabik.ui_my_shows.views.recycler.CollectionListItem.ShowItem
 import com.michaldrabik.ui_my_shows.watchlist.cases.WatchlistFiltersCase
 import com.michaldrabik.ui_my_shows.watchlist.cases.WatchlistLoadShowsCase
 import com.michaldrabik.ui_my_shows.watchlist.cases.WatchlistSortOrderCase

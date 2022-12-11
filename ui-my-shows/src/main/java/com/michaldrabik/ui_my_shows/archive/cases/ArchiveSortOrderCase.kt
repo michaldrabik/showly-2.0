@@ -15,9 +15,4 @@ class ArchiveSortOrderCase @Inject constructor(
     settingsRepository.sorting.hiddenShowsSortOrder = sortOrder
     settingsRepository.sorting.hiddenShowsSortType = sortType
   }
-
-  fun loadSortOrder() = Pair(
-    settingsRepository.sorting.hiddenShowsSortOrder,
-    settingsRepository.sorting.hiddenShowsSortType
-  )
 }

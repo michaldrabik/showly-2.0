@@ -4,7 +4,7 @@ import com.michaldrabik.ui_base.common.ListViewMode
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
-import com.michaldrabik.ui_my_shows.views.recycler.CollectionListItem
+import com.michaldrabik.ui_my_shows.common.recycler.CollectionListItem
 
 data class WatchlistUiState(
   val items: List<CollectionListItem> = emptyList(),

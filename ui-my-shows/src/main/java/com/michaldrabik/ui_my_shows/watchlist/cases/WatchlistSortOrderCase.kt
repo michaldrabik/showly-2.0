@@ -15,9 +15,4 @@ class WatchlistSortOrderCase @Inject constructor(
     settingsRepository.sorting.watchlistShowsSortOrder = sortOrder
     settingsRepository.sorting.watchlistShowsSortType = sortType
   }
-
-  fun loadSortOrder() = Pair(
-    settingsRepository.sorting.watchlistShowsSortOrder,
-    settingsRepository.sorting.watchlistShowsSortType
-  )
 }

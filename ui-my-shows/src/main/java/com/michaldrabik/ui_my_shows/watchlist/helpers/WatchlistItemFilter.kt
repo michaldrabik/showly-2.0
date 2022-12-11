@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_my_shows.watchlist.helpers
 
 import com.michaldrabik.common.extensions.nowUtc
-import com.michaldrabik.ui_my_shows.views.recycler.CollectionListItem
+import com.michaldrabik.ui_my_shows.common.recycler.CollectionListItem
 import javax.inject.Inject
 import javax.inject.Singleton
 

@@ -28,7 +28,7 @@ import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_shows.R
-import com.michaldrabik.ui_my_shows.archive.recycler.ArchiveAdapter
+import com.michaldrabik.ui_my_shows.common.recycler.CollectionAdapter
 import com.michaldrabik.ui_my_shows.main.FollowedShowsFragment
 import com.michaldrabik.ui_my_shows.main.FollowedShowsViewModel
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_ORDER
@@ -46,7 +46,7 @@ class ArchiveFragment :
   private val parentViewModel by viewModels<FollowedShowsViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<ArchiveViewModel>()
 
-  private var adapter: ArchiveAdapter? = null
+  private var adapter: CollectionAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
   private var statusBarHeight = 0
   private var isSearching = false
@@ -65,16 +65,19 @@ class ArchiveFragment :
 
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
-    adapter = ArchiveAdapter(
+    adapter = CollectionAdapter(
       itemClickListener = { openShowDetails(it.show) },
       itemLongClickListener = { item -> openShowMenu(item.show) },
       sortChipClickListener = ::openSortOrderDialog,
       missingImageListener = viewModel::loadMissingImage,
       missingTranslationListener = viewModel::loadMissingTranslation,
+      upcomingChipClickListener = {},
+      listViewChipClickListener = {},
       listChangeListener = {
         archiveRecycler.scrollToPosition(0)
         (requireParentFragment() as FollowedShowsFragment).resetTranslations()
-      }
+      },
+      upcomingChipVisible = false
     ).apply {
       stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
     }

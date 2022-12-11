@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_my_shows.archive.recycler.views
+package com.michaldrabik.ui_my_shows.common.views
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -7,19 +7,21 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.ui_base.common.views.ShowView
+import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.onLongClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_my_shows.R
-import com.michaldrabik.ui_my_shows.archive.recycler.ArchiveListItem
+import com.michaldrabik.ui_my_shows.common.recycler.CollectionListItem
 import kotlinx.android.synthetic.main.view_collection_show.view.*
 import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n")
-class ArchiveShowView : ShowView<ArchiveListItem.ShowItem> {
+class CollectionShowView : ShowView<CollectionListItem.ShowItem> {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -36,9 +38,10 @@ class ArchiveShowView : ShowView<ArchiveListItem.ShowItem> {
   override val imageView: ImageView = collectionShowImage
   override val placeholderView: ImageView = collectionShowPlaceholder
 
-  private lateinit var item: ArchiveListItem.ShowItem
+  private var nowUtc = nowUtc()
+  private lateinit var item: CollectionListItem.ShowItem
 
-  override fun bind(item: ArchiveListItem.ShowItem) {
+  override fun bind(item: CollectionListItem.ShowItem) {
     clear()
     this.item = item
     collectionShowProgress.visibleIf(item.isLoading)
@@ -57,6 +60,16 @@ class ArchiveShowView : ShowView<ArchiveListItem.ShowItem> {
     collectionShowRating.text = String.format(ENGLISH, "%.1f", item.show.rating)
     collectionShowDescription.visibleIf(item.show.overview.isNotBlank())
     collectionShowNetwork.visibleIf(item.show.network.isNotBlank())
+
+    with(collectionShowReleaseDate) {
+      val releaseDate = item.getReleaseDate()
+      if (releaseDate != null) {
+        visibleIf(releaseDate.isAfter(nowUtc))
+        text = item.dateFormat.format(releaseDate).capitalizeWords()
+      } else {
+        gone()
+      }
+    }
 
     item.userRating?.let {
       collectionShowUserStarIcon.visible()

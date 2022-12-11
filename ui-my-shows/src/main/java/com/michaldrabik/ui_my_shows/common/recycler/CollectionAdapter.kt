@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_my_shows.views.recycler
+package com.michaldrabik.ui_my_shows.common.recycler
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -12,14 +12,17 @@ import com.michaldrabik.ui_base.common.ListViewMode.GRID_TITLE
 import com.michaldrabik.ui_base.common.ListViewMode.NORMAL
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
-import com.michaldrabik.ui_my_shows.filters.FollowedShowsFiltersGridView
-import com.michaldrabik.ui_my_shows.filters.FollowedShowsFiltersView
-import com.michaldrabik.ui_my_shows.views.CollectionShowCompactView
-import com.michaldrabik.ui_my_shows.views.CollectionShowGridTitleView
-import com.michaldrabik.ui_my_shows.views.CollectionShowGridView
-import com.michaldrabik.ui_my_shows.views.CollectionShowView
+import com.michaldrabik.ui_my_shows.common.filters.CollectionShowsFiltersGridView
+import com.michaldrabik.ui_my_shows.common.filters.CollectionShowsFiltersView
+import com.michaldrabik.ui_my_shows.common.recycler.CollectionListItem.FiltersItem
+import com.michaldrabik.ui_my_shows.common.recycler.CollectionListItem.ShowItem
+import com.michaldrabik.ui_my_shows.common.views.CollectionShowCompactView
+import com.michaldrabik.ui_my_shows.common.views.CollectionShowGridTitleView
+import com.michaldrabik.ui_my_shows.common.views.CollectionShowGridView
+import com.michaldrabik.ui_my_shows.common.views.CollectionShowView
 
 class CollectionAdapter(
+  listChangeListener: () -> Unit,
   private val itemClickListener: (CollectionListItem) -> Unit,
   private val itemLongClickListener: (CollectionListItem) -> Unit,
   private val sortChipClickListener: (SortOrder, SortType) -> Unit,
@@ -27,7 +30,7 @@ class CollectionAdapter(
   private val listViewChipClickListener: () -> Unit,
   private val missingImageListener: (CollectionListItem, Boolean) -> Unit,
   private val missingTranslationListener: (CollectionListItem) -> Unit,
-  listChangeListener: () -> Unit,
+  private val upcomingChipVisible: Boolean = true,
 ) : BaseAdapter<CollectionListItem>(
   listChangeListener = listChangeListener
 ) {
@@ -62,17 +65,17 @@ class CollectionAdapter(
       )
       VIEW_TYPE_FILTERS -> BaseMovieAdapter.BaseViewHolder(
         when (listViewMode) {
-          NORMAL, COMPACT -> FollowedShowsFiltersView(parent.context).apply {
+          NORMAL, COMPACT -> CollectionShowsFiltersView(parent.context).apply {
             onSortChipClicked = this@CollectionAdapter.sortChipClickListener
             onFilterUpcomingClicked = this@CollectionAdapter.upcomingChipClickListener
             onListViewModeClicked = this@CollectionAdapter.listViewChipClickListener
-            isUpcomingChipVisible = true
+            isUpcomingChipVisible = upcomingChipVisible
           }
-          GRID, GRID_TITLE -> FollowedShowsFiltersGridView(parent.context).apply {
+          GRID, GRID_TITLE -> CollectionShowsFiltersGridView(parent.context).apply {
             onSortChipClicked = this@CollectionAdapter.sortChipClickListener
             onFilterUpcomingClicked = this@CollectionAdapter.upcomingChipClickListener
             onListViewModeClicked = this@CollectionAdapter.listViewChipClickListener
-            isUpcomingChipVisible = true
+            isUpcomingChipVisible = upcomingChipVisible
           }
         }
       )
@@ -81,16 +84,16 @@ class CollectionAdapter(
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     when (val item = asyncDiffer.currentList[position]) {
-      is CollectionListItem.FiltersItem ->
+      is FiltersItem ->
         when (listViewMode) {
           NORMAL, COMPACT ->
-            (holder.itemView as FollowedShowsFiltersView).bind(item.sortOrder, item.sortType, item.isUpcoming)
+            (holder.itemView as CollectionShowsFiltersView).bind(item.sortOrder, item.sortType, item.isUpcoming)
           GRID ->
-            (holder.itemView as FollowedShowsFiltersGridView).bind(item.sortOrder, item.sortType, item.isUpcoming)
+            (holder.itemView as CollectionShowsFiltersGridView).bind(item.sortOrder, item.sortType, item.isUpcoming)
           GRID_TITLE ->
-            (holder.itemView as FollowedShowsFiltersGridView).bind(item.sortOrder, item.sortType, item.isUpcoming)
+            (holder.itemView as CollectionShowsFiltersGridView).bind(item.sortOrder, item.sortType, item.isUpcoming)
         }
-      is CollectionListItem.ShowItem ->
+      is ShowItem ->
         when (listViewMode) {
           NORMAL -> (holder.itemView as CollectionShowView).bind(item)
           COMPACT -> (holder.itemView as CollectionShowCompactView).bind(item)
@@ -102,8 +105,8 @@ class CollectionAdapter(
 
   override fun getItemViewType(position: Int) =
     when (asyncDiffer.currentList[position]) {
-      is CollectionListItem.ShowItem -> VIEW_TYPE_SHOW
-      is CollectionListItem.FiltersItem -> VIEW_TYPE_FILTERS
+      is ShowItem -> VIEW_TYPE_SHOW
+      is FiltersItem -> VIEW_TYPE_FILTERS
       else -> throw IllegalStateException()
     }
 }

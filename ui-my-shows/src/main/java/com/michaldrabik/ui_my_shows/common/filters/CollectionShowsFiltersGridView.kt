@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_my_shows.filters
+package com.michaldrabik.ui_my_shows.common.filters
 
 import android.content.Context
 import android.util.AttributeSet
@@ -14,15 +14,15 @@ import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.SortType.ASCENDING
 import com.michaldrabik.ui_model.SortType.DESCENDING
 import com.michaldrabik.ui_my_shows.R
-import com.michaldrabik.ui_my_shows.databinding.ViewShowsFiltersBinding
+import com.michaldrabik.ui_my_shows.databinding.ViewShowsFiltersGridBinding
 
-class FollowedShowsFiltersView : FrameLayout {
+class CollectionShowsFiltersGridView : FrameLayout {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-  private val binding = ViewShowsFiltersBinding.inflate(LayoutInflater.from(context), this)
+  private val binding = ViewShowsFiltersGridBinding.inflate(LayoutInflater.from(context), this)
 
   var onSortChipClicked: ((SortOrder, SortType) -> Unit)? = null
   var onFilterUpcomingClicked: ((Boolean) -> Unit)? = null

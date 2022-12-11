@@ -10,7 +10,7 @@ import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.SortType.ASCENDING
 import com.michaldrabik.ui_model.SortType.DESCENDING
-import com.michaldrabik.ui_my_shows.archive.recycler.ArchiveListItem
+import com.michaldrabik.ui_my_shows.common.recycler.CollectionListItem
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -22,35 +22,35 @@ class ArchiveItemSorter @Inject constructor() {
     DESCENDING -> sortDescending(sortOrder)
   }
 
-  private fun sortAscending(sortOrder: SortOrder): Comparator<ArchiveListItem.ShowItem> =
+  private fun sortAscending(sortOrder: SortOrder): Comparator<CollectionListItem.ShowItem> =
     when (sortOrder) {
       NAME -> compareBy { getTitle(it) }
       RATING -> compareBy { it.show.rating }
       USER_RATING ->
-        compareByDescending<ArchiveListItem.ShowItem> { it.userRating != null }
+        compareByDescending<CollectionListItem.ShowItem> { it.userRating != null }
           .thenBy { it.userRating }
           .thenBy { getTitle(it) }
       DATE_ADDED -> compareBy { it.show.createdAt }
       RECENTLY_WATCHED -> compareBy { it.show.updatedAt }
-      NEWEST -> compareBy<ArchiveListItem.ShowItem> { it.show.year }.thenBy { it.show.firstAired }
+      NEWEST -> compareBy<CollectionListItem.ShowItem> { it.show.year }.thenBy { it.show.firstAired }
       else -> throw IllegalStateException("Invalid sort order")
     }
 
-  private fun sortDescending(sortOrder: SortOrder): Comparator<ArchiveListItem.ShowItem> =
+  private fun sortDescending(sortOrder: SortOrder): Comparator<CollectionListItem.ShowItem> =
     when (sortOrder) {
       NAME -> compareByDescending { getTitle(it) }
       RATING -> compareByDescending { it.show.rating }
       USER_RATING ->
-        compareByDescending<ArchiveListItem.ShowItem> { it.userRating != null }
+        compareByDescending<CollectionListItem.ShowItem> { it.userRating != null }
           .thenByDescending { it.userRating }
           .thenBy { getTitle(it) }
       DATE_ADDED -> compareByDescending { it.show.createdAt }
       RECENTLY_WATCHED -> compareByDescending { it.show.updatedAt }
-      NEWEST -> compareByDescending<ArchiveListItem.ShowItem> { it.show.year }.thenByDescending { it.show.firstAired }
+      NEWEST -> compareByDescending<CollectionListItem.ShowItem> { it.show.year }.thenByDescending { it.show.firstAired }
       else -> throw IllegalStateException("Invalid sort order")
     }
 
-  private fun getTitle(item: ArchiveListItem.ShowItem): String {
+  private fun getTitle(item: CollectionListItem.ShowItem): String {
     val translatedTitle =
       if (item.translation?.hasTitle == true) item.translation.title
       else item.show.titleNoThe

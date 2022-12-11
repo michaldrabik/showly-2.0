@@ -18,8 +18,8 @@ import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_shows.archive.cases.ArchiveLoadShowsCase
 import com.michaldrabik.ui_my_shows.archive.cases.ArchiveSortOrderCase
 import com.michaldrabik.ui_my_shows.archive.cases.ArchiveTranslationsCase
-import com.michaldrabik.ui_my_shows.archive.recycler.ArchiveListItem
-import com.michaldrabik.ui_my_shows.archive.recycler.ArchiveListItem.ShowItem
+import com.michaldrabik.ui_my_shows.common.recycler.CollectionListItem
+import com.michaldrabik.ui_my_shows.common.recycler.CollectionListItem.ShowItem
 import com.michaldrabik.ui_my_shows.main.FollowedShowsUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -43,7 +43,7 @@ class ArchiveViewModel @Inject constructor(
 
   private var loadItemsJob: Job? = null
 
-  private val itemsState = MutableStateFlow<List<ArchiveListItem>>(emptyList())
+  private val itemsState = MutableStateFlow<List<CollectionListItem>>(emptyList())
   private val sortOrderState = MutableStateFlow<Event<Pair<SortOrder, SortType>>?>(null)
   private val scrollState = MutableStateFlow<Event<Boolean>?>(null)
 
@@ -77,7 +77,7 @@ class ArchiveViewModel @Inject constructor(
     }
   }
 
-  fun loadMissingImage(item: ArchiveListItem, force: Boolean) {
+  fun loadMissingImage(item: CollectionListItem, force: Boolean) {
     check(item is ShowItem)
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
@@ -90,7 +90,7 @@ class ArchiveViewModel @Inject constructor(
     }
   }
 
-  fun loadMissingTranslation(item: ArchiveListItem) {
+  fun loadMissingTranslation(item: CollectionListItem) {
     check(item is ShowItem)
     if (item.translation != null || loadShowsCase.language == Config.DEFAULT_LANGUAGE) return
     viewModelScope.launch {
@@ -103,7 +103,7 @@ class ArchiveViewModel @Inject constructor(
     }
   }
 
-  private fun updateItem(new: ArchiveListItem) {
+  private fun updateItem(new: CollectionListItem) {
     val currentItems = uiState.value.items.toMutableList()
     currentItems.findReplace(new) { it.isSameAs(new) }
     itemsState.value = currentItems

@@ -11,7 +11,7 @@ import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
-import com.michaldrabik.ui_my_shows.views.recycler.CollectionListItem
+import com.michaldrabik.ui_my_shows.common.recycler.CollectionListItem
 import com.michaldrabik.ui_my_shows.watchlist.helpers.WatchlistItemFilter
 import com.michaldrabik.ui_my_shows.watchlist.helpers.WatchlistItemSorter
 import dagger.hilt.android.scopes.ViewModelScoped

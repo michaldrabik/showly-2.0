@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_my_shows.views
+package com.michaldrabik.ui_my_shows.common.views
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -17,8 +17,8 @@ import com.michaldrabik.ui_base.utilities.extensions.onLongClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_my_shows.R
+import com.michaldrabik.ui_my_shows.common.recycler.CollectionListItem
 import com.michaldrabik.ui_my_shows.databinding.ViewCollectionShowCompactBinding
-import com.michaldrabik.ui_my_shows.views.recycler.CollectionListItem
 import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n")
