@@ -43,7 +43,7 @@
 
       <com.google.android.material.chip.Chip
         android:id="@+id/followedShowsListViewChip"
-        style="@style/ShowlyChip"
+        style="@style/ShowlyChip.Filter"
         app:chipIcon="@drawable/ic_view_list"
         app:chipIconEnabled="true"
         app:chipIconTint="?android:textColorPrimary"

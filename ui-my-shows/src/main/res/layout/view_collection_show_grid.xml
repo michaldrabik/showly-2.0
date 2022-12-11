@@ -58,6 +58,7 @@
       android:paddingTop="2dp"
       android:paddingEnd="4dp"
       android:paddingBottom="2dp"
+      android:shadowColor="@color/colorTransparent"
       android:textColor="@color/colorWhite"
       android:textSize="11sp"
       android:visibility="gone"
