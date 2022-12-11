@@ -5,27 +5,15 @@
 
   <style name="MyShows.Label" parent="MyShows">
     <item name="android:layout_width">0dp</item>
-    <item name="android:layout_height">0dp</item>
+    <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_marginStart">@dimen/spaceMedium</item>
     <item name="android:layout_marginEnd">@dimen/spaceMedium</item>
     <item name="android:textColor">?android:attr/textColorPrimary</item>
     <item name="android:textStyle">bold</item>
     <item name="android:textAlignment">viewStart</item>
-    <item name="autoSizeMinTextSize">12sp</item>
-    <item name="autoSizeMaxTextSize">22sp</item>
-    <item name="autoSizeTextType">uniform</item>
+    <item name="android:textSize">22sp</item>
     <item name="android:gravity">start|center_vertical</item>
     <item name="android:maxLines">1</item>
-  </style>
-
-  <style name="MyShows.RecyclerHorizontal" parent="MyShows">
-    <item name="android:layout_width">match_parent</item>
-    <item name="android:layout_height">@dimen/myShowsPosterHeight</item>
-    <item name="android:clipToPadding">false</item>
-    <item name="android:overScrollMode">never</item>
-    <item name="android:paddingStart">@dimen/spaceMedium</item>
-    <item name="android:paddingEnd">@dimen/spaceMedium</item>
-    <item name="android:nestedScrollingEnabled">false</item>
   </style>
 
 </resources>

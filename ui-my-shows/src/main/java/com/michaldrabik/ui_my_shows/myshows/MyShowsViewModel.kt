@@ -18,10 +18,7 @@ import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.MyShowsSection
 import com.michaldrabik.ui_model.MyShowsSection.ALL
-import com.michaldrabik.ui_model.MyShowsSection.FINISHED
 import com.michaldrabik.ui_model.MyShowsSection.RECENTS
-import com.michaldrabik.ui_model.MyShowsSection.UPCOMING
-import com.michaldrabik.ui_model.MyShowsSection.WATCHING
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
@@ -92,33 +89,11 @@ class MyShowsViewModel @Inject constructor(
         .awaitAll()
 
       val seasons = loadShowsCase.loadSeasonsForShows(shows.map { it.show.traktId })
-
-      val sortingOrder = sortingCase.loadSectionSortOrder(ALL)
-      val allShows = loadShowsCase.filterSectionShows(shows, seasons, ALL, sortingOrder, searchQuery)
-
-      val runningShows =
-        if (settings.myShowsRunningIsEnabled) {
-          val sortOrder = sortingCase.loadSectionSortOrder(WATCHING)
-          loadShowsCase.filterSectionShows(shows, seasons, WATCHING, sortOrder)
-        } else {
-          emptyList()
-        }
-
-      val endedShows =
-        if (settings.myShowsEndedIsEnabled) {
-          val sortOrder = sortingCase.loadSectionSortOrder(FINISHED)
-          loadShowsCase.filterSectionShows(shows, seasons, FINISHED, sortOrder)
-        } else {
-          emptyList()
-        }
-
-      val incomingShows =
-        if (settings.myShowsIncomingIsEnabled) {
-          val sortOrder = sortingCase.loadSectionSortOrder(UPCOMING)
-          loadShowsCase.filterSectionShows(shows, seasons, UPCOMING, sortOrder)
-        } else {
-          emptyList()
-        }
+      val allShows = loadShowsCase.filterSectionShows(
+        allShows = shows,
+        allSeasons = seasons,
+        searchQuery = searchQuery
+      )
 
       val recentShows = if (settings.myShowsRecentIsEnabled) {
         loadShowsCase.loadRecentShows().map { toListItemAsync(Type.RECENT_SHOWS, it, ImageType.FANART, ratings[it.ids.trakt]) }.awaitAll()
@@ -132,18 +107,6 @@ class MyShowsViewModel @Inject constructor(
         if (isNotSearching && recentShows.isNotEmpty()) {
           add(MyShowsItem.createHeader(RECENTS, recentShows.count(), null))
           add(MyShowsItem.createRecentsSection(recentShows))
-        }
-        if (isNotSearching && runningShows.isNotEmpty()) {
-          add(MyShowsItem.createHeader(WATCHING, runningShows.count(), sortingCase.loadSectionSortOrder(WATCHING)))
-          add(MyShowsItem.createHorizontalSection(WATCHING, runningShows))
-        }
-        if (isNotSearching && incomingShows.isNotEmpty()) {
-          add(MyShowsItem.createHeader(UPCOMING, incomingShows.count(), sortingCase.loadSectionSortOrder(UPCOMING)))
-          add(MyShowsItem.createHorizontalSection(UPCOMING, incomingShows))
-        }
-        if (isNotSearching && endedShows.isNotEmpty()) {
-          add(MyShowsItem.createHeader(FINISHED, endedShows.count(), sortingCase.loadSectionSortOrder(FINISHED)))
-          add(MyShowsItem.createHorizontalSection(FINISHED, endedShows))
         }
         if (allShows.isNotEmpty()) {
           add(MyShowsItem.createHeader(ALL, allShows.count(), sortingCase.loadSectionSortOrder(ALL)))
@@ -159,7 +122,7 @@ class MyShowsViewModel @Inject constructor(
   fun setSectionSortOrder(section: MyShowsSection, sortOrder: SortOrder, sortType: SortType) {
     viewModelScope.launch {
       sortingCase.setSectionSortOrder(section, sortOrder, sortType)
-      loadShows(resetScroll = listOf(Type.HORIZONTAL_SHOWS))
+      loadShows()
     }
   }
 
@@ -171,32 +134,6 @@ class MyShowsViewModel @Inject constructor(
         updateItem(item.copy(isLoading = false, image = image))
       } catch (t: Throwable) {
         updateItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
-      }
-    }
-  }
-
-  fun loadSectionMissingItem(item: MyShowsItem, itemSection: MyShowsItem.HorizontalSection, force: Boolean) {
-
-    fun updateItem(newItem: MyShowsItem, newSection: MyShowsItem.HorizontalSection) {
-      val items = uiState.value.items?.toMutableList()
-      val section = items?.find { it.horizontalSection?.section == newSection.section }?.horizontalSection
-
-      val sectionItems = section?.items?.toMutableList() ?: mutableListOf()
-      sectionItems.findReplace(newItem) { it.isSameAs(newItem) }
-
-      val newSecWithItems = section?.copy(items = sectionItems)
-      items?.findReplace(newItem.copy(horizontalSection = newSecWithItems)) { it.horizontalSection?.section == newSection.section }
-
-      itemsState.value = items
-    }
-
-    viewModelScope.launch {
-      updateItem(item.copy(isLoading = true), itemSection)
-      try {
-        val image = imagesProvider.loadRemoteImage(item.show, item.image.type, force)
-        updateItem(item.copy(isLoading = false, image = image), itemSection)
-      } catch (t: Throwable) {
-        updateItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)), itemSection)
       }
     }
   }
@@ -227,7 +164,7 @@ class MyShowsViewModel @Inject constructor(
   ) = async {
     val image = imagesProvider.findCachedImage(show, type)
     val translation = translationsCase.loadTranslation(show, true)
-    MyShowsItem(itemType, null, null, null, show, image, false, translation, userRating?.rating)
+    MyShowsItem(itemType, null, null, show, image, false, translation, userRating?.rating)
   }
 
   private fun onEvent(event: EventSync) =

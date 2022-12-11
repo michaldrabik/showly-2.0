@@ -11,16 +11,14 @@ import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem.Type
 import com.michaldrabik.ui_my_shows.myshows.views.MyShowAllView
 import com.michaldrabik.ui_my_shows.myshows.views.MyShowHeaderView
 import com.michaldrabik.ui_my_shows.myshows.views.MyShowsRecentsView
-import com.michaldrabik.ui_my_shows.myshows.views.section.MyShowsSectionView
 
 class MyShowsAdapter(
   private val itemClickListener: (MyShowsItem) -> Unit,
   private val itemLongClickListener: (MyShowsItem) -> Unit,
-  private val onSortOrderClickListener: ((MyShowsSection, SortOrder, SortType) -> Unit),
+  private val onSortOrderClickListener: (MyShowsSection, SortOrder, SortType) -> Unit,
   private val missingImageListener: (MyShowsItem, Boolean) -> Unit,
   private val missingTranslationListener: (MyShowsItem) -> Unit,
-  private val sectionMissingImageListener: ((MyShowsItem, MyShowsItem.HorizontalSection, Boolean) -> Unit),
-  listChangeListener: () -> Unit
+  listChangeListener: () -> Unit,
 ) : BaseAdapter<MyShowsItem>(
   listChangeListener = listChangeListener
 ) {
@@ -29,7 +27,6 @@ class MyShowsAdapter(
     private const val VIEW_TYPE_HEADER = 1
     private const val VIEW_TYPE_SHOW_ITEM = 2
     private const val VIEW_TYPE_RECENTS_SECTION = 3
-    private const val VIEW_TYPE_HORIZONTAL_SECTION = 4
   }
 
   override val asyncDiffer = AsyncListDiffer(this, MyShowsItemDiffCallback())
@@ -55,11 +52,6 @@ class MyShowsAdapter(
           missingTranslationListener = this@MyShowsAdapter.missingTranslationListener
         }
       )
-      VIEW_TYPE_HORIZONTAL_SECTION -> BaseViewHolder(
-        MyShowsSectionView(parent.context).apply {
-          scrollPositionListener = { section, position -> horizontalPositions[section] = position }
-        }
-      )
       else -> throw IllegalStateException()
     }
 
@@ -76,17 +68,6 @@ class MyShowsAdapter(
         itemLongClickListener
       )
       VIEW_TYPE_SHOW_ITEM -> (holder.itemView as MyShowAllView).bind(item)
-      VIEW_TYPE_HORIZONTAL_SECTION -> {
-        val notifyChange = resetScrolls.contains(Type.HORIZONTAL_SHOWS)
-        (holder.itemView as MyShowsSectionView).bind(
-          item.horizontalSection!!,
-          horizontalPositions[item.horizontalSection.section] ?: Pair(0, 0),
-          notifyChange,
-          itemClickListener,
-          itemLongClickListener,
-          sectionMissingImageListener
-        )
-      }
     }
   }
 
@@ -95,6 +76,5 @@ class MyShowsAdapter(
       Type.HEADER -> VIEW_TYPE_HEADER
       Type.ALL_SHOWS_ITEM -> VIEW_TYPE_SHOW_ITEM
       Type.RECENT_SHOWS -> VIEW_TYPE_RECENTS_SECTION
-      Type.HORIZONTAL_SHOWS -> VIEW_TYPE_HORIZONTAL_SECTION
     }
 }

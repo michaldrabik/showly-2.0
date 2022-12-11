@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.MyShowsSection
+import com.michaldrabik.ui_model.MyShowsSection.ALL
 import com.michaldrabik.ui_model.MyShowsSection.RECENTS
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
@@ -38,17 +39,25 @@ class MyShowHeaderView : FrameLayout {
   ) {
     bindLabel(item)
     with(binding) {
-      myShowsHeaderSortButton.visibleIf(item.sortOrder != null)
+      myShowsFilterChipsScroll.visibleIf(item.section == ALL)
+      myShowsSortChip.visibleIf(item.sortOrder != null)
+
+      with(myShowsTypeChip) {
+        visibleIf(item.section != RECENTS)
+        isSelected = true
+        text = context.getString(item.section.displayString)
+      }
+
       item.sortOrder?.let { sortOrder ->
-        myShowsHeaderSortButton.text = context.getString(sortOrder.first.displayString)
-        myShowsHeaderSortButton.onClick {
+        myShowsSortChip.text = context.getString(sortOrder.first.displayString)
+        myShowsSortChip.onClick {
           sortClickListener?.invoke(item.section, sortOrder.first, sortOrder.second)
         }
         val sortIcon = when (sortOrder.second) {
           SortType.ASCENDING -> R.drawable.ic_arrow_alt_up
           SortType.DESCENDING -> R.drawable.ic_arrow_alt_down
         }
-        myShowsHeaderSortButton.closeIcon = ContextCompat.getDrawable(context, sortIcon)
+        myShowsSortChip.closeIcon = ContextCompat.getDrawable(context, sortIcon)
       }
     }
   }

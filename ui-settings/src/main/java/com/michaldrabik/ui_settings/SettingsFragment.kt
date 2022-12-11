@@ -38,10 +38,7 @@ import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.setCheckedSilent
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.MyMoviesSection
-import com.michaldrabik.ui_model.MyShowsSection.FINISHED
 import com.michaldrabik.ui_model.MyShowsSection.RECENTS
-import com.michaldrabik.ui_model.MyShowsSection.UPCOMING
-import com.michaldrabik.ui_model.MyShowsSection.WATCHING
 import com.michaldrabik.ui_model.NotificationDelay
 import com.michaldrabik.ui_model.ProgressNextEpisodeType
 import com.michaldrabik.ui_model.ProgressNextEpisodeType.LAST_WATCHED
@@ -358,7 +355,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
   }
 
   private fun showSectionsDialog(settings: Settings) {
-    val options = listOf(RECENTS, WATCHING, FINISHED, UPCOMING)
+    val options = listOf(RECENTS)
     val selected = booleanArrayOf(
       settings.myShowsRecentIsEnabled,
       settings.myShowsRunningIsEnabled,

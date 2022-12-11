@@ -19,10 +19,7 @@ import com.michaldrabik.ui_base.fcm.NotificationChannel
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_model.MyMoviesSection
 import com.michaldrabik.ui_model.MyShowsSection
-import com.michaldrabik.ui_model.MyShowsSection.FINISHED
 import com.michaldrabik.ui_model.MyShowsSection.RECENTS
-import com.michaldrabik.ui_model.MyShowsSection.UPCOMING
-import com.michaldrabik.ui_model.MyShowsSection.WATCHING
 import com.michaldrabik.ui_model.NotificationDelay
 import com.michaldrabik.ui_model.ProgressNextEpisodeType
 import com.michaldrabik.ui_model.Settings
@@ -83,9 +80,6 @@ class SettingsMainCase @Inject constructor(
     settings.let {
       val new = when (section) {
         RECENTS -> it.copy(myShowsRecentIsEnabled = isEnabled)
-        WATCHING -> it.copy(myShowsRunningIsEnabled = isEnabled)
-        FINISHED -> it.copy(myShowsEndedIsEnabled = isEnabled)
-        UPCOMING -> it.copy(myShowsIncomingIsEnabled = isEnabled)
         else -> error("Should not be used here.")
       }
       settingsRepository.update(new)

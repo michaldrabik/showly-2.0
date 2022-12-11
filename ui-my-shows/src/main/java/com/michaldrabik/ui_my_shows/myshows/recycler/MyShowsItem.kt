@@ -13,74 +13,52 @@ data class MyShowsItem(
   val type: Type,
   val header: Header?,
   val recentsSection: RecentsSection?,
-  val horizontalSection: HorizontalSection?,
   override val show: Show,
   override val image: Image,
   override val isLoading: Boolean,
   val translation: Translation? = null,
-  val userRating: Int? = null
+  val userRating: Int? = null,
 ) : ListItem {
 
   enum class Type {
     HEADER,
     RECENT_SHOWS,
-    HORIZONTAL_SHOWS,
     ALL_SHOWS_ITEM,
   }
 
   data class Header(
     val section: MyShowsSection,
     val itemCount: Int,
-    val sortOrder: Pair<SortOrder, SortType>?
+    val sortOrder: Pair<SortOrder, SortType>?,
   )
 
   data class RecentsSection(
-    val items: List<MyShowsItem>
-  )
-
-  data class HorizontalSection(
-    val section: MyShowsSection,
-    val items: List<MyShowsItem>
+    val items: List<MyShowsItem>,
   )
 
   companion object {
     fun createHeader(
       section: MyShowsSection,
       itemCount: Int,
-      sortOrder: Pair<SortOrder, SortType>?
+      sortOrder: Pair<SortOrder, SortType>?,
     ) = MyShowsItem(
-      Type.HEADER,
-      Header(section, itemCount, sortOrder),
-      null,
-      null,
-      Show.EMPTY,
-      Image.createUnavailable(POSTER),
-      false
+      type = Type.HEADER,
+      header = Header(section, itemCount, sortOrder),
+      recentsSection = null,
+      show = Show.EMPTY,
+      image = Image.createUnavailable(POSTER),
+      isLoading = false
     )
 
     fun createRecentsSection(
-      shows: List<MyShowsItem>
+      shows: List<MyShowsItem>,
     ) = MyShowsItem(
-      Type.RECENT_SHOWS,
-      null,
-      RecentsSection(shows),
-      null,
-      Show.EMPTY,
-      Image.createUnavailable(POSTER),
-      false
-    )
-
-    fun createHorizontalSection(
-      section: MyShowsSection,
-      shows: List<MyShowsItem>
-    ) = MyShowsItem(
-      Type.HORIZONTAL_SHOWS,
-      null,
-      null,
-      HorizontalSection(section, shows.map { it.copy(type = Type.HORIZONTAL_SHOWS) }),
-      Show.EMPTY,
-      Image.createUnavailable(POSTER),
-      false
+      type = Type.RECENT_SHOWS,
+      header = null,
+      recentsSection = RecentsSection(shows),
+      show = Show.EMPTY,
+      image = Image.createUnavailable(POSTER),
+      isLoading = false
     )
   }
 }

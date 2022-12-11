@@ -5,14 +5,11 @@ import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.Season
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
-import com.michaldrabik.ui_model.MyShowsSection
 import com.michaldrabik.ui_model.MyShowsSection.FINISHED
 import com.michaldrabik.ui_model.MyShowsSection.UPCOMING
 import com.michaldrabik.ui_model.MyShowsSection.WATCHING
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.ShowStatus.RETURNING
-import com.michaldrabik.ui_model.SortOrder
-import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_shows.myshows.helpers.MyShowsItemSorter
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -45,24 +42,23 @@ class MyShowsLoadShowsCase @Inject constructor(
   fun filterSectionShows(
     allShows: List<MyShowsItem>,
     allSeasons: List<Season>,
-    section: MyShowsSection,
-    sortOrder: Pair<SortOrder, SortType>,
     searchQuery: String? = null,
   ): List<MyShowsItem> {
     val shows = allShows
-      .filter {
-        val seasons = allSeasons.filter { s -> s.idShowTrakt == it.show.traktId }
-        val airedSeasons = seasons.filter { s -> s.seasonFirstAired?.isBefore(nowUtc()) == true }
-        when (section) {
+      .filter { showItem ->
+        val seasons = allSeasons.filter { it.idShowTrakt == showItem.show.traktId }
+        val airedSeasons = seasons.filter { it.seasonFirstAired?.isBefore(nowUtc()) == true }
+
+        when (val type = settingsRepository.filters.myShowsType) {
           WATCHING -> {
-            airedSeasons.any { s -> !s.isWatched }
+            airedSeasons.any { !it.isWatched }
           }
           FINISHED -> {
-            section.allowedStatuses.contains(it.show.status) && seasons.all { s -> s.isWatched }
+            type.allowedStatuses.contains(showItem.show.status) && seasons.all { it.isWatched }
           }
           UPCOMING -> {
-            section.allowedStatuses.contains(it.show.status) ||
-              (it.show.status == RETURNING && airedSeasons.all { s -> s.isWatched })
+            type.allowedStatuses.contains(showItem.show.status) ||
+              (showItem.show.status == RETURNING && airedSeasons.all { it.isWatched })
           }
           else -> true
         }
@@ -70,7 +66,12 @@ class MyShowsLoadShowsCase @Inject constructor(
 
     return shows
       .filterByQuery(searchQuery)
-      .sortedWith(sorter.sort(sortOrder.first, sortOrder.second))
+      .sortedWith(
+        sorter.sort(
+          sortOrder = settingsRepository.sorting.myShowsAllSortOrder,
+          sortType = settingsRepository.sorting.myShowsAllSortType
+        )
+      )
   }
 
   private fun List<MyShowsItem>.filterByQuery(query: String?) = when {

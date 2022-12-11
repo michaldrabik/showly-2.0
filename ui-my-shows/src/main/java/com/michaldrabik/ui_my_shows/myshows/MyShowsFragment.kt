@@ -98,13 +98,11 @@ class MyShowsFragment :
       itemLongClickListener = { item -> openShowMenu(item.show) },
       onSortOrderClickListener = { section, order, type -> openSortOrderDialog(section, order, type) },
       missingImageListener = { item, force -> viewModel.loadMissingImage(item, force) },
-      missingTranslationListener = { viewModel.loadMissingTranslation(it) },
-      sectionMissingImageListener = { item, section, force -> viewModel.loadSectionMissingItem(item, section, force) },
-      listChangeListener = {
-        layoutManager?.scrollToPosition(0)
-        (requireParentFragment() as FollowedShowsFragment).resetTranslations()
-      }
-    ).apply {
+      missingTranslationListener = { viewModel.loadMissingTranslation(it) }
+    ) {
+      layoutManager?.scrollToPosition(0)
+      (requireParentFragment() as FollowedShowsFragment).resetTranslations()
+    }.apply {
       stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
       horizontalPositions = this@MyShowsFragment.horizontalPositions?.toMutableMap() ?: mutableMapOf()
     }

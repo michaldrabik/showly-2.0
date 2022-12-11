@@ -9,7 +9,7 @@ import com.michaldrabik.ui_model.ShowStatus.RETURNING
 
 enum class MyShowsSection(
   @StringRes val displayString: Int,
-  val allowedStatuses: List<ShowStatus> = emptyList()
+  val allowedStatuses: List<ShowStatus> = emptyList(),
 ) {
   RECENTS(
     displayString = R.string.textHeaderRecentlyAdded

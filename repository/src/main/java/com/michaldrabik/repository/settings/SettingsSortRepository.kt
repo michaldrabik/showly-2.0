@@ -26,12 +26,6 @@ class SettingsSortRepository @Inject constructor(
     private const val HIDDEN_SHOWS_SORT_TYPE = "HIDDEN_SHOWS_SORT_TYPE"
     private const val MY_SHOWS_ALL_SORT_ORDER = "MY_SHOWS_ALL_SORT_ORDER"
     private const val MY_SHOWS_ALL_SORT_TYPE = "MY_SHOWS_ALL_SORT_TYPE"
-    private const val MY_SHOWS_WATCHING_SORT_ORDER = "MY_SHOWS_WATCHING_SORT_ORDER"
-    private const val MY_SHOWS_WATCHING_SORT_TYPE = "MY_SHOWS_WATCHING_SORT_TYPE"
-    private const val MY_SHOWS_UPCOMING_SORT_ORDER = "MY_SHOWS_UPCOMING_SORT_ORDER"
-    private const val MY_SHOWS_UPCOMING_SORT_TYPE = "MY_SHOWS_UPCOMING_SORT_TYPE"
-    private const val MY_SHOWS_FINISHED_SORT_ORDER = "MY_SHOWS_FINISHED_SORT_ORDER"
-    private const val MY_SHOWS_FINISHED_SORT_TYPE = "MY_SHOWS_FINISHED_SORT_TYPE"
 
     private const val PROGRESS_MOVIES_SORT_ORDER = "PROGRESS_MOVIES_SORT_ORDER"
     private const val PROGRESS_MOVIES_SORT_TYPE = "PROGRESS_MOVIES_SORT_TYPE"
@@ -55,12 +49,6 @@ class SettingsSortRepository @Inject constructor(
   var hiddenShowsSortType by EnumPreference(preferences, HIDDEN_SHOWS_SORT_TYPE, ASCENDING, SortType::class.java)
   var myShowsAllSortOrder by EnumPreference(preferences, MY_SHOWS_ALL_SORT_ORDER, NAME, SortOrder::class.java)
   var myShowsAllSortType by EnumPreference(preferences, MY_SHOWS_ALL_SORT_TYPE, ASCENDING, SortType::class.java)
-  var myShowsWatchingSortOrder by EnumPreference(preferences, MY_SHOWS_WATCHING_SORT_ORDER, NAME, SortOrder::class.java)
-  var myShowsWatchingSortType by EnumPreference(preferences, MY_SHOWS_WATCHING_SORT_TYPE, ASCENDING, SortType::class.java)
-  var myShowsUpcomingSortOrder by EnumPreference(preferences, MY_SHOWS_UPCOMING_SORT_ORDER, NAME, SortOrder::class.java)
-  var myShowsUpcomingSortType by EnumPreference(preferences, MY_SHOWS_UPCOMING_SORT_TYPE, ASCENDING, SortType::class.java)
-  var myShowsFinishedSortOrder by EnumPreference(preferences, MY_SHOWS_FINISHED_SORT_ORDER, NAME, SortOrder::class.java)
-  var myShowsFinishedSortType by EnumPreference(preferences, MY_SHOWS_FINISHED_SORT_TYPE, ASCENDING, SortType::class.java)
 
   var progressMoviesSortOrder by EnumPreference(preferences, PROGRESS_MOVIES_SORT_ORDER, NAME, SortOrder::class.java)
   var progressMoviesSortType by EnumPreference(preferences, PROGRESS_MOVIES_SORT_TYPE, ASCENDING, SortType::class.java)

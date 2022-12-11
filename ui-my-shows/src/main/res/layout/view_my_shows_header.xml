@@ -11,34 +11,64 @@
   <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/myShowsHeaderRoot"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="wrap_content"
     android:clipChildren="false"
     android:clipToPadding="false"
-    android:paddingTop="@dimen/spaceNormal"
-    android:paddingBottom="@dimen/spaceMicro"
     >
 
     <androidx.appcompat.widget.AppCompatTextView
       android:id="@+id/myShowsHeaderLabel"
       style="@style/MyShows.Label"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toStartOf="@id/myShowsHeaderSortButton"
+      android:layout_marginTop="20dp"
+      app:layout_constraintBottom_toTopOf="@id/myShowsFilterChipsScroll"
+      app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
+      app:layout_goneMarginBottom="@dimen/spaceSmall"
       tools:text="Section Label"
       />
 
-    <com.google.android.material.chip.Chip
-      android:id="@+id/myShowsHeaderSortButton"
-      style="@style/ShowlyChip.Sort"
-      android:layout_marginEnd="@dimen/spaceMedium"
-      android:text="@string/textSortName"
-      android:visibility="gone"
-      app:layout_constraintBottom_toBottomOf="@id/myShowsHeaderLabel"
+    <HorizontalScrollView
+      android:id="@+id/myShowsFilterChipsScroll"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="14dp"
+      android:layout_marginBottom="@dimen/spaceSmall"
+      android:clipToPadding="false"
+      android:overScrollMode="never"
+      android:paddingStart="@dimen/spaceMedium"
+      android:paddingEnd="@dimen/spaceMedium"
+      app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toTopOf="@id/myShowsHeaderLabel"
-      tools:visibility="visible"
-      />
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/myShowsHeaderLabel"
+      >
+
+      <com.google.android.material.chip.ChipGroup
+        android:id="@+id/myShowsFilterChips"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:singleLine="true"
+        >
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/myShowsTypeChip"
+          style="@style/ShowlyChip.Filter"
+          android:checkable="false"
+          android:text="@string/textHeaderAll"
+          />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/myShowsSortChip"
+          style="@style/ShowlyChip.Sort"
+          android:text="@string/textSortName"
+          android:visibility="gone"
+          tools:visibility="visible"
+          />
+
+      </com.google.android.material.chip.ChipGroup>
+
+    </HorizontalScrollView>
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 
