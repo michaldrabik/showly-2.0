@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.ui_base.BaseFragment
-import com.michaldrabik.ui_base.common.OnLoadDataListener
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
@@ -35,7 +34,6 @@ import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.main.FollowedShowsFragment
 import com.michaldrabik.ui_my_shows.main.FollowedShowsViewModel
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsAdapter
-import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem.Type.ALL_SHOWS_ITEM
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_my_shows.*
@@ -44,8 +42,7 @@ import kotlinx.android.synthetic.main.fragment_my_shows.*
 class MyShowsFragment :
   BaseFragment<MyShowsViewModel>(R.layout.fragment_my_shows),
   OnScrollResetListener,
-  OnSearchClickListener,
-  OnLoadDataListener {
+  OnSearchClickListener {
 
   private val parentViewModel by viewModels<FollowedShowsViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<MyShowsViewModel>()
@@ -151,6 +148,7 @@ class MyShowsFragment :
     (requireParentFragment() as? FollowedShowsFragment)?.openShowMenu(show)
   }
 
+  @Suppress("DEPRECATION")
   private fun openSortOrderDialog(
     section: MyShowsSection,
     order: SortOrder,
@@ -165,7 +163,7 @@ class MyShowsFragment :
       val sortType = bundle.getSerializable(NavigationArgs.ARG_SELECTED_SORT_TYPE) as SortType
       MyShowsSection.values()
         .find { NavigationArgs.requestSortOrderSection(it.name) == requestKey }
-        ?.let { viewModel.setSectionSortOrder(it, sortOrder, sortType) }
+        ?.let { viewModel.setAllSectionSortOrder(sortOrder, sortType) }
     }
 
     navigateTo(R.id.actionFollowedShowsFragmentToSortOrder, args)
@@ -186,8 +184,6 @@ class MyShowsFragment :
   }
 
   override fun onScrollReset() = myShowsRecycler.scrollToPosition(0)
-
-  override fun onLoadData() = viewModel.loadShows(resetScroll = listOf(ALL_SHOWS_ITEM))
 
   override fun setupBackPressed() = Unit
 

@@ -10,7 +10,6 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.viewpager.widget.ViewPager
 import com.michaldrabik.ui_base.BaseFragment
-import com.michaldrabik.ui_base.common.OnLoadDataListener
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
@@ -85,9 +84,7 @@ class FollowedShowsFragment :
     )
 
     setFragmentResultListener(REQUEST_MY_SHOWS_FILTERS) { _, _ ->
-      childFragmentManager.fragments.forEach {
-        (it as? OnLoadDataListener)?.onLoadData()
-      }
+      viewModel.refreshData()
     }
   }
 

@@ -75,7 +75,7 @@ class MyShowsAdapter(
 
   override fun getItemViewType(position: Int) =
     when (asyncDiffer.currentList[position].type) {
-      Type.HEADER -> VIEW_TYPE_HEADER
+      Type.ALL_SHOWS_HEADER -> VIEW_TYPE_HEADER
       Type.ALL_SHOWS_ITEM -> VIEW_TYPE_SHOW_ITEM
       Type.RECENT_SHOWS -> VIEW_TYPE_RECENTS_SECTION
     }

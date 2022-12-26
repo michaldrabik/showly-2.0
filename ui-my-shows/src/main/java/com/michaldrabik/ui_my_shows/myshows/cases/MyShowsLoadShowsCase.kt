@@ -30,7 +30,10 @@ class MyShowsLoadShowsCase @Inject constructor(
     return showsRepository.myShows.loadAllRecent(amount)
   }
 
-  suspend fun loadSeasonsForShows(traktIds: List<Long>, buffer: MutableList<Season> = mutableListOf()): List<Season> {
+  suspend fun loadSeasonsForShows(
+    traktIds: List<Long>,
+    buffer: MutableList<Season> = mutableListOf()
+  ): List<Season> {
     val batch = traktIds.take(500)
     if (batch.isEmpty()) return buffer
     val seasons = localSource.seasons.getAllByShowsIds(batch)

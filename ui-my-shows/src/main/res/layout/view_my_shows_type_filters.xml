@@ -2,7 +2,6 @@
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/rootLayout"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
@@ -17,88 +16,13 @@
     android:layout_weight="1"
     >
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
+      android:id="@+id/rootItemsLayout"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:clipToPadding="false"
-      android:paddingStart="@dimen/spaceNormal"
-      android:paddingTop="@dimen/spaceNormal"
-      android:paddingEnd="@dimen/spaceNormal"
-      tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
-      >
-
-      <com.google.android.material.chip.ChipGroup
-        android:id="@+id/feedChipGroup"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:chipSpacingVertical="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:selectionRequired="true"
-        app:singleSelection="true"
-        >
-
-        <com.google.android.material.chip.Chip
-          android:id="@+id/feedChipAll"
-          style="@style/Widget.Material3.Chip.Suggestion"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:checked="true"
-          android:text="@string/textHeaderAll"
-          android:textColor="@color/selector_discover_chip_text"
-          app:checkedIconTint="@color/selector_discover_chip_text"
-          app:chipBackgroundColor="@color/selector_discover_chip_background"
-          app:chipCornerRadius="100dp"
-          app:chipStrokeColor="@color/selector_discover_chip_text"
-          app:chipStrokeWidth="1dp"
-          />
-
-        <com.google.android.material.chip.Chip
-          android:id="@+id/feedChipWatching"
-          style="@style/Widget.Material3.Chip.Suggestion"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/textHeaderWatching"
-          android:textColor="@color/selector_discover_chip_text"
-          app:checkedIconTint="@color/selector_discover_chip_text"
-          app:chipBackgroundColor="@color/selector_discover_chip_background"
-          app:chipCornerRadius="100dp"
-          app:chipStrokeColor="@color/selector_discover_chip_text"
-          app:chipStrokeWidth="1dp"
-          />
-
-        <com.google.android.material.chip.Chip
-          android:id="@+id/feedChipReturning"
-          style="@style/Widget.Material3.Chip.Suggestion"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/textHeaderReturning"
-          android:textColor="@color/selector_discover_chip_text"
-          app:checkedIconTint="@color/selector_discover_chip_text"
-          app:chipBackgroundColor="@color/selector_discover_chip_background"
-          app:chipCornerRadius="100dp"
-          app:chipStrokeColor="@color/selector_discover_chip_text"
-          app:chipStrokeWidth="1dp"
-          />
-
-        <com.google.android.material.chip.Chip
-          android:id="@+id/feedChipFinished"
-          style="@style/Widget.Material3.Chip.Suggestion"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/textHeaderFinished"
-          android:textColor="@color/selector_discover_chip_text"
-          app:checkedIconTint="@color/selector_discover_chip_text"
-          app:chipBackgroundColor="@color/selector_discover_chip_background"
-          app:chipCornerRadius="100dp"
-          app:chipStrokeColor="@color/selector_discover_chip_text"
-          app:chipStrokeWidth="1dp"
-          />
-
-      </com.google.android.material.chip.ChipGroup>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+      android:layout_marginTop="@dimen/spaceMedium"
+      android:orientation="vertical"
+      />
 
   </androidx.core.widget.NestedScrollView>
 

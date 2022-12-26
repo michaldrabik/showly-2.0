@@ -21,8 +21,8 @@ data class MyShowsItem(
 ) : ListItem {
 
   enum class Type {
-    HEADER,
     RECENT_SHOWS,
+    ALL_SHOWS_HEADER,
     ALL_SHOWS_ITEM,
   }
 
@@ -42,7 +42,7 @@ data class MyShowsItem(
       itemCount: Int,
       sortOrder: Pair<SortOrder, SortType>?,
     ) = MyShowsItem(
-      type = Type.HEADER,
+      type = Type.ALL_SHOWS_HEADER,
       header = Header(section, itemCount, sortOrder),
       recentsSection = null,
       show = Show.EMPTY,

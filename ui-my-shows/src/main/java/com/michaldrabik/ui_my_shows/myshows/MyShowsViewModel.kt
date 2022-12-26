@@ -16,7 +16,6 @@ import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.ImageType.POSTER
-import com.michaldrabik.ui_model.MyShowsSection
 import com.michaldrabik.ui_model.MyShowsSection.ALL
 import com.michaldrabik.ui_model.MyShowsSection.RECENTS
 import com.michaldrabik.ui_model.Show
@@ -132,9 +131,9 @@ class MyShowsViewModel @Inject constructor(
     }
   }
 
-  fun setSectionSortOrder(section: MyShowsSection, sortOrder: SortOrder, sortType: SortType) {
+  fun setAllSectionSortOrder(sortOrder: SortOrder, sortType: SortType) {
     viewModelScope.launch {
-      sortingCase.setSectionSortOrder(section, sortOrder, sortType)
+      sortingCase.setSectionSortOrder(ALL, sortOrder, sortType)
       loadShows()
     }
   }

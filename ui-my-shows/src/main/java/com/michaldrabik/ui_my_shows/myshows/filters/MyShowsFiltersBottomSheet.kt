@@ -3,6 +3,7 @@ package com.michaldrabik.ui_my_shows.myshows.filters
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.forEach
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -14,11 +15,16 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.screenHeight
 import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.MyShowsSection
+import com.michaldrabik.ui_model.MyShowsSection.ALL
+import com.michaldrabik.ui_model.MyShowsSection.FINISHED
+import com.michaldrabik.ui_model.MyShowsSection.UPCOMING
+import com.michaldrabik.ui_model.MyShowsSection.WATCHING
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.databinding.ViewMyShowsTypeFiltersBinding
 import com.michaldrabik.ui_my_shows.main.FollowedShowsFragment.Companion.REQUEST_MY_SHOWS_FILTERS
 import com.michaldrabik.ui_my_shows.myshows.filters.MyShowsFiltersUiEvent.ApplyFilters
 import com.michaldrabik.ui_my_shows.myshows.filters.MyShowsFiltersUiEvent.CloseFilters
+import com.michaldrabik.ui_my_shows.myshows.filters.views.MyShowsFilterItemView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -46,35 +52,51 @@ internal class MyShowsFiltersBottomSheet : BaseBottomSheetFragment(R.layout.view
     behavior.maxHeight = (screenHeight() * 0.9).toInt()
 
     with(binding) {
-      applyButton.onClick { saveFeedOrder() }
+      rootItemsLayout.removeAllViews()
+      listOf(ALL, WATCHING, UPCOMING, FINISHED)
+        .filter { it != MyShowsSection.RECENTS }
+        .forEach { section ->
+          val itemView = MyShowsFilterItemView(requireContext()).apply {
+            onItemClickListener = { toggleItem(it) }
+            bind(section, isChecked = false)
+          }
+          rootItemsLayout.addView(itemView)
+        }
+      applyButton.onClick { applyFilters() }
     }
   }
 
-  private fun saveFeedOrder() {
+  private fun toggleItem(section: MyShowsSection) {
     with(binding) {
-      val feedOrder = when {
-        feedChipAll.isChecked -> MyShowsSection.ALL
-        feedChipWatching.isChecked -> MyShowsSection.WATCHING
-        feedChipReturning.isChecked -> MyShowsSection.UPCOMING
-        feedChipFinished.isChecked -> MyShowsSection.FINISHED
-        else -> throw IllegalStateException()
+      rootItemsLayout.forEach {
+        (it as MyShowsFilterItemView).bind(
+          sectionType = it.sectionType,
+          isChecked = it.sectionType == section
+        )
       }
-      viewModel.applySectionType(feedOrder)
+    }
+  }
+
+  private fun applyFilters() {
+    with(binding) {
+      rootItemsLayout.forEach {
+        if ((it as MyShowsFilterItemView).isChecked) {
+          viewModel.applySectionType(it.sectionType)
+        }
+      }
     }
   }
 
   private fun render(uiState: MyShowsFiltersUiState) {
     with(uiState) {
-      sectionType?.let { renderFilters(it) }
-    }
-  }
-
-  private fun renderFilters(sectionType: MyShowsSection) {
-    with(binding) {
-      feedChipAll.isChecked = sectionType == MyShowsSection.ALL
-      feedChipWatching.isChecked = sectionType == MyShowsSection.WATCHING
-      feedChipReturning.isChecked = sectionType == MyShowsSection.UPCOMING
-      feedChipFinished.isChecked = sectionType == MyShowsSection.FINISHED
+      sectionType?.let { sectionType ->
+        binding.rootItemsLayout.forEach {
+          (it as MyShowsFilterItemView).bind(
+            sectionType = it.sectionType,
+            isChecked = it.sectionType == sectionType
+          )
+        }
+      }
     }
   }
 

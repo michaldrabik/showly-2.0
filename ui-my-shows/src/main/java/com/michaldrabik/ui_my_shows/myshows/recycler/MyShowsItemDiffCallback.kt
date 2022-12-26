@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_my_shows.myshows.recycler
 
 import androidx.recyclerview.widget.DiffUtil
-import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem.Type.HEADER
+import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem.Type.ALL_SHOWS_HEADER
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem.Type.RECENT_SHOWS
 
 class MyShowsItemDiffCallback : DiffUtil.ItemCallback<MyShowsItem>() {
@@ -14,7 +14,7 @@ class MyShowsItemDiffCallback : DiffUtil.ItemCallback<MyShowsItem>() {
 
   override fun areContentsTheSame(oldItem: MyShowsItem, newItem: MyShowsItem) =
     when (oldItem.type) {
-      HEADER -> oldItem.header == newItem.header
+      ALL_SHOWS_HEADER -> oldItem.header == newItem.header
       RECENT_SHOWS -> oldItem.recentsSection == newItem.recentsSection
       else ->
         oldItem.image == newItem.image &&
