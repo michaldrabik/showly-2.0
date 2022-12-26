@@ -559,6 +559,11 @@
       app:destination="@id/showItemContextDialog"
       app:launchSingleTop="true"
       />
+    <action
+      android:id="@+id/actionFollowedShowsFragmentToMyShowsFilters"
+      app:destination="@id/myShowsFiltersDialog"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment
@@ -1018,6 +1023,12 @@
     android:id="@+id/discoverMoviesFiltersGenresDialog"
     android:name="com.michaldrabik.ui_discover_movies.filters.genres.DiscoverMoviesFiltersGenresBottomSheet"
     android:label="dialogDiscoverMoviesFiltersGenres"
+    />
+
+  <dialog
+    android:id="@+id/myShowsFiltersDialog"
+    android:name="com.michaldrabik.ui_my_shows.myshows.filters.MyShowsFiltersBottomSheet"
+    android:label="dialogMyShowsFilters"
     />
 
 </navigation>

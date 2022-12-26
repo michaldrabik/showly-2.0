@@ -10,7 +10,6 @@ import androidx.core.content.ContextCompat
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.MyShowsSection
-import com.michaldrabik.ui_model.MyShowsSection.ALL
 import com.michaldrabik.ui_model.MyShowsSection.RECENTS
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
@@ -35,17 +34,19 @@ class MyShowHeaderView : FrameLayout {
 
   fun bind(
     item: MyShowsItem.Header,
+    typeClickListener: (() -> Unit)?,
     sortClickListener: ((MyShowsSection, SortOrder, SortType) -> Unit)?,
   ) {
     bindLabel(item)
     with(binding) {
-      myShowsFilterChipsScroll.visibleIf(item.section == ALL)
+      myShowsFilterChipsScroll.visibleIf(item.section != RECENTS)
       myShowsSortChip.visibleIf(item.sortOrder != null)
 
       with(myShowsTypeChip) {
-        visibleIf(item.section != RECENTS)
         isSelected = true
         text = context.getString(item.section.displayString)
+        visibleIf(item.section != RECENTS)
+        onClick { typeClickListener?.invoke() }
       }
 
       item.sortOrder?.let { sortOrder ->

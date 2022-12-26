@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.common.OnLoadDataListener
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
@@ -19,6 +20,7 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
+import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_model.MyShowsSection
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
@@ -33,6 +35,7 @@ import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.main.FollowedShowsFragment
 import com.michaldrabik.ui_my_shows.main.FollowedShowsViewModel
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsAdapter
+import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem.Type.ALL_SHOWS_ITEM
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_my_shows.*
@@ -41,10 +44,12 @@ import kotlinx.android.synthetic.main.fragment_my_shows.*
 class MyShowsFragment :
   BaseFragment<MyShowsViewModel>(R.layout.fragment_my_shows),
   OnScrollResetListener,
-  OnSearchClickListener {
+  OnSearchClickListener,
+  OnLoadDataListener {
 
   private val parentViewModel by viewModels<FollowedShowsViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<MyShowsViewModel>()
+  override val navigationId = R.id.followedShowsFragment
 
   private var adapter: MyShowsAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
@@ -97,6 +102,7 @@ class MyShowsFragment :
       itemClickListener = { openShowDetails(it.show) },
       itemLongClickListener = { item -> openShowMenu(item.show) },
       onSortOrderClickListener = { section, order, type -> openSortOrderDialog(section, order, type) },
+      onTypeClickListener = { navigateToSafe(R.id.actionFollowedShowsFragmentToMyShowsFilters) },
       missingImageListener = { item, force -> viewModel.loadMissingImage(item, force) },
       missingTranslationListener = { viewModel.loadMissingTranslation(it) }
     ) {
@@ -180,6 +186,8 @@ class MyShowsFragment :
   }
 
   override fun onScrollReset() = myShowsRecycler.scrollToPosition(0)
+
+  override fun onLoadData() = viewModel.loadShows(resetScroll = listOf(ALL_SHOWS_ITEM))
 
   override fun setupBackPressed() = Unit
 

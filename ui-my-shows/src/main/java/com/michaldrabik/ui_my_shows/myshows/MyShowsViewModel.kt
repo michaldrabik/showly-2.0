@@ -85,7 +85,14 @@ class MyShowsViewModel @Inject constructor(
       val ratings = ratingsCase.loadRatings()
 
       val shows = loadShowsCase.loadAllShows()
-        .map { toListItemAsync(Type.ALL_SHOWS_ITEM, it, POSTER, ratings[it.ids.trakt]) }
+        .map {
+          toListItemAsync(
+            itemType = Type.ALL_SHOWS_ITEM,
+            show = it,
+            type = POSTER,
+            userRating = ratings[it.ids.trakt]
+          )
+        }
         .awaitAll()
 
       val seasons = loadShowsCase.loadSeasonsForShows(shows.map { it.show.traktId })
@@ -96,7 +103,9 @@ class MyShowsViewModel @Inject constructor(
       )
 
       val recentShows = if (settings.myShowsRecentIsEnabled) {
-        loadShowsCase.loadRecentShows().map { toListItemAsync(Type.RECENT_SHOWS, it, ImageType.FANART, ratings[it.ids.trakt]) }.awaitAll()
+        loadShowsCase.loadRecentShows().map {
+          toListItemAsync(Type.RECENT_SHOWS, it, ImageType.FANART, ratings[it.ids.trakt])
+        }.awaitAll()
       } else {
         emptyList()
       }
@@ -108,10 +117,14 @@ class MyShowsViewModel @Inject constructor(
           add(MyShowsItem.createHeader(RECENTS, recentShows.count(), null))
           add(MyShowsItem.createRecentsSection(recentShows))
         }
-        if (allShows.isNotEmpty()) {
-          add(MyShowsItem.createHeader(ALL, allShows.count(), sortingCase.loadSectionSortOrder(ALL)))
-          addAll(allShows)
-        }
+        add(
+          MyShowsItem.createHeader(
+            section = settingsRepository.filters.myShowsType,
+            itemCount = allShows.count(),
+            sortOrder = sortingCase.loadSectionSortOrder(ALL)
+          )
+        )
+        addAll(allShows)
       }
 
       itemsState.value = listItems

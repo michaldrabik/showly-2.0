@@ -16,6 +16,7 @@ class MyShowsAdapter(
   private val itemClickListener: (MyShowsItem) -> Unit,
   private val itemLongClickListener: (MyShowsItem) -> Unit,
   private val onSortOrderClickListener: (MyShowsSection, SortOrder, SortType) -> Unit,
+  private val onTypeClickListener: () -> Unit,
   private val missingImageListener: (MyShowsItem, Boolean) -> Unit,
   private val missingTranslationListener: (MyShowsItem) -> Unit,
   listChangeListener: () -> Unit,
@@ -60,6 +61,7 @@ class MyShowsAdapter(
     when (holder.itemViewType) {
       VIEW_TYPE_HEADER -> (holder.itemView as MyShowHeaderView).bind(
         item.header!!,
+        onTypeClickListener,
         onSortOrderClickListener
       )
       VIEW_TYPE_RECENTS_SECTION -> (holder.itemView as MyShowsRecentsView).bind(

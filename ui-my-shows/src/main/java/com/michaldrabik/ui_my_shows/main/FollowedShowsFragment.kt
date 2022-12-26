@@ -10,6 +10,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.viewpager.widget.ViewPager
 import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.common.OnLoadDataListener
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
@@ -36,7 +37,14 @@ import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_ITEM_MENU
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_followed_shows.*
+import kotlinx.android.synthetic.main.fragment_followed_shows.followedShowsIcons
+import kotlinx.android.synthetic.main.fragment_followed_shows.followedShowsModeTabs
+import kotlinx.android.synthetic.main.fragment_followed_shows.followedShowsPager
+import kotlinx.android.synthetic.main.fragment_followed_shows.followedShowsRoot
+import kotlinx.android.synthetic.main.fragment_followed_shows.followedShowsSearchIcon
+import kotlinx.android.synthetic.main.fragment_followed_shows.followedShowsSearchLocalView
+import kotlinx.android.synthetic.main.fragment_followed_shows.followedShowsSearchView
+import kotlinx.android.synthetic.main.fragment_followed_shows.followedShowsTabs
 
 @AndroidEntryPoint
 class FollowedShowsFragment :
@@ -44,6 +52,7 @@ class FollowedShowsFragment :
   OnTabReselectedListener {
 
   companion object {
+    const val REQUEST_MY_SHOWS_FILTERS = "REQUEST_MY_SHOWS_FILTERS"
     private const val TRANSLATION_DURATION = 225L
   }
 
@@ -74,6 +83,12 @@ class FollowedShowsFragment :
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } }
     )
+
+    setFragmentResultListener(REQUEST_MY_SHOWS_FILTERS) { _, _ ->
+      childFragmentManager.fragments.forEach {
+        (it as? OnLoadDataListener)?.onLoadData()
+      }
+    }
   }
 
   override fun onSaveInstanceState(outState: Bundle) {
