@@ -34,6 +34,7 @@ import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.main.FollowedShowsFragment
 import com.michaldrabik.ui_my_shows.main.FollowedShowsViewModel
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsAdapter
+import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_my_shows.*
@@ -132,10 +133,11 @@ class MyShowsFragment :
 
   private fun render(uiState: MyShowsUiState) {
     uiState.run {
-      items?.let {
+      items?.let { items ->
         val notifyChangeList = resetScrollMap?.consume()
-        adapter?.setItems(it, notifyChangeList)
-        myShowsEmptyView.fadeIf(it.isEmpty() && !isSearching)
+        val hasShowsItems = items.count { it.type == MyShowsItem.Type.ALL_SHOWS_ITEM } != 0
+        adapter?.setItems(items, notifyChangeList)
+        myShowsEmptyView.fadeIf(!hasShowsItems && !isSearching)
       }
     }
   }
