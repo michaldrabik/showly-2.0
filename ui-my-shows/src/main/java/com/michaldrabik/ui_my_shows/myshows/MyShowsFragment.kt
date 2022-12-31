@@ -82,6 +82,7 @@ class MyShowsFragment :
       itemLongClickListener = { item -> openShowMenu(item.show) },
       onSortOrderClickListener = { section, order, type -> openSortOrderDialog(section, order, type) },
       onTypeClickListener = { navigateToSafe(R.id.actionFollowedShowsFragmentToMyShowsFilters) },
+      onListViewModeClickListener = viewModel::toggleViewMode,
       missingImageListener = { item, force -> viewModel.loadMissingImage(item as MyShowsItem, force) },
       missingTranslationListener = { viewModel.loadMissingTranslation(it as MyShowsItem) }
     ) {
@@ -130,6 +131,7 @@ class MyShowsFragment :
     uiState.run {
       viewMode.let {
         if (adapter?.listViewMode != it) {
+          val state = myShowsRecycler.layoutManager?.onSaveInstanceState()
           layoutManager = when (it) {
             LIST_NORMAL, LIST_COMPACT -> LinearLayoutManager(requireContext(), VERTICAL, false)
             GRID, GRID_TITLE -> GridLayoutManager(context, Config.LISTS_GRID_SPAN)
@@ -138,6 +140,7 @@ class MyShowsFragment :
           myShowsRecycler?.let { recycler ->
             recycler.layoutManager = layoutManager
             recycler.adapter = adapter
+            recycler.layoutManager?.onRestoreInstanceState(state)
           }
           setupRecyclerPaddings()
         }
@@ -181,7 +184,7 @@ class MyShowsFragment :
       val sortType = bundle.getSerializable(NavigationArgs.ARG_SELECTED_SORT_TYPE) as SortType
       MyShowsSection.values()
         .find { NavigationArgs.requestSortOrderSection(it.name) == requestKey }
-        ?.let { viewModel.setAllSectionSortOrder(sortOrder, sortType) }
+        ?.let { viewModel.setSortOrder(sortOrder, sortType) }
     }
 
     navigateTo(R.id.actionFollowedShowsFragmentToSortOrder, args)

@@ -67,8 +67,8 @@ class MyShowsRecentsView : FrameLayout {
     when (viewMode) {
       GRID, GRID_TITLE -> {
         myShowsRecentsContainer.updatePadding(
-          left = 0,
-          right = 0,
+          left = resources.getDimensionPixelSize(R.dimen.myShowsRecentsGridPadding),
+          right = resources.getDimensionPixelSize(R.dimen.myShowsRecentsGridPadding),
         )
       }
       LIST_NORMAL, LIST_COMPACT -> {

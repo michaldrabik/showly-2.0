@@ -28,6 +28,7 @@ import com.michaldrabik.ui_my_shows.myshows.cases.MyShowsLoadShowsCase
 import com.michaldrabik.ui_my_shows.myshows.cases.MyShowsRatingsCase
 import com.michaldrabik.ui_my_shows.myshows.cases.MyShowsSortingCase
 import com.michaldrabik.ui_my_shows.myshows.cases.MyShowsTranslationsCase
+import com.michaldrabik.ui_my_shows.myshows.cases.MyShowsViewModeCase
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem.Type
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -49,6 +50,7 @@ class MyShowsViewModel @Inject constructor(
   private val loadShowsCase: MyShowsLoadShowsCase,
   private val sortingCase: MyShowsSortingCase,
   private val ratingsCase: MyShowsRatingsCase,
+  private val viewModeCase: MyShowsViewModeCase,
   private val translationsCase: MyShowsTranslationsCase,
   private val settingsRepository: SettingsRepository,
   private val imagesProvider: ShowImagesProvider,
@@ -136,10 +138,11 @@ class MyShowsViewModel @Inject constructor(
       itemsState.value = listItems
       itemsUpdateState.value = Event(resetScroll)
       showEmptyViewState.value = shows.isEmpty()
+      viewModeState.value = viewModeCase.getListViewMode()
     }
   }
 
-  fun setAllSectionSortOrder(sortOrder: SortOrder, sortType: SortType) {
+  fun setSortOrder(sortOrder: SortOrder, sortType: SortType) {
     viewModelScope.launch {
       sortingCase.setSectionSortOrder(ALL, sortOrder, sortType)
       loadShows()
@@ -168,6 +171,10 @@ class MyShowsViewModel @Inject constructor(
         Timber.e(error)
       }
     }
+  }
+
+  fun toggleViewMode() {
+    viewModeState.value = viewModeCase.setNextViewMode()
   }
 
   private fun updateItem(new: MyShowsItem) {

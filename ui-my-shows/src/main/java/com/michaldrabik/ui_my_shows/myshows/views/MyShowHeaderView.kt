@@ -43,6 +43,7 @@ class MyShowHeaderView : FrameLayout {
     viewMode: ListViewMode,
     typeClickListener: (() -> Unit)?,
     sortClickListener: ((MyShowsSection, SortOrder, SortType) -> Unit)?,
+    listModeClickListener: (() -> Unit)?,
   ) {
     bindMargins(viewMode)
     bindLabel(item)
@@ -55,6 +56,10 @@ class MyShowHeaderView : FrameLayout {
         text = context.getString(item.section.displayString)
         visibleIf(item.section != RECENTS)
         onClick { typeClickListener?.invoke() }
+      }
+
+      with(myShowsSortListViewChip) {
+        onClick { listModeClickListener?.invoke() }
       }
 
       item.sortOrder?.let { sortOrder ->
@@ -76,13 +81,13 @@ class MyShowHeaderView : FrameLayout {
       when (viewMode) {
         GRID, GRID_TITLE -> {
           myShowsFilterChipsScroll.updatePadding(
-            left = resources.getDimensionPixelSize(R.dimen.spaceTiny),
-            right = resources.getDimensionPixelSize(R.dimen.spaceTiny),
+            left = resources.getDimensionPixelSize(R.dimen.myShowsHeaderGridPadding),
+            right = resources.getDimensionPixelSize(R.dimen.myShowsHeaderGridPadding),
             bottom = resources.getDimensionPixelSize(R.dimen.spaceTiny)
           )
           myShowsHeaderLabel.updatePadding(
-            left = resources.getDimensionPixelSize(R.dimen.spaceTiny),
-            right = resources.getDimensionPixelSize(R.dimen.spaceTiny),
+            left = resources.getDimensionPixelSize(R.dimen.myShowsHeaderGridPadding),
+            right = resources.getDimensionPixelSize(R.dimen.myShowsHeaderGridPadding),
           )
         }
         LIST_NORMAL, LIST_COMPACT -> {

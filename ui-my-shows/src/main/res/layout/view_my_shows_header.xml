@@ -67,6 +67,16 @@
           tools:visibility="visible"
           />
 
+        <com.google.android.material.chip.Chip
+          android:id="@+id/myShowsSortListViewChip"
+          style="@style/ShowlyChip.Filter"
+          app:chipIcon="@drawable/ic_view_grid"
+          app:chipIconEnabled="true"
+          app:chipIconTint="?android:textColorPrimary"
+          app:iconEndPadding="-14dp"
+          app:iconStartPadding="2dp"
+          />
+
       </com.google.android.material.chip.ChipGroup>
 
     </HorizontalScrollView>
