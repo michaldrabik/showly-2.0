@@ -1,8 +1,8 @@
 package com.michaldrabik.ui_base.common
 
 enum class ListViewMode {
-  NORMAL,
-  COMPACT,
+  LIST_NORMAL,
+  LIST_COMPACT,
   GRID,
   GRID_TITLE
 }

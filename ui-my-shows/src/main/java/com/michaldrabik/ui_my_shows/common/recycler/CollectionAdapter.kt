@@ -6,10 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.ui_base.BaseAdapter
 import com.michaldrabik.ui_base.BaseMovieAdapter
 import com.michaldrabik.ui_base.common.ListViewMode
-import com.michaldrabik.ui_base.common.ListViewMode.COMPACT
 import com.michaldrabik.ui_base.common.ListViewMode.GRID
 import com.michaldrabik.ui_base.common.ListViewMode.GRID_TITLE
-import com.michaldrabik.ui_base.common.ListViewMode.NORMAL
+import com.michaldrabik.ui_base.common.ListViewMode.LIST_COMPACT
+import com.michaldrabik.ui_base.common.ListViewMode.LIST_NORMAL
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_shows.common.filters.CollectionShowsFiltersGridView
@@ -42,7 +42,7 @@ class CollectionAdapter(
 
   override val asyncDiffer = AsyncListDiffer(this, CollectionItemDiffCallback())
 
-  var listViewMode: ListViewMode = NORMAL
+  var listViewMode: ListViewMode = LIST_NORMAL
     set(value) {
       field = value
       notifyItemRangeChanged(0, asyncDiffer.currentList.size)
@@ -52,8 +52,8 @@ class CollectionAdapter(
     when (viewType) {
       VIEW_TYPE_SHOW -> BaseMovieAdapter.BaseViewHolder(
         when (listViewMode) {
-          NORMAL -> CollectionShowView(parent.context)
-          COMPACT -> CollectionShowCompactView(parent.context)
+          LIST_NORMAL -> CollectionShowView(parent.context)
+          LIST_COMPACT -> CollectionShowCompactView(parent.context)
           GRID -> CollectionShowGridView(parent.context)
           GRID_TITLE -> CollectionShowGridTitleView(parent.context)
         }.apply {
@@ -65,7 +65,7 @@ class CollectionAdapter(
       )
       VIEW_TYPE_FILTERS -> BaseMovieAdapter.BaseViewHolder(
         when (listViewMode) {
-          NORMAL, COMPACT -> CollectionShowsFiltersView(parent.context).apply {
+          LIST_NORMAL, LIST_COMPACT -> CollectionShowsFiltersView(parent.context).apply {
             onSortChipClicked = this@CollectionAdapter.sortChipClickListener
             onFilterUpcomingClicked = this@CollectionAdapter.upcomingChipClickListener
             onListViewModeClicked = this@CollectionAdapter.listViewChipClickListener
@@ -86,7 +86,7 @@ class CollectionAdapter(
     when (val item = asyncDiffer.currentList[position]) {
       is FiltersItem ->
         when (listViewMode) {
-          NORMAL, COMPACT ->
+          LIST_NORMAL, LIST_COMPACT ->
             (holder.itemView as CollectionShowsFiltersView).bind(item.sortOrder, item.sortType, item.isUpcoming)
           GRID ->
             (holder.itemView as CollectionShowsFiltersGridView).bind(item.sortOrder, item.sortType, item.isUpcoming)
@@ -95,8 +95,8 @@ class CollectionAdapter(
         }
       is ShowItem ->
         when (listViewMode) {
-          NORMAL -> (holder.itemView as CollectionShowView).bind(item)
-          COMPACT -> (holder.itemView as CollectionShowCompactView).bind(item)
+          LIST_NORMAL -> (holder.itemView as CollectionShowView).bind(item)
+          LIST_COMPACT -> (holder.itemView as CollectionShowCompactView).bind(item)
           GRID -> (holder.itemView as CollectionShowGridView).bind(item)
           GRID_TITLE -> (holder.itemView as CollectionShowGridTitleView).bind(item)
         }

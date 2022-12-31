@@ -16,6 +16,6 @@ class SettingsViewModeRepository @Inject constructor(
     private const val WATCHLIST_MOVIES_VIEW_MODE = "WATCHLIST_MOVIES_VIEW_MODE"
   }
 
-  var watchlistShowsViewMode by StringPreference(preferences, WATCHLIST_SHOWS_VIEW_MODE, "NORMAL")
-  var watchlistMoviesViewMode by StringPreference(preferences, WATCHLIST_MOVIES_VIEW_MODE, "NORMAL")
+  var watchlistShowsViewMode by StringPreference(preferences, WATCHLIST_SHOWS_VIEW_MODE, "LIST_NORMAL")
+  var watchlistMoviesViewMode by StringPreference(preferences, WATCHLIST_MOVIES_VIEW_MODE, "LIST_NORMAL")
 }

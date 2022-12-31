@@ -18,6 +18,7 @@ data class MyShowsItem(
   override val isLoading: Boolean,
   val translation: Translation? = null,
   val userRating: Int? = null,
+  val sortOrder: SortOrder? = null,
 ) : ListItem {
 
   enum class Type {

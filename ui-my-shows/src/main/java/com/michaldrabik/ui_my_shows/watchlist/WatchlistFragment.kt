@@ -15,10 +15,10 @@ import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.common.Config.LISTS_GRID_SPAN
 import com.michaldrabik.ui_base.BaseFragment
-import com.michaldrabik.ui_base.common.ListViewMode.COMPACT
 import com.michaldrabik.ui_base.common.ListViewMode.GRID
 import com.michaldrabik.ui_base.common.ListViewMode.GRID_TITLE
-import com.michaldrabik.ui_base.common.ListViewMode.NORMAL
+import com.michaldrabik.ui_base.common.ListViewMode.LIST_COMPACT
+import com.michaldrabik.ui_base.common.ListViewMode.LIST_NORMAL
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
@@ -129,7 +129,7 @@ class WatchlistFragment :
       viewMode.let {
         if (adapter?.listViewMode != it) {
           layoutManager = when (it) {
-            NORMAL, COMPACT -> LinearLayoutManager(requireContext(), VERTICAL, false)
+            LIST_NORMAL, LIST_COMPACT -> LinearLayoutManager(requireContext(), VERTICAL, false)
             GRID, GRID_TITLE -> GridLayoutManager(context, LISTS_GRID_SPAN)
           }
           adapter?.listViewMode = it

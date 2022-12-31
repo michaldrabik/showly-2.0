@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.repository.settings.SettingsRepository
+import com.michaldrabik.ui_base.common.ListViewMode
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.ReloadData
 import com.michaldrabik.ui_base.events.TraktSyncAuthError
@@ -58,6 +59,8 @@ class MyShowsViewModel @Inject constructor(
 
   private val itemsState = MutableStateFlow<List<MyShowsItem>?>(null)
   private val itemsUpdateState = MutableStateFlow<Event<List<Type>?>?>(null)
+  private val viewModeState = MutableStateFlow(ListViewMode.GRID_TITLE)
+  private val showEmptyViewState = MutableStateFlow(false)
 
   private var searchQuery: String? = null
 
@@ -82,6 +85,7 @@ class MyShowsViewModel @Inject constructor(
     loadItemsJob = viewModelScope.launch {
       val settings = settingsRepository.load()
       val ratings = ratingsCase.loadRatings()
+      val sortOrder = settingsRepository.sorting.myShowsAllSortOrder
 
       val shows = loadShowsCase.loadAllShows()
         .map {
@@ -89,7 +93,8 @@ class MyShowsViewModel @Inject constructor(
             itemType = Type.ALL_SHOWS_ITEM,
             show = it,
             type = POSTER,
-            userRating = ratings[it.ids.trakt]
+            userRating = ratings[it.ids.trakt],
+            sortOrder = sortOrder
           )
         }
         .awaitAll()
@@ -103,7 +108,7 @@ class MyShowsViewModel @Inject constructor(
 
       val recentShows = if (settings.myShowsRecentIsEnabled) {
         loadShowsCase.loadRecentShows().map {
-          toListItemAsync(Type.RECENT_SHOWS, it, ImageType.FANART, ratings[it.ids.trakt])
+          toListItemAsync(Type.RECENT_SHOWS, it, ImageType.FANART, ratings[it.ids.trakt], null)
         }.awaitAll()
       } else {
         emptyList()
@@ -116,18 +121,21 @@ class MyShowsViewModel @Inject constructor(
           add(MyShowsItem.createHeader(RECENTS, recentShows.count(), null))
           add(MyShowsItem.createRecentsSection(recentShows))
         }
-        add(
-          MyShowsItem.createHeader(
-            section = settingsRepository.filters.myShowsType,
-            itemCount = allShows.count(),
-            sortOrder = sortingCase.loadSectionSortOrder(ALL)
+        if (shows.isNotEmpty()) {
+          add(
+            MyShowsItem.createHeader(
+              section = settingsRepository.filters.myShowsType,
+              itemCount = allShows.count(),
+              sortOrder = sortingCase.loadSectionSortOrder(ALL)
+            )
           )
-        )
-        addAll(allShows)
+          addAll(allShows)
+        }
       }
 
       itemsState.value = listItems
       itemsUpdateState.value = Event(resetScroll)
+      showEmptyViewState.value = shows.isEmpty()
     }
   }
 
@@ -173,10 +181,11 @@ class MyShowsViewModel @Inject constructor(
     show: Show,
     type: ImageType = POSTER,
     userRating: TraktRating?,
+    sortOrder: SortOrder?,
   ) = async {
     val image = imagesProvider.findCachedImage(show, type)
     val translation = translationsCase.loadTranslation(show, true)
-    MyShowsItem(itemType, null, null, show, image, false, translation, userRating?.rating)
+    MyShowsItem(itemType, null, null, show, image, false, translation, userRating?.rating, sortOrder)
   }
 
   private fun onEvent(event: EventSync) =
@@ -190,11 +199,15 @@ class MyShowsViewModel @Inject constructor(
 
   val uiState = combine(
     itemsState,
-    itemsUpdateState
-  ) { itemsState, itemsUpdateState ->
+    itemsUpdateState,
+    viewModeState,
+    showEmptyViewState
+  ) { s1, s2, s3, s4 ->
     MyShowsUiState(
-      items = itemsState,
-      resetScrollMap = itemsUpdateState
+      items = s1,
+      resetScrollMap = s2,
+      viewMode = s3,
+      showEmptyView = s4
     )
   }.stateIn(
     scope = viewModelScope,

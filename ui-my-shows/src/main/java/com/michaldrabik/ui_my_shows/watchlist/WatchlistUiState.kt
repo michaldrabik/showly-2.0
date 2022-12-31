@@ -8,7 +8,7 @@ import com.michaldrabik.ui_my_shows.common.recycler.CollectionListItem
 
 data class WatchlistUiState(
   val items: List<CollectionListItem> = emptyList(),
-  val viewMode: ListViewMode = ListViewMode.NORMAL,
+  val viewMode: ListViewMode = ListViewMode.LIST_NORMAL,
   val resetScroll: Event<Boolean>? = null,
   val sortOrder: Event<Pair<SortOrder, SortType>>? = null,
 )

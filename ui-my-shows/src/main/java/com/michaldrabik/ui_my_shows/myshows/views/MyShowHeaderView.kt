@@ -7,6 +7,12 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.updatePadding
+import com.michaldrabik.ui_base.common.ListViewMode
+import com.michaldrabik.ui_base.common.ListViewMode.GRID
+import com.michaldrabik.ui_base.common.ListViewMode.GRID_TITLE
+import com.michaldrabik.ui_base.common.ListViewMode.LIST_COMPACT
+import com.michaldrabik.ui_base.common.ListViewMode.LIST_NORMAL
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.MyShowsSection
@@ -34,9 +40,11 @@ class MyShowHeaderView : FrameLayout {
 
   fun bind(
     item: MyShowsItem.Header,
+    viewMode: ListViewMode,
     typeClickListener: (() -> Unit)?,
     sortClickListener: ((MyShowsSection, SortOrder, SortType) -> Unit)?,
   ) {
+    bindMargins(viewMode)
     bindLabel(item)
     with(binding) {
       myShowsFilterChipsScroll.visibleIf(item.section != RECENTS)
@@ -59,6 +67,35 @@ class MyShowHeaderView : FrameLayout {
           SortType.DESCENDING -> R.drawable.ic_arrow_alt_down
         }
         myShowsSortChip.closeIcon = ContextCompat.getDrawable(context, sortIcon)
+      }
+    }
+  }
+
+  private fun bindMargins(viewMode: ListViewMode) {
+    with(binding) {
+      when (viewMode) {
+        GRID, GRID_TITLE -> {
+          myShowsFilterChipsScroll.updatePadding(
+            left = resources.getDimensionPixelSize(R.dimen.spaceTiny),
+            right = resources.getDimensionPixelSize(R.dimen.spaceTiny),
+            bottom = resources.getDimensionPixelSize(R.dimen.spaceTiny)
+          )
+          myShowsHeaderLabel.updatePadding(
+            left = resources.getDimensionPixelSize(R.dimen.spaceTiny),
+            right = resources.getDimensionPixelSize(R.dimen.spaceTiny),
+          )
+        }
+        LIST_NORMAL, LIST_COMPACT -> {
+          myShowsFilterChipsScroll.updatePadding(
+            left = resources.getDimensionPixelSize(R.dimen.spaceMedium),
+            right = resources.getDimensionPixelSize(R.dimen.spaceMedium),
+            bottom = 0
+          )
+          myShowsHeaderLabel.updatePadding(
+            left = resources.getDimensionPixelSize(R.dimen.spaceMedium),
+            right = resources.getDimensionPixelSize(R.dimen.spaceMedium)
+          )
+        }
       }
     }
   }

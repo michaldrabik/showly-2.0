@@ -49,7 +49,7 @@ class WatchlistViewModel @Inject constructor(
   private var loadItemsJob: Job? = null
 
   private val itemsState = MutableStateFlow<List<CollectionListItem>>(emptyList())
-  private val viewModeState = MutableStateFlow(ListViewMode.NORMAL)
+  private val viewModeState = MutableStateFlow(ListViewMode.LIST_NORMAL)
   private val sortOrderState = MutableStateFlow<Event<Pair<SortOrder, SortType>>?>(null)
   private val scrollState = MutableStateFlow<Event<Boolean>?>(null)
 

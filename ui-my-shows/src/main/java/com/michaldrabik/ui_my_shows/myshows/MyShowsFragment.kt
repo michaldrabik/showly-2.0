@@ -7,11 +7,15 @@ import androidx.core.view.postDelayed
 import androidx.core.view.updatePadding
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.common.ListViewMode.*
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
@@ -20,6 +24,7 @@ import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
+import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
 import com.michaldrabik.ui_model.MyShowsSection
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
@@ -35,9 +40,13 @@ import com.michaldrabik.ui_my_shows.main.FollowedShowsFragment
 import com.michaldrabik.ui_my_shows.main.FollowedShowsViewModel
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsAdapter
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
+import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem.Type.ALL_SHOWS_HEADER
+import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem.Type.ALL_SHOWS_ITEM
+import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem.Type.RECENT_SHOWS
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_my_shows.*
+import kotlinx.android.synthetic.main.fragment_watchlist.*
 
 @AndroidEntryPoint
 class MyShowsFragment :
@@ -50,25 +59,9 @@ class MyShowsFragment :
   override val navigationId = R.id.followedShowsFragment
 
   private var adapter: MyShowsAdapter? = null
-  private var layoutManager: LinearLayoutManager? = null
-  private var horizontalPositions: MutableMap<MyShowsSection, Pair<Int, Int>>? = null
+  private var layoutManager: LayoutManager? = null
   private var statusBarHeight = 0
   private var isSearching = false
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-
-    savedInstanceState?.let { bundle ->
-      val horizontalPositionsMap = mutableMapOf<MyShowsSection, Pair<Int, Int>>()
-      MyShowsSection.values().forEach { section ->
-        if (bundle.containsKey(section.name)) {
-          @Suppress("UNCHECKED_CAST")
-          horizontalPositionsMap[section] = bundle.getSerializable(section.name) as Pair<Int, Int>
-        }
-      }
-      horizontalPositions = horizontalPositionsMap
-    }
-  }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -82,18 +75,6 @@ class MyShowsFragment :
     )
   }
 
-  override fun onSaveInstanceState(outState: Bundle) {
-    super.onSaveInstanceState(outState)
-    horizontalPositions?.entries?.forEach { (section, position) ->
-      outState.putSerializable(section.name, position)
-    }
-  }
-
-  override fun onPause() {
-    horizontalPositions = adapter?.horizontalPositions?.toMutableMap()
-    super.onPause()
-  }
-
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
     adapter = MyShowsAdapter(
@@ -101,20 +82,34 @@ class MyShowsFragment :
       itemLongClickListener = { item -> openShowMenu(item.show) },
       onSortOrderClickListener = { section, order, type -> openSortOrderDialog(section, order, type) },
       onTypeClickListener = { navigateToSafe(R.id.actionFollowedShowsFragmentToMyShowsFilters) },
-      missingImageListener = { item, force -> viewModel.loadMissingImage(item, force) },
-      missingTranslationListener = { viewModel.loadMissingTranslation(it) }
+      missingImageListener = { item, force -> viewModel.loadMissingImage(item as MyShowsItem, force) },
+      missingTranslationListener = { viewModel.loadMissingTranslation(it as MyShowsItem) }
     ) {
       layoutManager?.scrollToPosition(0)
       (requireParentFragment() as FollowedShowsFragment).resetTranslations()
     }.apply {
       stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
-      horizontalPositions = this@MyShowsFragment.horizontalPositions?.toMutableMap() ?: mutableMapOf()
     }
     myShowsRecycler.apply {
       adapter = this@MyShowsFragment.adapter
       layoutManager = this@MyShowsFragment.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
       setHasFixedSize(true)
+    }
+    setupRecyclerPaddings()
+  }
+
+  private fun setupRecyclerPaddings() {
+    if (layoutManager is GridLayoutManager) {
+      myShowsRecycler.updatePadding(
+        left = dimenToPx(R.dimen.gridRecyclerPadding),
+        right = dimenToPx(R.dimen.gridRecyclerPadding)
+      )
+    } else {
+      myShowsRecycler.updatePadding(
+        left = 0,
+        right = 0
+      )
     }
   }
 
@@ -133,11 +128,32 @@ class MyShowsFragment :
 
   private fun render(uiState: MyShowsUiState) {
     uiState.run {
+      viewMode.let {
+        if (adapter?.listViewMode != it) {
+          layoutManager = when (it) {
+            LIST_NORMAL, LIST_COMPACT -> LinearLayoutManager(requireContext(), VERTICAL, false)
+            GRID, GRID_TITLE -> GridLayoutManager(context, Config.LISTS_GRID_SPAN)
+          }
+          adapter?.listViewMode = it
+          myShowsRecycler?.let { recycler ->
+            recycler.layoutManager = layoutManager
+            recycler.adapter = adapter
+          }
+          setupRecyclerPaddings()
+        }
+      }
       items?.let { items ->
         val notifyChangeList = resetScrollMap?.consume()
-        val hasShowsItems = items.count { it.type == MyShowsItem.Type.ALL_SHOWS_ITEM } != 0
         adapter?.setItems(items, notifyChangeList)
-        myShowsEmptyView.fadeIf(!hasShowsItems && !isSearching)
+        (layoutManager as? GridLayoutManager)?.withSpanSizeLookup { pos ->
+          val item = adapter?.getItems()?.get(pos)
+          when (item?.type) {
+            RECENT_SHOWS, ALL_SHOWS_HEADER -> Config.LISTS_GRID_SPAN
+            ALL_SHOWS_ITEM -> item.image.type.spanSize
+            null -> throw Error("Unsupported span size!")
+          }
+        }
+        myShowsEmptyView.fadeIf(showEmptyView && !isSearching)
       }
     }
   }
