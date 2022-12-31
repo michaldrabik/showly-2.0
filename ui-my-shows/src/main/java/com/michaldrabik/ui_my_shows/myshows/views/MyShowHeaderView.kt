@@ -59,6 +59,10 @@ class MyShowHeaderView : FrameLayout {
       }
 
       with(myShowsSortListViewChip) {
+        when (viewMode) {
+          LIST_NORMAL, LIST_COMPACT -> setChipIconResource(R.drawable.ic_view_list)
+          GRID, GRID_TITLE -> setChipIconResource(R.drawable.ic_view_grid)
+        }
         onClick { listModeClickListener?.invoke() }
       }
 

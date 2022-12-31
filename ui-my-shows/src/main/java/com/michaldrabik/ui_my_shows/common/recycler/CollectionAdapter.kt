@@ -87,11 +87,9 @@ class CollectionAdapter(
       is FiltersItem ->
         when (listViewMode) {
           LIST_NORMAL, LIST_COMPACT ->
-            (holder.itemView as CollectionShowsFiltersView).bind(item.sortOrder, item.sortType, item.isUpcoming)
-          GRID ->
-            (holder.itemView as CollectionShowsFiltersGridView).bind(item.sortOrder, item.sortType, item.isUpcoming)
-          GRID_TITLE ->
-            (holder.itemView as CollectionShowsFiltersGridView).bind(item.sortOrder, item.sortType, item.isUpcoming)
+            (holder.itemView as CollectionShowsFiltersView).bind(item, listViewMode)
+          GRID, GRID_TITLE ->
+            (holder.itemView as CollectionShowsFiltersGridView).bind(item, listViewMode)
         }
       is ShowItem ->
         when (listViewMode) {
