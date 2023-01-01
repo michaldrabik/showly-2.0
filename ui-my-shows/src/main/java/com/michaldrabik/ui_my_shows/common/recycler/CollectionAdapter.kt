@@ -12,11 +12,10 @@ import com.michaldrabik.ui_base.common.ListViewMode.LIST_COMPACT
 import com.michaldrabik.ui_base.common.ListViewMode.LIST_NORMAL
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
-import com.michaldrabik.ui_my_shows.common.filters.CollectionShowsFiltersGridView
-import com.michaldrabik.ui_my_shows.common.filters.CollectionShowsFiltersView
 import com.michaldrabik.ui_my_shows.common.recycler.CollectionListItem.FiltersItem
 import com.michaldrabik.ui_my_shows.common.recycler.CollectionListItem.ShowItem
 import com.michaldrabik.ui_my_shows.common.views.CollectionShowCompactView
+import com.michaldrabik.ui_my_shows.common.views.CollectionShowFiltersView
 import com.michaldrabik.ui_my_shows.common.views.CollectionShowGridTitleView
 import com.michaldrabik.ui_my_shows.common.views.CollectionShowGridView
 import com.michaldrabik.ui_my_shows.common.views.CollectionShowView
@@ -64,19 +63,11 @@ class CollectionAdapter(
         }
       )
       VIEW_TYPE_FILTERS -> BaseMovieAdapter.BaseViewHolder(
-        when (listViewMode) {
-          LIST_NORMAL, LIST_COMPACT -> CollectionShowsFiltersView(parent.context).apply {
-            onSortChipClicked = this@CollectionAdapter.sortChipClickListener
-            onFilterUpcomingClicked = this@CollectionAdapter.upcomingChipClickListener
-            onListViewModeClicked = this@CollectionAdapter.listViewChipClickListener
-            isUpcomingChipVisible = upcomingChipVisible
-          }
-          GRID, GRID_TITLE -> CollectionShowsFiltersGridView(parent.context).apply {
-            onSortChipClicked = this@CollectionAdapter.sortChipClickListener
-            onFilterUpcomingClicked = this@CollectionAdapter.upcomingChipClickListener
-            onListViewModeClicked = this@CollectionAdapter.listViewChipClickListener
-            isUpcomingChipVisible = upcomingChipVisible
-          }
+        CollectionShowFiltersView(parent.context).apply {
+          onSortChipClicked = this@CollectionAdapter.sortChipClickListener
+          onFilterUpcomingClicked = this@CollectionAdapter.upcomingChipClickListener
+          onListViewModeClicked = this@CollectionAdapter.listViewChipClickListener
+          isUpcomingChipVisible = upcomingChipVisible
         }
       )
       else -> throw IllegalStateException()
@@ -85,12 +76,7 @@ class CollectionAdapter(
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     when (val item = asyncDiffer.currentList[position]) {
       is FiltersItem ->
-        when (listViewMode) {
-          LIST_NORMAL, LIST_COMPACT ->
-            (holder.itemView as CollectionShowsFiltersView).bind(item, listViewMode)
-          GRID, GRID_TITLE ->
-            (holder.itemView as CollectionShowsFiltersGridView).bind(item, listViewMode)
-        }
+        (holder.itemView as CollectionShowFiltersView).bind(item, listViewMode)
       is ShowItem ->
         when (listViewMode) {
           LIST_NORMAL -> (holder.itemView as CollectionShowView).bind(item)

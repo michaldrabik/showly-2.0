@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_my_shows.common.filters
+package com.michaldrabik.ui_my_shows.common.views
 
 import android.content.Context
 import android.util.AttributeSet
@@ -7,6 +7,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.updatePadding
 import com.michaldrabik.ui_base.common.ListViewMode
 import com.michaldrabik.ui_base.common.ListViewMode.GRID
 import com.michaldrabik.ui_base.common.ListViewMode.GRID_TITLE
@@ -20,15 +21,15 @@ import com.michaldrabik.ui_model.SortType.ASCENDING
 import com.michaldrabik.ui_model.SortType.DESCENDING
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.common.recycler.CollectionListItem
-import com.michaldrabik.ui_my_shows.databinding.ViewShowsFiltersGridBinding
+import com.michaldrabik.ui_my_shows.databinding.ViewShowsFiltersBinding
 
-class CollectionShowsFiltersGridView : FrameLayout {
+class CollectionShowFiltersView : FrameLayout {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-  private val binding = ViewShowsFiltersGridBinding.inflate(LayoutInflater.from(context), this)
+  private val binding = ViewShowsFiltersBinding.inflate(LayoutInflater.from(context), this)
 
   var onSortChipClicked: ((SortOrder, SortType) -> Unit)? = null
   var onFilterUpcomingClicked: ((Boolean) -> Unit)? = null
@@ -48,6 +49,7 @@ class CollectionShowsFiltersGridView : FrameLayout {
     item: CollectionListItem.FiltersItem,
     viewMode: ListViewMode,
   ) {
+    bindMargins(viewMode)
     with(binding) {
       val sortIcon = when (item.sortType) {
         ASCENDING -> R.drawable.ic_arrow_alt_up
@@ -66,6 +68,27 @@ class CollectionShowsFiltersGridView : FrameLayout {
       followedShowsSortingChip.onClick { onSortChipClicked?.invoke(item.sortOrder, item.sortType) }
       followedShowsUpcomingChip.onClick { onFilterUpcomingClicked?.invoke(followedShowsUpcomingChip.isChecked) }
       followedShowsListViewChip.onClick { onListViewModeClicked?.invoke() }
+    }
+  }
+
+  private fun bindMargins(viewMode: ListViewMode) {
+    with(binding) {
+      when (viewMode) {
+        GRID, GRID_TITLE -> {
+          followedShowsScroll.updatePadding(
+            left = resources.getDimensionPixelSize(R.dimen.collectionFiltersPaddingHorizontal),
+            right = resources.getDimensionPixelSize(R.dimen.collectionFiltersPaddingHorizontal),
+            bottom = resources.getDimensionPixelSize(R.dimen.collectionFiltersPaddingBottom)
+          )
+        }
+        LIST_NORMAL, LIST_COMPACT -> {
+          followedShowsScroll.updatePadding(
+            left = resources.getDimensionPixelSize(R.dimen.spaceMedium),
+            right = resources.getDimensionPixelSize(R.dimen.spaceMedium),
+            bottom = 0
+          )
+        }
+      }
     }
   }
 }

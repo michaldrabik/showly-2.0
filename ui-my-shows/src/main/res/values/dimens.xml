@@ -30,4 +30,6 @@
   <dimen name="collectionImageWidth">80dp</dimen>
   <dimen name="collectionImageCompactHeight">64dp</dimen>
   <dimen name="collectionImageCompactWidth">43dp</dimen>
+  <dimen name="collectionFiltersPaddingHorizontal">3dp</dimen>
+  <dimen name="collectionFiltersPaddingBottom">5dp</dimen>
 </resources>

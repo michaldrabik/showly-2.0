@@ -9,49 +9,59 @@
   tools:theme="@style/AppTheme"
   >
 
-  <LinearLayout
+  <HorizontalScrollView
+    android:id="@+id/followedShowsScroll"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/spaceMedium"
-    android:layout_marginEnd="@dimen/spaceMedium"
-    android:orientation="horizontal"
+    android:clipToPadding="false"
+    android:overScrollMode="never"
+    android:paddingStart="@dimen/spaceMedium"
+    android:paddingEnd="@dimen/spaceMedium"
     >
 
-    <com.google.android.material.chip.ChipGroup
-      android:id="@+id/followedShowsChips"
+    <LinearLayout
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:paddingTop="@dimen/spaceSmall"
-      android:paddingBottom="@dimen/spaceSmall"
-      app:singleLine="true"
+      android:orientation="horizontal"
       >
 
-      <com.google.android.material.chip.Chip
-        android:id="@+id/followedShowsSortingChip"
-        style="@style/ShowlyChip.Sort"
-        android:text="@string/textSortName"
-        />
+      <com.google.android.material.chip.ChipGroup
+        android:id="@+id/followedShowsChips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/spaceSmall"
+        android:paddingBottom="@dimen/spaceSmall"
+        app:singleLine="true"
+        >
 
-      <com.google.android.material.chip.Chip
-        android:id="@+id/followedShowsUpcomingChip"
-        style="@style/ShowlyChip.Filter"
-        android:text="@string/textWatchlistIncoming"
-        android:visibility="gone"
-        tools:visibility="visible"
-        />
+        <com.google.android.material.chip.Chip
+          android:id="@+id/followedShowsSortingChip"
+          style="@style/ShowlyChip.Sort"
+          android:text="@string/textSortName"
+          />
 
-      <com.google.android.material.chip.Chip
-        android:id="@+id/followedShowsListViewChip"
-        style="@style/ShowlyChip.Filter"
-        app:chipIcon="@drawable/ic_view_grid"
-        app:chipIconEnabled="true"
-        app:chipIconTint="?android:textColorPrimary"
-        app:iconEndPadding="-14dp"
-        app:iconStartPadding="2dp"
-        />
+        <com.google.android.material.chip.Chip
+          android:id="@+id/followedShowsUpcomingChip"
+          style="@style/ShowlyChip.Filter"
+          android:text="@string/textWatchlistIncoming"
+          android:visibility="gone"
+          tools:visibility="visible"
+          />
 
-    </com.google.android.material.chip.ChipGroup>
+        <com.google.android.material.chip.Chip
+          android:id="@+id/followedShowsListViewChip"
+          style="@style/ShowlyChip.Filter"
+          app:chipIcon="@drawable/ic_view_grid"
+          app:chipIconEnabled="true"
+          app:chipIconTint="?android:textColorPrimary"
+          app:iconEndPadding="-14dp"
+          app:iconStartPadding="2dp"
+          />
 
-  </LinearLayout>
+      </com.google.android.material.chip.ChipGroup>
+
+    </LinearLayout>
+
+  </HorizontalScrollView>
 
 </merge>
