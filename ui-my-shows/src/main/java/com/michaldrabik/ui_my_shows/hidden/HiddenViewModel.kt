@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.images.ShowImagesProvider
+import com.michaldrabik.ui_base.common.ListViewMode
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.ReloadData
 import com.michaldrabik.ui_base.events.TraktSyncAuthError
@@ -20,6 +21,7 @@ import com.michaldrabik.ui_my_shows.common.recycler.CollectionListItem.ShowItem
 import com.michaldrabik.ui_my_shows.hidden.cases.HiddenLoadShowsCase
 import com.michaldrabik.ui_my_shows.hidden.cases.HiddenSortOrderCase
 import com.michaldrabik.ui_my_shows.hidden.cases.HiddenTranslationsCase
+import com.michaldrabik.ui_my_shows.hidden.cases.HiddenViewModeCase
 import com.michaldrabik.ui_my_shows.main.FollowedShowsUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -37,6 +39,7 @@ class HiddenViewModel @Inject constructor(
   private val sortOrderCase: HiddenSortOrderCase,
   private val loadShowsCase: HiddenLoadShowsCase,
   private val translationsCase: HiddenTranslationsCase,
+  private val viewModeCase: HiddenViewModeCase,
   private val imagesProvider: ShowImagesProvider,
   private val eventsManager: EventsManager,
 ) : ViewModel() {
@@ -46,6 +49,7 @@ class HiddenViewModel @Inject constructor(
   private val itemsState = MutableStateFlow<List<CollectionListItem>>(emptyList())
   private val sortOrderState = MutableStateFlow<Event<Pair<SortOrder, SortType>>?>(null)
   private val scrollState = MutableStateFlow<Event<Boolean>?>(null)
+  private val viewModeState = MutableStateFlow(ListViewMode.LIST_NORMAL)
 
   private var searchQuery: String? = null
 
@@ -65,6 +69,7 @@ class HiddenViewModel @Inject constructor(
   fun loadShows(resetScroll: Boolean = false) {
     loadItemsJob?.cancel()
     loadItemsJob = viewModelScope.launch {
+      viewModeState.value = viewModeCase.getListViewMode()
       itemsState.value = loadShowsCase.loadShows(searchQuery ?: "")
       scrollState.value = Event(resetScroll)
     }
@@ -103,6 +108,10 @@ class HiddenViewModel @Inject constructor(
     }
   }
 
+  fun setNextViewMode() {
+    viewModeState.value = viewModeCase.setNextViewMode()
+  }
+
   private fun updateItem(new: CollectionListItem) {
     val currentItems = uiState.value.items.toMutableList()
     currentItems.findReplace(new) { it.isSameAs(new) }
@@ -121,12 +130,14 @@ class HiddenViewModel @Inject constructor(
   val uiState = combine(
     itemsState,
     sortOrderState,
-    scrollState
-  ) { itemsState, sortOrderState, scrollState ->
+    scrollState,
+    viewModeState
+  ) { s1, s2, s3, s4 ->
     HiddenUiState(
-      items = itemsState,
-      sortOrder = sortOrderState,
-      resetScroll = scrollState
+      items = s1,
+      sortOrder = s2,
+      resetScroll = s3,
+      viewMode = s4
     )
   }.stateIn(
     scope = viewModelScope,
