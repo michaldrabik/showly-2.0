@@ -1,5 +1,5 @@
 ![Version](https://img.shields.io/github/v/tag/michaldrabik/showly-2.0?label=version)
-![Build](https://img.shields.io/github/workflow/status/michaldrabik/showly-2.0/Master%20Flow)
+![Build]( https://img.shields.io/github/actions/workflow/status/michaldrabik/showly-2.0/android.yml?branch=master)
 ![Twitter](https://img.shields.io/twitter/follow/AppShowly?style=social)
 
 # Showly 2.0
