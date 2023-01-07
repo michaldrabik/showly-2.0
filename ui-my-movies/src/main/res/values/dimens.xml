@@ -15,13 +15,17 @@
   <dimen name="myMovieAllImageWidth">80dp</dimen>
   <dimen name="myMovieAllMarginHorizontal">12dp</dimen>
 
-  <dimen name="watchlistMoviesTabsViewPadding">148dp</dimen>
-  <dimen name="watchlistMoviesImageHeight">120dp</dimen>
-  <dimen name="watchlistMoviesImageWidth">80dp</dimen>
-  <dimen name="watchlistMoviesMarginHorizontal">12dp</dimen>
-
   <dimen name="hiddenTabsViewPadding">148dp</dimen>
   <dimen name="hiddenImageHeight">120dp</dimen>
   <dimen name="hiddenImageWidth">80dp</dimen>
   <dimen name="hiddenMarginHorizontal">12dp</dimen>
+
+  <dimen name="collectionTabsViewPadding">148dp</dimen>
+  <dimen name="collectionMarginHorizontal">12dp</dimen>
+  <dimen name="collectionImageHeight">120dp</dimen>
+  <dimen name="collectionImageWidth">80dp</dimen>
+  <dimen name="collectionImageCompactHeight">64dp</dimen>
+  <dimen name="collectionImageCompactWidth">43dp</dimen>
+  <dimen name="collectionFiltersPaddingHorizontal">3dp</dimen>
+  <dimen name="collectionFiltersPaddingBottom">5dp</dimen>
 </resources>

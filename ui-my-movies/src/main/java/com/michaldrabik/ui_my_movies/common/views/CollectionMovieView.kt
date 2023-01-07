@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_my_movies.watchlist.views
+package com.michaldrabik.ui_my_movies.common.views
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -16,42 +16,40 @@ import com.michaldrabik.ui_base.utilities.extensions.onLongClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_my_movies.R
-import com.michaldrabik.ui_my_movies.watchlist.recycler.WatchlistListItem
-import kotlinx.android.synthetic.main.view_watchlist_movie.view.*
+import com.michaldrabik.ui_my_movies.common.recycler.CollectionListItem
+import kotlinx.android.synthetic.main.view_collection_movie.view.*
 import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n")
-class WatchlistMovieView : MovieView<WatchlistListItem.MovieItem> {
+class CollectionMovieView : MovieView<CollectionListItem.MovieItem> {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
   init {
-    inflate(context, R.layout.view_watchlist_movie, this)
+    inflate(context, R.layout.view_collection_movie, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+    collectionMovieRoot.onClick { itemClickListener?.invoke(item) }
+    collectionMovieRoot.onLongClick { itemLongClickListener?.invoke(item) }
     imageLoadCompleteListener = { loadTranslation() }
-    with(watchlistMoviesRoot) {
-      onClick { itemClickListener?.invoke(item) }
-      onLongClick { itemLongClickListener?.invoke(item) }
-    }
   }
 
-  override val imageView: ImageView = watchlistMoviesImage
-  override val placeholderView: ImageView = watchlistMoviesPlaceholder
+  override val imageView: ImageView = collectionMovieImage
+  override val placeholderView: ImageView = collectionMoviePlaceholder
 
   private var nowUtc = nowUtcDay()
-  private lateinit var item: WatchlistListItem.MovieItem
+  private lateinit var item: CollectionListItem.MovieItem
 
-  override fun bind(item: WatchlistListItem.MovieItem) {
+  override fun bind(item: CollectionListItem.MovieItem) {
     clear()
     this.item = item
-    watchlistMoviesProgress.visibleIf(item.isLoading)
-    watchlistMoviesTitle.text =
+    collectionMovieProgress.visibleIf(item.isLoading)
+    collectionMovieTitle.text =
       if (item.translation?.title.isNullOrBlank()) item.movie.title
       else item.translation?.title
 
-    watchlistMoviesDescription.text =
+    collectionMovieDescription.text =
       when {
         item.translation?.overview.isNullOrBlank() -> {
           item.movie.overview.ifBlank {
@@ -64,12 +62,12 @@ class WatchlistMovieView : MovieView<WatchlistListItem.MovieItem> {
     val releaseDate = item.movie.released
     val isUpcoming = releaseDate?.let { it.toEpochDay() > nowUtc.toEpochDay() } ?: false
 
-    with(watchlistMoviesYear) {
+    with(collectionMovieYear) {
       when {
         isUpcoming -> gone()
         releaseDate != null -> {
           visible()
-          text = item.dateFormat?.format(releaseDate)?.capitalizeWords()
+          text = item.dateFormat.format(releaseDate)?.capitalizeWords()
         }
         item.movie.year > 0 -> {
           visible()
@@ -78,18 +76,18 @@ class WatchlistMovieView : MovieView<WatchlistListItem.MovieItem> {
       }
     }
 
-    with(watchlistMovieReleaseDate) {
+    with(collectionMovieReleaseDate) {
       visibleIf(isUpcoming)
       releaseDate?.let {
-        text = item.fullDateFormat?.format(it)?.capitalizeWords()
+        text = item.fullDateFormat.format(it)?.capitalizeWords()
       }
     }
 
-    watchlistMoviesRating.text = String.format(ENGLISH, "%.1f", item.movie.rating)
+    collectionMovieRating.text = String.format(ENGLISH, "%.1f", item.movie.rating)
     item.userRating?.let {
-      watchlistMovieUserStarIcon.visible()
-      watchlistMovieUserRating.visible()
-      watchlistMovieUserRating.text = String.format(ENGLISH, "%d", it)
+      collectionMovieUserStarIcon.visible()
+      collectionMovieUserRating.visible()
+      collectionMovieUserRating.text = String.format(ENGLISH, "%d", it)
     }
 
     loadImage(item)
@@ -102,15 +100,15 @@ class WatchlistMovieView : MovieView<WatchlistListItem.MovieItem> {
   }
 
   private fun clear() {
-    watchlistMoviesTitle.text = ""
-    watchlistMoviesDescription.text = ""
-    watchlistMoviesYear.text = ""
-    watchlistMoviesRating.text = ""
-    watchlistMoviesYear.gone()
-    watchlistMoviesPlaceholder.gone()
-    watchlistMovieUserStarIcon.gone()
-    watchlistMovieUserRating.gone()
-    watchlistMovieReleaseDate.gone()
-    Glide.with(this).clear(watchlistMoviesImage)
+    collectionMovieTitle.text = ""
+    collectionMovieDescription.text = ""
+    collectionMovieYear.text = ""
+    collectionMovieRating.text = ""
+    collectionMovieYear.gone()
+    collectionMoviePlaceholder.gone()
+    collectionMovieUserStarIcon.gone()
+    collectionMovieUserRating.gone()
+    collectionMovieReleaseDate.gone()
+    Glide.with(this).clear(collectionMovieImage)
   }
 }

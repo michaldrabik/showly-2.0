@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <FrameLayout
+    android:id="@+id/collectionMovieRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="@dimen/gridListsSpacing"
+    android:layout_marginTop="@dimen/gridListsSpacing"
+    android:layout_marginEnd="@dimen/gridListsSpacing"
+    android:layout_marginBottom="28dp"
+    android:background="@drawable/bg_media_view_elevation"
+    android:elevation="@dimen/elevationTiny"
+    android:foreground="@drawable/bg_media_view_ripple"
+    >
+
+    <ImageView
+      android:id="@+id/collectionMovieImage"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      />
+
+    <ImageView
+      android:id="@+id/collectionMoviePlaceholder"
+      android:layout_width="@dimen/showTilePlaceholder"
+      android:layout_height="@dimen/showTilePlaceholder"
+      android:layout_gravity="center"
+      android:visibility="gone"
+      app:srcCompat="@drawable/ic_television"
+      app:tint="?attr/colorPlaceholderIcon"
+      tools:visibility="visible"
+      />
+
+    <ProgressBar
+      android:id="@+id/collectionMovieProgress"
+      style="@style/ProgressBar.Dark"
+      android:layout_width="28dp"
+      android:layout_height="28dp"
+      android:layout_gravity="center"
+      android:visibility="gone"
+      />
+
+    <TextView
+      android:id="@+id/collectionMovieRating"
+      style="@style/ImageTitle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="top|end"
+      android:layout_margin="@dimen/spaceTiny"
+      android:background="@drawable/bg_text_on_surface"
+      android:drawablePadding="2dp"
+      android:gravity="end"
+      android:paddingStart="4dp"
+      android:paddingTop="2dp"
+      android:paddingEnd="4dp"
+      android:paddingBottom="2dp"
+      android:shadowColor="@color/colorTransparent"
+      android:textColor="@color/colorWhite"
+      android:textSize="11sp"
+      android:visibility="gone"
+      app:drawableStartCompat="@drawable/ic_star_small"
+      app:drawableTint="@color/colorWhite"
+      tools:text="9.9"
+      tools:visibility="visible"
+      />
+
+  </FrameLayout>
+
+  <TextView
+    android:id="@+id/collectionMovieTitle"
+    style="@style/ImageTitleGrid"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|start"
+    android:layout_marginStart="@dimen/gridListsSpacing"
+    android:layout_marginEnd="@dimen/gridListsSpacing"
+    android:layout_marginBottom="9dp"
+    android:gravity="start"
+    android:maxLines="1"
+    android:textAlignment="viewStart"
+    android:textSize="11sp"
+    android:visibility="visible"
+    tools:text="Game Of Thrones"
+    tools:visibility="visible"
+    />
+
+</merge>

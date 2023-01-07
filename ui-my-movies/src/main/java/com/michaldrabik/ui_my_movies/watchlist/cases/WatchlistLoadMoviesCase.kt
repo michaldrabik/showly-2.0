@@ -10,9 +10,9 @@ import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
-import com.michaldrabik.ui_my_movies.watchlist.helpers.WatchlistItemFilter
-import com.michaldrabik.ui_my_movies.watchlist.helpers.WatchlistItemSorter
-import com.michaldrabik.ui_my_movies.watchlist.recycler.WatchlistListItem
+import com.michaldrabik.ui_my_movies.common.helpers.CollectionItemFilter
+import com.michaldrabik.ui_my_movies.common.helpers.CollectionItemSorter
+import com.michaldrabik.ui_my_movies.common.recycler.CollectionListItem
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
@@ -24,8 +24,8 @@ import javax.inject.Inject
 @ViewModelScoped
 class WatchlistLoadMoviesCase @Inject constructor(
   private val ratingsCase: WatchlistRatingsCase,
-  private val sorter: WatchlistItemSorter,
-  private val filters: WatchlistItemFilter,
+  private val sorter: CollectionItemSorter,
+  private val filters: CollectionItemFilter,
   private val moviesRepository: MoviesRepository,
   private val translationsRepository: TranslationsRepository,
   private val dateFormatProvider: DateFormatProvider,
@@ -35,7 +35,7 @@ class WatchlistLoadMoviesCase @Inject constructor(
 
   val language by lazy { translationsRepository.getLanguage() }
 
-  suspend fun loadMovies(searchQuery: String): List<WatchlistListItem> = coroutineScope {
+  suspend fun loadMovies(searchQuery: String): List<CollectionListItem> = coroutineScope {
     val ratings = ratingsCase.loadRatings()
     val dateFormat = dateFormatProvider.loadShortDayFormat()
     val fullDateFormat = dateFormatProvider.loadFullDayFormat()
@@ -54,7 +54,8 @@ class WatchlistLoadMoviesCase @Inject constructor(
           fullDateFormat = fullDateFormat
         )
       }
-      .awaitAll().filter {
+      .awaitAll()
+      .filter {
         filters.filterByQuery(it, searchQuery) &&
           filters.filterUpcoming(it, filtersItem.isUpcoming)
       }
@@ -67,8 +68,8 @@ class WatchlistLoadMoviesCase @Inject constructor(
     }
   }
 
-  private fun loadFiltersItem(): WatchlistListItem.FiltersItem {
-    return WatchlistListItem.FiltersItem(
+  private fun loadFiltersItem(): CollectionListItem.FiltersItem {
+    return CollectionListItem.FiltersItem(
       sortOrder = settingsRepository.sorting.watchlistMoviesSortOrder,
       sortType = settingsRepository.sorting.watchlistMoviesSortType,
       isUpcoming = settingsRepository.filters.watchlistMoviesUpcoming
@@ -88,7 +89,7 @@ class WatchlistLoadMoviesCase @Inject constructor(
     fullDateFormat: DateTimeFormatter,
   ) = async {
     val image = imagesProvider.findCachedImage(movie, ImageType.POSTER)
-    WatchlistListItem.MovieItem(
+    CollectionListItem.MovieItem(
       isLoading = false,
       movie = movie,
       image = image,

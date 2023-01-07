@@ -27,12 +27,14 @@ import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_movies.R
+import com.michaldrabik.ui_my_movies.common.recycler.CollectionAdapter
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesFragment
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesViewModel
-import com.michaldrabik.ui_my_movies.watchlist.recycler.WatchlistAdapter
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_watchlist_movies.*
+import kotlinx.android.synthetic.main.fragment_watchlist_movies.watchlistMoviesContent
+import kotlinx.android.synthetic.main.fragment_watchlist_movies.watchlistMoviesEmptyView
+import kotlinx.android.synthetic.main.fragment_watchlist_movies.watchlistMoviesRecycler
 
 @AndroidEntryPoint
 class WatchlistFragment :
@@ -43,7 +45,7 @@ class WatchlistFragment :
   private val parentViewModel by viewModels<FollowedMoviesViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<WatchlistViewModel>()
 
-  private var adapter: WatchlistAdapter? = null
+  private var adapter: CollectionAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
   private var statusBarHeight = 0
   private var isSearching = false
@@ -62,17 +64,18 @@ class WatchlistFragment :
 
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
-    adapter = WatchlistAdapter(
+    adapter = CollectionAdapter(
       itemClickListener = { openMovieDetails(it.movie) },
       itemLongClickListener = { openMovieMenu(it.movie) },
       sortChipClickListener = ::openSortOrderDialog,
       upcomingChipClickListener = viewModel::setFilters,
       missingImageListener = viewModel::loadMissingImage,
       missingTranslationListener = viewModel::loadMissingTranslation,
+      listViewChipClickListener = { TODO("Not yet implemented") },
       listChangeListener = {
         watchlistMoviesRecycler.scrollToPosition(0)
         (requireParentFragment() as FollowedMoviesFragment).resetTranslations()
-      }
+      },
     )
     watchlistMoviesRecycler.apply {
       setHasFixedSize(true)
@@ -85,13 +88,13 @@ class WatchlistFragment :
   private fun setupStatusBar() {
     if (statusBarHeight != 0) {
       watchlistMoviesContent.updatePadding(top = watchlistMoviesContent.paddingTop + statusBarHeight)
-      watchlistMoviesRecycler.updatePadding(top = dimenToPx(R.dimen.watchlistMoviesTabsViewPadding))
+      watchlistMoviesRecycler.updatePadding(top = dimenToPx(R.dimen.collectionTabsViewPadding))
       return
     }
     watchlistMoviesContent.doOnApplyWindowInsets { view, insets, padding, _ ->
       statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
       view.updatePadding(top = padding.top + statusBarHeight)
-      watchlistMoviesRecycler.updatePadding(top = dimenToPx(R.dimen.watchlistMoviesTabsViewPadding))
+      watchlistMoviesRecycler.updatePadding(top = dimenToPx(R.dimen.collectionTabsViewPadding))
     }
   }
 

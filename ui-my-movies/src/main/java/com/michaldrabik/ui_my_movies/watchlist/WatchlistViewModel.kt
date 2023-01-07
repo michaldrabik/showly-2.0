@@ -15,12 +15,12 @@ import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
+import com.michaldrabik.ui_my_movies.common.recycler.CollectionListItem
+import com.michaldrabik.ui_my_movies.common.recycler.CollectionListItem.MovieItem
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesUiState
 import com.michaldrabik.ui_my_movies.watchlist.cases.WatchlistFiltersCase
 import com.michaldrabik.ui_my_movies.watchlist.cases.WatchlistLoadMoviesCase
 import com.michaldrabik.ui_my_movies.watchlist.cases.WatchlistSortOrderCase
-import com.michaldrabik.ui_my_movies.watchlist.recycler.WatchlistListItem
-import com.michaldrabik.ui_my_movies.watchlist.recycler.WatchlistListItem.MovieItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,7 +43,7 @@ class WatchlistViewModel @Inject constructor(
 
   private var loadItemsJob: Job? = null
 
-  private val itemsState = MutableStateFlow<List<WatchlistListItem>>(emptyList())
+  private val itemsState = MutableStateFlow<List<CollectionListItem>>(emptyList())
   private val sortOrderState = MutableStateFlow<Event<Pair<SortOrder, SortType>>?>(null)
   private val scrollState = MutableStateFlow<Event<Boolean>?>(null)
 
@@ -84,7 +84,7 @@ class WatchlistViewModel @Inject constructor(
     }
   }
 
-  fun loadMissingImage(item: WatchlistListItem, force: Boolean) {
+  fun loadMissingImage(item: CollectionListItem, force: Boolean) {
     check(item is MovieItem)
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
@@ -97,7 +97,7 @@ class WatchlistViewModel @Inject constructor(
     }
   }
 
-  fun loadMissingTranslation(item: WatchlistListItem) {
+  fun loadMissingTranslation(item: CollectionListItem) {
     check(item is MovieItem)
     if (item.translation != null || loadMoviesCase.language == DEFAULT_LANGUAGE) return
     viewModelScope.launch {
@@ -110,7 +110,7 @@ class WatchlistViewModel @Inject constructor(
     }
   }
 
-  private fun updateItem(item: WatchlistListItem) {
+  private fun updateItem(item: CollectionListItem) {
     val currentItems = uiState.value.items.toMutableList()
     currentItems.findReplace(item) { it isSameAs item }
     itemsState.value = currentItems

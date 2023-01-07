@@ -15,9 +15,4 @@ class WatchlistSortOrderCase @Inject constructor(
     settingsRepository.sorting.watchlistMoviesSortOrder = sortOrder
     settingsRepository.sorting.watchlistMoviesSortType = sortType
   }
-
-  fun loadSortOrder() = Pair(
-    settingsRepository.sorting.watchlistMoviesSortOrder,
-    settingsRepository.sorting.watchlistMoviesSortType
-  )
 }

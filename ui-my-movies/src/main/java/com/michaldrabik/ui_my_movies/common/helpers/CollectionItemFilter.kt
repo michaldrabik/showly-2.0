@@ -1,15 +1,15 @@
-package com.michaldrabik.ui_my_movies.watchlist.helpers
+package com.michaldrabik.ui_my_movies.common.helpers
 
 import com.michaldrabik.common.extensions.nowUtcDay
-import com.michaldrabik.ui_my_movies.watchlist.recycler.WatchlistListItem
+import com.michaldrabik.ui_my_movies.common.recycler.CollectionListItem
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class WatchlistItemFilter @Inject constructor() {
+class CollectionItemFilter @Inject constructor() {
 
   fun filterUpcoming(
-    item: WatchlistListItem,
+    item: CollectionListItem,
     isUpcoming: Boolean,
   ): Boolean {
     if (isUpcoming) {
@@ -23,7 +23,7 @@ class WatchlistItemFilter @Inject constructor() {
   }
 
   fun filterByQuery(
-    item: WatchlistListItem.MovieItem,
+    item: CollectionListItem.MovieItem,
     query: String,
   ): Boolean {
     return item.movie.title.contains(query, true) ||

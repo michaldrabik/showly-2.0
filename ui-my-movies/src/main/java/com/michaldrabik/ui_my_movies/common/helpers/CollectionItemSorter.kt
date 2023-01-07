@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_my_movies.watchlist.helpers
+package com.michaldrabik.ui_my_movies.common.helpers
 
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
@@ -9,10 +9,10 @@ import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.SortType.ASCENDING
 import com.michaldrabik.ui_model.SortType.DESCENDING
-import com.michaldrabik.ui_my_movies.watchlist.recycler.WatchlistListItem
+import com.michaldrabik.ui_my_movies.common.recycler.CollectionListItem
 import javax.inject.Inject
 
-class WatchlistItemSorter @Inject constructor() {
+class CollectionItemSorter @Inject constructor() {
 
   fun sort(sortOrder: SortOrder, sortType: SortType) = when (sortType) {
     ASCENDING -> sortAscending(sortOrder)
@@ -23,11 +23,11 @@ class WatchlistItemSorter @Inject constructor() {
     NAME -> compareBy { getTitle(it) }
     RATING -> compareBy { it.movie.rating }
     USER_RATING ->
-      compareByDescending<WatchlistListItem.MovieItem> { it.userRating != null }
+      compareByDescending<CollectionListItem.MovieItem> { it.userRating != null }
         .thenBy { it.userRating }
         .thenBy { getTitle(it) }
     DATE_ADDED -> compareBy { it.movie.createdAt }
-    NEWEST -> compareBy<WatchlistListItem.MovieItem> { it.movie.released }.thenBy { it.movie.year }
+    NEWEST -> compareBy<CollectionListItem.MovieItem> { it.movie.released }.thenBy { it.movie.year }
     else -> throw IllegalStateException("Invalid sort order")
   }
 
@@ -35,15 +35,15 @@ class WatchlistItemSorter @Inject constructor() {
     NAME -> compareByDescending { getTitle(it) }
     RATING -> compareByDescending { it.movie.rating }
     USER_RATING ->
-      compareByDescending<WatchlistListItem.MovieItem> { it.userRating != null }
+      compareByDescending<CollectionListItem.MovieItem> { it.userRating != null }
         .thenByDescending { it.userRating }
         .thenBy { getTitle(it) }
     DATE_ADDED -> compareByDescending { it.movie.createdAt }
-    NEWEST -> compareByDescending<WatchlistListItem.MovieItem> { it.movie.released }.thenByDescending { it.movie.year }
+    NEWEST -> compareByDescending<CollectionListItem.MovieItem> { it.movie.released }.thenByDescending { it.movie.year }
     else -> throw IllegalStateException("Invalid sort order")
   }
 
-  private fun getTitle(item: WatchlistListItem.MovieItem): String {
+  private fun getTitle(item: CollectionListItem.MovieItem): String {
     val translatedTitle =
       if (item.translation?.hasTitle == true) item.translation.title
       else item.movie.titleNoThe

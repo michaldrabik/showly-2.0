@@ -9,21 +9,21 @@
   >
 
   <androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/watchlistMoviesRoot"
+    android:id="@+id/collectionMovieRoot"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
     android:clipToPadding="false"
-    android:paddingLeft="@dimen/watchlistMoviesMarginHorizontal"
+    android:paddingLeft="@dimen/collectionMarginHorizontal"
     android:paddingTop="@dimen/spaceSmall"
-    android:paddingRight="@dimen/watchlistMoviesMarginHorizontal"
+    android:paddingRight="@dimen/collectionMarginHorizontal"
     android:paddingBottom="@dimen/spaceSmall"
     >
 
     <ImageView
-      android:id="@+id/watchlistMoviesImage"
-      android:layout_width="@dimen/watchlistMoviesImageWidth"
-      android:layout_height="@dimen/watchlistMoviesImageHeight"
+      android:id="@+id/collectionMovieImage"
+      android:layout_width="@dimen/collectionImageWidth"
+      android:layout_height="@dimen/collectionImageHeight"
       android:background="@drawable/bg_media_view_elevation"
       android:elevation="@dimen/elevationSmall"
       app:layout_constraintBottom_toBottomOf="parent"
@@ -32,9 +32,9 @@
       />
 
     <ImageView
-      android:id="@+id/watchlistMoviesPlaceholder"
-      android:layout_width="@dimen/watchlistMoviesImageWidth"
-      android:layout_height="@dimen/watchlistMoviesImageHeight"
+      android:id="@+id/collectionMoviePlaceholder"
+      android:layout_width="@dimen/collectionImageWidth"
+      android:layout_height="@dimen/collectionImageHeight"
       android:layout_gravity="center"
       android:background="@drawable/bg_media_view_placeholder"
       android:elevation="@dimen/elevationSmall"
@@ -49,86 +49,86 @@
       />
 
     <ProgressBar
-      android:id="@+id/watchlistMoviesProgress"
+      android:id="@+id/collectionMovieProgress"
       style="@style/ProgressBar.Dark"
       android:layout_width="28dp"
       android:layout_height="28dp"
       android:layout_gravity="center"
       android:visibility="gone"
       app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="@id/watchlistMoviesImage"
-      app:layout_constraintStart_toStartOf="@id/watchlistMoviesImage"
+      app:layout_constraintEnd_toEndOf="@id/collectionMovieImage"
+      app:layout_constraintStart_toStartOf="@id/collectionMovieImage"
       app:layout_constraintTop_toTopOf="parent"
       tools:visibility="visible"
       />
 
     <TextView
-      android:id="@+id/watchlistMoviesTitle"
+      android:id="@+id/collectionMovieTitle"
       style="@style/CollectionItem.Title"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spaceMedium"
-      app:layout_constraintBottom_toTopOf="@id/watchlistMoviesDescription"
+      app:layout_constraintBottom_toTopOf="@id/collectionMovieDescription"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toEndOf="@id/watchlistMoviesImage"
-      app:layout_constraintTop_toBottomOf="@id/watchlistMoviesYear"
+      app:layout_constraintStart_toEndOf="@id/collectionMovieImage"
+      app:layout_constraintTop_toBottomOf="@id/collectionMovieYear"
       app:layout_constraintVertical_chainStyle="packed"
       tools:text="Game of Thrones"
       />
 
     <TextView
-      android:id="@+id/watchlistMoviesYear"
+      android:id="@+id/collectionMovieYear"
       style="@style/CollectionItem.Header"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spaceMedium"
-      app:layout_constraintBottom_toTopOf="@id/watchlistMoviesTitle"
+      app:layout_constraintBottom_toTopOf="@id/collectionMovieTitle"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toEndOf="@id/watchlistMoviesImage"
+      app:layout_constraintStart_toEndOf="@id/collectionMovieImage"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintVertical_chainStyle="packed"
       tools:text="24 Mar 2022"
       />
 
     <ImageView
-      android:id="@+id/watchlistMoviesStarIcon"
+      android:id="@+id/collectionMovieStarIcon"
       android:layout_width="20dp"
       android:layout_height="0dp"
-      app:layout_constraintBottom_toTopOf="@id/watchlistMoviesTitle"
-      app:layout_constraintEnd_toStartOf="@id/watchlistMoviesRating"
-      app:layout_constraintTop_toTopOf="@id/watchlistMoviesYear"
+      app:layout_constraintBottom_toTopOf="@id/collectionMovieTitle"
+      app:layout_constraintEnd_toStartOf="@id/collectionMovieRating"
+      app:layout_constraintTop_toTopOf="@id/collectionMovieYear"
       app:srcCompat="@drawable/ic_star"
       app:tint="?attr/colorAccent"
       />
 
     <TextView
-      android:id="@+id/watchlistMoviesRating"
+      android:id="@+id/collectionMovieRating"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:gravity="end"
       android:textColor="?android:attr/textColorSecondary"
       android:textSize="12sp"
-      app:layout_constraintBottom_toTopOf="@id/watchlistMoviesTitle"
+      app:layout_constraintBottom_toTopOf="@id/collectionMovieTitle"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toTopOf="@id/watchlistMoviesYear"
+      app:layout_constraintTop_toTopOf="@id/collectionMovieYear"
       tools:text="7.6"
       />
 
     <ImageView
-      android:id="@+id/watchlistMovieUserStarIcon"
+      android:id="@+id/collectionMovieUserStarIcon"
       android:layout_width="20dp"
       android:layout_height="0dp"
       android:visibility="gone"
-      app:layout_constraintBottom_toTopOf="@id/watchlistMoviesTitle"
-      app:layout_constraintEnd_toStartOf="@id/watchlistMovieUserRating"
-      app:layout_constraintTop_toTopOf="@id/watchlistMoviesYear"
+      app:layout_constraintBottom_toTopOf="@id/collectionMovieTitle"
+      app:layout_constraintEnd_toStartOf="@id/collectionMovieUserRating"
+      app:layout_constraintTop_toTopOf="@id/collectionMovieYear"
       app:srcCompat="@drawable/ic_star"
       app:tint="?android:attr/textColorPrimary"
       tools:visibility="visible"
       />
 
     <TextView
-      android:id="@+id/watchlistMovieUserRating"
+      android:id="@+id/collectionMovieUserRating"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginEnd="@dimen/spaceTiny"
@@ -136,28 +136,28 @@
       android:textColor="?android:attr/textColorSecondary"
       android:textSize="12sp"
       android:visibility="gone"
-      app:layout_constraintBottom_toTopOf="@id/watchlistMoviesTitle"
-      app:layout_constraintEnd_toStartOf="@id/watchlistMoviesStarIcon"
-      app:layout_constraintTop_toTopOf="@id/watchlistMoviesYear"
+      app:layout_constraintBottom_toTopOf="@id/collectionMovieTitle"
+      app:layout_constraintEnd_toStartOf="@id/collectionMovieStarIcon"
+      app:layout_constraintTop_toTopOf="@id/collectionMovieYear"
       tools:text="10"
       tools:visibility="visible"
       />
 
     <TextView
-      android:id="@+id/watchlistMoviesDescription"
+      android:id="@+id/collectionMovieDescription"
       style="@style/CollectionItem.Description"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spaceMedium"
-      app:layout_constraintBottom_toTopOf="@id/watchlistMovieReleaseDate"
+      app:layout_constraintBottom_toTopOf="@id/collectionMovieReleaseDate"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toEndOf="@id/watchlistMoviesImage"
-      app:layout_constraintTop_toBottomOf="@id/watchlistMoviesTitle"
+      app:layout_constraintStart_toEndOf="@id/collectionMovieImage"
+      app:layout_constraintTop_toBottomOf="@id/collectionMovieTitle"
       tools:text="Lorem Ipsum"
       />
 
     <TextView
-      android:id="@+id/watchlistMovieReleaseDate"
+      android:id="@+id/collectionMovieReleaseDate"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spaceMedium"
@@ -179,8 +179,8 @@
       app:drawableStartCompat="@drawable/ic_clock_small"
       app:drawableTint="?android:attr/textColorPrimary"
       app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintStart_toEndOf="@id/watchlistMoviesImage"
-      app:layout_constraintTop_toBottomOf="@id/watchlistMoviesDescription"
+      app:layout_constraintStart_toEndOf="@id/collectionMovieImage"
+      app:layout_constraintTop_toBottomOf="@id/collectionMovieDescription"
       tools:text="Wednesday, 27 June 2019"
       tools:visibility="visible"
       />
