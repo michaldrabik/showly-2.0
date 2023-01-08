@@ -15,12 +15,17 @@ class SettingsViewModeRepository @Inject constructor(
     private const val MY_SHOWS_VIEW_MODE = "MY_SHOWS_VIEW_MODE"
     private const val WATCHLIST_SHOWS_VIEW_MODE = "WATCHLIST_SHOWS_VIEW_MODE"
     private const val HIDDEN_SHOWS_VIEW_MODE = "HIDDEN_SHOWS_VIEW_MODE"
+
+    private const val MY_MOVIES_VIEW_MODE = "MY_MOVIES_VIEW_MODE"
     private const val WATCHLIST_MOVIES_VIEW_MODE = "WATCHLIST_MOVIES_VIEW_MODE"
+    private const val HIDDEN_MOVIES_VIEW_MODE = "HIDDEN_MOVIES_VIEW_MODE"
   }
 
   var myShowsViewMode by StringPreference(preferences, MY_SHOWS_VIEW_MODE, "LIST_NORMAL")
   var watchlistShowsViewMode by StringPreference(preferences, WATCHLIST_SHOWS_VIEW_MODE, "LIST_NORMAL")
   var hiddenShowsViewMode by StringPreference(preferences, HIDDEN_SHOWS_VIEW_MODE, "LIST_NORMAL")
 
+  var myMoviesViewMode by StringPreference(preferences, MY_MOVIES_VIEW_MODE, "LIST_NORMAL")
   var watchlistMoviesViewMode by StringPreference(preferences, WATCHLIST_MOVIES_VIEW_MODE, "LIST_NORMAL")
+  var hiddenMoviesViewMode by StringPreference(preferences, HIDDEN_MOVIES_VIEW_MODE, "LIST_NORMAL")
 }

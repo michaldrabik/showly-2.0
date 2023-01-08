@@ -13,7 +13,10 @@ import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_movies.common.recycler.CollectionListItem.FiltersItem
 import com.michaldrabik.ui_my_movies.common.recycler.CollectionListItem.MovieItem
+import com.michaldrabik.ui_my_movies.common.views.CollectionMovieCompactView
 import com.michaldrabik.ui_my_movies.common.views.CollectionMovieFiltersView
+import com.michaldrabik.ui_my_movies.common.views.CollectionMovieGridTitleView
+import com.michaldrabik.ui_my_movies.common.views.CollectionMovieGridView
 import com.michaldrabik.ui_my_movies.common.views.CollectionMovieView
 
 class CollectionAdapter(
@@ -48,9 +51,9 @@ class CollectionAdapter(
       VIEW_TYPE_SHOW -> BaseViewHolder(
         when (listViewMode) {
           LIST_NORMAL -> CollectionMovieView(parent.context)
-          LIST_COMPACT -> CollectionMovieView(parent.context)
-          GRID -> CollectionMovieView(parent.context)
-          GRID_TITLE -> CollectionMovieView(parent.context)
+          LIST_COMPACT -> CollectionMovieCompactView(parent.context)
+          GRID -> CollectionMovieGridView(parent.context)
+          GRID_TITLE -> CollectionMovieGridTitleView(parent.context)
         }.apply {
           itemClickListener = this@CollectionAdapter.itemClickListener
           itemLongClickListener = this@CollectionAdapter.itemLongClickListener
@@ -76,9 +79,9 @@ class CollectionAdapter(
       is MovieItem ->
         when (listViewMode) {
           LIST_NORMAL -> (holder.itemView as CollectionMovieView).bind(item)
-          LIST_COMPACT -> (holder.itemView as CollectionMovieView).bind(item)
-          GRID -> (holder.itemView as CollectionMovieView).bind(item)
-          GRID_TITLE -> (holder.itemView as CollectionMovieView).bind(item)
+          LIST_COMPACT -> (holder.itemView as CollectionMovieCompactView).bind(item)
+          GRID -> (holder.itemView as CollectionMovieGridView).bind(item)
+          GRID_TITLE -> (holder.itemView as CollectionMovieGridTitleView).bind(item)
         }
     }
   }

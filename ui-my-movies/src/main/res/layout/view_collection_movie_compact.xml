@@ -75,6 +75,7 @@
       app:layout_constraintStart_toEndOf="@id/collectionMovieImage"
       app:layout_constraintTop_toBottomOf="@+id/collectionMovieYear"
       app:layout_constraintVertical_chainStyle="packed"
+      app:layout_goneMarginTop="@dimen/spaceNormal"
       tools:text="Game of Thrones"
       />
 

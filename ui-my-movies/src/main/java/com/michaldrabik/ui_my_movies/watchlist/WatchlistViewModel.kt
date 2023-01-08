@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.repository.images.MovieImagesProvider
+import com.michaldrabik.ui_base.common.ListViewMode
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.ReloadData
 import com.michaldrabik.ui_base.events.TraktSyncAuthError
@@ -21,6 +22,7 @@ import com.michaldrabik.ui_my_movies.main.FollowedMoviesUiState
 import com.michaldrabik.ui_my_movies.watchlist.cases.WatchlistFiltersCase
 import com.michaldrabik.ui_my_movies.watchlist.cases.WatchlistLoadMoviesCase
 import com.michaldrabik.ui_my_movies.watchlist.cases.WatchlistSortOrderCase
+import com.michaldrabik.ui_my_movies.watchlist.cases.WatchlistViewModeCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,6 +39,7 @@ class WatchlistViewModel @Inject constructor(
   private val sortOrderCase: WatchlistSortOrderCase,
   private val filtersCase: WatchlistFiltersCase,
   private val loadMoviesCase: WatchlistLoadMoviesCase,
+  private val viewModeCase: WatchlistViewModeCase,
   private val imagesProvider: MovieImagesProvider,
   private val eventsManager: EventsManager,
 ) : ViewModel() {
@@ -44,6 +47,7 @@ class WatchlistViewModel @Inject constructor(
   private var loadItemsJob: Job? = null
 
   private val itemsState = MutableStateFlow<List<CollectionListItem>>(emptyList())
+  private val viewModeState = MutableStateFlow(ListViewMode.LIST_NORMAL)
   private val sortOrderState = MutableStateFlow<Event<Pair<SortOrder, SortType>>?>(null)
   private val scrollState = MutableStateFlow<Event<Boolean>?>(null)
 
@@ -65,6 +69,7 @@ class WatchlistViewModel @Inject constructor(
   fun loadMovies(resetScroll: Boolean = false) {
     loadItemsJob?.cancel()
     loadItemsJob = viewModelScope.launch {
+      viewModeState.value = viewModeCase.getListViewMode()
       itemsState.value = loadMoviesCase.loadMovies(searchQuery ?: "")
       scrollState.value = Event(resetScroll)
     }
@@ -82,6 +87,10 @@ class WatchlistViewModel @Inject constructor(
       filtersCase.setIsUpcoming(isUpcoming)
       loadMovies(resetScroll = true)
     }
+  }
+
+  fun setNextViewMode() {
+    viewModeState.value = viewModeCase.setNextViewMode()
   }
 
   fun loadMissingImage(item: CollectionListItem, force: Boolean) {
@@ -128,12 +137,14 @@ class WatchlistViewModel @Inject constructor(
   val uiState = combine(
     itemsState,
     sortOrderState,
-    scrollState
-  ) { itemsState, sortOrderState, scrollState ->
+    scrollState,
+    viewModeState
+  ) { s1, s2, s3, s4 ->
     WatchlistUiState(
-      items = itemsState,
-      sortOrder = sortOrderState,
-      resetScroll = scrollState
+      items = s1,
+      sortOrder = s2,
+      resetScroll = s3,
+      viewMode = s4
     )
   }.stateIn(
     scope = viewModelScope,

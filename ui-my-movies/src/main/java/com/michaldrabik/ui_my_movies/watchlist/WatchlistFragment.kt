@@ -7,10 +7,17 @@ import androidx.core.view.postDelayed
 import androidx.core.view.updatePadding
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.common.ListViewMode.GRID
+import com.michaldrabik.ui_base.common.ListViewMode.GRID_TITLE
+import com.michaldrabik.ui_base.common.ListViewMode.LIST_COMPACT
+import com.michaldrabik.ui_base.common.ListViewMode.LIST_NORMAL
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
@@ -18,6 +25,7 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
+import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
@@ -32,9 +40,7 @@ import com.michaldrabik.ui_my_movies.main.FollowedMoviesFragment
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesViewModel
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_watchlist_movies.watchlistMoviesContent
-import kotlinx.android.synthetic.main.fragment_watchlist_movies.watchlistMoviesEmptyView
-import kotlinx.android.synthetic.main.fragment_watchlist_movies.watchlistMoviesRecycler
+import kotlinx.android.synthetic.main.fragment_watchlist_movies.*
 
 @AndroidEntryPoint
 class WatchlistFragment :
@@ -46,7 +52,7 @@ class WatchlistFragment :
   override val viewModel by viewModels<WatchlistViewModel>()
 
   private var adapter: CollectionAdapter? = null
-  private var layoutManager: LinearLayoutManager? = null
+  private var layoutManager: LayoutManager? = null
   private var statusBarHeight = 0
   private var isSearching = false
 
@@ -71,7 +77,7 @@ class WatchlistFragment :
       upcomingChipClickListener = viewModel::setFilters,
       missingImageListener = viewModel::loadMissingImage,
       missingTranslationListener = viewModel::loadMissingTranslation,
-      listViewChipClickListener = { TODO("Not yet implemented") },
+      listViewChipClickListener = viewModel::setNextViewMode,
       listChangeListener = {
         watchlistMoviesRecycler.scrollToPosition(0)
         (requireParentFragment() as FollowedMoviesFragment).resetTranslations()
@@ -82,6 +88,21 @@ class WatchlistFragment :
       adapter = this@WatchlistFragment.adapter
       layoutManager = this@WatchlistFragment.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+    }
+    setupRecyclerPaddings()
+  }
+
+  private fun setupRecyclerPaddings() {
+    if (layoutManager is GridLayoutManager) {
+      watchlistMoviesRecycler.updatePadding(
+        left = dimenToPx(R.dimen.gridRecyclerPadding),
+        right = dimenToPx(R.dimen.gridRecyclerPadding)
+      )
+    } else {
+      watchlistMoviesRecycler.updatePadding(
+        left = 0,
+        right = 0
+      )
     }
   }
 
@@ -100,9 +121,26 @@ class WatchlistFragment :
 
   private fun render(uiState: WatchlistUiState) {
     uiState.run {
+      viewMode.let {
+        if (adapter?.listViewMode != it) {
+          layoutManager = when (it) {
+            LIST_NORMAL, LIST_COMPACT -> LinearLayoutManager(requireContext(), VERTICAL, false)
+            GRID, GRID_TITLE -> GridLayoutManager(context, Config.LISTS_GRID_SPAN)
+          }
+          adapter?.listViewMode = it
+          watchlistMoviesRecycler?.let { recycler ->
+            recycler.layoutManager = layoutManager
+            recycler.adapter = adapter
+          }
+          setupRecyclerPaddings()
+        }
+      }
       items.let {
         val notifyChange = resetScroll?.consume() == true
         adapter?.setItems(it, notifyChange = notifyChange)
+        (layoutManager as? GridLayoutManager)?.withSpanSizeLookup { pos ->
+          adapter?.getItems()?.get(pos)?.image?.type?.spanSize!!
+        }
         watchlistMoviesEmptyView.fadeIf(it.isEmpty() && !isSearching)
       }
       sortOrder?.let { event ->
