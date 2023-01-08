@@ -15,9 +15,9 @@ import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
+import com.michaldrabik.ui_my_movies.common.recycler.CollectionListItem
 import com.michaldrabik.ui_my_movies.hidden.cases.HiddenLoadMoviesCase
 import com.michaldrabik.ui_my_movies.hidden.cases.HiddenSortOrderCase
-import com.michaldrabik.ui_my_movies.hidden.recycler.HiddenListItem
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -40,7 +40,7 @@ class HiddenViewModel @Inject constructor(
 
   private var loadItemsJob: Job? = null
 
-  private val itemsState = MutableStateFlow<List<HiddenListItem>>(emptyList())
+  private val itemsState = MutableStateFlow<List<CollectionListItem>>(emptyList())
   private val sortOrderState = MutableStateFlow<Event<Pair<SortOrder, SortType>>?>(null)
   private val scrollState = MutableStateFlow<Event<Boolean>?>(null)
 
@@ -76,8 +76,8 @@ class HiddenViewModel @Inject constructor(
     }
   }
 
-  fun loadMissingImage(item: HiddenListItem, force: Boolean) {
-    check(item is HiddenListItem.MovieItem)
+  fun loadMissingImage(item: CollectionListItem, force: Boolean) {
+    check(item is CollectionListItem.MovieItem)
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
       try {
@@ -89,8 +89,8 @@ class HiddenViewModel @Inject constructor(
     }
   }
 
-  fun loadMissingTranslation(item: HiddenListItem) {
-    check(item is HiddenListItem.MovieItem)
+  fun loadMissingTranslation(item: CollectionListItem) {
+    check(item is CollectionListItem.MovieItem)
     if (item.translation != null || loadMoviesCase.language == Config.DEFAULT_LANGUAGE) return
     viewModelScope.launch {
       try {
@@ -102,7 +102,7 @@ class HiddenViewModel @Inject constructor(
     }
   }
 
-  private fun updateItem(new: HiddenListItem) {
+  private fun updateItem(new: CollectionListItem) {
     val currentItems = uiState.value.items.toMutableList()
     currentItems.findReplace(new) { it isSameAs (new) }
     itemsState.value = currentItems

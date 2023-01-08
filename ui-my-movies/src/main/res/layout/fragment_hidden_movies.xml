@@ -15,7 +15,7 @@
     android:background="@android:color/transparent"
     android:clipToPadding="false"
     android:overScrollMode="never"
-    android:paddingTop="@dimen/hiddenTabsViewPadding"
+    android:paddingTop="@dimen/collectionTabsViewPadding"
     android:paddingBottom="@dimen/myMoviesBottomPadding"
     />
 

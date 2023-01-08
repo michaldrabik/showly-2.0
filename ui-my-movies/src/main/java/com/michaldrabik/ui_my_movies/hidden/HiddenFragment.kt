@@ -27,7 +27,7 @@ import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_movies.R
-import com.michaldrabik.ui_my_movies.hidden.recycler.HiddenAdapter
+import com.michaldrabik.ui_my_movies.common.recycler.CollectionAdapter
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesFragment
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesViewModel
 import com.michaldrabik.ui_navigation.java.NavigationArgs
@@ -43,7 +43,7 @@ class HiddenFragment :
   private val parentViewModel by viewModels<FollowedMoviesViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<HiddenViewModel>()
 
-  private var adapter: HiddenAdapter? = null
+  private var adapter: CollectionAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
   private var statusBarHeight = 0
   private var isSearching = false
@@ -62,16 +62,19 @@ class HiddenFragment :
 
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
-    adapter = HiddenAdapter(
+    adapter = CollectionAdapter(
       itemClickListener = { openMovieDetails(it.movie) },
       itemLongClickListener = { openMovieMenu(it.movie) },
       sortChipClickListener = ::openSortOrderDialog,
       missingImageListener = viewModel::loadMissingImage,
       missingTranslationListener = viewModel::loadMissingTranslation,
+      listViewChipClickListener = { TODO("Not yet implemented") },
+      upcomingChipVisible = false,
+      upcomingChipClickListener = {},
       listChangeListener = {
         hiddenMoviesRecycler.scrollToPosition(0)
         (requireParentFragment() as FollowedMoviesFragment).resetTranslations()
-      }
+      },
     )
     hiddenMoviesRecycler.apply {
       setHasFixedSize(true)
@@ -84,13 +87,13 @@ class HiddenFragment :
   private fun setupStatusBar() {
     if (statusBarHeight != 0) {
       hiddenMoviesContent.updatePadding(top = hiddenMoviesContent.paddingTop + statusBarHeight)
-      hiddenMoviesRecycler.updatePadding(top = dimenToPx(R.dimen.hiddenTabsViewPadding))
+      hiddenMoviesRecycler.updatePadding(top = dimenToPx(R.dimen.collectionTabsViewPadding))
       return
     }
     hiddenMoviesContent.doOnApplyWindowInsets { view, insets, padding, _ ->
       statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
       view.updatePadding(top = padding.top + statusBarHeight)
-      hiddenMoviesRecycler.updatePadding(top = dimenToPx(R.dimen.hiddenTabsViewPadding))
+      hiddenMoviesRecycler.updatePadding(top = dimenToPx(R.dimen.collectionTabsViewPadding))
     }
   }
 
