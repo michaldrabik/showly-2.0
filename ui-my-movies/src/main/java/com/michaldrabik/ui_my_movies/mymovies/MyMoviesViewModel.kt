@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.repository.settings.SettingsRepository
+import com.michaldrabik.ui_base.common.ListViewMode
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.ReloadData
 import com.michaldrabik.ui_base.events.TraktSyncAuthError
@@ -25,10 +26,11 @@ import com.michaldrabik.ui_my_movies.main.FollowedMoviesUiState
 import com.michaldrabik.ui_my_movies.mymovies.cases.MyMoviesLoadCase
 import com.michaldrabik.ui_my_movies.mymovies.cases.MyMoviesRatingsCase
 import com.michaldrabik.ui_my_movies.mymovies.cases.MyMoviesSortingCase
+import com.michaldrabik.ui_my_movies.mymovies.cases.MyMoviesViewModeCase
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem.Type
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem.Type.ALL_MOVIES_ITEM
-import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem.Type.RECENT_MOVIE
+import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem.Type.RECENT_MOVIES
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -49,6 +51,7 @@ class MyMoviesViewModel @Inject constructor(
   private val loadMoviesCase: MyMoviesLoadCase,
   private val ratingsCase: MyMoviesRatingsCase,
   private val sortingCase: MyMoviesSortingCase,
+  private val viewModeCase: MyMoviesViewModeCase,
   private val settingsRepository: SettingsRepository,
   private val eventsManager: EventsManager,
 ) : ViewModel() {
@@ -57,6 +60,8 @@ class MyMoviesViewModel @Inject constructor(
 
   private val itemsState = MutableStateFlow<List<MyMoviesItem>?>(null)
   private val itemsUpdateState = MutableStateFlow<Event<Boolean>?>(null)
+  private val viewModeState = MutableStateFlow(ListViewMode.LIST_NORMAL)
+  private val showEmptyViewState = MutableStateFlow(false)
 
   private var searchQuery: String? = null
 
@@ -88,7 +93,7 @@ class MyMoviesViewModel @Inject constructor(
       val allMovies = loadMoviesCase.filterSectionMovies(movies, sortOrder, searchQuery)
       val recentMovies = if (settings.myMoviesRecentIsEnabled) {
         loadMoviesCase.loadRecentMovies().map {
-          toListItemAsync(RECENT_MOVIE, it, dateFormat, ImageType.FANART, ratings[it.ids.trakt])
+          toListItemAsync(RECENT_MOVIES, it, dateFormat, ImageType.FANART, ratings[it.ids.trakt])
         }.awaitAll()
       } else {
         emptyList()
@@ -109,6 +114,8 @@ class MyMoviesViewModel @Inject constructor(
 
       itemsState.value = listItems
       itemsUpdateState.value = Event(notifyListsUpdate)
+      showEmptyViewState.value = movies.isEmpty()
+      viewModeState.value = viewModeCase.getListViewMode()
     }
   }
 
@@ -143,6 +150,10 @@ class MyMoviesViewModel @Inject constructor(
     }
   }
 
+  fun toggleViewMode() {
+    viewModeState.value = viewModeCase.setNextViewMode()
+  }
+
   private fun updateItem(new: MyMoviesItem) {
     val items = uiState.value.items?.toMutableList()
     items?.findReplace(new) { it isSameAs new }
@@ -158,7 +169,7 @@ class MyMoviesViewModel @Inject constructor(
   ) = async {
     val image = loadMoviesCase.findCachedImage(movie, type)
     val translation = loadMoviesCase.loadTranslation(movie, true)
-    MyMoviesItem(itemType, null, null, null, movie, image, false, translation, userRating?.rating, dateFormat)
+    MyMoviesItem(itemType, null, null, movie, image, false, translation, userRating?.rating, dateFormat)
   }
 
   private fun onEvent(event: EventSync) =
@@ -172,11 +183,15 @@ class MyMoviesViewModel @Inject constructor(
 
   val uiState = combine(
     itemsState,
-    itemsUpdateState
-  ) { itemsState, itemsUpdateState ->
+    itemsUpdateState,
+    viewModeState,
+    showEmptyViewState
+  ) { s1, s2, s3, s4 ->
     MyMoviesUiState(
-      items = itemsState,
-      resetScroll = itemsUpdateState
+      items = s1,
+      resetScroll = s2,
+      viewMode = s3,
+      showEmptyView = s4
     )
   }.stateIn(
     scope = viewModelScope,

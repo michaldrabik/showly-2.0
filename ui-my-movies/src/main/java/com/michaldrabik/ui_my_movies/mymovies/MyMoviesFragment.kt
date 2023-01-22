@@ -7,10 +7,16 @@ import androidx.core.view.postDelayed
 import androidx.core.view.updatePadding
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.common.ListViewMode.GRID
+import com.michaldrabik.ui_base.common.ListViewMode.GRID_TITLE
+import com.michaldrabik.ui_base.common.ListViewMode.LIST_COMPACT
+import com.michaldrabik.ui_base.common.ListViewMode.LIST_NORMAL
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
@@ -18,6 +24,7 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
+import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
@@ -30,6 +37,9 @@ import com.michaldrabik.ui_my_movies.R
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesFragment
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesViewModel
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesAdapter
+import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem.Type.ALL_MOVIES_ITEM
+import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem.Type.HEADER
+import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem.Type.RECENT_MOVIES
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_my_movies.*
@@ -65,9 +75,10 @@ class MyMoviesFragment :
     adapter = MyMoviesAdapter(
       itemClickListener = { openMovieDetails(it.movie) },
       itemLongClickListener = { openMovieMenu(it.movie) },
+      onSortOrderClickListener = { order, type -> openSortOrderDialog(order, type) },
+      onListViewModeClickListener = viewModel::toggleViewMode,
       missingImageListener = { item, force -> viewModel.loadMissingImage(item, force) },
       missingTranslationListener = { viewModel.loadMissingTranslation(it) },
-      onSortOrderClickListener = { order, type -> openSortOrderDialog(order, type) },
       listChangeListener = {
         layoutManager?.scrollToPosition(0)
         (requireParentFragment() as FollowedMoviesFragment).resetTranslations()
@@ -79,25 +90,66 @@ class MyMoviesFragment :
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
       setHasFixedSize(true)
     }
+    setupRecyclerPaddings()
   }
 
   private fun setupStatusBar() {
     if (statusBarHeight != 0) {
       myMoviesRoot.updatePadding(top = statusBarHeight)
+      myMoviesRecycler.updatePadding(top = dimenToPx(R.dimen.myMoviesTabsViewPadding))
       return
     }
     myMoviesRoot.doOnApplyWindowInsets { view, insets, _, _ ->
       statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
       view.updatePadding(top = statusBarHeight)
+      myMoviesRecycler.updatePadding(top = dimenToPx(R.dimen.myMoviesTabsViewPadding))
+    }
+  }
+
+  private fun setupRecyclerPaddings() {
+    if (layoutManager is GridLayoutManager) {
+      myMoviesRecycler.updatePadding(
+        left = dimenToPx(R.dimen.gridRecyclerPadding),
+        right = dimenToPx(R.dimen.gridRecyclerPadding)
+      )
+    } else {
+      myMoviesRecycler.updatePadding(
+        left = 0,
+        right = 0
+      )
     }
   }
 
   private fun render(uiState: MyMoviesUiState) {
     uiState.run {
+      viewMode.let {
+        if (adapter?.listViewMode != it) {
+          val state = myMoviesRecycler.layoutManager?.onSaveInstanceState()
+          layoutManager = when (it) {
+            LIST_NORMAL, LIST_COMPACT -> LinearLayoutManager(requireContext(), VERTICAL, false)
+            GRID, GRID_TITLE -> GridLayoutManager(context, Config.LISTS_GRID_SPAN)
+          }
+          adapter?.listViewMode = it
+          myMoviesRecycler?.let { recycler ->
+            recycler.layoutManager = layoutManager
+            recycler.adapter = adapter
+            recycler.layoutManager?.onRestoreInstanceState(state)
+          }
+          setupRecyclerPaddings()
+        }
+      }
       items?.let {
         val notifyChange = resetScroll?.consume() == true
         adapter?.setItems(it, notifyChange)
-        myMoviesEmptyView.fadeIf(it.isEmpty() && !isSearching)
+        (layoutManager as? GridLayoutManager)?.withSpanSizeLookup { pos ->
+          val item = adapter?.getItems()?.get(pos)
+          when (item?.type) {
+            RECENT_MOVIES, HEADER -> Config.LISTS_GRID_SPAN
+            ALL_MOVIES_ITEM -> item.image.type.spanSize
+            null -> throw Error("Unsupported span size!")
+          }
+        }
+        myMoviesEmptyView.fadeIf(showEmptyView && !isSearching)
       }
     }
   }

@@ -3,7 +3,10 @@
   <dimen name="myMoviesTabsTranslation">-7dp</dimen>
 
   <dimen name="myMoviesSearchViewPadding">104dp</dimen>
-  <dimen name="myMoviesTabsViewPadding">128dp</dimen>
+  <dimen name="myMoviesTabsViewPadding">136dp</dimen>
+  <dimen name="myMoviesHeaderGridPadding">3dp</dimen>
+  <dimen name="myMoviesRecentsGridPadding">-1dp</dimen>
+
   <dimen name="myMoviesBottomPadding">76dp</dimen>
   <dimen name="myMoviesFanartCorner">4dp</dimen>
   <dimen name="myMoviesFanartHeight">126dp</dimen>

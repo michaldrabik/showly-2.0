@@ -7,8 +7,15 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.updatePadding
+import com.michaldrabik.ui_base.common.ListViewMode
+import com.michaldrabik.ui_base.common.ListViewMode.GRID
+import com.michaldrabik.ui_base.common.ListViewMode.GRID_TITLE
+import com.michaldrabik.ui_base.common.ListViewMode.LIST_COMPACT
+import com.michaldrabik.ui_base.common.ListViewMode.LIST_NORMAL
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_model.MyMoviesSection.ALL
 import com.michaldrabik.ui_model.MyMoviesSection.RECENTS
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
@@ -33,19 +40,34 @@ class MyMovieHeaderView : FrameLayout {
 
   fun bind(
     item: MyMoviesItem.Header,
+    viewMode: ListViewMode,
     sortClickListener: (SortOrder, SortType) -> Unit,
+    listModeClickListener: (() -> Unit)?,
   ) {
+    bindMargins(viewMode)
     bindLabel(item)
     with(binding) {
-      myMoviesHeaderSortButton.visibleIf(item.sortOrder != null)
+      myMoviesFilterChipsScroll.visibleIf(item.section == ALL)
+      myMoviesSortChip.visibleIf(item.sortOrder != null)
+
+      with(myMoviesSortListViewChip) {
+        when (viewMode) {
+          LIST_NORMAL, LIST_COMPACT -> setChipIconResource(R.drawable.ic_view_list)
+          GRID, GRID_TITLE -> setChipIconResource(R.drawable.ic_view_grid)
+        }
+        onClick { listModeClickListener?.invoke() }
+      }
+
       item.sortOrder?.let { sortOrder ->
-        myMoviesHeaderSortButton.text = context.getString(sortOrder.first.displayString)
-        myMoviesHeaderSortButton.onClick { sortClickListener(sortOrder.first, sortOrder.second) }
+        myMoviesSortChip.text = context.getString(sortOrder.first.displayString)
+        myMoviesSortChip.onClick {
+          sortClickListener.invoke(sortOrder.first, sortOrder.second)
+        }
         val sortIcon = when (sortOrder.second) {
           SortType.ASCENDING -> R.drawable.ic_arrow_alt_up
           SortType.DESCENDING -> R.drawable.ic_arrow_alt_down
         }
-        myMoviesHeaderSortButton.closeIcon = ContextCompat.getDrawable(context, sortIcon)
+        myMoviesSortChip.closeIcon = ContextCompat.getDrawable(context, sortIcon)
       }
     }
   }
@@ -55,6 +77,35 @@ class MyMovieHeaderView : FrameLayout {
     binding.myMoviesHeaderLabel.text = when (item.section) {
       RECENTS -> headerLabel
       else -> String.format(ENGLISH, "%s (%d)", headerLabel, item.itemCount)
+    }
+  }
+
+  private fun bindMargins(viewMode: ListViewMode) {
+    with(binding) {
+      when (viewMode) {
+        GRID, GRID_TITLE -> {
+          myMoviesFilterChipsScroll.updatePadding(
+            left = resources.getDimensionPixelSize(R.dimen.myMoviesHeaderGridPadding),
+            right = resources.getDimensionPixelSize(R.dimen.myMoviesHeaderGridPadding),
+            bottom = resources.getDimensionPixelSize(R.dimen.spaceTiny)
+          )
+          myMoviesHeaderLabel.updatePadding(
+            left = resources.getDimensionPixelSize(R.dimen.myMoviesHeaderGridPadding),
+            right = resources.getDimensionPixelSize(R.dimen.myMoviesHeaderGridPadding),
+          )
+        }
+        LIST_NORMAL, LIST_COMPACT -> {
+          myMoviesFilterChipsScroll.updatePadding(
+            left = resources.getDimensionPixelSize(R.dimen.spaceMedium),
+            right = resources.getDimensionPixelSize(R.dimen.spaceMedium),
+            bottom = 0
+          )
+          myMoviesHeaderLabel.updatePadding(
+            left = resources.getDimensionPixelSize(R.dimen.spaceMedium),
+            right = resources.getDimensionPixelSize(R.dimen.spaceMedium)
+          )
+        }
+      }
     }
   }
 }

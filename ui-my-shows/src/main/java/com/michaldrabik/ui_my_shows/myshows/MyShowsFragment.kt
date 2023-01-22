@@ -84,11 +84,12 @@ class MyShowsFragment :
       onTypeClickListener = { navigateToSafe(R.id.actionFollowedShowsFragmentToMyShowsFilters) },
       onListViewModeClickListener = viewModel::toggleViewMode,
       missingImageListener = { item, force -> viewModel.loadMissingImage(item as MyShowsItem, force) },
-      missingTranslationListener = { viewModel.loadMissingTranslation(it as MyShowsItem) }
-    ) {
-      layoutManager?.scrollToPosition(0)
-      (requireParentFragment() as FollowedShowsFragment).resetTranslations()
-    }.apply {
+      missingTranslationListener = { viewModel.loadMissingTranslation(it as MyShowsItem) },
+      listChangeListener = {
+        layoutManager?.scrollToPosition(0)
+        (requireParentFragment() as FollowedShowsFragment).resetTranslations()
+      }
+    ).apply {
       stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
     }
     myShowsRecycler.apply {

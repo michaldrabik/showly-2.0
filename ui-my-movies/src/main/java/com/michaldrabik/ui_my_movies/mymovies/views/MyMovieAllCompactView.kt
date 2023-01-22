@@ -16,22 +16,22 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_my_movies.R
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem
-import kotlinx.android.synthetic.main.view_collection_movie.view.*
+import kotlinx.android.synthetic.main.view_collection_movie_compact.view.*
 import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n")
-class MyMovieAllView : MovieView<MyMoviesItem> {
+class MyMovieAllCompactView : MovieView<MyMoviesItem> {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
   init {
-    inflate(context, R.layout.view_collection_movie, this)
+    inflate(context, R.layout.view_collection_movie_compact, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-    imageLoadCompleteListener = { loadTranslation() }
     collectionMovieRoot.onClick { itemClickListener?.invoke(item) }
     collectionMovieRoot.onLongClick { itemLongClickListener?.invoke(item) }
+    imageLoadCompleteListener = { loadTranslation() }
   }
 
   override val imageView: ImageView = collectionMovieImage
@@ -46,15 +46,6 @@ class MyMovieAllView : MovieView<MyMoviesItem> {
     collectionMovieTitle.text =
       if (item.translation?.title.isNullOrBlank()) item.movie.title
       else item.translation?.title
-
-    collectionMovieDescription.text =
-      when {
-        item.translation?.overview.isNullOrBlank() -> {
-          if (item.movie.overview.isNotBlank()) item.movie.overview
-          else context.getString(R.string.textNoDescription)
-        }
-        else -> item.translation?.overview
-      }
 
     collectionMovieRating.text = String.format(ENGLISH, "%.1f", item.movie.rating)
     collectionMovieYear.visibleIf(item.movie.released != null || item.movie.year > 0)
@@ -80,7 +71,6 @@ class MyMovieAllView : MovieView<MyMoviesItem> {
 
   private fun clear() {
     collectionMovieTitle.text = ""
-    collectionMovieDescription.text = ""
     collectionMovieYear.text = ""
     collectionMovieRating.text = ""
     collectionMovieUserRating.gone()

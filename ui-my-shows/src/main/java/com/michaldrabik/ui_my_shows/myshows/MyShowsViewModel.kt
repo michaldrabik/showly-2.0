@@ -61,7 +61,7 @@ class MyShowsViewModel @Inject constructor(
 
   private val itemsState = MutableStateFlow<List<MyShowsItem>?>(null)
   private val itemsUpdateState = MutableStateFlow<Event<List<Type>?>?>(null)
-  private val viewModeState = MutableStateFlow(ListViewMode.GRID_TITLE)
+  private val viewModeState = MutableStateFlow(ListViewMode.LIST_NORMAL)
   private val showEmptyViewState = MutableStateFlow(false)
 
   private var searchQuery: String? = null

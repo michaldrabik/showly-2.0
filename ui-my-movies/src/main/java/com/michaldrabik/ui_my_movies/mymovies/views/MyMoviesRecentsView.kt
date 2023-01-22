@@ -6,6 +6,12 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import android.widget.GridLayout
+import androidx.core.view.updatePadding
+import com.michaldrabik.ui_base.common.ListViewMode
+import com.michaldrabik.ui_base.common.ListViewMode.GRID
+import com.michaldrabik.ui_base.common.ListViewMode.GRID_TITLE
+import com.michaldrabik.ui_base.common.ListViewMode.LIST_COMPACT
+import com.michaldrabik.ui_base.common.ListViewMode.LIST_NORMAL
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.screenWidth
 import com.michaldrabik.ui_my_movies.R
@@ -30,8 +36,9 @@ class MyMoviesRecentsView : FrameLayout {
 
   fun bind(
     item: MyMoviesItem.RecentsSection,
+    viewMode: ListViewMode,
     itemClickListener: ((MyMoviesItem) -> Unit)?,
-    itemLongClickListener: ((MyMoviesItem) -> Unit)?
+    itemLongClickListener: ((MyMoviesItem) -> Unit)?,
   ) {
     myMoviesRecentsContainer.removeAllViews()
 
@@ -50,6 +57,25 @@ class MyMoviesRecentsView : FrameLayout {
         setMargins(itemMargin, itemMargin, itemMargin, itemMargin)
       }
       myMoviesRecentsContainer.addView(view, layoutParams)
+    }
+
+    bindMargins(viewMode)
+  }
+
+  private fun bindMargins(viewMode: ListViewMode) {
+    when (viewMode) {
+      GRID, GRID_TITLE -> {
+        myMoviesRecentsContainer.updatePadding(
+          left = resources.getDimensionPixelSize(R.dimen.myMoviesRecentsGridPadding),
+          right = resources.getDimensionPixelSize(R.dimen.myMoviesRecentsGridPadding),
+        )
+      }
+      LIST_NORMAL, LIST_COMPACT -> {
+        myMoviesRecentsContainer.updatePadding(
+          left = resources.getDimensionPixelSize(R.dimen.spaceSmall),
+          right = resources.getDimensionPixelSize(R.dimen.spaceSmall),
+        )
+      }
     }
   }
 }

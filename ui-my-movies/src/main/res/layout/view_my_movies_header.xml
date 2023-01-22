@@ -6,37 +6,73 @@
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   tools:parentTag="android.widget.FrameLayout"
+  tools:theme="@style/AppTheme"
   >
 
   <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/myMoviesHeaderRoot"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="wrap_content"
     android:clipChildren="false"
     android:clipToPadding="false"
-    android:paddingTop="@dimen/spaceNormal"
-    android:paddingBottom="@dimen/spaceMicro"
     >
 
     <androidx.appcompat.widget.AppCompatTextView
       android:id="@+id/myMoviesHeaderLabel"
       style="@style/MyMovies.Label"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toStartOf="@id/myMoviesHeaderSortButton"
+      android:layout_marginTop="@dimen/spaceNormal"
+      app:layout_constraintBottom_toTopOf="@id/myMoviesFilterChipsScroll"
+      app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
+      app:layout_goneMarginBottom="@dimen/spaceSmall"
       tools:text="Section Label"
       />
 
-    <com.google.android.material.chip.Chip
-      android:id="@+id/myMoviesHeaderSortButton"
-      style="@style/ShowlyChip.Sort"
-      android:layout_marginEnd="@dimen/spaceMedium"
-      android:text="@string/textSortName"
-      app:layout_constraintBottom_toBottomOf="@id/myMoviesHeaderLabel"
+    <HorizontalScrollView
+      android:id="@+id/myMoviesFilterChipsScroll"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="14dp"
+      android:layout_marginBottom="@dimen/spaceSmall"
+      android:clipToPadding="false"
+      android:overScrollMode="never"
+      android:paddingStart="@dimen/spaceMedium"
+      android:paddingEnd="@dimen/spaceMedium"
+      app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toTopOf="@id/myMoviesHeaderLabel"
-      />
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/myMoviesHeaderLabel"
+      >
+
+      <com.google.android.material.chip.ChipGroup
+        android:id="@+id/myMoviesFilterChips"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:singleLine="true"
+        >
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/myMoviesSortChip"
+          style="@style/ShowlyChip.Sort"
+          android:text="@string/textSortName"
+          android:visibility="gone"
+          tools:visibility="visible"
+          />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/myMoviesSortListViewChip"
+          style="@style/ShowlyChip.Filter"
+          app:chipIcon="@drawable/ic_view_grid"
+          app:chipIconEnabled="true"
+          app:chipIconTint="?android:textColorPrimary"
+          app:iconEndPadding="-14dp"
+          app:iconStartPadding="2dp"
+          />
+
+      </com.google.android.material.chip.ChipGroup>
+
+    </HorizontalScrollView>
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -14,20 +14,19 @@ data class MyMoviesItem(
   val type: Type,
   val header: Header?,
   val recentsSection: RecentsSection?,
-  val horizontalSection: HorizontalSection?,
   override val movie: Movie,
   override val image: Image,
   override val isLoading: Boolean,
   val translation: Translation? = null,
   val userRating: Int? = null,
   val dateFormat: DateTimeFormatter? = null,
+  val sortOrder: SortOrder? = null,
 ) : MovieListItem {
 
   enum class Type {
     HEADER,
-    RECENT_MOVIE,
-    ALL_MOVIES_ITEM,
-    SEARCH_MOVIES_ITEM
+    RECENT_MOVIES,
+    ALL_MOVIES_ITEM
   }
 
   data class Header(
@@ -37,11 +36,6 @@ data class MyMoviesItem(
   )
 
   data class RecentsSection(
-    val items: List<MyMoviesItem>,
-  )
-
-  data class HorizontalSection(
-    val section: MyMoviesSection,
     val items: List<MyMoviesItem>,
   )
 
@@ -55,7 +49,6 @@ data class MyMoviesItem(
       Type.HEADER,
       Header(section, itemCount, sortOrder),
       null,
-      null,
       Movie.EMPTY,
       Image.createUnavailable(POSTER),
       false
@@ -64,28 +57,12 @@ data class MyMoviesItem(
     fun createRecentsSection(
       movies: List<MyMoviesItem>,
     ) = MyMoviesItem(
-      Type.RECENT_MOVIE,
+      Type.RECENT_MOVIES,
       null,
       RecentsSection(movies),
-      null,
       Movie.EMPTY,
       Image.createUnavailable(POSTER),
       false
-    )
-
-    fun createSearchItem(
-      movie: Movie,
-      image: Image,
-      translation: Translation? = null,
-    ) = MyMoviesItem(
-      Type.SEARCH_MOVIES_ITEM,
-      null,
-      null,
-      null,
-      movie,
-      image,
-      false,
-      translation
     )
   }
 }
