@@ -5,7 +5,6 @@ import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.movies.MoviesRepository
-import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.common.sheets.context_menu.movie.helpers.MovieContextItem
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_model.IdTrakt
@@ -23,15 +22,13 @@ class MovieContextMenuLoadItemCase @Inject constructor(
   private val imagesProvider: MovieImagesProvider,
   private val translationsRepository: TranslationsRepository,
   private val ratingsRepository: RatingsRepository,
-  private val settingsRepository: SettingsRepository,
   private val dateFormatProvider: DateFormatProvider,
 ) {
-
-  private val language by lazy { settingsRepository.language }
 
   suspend fun loadItem(traktId: IdTrakt) = withContext(Dispatchers.IO) {
     val movie = moviesRepository.movieDetails.load(traktId)
     val dateFormat = dateFormatProvider.loadShortDayFormat()
+    val language = translationsRepository.getLanguage()
 
     val imageAsync = async { imagesProvider.findCachedImage(movie, ImageType.POSTER) }
     val translationAsync = async { translationsRepository.loadTranslation(movie, language = language, onlyLocal = true) }

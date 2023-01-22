@@ -226,7 +226,7 @@ class SearchViewModel @Inject constructor(
   }
 
   fun loadMissingSuggestionTranslation(item: SearchListItem) {
-    if (item.translation != null || searchTranslationsCase.language == Config.DEFAULT_LANGUAGE) {
+    if (item.translation != null || searchTranslationsCase.getLanguage() == Config.DEFAULT_LANGUAGE) {
       return
     }
     viewModelScope.launch {

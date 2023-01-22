@@ -24,16 +24,14 @@ class ShowContextMenuLoadItemCase @Inject constructor(
   private val imagesProvider: ShowImagesProvider,
   private val translationsRepository: TranslationsRepository,
   private val ratingsRepository: RatingsRepository,
-  private val settingsRepository: SettingsRepository
+  private val settingsRepository: SettingsRepository,
 ) {
-
-  private val language by lazy { settingsRepository.language }
 
   suspend fun loadItem(traktId: IdTrakt) = withContext(Dispatchers.IO) {
     val show = showsRepository.detailsShow.load(traktId)
 
     val imageAsync = async { imagesProvider.findCachedImage(show, ImageType.POSTER) }
-    val translationAsync = async { translationsRepository.loadTranslation(show, language = language, onlyLocal = true) }
+    val translationAsync = async { translationsRepository.loadTranslation(show, language = settingsRepository.language, onlyLocal = true) }
     val ratingAsync = async { ratingsRepository.shows.loadRatings(listOf(show)) }
 
     val isMyShowAsync = async { showsRepository.myShows.exists(traktId) }

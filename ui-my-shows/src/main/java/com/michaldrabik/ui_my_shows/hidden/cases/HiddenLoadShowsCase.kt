@@ -33,9 +33,8 @@ class HiddenLoadShowsCase @Inject constructor(
   private val dateFormatProvider: DateFormatProvider,
 ) {
 
-  val language by lazy { translationsRepository.getLanguage() }
-
   suspend fun loadShows(searchQuery: String): List<CollectionListItem> = coroutineScope {
+    val language = translationsRepository.getLanguage()
     val ratings = ratingsCase.loadRatings()
     val dateFormat = dateFormatProvider.loadFullDayFormat()
     val translations =

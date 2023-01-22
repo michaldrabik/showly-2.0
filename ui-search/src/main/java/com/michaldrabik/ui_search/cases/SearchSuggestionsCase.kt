@@ -28,10 +28,8 @@ class SearchSuggestionsCase @Inject constructor(
   private val translationsRepository: TranslationsRepository,
   private val settingsRepository: SettingsRepository,
   private val showsImagesProvider: ShowImagesProvider,
-  private val moviesImagesProvider: MovieImagesProvider
+  private val moviesImagesProvider: MovieImagesProvider,
 ) {
-
-  val language by lazy { translationsRepository.getLanguage() }
 
   private var showsCache: List<ShowDb>? = null
   private var moviesCache: List<MovieDb>? = null
@@ -112,6 +110,7 @@ class SearchSuggestionsCase @Inject constructor(
   }
 
   private suspend fun loadTranslation(result: SearchResult): Translation? {
+    val language = translationsRepository.getLanguage()
     if (language == Config.DEFAULT_LANGUAGE) return Translation.EMPTY
     return when {
       result.isShow -> translationsRepository.loadTranslation(result.show, language, onlyLocal = true)

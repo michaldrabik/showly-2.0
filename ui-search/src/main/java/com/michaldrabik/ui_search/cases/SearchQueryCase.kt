@@ -32,10 +32,8 @@ class SearchQueryCase @Inject constructor(
   private val moviesRepository: MoviesRepository,
   private val translationsRepository: TranslationsRepository,
   private val showsImagesProvider: ShowImagesProvider,
-  private val moviesImagesProvider: MovieImagesProvider
+  private val moviesImagesProvider: MovieImagesProvider,
 ) {
-
-  val language by lazy { translationsRepository.getLanguage() }
 
   suspend fun searchByQuery(query: String): List<SearchListItem> = coroutineScope {
     val withMovies = settingsRepository.isMoviesEnabled
@@ -89,6 +87,7 @@ class SearchQueryCase @Inject constructor(
   }
 
   private suspend fun loadTranslation(result: SearchResult): Translation? {
+    val language = translationsRepository.getLanguage()
     if (language == Config.DEFAULT_LANGUAGE) return Translation.EMPTY
     return when {
       result.isShow -> translationsRepository.loadTranslation(result.show, language, onlyLocal = true)

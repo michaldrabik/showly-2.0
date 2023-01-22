@@ -53,10 +53,9 @@ class ListDetailsItemsCase @Inject constructor(
   private val sorter: ListDetailsSorter,
 ) {
 
-  private val language by lazy { translationsRepository.getLanguage() }
-
   suspend fun loadItems(list: CustomList) = coroutineScope {
     val moviesEnabled = settingsRepository.isMoviesEnabled
+    val language = translationsRepository.getLanguage()
     val listItems = listsRepository.loadItemsById(list.id)
 
     val showsAsync = async {

@@ -9,12 +9,13 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class ListDetailsTranslationsCase @Inject constructor(
-  private val translationsRepository: TranslationsRepository
+  private val translationsRepository: TranslationsRepository,
 ) {
 
-  val language by lazy { translationsRepository.getLanguage() }
+  fun getLanguage() = translationsRepository.getLanguage()
 
   suspend fun loadTranslation(item: ListDetailsItem, onlyLocal: Boolean): Translation? {
+    val language = getLanguage()
     if (language == Config.DEFAULT_LANGUAGE) return Translation.EMPTY
     return when {
       item.isShow() -> translationsRepository.loadTranslation(item.requireShow(), language, onlyLocal)

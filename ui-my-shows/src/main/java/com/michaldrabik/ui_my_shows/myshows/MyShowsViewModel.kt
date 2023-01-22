@@ -162,7 +162,7 @@ class MyShowsViewModel @Inject constructor(
   }
 
   fun loadMissingTranslation(item: MyShowsItem) {
-    if (item.translation != null || translationsCase.language == Config.DEFAULT_LANGUAGE) return
+    if (item.translation != null || translationsCase.getLanguage() == Config.DEFAULT_LANGUAGE) return
     viewModelScope.launch {
       try {
         val translation = translationsCase.loadTranslation(item.show, false)

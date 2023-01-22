@@ -10,17 +10,19 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class SearchTranslationsCase @Inject constructor(
-  private val translationsRepository: TranslationsRepository
+  private val translationsRepository: TranslationsRepository,
 ) {
 
-  val language by lazy { translationsRepository.getLanguage() }
+  fun getLanguage() = translationsRepository.getLanguage()
 
   suspend fun loadTranslation(show: Show): Translation? {
+    val language = getLanguage()
     if (language == Config.DEFAULT_LANGUAGE) return Translation.EMPTY
     return translationsRepository.loadTranslation(show, language)
   }
 
   suspend fun loadTranslation(movie: Movie): Translation? {
+    val language = getLanguage()
     if (language == Config.DEFAULT_LANGUAGE) return Translation.EMPTY
     return translationsRepository.loadTranslation(movie, language)
   }

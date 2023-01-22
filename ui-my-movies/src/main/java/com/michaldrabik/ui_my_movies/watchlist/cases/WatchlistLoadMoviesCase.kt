@@ -33,12 +33,11 @@ class WatchlistLoadMoviesCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
 ) {
 
-  val language by lazy { translationsRepository.getLanguage() }
-
   suspend fun loadMovies(searchQuery: String): List<CollectionListItem> = coroutineScope {
     val ratings = ratingsCase.loadRatings()
     val dateFormat = dateFormatProvider.loadShortDayFormat()
     val fullDateFormat = dateFormatProvider.loadFullDayFormat()
+    val language = translationsRepository.getLanguage()
     val translations =
       if (language == Config.DEFAULT_LANGUAGE) emptyMap()
       else translationsRepository.loadAllMoviesLocal(language)
@@ -77,6 +76,7 @@ class WatchlistLoadMoviesCase @Inject constructor(
   }
 
   suspend fun loadTranslation(movie: Movie, onlyLocal: Boolean): Translation? {
+    val language = translationsRepository.getLanguage()
     if (language == Config.DEFAULT_LANGUAGE) return Translation.EMPTY
     return translationsRepository.loadTranslation(movie, language, onlyLocal)
   }

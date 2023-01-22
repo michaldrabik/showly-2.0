@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.repository.images.MovieImagesProvider
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.common.ListViewMode
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.ReloadData
@@ -40,6 +41,7 @@ class WatchlistViewModel @Inject constructor(
   private val filtersCase: WatchlistFiltersCase,
   private val loadMoviesCase: WatchlistLoadMoviesCase,
   private val viewModeCase: WatchlistViewModeCase,
+  private val settingsRepository: SettingsRepository,
   private val imagesProvider: MovieImagesProvider,
   private val eventsManager: EventsManager,
 ) : ViewModel() {
@@ -108,7 +110,7 @@ class WatchlistViewModel @Inject constructor(
 
   fun loadMissingTranslation(item: CollectionListItem) {
     check(item is MovieItem)
-    if (item.translation != null || loadMoviesCase.language == DEFAULT_LANGUAGE) return
+    if (item.translation != null || settingsRepository.language == DEFAULT_LANGUAGE) return
     viewModelScope.launch {
       try {
         val translation = loadMoviesCase.loadTranslation(item.movie, false)

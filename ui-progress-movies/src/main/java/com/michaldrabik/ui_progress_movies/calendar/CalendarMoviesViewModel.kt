@@ -38,7 +38,6 @@ class CalendarMoviesViewModel @Inject constructor(
   private val itemsState = MutableStateFlow<List<CalendarMovieListItem>?>(null)
   private val modeState = MutableStateFlow(CalendarMode.PRESENT_FUTURE)
 
-  private val language by lazy { translationsRepository.getLanguage() }
   private var mode = CalendarMode.PRESENT_FUTURE
   private var searchQuery: String? = null
   private var timestamp = 0L
@@ -89,6 +88,7 @@ class CalendarMoviesViewModel @Inject constructor(
 
   fun findMissingTranslation(item: CalendarMovieListItem) {
     check(item is CalendarMovieListItem.MovieItem)
+    val language = translationsRepository.getLanguage()
     if (item.translation != null || language == Config.DEFAULT_LANGUAGE) return
     viewModelScope.launch {
       try {

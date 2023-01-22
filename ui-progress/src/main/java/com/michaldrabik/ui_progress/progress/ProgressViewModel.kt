@@ -54,7 +54,6 @@ class ProgressViewModel @Inject constructor(
   private val scrollState = MutableStateFlow(Event(false))
   private val sortOrderState = MutableStateFlow<Event<Triple<SortOrder, SortType, Boolean>>?>(null)
 
-  private val language by lazy { translationsRepository.getLanguage() }
   private var searchQuery: String? = null
   private var timestamp = 0L
 
@@ -115,6 +114,7 @@ class ProgressViewModel @Inject constructor(
 
   fun findMissingTranslation(item: ProgressListItem) {
     check(item is ProgressListItem.Episode)
+    val language = translationsRepository.getLanguage()
     if (item.translations?.show != null || language == Config.DEFAULT_LANGUAGE) return
     viewModelScope.launch {
       try {

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.images.MovieImagesProvider
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.common.ListViewMode
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.ReloadData
@@ -37,6 +38,7 @@ class HiddenViewModel @Inject constructor(
   private val sortOrderCase: HiddenSortOrderCase,
   private val loadMoviesCase: HiddenLoadMoviesCase,
   private val viewModeCase: HiddenViewModeCase,
+  private val settingsRepository: SettingsRepository,
   private val imagesProvider: MovieImagesProvider,
   private val eventsManager: EventsManager,
 ) : ViewModel() {
@@ -100,7 +102,7 @@ class HiddenViewModel @Inject constructor(
 
   fun loadMissingTranslation(item: CollectionListItem) {
     check(item is CollectionListItem.MovieItem)
-    if (item.translation != null || loadMoviesCase.language == Config.DEFAULT_LANGUAGE) return
+    if (item.translation != null || settingsRepository.language == Config.DEFAULT_LANGUAGE) return
     viewModelScope.launch {
       try {
         val translation = loadMoviesCase.loadTranslation(item.movie, false)

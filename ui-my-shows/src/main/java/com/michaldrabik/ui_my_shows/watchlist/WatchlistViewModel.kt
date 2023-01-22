@@ -110,7 +110,7 @@ class WatchlistViewModel @Inject constructor(
 
   fun loadMissingTranslation(item: CollectionListItem) {
     check(item is ShowItem)
-    if (item.translation != null || loadShowsCase.language == Config.DEFAULT_LANGUAGE) return
+    if (item.translation != null || translationsCase.getLanguage() == Config.DEFAULT_LANGUAGE) return
     viewModelScope.launch {
       try {
         val translation = translationsCase.loadTranslation(item.show, false)

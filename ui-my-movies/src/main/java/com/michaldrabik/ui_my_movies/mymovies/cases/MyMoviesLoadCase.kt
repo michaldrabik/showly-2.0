@@ -23,10 +23,8 @@ class MyMoviesLoadCase @Inject constructor(
   private val moviesRepository: MoviesRepository,
   private val dateFormatProvider: DateFormatProvider,
   private val translationsRepository: TranslationsRepository,
-  private val settingsRepository: SettingsRepository
+  private val settingsRepository: SettingsRepository,
 ) {
-
-  val language by lazy { translationsRepository.getLanguage() }
 
   suspend fun loadSettings() = settingsRepository.load()
 
@@ -35,7 +33,7 @@ class MyMoviesLoadCase @Inject constructor(
   fun filterSectionMovies(
     allMovies: List<MyMoviesItem>,
     sortOrder: Pair<SortOrder, SortType>,
-    searchQuery: String? = null
+    searchQuery: String? = null,
   ) = allMovies
     .filterByQuery(searchQuery)
     .sortedWith(sorter.sort(sortOrder.first, sortOrder.second))
@@ -54,6 +52,7 @@ class MyMoviesLoadCase @Inject constructor(
   }
 
   suspend fun loadTranslation(movie: Movie, onlyLocal: Boolean): Translation? {
+    val language = translationsRepository.getLanguage()
     if (language == Config.DEFAULT_LANGUAGE) return Translation.EMPTY
     return translationsRepository.loadTranslation(movie, language, onlyLocal)
   }

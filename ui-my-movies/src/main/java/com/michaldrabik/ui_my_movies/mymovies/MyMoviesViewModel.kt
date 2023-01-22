@@ -3,6 +3,7 @@ package com.michaldrabik.ui_my_movies.mymovies
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.ReloadData
 import com.michaldrabik.ui_base.events.TraktSyncAuthError
@@ -48,6 +49,7 @@ class MyMoviesViewModel @Inject constructor(
   private val loadMoviesCase: MyMoviesLoadCase,
   private val ratingsCase: MyMoviesRatingsCase,
   private val sortingCase: MyMoviesSortingCase,
+  private val settingsRepository: SettingsRepository,
   private val eventsManager: EventsManager,
 ) : ViewModel() {
 
@@ -130,7 +132,7 @@ class MyMoviesViewModel @Inject constructor(
   }
 
   fun loadMissingTranslation(item: MyMoviesItem) {
-    if (item.translation != null || loadMoviesCase.language == DEFAULT_LANGUAGE) return
+    if (item.translation != null || settingsRepository.language == DEFAULT_LANGUAGE) return
     viewModelScope.launch {
       try {
         val translation = loadMoviesCase.loadTranslation(item.movie, false)

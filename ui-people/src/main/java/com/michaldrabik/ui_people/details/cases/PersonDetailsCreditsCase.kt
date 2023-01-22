@@ -29,11 +29,8 @@ class PersonDetailsCreditsCase @Inject constructor(
   private val showsRepository: ShowsRepository,
   private val moviesRepository: MoviesRepository,
   private val showImagesProvider: ShowImagesProvider,
-  private val movieImagesProvider: MovieImagesProvider
+  private val movieImagesProvider: MovieImagesProvider,
 ) {
-
-  private val language by lazy { settingsRepository.language }
-  private val moviesEnabled by lazy { settingsRepository.isMoviesEnabled }
 
   suspend fun loadCredits(person: Person, filters: List<Mode>) = coroutineScope {
     val myShowsIdsAsync = async { showsRepository.myShows.loadAllIds() }
@@ -78,11 +75,12 @@ class PersonDetailsCreditsCase @Inject constructor(
   private suspend fun createShowItem(
     show: Show,
     myShowsIds: List<Long>,
-    watchlistShowsId: List<Long>
+    watchlistShowsId: List<Long>,
   ) = show.let {
     val isMy = it.traktId in myShowsIds
     val isWatchlist = it.traktId in watchlistShowsId
     val image = showImagesProvider.findCachedImage(it, ImageType.POSTER)
+    val language = translationsRepository.getLanguage()
     val translation = when (language) {
       Config.DEFAULT_LANGUAGE -> null
       else -> translationsRepository.loadTranslation(it, language, onlyLocal = true)
@@ -93,15 +91,16 @@ class PersonDetailsCreditsCase @Inject constructor(
   private suspend fun createMovieItem(
     movie: Movie,
     myMoviesIds: List<Long>,
-    watchlistMoviesId: List<Long>
+    watchlistMoviesId: List<Long>,
   ) = movie.let {
     val isMy = it.traktId in myMoviesIds
     val isWatchlist = it.traktId in watchlistMoviesId
     val image = movieImagesProvider.findCachedImage(it, ImageType.POSTER)
+    val language = translationsRepository.getLanguage()
     val translation = when (language) {
       Config.DEFAULT_LANGUAGE -> null
       else -> translationsRepository.loadTranslation(it, language, onlyLocal = true)
     }
-    PersonDetailsItem.CreditsMovieItem(it, image, isMy, isWatchlist, translation, moviesEnabled)
+    PersonDetailsItem.CreditsMovieItem(it, image, isMy, isWatchlist, translation, settingsRepository.isMoviesEnabled)
   }
 }

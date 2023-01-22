@@ -48,8 +48,6 @@ class PersonDetailsViewModel @Inject constructor(
   private var imagesJobs = mutableMapOf<String, Boolean>()
   private var translationsJobs = mutableMapOf<String, Boolean>()
 
-  private val language by lazy { settingsRepository.language }
-
   fun loadDetails(person: Person) {
     viewModelScope.launch {
       mainProgressJob = launchDelayed(750) { setMainLoading(true) }
@@ -134,6 +132,7 @@ class PersonDetailsViewModel @Inject constructor(
   }
 
   fun loadMissingTranslation(item: PersonDetailsItem) {
+    val language = settingsRepository.language
     if (language == Config.DEFAULT_LANGUAGE || item.getId() in translationsJobs.keys) {
       return
     }
