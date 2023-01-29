@@ -226,10 +226,48 @@
     <View
       android:id="@+id/premiumSeparator2"
       style="@style/Premium.Separator"
-      app:layout_constraintBottom_toTopOf="@id/premiumQuickRateTitle"
+      app:layout_constraintBottom_toTopOf="@id/premiumListTypesTitle"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/premiumCustomImagesDescription"
+      />
+
+    <ImageView
+      android:id="@+id/premiumListTypesImage"
+      style="@style/Premium.Image"
+      app:layout_constraintBottom_toBottomOf="@id/premiumListTypesDescription"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="@id/premiumListTypesTitle"
+      app:srcCompat="@drawable/ic_homer"
+      />
+
+    <TextView
+      android:id="@+id/premiumListTypesTitle"
+      style="@style/Premium.Title"
+      android:text="@string/textViewsTitle"
+      app:layout_constraintBottom_toTopOf="@id/premiumListTypesDescription"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/premiumListTypesImage"
+      app:layout_constraintTop_toBottomOf="@id/premiumSeparator2"
+      />
+
+    <TextView
+      android:id="@+id/premiumListTypesDescription"
+      style="@style/Premium.Description"
+      android:text="@string/textViewsDesc"
+      app:layout_constraintBottom_toTopOf="@id/premiumSeparator6"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/premiumListTypesImage"
+      app:layout_constraintTop_toBottomOf="@id/premiumListTypesTitle"
+      />
+
+    <View
+      android:id="@+id/premiumSeparator6"
+      style="@style/Premium.Separator"
+      app:layout_constraintBottom_toTopOf="@id/premiumQuickRateTitle"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/premiumListTypesDescription"
       />
 
     <ImageView
@@ -248,7 +286,7 @@
       app:layout_constraintBottom_toTopOf="@id/premiumQuickRateDescription"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/premiumQuickRateImage"
-      app:layout_constraintTop_toBottomOf="@id/premiumSeparator2"
+      app:layout_constraintTop_toBottomOf="@id/premiumSeparator6"
       />
 
     <TextView

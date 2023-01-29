@@ -1,4 +1,2 @@
-* Upcoming Watchlist shows with dates and notifications when released (also visible in Calendar now)
-* Added sorting option by user rating
-* Added sorting option to show new episodes always at the top in Progress
+* (Premium) Added additional collection view types: compact list and grid view
 * Bugfixes
