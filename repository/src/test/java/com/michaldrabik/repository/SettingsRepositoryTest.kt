@@ -8,6 +8,7 @@ import com.michaldrabik.repository.mappers.SettingsMapper
 import com.michaldrabik.repository.settings.SettingsFiltersRepository
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.settings.SettingsSortRepository
+import com.michaldrabik.repository.settings.SettingsViewModeRepository
 import com.michaldrabik.repository.settings.SettingsWidgetsRepository
 import com.michaldrabik.ui_model.Settings
 import io.mockk.Runs
@@ -28,6 +29,7 @@ class SettingsRepositoryTest : BaseMockTest() {
   @MockK lateinit var settingsSortRepository: SettingsSortRepository
   @MockK lateinit var settingsFilterRepository: SettingsFiltersRepository
   @MockK lateinit var settingsWidgetsRepository: SettingsWidgetsRepository
+  @MockK lateinit var settingsViewModeRepository: SettingsViewModeRepository
 
   private lateinit var SUT: SettingsRepository
 
@@ -39,6 +41,7 @@ class SettingsRepositoryTest : BaseMockTest() {
       settingsSortRepository,
       settingsFilterRepository,
       settingsWidgetsRepository,
+      settingsViewModeRepository,
       database,
       transactions,
       mappers,

@@ -378,7 +378,7 @@ class SearchViewModelTest : BaseMockTest() {
     val item = TestData.SEARCH_LIST_ITEM.copy(
       show = Show.EMPTY.copy(title = "test")
     )
-    coEvery { searchTranslationsCase.language } returns "pl"
+    coEvery { searchTranslationsCase.getLanguage() } returns "pl"
     coEvery { searchTranslationsCase.loadTranslation(any<Show>()) } returns Translation.EMPTY
     coEvery { suggestionsCase.loadSuggestions((any())) } returns listOf(item)
     val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
@@ -402,7 +402,7 @@ class SearchViewModelTest : BaseMockTest() {
     val item = TestData.SEARCH_LIST_ITEM.copy(
       movie = Movie.EMPTY.copy(title = "test")
     )
-    coEvery { searchTranslationsCase.language } returns "pl"
+    coEvery { searchTranslationsCase.getLanguage() } returns "pl"
     coEvery { searchTranslationsCase.loadTranslation(any<Movie>()) } returns Translation.EMPTY
     coEvery { suggestionsCase.loadSuggestions((any())) } returns listOf(item)
     val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
@@ -423,7 +423,7 @@ class SearchViewModelTest : BaseMockTest() {
 
   @Test
   fun `Should not update missing suggestion translation if default language`() = runTest {
-    coEvery { searchTranslationsCase.language } returns "en"
+    coEvery { searchTranslationsCase.getLanguage() } returns "en"
     val item = TestData.SEARCH_LIST_ITEM
 
     SUT.loadMissingSuggestionTranslation(item)
@@ -434,7 +434,7 @@ class SearchViewModelTest : BaseMockTest() {
 
   @Test
   fun `Should not update missing suggestion translation if already has translation`() = runTest {
-    coEvery { searchTranslationsCase.language } returns "pl"
+    coEvery { searchTranslationsCase.getLanguage() } returns "pl"
     val item = TestData.SEARCH_LIST_ITEM.copy(translation = Translation.EMPTY)
 
     SUT.loadMissingSuggestionTranslation(item)

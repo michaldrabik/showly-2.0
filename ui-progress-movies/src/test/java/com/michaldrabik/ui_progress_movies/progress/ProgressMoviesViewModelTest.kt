@@ -11,8 +11,6 @@ import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Settings
-import com.michaldrabik.ui_model.SortOrder
-import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_progress_movies.BaseMockTest
 import com.michaldrabik.ui_progress_movies.main.MovieCheckActionUiEvent
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainUiState
@@ -132,31 +130,6 @@ class ProgressMoviesViewModelTest : BaseMockTest() {
 
     assertThat(stateResult.last().items).containsExactly(item)
     coVerify(exactly = 1) { itemsCase.loadItems(any()) }
-    job.cancel()
-  }
-
-  @Test
-  fun `Should load sort order if there are items`() = runTest {
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
-    coEvery { sortCase.loadSortOrder() } returns Pair(SortOrder.NAME, SortType.ASCENDING)
-    coEvery { itemsCase.loadItems(any()) } returns listOf(mockk())
-
-    SUT.onParentState(parentState.copy(timestamp = 123))
-    SUT.loadSortOrder()
-
-    assertThat(stateResult.last().sortOrder?.consume()).isEqualTo(Pair(SortOrder.NAME, SortType.ASCENDING))
-    coVerify(exactly = 1) { sortCase.loadSortOrder() }
-    job.cancel()
-  }
-
-  @Test
-  fun `Should not load sort order if there are no items`() = runTest {
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
-    coEvery { sortCase.loadSortOrder() } returns Pair(SortOrder.NAME, SortType.ASCENDING)
-
-    SUT.loadSortOrder()
-
-    coVerify { sortCase wasNot Called }
     job.cancel()
   }
 

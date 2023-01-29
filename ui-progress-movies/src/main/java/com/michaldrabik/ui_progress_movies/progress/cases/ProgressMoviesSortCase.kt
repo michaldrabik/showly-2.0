@@ -15,9 +15,4 @@ class ProgressMoviesSortCase @Inject constructor(
     settingsRepository.sorting.progressMoviesSortOrder = sortOrder
     settingsRepository.sorting.progressMoviesSortType = sortType
   }
-
-  fun loadSortOrder() = Pair(
-    settingsRepository.sorting.progressMoviesSortOrder,
-    settingsRepository.sorting.progressMoviesSortType
-  )
 }
