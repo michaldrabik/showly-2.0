@@ -14,5 +14,7 @@
   <string name="textRemoveAdsDesc">Schowaj wszystkie reklamy premium widoczne w aplikacji.</string>
   <string name="textNewsTitle">Newsy</string>
   <string name="textNewsDesc">Odblokuj sekcję newsów z najnowszymi artykułami oraz wiadomościami ze świata seriali i filmów.</string>
+  <string name="textViewsTitle">Widok list</string>
+  <string name="textViewsDesc">Dodatkowe typy widoków kolekcji, takie jak kompaktowa lista oraz siatka.</string>
   <string name="textPurchaseThanks">Od teraz jesteś subskrybentem i wspierasz Showly!\nDziękuję i miłego użytkowania!</string>
 </resources>
