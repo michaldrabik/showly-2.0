@@ -24,7 +24,6 @@ import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
 import com.michaldrabik.ui_model.ImageStatus.UNKNOWN
 import com.michaldrabik.ui_model.ImageType.POSTER
 
-@Suppress("LeakingThis")
 @SuppressLint("ClickableViewAccessibility")
 abstract class ListDetailsItemView : FrameLayout {
 

@@ -4,15 +4,21 @@ import android.annotation.SuppressLint
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.michaldrabik.ui_base.common.ListViewMode
+import com.michaldrabik.ui_base.common.ListViewMode.GRID
+import com.michaldrabik.ui_base.common.ListViewMode.GRID_TITLE
+import com.michaldrabik.ui_base.common.ListViewMode.LIST_COMPACT
+import com.michaldrabik.ui_base.common.ListViewMode.LIST_NORMAL
 import com.michaldrabik.ui_lists.details.helpers.ListItemDragListener
 import com.michaldrabik.ui_lists.details.helpers.ListItemSwipeListener
 import com.michaldrabik.ui_lists.details.helpers.ReorderListCallbackAdapter
 import com.michaldrabik.ui_lists.details.views.ListDetailsItemView
 import com.michaldrabik.ui_lists.details.views.ListDetailsMovieItemView
 import com.michaldrabik.ui_lists.details.views.ListDetailsShowItemView
+import com.michaldrabik.ui_lists.details.views.compact.ListDetailsCompactMovieItemView
+import com.michaldrabik.ui_lists.details.views.compact.ListDetailsCompactShowItemView
 import java.util.Collections
 
-// TODO Try drag drop again with asyncdiffer
 class ListDetailsAdapter(
   val itemClickListener: (ListDetailsItem) -> Unit,
   val missingImageListener: (ListDetailsItem, Boolean) -> Unit,
@@ -32,6 +38,12 @@ class ListDetailsAdapter(
 
   private var items = listOf<ListDetailsItem>()
 
+  var listViewMode: ListViewMode = LIST_COMPACT
+    set(value) {
+      field = value
+      notifyItemRangeChanged(0, items.size)
+    }
+
   fun setItems(newItems: List<ListDetailsItem>, notifyItemsChange: Boolean) {
     // Using old DiffUtil method here because of drag and drop issues with asyncDiff.
     val diff = DiffUtil.calculateDiff(ListDetailsDiffCallback(items, newItems))
@@ -50,32 +62,58 @@ class ListDetailsAdapter(
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
-    VIEW_TYPE_SHOW -> ListDetailsItemViewHolder(
-      ListDetailsShowItemView(parent.context).apply {
+    VIEW_TYPE_SHOW -> {
+      val view = when (listViewMode) {
+        LIST_NORMAL -> ListDetailsShowItemView(parent.context)
+        LIST_COMPACT -> ListDetailsCompactShowItemView(parent.context)
+        GRID -> TODO()
+        GRID_TITLE -> TODO()
+      }.apply {
         itemClickListener = { item -> this@ListDetailsAdapter.itemClickListener(item) }
         missingImageListener = { item, force -> this@ListDetailsAdapter.missingImageListener(item, force) }
         missingTranslationListener = { item -> this@ListDetailsAdapter.missingTranslationListener(item) }
-      },
-      itemDragStartListener,
-      itemSwipeStartListener
-    )
-    VIEW_TYPE_MOVIE -> ListDetailsItemViewHolder(
-      ListDetailsMovieItemView(parent.context).apply {
+      }
+      ListDetailsItemViewHolder(
+        view,
+        itemDragStartListener,
+        itemSwipeStartListener
+      )
+    }
+    VIEW_TYPE_MOVIE -> {
+      val view = when (listViewMode) {
+        LIST_NORMAL -> ListDetailsMovieItemView(parent.context)
+        LIST_COMPACT -> ListDetailsCompactMovieItemView(parent.context)
+        GRID -> TODO()
+        GRID_TITLE -> TODO()
+      }.apply {
         itemClickListener = { item -> this@ListDetailsAdapter.itemClickListener(item) }
         missingImageListener = { item, force -> this@ListDetailsAdapter.missingImageListener(item, force) }
         missingTranslationListener = { item -> this@ListDetailsAdapter.missingTranslationListener(item) }
-      },
-      itemDragStartListener,
-      itemSwipeStartListener
-    )
+      }
+      ListDetailsItemViewHolder(
+        view,
+        itemDragStartListener,
+        itemSwipeStartListener
+      )
+    }
     else -> throw IllegalStateException()
   }
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     val item = items[position]
     when (holder.itemViewType) {
-      VIEW_TYPE_SHOW -> (holder.itemView as ListDetailsShowItemView).bind(item)
-      VIEW_TYPE_MOVIE -> (holder.itemView as ListDetailsMovieItemView).bind(item)
+      VIEW_TYPE_SHOW -> when (listViewMode) {
+        LIST_NORMAL -> (holder.itemView as ListDetailsShowItemView).bind(item)
+        LIST_COMPACT -> (holder.itemView as ListDetailsCompactShowItemView).bind(item)
+        GRID -> TODO()
+        GRID_TITLE -> TODO()
+      }
+      VIEW_TYPE_MOVIE -> when (listViewMode) {
+        LIST_NORMAL -> (holder.itemView as ListDetailsMovieItemView).bind(item)
+        LIST_COMPACT -> (holder.itemView as ListDetailsCompactMovieItemView).bind(item)
+        GRID -> TODO()
+        GRID_TITLE -> TODO()
+      }
       else -> throw IllegalStateException()
     }
   }

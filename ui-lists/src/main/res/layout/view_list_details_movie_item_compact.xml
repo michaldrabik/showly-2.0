@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/listDetailsMovieRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:clipToPadding="false"
+    android:paddingLeft="@dimen/listDetailsItemMarginHorizontal"
+    android:paddingTop="5dp"
+    android:paddingRight="@dimen/listDetailsItemMarginHorizontal"
+    android:paddingBottom="5dp"
+    >
+
+    <ImageView
+      android:id="@+id/listDetailsMovieImage"
+      android:layout_width="@dimen/listDetailsItemCompactImageWidth"
+      android:layout_height="@dimen/listDetailsItemCompactImageHeight"
+      android:background="@drawable/bg_media_view_elevation"
+      android:elevation="@dimen/elevationSmall"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+    <ImageView
+      android:id="@+id/listDetailsMoviePlaceholder"
+      android:layout_width="@dimen/listDetailsItemCompactImageWidth"
+      android:layout_height="@dimen/listDetailsItemCompactImageHeight"
+      android:layout_gravity="center"
+      android:background="@drawable/bg_media_view_placeholder"
+      android:elevation="@dimen/elevationSmall"
+      android:padding="22dp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_television"
+      app:tint="?attr/colorPlaceholderIcon"
+      tools:visibility="visible"
+      />
+
+    <ProgressBar
+      android:id="@+id/listDetailsMovieProgress"
+      style="@style/ProgressBar.Dark"
+      android:layout_width="20dp"
+      android:layout_height="20dp"
+      android:layout_gravity="center"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="@id/listDetailsMovieImage"
+      app:layout_constraintStart_toStartOf="@id/listDetailsMovieImage"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:progress="75"
+      tools:visibility="visible"
+      />
+
+    <TextView
+      android:id="@+id/listDetailsMovieRank"
+      android:layout_width="18dp"
+      android:layout_height="18dp"
+      android:layout_margin="@dimen/spaceTiny"
+      android:background="@drawable/bg_rank"
+      android:gravity="center"
+      android:includeFontPadding="false"
+      android:textColor="?attr/textColorOnSurface"
+      android:textSize="10sp"
+      android:textStyle="bold"
+      android:translationZ="@dimen/elevationSmall"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="@id/listDetailsMovieImage"
+      app:layout_constraintEnd_toEndOf="@id/listDetailsMovieImage"
+      tools:ignore="SmallSp"
+      tools:text="10"
+      tools:visibility="visible"
+      />
+
+    <TextView
+      android:id="@+id/listDetailsMovieTitle"
+      style="@style/CollectionItem.Title"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceMedium"
+      android:textSize="16sp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/listDetailsMovieHandle"
+      app:layout_constraintStart_toEndOf="@id/listDetailsMovieImage"
+      app:layout_constraintTop_toBottomOf="@id/listDetailsMovieHeader"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:text="Game of Thrones"
+      />
+
+    <ImageView
+      android:id="@+id/listDetailsMovieHeaderIcon"
+      android:layout_width="20dp"
+      android:layout_height="0dp"
+      android:layout_marginStart="11dp"
+      app:layout_constraintBottom_toBottomOf="@id/listDetailsMovieHeader"
+      app:layout_constraintStart_toEndOf="@id/listDetailsMovieImage"
+      app:layout_constraintTop_toTopOf="@id/listDetailsMovieHeader"
+      app:srcCompat="@drawable/ic_television"
+      app:tint="?attr/colorAccent"
+      />
+
+    <ImageView
+      android:id="@+id/listDetailsMovieHeaderBadge"
+      style="@style/Badge"
+      android:layout_width="18dp"
+      android:layout_height="18dp"
+      android:layout_marginEnd="2dp"
+      android:translationY="-2dp"
+      app:layout_constraintEnd_toEndOf="@id/listDetailsMovieImage"
+      app:layout_constraintTop_toTopOf="@id/listDetailsMovieImage"
+      app:srcCompat="@drawable/ic_bookmark_full"
+      tools:visibility="visible"
+      />
+
+    <TextView
+      android:id="@+id/listDetailsMovieHeader"
+      style="@style/CollectionItem.Header"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceTiny"
+      android:layout_marginEnd="@dimen/spaceTiny"
+      android:layout_marginBottom="@dimen/spaceMicro"
+      android:textSize="11sp"
+      app:layout_constraintBottom_toTopOf="@id/listDetailsMovieTitle"
+      app:layout_constraintEnd_toStartOf="@id/listDetailsMovieStarIcon"
+      app:layout_constraintStart_toEndOf="@id/listDetailsMovieHeaderIcon"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:ignore="SmallSp"
+      tools:text="Netflix 2020"
+      />
+
+    <ImageView
+      android:id="@+id/listDetailsMovieStarIcon"
+      android:layout_width="20dp"
+      android:layout_height="0dp"
+      app:layout_constraintBottom_toBottomOf="@id/listDetailsMovieHeader"
+      app:layout_constraintEnd_toStartOf="@id/listDetailsMovieRating"
+      app:layout_constraintTop_toTopOf="@id/listDetailsMovieHeader"
+      app:srcCompat="@drawable/ic_star"
+      app:tint="?attr/colorAccent"
+      />
+
+    <TextView
+      android:id="@+id/listDetailsMovieRating"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="end"
+      android:textColor="?android:attr/textColorSecondary"
+      android:textSize="11sp"
+      app:layout_constraintBottom_toBottomOf="@id/listDetailsMovieHeader"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/listDetailsMovieHeader"
+      tools:text="7.6"
+      />
+
+    <ImageView
+      android:id="@+id/listDetailsMovieUserStarIcon"
+      android:layout_width="20dp"
+      android:layout_height="0dp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toTopOf="@id/listDetailsMovieTitle"
+      app:layout_constraintEnd_toStartOf="@id/listDetailsMovieUserRating"
+      app:layout_constraintTop_toTopOf="@id/listDetailsMovieHeader"
+      app:srcCompat="@drawable/ic_star"
+      app:tint="?android:attr/textColorPrimary"
+      />
+
+    <TextView
+      android:id="@+id/listDetailsMovieUserRating"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/spaceTiny"
+      android:gravity="end"
+      android:textColor="?android:attr/textColorSecondary"
+      android:textSize="11sp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toTopOf="@id/listDetailsMovieTitle"
+      app:layout_constraintEnd_toStartOf="@id/listDetailsMovieStarIcon"
+      app:layout_constraintTop_toTopOf="@id/listDetailsMovieHeader"
+      tools:text="10"
+      />
+
+    <ImageView
+      android:id="@+id/listDetailsMovieHandle"
+      android:layout_width="40dp"
+      android:layout_height="0dp"
+      android:paddingStart="12dp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_handle"
+      app:tint="?android:attr/textColorPrimary"
+      tools:visibility="visible"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>
