@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:clipChildren="false"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <FrameLayout
+    android:id="@+id/listDetailsGridItemRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/gridListsSpacing"
+    android:background="@drawable/bg_media_view_elevation"
+    android:elevation="@dimen/elevationTiny"
+    android:foreground="@drawable/bg_media_view_ripple"
+    >
+
+    <include layout="@layout/layout_list_details_item_grid" />
+
+  </FrameLayout>
+
+</merge>

@@ -18,6 +18,7 @@ import com.michaldrabik.ui_lists.details.views.ListDetailsShowItemView
 import com.michaldrabik.ui_lists.details.views.compact.ListDetailsCompactMovieItemView
 import com.michaldrabik.ui_lists.details.views.compact.ListDetailsCompactShowItemView
 import com.michaldrabik.ui_lists.details.views.grid.ListDetailsGridItemView
+import com.michaldrabik.ui_lists.details.views.grid.ListDetailsGridTitleItemView
 import java.util.Collections
 
 class ListDetailsAdapter(
@@ -68,7 +69,7 @@ class ListDetailsAdapter(
         LIST_NORMAL -> ListDetailsShowItemView(parent.context)
         LIST_COMPACT -> ListDetailsCompactShowItemView(parent.context)
         GRID -> ListDetailsGridItemView(parent.context)
-        GRID_TITLE -> TODO()
+        GRID_TITLE -> ListDetailsGridTitleItemView(parent.context)
       }.apply {
         itemClickListener = { item -> this@ListDetailsAdapter.itemClickListener(item) }
         missingImageListener = { item, force -> this@ListDetailsAdapter.missingImageListener(item, force) }
@@ -85,7 +86,7 @@ class ListDetailsAdapter(
         LIST_NORMAL -> ListDetailsMovieItemView(parent.context)
         LIST_COMPACT -> ListDetailsCompactMovieItemView(parent.context)
         GRID -> ListDetailsGridItemView(parent.context)
-        GRID_TITLE -> TODO()
+        GRID_TITLE -> ListDetailsGridTitleItemView(parent.context)
       }.apply {
         itemClickListener = { item -> this@ListDetailsAdapter.itemClickListener(item) }
         missingImageListener = { item, force -> this@ListDetailsAdapter.missingImageListener(item, force) }
@@ -107,13 +108,13 @@ class ListDetailsAdapter(
         LIST_NORMAL -> (holder.itemView as ListDetailsShowItemView).bind(item)
         LIST_COMPACT -> (holder.itemView as ListDetailsCompactShowItemView).bind(item)
         GRID -> (holder.itemView as ListDetailsGridItemView).bind(item)
-        GRID_TITLE -> TODO()
+        GRID_TITLE -> (holder.itemView as ListDetailsGridTitleItemView).bind(item)
       }
       VIEW_TYPE_MOVIE -> when (listViewMode) {
         LIST_NORMAL -> (holder.itemView as ListDetailsMovieItemView).bind(item)
         LIST_COMPACT -> (holder.itemView as ListDetailsCompactMovieItemView).bind(item)
         GRID -> (holder.itemView as ListDetailsGridItemView).bind(item)
-        GRID_TITLE -> TODO()
+        GRID_TITLE -> (holder.itemView as ListDetailsGridTitleItemView).bind(item)
       }
       else -> throw IllegalStateException()
     }

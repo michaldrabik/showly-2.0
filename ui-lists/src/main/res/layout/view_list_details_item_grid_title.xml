@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:clipChildren="false"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <FrameLayout
+    android:id="@+id/listDetailsGridItemRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="@dimen/gridListsSpacing"
+    android:layout_marginTop="@dimen/gridListsSpacing"
+    android:layout_marginEnd="@dimen/gridListsSpacing"
+    android:layout_marginBottom="28dp"
+    android:background="@drawable/bg_media_view_elevation"
+    android:elevation="@dimen/elevationTiny"
+    android:foreground="@drawable/bg_media_view_ripple"
+    >
+
+    <include layout="@layout/layout_list_details_item_grid" />
+
+  </FrameLayout>
+
+  <TextView
+    android:id="@+id/listDetailsGridItemTitle"
+    style="@style/ImageTitleGrid"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|start"
+    android:layout_marginStart="@dimen/gridListsSpacing"
+    android:layout_marginEnd="@dimen/gridListsSpacing"
+    android:layout_marginBottom="9dp"
+    android:gravity="start"
+    android:maxLines="1"
+    android:textAlignment="viewStart"
+    android:textSize="11sp"
+    tools:text="Game Of Thrones"
+    />
+
+</merge>

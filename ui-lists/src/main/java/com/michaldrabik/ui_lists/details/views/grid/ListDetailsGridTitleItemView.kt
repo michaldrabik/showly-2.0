@@ -12,7 +12,6 @@ import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.R
-import com.michaldrabik.ui_base.common.views.ShowView.Companion.ASPECT_RATIO
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -20,7 +19,7 @@ import com.michaldrabik.ui_base.utilities.extensions.screenWidth
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_lists.databinding.LayoutListDetailsItemGridBinding
-import com.michaldrabik.ui_lists.databinding.ViewListDetailsItemGridBinding
+import com.michaldrabik.ui_lists.databinding.ViewListDetailsItemGridTitleBinding
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
 import com.michaldrabik.ui_lists.details.views.ListDetailsItemView
 import com.michaldrabik.ui_model.SortOrder.RATING
@@ -30,18 +29,18 @@ import java.util.Locale.ENGLISH
 import kotlin.math.abs
 
 @SuppressLint("ClickableViewAccessibility")
-class ListDetailsGridItemView : ListDetailsItemView {
+class ListDetailsGridTitleItemView : ListDetailsItemView {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-  private val binding = ViewListDetailsItemGridBinding.inflate(LayoutInflater.from(context), this)
+  private val binding = ViewListDetailsItemGridTitleBinding.inflate(LayoutInflater.from(context), this)
   private val contentBinding = LayoutListDetailsItemGridBinding.bind(binding.listDetailsGridItemRoot)
 
   private val gridPadding by lazy { context.dimenToPx(R.dimen.gridListsPadding) }
   private val width by lazy { (screenWidth().toFloat() - (2.0 * gridPadding)) / Config.LISTS_GRID_SPAN }
-  private val height by lazy { width * ASPECT_RATIO }
+  private val height by lazy { width * 1.7305 }
 
   init {
     layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
@@ -92,6 +91,19 @@ class ListDetailsGridItemView : ListDetailsItemView {
     with(contentBinding) {
       listDetailsGridItemProgress.visibleIf(item.isLoading)
 
+      with(binding.listDetailsGridItemTitle) {
+        if (item.isShow()) {
+          text =
+            if (item.translation?.title.isNullOrBlank()) item.requireShow().title
+            else item.translation?.title
+        }
+        if (item.isMovie()) {
+          text =
+            if (item.translation?.title.isNullOrBlank()) item.requireMovie().title
+            else item.translation?.title
+        }
+      }
+
       with(listDetailsGridItemImage) {
         if (item.isShow()) setImageResource(R.drawable.ic_television)
         if (item.isMovie()) setImageResource(R.drawable.ic_film)
@@ -138,7 +150,7 @@ class ListDetailsGridItemView : ListDetailsItemView {
   private fun clear() {
     with(contentBinding) {
       listDetailsGridItemPlaceholder.gone()
-      Glide.with(this@ListDetailsGridItemView).clear(listDetailsGridItemImage)
+      Glide.with(this@ListDetailsGridTitleItemView).clear(listDetailsGridItemImage)
     }
   }
 }
