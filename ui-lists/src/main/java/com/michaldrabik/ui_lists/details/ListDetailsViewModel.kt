@@ -134,7 +134,11 @@ class ListDetailsViewModel @Inject constructor(
     }
   }
 
-  fun setSortOrder(id: Long, sortOrder: SortOrder, sortType: SortType) {
+  fun setSortOrder(
+    id: Long,
+    sortOrder: SortOrder,
+    sortType: SortType
+  ) {
     viewModelScope.launch {
       val list = sortCase.setSortOrder(id, sortOrder, sortType)
 

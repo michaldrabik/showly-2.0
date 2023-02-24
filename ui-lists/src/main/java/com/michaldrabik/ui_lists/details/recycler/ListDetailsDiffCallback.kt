@@ -7,8 +7,11 @@ class ListDetailsDiffCallback(
   private val newItems: List<ListDetailsItem>,
 ) : DiffUtil.Callback() {
 
-  override fun areItemsTheSame(oldPos: Int, newPos: Int) =
-    oldItems[oldPos].id == newItems[newPos].id
+  override fun areItemsTheSame(oldPos: Int, newPos: Int): Boolean {
+    if (oldItems[oldPos].isMovie() && newItems[newPos].isShow()) return false
+    if (oldItems[oldPos].isShow() && newItems[newPos].isMovie()) return false
+    return oldItems[oldPos].id == newItems[newPos].id
+  }
 
   override fun areContentsTheSame(oldPos: Int, newPos: Int): Boolean {
     val oldItem = oldItems[oldPos]
@@ -26,6 +29,7 @@ class ListDetailsDiffCallback(
           oldItem.userRating == newItem.userRating &&
           oldItem.image == newItem.image &&
           oldItem.listedAt == newItem.listedAt &&
+          oldItem.sortOrder == newItem.sortOrder &&
           oldItem.rankDisplay == newItem.rankDisplay &&
           oldItem.rank == newItem.rank
       }
@@ -41,6 +45,7 @@ class ListDetailsDiffCallback(
           oldItem.userRating == newItem.userRating &&
           oldItem.image == newItem.image &&
           oldItem.listedAt == newItem.listedAt &&
+          oldItem.sortOrder == newItem.sortOrder &&
           oldItem.rankDisplay == newItem.rankDisplay &&
           oldItem.rank == newItem.rank
       }
