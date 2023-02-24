@@ -39,6 +39,7 @@ class ListDetailsGridItemView : ListDetailsItemView {
     binding.listDetailsGridItemRoot.onClick { itemClickListener?.invoke(item) }
     imageLoadCompleteListener = { loadTranslation() }
     initSwipeListener()
+    initDragListener()
   }
 
   override val imageView: ImageView = binding.listDetailsGridItemImage
@@ -55,6 +56,15 @@ class ListDetailsGridItemView : ListDetailsItemView {
       if (event.action == MotionEvent.ACTION_MOVE && abs(x - event.x) > 50F) {
         itemSwipeStartListener?.invoke()
         return@setOnTouchListener true
+      }
+      false
+    }
+  }
+
+  private fun initDragListener() {
+    binding.listDetailsGridItemHandle.setOnTouchListener { _, event ->
+      if (item.isManageMode && event.action == MotionEvent.ACTION_DOWN) {
+        itemDragStartListener?.invoke()
       }
       false
     }
@@ -86,8 +96,8 @@ class ListDetailsGridItemView : ListDetailsItemView {
 //      } else {
 //        collectionShowRating.gone()
 //      }
+      listDetailsGridItemHandle.visibleIf(item.isManageMode)
     }
-
     loadImage(item)
   }
 

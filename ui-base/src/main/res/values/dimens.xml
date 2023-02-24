@@ -21,7 +21,7 @@
   <dimen name="backArrowPadding">16dp</dimen>
 
   <dimen name="gridSpacing">3dp</dimen>
-  <dimen name="gridListsSpacing">3dp</dimen>
+  <dimen name="gridListsSpacing">4dp</dimen>
   <dimen name="gridPadding">8dp</dimen>
   <dimen name="gridListsPadding">9dp</dimen>
   <dimen name="gridRecyclerPadding">9dp</dimen>

@@ -25,7 +25,7 @@ import com.michaldrabik.ui_model.ImageStatus.UNKNOWN
 import com.michaldrabik.ui_model.ImageType.POSTER
 
 @SuppressLint("ClickableViewAccessibility")
-abstract class  ListDetailsItemView : FrameLayout {
+abstract class ListDetailsItemView : FrameLayout {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
