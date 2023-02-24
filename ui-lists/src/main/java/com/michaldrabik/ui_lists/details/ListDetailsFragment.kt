@@ -13,15 +13,22 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.michaldrabik.common.Config
 import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.common.ListViewMode.GRID
+import com.michaldrabik.ui_base.common.ListViewMode.GRID_TITLE
+import com.michaldrabik.ui_base.common.ListViewMode.LIST_COMPACT
+import com.michaldrabik.ui_base.common.ListViewMode.LIST_NORMAL
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -34,6 +41,7 @@ import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.requireParcelable
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
 import com.michaldrabik.ui_lists.R
 import com.michaldrabik.ui_lists.details.helpers.ListItemDragListener
 import com.michaldrabik.ui_lists.details.helpers.ListItemSwipeListener
@@ -59,12 +67,21 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_SORT_ORDER
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_list_details.*
-import kotlinx.android.synthetic.main.view_list_delete_confirm.view.*
+import kotlinx.android.synthetic.main.fragment_list_details.fragmentListDetailsEmptyView
+import kotlinx.android.synthetic.main.fragment_list_details.fragmentListDetailsFiltersView
+import kotlinx.android.synthetic.main.fragment_list_details.fragmentListDetailsLoadingView
+import kotlinx.android.synthetic.main.fragment_list_details.fragmentListDetailsManageButton
+import kotlinx.android.synthetic.main.fragment_list_details.fragmentListDetailsMoreButton
+import kotlinx.android.synthetic.main.fragment_list_details.fragmentListDetailsRecycler
+import kotlinx.android.synthetic.main.fragment_list_details.fragmentListDetailsRoot
+import kotlinx.android.synthetic.main.fragment_list_details.fragmentListDetailsToolbar
+import kotlinx.android.synthetic.main.view_list_delete_confirm.view.viewListDeleteConfirmCheckbox
 
 @AndroidEntryPoint
 class ListDetailsFragment :
-  BaseFragment<ListDetailsViewModel>(R.layout.fragment_list_details), ListItemDragListener, ListItemSwipeListener {
+  BaseFragment<ListDetailsViewModel>(R.layout.fragment_list_details),
+  ListItemDragListener,
+  ListItemSwipeListener {
 
   companion object {
     private const val ARG_HEADER_TRANSLATION = "ARG_HEADER_TRANSLATION"
@@ -76,10 +93,11 @@ class ListDetailsFragment :
 
   private val recyclerPaddingBottom by lazy { requireContext().dimenToPx(R.dimen.spaceSmall) }
   private val recyclerPaddingTop by lazy { requireContext().dimenToPx(R.dimen.listDetailsRecyclerTopPadding) }
+  private val recyclerPaddingGridTop by lazy { requireContext().dimenToPx(R.dimen.listDetailsRecyclerTopGridPadding) }
 
   private var adapter: ListDetailsAdapter? = null
   private var touchHelper: ItemTouchHelper? = null
-  private var layoutManager: LinearLayoutManager? = null
+  private var layoutManager: LayoutManager? = null
 
   private var headerTranslation = 0F
   private var isReorderMode = false
@@ -166,9 +184,27 @@ class ListDetailsFragment :
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
       setHasFixedSize(true)
     }
+    setupRecyclerPaddings()
+
     val touchCallback = ReorderListCallback(adapter as ReorderListCallbackAdapter)
     touchHelper = ItemTouchHelper(touchCallback)
     touchHelper?.attachToRecyclerView(fragmentListDetailsRecycler)
+  }
+
+  private fun setupRecyclerPaddings() {
+    if (layoutManager is GridLayoutManager) {
+      fragmentListDetailsRecycler.updatePadding(
+        top = recyclerPaddingGridTop,
+        left = dimenToPx(R.dimen.gridRecyclerPadding),
+        right = dimenToPx(R.dimen.gridRecyclerPadding)
+      )
+    } else {
+      fragmentListDetailsRecycler.updatePadding(
+        top = recyclerPaddingTop,
+        left = 0,
+        right = 0
+      )
+    }
   }
 
   override fun setupBackPressed() {
@@ -267,6 +303,20 @@ class ListDetailsFragment :
 
     uiState.run {
       renderTitle(listDetails?.name, listItems?.size)
+      viewMode.let {
+        if (adapter?.listViewMode != it) {
+          layoutManager = when (it) {
+            LIST_NORMAL, LIST_COMPACT -> LinearLayoutManager(requireContext(), VERTICAL, false)
+            GRID, GRID_TITLE -> GridLayoutManager(context, Config.LISTS_GRID_SPAN)
+          }
+          adapter?.listViewMode = it
+          fragmentListDetailsRecycler?.let { recycler ->
+            recycler.layoutManager = layoutManager
+            recycler.adapter = adapter
+          }
+          setupRecyclerPaddings()
+        }
+      }
       listDetails?.let { details ->
         val isQuickRemoveEnabled = isQuickRemoveEnabled
         fragmentListDetailsToolbar.subtitle = details.description
@@ -280,6 +330,9 @@ class ListDetailsFragment :
 
         val scrollTop = resetScroll?.consume() == true
         adapter?.setItems(it, scrollTop)
+        (layoutManager as? GridLayoutManager)?.withSpanSizeLookup { pos ->
+          adapter?.items?.get(pos)?.image?.type?.spanSize!!
+        }
       }
       isManageMode.let { isManageMode ->
         if (listItems?.isEmpty() == true && listDetails?.filterTypeLocal?.containsAll(Mode.getAll()) == true) {
@@ -292,11 +345,17 @@ class ListDetailsFragment :
         if (isManageMode) {
           fragmentListDetailsToolbar.title = getString(R.string.textChangeRanks)
           fragmentListDetailsToolbar.subtitle = getString(R.string.textChangeRanksSubtitle)
-          fragmentListDetailsRecycler.setPadding(0, 0, 0, recyclerPaddingBottom)
+          fragmentListDetailsRecycler.updatePadding(
+            top = if (layoutManager is GridLayoutManager) dimenToPx(R.dimen.spaceTiny) else 0,
+            bottom = recyclerPaddingBottom
+          )
         } else {
           renderTitle(listDetails?.name ?: list.name, listItems?.size)
           fragmentListDetailsToolbar.subtitle = listDetails?.description
-          fragmentListDetailsRecycler.setPadding(0, recyclerPaddingTop, 0, recyclerPaddingBottom)
+          fragmentListDetailsRecycler.updatePadding(
+            top = if (layoutManager is GridLayoutManager) recyclerPaddingGridTop else recyclerPaddingTop,
+            bottom = recyclerPaddingBottom
+          )
         }
 
         if (resetScroll?.consume() == true) {
@@ -311,7 +370,9 @@ class ListDetailsFragment :
         fragmentListDetailsLoadingView.visibleIf(it)
         if (it) disableUi() else enableUi()
       }
-      deleteEvent?.let { event -> event.consume()?.let { activity?.onBackPressed() } }
+      deleteEvent?.let { event ->
+        event.consume()?.let { activity?.onBackPressed() }
+      }
     }
   }
 

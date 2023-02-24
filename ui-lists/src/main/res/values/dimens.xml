@@ -20,6 +20,7 @@
   <dimen name="listDetailsItemCompactImageHeight">64dp</dimen>
 
   <dimen name="listDetailsRecyclerTopPadding">54dp</dimen>
+  <dimen name="listDetailsRecyclerTopGridPadding">58dp</dimen>
   <dimen name="listDetailsChipsTopPadding">66dp</dimen>
 
 </resources>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <dimen name="listDetailsRecyclerTopPadding">52dp</dimen>
+  <dimen name="listDetailsRecyclerTopGridPadding">56dp</dimen>
   <dimen name="listDetailsChipsTopPadding">66dp</dimen>
 </resources>

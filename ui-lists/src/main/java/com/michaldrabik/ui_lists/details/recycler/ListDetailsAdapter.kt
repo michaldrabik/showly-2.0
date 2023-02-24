@@ -17,6 +17,7 @@ import com.michaldrabik.ui_lists.details.views.ListDetailsMovieItemView
 import com.michaldrabik.ui_lists.details.views.ListDetailsShowItemView
 import com.michaldrabik.ui_lists.details.views.compact.ListDetailsCompactMovieItemView
 import com.michaldrabik.ui_lists.details.views.compact.ListDetailsCompactShowItemView
+import com.michaldrabik.ui_lists.details.views.grid.ListDetailsGridItemView
 import java.util.Collections
 
 class ListDetailsAdapter(
@@ -36,9 +37,9 @@ class ListDetailsAdapter(
     private const val VIEW_TYPE_MOVIE = 2
   }
 
-  private var items = listOf<ListDetailsItem>()
+  var items = listOf<ListDetailsItem>()
 
-  var listViewMode: ListViewMode = LIST_COMPACT
+  var listViewMode: ListViewMode = LIST_NORMAL
     set(value) {
       field = value
       notifyItemRangeChanged(0, items.size)
@@ -66,7 +67,7 @@ class ListDetailsAdapter(
       val view = when (listViewMode) {
         LIST_NORMAL -> ListDetailsShowItemView(parent.context)
         LIST_COMPACT -> ListDetailsCompactShowItemView(parent.context)
-        GRID -> TODO()
+        GRID -> ListDetailsGridItemView(parent.context)
         GRID_TITLE -> TODO()
       }.apply {
         itemClickListener = { item -> this@ListDetailsAdapter.itemClickListener(item) }
@@ -83,7 +84,7 @@ class ListDetailsAdapter(
       val view = when (listViewMode) {
         LIST_NORMAL -> ListDetailsMovieItemView(parent.context)
         LIST_COMPACT -> ListDetailsCompactMovieItemView(parent.context)
-        GRID -> TODO()
+        GRID -> ListDetailsGridItemView(parent.context)
         GRID_TITLE -> TODO()
       }.apply {
         itemClickListener = { item -> this@ListDetailsAdapter.itemClickListener(item) }
@@ -105,13 +106,13 @@ class ListDetailsAdapter(
       VIEW_TYPE_SHOW -> when (listViewMode) {
         LIST_NORMAL -> (holder.itemView as ListDetailsShowItemView).bind(item)
         LIST_COMPACT -> (holder.itemView as ListDetailsCompactShowItemView).bind(item)
-        GRID -> TODO()
+        GRID -> (holder.itemView as ListDetailsGridItemView).bind(item)
         GRID_TITLE -> TODO()
       }
       VIEW_TYPE_MOVIE -> when (listViewMode) {
         LIST_NORMAL -> (holder.itemView as ListDetailsMovieItemView).bind(item)
         LIST_COMPACT -> (holder.itemView as ListDetailsCompactMovieItemView).bind(item)
-        GRID -> TODO()
+        GRID -> (holder.itemView as ListDetailsGridItemView).bind(item)
         GRID_TITLE -> TODO()
       }
       else -> throw IllegalStateException()
