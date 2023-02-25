@@ -70,6 +70,19 @@
       tools:visibility="visible"
       />
 
+    <ImageView
+      android:id="@+id/fragmentListDetailsViewModeButton"
+      android:layout_width="40dp"
+      android:layout_height="match_parent"
+      android:layout_gravity="end"
+      android:layout_marginEnd="@dimen/spaceTiny"
+      android:padding="8dp"
+      android:visibility="gone"
+      app:srcCompat="@drawable/ic_view_list"
+      app:tint="?android:attr/textColorPrimary"
+      tools:visibility="visible"
+      />
+
   </com.google.android.material.appbar.MaterialToolbar>
 
   <include

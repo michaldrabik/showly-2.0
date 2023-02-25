@@ -19,6 +19,8 @@ class SettingsViewModeRepository @Inject constructor(
     private const val MY_MOVIES_VIEW_MODE = "MY_MOVIES_VIEW_MODE"
     private const val WATCHLIST_MOVIES_VIEW_MODE = "WATCHLIST_MOVIES_VIEW_MODE"
     private const val HIDDEN_MOVIES_VIEW_MODE = "HIDDEN_MOVIES_VIEW_MODE"
+
+    private const val CUSTOM_LIST_VIEW_MODE = "CUSTOM_LIST_VIEW_MODE"
   }
 
   var myShowsViewMode by StringPreference(preferences, MY_SHOWS_VIEW_MODE, "LIST_NORMAL")
@@ -28,4 +30,6 @@ class SettingsViewModeRepository @Inject constructor(
   var myMoviesViewMode by StringPreference(preferences, MY_MOVIES_VIEW_MODE, "LIST_NORMAL")
   var watchlistMoviesViewMode by StringPreference(preferences, WATCHLIST_MOVIES_VIEW_MODE, "LIST_NORMAL")
   var hiddenMoviesViewMode by StringPreference(preferences, HIDDEN_MOVIES_VIEW_MODE, "LIST_NORMAL")
+
+  var customListsViewMode by StringPreference(preferences, CUSTOM_LIST_VIEW_MODE, "LIST_NORMAL")
 }

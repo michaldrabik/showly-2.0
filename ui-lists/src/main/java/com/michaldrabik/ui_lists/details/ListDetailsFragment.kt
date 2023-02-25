@@ -75,6 +75,7 @@ import kotlinx.android.synthetic.main.fragment_list_details.fragmentListDetailsM
 import kotlinx.android.synthetic.main.fragment_list_details.fragmentListDetailsRecycler
 import kotlinx.android.synthetic.main.fragment_list_details.fragmentListDetailsRoot
 import kotlinx.android.synthetic.main.fragment_list_details.fragmentListDetailsToolbar
+import kotlinx.android.synthetic.main.fragment_list_details.fragmentListDetailsViewModeButton
 import kotlinx.android.synthetic.main.view_list_delete_confirm.view.viewListDeleteConfirmCheckbox
 
 @AndroidEntryPoint
@@ -151,6 +152,7 @@ class ListDetailsFragment :
       translationY = headerTranslation
     }
     fragmentListDetailsManageButton.onClick { toggleReorderMode() }
+    fragmentListDetailsViewModeButton.onClick(safe = false) { viewModel.toggleViewMode() }
   }
 
   private fun setupRecycler() {
@@ -315,6 +317,12 @@ class ListDetailsFragment :
             recycler.adapter = adapter
           }
           setupRecyclerPaddings()
+          fragmentListDetailsViewModeButton.setImageResource(
+            when (it) {
+              LIST_NORMAL, LIST_COMPACT -> R.drawable.ic_view_list
+              GRID, GRID_TITLE -> R.drawable.ic_view_grid
+            }
+          )
         }
       }
       listDetails?.let { details ->
@@ -327,6 +335,7 @@ class ListDetailsFragment :
         val isRealEmpty = it.isEmpty() && listDetails?.filterTypeLocal?.containsAll(Mode.getAll()) == true
         fragmentListDetailsEmptyView.fadeIf(it.isEmpty())
         fragmentListDetailsManageButton.visibleIf(!isRealEmpty)
+        fragmentListDetailsViewModeButton.visibleIf(!isRealEmpty)
 
         val scrollTop = resetScroll?.consume() == true
         adapter?.setItems(it, scrollTop)
@@ -341,6 +350,7 @@ class ListDetailsFragment :
 
         fragmentListDetailsManageButton.visibleIf(!isManageMode)
         fragmentListDetailsMoreButton.visibleIf(!isManageMode)
+        fragmentListDetailsViewModeButton.visibleIf(!isManageMode)
 
         if (isManageMode) {
           fragmentListDetailsToolbar.title = getString(R.string.textChangeRanks)

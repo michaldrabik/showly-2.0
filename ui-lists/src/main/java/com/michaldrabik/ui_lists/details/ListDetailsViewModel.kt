@@ -8,6 +8,7 @@ import com.michaldrabik.common.Mode.MOVIES
 import com.michaldrabik.common.Mode.SHOWS
 import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.images.ShowImagesProvider
+import com.michaldrabik.ui_base.common.ListViewMode
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
@@ -21,6 +22,7 @@ import com.michaldrabik.ui_lists.details.cases.ListDetailsMainCase
 import com.michaldrabik.ui_lists.details.cases.ListDetailsSortCase
 import com.michaldrabik.ui_lists.details.cases.ListDetailsTipsCase
 import com.michaldrabik.ui_lists.details.cases.ListDetailsTranslationsCase
+import com.michaldrabik.ui_lists.details.cases.ListDetailsViewModeCase
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
 import com.michaldrabik.ui_model.CustomList
 import com.michaldrabik.ui_model.Image
@@ -42,6 +44,7 @@ class ListDetailsViewModel @Inject constructor(
   private val translationsCase: ListDetailsTranslationsCase,
   private val sortCase: ListDetailsSortCase,
   private val tipsCase: ListDetailsTipsCase,
+  private val viewModeCase: ListDetailsViewModeCase,
   private val showImagesProvider: ShowImagesProvider,
   private val movieImagesProvider: MovieImagesProvider,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
@@ -54,12 +57,14 @@ class ListDetailsViewModel @Inject constructor(
   private val scrollState = MutableStateFlow<Event<Boolean>?>(null)
   private val loadingState = MutableStateFlow(false)
   private val filtersVisibleState = MutableStateFlow(false)
+  private val viewModeState = MutableStateFlow(ListViewMode.LIST_NORMAL)
 
   fun loadDetails(id: Long) {
     viewModelScope.launch {
       val list = mainCase.loadDetails(id)
       val (listItems, totalCount) = itemsCase.loadItems(list)
 
+      viewModeState.value = viewModeCase.getListViewMode()
       listDetailsState.value = list
       listItemsState.value = listItems
       manageModeState.value = false
@@ -101,6 +106,10 @@ class ListDetailsViewModel @Inject constructor(
         Timber.e(error)
       }
     }
+  }
+
+  fun toggleViewMode() {
+    viewModeState.value = viewModeCase.setNextViewMode()
   }
 
   fun setReorderMode(listId: Long, isReorderMode: Boolean) {
@@ -211,8 +220,9 @@ class ListDetailsViewModel @Inject constructor(
     loadingState,
     listDeleteState,
     scrollState,
-    filtersVisibleState
-  ) { s1, s2, s3, s4, s5, s6, s7, s8 ->
+    filtersVisibleState,
+    viewModeState
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9 ->
     ListDetailsUiState(
       listDetails = s1,
       listItems = s2,
@@ -221,7 +231,8 @@ class ListDetailsViewModel @Inject constructor(
       isLoading = s5,
       deleteEvent = s6,
       resetScroll = s7,
-      isFiltersVisible = s8
+      isFiltersVisible = s8,
+      viewMode = s9
     )
   }.stateIn(
     scope = viewModelScope,
