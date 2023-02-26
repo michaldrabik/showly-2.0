@@ -1,6 +1,7 @@
 package com.michaldrabik.repository.settings
 
 import android.content.SharedPreferences
+import com.michaldrabik.common.Config
 import com.michaldrabik.repository.utilities.StringPreference
 import javax.inject.Inject
 import javax.inject.Named
@@ -23,13 +24,13 @@ class SettingsViewModeRepository @Inject constructor(
     private const val CUSTOM_LIST_VIEW_MODE = "CUSTOM_LIST_VIEW_MODE"
   }
 
-  var myShowsViewMode by StringPreference(preferences, MY_SHOWS_VIEW_MODE, "LIST_NORMAL")
-  var watchlistShowsViewMode by StringPreference(preferences, WATCHLIST_SHOWS_VIEW_MODE, "LIST_NORMAL")
-  var hiddenShowsViewMode by StringPreference(preferences, HIDDEN_SHOWS_VIEW_MODE, "LIST_NORMAL")
+  var myShowsViewMode by StringPreference(preferences, MY_SHOWS_VIEW_MODE, Config.DEFAULT_LIST_VIEW_MODE)
+  var watchlistShowsViewMode by StringPreference(preferences, WATCHLIST_SHOWS_VIEW_MODE, Config.DEFAULT_LIST_VIEW_MODE)
+  var hiddenShowsViewMode by StringPreference(preferences, HIDDEN_SHOWS_VIEW_MODE, Config.DEFAULT_LIST_VIEW_MODE)
 
-  var myMoviesViewMode by StringPreference(preferences, MY_MOVIES_VIEW_MODE, "LIST_NORMAL")
-  var watchlistMoviesViewMode by StringPreference(preferences, WATCHLIST_MOVIES_VIEW_MODE, "LIST_NORMAL")
-  var hiddenMoviesViewMode by StringPreference(preferences, HIDDEN_MOVIES_VIEW_MODE, "LIST_NORMAL")
+  var myMoviesViewMode by StringPreference(preferences, MY_MOVIES_VIEW_MODE, Config.DEFAULT_LIST_VIEW_MODE)
+  var watchlistMoviesViewMode by StringPreference(preferences, WATCHLIST_MOVIES_VIEW_MODE, Config.DEFAULT_LIST_VIEW_MODE)
+  var hiddenMoviesViewMode by StringPreference(preferences, HIDDEN_MOVIES_VIEW_MODE, Config.DEFAULT_LIST_VIEW_MODE)
 
-  var customListsViewMode by StringPreference(preferences, CUSTOM_LIST_VIEW_MODE, "LIST_NORMAL")
+  var customListsViewMode by StringPreference(preferences, CUSTOM_LIST_VIEW_MODE, Config.DEFAULT_LIST_VIEW_MODE)
 }

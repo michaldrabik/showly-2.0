@@ -36,6 +36,7 @@ object Config {
   const val DEFAULT_COUNTRY = "us"
   const val DEFAULT_DATE_FORMAT = "DEFAULT_24"
   const val DEFAULT_NEWS_VIEW_TYPE = "ROW"
+  const val DEFAULT_LIST_VIEW_MODE = "LIST_NORMAL"
   const val HOST_ACTIVITY_NAME = "com.michaldrabik.showly2.ui.main.MainActivity"
 
   const val SHOW_TIPS_DEBUG = false

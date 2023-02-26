@@ -30,6 +30,7 @@ import com.michaldrabik.ui_base.common.ListViewMode.GRID_TITLE
 import com.michaldrabik.ui_base.common.ListViewMode.LIST_COMPACT
 import com.michaldrabik.ui_base.common.ListViewMode.LIST_NORMAL
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
+import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.disableUi
@@ -38,11 +39,13 @@ import com.michaldrabik.ui_base.utilities.extensions.enableUi
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
+import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.requireParcelable
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
 import com.michaldrabik.ui_lists.R
+import com.michaldrabik.ui_lists.details.ListDetailsUiEvent.OpenPremium
 import com.michaldrabik.ui_lists.details.helpers.ListItemDragListener
 import com.michaldrabik.ui_lists.details.helpers.ListItemSwipeListener
 import com.michaldrabik.ui_lists.details.helpers.ReorderListCallback
@@ -88,6 +91,7 @@ class ListDetailsFragment :
     private const val ARG_HEADER_TRANSLATION = "ARG_HEADER_TRANSLATION"
   }
 
+  override val navigationId = R.id.listDetailsFragment
   override val viewModel by viewModels<ListDetailsViewModel>()
 
   private val list by lazy { requireParcelable<CustomList>(ARG_LIST) }
@@ -118,6 +122,7 @@ class ListDetailsFragment :
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
       { viewModel.messageFlow.collect { showSnack(it) } },
+      { viewModel.eventFlow.collect { handleEvent(it) } },
       doAfterLaunch = { viewModel.loadDetails(list.id) }
     )
   }
@@ -382,6 +387,14 @@ class ListDetailsFragment :
       }
       deleteEvent?.let { event ->
         event.consume()?.let { activity?.onBackPressed() }
+      }
+    }
+  }
+
+  private fun handleEvent(event: Event<*>) {
+    when (event) {
+      is OpenPremium -> {
+        navigateToSafe(R.id.actionListDetailsFragmentToPremium)
       }
     }
   }

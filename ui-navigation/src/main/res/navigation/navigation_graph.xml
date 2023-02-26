@@ -674,6 +674,13 @@
       app:destination="@id/sortOrderDialog"
       app:launchSingleTop="true"
       />
+    <action
+      android:id="@+id/actionListDetailsFragmentToPremium"
+      app:destination="@id/premiumFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
   </fragment>
 
   <fragment

@@ -8,6 +8,7 @@ import com.michaldrabik.common.Mode.MOVIES
 import com.michaldrabik.common.Mode.SHOWS
 import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.images.ShowImagesProvider
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.common.ListViewMode
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
@@ -17,6 +18,7 @@ import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
 import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_lists.R
+import com.michaldrabik.ui_lists.details.ListDetailsUiEvent.OpenPremium
 import com.michaldrabik.ui_lists.details.cases.ListDetailsItemsCase
 import com.michaldrabik.ui_lists.details.cases.ListDetailsMainCase
 import com.michaldrabik.ui_lists.details.cases.ListDetailsSortCase
@@ -47,6 +49,7 @@ class ListDetailsViewModel @Inject constructor(
   private val viewModeCase: ListDetailsViewModeCase,
   private val showImagesProvider: ShowImagesProvider,
   private val movieImagesProvider: MovieImagesProvider,
+  private val settingsRepository: SettingsRepository
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val listDetailsState = MutableStateFlow<CustomList?>(null)
@@ -109,7 +112,13 @@ class ListDetailsViewModel @Inject constructor(
   }
 
   fun toggleViewMode() {
-    viewModeState.value = viewModeCase.setNextViewMode()
+    if (settingsRepository.isPremium) {
+      viewModeState.value = viewModeCase.setNextViewMode()
+      return
+    }
+    viewModelScope.launch {
+      eventChannel.send(OpenPremium)
+    }
   }
 
   fun setReorderMode(listId: Long, isReorderMode: Boolean) {
