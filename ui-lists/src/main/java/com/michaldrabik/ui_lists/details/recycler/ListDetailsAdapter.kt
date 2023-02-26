@@ -123,7 +123,15 @@ class ListDetailsAdapter(
   override fun getItemCount() = items.size
 
   override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
-    Collections.swap(items, fromPosition, toPosition)
+    if (fromPosition < toPosition) {
+      for (i in fromPosition until toPosition) {
+        Collections.swap(items, i, i + 1)
+      }
+    } else {
+      for (i in fromPosition downTo toPosition + 1) {
+        Collections.swap(items, i, i - 1)
+      }
+    }
     notifyItemMoved(fromPosition, toPosition)
     return true
   }

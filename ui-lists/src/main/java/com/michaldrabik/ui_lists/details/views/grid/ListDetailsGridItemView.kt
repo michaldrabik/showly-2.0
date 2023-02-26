@@ -46,7 +46,11 @@ class ListDetailsGridItemView : ListDetailsItemView {
   init {
     layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
     clipChildren = false
-    binding.listDetailsGridItemRoot.onClick { itemClickListener?.invoke(item) }
+    binding.listDetailsGridItemRoot.onClick {
+      if (item.isEnabled && !item.isManageMode) {
+        itemClickListener?.invoke(item)
+      }
+    }
     imageLoadCompleteListener = { loadTranslation() }
     initSwipeListener()
     initDragListener()

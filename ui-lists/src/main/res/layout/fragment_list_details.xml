@@ -76,7 +76,7 @@
       android:layout_height="match_parent"
       android:layout_gravity="end"
       android:layout_marginEnd="@dimen/spaceTiny"
-      android:padding="8dp"
+      android:padding="9dp"
       android:visibility="gone"
       app:srcCompat="@drawable/ic_view_list"
       app:tint="?android:attr/textColorPrimary"
