@@ -75,7 +75,7 @@ class SettingsRepository @Inject constructor(
   }
 
   var installTimestamp by LongPreference(preferences, INSTALL_TIMESTAMP, 0L)
-  var isPremium = true
+  var isPremium by BooleanPreference(preferences, PREMIUM)
   var streamingsEnabled by BooleanPreference(preferences, STREAMINGS_ENABLED, true)
   var isMoviesEnabled by BooleanPreference(preferences, MOVIES_ENABLED, true)
   var isNewsEnabled by BooleanPreference(preferences, NEWS_ENABLED)
