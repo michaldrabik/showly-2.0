@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.images.ShowImagesProvider
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.common.ListViewMode
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.ReloadData
@@ -13,6 +14,8 @@ import com.michaldrabik.ui_base.events.TraktSyncSuccess
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
+import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
+import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
@@ -22,6 +25,7 @@ import com.michaldrabik.ui_my_shows.hidden.cases.HiddenLoadShowsCase
 import com.michaldrabik.ui_my_shows.hidden.cases.HiddenSortOrderCase
 import com.michaldrabik.ui_my_shows.hidden.cases.HiddenTranslationsCase
 import com.michaldrabik.ui_my_shows.hidden.cases.HiddenViewModeCase
+import com.michaldrabik.ui_my_shows.main.FollowedShowsUiEvent.OpenPremium
 import com.michaldrabik.ui_my_shows.main.FollowedShowsUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -42,7 +46,8 @@ class HiddenViewModel @Inject constructor(
   private val viewModeCase: HiddenViewModeCase,
   private val imagesProvider: ShowImagesProvider,
   private val eventsManager: EventsManager,
-) : ViewModel() {
+  private val settingsRepository: SettingsRepository
+) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private var loadItemsJob: Job? = null
 
@@ -109,7 +114,13 @@ class HiddenViewModel @Inject constructor(
   }
 
   fun setNextViewMode() {
-    viewModeState.value = viewModeCase.setNextViewMode()
+    if (settingsRepository.isPremium) {
+      viewModeState.value = viewModeCase.setNextViewMode()
+      return
+    }
+    viewModelScope.launch {
+      eventChannel.send(OpenPremium)
+    }
   }
 
   private fun updateItem(new: CollectionListItem) {

@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_my_shows.watchlist.cases
 
+import com.michaldrabik.common.Config
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.common.ListViewMode
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -19,6 +20,9 @@ class WatchlistViewModeCase @Inject constructor(
   }
 
   fun getListViewMode(): ListViewMode {
+    if (!settingsRepository.isPremium) {
+      return ListViewMode.valueOf(Config.DEFAULT_LIST_VIEW_MODE)
+    }
     val viewMode = settingsRepository.viewMode.watchlistShowsViewMode
     return ListViewMode.valueOf(viewMode)
   }

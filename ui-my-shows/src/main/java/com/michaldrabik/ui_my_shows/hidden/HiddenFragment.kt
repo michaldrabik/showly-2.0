@@ -22,6 +22,7 @@ import com.michaldrabik.ui_base.common.ListViewMode.LIST_NORMAL
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
+import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
@@ -38,12 +39,15 @@ import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.common.recycler.CollectionAdapter
 import com.michaldrabik.ui_my_shows.main.FollowedShowsFragment
+import com.michaldrabik.ui_my_shows.main.FollowedShowsUiEvent.OpenPremium
 import com.michaldrabik.ui_my_shows.main.FollowedShowsViewModel
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_ORDER
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_SORT_ORDER
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_hidden.*
+import kotlinx.android.synthetic.main.fragment_hidden.hiddenContent
+import kotlinx.android.synthetic.main.fragment_hidden.hiddenEmptyView
+import kotlinx.android.synthetic.main.fragment_hidden.hiddenRecycler
 
 @AndroidEntryPoint
 class HiddenFragment :
@@ -67,6 +71,7 @@ class HiddenFragment :
     launchAndRepeatStarted(
       { parentViewModel.uiState.collect { viewModel.onParentState(it) } },
       { viewModel.uiState.collect { render(it) } },
+      { viewModel.eventFlow.collect { handleEvent(it) } },
       doAfterLaunch = { viewModel.loadShows() }
     )
   }
@@ -187,6 +192,14 @@ class HiddenFragment :
     with(hiddenRecycler) {
       translationY = 0F
       postDelayed(200) { layoutManager?.scrollToPosition(0) }
+    }
+  }
+
+  private fun handleEvent(event: Event<*>) {
+    when (event) {
+      is OpenPremium -> {
+        (requireParentFragment() as? FollowedShowsFragment)?.openPremium()
+      }
     }
   }
 

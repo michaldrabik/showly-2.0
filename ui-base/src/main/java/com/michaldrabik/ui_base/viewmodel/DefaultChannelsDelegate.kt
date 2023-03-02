@@ -5,7 +5,6 @@ import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 
-@Suppress("PropertyName")
 class DefaultChannelsDelegate : ChannelsDelegate {
 
   override val messageChannel = Channel<MessageEvent>(Channel.BUFFERED)

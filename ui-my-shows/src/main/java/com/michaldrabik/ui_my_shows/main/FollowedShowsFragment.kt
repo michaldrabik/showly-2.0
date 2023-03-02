@@ -231,6 +231,12 @@ class FollowedShowsFragment :
     navigateToSafe(R.id.actionFollowedShowsFragmentToItemMenu, bundle)
   }
 
+  fun openPremium() {
+    hideNavigation()
+    exitSearch()
+    navigateToSafe(R.id.actionFollowedShowsFragmentToPremium)
+  }
+
   private fun openSettings() {
     hideNavigation()
     exitSearch()

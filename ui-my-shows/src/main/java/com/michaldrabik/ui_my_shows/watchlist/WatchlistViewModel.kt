@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.images.ShowImagesProvider
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.common.ListViewMode
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.ReloadData
@@ -13,11 +14,14 @@ import com.michaldrabik.ui_base.events.TraktSyncSuccess
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
+import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
+import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_shows.common.recycler.CollectionListItem
 import com.michaldrabik.ui_my_shows.common.recycler.CollectionListItem.ShowItem
+import com.michaldrabik.ui_my_shows.main.FollowedShowsUiEvent.OpenPremium
 import com.michaldrabik.ui_my_shows.main.FollowedShowsUiState
 import com.michaldrabik.ui_my_shows.watchlist.cases.WatchlistFiltersCase
 import com.michaldrabik.ui_my_shows.watchlist.cases.WatchlistLoadShowsCase
@@ -44,7 +48,8 @@ class WatchlistViewModel @Inject constructor(
   private val viewModeCase: WatchlistViewModeCase,
   private val imagesProvider: ShowImagesProvider,
   private val eventsManager: EventsManager,
-) : ViewModel() {
+  private val settingsRepository: SettingsRepository
+) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private var loadItemsJob: Job? = null
 
@@ -92,7 +97,13 @@ class WatchlistViewModel @Inject constructor(
   }
 
   fun setNextViewMode() {
-    viewModeState.value = viewModeCase.setNextViewMode()
+    if (settingsRepository.isPremium) {
+      viewModeState.value = viewModeCase.setNextViewMode()
+      return
+    }
+    viewModelScope.launch {
+      eventChannel.send(OpenPremium)
+    }
   }
 
   fun loadMissingImage(item: CollectionListItem, force: Boolean) {

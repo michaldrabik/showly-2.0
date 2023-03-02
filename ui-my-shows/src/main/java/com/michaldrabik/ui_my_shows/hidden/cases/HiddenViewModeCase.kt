@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_my_shows.hidden.cases
 
+import com.michaldrabik.common.Config
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.common.ListViewMode
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -19,7 +20,9 @@ class HiddenViewModeCase @Inject constructor(
   }
 
   fun getListViewMode(): ListViewMode {
-    val viewMode = settingsRepository.viewMode.hiddenShowsViewMode
-    return ListViewMode.valueOf(viewMode)
+    if (!settingsRepository.isPremium) {
+      return ListViewMode.valueOf(Config.DEFAULT_LIST_VIEW_MODE)
+    }
+    return ListViewMode.valueOf(settingsRepository.viewMode.hiddenShowsViewMode)
   }
 }

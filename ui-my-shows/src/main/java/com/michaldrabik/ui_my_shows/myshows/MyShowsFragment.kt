@@ -22,6 +22,7 @@ import com.michaldrabik.ui_base.common.ListViewMode.LIST_NORMAL
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
+import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
@@ -40,6 +41,7 @@ import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.main.FollowedShowsFragment
+import com.michaldrabik.ui_my_shows.main.FollowedShowsUiEvent.OpenPremium
 import com.michaldrabik.ui_my_shows.main.FollowedShowsViewModel
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsAdapter
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
@@ -74,6 +76,7 @@ class MyShowsFragment :
     launchAndRepeatStarted(
       { parentViewModel.uiState.collect { viewModel.onParentState(it) } },
       { viewModel.uiState.collect { render(it) } },
+      { viewModel.eventFlow.collect { handleEvent(it) } },
       doAfterLaunch = { viewModel.loadShows() }
     )
   }
@@ -161,6 +164,14 @@ class MyShowsFragment :
           }
         }
         myShowsEmptyView.fadeIf(showEmptyView && !isSearching)
+      }
+    }
+  }
+
+  private fun handleEvent(event: Event<*>) {
+    when (event) {
+      is OpenPremium -> {
+        (requireParentFragment() as? FollowedShowsFragment)?.openPremium()
       }
     }
   }
