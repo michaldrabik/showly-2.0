@@ -13,6 +13,8 @@ import com.michaldrabik.ui_base.events.TraktSyncSuccess
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
+import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
+import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.ImageType.POSTER
@@ -22,6 +24,7 @@ import com.michaldrabik.ui_model.MyMoviesSection.RECENTS
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.TraktRating
+import com.michaldrabik.ui_my_movies.main.FollowedMoviesUiEvent
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesUiState
 import com.michaldrabik.ui_my_movies.mymovies.cases.MyMoviesLoadCase
 import com.michaldrabik.ui_my_movies.mymovies.cases.MyMoviesRatingsCase
@@ -54,7 +57,7 @@ class MyMoviesViewModel @Inject constructor(
   private val viewModeCase: MyMoviesViewModeCase,
   private val settingsRepository: SettingsRepository,
   private val eventsManager: EventsManager,
-) : ViewModel() {
+) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private var loadItemsJob: Job? = null
 
@@ -150,8 +153,14 @@ class MyMoviesViewModel @Inject constructor(
     }
   }
 
-  fun toggleViewMode() {
-    viewModeState.value = viewModeCase.setNextViewMode()
+  fun setNextViewMode() {
+    if (settingsRepository.isPremium) {
+      viewModeState.value = viewModeCase.setNextViewMode()
+      return
+    }
+    viewModelScope.launch {
+      eventChannel.send(FollowedMoviesUiEvent.OpenPremium)
+    }
   }
 
   private fun updateItem(new: MyMoviesItem) {

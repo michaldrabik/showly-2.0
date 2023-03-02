@@ -612,6 +612,11 @@
       app:destination="@id/movieItemContextDialog"
       app:launchSingleTop="true"
       />
+    <action
+      android:id="@+id/actionFollowedMoviesFragmentToPremium"
+      app:destination="@id/premiumFragment"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment

@@ -20,6 +20,7 @@ import com.michaldrabik.ui_base.common.ListViewMode.LIST_NORMAL
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
+import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
@@ -35,6 +36,7 @@ import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_movies.R
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesFragment
+import com.michaldrabik.ui_my_movies.main.FollowedMoviesUiEvent.OpenPremium
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesViewModel
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesAdapter
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem.Type.ALL_MOVIES_ITEM
@@ -42,7 +44,9 @@ import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem.Type.HEADER
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem.Type.RECENT_MOVIES
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_my_movies.*
+import kotlinx.android.synthetic.main.fragment_my_movies.myMoviesEmptyView
+import kotlinx.android.synthetic.main.fragment_my_movies.myMoviesRecycler
+import kotlinx.android.synthetic.main.fragment_my_movies.myMoviesRoot
 
 @AndroidEntryPoint
 class MyMoviesFragment :
@@ -66,6 +70,7 @@ class MyMoviesFragment :
     launchAndRepeatStarted(
       { parentViewModel.uiState.collect { viewModel.onParentState(it) } },
       { viewModel.uiState.collect { render(it) } },
+      { viewModel.eventFlow.collect { handleEvent(it) } },
       doAfterLaunch = { viewModel.loadMovies() }
     )
   }
@@ -76,7 +81,7 @@ class MyMoviesFragment :
       itemClickListener = { openMovieDetails(it.movie) },
       itemLongClickListener = { openMovieMenu(it.movie) },
       onSortOrderClickListener = { order, type -> openSortOrderDialog(order, type) },
-      onListViewModeClickListener = viewModel::toggleViewMode,
+      onListViewModeClickListener = viewModel::setNextViewMode,
       missingImageListener = { item, force -> viewModel.loadMissingImage(item, force) },
       missingTranslationListener = { viewModel.loadMissingTranslation(it) },
       listChangeListener = {
@@ -150,6 +155,14 @@ class MyMoviesFragment :
           }
         }
         myMoviesEmptyView.fadeIf(showEmptyView && !isSearching)
+      }
+    }
+  }
+
+  private fun handleEvent(event: Event<*>) {
+    when (event) {
+      is OpenPremium -> {
+        (requireParentFragment() as? FollowedMoviesFragment)?.openPremium()
       }
     }
   }

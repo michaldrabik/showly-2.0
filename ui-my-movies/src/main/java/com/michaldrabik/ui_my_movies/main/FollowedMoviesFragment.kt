@@ -36,7 +36,14 @@ import com.michaldrabik.ui_my_movies.R
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_followed_movies.*
+import kotlinx.android.synthetic.main.fragment_followed_movies.followedMoviesIcons
+import kotlinx.android.synthetic.main.fragment_followed_movies.followedMoviesModeTabs
+import kotlinx.android.synthetic.main.fragment_followed_movies.followedMoviesPager
+import kotlinx.android.synthetic.main.fragment_followed_movies.followedMoviesRoot
+import kotlinx.android.synthetic.main.fragment_followed_movies.followedMoviesSearchIcon
+import kotlinx.android.synthetic.main.fragment_followed_movies.followedMoviesSearchLocalView
+import kotlinx.android.synthetic.main.fragment_followed_movies.followedMoviesSearchView
+import kotlinx.android.synthetic.main.fragment_followed_movies.followedMoviesTabs
 
 @AndroidEntryPoint
 class FollowedMoviesFragment :
@@ -217,6 +224,12 @@ class FollowedMoviesFragment :
     }
     val bundle = ContextMenuBottomSheet.createBundle(movie.ids.trakt)
     navigateToSafe(R.id.actionFollowedMoviesFragmentToItemMenu, bundle)
+  }
+
+  fun openPremium() {
+    hideNavigation()
+    exitSearch()
+    navigateToSafe(R.id.actionFollowedMoviesFragmentToPremium)
   }
 
   private fun openSettings() {

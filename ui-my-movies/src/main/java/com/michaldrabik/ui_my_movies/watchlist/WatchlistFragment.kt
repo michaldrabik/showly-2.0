@@ -21,6 +21,7 @@ import com.michaldrabik.ui_base.common.ListViewMode.LIST_NORMAL
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
+import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
@@ -37,10 +38,13 @@ import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_movies.R
 import com.michaldrabik.ui_my_movies.common.recycler.CollectionAdapter
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesFragment
+import com.michaldrabik.ui_my_movies.main.FollowedMoviesUiEvent.OpenPremium
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesViewModel
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_watchlist_movies.*
+import kotlinx.android.synthetic.main.fragment_watchlist_movies.watchlistMoviesContent
+import kotlinx.android.synthetic.main.fragment_watchlist_movies.watchlistMoviesEmptyView
+import kotlinx.android.synthetic.main.fragment_watchlist_movies.watchlistMoviesRecycler
 
 @AndroidEntryPoint
 class WatchlistFragment :
@@ -64,6 +68,7 @@ class WatchlistFragment :
     launchAndRepeatStarted(
       { parentViewModel.uiState.collect { viewModel.onParentState(it) } },
       { viewModel.uiState.collect { render(it) } },
+      { viewModel.eventFlow.collect { handleEvent(it) } },
       doAfterLaunch = { viewModel.loadMovies() }
     )
   }
@@ -145,6 +150,14 @@ class WatchlistFragment :
       }
       sortOrder?.let { event ->
         event.consume()?.let { openSortOrderDialog(it.first, it.second) }
+      }
+    }
+  }
+
+  private fun handleEvent(event: Event<*>) {
+    when (event) {
+      is OpenPremium -> {
+        (requireParentFragment() as? FollowedMoviesFragment)?.openPremium()
       }
     }
   }

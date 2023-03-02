@@ -14,6 +14,8 @@ import com.michaldrabik.ui_base.events.TraktSyncSuccess
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
+import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
+import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
@@ -21,6 +23,7 @@ import com.michaldrabik.ui_my_movies.common.recycler.CollectionListItem
 import com.michaldrabik.ui_my_movies.hidden.cases.HiddenLoadMoviesCase
 import com.michaldrabik.ui_my_movies.hidden.cases.HiddenSortOrderCase
 import com.michaldrabik.ui_my_movies.hidden.cases.HiddenViewModeCase
+import com.michaldrabik.ui_my_movies.main.FollowedMoviesUiEvent.OpenPremium
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -41,7 +44,7 @@ class HiddenViewModel @Inject constructor(
   private val settingsRepository: SettingsRepository,
   private val imagesProvider: MovieImagesProvider,
   private val eventsManager: EventsManager,
-) : ViewModel() {
+) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private var loadItemsJob: Job? = null
 
@@ -84,7 +87,13 @@ class HiddenViewModel @Inject constructor(
   }
 
   fun setNextViewMode() {
-    viewModeState.value = viewModeCase.setNextViewMode()
+    if (settingsRepository.isPremium) {
+      viewModeState.value = viewModeCase.setNextViewMode()
+      return
+    }
+    viewModelScope.launch {
+      eventChannel.send(OpenPremium)
+    }
   }
 
   fun loadMissingImage(item: CollectionListItem, force: Boolean) {
