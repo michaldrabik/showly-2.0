@@ -118,6 +118,7 @@
     <ImageView
       android:id="@+id/premiumLightThemeImage"
       style="@style/Premium.Image"
+      android:tag="@string/tagTheme"
       app:layout_constraintBottom_toBottomOf="@id/premiumLightThemeDescription"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="@id/premiumLightThemeTitle"
@@ -128,6 +129,7 @@
       android:id="@+id/premiumLightThemeTitle"
       style="@style/Premium.Title"
       android:layout_marginTop="@dimen/spaceSmall"
+      android:tag="@string/tagTheme"
       android:text="@string/textLightThemeTitle"
       app:layout_constraintBottom_toTopOf="@id/premiumLightThemeDescription"
       app:layout_constraintEnd_toEndOf="parent"
@@ -139,6 +141,7 @@
     <TextView
       android:id="@+id/premiumLightThemeDescription"
       style="@style/Premium.Description"
+      android:tag="@string/tagTheme"
       android:text="@string/textLightThemeDesc"
       app:layout_constraintBottom_toTopOf="@id/premiumSeparator4"
       app:layout_constraintEnd_toEndOf="parent"
@@ -158,6 +161,7 @@
     <ImageView
       android:id="@+id/premiumNewsImage"
       style="@style/Premium.Image"
+      android:tag="@string/tagNews"
       app:layout_constraintBottom_toBottomOf="@id/premiumNewsDescription"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="@id/premiumNewsTitle"
@@ -167,6 +171,7 @@
     <TextView
       android:id="@+id/premiumNewsTitle"
       style="@style/Premium.Title"
+      android:tag="@string/tagNews"
       android:text="@string/textNewsTitle"
       app:layout_constraintBottom_toTopOf="@id/premiumNewsDescription"
       app:layout_constraintEnd_toEndOf="parent"
@@ -177,6 +182,7 @@
     <TextView
       android:id="@+id/premiumNewsDescription"
       style="@style/Premium.Description"
+      android:tag="@string/tagNews"
       android:text="@string/textNewsDesc"
       app:layout_constraintBottom_toTopOf="@id/premiumSeparator1"
       app:layout_constraintEnd_toEndOf="parent"
@@ -197,6 +203,7 @@
     <ImageView
       android:id="@+id/premiumCustomImagesImage"
       style="@style/Premium.Image"
+      android:tag="@string/tagCustomImages"
       app:layout_constraintBottom_toBottomOf="@id/premiumCustomImagesDescription"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="@id/premiumCustomImagesTitle"
@@ -206,6 +213,7 @@
     <TextView
       android:id="@+id/premiumCustomImagesTitle"
       style="@style/Premium.Title"
+      android:tag="@string/tagCustomImages"
       android:text="@string/textCustomImagesTitle"
       app:layout_constraintBottom_toTopOf="@id/premiumCustomImagesDescription"
       app:layout_constraintEnd_toEndOf="parent"
@@ -216,6 +224,7 @@
     <TextView
       android:id="@+id/premiumCustomImagesDescription"
       style="@style/Premium.Description"
+      android:tag="@string/tagCustomImages"
       android:text="@string/textCustomImagesDesc"
       app:layout_constraintBottom_toTopOf="@id/premiumSeparator2"
       app:layout_constraintEnd_toEndOf="parent"
@@ -235,6 +244,7 @@
     <ImageView
       android:id="@+id/premiumListTypesImage"
       style="@style/Premium.Image"
+      android:tag="@string/tagViewsTypes"
       app:layout_constraintBottom_toBottomOf="@id/premiumListTypesDescription"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="@id/premiumListTypesTitle"
@@ -244,6 +254,7 @@
     <TextView
       android:id="@+id/premiumListTypesTitle"
       style="@style/Premium.Title"
+      android:tag="@string/tagViewsTypes"
       android:text="@string/textViewsTitle"
       app:layout_constraintBottom_toTopOf="@id/premiumListTypesDescription"
       app:layout_constraintEnd_toEndOf="parent"
@@ -254,6 +265,7 @@
     <TextView
       android:id="@+id/premiumListTypesDescription"
       style="@style/Premium.Description"
+      android:tag="@string/tagViewsTypes"
       android:text="@string/textViewsDesc"
       app:layout_constraintBottom_toTopOf="@id/premiumSeparator6"
       app:layout_constraintEnd_toEndOf="parent"
@@ -273,6 +285,7 @@
     <ImageView
       android:id="@+id/premiumQuickRateImage"
       style="@style/Premium.Image"
+      android:tag="@string/tagQuickRating"
       app:layout_constraintBottom_toBottomOf="@id/premiumQuickRateDescription"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="@id/premiumQuickRateTitle"
@@ -282,6 +295,7 @@
     <TextView
       android:id="@+id/premiumQuickRateTitle"
       style="@style/Premium.Title"
+      android:tag="@string/tagQuickRating"
       android:text="@string/textQuickRatingTitle"
       app:layout_constraintBottom_toTopOf="@id/premiumQuickRateDescription"
       app:layout_constraintEnd_toEndOf="parent"
@@ -292,6 +306,7 @@
     <TextView
       android:id="@+id/premiumQuickRateDescription"
       style="@style/Premium.Description"
+      android:tag="@string/tagQuickRating"
       android:text="@string/textQuickRatingDesc"
       app:layout_constraintBottom_toTopOf="@id/premiumSeparator3"
       app:layout_constraintEnd_toEndOf="parent"
@@ -311,6 +326,7 @@
     <ImageView
       android:id="@+id/premiumWidgetsImage"
       style="@style/Premium.Image"
+      android:tag="@string/tagWidgetTransparency"
       app:layout_constraintBottom_toBottomOf="@id/premiumWidgetsDescription"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="@id/premiumWidgetsTitle"
@@ -320,6 +336,7 @@
     <TextView
       android:id="@+id/premiumWidgetsTitle"
       style="@style/Premium.Title"
+      android:tag="@string/tagWidgetTransparency"
       android:text="@string/textWidgetsTitle"
       app:layout_constraintBottom_toTopOf="@id/premiumWidgetsDescription"
       app:layout_constraintEnd_toEndOf="parent"
@@ -330,6 +347,7 @@
     <TextView
       android:id="@+id/premiumWidgetsDescription"
       style="@style/Premium.Description"
+      android:tag="@string/tagWidgetTransparency"
       android:text="@string/textWidgetsDesc"
       app:layout_constraintBottom_toTopOf="@id/premiumSeparator5"
       app:layout_constraintEnd_toEndOf="parent"

@@ -91,4 +91,11 @@
   <string name="textStreamingBuy">Buy</string>
   <string name="textStreamingRent">Rent</string>
   <string name="textStreamingFree">Free</string>
+
+  <string name="tagQuickRating" translatable="false">Quick Rating</string>
+  <string name="tagCustomImages" translatable="false">Custom Images</string>
+  <string name="tagTheme" translatable="false">Theme</string>
+  <string name="tagWidgetTransparency" translatable="false">Widget Transparency</string>
+  <string name="tagNews" translatable="false">News</string>
+  <string name="tagViewsTypes" translatable="false">List View Types</string>
 </resources>

@@ -3,6 +3,7 @@ package com.michaldrabik.ui_my_movies.main
 import android.os.Bundle
 import android.view.View
 import androidx.activity.addCallback
+import androidx.core.os.bundleOf
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.clearFragmentResultListener
@@ -32,8 +33,10 @@ import com.michaldrabik.ui_base.utilities.extensions.showKeyboard
 import com.michaldrabik.ui_base.utilities.extensions.updateTopMargin
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_model.Movie
+import com.michaldrabik.ui_model.PremiumFeature
 import com.michaldrabik.ui_my_movies.R
 import com.michaldrabik.ui_navigation.java.NavigationArgs
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ITEM
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_followed_movies.followedMoviesIcons
@@ -229,7 +232,8 @@ class FollowedMoviesFragment :
   fun openPremium() {
     hideNavigation()
     exitSearch()
-    navigateToSafe(R.id.actionFollowedMoviesFragmentToPremium)
+    val args = bundleOf(ARG_ITEM to PremiumFeature.VIEW_TYPES)
+    navigateToSafe(R.id.actionFollowedMoviesFragmentToPremium, args)
   }
 
   private fun openSettings() {

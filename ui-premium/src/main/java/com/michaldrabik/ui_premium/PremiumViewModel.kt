@@ -32,7 +32,9 @@ import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
 import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
+import com.michaldrabik.ui_premium.PremiumUiEvent.HighlightItem
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -206,6 +208,13 @@ class PremiumViewModel @Inject constructor(
     settingsRepository.isPremium = true
     messageChannel.send(MessageEvent.Info(R.string.textPurchaseThanks))
     finishEvent.value = Event(true)
+  }
+
+  fun highlightItem(item: com.michaldrabik.ui_model.PremiumFeature) {
+    viewModelScope.launch {
+      delay(300)
+      eventChannel.send(HighlightItem(item))
+    }
   }
 
   val uiState = combine(

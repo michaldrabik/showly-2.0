@@ -105,13 +105,18 @@ fun View.shake() = ObjectAnimator.ofFloat(this, "translationX", 0F, -15F, 15F, -
   .setDuration(500)
   .start()
 
-fun View.bump(action: () -> Unit = {}) {
+fun View.bump(
+  duration: Long = 250,
+  startDelay: Long = 0,
+  action: () -> Unit = {}
+) {
   val x = ObjectAnimator.ofFloat(this, "scaleX", 1F, 1.1F, 1F)
   val y = ObjectAnimator.ofFloat(this, "scaleY", 1F, 1.1F, 1F)
 
   AnimatorSet().apply {
     playTogether(x, y)
-    duration = 250
+    this.startDelay = startDelay
+    this.duration = duration
     doOnEnd { action() }
     start()
   }
