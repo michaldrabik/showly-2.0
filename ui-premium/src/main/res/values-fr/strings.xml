@@ -14,5 +14,7 @@
   <string name="textRemoveAdsDesc">Supprime toutes les publicités premium visibles dans l\'application.</string>
   <string name="textNewsTitle">Section Actualités</string>
   <string name="textNewsDesc">Activer la section Actualités pour être au fait des derniers films, séries, nouvelles et bande-annonces. Propulsée par Reddit.</string>
+  <string name="textViewsTitle">Types d’affichage de listes</string>
+  <string name="textViewsDesc">Activer les types d\'affichage de collection supplémentaires comme la liste compacte ou la grille.</string>
   <string name="textPurchaseThanks">Vous êtes maintenant un supporteur de Showly !\nMerci et profitez de l\'application !</string>
 </resources>

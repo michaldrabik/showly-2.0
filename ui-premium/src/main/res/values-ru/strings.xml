@@ -14,5 +14,7 @@
   <string name="textRemoveAdsDesc">Убрать всю видимую рекламу премиума в приложении.</string>
   <string name="textNewsTitle">Раздел новостей</string>
   <string name="textNewsDesc">Включить раздел новостей с последними статьями сериалов и фильмов, новостями и трейлерами. Работает на Reddit.</string>
+  <string name="textViewsTitle">Типы списков</string>
+  <string name="textViewsDesc">Включайте дополнительные типы коллекций, такие как компактный список или представление сетки.</string>
   <string name="textPurchaseThanks">Теперь вы спонсор Showly!\nБлагодарим вас, наслаждайтесь приложением!</string>
 </resources>

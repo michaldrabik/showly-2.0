@@ -14,5 +14,7 @@
   <string name="textRemoveAdsDesc">Rimuovi tutti gli annunci premium visibili nell\'app.</string>
   <string name="textNewsTitle">Sezione notizie</string>
   <string name="textNewsDesc">Attiva la sezione notizie con gli ultimi articoli di show e film, notizie e trailer. Offerto da Reddit.</string>
+  <string name="textViewsTitle">Tipi di visualizzazione elenchi</string>
+  <string name="textViewsDesc">Abilita ulteriori tipi di visualizzazione della collezione come elenco compatto o visualizzazione a griglia.</string>
   <string name="textPurchaseThanks">Ora sei un sostenitore di Showly!\nGrazie e goditi l\'app!</string>
 </resources>
