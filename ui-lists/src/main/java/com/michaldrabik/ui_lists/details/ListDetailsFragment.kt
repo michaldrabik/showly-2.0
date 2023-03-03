@@ -54,6 +54,7 @@ import com.michaldrabik.ui_lists.details.recycler.ListDetailsAdapter
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
 import com.michaldrabik.ui_lists.details.views.ListDetailsDeleteConfirmView
 import com.michaldrabik.ui_model.CustomList
+import com.michaldrabik.ui_model.PremiumFeature
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
 import com.michaldrabik.ui_model.SortOrder.NAME
@@ -63,6 +64,7 @@ import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_navigation.java.NavigationArgs
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ITEM
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_LIST
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_ORDER
@@ -394,7 +396,8 @@ class ListDetailsFragment :
   private fun handleEvent(event: Event<*>) {
     when (event) {
       is OpenPremium -> {
-        navigateToSafe(R.id.actionListDetailsFragmentToPremium)
+        val args = bundleOf(ARG_ITEM to PremiumFeature.VIEW_TYPES)
+        navigateToSafe(R.id.actionListDetailsFragmentToPremium, args)
       }
     }
   }

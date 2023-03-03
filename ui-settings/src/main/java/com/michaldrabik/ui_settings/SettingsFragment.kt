@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
@@ -40,17 +41,67 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.MyMoviesSection
 import com.michaldrabik.ui_model.MyShowsSection.RECENTS
 import com.michaldrabik.ui_model.NotificationDelay
+import com.michaldrabik.ui_model.PremiumFeature
 import com.michaldrabik.ui_model.ProgressNextEpisodeType
 import com.michaldrabik.ui_model.ProgressNextEpisodeType.LAST_WATCHED
 import com.michaldrabik.ui_model.ProgressNextEpisodeType.OLDEST
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_model.TraktSyncSchedule.OFF
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ITEM
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import com.michaldrabik.ui_settings.helpers.AppTheme
 import com.michaldrabik.ui_settings.helpers.PlayStoreHelper
 import com.michaldrabik.ui_settings.helpers.WidgetTransparency
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_settings.*
+import kotlinx.android.synthetic.main.fragment_settings.settingsContactDevs
+import kotlinx.android.synthetic.main.fragment_settings.settingsContent
+import kotlinx.android.synthetic.main.fragment_settings.settingsCountryValue
+import kotlinx.android.synthetic.main.fragment_settings.settingsDateFormat
+import kotlinx.android.synthetic.main.fragment_settings.settingsDateFormatValue
+import kotlinx.android.synthetic.main.fragment_settings.settingsDeleteCache
+import kotlinx.android.synthetic.main.fragment_settings.settingsIncludeSpecialsSwitch
+import kotlinx.android.synthetic.main.fragment_settings.settingsJustWatchIcon
+import kotlinx.android.synthetic.main.fragment_settings.settingsLanguageValue
+import kotlinx.android.synthetic.main.fragment_settings.settingsMoviesEnabledSwitch
+import kotlinx.android.synthetic.main.fragment_settings.settingsMyMoviesSections
+import kotlinx.android.synthetic.main.fragment_settings.settingsMyShowsSections
+import kotlinx.android.synthetic.main.fragment_settings.settingsNewsEnabled
+import kotlinx.android.synthetic.main.fragment_settings.settingsNewsEnabledSwitch
+import kotlinx.android.synthetic.main.fragment_settings.settingsPremium
+import kotlinx.android.synthetic.main.fragment_settings.settingsProgressNextValue
+import kotlinx.android.synthetic.main.fragment_settings.settingsPushNotificationsSwitch
+import kotlinx.android.synthetic.main.fragment_settings.settingsRateApp
+import kotlinx.android.synthetic.main.fragment_settings.settingsRecentShowsAmount
+import kotlinx.android.synthetic.main.fragment_settings.settingsRoot
+import kotlinx.android.synthetic.main.fragment_settings.settingsShowsNotificationsSwitch
+import kotlinx.android.synthetic.main.fragment_settings.settingsStreamingsSwitch
+import kotlinx.android.synthetic.main.fragment_settings.settingsTheme
+import kotlinx.android.synthetic.main.fragment_settings.settingsThemeValue
+import kotlinx.android.synthetic.main.fragment_settings.settingsTmdbIcon
+import kotlinx.android.synthetic.main.fragment_settings.settingsToolbar
+import kotlinx.android.synthetic.main.fragment_settings.settingsTraktAuthorize
+import kotlinx.android.synthetic.main.fragment_settings.settingsTraktAuthorizeIcon
+import kotlinx.android.synthetic.main.fragment_settings.settingsTraktAuthorizeProgress
+import kotlinx.android.synthetic.main.fragment_settings.settingsTraktAuthorizeSummary
+import kotlinx.android.synthetic.main.fragment_settings.settingsTraktIcon
+import kotlinx.android.synthetic.main.fragment_settings.settingsTraktQuickRate
+import kotlinx.android.synthetic.main.fragment_settings.settingsTraktQuickRateSwitch
+import kotlinx.android.synthetic.main.fragment_settings.settingsTraktQuickRemove
+import kotlinx.android.synthetic.main.fragment_settings.settingsTraktQuickRemoveSwitch
+import kotlinx.android.synthetic.main.fragment_settings.settingsTraktQuickSync
+import kotlinx.android.synthetic.main.fragment_settings.settingsTraktQuickSyncSwitch
+import kotlinx.android.synthetic.main.fragment_settings.settingsTraktSync
+import kotlinx.android.synthetic.main.fragment_settings.settingsTraktSyncProgress
+import kotlinx.android.synthetic.main.fragment_settings.settingsTwitterIcon
+import kotlinx.android.synthetic.main.fragment_settings.settingsUpcomingSectionSwitch
+import kotlinx.android.synthetic.main.fragment_settings.settingsUserId
+import kotlinx.android.synthetic.main.fragment_settings.settingsVersion
+import kotlinx.android.synthetic.main.fragment_settings.settingsWhenToNotifyValue
+import kotlinx.android.synthetic.main.fragment_settings.settingsWidgetsLabelsSwitch
+import kotlinx.android.synthetic.main.fragment_settings.settingsWidgetsTheme
+import kotlinx.android.synthetic.main.fragment_settings.settingsWidgetsThemeValue
+import kotlinx.android.synthetic.main.fragment_settings.settingsWidgetsTransparency
+import kotlinx.android.synthetic.main.fragment_settings.settingsWidgetsTransparencyValue
 import com.michaldrabik.data_remote.Config as ConfigNetwork
 
 @AndroidEntryPoint
@@ -181,7 +232,16 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
           settingsWidgetsTransparency,
           settingsNewsEnabled
         ).onClick {
-          if (!isPremium) navigateTo(R.id.actionSettingsFragmentToPremium)
+          if (!isPremium) {
+            val args = bundleOf()
+            if (it.tag != null) {
+              val feature = PremiumFeature.fromTag(requireContext(), it.tag.toString())
+              feature?.let {
+                args.putSerializable(ARG_ITEM, feature)
+              }
+            }
+            navigateTo(R.id.actionSettingsFragmentToPremium, args)
+          }
         }
       }
       userId.let { settingsUserId.text = it }
