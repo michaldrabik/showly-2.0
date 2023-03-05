@@ -198,7 +198,6 @@
         android:layout_marginEnd="@dimen/spaceNormal"
         android:ellipsize="end"
         android:gravity="start"
-        android:justificationMode="inter_word"
         android:maxLines="12"
         android:textAlignment="viewStart"
         android:textColor="?android:attr/textColorPrimary"

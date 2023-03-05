@@ -77,7 +77,6 @@
       android:layout_marginTop="@dimen/spaceTiny"
       android:ellipsize="end"
       android:gravity="start"
-      android:justificationMode="inter_word"
       android:maxLines="10"
       android:textAlignment="viewStart"
       android:textColor="?android:attr/textColorPrimary"

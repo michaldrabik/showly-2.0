@@ -232,7 +232,6 @@
         android:layout_marginBottom="@dimen/spaceTiny"
         android:ellipsize="end"
         android:gravity="start"
-        android:justificationMode="inter_word"
         android:textAlignment="viewStart"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="14sp"

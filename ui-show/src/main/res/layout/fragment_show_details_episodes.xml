@@ -127,7 +127,6 @@
     android:layout_marginBottom="@dimen/spaceSmall"
     android:ellipsize="end"
     android:gravity="center_vertical"
-    android:justificationMode="inter_word"
     android:paddingLeft="@dimen/spaceNormal"
     android:paddingRight="@dimen/spaceNormal"
     android:textColor="?android:attr/textColorPrimary"
