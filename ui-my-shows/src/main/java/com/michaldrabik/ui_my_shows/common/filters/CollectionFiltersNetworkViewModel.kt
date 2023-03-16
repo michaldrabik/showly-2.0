@@ -34,7 +34,7 @@ internal class CollectionFiltersNetworkViewModel @Inject constructor(
   fun loadData(origin: CollectionFiltersOrigin) {
     this.origin = origin
     networksState.value = when (origin) {
-      MY_SHOWS -> settingsRepository.filters.watchlistShowsNetworks
+      MY_SHOWS -> settingsRepository.filters.myShowsNetworks
       WATCHLIST_SHOWS -> settingsRepository.filters.watchlistShowsNetworks
       HIDDEN_SHOWS -> settingsRepository.filters.hiddenShowsNetworks
     }.toList()
@@ -47,7 +47,7 @@ internal class CollectionFiltersNetworkViewModel @Inject constructor(
         return@launch
       }
       when (origin) {
-        MY_SHOWS -> settingsRepository.filters.watchlistShowsNetworks = networks
+        MY_SHOWS -> settingsRepository.filters.myShowsNetworks = networks
         WATCHLIST_SHOWS -> settingsRepository.filters.watchlistShowsNetworks = networks
         HIDDEN_SHOWS -> settingsRepository.filters.hiddenShowsNetworks = networks
       }

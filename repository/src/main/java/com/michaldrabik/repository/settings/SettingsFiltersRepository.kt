@@ -17,6 +17,7 @@ class SettingsFiltersRepository @Inject constructor(
 
   companion object Key {
     private const val MY_SHOWS_TYPE = "MY_SHOWS_TYPE"
+    private const val MY_SHOWS_NETWORKS = "MY_SHOWS_NETWORKS"
     private const val WATCHLIST_SHOWS_UPCOMING = "WATCHLIST_SHOWS_UPCOMING"
     private const val WATCHLIST_SHOWS_NETWORKS = "WATCHLIST_SHOWS_NETWORKS"
     private const val HIDDEN_SHOWS_NETWORKS = "HIDDEN_SHOWS_NETWORKS"
@@ -24,6 +25,14 @@ class SettingsFiltersRepository @Inject constructor(
   }
 
   var myShowsType by EnumPreference(preferences, MY_SHOWS_TYPE, MyShowsSection.ALL, MyShowsSection::class.java)
+  var myShowsNetworks: List<Network>
+    get() {
+      val filters = preferences.getStringSet(MY_SHOWS_NETWORKS, emptySet()) ?: emptySet()
+      return filters.map { Network.valueOf(it) }
+    }
+    set(value) {
+      preferences.edit { putStringSet(MY_SHOWS_NETWORKS, value.map { it.name }.toSet()) }
+    }
 
   var watchlistShowsUpcoming by BooleanPreference(preferences, WATCHLIST_SHOWS_UPCOMING, false)
   var watchlistShowsNetworks: List<Network>

@@ -40,6 +40,9 @@ import com.michaldrabik.ui_model.SortOrder.RECENTLY_WATCHED
 import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_shows.R
+import com.michaldrabik.ui_my_shows.common.filters.CollectionFiltersNetworkBottomSheet
+import com.michaldrabik.ui_my_shows.common.filters.CollectionFiltersNetworkBottomSheet.Companion.REQUEST_COLLECTION_FILTERS_NETWORK
+import com.michaldrabik.ui_my_shows.common.filters.enums.CollectionFiltersOrigin.MY_SHOWS
 import com.michaldrabik.ui_my_shows.main.FollowedShowsFragment
 import com.michaldrabik.ui_my_shows.main.FollowedShowsUiEvent.OpenPremium
 import com.michaldrabik.ui_my_shows.main.FollowedShowsViewModel
@@ -89,6 +92,7 @@ class MyShowsFragment :
       onSortOrderClickListener = { section, order, type -> openSortOrderDialog(section, order, type) },
       onTypeClickListener = { navigateToSafe(R.id.actionFollowedShowsFragmentToMyShowsFilters) },
       onListViewModeClickListener = viewModel::toggleViewMode,
+      onNetworksClickListener = ::openNetworksDialog,
       missingImageListener = { item, force -> viewModel.loadMissingImage(item as MyShowsItem, force) },
       missingTranslationListener = { viewModel.loadMissingTranslation(it as MyShowsItem) },
       listChangeListener = {
@@ -203,6 +207,15 @@ class MyShowsFragment :
     }
 
     navigateTo(R.id.actionFollowedShowsFragmentToSortOrder, args)
+  }
+
+  private fun openNetworksDialog() {
+    requireParentFragment().setFragmentResultListener(REQUEST_COLLECTION_FILTERS_NETWORK) { _, _ ->
+      viewModel.loadShows()
+    }
+
+    val bundle = CollectionFiltersNetworkBottomSheet.createBundle(MY_SHOWS)
+    navigateToSafe(R.id.actionFollowedShowsFragmentToNetworks, bundle)
   }
 
   override fun onEnterSearch() {

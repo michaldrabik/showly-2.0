@@ -43,6 +43,7 @@ class MyShowHeaderView : FrameLayout {
     viewMode: ListViewMode,
     typeClickListener: (() -> Unit)?,
     sortClickListener: ((MyShowsSection, SortOrder, SortType) -> Unit)?,
+    networksClickListener: (() -> Unit)?,
     listModeClickListener: (() -> Unit)?,
   ) {
     bindMargins(viewMode)
@@ -50,6 +51,7 @@ class MyShowHeaderView : FrameLayout {
     with(binding) {
       myShowsFilterChipsScroll.visibleIf(item.section != RECENTS)
       myShowsSortChip.visibleIf(item.sortOrder != null)
+      myShowsNetworksChip.visibleIf(item.networks != null)
 
       with(myShowsTypeChip) {
         isSelected = true
@@ -76,6 +78,16 @@ class MyShowHeaderView : FrameLayout {
           SortType.DESCENDING -> R.drawable.ic_arrow_alt_down
         }
         myShowsSortChip.closeIcon = ContextCompat.getDrawable(context, sortIcon)
+      }
+
+      item.networks?.let { networks ->
+        myShowsNetworksChip.isSelected = networks.isNotEmpty()
+        myShowsNetworksChip.onClick { networksClickListener?.invoke() }
+        myShowsNetworksChip.text = when {
+          networks.isEmpty() -> context.getString(R.string.textNetworks).filter { it.isLetter() }
+          networks.size == 1 -> networks[0].channels.first()
+          else -> throw IllegalStateException()
+        }
       }
     }
   }
