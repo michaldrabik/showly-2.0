@@ -4,6 +4,7 @@ import com.michaldrabik.common.extensions.toZonedDateTime
 import com.michaldrabik.ui_base.common.ListItem
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
+import com.michaldrabik.ui_model.Network
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
@@ -36,10 +37,14 @@ sealed class CollectionListItem(
   data class FiltersItem(
     val sortOrder: SortOrder,
     val sortType: SortType,
+    val networks: List<Network>,
     val isUpcoming: Boolean,
   ) : CollectionListItem(
     show = Show.EMPTY,
     image = Image.createUnknown(ImageType.FILTERS),
     isLoading = false
-  )
+  ) {
+
+    fun hasActiveFilters() = isUpcoming || networks.isNotEmpty()
+  }
 }

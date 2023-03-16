@@ -1,9 +1,10 @@
-package com.michaldrabik.ui_discover.filters.networks
+package com.michaldrabik.ui_my_shows.common.filters
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.forEach
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
@@ -15,23 +16,33 @@ import com.michaldrabik.ui_base.utilities.NetworkIconProvider
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.requireSerializable
 import com.michaldrabik.ui_base.utilities.extensions.screenHeight
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.viewBinding
-import com.michaldrabik.ui_discover.DiscoverFragment.Companion.REQUEST_DISCOVER_FILTERS
-import com.michaldrabik.ui_discover.R
-import com.michaldrabik.ui_discover.databinding.ViewDiscoverFiltersNetworksBinding
-import com.michaldrabik.ui_discover.filters.networks.DiscoverFiltersNetworksUiEvent.ApplyFilters
-import com.michaldrabik.ui_discover.filters.networks.DiscoverFiltersNetworksUiEvent.CloseFilters
 import com.michaldrabik.ui_model.Network
+import com.michaldrabik.ui_my_shows.R
+import com.michaldrabik.ui_my_shows.common.filters.CollectionFiltersNetworkUiEvent.ApplyFilters
+import com.michaldrabik.ui_my_shows.common.filters.CollectionFiltersNetworkUiEvent.CloseFilters
+import com.michaldrabik.ui_my_shows.common.filters.enums.CollectionFiltersOrigin
+import com.michaldrabik.ui_my_shows.databinding.ViewFiltersNetworksBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-internal class DiscoverFiltersNetworksBottomSheet : BaseBottomSheetFragment(R.layout.view_discover_filters_networks) {
+internal class CollectionFiltersNetworkBottomSheet : BaseBottomSheetFragment(R.layout.view_filters_networks) {
 
-  private val viewModel by viewModels<DiscoverFiltersNetworksViewModel>()
-  private val binding by viewBinding(ViewDiscoverFiltersNetworksBinding::bind)
+  companion object {
+    private const val ARG_ORIGIN = "ARG_ORIGIN"
+    const val REQUEST_COLLECTION_FILTERS_NETWORK = "REQUEST_COLLECTION_FILTERS_NETWORK"
+
+    fun createBundle(origin: CollectionFiltersOrigin): Bundle {
+      return bundleOf(ARG_ORIGIN to origin)
+    }
+  }
+
+  private val viewModel by viewModels<CollectionFiltersNetworkViewModel>()
+  private val binding by viewBinding(ViewFiltersNetworksBinding::bind)
 
   @Inject
   lateinit var networkIconProvider: NetworkIconProvider
@@ -44,7 +55,11 @@ internal class DiscoverFiltersNetworksBottomSheet : BaseBottomSheetFragment(R.la
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
-      { viewModel.eventFlow.collect { handleEvent(it) } }
+      { viewModel.eventFlow.collect { handleEvent(it) } },
+      doAfterLaunch = {
+        val origin = requireSerializable<CollectionFiltersOrigin>(ARG_ORIGIN)
+        viewModel.loadData(origin)
+      }
     )
   }
 
@@ -73,7 +88,7 @@ internal class DiscoverFiltersNetworksBottomSheet : BaseBottomSheetFragment(R.la
     }
   }
 
-  private fun render(uiState: DiscoverFiltersNetworksUiState) {
+  private fun render(uiState: CollectionFiltersNetworkUiState) {
     with(uiState) {
       networks?.let { renderNetworks(it) }
     }
@@ -111,7 +126,7 @@ internal class DiscoverFiltersNetworksBottomSheet : BaseBottomSheetFragment(R.la
   private fun handleEvent(event: Event<*>) {
     when (event) {
       is ApplyFilters -> {
-        setFragmentResult(REQUEST_DISCOVER_FILTERS, Bundle.EMPTY)
+        setFragmentResult(REQUEST_COLLECTION_FILTERS_NETWORK, Bundle.EMPTY)
         closeSheet()
       }
       is CloseFilters -> closeSheet()

@@ -27,6 +27,7 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
+import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
@@ -37,6 +38,9 @@ import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_shows.R
+import com.michaldrabik.ui_my_shows.common.filters.CollectionFiltersNetworkBottomSheet
+import com.michaldrabik.ui_my_shows.common.filters.CollectionFiltersNetworkBottomSheet.Companion.REQUEST_COLLECTION_FILTERS_NETWORK
+import com.michaldrabik.ui_my_shows.common.filters.enums.CollectionFiltersOrigin.WATCHLIST_SHOWS
 import com.michaldrabik.ui_my_shows.common.recycler.CollectionAdapter
 import com.michaldrabik.ui_my_shows.main.FollowedShowsFragment
 import com.michaldrabik.ui_my_shows.main.FollowedShowsUiEvent.OpenPremium
@@ -57,6 +61,7 @@ class WatchlistFragment :
 
   private val parentViewModel by viewModels<FollowedShowsViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<WatchlistViewModel>()
+  override val navigationId = R.id.followedShowsFragment
 
   private var adapter: CollectionAdapter? = null
   private var layoutManager: LayoutManager? = null
@@ -84,6 +89,7 @@ class WatchlistFragment :
       sortChipClickListener = ::openSortOrderDialog,
       upcomingChipClickListener = viewModel::setFilters,
       listViewChipClickListener = viewModel::setNextViewMode,
+      networksChipClickListener = ::openNetworksDialog,
       missingImageListener = viewModel::loadMissingImage,
       missingTranslationListener = viewModel::loadMissingTranslation,
       listChangeListener = {
@@ -178,6 +184,15 @@ class WatchlistFragment :
     }
 
     navigateTo(R.id.actionFollowedShowsFragmentToSortOrder, args)
+  }
+
+  private fun openNetworksDialog() {
+    requireParentFragment().setFragmentResultListener(REQUEST_COLLECTION_FILTERS_NETWORK) { _, _ ->
+      viewModel.loadShows(resetScroll = true)
+    }
+
+    val bundle = CollectionFiltersNetworkBottomSheet.createBundle(WATCHLIST_SHOWS)
+    navigateToSafe(R.id.actionFollowedShowsFragmentToNetworks, bundle)
   }
 
   override fun onEnterSearch() {

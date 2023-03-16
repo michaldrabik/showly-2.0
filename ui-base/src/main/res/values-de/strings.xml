@@ -24,6 +24,7 @@
   <string name="textSpoilersWarning">Dieses Kommentar enthält Spoiler.\nTippen um zu lesen.</string>
   <string name="textCommentedOn">Kommentiert von %s</string>
   <string name="textNetwork">%1$s (%2$s)</string>
+  <string name="textNetworks">Fernseh-Network:</string>
   <string name="textShows">Serien</string>
   <string name="textMovies">Filme</string>
   <string name="textLists">Listen</string>

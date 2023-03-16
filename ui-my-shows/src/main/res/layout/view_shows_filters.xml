@@ -17,6 +17,7 @@
     android:overScrollMode="never"
     android:paddingStart="@dimen/spaceMedium"
     android:paddingEnd="@dimen/spaceMedium"
+    android:scrollbars="none"
     >
 
     <LinearLayout
@@ -38,6 +39,13 @@
           android:id="@+id/followedShowsSortingChip"
           style="@style/ShowlyChip.Sort"
           android:text="@string/textSortName"
+          />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/followedShowsNetworksChip"
+          style="@style/ShowlyChip.Filter"
+          android:checkable="false"
+          android:text="@string/textNetworks"
           />
 
         <com.google.android.material.chip.Chip

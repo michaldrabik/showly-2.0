@@ -34,6 +34,7 @@ class CollectionShowFiltersView : FrameLayout {
   var onSortChipClicked: ((SortOrder, SortType) -> Unit)? = null
   var onFilterUpcomingClicked: ((Boolean) -> Unit)? = null
   var onListViewModeClicked: (() -> Unit)? = null
+  var onNetworksChipClick: (() -> Unit)? = null
 
   init {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
@@ -57,6 +58,14 @@ class CollectionShowFiltersView : FrameLayout {
       }
       followedShowsSortingChip.closeIcon = ContextCompat.getDrawable(context, sortIcon)
       followedShowsSortingChip.text = context.getText(item.sortOrder.displayString)
+
+      followedShowsNetworksChip.isSelected = item.networks.isNotEmpty()
+      followedShowsNetworksChip.text = when {
+        item.networks.isEmpty() -> context.getString(R.string.textNetworks).filter { it.isLetter() }
+        item.networks.size == 1 -> item.networks[0].channels.first()
+        else -> throw IllegalStateException()
+      }
+
       followedShowsUpcomingChip.isChecked = item.isUpcoming
       followedShowsListViewChip.setChipIconResource(
         when (viewMode) {
@@ -68,6 +77,7 @@ class CollectionShowFiltersView : FrameLayout {
       followedShowsSortingChip.onClick { onSortChipClicked?.invoke(item.sortOrder, item.sortType) }
       followedShowsUpcomingChip.onClick { onFilterUpcomingClicked?.invoke(followedShowsUpcomingChip.isChecked) }
       followedShowsListViewChip.onClick { onListViewModeClicked?.invoke() }
+      followedShowsNetworksChip.onClick { onNetworksChipClick?.invoke() }
     }
   }
 

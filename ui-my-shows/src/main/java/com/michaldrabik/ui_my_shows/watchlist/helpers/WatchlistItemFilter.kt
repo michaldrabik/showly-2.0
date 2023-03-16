@@ -19,6 +19,16 @@ class WatchlistItemFilter @Inject constructor() {
     return true
   }
 
+  fun filterNetworks(
+    item: CollectionListItem,
+    networks: List<String>,
+  ): Boolean {
+    if (networks.isEmpty()) {
+      return true
+    }
+    return item.show.network in networks
+  }
+
   fun filterByQuery(
     item: CollectionListItem.ShowItem,
     query: String,

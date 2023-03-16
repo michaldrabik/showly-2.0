@@ -550,6 +550,11 @@
       app:launchSingleTop="true"
       />
     <action
+      android:id="@+id/actionFollowedShowsFragmentToNetworks"
+      app:destination="@id/collectionFiltersNetworkDialog"
+      app:launchSingleTop="true"
+      />
+    <action
       android:id="@+id/actionFollowedShowsFragmentToSearch"
       app:destination="@id/searchFragment"
       app:launchSingleTop="true"
@@ -1046,6 +1051,12 @@
     android:id="@+id/myShowsFiltersDialog"
     android:name="com.michaldrabik.ui_my_shows.myshows.filters.MyShowsFiltersBottomSheet"
     android:label="dialogMyShowsFilters"
+    />
+
+  <dialog
+    android:id="@+id/collectionFiltersNetworkDialog"
+    android:name="com.michaldrabik.ui_my_shows.common.filters.CollectionFiltersNetworkBottomSheet"
+    android:label="dialogCollectionFiltersNetwork"
     />
 
 </navigation>

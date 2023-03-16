@@ -27,6 +27,7 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
+import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
@@ -37,6 +38,9 @@ import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_shows.R
+import com.michaldrabik.ui_my_shows.common.filters.CollectionFiltersNetworkBottomSheet
+import com.michaldrabik.ui_my_shows.common.filters.CollectionFiltersNetworkBottomSheet.Companion.REQUEST_COLLECTION_FILTERS_NETWORK
+import com.michaldrabik.ui_my_shows.common.filters.enums.CollectionFiltersOrigin.HIDDEN_SHOWS
 import com.michaldrabik.ui_my_shows.common.recycler.CollectionAdapter
 import com.michaldrabik.ui_my_shows.main.FollowedShowsFragment
 import com.michaldrabik.ui_my_shows.main.FollowedShowsUiEvent.OpenPremium
@@ -57,6 +61,7 @@ class HiddenFragment :
 
   private val parentViewModel by viewModels<FollowedShowsViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<HiddenViewModel>()
+  override val navigationId = R.id.followedShowsFragment
 
   private var adapter: CollectionAdapter? = null
   private var layoutManager: LayoutManager? = null
@@ -85,6 +90,7 @@ class HiddenFragment :
       missingImageListener = viewModel::loadMissingImage,
       missingTranslationListener = viewModel::loadMissingTranslation,
       listViewChipClickListener = viewModel::setNextViewMode,
+      networksChipClickListener = ::openNetworksDialog,
       upcomingChipClickListener = {},
       listChangeListener = {
         hiddenRecycler.scrollToPosition(0)
@@ -141,6 +147,15 @@ class HiddenFragment :
     }
 
     navigateTo(R.id.actionFollowedShowsFragmentToSortOrder, args)
+  }
+
+  private fun openNetworksDialog() {
+    requireParentFragment().setFragmentResultListener(REQUEST_COLLECTION_FILTERS_NETWORK) { _, _ ->
+      viewModel.loadShows(resetScroll = true)
+    }
+
+    val bundle = CollectionFiltersNetworkBottomSheet.createBundle(HIDDEN_SHOWS)
+    navigateToSafe(R.id.actionFollowedShowsFragmentToNetworks, bundle)
   }
 
   private fun render(uiState: HiddenUiState) {
