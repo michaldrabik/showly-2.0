@@ -25,6 +25,7 @@
   <string name="textCommentedOn">Commenté par %s</string>
   <string name="textNetwork">%1$s (%2$s)</string>
   <string name="textNetworks">Réseau :</string>
+  <string name="textGenres">Genres :</string>
   <string name="textShows">Séries</string>
   <string name="textMovies">Films</string>
   <string name="textLists">Listes</string>

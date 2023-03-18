@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_my_shows.myshows.recycler
 
 import com.michaldrabik.ui_base.common.ListItem
+import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.MyShowsSection
@@ -32,7 +33,8 @@ data class MyShowsItem(
     val section: MyShowsSection,
     val itemCount: Int,
     val sortOrder: Pair<SortOrder, SortType>?,
-    val networks: List<Network>?
+    val networks: List<Network>?,
+    val genres: List<Genre>?,
   )
 
   data class RecentsSection(
@@ -44,10 +46,11 @@ data class MyShowsItem(
       section: MyShowsSection,
       itemCount: Int,
       sortOrder: Pair<SortOrder, SortType>?,
-      networks: List<Network>?
+      networks: List<Network>?,
+      genres: List<Genre>?
     ) = MyShowsItem(
       type = Type.ALL_SHOWS_HEADER,
-      header = Header(section, itemCount, sortOrder, networks),
+      header = Header(section, itemCount, sortOrder, networks, genres),
       recentsSection = null,
       show = Show.EMPTY,
       image = Image.createUnavailable(POSTER),

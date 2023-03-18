@@ -45,6 +45,7 @@ class WatchlistLoadShowsCase @Inject constructor(
     val filtersItem = loadFiltersItem()
     val filtersNetworks = filtersItem.networks
       .flatMap { network -> network.channels.map { it } }
+    val filtersGenres = filtersItem.genres.map { it.slug.lowercase() }
 
     val showsItems = showsRepository.watchlistShows.loadAll()
       .map {
@@ -60,7 +61,8 @@ class WatchlistLoadShowsCase @Inject constructor(
       .filter { item ->
         filters.filterByQuery(item, searchQuery) &&
           filters.filterUpcoming(item, filtersItem.isUpcoming) &&
-          filters.filterNetworks(item, filtersNetworks)
+          filters.filterNetworks(item, filtersNetworks) &&
+          filters.filterGenres(item, filtersGenres)
       }
       .sortedWith(sorter.sort(filtersItem.sortOrder, filtersItem.sortType))
 
@@ -76,6 +78,7 @@ class WatchlistLoadShowsCase @Inject constructor(
       sortOrder = settingsRepository.sorting.watchlistShowsSortOrder,
       sortType = settingsRepository.sorting.watchlistShowsSortType,
       networks = settingsRepository.filters.watchlistShowsNetworks,
+      genres = settingsRepository.filters.watchlistShowsGenres,
       isUpcoming = settingsRepository.filters.watchlistShowsUpcoming
     )
   }

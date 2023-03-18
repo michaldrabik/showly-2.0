@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_my_shows.common.filters
+package com.michaldrabik.ui_my_shows.common.filters.network
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,12 +7,12 @@ import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
 import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.Network
-import com.michaldrabik.ui_my_shows.common.filters.CollectionFiltersNetworkUiEvent.ApplyFilters
-import com.michaldrabik.ui_my_shows.common.filters.CollectionFiltersNetworkUiEvent.CloseFilters
-import com.michaldrabik.ui_my_shows.common.filters.enums.CollectionFiltersOrigin
-import com.michaldrabik.ui_my_shows.common.filters.enums.CollectionFiltersOrigin.HIDDEN_SHOWS
-import com.michaldrabik.ui_my_shows.common.filters.enums.CollectionFiltersOrigin.MY_SHOWS
-import com.michaldrabik.ui_my_shows.common.filters.enums.CollectionFiltersOrigin.WATCHLIST_SHOWS
+import com.michaldrabik.ui_my_shows.common.filters.CollectionFiltersOrigin
+import com.michaldrabik.ui_my_shows.common.filters.CollectionFiltersOrigin.HIDDEN_SHOWS
+import com.michaldrabik.ui_my_shows.common.filters.CollectionFiltersOrigin.MY_SHOWS
+import com.michaldrabik.ui_my_shows.common.filters.CollectionFiltersOrigin.WATCHLIST_SHOWS
+import com.michaldrabik.ui_my_shows.common.filters.CollectionFiltersUiEvent.ApplyFilters
+import com.michaldrabik.ui_my_shows.common.filters.CollectionFiltersUiEvent.CloseFilters
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

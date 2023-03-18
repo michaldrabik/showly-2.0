@@ -47,6 +47,7 @@ class HiddenLoadShowsCase @Inject constructor(
     val filtersItem = loadFiltersItem(sortOrder, sortType)
     val filtersNetworks = filtersItem.networks
       .flatMap { network -> network.channels.map { it } }
+    val filtersGenres = filtersItem.genres.map { it.slug.lowercase() }
 
     val hiddenItems = showsRepository.hiddenShows.loadAll()
       .map {
@@ -61,6 +62,7 @@ class HiddenLoadShowsCase @Inject constructor(
       .awaitAll()
       .filterByQuery(searchQuery)
       .filterByNetwork(filtersNetworks)
+      .filterByGenre(filtersGenres)
       .sortedWith(sorter.sort(sortOrder, sortType))
 
     if (hiddenItems.isNotEmpty() || filtersItem.hasActiveFilters()) {
@@ -79,6 +81,9 @@ class HiddenLoadShowsCase @Inject constructor(
   private fun List<CollectionListItem.ShowItem>.filterByNetwork(networks: List<String>) =
     filter { networks.isEmpty() || it.show.network in networks }
 
+  private fun List<CollectionListItem.ShowItem>.filterByGenre(genres: List<String>) =
+    filter { genres.isEmpty() || it.show.genres.any { genre -> genre.lowercase() in genres } }
+
   private fun loadFiltersItem(
     sortOrder: SortOrder,
     sortType: SortType,
@@ -87,6 +92,7 @@ class HiddenLoadShowsCase @Inject constructor(
       sortOrder = sortOrder,
       sortType = sortType,
       networks = settingsRepository.filters.hiddenShowsNetworks,
+      genres = settingsRepository.filters.hiddenShowsGenres,
       isUpcoming = false,
     )
   }

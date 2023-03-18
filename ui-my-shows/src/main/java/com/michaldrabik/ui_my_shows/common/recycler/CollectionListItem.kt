@@ -2,6 +2,7 @@ package com.michaldrabik.ui_my_shows.common.recycler
 
 import com.michaldrabik.common.extensions.toZonedDateTime
 import com.michaldrabik.ui_base.common.ListItem
+import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Network
@@ -38,6 +39,7 @@ sealed class CollectionListItem(
     val sortOrder: SortOrder,
     val sortType: SortType,
     val networks: List<Network>,
+    val genres: List<Genre>,
     val isUpcoming: Boolean,
   ) : CollectionListItem(
     show = Show.EMPTY,
@@ -45,6 +47,6 @@ sealed class CollectionListItem(
     isLoading = false
   ) {
 
-    fun hasActiveFilters() = isUpcoming || networks.isNotEmpty()
+    fun hasActiveFilters() = isUpcoming || networks.isNotEmpty() || genres.isNotEmpty()
   }
 }

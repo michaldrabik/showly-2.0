@@ -50,6 +50,7 @@ class CollectionItemDiffCallback : DiffUtil.ItemCallback<CollectionListItem>() {
   ): Boolean {
     return oldItem.isUpcoming == newItem.isUpcoming &&
       oldItem.networks == newItem.networks &&
+      oldItem.genres == newItem.genres &&
       oldItem.sortOrder == newItem.sortOrder &&
       oldItem.sortType == newItem.sortType
   }

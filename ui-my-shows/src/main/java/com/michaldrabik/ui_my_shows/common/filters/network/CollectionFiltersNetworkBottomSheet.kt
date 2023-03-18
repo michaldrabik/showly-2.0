@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_my_shows.common.filters
+package com.michaldrabik.ui_my_shows.common.filters.network
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -22,9 +22,9 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.Network
 import com.michaldrabik.ui_my_shows.R
-import com.michaldrabik.ui_my_shows.common.filters.CollectionFiltersNetworkUiEvent.ApplyFilters
-import com.michaldrabik.ui_my_shows.common.filters.CollectionFiltersNetworkUiEvent.CloseFilters
-import com.michaldrabik.ui_my_shows.common.filters.enums.CollectionFiltersOrigin
+import com.michaldrabik.ui_my_shows.common.filters.CollectionFiltersOrigin
+import com.michaldrabik.ui_my_shows.common.filters.CollectionFiltersUiEvent.ApplyFilters
+import com.michaldrabik.ui_my_shows.common.filters.CollectionFiltersUiEvent.CloseFilters
 import com.michaldrabik.ui_my_shows.databinding.ViewFiltersNetworksBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

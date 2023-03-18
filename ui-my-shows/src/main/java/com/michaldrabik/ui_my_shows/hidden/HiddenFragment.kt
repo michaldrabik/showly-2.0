@@ -38,9 +38,11 @@ import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_shows.R
-import com.michaldrabik.ui_my_shows.common.filters.CollectionFiltersNetworkBottomSheet
-import com.michaldrabik.ui_my_shows.common.filters.CollectionFiltersNetworkBottomSheet.Companion.REQUEST_COLLECTION_FILTERS_NETWORK
-import com.michaldrabik.ui_my_shows.common.filters.enums.CollectionFiltersOrigin.HIDDEN_SHOWS
+import com.michaldrabik.ui_my_shows.common.filters.CollectionFiltersOrigin.HIDDEN_SHOWS
+import com.michaldrabik.ui_my_shows.common.filters.genre.CollectionFiltersGenreBottomSheet
+import com.michaldrabik.ui_my_shows.common.filters.genre.CollectionFiltersGenreBottomSheet.Companion.REQUEST_COLLECTION_FILTERS_GENRE
+import com.michaldrabik.ui_my_shows.common.filters.network.CollectionFiltersNetworkBottomSheet
+import com.michaldrabik.ui_my_shows.common.filters.network.CollectionFiltersNetworkBottomSheet.Companion.REQUEST_COLLECTION_FILTERS_NETWORK
 import com.michaldrabik.ui_my_shows.common.recycler.CollectionAdapter
 import com.michaldrabik.ui_my_shows.main.FollowedShowsFragment
 import com.michaldrabik.ui_my_shows.main.FollowedShowsUiEvent.OpenPremium
@@ -91,6 +93,7 @@ class HiddenFragment :
       missingTranslationListener = viewModel::loadMissingTranslation,
       listViewChipClickListener = viewModel::setNextViewMode,
       networksChipClickListener = ::openNetworksDialog,
+      genresChipClickListener = ::openGenresDialog,
       upcomingChipClickListener = {},
       listChangeListener = {
         hiddenRecycler.scrollToPosition(0)
@@ -136,28 +139,6 @@ class HiddenFragment :
     }
   }
 
-  private fun openSortOrderDialog(order: SortOrder, type: SortType) {
-    val options = listOf(NAME, RATING, USER_RATING, NEWEST, DATE_ADDED)
-    val args = SortOrderBottomSheet.createBundle(options, order, type)
-
-    requireParentFragment().setFragmentResultListener(REQUEST_SORT_ORDER) { _, bundle ->
-      val sortOrder = bundle.getSerializable(ARG_SELECTED_SORT_ORDER) as SortOrder
-      val sortType = bundle.getSerializable(ARG_SELECTED_SORT_TYPE) as SortType
-      viewModel.setSortOrder(sortOrder, sortType)
-    }
-
-    navigateTo(R.id.actionFollowedShowsFragmentToSortOrder, args)
-  }
-
-  private fun openNetworksDialog() {
-    requireParentFragment().setFragmentResultListener(REQUEST_COLLECTION_FILTERS_NETWORK) { _, _ ->
-      viewModel.loadShows(resetScroll = true)
-    }
-
-    val bundle = CollectionFiltersNetworkBottomSheet.createBundle(HIDDEN_SHOWS)
-    navigateToSafe(R.id.actionFollowedShowsFragmentToNetworks, bundle)
-  }
-
   private fun render(uiState: HiddenUiState) {
     uiState.run {
       viewMode.let {
@@ -194,6 +175,37 @@ class HiddenFragment :
 
   private fun openShowMenu(show: Show) {
     (requireParentFragment() as? FollowedShowsFragment)?.openShowMenu(show)
+  }
+
+  private fun openSortOrderDialog(order: SortOrder, type: SortType) {
+    val options = listOf(NAME, RATING, USER_RATING, NEWEST, DATE_ADDED)
+    val args = SortOrderBottomSheet.createBundle(options, order, type)
+
+    requireParentFragment().setFragmentResultListener(REQUEST_SORT_ORDER) { _, bundle ->
+      val sortOrder = bundle.getSerializable(ARG_SELECTED_SORT_ORDER) as SortOrder
+      val sortType = bundle.getSerializable(ARG_SELECTED_SORT_TYPE) as SortType
+      viewModel.setSortOrder(sortOrder, sortType)
+    }
+
+    navigateTo(R.id.actionFollowedShowsFragmentToSortOrder, args)
+  }
+
+  private fun openNetworksDialog() {
+    requireParentFragment().setFragmentResultListener(REQUEST_COLLECTION_FILTERS_NETWORK) { _, _ ->
+      viewModel.loadShows(resetScroll = true)
+    }
+
+    val bundle = CollectionFiltersNetworkBottomSheet.createBundle(HIDDEN_SHOWS)
+    navigateToSafe(R.id.actionFollowedShowsFragmentToNetworks, bundle)
+  }
+
+  private fun openGenresDialog() {
+    requireParentFragment().setFragmentResultListener(REQUEST_COLLECTION_FILTERS_GENRE) { _, _ ->
+      viewModel.loadShows(resetScroll = true)
+    }
+
+    val bundle = CollectionFiltersGenreBottomSheet.createBundle(HIDDEN_SHOWS)
+    navigateToSafe(R.id.actionFollowedShowsFragmentToGenres, bundle)
   }
 
   override fun onEnterSearch() {

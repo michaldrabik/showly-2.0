@@ -36,7 +36,7 @@
         android:id="@+id/discoverMoviesGenresChip"
         style="@style/ShowlyChip.Filter"
         android:checkable="false"
-        android:text="@string/textGenresMovies"
+        android:text="@string/textGenres"
         />
 
       <com.google.android.material.chip.Chip

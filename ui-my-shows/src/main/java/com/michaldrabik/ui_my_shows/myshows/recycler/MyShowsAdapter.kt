@@ -27,6 +27,7 @@ class MyShowsAdapter(
   private val onSortOrderClickListener: (MyShowsSection, SortOrder, SortType) -> Unit,
   private val onListViewModeClickListener: () -> Unit,
   private val onNetworksClickListener: () -> Unit,
+  private val onGenresClickListener: () -> Unit,
   private val onTypeClickListener: () -> Unit,
   private val missingImageListener: (ListItem, Boolean) -> Unit,
   private val missingTranslationListener: (ListItem) -> Unit,
@@ -83,6 +84,7 @@ class MyShowsAdapter(
         typeClickListener = onTypeClickListener,
         sortClickListener = onSortOrderClickListener,
         networksClickListener = onNetworksClickListener,
+        genresClickListener = onGenresClickListener,
         listModeClickListener = onListViewModeClickListener
       )
       VIEW_TYPE_RECENTS_SECTION -> (holder.itemView as MyShowsRecentsView).bind(

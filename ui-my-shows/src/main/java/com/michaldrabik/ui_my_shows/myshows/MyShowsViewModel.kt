@@ -92,6 +92,7 @@ class MyShowsViewModel @Inject constructor(
       val ratings = ratingsCase.loadRatings()
       val sortOrder = settingsRepository.sorting.myShowsAllSortOrder
       val networks = settingsRepository.filters.myShowsNetworks
+      val genres = settingsRepository.filters.myShowsGenres
 
       val shows = loadShowsCase.loadAllShows()
         .map {
@@ -110,7 +111,8 @@ class MyShowsViewModel @Inject constructor(
         allShows = shows,
         allSeasons = seasons,
         searchQuery = searchQuery,
-        networks = networks.flatMap { network -> network.channels.map { it } }
+        networks = networks.flatMap { network -> network.channels.map { it } },
+        genres = genres.map { it.slug }
       )
 
       val recentShows = if (settings.myShowsRecentIsEnabled) {
@@ -125,7 +127,7 @@ class MyShowsViewModel @Inject constructor(
       val listItems = mutableListOf<MyShowsItem>()
       listItems.run {
         if (isNotSearching && recentShows.isNotEmpty()) {
-          add(MyShowsItem.createHeader(RECENTS, recentShows.count(), null, null))
+          add(MyShowsItem.createHeader(RECENTS, recentShows.count(), null, null, null))
           add(MyShowsItem.createRecentsSection(recentShows))
         }
         if (shows.isNotEmpty()) {
@@ -134,7 +136,8 @@ class MyShowsViewModel @Inject constructor(
               section = settingsRepository.filters.myShowsType,
               itemCount = allShows.count(),
               sortOrder = sortingCase.loadSectionSortOrder(ALL),
-              networks = settingsRepository.filters.myShowsNetworks
+              networks = settingsRepository.filters.myShowsNetworks,
+              genres = settingsRepository.filters.myShowsGenres
             )
           )
           addAll(allShows)

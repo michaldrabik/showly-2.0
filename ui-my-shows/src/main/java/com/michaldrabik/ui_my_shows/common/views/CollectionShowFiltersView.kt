@@ -35,6 +35,7 @@ class CollectionShowFiltersView : FrameLayout {
   var onFilterUpcomingClicked: ((Boolean) -> Unit)? = null
   var onListViewModeClicked: (() -> Unit)? = null
   var onNetworksChipClick: (() -> Unit)? = null
+  var onGenresChipClick: (() -> Unit)? = null
 
   init {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
@@ -66,6 +67,14 @@ class CollectionShowFiltersView : FrameLayout {
         else -> throw IllegalStateException()
       }
 
+      followedShowsGenresChip.isSelected = item.genres.isNotEmpty()
+      followedShowsGenresChip.text = when {
+        item.genres.isEmpty() -> context.getString(R.string.textGenres).filter { it.isLetter() }
+        item.genres.size == 1 -> context.getString(item.genres.first().displayName)
+        item.genres.size == 2 -> "${context.getString(item.genres[0].displayName)}, ${context.getString(item.genres[1].displayName)}"
+        else -> "${context.getString(item.genres[0].displayName)}, ${context.getString(item.genres[1].displayName)} + ${item.genres.size - 2}"
+      }
+
       followedShowsUpcomingChip.isChecked = item.isUpcoming
       followedShowsListViewChip.setChipIconResource(
         when (viewMode) {
@@ -78,6 +87,7 @@ class CollectionShowFiltersView : FrameLayout {
       followedShowsUpcomingChip.onClick { onFilterUpcomingClicked?.invoke(followedShowsUpcomingChip.isChecked) }
       followedShowsListViewChip.onClick { onListViewModeClicked?.invoke() }
       followedShowsNetworksChip.onClick { onNetworksChipClick?.invoke() }
+      followedShowsGenresChip.onClick { onGenresChipClick?.invoke() }
     }
   }
 

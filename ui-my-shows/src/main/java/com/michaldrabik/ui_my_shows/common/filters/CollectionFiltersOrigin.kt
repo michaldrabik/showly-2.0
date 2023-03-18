@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_my_shows.common.filters.enums
+package com.michaldrabik.ui_my_shows.common.filters
 
 internal enum class CollectionFiltersOrigin {
   MY_SHOWS,
