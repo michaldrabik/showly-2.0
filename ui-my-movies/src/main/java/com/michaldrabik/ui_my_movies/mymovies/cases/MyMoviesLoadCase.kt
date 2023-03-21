@@ -33,9 +33,11 @@ class MyMoviesLoadCase @Inject constructor(
   fun filterSectionMovies(
     allMovies: List<MyMoviesItem>,
     sortOrder: Pair<SortOrder, SortType>,
+    genres: List<String>,
     searchQuery: String? = null,
   ) = allMovies
     .filterByQuery(searchQuery)
+    .filterByGenre(genres)
     .sortedWith(sorter.sort(sortOrder.first, sortOrder.second))
 
   private fun List<MyMoviesItem>.filterByQuery(query: String?) = when {
@@ -45,6 +47,9 @@ class MyMoviesLoadCase @Inject constructor(
         it.translation?.title?.contains(query, true) == true
     }
   }
+
+  private fun List<MyMoviesItem>.filterByGenre(genres: List<String>) =
+    filter { genres.isEmpty() || it.movie.genres.any { genre -> genre.lowercase() in genres } }
 
   suspend fun loadRecentMovies(): List<Movie> {
     val amount = loadSettings().myRecentsAmount

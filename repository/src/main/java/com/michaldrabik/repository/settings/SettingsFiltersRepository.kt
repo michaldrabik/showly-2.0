@@ -26,8 +26,13 @@ class SettingsFiltersRepository @Inject constructor(
     private const val HIDDEN_SHOWS_NETWORKS = "HIDDEN_SHOWS_NETWORKS"
     private const val HIDDEN_SHOWS_GENRES = "HIDDEN_SHOWS_GENRES"
 
+    private const val MY_MOVIES_GENRES = "MY_MOVIES_GENRES"
     private const val WATCHLIST_MOVIES_UPCOMING = "WATCHLIST_MOVIES_UPCOMING"
+    private const val WATCHLIST_MOVIES_GENRES = "WATCHLIST_MOVIES_GENRES"
+    private const val HIDDEN_MOVIES_GENRES = "HIDDEN_MOVIES_GENRES"
   }
+
+  // Shows
 
   var myShowsType by EnumPreference(preferences, MY_SHOWS_TYPE, MyShowsSection.ALL, MyShowsSection::class.java)
   var myShowsNetworks: List<Network>
@@ -82,5 +87,33 @@ class SettingsFiltersRepository @Inject constructor(
       preferences.edit { putStringSet(HIDDEN_SHOWS_GENRES, value.map { it.name }.toSet()) }
     }
 
+  // Movies
+
+  var myMoviesGenres: List<Genre>
+    get() {
+      val filters = preferences.getStringSet(MY_MOVIES_GENRES, emptySet()) ?: emptySet()
+      return filters.map { Genre.valueOf(it) }
+    }
+    set(value) {
+      preferences.edit { putStringSet(MY_MOVIES_GENRES, value.map { it.name }.toSet()) }
+    }
+
   var watchlistMoviesUpcoming by BooleanPreference(preferences, WATCHLIST_MOVIES_UPCOMING, false)
+  var watchlistMoviesGenres: List<Genre>
+    get() {
+      val filters = preferences.getStringSet(WATCHLIST_MOVIES_GENRES, emptySet()) ?: emptySet()
+      return filters.map { Genre.valueOf(it) }
+    }
+    set(value) {
+      preferences.edit { putStringSet(WATCHLIST_MOVIES_GENRES, value.map { it.name }.toSet()) }
+    }
+
+  var hiddenMoviesGenres: List<Genre>
+    get() {
+      val filters = preferences.getStringSet(HIDDEN_MOVIES_GENRES, emptySet()) ?: emptySet()
+      return filters.map { Genre.valueOf(it) }
+    }
+    set(value) {
+      preferences.edit { putStringSet(HIDDEN_MOVIES_GENRES, value.map { it.name }.toSet()) }
+    }
 }

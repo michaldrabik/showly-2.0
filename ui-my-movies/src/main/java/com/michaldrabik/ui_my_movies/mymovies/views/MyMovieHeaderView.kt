@@ -42,6 +42,7 @@ class MyMovieHeaderView : FrameLayout {
     item: MyMoviesItem.Header,
     viewMode: ListViewMode,
     sortClickListener: (SortOrder, SortType) -> Unit,
+    genresClickListener: () -> Unit,
     listModeClickListener: (() -> Unit)?,
   ) {
     bindMargins(viewMode)
@@ -49,6 +50,7 @@ class MyMovieHeaderView : FrameLayout {
     with(binding) {
       myMoviesFilterChipsScroll.visibleIf(item.section == ALL)
       myMoviesSortChip.visibleIf(item.sortOrder != null)
+      myMoviesGenresChip.visibleIf(item.genres != null)
 
       with(myMoviesSortListViewChip) {
         when (viewMode) {
@@ -68,6 +70,17 @@ class MyMovieHeaderView : FrameLayout {
           SortType.DESCENDING -> R.drawable.ic_arrow_alt_down
         }
         myMoviesSortChip.closeIcon = ContextCompat.getDrawable(context, sortIcon)
+      }
+
+      item.genres?.let { genres ->
+        myMoviesGenresChip.isSelected = genres.isNotEmpty()
+        myMoviesGenresChip.onClick { genresClickListener.invoke() }
+        myMoviesGenresChip.text = when {
+          genres.isEmpty() -> context.getString(R.string.textGenres).filter { it.isLetter() }
+          genres.size == 1 -> context.getString(genres.first().displayName)
+          genres.size == 2 -> "${context.getString(genres[0].displayName)}, ${context.getString(genres[1].displayName)}"
+          else -> "${context.getString(genres[0].displayName)}, ${context.getString(genres[1].displayName)} + ${genres.size - 2}"
+        }
       }
     }
   }

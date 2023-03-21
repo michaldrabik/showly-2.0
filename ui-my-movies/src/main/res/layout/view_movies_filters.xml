@@ -35,6 +35,13 @@
         />
 
       <com.google.android.material.chip.Chip
+        android:id="@+id/followedMoviesGenresChip"
+        style="@style/ShowlyChip.Filter"
+        android:checkable="false"
+        android:text="@string/textGenres"
+        />
+
+      <com.google.android.material.chip.Chip
         android:id="@+id/followedMoviesUpcomingChip"
         style="@style/ShowlyChip.Filter"
         android:text="@string/textWatchlistIncoming"

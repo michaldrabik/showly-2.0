@@ -627,6 +627,11 @@
       app:destination="@id/premiumFragment"
       app:launchSingleTop="true"
       />
+    <action
+      android:id="@+id/actionFollowedMoviesFragmentToGenres"
+      app:destination="@id/collectionMoviesFiltersGenreDialog"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment
@@ -1067,6 +1072,12 @@
   <dialog
     android:id="@+id/collectionFiltersGenreDialog"
     android:name="com.michaldrabik.ui_my_shows.common.filters.genre.CollectionFiltersGenreBottomSheet"
+    android:label="dialogCollectionFiltersGenre"
+    />
+
+  <dialog
+    android:id="@+id/collectionMoviesFiltersGenreDialog"
+    android:name="com.michaldrabik.ui_my_movies.filters.genre.CollectionFiltersGenreBottomSheet"
     android:label="dialogCollectionFiltersGenre"
     />
 

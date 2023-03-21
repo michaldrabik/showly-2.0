@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_my_movies.mymovies.recycler
 
 import com.michaldrabik.ui_base.common.MovieListItem
+import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.Movie
@@ -33,6 +34,7 @@ data class MyMoviesItem(
     val section: MyMoviesSection,
     val itemCount: Int,
     val sortOrder: Pair<SortOrder, SortType>?,
+    val genres: List<Genre>?
   )
 
   data class RecentsSection(
@@ -45,9 +47,10 @@ data class MyMoviesItem(
       section: MyMoviesSection,
       itemCount: Int,
       sortOrder: Pair<SortOrder, SortType>?,
+      genres: List<Genre>?
     ) = MyMoviesItem(
       Type.HEADER,
-      Header(section, itemCount, sortOrder),
+      Header(section, itemCount, sortOrder, genres),
       null,
       Movie.EMPTY,
       Image.createUnavailable(POSTER),

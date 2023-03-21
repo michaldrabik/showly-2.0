@@ -25,6 +25,7 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
+import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.SortOrder
@@ -35,6 +36,9 @@ import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_movies.R
+import com.michaldrabik.ui_my_movies.filters.CollectionFiltersOrigin.MY_MOVIES
+import com.michaldrabik.ui_my_movies.filters.genre.CollectionFiltersGenreBottomSheet
+import com.michaldrabik.ui_my_movies.filters.genre.CollectionFiltersGenreBottomSheet.Companion.REQUEST_COLLECTION_FILTERS_GENRE
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesFragment
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesUiEvent.OpenPremium
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesViewModel
@@ -56,6 +60,7 @@ class MyMoviesFragment :
 
   private val parentViewModel by viewModels<FollowedMoviesViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<MyMoviesViewModel>()
+  override val navigationId = R.id.followedMoviesFragment
 
   private var adapter: MyMoviesAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
@@ -80,7 +85,8 @@ class MyMoviesFragment :
     adapter = MyMoviesAdapter(
       itemClickListener = { openMovieDetails(it.movie) },
       itemLongClickListener = { openMovieMenu(it.movie) },
-      onSortOrderClickListener = { order, type -> openSortOrderDialog(order, type) },
+      onSortOrderClickListener = ::openSortOrderDialog,
+      onGenresClickListener = ::openGenresDialog,
       onListViewModeClickListener = viewModel::setNextViewMode,
       missingImageListener = { item, force -> viewModel.loadMissingImage(item, force) },
       missingTranslationListener = { viewModel.loadMissingTranslation(it) },
@@ -186,6 +192,14 @@ class MyMoviesFragment :
     }
 
     navigateTo(R.id.actionFollowedMoviesFragmentToSortOrder, args)
+  }
+
+  private fun openGenresDialog() {
+    requireParentFragment().setFragmentResultListener(REQUEST_COLLECTION_FILTERS_GENRE) { _, _ ->
+      viewModel.loadMovies()
+    }
+    val bundle = CollectionFiltersGenreBottomSheet.createBundle(MY_MOVIES)
+    navigateToSafe(R.id.actionFollowedMoviesFragmentToGenres, bundle)
   }
 
   override fun onEnterSearch() {
