@@ -17,6 +17,7 @@
     android:overScrollMode="never"
     android:paddingStart="@dimen/spaceMedium"
     android:paddingEnd="@dimen/spaceMedium"
+    android:scrollbars="none"
     >
 
     <com.google.android.material.chip.ChipGroup

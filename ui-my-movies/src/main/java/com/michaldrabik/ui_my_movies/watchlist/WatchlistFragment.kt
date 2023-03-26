@@ -26,6 +26,7 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
+import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.SortOrder
@@ -37,6 +38,9 @@ import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_movies.R
 import com.michaldrabik.ui_my_movies.common.recycler.CollectionAdapter
+import com.michaldrabik.ui_my_movies.filters.CollectionFiltersOrigin.WATCHLIST_MOVIES
+import com.michaldrabik.ui_my_movies.filters.genre.CollectionFiltersGenreBottomSheet
+import com.michaldrabik.ui_my_movies.filters.genre.CollectionFiltersGenreBottomSheet.Companion.REQUEST_COLLECTION_FILTERS_GENRE
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesFragment
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesUiEvent.OpenPremium
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesViewModel
@@ -54,6 +58,7 @@ class WatchlistFragment :
 
   private val parentViewModel by viewModels<FollowedMoviesViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<WatchlistViewModel>()
+  override val navigationId = R.id.followedMoviesFragment
 
   private var adapter: CollectionAdapter? = null
   private var layoutManager: LayoutManager? = null
@@ -79,6 +84,7 @@ class WatchlistFragment :
       itemClickListener = { openMovieDetails(it.movie) },
       itemLongClickListener = { openMovieMenu(it.movie) },
       sortChipClickListener = ::openSortOrderDialog,
+      genreChipClickListener = ::openGenresDialog,
       upcomingChipClickListener = viewModel::setFilters,
       missingImageListener = viewModel::loadMissingImage,
       missingTranslationListener = viewModel::loadMissingTranslation,
@@ -173,6 +179,15 @@ class WatchlistFragment :
     }
 
     navigateTo(R.id.actionFollowedMoviesFragmentToSortOrder, args)
+  }
+
+  private fun openGenresDialog() {
+    requireParentFragment().setFragmentResultListener(REQUEST_COLLECTION_FILTERS_GENRE) { _, _ ->
+      viewModel.loadMovies(resetScroll = true)
+    }
+
+    val bundle = CollectionFiltersGenreBottomSheet.createBundle(WATCHLIST_MOVIES)
+    navigateToSafe(R.id.actionFollowedMoviesFragmentToGenres, bundle)
   }
 
   private fun openMovieDetails(movie: Movie) {

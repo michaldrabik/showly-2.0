@@ -25,6 +25,7 @@ class CollectionAdapter(
   private val itemLongClickListener: (CollectionListItem) -> Unit,
   private val sortChipClickListener: (SortOrder, SortType) -> Unit,
   private val upcomingChipClickListener: (Boolean) -> Unit,
+  private val genreChipClickListener: () -> Unit,
   private val listViewChipClickListener: () -> Unit,
   private val missingImageListener: (CollectionListItem, Boolean) -> Unit,
   private val missingTranslationListener: (CollectionListItem) -> Unit,
@@ -65,6 +66,7 @@ class CollectionAdapter(
         CollectionMovieFiltersView(parent.context).apply {
           onSortChipClicked = this@CollectionAdapter.sortChipClickListener
           onFilterUpcomingClicked = this@CollectionAdapter.upcomingChipClickListener
+          onGenreChipClicked = this@CollectionAdapter.genreChipClickListener
           onListViewModeClicked = this@CollectionAdapter.listViewChipClickListener
           isUpcomingChipVisible = upcomingChipVisible
         }

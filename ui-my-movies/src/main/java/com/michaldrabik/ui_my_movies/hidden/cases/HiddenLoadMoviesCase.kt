@@ -6,6 +6,7 @@ import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
+import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.SortOrder
@@ -44,7 +45,9 @@ class HiddenLoadMoviesCase @Inject constructor(
 
     val sortOrder = settingsRepository.sorting.hiddenMoviesSortOrder
     val sortType = settingsRepository.sorting.hiddenMoviesSortType
+    val genres = settingsRepository.filters.hiddenMoviesGenres
 
+    val filtersItem = loadFiltersItem(sortOrder, sortType, genres)
     val moviesItems = moviesRepository.hiddenMovies.loadAll()
       .map {
         toListItemAsync(
@@ -57,10 +60,10 @@ class HiddenLoadMoviesCase @Inject constructor(
       }
       .awaitAll()
       .filterByQuery(searchQuery)
+      .filterByGenre(genres.map { it.slug.lowercase() })
       .sortedWith(sorter.sort(sortOrder, sortType))
 
-    if (moviesItems.isNotEmpty()) {
-      val filtersItem = loadFiltersItem(sortOrder, sortType)
+    if (moviesItems.isNotEmpty() || filtersItem.hasActiveFilters()) {
       listOf(filtersItem) + moviesItems
     } else {
       moviesItems
@@ -70,10 +73,12 @@ class HiddenLoadMoviesCase @Inject constructor(
   private fun loadFiltersItem(
     sortOrder: SortOrder,
     sortType: SortType,
+    genres: List<Genre>,
   ): CollectionListItem.FiltersItem {
     return CollectionListItem.FiltersItem(
       sortOrder = sortOrder,
       sortType = sortType,
+      genres = genres,
       isUpcoming = false
     )
   }
@@ -83,6 +88,9 @@ class HiddenLoadMoviesCase @Inject constructor(
       it.movie.title.contains(query, true) ||
         it.translation?.title?.contains(query, true) == true
     }
+
+  private fun List<CollectionListItem.MovieItem>.filterByGenre(genres: List<String>) =
+    filter { genres.isEmpty() || it.movie.genres.any { genre -> genre.lowercase() in genres } }
 
   suspend fun loadTranslation(movie: Movie, onlyLocal: Boolean): Translation? {
     val language = translationsRepository.getLanguage()

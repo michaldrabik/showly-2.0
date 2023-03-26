@@ -43,6 +43,8 @@ class WatchlistLoadMoviesCase @Inject constructor(
       else translationsRepository.loadAllMoviesLocal(language)
 
     val filtersItem = loadFiltersItem()
+    val filtersGenres = filtersItem.genres.map { it.slug.lowercase() }
+
     val moviesItems = moviesRepository.watchlistMovies.loadAll()
       .map {
         toListItemAsync(
@@ -56,11 +58,12 @@ class WatchlistLoadMoviesCase @Inject constructor(
       .awaitAll()
       .filter {
         filters.filterByQuery(it, searchQuery) &&
-          filters.filterUpcoming(it, filtersItem.isUpcoming)
+          filters.filterUpcoming(it, filtersItem.isUpcoming) &&
+          filters.filterGenres(it, filtersGenres)
       }
       .sortedWith(sorter.sort(filtersItem.sortOrder, filtersItem.sortType))
 
-    if (moviesItems.isNotEmpty() || filtersItem.isUpcoming) {
+    if (moviesItems.isNotEmpty() || filtersItem.hasActiveFilters()) {
       listOf(filtersItem) + moviesItems
     } else {
       moviesItems
@@ -71,6 +74,7 @@ class WatchlistLoadMoviesCase @Inject constructor(
     return CollectionListItem.FiltersItem(
       sortOrder = settingsRepository.sorting.watchlistMoviesSortOrder,
       sortType = settingsRepository.sorting.watchlistMoviesSortType,
+      genres = settingsRepository.filters.watchlistMoviesGenres,
       isUpcoming = settingsRepository.filters.watchlistMoviesUpcoming
     )
   }

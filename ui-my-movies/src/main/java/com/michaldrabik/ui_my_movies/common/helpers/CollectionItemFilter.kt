@@ -29,4 +29,14 @@ class CollectionItemFilter @Inject constructor() {
     return item.movie.title.contains(query, true) ||
       item.translation?.title?.contains(query, true) == true
   }
+
+  fun filterGenres(
+    item: CollectionListItem,
+    genres: List<String>,
+  ): Boolean {
+    if (genres.isEmpty()) {
+      return true
+    }
+    return item.movie.genres.any { genre -> genre.lowercase() in genres }
+  }
 }

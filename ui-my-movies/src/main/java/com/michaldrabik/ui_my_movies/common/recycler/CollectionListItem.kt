@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_my_movies.common.recycler
 
 import com.michaldrabik.ui_base.common.MovieListItem
+import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
@@ -34,9 +35,13 @@ sealed class CollectionListItem(
     val sortOrder: SortOrder,
     val sortType: SortType,
     val isUpcoming: Boolean,
+    val genres: List<Genre>
   ) : CollectionListItem(
     movie = Movie.EMPTY,
     image = Image.createUnknown(ImageType.FILTERS),
     isLoading = false
-  )
+  ) {
+
+    fun hasActiveFilters() = isUpcoming || genres.isNotEmpty()
+  }
 }
