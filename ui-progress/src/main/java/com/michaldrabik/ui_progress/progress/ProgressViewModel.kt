@@ -19,6 +19,7 @@ import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_progress.main.EpisodeCheckActionUiEvent
 import com.michaldrabik.ui_progress.main.ProgressMainUiState
+import com.michaldrabik.ui_progress.progress.cases.ProgressFiltersCase
 import com.michaldrabik.ui_progress.progress.cases.ProgressHeadersCase
 import com.michaldrabik.ui_progress.progress.cases.ProgressItemsCase
 import com.michaldrabik.ui_progress.progress.cases.ProgressRatingsCase
@@ -39,6 +40,7 @@ class ProgressViewModel @Inject constructor(
   private val itemsCase: ProgressItemsCase,
   private val headersCase: ProgressHeadersCase,
   private val sortOrderCase: ProgressSortOrderCase,
+  private val filtersCase: ProgressFiltersCase,
   private val ratingsCase: ProgressRatingsCase,
   private val imagesProvider: ShowImagesProvider,
   private val userTraktManager: UserTraktManager,
@@ -129,6 +131,16 @@ class ProgressViewModel @Inject constructor(
 
   fun setSortOrder(sortOrder: SortOrder, sortType: SortType, newAtTop: Boolean) {
     sortOrderCase.setSortOrder(sortOrder, sortType, newAtTop)
+    loadItems(resetScroll = true)
+  }
+
+  fun setUpcomingFilter(isEnabled: Boolean) {
+    filtersCase.setUpcomingFilter(isEnabled)
+    loadItems(resetScroll = true)
+  }
+
+  fun setOnHoldFilter(isEnabled: Boolean) {
+    filtersCase.setOnHoldFilter(isEnabled)
     loadItems(resetScroll = true)
   }
 

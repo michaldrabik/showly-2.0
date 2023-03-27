@@ -38,6 +38,8 @@ class CollectionMovieFiltersView : FrameLayout {
 
   init {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+    clipChildren = false
+    clipToPadding = false
   }
 
   var isUpcomingChipVisible: Boolean

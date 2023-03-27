@@ -17,6 +17,8 @@ class SettingsFiltersRepository @Inject constructor(
 ) {
 
   companion object Key {
+    private const val PROGRESS_SHOWS_UPCOMING = "PROGRESS_SHOWS_UPCOMING"
+    private const val PROGRESS_SHOWS_ON_HOLD = "PROGRESS_SHOWS_ON_HOLD"
     private const val MY_SHOWS_TYPE = "MY_SHOWS_TYPE"
     private const val MY_SHOWS_NETWORKS = "MY_SHOWS_NETWORKS"
     private const val MY_SHOWS_GENRES = "MY_SHOWS_GENRES"
@@ -33,6 +35,9 @@ class SettingsFiltersRepository @Inject constructor(
   }
 
   // Shows
+
+  var progressShowsUpcoming by BooleanPreference(preferences, PROGRESS_SHOWS_UPCOMING, false)
+  var progressShowsOnHold by BooleanPreference(preferences, PROGRESS_SHOWS_ON_HOLD, false)
 
   var myShowsType by EnumPreference(preferences, MY_SHOWS_TYPE, MyShowsSection.ALL, MyShowsSection::class.java)
   var myShowsNetworks: List<Network>

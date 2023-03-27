@@ -18,12 +18,28 @@
     android:paddingTop="@dimen/spaceSmall"
     android:paddingBottom="@dimen/spaceSmall"
     app:singleLine="true"
+    app:singleSelection="true"
     >
 
     <com.google.android.material.chip.Chip
       android:id="@+id/progressFiltersSortingChip"
       style="@style/ShowlyChip.Sort"
+      android:checkable="false"
       android:text="@string/textSortName"
+      />
+
+    <com.google.android.material.chip.Chip
+      android:id="@+id/progressFiltersUpcomingChip"
+      style="@style/ShowlyChip.Filter"
+      android:checkable="false"
+      android:text="@string/textWatchlistIncoming"
+      />
+
+    <com.google.android.material.chip.Chip
+      android:id="@+id/progressFiltersOnHoldChip"
+      style="@style/ShowlyChip.Filter"
+      android:checkable="false"
+      android:text="@string/textOnHold"
       />
 
   </com.google.android.material.chip.ChipGroup>

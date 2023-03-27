@@ -59,6 +59,9 @@ class ProgressItemDiffCallback : DiffUtil.ItemCallback<ProgressListItem>() {
     newItem: ProgressListItem.Filters,
   ): Boolean {
     return oldItem.sortOrder == newItem.sortOrder &&
-      oldItem.sortType == newItem.sortType
+      oldItem.sortType == newItem.sortType &&
+      oldItem.newAtTop == newItem.newAtTop &&
+      oldItem.isUpcoming == newItem.isUpcoming &&
+      oldItem.isOnHold == newItem.isOnHold
   }
 }

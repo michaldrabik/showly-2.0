@@ -49,8 +49,12 @@ import com.michaldrabik.ui_progress.main.ProgressMainViewModel
 import com.michaldrabik.ui_progress.progress.recycler.ProgressAdapter
 import com.michaldrabik.ui_progress.progress.recycler.ProgressListItem
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_progress.*
-import kotlinx.android.synthetic.main.layout_progress_empty.*
+import kotlinx.android.synthetic.main.fragment_progress.progressEmptyView
+import kotlinx.android.synthetic.main.fragment_progress.progressOverscrollIcon
+import kotlinx.android.synthetic.main.fragment_progress.progressRecycler
+import kotlinx.android.synthetic.main.fragment_progress.progressTipItem
+import kotlinx.android.synthetic.main.layout_progress_empty.progressEmptyDiscoverButton
+import kotlinx.android.synthetic.main.layout_progress_empty.progressEmptyTraktButton
 import kotlinx.coroutines.launch
 import me.everything.android.ui.overscroll.IOverScrollDecor
 import me.everything.android.ui.overscroll.IOverScrollState
@@ -118,6 +122,8 @@ class ProgressFragment :
       detailsClickListener = { requireMainFragment().openEpisodeDetails(it.show, it.requireEpisode(), it.requireSeason()) },
       checkClickListener = { viewModel.onEpisodeChecked(it) },
       sortChipClickListener = { viewModel.loadSortOrder() },
+      upcomingChipClickListener = { viewModel.setUpcomingFilter(it) },
+      onHoldChipClickListener = { viewModel.setOnHoldFilter(it) },
       missingImageListener = { item: ProgressListItem, force -> viewModel.findMissingImage(item, force) },
       missingTranslationListener = { viewModel.findMissingTranslation(it) },
       listChangeListener = {

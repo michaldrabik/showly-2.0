@@ -81,9 +81,15 @@ sealed class ProgressListItem(
   data class Filters(
     val sortOrder: SortOrder,
     val sortType: SortType,
+    val isUpcoming: Boolean,
+    val isOnHold: Boolean,
+    val newAtTop: Boolean
   ) : ProgressListItem(
     show = Show.EMPTY,
     image = Image.createUnknown(ImageType.POSTER),
     isLoading = false
-  )
+  ) {
+
+    fun hasActiveFilters() = isUpcoming || isOnHold
+  }
 }
