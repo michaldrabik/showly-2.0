@@ -1,2 +1,3 @@
-* (Premium) Added additional collection view types: compact list and grid view
+* Added new filters for Progress and Collection tabs
+* Updated Pull To Sync to avoid accidental syncs
 * Bugfixes
