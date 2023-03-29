@@ -252,7 +252,10 @@ class ProgressFragment :
         adapter?.setItems(it, resetScroll)
         progressEmptyView.visibleIf(it.isEmpty() && !isLoading && !isSearching)
         progressTipItem.visibleIf(it.count() >= 3 && !isTipShown(Tip.WATCHLIST_ITEM_PIN))
-        progressRecycler.fadeIn(withHardware = true).add(animations)
+        progressRecycler.fadeIn(
+          duration = 200,
+          withHardware = true
+        ).add(animations)
         (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
       }
       isOverScrollEnabled.let {

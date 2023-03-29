@@ -44,8 +44,11 @@ import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainFragment
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainViewModel
 import com.michaldrabik.ui_progress_movies.progress.recycler.ProgressMoviesAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_progress_movies.*
-import kotlinx.android.synthetic.main.layout_progress_movies_empty.*
+import kotlinx.android.synthetic.main.fragment_progress_movies.progressMoviesEmptyView
+import kotlinx.android.synthetic.main.fragment_progress_movies.progressMoviesMainRecycler
+import kotlinx.android.synthetic.main.fragment_progress_movies.progressMoviesOverscrollIcon
+import kotlinx.android.synthetic.main.layout_progress_movies_empty.progressMoviesEmptyDiscoverButton
+import kotlinx.android.synthetic.main.layout_progress_movies_empty.progressMoviesEmptyTraktButton
 import kotlinx.coroutines.launch
 import me.everything.android.ui.overscroll.IOverScrollDecor
 import me.everything.android.ui.overscroll.IOverScrollState.STATE_BOUNCE_BACK
@@ -231,7 +234,10 @@ class ProgressMoviesFragment :
         val resetScroll = scrollReset?.consume() == true
         adapter?.setItems(it, resetScroll)
         progressMoviesEmptyView.fadeIf(items.isEmpty() && !isSearching)
-        progressMoviesMainRecycler.fadeIn(withHardware = true).add(animations)
+        progressMoviesMainRecycler.fadeIn(
+          duration = 200,
+          withHardware = true
+        ).add(animations)
         (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
       }
       isOverScrollEnabled.let {
