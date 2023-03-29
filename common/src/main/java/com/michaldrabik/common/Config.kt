@@ -28,7 +28,7 @@ object Config {
 
   const val MAIN_GRID_SPAN = 3
   const val LISTS_GRID_SPAN = 4
-  const val IMAGE_FADE_DURATION_MS = 200
+  const val IMAGE_FADE_DURATION_MS = 150
   const val SEARCH_RECENTS_AMOUNT = 5
   const val FANART_GALLERY_IMAGES_LIMIT = 20
   const val PULL_TO_REFRESH_COOLDOWN_MS = 10_000
