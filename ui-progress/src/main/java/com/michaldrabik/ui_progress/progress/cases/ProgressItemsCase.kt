@@ -201,14 +201,18 @@ class ProgressItemsCase @Inject constructor(
       async {
         input
           .filter { it.isPinned }
-          .sortedWith(compareByDescending<ProgressListItem.Episode> { it.isNew() }
-            then sorter.sort(filters.sortOrder, filters.sortType))
+          .sortedWith(
+            compareByDescending<ProgressListItem.Episode> { it.isNew() }
+              then sorter.sort(filters.sortOrder, filters.sortType)
+          )
       },
       async {
         input
           .filter { it.isOnHold }
-          .sortedWith(compareByDescending<ProgressListItem.Episode> { it.isNew() }
-            then sorter.sort(filters.sortOrder, filters.sortType))
+          .sortedWith(
+            compareByDescending<ProgressListItem.Episode> { it.isNew() }
+              then sorter.sort(filters.sortOrder, filters.sortType)
+          )
       }
     )
 
