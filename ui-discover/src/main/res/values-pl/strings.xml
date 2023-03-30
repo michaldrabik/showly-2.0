@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textGenres">Gatunki:</string>
-  <string name="textNetworks" comment="TV network like HBO, AMC, Showtime, Disney etc.">Sieć:</string>
   <string name="textSortOrder">Strumień:</string>
   <string name="textDiscoverFilterAnticipated">Ukryj nadchodzące</string>
   <string name="textDiscoverFilterCollection">Ukryj kolekcję</string>
