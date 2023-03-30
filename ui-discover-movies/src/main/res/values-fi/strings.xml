@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textGenresMovies">Tyylilajit:</string>
-  <string name="textNetworks" comment="TV network like HBO, AMC, Showtime, Disney etc.">Verkko:</string>
   <string name="textSortOrderMovies">Syöte:</string>
   <string name="textDiscoverFilterAnticipatedMovies">Piilota odotetut elokuvat</string>
   <string name="textDiscoverFilterCollectionMovies">Piilota kokoelma</string>
