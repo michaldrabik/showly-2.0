@@ -24,6 +24,8 @@
   <string name="textSpoilersWarning">此评论包含剧透。\n点后阅读。</string>
   <string name="textCommentedOn">%s 的评论</string>
   <string name="textNetwork">%1$s (%2$s)</string>
+  <string name="textNetworks" comment="TV network like HBO, AMC, Showtime, Disney etc.">流媒体：</string>
+  <string name="textGenres">类型：</string>
   <string name="textShows">剧集</string>
   <string name="textMovies">电影</string>
   <string name="textLists">列表</string>
