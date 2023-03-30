@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textGenresMovies">Generi:</string>
-  <string name="textNetworks" comment="TV network like HBO, AMC, Showtime, Disney etc.">Rete:</string>
   <string name="textSortOrderMovies">Riepilogo:</string>
   <string name="textDiscoverFilterAnticipatedMovies">Nascondi film attesi</string>
   <string name="textDiscoverFilterCollectionMovies">Nascondi raccolta</string>
