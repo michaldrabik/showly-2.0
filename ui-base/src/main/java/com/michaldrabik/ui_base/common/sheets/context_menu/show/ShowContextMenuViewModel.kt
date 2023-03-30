@@ -19,6 +19,7 @@ import com.michaldrabik.ui_base.network.NetworkStatusProvider
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
+import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
 import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
 import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
 import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
@@ -52,6 +53,7 @@ class ShowContextMenuViewModel @Inject constructor(
   private var isQuickRemoveEnabled by notNull<Boolean>()
 
   private val loadingState = MutableStateFlow(false)
+  private val loadingSecondaryState = MutableStateFlow(false)
   private val itemState = MutableStateFlow<ShowContextItem?>(null)
 
   fun loadShow(idTrakt: IdTrakt) {
@@ -77,12 +79,17 @@ class ShowContextMenuViewModel @Inject constructor(
         messageChannel.send(MessageEvent.Error(R.string.errorNoInternetConnection))
         return@launch
       }
+      val progressJob = launchDelayed(250) {
+        loadingSecondaryState.value = true
+      }
       try {
         val result = myShowsCase.moveToMyShows(showId)
         preloadImage()
         checkQuickRemove(result)
       } catch (error: Throwable) {
         onError(error)
+      } finally {
+        progressJob.cancel()
       }
     }
   }
@@ -194,6 +201,7 @@ class ShowContextMenuViewModel @Inject constructor(
   private suspend fun checkQuickRemove(event: RemoveTraktUiEvent) {
     if (isQuickRemoveEnabled) {
       loadingState.value = false
+      loadingSecondaryState.value = false
       eventChannel.send(Event(event))
     } else {
       eventChannel.send(Event(FinishUiEvent(true)))
@@ -202,17 +210,20 @@ class ShowContextMenuViewModel @Inject constructor(
 
   private suspend fun onError(error: Throwable) {
     loadingState.value = false
+    loadingSecondaryState.value = false
     messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
     rethrowCancellation(error)
   }
 
   val uiState = combine(
     loadingState,
+    loadingSecondaryState,
     itemState
-  ) { s1, s2 ->
+  ) { s1, s2, s3 ->
     ShowContextMenuUiState(
       isLoading = s1,
-      item = s2
+      isLoadingSecondary = s2,
+      item = s3
     )
   }.stateIn(
     scope = viewModelScope,
