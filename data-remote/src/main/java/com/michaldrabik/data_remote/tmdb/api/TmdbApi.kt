@@ -79,7 +79,12 @@ internal class TmdbApi(private val service: TmdbService) : TmdbRemoteDataSource 
 
   override suspend fun fetchPersonTranslations(id: Long): Map<String, TmdbTranslation.Data> {
     val result = service.fetchPersonTranslation(id).translations ?: emptyList()
-    return result.associateBy({ it.iso_639_1.lowercase() }, { it.data ?: TmdbTranslation.Data(null) })
+    return result
+      .filter { if (it.iso_639_1.lowercase() != "zh") true else it.iso_3166_1.lowercase() == "cn" } // Chinese Simplified filter
+      .associateBy(
+        keySelector = { it.iso_639_1.lowercase() },
+        valueTransform = { it.data ?: TmdbTranslation.Data(null) }
+      )
   }
 
   override suspend fun fetchPersonImages(tmdbId: Long) =
