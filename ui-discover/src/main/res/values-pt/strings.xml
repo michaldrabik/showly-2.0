@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textGenres">Gêneros:</string>
-  <string name="textNetworks" comment="TV network like HBO, AMC, Showtime, Disney etc.">Rede de televisão:</string>
   <string name="textSortOrder">Feed:</string>
   <string name="textDiscoverFilterAnticipated">Ocultar séries aguardadas</string>
   <string name="textDiscoverFilterCollection">Ocultar assistidos</string>
