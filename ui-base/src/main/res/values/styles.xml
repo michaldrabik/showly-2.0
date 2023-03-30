@@ -331,4 +331,15 @@
     <item name="closeIconVisible">false</item>
   </style>
 
+  <style name="ShowlyCheckbox" parent="Widget.Material3.CompoundButton.CheckBox">
+    <item name="buttonTint">@color/selector_main_checkbox</item>
+    <item name="buttonIconTint">@color/colorBackground</item>
+    <item name="android:textColor">?android:textColorPrimary</item>
+  </style>
+
+  <style name="ShowlyCheckbox.Secondary" parent="ShowlyCheckbox">
+    <item name="buttonIconTint">?attr/colorBottomMenuBackground</item>
+    <item name="android:textColor">?android:textColorSecondary</item>
+  </style>
+
 </resources>

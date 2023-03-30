@@ -24,6 +24,7 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.disableUi
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.enableUi
+import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
@@ -278,7 +279,7 @@ class DiscoverFragment :
         val resetScroll = resetScroll?.consume() == true
         adapter?.setItems(it, resetScroll)
         layoutManager?.withSpanSizeLookup { pos -> adapter?.getItems()?.get(pos)?.image?.type?.spanSize!! }
-        discoverRecycler.visible()
+        discoverRecycler.fadeIn(200, withHardware = true)
       }
       isSyncing?.let {
         discoverSearchView.setTraktProgress(it)

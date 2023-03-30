@@ -9,7 +9,7 @@ dependencyResolutionManagement {
       library("android.billing", "com.android.billingclient:billing-ktx:4.0.0")
       library("android.browser", "androidx.browser:browser:1.5.0")
       library("android.desugar", "com.android.tools:desugar_jdk_libs:1.1.5")
-      library("android.material", "com.google.android.material:material:1.8.0")
+      library("android.material", "com.google.android.material:material:1.7.0")
       library("android.dynamicAnimation", "androidx.dynamicanimation:dynamicanimation:1.0.0")
       library("android.work", "androidx.work:work-runtime-ktx:2.8.1")
       library("android.swipeRefresh", "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
