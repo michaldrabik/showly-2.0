@@ -28,7 +28,10 @@ import com.michaldrabik.ui_progress_movies.helpers.TopOverscrollAdapter
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainFragment
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_calendar_movies.*
+import kotlinx.android.synthetic.main.fragment_calendar_movies.progressMoviesCalendarEmptyFutureView
+import kotlinx.android.synthetic.main.fragment_calendar_movies.progressMoviesCalendarEmptyRecentsView
+import kotlinx.android.synthetic.main.fragment_calendar_movies.progressMoviesCalendarOverscrollIcon
+import kotlinx.android.synthetic.main.fragment_calendar_movies.progressMoviesCalendarRecycler
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.everything.android.ui.overscroll.IOverScrollDecor
@@ -146,7 +149,7 @@ class CalendarMoviesFragment :
       statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
       view.updatePadding(top = statusBarHeight + dimenToPx(R.dimen.progressMoviesCalendarTabsViewPadding))
       (progressMoviesCalendarOverscrollIcon.layoutParams as ViewGroup.MarginLayoutParams)
-        .updateMargins(top = statusBarHeight + dimenToPx(R.dimen.progressMoviesOverscrollIconPadding))
+        .updateMargins(top = statusBarHeight + dimenToPx(R.dimen.progressMoviesOverscrollPadding))
     }
   }
 

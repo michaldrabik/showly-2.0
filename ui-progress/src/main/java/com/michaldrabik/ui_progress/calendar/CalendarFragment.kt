@@ -30,7 +30,10 @@ import com.michaldrabik.ui_progress.main.EpisodeCheckActionUiEvent
 import com.michaldrabik.ui_progress.main.ProgressMainFragment
 import com.michaldrabik.ui_progress.main.ProgressMainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_calendar.*
+import kotlinx.android.synthetic.main.fragment_calendar.progressCalendarEmptyFutureView
+import kotlinx.android.synthetic.main.fragment_calendar.progressCalendarEmptyRecentsView
+import kotlinx.android.synthetic.main.fragment_calendar.progressCalendarOverscrollIcon
+import kotlinx.android.synthetic.main.fragment_calendar.progressCalendarRecycler
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.everything.android.ui.overscroll.IOverScrollDecor
@@ -143,7 +146,7 @@ class CalendarFragment :
 
   private fun setupStatusBar() {
     val recyclerPadding = if (moviesEnabled) R.dimen.progressCalendarTabsViewPadding else R.dimen.progressCalendarTabsViewPaddingNoModes
-    val overscrollPadding = if (moviesEnabled) R.dimen.progressOverscrollIconPadding else R.dimen.progressOverscrollIconPaddingNoModes
+    val overscrollPadding = if (moviesEnabled) R.dimen.progressOverscrollPadding else R.dimen.progressOverscrollPaddingNoModes
 
     if (statusBarHeight != 0) {
       progressCalendarRecycler.updatePadding(top = statusBarHeight + dimenToPx(recyclerPadding))

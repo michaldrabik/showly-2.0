@@ -51,7 +51,7 @@
     android:layout_width="@dimen/progressMoviesOverscrollIcon"
     android:layout_height="@dimen/progressMoviesOverscrollIcon"
     android:layout_gravity="center_horizontal"
-    android:layout_marginTop="@dimen/progressMoviesOverscrollIconPadding"
+    android:layout_marginTop="@dimen/progressMoviesOverscrollPadding"
     android:alpha="0"
     android:scaleX="0"
     android:scaleY="0"
