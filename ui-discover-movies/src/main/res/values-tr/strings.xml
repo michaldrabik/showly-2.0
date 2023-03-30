@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textGenresMovies">Türler:</string>
-  <string name="textNetworks" comment="TV network like HBO, AMC, Showtime, Disney etc.">Ağ:</string>
   <string name="textSortOrderMovies">Akış:</string>
   <string name="textDiscoverFilterAnticipatedMovies">Beklenen Filmleri Gizle</string>
   <string name="textDiscoverFilterCollectionMovies">Koleksiyonu Gizle</string>
