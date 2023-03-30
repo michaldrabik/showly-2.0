@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textGenresMovies">Жанры:</string>
-  <string name="textNetworks" comment="TV network like HBO, AMC, Showtime, Disney etc.">Студия:</string>
   <string name="textSortOrderMovies">Сортировать по:</string>
   <string name="textDiscoverFilterAnticipatedMovies">Скрыть ожидаемые фильмы</string>
   <string name="textDiscoverFilterCollectionMovies">Скрыть коллекцию</string>
