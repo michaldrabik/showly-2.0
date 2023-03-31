@@ -5,8 +5,10 @@ import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Person
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -15,13 +17,19 @@ class MovieDetailsActorsCase @Inject constructor(
   private val peopleRepository: PeopleRepository
 ) {
 
-  suspend fun loadPeople(movie: Movie) = peopleRepository.loadAllForMovie(movie.ids)
+  suspend fun loadPeople(movie: Movie) = withContext(Dispatchers.IO) {
+    peopleRepository.loadAllForMovie(movie.ids)
+  }
 
-  suspend fun preloadDetails(people: List<Person>) = supervisorScope {
-    val errorHandler = CoroutineExceptionHandler { _, _ -> Timber.d("Failed to preload details.") }
-    people.take(5).forEach {
-      launch(errorHandler) {
-        peopleRepository.loadDetails(it)
+  suspend fun preloadDetails(people: List<Person>) {
+    withContext(Dispatchers.IO) {
+      supervisorScope {
+        val errorHandler = CoroutineExceptionHandler { _, _ -> Timber.d("Failed to preload details.") }
+        people.take(5).forEach {
+          launch(errorHandler) {
+            peopleRepository.loadDetails(it)
+          }
+        }
       }
     }
   }

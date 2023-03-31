@@ -8,3 +8,5 @@ data class EpisodeCheckActionUiEvent(
   val episode: EpisodeBundle,
   val isQuickRate: Boolean,
 ) : Event<EpisodeBundle>(episode)
+
+object RequestWidgetsUpdate : Event<Unit>(Unit)

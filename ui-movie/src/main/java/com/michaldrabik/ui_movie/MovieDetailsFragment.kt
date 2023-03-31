@@ -265,7 +265,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
           else -> movieDetailsAddButton.setState(ADD, it.withAnimation)
         }
         movieDetailsHideLabel.visibleIf(!it.isHidden)
-        (requireAppContext() as WidgetsProvider).requestMoviesWidgetsUpdate()
       }
       image?.let { renderImage(it) }
       translation?.let { renderTranslation(it) }
@@ -358,8 +357,9 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 
   private fun handleEvent(event: Event<*>) {
     when (event) {
-      is MovieDetailsEvent.Finish -> requireActivity().onBackPressed()
       is MovieDetailsEvent.RemoveFromTrakt -> openRemoveTraktSheet(event.navigationId)
+      is MovieDetailsEvent.RequestWidgetsUpdate -> (requireAppContext() as WidgetsProvider).requestMoviesWidgetsUpdate()
+      is MovieDetailsEvent.Finish -> requireActivity().onBackPressed()
     }
   }
 

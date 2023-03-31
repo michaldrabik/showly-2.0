@@ -3,6 +3,8 @@ package com.michaldrabik.ui_movie.cases
 import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.ui_model.IdTrakt
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -11,15 +13,19 @@ class MovieDetailsMainCase @Inject constructor(
   private val moviesRepository: MoviesRepository,
 ) {
 
-  suspend fun loadDetails(idTrakt: IdTrakt) =
+  suspend fun loadDetails(idTrakt: IdTrakt) = withContext(Dispatchers.IO) {
     moviesRepository.movieDetails.load(idTrakt)
+  }
 
   suspend fun removeMalformedMovie(idTrakt: IdTrakt) {
-    with(moviesRepository) {
-      myMovies.delete(idTrakt)
-      watchlistMovies.delete(idTrakt)
-      movieDetails.delete(idTrakt)
+    withContext(Dispatchers.IO) {
+      with(moviesRepository) {
+        myMovies.delete(idTrakt)
+        watchlistMovies.delete(idTrakt)
+        movieDetails.delete(idTrakt)
+      }
     }
     Timber.d("Removing malformed movie...")
   }
 }
+

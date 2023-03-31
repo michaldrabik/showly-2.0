@@ -6,9 +6,10 @@ import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.ui_model.Movie
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -19,7 +20,7 @@ class MovieDetailsMyMoviesCase @Inject constructor(
   private val announcementManager: AnnouncementManager
 ) {
 
-  suspend fun getAllIds() = coroutineScope {
+  suspend fun getAllIds() = withContext(Dispatchers.IO) {
     val (myMovies, watchlistMovies) = awaitAll(
       async { moviesRepository.myMovies.loadAllIds() },
       async { moviesRepository.watchlistMovies.loadAllIds() }
@@ -27,19 +28,25 @@ class MovieDetailsMyMoviesCase @Inject constructor(
     Pair(myMovies, watchlistMovies)
   }
 
-  suspend fun isMyMovie(movie: Movie) =
+  suspend fun isMyMovie(movie: Movie) = withContext(Dispatchers.IO) {
     moviesRepository.myMovies.load(movie.ids.trakt) != null
+  }
 
   suspend fun addToMyMovies(movie: Movie) {
-    moviesRepository.myMovies.insert(movie.ids.trakt)
-    quickSyncManager.scheduleMovies(listOf(movie.traktId))
-    pinnedItemsRepository.removePinnedItem(movie)
-    announcementManager.refreshMoviesAnnouncements()
+    withContext(Dispatchers.IO) {
+      moviesRepository.myMovies.insert(movie.ids.trakt)
+      quickSyncManager.scheduleMovies(listOf(movie.traktId))
+      pinnedItemsRepository.removePinnedItem(movie)
+      announcementManager.refreshMoviesAnnouncements()
+    }
   }
 
   suspend fun removeFromMyMovies(movie: Movie) {
-    moviesRepository.myMovies.delete(movie.ids.trakt)
-    pinnedItemsRepository.removePinnedItem(movie)
-    quickSyncManager.clearMovies(listOf(movie.traktId))
+    withContext(Dispatchers.IO) {
+      moviesRepository.myMovies.delete(movie.ids.trakt)
+      pinnedItemsRepository.removePinnedItem(movie)
+      quickSyncManager.clearMovies(listOf(movie.traktId))
+    }
   }
 }
+

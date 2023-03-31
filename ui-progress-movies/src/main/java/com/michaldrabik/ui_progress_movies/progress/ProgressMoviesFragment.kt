@@ -43,6 +43,7 @@ import com.michaldrabik.ui_progress_movies.helpers.TopOverscrollAdapter
 import com.michaldrabik.ui_progress_movies.main.MovieCheckActionUiEvent
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainFragment
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainViewModel
+import com.michaldrabik.ui_progress_movies.main.RequestWidgetsUpdate
 import com.michaldrabik.ui_progress_movies.progress.recycler.ProgressMoviesAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_progress_movies.progressMoviesEmptyView
@@ -258,6 +259,9 @@ class ProgressMoviesFragment :
         if (event.isQuickRate) requireMainFragment().openRateDialog(event.movie)
         else parentViewModel.setWatchedMovie(event.movie)
       }
+      is RequestWidgetsUpdate -> {
+        (requireAppContext() as WidgetsProvider).requestMoviesWidgetsUpdate()
+      }
     }
   }
 
@@ -271,7 +275,6 @@ class ProgressMoviesFragment :
           duration = 200,
           withHardware = true
         ).add(animations)
-        (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
       }
       isOverScrollEnabled.let {
         if (it) {

@@ -8,3 +8,5 @@ data class MovieCheckActionUiEvent(
   val movie: Movie,
   val isQuickRate: Boolean,
 ) : Event<Movie>(movie)
+
+object RequestWidgetsUpdate : Event<Unit>(Unit)

@@ -29,6 +29,7 @@ import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_movie.MovieDetailsEvent.Finish
 import com.michaldrabik.ui_movie.MovieDetailsEvent.RemoveFromTrakt
+import com.michaldrabik.ui_movie.MovieDetailsEvent.RequestWidgetsUpdate
 import com.michaldrabik.ui_movie.MovieDetailsEvent.SaveOpenedPerson
 import com.michaldrabik.ui_movie.MovieDetailsUiState.FollowedState
 import com.michaldrabik.ui_movie.cases.MovieDetailsHiddenCase
@@ -121,6 +122,8 @@ class MovieDetailsViewModel @Inject constructor(
         loadListsCount(movie)
         loadUserRating()
         loadTranslation()
+
+        eventChannel.send(RequestWidgetsUpdate)
       } catch (error: Throwable) {
         Timber.e(error)
         progressJob.cancel()
@@ -195,6 +198,7 @@ class MovieDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       myMoviesCase.addToMyMovies(movie)
       followedState.value = FollowedState.inMyMovies()
+      eventChannel.send(RequestWidgetsUpdate)
       Analytics.logMovieAddToMyMovies(movie)
     }
   }
@@ -203,6 +207,7 @@ class MovieDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       watchlistCase.addToWatchlist(movie)
       followedState.value = FollowedState.inWatchlist()
+      eventChannel.send(RequestWidgetsUpdate)
       Analytics.logMovieAddToWatchlistMovies(movie)
     }
   }
@@ -211,6 +216,7 @@ class MovieDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       hiddenCase.addToHidden(movie)
       followedState.value = FollowedState.inHidden()
+      eventChannel.send(RequestWidgetsUpdate)
       Analytics.logMovieAddToArchive(movie)
     }
   }
@@ -252,6 +258,7 @@ class MovieDetailsViewModel @Inject constructor(
         }
         else -> error("Unexpected movie state.")
       }
+      eventChannel.send(RequestWidgetsUpdate)
       announcementManager.refreshMoviesAnnouncements()
     }
   }

@@ -6,6 +6,8 @@ import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.ui_model.Movie
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -16,19 +18,25 @@ class MovieDetailsWatchlistCase @Inject constructor(
   private val announcementManager: AnnouncementManager
 ) {
 
-  suspend fun isWatchlist(movie: Movie) =
+  suspend fun isWatchlist(movie: Movie) = withContext(Dispatchers.IO) {
     moviesRepository.watchlistMovies.load(movie.ids.trakt) != null
+  }
 
   suspend fun addToWatchlist(movie: Movie) {
-    moviesRepository.watchlistMovies.insert(movie.ids.trakt)
-    pinnedItemsRepository.removePinnedItem(movie)
-    quickSyncManager.scheduleMoviesWatchlist(listOf(movie.traktId))
-    announcementManager.refreshMoviesAnnouncements()
+    withContext(Dispatchers.IO) {
+      moviesRepository.watchlistMovies.insert(movie.ids.trakt)
+      pinnedItemsRepository.removePinnedItem(movie)
+      quickSyncManager.scheduleMoviesWatchlist(listOf(movie.traktId))
+      announcementManager.refreshMoviesAnnouncements()
+    }
   }
 
   suspend fun removeFromWatchlist(movie: Movie) {
-    moviesRepository.watchlistMovies.delete(movie.ids.trakt)
-    pinnedItemsRepository.removePinnedItem(movie)
-    quickSyncManager.clearWatchlistMovies(listOf(movie.traktId))
+    withContext(Dispatchers.IO) {
+      moviesRepository.watchlistMovies.delete(movie.ids.trakt)
+      pinnedItemsRepository.removePinnedItem(movie)
+      quickSyncManager.clearWatchlistMovies(listOf(movie.traktId))
+    }
   }
 }
+

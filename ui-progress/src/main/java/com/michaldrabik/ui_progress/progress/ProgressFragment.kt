@@ -47,6 +47,7 @@ import com.michaldrabik.ui_progress.helpers.TopOverscrollAdapter
 import com.michaldrabik.ui_progress.main.EpisodeCheckActionUiEvent
 import com.michaldrabik.ui_progress.main.ProgressMainFragment
 import com.michaldrabik.ui_progress.main.ProgressMainViewModel
+import com.michaldrabik.ui_progress.main.RequestWidgetsUpdate
 import com.michaldrabik.ui_progress.progress.recycler.ProgressAdapter
 import com.michaldrabik.ui_progress.progress.recycler.ProgressListItem
 import dagger.hilt.android.AndroidEntryPoint
@@ -277,6 +278,9 @@ class ProgressFragment :
         if (event.isQuickRate) requireMainFragment().openRateDialog(event.episode)
         else parentViewModel.setWatchedEpisode(event.episode)
       }
+      is RequestWidgetsUpdate -> {
+        (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
+      }
     }
   }
 
@@ -291,7 +295,6 @@ class ProgressFragment :
           duration = 200,
           withHardware = true
         ).add(animations)
-        (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
       }
       isOverScrollEnabled.let {
         if (it) {
