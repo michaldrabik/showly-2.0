@@ -13,6 +13,7 @@ import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.data_remote.trakt.model.SyncExportItem
 import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
+import com.michaldrabik.data_remote.trakt.model.SyncItem
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.trakt.TraktSyncRunner
@@ -56,6 +57,7 @@ class QuickSyncRunner @Inject constructor(
 
   private suspend fun exportHistoryItems(
     moviesEnabled: Boolean,
+    remoteFetchedShows: List<SyncItem> = emptyList(),
     count: Int = 0,
     clearedProgressIds: MutableSet<Long> = mutableSetOf()
   ): Int {
@@ -101,11 +103,10 @@ class QuickSyncRunner @Inject constructor(
       }
     }
 
-    val remoteShows = if (exportEpisodes.isNotEmpty()) {
-      remoteSource.trakt.fetchSyncWatchedShows()
-        .filter { it.show != null }
-    } else {
-      emptyList()
+    val remoteShows = when {
+      remoteFetchedShows.isNotEmpty() -> remoteFetchedShows.toList()
+      exportEpisodes.isNotEmpty() -> remoteSource.trakt.fetchSyncWatchedShows().filter { it.show != null }
+      else -> emptyList()
     }
 
     val excludedEpisodes = mutableListOf<Long>()
@@ -148,7 +149,12 @@ class QuickSyncRunner @Inject constructor(
     val newItems = localSource.traktSyncQueue.getAll(types.map { it.slug })
     if (newItems.isNotEmpty()) {
       delay(DELAY)
-      return exportHistoryItems(moviesEnabled, currentCount, clearedProgressIds.toMutableSet())
+      return exportHistoryItems(
+        moviesEnabled = moviesEnabled,
+        remoteFetchedShows = remoteShows,
+        count = currentCount,
+        clearedProgressIds = clearedProgressIds.toMutableSet()
+      )
     }
 
     return currentCount
