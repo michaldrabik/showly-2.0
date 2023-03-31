@@ -30,7 +30,7 @@ abstract class CalendarMoviesItemsCase constructor(
   abstract val sorter: CalendarSorter
 
   suspend fun loadItems(searchQuery: String? = ""): List<CalendarMovieListItem> =
-    withContext(Dispatchers.Default) {
+    withContext(Dispatchers.IO) {
       val now = nowUtc().toLocalZone()
       val language = translationsRepository.getLanguage()
       val dateFormat = dateFormatProvider.loadFullDayFormat()

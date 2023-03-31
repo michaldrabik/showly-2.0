@@ -5,6 +5,8 @@ import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.TraktRating
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -13,10 +15,10 @@ class WatchlistRatingsCase @Inject constructor(
   private val userTraktManager: UserTraktManager,
 ) {
 
-  suspend fun loadRatings(): Map<IdTrakt, TraktRating?> {
+  suspend fun loadRatings(): Map<IdTrakt, TraktRating?> = withContext(Dispatchers.IO) {
     if (!userTraktManager.isAuthorized()) {
-      return emptyMap()
+      return@withContext emptyMap()
     }
-    return ratingsRepository.movies.loadMoviesRatings().associateBy { it.idTrakt }
+    ratingsRepository.movies.loadMoviesRatings().associateBy { it.idTrakt }
   }
 }

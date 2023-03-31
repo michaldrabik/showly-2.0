@@ -16,9 +16,10 @@ import com.michaldrabik.ui_my_shows.common.recycler.CollectionListItem
 import com.michaldrabik.ui_my_shows.hidden.helpers.HiddenItemSorter
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
@@ -33,44 +34,45 @@ class HiddenLoadShowsCase @Inject constructor(
   private val dateFormatProvider: DateFormatProvider,
 ) {
 
-  suspend fun loadShows(searchQuery: String): List<CollectionListItem> = coroutineScope {
-    val language = translationsRepository.getLanguage()
-    val ratings = ratingsCase.loadRatings()
-    val dateFormat = dateFormatProvider.loadFullDayFormat()
-    val translations =
-      if (language == Config.DEFAULT_LANGUAGE) emptyMap()
-      else translationsRepository.loadAllShowsLocal(language)
+  suspend fun loadShows(searchQuery: String): List<CollectionListItem> =
+    withContext(Dispatchers.IO) {
+      val language = translationsRepository.getLanguage()
+      val ratings = ratingsCase.loadRatings()
+      val dateFormat = dateFormatProvider.loadFullDayFormat()
+      val translations =
+        if (language == Config.DEFAULT_LANGUAGE) emptyMap()
+        else translationsRepository.loadAllShowsLocal(language)
 
-    val sortOrder = settingsRepository.sorting.hiddenShowsSortOrder
-    val sortType = settingsRepository.sorting.hiddenShowsSortType
+      val sortOrder = settingsRepository.sorting.hiddenShowsSortOrder
+      val sortType = settingsRepository.sorting.hiddenShowsSortType
 
-    val filtersItem = loadFiltersItem(sortOrder, sortType)
-    val filtersNetworks = filtersItem.networks
-      .flatMap { network -> network.channels.map { it } }
-    val filtersGenres = filtersItem.genres.map { it.slug.lowercase() }
+      val filtersItem = loadFiltersItem(sortOrder, sortType)
+      val filtersNetworks = filtersItem.networks
+        .flatMap { network -> network.channels.map { it } }
+      val filtersGenres = filtersItem.genres.map { it.slug.lowercase() }
 
-    val hiddenItems = showsRepository.hiddenShows.loadAll()
-      .map {
-        toListItemAsync(
-          show = it,
-          translation = translations[it.traktId],
-          userRating = ratings[it.ids.trakt],
-          dateFormat = dateFormat,
-          sortOrder = sortOrder,
-        )
+      val hiddenItems = showsRepository.hiddenShows.loadAll()
+        .map {
+          toListItemAsync(
+            show = it,
+            translation = translations[it.traktId],
+            userRating = ratings[it.ids.trakt],
+            dateFormat = dateFormat,
+            sortOrder = sortOrder,
+          )
+        }
+        .awaitAll()
+        .filterByQuery(searchQuery)
+        .filterByNetwork(filtersNetworks)
+        .filterByGenre(filtersGenres)
+        .sortedWith(sorter.sort(sortOrder, sortType))
+
+      if (hiddenItems.isNotEmpty() || filtersItem.hasActiveFilters()) {
+        listOf(filtersItem) + hiddenItems
+      } else {
+        hiddenItems
       }
-      .awaitAll()
-      .filterByQuery(searchQuery)
-      .filterByNetwork(filtersNetworks)
-      .filterByGenre(filtersGenres)
-      .sortedWith(sorter.sort(sortOrder, sortType))
-
-    if (hiddenItems.isNotEmpty() || filtersItem.hasActiveFilters()) {
-      listOf(filtersItem) + hiddenItems
-    } else {
-      hiddenItems
     }
-  }
 
   private fun List<CollectionListItem.ShowItem>.filterByQuery(query: String) =
     filter {

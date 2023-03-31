@@ -14,6 +14,8 @@ import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_my_movies.mymovies.helpers.MyMoviesSorter
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -26,9 +28,13 @@ class MyMoviesLoadCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
 ) {
 
-  suspend fun loadSettings() = settingsRepository.load()
+  suspend fun loadSettings() = withContext(Dispatchers.IO) {
+    settingsRepository.load()
+  }
 
-  suspend fun loadAll() = moviesRepository.myMovies.loadAll()
+  suspend fun loadAll() = withContext(Dispatchers.IO) {
+    moviesRepository.myMovies.loadAll()
+  }
 
   fun filterSectionMovies(
     allMovies: List<MyMoviesItem>,
@@ -51,16 +57,19 @@ class MyMoviesLoadCase @Inject constructor(
   private fun List<MyMoviesItem>.filterByGenre(genres: List<String>) =
     filter { genres.isEmpty() || it.movie.genres.any { genre -> genre.lowercase() in genres } }
 
-  suspend fun loadRecentMovies(): List<Movie> {
+  suspend fun loadRecentMovies(): List<Movie> = withContext(Dispatchers.IO) {
     val amount = loadSettings().myRecentsAmount
-    return moviesRepository.myMovies.loadAllRecent(amount)
+    moviesRepository.myMovies.loadAllRecent(amount)
   }
 
-  suspend fun loadTranslation(movie: Movie, onlyLocal: Boolean): Translation? {
-    val language = translationsRepository.getLanguage()
-    if (language == Config.DEFAULT_LANGUAGE) return Translation.EMPTY
-    return translationsRepository.loadTranslation(movie, language, onlyLocal)
-  }
+  suspend fun loadTranslation(movie: Movie, onlyLocal: Boolean): Translation? =
+    withContext(Dispatchers.IO) {
+      val language = translationsRepository.getLanguage()
+      if (language == Config.DEFAULT_LANGUAGE) {
+        return@withContext Translation.EMPTY
+      }
+      translationsRepository.loadTranslation(movie, language, onlyLocal)
+    }
 
   fun loadDateFormat() = dateFormatProvider.loadShortDayFormat()
 

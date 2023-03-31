@@ -7,7 +7,9 @@ import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
 import com.michaldrabik.ui_model.DiscoverFilters
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -16,16 +18,17 @@ class DiscoverFiltersCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
 ) {
 
-  suspend fun loadFilters(): DiscoverFilters {
-    val settings = settingsRepository.load()
-    return DiscoverFilters(
-      feedOrder = settings.discoverFilterFeed,
-      hideAnticipated = !settings.showAnticipatedShows,
-      hideCollection = !settings.showCollectionShows,
-      genres = settings.discoverFilterGenres.toList(),
-      networks = settings.discoverFilterNetworks.toList()
-    )
-  }
+  suspend fun loadFilters(): DiscoverFilters =
+    withContext(Dispatchers.IO) {
+      val settings = settingsRepository.load()
+      DiscoverFilters(
+        feedOrder = settings.discoverFilterFeed,
+        hideAnticipated = !settings.showAnticipatedShows,
+        hideCollection = !settings.showCollectionShows,
+        genres = settings.discoverFilterGenres.toList(),
+        networks = settings.discoverFilterNetworks.toList()
+      )
+    }
 
   fun revertFilters(
     initialFilters: DiscoverFilters?,
@@ -54,16 +57,20 @@ class DiscoverFiltersCase @Inject constructor(
   }
 
   suspend fun toggleAnticipated() {
-    val settings = settingsRepository.load()
-    settingsRepository.update(
-      settings.copy(showAnticipatedShows = !settings.showAnticipatedShows)
-    )
+    withContext(Dispatchers.IO) {
+      val settings = settingsRepository.load()
+      settingsRepository.update(
+        settings.copy(showAnticipatedShows = !settings.showAnticipatedShows)
+      )
+    }
   }
 
   suspend fun toggleCollection() {
-    val settings = settingsRepository.load()
-    settingsRepository.update(
-      settings.copy(showCollectionShows = !settings.showCollectionShows)
-    )
+    withContext(Dispatchers.IO) {
+      val settings = settingsRepository.load()
+      settingsRepository.update(
+        settings.copy(showCollectionShows = !settings.showCollectionShows)
+      )
+    }
   }
 }

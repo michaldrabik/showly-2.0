@@ -41,7 +41,7 @@ abstract class CalendarItemsCase constructor(
   abstract fun isWatched(episode: Episode): Boolean
 
   suspend fun loadItems(searchQuery: String? = "") =
-    withContext(Dispatchers.Default) {
+    withContext(Dispatchers.IO) {
       val now = nowUtc().toLocalZone()
 
       val language = translationsRepository.getLanguage()

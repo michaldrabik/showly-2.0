@@ -34,46 +34,47 @@ class ProgressMoviesItemsCase @Inject constructor(
   private val sorter: ProgressMoviesItemsSorter,
 ) {
 
-  suspend fun loadItems(searchQuery: String) = withContext(Dispatchers.Default) {
-    val language = translationsRepository.getLanguage()
-    val dateFormat = dateFormatProvider.loadFullDayFormat()
+  suspend fun loadItems(searchQuery: String) =
+    withContext(Dispatchers.IO) {
+      val language = translationsRepository.getLanguage()
+      val dateFormat = dateFormatProvider.loadFullDayFormat()
 
-    val sortOrder = settingsRepository.sorting.progressMoviesSortOrder
-    val sortType = settingsRepository.sorting.progressMoviesSortType
+      val sortOrder = settingsRepository.sorting.progressMoviesSortOrder
+      val sortType = settingsRepository.sorting.progressMoviesSortType
 
-    val watchlistMovies = moviesRepository.watchlistMovies.loadAll()
-    val items = watchlistMovies.map { movie ->
-      async {
-        val rating = ratingsRepository.movies.loadRatings(listOf(movie))
-        var translation: Translation? = null
-        if (language != Config.DEFAULT_LANGUAGE) {
-          translation = translationsRepository.loadTranslation(movie, language, onlyLocal = true)
+      val watchlistMovies = moviesRepository.watchlistMovies.loadAll()
+      val items = watchlistMovies.map { movie ->
+        async {
+          val rating = ratingsRepository.movies.loadRatings(listOf(movie))
+          var translation: Translation? = null
+          if (language != Config.DEFAULT_LANGUAGE) {
+            translation = translationsRepository.loadTranslation(movie, language, onlyLocal = true)
+          }
+
+          ProgressMovieListItem.MovieItem(
+            movie = movie,
+            image = imagesProvider.findCachedImage(movie, ImageType.POSTER),
+            isLoading = false,
+            isPinned = pinnedItemsRepository.isItemPinned(movie),
+            translation = translation,
+            dateFormat = dateFormat,
+            sortOrder = sortOrder,
+            userRating = rating.firstOrNull()?.rating
+          )
         }
+      }.awaitAll()
 
-        ProgressMovieListItem.MovieItem(
-          movie = movie,
-          image = imagesProvider.findCachedImage(movie, ImageType.POSTER),
-          isLoading = false,
-          isPinned = pinnedItemsRepository.isItemPinned(movie),
-          translation = translation,
-          dateFormat = dateFormat,
-          sortOrder = sortOrder,
-          userRating = rating.firstOrNull()?.rating
-        )
+      val filtered = filterItems(searchQuery, items)
+      val sorted = filtered.sortedWith(sorter.sort(sortOrder, sortType))
+      val preparedItems = prepareItems(sorted)
+
+      if (preparedItems.isNotEmpty()) {
+        val filtersItem = loadFiltersItem(sortOrder, sortType)
+        listOf(filtersItem) + preparedItems
+      } else {
+        preparedItems
       }
-    }.awaitAll()
-
-    val filtered = filterItems(searchQuery, items)
-    val sorted = filtered.sortedWith(sorter.sort(sortOrder, sortType))
-    val preparedItems = prepareItems(sorted)
-
-    if (preparedItems.isNotEmpty()) {
-      val filtersItem = loadFiltersItem(sortOrder, sortType)
-      listOf(filtersItem) + preparedItems
-    } else {
-      preparedItems
     }
-  }
 
   private fun loadFiltersItem(
     sortOrder: SortOrder,

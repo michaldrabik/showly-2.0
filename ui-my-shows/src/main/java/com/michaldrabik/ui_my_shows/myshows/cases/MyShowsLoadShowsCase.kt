@@ -13,6 +13,8 @@ import com.michaldrabik.ui_model.ShowStatus.RETURNING
 import com.michaldrabik.ui_my_shows.myshows.helpers.MyShowsItemSorter
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -23,23 +25,29 @@ class MyShowsLoadShowsCase @Inject constructor(
   private val localSource: LocalDataSource,
 ) {
 
-  suspend fun loadAllShows() = showsRepository.myShows.loadAll()
+  suspend fun loadAllShows() = withContext(Dispatchers.IO) {
+    showsRepository.myShows.loadAll()
+  }
 
-  suspend fun loadRecentShows(): List<Show> {
+  suspend fun loadRecentShows(): List<Show> = withContext(Dispatchers.IO) {
     val amount = settingsRepository.load().myRecentsAmount
-    return showsRepository.myShows.loadAllRecent(amount)
+    showsRepository.myShows.loadAllRecent(amount)
   }
 
   suspend fun loadSeasonsForShows(
     traktIds: List<Long>,
     buffer: MutableList<Season> = mutableListOf()
-  ): List<Season> {
+  ): List<Season> = withContext(Dispatchers.IO) {
     val batch = traktIds.take(500)
-    if (batch.isEmpty()) return buffer
+    if (batch.isEmpty()) {
+      return@withContext buffer
+    }
+
     val seasons = localSource.seasons.getAllByShowsIds(batch)
       .filter { it.seasonNumber != 0 }
     buffer.addAll(seasons)
-    return loadSeasonsForShows(traktIds.filter { it !in batch }, buffer)
+
+    loadSeasonsForShows(traktIds.filter { it !in batch }, buffer)
   }
 
   fun filterSectionShows(

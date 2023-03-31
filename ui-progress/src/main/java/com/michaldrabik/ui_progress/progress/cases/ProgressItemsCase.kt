@@ -53,107 +53,108 @@ class ProgressItemsCase @Inject constructor(
     private const val UPCOMING_MONTHS_LIMIT = 3L
   }
 
-  suspend fun loadItems(searchQuery: String): List<ProgressListItem> = withContext(Dispatchers.Default) {
-    val nowUtc = nowUtc()
+  suspend fun loadItems(searchQuery: String): List<ProgressListItem> =
+    withContext(Dispatchers.IO) {
+      val nowUtc = nowUtc()
 
-    val settings = settingsRepository.load()
-    val dateFormat = dateFormatProvider.loadFullHourFormat()
-    val upcomingLimit = nowUtc.plusMonths(UPCOMING_MONTHS_LIMIT).toMillis()
-    val nextEpisodeType = settingsRepository.progressNextEpisodeType
-    val filtersItem = loadFiltersItem()
+      val settings = settingsRepository.load()
+      val dateFormat = dateFormatProvider.loadFullHourFormat()
+      val upcomingLimit = nowUtc.plusMonths(UPCOMING_MONTHS_LIMIT).toMillis()
+      val nextEpisodeType = settingsRepository.progressNextEpisodeType
+      val filtersItem = loadFiltersItem()
 
-    val items = showsRepository.myShows.loadAll()
-      .map { show ->
-        async {
-          val nextEpisode = findNextEpisode(show.traktId, nextEpisodeType, upcomingLimit)
+      val items = showsRepository.myShows.loadAll()
+        .map { show ->
+          async {
+            val nextEpisode = findNextEpisode(show.traktId, nextEpisodeType, upcomingLimit)
 
-          val episodeUi = nextEpisode?.let { mappers.episode.fromDatabase(it) }
-          val seasonUi = nextEpisode?.let { ep ->
-            localSource.seasons.getById(ep.idSeason)?.let {
-              mappers.season.fromDatabase(it)
+            val episodeUi = nextEpisode?.let { mappers.episode.fromDatabase(it) }
+            val seasonUi = nextEpisode?.let { ep ->
+              localSource.seasons.getById(ep.idSeason)?.let {
+                mappers.season.fromDatabase(it)
+              }
             }
-          }
-          val isUpcoming = nextEpisode?.firstAired?.isAfter(nowUtc) == true
+            val isUpcoming = nextEpisode?.firstAired?.isAfter(nowUtc) == true
 
-          ProgressListItem.Episode(
-            show = show,
-            image = Image.createUnavailable(ImageType.POSTER),
-            episode = episodeUi,
-            season = seasonUi,
-            totalCount = 0,
-            watchedCount = 0,
-            isUpcoming = isUpcoming,
-            isPinned = false,
-            isOnHold = false,
-            dateFormat = dateFormat,
-            sortOrder = filtersItem.sortOrder
-          )
-        }
-      }.awaitAll()
-
-    val upcomingEnabled = settings.progressUpcomingEnabled
-    val language = translationsRepository.getLanguage()
-
-    val validItems = items
-      .filter { if (upcomingEnabled) true else !it.isUpcoming }
-      .filter { it.episode?.firstAired != null }
-
-    val filledItems = validItems
-      .map {
-        async {
-          val image = imagesProvider.findCachedImage(it.show, ImageType.POSTER)
-          val rating = ratingsRepository.shows.loadRatings(listOf(it.show))
-          val isPinned = pinnedItemsRepository.isItemPinned(it.show)
-          val isOnHold = onHoldItemsRepository.isOnHold(it.show)
-
-          var translations: TranslationsBundle? = null
-          if (language != Config.DEFAULT_LANGUAGE) {
-            translations = TranslationsBundle(
-              show = translationsRepository.loadTranslation(it.show, language, onlyLocal = true),
-              episode = translationsRepository.loadTranslation(it.episode ?: EpisodeUi.EMPTY, it.show.ids.trakt, language, onlyLocal = true)
+            ProgressListItem.Episode(
+              show = show,
+              image = Image.createUnavailable(ImageType.POSTER),
+              episode = episodeUi,
+              season = seasonUi,
+              totalCount = 0,
+              watchedCount = 0,
+              isUpcoming = isUpcoming,
+              isPinned = false,
+              isOnHold = false,
+              dateFormat = dateFormat,
+              sortOrder = filtersItem.sortOrder
             )
           }
+        }.awaitAll()
 
-          val (total, watched) = when (settingsRepository.progressPercentType) {
-            ProgressType.AIRED -> {
-              awaitAll(
-                async { localSource.episodes.getTotalCount(it.show.traktId, nowUtc.toMillis()) },
-                async { localSource.episodes.getWatchedCount(it.show.traktId, nowUtc.toMillis()) }
+      val upcomingEnabled = settings.progressUpcomingEnabled
+      val language = translationsRepository.getLanguage()
+
+      val validItems = items
+        .filter { if (upcomingEnabled) true else !it.isUpcoming }
+        .filter { it.episode?.firstAired != null }
+
+      val filledItems = validItems
+        .map {
+          async {
+            val image = imagesProvider.findCachedImage(it.show, ImageType.POSTER)
+            val rating = ratingsRepository.shows.loadRatings(listOf(it.show))
+            val isPinned = pinnedItemsRepository.isItemPinned(it.show)
+            val isOnHold = onHoldItemsRepository.isOnHold(it.show)
+
+            var translations: TranslationsBundle? = null
+            if (language != Config.DEFAULT_LANGUAGE) {
+              translations = TranslationsBundle(
+                show = translationsRepository.loadTranslation(it.show, language, onlyLocal = true),
+                episode = translationsRepository.loadTranslation(it.episode ?: EpisodeUi.EMPTY, it.show.ids.trakt, language, onlyLocal = true)
               )
             }
 
-            ProgressType.ALL -> {
-              awaitAll(
-                async { localSource.episodes.getTotalCount(it.show.traktId) },
-                async { localSource.episodes.getWatchedCount(it.show.traktId) }
-              )
+            val (total, watched) = when (settingsRepository.progressPercentType) {
+              ProgressType.AIRED -> {
+                awaitAll(
+                  async { localSource.episodes.getTotalCount(it.show.traktId, nowUtc.toMillis()) },
+                  async { localSource.episodes.getWatchedCount(it.show.traktId, nowUtc.toMillis()) }
+                )
+              }
+
+              ProgressType.ALL -> {
+                awaitAll(
+                  async { localSource.episodes.getTotalCount(it.show.traktId) },
+                  async { localSource.episodes.getWatchedCount(it.show.traktId) }
+                )
+              }
             }
+
+            it.copy(
+              image = image,
+              isPinned = isPinned,
+              isOnHold = isOnHold,
+              translations = translations,
+              userRating = rating.firstOrNull()?.rating,
+              watchedCount = watched,
+              totalCount = total
+            )
           }
+        }.awaitAll()
 
-          it.copy(
-            image = image,
-            isPinned = isPinned,
-            isOnHold = isOnHold,
-            translations = translations,
-            userRating = rating.firstOrNull()?.rating,
-            watchedCount = watched,
-            totalCount = total
-          )
-        }
-      }.awaitAll()
+      val filteredItems = filterByQuery(searchQuery, filledItems)
+      val groupedItems = groupItems(
+        filteredItems,
+        filtersItem
+      )
 
-    val filteredItems = filterByQuery(searchQuery, filledItems)
-    val groupedItems = groupItems(
-      filteredItems,
-      filtersItem
-    )
-
-    if (groupedItems.isNotEmpty() || filtersItem.hasActiveFilters()) {
-      listOf(filtersItem) + groupedItems
-    } else {
-      groupedItems
+      if (groupedItems.isNotEmpty() || filtersItem.hasActiveFilters()) {
+        listOf(filtersItem) + groupedItems
+      } else {
+        groupedItems
+      }
     }
-  }
 
   private suspend fun findNextEpisode(
     showId: Long,

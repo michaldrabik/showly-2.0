@@ -5,6 +5,8 @@ import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -14,11 +16,12 @@ class HiddenTranslationsCase @Inject constructor(
 
   fun getLanguage() = translationsRepository.getLanguage()
 
-  suspend fun loadTranslation(show: Show, onlyLocal: Boolean): Translation? {
-    val language = getLanguage()
-    if (language == Config.DEFAULT_LANGUAGE) {
-      return Translation.EMPTY
+  suspend fun loadTranslation(show: Show, onlyLocal: Boolean): Translation? =
+    withContext(Dispatchers.IO) {
+      val language = getLanguage()
+      if (language == Config.DEFAULT_LANGUAGE) {
+        return@withContext Translation.EMPTY
+      }
+      translationsRepository.loadTranslation(show, language, onlyLocal)
     }
-    return translationsRepository.loadTranslation(show, language, onlyLocal)
-  }
 }

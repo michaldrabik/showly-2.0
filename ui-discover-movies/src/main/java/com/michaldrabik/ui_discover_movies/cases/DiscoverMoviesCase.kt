@@ -21,9 +21,11 @@ import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.ImageType.PREMIUM
 import com.michaldrabik.ui_model.Movie
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -38,9 +40,11 @@ class DiscoverMoviesCase @Inject constructor(
     private const val PREMIUM_AD_POSITION = 29
   }
 
-  suspend fun isCacheValid() = moviesRepository.discoverMovies.isCacheValid()
+  suspend fun isCacheValid() = withContext(Dispatchers.IO) {
+    moviesRepository.discoverMovies.isCacheValid()
+  }
 
-  suspend fun loadCachedMovies(filters: DiscoverFilters) = coroutineScope {
+  suspend fun loadCachedMovies(filters: DiscoverFilters) = withContext(Dispatchers.IO) {
     val myIds = async { moviesRepository.myMovies.loadAllIds() }
     val watchlistIds = async { moviesRepository.watchlistMovies.loadAllIds() }
     val hiddenIds = async { moviesRepository.hiddenMovies.loadAllIds() }
@@ -57,7 +61,7 @@ class DiscoverMoviesCase @Inject constructor(
     )
   }
 
-  suspend fun loadRemoteMovies(filters: DiscoverFilters) = coroutineScope {
+  suspend fun loadRemoteMovies(filters: DiscoverFilters) = withContext(Dispatchers.IO) {
     val showAnticipated = !filters.hideAnticipated
     val showCollection = !filters.hideCollection
     val genres = filters.genres.toList()

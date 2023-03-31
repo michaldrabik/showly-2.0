@@ -121,13 +121,13 @@ class QuickSyncRunner @Inject constructor(
           excludedEpisodes.add(item.idTrakt)
         } else {
           if (remoteShows
-              .filter { it.show?.ids?.trakt == showId }
-              .any { remoteShow ->
-                remoteShow.seasons
-                  ?.find { it.number == localEpisode.seasonNumber }
-                  ?.episodes
-                  ?.any { it.number == localEpisode.episodeNumber } == true
-              }
+            .filter { it.show?.ids?.trakt == showId }
+            .any { remoteShow ->
+              remoteShow.seasons
+                ?.find { it.number == localEpisode.seasonNumber }
+                ?.episodes
+                ?.any { it.number == localEpisode.episodeNumber } == true
+            }
           ) {
             excludedEpisodes.add(item.idTrakt)
           }

@@ -17,9 +17,11 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Show
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -35,24 +37,28 @@ class DiscoverShowsCase @Inject constructor(
     private const val PREMIUM_AD_POSITION = 29
   }
 
-  suspend fun isCacheValid() = showsRepository.discoverShows.isCacheValid()
+  suspend fun isCacheValid() =
+    withContext(Dispatchers.IO) {
+      showsRepository.discoverShows.isCacheValid()
+    }
 
-  suspend fun loadCachedShows(filters: DiscoverFilters) = coroutineScope {
-    val myShowsIds = async { showsRepository.myShows.loadAllIds() }
-    val watchlistShowsIds = async { showsRepository.watchlistShows.loadAllIds() }
-    val archiveShowsIds = async { showsRepository.hiddenShows.loadAllIds() }
-    val cachedShows = async { showsRepository.discoverShows.loadAllCached() }
+  suspend fun loadCachedShows(filters: DiscoverFilters) =
+    withContext(Dispatchers.IO) {
+      val myShowsIds = async { showsRepository.myShows.loadAllIds() }
+      val watchlistShowsIds = async { showsRepository.watchlistShows.loadAllIds() }
+      val archiveShowsIds = async { showsRepository.hiddenShows.loadAllIds() }
+      val cachedShows = async { showsRepository.discoverShows.loadAllCached() }
 
-    prepareItems(
-      shows = cachedShows.await(),
-      myShowsIds = myShowsIds.await(),
-      watchlistShowsIds = watchlistShowsIds.await(),
-      hiddenShowsIds = archiveShowsIds.await(),
-      filters = filters
-    )
-  }
+      prepareItems(
+        shows = cachedShows.await(),
+        myShowsIds = myShowsIds.await(),
+        watchlistShowsIds = watchlistShowsIds.await(),
+        hiddenShowsIds = archiveShowsIds.await(),
+        filters = filters
+      )
+    }
 
-  suspend fun loadRemoteShows(filters: DiscoverFilters) = coroutineScope {
+  suspend fun loadRemoteShows(filters: DiscoverFilters) = withContext(Dispatchers.IO) {
     val showAnticipated = !filters.hideAnticipated
     val showCollection = !filters.hideCollection
     val genres = filters.genres.toList()

@@ -20,6 +20,8 @@ import com.michaldrabik.ui_model.ProgressNextEpisodeType
 import com.michaldrabik.ui_model.ProgressNextEpisodeType.LAST_WATCHED
 import com.michaldrabik.ui_model.ProgressType
 import com.michaldrabik.ui_model.Settings
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Named
@@ -60,10 +62,14 @@ class SettingsRepository @Inject constructor(
   }
 
   suspend fun isInitialized() =
-    localSource.settings.getCount() > 0
+    withContext(Dispatchers.IO) {
+      localSource.settings.getCount() > 0
+    }
 
   suspend fun load(): Settings {
-    val settingsDb = localSource.settings.getAll()
+    val settingsDb = withContext(Dispatchers.IO) {
+      localSource.settings.getAll()
+    }
     return mappers.settings.fromDatabase(settingsDb)
   }
 
