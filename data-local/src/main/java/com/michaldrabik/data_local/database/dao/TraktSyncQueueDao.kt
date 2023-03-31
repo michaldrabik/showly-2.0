@@ -29,6 +29,9 @@ interface TraktSyncQueueDao : TraktSyncQueueLocalDataSource {
   @Query("DELETE FROM trakt_sync_queue WHERE type = :type")
   override suspend fun deleteAll(type: String): Int
 
+  @Query("DELETE FROM trakt_sync_queue")
+  override suspend fun deleteAll()
+
   @Query("DELETE FROM trakt_sync_queue WHERE id_list = :idList")
   override suspend fun deleteAllForList(idList: Long): Int
 
