@@ -22,11 +22,11 @@ class MovieDetailsActorsCase @Inject constructor(
   }
 
   suspend fun preloadDetails(people: List<Person>) {
-    withContext(Dispatchers.IO) {
-      supervisorScope {
-        val errorHandler = CoroutineExceptionHandler { _, _ -> Timber.d("Failed to preload details.") }
-        people.take(5).forEach {
-          launch(errorHandler) {
+    supervisorScope {
+      val errorHandler = CoroutineExceptionHandler { _, _ -> Timber.d("Failed to preload details.") }
+      people.take(5).forEach {
+        launch(errorHandler) {
+          withContext(Dispatchers.IO) {
             peopleRepository.loadDetails(it)
           }
         }
