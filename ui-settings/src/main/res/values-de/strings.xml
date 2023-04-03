@@ -71,7 +71,7 @@
   <string name="textNextEpisodeLastWatched">Letzte Folge angesehen</string>
   <string name="textNextEpisodeOldest">Älteste ungesehene Folge</string>
   <string name="textThemeDark">Dunkel</string>
-  <string name="textThemeLight">Licht</string>
+  <string name="textThemeLight">Hell</string>
   <string name="textThemeSystem">System</string>
   <string name="textTransparency100">Undurchsichtig</string>
 </resources>
