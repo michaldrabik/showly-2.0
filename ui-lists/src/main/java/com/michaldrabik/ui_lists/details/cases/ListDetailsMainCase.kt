@@ -78,4 +78,3 @@ class ListDetailsMainCase @Inject constructor(
       list.idTrakt != null && settingsRepository.load().traktQuickRemoveEnabled
     }
 }
-
