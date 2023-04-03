@@ -36,7 +36,7 @@ class SearchRecentsCaseTest : BaseMockTest() {
     coEvery { recentSearch.text } returnsMany listOf("1", "2", "3")
     coEvery { database.recentSearch } returns recentSearchDao
 
-    SUT = SearchRecentsCase(database)
+    SUT = SearchRecentsCase(testDispatchers, database)
   }
 
   @After

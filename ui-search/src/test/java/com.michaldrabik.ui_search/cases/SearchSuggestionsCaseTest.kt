@@ -44,6 +44,7 @@ class SearchSuggestionsCaseTest : BaseMockTest() {
     coEvery { database.movies } returns moviesDao
 
     SUT = SearchSuggestionsCase(
+      testDispatchers,
       database,
       mappers,
       translationsRepository,

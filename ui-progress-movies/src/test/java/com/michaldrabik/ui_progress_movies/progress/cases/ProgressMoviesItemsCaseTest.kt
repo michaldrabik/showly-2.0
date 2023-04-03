@@ -55,6 +55,7 @@ class ProgressMoviesItemsCaseTest : BaseMockTest() {
     coEvery { pinnedItemsRepository.isItemPinned(any<Movie>()) } returns false
 
     SUT = ProgressMoviesItemsCase(
+      testDispatchers,
       moviesRepository,
       translationsRepository,
       ratingsRepository,

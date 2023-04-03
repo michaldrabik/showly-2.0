@@ -37,5 +37,6 @@ dependencies {
   implementation libs.hilt.android
   kapt libs.hilt.compiler
 
+  implementation testLibs.kotlin.coroutines.test
   coreLibraryDesugaring libs.android.desugar
 }
