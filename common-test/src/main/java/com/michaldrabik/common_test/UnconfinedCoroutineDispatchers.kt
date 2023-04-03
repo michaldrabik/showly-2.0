@@ -1,5 +1,6 @@
-package com.michaldrabik.common.dispatchers
+package com.michaldrabik.common_test
 
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 

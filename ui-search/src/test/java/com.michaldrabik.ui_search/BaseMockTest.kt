@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_search
 
-import com.michaldrabik.common.dispatchers.UnconfinedCoroutineDispatchers
-import com.michaldrabik.ui_search.helpers.MainDispatcherRule
+import com.michaldrabik.common_test.MainDispatcherRule
+import com.michaldrabik.common_test.UnconfinedCoroutineDispatchers
 import io.mockk.MockKAnnotations
 import org.junit.Before
 import org.junit.Rule

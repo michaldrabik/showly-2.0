@@ -1,4 +1,4 @@
-import com.michaldrabik.ui_statistics_movies.MainDispatcherRule
+import com.michaldrabik.common_test.MainDispatcherRule
 import io.mockk.MockKAnnotations
 import org.junit.Before
 import org.junit.Rule

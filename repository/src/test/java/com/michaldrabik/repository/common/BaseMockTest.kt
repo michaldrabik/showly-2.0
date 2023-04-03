@@ -1,6 +1,6 @@
 package com.michaldrabik.repository.common
 
-import com.michaldrabik.common.dispatchers.UnconfinedCoroutineDispatchers
+import com.michaldrabik.common_test.UnconfinedCoroutineDispatchers
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.data_remote.RemoteDataSource
