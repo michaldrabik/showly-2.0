@@ -244,7 +244,7 @@ class ShowDetailsEpisodesViewModel @Inject constructor(
       seasonState.value = marked
       episodesState.value = marked.episodes
       initialLoadState.value = false
-      eventChannel.send(ShowDetailsEpisodesEvent.Finish)
+      eventChannel.send(ShowDetailsEpisodesEvent.RequestWidgetsUpdate)
     }
   }
 
