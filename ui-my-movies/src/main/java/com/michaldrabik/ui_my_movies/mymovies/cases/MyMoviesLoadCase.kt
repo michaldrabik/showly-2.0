@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_my_movies.mymovies.cases
 
 import com.michaldrabik.common.Config
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.movies.MoviesRepository
@@ -14,12 +15,12 @@ import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_my_movies.mymovies.helpers.MyMoviesSorter
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem
 import dagger.hilt.android.scopes.ViewModelScoped
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ViewModelScoped
 class MyMoviesLoadCase @Inject constructor(
+  private val dispatchers: CoroutineDispatchers,
   private val sorter: MyMoviesSorter,
   private val imagesProvider: MovieImagesProvider,
   private val moviesRepository: MoviesRepository,
@@ -28,11 +29,11 @@ class MyMoviesLoadCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
 ) {
 
-  suspend fun loadSettings() = withContext(Dispatchers.IO) {
+  suspend fun loadSettings() = withContext(dispatchers.IO) {
     settingsRepository.load()
   }
 
-  suspend fun loadAll() = withContext(Dispatchers.IO) {
+  suspend fun loadAll() = withContext(dispatchers.IO) {
     moviesRepository.myMovies.loadAll()
   }
 
@@ -57,13 +58,13 @@ class MyMoviesLoadCase @Inject constructor(
   private fun List<MyMoviesItem>.filterByGenre(genres: List<String>) =
     filter { genres.isEmpty() || it.movie.genres.any { genre -> genre.lowercase() in genres } }
 
-  suspend fun loadRecentMovies(): List<Movie> = withContext(Dispatchers.IO) {
+  suspend fun loadRecentMovies(): List<Movie> = withContext(dispatchers.IO) {
     val amount = loadSettings().myRecentsAmount
     moviesRepository.myMovies.loadAllRecent(amount)
   }
 
   suspend fun loadTranslation(movie: Movie, onlyLocal: Boolean): Translation? =
-    withContext(Dispatchers.IO) {
+    withContext(dispatchers.IO) {
       val language = translationsRepository.getLanguage()
       if (language == Config.DEFAULT_LANGUAGE) {
         return@withContext Translation.EMPTY

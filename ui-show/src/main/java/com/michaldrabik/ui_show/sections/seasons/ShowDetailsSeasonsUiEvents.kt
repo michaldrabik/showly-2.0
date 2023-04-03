@@ -18,4 +18,6 @@ sealed class ShowDetailsSeasonsEvent<T>(action: T) : Event<T>(action) {
     val mode: RemoveTraktBottomSheet.Mode,
     val traktIds: List<IdTrakt>
   ) : ShowDetailsSeasonsEvent<Int>(actionId)
+
+  object RequestWidgetsUpdate : ShowDetailsSeasonsEvent<Unit>(Unit)
 }

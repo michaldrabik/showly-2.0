@@ -163,7 +163,7 @@ class ShowDetailsViewModel @Inject constructor(
 
   fun loadListsCount(show: Show? = null) {
     viewModelScope.launch {
-      val count = listsCase.countLists(show ?: this@ShowDetailsViewModel.show)
+      val count = listsCase.getListsCount(show ?: this@ShowDetailsViewModel.show)
       listsCountState.value = count
     }
   }

@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_my_movies.watchlist.cases
 
 import com.michaldrabik.common.Config
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.movies.MoviesRepository
@@ -15,7 +16,6 @@ import com.michaldrabik.ui_my_movies.common.helpers.CollectionItemSorter
 import com.michaldrabik.ui_my_movies.common.recycler.CollectionListItem
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
@@ -24,6 +24,7 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class WatchlistLoadMoviesCase @Inject constructor(
+  private val dispatchers: CoroutineDispatchers,
   private val ratingsCase: WatchlistRatingsCase,
   private val sorter: CollectionItemSorter,
   private val filters: CollectionItemFilter,
@@ -35,7 +36,7 @@ class WatchlistLoadMoviesCase @Inject constructor(
 ) {
 
   suspend fun loadMovies(searchQuery: String): List<CollectionListItem> =
-    withContext(Dispatchers.IO) {
+    withContext(dispatchers.IO) {
       val ratings = ratingsCase.loadRatings()
       val dateFormat = dateFormatProvider.loadShortDayFormat()
       val fullDateFormat = dateFormatProvider.loadFullDayFormat()
@@ -82,7 +83,7 @@ class WatchlistLoadMoviesCase @Inject constructor(
   }
 
   suspend fun loadTranslation(movie: Movie, onlyLocal: Boolean): Translation? =
-    withContext(Dispatchers.IO) {
+    withContext(dispatchers.IO) {
       val language = translationsRepository.getLanguage()
       if (language == Config.DEFAULT_LANGUAGE) {
         return@withContext Translation.EMPTY

@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_progress_movies.progress.cases
 
 import com.michaldrabik.common.Config
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.TranslationsRepository
@@ -14,16 +15,15 @@ import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_progress_movies.helpers.ProgressMoviesItemsSorter
 import com.michaldrabik.ui_progress_movies.progress.recycler.ProgressMovieListItem
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Suppress("UNCHECKED_CAST")
 @Singleton
 class ProgressMoviesItemsCase @Inject constructor(
+  private val dispatchers: CoroutineDispatchers,
   private val moviesRepository: MoviesRepository,
   private val translationsRepository: TranslationsRepository,
   private val ratingsRepository: RatingsRepository,
@@ -35,7 +35,7 @@ class ProgressMoviesItemsCase @Inject constructor(
 ) {
 
   suspend fun loadItems(searchQuery: String) =
-    withContext(Dispatchers.IO) {
+    withContext(dispatchers.IO) {
       val language = translationsRepository.getLanguage()
       val dateFormat = dateFormatProvider.loadFullDayFormat()
 

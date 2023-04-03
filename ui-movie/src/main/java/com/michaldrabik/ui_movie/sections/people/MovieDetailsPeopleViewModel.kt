@@ -13,7 +13,7 @@ import com.michaldrabik.ui_movie.MovieDetailsEvent
 import com.michaldrabik.ui_movie.MovieDetailsEvent.OpenPeopleSheet
 import com.michaldrabik.ui_movie.MovieDetailsEvent.OpenPersonSheet
 import com.michaldrabik.ui_movie.MovieDetailsEvent.SaveOpenedPerson
-import com.michaldrabik.ui_movie.sections.people.cases.MovieDetailsActorsCase
+import com.michaldrabik.ui_movie.sections.people.cases.MovieDetailsPeopleCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -25,7 +25,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MovieDetailsPeopleViewModel @Inject constructor(
-  private val actorsCase: MovieDetailsActorsCase,
+  private val actorsCase: MovieDetailsPeopleCase,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private lateinit var movie: Movie

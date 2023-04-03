@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_show.cases
 
 import com.michaldrabik.common.Mode
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.Season
 import com.michaldrabik.data_local.database.model.TraktSyncQueue
@@ -11,10 +12,12 @@ import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.ui_model.Show
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ViewModelScoped
 class ShowDetailsHiddenCase @Inject constructor(
+  private val dispatchers: CoroutineDispatchers,
   private val localSource: LocalDataSource,
   private val transactions: TransactionsProvider,
   private val showsRepository: ShowsRepository,
@@ -23,10 +26,11 @@ class ShowDetailsHiddenCase @Inject constructor(
   private val announcementManager: AnnouncementManager,
 ) {
 
-  suspend fun isHidden(show: Show) =
+  suspend fun isHidden(show: Show) = withContext(dispatchers.IO) {
     showsRepository.hiddenShows.exists(show.ids.trakt)
+  }
 
-  suspend fun addToHidden(show: Show, removeLocalData: Boolean) {
+  suspend fun addToHidden(show: Show, removeLocalData: Boolean) = withContext(dispatchers.IO) {
     transactions.withTransaction {
       showsRepository.hiddenShows.insert(show.ids.trakt)
 
@@ -48,7 +52,7 @@ class ShowDetailsHiddenCase @Inject constructor(
     quickSyncManager.scheduleHidden(show.traktId, Mode.SHOWS, TraktSyncQueue.Operation.ADD)
   }
 
-  suspend fun removeFromHidden(show: Show) {
+  suspend fun removeFromHidden(show: Show) = withContext(dispatchers.IO) {
     showsRepository.hiddenShows.delete(show.ids.trakt)
     pinnedItemsRepository.removePinnedItem(show)
     announcementManager.refreshShowsAnnouncements()

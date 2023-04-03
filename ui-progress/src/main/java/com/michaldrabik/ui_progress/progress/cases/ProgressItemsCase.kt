@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_progress.progress.cases
 
 import com.michaldrabik.common.Config
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.data_local.LocalDataSource
@@ -25,7 +26,6 @@ import com.michaldrabik.ui_progress.helpers.ProgressItemsSorter
 import com.michaldrabik.ui_progress.helpers.TranslationsBundle
 import com.michaldrabik.ui_progress.progress.recycler.ProgressListItem
 import com.michaldrabik.ui_progress.progress.recycler.ProgressListItem.Header.Type
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -36,6 +36,7 @@ import com.michaldrabik.ui_model.Episode.Companion as EpisodeUi
 
 @Singleton
 class ProgressItemsCase @Inject constructor(
+  private val dispatchers: CoroutineDispatchers,
   private val localSource: LocalDataSource,
   private val mappers: Mappers,
   private val showsRepository: ShowsRepository,
@@ -54,7 +55,7 @@ class ProgressItemsCase @Inject constructor(
   }
 
   suspend fun loadItems(searchQuery: String): List<ProgressListItem> =
-    withContext(Dispatchers.IO) {
+    withContext(dispatchers.IO) {
       val nowUtc = nowUtc()
 
       val settings = settingsRepository.load()

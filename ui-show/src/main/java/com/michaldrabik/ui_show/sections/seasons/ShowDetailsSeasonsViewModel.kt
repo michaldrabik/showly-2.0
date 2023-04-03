@@ -14,6 +14,7 @@ import com.michaldrabik.ui_show.R
 import com.michaldrabik.ui_show.ShowDetailsEvent
 import com.michaldrabik.ui_show.episodes.cases.EpisodesMarkWatchedCase
 import com.michaldrabik.ui_show.quicksetup.QuickSetupListItem
+import com.michaldrabik.ui_show.sections.seasons.ShowDetailsSeasonsEvent.RequestWidgetsUpdate
 import com.michaldrabik.ui_show.sections.seasons.cases.ShowDetailsLoadSeasonsCase
 import com.michaldrabik.ui_show.sections.seasons.cases.ShowDetailsQuickProgressCase
 import com.michaldrabik.ui_show.sections.seasons.cases.ShowDetailsWatchedSeasonCase
@@ -128,9 +129,10 @@ class ShowDetailsSeasonsViewModel @Inject constructor(
     return true
   }
 
-  private fun updateSeasons(seasons: List<SeasonListItem>) {
+  private suspend fun updateSeasons(seasons: List<SeasonListItem>) {
     seasonsState.value = seasons
     seasonsCache.setSeasons(show.ids.trakt, seasons, areSeasonsLocal)
+    eventChannel.send(RequestWidgetsUpdate)
   }
 
   val uiState = combine(

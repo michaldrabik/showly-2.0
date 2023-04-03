@@ -1,6 +1,7 @@
 package com.michaldrabik.repository.images
 
 import com.michaldrabik.common.Config
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.LocalDataSource
@@ -12,20 +13,22 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageFamily
 import com.michaldrabik.ui_model.ImageSource
 import com.michaldrabik.ui_model.ImageType
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class PeopleImagesProvider @Inject constructor(
+  private val dispatchers: CoroutineDispatchers,
   private val localSource: LocalDataSource,
   private val remoteSource: RemoteDataSource,
 ) {
 
-  suspend fun loadCachedImage(personTmdbId: IdTmdb): Image? {
+  suspend fun loadCachedImage(personTmdbId: IdTmdb): Image? = withContext(dispatchers.IO) {
     val localPerson = localSource.people.getById(personTmdbId.id)
-    return localPerson?.image?.let {
-      return Image.createAvailable(
+    return@withContext localPerson?.image?.let {
+      Image.createAvailable(
         ids = Ids.EMPTY,
         type = ImageType.PROFILE,
         family = ImageFamily.PROFILE,
@@ -35,12 +38,12 @@ class PeopleImagesProvider @Inject constructor(
     }
   }
 
-  suspend fun loadImages(personTmdbId: IdTmdb): List<Image> {
+  suspend fun loadImages(personTmdbId: IdTmdb): List<Image> = withContext(dispatchers.IO) {
     val localTimestamp = localSource.peopleImages.getTimestampForPerson(personTmdbId.id) ?: 0
     if (localTimestamp + Config.PEOPLE_IMAGES_CACHE_DURATION > nowUtcMillis()) {
       Timber.d("Returning cached result. Cache still valid for ${(localTimestamp + Config.PEOPLE_IMAGES_CACHE_DURATION) - nowUtcMillis()} ms")
       val local = localSource.peopleImages.getAll(personTmdbId.id)
-      return local.map {
+      return@withContext local.map {
         Image.createAvailable(
           ids = Ids.EMPTY,
           type = ImageType.PROFILE,
@@ -65,7 +68,7 @@ class PeopleImagesProvider @Inject constructor(
 
     localSource.peopleImages.insert(personTmdbId.id, dbImages)
 
-    return images.map {
+    return@withContext images.map {
       Image.createAvailable(
         ids = Ids.EMPTY,
         type = ImageType.PROFILE,

@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_show.sections.seasons.cases
 
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_remote.RemoteDataSource
@@ -22,10 +23,12 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ViewModelScoped
 class ShowDetailsLoadSeasonsCase @Inject constructor(
+  private val dispatchers: CoroutineDispatchers,
   private val remoteSource: RemoteDataSource,
   private val localSource: LocalDataSource,
   private val mappers: Mappers,
@@ -40,7 +43,7 @@ class ShowDetailsLoadSeasonsCase @Inject constructor(
 ) {
 
   suspend fun loadSeasons(show: Show): SeasonsBundle =
-    coroutineScope {
+    withContext(dispatchers.IO) {
       val showSpecialSeasons = settingsRepository.load().specialSeasonsEnabled
       try {
         if (!networkStatusProvider.isOnline()) {

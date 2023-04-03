@@ -68,6 +68,9 @@ import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.PremiumFeature
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_movie.MovieDetailsEvent.Finish
+import com.michaldrabik.ui_movie.MovieDetailsEvent.RemoveFromTrakt
+import com.michaldrabik.ui_movie.MovieDetailsEvent.RequestWidgetsUpdate
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.ADD
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_HIDDEN
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_MY_MOVIES
@@ -357,9 +360,9 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 
   private fun handleEvent(event: Event<*>) {
     when (event) {
-      is MovieDetailsEvent.RemoveFromTrakt -> openRemoveTraktSheet(event.navigationId)
-      is MovieDetailsEvent.RequestWidgetsUpdate -> (requireAppContext() as WidgetsProvider).requestMoviesWidgetsUpdate()
-      is MovieDetailsEvent.Finish -> requireActivity().onBackPressed()
+      is RemoveFromTrakt -> openRemoveTraktSheet(event.navigationId)
+      is RequestWidgetsUpdate -> (requireAppContext() as WidgetsProvider).requestMoviesWidgetsUpdate()
+      is Finish -> requireActivity().onBackPressed()
     }
   }
 

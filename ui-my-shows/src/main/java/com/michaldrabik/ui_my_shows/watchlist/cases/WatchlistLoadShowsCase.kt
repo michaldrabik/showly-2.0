@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_my_shows.watchlist.cases
 
 import com.michaldrabik.common.Config
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.repository.settings.SettingsRepository
@@ -16,7 +17,6 @@ import com.michaldrabik.ui_my_shows.watchlist.helpers.WatchlistItemFilter
 import com.michaldrabik.ui_my_shows.watchlist.helpers.WatchlistItemSorter
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
@@ -25,6 +25,7 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class WatchlistLoadShowsCase @Inject constructor(
+  private val dispatchers: CoroutineDispatchers,
   private val ratingsCase: WatchlistRatingsCase,
   private val sorter: WatchlistItemSorter,
   private val filters: WatchlistItemFilter,
@@ -36,7 +37,7 @@ class WatchlistLoadShowsCase @Inject constructor(
 ) {
 
   suspend fun loadShows(searchQuery: String): List<CollectionListItem> =
-    withContext(Dispatchers.IO) {
+    withContext(dispatchers.IO) {
       val language = translationsRepository.getLanguage()
       val ratings = ratingsCase.loadRatings()
       val dateFormat = dateFormatProvider.loadFullDayFormat()

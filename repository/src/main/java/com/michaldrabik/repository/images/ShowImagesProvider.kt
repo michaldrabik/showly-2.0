@@ -1,6 +1,7 @@
 package com.michaldrabik.repository.images
 
 import com.michaldrabik.common.Mode
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.CustomImage
 import com.michaldrabik.data_remote.RemoteDataSource
@@ -25,13 +26,13 @@ import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.ImageType.FANART_WIDE
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.Show
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class ShowImagesProvider @Inject constructor(
+  private val dispatchers: CoroutineDispatchers,
   private val remoteSource: RemoteDataSource,
   private val localSource: LocalDataSource,
   private val mappers: Mappers,
@@ -42,7 +43,7 @@ class ShowImagesProvider @Inject constructor(
   private var awsImagesCache: AwsImages? = null
 
   suspend fun findCustomImage(traktId: Long, type: ImageType): Image? =
-    withContext(Dispatchers.IO) {
+    withContext(dispatchers.IO) {
       if (!settingsRepository.isPremium) {
         return@withContext null
       }
@@ -51,7 +52,7 @@ class ShowImagesProvider @Inject constructor(
     }
 
   suspend fun findCachedImage(show: Show, type: ImageType): Image =
-    withContext(Dispatchers.IO) {
+    withContext(dispatchers.IO) {
       val custom = findCustomImage(show.traktId, type)
       if (custom != null) {
         return@withContext custom
@@ -69,7 +70,7 @@ class ShowImagesProvider @Inject constructor(
     }
 
   suspend fun loadRemoteImage(show: Show, type: ImageType, force: Boolean = false): Image =
-    withContext(Dispatchers.IO) {
+    withContext(dispatchers.IO) {
       val tvdbId = show.ids.tvdb
       val tmdbId = show.ids.tmdb
 
@@ -166,7 +167,7 @@ class ShowImagesProvider @Inject constructor(
   }
 
   suspend fun loadRemoteImages(show: Show, type: ImageType): List<Image> =
-    withContext(Dispatchers.IO) {
+    withContext(dispatchers.IO) {
       val tmdbId = show.ids.tmdb
       val remoteImages = remoteSource.tmdb.fetchShowImages(tmdbId.id)
       val typeImages = when (type) {
@@ -197,18 +198,18 @@ class ShowImagesProvider @Inject constructor(
 
   suspend fun saveCustomImage(traktId: IdTrakt, image: Image, imageFamily: ImageFamily, imageType: ImageType) {
     val imageDb = CustomImage(0, traktId.id, imageFamily.key, imageType.key, image.fullFileUrl)
-    withContext(Dispatchers.IO) {
+    withContext(dispatchers.IO) {
       localSource.customImages.insertImage(imageDb)
     }
   }
 
   suspend fun deleteCustomImage(traktId: IdTrakt, imageFamily: ImageFamily, imageType: ImageType) {
-    withContext(Dispatchers.IO) {
+    withContext(dispatchers.IO) {
       localSource.customImages.deleteById(traktId.id, imageFamily.key, imageType.key)
     }
   }
 
-  suspend fun deleteLocalCache() = withContext(Dispatchers.IO) {
+  suspend fun deleteLocalCache() = withContext(dispatchers.IO) {
     localSource.showImages.deleteAll()
   }
 

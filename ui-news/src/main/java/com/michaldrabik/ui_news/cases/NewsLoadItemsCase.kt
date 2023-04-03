@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_news.cases
 
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.repository.NewsRepository
@@ -9,7 +10,6 @@ import com.michaldrabik.ui_model.NewsItem
 import com.michaldrabik.ui_model.NewsItem.Type
 import com.michaldrabik.ui_news.recycler.NewsListItem
 import dagger.hilt.android.scopes.ViewModelScoped
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
@@ -18,12 +18,13 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class NewsLoadItemsCase @Inject constructor(
+  private val dispatchers: CoroutineDispatchers,
   private val newsRepository: NewsRepository,
   private val dateFormatProvider: DateFormatProvider,
   private val userManager: UserRedditManager,
 ) {
 
-  suspend fun preloadItems(types: List<Type>) = withContext(Dispatchers.IO) {
+  suspend fun preloadItems(types: List<Type>) = withContext(dispatchers.IO) {
     val showsNewsAsync = async {
       when {
         types.contains(Type.SHOW) || types.isEmpty() -> newsRepository.getCachedNews(Type.SHOW)
@@ -46,7 +47,7 @@ class NewsLoadItemsCase @Inject constructor(
   suspend fun loadItems(
     forceRefresh: Boolean,
     types: List<Type>,
-  ) = withContext(Dispatchers.IO) {
+  ) = withContext(dispatchers.IO) {
     val token = userManager.checkAuthorization()
 
     val showsNewsAsync = async {

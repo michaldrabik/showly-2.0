@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_base.common.sheets.context_menu.show.cases
 
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.Season
 import com.michaldrabik.data_local.utilities.TransactionsProvider
@@ -14,11 +15,12 @@ import com.michaldrabik.ui_model.Show
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ViewModelScoped
 class ShowContextMenuWatchlistCase @Inject constructor(
+  private val dispatchers: CoroutineDispatchers,
   private val localSource: LocalDataSource,
   private val transactions: TransactionsProvider,
   private val showsRepository: ShowsRepository,
@@ -30,7 +32,7 @@ class ShowContextMenuWatchlistCase @Inject constructor(
   suspend fun moveToWatchlist(
     traktId: IdTrakt,
     removeLocalData: Boolean,
-  ) = coroutineScope {
+  ) = withContext(dispatchers.IO) {
     val show = Show.EMPTY.copy(ids = Ids.EMPTY.copy(traktId))
 
     val (isMyShow, isHidden) = awaitAll(
@@ -65,7 +67,7 @@ class ShowContextMenuWatchlistCase @Inject constructor(
     RemoveTraktUiEvent(removeProgress = isMyShow, removeHidden = isHidden)
   }
 
-  suspend fun removeFromWatchlist(traktId: IdTrakt) {
+  suspend fun removeFromWatchlist(traktId: IdTrakt) = withContext(dispatchers.IO) {
     showsRepository.watchlistShows.delete(traktId)
     announcementManager.refreshShowsAnnouncements()
     quickSyncManager.clearWatchlistShows(listOf(traktId.id))

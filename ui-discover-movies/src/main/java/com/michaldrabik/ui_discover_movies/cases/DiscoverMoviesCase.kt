@@ -2,6 +2,7 @@ package com.michaldrabik.ui_discover_movies.cases
 
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.ConfigVariant
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.MovieImagesProvider
@@ -21,7 +22,6 @@ import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.ImageType.PREMIUM
 import com.michaldrabik.ui_model.Movie
 import dagger.hilt.android.scopes.ViewModelScoped
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -30,6 +30,7 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class DiscoverMoviesCase @Inject constructor(
+  private val dispatchers: CoroutineDispatchers,
   private val moviesRepository: MoviesRepository,
   private val imagesProvider: MovieImagesProvider,
   private val translationsRepository: TranslationsRepository,
@@ -40,11 +41,11 @@ class DiscoverMoviesCase @Inject constructor(
     private const val PREMIUM_AD_POSITION = 29
   }
 
-  suspend fun isCacheValid() = withContext(Dispatchers.IO) {
+  suspend fun isCacheValid() = withContext(dispatchers.IO) {
     moviesRepository.discoverMovies.isCacheValid()
   }
 
-  suspend fun loadCachedMovies(filters: DiscoverFilters) = withContext(Dispatchers.IO) {
+  suspend fun loadCachedMovies(filters: DiscoverFilters) = withContext(dispatchers.IO) {
     val myIds = async { moviesRepository.myMovies.loadAllIds() }
     val watchlistIds = async { moviesRepository.watchlistMovies.loadAllIds() }
     val hiddenIds = async { moviesRepository.hiddenMovies.loadAllIds() }
@@ -61,7 +62,7 @@ class DiscoverMoviesCase @Inject constructor(
     )
   }
 
-  suspend fun loadRemoteMovies(filters: DiscoverFilters) = withContext(Dispatchers.IO) {
+  suspend fun loadRemoteMovies(filters: DiscoverFilters) = withContext(dispatchers.IO) {
     val showAnticipated = !filters.hideAnticipated
     val showCollection = !filters.hideCollection
     val genres = filters.genres.toList()

@@ -2,6 +2,7 @@ package com.michaldrabik.ui_discover.cases
 
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.ConfigVariant
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.ShowImagesProvider
@@ -17,7 +18,6 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Show
 import dagger.hilt.android.scopes.ViewModelScoped
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -26,6 +26,7 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class DiscoverShowsCase @Inject constructor(
+  private val dispatchers: CoroutineDispatchers,
   private val showsRepository: ShowsRepository,
   private val imagesProvider: ShowImagesProvider,
   private val translationsRepository: TranslationsRepository,
@@ -38,12 +39,12 @@ class DiscoverShowsCase @Inject constructor(
   }
 
   suspend fun isCacheValid() =
-    withContext(Dispatchers.IO) {
+    withContext(dispatchers.IO) {
       showsRepository.discoverShows.isCacheValid()
     }
 
   suspend fun loadCachedShows(filters: DiscoverFilters) =
-    withContext(Dispatchers.IO) {
+    withContext(dispatchers.IO) {
       val myShowsIds = async { showsRepository.myShows.loadAllIds() }
       val watchlistShowsIds = async { showsRepository.watchlistShows.loadAllIds() }
       val archiveShowsIds = async { showsRepository.hiddenShows.loadAllIds() }
@@ -58,7 +59,7 @@ class DiscoverShowsCase @Inject constructor(
       )
     }
 
-  suspend fun loadRemoteShows(filters: DiscoverFilters) = withContext(Dispatchers.IO) {
+  suspend fun loadRemoteShows(filters: DiscoverFilters) = withContext(dispatchers.IO) {
     val showAnticipated = !filters.hideAnticipated
     val showCollection = !filters.hideCollection
     val genres = filters.genres.toList()
