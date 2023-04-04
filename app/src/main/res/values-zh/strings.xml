@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="menuProgress">进度</string>
+  <string name="menuDiscover">发现</string>
+  <string name="menuCollection">合集</string>
+  <string name="menuNews">新闻</string>
+  <string name="textRateAppTitle">喜欢 Showly 2.0 吗？</string>
+  <string name="textRateAppMessage">您愿意给应用评分吗？\n仅需几秒，感谢！\n\n<i>应用不会被关闭。</i></string>
+  <string name="textRateAppYesButton">好，没问题。</string>
+  <string name="textRateAppNoButton">稍后</string>
+  <string name="textDisclaimerTitle">欢迎!</string>
+  <string name="textDisclaimerText">请注意您 <b>不能</b> 使用此应用观看或下载剧集和电影。\n\n使用 <b>Netflix</b> 等应用来观看。</string>
+  <string name="textDisclaimerConfirmText">好的，我已了解</string>
+  <string name="textWhatsNewTitle">更新内容</string>
+  <string name="textWhatsNewSubtitle">版本： %s</string>
+  <string name="shortcutDiscover">发现</string>
+  <string name="shortcutCollection">合集</string>
+  <string name="shortcutSearch">搜索</string>
+  <string name="shortcutProgress">进度</string>
+</resources>

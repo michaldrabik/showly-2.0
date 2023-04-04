@@ -24,7 +24,7 @@
   <string name="textSpoilersWarning">Kommentti sisältää juonipaljastuksia.\nLue napauttamalla.</string>
   <string name="textCommentedOn">Kirjoittanut %s</string>
   <string name="textNetwork">%1$s (%2$s)</string>
-  <string name="textNetworks">Verkko:</string>
+  <string name="textNetworks" comment="TV network like HBO, AMC, Showtime, Disney etc.">Verkko:</string>
   <string name="textGenres">Tyylilajit:</string>
   <string name="textShows">Sarjat</string>
   <string name="textMovies">Elokuvat</string>

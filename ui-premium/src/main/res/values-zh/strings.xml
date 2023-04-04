@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textPremium">Showly 会员</string>
+  <string name="textPremiumAdFull">成为 Showly 支持者，帮助其开发并获得很酷的额外功能！</string>
+  <string name="textLightThemeTitle">亮色主题</string>
+  <string name="textLightThemeDesc">加入原力的光明一派，解锁适用于主应用程序和桌面小部件的亮色主题。</string>
+  <string name="textCustomImagesTitle">自定义图片</string>
+  <string name="textCustomImagesDesc">为节目和电影设置您自己最喜欢的海报和粉丝作品。支持从手机图库中选择图片或上传您自己的 URL。</string>
+  <string name="textQuickRatingTitle">快速评分</string>
+  <string name="textQuickRatingDesc">不要忘记给您刚刚看过的电影或剧集评分。 使用快速评分功能，每当您标记项目为已看时，可自动对其进行评分。</string>
+  <string name="textWidgetsTitle">透明桌面小部件</string>
+  <string name="textWidgetsDesc">设置桌面小部件背景透明度，以更好地匹配您的手机主屏背景。</string>
+  <string name="textRemoveAdsTitle">移除广告</string>
+  <string name="textRemoveAdsDesc">移除应用中可见的所有广告。</string>
+  <string name="textNewsTitle">新闻模块</string>
+  <string name="textNewsDesc">解锁新闻模块以获取最新关于剧集和电影的文章、新闻和预告。由 Reddit 提供支持。</string>
+  <string name="textViewsTitle">更多列表视图</string>
+  <string name="textViewsDesc">解锁额外的列表视图，比如紧凑列表或网格视图。</string>
+  <string name="textPurchaseThanks">您现已成为 Showly 支持者！\n谢谢您喜欢这款应用！</string>
+</resources>

@@ -24,7 +24,7 @@
   <string name="textSpoilersWarning">هذا التعليق يحتوى على حرق للأحداث.\nاضغط للقراءة.</string>
   <string name="textCommentedOn">تعليق بواسطة %s</string>
   <string name="textNetwork">(%2$s) %1$s</string>
-  <string name="textNetworks">الشبكة التلفزيونية:</string>
+  <string name="textNetworks" comment="TV network like HBO, AMC, Showtime, Disney etc.">الشبكة التلفزيونية:</string>
   <string name="textGenres">التصنيفات:</string>
   <string name="textShows">مسلسلات</string>
   <string name="textMovies">أفلام</string>
