@@ -22,6 +22,7 @@ import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.extensions.add
+import com.michaldrabik.ui_base.utilities.extensions.bump
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
@@ -46,14 +47,23 @@ import com.michaldrabik.ui_progress.helpers.TopOverscrollAdapter
 import com.michaldrabik.ui_progress.main.EpisodeCheckActionUiEvent
 import com.michaldrabik.ui_progress.main.ProgressMainFragment
 import com.michaldrabik.ui_progress.main.ProgressMainViewModel
+import com.michaldrabik.ui_progress.main.RequestWidgetsUpdate
 import com.michaldrabik.ui_progress.progress.recycler.ProgressAdapter
 import com.michaldrabik.ui_progress.progress.recycler.ProgressListItem
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_progress.*
-import kotlinx.android.synthetic.main.layout_progress_empty.*
+import kotlinx.android.synthetic.main.fragment_progress.progressEmptyView
+import kotlinx.android.synthetic.main.fragment_progress.progressOverscroll
+import kotlinx.android.synthetic.main.fragment_progress.progressOverscrollProgress
+import kotlinx.android.synthetic.main.fragment_progress.progressRecycler
+import kotlinx.android.synthetic.main.fragment_progress.progressTipItem
+import kotlinx.android.synthetic.main.layout_progress_empty.progressEmptyDiscoverButton
+import kotlinx.android.synthetic.main.layout_progress_empty.progressEmptyTraktButton
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.everything.android.ui.overscroll.IOverScrollDecor
-import me.everything.android.ui.overscroll.IOverScrollState
+import me.everything.android.ui.overscroll.IOverScrollState.STATE_BOUNCE_BACK
+import me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_START_SIDE
 import me.everything.android.ui.overscroll.OverScrollBounceEffectDecoratorBase
 import me.everything.android.ui.overscroll.VerticalOverScrollBounceEffectDecorator
 
@@ -64,7 +74,7 @@ class ProgressFragment :
   OnScrollResetListener {
 
   private companion object {
-    const val OVERSCROLL_OFFSET = 250F
+    const val OVERSCROLL_OFFSET = 225F
     const val OVERSCROLL_OFFSET_TRANSLATION = 4.5F
   }
 
@@ -74,6 +84,7 @@ class ProgressFragment :
   private var adapter: ProgressAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
   private var overscroll: IOverScrollDecor? = null
+  private var overscrollJob: Job? = null
   private var statusBarHeight = 0
   private var overscrollEnabled = true
   private var isSearching = false
@@ -118,6 +129,8 @@ class ProgressFragment :
       detailsClickListener = { requireMainFragment().openEpisodeDetails(it.show, it.requireEpisode(), it.requireSeason()) },
       checkClickListener = { viewModel.onEpisodeChecked(it) },
       sortChipClickListener = { viewModel.loadSortOrder() },
+      upcomingChipClickListener = { viewModel.setUpcomingFilter(it) },
+      onHoldChipClickListener = { viewModel.setOnHoldFilter(it) },
       missingImageListener = { item: ProgressListItem, force -> viewModel.findMissingImage(item, force) },
       missingTranslationListener = { viewModel.findMissingTranslation(it) },
       listChangeListener = {
@@ -136,10 +149,10 @@ class ProgressFragment :
 
   private fun setupStatusBar() {
     val recyclerPadding = if (moviesEnabled) R.dimen.progressTabsViewPadding else R.dimen.progressTabsViewPaddingNoModes
-    val overscrollPadding = if (moviesEnabled) R.dimen.progressOverscrollIconPadding else R.dimen.progressOverscrollIconPaddingNoModes
+    val overscrollPadding = if (moviesEnabled) R.dimen.progressOverscrollPadding else R.dimen.progressOverscrollPaddingNoModes
     if (statusBarHeight != 0) {
       progressRecycler.updatePadding(top = statusBarHeight + dimenToPx(recyclerPadding))
-      (progressOverscrollIcon.layoutParams as ViewGroup.MarginLayoutParams)
+      (progressOverscroll.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarHeight + dimenToPx(overscrollPadding))
       return
     }
@@ -148,7 +161,7 @@ class ProgressFragment :
       view.updatePadding(top = statusBarHeight + dimenToPx(recyclerPadding))
       (progressEmptyView.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarHeight + dimenToPx(R.dimen.spaceBig))
-      (progressOverscrollIcon.layoutParams as ViewGroup.MarginLayoutParams)
+      (progressOverscroll.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarHeight + dimenToPx(overscrollPadding))
     }
   }
@@ -158,29 +171,37 @@ class ProgressFragment :
     val adapt = TopOverscrollAdapter(progressRecycler)
     overscroll = VerticalOverScrollBounceEffectDecorator(
       adapt,
-      1.75F,
+      1F,
       OverScrollBounceEffectDecoratorBase.DEFAULT_TOUCH_DRAG_MOVE_RATIO_BCK,
       OverScrollBounceEffectDecoratorBase.DEFAULT_DECELERATE_FACTOR
     ).apply {
       setOverScrollUpdateListener { _, state, offset ->
-        progressOverscrollIcon?.run {
+        progressOverscroll?.run {
           if (offset > 0) {
             val value = (offset / OVERSCROLL_OFFSET).coerceAtMost(1F)
             val valueTranslation = offset / OVERSCROLL_OFFSET_TRANSLATION
+            if (value >= 1F) {
+              onOverscrollReach()
+            } else {
+              onOverscrollCancel()
+            }
             when (state) {
-              IOverScrollState.STATE_DRAG_START_SIDE -> {
+              STATE_DRAG_START_SIDE -> {
                 alpha = value
                 scaleX = value
                 scaleY = value
                 translationY = valueTranslation
                 overscrollEnabled = true
               }
-              IOverScrollState.STATE_BOUNCE_BACK -> {
+              STATE_BOUNCE_BACK -> {
                 alpha = value
                 scaleX = value
                 scaleY = value
                 translationY = valueTranslation
-                if (offset >= OVERSCROLL_OFFSET && overscrollEnabled) {
+                if (offset >= OVERSCROLL_OFFSET &&
+                  overscrollEnabled &&
+                  progressOverscrollProgress.progress >= 100
+                ) {
                   overscrollEnabled = false
                   viewModel.startTraktSync()
                 }
@@ -191,10 +212,31 @@ class ProgressFragment :
             scaleX = 0F
             scaleY = 0F
             translationY = 0F
+            onOverscrollCancel()
           }
         }
       }
     }
+  }
+
+  private fun onOverscrollReach() {
+    if (overscrollJob != null) return
+    overscrollJob = viewLifecycleOwner.lifecycleScope.launch {
+      repeat(100) {
+        val progress = it + 1
+        progressOverscrollProgress.progress = progress
+        if (progress >= 100) {
+          progressOverscroll.bump(200)
+        }
+        delay(5)
+      }
+    }
+  }
+
+  private fun onOverscrollCancel() {
+    overscrollJob?.cancel()
+    overscrollJob = null
+    progressOverscrollProgress.progress = 0
   }
 
   private fun openSortOrderDialog(order: SortOrder, type: SortType, newAtTop: Boolean) {
@@ -236,6 +278,9 @@ class ProgressFragment :
         if (event.isQuickRate) requireMainFragment().openRateDialog(event.episode)
         else parentViewModel.setWatchedEpisode(event.episode)
       }
+      is RequestWidgetsUpdate -> {
+        (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
+      }
     }
   }
 
@@ -246,8 +291,10 @@ class ProgressFragment :
         adapter?.setItems(it, resetScroll)
         progressEmptyView.visibleIf(it.isEmpty() && !isLoading && !isSearching)
         progressTipItem.visibleIf(it.count() >= 3 && !isTipShown(Tip.WATCHLIST_ITEM_PIN))
-        progressRecycler.fadeIn(withHardware = true).add(animations)
-        (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
+        progressRecycler.fadeIn(
+          duration = 200,
+          withHardware = true
+        ).add(animations)
       }
       isOverScrollEnabled.let {
         if (it) {
@@ -272,6 +319,8 @@ class ProgressFragment :
   override fun setupBackPressed() = Unit
 
   override fun onDestroyView() {
+    overscrollJob?.cancel()
+    overscrollJob = null
     overscroll = null
     adapter = null
     layoutManager = null

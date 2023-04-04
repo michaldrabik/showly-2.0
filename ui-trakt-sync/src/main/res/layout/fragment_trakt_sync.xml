@@ -109,6 +109,7 @@
 
     <com.google.android.material.checkbox.MaterialCheckBox
       android:id="@+id/traktSyncImportCheckbox"
+      style="@style/ShowlyCheckbox"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spaceBig"
@@ -117,7 +118,6 @@
       android:checked="true"
       android:gravity="center"
       android:text="@string/textTraktSyncFromTraktToShowly"
-      app:buttonTint="@color/selector_main_checkbox"
       app:layout_constraintBottom_toTopOf="@id/traktSyncExportCheckbox"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
@@ -126,6 +126,7 @@
 
     <com.google.android.material.checkbox.MaterialCheckBox
       android:id="@+id/traktSyncExportCheckbox"
+      style="@style/ShowlyCheckbox"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spaceBig"
@@ -133,7 +134,6 @@
       android:checked="true"
       android:gravity="center"
       android:text="@string/textTraktSyncFromShowlyToTrakt"
-      app:buttonTint="@color/selector_main_checkbox"
       app:layout_constraintBottom_toTopOf="@id/traktSyncButton"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"

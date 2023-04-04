@@ -25,5 +25,7 @@ sealed class ShowDetailsEpisodesEvent<T>(action: T) : Event<T>(action) {
     val traktIds: List<IdTrakt>
   ) : ShowDetailsEpisodesEvent<Int>(actionId)
 
+  object RequestWidgetsUpdate : ShowDetailsEpisodesEvent<Unit>(Unit)
+
   object Finish : ShowDetailsEpisodesEvent<Unit>(Unit)
 }

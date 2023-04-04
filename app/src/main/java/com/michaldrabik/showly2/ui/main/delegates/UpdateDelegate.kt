@@ -32,6 +32,7 @@ class MainUpdateDelegate : UpdateDelegate, DefaultLifecycleObserver {
   private lateinit var updateListener: InstallStateUpdatedListener
 
   private var onUpdateDownloaded: ((AppUpdateManager) -> Unit)? = null
+  private var isCompleted = false
 
   override fun registerUpdate(
     activity: AppCompatActivity,
@@ -56,26 +57,37 @@ class MainUpdateDelegate : UpdateDelegate, DefaultLifecycleObserver {
       }
     }
 
-    appUpdateManager.appUpdateInfo.addOnSuccessListener { updateInfo ->
-      Timber.d("Update info: $updateInfo")
-      if (updateInfo.installStatus() == InstallStatus.DOWNLOADED) {
-        onUpdateDownloaded?.invoke(appUpdateManager)
-        return@addOnSuccessListener
-      }
+    getAppUpdateInfo()
+  }
 
-      if (updateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
-        (updateInfo.clientVersionStalenessDays() ?: 0) >= DAYS_FOR_UPDATE &&
-        updateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
-      ) {
-        Timber.d("Starting update flow...")
-        startUpdate(appUpdateManager, updateInfo)
+  private fun getAppUpdateInfo() {
+    appUpdateManager.appUpdateInfo
+      .addOnCompleteListener {
+        if (it.isSuccessful) {
+          val updateInfo = it.result
+          Timber.d("Update info success: $updateInfo")
+
+          if (updateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+            onUpdateDownloaded?.invoke(appUpdateManager)
+            return@addOnCompleteListener
+          }
+
+          if (updateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
+            (updateInfo.clientVersionStalenessDays() ?: 0) >= DAYS_FOR_UPDATE &&
+            updateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
+          ) {
+            Timber.d("Starting update flow...")
+            startUpdate(appUpdateManager, updateInfo)
+          }
+        }
+        isCompleted = true
       }
-    }
   }
 
   override fun onDestroy(owner: LifecycleOwner) {
     appUpdateManager.unregisterListener(updateListener)
     onUpdateDownloaded = null
+    isCompleted = false
     Timber.d("onDestroy()")
     super.onDestroy(owner)
   }
@@ -84,7 +96,15 @@ class MainUpdateDelegate : UpdateDelegate, DefaultLifecycleObserver {
     appUpdateManager: AppUpdateManager,
     updateInfo: AppUpdateInfo,
   ) {
+    if (isCompleted) {
+      return
+    }
     appUpdateManager.registerListener(updateListener)
-    appUpdateManager.startUpdateFlowForResult(updateInfo, AppUpdateType.FLEXIBLE, activity, REQUEST_APP_UPDATE)
+    appUpdateManager.startUpdateFlowForResult(
+      updateInfo,
+      AppUpdateType.FLEXIBLE,
+      activity,
+      REQUEST_APP_UPDATE
+    )
   }
 }

@@ -1,4 +1,6 @@
-* (Premium) Added additional collection view types: compact list and grid view
+* Added new filters for Progress and Collection tabs
+* Updated Pull To Sync to avoid accidental syncs
+* Added monochrome icon for Android 13
 * Bugfixes
 
 Do you enjoy Showly and want to support the developer?

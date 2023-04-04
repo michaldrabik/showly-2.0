@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_search.cases
 
 import com.michaldrabik.common.Config
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.MovieImagesProvider
@@ -15,7 +16,7 @@ import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_search.recycler.SearchListItem
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import java.util.UUID
 import javax.inject.Inject
 import com.michaldrabik.data_local.database.model.Movie as MovieDb
@@ -23,6 +24,7 @@ import com.michaldrabik.data_local.database.model.Show as ShowDb
 
 @ViewModelScoped
 class SearchSuggestionsCase @Inject constructor(
+  private val dispatchers: CoroutineDispatchers,
   private val localSource: LocalDataSource,
   private val mappers: Mappers,
   private val translationsRepository: TranslationsRepository,
@@ -36,7 +38,7 @@ class SearchSuggestionsCase @Inject constructor(
   private var showTranslationsCache: Map<Long, Translation>? = null
   private var movieTranslationsCache: Map<Long, Translation>? = null
 
-  suspend fun preloadCache() {
+  suspend fun preloadCache() = withContext(dispatchers.IO) {
     val language = translationsRepository.getLanguage()
     val moviesEnabled = settingsRepository.isMoviesEnabled
 
@@ -53,7 +55,7 @@ class SearchSuggestionsCase @Inject constructor(
     }
   }
 
-  suspend fun loadSuggestions(query: String) = coroutineScope {
+  suspend fun loadSuggestions(query: String) = withContext(dispatchers.IO) {
     val showsDef = async { loadShows(query.trim(), 5) }
     val moviesDef = async { loadMovies(query.trim(), 5) }
 

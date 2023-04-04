@@ -12,6 +12,8 @@ class ProgressAdapter(
   private val itemClickListener: (ProgressListItem) -> Unit,
   private val itemLongClickListener: (ProgressListItem) -> Unit,
   private val sortChipClickListener: () -> Unit,
+  private val upcomingChipClickListener: (Boolean) -> Unit,
+  private val onHoldChipClickListener: (Boolean) -> Unit,
   private val detailsClickListener: ((ProgressListItem.Episode) -> Unit)?,
   private val checkClickListener: ((ProgressListItem.Episode) -> Unit)?,
   private val headerClickListener: ((ProgressListItem.Header) -> Unit)?,
@@ -50,6 +52,8 @@ class ProgressAdapter(
       VIEW_TYPE_FILTERS -> BaseViewHolder(
         ProgressFiltersView(parent.context).apply {
           onSortChipClicked = this@ProgressAdapter.sortChipClickListener
+          upcomingChipClicked = this@ProgressAdapter.upcomingChipClickListener
+          onHoldChipClicked = this@ProgressAdapter.onHoldChipClickListener
         }
       )
       else -> throw IllegalStateException()
@@ -59,7 +63,7 @@ class ProgressAdapter(
     when (val item = asyncDiffer.currentList[position]) {
       is ProgressListItem.Episode -> (holder.itemView as ProgressItemView).bind(item)
       is ProgressListItem.Header -> (holder.itemView as ProgressHeaderView).bind(item)
-      is ProgressListItem.Filters -> (holder.itemView as ProgressFiltersView).bind(item.sortOrder, item.sortType)
+      is ProgressListItem.Filters -> (holder.itemView as ProgressFiltersView).bind(item)
     }
   }
 

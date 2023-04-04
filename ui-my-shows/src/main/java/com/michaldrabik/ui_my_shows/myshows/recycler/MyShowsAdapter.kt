@@ -26,6 +26,8 @@ class MyShowsAdapter(
   private val itemLongClickListener: (ListItem) -> Unit,
   private val onSortOrderClickListener: (MyShowsSection, SortOrder, SortType) -> Unit,
   private val onListViewModeClickListener: () -> Unit,
+  private val onNetworksClickListener: () -> Unit,
+  private val onGenresClickListener: () -> Unit,
   private val onTypeClickListener: () -> Unit,
   private val missingImageListener: (ListItem, Boolean) -> Unit,
   private val missingTranslationListener: (ListItem) -> Unit,
@@ -77,11 +79,13 @@ class MyShowsAdapter(
     val item = asyncDiffer.currentList[position]
     when (holder.itemViewType) {
       VIEW_TYPE_HEADER -> (holder.itemView as MyShowHeaderView).bind(
-        item.header!!,
-        listViewMode,
-        onTypeClickListener,
-        onSortOrderClickListener,
-        onListViewModeClickListener
+        item = item.header!!,
+        viewMode = listViewMode,
+        typeClickListener = onTypeClickListener,
+        sortClickListener = onSortOrderClickListener,
+        networksClickListener = onNetworksClickListener,
+        genresClickListener = onGenresClickListener,
+        listModeClickListener = onListViewModeClickListener
       )
       VIEW_TYPE_RECENTS_SECTION -> (holder.itemView as MyShowsRecentsView).bind(
         item.recentsSection!!,

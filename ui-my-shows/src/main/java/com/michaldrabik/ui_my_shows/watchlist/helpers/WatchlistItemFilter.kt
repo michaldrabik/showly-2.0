@@ -19,6 +19,26 @@ class WatchlistItemFilter @Inject constructor() {
     return true
   }
 
+  fun filterNetworks(
+    item: CollectionListItem,
+    networks: List<String>,
+  ): Boolean {
+    if (networks.isEmpty()) {
+      return true
+    }
+    return item.show.network in networks
+  }
+
+  fun filterGenres(
+    item: CollectionListItem,
+    genres: List<String>,
+  ): Boolean {
+    if (genres.isEmpty()) {
+      return true
+    }
+    return item.show.genres.any { genre -> genre.lowercase() in genres }
+  }
+
   fun filterByQuery(
     item: CollectionListItem.ShowItem,
     query: String,

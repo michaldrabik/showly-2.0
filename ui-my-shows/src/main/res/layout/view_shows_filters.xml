@@ -17,6 +17,7 @@
     android:overScrollMode="never"
     android:paddingStart="@dimen/spaceMedium"
     android:paddingEnd="@dimen/spaceMedium"
+    android:scrollbars="none"
     >
 
     <LinearLayout
@@ -41,6 +42,20 @@
           />
 
         <com.google.android.material.chip.Chip
+          android:id="@+id/followedShowsNetworksChip"
+          style="@style/ShowlyChip.Filter"
+          android:checkable="false"
+          android:text="@string/textNetworks"
+          />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/followedShowsGenresChip"
+          style="@style/ShowlyChip.Filter"
+          android:checkable="false"
+          android:text="@string/textGenres"
+          />
+
+        <com.google.android.material.chip.Chip
           android:id="@+id/followedShowsUpcomingChip"
           style="@style/ShowlyChip.Filter"
           android:text="@string/textWatchlistIncoming"
@@ -51,6 +66,7 @@
         <com.google.android.material.chip.Chip
           android:id="@+id/followedShowsListViewChip"
           style="@style/ShowlyChip.Filter"
+          android:checkable="false"
           app:chipIcon="@drawable/ic_view_grid"
           app:chipIconEnabled="true"
           app:chipIconTint="?android:textColorPrimary"

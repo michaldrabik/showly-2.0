@@ -27,5 +27,7 @@ sealed class MovieDetailsEvent<T>(action: T) : Event<T>(action) {
     val person: Person
   ) : MovieDetailsEvent<Person>(person)
 
+  object RequestWidgetsUpdate : MovieDetailsEvent<Unit>(Unit)
+
   object Finish : MovieDetailsEvent<Unit>(Unit)
 }

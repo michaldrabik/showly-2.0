@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_my_shows.myshows.cases
 
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.Season
@@ -13,39 +14,49 @@ import com.michaldrabik.ui_model.ShowStatus.RETURNING
 import com.michaldrabik.ui_my_shows.myshows.helpers.MyShowsItemSorter
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ViewModelScoped
 class MyShowsLoadShowsCase @Inject constructor(
+  private val dispatchers: CoroutineDispatchers,
   private val sorter: MyShowsItemSorter,
   private val showsRepository: ShowsRepository,
   private val settingsRepository: SettingsRepository,
   private val localSource: LocalDataSource,
 ) {
 
-  suspend fun loadAllShows() = showsRepository.myShows.loadAll()
+  suspend fun loadAllShows() = withContext(dispatchers.IO) {
+    showsRepository.myShows.loadAll()
+  }
 
-  suspend fun loadRecentShows(): List<Show> {
+  suspend fun loadRecentShows(): List<Show> = withContext(dispatchers.IO) {
     val amount = settingsRepository.load().myRecentsAmount
-    return showsRepository.myShows.loadAllRecent(amount)
+    showsRepository.myShows.loadAllRecent(amount)
   }
 
   suspend fun loadSeasonsForShows(
     traktIds: List<Long>,
     buffer: MutableList<Season> = mutableListOf()
-  ): List<Season> {
+  ): List<Season> = withContext(dispatchers.IO) {
     val batch = traktIds.take(500)
-    if (batch.isEmpty()) return buffer
+    if (batch.isEmpty()) {
+      return@withContext buffer
+    }
+
     val seasons = localSource.seasons.getAllByShowsIds(batch)
       .filter { it.seasonNumber != 0 }
     buffer.addAll(seasons)
-    return loadSeasonsForShows(traktIds.filter { it !in batch }, buffer)
+
+    loadSeasonsForShows(traktIds.filter { it !in batch }, buffer)
   }
 
   fun filterSectionShows(
     allShows: List<MyShowsItem>,
     allSeasons: List<Season>,
     searchQuery: String? = null,
+    networks: List<String>,
+    genres: List<String>
   ): List<MyShowsItem> {
     val shows = allShows
       .filter { showItem ->
@@ -69,6 +80,8 @@ class MyShowsLoadShowsCase @Inject constructor(
 
     return shows
       .filterByQuery(searchQuery)
+      .filterByNetwork(networks)
+      .filterByGenre(genres)
       .sortedWith(
         sorter.sort(
           sortOrder = settingsRepository.sorting.myShowsAllSortOrder,
@@ -84,4 +97,10 @@ class MyShowsLoadShowsCase @Inject constructor(
         it.translation?.title?.contains(query, true) == true
     }
   }
+
+  private fun List<MyShowsItem>.filterByNetwork(networks: List<String>) =
+    filter { networks.isEmpty() || it.show.network in networks }
+
+  private fun List<MyShowsItem>.filterByGenre(genres: List<String>) =
+    filter { genres.isEmpty() || it.show.genres.any { genre -> genre.lowercase() in genres } }
 }

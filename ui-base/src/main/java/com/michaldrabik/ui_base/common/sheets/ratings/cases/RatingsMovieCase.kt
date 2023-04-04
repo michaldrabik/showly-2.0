@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_base.common.sheets.ratings.cases
 
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.common.errors.ErrorHelper
 import com.michaldrabik.common.errors.ShowlyError
 import com.michaldrabik.repository.RatingsRepository
@@ -9,10 +10,12 @@ import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.TraktRating
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ViewModelScoped
 class RatingsMovieCase @Inject constructor(
+  private val dispatchers: CoroutineDispatchers,
   private val userTraktManager: UserTraktManager,
   private val ratingsRepository: RatingsRepository,
 ) {
@@ -21,30 +24,32 @@ class RatingsMovieCase @Inject constructor(
     private val RATING_VALID_RANGE = 1..10
   }
 
-  suspend fun loadRating(idTrakt: IdTrakt): TraktRating {
-    val movie = Movie.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = idTrakt))
-    return try {
-      val rating = ratingsRepository.movies.loadRatings(listOf(movie))
-      rating.firstOrNull() ?: TraktRating.EMPTY
-    } catch (error: Throwable) {
-      handleError(error)
-      TraktRating.EMPTY
+  suspend fun loadRating(idTrakt: IdTrakt): TraktRating =
+    withContext(dispatchers.IO) {
+      val movie = Movie.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = idTrakt))
+      try {
+        val rating = ratingsRepository.movies.loadRatings(listOf(movie))
+        rating.firstOrNull() ?: TraktRating.EMPTY
+      } catch (error: Throwable) {
+        handleError(error)
+        TraktRating.EMPTY
+      }
     }
-  }
 
-  suspend fun saveRating(idTrakt: IdTrakt, rating: Int) {
-    check(rating in RATING_VALID_RANGE)
-    userTraktManager.checkAuthorization()
+  suspend fun saveRating(idTrakt: IdTrakt, rating: Int) =
+    withContext(dispatchers.IO) {
+      check(rating in RATING_VALID_RANGE)
+      userTraktManager.checkAuthorization()
 
-    val movie = Movie.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = idTrakt))
-    try {
-      ratingsRepository.movies.addRating(movie, rating)
-    } catch (error: Throwable) {
-      handleError(error)
+      val movie = Movie.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = idTrakt))
+      try {
+        ratingsRepository.movies.addRating(movie, rating)
+      } catch (error: Throwable) {
+        handleError(error)
+      }
     }
-  }
 
-  suspend fun deleteRating(idTrakt: IdTrakt) {
+  suspend fun deleteRating(idTrakt: IdTrakt) = withContext(dispatchers.IO) {
     userTraktManager.checkAuthorization()
 
     val movie = Movie.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = idTrakt))

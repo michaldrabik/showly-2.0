@@ -96,7 +96,7 @@ class QuickSyncWorker @AssistedInject constructor(
     val notificationMessage = when (showlyError) {
       is AccountLimitsError -> R.string.errorAccountListsLimitsReached
       is UnauthorizedError -> R.string.errorTraktAuthorization
-      else -> R.string.textTraktQuickSyncErrorFull
+      else -> R.string.textTraktSyncErrorFull
     }
     val theme = settingsRepository.theme
     applicationContext.notificationManager().notify(

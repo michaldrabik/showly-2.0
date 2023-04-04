@@ -2,6 +2,7 @@ package com.michaldrabik.ui_lists.lists.cases
 
 import com.michaldrabik.common.Mode.MOVIES
 import com.michaldrabik.common.Mode.SHOWS
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.CustomListItem
 import com.michaldrabik.repository.ListsRepository
@@ -19,11 +20,12 @@ import com.michaldrabik.ui_model.ImageType.POSTER
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ViewModelScoped
 class MainListsCase @Inject constructor(
+  private val dispatchers: CoroutineDispatchers,
   private val localSource: LocalDataSource,
   private val mappers: Mappers,
   private val listsRepository: ListsRepository,
@@ -38,7 +40,7 @@ class MainListsCase @Inject constructor(
     private const val IMAGES_LIMIT = 3
   }
 
-  suspend fun loadLists(searchQuery: String?) = coroutineScope {
+  suspend fun loadLists(searchQuery: String?) = withContext(dispatchers.IO) {
     val lists = listsRepository.loadAll()
     val dateFormat = dateProvider.loadFullDayFormat()
     val sorting = Pair(

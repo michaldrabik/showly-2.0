@@ -2,6 +2,7 @@ package com.michaldrabik.ui_settings.cases
 
 import android.net.Uri
 import androidx.work.WorkManager
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.data_local.sources.TraktSyncLogLocalDataSource
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.UserTraktManager
@@ -10,10 +11,12 @@ import com.michaldrabik.ui_base.trakt.TraktSyncWorker
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_model.TraktSyncSchedule
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ViewModelScoped
 class SettingsTraktCase @Inject constructor(
+  private val dispatchers: CoroutineDispatchers,
   private val settingsRepository: SettingsRepository,
   private val ratingsRepository: RatingsRepository,
   private val syncLogLocalSource: TraktSyncLogLocalDataSource,
@@ -59,7 +62,9 @@ class SettingsTraktCase @Inject constructor(
     if (code.isNullOrBlank()) {
       throw IllegalStateException("Invalid Trakt authorization code.")
     }
-    userManager.authorize(code)
+    withContext(dispatchers.IO) {
+      userManager.authorize(code)
+    }
   }
 
   suspend fun logoutTrakt() {
@@ -87,5 +92,8 @@ class SettingsTraktCase @Inject constructor(
 
   fun isTraktAuthorized() = userManager.isAuthorized()
 
-  suspend fun getTraktUsername() = userManager.getUsername()
+  suspend fun getTraktUsername() =
+    withContext(dispatchers.IO) {
+      userManager.getUsername()
+    }
 }

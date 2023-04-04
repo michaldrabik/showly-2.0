@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_progress_movies.calendar.cases.items
 
 import com.michaldrabik.common.Config
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.repository.TranslationsRepository
@@ -13,12 +14,12 @@ import com.michaldrabik.ui_progress_movies.calendar.helpers.filters.CalendarFilt
 import com.michaldrabik.ui_progress_movies.calendar.helpers.groupers.CalendarGrouper
 import com.michaldrabik.ui_progress_movies.calendar.helpers.sorter.CalendarSorter
 import com.michaldrabik.ui_progress_movies.calendar.recycler.CalendarMovieListItem
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
 
 abstract class CalendarMoviesItemsCase constructor(
+  private val dispatchers: CoroutineDispatchers,
   private val moviesRepository: MoviesRepository,
   private val translationsRepository: TranslationsRepository,
   private val imagesProvider: MovieImagesProvider,
@@ -30,7 +31,7 @@ abstract class CalendarMoviesItemsCase constructor(
   abstract val sorter: CalendarSorter
 
   suspend fun loadItems(searchQuery: String? = ""): List<CalendarMovieListItem> =
-    withContext(Dispatchers.Default) {
+    withContext(dispatchers.IO) {
       val now = nowUtc().toLocalZone()
       val language = translationsRepository.getLanguage()
       val dateFormat = dateFormatProvider.loadFullDayFormat()

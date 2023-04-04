@@ -20,6 +20,7 @@ import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_progress_movies.main.MovieCheckActionUiEvent
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainUiState
+import com.michaldrabik.ui_progress_movies.main.RequestWidgetsUpdate
 import com.michaldrabik.ui_progress_movies.progress.cases.ProgressMoviesItemsCase
 import com.michaldrabik.ui_progress_movies.progress.cases.ProgressMoviesPinnedCase
 import com.michaldrabik.ui_progress_movies.progress.cases.ProgressMoviesSortCase
@@ -83,6 +84,7 @@ class ProgressMoviesViewModel @Inject constructor(
       itemsState.value = items
       scrollState.value = Event(resetScroll)
       overscrollState.value = userTraktManager.isAuthorized() && items.isNotEmpty()
+      eventChannel.send(RequestWidgetsUpdate)
     }
   }
 

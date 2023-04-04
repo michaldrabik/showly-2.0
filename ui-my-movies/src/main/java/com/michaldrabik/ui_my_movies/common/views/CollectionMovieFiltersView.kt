@@ -32,11 +32,14 @@ class CollectionMovieFiltersView : FrameLayout {
   private val binding = ViewMoviesFiltersBinding.inflate(LayoutInflater.from(context), this)
 
   var onSortChipClicked: ((SortOrder, SortType) -> Unit)? = null
+  var onGenreChipClicked: (() -> Unit)? = null
   var onFilterUpcomingClicked: ((Boolean) -> Unit)? = null
   var onListViewModeClicked: (() -> Unit)? = null
 
   init {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+    clipChildren = false
+    clipToPadding = false
   }
 
   var isUpcomingChipVisible: Boolean
@@ -65,6 +68,15 @@ class CollectionMovieFiltersView : FrameLayout {
         }
       )
 
+      followedMoviesGenresChip.isSelected = item.genres.isNotEmpty()
+      followedMoviesGenresChip.text = when {
+        item.genres.isEmpty() -> context.getString(R.string.textGenres).filter { it.isLetter() }
+        item.genres.size == 1 -> context.getString(item.genres.first().displayName)
+        item.genres.size == 2 -> "${context.getString(item.genres[0].displayName)}, ${context.getString(item.genres[1].displayName)}"
+        else -> "${context.getString(item.genres[0].displayName)}, ${context.getString(item.genres[1].displayName)} + ${item.genres.size - 2}"
+      }
+
+      followedMoviesGenresChip.onClick { onGenreChipClicked?.invoke() }
       followedMoviesSortingChip.onClick { onSortChipClicked?.invoke(item.sortOrder, item.sortType) }
       followedMoviesUpcomingChip.onClick { onFilterUpcomingClicked?.invoke(followedMoviesUpcomingChip.isChecked) }
       followedMoviesListViewChip.onClick { onListViewModeClicked?.invoke() }

@@ -7,12 +7,13 @@ import com.michaldrabik.ui_progress_movies.R
 import com.michaldrabik.ui_progress_movies.calendar.recycler.CalendarMovieListItem
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
 import org.junit.Test
 import java.time.LocalDate
 import java.time.ZonedDateTime
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @Suppress("EXPERIMENTAL_API_USAGE")
 class CalendarRecentsGrouperTest : BaseMockTest() {
 
@@ -25,8 +26,8 @@ class CalendarRecentsGrouperTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should group past items by time properly`() = runBlockingTest {
-    val zonedNow = ZonedDateTime.parse("2021-12-20T18:00:00Z")
+  fun `Should group past items by time properly`() {
+    val zonedNow = ZonedDateTime.parse("2021-12-20T12:00:00Z")
     val now = LocalDate.parse("2021-12-20") // Monday
     val movie1 = Movie.EMPTY.copy(released = now.minusDays(1))
     val movie2 = Movie.EMPTY.copy(released = now.minusDays(7))
@@ -60,7 +61,7 @@ class CalendarRecentsGrouperTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should not include items older than 90 days`() = runBlockingTest {
+  fun `Should not include items older than 90 days`() {
     val zonedNow = ZonedDateTime.parse("2021-12-20T18:00:00Z")
     val now = LocalDate.parse("2021-12-20") // Monday
     val movie1 = Movie.EMPTY.copy(released = now.minusDays(91))

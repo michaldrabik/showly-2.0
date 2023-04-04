@@ -26,6 +26,7 @@ class MyMoviesAdapter(
   private val missingImageListener: (MyMoviesItem, Boolean) -> Unit,
   private val missingTranslationListener: (MyMoviesItem) -> Unit,
   private val onSortOrderClickListener: (SortOrder, SortType) -> Unit,
+  private val onGenresClickListener: () -> Unit,
   private val onListViewModeClickListener: () -> Unit,
   listChangeListener: (() -> Unit),
 ) : BaseMovieAdapter<MyMoviesItem>(
@@ -49,11 +50,6 @@ class MyMoviesAdapter(
       field = value
       notifyItemRangeChanged(0, asyncDiffer.currentList.size)
     }
-
-  fun setItems(newItems: List<MyMoviesItem>, notifyChangeList: List<Type>?) {
-    val notifyChange = notifyChangeList?.contains(Type.ALL_MOVIES_ITEM) == true
-    super.setItems(newItems, notifyChange)
-  }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     when (viewType) {
@@ -82,6 +78,7 @@ class MyMoviesAdapter(
         item.header!!,
         listViewMode,
         onSortOrderClickListener,
+        onGenresClickListener,
         onListViewModeClickListener
       )
       VIEW_TYPE_RECENTS_SECTION -> (holder.itemView as MyMoviesRecentsView).bind(
@@ -104,6 +101,5 @@ class MyMoviesAdapter(
       Type.HEADER -> VIEW_TYPE_HEADER
       Type.ALL_MOVIES_ITEM -> VIEW_TYPE_MOVIE_ITEM
       Type.RECENT_MOVIES -> VIEW_TYPE_RECENTS_SECTION
-      else -> throw IllegalStateException()
     }
 }

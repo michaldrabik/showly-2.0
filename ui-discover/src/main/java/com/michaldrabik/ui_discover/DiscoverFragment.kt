@@ -30,6 +30,7 @@ import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
+import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
 import com.michaldrabik.ui_discover.recycler.DiscoverAdapter
@@ -39,7 +40,12 @@ import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_ITEM_MENU
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_discover.*
+import kotlinx.android.synthetic.main.fragment_discover.discoverFiltersView
+import kotlinx.android.synthetic.main.fragment_discover.discoverModeTabsView
+import kotlinx.android.synthetic.main.fragment_discover.discoverRecycler
+import kotlinx.android.synthetic.main.fragment_discover.discoverRoot
+import kotlinx.android.synthetic.main.fragment_discover.discoverSearchView
+import kotlinx.android.synthetic.main.fragment_discover.discoverSwipeRefresh
 import kotlin.random.Random
 
 @AndroidEntryPoint
@@ -273,7 +279,7 @@ class DiscoverFragment :
         val resetScroll = resetScroll?.consume() == true
         adapter?.setItems(it, resetScroll)
         layoutManager?.withSpanSizeLookup { pos -> adapter?.getItems()?.get(pos)?.image?.type?.spanSize!! }
-        discoverRecycler.fadeIn()
+        discoverRecycler.fadeIn(200, withHardware = true)
       }
       isSyncing?.let {
         discoverSearchView.setTraktProgress(it)
@@ -289,7 +295,7 @@ class DiscoverFragment :
       }
       filters?.let {
         if (discoverFiltersView.visibility != View.VISIBLE) {
-          discoverFiltersView.fadeIn(duration = 300)
+          discoverFiltersView.visible()
         }
         discoverFiltersView.bind(it)
       }

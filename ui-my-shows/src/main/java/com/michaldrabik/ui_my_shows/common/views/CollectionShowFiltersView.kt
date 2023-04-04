@@ -34,9 +34,13 @@ class CollectionShowFiltersView : FrameLayout {
   var onSortChipClicked: ((SortOrder, SortType) -> Unit)? = null
   var onFilterUpcomingClicked: ((Boolean) -> Unit)? = null
   var onListViewModeClicked: (() -> Unit)? = null
+  var onNetworksChipClick: (() -> Unit)? = null
+  var onGenresChipClick: (() -> Unit)? = null
 
   init {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+    clipChildren = false
+    clipToPadding = false
   }
 
   var isUpcomingChipVisible: Boolean
@@ -57,6 +61,22 @@ class CollectionShowFiltersView : FrameLayout {
       }
       followedShowsSortingChip.closeIcon = ContextCompat.getDrawable(context, sortIcon)
       followedShowsSortingChip.text = context.getText(item.sortOrder.displayString)
+
+      followedShowsNetworksChip.isSelected = item.networks.isNotEmpty()
+      followedShowsNetworksChip.text = when {
+        item.networks.isEmpty() -> context.getString(R.string.textNetworks).filter { it.isLetter() }
+        item.networks.size == 1 -> item.networks[0].channels.first()
+        else -> throw IllegalStateException()
+      }
+
+      followedShowsGenresChip.isSelected = item.genres.isNotEmpty()
+      followedShowsGenresChip.text = when {
+        item.genres.isEmpty() -> context.getString(R.string.textGenres).filter { it.isLetter() }
+        item.genres.size == 1 -> context.getString(item.genres.first().displayName)
+        item.genres.size == 2 -> "${context.getString(item.genres[0].displayName)}, ${context.getString(item.genres[1].displayName)}"
+        else -> "${context.getString(item.genres[0].displayName)}, ${context.getString(item.genres[1].displayName)} + ${item.genres.size - 2}"
+      }
+
       followedShowsUpcomingChip.isChecked = item.isUpcoming
       followedShowsListViewChip.setChipIconResource(
         when (viewMode) {
@@ -68,6 +88,8 @@ class CollectionShowFiltersView : FrameLayout {
       followedShowsSortingChip.onClick { onSortChipClicked?.invoke(item.sortOrder, item.sortType) }
       followedShowsUpcomingChip.onClick { onFilterUpcomingClicked?.invoke(followedShowsUpcomingChip.isChecked) }
       followedShowsListViewChip.onClick { onListViewModeClicked?.invoke() }
+      followedShowsNetworksChip.onClick { onNetworksChipClick?.invoke() }
+      followedShowsGenresChip.onClick { onGenresChipClick?.invoke() }
     }
   }
 

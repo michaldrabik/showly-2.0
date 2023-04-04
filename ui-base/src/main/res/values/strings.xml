@@ -24,6 +24,8 @@
   <string name="textSpoilersWarning">This comment contains spoilers.\nTap to read.</string>
   <string name="textCommentedOn">Commented by %s</string>
   <string name="textNetwork">%1$s (%2$s)</string>
+  <string name="textNetworks" comment="TV network like HBO, AMC, Showtime, Disney etc.">Network:</string>
+  <string name="textGenres">Genres:</string>
   <string name="textTba" translatable="false">TBA</string>
   <string name="textShows">Shows</string>
   <string name="textMovies">Movies</string>

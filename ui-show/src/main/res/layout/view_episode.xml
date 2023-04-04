@@ -106,10 +106,10 @@
 
   <com.google.android.material.checkbox.MaterialCheckBox
     android:id="@+id/episodeCheckbox"
+    style="@style/ShowlyCheckbox"
     android:layout_width="32dp"
     android:layout_height="@dimen/episodeViewHeight"
     android:layout_marginEnd="@dimen/spaceNormal"
-    app:buttonTint="@color/selector_main_checkbox"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toTopOf="parent"

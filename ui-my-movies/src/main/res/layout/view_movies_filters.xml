@@ -17,6 +17,7 @@
     android:overScrollMode="never"
     android:paddingStart="@dimen/spaceMedium"
     android:paddingEnd="@dimen/spaceMedium"
+    android:scrollbars="none"
     >
 
     <com.google.android.material.chip.ChipGroup
@@ -35,6 +36,13 @@
         />
 
       <com.google.android.material.chip.Chip
+        android:id="@+id/followedMoviesGenresChip"
+        style="@style/ShowlyChip.Filter"
+        android:checkable="false"
+        android:text="@string/textGenres"
+        />
+
+      <com.google.android.material.chip.Chip
         android:id="@+id/followedMoviesUpcomingChip"
         style="@style/ShowlyChip.Filter"
         android:text="@string/textWatchlistIncoming"
@@ -45,6 +53,7 @@
       <com.google.android.material.chip.Chip
         android:id="@+id/followedMoviesListViewChip"
         style="@style/ShowlyChip.Filter"
+        android:checkable="false"
         app:chipIcon="@drawable/ic_view_grid"
         app:chipIconEnabled="true"
         app:chipIconTint="?android:textColorPrimary"

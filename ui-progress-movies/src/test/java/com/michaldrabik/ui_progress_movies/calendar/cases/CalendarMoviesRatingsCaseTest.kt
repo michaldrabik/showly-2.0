@@ -29,7 +29,11 @@ class CalendarMoviesRatingsCaseTest : BaseMockTest() {
     coEvery { settingsRepository.isPremium } returns true
     coEvery { settingsRepository.load().traktQuickRateEnabled } returns true
 
-    SUT = CalendarMoviesRatingsCase(userTraktManager, settingsRepository)
+    SUT = CalendarMoviesRatingsCase(
+      testDispatchers,
+      userTraktManager,
+      settingsRepository
+    )
   }
 
   @After

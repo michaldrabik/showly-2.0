@@ -23,6 +23,6 @@ enum class Genre(
   WESTERN("western", R.string.textGenreWestern);
 
   companion object {
-    fun fromSlug(slug: String) = values().find { it.slug.equals(slug, true) }
+    fun fromSlug(slug: String) = values().find { it.slug.equals(slug, ignoreCase = true) }
   }
 }

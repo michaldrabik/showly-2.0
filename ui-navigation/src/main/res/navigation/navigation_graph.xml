@@ -550,6 +550,16 @@
       app:launchSingleTop="true"
       />
     <action
+      android:id="@+id/actionFollowedShowsFragmentToNetworks"
+      app:destination="@id/collectionFiltersNetworkDialog"
+      app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionFollowedShowsFragmentToGenres"
+      app:destination="@id/collectionFiltersGenreDialog"
+      app:launchSingleTop="true"
+      />
+    <action
       android:id="@+id/actionFollowedShowsFragmentToSearch"
       app:destination="@id/searchFragment"
       app:launchSingleTop="true"
@@ -615,6 +625,11 @@
     <action
       android:id="@+id/actionFollowedMoviesFragmentToPremium"
       app:destination="@id/premiumFragment"
+      app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionFollowedMoviesFragmentToGenres"
+      app:destination="@id/collectionMoviesFiltersGenreDialog"
       app:launchSingleTop="true"
       />
   </fragment>
@@ -1046,6 +1061,24 @@
     android:id="@+id/myShowsFiltersDialog"
     android:name="com.michaldrabik.ui_my_shows.myshows.filters.MyShowsFiltersBottomSheet"
     android:label="dialogMyShowsFilters"
+    />
+
+  <dialog
+    android:id="@+id/collectionFiltersNetworkDialog"
+    android:name="com.michaldrabik.ui_my_shows.common.filters.network.CollectionFiltersNetworkBottomSheet"
+    android:label="dialogCollectionFiltersNetwork"
+    />
+
+  <dialog
+    android:id="@+id/collectionFiltersGenreDialog"
+    android:name="com.michaldrabik.ui_my_shows.common.filters.genre.CollectionFiltersGenreBottomSheet"
+    android:label="dialogCollectionFiltersGenre"
+    />
+
+  <dialog
+    android:id="@+id/collectionMoviesFiltersGenreDialog"
+    android:name="com.michaldrabik.ui_my_movies.filters.genre.CollectionFiltersGenreBottomSheet"
+    android:label="dialogCollectionFiltersGenre"
     />
 
 </navigation>

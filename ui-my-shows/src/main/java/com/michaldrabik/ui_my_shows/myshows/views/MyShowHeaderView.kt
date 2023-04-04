@@ -16,6 +16,7 @@ import com.michaldrabik.ui_base.common.ListViewMode.LIST_NORMAL
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.MyShowsSection
+import com.michaldrabik.ui_model.MyShowsSection.ALL
 import com.michaldrabik.ui_model.MyShowsSection.RECENTS
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
@@ -43,6 +44,8 @@ class MyShowHeaderView : FrameLayout {
     viewMode: ListViewMode,
     typeClickListener: (() -> Unit)?,
     sortClickListener: ((MyShowsSection, SortOrder, SortType) -> Unit)?,
+    networksClickListener: (() -> Unit)?,
+    genresClickListener: (() -> Unit)?,
     listModeClickListener: (() -> Unit)?,
   ) {
     bindMargins(viewMode)
@@ -50,9 +53,11 @@ class MyShowHeaderView : FrameLayout {
     with(binding) {
       myShowsFilterChipsScroll.visibleIf(item.section != RECENTS)
       myShowsSortChip.visibleIf(item.sortOrder != null)
+      myShowsNetworksChip.visibleIf(item.networks != null)
+      myShowsGenresChip.visibleIf(item.genres != null)
 
       with(myShowsTypeChip) {
-        isSelected = true
+        isSelected = item.section != ALL
         text = context.getString(item.section.displayString)
         visibleIf(item.section != RECENTS)
         onClick { typeClickListener?.invoke() }
@@ -76,6 +81,27 @@ class MyShowHeaderView : FrameLayout {
           SortType.DESCENDING -> R.drawable.ic_arrow_alt_down
         }
         myShowsSortChip.closeIcon = ContextCompat.getDrawable(context, sortIcon)
+      }
+
+      item.networks?.let { networks ->
+        myShowsNetworksChip.isSelected = networks.isNotEmpty()
+        myShowsNetworksChip.onClick { networksClickListener?.invoke() }
+        myShowsNetworksChip.text = when {
+          networks.isEmpty() -> context.getString(R.string.textNetworks).filter { it.isLetter() }
+          networks.size == 1 -> networks[0].channels.first()
+          else -> throw IllegalStateException()
+        }
+      }
+
+      item.genres?.let { genres ->
+        myShowsGenresChip.isSelected = genres.isNotEmpty()
+        myShowsGenresChip.onClick { genresClickListener?.invoke() }
+        myShowsGenresChip.text = when {
+          genres.isEmpty() -> context.getString(R.string.textGenres).filter { it.isLetter() }
+          genres.size == 1 -> context.getString(genres.first().displayName)
+          genres.size == 2 -> "${context.getString(genres[0].displayName)}, ${context.getString(genres[1].displayName)}"
+          else -> "${context.getString(genres[0].displayName)}, ${context.getString(genres[1].displayName)} + ${genres.size - 2}"
+        }
       }
     }
   }

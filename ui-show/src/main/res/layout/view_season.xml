@@ -21,10 +21,10 @@
 
     <com.google.android.material.checkbox.MaterialCheckBox
       android:id="@+id/seasonViewCheckbox"
+      style="@style/ShowlyCheckbox"
       android:layout_width="30dp"
       android:layout_height="0dp"
       android:gravity="center"
-      app:buttonTint="@color/selector_main_checkbox"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"

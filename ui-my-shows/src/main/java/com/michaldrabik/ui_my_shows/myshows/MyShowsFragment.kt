@@ -40,6 +40,11 @@ import com.michaldrabik.ui_model.SortOrder.RECENTLY_WATCHED
 import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_shows.R
+import com.michaldrabik.ui_my_shows.common.filters.CollectionFiltersOrigin.MY_SHOWS
+import com.michaldrabik.ui_my_shows.common.filters.genre.CollectionFiltersGenreBottomSheet
+import com.michaldrabik.ui_my_shows.common.filters.genre.CollectionFiltersGenreBottomSheet.Companion.REQUEST_COLLECTION_FILTERS_GENRE
+import com.michaldrabik.ui_my_shows.common.filters.network.CollectionFiltersNetworkBottomSheet
+import com.michaldrabik.ui_my_shows.common.filters.network.CollectionFiltersNetworkBottomSheet.Companion.REQUEST_COLLECTION_FILTERS_NETWORK
 import com.michaldrabik.ui_my_shows.main.FollowedShowsFragment
 import com.michaldrabik.ui_my_shows.main.FollowedShowsUiEvent.OpenPremium
 import com.michaldrabik.ui_my_shows.main.FollowedShowsViewModel
@@ -89,6 +94,8 @@ class MyShowsFragment :
       onSortOrderClickListener = { section, order, type -> openSortOrderDialog(section, order, type) },
       onTypeClickListener = { navigateToSafe(R.id.actionFollowedShowsFragmentToMyShowsFilters) },
       onListViewModeClickListener = viewModel::toggleViewMode,
+      onNetworksClickListener = ::openNetworksDialog,
+      onGenresClickListener = ::openGenresDialog,
       missingImageListener = { item, force -> viewModel.loadMissingImage(item as MyShowsItem, force) },
       missingTranslationListener = { viewModel.loadMissingTranslation(it as MyShowsItem) },
       listChangeListener = {
@@ -203,6 +210,24 @@ class MyShowsFragment :
     }
 
     navigateTo(R.id.actionFollowedShowsFragmentToSortOrder, args)
+  }
+
+  private fun openNetworksDialog() {
+    requireParentFragment().setFragmentResultListener(REQUEST_COLLECTION_FILTERS_NETWORK) { _, _ ->
+      viewModel.loadShows()
+    }
+
+    val bundle = CollectionFiltersNetworkBottomSheet.createBundle(MY_SHOWS)
+    navigateToSafe(R.id.actionFollowedShowsFragmentToNetworks, bundle)
+  }
+
+  private fun openGenresDialog() {
+    requireParentFragment().setFragmentResultListener(REQUEST_COLLECTION_FILTERS_GENRE) { _, _ ->
+      viewModel.loadShows()
+    }
+
+    val bundle = CollectionFiltersGenreBottomSheet.createBundle(MY_SHOWS)
+    navigateToSafe(R.id.actionFollowedShowsFragmentToGenres, bundle)
   }
 
   override fun onEnterSearch() {

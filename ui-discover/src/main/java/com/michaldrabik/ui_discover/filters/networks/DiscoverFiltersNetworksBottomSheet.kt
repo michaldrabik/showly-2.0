@@ -11,6 +11,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.Chip
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
+import com.michaldrabik.ui_base.utilities.NetworkIconProvider
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -22,7 +23,6 @@ import com.michaldrabik.ui_discover.R
 import com.michaldrabik.ui_discover.databinding.ViewDiscoverFiltersNetworksBinding
 import com.michaldrabik.ui_discover.filters.networks.DiscoverFiltersNetworksUiEvent.ApplyFilters
 import com.michaldrabik.ui_discover.filters.networks.DiscoverFiltersNetworksUiEvent.CloseFilters
-import com.michaldrabik.ui_discover.filters.networks.helpers.NetworkIconProvider
 import com.michaldrabik.ui_model.Network
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -33,7 +33,8 @@ internal class DiscoverFiltersNetworksBottomSheet : BaseBottomSheetFragment(R.la
   private val viewModel by viewModels<DiscoverFiltersNetworksViewModel>()
   private val binding by viewBinding(ViewDiscoverFiltersNetworksBinding::bind)
 
-  @Inject lateinit var networkIconProvider: NetworkIconProvider
+  @Inject
+  lateinit var networkIconProvider: NetworkIconProvider
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 

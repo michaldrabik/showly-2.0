@@ -1,23 +1,25 @@
 package com.michaldrabik.ui_show.episodes.cases
 
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.repository.EpisodesManager
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_show.sections.seasons.recycler.SeasonListItem
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ViewModelScoped
 class EpisodesMarkWatchedCase @Inject constructor(
+  private val dispatchers: CoroutineDispatchers,
   private val episodesManager: EpisodesManager,
 ) {
 
   suspend fun markWatchedEpisodes(
     show: Show,
     season: SeasonListItem
-  ): SeasonListItem = coroutineScope {
+  ): SeasonListItem = withContext(dispatchers.IO) {
     val (watchedSeasonsIds, watchedEpisodesIds) = awaitAll(
       async { episodesManager.getWatchedSeasonsIds(show) },
       async { episodesManager.getWatchedEpisodesIds(show) }
@@ -36,7 +38,7 @@ class EpisodesMarkWatchedCase @Inject constructor(
     show: Show,
     seasonsList: List<SeasonListItem>?
   ): List<SeasonListItem> =
-    coroutineScope {
+    withContext(dispatchers.IO) {
       val items = mutableListOf<SeasonListItem>()
 
       val (watchedSeasonsIds, watchedEpisodesIds) = awaitAll(

@@ -1,21 +1,23 @@
 package com.michaldrabik.ui_search.cases
 
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_search.recycler.SearchListItem
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ViewModelScoped
 class SearchInvalidateItemCase @Inject constructor(
+  private val dispatchers: CoroutineDispatchers,
   private val showsRepository: ShowsRepository,
   private val moviesRepository: MoviesRepository,
 ) {
 
-  suspend fun checkFollowedState(item: SearchListItem) = coroutineScope {
+  suspend fun checkFollowedState(item: SearchListItem) = withContext(dispatchers.IO) {
     when {
       item.isShow -> {
         val (isMy, isWatchlist) = awaitAll(

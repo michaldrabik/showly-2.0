@@ -10,7 +10,7 @@ import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.Person.Department
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_show.ShowDetailsEvent
-import com.michaldrabik.ui_show.sections.people.cases.ShowDetailsActorsCase
+import com.michaldrabik.ui_show.sections.people.cases.ShowDetailsPeopleCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -22,7 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ShowDetailsPeopleViewModel @Inject constructor(
-  private val actorsCase: ShowDetailsActorsCase,
+  private val actorsCase: ShowDetailsPeopleCase,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private lateinit var show: Show

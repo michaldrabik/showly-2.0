@@ -49,6 +49,8 @@ class CollectionItemDiffCallback : DiffUtil.ItemCallback<CollectionListItem>() {
     newItem: CollectionListItem.FiltersItem,
   ): Boolean {
     return oldItem.isUpcoming == newItem.isUpcoming &&
+      oldItem.networks == newItem.networks &&
+      oldItem.genres == newItem.genres &&
       oldItem.sortOrder == newItem.sortOrder &&
       oldItem.sortType == newItem.sortType
   }

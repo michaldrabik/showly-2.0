@@ -28,6 +28,7 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
 import com.michaldrabik.ui_discover_movies.recycler.DiscoverMovieListItem
 import com.michaldrabik.ui_discover_movies.recycler.DiscoverMoviesAdapter
@@ -35,7 +36,12 @@ import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_discover_movies.*
+import kotlinx.android.synthetic.main.fragment_discover_movies.discoverMoviesFiltersView
+import kotlinx.android.synthetic.main.fragment_discover_movies.discoverMoviesRecycler
+import kotlinx.android.synthetic.main.fragment_discover_movies.discoverMoviesRoot
+import kotlinx.android.synthetic.main.fragment_discover_movies.discoverMoviesSearchView
+import kotlinx.android.synthetic.main.fragment_discover_movies.discoverMoviesSwipeRefresh
+import kotlinx.android.synthetic.main.fragment_discover_movies.discoverMoviesTabsView
 import kotlin.random.Random
 
 @AndroidEntryPoint
@@ -255,7 +261,7 @@ class DiscoverMoviesFragment :
         val resetScroll = resetScroll?.consume() == true
         adapter?.setItems(it, resetScroll)
         layoutManager?.withSpanSizeLookup { pos -> adapter?.getItems()?.get(pos)?.image?.type?.spanSize!! }
-        discoverMoviesRecycler.fadeIn()
+        discoverMoviesRecycler.fadeIn(200, withHardware = true)
       }
       isSyncing?.let {
         discoverMoviesSearchView.setTraktProgress(it)
@@ -271,7 +277,7 @@ class DiscoverMoviesFragment :
       }
       filters?.let {
         if (discoverMoviesFiltersView.visibility != VISIBLE) {
-          discoverMoviesFiltersView.fadeIn(duration = 300)
+          discoverMoviesFiltersView.visible()
         }
         discoverMoviesFiltersView.bind(it)
       }

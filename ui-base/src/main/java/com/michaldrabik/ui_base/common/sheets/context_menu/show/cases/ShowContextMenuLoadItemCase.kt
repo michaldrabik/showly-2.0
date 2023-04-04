@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_base.common.sheets.context_menu.show.cases
 
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.repository.OnHoldItemsRepository
 import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.RatingsRepository
@@ -11,13 +12,13 @@ import com.michaldrabik.ui_base.common.sheets.context_menu.show.helpers.ShowCont
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.ImageType
 import dagger.hilt.android.scopes.ViewModelScoped
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ViewModelScoped
 class ShowContextMenuLoadItemCase @Inject constructor(
+  private val dispatchers: CoroutineDispatchers,
   private val showsRepository: ShowsRepository,
   private val pinnedItemsRepository: PinnedItemsRepository,
   private val onHoldItemsRepository: OnHoldItemsRepository,
@@ -27,7 +28,7 @@ class ShowContextMenuLoadItemCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
 ) {
 
-  suspend fun loadItem(traktId: IdTrakt) = withContext(Dispatchers.IO) {
+  suspend fun loadItem(traktId: IdTrakt) = withContext(dispatchers.IO) {
     val show = showsRepository.detailsShow.load(traktId)
 
     val imageAsync = async { imagesProvider.findCachedImage(show, ImageType.POSTER) }

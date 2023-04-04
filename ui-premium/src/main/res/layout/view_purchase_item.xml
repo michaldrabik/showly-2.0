@@ -78,7 +78,6 @@
       android:drawablePadding="@dimen/spaceSmall"
       android:ellipsize="end"
       android:gravity="center_vertical"
-      android:justificationMode="inter_word"
       android:textAlignment="viewStart"
       android:textColor="?android:attr/textColorPrimary"
       android:textSize="10sp"

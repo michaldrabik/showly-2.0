@@ -13,8 +13,10 @@ import com.michaldrabik.ui_base.common.sheets.context_menu.events.RemoveTraktUiE
 import com.michaldrabik.ui_base.common.sheets.context_menu.show.helpers.ShowContextItem
 import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet.Mode
 import com.michaldrabik.ui_base.utilities.events.Event
+import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import dagger.hilt.android.AndroidEntryPoint
@@ -64,6 +66,13 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet() {
           else -> binding.contextMenuItemProgress.hide()
         }
         binding.contextMenuItemButtonsLayout.visibleIf(!isLoading, gone = false)
+      }
+      isLoadingSecondary?.let {
+        when {
+          isLoadingSecondary -> binding.contextMenuItemProgressSecondary.visible()
+          else -> binding.contextMenuItemProgressSecondary.gone()
+        }
+        binding.contextMenuItemButtonsLayout.visibleIf(!isLoadingSecondary, gone = false)
       }
       item?.let {
         renderItem(it)

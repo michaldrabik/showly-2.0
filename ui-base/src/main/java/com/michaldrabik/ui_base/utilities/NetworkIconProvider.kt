@@ -1,7 +1,7 @@
-package com.michaldrabik.ui_discover.filters.networks.helpers
+package com.michaldrabik.ui_base.utilities
 
 import androidx.annotation.DrawableRes
-import com.michaldrabik.ui_discover.R
+import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_model.Network
 import javax.inject.Inject
 import javax.inject.Singleton

@@ -61,8 +61,16 @@
           />
 
         <com.google.android.material.chip.Chip
+          android:id="@+id/myMoviesGenresChip"
+          style="@style/ShowlyChip.Filter"
+          android:checkable="false"
+          android:text="@string/textGenres"
+          />
+
+        <com.google.android.material.chip.Chip
           android:id="@+id/myMoviesSortListViewChip"
           style="@style/ShowlyChip.Filter"
+          android:checkable="false"
           app:chipIcon="@drawable/ic_view_grid"
           app:chipIconEnabled="true"
           app:chipIconTint="?android:textColorPrimary"

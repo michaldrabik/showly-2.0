@@ -27,6 +27,7 @@ import com.michaldrabik.ui_show.ShowDetailsViewModel
 import com.michaldrabik.ui_show.databinding.FragmentShowDetailsSeasonsBinding
 import com.michaldrabik.ui_show.episodes.ShowDetailsEpisodesFragment
 import com.michaldrabik.ui_show.quicksetup.QuickSetupView
+import com.michaldrabik.ui_show.sections.seasons.ShowDetailsSeasonsEvent.RequestWidgetsUpdate
 import com.michaldrabik.ui_show.sections.seasons.recycler.SeasonListItem
 import com.michaldrabik.ui_show.sections.seasons.recycler.SeasonsAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -77,7 +78,6 @@ class ShowDetailsSeasonsFragment : BaseFragment<ShowDetailsSeasonsViewModel>(R.l
       seasons?.let {
         renderSeasons(it)
         renderRuntimeLeft(it)
-        (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
       }
     }
   }
@@ -97,7 +97,6 @@ class ShowDetailsSeasonsFragment : BaseFragment<ShowDetailsSeasonsViewModel>(R.l
           showSnack(MessageEvent.Info(R.string.textSeasonsEmpty))
         }
       }
-      (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
     }
   }
 
@@ -130,6 +129,9 @@ class ShowDetailsSeasonsFragment : BaseFragment<ShowDetailsSeasonsViewModel>(R.l
       is ShowDetailsSeasonsEvent.OpenSeasonEpisodes -> {
         val bundle = ShowDetailsEpisodesFragment.createBundle(event.showId, event.seasonId)
         navigateToSafe(R.id.actionShowDetailsFragmentToEpisodes, bundle)
+      }
+      is RequestWidgetsUpdate -> {
+        (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
       }
     }
   }

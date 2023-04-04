@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_base.common.sheets.ratings.cases
 
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.common.errors.ErrorHelper
 import com.michaldrabik.common.errors.ShowlyError
 import com.michaldrabik.repository.RatingsRepository
@@ -9,10 +10,12 @@ import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.TraktRating
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ViewModelScoped
 class RatingsSeasonCase @Inject constructor(
+  private val dispatchers: CoroutineDispatchers,
   private val userTraktManager: UserTraktManager,
   private val ratingsRepository: RatingsRepository,
 ) {
@@ -21,9 +24,9 @@ class RatingsSeasonCase @Inject constructor(
     private val RATING_VALID_RANGE = 1..10
   }
 
-  suspend fun loadRating(idTrakt: IdTrakt): TraktRating {
+  suspend fun loadRating(idTrakt: IdTrakt): TraktRating = withContext(dispatchers.IO) {
     val season = Season.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = idTrakt))
-    return try {
+    try {
       val rating = ratingsRepository.shows.loadRatingsSeasons(listOf(season))
       rating.firstOrNull() ?: TraktRating.EMPTY
     } catch (error: Throwable) {
@@ -32,7 +35,7 @@ class RatingsSeasonCase @Inject constructor(
     }
   }
 
-  suspend fun saveRating(idTrakt: IdTrakt, rating: Int) {
+  suspend fun saveRating(idTrakt: IdTrakt, rating: Int) = withContext(dispatchers.IO) {
     check(rating in RATING_VALID_RANGE)
     userTraktManager.checkAuthorization()
 
@@ -44,7 +47,7 @@ class RatingsSeasonCase @Inject constructor(
     }
   }
 
-  suspend fun deleteRating(idTrakt: IdTrakt) {
+  suspend fun deleteRating(idTrakt: IdTrakt) = withContext(dispatchers.IO) {
     userTraktManager.checkAuthorization()
 
     val season = Season.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = idTrakt))

@@ -208,10 +208,10 @@ internal class TraktApi(
     usersService.fetchHiddenMovies(pageLimit = 250)
 
   override suspend fun fetchSyncWatchedShows(extended: String?) =
-    syncService.fetchSyncWatched("shows", extended)
+    syncService.fetchSyncWatched("shows", extended).filter { it.show != null }
 
   override suspend fun fetchSyncWatchedMovies(extended: String?) =
-    syncService.fetchSyncWatched("movies", extended)
+    syncService.fetchSyncWatched("movies", extended).filter { it.movie != null }
 
   override suspend fun fetchSyncShowsWatchlist() = fetchSyncWatchlist("shows")
 

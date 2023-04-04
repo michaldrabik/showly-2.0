@@ -33,6 +33,11 @@ import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_show.R
 import com.michaldrabik.ui_show.databinding.FragmentShowDetailsEpisodesBinding
+import com.michaldrabik.ui_show.episodes.ShowDetailsEpisodesEvent.Finish
+import com.michaldrabik.ui_show.episodes.ShowDetailsEpisodesEvent.OpenEpisodeDetails
+import com.michaldrabik.ui_show.episodes.ShowDetailsEpisodesEvent.OpenRateSeason
+import com.michaldrabik.ui_show.episodes.ShowDetailsEpisodesEvent.RemoveFromTrakt
+import com.michaldrabik.ui_show.episodes.ShowDetailsEpisodesEvent.RequestWidgetsUpdate
 import com.michaldrabik.ui_show.episodes.recycler.EpisodesAdapter
 import com.michaldrabik.ui_show.sections.seasons.recycler.SeasonListItem
 import dagger.hilt.android.AndroidEntryPoint
@@ -139,7 +144,6 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
           if (isInitialLoad == true) {
             episodesRecycler.scheduleLayoutAnimation()
           }
-          (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
         }
       }
     }
@@ -165,10 +169,11 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
 
   private fun handleEvent(event: ShowDetailsEpisodesEvent<*>) {
     when (event) {
-      is ShowDetailsEpisodesEvent.Finish -> requireActivity().onBackPressed()
-      is ShowDetailsEpisodesEvent.RemoveFromTrakt -> openRemoveTraktSheet(event)
-      is ShowDetailsEpisodesEvent.OpenEpisodeDetails -> openEpisodeDetails(event.bundle, event.isWatched)
-      is ShowDetailsEpisodesEvent.OpenRateSeason -> openRateSeasonDialog(event.season)
+      is RemoveFromTrakt -> openRemoveTraktSheet(event)
+      is OpenEpisodeDetails -> openEpisodeDetails(event.bundle, event.isWatched)
+      is OpenRateSeason -> openRateSeasonDialog(event.season)
+      is RequestWidgetsUpdate -> (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
+      is Finish -> requireActivity().onBackPressed()
     }
   }
 
@@ -213,7 +218,7 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
     navigateToSafe(R.id.actionEpisodesFragmentToEpisodesDetails, bundle)
   }
 
-  private fun openRemoveTraktSheet(event: ShowDetailsEpisodesEvent.RemoveFromTrakt) {
+  private fun openRemoveTraktSheet(event: RemoveFromTrakt) {
     setFragmentResultListener(NavigationArgs.REQUEST_REMOVE_TRAKT) { _, bundle ->
       if (bundle.getBoolean(NavigationArgs.RESULT, false)) {
         val text = resources.getString(R.string.textTraktSyncRemovedFromTrakt)

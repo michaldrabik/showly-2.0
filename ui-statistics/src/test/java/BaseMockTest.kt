@@ -1,3 +1,4 @@
+import com.michaldrabik.common_test.MainDispatcherRule
 import io.mockk.MockKAnnotations
 import org.junit.Before
 import org.junit.Rule

@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_progress.progress.cases
 
 import com.michaldrabik.common.Config
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.data_local.LocalDataSource
@@ -20,14 +21,11 @@ import com.michaldrabik.ui_model.ProgressNextEpisodeType
 import com.michaldrabik.ui_model.ProgressNextEpisodeType.LAST_WATCHED
 import com.michaldrabik.ui_model.ProgressNextEpisodeType.OLDEST
 import com.michaldrabik.ui_model.ProgressType
-import com.michaldrabik.ui_model.SortOrder
-import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.helpers.ProgressItemsSorter
 import com.michaldrabik.ui_progress.helpers.TranslationsBundle
 import com.michaldrabik.ui_progress.progress.recycler.ProgressListItem
 import com.michaldrabik.ui_progress.progress.recycler.ProgressListItem.Header.Type
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -38,6 +36,7 @@ import com.michaldrabik.ui_model.Episode.Companion as EpisodeUi
 
 @Singleton
 class ProgressItemsCase @Inject constructor(
+  private val dispatchers: CoroutineDispatchers,
   private val localSource: LocalDataSource,
   private val mappers: Mappers,
   private val showsRepository: ShowsRepository,
@@ -55,108 +54,108 @@ class ProgressItemsCase @Inject constructor(
     private const val UPCOMING_MONTHS_LIMIT = 3L
   }
 
-  suspend fun loadItems(searchQuery: String): List<ProgressListItem> = withContext(Dispatchers.Default) {
-    val settings = settingsRepository.load()
-    val upcomingEnabled = settings.progressUpcomingEnabled
-    val progressType = settingsRepository.progressPercentType
-    val language = translationsRepository.getLanguage()
-    val dateFormat = dateFormatProvider.loadFullHourFormat()
+  suspend fun loadItems(searchQuery: String): List<ProgressListItem> =
+    withContext(dispatchers.IO) {
+      val nowUtc = nowUtc()
 
-    val sortOrder = settingsRepository.sorting.progressShowsSortOrder
-    val sortType = settingsRepository.sorting.progressShowsSortType
-    val newAtTop = settingsRepository.sorting.progressShowsNewAtTop
+      val settings = settingsRepository.load()
+      val dateFormat = dateFormatProvider.loadFullHourFormat()
+      val upcomingLimit = nowUtc.plusMonths(UPCOMING_MONTHS_LIMIT).toMillis()
+      val nextEpisodeType = settingsRepository.progressNextEpisodeType
+      val filtersItem = loadFiltersItem()
 
-    val nowUtc = nowUtc()
-    val upcomingLimit = nowUtc.plusMonths(UPCOMING_MONTHS_LIMIT).toMillis()
-    val shows = showsRepository.myShows.loadAll()
-    val nextEpisodeType = settingsRepository.progressNextEpisodeType
+      val items = showsRepository.myShows.loadAll()
+        .map { show ->
+          async {
+            val nextEpisode = findNextEpisode(show.traktId, nextEpisodeType, upcomingLimit)
 
-    val items = shows.map { show ->
-      async {
-        val nextEpisode = findNextEpisode(show.traktId, nextEpisodeType, upcomingLimit)
+            val episodeUi = nextEpisode?.let { mappers.episode.fromDatabase(it) }
+            val seasonUi = nextEpisode?.let { ep ->
+              localSource.seasons.getById(ep.idSeason)?.let {
+                mappers.season.fromDatabase(it)
+              }
+            }
+            val isUpcoming = nextEpisode?.firstAired?.isAfter(nowUtc) == true
 
-        val episodeUi = nextEpisode?.let { mappers.episode.fromDatabase(it) }
-        val seasonUi = nextEpisode?.let { ep ->
-          localSource.seasons.getById(ep.idSeason)?.let {
-            mappers.season.fromDatabase(it)
-          }
-        }
-        val isUpcoming = nextEpisode?.firstAired?.isAfter(nowUtc) == true
-
-        ProgressListItem.Episode(
-          show = show,
-          image = Image.createUnavailable(ImageType.POSTER),
-          episode = episodeUi,
-          season = seasonUi,
-          totalCount = 0,
-          watchedCount = 0,
-          isUpcoming = isUpcoming,
-          isPinned = false,
-          isOnHold = false,
-          dateFormat = dateFormat,
-          sortOrder = sortOrder
-        )
-      }
-    }.awaitAll()
-
-    val validItems = items
-      .filter { if (upcomingEnabled) true else !it.isUpcoming }
-      .filter { it.episode?.firstAired != null }
-
-    val filledItems = validItems
-      .map {
-        async {
-          val image = imagesProvider.findCachedImage(it.show, ImageType.POSTER)
-          val rating = ratingsRepository.shows.loadRatings(listOf(it.show))
-          val isPinned = pinnedItemsRepository.isItemPinned(it.show)
-          val isOnHold = onHoldItemsRepository.isOnHold(it.show)
-
-          var translations: TranslationsBundle? = null
-          if (language != Config.DEFAULT_LANGUAGE) {
-            translations = TranslationsBundle(
-              show = translationsRepository.loadTranslation(it.show, language, onlyLocal = true),
-              episode = translationsRepository.loadTranslation(it.episode ?: EpisodeUi.EMPTY, it.show.ids.trakt, language, onlyLocal = true)
+            ProgressListItem.Episode(
+              show = show,
+              image = Image.createUnavailable(ImageType.POSTER),
+              episode = episodeUi,
+              season = seasonUi,
+              totalCount = 0,
+              watchedCount = 0,
+              isUpcoming = isUpcoming,
+              isPinned = false,
+              isOnHold = false,
+              dateFormat = dateFormat,
+              sortOrder = filtersItem.sortOrder
             )
           }
+        }.awaitAll()
 
-          val (total, watched) = when (progressType) {
-            ProgressType.AIRED -> {
-              awaitAll(
-                async { localSource.episodes.getTotalCount(it.show.traktId, nowUtc.toMillis()) },
-                async { localSource.episodes.getWatchedCount(it.show.traktId, nowUtc.toMillis()) }
+      val upcomingEnabled = settings.progressUpcomingEnabled
+      val language = translationsRepository.getLanguage()
+
+      val validItems = items
+        .filter { if (upcomingEnabled) true else !it.isUpcoming }
+        .filter { it.episode?.firstAired != null }
+
+      val filledItems = validItems
+        .map {
+          async {
+            val image = imagesProvider.findCachedImage(it.show, ImageType.POSTER)
+            val rating = ratingsRepository.shows.loadRatings(listOf(it.show))
+            val isPinned = pinnedItemsRepository.isItemPinned(it.show)
+            val isOnHold = onHoldItemsRepository.isOnHold(it.show)
+
+            var translations: TranslationsBundle? = null
+            if (language != Config.DEFAULT_LANGUAGE) {
+              translations = TranslationsBundle(
+                show = translationsRepository.loadTranslation(it.show, language, onlyLocal = true),
+                episode = translationsRepository.loadTranslation(it.episode ?: EpisodeUi.EMPTY, it.show.ids.trakt, language, onlyLocal = true)
               )
             }
 
-            ProgressType.ALL -> {
-              awaitAll(
-                async { localSource.episodes.getTotalCount(it.show.traktId) },
-                async { localSource.episodes.getWatchedCount(it.show.traktId) }
-              )
+            val (total, watched) = when (settingsRepository.progressPercentType) {
+              ProgressType.AIRED -> {
+                awaitAll(
+                  async { localSource.episodes.getTotalCount(it.show.traktId, nowUtc.toMillis()) },
+                  async { localSource.episodes.getWatchedCount(it.show.traktId, nowUtc.toMillis()) }
+                )
+              }
+
+              ProgressType.ALL -> {
+                awaitAll(
+                  async { localSource.episodes.getTotalCount(it.show.traktId) },
+                  async { localSource.episodes.getWatchedCount(it.show.traktId) }
+                )
+              }
             }
+
+            it.copy(
+              image = image,
+              isPinned = isPinned,
+              isOnHold = isOnHold,
+              translations = translations,
+              userRating = rating.firstOrNull()?.rating,
+              watchedCount = watched,
+              totalCount = total
+            )
           }
+        }.awaitAll()
 
-          it.copy(
-            image = image,
-            isPinned = isPinned,
-            isOnHold = isOnHold,
-            translations = translations,
-            userRating = rating.firstOrNull()?.rating,
-            watchedCount = watched,
-            totalCount = total
-          )
-        }
-      }.awaitAll()
+      val filteredItems = filterByQuery(searchQuery, filledItems)
+      val groupedItems = groupItems(
+        filteredItems,
+        filtersItem
+      )
 
-    val filteredItems = filterByQuery(searchQuery, filledItems)
-    val groupedItems = groupItems(filteredItems, sortOrder, sortType, newAtTop)
-
-    if (groupedItems.isNotEmpty()) {
-      val filtersItem = loadFiltersItem(sortOrder, sortType)
-      listOf(filtersItem) + groupedItems
-    } else {
-      groupedItems
+      if (groupedItems.isNotEmpty() || filtersItem.hasActiveFilters()) {
+        listOf(filtersItem) + groupedItems
+      } else {
+        groupedItems
+      }
     }
-  }
 
   private suspend fun findNextEpisode(
     showId: Long,
@@ -189,16 +188,14 @@ class ProgressItemsCase @Inject constructor(
 
   private suspend fun groupItems(
     input: List<ProgressListItem.Episode>,
-    sortOrder: SortOrder,
-    sortType: SortType,
-    newAtTop: Boolean,
+    filters: ProgressListItem.Filters
   ): List<ProgressListItem> = coroutineScope {
     val (newItems, pinnedItems, onHoldItems) = awaitAll(
       async {
-        if (newAtTop) {
+        if (filters.newAtTop) {
           input
             .filter { it.isNew() && !it.isOnHold && !it.isPinned }
-            .sortedWith(sorter.sort(sortOrder, sortType))
+            .sortedWith(sorter.sort(filters.sortOrder, filters.sortType))
         } else {
           emptyList()
         }
@@ -206,12 +203,18 @@ class ProgressItemsCase @Inject constructor(
       async {
         input
           .filter { it.isPinned }
-          .sortedWith(compareByDescending<ProgressListItem.Episode> { it.isNew() } then sorter.sort(sortOrder, sortType))
+          .sortedWith(
+            compareByDescending<ProgressListItem.Episode> { it.isNew() }
+              then sorter.sort(filters.sortOrder, filters.sortType)
+          )
       },
       async {
         input
           .filter { it.isOnHold }
-          .sortedWith(compareByDescending<ProgressListItem.Episode> { it.isNew() } then sorter.sort(sortOrder, sortType))
+          .sortedWith(
+            compareByDescending<ProgressListItem.Episode> { it.isNew() }
+              then sorter.sort(filters.sortOrder, filters.sortType)
+          )
       }
     )
 
@@ -221,7 +224,7 @@ class ProgressItemsCase @Inject constructor(
     val (airedItems, upcomingItems) = awaitAll(
       async {
         ((groupedItems[true] ?: emptyList()))
-          .sortedWith(sorter.sort(sortOrder, sortType))
+          .sortedWith(sorter.sort(filters.sortOrder, filters.sortType))
       },
       async {
         ((groupedItems[false] ?: emptyList()))
@@ -230,22 +233,22 @@ class ProgressItemsCase @Inject constructor(
     )
 
     mutableListOf<ProgressListItem>().apply {
-      if (pinnedItems.isNotEmpty()) {
+      if (pinnedItems.isNotEmpty() && !filters.hasActiveFilters()) {
         addAll(pinnedItems)
       }
-      if (newItems.isNotEmpty()) {
+      if (newItems.isNotEmpty() && !filters.hasActiveFilters()) {
         addAll(newItems)
       }
-      if (airedItems.isNotEmpty()) {
+      if (airedItems.isNotEmpty() && !filters.hasActiveFilters()) {
         addAll(airedItems)
       }
-      if (upcomingItems.isNotEmpty()) {
+      if (upcomingItems.isNotEmpty() && (filters.isUpcoming || !filters.hasActiveFilters())) {
         val isCollapsed = settingsRepository.isProgressUpcomingCollapsed
         val upcomingHeader = ProgressListItem.Header.create(Type.UPCOMING, R.string.textWatchlistIncoming, isCollapsed)
         addAll(listOf(upcomingHeader))
         if (!isCollapsed) addAll(upcomingItems)
       }
-      if (onHoldItems.isNotEmpty()) {
+      if (onHoldItems.isNotEmpty() && (filters.isOnHold || !filters.hasActiveFilters())) {
         val isCollapsed = settingsRepository.isProgressOnHoldCollapsed
         val onHoldHeader = ProgressListItem.Header.create(Type.ON_HOLD, R.string.textOnHold, isCollapsed)
         addAll(listOf(onHoldHeader))
@@ -254,13 +257,13 @@ class ProgressItemsCase @Inject constructor(
     }
   }
 
-  private fun loadFiltersItem(
-    sortOrder: SortOrder,
-    sortType: SortType,
-  ): ProgressListItem.Filters {
+  private fun loadFiltersItem(): ProgressListItem.Filters {
     return ProgressListItem.Filters(
-      sortOrder = sortOrder,
-      sortType = sortType
+      newAtTop = settingsRepository.sorting.progressShowsNewAtTop,
+      sortOrder = settingsRepository.sorting.progressShowsSortOrder,
+      sortType = settingsRepository.sorting.progressShowsSortType,
+      isUpcoming = settingsRepository.filters.progressShowsUpcoming,
+      isOnHold = settingsRepository.filters.progressShowsOnHold
     )
   }
 }

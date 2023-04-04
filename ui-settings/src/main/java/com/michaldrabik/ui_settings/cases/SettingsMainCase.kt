@@ -9,6 +9,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.ConfigVariant
 import com.michaldrabik.common.Mode
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.repository.settings.SettingsRepository
@@ -25,24 +26,30 @@ import com.michaldrabik.ui_model.ProgressNextEpisodeType
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ViewModelScoped
 class SettingsMainCase @Inject constructor(
+  private val dispatchers: CoroutineDispatchers,
   private val settingsRepository: SettingsRepository,
   private val announcementManager: AnnouncementManager,
   private val showsImagesProvider: ShowImagesProvider,
   private val moviesImagesProvider: MovieImagesProvider,
 ) {
 
-  suspend fun getSettings(): Settings = settingsRepository.load()
+  suspend fun getSettings(): Settings = withContext(dispatchers.IO) {
+    settingsRepository.load()
+  }
 
   suspend fun setRecentShowsAmount(amount: Int) {
     check(amount in Config.MY_SHOWS_RECENTS_OPTIONS)
-    val settings = settingsRepository.load()
-    settings.let {
-      val new = it.copy(myRecentsAmount = amount)
-      settingsRepository.update(new)
+    withContext(dispatchers.IO) {
+      val settings = settingsRepository.load()
+      settings.let {
+        val new = it.copy(myRecentsAmount = amount)
+        settingsRepository.update(new)
+      }
     }
   }
 

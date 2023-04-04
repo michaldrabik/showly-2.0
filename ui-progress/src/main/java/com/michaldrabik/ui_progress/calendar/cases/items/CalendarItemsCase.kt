@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_progress.calendar.cases.items
 
 import com.michaldrabik.common.Config
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.data_local.LocalDataSource
@@ -17,7 +18,6 @@ import com.michaldrabik.ui_progress.calendar.helpers.filters.CalendarFilter
 import com.michaldrabik.ui_progress.calendar.helpers.groupers.CalendarGrouper
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarListItem
 import com.michaldrabik.ui_progress.helpers.TranslationsBundle
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -25,6 +25,7 @@ import kotlinx.coroutines.withContext
 
 @Suppress("UNCHECKED_CAST")
 abstract class CalendarItemsCase constructor(
+  private val dispatchers: CoroutineDispatchers,
   private val localSource: LocalDataSource,
   private val mappers: Mappers,
   private val showsRepository: ShowsRepository,
@@ -41,7 +42,7 @@ abstract class CalendarItemsCase constructor(
   abstract fun isWatched(episode: Episode): Boolean
 
   suspend fun loadItems(searchQuery: String? = "") =
-    withContext(Dispatchers.Default) {
+    withContext(dispatchers.IO) {
       val now = nowUtc().toLocalZone()
 
       val language = translationsRepository.getLanguage()
