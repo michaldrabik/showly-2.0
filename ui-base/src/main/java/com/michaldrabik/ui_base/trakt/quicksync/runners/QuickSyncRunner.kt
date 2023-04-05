@@ -40,6 +40,15 @@ class QuickSyncRunner @Inject constructor(
     private const val DELAY = 2000L
   }
 
+  private val syncTypes = listOf(
+    MOVIE,
+    EPISODE,
+    MOVIE_WATCHLIST,
+    SHOW_WATCHLIST,
+    HIDDEN_SHOW,
+    HIDDEN_MOVIE
+  ).map { it.slug }
+
   override suspend fun run(): Int {
     Timber.d("Initialized.")
     try {
@@ -55,7 +64,9 @@ class QuickSyncRunner @Inject constructor(
     } catch (error: Throwable) {
       throw error
     } finally {
-      localSource.traktSyncQueue.deleteAll()
+      syncTypes.forEach {
+        localSource.traktSyncQueue.deleteAll(it)
+      }
     }
   }
 
