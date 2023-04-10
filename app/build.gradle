@@ -128,3 +128,13 @@ dependencies {
   //  debugImplementation "com.squareup.leakcanary:leakcanary-android:$versions.leakCanary"
   coreLibraryDesugaring libs.android.desugar
 }
+
+// Custom Tasks
+
+tasks.register('releaseFirebase') {
+  dependsOn("assembleRelease", "appDistributionUploadRelease")
+}
+
+tasks.register('releasePlayStore') {
+  dependsOn("assembleRelease", "publishReleaseApk")
+}
