@@ -1,0 +1,6 @@
+[versions]
+androidxPlay = "2.0.1"
+
+[libraries]
+androidx-play-reviews = { group = "com.google.android.play", name = "review", version.ref = "androidxPlay" }
+androidx-play-updates = { group = "com.google.android.play", name = "app-update", version.ref = "androidxPlay" }
