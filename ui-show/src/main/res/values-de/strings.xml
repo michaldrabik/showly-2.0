@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textNextEpisode">Nächste Folge</string>
+  <string name="textNextEpisode">Nächste Folge:</string>
   <string name="textInMyShows">In Meine Serien</string>
   <string name="textInWatchlist">Im Watchlist</string>
   <string name="textInHidden">Versteckt</string>

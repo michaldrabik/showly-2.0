@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textStatistics">统计信息</string>
+  <string name="textStatisticsEmpty"><b>我的剧集</b>\n中至少要有一部剧集，才能显示统计数据。</string>
+  <string name="textStatisticsMostWatchedShows">观看最多的剧</string>
+  <string name="textStatisticsTotalTimeSpent">总观看时间</string>
+  <string name="textStatisticsTotalTimeItIs">相当于</string>
+  <string name="textStatisticsTotalTimeSpentHours">%s 小时</string>
+  <string name="textStatisticsTotalTimeSpentMinutes">%s 分钟</string>
+  <string name="textStatisticsTotalTimeSpentDays">大约是 %s 天。</string>
+  <string name="textStatisticsTotalEpisodes">已观看的单集总数</string>
+  <string name="textStatisticsTotalEpisodesCount">%s 集</string>
+  <string name="textStatisticsTotalEpisodesShowsCount">包含 %s 部剧。</string>
+  <string name="textStatisticsTopGenre">最爱类别</string>
+  <string name="textStatisticsTopGenreSubValue">似乎这正符合您的口味。点击查看更多。</string>
+  <string name="textStatisticsTopGenreSubValue2">似乎这正符合您的口味。</string>
+  <string name="textStatisticsShowMore">显示更多</string>
+  <string name="textStatisticsRatings">最近评分</string>
+  <string name="textStatisticsHours">小时</string>
+  <string name="textStatisticsEpisodes">集</string>
+  <string name="textStatisticsSeasons">季</string>
+</resources>

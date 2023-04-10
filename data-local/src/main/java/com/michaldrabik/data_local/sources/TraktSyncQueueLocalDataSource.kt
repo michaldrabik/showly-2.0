@@ -14,6 +14,8 @@ interface TraktSyncQueueLocalDataSource {
 
   suspend fun deleteAll(type: String): Int
 
+  suspend fun deleteAll()
+
   suspend fun deleteAllForList(idList: Long): Int
 
   suspend fun delete(items: List<TraktSyncQueue>)

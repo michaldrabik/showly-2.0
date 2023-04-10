@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_news.cases
 
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.repository.NewsRepository
@@ -11,18 +12,19 @@ import com.michaldrabik.ui_news.recycler.NewsListItem
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @ViewModelScoped
 class NewsLoadItemsCase @Inject constructor(
+  private val dispatchers: CoroutineDispatchers,
   private val newsRepository: NewsRepository,
   private val dateFormatProvider: DateFormatProvider,
   private val userManager: UserRedditManager,
 ) {
 
-  suspend fun preloadItems(types: List<Type>) = coroutineScope {
+  suspend fun preloadItems(types: List<Type>) = withContext(dispatchers.IO) {
     val showsNewsAsync = async {
       when {
         types.contains(Type.SHOW) || types.isEmpty() -> newsRepository.getCachedNews(Type.SHOW)
@@ -45,7 +47,7 @@ class NewsLoadItemsCase @Inject constructor(
   suspend fun loadItems(
     forceRefresh: Boolean,
     types: List<Type>,
-  ) = coroutineScope {
+  ) = withContext(dispatchers.IO) {
     val token = userManager.checkAuthorization()
 
     val showsNewsAsync = async {

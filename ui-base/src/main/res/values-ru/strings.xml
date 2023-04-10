@@ -24,7 +24,7 @@
   <string name="textSpoilersWarning">Этот комментарий содержит спойлеры.\nНажмите, чтобы прочитать.</string>
   <string name="textCommentedOn">Прокомментировал %s</string>
   <string name="textNetwork">%1$s (%2$s)</string>
-  <string name="textNetworks">Студия:</string>
+  <string name="textNetworks" comment="TV network like HBO, AMC, Showtime, Disney etc.">Студия:</string>
   <string name="textGenres">Жанры:</string>
   <string name="textShows">Сериалы</string>
   <string name="textMovies">Фильмы</string>

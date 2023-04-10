@@ -8,6 +8,7 @@ import com.michaldrabik.common.Config.DEFAULT_DATE_FORMAT
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.common.Config.DEFAULT_NEWS_VIEW_TYPE
 import com.michaldrabik.common.Mode
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.repository.mappers.Mappers
@@ -20,6 +21,7 @@ import com.michaldrabik.ui_model.ProgressNextEpisodeType
 import com.michaldrabik.ui_model.ProgressNextEpisodeType.LAST_WATCHED
 import com.michaldrabik.ui_model.ProgressType
 import com.michaldrabik.ui_model.Settings
+import kotlinx.coroutines.withContext
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Named
@@ -31,6 +33,7 @@ class SettingsRepository @Inject constructor(
   val filters: SettingsFiltersRepository,
   val widgets: SettingsWidgetsRepository,
   val viewMode: SettingsViewModeRepository,
+  private val dispatchers: CoroutineDispatchers,
   private val localSource: LocalDataSource,
   private val transactions: TransactionsProvider,
   private val mappers: Mappers,
@@ -60,17 +63,23 @@ class SettingsRepository @Inject constructor(
   }
 
   suspend fun isInitialized() =
-    localSource.settings.getCount() > 0
+    withContext(dispatchers.IO) {
+      localSource.settings.getCount() > 0
+    }
 
   suspend fun load(): Settings {
-    val settingsDb = localSource.settings.getAll()
+    val settingsDb = withContext(dispatchers.IO) {
+      localSource.settings.getAll()
+    }
     return mappers.settings.fromDatabase(settingsDb)
   }
 
   suspend fun update(settings: Settings) {
-    transactions.withTransaction {
-      val settingsDb = mappers.settings.toDatabase(settings)
-      localSource.settings.upsert(settingsDb)
+    withContext(dispatchers.IO) {
+      transactions.withTransaction {
+        val settingsDb = mappers.settings.toDatabase(settings)
+        localSource.settings.upsert(settingsDb)
+      }
     }
   }
 

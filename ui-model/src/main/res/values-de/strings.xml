@@ -26,12 +26,12 @@
   <string name="textSettingsShowsNotificationsWhen12HoursBefore">Vor 12 Stunden</string>
   <string name="textSettingsShowsNotificationsWhen12Hours">Nach 12 Stunden</string>
   <string name="textSettingsShowsNotificationsWhenNextDay">1 Tag danach</string>
-  <string name="textTipDiscover">Doppeltipp auf den \'Entdecken\' Tap um eine Schnellsuche zu starten.</string>
-  <string name="textTipMyShows">Tippe zweimal auf die Menüschaltfläche \'Sammlung\', um schnell zwischen den Registerkarten zu wechseln.</string>
+  <string name="textTipDiscover">Tippe zweimal auf \'Entdecken\', um eine Schnellsuche zu starten.</string>
+  <string name="textTipMyShows">Tippe zweimal auf \'Sammlung\', um schnell zwischen den Registerkarten zu wechseln.</string>
   <string name="textTipShowDetailsGallery">Bild antippen, um Galerie zu öffnen.</string>
   <string name="textTipWatchlistPinItem">Tippe &amp; Halte um oben anzupinnen.</string>
-  <string name="textTipBottomModeMenu">Wischen Sie unten Menü links oder rechts um den Modus zu wechseln.</string>
-  <string name="textTipListSwipeToDelete">Wischen Sie Listenelemente, um sie aus der Liste zu entfernen.</string>
+  <string name="textTipBottomModeMenu">Wische im Menü unten nach links oder rechts um den Modus zu wechseln.</string>
+  <string name="textTipListSwipeToDelete">Wische Listenelemente zur Seite, um sie aus der Liste zu entfernen.</string>
   <string name="textGenreAction">Action</string>
   <string name="textGenreAdventure">Abenteuer</string>
   <string name="textGenreAnimation">Animation</string>
@@ -69,12 +69,14 @@
   <string name="textShowStatusPlanned">Geplant</string>
   <string name="textShowStatusCanceled">Abgebrochen</string>
   <string name="textShowStatusEnded">Beendet</string>
+  <string name="textShowStatusUnknown" translatable="false"></string>
   <string name="textMovieStatusReleased">Veröffentlicht</string>
   <string name="textMovieStatusInProduction">In Produktion</string>
   <string name="textMovieStatusPostProduction">Postproduktion</string>
   <string name="textMovieStatusPlanned">Geplant</string>
   <string name="textMovieStatusCanceled">Abgebrochen</string>
   <string name="textMovieStatusRumored">Gerüchten zufolge</string>
+  <string name="textMovieStatusUnknown" translatable="false"></string>
   <string name="textStreamingStream">Stream</string>
   <string name="textStreamingAds">Werbung</string>
   <string name="textStreamingBuy">Kaufen</string>

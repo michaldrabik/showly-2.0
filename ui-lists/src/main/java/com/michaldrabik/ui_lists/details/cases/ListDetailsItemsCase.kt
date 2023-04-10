@@ -4,6 +4,7 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.Mode.MOVIES
 import com.michaldrabik.common.Mode.SHOWS
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.CustomListItem
 import com.michaldrabik.repository.ListsRepository
@@ -30,7 +31,7 @@ import com.michaldrabik.ui_model.Translation
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -39,6 +40,7 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class ListDetailsItemsCase @Inject constructor(
+  private val dispatchers: CoroutineDispatchers,
   private val localSource: LocalDataSource,
   private val mappers: Mappers,
   private val showsRepository: ShowsRepository,
@@ -54,7 +56,7 @@ class ListDetailsItemsCase @Inject constructor(
 ) {
 
   suspend fun loadItems(list: CustomList): Pair<List<ListDetailsItem>, Int> =
-    coroutineScope {
+    withContext(dispatchers.IO) {
       val moviesEnabled = settingsRepository.isMoviesEnabled
       val language = translationsRepository.getLanguage()
       val listItems = listsRepository.loadItemsById(list.id)
@@ -225,7 +227,7 @@ class ListDetailsItemsCase @Inject constructor(
     listId: Long,
     itemTraktId: IdTrakt,
     itemType: Mode,
-  ) {
+  ) = withContext(dispatchers.IO) {
     listsRepository.removeFromList(listId, itemTraktId, itemType.type)
     val isQuickRemoveEnabled = settingsRepository.load().traktQuickRemoveEnabled
     if (isQuickRemoveEnabled) {

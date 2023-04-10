@@ -14,6 +14,9 @@ class ProgressMainEpisodesCase @Inject constructor(
 
   suspend fun setEpisodeWatched(bundle: EpisodeBundle) {
     episodesManager.setEpisodeWatched(bundle)
-    quickSyncManager.scheduleEpisodes(listOf(bundle.episode.ids.trakt.id))
+    quickSyncManager.scheduleEpisodes(
+      showId = bundle.show.traktId,
+      episodesIds = listOf(bundle.episode.ids.trakt.id)
+    )
   }
 }

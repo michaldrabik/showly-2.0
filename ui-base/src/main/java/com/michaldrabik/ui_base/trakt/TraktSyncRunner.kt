@@ -23,8 +23,8 @@ abstract class TraktSyncRunner(
     try {
       Timber.d("Checking authorization...")
       userTraktManager.checkAuthorization()
-    } catch (t: Throwable) {
-      throw ShowlyError.UnauthorizedError(t.message)
+    } catch (error: Throwable) {
+      throw ShowlyError.UnauthorizedError(error.message)
     }
   }
 

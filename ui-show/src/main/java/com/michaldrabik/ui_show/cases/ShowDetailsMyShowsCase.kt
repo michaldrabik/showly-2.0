@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_show.cases
 
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.utilities.TransactionsProvider
@@ -13,13 +14,14 @@ import com.michaldrabik.ui_model.Show
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import com.michaldrabik.data_local.database.model.Episode as EpisodeDb
 import com.michaldrabik.data_local.database.model.Season as SeasonDb
 
 @ViewModelScoped
 class ShowDetailsMyShowsCase @Inject constructor(
+  private val dispatchers: CoroutineDispatchers,
   private val localSource: LocalDataSource,
   private val mappers: Mappers,
   private val transactions: TransactionsProvider,
@@ -28,7 +30,7 @@ class ShowDetailsMyShowsCase @Inject constructor(
   private val announcementManager: AnnouncementManager
 ) {
 
-  suspend fun getAllIds() = coroutineScope {
+  suspend fun getAllIds() = withContext(dispatchers.IO) {
     val (myShows, watchlistShows) = awaitAll(
       async { showsRepository.myShows.loadAllIds() },
       async { showsRepository.watchlistShows.loadAllIds() }
@@ -36,14 +38,15 @@ class ShowDetailsMyShowsCase @Inject constructor(
     Pair(myShows, watchlistShows)
   }
 
-  suspend fun isMyShows(show: Show) =
+  suspend fun isMyShows(show: Show) = withContext(dispatchers.IO) {
     showsRepository.myShows.exists(show.ids.trakt)
+  }
 
   suspend fun addToMyShows(
     show: Show,
     seasons: List<Season>,
     episodes: List<Episode>
-  ) {
+  ) = withContext(dispatchers.IO) {
     transactions.withTransaction {
       val localSeasons = localSource.seasons.getAllByShowId(show.traktId)
       val localEpisodes = localSource.episodes.getAllByShowId(show.traktId)
@@ -74,7 +77,7 @@ class ShowDetailsMyShowsCase @Inject constructor(
     announcementManager.refreshShowsAnnouncements()
   }
 
-  suspend fun removeFromMyShows(show: Show, removeLocalData: Boolean) {
+  suspend fun removeFromMyShows(show: Show, removeLocalData: Boolean) = withContext(dispatchers.IO) {
     transactions.withTransaction {
       showsRepository.myShows.delete(show.ids.trakt)
 

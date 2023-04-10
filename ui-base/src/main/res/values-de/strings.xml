@@ -21,10 +21,10 @@
   <string name="textEpisode">Folge %1$d</string>
   <string name="textSeasonEpisode">S.%02d E.%02d</string>
   <string name="textSortBy">Sortiert nach:</string>
-  <string name="textSpoilersWarning">Dieses Kommentar enthält Spoiler.\nTippen um zu lesen.</string>
+  <string name="textSpoilersWarning">Dieser Kommentar enthält Spoiler.\nTippen um zu lesen.</string>
   <string name="textCommentedOn">Kommentiert von %s</string>
   <string name="textNetwork">%1$s (%2$s)</string>
-  <string name="textNetworks">Fernseh-Network:</string>
+  <string name="textNetworks" comment="TV network like HBO, AMC, Showtime, Disney etc.">Fernseh-Network:</string>
   <string name="textGenres">Genres:</string>
   <string name="textShows">Serien</string>
   <string name="textMovies">Filme</string>
@@ -49,7 +49,7 @@
   <string name="textMusic">Musik</string>
   <string name="textActing">Darsteller</string>
   <string name="textSetCustomImages">Benutzerdefinierte Bilder</string>
-  <string name="textSetCustomImagesDescription">Wählen Sie Ihr eigenes Poster und Fanart, die in der gesamten App verwendet werden.</string>
+  <string name="textSetCustomImagesDescription">Wähle dein eigenes Poster und Fanart, diese werden in der gesamten App verwendet.</string>
   <string name="textAiredAlready">Veröffentlicht</string>
   <string name="textAirsNow">Jetzt live</string>
   <plurals name="textDaysToAir">
@@ -65,7 +65,7 @@
     <item quantity="other">Verfügbar in %d Minuten</item>
   </plurals>
   <plurals name="textTraktQuickSyncComplete">
-    <item quantity="one">1 Item erfolgreich synchronisiert. </item>
+    <item quantity="one">1 Element erfolgreich synchronisiert.</item>
     <item quantity="other">%d Items erfolgreich synchronisiert.  </item>
   </plurals>
   <string name="textToday">Heute</string>
@@ -87,16 +87,16 @@
   <string name="textNewSeasonAvailableSoon">Neue Staffel bald verfügbar!</string>
   <string name="textNewMovieAvailable">Film wurde veroffentlicht!</string>
   <string name="textTraktSync">Trakt.tv Sync</string>
-  <string name="textTraktSyncComplete">Synchronisation komplett erfolgreich!</string>
-  <string name="textTraktSyncRunning">Im Gang…</string>
+  <string name="textTraktSyncComplete">Synchronisation erfolgreich abgeschlossen!</string>
+  <string name="textTraktSyncRunning">Läuft…</string>
   <string name="textTraktSyncError">Synchronisation mit Trakt.tv fehlgeschlagen.</string>
   <string name="textTraktSyncErrorFull">Trakt.tv Synchronisation fehlgeschlagen. Bitte überprüfe deine Internetverbindung und versuch es erneut oder kontaktiere uns, wenn der Fehler weiterhin besteht.</string>
   <string name="textTraktQuickSyncError">Sofortige Synchronisation fehlgeschlagen.</string>
-  <string name="textTraktQuickSyncErrorFull">Sofortige Synchronisation fehlgeschlagen. Wir versuchen es beim nächsten öffnen der App. Bitte überprüfe deine Internetverbindung.</string>
+  <string name="textTraktQuickSyncErrorFull">Sofortige Synchronisation fehlgeschlagen. Wir versuchen es erneut beim nächsten Öffnen der App. Bitte überprüfe deine Internetverbindung.</string>
   <string name="textRemoveFromTrakt">Von Trakt.tv entfernen?</string>
-  <string name="textRemoveFromTraktHidden">Möchtest du dieses Element von deinem Trakt.tv-Account \'Versteckt\' entfernen?</string>
-  <string name="textRemoveFromTraktWatchlist">Möchtest du dieses Element von deinem Trakt.tv-Account \'Watchlist\' entfernen?</string>
-  <string name="textRemoveFromTraktProgress">Möchtest du dieses Element von deinem Trakt.tv-Account \'Fortschritt\' entfernen?</string>
+  <string name="textRemoveFromTraktHidden">Möchtest du dieses Element aus den \'Versteckten Elementen\' deines Trakt.tv-Accounts entfernen?</string>
+  <string name="textRemoveFromTraktWatchlist">Möchtest du dieses Element aus der \'Watchlist\' deines Trakt.tv-Accounts entfernen?</string>
+  <string name="textRemoveFromTraktProgress">Möchtest du dieses Element aus der Kategorie \'Fortschritt\' deines Trakt.tv-Accounts entfernen?</string>
   <string name="textAddToMyShows">Zu Meine Serien</string>
   <string name="textAddToMyMovies">Zu Meinen Filmen</string>
   <string name="textAddToWatchlist">Zu Watchlist</string>
@@ -118,18 +118,18 @@
   <string name="menuAddOnHold" comment="This is a button for Progress subsection. It will contain pending shows marked by user.">Pin auf \'Angehalten\'</string>
   <string name="menuRemoveOnHold" comment="This is a button for Progress subsection. It will contain pending shows marked by user.">Pin von \'Angehalten\' lösen</string>
   <string name="errorGeneral">Hoppla… Da ging etwas schief.\nBitte kontaktiere uns, wenn dies weiterhin geschieht.</string>
-  <string name="errorAuthorization">Autorisation fehlgeschlagen. Bitte kontaktiere uns, wenn dies weiterhin geschieht.</string>
+  <string name="errorAuthorization">Authentifizierung fehlgeschlagen. Bitte kontaktiere uns, wenn dies weiterhin geschieht.</string>
   <string name="errorTraktAuthorization">Trakt.tv Authentifizierung fehlgeschlagen.\nBitte einloggen und erneut versuchen.</string>
   <string name="errorSeasonsNotLoaded">Bitte warte bis die Staffelinformationen geladen sind.</string>
   <string name="errorEpisodeNotAired">Diese Folge wurde bisher noch nicht veröffentlicht.</string>
   <string name="errorCouldNotLoadDiscover">Wir können die Entdecken Seite aktuell nicht laden.\nBitte kontaktiere uns, wenn dieser Fehler weiterhin besteht.</string>
-  <string name="errorMalformedShow">Es sieht so aus als ob die Sendung nicht länger in der Trakt.tv Datenbank existiert oder doppelt ist.\n\n Tippe auf \"OK\" um sie aus der App zu entfernen.</string>
+  <string name="errorMalformedShow">Es sieht so aus als ob diese Sendung nicht länger in der Trakt.tv Datenbank existiert oder doppelt ist.\n\n Tippe auf \"OK\" um sie aus der App zu entfernen.</string>
   <string name="errorMalformedMovie">Es sieht so aus als ob dieser Film nicht länger in der Trakt.tv Datenbank existiert oder doppelt ist.\n\n Tippe auf \"OK\" um ihn auf der App zu entfernen.</string>
-  <string name="errorCouldNotLoadShow">Wir können die Detail der Serie aktuell nicht laden.\nBitte kontaktiere uns, wenn dieser Fehler weiterhin passiert.</string>
-  <string name="errorCouldNotLoadMovie">Wir können die Detail des Filmes aktuell nicht laden.\nBitte kontaktiere uns, wenn dieser Fehler weiterhin passiert.</string>
+  <string name="errorCouldNotLoadShow">Wir können die Details zu dieser Serie aktuell nicht laden.\nBitte kontaktiere uns, wenn dieser Fehler weiterhin passiert.</string>
+  <string name="errorCouldNotLoadMovie">Wir können die Details zu diesem Filme aktuell nicht laden.\nBitte kontaktiere uns, wenn dieser Fehler weiterhin passiert.</string>
   <string name="errorCouldNotLoadSearchResults">Wir können die Suchergebnisse aktuell nicht laden.\nBitte schreib uns, wenn dieser Fehler weiterhin passiert.</string>
   <string name="errorNoInternetConnection">Kein Internet. Bitte überprüfe deine Verbindung.</string>
-  <string name="errorTraktSyncGeneral">Synchronisationserror mit Trakt.tv.\nBitte check deine Internetverbindung und versuch es erneut. </string>
-  <string name="errorTraktLocked">Ihr Trakt.tv-Konto ist derzeit gesperrt. Wenden Sie sich unter https://support.trakt.tv/ an den Trakt.tv-Support, um Ihr Konto zu entsperren.</string>
+  <string name="errorTraktSyncGeneral">Synchronisierungsfehler mit Trakt.tv.\nBitte prüfe deine Internetverbindung und versuch es erneut.</string>
+  <string name="errorTraktLocked">Dein Trakt.tv-Account ist derzeit gesperrt.\nWende dich an den Support unter https://support.trakt.tv/.</string>
   <string name="errorSubscriptionsNotAvailable">Google Play Abonnements sind auf diesem Gerät nicht verfügbar.</string>
 </resources>

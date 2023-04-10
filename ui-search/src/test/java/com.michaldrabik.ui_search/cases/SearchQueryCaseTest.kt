@@ -59,6 +59,7 @@ class SearchQueryCaseTest : BaseMockTest() {
     coEvery { moviesRepository.watchlistMovies.loadAllIds() } returns emptyList()
 
     SUT = SearchQueryCase(
+      testDispatchers,
       cloud,
       mappers,
       settingsRepository,

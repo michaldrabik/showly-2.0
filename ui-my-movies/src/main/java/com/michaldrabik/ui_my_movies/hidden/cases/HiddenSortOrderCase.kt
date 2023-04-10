@@ -15,9 +15,4 @@ class HiddenSortOrderCase @Inject constructor(
     settingsRepository.sorting.hiddenMoviesSortOrder = sortOrder
     settingsRepository.sorting.hiddenMoviesSortType = sortType
   }
-
-  fun loadSortOrder() = Pair(
-    settingsRepository.sorting.hiddenMoviesSortOrder,
-    settingsRepository.sorting.hiddenMoviesSortType
-  )
 }

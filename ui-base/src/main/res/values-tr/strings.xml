@@ -24,7 +24,7 @@
   <string name="textSpoilersWarning">Bu yorum sürpriz bozan içermektedir.\nOkumak için dokunun.</string>
   <string name="textCommentedOn">Yorum yapan: %s</string>
   <string name="textNetwork">%1$s (%2$s)</string>
-  <string name="textNetworks">Ağ:</string>
+  <string name="textNetworks" comment="TV network like HBO, AMC, Showtime, Disney etc.">Ağ:</string>
   <string name="textGenres">Türler:</string>
   <string name="textShows">Diziler</string>
   <string name="textMovies">Filmler</string>

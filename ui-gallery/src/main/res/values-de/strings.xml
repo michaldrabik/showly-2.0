@@ -3,7 +3,7 @@
   <string name="textPoster">Poster</string>
   <string name="textFanart">Fanart</string>
   <string name="textGalleryEmpty">Keine Bilder verfügbar</string>
-  <string name="textUrlDialogTitle">Image herunterladen</string>
+  <string name="textUrlDialogTitle">Bild herunterladen</string>
   <string name="textUrlDialogHint">Bildadresse</string>
   <string name="textUrlDialogInvalidUrl">Ungültiges Bild URL-Format.\nBeispiel: https://test.com/image.jpg</string>
   <string name="textUrlDialogInvalidImage">Entschuldigung. Das Bild konnte nicht geladen werden.</string>

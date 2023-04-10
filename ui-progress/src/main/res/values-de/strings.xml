@@ -8,6 +8,6 @@
   <string name="textDiscoverShows">Shows entdecken</string>
   <string name="textEpisodeInfo">Details</string>
   <string name="textTraktSynchronize">Von Trakt.tv importieren</string>
-  <string name="textProgressEmpty">Dein <b>Fortschritt</b>ist aktuell leer.\n\nTippe auf den <b>Entdecken</b> Tab, um Shows hinzuzufügen oder deine Trakt.tv-Sammlung zu importieren.</string>
+  <string name="textProgressEmpty">Dein <b>Fortschritt</b>ist aktuell leer.\n\nTippe auf den <b>Entdecken</b> Tab, um Serien hinzuzufügen oder deine Trakt.tv-Sammlung zu importieren.</string>
   <string name="textNewSeason">Staffel Premiere</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_statistics_movies
+package com.michaldrabik.common_test
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

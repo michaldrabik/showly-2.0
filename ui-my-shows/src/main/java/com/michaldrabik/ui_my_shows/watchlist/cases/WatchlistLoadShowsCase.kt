@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_my_shows.watchlist.cases
 
 import com.michaldrabik.common.Config
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.repository.settings.SettingsRepository
@@ -18,12 +19,13 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @ViewModelScoped
 class WatchlistLoadShowsCase @Inject constructor(
+  private val dispatchers: CoroutineDispatchers,
   private val ratingsCase: WatchlistRatingsCase,
   private val sorter: WatchlistItemSorter,
   private val filters: WatchlistItemFilter,
@@ -34,44 +36,45 @@ class WatchlistLoadShowsCase @Inject constructor(
   private val dateFormatProvider: DateFormatProvider,
 ) {
 
-  suspend fun loadShows(searchQuery: String): List<CollectionListItem> = coroutineScope {
-    val language = translationsRepository.getLanguage()
-    val ratings = ratingsCase.loadRatings()
-    val dateFormat = dateFormatProvider.loadFullDayFormat()
-    val translations =
-      if (language == Config.DEFAULT_LANGUAGE) emptyMap()
-      else translationsRepository.loadAllShowsLocal(language)
+  suspend fun loadShows(searchQuery: String): List<CollectionListItem> =
+    withContext(dispatchers.IO) {
+      val language = translationsRepository.getLanguage()
+      val ratings = ratingsCase.loadRatings()
+      val dateFormat = dateFormatProvider.loadFullDayFormat()
+      val translations =
+        if (language == Config.DEFAULT_LANGUAGE) emptyMap()
+        else translationsRepository.loadAllShowsLocal(language)
 
-    val filtersItem = loadFiltersItem()
-    val filtersNetworks = filtersItem.networks
-      .flatMap { network -> network.channels.map { it } }
-    val filtersGenres = filtersItem.genres.map { it.slug.lowercase() }
+      val filtersItem = loadFiltersItem()
+      val filtersNetworks = filtersItem.networks
+        .flatMap { network -> network.channels.map { it } }
+      val filtersGenres = filtersItem.genres.map { it.slug.lowercase() }
 
-    val showsItems = showsRepository.watchlistShows.loadAll()
-      .map {
-        toListItemAsync(
-          show = it,
-          translation = translations[it.traktId],
-          userRating = ratings[it.ids.trakt],
-          dateFormat = dateFormat,
-          sortOrder = filtersItem.sortOrder
-        )
+      val showsItems = showsRepository.watchlistShows.loadAll()
+        .map {
+          toListItemAsync(
+            show = it,
+            translation = translations[it.traktId],
+            userRating = ratings[it.ids.trakt],
+            dateFormat = dateFormat,
+            sortOrder = filtersItem.sortOrder
+          )
+        }
+        .awaitAll()
+        .filter { item ->
+          filters.filterByQuery(item, searchQuery) &&
+            filters.filterUpcoming(item, filtersItem.isUpcoming) &&
+            filters.filterNetworks(item, filtersNetworks) &&
+            filters.filterGenres(item, filtersGenres)
+        }
+        .sortedWith(sorter.sort(filtersItem.sortOrder, filtersItem.sortType))
+
+      if (showsItems.isNotEmpty() || filtersItem.hasActiveFilters()) {
+        listOf(filtersItem) + showsItems
+      } else {
+        showsItems
       }
-      .awaitAll()
-      .filter { item ->
-        filters.filterByQuery(item, searchQuery) &&
-          filters.filterUpcoming(item, filtersItem.isUpcoming) &&
-          filters.filterNetworks(item, filtersNetworks) &&
-          filters.filterGenres(item, filtersGenres)
-      }
-      .sortedWith(sorter.sort(filtersItem.sortOrder, filtersItem.sortType))
-
-    if (showsItems.isNotEmpty() || filtersItem.hasActiveFilters()) {
-      listOf(filtersItem) + showsItems
-    } else {
-      showsItems
     }
-  }
 
   private fun loadFiltersItem(): CollectionListItem.FiltersItem {
     return CollectionListItem.FiltersItem(

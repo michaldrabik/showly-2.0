@@ -42,6 +42,7 @@ class SettingsRepositoryTest : BaseMockTest() {
       settingsFilterRepository,
       settingsWidgetsRepository,
       settingsViewModeRepository,
+      testDispatchers,
       database,
       transactions,
       mappers,

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textNextEpisode">下一集：</string>
+  <string name="textInMyShows">已加入我的剧集</string>
+  <string name="textInWatchlist">已加入待看列表</string>
+  <string name="textInHidden">已隐藏</string>
+  <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
+  <string name="textShowQuickProgressTitle">快速设置进度</string>
+  <string name="textShowQuickProgressSubTitle">选择最后观看的单集，来快速更新您的进度至此。</string>
+  <string name="textShowQuickProgressDone">您的进度已经更新。</string>
+  <string name="textEpisodeDate">集数 %1$d | %2$s</string>
+  <string name="textEpisodeTitle">%02d 季 %02d 集 | \'%s\'</string>
+  <string name="textTraktSyncRemovedFromTrakt">Trakt.tv 同步成功。</string>
+  <string name="textActorsEmpty">暂无演职人员信息</string>
+  <string name="textSeasons">季：</string>
+  <string name="textSeasonsEmpty">暂无剧季信息</string>
+  <string name="textTrailer">预告片</string>
+  <string name="textYouMayAlsoLike">你可能还喜欢：</string>
+  <string name="textRuntimeLeftHours">剩余约 %s 小时 %s 分钟</string>
+  <string name="textRuntimeLeftMinutes">剩余约 %s 分钟</string>
+  <string name="textShowManageLists">管理列表</string>
+  <string name="textShowManageListsCount">管理列表 (%d)</string>
+</resources>

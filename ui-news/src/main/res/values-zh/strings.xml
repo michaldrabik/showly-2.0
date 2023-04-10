@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="menuNews">新闻</string>
+  <string name="textNewsEmpty">目前暂无新闻。</string>
+</resources>

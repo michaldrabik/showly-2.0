@@ -61,7 +61,10 @@ class ProgressWidgetEpisodeCheckService : JobIntentService(), CoroutineScope {
 
     runBlocking {
       episodesManager.setEpisodeWatched(episodeId, seasonId, IdTrakt(showId))
-      quickSyncManager.scheduleEpisodes(listOf(episodeId))
+      quickSyncManager.scheduleEpisodes(
+        showId = showId,
+        episodesIds = listOf(episodeId)
+      )
       (applicationContext as WidgetsProvider).requestShowsWidgetsUpdate()
     }
   }

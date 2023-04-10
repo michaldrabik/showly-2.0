@@ -28,7 +28,7 @@ class SearchTranslationsCaseTest : BaseMockTest() {
   @Before
   override fun setUp() {
     super.setUp()
-    SUT = SearchTranslationsCase(translationsRepository)
+    SUT = SearchTranslationsCase(testDispatchers, translationsRepository)
   }
 
   @After

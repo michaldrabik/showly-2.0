@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_base.common.sheets.context_menu.movie.cases
 
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.ui_base.common.sheets.context_menu.events.RemoveTraktUiEvent
@@ -11,18 +12,19 @@ import com.michaldrabik.ui_model.Movie
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ViewModelScoped
 class MovieContextMenuMyMoviesCase @Inject constructor(
+  private val dispatchers: CoroutineDispatchers,
   private val moviesRepository: MoviesRepository,
   private val pinnedItemsRepository: PinnedItemsRepository,
   private val announcementManager: AnnouncementManager,
   private val quickSyncManager: QuickSyncManager,
 ) {
 
-  suspend fun moveToMyMovies(traktId: IdTrakt) = coroutineScope {
+  suspend fun moveToMyMovies(traktId: IdTrakt) = withContext(dispatchers.IO) {
     val movie = Movie.EMPTY.copy(ids = Ids.EMPTY.copy(traktId))
 
     val (isWatchlist, isHidden) = awaitAll(
@@ -42,7 +44,7 @@ class MovieContextMenuMyMoviesCase @Inject constructor(
     RemoveTraktUiEvent(removeWatchlist = isWatchlist, removeHidden = isHidden)
   }
 
-  suspend fun removeFromMyMovies(traktId: IdTrakt) {
+  suspend fun removeFromMyMovies(traktId: IdTrakt) = withContext(dispatchers.IO) {
     val movie = Movie.EMPTY.copy(ids = Ids.EMPTY.copy(traktId))
     moviesRepository.myMovies.delete(traktId)
     pinnedItemsRepository.removePinnedItem(movie)

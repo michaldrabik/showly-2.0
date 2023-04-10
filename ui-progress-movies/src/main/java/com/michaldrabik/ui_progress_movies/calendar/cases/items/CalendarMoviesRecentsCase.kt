@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_progress_movies.calendar.cases.items
 
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.movies.MoviesRepository
@@ -12,6 +13,7 @@ import javax.inject.Singleton
 
 @Singleton
 class CalendarMoviesRecentsCase @Inject constructor(
+  dispatchers: CoroutineDispatchers,
   moviesRepository: MoviesRepository,
   translationsRepository: TranslationsRepository,
   imagesProvider: MovieImagesProvider,
@@ -20,6 +22,7 @@ class CalendarMoviesRecentsCase @Inject constructor(
   override val grouper: CalendarRecentsGrouper,
   override val sorter: CalendarRecentsSorter,
 ) : CalendarMoviesItemsCase(
+  dispatchers,
   moviesRepository,
   translationsRepository,
   imagesProvider,

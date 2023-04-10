@@ -19,6 +19,7 @@ import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_progress.main.EpisodeCheckActionUiEvent
 import com.michaldrabik.ui_progress.main.ProgressMainUiState
+import com.michaldrabik.ui_progress.main.RequestWidgetsUpdate
 import com.michaldrabik.ui_progress.progress.cases.ProgressFiltersCase
 import com.michaldrabik.ui_progress.progress.cases.ProgressHeadersCase
 import com.michaldrabik.ui_progress.progress.cases.ProgressItemsCase
@@ -76,11 +77,14 @@ class ProgressViewModel @Inject constructor(
     loadItemsJob?.cancel()
     loadItemsJob = viewModelScope.launch {
       loadingState.value = true
+
       val items = itemsCase.loadItems(searchQuery ?: "")
       itemsState.value = items
       loadingState.value = false
       scrollState.value = Event(resetScroll)
       overscrollState.value = userTraktManager.isAuthorized() && items.isNotEmpty()
+
+      eventChannel.send(RequestWidgetsUpdate)
     }
   }
 

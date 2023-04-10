@@ -9,13 +9,13 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.ShowsMoviesSyncComplete
 import com.michaldrabik.ui_base.sync.runners.MoviesSyncRunner
 import com.michaldrabik.ui_base.sync.runners.ShowsSyncRunner
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
@@ -27,7 +27,8 @@ class ShowsMoviesSyncWorker @AssistedInject constructor(
   @Assisted workerParams: WorkerParameters,
   private val showsSyncRunner: ShowsSyncRunner,
   private val moviesSyncRunner: MoviesSyncRunner,
-  private val eventsManager: EventsManager
+  private val eventsManager: EventsManager,
+  private val dispatchers: CoroutineDispatchers
 ) : CoroutineWorker(context, workerParams) {
 
   companion object {
@@ -48,7 +49,7 @@ class ShowsMoviesSyncWorker @AssistedInject constructor(
     }
   }
 
-  override suspend fun doWork() = withContext(Dispatchers.IO) {
+  override suspend fun doWork() = withContext(dispatchers.IO) {
     Timber.d("Doing work...")
 
     val showsAsync = async {

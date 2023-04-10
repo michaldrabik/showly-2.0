@@ -25,7 +25,7 @@ class QuickSyncManager @Inject constructor(
 
   suspend fun scheduleEpisodes(
     episodesIds: List<Long>,
-    showId: Long? = null,
+    showId: Long,
     clearProgress: Boolean = false
   ) {
     if (!ensureQuickSync() && !(clearProgress && ensureQuickRemove())) {

@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_my_movies.hidden.cases
 
 import com.michaldrabik.common.Config
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.movies.MoviesRepository
@@ -19,12 +20,13 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @ViewModelScoped
 class HiddenLoadMoviesCase @Inject constructor(
+  private val dispatchers: CoroutineDispatchers,
   private val ratingsCase: HiddenRatingsCase,
   private val sorter: CollectionItemSorter,
   private val moviesRepository: MoviesRepository,
@@ -34,41 +36,42 @@ class HiddenLoadMoviesCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
 ) {
 
-  suspend fun loadMovies(searchQuery: String): List<CollectionListItem> = coroutineScope {
-    val language = translationsRepository.getLanguage()
-    val ratings = ratingsCase.loadRatings()
-    val dateFormat = dateFormatProvider.loadShortDayFormat()
-    val fullDateFormat = dateFormatProvider.loadFullDayFormat()
-    val translations =
-      if (language == Config.DEFAULT_LANGUAGE) emptyMap()
-      else translationsRepository.loadAllMoviesLocal(language)
+  suspend fun loadMovies(searchQuery: String): List<CollectionListItem> =
+    withContext(dispatchers.IO) {
+      val language = translationsRepository.getLanguage()
+      val ratings = ratingsCase.loadRatings()
+      val dateFormat = dateFormatProvider.loadShortDayFormat()
+      val fullDateFormat = dateFormatProvider.loadFullDayFormat()
+      val translations =
+        if (language == Config.DEFAULT_LANGUAGE) emptyMap()
+        else translationsRepository.loadAllMoviesLocal(language)
 
-    val sortOrder = settingsRepository.sorting.hiddenMoviesSortOrder
-    val sortType = settingsRepository.sorting.hiddenMoviesSortType
-    val genres = settingsRepository.filters.hiddenMoviesGenres
+      val sortOrder = settingsRepository.sorting.hiddenMoviesSortOrder
+      val sortType = settingsRepository.sorting.hiddenMoviesSortType
+      val genres = settingsRepository.filters.hiddenMoviesGenres
 
-    val filtersItem = loadFiltersItem(sortOrder, sortType, genres)
-    val moviesItems = moviesRepository.hiddenMovies.loadAll()
-      .map {
-        toListItemAsync(
-          movie = it,
-          translation = translations[it.traktId],
-          userRating = ratings[it.ids.trakt],
-          dateFormat = dateFormat,
-          fullDateFormat = fullDateFormat
-        )
+      val filtersItem = loadFiltersItem(sortOrder, sortType, genres)
+      val moviesItems = moviesRepository.hiddenMovies.loadAll()
+        .map {
+          toListItemAsync(
+            movie = it,
+            translation = translations[it.traktId],
+            userRating = ratings[it.ids.trakt],
+            dateFormat = dateFormat,
+            fullDateFormat = fullDateFormat
+          )
+        }
+        .awaitAll()
+        .filterByQuery(searchQuery)
+        .filterByGenre(genres.map { it.slug.lowercase() })
+        .sortedWith(sorter.sort(sortOrder, sortType))
+
+      if (moviesItems.isNotEmpty() || filtersItem.hasActiveFilters()) {
+        listOf(filtersItem) + moviesItems
+      } else {
+        moviesItems
       }
-      .awaitAll()
-      .filterByQuery(searchQuery)
-      .filterByGenre(genres.map { it.slug.lowercase() })
-      .sortedWith(sorter.sort(sortOrder, sortType))
-
-    if (moviesItems.isNotEmpty() || filtersItem.hasActiveFilters()) {
-      listOf(filtersItem) + moviesItems
-    } else {
-      moviesItems
     }
-  }
 
   private fun loadFiltersItem(
     sortOrder: SortOrder,
@@ -92,11 +95,14 @@ class HiddenLoadMoviesCase @Inject constructor(
   private fun List<CollectionListItem.MovieItem>.filterByGenre(genres: List<String>) =
     filter { genres.isEmpty() || it.movie.genres.any { genre -> genre.lowercase() in genres } }
 
-  suspend fun loadTranslation(movie: Movie, onlyLocal: Boolean): Translation? {
-    val language = translationsRepository.getLanguage()
-    if (language == Config.DEFAULT_LANGUAGE) return Translation.EMPTY
-    return translationsRepository.loadTranslation(movie, language, onlyLocal)
-  }
+  suspend fun loadTranslation(movie: Movie, onlyLocal: Boolean): Translation? =
+    withContext(dispatchers.IO) {
+      val language = translationsRepository.getLanguage()
+      if (language == Config.DEFAULT_LANGUAGE) {
+        return@withContext Translation.EMPTY
+      }
+      translationsRepository.loadTranslation(movie, language, onlyLocal)
+    }
 
   private fun CoroutineScope.toListItemAsync(
     movie: Movie,

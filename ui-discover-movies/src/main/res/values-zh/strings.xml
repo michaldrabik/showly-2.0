@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textSortOrderMovies">信息流：</string>
+  <string name="textDiscoverFilterAnticipatedMovies">隐藏备受期待的电影</string>
+  <string name="textDiscoverFilterCollectionMovies">隐藏合集中的项目</string>
+</resources>

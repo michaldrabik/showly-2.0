@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textSeasonEpisodeDate">%1$02d 季 %2$02d 集 | %3$s</string>
+  <string name="textLoadCommentsCount">评论 (%d)</string>
+  <string name="textVotes">%.1f (%d 个评分 )</string>
+</resources>

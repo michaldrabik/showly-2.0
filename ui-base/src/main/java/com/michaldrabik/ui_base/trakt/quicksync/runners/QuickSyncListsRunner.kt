@@ -48,7 +48,7 @@ class QuickSyncListsRunner @Inject constructor(
 
     if (items.isEmpty()) {
       Timber.d("Nothing to sync. Cancelling..")
-      return count
+      return 0
     }
 
     count += processItems(items, count)

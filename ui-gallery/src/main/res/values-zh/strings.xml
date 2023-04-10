@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textPoster">海报</string>
+  <string name="textFanart">粉丝作品</string>
+  <string name="textGalleryEmpty">暂未能获取图片</string>
+  <string name="textUrlDialogTitle">下载图片</string>
+  <string name="textUrlDialogHint">图片 URL</string>
+  <string name="textUrlDialogInvalidUrl">图片 URL 格式无效。\n正确示例：https://test.com/image.jpg</string>
+  <string name="textUrlDialogInvalidImage">抱歉。无法加载此图片。</string>
+</resources>
