@@ -39,7 +39,7 @@ dependencies {
   implementation project(':ui-model')
 
   implementation libs.android.core
-  implementation libs.android.appCompat
+  implementation libs.android.appcompat
   implementation libs.timber
 
   implementation libs.hilt.android

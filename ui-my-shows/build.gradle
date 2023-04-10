@@ -47,7 +47,7 @@ dependencies {
   implementation libs.hilt.android
   kapt libs.hilt.compiler
 
-  implementation libs.android.gridLayout
+  implementation libs.android.gridlayout
 
   coreLibraryDesugaring libs.android.desugar
 }

@@ -172,9 +172,9 @@ class TraktSyncViewModel @Inject constructor(
     TraktSyncWorker.scheduleOneOff(workManager, isImport, isExport, false)
   }
 
-  override fun onChanged(workInfo: MutableList<WorkInfo>?) {
+  override fun onChanged(workInfo: MutableList<WorkInfo>) {
     Timber.d("WorkInfo changed")
-    val isAnyRunning = workInfo?.any { it.state == WorkInfo.State.RUNNING } == true
+    val isAnyRunning = workInfo.any { it.state == WorkInfo.State.RUNNING }
     progressState.value = isAnyRunning
   }
 

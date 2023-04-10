@@ -33,7 +33,7 @@ android {
 }
 
 dependencies {
-  api libs.android.room
+  api libs.android.room.ktx
   api libs.android.room.runtime
   kapt libs.android.room.compiler
 
