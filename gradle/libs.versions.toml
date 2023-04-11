@@ -12,7 +12,7 @@ hiltWork = "1.0.0"
 
 [libraries]
 
-gradle = { group = "com.android.tools.build", name ="gradle", version = "7.3.1" }
+gradle = { group = "com.android.tools.build", name ="gradle", version = "7.4.2" }
 gradle-firebase-crashlytics = { group = "com.google.firebase", name ="firebase-crashlytics-gradle", version = "2.9.4" }
 gradle-firebase-appdistribution = { group = "com.google.firebase", name ="firebase-appdistribution-gradle", version = "4.0.0" }
 gradle-kotlin-plugin = { group = "org.jetbrains.kotlin", name ="kotlin-gradle-plugin", version = "1.7.20" }
