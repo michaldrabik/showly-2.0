@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="menuMyMovies">Мої Фільми</string>
+  <string name="menuWatchlistMovies">На потім</string>
+  <string name="menuHidden">Приховане</string>
+  <string name="textMyMoviesEmpty">Ваша колекція фільмів наразі порожня.\n\nВідвідайте <b>Огляд</b>, щоб додати свій перший фільм.</string>
+  <string name="textWatchlistMoviesEmpty">Ваш список <b>На потім</b> зараз порожній.\n\nВідвідайте вкладку <b>Огляд</b>, щоб додати фільми, які ви хочете переглянути у майбутньому.</string>
+  <string name="textHiddenEmpty">Наразі Ваш список <b>Приховане</b> порожній.\n\n<b>Приховане</b> це список елементів, які вас не цікавлять.\n\nПриховані елементи більше не з\'являтимуться в <b>Прогрес</b>, <b>Огляд</b> та інших розділах.</string>
+</resources>
