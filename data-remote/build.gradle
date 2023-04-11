@@ -67,7 +67,7 @@ dependencies {
   implementation libs.hilt.android
   kapt libs.hilt.compiler
 
-  testImplementation testLibs.junit
+  testImplementation libs.junit
 
   coreLibraryDesugaring libs.android.desugar
 }

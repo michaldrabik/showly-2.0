@@ -122,8 +122,8 @@ dependencies {
   implementation libs.android.play.updates
   implementation libs.android.play.reviews
 
-  testImplementation testLibs.bundles.testing
-  androidTestImplementation androidTestLibs.android.test.runner
+  testImplementation libs.bundles.testing
+  androidTestImplementation libs.android.test.runner
 
   //  debugImplementation "com.squareup.leakcanary:leakcanary-android:$versions.leakCanary"
   coreLibraryDesugaring libs.android.desugar
