@@ -12,6 +12,13 @@ hiltWork = "1.0.0"
 
 [libraries]
 
+gradle = { group = "com.android.tools.build", name ="gradle", version = "7.3.1" }
+gradle-firebase-crashlytics = { group = "com.google.firebase", name ="firebase-crashlytics-gradle", version = "2.9.4" }
+gradle-firebase-appdistribution = { group = "com.google.firebase", name ="firebase-appdistribution-gradle", version = "4.0.0" }
+gradle-kotlin-plugin = { group = "org.jetbrains.kotlin", name ="kotlin-gradle-plugin", version = "1.7.20" }
+gradle-ktlint = { group = "org.jlleitschuh.gradle", name ="ktlint-gradle", version = "10.2.1" }
+google-services = { group = "com.google.gms", name ="google-services", version = "4.3.15" }
+
 android-core = { group = "androidx.core", name = "core-ktx", version = "1.9.0" }
 android-appcompat = { group = "androidx.appcompat", name = "appcompat", version = "1.7.0-alpha01" }
 android-gridlayout = { group = "androidx.gridlayout", name = "gridlayout", version = "1.0.0" }
