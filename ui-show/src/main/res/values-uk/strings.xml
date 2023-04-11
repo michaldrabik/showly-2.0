@@ -2,7 +2,7 @@
 <resources>
   <string name="textNextEpisode">Наступна серія:</string>
   <string name="textInMyShows">Додано до моїх серіалів</string>
-  <string name="textInWatchlist">Added to watchlist</string>
+  <string name="textInWatchlist">Додано в \'На потім\'</string>
   <string name="textInHidden">Приховане</string>
   <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
   <string name="textShowQuickProgressTitle">Швидкий прогрес</string>
