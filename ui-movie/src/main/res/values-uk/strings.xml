@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textInMyMovies">Додано до моїх фільмів</string>
+  <string name="textInMoviesWatchlist">Додано в \'На потім\'</string>
+  <string name="textInHidden">Приховане</string>
+  <string name="textMovieActorsEmpty">Актори недоступні</string>
+  <string name="textMovieTrailer">Трейлер</string>
+  <string name="textMovieRate">Оцінити</string>
+  <string name="textMovieComments2">Коментарі</string>
+  <string name="textMovieYouMayAlsoLike">Вам також може сподобатись:</string>
+  <string name="textMovieExtraInfo">%s %s | %s %s | %s</string>
+  <string name="textMovieManageLists">Керування списками</string>
+  <string name="textMovieManageListsCount">Керування списками (%d)</string>
+  <string name="textTraktSyncMovieRemovedFromTrakt">Trakt.tv успішно синхронізовано.</string>
+</resources>
