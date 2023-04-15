@@ -39,15 +39,15 @@ dependencies {
   implementation project(':ui-model')
 
   implementation libs.android.core
-  implementation libs.android.appCompat
+  implementation libs.android.appcompat
   implementation libs.timber
 
   implementation libs.hilt.android
   kapt libs.hilt.compiler
 
   testImplementation project(':common-test')
-  testImplementation testLibs.bundles.testing
-  androidTestImplementation androidTestLibs.android.test.runner
+  testImplementation libs.bundles.testing
+  androidTestImplementation libs.android.test.runner
 
   coreLibraryDesugaring libs.android.desugar
 }

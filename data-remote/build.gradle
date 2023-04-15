@@ -59,7 +59,7 @@ dependencies {
   api libs.retrofit.moshi
   api libs.loggingInterceptor
 
-  implementation libs.kotlin.coroutines
+  implementation libs.coroutines
   implementation libs.timber
   implementation libs.firebase.crashlytics
   implementation libs.firebase.analytics
@@ -67,7 +67,7 @@ dependencies {
   implementation libs.hilt.android
   kapt libs.hilt.compiler
 
-  testImplementation testLibs.junit
+  testImplementation libs.junit
 
   coreLibraryDesugaring libs.android.desugar
 }

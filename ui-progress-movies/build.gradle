@@ -48,8 +48,8 @@ dependencies {
   kapt libs.hilt.compiler
 
   testImplementation project(':common-test')
-  testImplementation testLibs.bundles.testing
-  androidTestImplementation androidTestLibs.android.test.runner
+  testImplementation libs.bundles.testing
+  androidTestImplementation libs.android.test.runner
 
   coreLibraryDesugaring libs.android.desugar
 }

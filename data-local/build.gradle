@@ -33,7 +33,7 @@ android {
 }
 
 dependencies {
-  api libs.android.room
+  api libs.android.room.ktx
   api libs.android.room.runtime
   kapt libs.android.room.compiler
 
@@ -42,10 +42,10 @@ dependencies {
   implementation libs.hilt.android
   kapt libs.hilt.compiler
 
-  testImplementation testLibs.junit
-  androidTestImplementation testLibs.truth
-  androidTestImplementation androidTestLibs.android.test.runner
-  androidTestImplementation androidTestLibs.android.test.truth
+  testImplementation libs.junit
+  androidTestImplementation libs.truth
+  androidTestImplementation libs.android.test.runner
+  androidTestImplementation libs.android.test.truth
 
   coreLibraryDesugaring libs.android.desugar
 }
