@@ -53,10 +53,10 @@ glide-compiler = { group = "com.github.bumptech.glide", name = "compiler", versi
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit" }
 
-firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics", version = "18.3.2" }
-firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx", version = "21.2.0" }
-firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version = "23.1.1" }
-firebase-config = { group = "com.google.firebase", name = "firebase-config-ktx", version = "21.2.0" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics", version = "18.3.6" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx", version = "21.2.1" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version = "23.1.2" }
+firebase-config = { group = "com.google.firebase", name = "firebase-config-ktx", version = "21.3.0" }
 
 hilt-plugin = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hilt" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
@@ -74,7 +74,7 @@ overscrollDecor = { group = "io.github.everythingme", name = "overscroll-decor-a
 
 # Testing
 junit = { group = "junit", name = "junit", version = "4.13.2" }
-mockk = { group = "io.mockk", name = "mockk", version = "1.13.2" }
+mockk = { group = "io.mockk", name = "mockk", version = "1.13.5" }
 truth = { group = "com.google.truth", name = "truth", version = "1.1.3" }
 coroutinesTest = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version = "1.6.4" }
 android-test-core = { group = "androidx.arch.core", name = "core-testing", version = "2.2.0" }
