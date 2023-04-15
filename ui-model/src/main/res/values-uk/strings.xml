@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textSortRank">Ранг</string>
-  <string name="textSortName">Назвою</string>
-  <string name="textSortNewest">Датою випуску</string>
-  <string name="textSortRated">Оцінкою</string>
-  <string name="textSortRatedUser">Моєю оцінкою</string>
-  <string name="textSortDateAdded">Датою додавання</string>
-  <string name="textSortDateUpdated">Датою оновлення</string>
-  <string name="textSortRecentlyWatched">Датою перегляду</string>
-  <string name="textSortEpisodesLeft">Кількістю непереглянутих серій</string>
-  <string name="textHeaderRecentlyAdded">Датою додавання</string>
+  <string name="textSortRank">За рангом</string>
+  <string name="textSortName">За назвою</string>
+  <string name="textSortNewest">За датою випуску</string>
+  <string name="textSortRated">За оцінкою</string>
+  <string name="textSortRatedUser">За моєю оцінкою</string>
+  <string name="textSortDateAdded">За датою додавання</string>
+  <string name="textSortDateUpdated">За датою оновлення</string>
+  <string name="textSortRecentlyWatched">За датою перегляду</string>
+  <string name="textSortEpisodesLeft">За кількістю непереглянутих серій</string>
+  <string name="textHeaderRecentlyAdded">За датою додавання</string>
   <string name="textHeaderWatching">Дивлюся</string>
   <string name="textHeaderFinished">Завершено</string>
   <string name="textHeaderReturning">Продовжується &amp; Незабаром</string>
