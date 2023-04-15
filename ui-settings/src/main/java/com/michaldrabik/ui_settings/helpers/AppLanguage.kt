@@ -18,6 +18,7 @@ enum class AppLanguage(
   RUSSIAN("ru", "Russian", R.string.textLanguageRussian),
   FINNISH("fi", "Finnish", R.string.textLanguageFinnish),
   TURKISH("tr", "Turkish", R.string.textLanguageTurkish),
+  UKRAINIAN("uk", "Ukrainian", R.string.textLanguageUkrainian),
   ARABIC("ar", "Arabic", R.string.textLanguageArabic);
 
   companion object {
