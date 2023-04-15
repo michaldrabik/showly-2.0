@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textPoster">Постер</string>
+  <string name="textFanart">Фанарт</string>
+  <string name="textGalleryEmpty">Немає доступних зображень</string>
+  <string name="textUrlDialogTitle">Завантажити зображення</string>
+  <string name="textUrlDialogHint">Посилання на зображення</string>
+  <string name="textUrlDialogInvalidUrl">Невірний формат посилання на зображення.\nПриклад: https://test.com/image.jpg</string>
+  <string name="textUrlDialogInvalidImage">Вибачте, це зображення не вдалося завантажити.</string>
+</resources>

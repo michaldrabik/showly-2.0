@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textSortOrderMovies">Стрічка:</string>
+  <string name="textDiscoverFilterAnticipatedMovies">Приховати очікувані фільми</string>
+  <string name="textDiscoverFilterCollectionMovies">Приховати колекцію</string>
+</resources>

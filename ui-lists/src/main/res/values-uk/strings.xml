@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="menuLists">Списки</string>
+  <string name="menuList">Список</string>
+  <string name="textFilters">Фільтри:</string>
+  <string name="textListsEmpty">Ваші списки колекцій наразі порожні.</string>
+  <string name="textListEmpty">Ваш список наразі порожній.</string>
+  <string name="textCreateList">Створити список</string>
+  <string name="textCreateListDescription">Створити новий користувацький список.</string>
+  <string name="textName">Назва</string>
+  <string name="textDescription">Опис (необов\'язково)</string>
+  <string name="textDeleteList">Видалити список</string>
+  <string name="textEditList">Редагувати список</string>
+  <string name="textEditListDescription">Оновити користувацький список.</string>
+  <string name="textConfirmDeleteListTitle">Видалити список</string>
+  <string name="textConfirmDeleteListSubtitle">Ви дійсно бажаєте видалити цей список?</string>
+  <string name="textChangeRanks">Змінити ранги</string>
+  <string name="textChangeRanksSubtitle">Перетягніть елемент списку, щоб змінити його ранг</string>
+  <string name="textManageLists">Керування списками</string>
+  <string name="textManageListsShows">Керування списками для цього серіалу.</string>
+  <string name="textManageListsMovies">Керування списками для цього фільму.</string>
+  <string name="errorCouldNotCreateList">Не вдалося створити новий список у вашому обліковому записі Trakt.\nБудь ласка, перевірте підключення до Інтернету і спробуйте ще раз.</string>
+  <string name="errorCouldNotUpdateList">Не вдалося оновити цей список у вашому обліковому записі Trakt.\nБудь ласка, перевірте підключення до Інтернету і спробуйте ще раз.</string>
+  <string name="errorCouldNotDeleteList">Не вдалося видалити цей список з вашого облікового запису Trakt.\nБудь ласка, перевірте підключення до Інтернету і спробуйте ще раз.</string>
+</resources>
