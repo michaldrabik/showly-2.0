@@ -16,9 +16,9 @@ enum class AppLanguage(
   PORTUGAL_BRASIL("pt", "Portuguese", R.string.textLanguagePortugalBrasil),
   POLISH("pl", "Polish", R.string.textLanguagePolish),
   RUSSIAN("ru", "Russian", R.string.textLanguageRussian),
+  UKRAINIAN("uk", "Ukrainian", R.string.textLanguageUkrainian),
   FINNISH("fi", "Finnish", R.string.textLanguageFinnish),
   TURKISH("tr", "Turkish", R.string.textLanguageTurkish),
-  UKRAINIAN("uk", "Ukrainian", R.string.textLanguageUkrainian),
   ARABIC("ar", "Arabic", R.string.textLanguageArabic);
 
   companion object {
