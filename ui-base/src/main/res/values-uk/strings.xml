@@ -20,7 +20,7 @@
   <string name="textSpecials">Спецвипуски</string>
   <string name="textEpisode">Серія %1$d</string>
   <string name="textSeasonEpisode">S.%02d E.%02d</string>
-  <string name="textSortBy">Сортувати за:</string>
+  <string name="textSortBy">Сортувати:</string>
   <string name="textSpoilersWarning">Цей коментар містить спойлери.\nТоркніться, щоб прочитати.</string>
   <string name="textCommentedOn">Коментар від %s</string>
   <string name="textNetwork">%1$s (%2$s)</string>
@@ -45,8 +45,8 @@
   <string name="textPeople">Люди:</string>
   <string name="textDirecting">Режисура</string>
   <string name="textDirector">Режисер</string>
-  <string name="textWriting">Автор ідеї</string>
-  <string name="textScreenplay">Сценарист</string>
+  <string name="textWriting">Сценарій</string>
+  <string name="textScreenplay">Сценарій</string>
   <string name="textSound">Звук</string>
   <string name="textMusic">Музика</string>
   <string name="textActing">Акторство</string>
