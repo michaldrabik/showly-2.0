@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textNextEpisode">Наступна серія:</string>
+  <string name="textInMyShows">Додано до моїх серіалів</string>
+  <string name="textInWatchlist">Додано в \'На потім\'</string>
+  <string name="textInHidden">Приховане</string>
+  <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
+  <string name="textShowQuickProgressTitle">Швидкий прогрес</string>
+  <string name="textShowQuickProgressSubTitle">Виберіть останню переглянуту серію, щоб швидко відмітити попередні.</string>
+  <string name="textShowQuickProgressDone">Ваш прогрес було оновлено.</string>
+  <string name="textEpisodeDate">Серія %1$d | %2$s</string>
+  <string name="textEpisodeTitle">S.%02d E.%02d - \'%s\'</string>
+  <string name="textTraktSyncRemovedFromTrakt">Trakt.tv успішно синхронізовано.</string>
+  <string name="textActorsEmpty">Актори недоступні</string>
+  <string name="textSeasons">Сезони:</string>
+  <string name="textSeasonsEmpty">Сезони недоступні.</string>
+  <string name="textTrailer">Трейлер</string>
+  <string name="textYouMayAlsoLike">Вам також може сподобатись:</string>
+  <string name="textRuntimeLeftHours">~%sг %sхв залишилось</string>
+  <string name="textRuntimeLeftMinutes">~%sхв залишилось</string>
+  <string name="textShowManageLists">Керування списками</string>
+  <string name="textShowManageListsCount">Керування списками (%d)</string>
+</resources>

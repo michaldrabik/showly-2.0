@@ -45,17 +45,17 @@ dependencies {
   implementation project(':ui-navigation')
   implementation project(':repository')
 
-  api libs.android.appCompat
+  api libs.android.appcompat
   api libs.android.core
-  api libs.bundles.lifecycle
-  api libs.bundles.navigation
+  api libs.bundles.android.lifecycle
+  api libs.bundles.android.navigation
   api libs.android.fragment
   api libs.android.recycler
-  api libs.android.constraintLayout
-  api libs.android.swipeRefresh
+  api libs.android.constraintlayout
+  api libs.android.swiperefresh
   api libs.android.work
   api libs.android.material
-  api libs.android.dynamicAnimation
+  api libs.android.dynamicanimation
   api libs.overscrollDecor
   api libs.timber
 

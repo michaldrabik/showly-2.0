@@ -31,6 +31,6 @@ android {
 }
 
 dependencies {
-  api libs.bundles.navigation
+  api libs.bundles.android.navigation
   coreLibraryDesugaring libs.android.desugar
 }

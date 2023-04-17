@@ -119,11 +119,11 @@ dependencies {
   implementation libs.hilt.work
   kapt libs.hilt.work.compiler
 
-  implementation libs.android.playReviews
-  implementation libs.android.playUpdates
+  implementation libs.android.play.updates
+  implementation libs.android.play.reviews
 
-  testImplementation testLibs.bundles.testing
-  androidTestImplementation androidTestLibs.android.test.runner
+  testImplementation libs.bundles.testing
+  androidTestImplementation libs.android.test.runner
 
   //  debugImplementation "com.squareup.leakcanary:leakcanary-android:$versions.leakCanary"
   coreLibraryDesugaring libs.android.desugar

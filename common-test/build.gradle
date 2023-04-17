@@ -33,7 +33,7 @@ android {
 dependencies {
     implementation project(':common')
 
-    implementation testLibs.kotlin.coroutines.test
-    implementation testLibs.junit
+    implementation libs.coroutinesTest
+    implementation libs.junit
     coreLibraryDesugaring libs.android.desugar
 }

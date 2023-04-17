@@ -77,7 +77,7 @@
   <string name="textMovieStatusCanceled">已取消</string>
   <string name="textMovieStatusRumored">有传闻</string>
   <string name="textMovieStatusUnknown" translatable="false"></string>
-  <string name="textStreamingStream">流媒体</string>
+  <string name="textStreamingStream">串流</string>
   <string name="textStreamingAds">含广告</string>
   <string name="textStreamingBuy">购买</string>
   <string name="textStreamingRent">租看</string>

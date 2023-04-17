@@ -31,12 +31,12 @@ android {
 }
 
 dependencies {
-  api libs.kotlin.coroutines
+  api libs.coroutines
   implementation libs.retrofit
 
   implementation libs.hilt.android
   kapt libs.hilt.compiler
 
-  implementation testLibs.kotlin.coroutines.test
+  implementation libs.coroutinesTest
   coreLibraryDesugaring libs.android.desugar
 }
