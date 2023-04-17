@@ -76,7 +76,7 @@
   <string name="textLanguageEnglish" translatable="false">English</string>
   <string name="textLanguagePolish" translatable="false">Polski</string>
   <string name="textLanguageArabic" translatable="false">العربية</string>
-  <string name="textLanguageChinese" translatable="false">漢語</string>
+  <string name="textLanguageChinese" translatable="false">中文简体</string>
   <string name="textLanguageSpanish" translatable="false">Español</string>
   <string name="textLanguageItalian" translatable="false">Italiano</string>
   <string name="textLanguageFrench" translatable="false">Français</string>
