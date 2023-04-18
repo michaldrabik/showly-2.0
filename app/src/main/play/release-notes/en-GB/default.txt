@@ -1,4 +1,2 @@
-* Added new filters for Progress and Collection tabs
-* Updated Pull To Sync to avoid accidental syncs
-* Added monochrome icon for Android 13
+* Added Ukrainian and Chinese (Simplified) language
 * Bugfixes
