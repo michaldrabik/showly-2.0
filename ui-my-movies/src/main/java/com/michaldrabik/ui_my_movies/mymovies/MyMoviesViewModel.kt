@@ -88,7 +88,7 @@ class MyMoviesViewModel @Inject constructor(
       val dateFormat = loadMoviesCase.loadDateFormat()
       val ratings = ratingsCase.loadRatings()
       val sortOrder = sortingCase.loadSortOrder()
-      val genres = settingsRepository.filters.myMoviesGenres
+      val genresFilter = settingsRepository.filters.myMoviesGenres
 
       val movies = loadMoviesCase.loadAll().map {
         toListItemAsync(ALL_MOVIES_ITEM, it, dateFormat, POSTER, ratings[it.ids.trakt])
@@ -97,7 +97,7 @@ class MyMoviesViewModel @Inject constructor(
       val allMovies = loadMoviesCase.filterSectionMovies(
         allMovies = movies,
         sortOrder = sortOrder,
-        genres = genres.map { it.slug },
+        genres = genresFilter.map { it.slug },
         searchQuery = searchQuery
       )
       val recentMovies = if (settings.myMoviesRecentIsEnabled) {
@@ -109,19 +109,20 @@ class MyMoviesViewModel @Inject constructor(
       }
 
       val isNotSearching = searchQuery.isNullOrBlank()
+      val hasAnyFilters = genresFilter.isNotEmpty()
       val listItems = mutableListOf<MyMoviesItem>()
       listItems.run {
         if (isNotSearching && recentMovies.isNotEmpty()) {
           add(MyMoviesItem.createHeader(RECENTS, recentMovies.count(), null, null))
           add(MyMoviesItem.createRecentsSection(recentMovies))
         }
-        if (allMovies.isNotEmpty()) {
+        if (allMovies.isNotEmpty() || hasAnyFilters) {
           add(
             MyMoviesItem.createHeader(
               section = ALL,
               itemCount = allMovies.count(),
               sortOrder = sortOrder,
-              genres = genres
+              genres = genresFilter
             )
           )
           addAll(allMovies)
