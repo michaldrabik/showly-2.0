@@ -14,7 +14,7 @@ import javax.inject.Singleton
 
 @Singleton
 class DateFormatProvider @Inject constructor(
-  private val settingsRepository: SettingsRepository
+  private val settingsRepository: SettingsRepository,
 ) {
 
   companion object {
@@ -33,7 +33,7 @@ class DateFormatProvider @Inject constructor(
 
     fun loadSettingsFormat(
       format: AppDateFormat,
-      language: String
+      language: String,
     ): DateTimeFormatter {
       val pattern = when (format) {
         DEFAULT_12 -> DAY_HOUR_1
@@ -99,4 +99,3 @@ class DateFormatProvider @Inject constructor(
 private fun String.appendChineseDay(): String {
   return this.replace("dd", "dd\'日\'")
 }
-
