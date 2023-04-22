@@ -120,13 +120,13 @@
   <string name="textRemoveFromWatchlist">Usuń z \'Na Później\'</string>
   <string name="textRemoveFromHidden">Usuń z ukrytych</string>
   <string name="textWatchlist">Na Później</string>
-  <string name="textWatchlistIncoming">W Produkcji</string>
+  <string name="textWatchlistIncoming">Nadchodzące</string>
   <string name="textNewAlwaysAtTop">Nowe odcinki zawsze u góry</string>
   <string name="textPremiumAd">Zostań subskrybentem i uzyskaj dostęp do dodatkowych funkcji! Kliknij, aby zobaczyć więcej.</string>
   <string name="menuPin">Przypnij u góry</string>
   <string name="menuUnpin">Odepnij z góry</string>
-  <string name="menuAddOnHold" comment="This is a button for Progress subsection. It will contain pending shows marked by user.">Przypnij do zawieszonych</string>
-  <string name="menuRemoveOnHold" comment="This is a button for Progress subsection. It will contain pending shows marked by user.">Odepnij od zawieszonych</string>
+  <string name="menuAddOnHold" comment="This is a button for Progress subsection. It will contain pending shows marked by user.">Przypnij do wstrzymanych</string>
+  <string name="menuRemoveOnHold" comment="This is a button for Progress subsection. It will contain pending shows marked by user.">Odepnij ze wstrzymanych</string>
   <string name="errorGeneral">Oj… Coś poszło nie tak.\nSkontaktuj się z nami jeżeli błąd się powtarza.</string>
   <string name="errorAuthorization">Błąd autoryzacji.\nSkontaktuj się z nami jeżeli błąd się powtarza.</string>
   <string name="errorTraktAuthorization">Błąd autoryzacji Trakt.tv.\nZaloguj się i spróbuj ponownie.</string>
