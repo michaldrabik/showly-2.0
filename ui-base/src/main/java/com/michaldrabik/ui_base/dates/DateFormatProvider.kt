@@ -14,61 +14,89 @@ import javax.inject.Singleton
 
 @Singleton
 class DateFormatProvider @Inject constructor(
-  private val settingsRepository: SettingsRepository,
+  private val settingsRepository: SettingsRepository
 ) {
 
   companion object {
-    fun loadSettingsFormat(format: AppDateFormat): DateTimeFormatter =
-      when (format) {
-        DEFAULT_12 -> DateTimeFormatter.ofPattern("EEEE, dd MMM yyyy, h:mm a")
-        DEFAULT_24 -> DateTimeFormatter.ofPattern("EEEE, dd MMM yyyy, HH:mm")
-        TRAKT_12 -> DateTimeFormatter.ofPattern("MMM dd, yyyy h:mm a (EEEE)")
-        TRAKT_24 -> DateTimeFormatter.ofPattern("MMM dd, yyyy HH:mm (EEEE)")
-        MISC_24 -> DateTimeFormatter.ofPattern("dd MMM yyyy, HH:mm (EEEE)")
-        MISC_12 -> DateTimeFormatter.ofPattern("dd MMM yyyy, h:mm a (EEEE)")
+    const val DAY_1 = "dd MMM yyyy"
+    const val DAY_2 = "MMM dd, yyyy"
+    const val DAY_3 = "EEEE, dd MMMM yyyy"
+    const val DAY_4 = "MMMM dd, yyyy (EEEE)"
+    const val DAY_5 = "dd MMMM yyyy (EEEE)"
+
+    const val DAY_HOUR_1 = "EEEE, dd MMM yyyy, h:mm a"
+    const val DAY_HOUR_2 = "EEEE, dd MMM yyyy, HH:mm"
+    const val DAY_HOUR_3 = "MMM dd, yyyy h:mm a (EEEE)"
+    const val DAY_HOUR_4 = "MMM dd, yyyy HH:mm (EEEE)"
+    const val DAY_HOUR_5 = "dd MMM yyyy, h:mm a (EEEE)"
+    const val DAY_HOUR_6 = "dd MMM yyyy, HH:mm (EEEE)"
+
+    fun loadSettingsFormat(
+      format: AppDateFormat,
+      language: String
+    ): DateTimeFormatter {
+      val pattern = when (format) {
+        DEFAULT_12 -> DAY_HOUR_1
+        DEFAULT_24 -> DAY_HOUR_2
+        TRAKT_12 -> DAY_HOUR_3
+        TRAKT_24 -> DAY_HOUR_4
+        MISC_12 -> DAY_HOUR_5
+        MISC_24 -> DAY_HOUR_6
       }
+      if (language == "zh") {
+        return DateTimeFormatter.ofPattern(pattern.appendChineseDay())
+      }
+      return DateTimeFormatter.ofPattern(pattern)
+    }
   }
 
-  private val dayPattern1 by lazy { DateTimeFormatter.ofPattern("dd MMM yyyy") }
-  private val dayPattern2 by lazy { DateTimeFormatter.ofPattern("MMM dd, yyyy") }
-  private val dayPattern3 by lazy { DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy") }
-  private val dayPattern4 by lazy { DateTimeFormatter.ofPattern("MMMM dd, yyyy (EEEE)") }
-  private val dayPattern5 by lazy { DateTimeFormatter.ofPattern("dd MMMM yyyy (EEEE)") }
-
-  private val hourPattern1 by lazy { DateTimeFormatter.ofPattern("EEEE, dd MMM yyyy, h:mm a") }
-  private val hourPattern2 by lazy { DateTimeFormatter.ofPattern("EEEE, dd MMM yyyy, HH:mm") }
-  private val hourPattern3 by lazy { DateTimeFormatter.ofPattern("MMM dd, yyyy h:mm a (EEEE)") }
-  private val hourPattern4 by lazy { DateTimeFormatter.ofPattern("MMM dd, yyyy HH:mm (EEEE)") }
-  private val hourPattern5 by lazy { DateTimeFormatter.ofPattern("dd MMM yyyy, h:mm a (EEEE)") }
-  private val hourPattern6 by lazy { DateTimeFormatter.ofPattern("dd MMM yyyy, HH:mm (EEEE)") }
-
-  fun loadShortDayFormat(): DateTimeFormatter =
-    when (valueOf(settingsRepository.dateFormat)) {
-      DEFAULT_12 -> dayPattern1
-      DEFAULT_24 -> dayPattern1
-      TRAKT_12 -> dayPattern2
-      TRAKT_24 -> dayPattern2
-      MISC_12 -> dayPattern1
-      MISC_24 -> dayPattern1
+  fun loadShortDayFormat(): DateTimeFormatter {
+    val pattern = when (valueOf(settingsRepository.dateFormat)) {
+      DEFAULT_12 -> DAY_1
+      DEFAULT_24 -> DAY_1
+      TRAKT_12 -> DAY_2
+      TRAKT_24 -> DAY_2
+      MISC_12 -> DAY_1
+      MISC_24 -> DAY_1
     }
+    return createDateFormat(pattern)
+  }
 
-  fun loadFullDayFormat(): DateTimeFormatter =
-    when (valueOf(settingsRepository.dateFormat)) {
-      DEFAULT_12 -> dayPattern3
-      DEFAULT_24 -> dayPattern3
-      TRAKT_12 -> dayPattern4
-      TRAKT_24 -> dayPattern4
-      MISC_12 -> dayPattern5
-      MISC_24 -> dayPattern5
+  fun loadFullDayFormat(): DateTimeFormatter {
+    val pattern = when (valueOf(settingsRepository.dateFormat)) {
+      DEFAULT_12 -> DAY_3
+      DEFAULT_24 -> DAY_3
+      TRAKT_12 -> DAY_4
+      TRAKT_24 -> DAY_4
+      MISC_12 -> DAY_5
+      MISC_24 -> DAY_5
     }
+    return createDateFormat(pattern)
+  }
 
-  fun loadFullHourFormat(): DateTimeFormatter =
-    when (valueOf(settingsRepository.dateFormat)) {
-      DEFAULT_12 -> hourPattern1
-      DEFAULT_24 -> hourPattern2
-      TRAKT_12 -> hourPattern3
-      TRAKT_24 -> hourPattern4
-      MISC_12 -> hourPattern5
-      MISC_24 -> hourPattern6
+  fun loadFullHourFormat(): DateTimeFormatter {
+    val pattern = when (valueOf(settingsRepository.dateFormat)) {
+      DEFAULT_12 -> DAY_HOUR_1
+      DEFAULT_24 -> DAY_HOUR_2
+      TRAKT_12 -> DAY_HOUR_3
+      TRAKT_24 -> DAY_HOUR_4
+      MISC_12 -> DAY_HOUR_5
+      MISC_24 -> DAY_HOUR_6
     }
+    return createDateFormat(pattern)
+  }
+
+  private fun createDateFormat(pattern: String): DateTimeFormatter {
+    val language = settingsRepository.language
+    if (language == "zh") {
+      return DateTimeFormatter.ofPattern(pattern.appendChineseDay())
+    }
+    return DateTimeFormatter.ofPattern(pattern)
+  }
 }
+
+// Adding special symbol in case of Chinese language as it is missing from DateTimeFormatter implementation.
+private fun String.appendChineseDay(): String {
+  return this.replace("dd", "dd\'日\'")
+}
+

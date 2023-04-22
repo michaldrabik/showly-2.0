@@ -19,7 +19,8 @@ enum class AppLanguage(
   UKRAINIAN("uk", "Ukrainian", R.string.textLanguageUkrainian),
   FINNISH("fi", "Finnish", R.string.textLanguageFinnish),
   TURKISH("tr", "Turkish", R.string.textLanguageTurkish),
-  ARABIC("ar", "Arabic", R.string.textLanguageArabic);
+  ARABIC("ar", "Arabic", R.string.textLanguageArabic),
+  CHINESE("zh", "Chinese Simplified", R.string.textLanguageChinese);
 
   companion object {
     fun fromCode(code: String) = values().first { it.code == code }

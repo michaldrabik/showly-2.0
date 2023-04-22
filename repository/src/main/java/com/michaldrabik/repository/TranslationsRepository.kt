@@ -23,6 +23,7 @@ import com.michaldrabik.ui_model.Translation
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
+import com.michaldrabik.data_remote.trakt.model.Translation as TranslationRemote
 
 @Singleton
 class TranslationsRepository @Inject constructor(
@@ -65,7 +66,8 @@ class TranslationsRepository @Inject constructor(
     }
 
     val remoteTranslation = try {
-      remoteSource.trakt.fetchShowTranslations(show.traktId, language).firstOrNull()
+      remoteSource.trakt.fetchShowTranslations(show.traktId, language)
+        .firstOrNull { chineseLanguagePredicate(it) }
     } catch (error: Throwable) {
       null
     }
@@ -104,7 +106,8 @@ class TranslationsRepository @Inject constructor(
     }
 
     val remoteTranslation = try {
-      remoteSource.trakt.fetchMovieTranslations(movie.traktId, language).firstOrNull()
+      remoteSource.trakt.fetchMovieTranslations(movie.traktId, language)
+        .firstOrNull { chineseLanguagePredicate(it) }
     } catch (error: Throwable) {
       null
     }
@@ -227,4 +230,11 @@ class TranslationsRepository @Inject constructor(
       )
     }
   }
+
+  private fun chineseLanguagePredicate(translation: TranslationRemote) =
+    if (translation.language?.lowercase() != "zh") {
+      true
+    } else {
+      translation.country?.equals("cn", true) == true
+    }
 }
