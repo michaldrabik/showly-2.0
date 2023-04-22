@@ -64,7 +64,7 @@
   <string name="textTraktSyncOption3DayButton">Zaplanowano co 3 dni</string>
   <string name="textTraktSyncOptionWeeklyButton">Zaplanowano raz każdego tygodnia</string>
   <string name="textShowStatusReturning">Powracająca Seria</string>
-  <string name="textShowStatusUpcoming">W Produkcji</string>
+  <string name="textShowStatusUpcoming">Nadchodzące</string>
   <string name="textShowStatusInProduction">W Produkcji</string>
   <string name="textShowStatusPlanned">Zaplanowany</string>
   <string name="textShowStatusCanceled">Anulowany</string>
