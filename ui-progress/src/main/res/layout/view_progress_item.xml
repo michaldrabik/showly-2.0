@@ -45,6 +45,23 @@
       tools:visibility="visible"
       />
 
+    <androidx.constraintlayout.widget.Barrier
+      android:id="@+id/progressItemBarrier"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      app:barrierDirection="start"
+      app:constraint_referenced_ids="progressItemNewBadge, progressItemRatingStar, progressItemRating, progressItemBarrierSpace"
+      />
+
+    <Space
+      android:id="@+id/progressItemBarrierSpace"
+      android:layout_width="@dimen/spaceMedium"
+      android:layout_height="wrap_content"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
     <TextView
       android:id="@+id/progressItemNewBadge"
       android:layout_width="wrap_content"
@@ -63,7 +80,7 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/progressItemTitle"
       app:layout_constraintTop_toTopOf="@id/progressItemTitle"
-      tools:visibility="visible"
+      tools:visibility="gone"
       />
 
     <ImageView
@@ -126,15 +143,13 @@
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spaceNormal"
-      android:layout_marginEnd="@dimen/spaceMedium"
       app:layout_constraintBottom_toTopOf="@id/progressItemSubtitle"
-      app:layout_constraintEnd_toStartOf="@id/progressItemNewBadge"
+      app:layout_constraintEnd_toStartOf="@id/progressItemBarrier"
       app:layout_constraintStart_toEndOf="@id/progressItemImage"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintVertical_chainStyle="packed"
-      app:layout_goneMarginEnd="@dimen/spaceMedium"
       tools:ignore="RtlSymmetry"
-      tools:text="Breaking Bad"
+      tools:text="@tools:sample/lorem"
       />
 
     <TextView
