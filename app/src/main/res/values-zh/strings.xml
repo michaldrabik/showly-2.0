@@ -12,7 +12,7 @@
   <string name="textDisclaimerText">请注意您 <b>不能</b> 使用此应用观看或下载剧集和电影。\n\n使用 <b>Netflix</b> 等应用来观看。</string>
   <string name="textDisclaimerConfirmText">好的，我已了解</string>
   <string name="textWhatsNewTitle">更新内容</string>
-  <string name="textWhatsNewSubtitle">版本： %s</string>
+  <string name="textWhatsNewSubtitle">版本：%s</string>
   <string name="shortcutDiscover">发现</string>
   <string name="shortcutCollection">合集</string>
   <string name="shortcutSearch">搜索</string>
