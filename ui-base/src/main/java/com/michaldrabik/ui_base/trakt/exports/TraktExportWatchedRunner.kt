@@ -13,6 +13,7 @@ import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
 import com.michaldrabik.data_remote.trakt.model.SyncItem
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.settings.SettingsRepository
+import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.trakt.TraktSyncRunner
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -34,6 +35,7 @@ class TraktExportWatchedRunner @Inject constructor(
     Timber.d("Initialized.")
 
     checkAuthorization()
+    resetRetries()
     runExport()
 
     Timber.d("Finished with success.")
@@ -44,9 +46,8 @@ class TraktExportWatchedRunner @Inject constructor(
     try {
       exportWatched()
     } catch (error: Throwable) {
-      if (retryCount < MAX_RETRY_COUNT) {
+      if (retryCount.getAndIncrement() < MAX_RETRY_COUNT) {
         Timber.w("exportWatched failed. Will retry in $RETRY_DELAY_MS ms... $error")
-        retryCount += 1
         delay(RETRY_DELAY_MS)
         runExport()
       } else {
@@ -91,6 +92,7 @@ class TraktExportWatchedRunner @Inject constructor(
 
     Timber.d("Exporting ${episodes.size} episodes & ${movies.size} movies...")
     if (episodes.isNotEmpty() || movies.isNotEmpty()) {
+      Analytics.logExportHistory(episodes.size, movies.size, retryCount.get())
       val request = SyncExportRequest(episodes = episodes, movies = movies)
       remoteSource.trakt.postSyncWatched(request)
     } else {

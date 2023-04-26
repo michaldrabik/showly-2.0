@@ -16,6 +16,7 @@ import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
 import com.michaldrabik.data_remote.trakt.model.SyncItem
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.settings.SettingsRepository
+import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.trakt.TraktSyncRunner
 import com.michaldrabik.ui_base.trakt.quicksync.runners.cases.QuickSyncDuplicateEpisodesCase
 import com.michaldrabik.ui_base.trakt.quicksync.runners.cases.QuickSyncDuplicateMoviesCase
@@ -32,7 +33,7 @@ class QuickSyncRunner @Inject constructor(
   private val settingsRepository: SettingsRepository,
   private val duplicateEpisodesCase: QuickSyncDuplicateEpisodesCase,
   private val duplicateMoviesCase: QuickSyncDuplicateMoviesCase,
-  userTraktManager: UserTraktManager
+  userTraktManager: UserTraktManager,
 ) : TraktSyncRunner(userTraktManager) {
 
   companion object {
@@ -75,7 +76,7 @@ class QuickSyncRunner @Inject constructor(
     remoteFetchedShows: List<SyncItem> = emptyList(),
     remoteFetchedMovies: List<SyncItem> = emptyList(),
     count: Int = 0,
-    clearedProgressIds: MutableSet<Long> = mutableSetOf()
+    clearedProgressIds: MutableSet<Long> = mutableSetOf(),
   ): Int {
     val types = if (moviesEnabled) listOf(MOVIE, EPISODE) else listOf(EPISODE)
     val items = localSource.traktSyncQueue.getAll(types.map { it.slug })
@@ -129,6 +130,7 @@ class QuickSyncRunner @Inject constructor(
     )
 
     if (request.episodes.isNotEmpty() || request.movies.isNotEmpty()) {
+      Analytics.logQuickExportHistory(request.episodes.size, request.movies.size, retryCount.get())
       remoteSource.trakt.postSyncWatched(request)
     }
 
@@ -152,7 +154,7 @@ class QuickSyncRunner @Inject constructor(
 
   private suspend fun exportWatchlistItems(
     moviesEnabled: Boolean,
-    count: Int = 0
+    count: Int = 0,
   ): Int {
     val types = if (moviesEnabled) listOf(MOVIE_WATCHLIST, SHOW_WATCHLIST) else listOf(SHOW_WATCHLIST)
     val items = localSource.traktSyncQueue.getAll(types.map { it.slug }).take(BATCH_LIMIT)
@@ -192,7 +194,7 @@ class QuickSyncRunner @Inject constructor(
 
   private suspend fun exportHiddenItems(
     moviesEnabled: Boolean,
-    count: Int = 0
+    count: Int = 0,
   ): Int {
     val types = if (moviesEnabled) listOf(HIDDEN_SHOW, HIDDEN_MOVIE) else listOf(HIDDEN_SHOW)
     val items = localSource.traktSyncQueue.getAll(types.map { it.slug }).take(BATCH_LIMIT)

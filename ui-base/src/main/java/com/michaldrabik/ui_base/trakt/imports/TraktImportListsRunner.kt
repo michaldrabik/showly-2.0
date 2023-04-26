@@ -42,9 +42,8 @@ class TraktImportListsRunner @Inject constructor(
     return try {
       importLists()
     } catch (error: Throwable) {
-      if (retryCount < MAX_RETRY_COUNT) {
+      if (retryCount.getAndIncrement() < MAX_RETRY_COUNT) {
         Timber.w("runLists HTTP failed. Will retry in $RETRY_DELAY_MS ms... $error")
-        retryCount += 1
         delay(RETRY_DELAY_MS)
         runLists()
       } else {

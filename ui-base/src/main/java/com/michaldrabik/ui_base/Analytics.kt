@@ -347,4 +347,28 @@ object Analytics {
   fun logUnsupportedBilling() {
     firebaseAnalytics.logEvent("unsupported_billing", null)
   }
+
+  fun logExportHistory(
+    episodesCount: Int,
+    moviesCount: Int,
+    retryCount: Int,
+  ) {
+    firebaseAnalytics.logEvent("export_watched") {
+      param("episodes_count", episodesCount.toLong())
+      param("movies_count", moviesCount.toLong())
+      param("retry_count", retryCount.toLong())
+    }
+  }
+
+  fun logQuickExportHistory(
+    episodesCount: Int,
+    moviesCount: Int,
+    retryCount: Int,
+  ) {
+    firebaseAnalytics.logEvent("export_watched_quick") {
+      param("episodes_count", episodesCount.toLong())
+      param("movies_count", moviesCount.toLong())
+      param("retry_count", retryCount.toLong())
+    }
+  }
 }

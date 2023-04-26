@@ -19,13 +19,14 @@ class TraktExportWatchlistRunner @Inject constructor(
   private val remoteSource: RemoteDataSource,
   private val localSource: LocalDataSource,
   private val settingsRepository: SettingsRepository,
-  userTraktManager: UserTraktManager
+  userTraktManager: UserTraktManager,
 ) : TraktSyncRunner(userTraktManager) {
 
   override suspend fun run(): Int {
     Timber.d("Initialized.")
 
     checkAuthorization()
+    resetRetries()
     runExport()
 
     Timber.d("Finished with success.")
@@ -80,9 +81,8 @@ class TraktExportWatchlistRunner @Inject constructor(
         Timber.w("Account limits reached for Watchlist.")
         throw error
       }
-      retryCount < MAX_RETRY_COUNT -> {
+      retryCount.getAndIncrement() < MAX_RETRY_COUNT -> {
         Timber.w("exportWatchlist failed. Will retry in $RETRY_DELAY_MS ms... $error")
-        retryCount += 1
         delay(RETRY_DELAY_MS)
         runExport()
       }

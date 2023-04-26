@@ -3,6 +3,7 @@ package com.michaldrabik.ui_base.trakt
 import com.michaldrabik.common.errors.ShowlyError
 import com.michaldrabik.repository.UserTraktManager
 import timber.log.Timber
+import java.util.concurrent.atomic.AtomicInteger
 
 abstract class TraktSyncRunner(
   private val userTraktManager: UserTraktManager,
@@ -14,7 +15,7 @@ abstract class TraktSyncRunner(
     const val MAX_RETRY_COUNT = 3
   }
 
-  var retryCount = 0
+  val retryCount = AtomicInteger(0)
   var progressListener: (suspend (String, Int, Int) -> Unit)? = null
 
   abstract suspend fun run(): Int
@@ -29,6 +30,6 @@ abstract class TraktSyncRunner(
   }
 
   protected fun resetRetries() {
-    retryCount = 0
+    retryCount.set(0)
   }
 }

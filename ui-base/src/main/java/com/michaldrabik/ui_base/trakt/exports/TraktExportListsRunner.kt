@@ -32,6 +32,7 @@ class TraktExportListsRunner @Inject constructor(
     hasAccountLimitsOccurred = false
 
     checkAuthorization()
+    resetRetries()
     runExport()
 
     if (hasAccountLimitsOccurred) {
@@ -45,9 +46,8 @@ class TraktExportListsRunner @Inject constructor(
     try {
       exportLists()
     } catch (error: Throwable) {
-      if (retryCount < MAX_RETRY_COUNT) {
+      if (retryCount.getAndIncrement() < MAX_RETRY_COUNT) {
         Timber.w("exportLists failed. Will retry in $RETRY_DELAY_MS ms... $error")
-        retryCount += 1
         delay(RETRY_DELAY_MS)
         runExport()
       } else {

@@ -22,7 +22,7 @@ class TraktImportWatchlistRunner @Inject constructor(
   private val transactions: TransactionsProvider,
   private val mappers: Mappers,
   private val settingsRepository: SettingsRepository,
-  userTraktManager: UserTraktManager
+  userTraktManager: UserTraktManager,
 ) : TraktSyncRunner(userTraktManager) {
 
   override suspend fun run(): Int {
@@ -44,9 +44,8 @@ class TraktImportWatchlistRunner @Inject constructor(
   private suspend fun runShows(): Int = try {
     importShowsWatchlist()
   } catch (error: Throwable) {
-    if (retryCount < MAX_RETRY_COUNT) {
+    if (retryCount.getAndIncrement() < MAX_RETRY_COUNT) {
       Timber.w("runShows HTTP failed. Will retry in $RETRY_DELAY_MS ms... $error")
-      retryCount += 1
       delay(RETRY_DELAY_MS)
       runShows()
     } else {
@@ -63,9 +62,8 @@ class TraktImportWatchlistRunner @Inject constructor(
     return try {
       importMoviesWatchlist()
     } catch (error: Throwable) {
-      if (retryCount < MAX_RETRY_COUNT) {
+      if (retryCount.getAndIncrement() < MAX_RETRY_COUNT) {
         Timber.w("runMovies HTTP failed. Will retry in $RETRY_DELAY_MS ms... $error")
-        retryCount += 1
         delay(RETRY_DELAY_MS)
         runMovies()
       } else {
