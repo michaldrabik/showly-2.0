@@ -344,8 +344,10 @@ object Analytics {
     firebaseAnalytics.logEvent("unsupported_subscriptions", null)
   }
 
-  fun logUnsupportedBilling() {
-    firebaseAnalytics.logEvent("unsupported_billing", null)
+  fun logUnsupportedBilling(responseCode: Int) {
+    firebaseAnalytics.logEvent("unsupported_billing") {
+      param("billing_response_code", responseCode.toLong())
+    }
   }
 
   fun logExportHistory(

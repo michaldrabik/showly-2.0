@@ -72,7 +72,7 @@ class PremiumViewModel @Inject constructor(
             Analytics.logUnsupportedSubscriptions()
           }
         } else {
-          Analytics.logUnsupportedBilling()
+          Analytics.logUnsupportedBilling(billingResult.responseCode)
           messageChannel.trySend(MessageEvent.Error(R.string.errorSubscriptionsNotAvailable))
         }
       }
