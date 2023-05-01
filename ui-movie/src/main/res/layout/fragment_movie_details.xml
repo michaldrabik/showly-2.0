@@ -355,10 +355,26 @@
         style="@style/MovieDetails.ExtraButton"
         android:text="@string/textMovieComments2"
         app:drawableTopCompat="@drawable/ic_comment"
-        app:layout_constraintBottom_toTopOf="@id/movieDetailsSeparator5"
+        app:layout_constraintBottom_toTopOf="@id/separator5"
         app:layout_constraintEnd_toStartOf="@+id/movieDetailsLinksButton"
         app:layout_constraintStart_toEndOf="@+id/movieDetailsRateButton"
         app:layout_constraintTop_toBottomOf="@id/separator2"
+        />
+
+      <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/movieDetailsCollectionsFragment"
+        android:name="com.michaldrabik.ui_movie.sections.collections.MovieDetailsCollectionFragment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spaceNormal"
+        android:visibility="gone"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/separator5"
+        tools:layout="@layout/fragment_movie_details_collection"
+        tools:layout_height="40dp"
+        tools:visibility="visible"
         />
 
       <androidx.fragment.app.FragmentContainerView
@@ -366,10 +382,10 @@
         android:name="com.michaldrabik.ui_movie.sections.related.MovieDetailsRelatedFragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spaceMedium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/movieDetailsSeparator5"
+        app:layout_constraintTop_toBottomOf="@id/movieDetailsCollectionsFragment"
+        app:layout_goneMarginTop="@dimen/spaceNormal"
         tools:layout="@layout/fragment_movie_details_related"
         />
 
@@ -396,7 +412,7 @@
         />
 
       <View
-        android:id="@+id/movieDetailsSeparator5"
+        android:id="@+id/separator5"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginStart="@dimen/spaceNormal"
@@ -404,7 +420,7 @@
         android:layout_marginEnd="@dimen/spaceNormal"
         android:background="?attr/colorSeparator"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/movieDetailsRelatedFragment"
+        app:layout_constraintBottom_toTopOf="@id/movieDetailsCollectionsFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

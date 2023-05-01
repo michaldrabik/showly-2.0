@@ -423,27 +423,12 @@
         app:layout_constraintTop_toBottomOf="@id/separator3"
         />
 
-      <TextView
-        android:id="@+id/showDetailsRelatedLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="@dimen/spaceMedium"
-        android:text="@string/textYouMayAlsoLike"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsRelatedFragment"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/separator4"
-        />
-
       <androidx.fragment.app.FragmentContainerView
         android:id="@+id/showDetailsRelatedFragment"
         android:name="com.michaldrabik.ui_show.sections.related.ShowDetailsRelatedFragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spaceMedium"
+        android:layout_marginTop="@dimen/spaceNormal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/separator4"
@@ -459,7 +444,7 @@
         android:layout_marginEnd="@dimen/spaceNormal"
         android:background="?attr/colorSeparator"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsRelatedLabel"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsRelatedFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

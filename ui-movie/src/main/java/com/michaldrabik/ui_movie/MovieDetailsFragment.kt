@@ -87,31 +87,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MANAGE_LISTS
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_PERSON_DETAILS
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_movie_details.movieDetailsAddButton
-import kotlinx.android.synthetic.main.fragment_movie_details.movieDetailsBackArrow
-import kotlinx.android.synthetic.main.fragment_movie_details.movieDetailsCommentsButton
-import kotlinx.android.synthetic.main.fragment_movie_details.movieDetailsCustomImagesLabel
-import kotlinx.android.synthetic.main.fragment_movie_details.movieDetailsDescription
-import kotlinx.android.synthetic.main.fragment_movie_details.movieDetailsExtraInfo
-import kotlinx.android.synthetic.main.fragment_movie_details.movieDetailsHideLabel
-import kotlinx.android.synthetic.main.fragment_movie_details.movieDetailsImage
-import kotlinx.android.synthetic.main.fragment_movie_details.movieDetailsImageGuideline
-import kotlinx.android.synthetic.main.fragment_movie_details.movieDetailsImageProgress
-import kotlinx.android.synthetic.main.fragment_movie_details.movieDetailsLinksButton
-import kotlinx.android.synthetic.main.fragment_movie_details.movieDetailsMainContent
-import kotlinx.android.synthetic.main.fragment_movie_details.movieDetailsMainLayout
-import kotlinx.android.synthetic.main.fragment_movie_details.movieDetailsMainProgress
-import kotlinx.android.synthetic.main.fragment_movie_details.movieDetailsManageListsLabel
-import kotlinx.android.synthetic.main.fragment_movie_details.movieDetailsPlaceholder
-import kotlinx.android.synthetic.main.fragment_movie_details.movieDetailsPremiumAd
-import kotlinx.android.synthetic.main.fragment_movie_details.movieDetailsRateButton
-import kotlinx.android.synthetic.main.fragment_movie_details.movieDetailsRateProgress
-import kotlinx.android.synthetic.main.fragment_movie_details.movieDetailsSeparator5
-import kotlinx.android.synthetic.main.fragment_movie_details.movieDetailsShareButton
-import kotlinx.android.synthetic.main.fragment_movie_details.movieDetailsStatus
-import kotlinx.android.synthetic.main.fragment_movie_details.movieDetailsStreamingsFragment
-import kotlinx.android.synthetic.main.fragment_movie_details.movieDetailsTitle
-import kotlinx.android.synthetic.main.fragment_movie_details.movieDetailsTrailerButton
+import kotlinx.android.synthetic.main.fragment_movie_details.*
 import timber.log.Timber
 import java.util.Locale.ENGLISH
 import java.util.Locale.ROOT
@@ -247,7 +223,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
             navigateTo(R.id.actionMovieDetailsFragmentToLinks, args)
           }
         }
-        movieDetailsSeparator5.visible()
+        separator5.visible()
         movieDetailsCustomImagesLabel.visibleIf(Config.SHOW_PREMIUM)
         movieDetailsCustomImagesLabel.onClick { openCustomImagesSheet(movie.traktId, meta?.isPremium) }
         movieDetailsCommentsButton.onClick {
@@ -440,6 +416,23 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     val animation = ConstraintSet().apply {
       clone(movieDetailsMainContent)
       setVisibility(movieDetailsStreamingsFragment.id, View.VISIBLE)
+    }
+    val transition = AutoTransition().apply {
+      interpolator = DecelerateInterpolator(1.5F)
+      duration = 200
+    }
+    TransitionManager.beginDelayedTransition(movieDetailsMainContent, transition)
+    animation.applyTo(movieDetailsMainContent)
+  }
+
+  fun showCollectionsView(animate: Boolean) {
+    if (!animate) {
+      movieDetailsCollectionsFragment.visible()
+      return
+    }
+    val animation = ConstraintSet().apply {
+      clone(movieDetailsMainContent)
+      setVisibility(movieDetailsCollectionsFragment.id, View.VISIBLE)
     }
     val transition = AutoTransition().apply {
       interpolator = DecelerateInterpolator(1.5F)

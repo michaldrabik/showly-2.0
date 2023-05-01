@@ -15,7 +15,7 @@
   <string name="textSeasons">Сезоны:</string>
   <string name="textSeasonsEmpty">Сезоны недоступны.</string>
   <string name="textTrailer">Трейлер</string>
-  <string name="textYouMayAlsoLike">Вам также может понравиться:</string>
+  <string name="textYouMayAlsoLike">Вам также может понравиться</string>
   <string name="textRuntimeLeftHours">~%sч %sм осталось</string>
   <string name="textRuntimeLeftMinutes">~%sм осталось</string>
   <string name="textShowManageLists">Управление списками</string>

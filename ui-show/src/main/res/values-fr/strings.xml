@@ -15,7 +15,7 @@
   <string name="textSeasons">Saisons :</string>
   <string name="textSeasonsEmpty">Saisons non disponibles.</string>
   <string name="textTrailer">Bande\nAnnonce</string>
-  <string name="textYouMayAlsoLike">Vous pourriez aussi aimer :</string>
+  <string name="textYouMayAlsoLike">Vous pourriez aussi aimer</string>
   <string name="textRuntimeLeftHours">~%sh %sm restantes</string>
   <string name="textRuntimeLeftMinutes">~%sm restantes</string>
   <string name="textShowManageLists">Gérer les listes</string>

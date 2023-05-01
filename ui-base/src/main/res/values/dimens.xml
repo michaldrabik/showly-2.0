@@ -34,7 +34,9 @@
   <dimen name="bottomSheetCorner">16dp</dimen>
   <dimen name="relatedTileMoviePlaceholder">22dp</dimen>
   <dimen name="relatedTileShowPlaceholder">24dp</dimen>
-
+  <dimen name="collectionTileMoviePlaceholder">22dp</dimen>
+  <dimen name="collectionTileShowPlaceholder">24dp</dimen>
+  
   <dimen name="searchViewHeight">48dp</dimen>
   <dimen name="searchViewHeightPadded">64dp</dimen>
   <dimen name="searchViewCorner">24dp</dimen>

@@ -7,6 +7,7 @@ import com.michaldrabik.data_remote.trakt.model.Episode
 import com.michaldrabik.data_remote.trakt.model.HiddenItem
 import com.michaldrabik.data_remote.trakt.model.Ids
 import com.michaldrabik.data_remote.trakt.model.Movie
+import com.michaldrabik.data_remote.trakt.model.MovieCollection
 import com.michaldrabik.data_remote.trakt.model.OAuthResponse
 import com.michaldrabik.data_remote.trakt.model.PersonCredit
 import com.michaldrabik.data_remote.trakt.model.RatingResultEpisode
@@ -30,6 +31,7 @@ import retrofit2.Response
  * Fetch/post remote resources via Trakt API
  */
 interface TraktRemoteDataSource {
+
   suspend fun fetchShow(traktId: Long): Show
 
   suspend fun fetchShow(traktSlug: String): Show
@@ -89,7 +91,7 @@ interface TraktRemoteDataSource {
   suspend fun fetchEpisodeComments(
     traktId: Long,
     seasonNumber: Int,
-    episodeNumber: Int
+    episodeNumber: Int,
   ): List<Comment>
 
   suspend fun fetchAuthTokens(code: String): OAuthResponse
@@ -133,13 +135,13 @@ interface TraktRemoteDataSource {
   suspend fun postAddListItems(
     listTraktId: Long,
     showsIds: List<Long>,
-    moviesIds: List<Long>
+    moviesIds: List<Long>,
   ): SyncExportResult
 
   suspend fun postRemoveListItems(
     listTraktId: Long,
     showsIds: List<Long>,
-    moviesIds: List<Long>
+    moviesIds: List<Long>,
   ): SyncExportResult
 
   suspend fun postSyncWatchlist(request: SyncExportRequest): SyncExportResult
@@ -177,4 +179,8 @@ interface TraktRemoteDataSource {
   suspend fun fetchEpisodesRatings(): List<RatingResultEpisode>
 
   suspend fun fetchSeasonsRatings(): List<RatingResultSeason>
+
+  suspend fun fetchMovieCollections(traktId: Long): List<MovieCollection>
+
+  suspend fun fetchMovieCollectionItems(collectionId: Long): List<Movie>
 }

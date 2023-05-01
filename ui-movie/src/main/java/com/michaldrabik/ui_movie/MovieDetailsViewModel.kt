@@ -180,15 +180,16 @@ class MovieDetailsViewModel @Inject constructor(
   }
 
   fun loadUserRating() {
+    if (!userManager.isAuthorized()) {
+      return
+    }
     viewModelScope.launch {
-      val isSignedIn = userManager.isAuthorized()
-      if (!isSignedIn) return@launch
       try {
-        ratingState.value = RatingState(rateLoading = true, rateAllowed = isSignedIn)
+        ratingState.value = RatingState(rateLoading = true, rateAllowed = true)
         val rating = ratingsCase.loadRating(movie)
-        ratingState.value = RatingState(rateLoading = false, rateAllowed = isSignedIn, userRating = rating ?: TraktRating.EMPTY)
+        ratingState.value = RatingState(rateLoading = false, rateAllowed = true, userRating = rating ?: TraktRating.EMPTY)
       } catch (error: Throwable) {
-        ratingState.value = RatingState(rateLoading = false, rateAllowed = isSignedIn)
+        ratingState.value = RatingState(rateLoading = false, rateAllowed = true)
         rethrowCancellation(error)
       }
     }

@@ -8,7 +8,8 @@
   <string name="textMovieTrailer">Trailer</string>
   <string name="textMovieRate">Rate</string>
   <string name="textMovieComments2">Comments</string>
-  <string name="textMovieYouMayAlsoLike">You may also like:</string>
+  <string name="textMovieYouMayAlsoLike">You may also like</string>
+  <string name="textMovieCollections">Collections</string>
 
   <string name="textMovieExtraInfo">%s %s | %s %s | %s</string>
 

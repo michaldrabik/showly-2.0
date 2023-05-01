@@ -7,7 +7,7 @@
   <string name="textMovieTrailer">预告片</string>
   <string name="textMovieRate">评分</string>
   <string name="textMovieComments2">评论</string>
-  <string name="textMovieYouMayAlsoLike">你可能还喜欢：</string>
+  <string name="textMovieYouMayAlsoLike">你可能还喜欢</string>
   <string name="textMovieExtraInfo">%s %s | %s %s | %s</string>
   <string name="textMovieManageLists">管理列表</string>
   <string name="textMovieManageListsCount">管理列表 (%d)</string>

@@ -21,6 +21,7 @@ import com.michaldrabik.data_remote.trakt.model.CustomList
 import com.michaldrabik.data_remote.trakt.model.Episode
 import com.michaldrabik.data_remote.trakt.model.Ids
 import com.michaldrabik.data_remote.trakt.model.Movie
+import com.michaldrabik.data_remote.trakt.model.MovieCollection
 import com.michaldrabik.data_remote.trakt.model.OAuthResponse
 import com.michaldrabik.data_remote.trakt.model.PersonCredit
 import com.michaldrabik.data_remote.trakt.model.Season
@@ -154,7 +155,7 @@ internal class TraktApi(
   override suspend fun fetchEpisodeComments(
     traktId: Long,
     seasonNumber: Int,
-    episodeNumber: Int
+    episodeNumber: Int,
   ): List<Comment> = try {
     showsService.fetchEpisodeComments(traktId, seasonNumber, episodeNumber, currentTimeMillis())
   } catch (t: Throwable) {
@@ -269,7 +270,7 @@ internal class TraktApi(
   override suspend fun postAddListItems(
     listTraktId: Long,
     showsIds: List<Long>,
-    moviesIds: List<Long>
+    moviesIds: List<Long>,
   ): SyncExportResult {
     val body = SyncExportRequest(
       shows = showsIds.map { SyncExportItem.create(it, null) },
@@ -281,7 +282,7 @@ internal class TraktApi(
   override suspend fun postRemoveListItems(
     listTraktId: Long,
     showsIds: List<Long>,
-    moviesIds: List<Long>
+    moviesIds: List<Long>,
   ): SyncExportResult {
     val body = SyncExportRequest(
       shows = showsIds.map { SyncExportItem.create(it, null) },
@@ -367,4 +368,13 @@ internal class TraktApi(
 
   override suspend fun fetchSeasonsRatings() =
     syncService.fetchSeasonsRatings()
+
+  override suspend fun fetchMovieCollections(traktId: Long): List<MovieCollection> {
+    val lists = moviesService.fetchMovieCollections(traktId)
+    return lists.filter { it.privacy == "public" }
+  }
+
+  override suspend fun fetchMovieCollectionItems(collectionId: Long): List<Movie> {
+    return moviesService.fetchMovieCollectionItems(collectionId)
+  }
 }
