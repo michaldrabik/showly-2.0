@@ -1,8 +1,8 @@
 package com.michaldrabik.ui_movie.sections.collections.cases
 
 import com.michaldrabik.common.dispatchers.CoroutineDispatchers
-import com.michaldrabik.data_remote.trakt.TraktRemoteDataSource
-import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.repository.movies.MovieCollectionsRepository
+import com.michaldrabik.repository.movies.MovieCollectionsRepository.Source
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.MovieCollection
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -12,24 +12,15 @@ import javax.inject.Inject
 @ViewModelScoped
 class MovieDetailsCollectionCase @Inject constructor(
   private val dispatchers: CoroutineDispatchers,
-  private val remoteDataSource: TraktRemoteDataSource,
+  private val repository: MovieCollectionsRepository,
 ) {
 
-  suspend fun loadMovieCollections(movie: Movie): List<MovieCollection> =
+  suspend fun loadMovieCollections(movie: Movie): Pair<List<MovieCollection>, Source> =
     withContext(dispatchers.IO) {
       try {
-        val remoteCollections = remoteDataSource.fetchMovieCollections(movie.traktId)
-        return@withContext remoteCollections
-          .map {
-            MovieCollection(
-              id = IdTrakt(it.ids.trakt ?: -1),
-              name = it.name,
-              description = it.description.ifBlank { it.name },
-              itemCount = it.item_count
-            )
-          }
+        return@withContext repository.loadCollections(movie.ids.trakt)
       } catch (error: Throwable) {
-        return@withContext emptyList()
+        return@withContext Pair(emptyList(), Source.LOCAL)
       }
     }
 }

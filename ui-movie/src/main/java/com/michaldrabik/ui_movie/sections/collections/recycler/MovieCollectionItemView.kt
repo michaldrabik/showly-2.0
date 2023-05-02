@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import com.michaldrabik.ui_base.utilities.extensions.onClick
-import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.MovieCollection
 import com.michaldrabik.ui_movie.databinding.ViewMovieCollectionBinding
 
@@ -33,8 +32,7 @@ class MovieCollectionItemView : FrameLayout {
     this.item = item
     with(binding) {
       title.text = item.name
-      description.text = item.description
-      description.visibleIf(item.description.isNotBlank())
+      description.text = item.description.ifBlank { item.name }
     }
   }
 }

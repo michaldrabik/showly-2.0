@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
+import com.michaldrabik.repository.movies.MovieCollectionsRepository.Source
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
@@ -53,10 +54,10 @@ class MovieDetailsCollectionFragment : BaseFragment<MovieDetailsCollectionViewMo
 
   private fun render(uiState: MovieDetailsCollectionUiState) {
     with(uiState) {
-      collections?.let {
-        collectionsAdapter?.setItems(it)
-        if (it.isNotEmpty()) {
-          (requireParentFragment() as MovieDetailsFragment).showCollectionsView(animate = true)
+      collections?.let { (collections, source) ->
+        collectionsAdapter?.setItems(collections)
+        if (collections.isNotEmpty()) {
+          (requireParentFragment() as MovieDetailsFragment).showCollectionsView(animate = source == Source.REMOTE)
         }
       }
       isLoading.let {

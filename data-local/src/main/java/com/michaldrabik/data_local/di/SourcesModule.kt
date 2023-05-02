@@ -11,6 +11,7 @@ import com.michaldrabik.data_local.sources.DiscoverShowsLocalDataSource
 import com.michaldrabik.data_local.sources.EpisodeTranslationsLocalDataSource
 import com.michaldrabik.data_local.sources.EpisodesLocalDataSource
 import com.michaldrabik.data_local.sources.EpisodesSyncLogLocalDataSource
+import com.michaldrabik.data_local.sources.MovieCollectionsLocalDataSource
 import com.michaldrabik.data_local.sources.MovieImagesLocalDataSource
 import com.michaldrabik.data_local.sources.MovieRatingsLocalDataSource
 import com.michaldrabik.data_local.sources.MovieStreamingsLocalDataSource
@@ -131,6 +132,11 @@ class SourcesModule {
   @Singleton
   internal fun providesMovieStreaming(database: AppDatabase): MovieStreamingsLocalDataSource =
     database.movieStreamingsDao()
+
+  @Provides
+  @Singleton
+  internal fun providesMovieCollections(database: AppDatabase): MovieCollectionsLocalDataSource =
+    database.movieCollectionsDao()
 
   @Provides
   @Singleton

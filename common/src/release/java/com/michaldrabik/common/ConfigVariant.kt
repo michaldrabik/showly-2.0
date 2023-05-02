@@ -14,6 +14,7 @@ object ConfigVariant {
 
   val RATINGS_CACHE_DURATION by lazy { DAYS.toMillis(3) }
   val STREAMINGS_CACHE_DURATION by lazy { DAYS.toMillis(3) }
+  val COLLECTIONS_CACHE_DURATION by lazy { DAYS.toMillis(7) }
 
   val REMOTE_CONFIG_FETCH_INTERVAL by lazy { MINUTES.toSeconds(60) }
   val TWITTER_AD_DELAY by lazy { DAYS.toMillis(5) }

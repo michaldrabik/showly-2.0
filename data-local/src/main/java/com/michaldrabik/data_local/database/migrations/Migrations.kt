@@ -5,7 +5,7 @@ import android.content.Context.MODE_PRIVATE
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-const val DATABASE_VERSION = 35
+const val DATABASE_VERSION = 36
 const val DATABASE_NAME = "SHOWLY2_DB_2"
 
 class Migrations(context: Context) {
@@ -678,6 +678,27 @@ class Migrations(context: Context) {
     }
   }
 
+  private val migration36 = object : Migration(35, 36) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+      with(database) {
+        execSQL(
+          "CREATE TABLE IF NOT EXISTS `movies_collections` (" +
+            "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+            "`id_trakt` INTEGER NOT NULL, " +
+            "`id_trakt_movie` INTEGER NOT NULL, " +
+            "`name` TEXT NOT NULL, " +
+            "`description` TEXT NOT NULL, " +
+            "`item_count` INTEGER NOT NULL, " +
+            "`created_at` INTEGER NOT NULL, " +
+            "`updated_at` INTEGER NOT NULL, " +
+            "FOREIGN KEY(`id_trakt_movie`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)"
+        )
+        execSQL("CREATE INDEX index_movies_collections_id_trakt ON movies_collections(id_trakt)")
+        execSQL("CREATE INDEX index_movies_collections_id_trakt_movie ON movies_collections(id_trakt_movie)")
+      }
+    }
+  }
+
   fun getAll() = listOf(
     migration2,
     migration3,
@@ -712,6 +733,7 @@ class Migrations(context: Context) {
     migration32,
     migration33,
     migration34,
-    migration35
+    migration35,
+    migration36
   )
 }

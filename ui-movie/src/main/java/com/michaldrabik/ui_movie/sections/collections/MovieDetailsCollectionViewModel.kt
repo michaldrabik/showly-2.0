@@ -2,6 +2,7 @@ package com.michaldrabik.ui_movie.sections.collections
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.repository.movies.MovieCollectionsRepository.Source
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
 import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
@@ -26,7 +27,7 @@ class MovieDetailsCollectionViewModel @Inject constructor(
   private lateinit var movie: Movie
 
   private val loadingState = MutableStateFlow(true)
-  private val movieCollectionState = MutableStateFlow<List<MovieCollection>?>(null)
+  private val movieCollectionState = MutableStateFlow<Pair<List<MovieCollection>, Source>?>(null)
 
   fun loadMovieCollections(movie: Movie) {
     if (this::movie.isInitialized) {
@@ -36,10 +37,8 @@ class MovieDetailsCollectionViewModel @Inject constructor(
 
     viewModelScope.launch {
       try {
-        val movies = collectionsCase.loadMovieCollections(movie)
-        movieCollectionState.value = movies
+        movieCollectionState.value = collectionsCase.loadMovieCollections(movie)
       } catch (error: Throwable) {
-        movieCollectionState.value = emptyList()
         Timber.e(error)
         rethrowCancellation(error)
       } finally {

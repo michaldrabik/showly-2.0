@@ -60,7 +60,6 @@
       app:layout_constraintWidth_max="232dp"
       tools:ignore="SmallSp"
       tools:text="@tools:sample/lorem/random"
-      tools:visibility="gone"
       />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
