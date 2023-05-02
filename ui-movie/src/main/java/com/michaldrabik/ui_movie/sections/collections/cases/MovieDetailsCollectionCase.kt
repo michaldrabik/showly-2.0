@@ -18,9 +18,16 @@ class MovieDetailsCollectionCase @Inject constructor(
   suspend fun loadMovieCollections(movie: Movie): Pair<List<MovieCollection>, Source> =
     withContext(dispatchers.IO) {
       try {
-        return@withContext repository.loadCollections(movie.ids.trakt)
+        val (collections, source) = repository.loadCollections(movie.ids.trakt)
+        return@withContext Pair(
+          collections.filter { it.itemCount > 0 },
+          source
+        )
       } catch (error: Throwable) {
-        return@withContext Pair(emptyList(), Source.LOCAL)
+        return@withContext Pair(
+          emptyList(),
+          Source.LOCAL
+        )
       }
     }
 }

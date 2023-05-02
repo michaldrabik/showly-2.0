@@ -10,6 +10,7 @@ import com.michaldrabik.repository.mappers.CollectionsMapper
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.MovieCollection
 import kotlinx.coroutines.withContext
+import java.time.ZonedDateTime
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -39,21 +40,37 @@ class MovieCollectionsRepository @Inject constructor(
       val remoteCollections = remoteSource.fetchMovieCollections(movieId.id)
       val collections = remoteCollections.map { mapper.fromNetwork(it) }
 
-      val entities = collections.map {
-        mapper.toEntity(
-          movieId = movieId.id,
-          input = it,
-          updatedAt = now,
-          createdAt = now
-        )
-      }
-      localSource.replace(movieId.id, entities)
+      updateLocalSource(collections, movieId, now)
 
       return@withContext Pair(
         collections,
         Source.REMOTE
       )
     }
+
+  private suspend fun updateLocalSource(
+    collections: List<MovieCollection>,
+    movieId: IdTrakt,
+    now: ZonedDateTime
+  ) {
+    var entities = collections.map {
+      mapper.toEntity(
+        movieId = movieId.id,
+        input = it,
+        updatedAt = now,
+        createdAt = now
+      )
+    }
+    if (entities.isEmpty()) {
+      entities = listOf(
+        mapper.toEntity(
+          movieId.id,
+          MovieCollection.EMPTY
+        )
+      )
+    }
+    localSource.replace(movieId.id, entities)
+  }
 
   enum class Source { LOCAL, REMOTE }
 }
