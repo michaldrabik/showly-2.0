@@ -9,4 +9,8 @@
   <dimen name="relatedMovieWidth">80dp</dimen>
 
   <dimen name="movieCollectionHeight">66dp</dimen>
+
+  <dimen name="movieCollectionImageWidth">53dp</dimen>
+  <dimen name="movieCollectionImageHeight">80dp</dimen>
+  <dimen name="movieCollectionImageGuide">65dp</dimen>
 </resources>

@@ -40,7 +40,7 @@ class MovieCollectionsRepository @Inject constructor(
       val remoteCollections = remoteSource.fetchMovieCollections(movieId.id)
       val collections = remoteCollections.map { mapper.fromNetwork(it) }
 
-      updateLocalSource(collections, movieId, now)
+      updateLocalCollections(collections, movieId, now)
 
       return@withContext Pair(
         collections,
@@ -48,7 +48,12 @@ class MovieCollectionsRepository @Inject constructor(
       )
     }
 
-  private suspend fun updateLocalSource(
+  suspend fun loadCollectionMovies(collectionId: IdTrakt): Pair<List<MovieCollection>, Source> =
+    withContext(dispatchers.IO) {
+      Pair(emptyList(), Source.LOCAL)
+    }
+
+  private suspend fun updateLocalCollections(
     collections: List<MovieCollection>,
     movieId: IdTrakt,
     now: ZonedDateTime
