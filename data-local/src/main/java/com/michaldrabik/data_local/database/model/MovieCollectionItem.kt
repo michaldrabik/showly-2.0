@@ -35,6 +35,7 @@ data class MovieCollectionItem(
   @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Long = 0,
   @ColumnInfo(name = "id_trakt") val idTrakt: Long,
   @ColumnInfo(name = "id_trakt_collection") val idTraktCollection: Long,
+  @ColumnInfo(name = "rank") val rank: Int,
   @ColumnInfo(name = "created_at") val createdAt: ZonedDateTime,
-  @ColumnInfo(name = "updated_at") val updatedAt: ZonedDateTime
+  @ColumnInfo(name = "updated_at") val updatedAt: ZonedDateTime,
 )

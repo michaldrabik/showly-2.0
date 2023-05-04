@@ -8,9 +8,7 @@ import javax.inject.Inject
 import com.michaldrabik.data_local.database.model.MovieCollection as MovieCollectionEntity
 import com.michaldrabik.data_remote.trakt.model.MovieCollection as MovieCollectionNetwork
 
-class CollectionsMapper @Inject constructor(
-  private val idsMapper: IdsMapper,
-) {
+class CollectionMapper @Inject constructor() {
 
   fun fromNetwork(input: MovieCollectionNetwork): MovieCollection {
     return MovieCollection(

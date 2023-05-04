@@ -58,22 +58,20 @@
 
     <TextView
       android:id="@+id/rankText"
-      android:layout_width="16dp"
-      android:layout_height="16dp"
+      android:layout_width="17dp"
+      android:layout_height="17dp"
       android:layout_margin="@dimen/spaceTiny"
       android:background="@drawable/bg_rank"
       android:gravity="center"
       android:includeFontPadding="false"
       android:textColor="?attr/textColorOnSurface"
-      android:textSize="8sp"
+      android:textSize="10sp"
       android:textStyle="bold"
       android:translationZ="@dimen/elevationSmall"
-      android:visibility="gone"
       app:layout_constraintBottom_toBottomOf="@id/movieImage"
       app:layout_constraintEnd_toEndOf="@id/movieImage"
       tools:ignore="SmallSp"
       tools:text="10"
-      tools:visibility="visible"
       />
 
     <ImageView
@@ -101,7 +99,7 @@
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintVertical_chainStyle="packed"
       tools:ignore="SmallSp"
-      tools:text="Director"
+      tools:text="2023"
       />
 
     <TextView
@@ -115,7 +113,7 @@
       app:layout_constraintStart_toEndOf="@id/guideline1"
       app:layout_constraintTop_toBottomOf="@id/headerText"
       app:layout_constraintVertical_chainStyle="packed"
-      tools:text="Hans Zimmer"
+      tools:text="Kill Bill"
       />
 
     <TextView
@@ -123,7 +121,7 @@
       style="@style/CollectionItem.Description"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:textSize="11sp"
+      android:textSize="12sp"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/guideline1"

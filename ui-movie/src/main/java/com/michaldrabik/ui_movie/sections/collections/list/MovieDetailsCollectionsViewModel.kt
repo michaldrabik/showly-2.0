@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_movie.sections.collections
+package com.michaldrabik.ui_movie.sections.collections.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,7 +9,7 @@ import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
 import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.MovieCollection
-import com.michaldrabik.ui_movie.sections.collections.cases.MovieDetailsCollectionCase
+import com.michaldrabik.ui_movie.sections.collections.list.cases.MovieDetailsCollectionsCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -20,8 +20,8 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class MovieDetailsCollectionViewModel @Inject constructor(
-  private val collectionsCase: MovieDetailsCollectionCase,
+class MovieDetailsCollectionsViewModel @Inject constructor(
+  private val collectionsCase: MovieDetailsCollectionsCase,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private lateinit var movie: Movie
@@ -52,13 +52,13 @@ class MovieDetailsCollectionViewModel @Inject constructor(
     loadingState,
     movieCollectionState
   ) { s1, s2 ->
-    MovieDetailsCollectionUiState(
+    MovieDetailsCollectionsUiState(
       isLoading = s1,
       collections = s2
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = MovieDetailsCollectionUiState()
+    initialValue = MovieDetailsCollectionsUiState()
   )
 }

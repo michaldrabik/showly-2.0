@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_movie.sections.collections.cases
+package com.michaldrabik.ui_movie.sections.collections.list.cases
 
 import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.repository.movies.MovieCollectionsRepository
@@ -10,7 +10,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ViewModelScoped
-class MovieDetailsCollectionCase @Inject constructor(
+class MovieDetailsCollectionsCase @Inject constructor(
   private val dispatchers: CoroutineDispatchers,
   private val repository: MovieCollectionsRepository,
 ) {
@@ -20,7 +20,7 @@ class MovieDetailsCollectionCase @Inject constructor(
       try {
         val (collections, source) = repository.loadCollections(movie.ids.trakt)
         return@withContext Pair(
-          collections.filter { it.itemCount > 0 },
+          collections.filter { it.itemCount != -1 },
           source
         )
       } catch (error: Throwable) {

@@ -46,9 +46,12 @@ interface MoviesDao : BaseDao<Movie>, MoviesLocalDataSource {
 
     val updateList = mutableListOf<Movie>()
     result.forEachIndexed { index, id ->
-      if (id == -1L) updateList.add(movies[index])
+      if (id == -1L) {
+        updateList.add(movies[index])
+      }
     }
-
-    if (updateList.isNotEmpty()) update(updateList)
+    if (updateList.isNotEmpty()) {
+      update(updateList)
+    }
   }
 }

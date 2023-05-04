@@ -376,5 +376,7 @@ internal class TraktApi(
 
   override suspend fun fetchMovieCollectionItems(collectionId: Long): List<Movie> {
     return moviesService.fetchMovieCollectionItems(collectionId)
+      .sortedBy { it.rank }
+      .map { it.movie }
   }
 }

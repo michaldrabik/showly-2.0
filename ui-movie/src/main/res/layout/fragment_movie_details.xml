@@ -363,7 +363,7 @@
 
       <androidx.fragment.app.FragmentContainerView
         android:id="@+id/movieDetailsCollectionsFragment"
-        android:name="com.michaldrabik.ui_movie.sections.collections.MovieDetailsCollectionFragment"
+        android:name="com.michaldrabik.ui_movie.sections.collections.list.MovieDetailsCollectionsFragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spaceNormal"

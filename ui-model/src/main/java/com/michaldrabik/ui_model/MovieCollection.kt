@@ -8,6 +8,6 @@ data class MovieCollection(
 ) {
 
   companion object {
-    val EMPTY = MovieCollection(IdTrakt(-1), "", "", 0)
+    val EMPTY = MovieCollection(IdTrakt(-1), "", "", -1)
   }
 }

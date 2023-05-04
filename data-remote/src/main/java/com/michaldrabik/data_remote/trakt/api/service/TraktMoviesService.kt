@@ -4,6 +4,7 @@ import com.michaldrabik.data_remote.Config
 import com.michaldrabik.data_remote.trakt.model.Comment
 import com.michaldrabik.data_remote.trakt.model.Movie
 import com.michaldrabik.data_remote.trakt.model.MovieCollection
+import com.michaldrabik.data_remote.trakt.model.MovieCollectionItem
 import com.michaldrabik.data_remote.trakt.model.MovieResult
 import com.michaldrabik.data_remote.trakt.model.Translation
 import retrofit2.http.GET
@@ -58,5 +59,5 @@ interface TraktMoviesService {
   @GET("lists/{collectionId}/items/movie?extended=full")
   suspend fun fetchMovieCollectionItems(
     @Path("collectionId") collectionId: Long,
-  ): List<Movie>
+  ): List<MovieCollectionItem>
 }

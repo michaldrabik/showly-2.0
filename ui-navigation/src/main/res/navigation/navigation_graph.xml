@@ -504,6 +504,11 @@
       app:popEnterAnim="@anim/anim_in_from_left"
       app:popExitAnim="@anim/anim_out_from_left"
       />
+    <action
+      android:id="@+id/actionMovieDetailsFragmentToCollection"
+      app:destination="@id/movieCollectionDialog"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment
@@ -1080,5 +1085,18 @@
     android:name="com.michaldrabik.ui_my_movies.filters.genre.CollectionFiltersGenreBottomSheet"
     android:label="dialogCollectionFiltersGenre"
     />
+
+  <dialog
+    android:id="@+id/movieCollectionDialog"
+    android:name="com.michaldrabik.ui_movie.sections.collections.details.MovieDetailsCollectionBottomSheet"
+    android:label="dialogMovieCollection"
+    >
+    <action
+      android:id="@+id/actionMovieCollectionDialogToMovie"
+      app:destination="@id/movieDetailsFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+  </dialog>
 
 </navigation>

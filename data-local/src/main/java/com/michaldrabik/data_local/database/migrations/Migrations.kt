@@ -693,7 +693,7 @@ class Migrations(context: Context) {
             "`updated_at` INTEGER NOT NULL, " +
             "FOREIGN KEY(`id_trakt_movie`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)"
         )
-        execSQL("CREATE INDEX index_movies_collections_id_trakt ON movies_collections(id_trakt)")
+        execSQL("CREATE UNIQUE INDEX index_movies_collections_id_trakt ON movies_collections(id_trakt)")
         execSQL("CREATE INDEX index_movies_collections_id_trakt_movie ON movies_collections(id_trakt_movie)")
 
         execSQL(

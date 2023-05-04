@@ -12,7 +12,7 @@ import java.time.ZonedDateTime
 @Entity(
   tableName = "movies_collections",
   indices = [
-    Index(value = ["id_trakt"]),
+    Index(value = ["id_trakt"], unique = true),
     Index(value = ["id_trakt_movie"]),
   ],
   foreignKeys = [

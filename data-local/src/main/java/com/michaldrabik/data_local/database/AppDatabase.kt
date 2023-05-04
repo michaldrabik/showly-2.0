@@ -13,6 +13,7 @@ import com.michaldrabik.data_local.database.dao.EpisodeTranslationsDao
 import com.michaldrabik.data_local.database.dao.EpisodesDao
 import com.michaldrabik.data_local.database.dao.EpisodesSyncLogDao
 import com.michaldrabik.data_local.database.dao.MovieCollectionsDao
+import com.michaldrabik.data_local.database.dao.MovieCollectionsItemsDao
 import com.michaldrabik.data_local.database.dao.MovieImagesDao
 import com.michaldrabik.data_local.database.dao.MovieRatingsDao
 import com.michaldrabik.data_local.database.dao.MovieStreamingsDao
@@ -216,7 +217,7 @@ abstract class AppDatabase : RoomDatabase() {
 
   abstract fun movieCollectionsDao(): MovieCollectionsDao
 
-  abstract fun movieCollectionsItemsDao(): MovieColle
+  abstract fun movieCollectionsItemsDao(): MovieCollectionsItemsDao
 
   abstract fun episodeTranslationsDao(): EpisodeTranslationsDao
 

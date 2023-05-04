@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_movie.sections.collections
+package com.michaldrabik.ui_movie.sections.collections.list
 
 import android.os.Bundle
 import android.view.View
@@ -9,20 +9,25 @@ import com.michaldrabik.repository.movies.MovieCollectionsRepository.Source
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
+import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.viewBinding
+import com.michaldrabik.ui_model.MovieCollection
 import com.michaldrabik.ui_movie.MovieDetailsFragment
 import com.michaldrabik.ui_movie.MovieDetailsViewModel
 import com.michaldrabik.ui_movie.R
 import com.michaldrabik.ui_movie.databinding.FragmentMovieDetailsCollectionBinding
-import com.michaldrabik.ui_movie.sections.collections.recycler.MovieCollectionAdapter
+import com.michaldrabik.ui_movie.sections.collections.details.MovieDetailsCollectionBottomSheet
+import com.michaldrabik.ui_movie.sections.collections.list.recycler.MovieCollectionAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MovieDetailsCollectionFragment : BaseFragment<MovieDetailsCollectionViewModel>(R.layout.fragment_movie_details_collection) {
+class MovieDetailsCollectionsFragment : BaseFragment<MovieDetailsCollectionsViewModel>(R.layout.fragment_movie_details_collection) {
+
+  override val navigationId = R.id.movieDetailsFragment
 
   private val parentViewModel by viewModels<MovieDetailsViewModel>({ requireParentFragment() })
-  override val viewModel by viewModels<MovieDetailsCollectionViewModel>()
+  override val viewModel by viewModels<MovieDetailsCollectionsViewModel>()
 
   private val binding by viewBinding(FragmentMovieDetailsCollectionBinding::bind)
 
@@ -39,10 +44,7 @@ class MovieDetailsCollectionFragment : BaseFragment<MovieDetailsCollectionViewMo
 
   private fun setupView() {
     collectionsAdapter = MovieCollectionAdapter(
-      itemClickListener = {
-//        val bundle = Bundle().apply { putLong(ARG_MOVIE_ID, it.movie.traktId) }
-//        navigateTo(R.id.actionMovieDetailsFragmentToSelf, bundle)
-      },
+      itemClickListener = { openCollectionSheet(it) }
     )
     binding.movieDetailsCollectionRecycler.apply {
       setHasFixedSize(true)
@@ -52,7 +54,7 @@ class MovieDetailsCollectionFragment : BaseFragment<MovieDetailsCollectionViewMo
     }
   }
 
-  private fun render(uiState: MovieDetailsCollectionUiState) {
+  private fun render(uiState: MovieDetailsCollectionsUiState) {
     with(uiState) {
       collections?.let { (collections, source) ->
         collectionsAdapter?.setItems(collections)
@@ -64,6 +66,11 @@ class MovieDetailsCollectionFragment : BaseFragment<MovieDetailsCollectionViewMo
         binding.movieDetailsCollectionProgress.visibleIf(it)
       }
     }
+  }
+
+  private fun openCollectionSheet(collection: MovieCollection) {
+    val bundle = MovieDetailsCollectionBottomSheet.createBundle(collection.id)
+    navigateToSafe(R.id.actionMovieDetailsFragmentToCollection, bundle)
   }
 
   override fun setupBackPressed() = Unit
