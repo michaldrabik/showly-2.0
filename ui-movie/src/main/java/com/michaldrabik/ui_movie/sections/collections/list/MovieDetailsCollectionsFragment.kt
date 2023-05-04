@@ -7,12 +7,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
 import com.michaldrabik.repository.movies.MovieCollectionsRepository.Source
 import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.viewBinding
+import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.MovieCollection
+import com.michaldrabik.ui_movie.MovieDetailsEvent.OpenCollectionSheet
 import com.michaldrabik.ui_movie.MovieDetailsFragment
 import com.michaldrabik.ui_movie.MovieDetailsViewModel
 import com.michaldrabik.ui_movie.R
@@ -37,14 +40,15 @@ class MovieDetailsCollectionsFragment : BaseFragment<MovieDetailsCollectionsView
     super.onViewCreated(view, savedInstanceState)
     setupView()
     launchAndRepeatStarted(
-      { parentViewModel.parentMovieState.collect { it?.let { viewModel.loadMovieCollections(it) } } },
-      { viewModel.uiState.collect { render(it) } }
+      { parentViewModel.parentMovieState.collect { it?.let { viewModel.loadCollections(it) } } },
+      { viewModel.uiState.collect { render(it) } },
+      { viewModel.eventFlow.collect { handleEvent(it) } },
     )
   }
 
   private fun setupView() {
     collectionsAdapter = MovieCollectionAdapter(
-      itemClickListener = { openCollectionSheet(it) }
+      itemClickListener = { viewModel.loadCollection(it) }
     )
     binding.movieDetailsCollectionRecycler.apply {
       setHasFixedSize(true)
@@ -68,8 +72,20 @@ class MovieDetailsCollectionsFragment : BaseFragment<MovieDetailsCollectionsView
     }
   }
 
-  private fun openCollectionSheet(collection: MovieCollection) {
-    val bundle = MovieDetailsCollectionBottomSheet.createBundle(collection.id)
+  private fun handleEvent(event: Event<*>) {
+    when (event) {
+      is OpenCollectionSheet -> openCollectionDetails(event.movie, event.collection)
+    }
+  }
+
+  private fun openCollectionDetails(
+    movie: Movie,
+    collection: MovieCollection
+  ) {
+    val bundle = MovieDetailsCollectionBottomSheet.createBundle(
+      collectionId = collection.id,
+      sourceMovieId = movie.ids.trakt
+    )
     navigateToSafe(R.id.actionMovieDetailsFragmentToCollection, bundle)
   }
 

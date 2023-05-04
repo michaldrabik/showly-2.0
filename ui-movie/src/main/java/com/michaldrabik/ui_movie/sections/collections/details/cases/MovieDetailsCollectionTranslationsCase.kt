@@ -28,4 +28,3 @@ class MovieDetailsCollectionTranslationsCase @Inject constructor(
     }
   }
 }
-

@@ -9,6 +9,7 @@ import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
 import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.MovieCollection
+import com.michaldrabik.ui_movie.MovieDetailsEvent.OpenCollectionSheet
 import com.michaldrabik.ui_movie.sections.collections.list.cases.MovieDetailsCollectionsCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,7 +30,7 @@ class MovieDetailsCollectionsViewModel @Inject constructor(
   private val loadingState = MutableStateFlow(true)
   private val movieCollectionState = MutableStateFlow<Pair<List<MovieCollection>, Source>?>(null)
 
-  fun loadMovieCollections(movie: Movie) {
+  fun loadCollections(movie: Movie) {
     if (this::movie.isInitialized) {
       return
     }
@@ -46,6 +47,12 @@ class MovieDetailsCollectionsViewModel @Inject constructor(
       }
     }
     Timber.d("Loading movie collections...")
+  }
+
+  fun loadCollection(collection: MovieCollection) {
+    viewModelScope.launch {
+      eventChannel.send(OpenCollectionSheet(movie, collection))
+    }
   }
 
   val uiState = combine(

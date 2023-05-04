@@ -1,3 +1,4 @@
+// ktlint-disable max-line-length
 package com.michaldrabik.data_local.database.dao
 
 import androidx.room.Dao

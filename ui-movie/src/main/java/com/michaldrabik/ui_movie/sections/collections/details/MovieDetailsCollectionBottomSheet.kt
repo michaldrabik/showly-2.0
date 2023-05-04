@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
@@ -28,7 +29,9 @@ import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_movie.R
 import com.michaldrabik.ui_movie.databinding.ViewMovieCollectionDetailsBinding
 import com.michaldrabik.ui_movie.sections.collections.details.recycler.MovieDetailsCollectionAdapter
+import com.michaldrabik.ui_movie.sections.collections.details.recycler.MovieDetailsCollectionItem
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -37,16 +40,20 @@ class MovieDetailsCollectionBottomSheet : BaseBottomSheetFragment(R.layout.view_
   companion object {
     const val SHOW_BACK_UP_BUTTON_THRESHOLD = 25
 
-    fun createBundle(collectionId: IdTrakt) =
-      bundleOf(
-        ARG_ID to collectionId
-      )
+    fun createBundle(
+      collectionId: IdTrakt,
+      sourceMovieId: IdTrakt
+    ) = bundleOf(
+      ARG_ID to collectionId,
+      ARG_MOVIE_ID to sourceMovieId
+    )
   }
 
   private val viewModel by viewModels<MovieDetailsCollectionViewModel>()
   private val binding by viewBinding(ViewMovieCollectionDetailsBinding::bind)
 
   private val collectionId by lazy { requireParcelable<IdTrakt>(ARG_ID) }
+  private val sourceMovieId by lazy { requireParcelable<IdTrakt>(ARG_MOVIE_ID) }
 
   private var adapter: MovieDetailsCollectionAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
@@ -84,7 +91,7 @@ class MovieDetailsCollectionBottomSheet : BaseBottomSheetFragment(R.layout.view_
   private fun setupRecycler() {
     layoutManager = FastLinearLayoutManager(context, VERTICAL, false)
     adapter = MovieDetailsCollectionAdapter(
-      onItemClickListener = { },
+      onItemClickListener = ::openDetails,
       onMissingImageListener = viewModel::loadMissingImage,
       onMissingTranslationListener = viewModel::loadMissingTranslation,
     )
@@ -97,37 +104,15 @@ class MovieDetailsCollectionBottomSheet : BaseBottomSheetFragment(R.layout.view_
     }
   }
 
-//  private fun openDetails(item: PersonDetailsItem) {
-//    val personBundle = bundleOf(ARG_PERSON to person)
-//    if (item is PersonDetailsItem.CreditsShowItem && item.show.traktId != sourceId.id) {
-//      setFragmentResult(REQUEST_PERSON_DETAILS, personBundle)
-//      val bundle = bundleOf(NavigationArgs.ARG_SHOW_ID to item.show.traktId)
-//      requireParentFragment()
-//        .findNavController()
-//        .navigate(R.id.actionPersonDetailsDialogToShow, bundle)
-//    }
-//    if (item is PersonDetailsItem.CreditsMovieItem && item.movie.traktId != sourceId.id) {
-//      setFragmentResult(REQUEST_PERSON_DETAILS, personBundle)
-//      val bundle = bundleOf(NavigationArgs.ARG_MOVIE_ID to item.movie.traktId)
-//      requireParentFragment()
-//        .findNavController()
-//        .navigate(R.id.actionPersonDetailsDialogToMovie, bundle)
-//    }
-//  }
-
-//  private fun openGallery() {
-//    val personBundle = bundleOf(ARG_PERSON to person)
-//    setFragmentResult(REQUEST_PERSON_DETAILS, personBundle)
-//    val options = PersonGalleryFragment.createBundle(person)
-//    requireParentFragment()
-//      .findNavController()
-//      .navigate(R.id.actionPersonDetailsDialogToGallery, options)
-//  }
-
-//  private fun openLinksSheet(it: Person) {
-//    val options = PersonLinksBottomSheet.createBundle(it)
-//    navigateTo(R.id.actionPersonDetailsDialogToLinks, options)
-//  }
+  private fun openDetails(item: MovieDetailsCollectionItem) {
+    if (item is MovieDetailsCollectionItem.MovieItem && item.movie.ids.trakt != sourceMovieId) {
+//      setFragmentResult(REQUEST_PERSON_DETAILS, bundle)
+      val bundle = bundleOf(ARG_MOVIE_ID to item.movie.traktId)
+      requireParentFragment()
+        .findNavController()
+        .navigate(R.id.actionMovieCollectionDialogToMovie, bundle)
+    }
+  }
 
   @SuppressLint("SetTextI18n")
   private fun render(uiState: MovieDetailsCollectionUiState) {
