@@ -9,6 +9,7 @@ import com.michaldrabik.ui_movie.sections.collections.details.recycler.MovieDeta
 import com.michaldrabik.ui_movie.sections.collections.details.recycler.MovieDetailsCollectionItem.MovieItem
 import com.michaldrabik.ui_movie.sections.collections.details.recycler.views.MovieDetailsCollectionHeaderView
 import com.michaldrabik.ui_movie.sections.collections.details.recycler.views.MovieDetailsCollectionItemView
+import com.michaldrabik.ui_movie.sections.collections.details.recycler.views.MovieDetailsCollectionLoadingView
 
 class MovieDetailsCollectionAdapter(
   var onItemClickListener: (MovieDetailsCollectionItem) -> Unit,
@@ -44,7 +45,7 @@ class MovieDetailsCollectionAdapter(
         }
       )
       VIEW_TYPE_HEADER -> BaseViewHolder(MovieDetailsCollectionHeaderView(parent.context))
-//      VIEW_TYPE_LOADING -> BaseViewHolder(PersonDetailsLoadingView(parent.context))
+      VIEW_TYPE_LOADING -> BaseViewHolder(MovieDetailsCollectionLoadingView(parent.context))
       else -> throw IllegalStateException()
     }
 

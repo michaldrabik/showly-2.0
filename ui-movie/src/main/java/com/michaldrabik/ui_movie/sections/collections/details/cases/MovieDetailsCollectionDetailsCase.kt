@@ -9,7 +9,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ViewModelScoped
-class MovieDetailsCollectionLoadCase @Inject constructor(
+class MovieDetailsCollectionDetailsCase @Inject constructor(
   private val dispatchers: CoroutineDispatchers,
   private val collectionsRepository: MovieCollectionsRepository,
 ) {

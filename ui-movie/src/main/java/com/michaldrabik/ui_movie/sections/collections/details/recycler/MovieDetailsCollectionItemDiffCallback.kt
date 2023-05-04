@@ -10,7 +10,7 @@ class MovieDetailsCollectionItemDiffCallback : DiffUtil.ItemCallback<MovieDetail
   override fun areItemsTheSame(oldItem: MovieDetailsCollectionItem, newItem: MovieDetailsCollectionItem) =
     when {
       oldItem is HeaderItem && newItem is HeaderItem -> true
-      oldItem is MovieItem && newItem is MovieItem && oldItem.getId() == newItem.getId() -> true
+      oldItem is MovieItem && newItem is MovieItem && oldItem.id == newItem.id -> true
       oldItem is LoadingItem && newItem is LoadingItem -> true
       else -> false
     }

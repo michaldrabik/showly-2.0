@@ -85,8 +85,8 @@ class MovieDetailsCollectionBottomSheet : BaseBottomSheetFragment(R.layout.view_
     layoutManager = FastLinearLayoutManager(context, VERTICAL, false)
     adapter = MovieDetailsCollectionAdapter(
       onItemClickListener = { },
-      onMissingImageListener = { item, force -> Unit },
-      onMissingTranslationListener = { item -> Unit },
+      onMissingImageListener = viewModel::loadMissingImage,
+      onMissingTranslationListener = viewModel::loadMissingTranslation,
     )
     with(binding.itemsRecycler) {
       adapter = this@MovieDetailsCollectionBottomSheet.adapter

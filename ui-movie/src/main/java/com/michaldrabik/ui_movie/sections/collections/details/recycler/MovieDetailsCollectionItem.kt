@@ -7,7 +7,8 @@ import java.util.UUID
 
 sealed class MovieDetailsCollectionItem {
 
-  open fun getId(): String = UUID.randomUUID().toString()
+  open val id: String
+    get() = UUID.randomUUID().toString()
 
   data class HeaderItem(
     val title: String,
@@ -23,7 +24,7 @@ sealed class MovieDetailsCollectionItem {
     val translation: Translation?,
     val isLoading: Boolean,
   ) : MovieDetailsCollectionItem() {
-    override fun getId() = "${movie.traktId}"
+    override val id get() = "${movie.traktId}"
   }
 
   object LoadingItem : MovieDetailsCollectionItem()
