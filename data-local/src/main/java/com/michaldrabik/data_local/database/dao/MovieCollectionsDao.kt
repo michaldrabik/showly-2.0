@@ -20,10 +20,17 @@ interface MovieCollectionsDao : BaseDao<MovieCollection>, MovieCollectionsLocalD
     movieTraktId: Long,
     entities: List<MovieCollection>,
   ) {
-    deleteByMovieId(movieTraktId)
+    val deleteCollections = getByMovieId(movieTraktId).map { it.idTrakt }
+
+    deleteCollectionsItems(deleteCollections)
+    deleteCollections(deleteCollections)
+
     insert(entities)
   }
 
-  @Query("DELETE FROM movies_collections WHERE id_trakt_movie == :movieTraktId")
-  suspend fun deleteByMovieId(movieTraktId: Long)
+  @Query("DELETE FROM movies_collections WHERE id_trakt IN (:collectionIds)")
+  suspend fun deleteCollections(collectionIds: List<Long>)
+
+  @Query("DELETE FROM movies_collections_items WHERE id_trakt_collection IN (:collectionIds)")
+  suspend fun deleteCollectionsItems(collectionIds: List<Long>)
 }

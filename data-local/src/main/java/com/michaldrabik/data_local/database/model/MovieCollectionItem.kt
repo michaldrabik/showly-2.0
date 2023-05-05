@@ -21,12 +21,6 @@ import java.time.ZonedDateTime
       parentColumns = arrayOf("id_trakt"),
       childColumns = arrayOf("id_trakt"),
       onDelete = ForeignKey.CASCADE
-    ),
-    ForeignKey(
-      entity = MovieCollection::class,
-      parentColumns = arrayOf("id_trakt"),
-      childColumns = arrayOf("id_trakt_collection"),
-      onDelete = ForeignKey.CASCADE
     )
   ]
 )

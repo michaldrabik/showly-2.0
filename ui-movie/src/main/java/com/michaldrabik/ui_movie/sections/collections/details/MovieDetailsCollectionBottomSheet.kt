@@ -42,7 +42,7 @@ class MovieDetailsCollectionBottomSheet : BaseBottomSheetFragment(R.layout.view_
 
     fun createBundle(
       collectionId: IdTrakt,
-      sourceMovieId: IdTrakt
+      sourceMovieId: IdTrakt,
     ) = bundleOf(
       ARG_ID to collectionId,
       ARG_MOVIE_ID to sourceMovieId
@@ -105,13 +105,16 @@ class MovieDetailsCollectionBottomSheet : BaseBottomSheetFragment(R.layout.view_
   }
 
   private fun openDetails(item: MovieDetailsCollectionItem) {
-    if (item is MovieDetailsCollectionItem.MovieItem && item.movie.ids.trakt != sourceMovieId) {
-//      setFragmentResult(REQUEST_PERSON_DETAILS, bundle)
-      val bundle = bundleOf(ARG_MOVIE_ID to item.movie.traktId)
-      requireParentFragment()
-        .findNavController()
-        .navigate(R.id.actionMovieCollectionDialogToMovie, bundle)
+    if (item !is MovieDetailsCollectionItem.MovieItem) return
+    if (item.movie.ids.trakt == sourceMovieId) {
+      dismiss()
+      return
     }
+//          setFragmentResult(REQUEST_PERSON_DETAILS, bundle)
+    val bundle = bundleOf(ARG_MOVIE_ID to item.movie.traktId)
+    requireParentFragment()
+      .findNavController()
+      .navigate(R.id.actionMovieCollectionDialogToMovie, bundle)
   }
 
   @SuppressLint("SetTextI18n")

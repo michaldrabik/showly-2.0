@@ -17,7 +17,7 @@ abstract class BaseBottomSheetFragment(@LayoutRes val layoutResId: Int) : Bottom
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
-    savedInstanceState: Bundle?
+    savedInstanceState: Bundle?,
   ): View {
     val contextThemeWrapper = ContextThemeWrapper(requireActivity(), R.style.AppTheme)
     return inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
