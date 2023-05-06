@@ -35,7 +35,7 @@ import com.michaldrabik.ui_model.IdTvdb
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageStatus
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
-import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_LIST
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_OPTIONS
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_ITEM_MENU
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_REMOVE_TRAKT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.RESULT
@@ -48,14 +48,14 @@ abstract class ContextMenuBottomSheet : BaseBottomSheetFragment(R.layout.view_co
       showPinButtons: Boolean = false,
     ) = bundleOf(
       ARG_ID to idTrakt,
-      ARG_LIST to showPinButtons
+      ARG_OPTIONS to showPinButtons
     )
   }
 
   protected val binding by viewBinding(ViewContextMenuBinding::bind)
 
   protected val itemId by lazy { requireParcelable<IdTrakt>(ARG_ID) }
-  private val showPinButtons by lazy { requireBoolean(ARG_LIST) }
+  private val showPinButtons by lazy { requireBoolean(ARG_OPTIONS) }
 
   private val cornerRadius by lazy { dimenToPx(R.dimen.mediaTileCorner).toFloat() }
   private val cornerBigRadius by lazy { dimenToPx(R.dimen.collectionItemCorner).toFloat() }

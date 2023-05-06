@@ -1097,6 +1097,11 @@
       app:enterAnim="@anim/anim_fade_in"
       app:popExitAnim="@anim/anim_fade_out"
       />
+    <action
+      android:id="@+id/actionMovieCollectionDialogToContextDialog"
+      app:destination="@id/movieItemContextDialog"
+      app:launchSingleTop="true"
+      />
   </dialog>
 
 </navigation>

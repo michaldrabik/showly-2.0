@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.fragment.app.clearFragmentResultListener
 import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +18,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
 import com.michaldrabik.ui_base.common.FastLinearLayoutManager
+import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
@@ -31,6 +34,7 @@ import com.michaldrabik.ui_movie.R
 import com.michaldrabik.ui_movie.databinding.ViewMovieCollectionDetailsBinding
 import com.michaldrabik.ui_movie.sections.collections.details.recycler.MovieDetailsCollectionAdapter
 import com.michaldrabik.ui_movie.sections.collections.details.recycler.MovieDetailsCollectionItem
+import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COLLECTION_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
@@ -95,6 +99,7 @@ class MovieDetailsCollectionBottomSheet : BaseBottomSheetFragment(R.layout.view_
     layoutManager = FastLinearLayoutManager(context, VERTICAL, false)
     adapter = MovieDetailsCollectionAdapter(
       onItemClickListener = ::openDetails,
+      onItemLongClickListener = ::openContextDetails,
       onMissingImageListener = viewModel::loadMissingImage,
       onMissingTranslationListener = viewModel::loadMissingTranslation,
     )
@@ -121,6 +126,21 @@ class MovieDetailsCollectionBottomSheet : BaseBottomSheetFragment(R.layout.view_
     requireParentFragment()
       .findNavController()
       .navigate(R.id.actionMovieCollectionDialogToMovie, argsBundle)
+  }
+
+  private fun openContextDetails(item: MovieDetailsCollectionItem) {
+    if (item !is MovieDetailsCollectionItem.MovieItem) return
+    if (item.movie.ids.trakt == sourceMovieId) return
+
+    setFragmentResultListener(NavigationArgs.REQUEST_ITEM_MENU) { requestKey, _ ->
+      if (requestKey == NavigationArgs.REQUEST_ITEM_MENU) {
+        viewModel.loadCollection(collectionId)
+      }
+      clearFragmentResultListener(NavigationArgs.REQUEST_ITEM_MENU)
+    }
+
+    val bundle = ContextMenuBottomSheet.createBundle(item.movie.ids.trakt)
+    navigateTo(R.id.actionMovieCollectionDialogToContextDialog, bundle)
   }
 
   @SuppressLint("SetTextI18n")

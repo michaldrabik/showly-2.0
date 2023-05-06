@@ -18,6 +18,7 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.invisible
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.onLongClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
@@ -38,6 +39,7 @@ class MovieDetailsCollectionItemView : FrameLayout {
   private val binding = ViewMovieCollectionListItemBinding.inflate(LayoutInflater.from(context), this)
 
   var onItemClickListener: ((MovieDetailsCollectionItem) -> Unit)? = null
+  var onItemLongClickListener: ((MovieDetailsCollectionItem) -> Unit)? = null
   var onMissingImageListener: ((MovieDetailsCollectionItem, Boolean) -> Unit)? = null
   var onMissingTranslationListener: ((MovieDetailsCollectionItem) -> Unit)? = null
 
@@ -52,7 +54,10 @@ class MovieDetailsCollectionItemView : FrameLayout {
 
   init {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-    binding.rootLayout.onClick { onItemClickListener?.invoke(item) }
+    with(binding.rootLayout) {
+      onClick { onItemClickListener?.invoke(item) }
+      onLongClick { onItemLongClickListener?.invoke(item) }
+    }
   }
 
   fun bind(item: MovieItem) {

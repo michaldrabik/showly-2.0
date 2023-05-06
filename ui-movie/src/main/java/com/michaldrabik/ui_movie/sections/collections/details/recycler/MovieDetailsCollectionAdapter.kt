@@ -13,6 +13,7 @@ import com.michaldrabik.ui_movie.sections.collections.details.recycler.views.Mov
 
 class MovieDetailsCollectionAdapter(
   var onItemClickListener: (MovieDetailsCollectionItem) -> Unit,
+  var onItemLongClickListener: (MovieDetailsCollectionItem) -> Unit,
   val onMissingImageListener: (MovieDetailsCollectionItem, Boolean) -> Unit,
   val onMissingTranslationListener: (MovieDetailsCollectionItem) -> Unit,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -40,6 +41,7 @@ class MovieDetailsCollectionAdapter(
       VIEW_TYPE_ITEM -> BaseViewHolder(
         MovieDetailsCollectionItemView(parent.context).apply {
           onItemClickListener = this@MovieDetailsCollectionAdapter.onItemClickListener
+          onItemLongClickListener = this@MovieDetailsCollectionAdapter.onItemLongClickListener
           onMissingImageListener = this@MovieDetailsCollectionAdapter.onMissingImageListener
           onMissingTranslationListener = this@MovieDetailsCollectionAdapter.onMissingTranslationListener
         }
