@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.fragment.app.clearFragmentResultListener
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.michaldrabik.common.Mode
@@ -19,11 +20,12 @@ import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.Person.Department
 import com.michaldrabik.ui_model.Show
-import com.michaldrabik.ui_navigation.java.NavigationArgs
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_PERSON
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_DETAILS
 import com.michaldrabik.ui_people.details.PersonDetailsBottomSheet
 import com.michaldrabik.ui_people.list.PeopleListBottomSheet
 import com.michaldrabik.ui_show.R
-import com.michaldrabik.ui_show.ShowDetailsEvent
+import com.michaldrabik.ui_show.ShowDetailsEvent.*
 import com.michaldrabik.ui_show.ShowDetailsFragment
 import com.michaldrabik.ui_show.ShowDetailsViewModel
 import com.michaldrabik.ui_show.databinding.FragmentShowDetailsPeopleBinding
@@ -45,7 +47,6 @@ class ShowDetailsPeopleFragment : BaseFragment<ShowDetailsPeopleViewModel>(R.lay
     super.onViewCreated(view, savedInstanceState)
     setupView()
     launchAndRepeatStarted(
-      { parentViewModel.parentEvents.collect { viewModel.handleEvent(it) } },
       { parentViewModel.parentShowState.collect { it?.let { viewModel.loadPeople(it) } } },
       { viewModel.uiState.collect { render(it) } },
       { viewModel.eventFlow.collect { handleEvent(it) } },
@@ -65,12 +66,21 @@ class ShowDetailsPeopleFragment : BaseFragment<ShowDetailsPeopleViewModel>(R.lay
     }
   }
 
+  @Suppress("DEPRECATION")
   private fun openPersonSheet(show: Show, person: Person) {
+    requireParentFragment()
+      .setFragmentResultListener(REQUEST_DETAILS) { _, bundle ->
+        bundle.getParcelable<Person>(ARG_PERSON)?.let {
+          viewModel.saveLastPerson(it)
+          bundle.clear()
+        }
+      }
     val bundle = PersonDetailsBottomSheet.createBundle(person, show.ids.trakt)
-    navigateToSafe(R.id.actionShowDetailsFragmentToPerson, bundle)
+    (requireParentFragment() as BaseFragment<*>)
+      .navigateToSafe(R.id.actionShowDetailsFragmentToPerson, bundle)
   }
 
-  private fun openPeopleSheet(event: ShowDetailsEvent.OpenPeopleSheet) {
+  private fun openPeopleSheet(event: OpenPeopleSheet) {
     val (show, people, department) = event
 
     if (people.isEmpty()) return
@@ -79,7 +89,9 @@ class ShowDetailsPeopleFragment : BaseFragment<ShowDetailsPeopleViewModel>(R.lay
       return
     }
 
-    clearFragmentResultListener(NavigationArgs.REQUEST_PERSON_DETAILS)
+    requireParentFragment()
+      .clearFragmentResultListener(REQUEST_DETAILS)
+
     val title = (requireParentFragment() as ShowDetailsFragment).binding.showDetailsTitle.text.toString()
     val bundle = PeopleListBottomSheet.createBundle(show.ids.trakt, title, Mode.SHOWS, department)
     navigateToSafe(R.id.actionShowDetailsFragmentToPeopleList, bundle)
@@ -106,7 +118,7 @@ class ShowDetailsPeopleFragment : BaseFragment<ShowDetailsPeopleViewModel>(R.lay
       labelView: View,
       valueView: TextView,
       people: List<Person>,
-      department: Department
+      department: Department,
     ) {
       labelView.visibleIf(people.isNotEmpty())
       valueView.visibleIf(people.isNotEmpty())
@@ -134,8 +146,8 @@ class ShowDetailsPeopleFragment : BaseFragment<ShowDetailsPeopleViewModel>(R.lay
 
   private fun handleEvent(event: Event<*>) {
     when (event) {
-      is ShowDetailsEvent.OpenPersonSheet -> openPersonSheet(event.show, event.person)
-      is ShowDetailsEvent.OpenPeopleSheet -> openPeopleSheet(event)
+      is OpenPersonSheet -> openPersonSheet(event.show, event.person)
+      is OpenPeopleSheet -> openPeopleSheet(event)
     }
   }
 

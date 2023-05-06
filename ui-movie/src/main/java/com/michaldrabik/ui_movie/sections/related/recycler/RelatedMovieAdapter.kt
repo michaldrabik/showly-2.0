@@ -8,6 +8,7 @@ import com.michaldrabik.ui_base.BaseMovieAdapter
 
 class RelatedMovieAdapter(
   private val itemClickListener: (RelatedListItem) -> Unit,
+  private val itemLongClickListener: (RelatedListItem) -> Unit,
   private val missingImageListener: (RelatedListItem, Boolean) -> Unit,
 ) : BaseMovieAdapter<RelatedListItem>() {
 
@@ -17,6 +18,7 @@ class RelatedMovieAdapter(
     ViewHolderShow(
       RelatedMovieView(parent.context).apply {
         itemClickListener = this@RelatedMovieAdapter.itemClickListener
+        itemLongClickListener = this@RelatedMovieAdapter.itemLongClickListener
         missingImageListener = this@RelatedMovieAdapter.missingImageListener
       }
     )

@@ -35,10 +35,14 @@ class MovieDetailsRelatedViewModel @Inject constructor(
   private val loadingState = MutableStateFlow(true)
   private val relatedItemsState = MutableStateFlow<List<RelatedListItem>?>(null)
 
-  fun loadRelatedMovies(movie: Movie) {
+  fun initRelatedMovies(movie: Movie) {
     if (this::movie.isInitialized) return
     this.movie = movie
+    loadRelatedMovies()
+  }
 
+  fun loadRelatedMovies() {
+    if (!this::movie.isInitialized) return
     viewModelScope.launch {
       try {
         val (myMovies, watchlistMovies) = myMoviesCase.getAllIds()

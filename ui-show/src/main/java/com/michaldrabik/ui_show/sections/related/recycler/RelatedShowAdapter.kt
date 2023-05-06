@@ -8,6 +8,7 @@ import com.michaldrabik.ui_base.BaseAdapter
 
 class RelatedShowAdapter(
   private val itemClickListener: (RelatedListItem) -> Unit,
+  private val itemLongClickListener: (RelatedListItem) -> Unit,
   private val missingImageListener: (RelatedListItem, Boolean) -> Unit,
 ) : BaseAdapter<RelatedListItem>() {
 
@@ -17,6 +18,7 @@ class RelatedShowAdapter(
     ViewHolderShow(
       RelatedShowView(parent.context).apply {
         itemClickListener = this@RelatedShowAdapter.itemClickListener
+        itemLongClickListener = this@RelatedShowAdapter.itemLongClickListener
         missingImageListener = this@RelatedShowAdapter.missingImageListener
       }
     )

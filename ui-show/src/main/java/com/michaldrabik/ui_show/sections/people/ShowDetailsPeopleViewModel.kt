@@ -32,18 +32,10 @@ class ShowDetailsPeopleViewModel @Inject constructor(
   private val actorsState = MutableStateFlow<List<Person>?>(null)
   private val crewState = MutableStateFlow<Map<Department, List<Person>>?>(null)
 
-  fun handleEvent(event: ShowDetailsEvent<*>) {
-    when (event) {
-      is ShowDetailsEvent.SaveOpenedPerson -> {
-        lastOpenedPerson = event.person
-      }
-      else -> Unit
-    }
-  }
-
   fun loadPeople(show: Show) {
     if (this::show.isInitialized) return
     this.show = show
+
     viewModelScope.launch {
       try {
         val people = actorsCase.loadPeople(show)
@@ -83,6 +75,10 @@ class ShowDetailsPeopleViewModel @Inject constructor(
       loadPersonDetails(it)
       lastOpenedPerson = null
     }
+  }
+
+  fun saveLastPerson(person: Person) {
+    lastOpenedPerson = person
   }
 
   val uiState = combine(

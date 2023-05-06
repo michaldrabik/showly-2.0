@@ -10,9 +10,7 @@ import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.MovieCollection
-import com.michaldrabik.ui_movie.MovieDetailsEvent
 import com.michaldrabik.ui_movie.MovieDetailsEvent.OpenCollectionSheet
-import com.michaldrabik.ui_movie.MovieDetailsEvent.SaveOpenedCollection
 import com.michaldrabik.ui_movie.sections.collections.list.cases.MovieDetailsCollectionsCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,15 +31,6 @@ class MovieDetailsCollectionsViewModel @Inject constructor(
 
   private val loadingState = MutableStateFlow(true)
   private val movieCollectionState = MutableStateFlow<Pair<List<MovieCollection>, Source>?>(null)
-
-  fun handleEvent(event: MovieDetailsEvent<*>) {
-    when (event) {
-      is SaveOpenedCollection -> {
-        lastOpenedCollection = event.collectionId
-      }
-      else -> Unit
-    }
-  }
 
   fun loadCollections(movie: Movie) {
     if (this::movie.isInitialized) {
@@ -76,6 +65,10 @@ class MovieDetailsCollectionsViewModel @Inject constructor(
         lastOpenedCollection = null
       }
     }
+  }
+
+  fun saveLastOpenedCollection(collectionId: IdTrakt) {
+    lastOpenedCollection = collectionId
   }
 
   val uiState = combine(

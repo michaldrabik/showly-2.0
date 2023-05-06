@@ -9,10 +9,8 @@ import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.Person.Department
-import com.michaldrabik.ui_movie.MovieDetailsEvent
 import com.michaldrabik.ui_movie.MovieDetailsEvent.OpenPeopleSheet
 import com.michaldrabik.ui_movie.MovieDetailsEvent.OpenPersonSheet
-import com.michaldrabik.ui_movie.MovieDetailsEvent.SaveOpenedPerson
 import com.michaldrabik.ui_movie.sections.people.cases.MovieDetailsPeopleCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,15 +32,6 @@ class MovieDetailsPeopleViewModel @Inject constructor(
   private val loadingState = MutableStateFlow(true)
   private val actorsState = MutableStateFlow<List<Person>?>(null)
   private val crewState = MutableStateFlow<Map<Department, List<Person>>?>(null)
-
-  fun handleEvent(event: MovieDetailsEvent<*>) {
-    when (event) {
-      is SaveOpenedPerson -> {
-        lastOpenedPerson = event.person
-      }
-      else -> Unit
-    }
-  }
 
   fun loadPeople(movie: Movie) {
     if (this::movie.isInitialized) return
@@ -87,6 +76,10 @@ class MovieDetailsPeopleViewModel @Inject constructor(
       loadPersonDetails(it)
       lastOpenedPerson = null
     }
+  }
+
+  fun saveLastPerson(person: Person) {
+    lastOpenedPerson = person
   }
 
   val uiState = combine(

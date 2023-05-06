@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.fragment.app.clearFragmentResultListener
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.michaldrabik.common.Mode
@@ -23,7 +24,8 @@ import com.michaldrabik.ui_movie.MovieDetailsEvent.OpenPersonSheet
 import com.michaldrabik.ui_movie.MovieDetailsViewModel
 import com.michaldrabik.ui_movie.R
 import com.michaldrabik.ui_movie.sections.people.recycler.ActorsAdapter
-import com.michaldrabik.ui_navigation.java.NavigationArgs
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_PERSON
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_DETAILS
 import com.michaldrabik.ui_people.details.PersonDetailsBottomSheet
 import com.michaldrabik.ui_people.list.PeopleListBottomSheet
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,7 +46,6 @@ class MovieDetailsPeopleFragment : BaseFragment<MovieDetailsPeopleViewModel>(R.l
     super.onViewCreated(view, savedInstanceState)
     setupView()
     launchAndRepeatStarted(
-      { parentViewModel.parentEvents.collect { viewModel.handleEvent(it) } },
       { parentViewModel.parentMovieState.collect { it?.let { viewModel.loadPeople(it) } } },
       { viewModel.uiState.collect { render(it) } },
       { viewModel.eventFlow.collect { handleEvent(it) } },
@@ -64,9 +65,18 @@ class MovieDetailsPeopleFragment : BaseFragment<MovieDetailsPeopleViewModel>(R.l
     }
   }
 
+  @Suppress("DEPRECATION")
   private fun openPersonSheet(movie: Movie, person: Person) {
+    requireParentFragment()
+      .setFragmentResultListener(REQUEST_DETAILS) { _, bundle ->
+        bundle.getParcelable<Person>(ARG_PERSON)?.let {
+          viewModel.saveLastPerson(it)
+          bundle.clear()
+        }
+      }
     val bundle = PersonDetailsBottomSheet.createBundle(person, movie.ids.trakt)
-    navigateToSafe(R.id.actionMovieDetailsFragmentToPerson, bundle)
+    (requireParentFragment() as BaseFragment<*>)
+      .navigateToSafe(R.id.actionMovieDetailsFragmentToPerson, bundle)
   }
 
   private fun openPeopleSheet(event: OpenPeopleSheet) {
@@ -78,7 +88,9 @@ class MovieDetailsPeopleFragment : BaseFragment<MovieDetailsPeopleViewModel>(R.l
       return
     }
 
-    clearFragmentResultListener(NavigationArgs.REQUEST_PERSON_DETAILS)
+    requireParentFragment()
+      .clearFragmentResultListener(REQUEST_DETAILS)
+
     val title = requireParentFragment().movieDetailsTitle.text.toString()
     val bundle = PeopleListBottomSheet.createBundle(movie.ids.trakt, title, Mode.MOVIES, department)
     navigateToSafe(R.id.actionMovieDetailsFragmentToPeopleList, bundle)
@@ -105,7 +117,7 @@ class MovieDetailsPeopleFragment : BaseFragment<MovieDetailsPeopleViewModel>(R.l
       labelView: View,
       valueView: TextView,
       people: List<Person>,
-      department: Department
+      department: Department,
     ) {
       labelView.visibleIf(people.isNotEmpty())
       valueView.visibleIf(people.isNotEmpty())

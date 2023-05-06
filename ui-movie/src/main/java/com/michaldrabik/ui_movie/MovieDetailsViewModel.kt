@@ -23,15 +23,12 @@ import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
-import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_movie.MovieDetailsEvent.Finish
 import com.michaldrabik.ui_movie.MovieDetailsEvent.RemoveFromTrakt
 import com.michaldrabik.ui_movie.MovieDetailsEvent.RequestWidgetsUpdate
-import com.michaldrabik.ui_movie.MovieDetailsEvent.SaveOpenedCollection
-import com.michaldrabik.ui_movie.MovieDetailsEvent.SaveOpenedPerson
 import com.michaldrabik.ui_movie.MovieDetailsUiState.FollowedState
 import com.michaldrabik.ui_movie.cases.MovieDetailsHiddenCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsListsCase
@@ -275,18 +272,6 @@ class MovieDetailsViewModel @Inject constructor(
       } finally {
         eventChannel.send(Finish)
       }
-    }
-  }
-
-  fun onPersonDetails(person: Person) {
-    viewModelScope.launch {
-      _parentEvents.emit(SaveOpenedPerson(person))
-    }
-  }
-
-  fun onCollectionDetails(collectionId: IdTrakt) {
-    viewModelScope.launch {
-      _parentEvents.emit(SaveOpenedCollection(collectionId))
     }
   }
 

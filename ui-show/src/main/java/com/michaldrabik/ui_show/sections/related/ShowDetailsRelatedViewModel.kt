@@ -35,9 +35,14 @@ class ShowDetailsRelatedViewModel @Inject constructor(
   private val loadingState = MutableStateFlow(true)
   private val relatedItemsState = MutableStateFlow<List<RelatedListItem>?>(null)
 
-  fun loadRelatedShows(show: Show) {
+  fun initRelatedShows(show: Show) {
     if (this::show.isInitialized) return
     this.show = show
+    loadRelatedShows()
+  }
+
+  fun loadRelatedShows() {
+    if (!this::show.isInitialized) return
     viewModelScope.launch {
       try {
         val (myShows, watchlistShows) = myShowsCase.getAllIds()

@@ -22,7 +22,6 @@ import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType.FANART
-import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.TraktRating
@@ -292,12 +291,6 @@ class ShowDetailsViewModel @Inject constructor(
       return false
     }
     return true
-  }
-
-  fun onPersonDetails(person: Person) {
-    viewModelScope.launch {
-      _parentEvents.emit(ShowDetailsEvent.SaveOpenedPerson(person))
-    }
   }
 
   override fun onCleared() {

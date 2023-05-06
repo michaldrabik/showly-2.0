@@ -38,7 +38,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COLLECTION_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
-import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MOVIE_DETAILS
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_DETAILS
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -120,7 +120,7 @@ class MovieDetailsCollectionBottomSheet : BaseBottomSheetFragment(R.layout.view_
     }
 
     val resultBundle = bundleOf(ARG_COLLECTION_ID to collectionId)
-    setFragmentResult(REQUEST_MOVIE_DETAILS, resultBundle)
+    setFragmentResult(REQUEST_DETAILS, resultBundle)
 
     val argsBundle = bundleOf(ARG_MOVIE_ID to item.movie.traktId)
     requireParentFragment()

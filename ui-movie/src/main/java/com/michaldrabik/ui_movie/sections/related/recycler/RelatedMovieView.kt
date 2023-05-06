@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.michaldrabik.ui_base.common.views.MovieView
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.onLongClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.ImageStatus.AVAILABLE
@@ -29,6 +30,7 @@ class RelatedMovieView : MovieView<RelatedListItem> {
     layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
     clipChildren = false
     onClick { itemClickListener?.invoke(item) }
+    onLongClick { itemLongClickListener?.invoke(item) }
   }
 
   private val colorAccent by lazy { ContextCompat.getColor(context, R.color.colorAccent) }

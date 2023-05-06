@@ -394,6 +394,11 @@
       app:popEnterAnim="@anim/anim_in_from_left"
       app:popExitAnim="@anim/anim_out_from_left"
       />
+    <action
+      android:id="@+id/actionShowDetailsFragmentToContext"
+      app:destination="@id/showItemContextDialog"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment
@@ -507,6 +512,11 @@
     <action
       android:id="@+id/actionMovieDetailsFragmentToCollection"
       app:destination="@id/movieCollectionDialog"
+      app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionMovieDetailsFragmentToContext"
+      app:destination="@id/movieItemContextDialog"
       app:launchSingleTop="true"
       />
   </fragment>

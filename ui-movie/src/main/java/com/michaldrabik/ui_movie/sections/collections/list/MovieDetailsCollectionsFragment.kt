@@ -2,6 +2,7 @@ package com.michaldrabik.ui_movie.sections.collections.list
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
@@ -13,6 +14,7 @@ import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.viewBinding
+import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.MovieCollection
 import com.michaldrabik.ui_movie.MovieDetailsEvent.OpenCollectionSheet
@@ -22,6 +24,8 @@ import com.michaldrabik.ui_movie.R
 import com.michaldrabik.ui_movie.databinding.FragmentMovieDetailsCollectionBinding
 import com.michaldrabik.ui_movie.sections.collections.details.MovieDetailsCollectionBottomSheet
 import com.michaldrabik.ui_movie.sections.collections.list.recycler.MovieCollectionAdapter
+import com.michaldrabik.ui_navigation.java.NavigationArgs
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COLLECTION_ID
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -41,7 +45,6 @@ class MovieDetailsCollectionsFragment : BaseFragment<MovieDetailsCollectionsView
     setupView()
     launchAndRepeatStarted(
       { parentViewModel.parentMovieState.collect { it?.let { viewModel.loadCollections(it) } } },
-      { parentViewModel.parentEvents.collect { viewModel.handleEvent(it) } },
       { viewModel.uiState.collect { render(it) } },
       { viewModel.eventFlow.collect { handleEvent(it) } },
       doAfterLaunch = { viewModel.loadLastOpenedCollection() }
@@ -80,10 +83,17 @@ class MovieDetailsCollectionsFragment : BaseFragment<MovieDetailsCollectionsView
     }
   }
 
+  @Suppress("DEPRECATION")
   private fun openCollectionDetails(
     movie: Movie,
-    collection: MovieCollection
+    collection: MovieCollection,
   ) {
+    requireParentFragment()
+      .setFragmentResultListener(NavigationArgs.REQUEST_DETAILS) { _, bundle ->
+        bundle.getParcelable<IdTrakt>(ARG_COLLECTION_ID)?.let {
+          viewModel.saveLastOpenedCollection(it)
+        }
+      }
     val bundle = MovieDetailsCollectionBottomSheet.createBundle(
       collectionId = collection.id,
       sourceMovieId = movie.ids.trakt

@@ -63,7 +63,6 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageFamily.SHOW
 import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
 import com.michaldrabik.ui_model.ImageType.FANART
-import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.PremiumFeature
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Show
@@ -74,12 +73,10 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_CUSTOM_IMAGE_CLEAR
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FAMILY
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ITEM
-import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_PERSON
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MANAGE_LISTS
-import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_PERSON_DETAILS
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_REMOVE_TRAKT
 import com.michaldrabik.ui_show.ShowDetailsEvent.Finish
 import com.michaldrabik.ui_show.ShowDetailsEvent.RemoveFromTrakt
@@ -125,13 +122,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         viewModel.loadPremium()
       }
     )
-
-    setFragmentResultListener(REQUEST_PERSON_DETAILS) { _, bundle ->
-      bundle.getParcelable<Person>(ARG_PERSON)?.let {
-        viewModel.onPersonDetails(it)
-        bundle.clear()
-      }
-    }
   }
 
   private fun setupView() {
