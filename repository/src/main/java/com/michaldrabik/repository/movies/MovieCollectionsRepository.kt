@@ -89,6 +89,15 @@ class MovieCollectionsRepository @Inject constructor(
         }
         moviesLocalSource.upsert(items.map { movieMapper.toDatabase(it) })
         movieCollectionsItemsLocalSource.replace(collectionId.id, entities)
+
+        // Fill up collection with other movies that belong in it.
+        val collection = movieCollectionsLocalSource.getById(collectionId.id)
+        collection?.let { coll ->
+          val insertEntities = entities
+            .filter { it.idTrakt != coll.idTraktMovie }
+            .map { coll.copy(id = 0, idTraktMovie = it.idTrakt) }
+          movieCollectionsLocalSource.insertAll(insertEntities)
+        }
       }
 
       return@withContext items
@@ -115,7 +124,7 @@ class MovieCollectionsRepository @Inject constructor(
         )
       )
     }
-    movieCollectionsLocalSource.replace(movieId.id, entities)
+    movieCollectionsLocalSource.replaceByMovieId(movieId.id, entities)
   }
 
   enum class Source { LOCAL, REMOTE }

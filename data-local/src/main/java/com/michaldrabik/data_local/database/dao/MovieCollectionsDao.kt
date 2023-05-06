@@ -16,7 +16,7 @@ interface MovieCollectionsDao : BaseDao<MovieCollection>, MovieCollectionsLocalD
   override suspend fun getByMovieId(movieTraktId: Long): List<MovieCollection>
 
   @Transaction
-  override suspend fun replace(
+  override suspend fun replaceByMovieId(
     movieTraktId: Long,
     entities: List<MovieCollection>,
   ) {
@@ -26,6 +26,10 @@ interface MovieCollectionsDao : BaseDao<MovieCollection>, MovieCollectionsLocalD
     deleteCollections(deleteCollections)
 
     insert(entities)
+  }
+
+  override suspend fun insertAll(items: List<MovieCollection>) {
+    insert(items)
   }
 
   @Query("DELETE FROM movies_collections WHERE id_trakt IN (:collectionIds)")
