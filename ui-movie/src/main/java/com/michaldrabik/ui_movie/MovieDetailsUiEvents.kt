@@ -3,6 +3,7 @@ package com.michaldrabik.ui_movie
 
 import androidx.annotation.IdRes
 import com.michaldrabik.ui_base.utilities.events.Event
+import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.MovieCollection
 import com.michaldrabik.ui_model.Person
@@ -32,6 +33,10 @@ sealed class MovieDetailsEvent<T>(action: T) : Event<T>(action) {
   data class SaveOpenedPerson(
     val person: Person
   ) : MovieDetailsEvent<Person>(person)
+
+  data class SaveOpenedCollection(
+    val collectionId: IdTrakt
+  ) : MovieDetailsEvent<IdTrakt>(collectionId)
 
   object RequestWidgetsUpdate : MovieDetailsEvent<Unit>(Unit)
 

@@ -32,7 +32,7 @@ import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_PERSON
-import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_PERSON_DETAILS
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MOVIE_DETAILS
 import com.michaldrabik.ui_people.R
 import com.michaldrabik.ui_people.databinding.ViewPersonDetailsBinding
 import com.michaldrabik.ui_people.details.links.PersonLinksBottomSheet
@@ -124,14 +124,14 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_person_de
   private fun openDetails(item: PersonDetailsItem) {
     val personBundle = bundleOf(ARG_PERSON to person)
     if (item is PersonDetailsItem.CreditsShowItem && item.show.traktId != sourceId.id) {
-      setFragmentResult(REQUEST_PERSON_DETAILS, personBundle)
+      setFragmentResult(REQUEST_MOVIE_DETAILS, personBundle)
       val bundle = bundleOf(NavigationArgs.ARG_SHOW_ID to item.show.traktId)
       requireParentFragment()
         .findNavController()
         .navigate(R.id.actionPersonDetailsDialogToShow, bundle)
     }
     if (item is PersonDetailsItem.CreditsMovieItem && item.movie.traktId != sourceId.id) {
-      setFragmentResult(REQUEST_PERSON_DETAILS, personBundle)
+      setFragmentResult(REQUEST_MOVIE_DETAILS, personBundle)
       val bundle = bundleOf(NavigationArgs.ARG_MOVIE_ID to item.movie.traktId)
       requireParentFragment()
         .findNavController()
@@ -141,7 +141,7 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_person_de
 
   private fun openGallery() {
     val personBundle = bundleOf(ARG_PERSON to person)
-    setFragmentResult(REQUEST_PERSON_DETAILS, personBundle)
+    setFragmentResult(REQUEST_MOVIE_DETAILS, personBundle)
     val options = PersonGalleryFragment.createBundle(person)
     requireParentFragment()
       .findNavController()

@@ -41,8 +41,10 @@ class MovieDetailsCollectionsFragment : BaseFragment<MovieDetailsCollectionsView
     setupView()
     launchAndRepeatStarted(
       { parentViewModel.parentMovieState.collect { it?.let { viewModel.loadCollections(it) } } },
+      { parentViewModel.parentEvents.collect { viewModel.handleEvent(it) } },
       { viewModel.uiState.collect { render(it) } },
       { viewModel.eventFlow.collect { handleEvent(it) } },
+      doAfterLaunch = { viewModel.loadLastOpenedCollection() }
     )
   }
 

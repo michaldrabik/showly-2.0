@@ -30,6 +30,7 @@ import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_movie.MovieDetailsEvent.Finish
 import com.michaldrabik.ui_movie.MovieDetailsEvent.RemoveFromTrakt
 import com.michaldrabik.ui_movie.MovieDetailsEvent.RequestWidgetsUpdate
+import com.michaldrabik.ui_movie.MovieDetailsEvent.SaveOpenedCollection
 import com.michaldrabik.ui_movie.MovieDetailsEvent.SaveOpenedPerson
 import com.michaldrabik.ui_movie.MovieDetailsUiState.FollowedState
 import com.michaldrabik.ui_movie.cases.MovieDetailsHiddenCase
@@ -280,6 +281,12 @@ class MovieDetailsViewModel @Inject constructor(
   fun onPersonDetails(person: Person) {
     viewModelScope.launch {
       _parentEvents.emit(SaveOpenedPerson(person))
+    }
+  }
+
+  fun onCollectionDetails(collectionId: IdTrakt) {
+    viewModelScope.launch {
+      _parentEvents.emit(SaveOpenedCollection(collectionId))
     }
   }
 
