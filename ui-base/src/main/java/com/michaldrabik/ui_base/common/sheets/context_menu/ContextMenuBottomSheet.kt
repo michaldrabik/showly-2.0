@@ -21,7 +21,6 @@ import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
-import com.michaldrabik.ui_base.utilities.extensions.requireBoolean
 import com.michaldrabik.ui_base.utilities.extensions.requireParcelable
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
@@ -43,19 +42,27 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.RESULT
 abstract class ContextMenuBottomSheet : BaseBottomSheetFragment(R.layout.view_context_menu) {
 
   companion object {
+    private const val ARG_SHOW_PIN_BUTTONS = "ARG_SHOW_PIN_BUTTONS"
+    private const val ARG_DETAILS_ENABLED = "ARG_DETAILS_ENABLED"
+
     fun createBundle(
       idTrakt: IdTrakt,
       showPinButtons: Boolean = false,
+      detailsEnabled: Boolean = true
     ) = bundleOf(
       ARG_ID to idTrakt,
-      ARG_OPTIONS to showPinButtons
+      ARG_OPTIONS to bundleOf(
+        ARG_SHOW_PIN_BUTTONS to showPinButtons,
+        ARG_DETAILS_ENABLED to detailsEnabled
+      )
     )
   }
 
   protected val binding by viewBinding(ViewContextMenuBinding::bind)
 
   protected val itemId by lazy { requireParcelable<IdTrakt>(ARG_ID) }
-  private val showPinButtons by lazy { requireBoolean(ARG_OPTIONS) }
+  private val showPinButtons by lazy { requireParcelable<Bundle>(ARG_OPTIONS).getBoolean(ARG_SHOW_PIN_BUTTONS) }
+  private val detailsEnabled by lazy { requireParcelable<Bundle>(ARG_OPTIONS).getBoolean(ARG_DETAILS_ENABLED) }
 
   private val cornerRadius by lazy { dimenToPx(R.dimen.mediaTileCorner).toFloat() }
   private val cornerBigRadius by lazy { dimenToPx(R.dimen.collectionItemCorner).toFloat() }
@@ -74,8 +81,8 @@ abstract class ContextMenuBottomSheet : BaseBottomSheetFragment(R.layout.view_co
       contextMenuItemDescription.setInitialLines(5)
       contextMenuItemPinButtonsLayout.visibleIf(showPinButtons)
       contextMenuItemSeparator2.visibleIf(showPinButtons)
-      contextMenuItemImage.onClick { openDetails() }
-      contextMenuItemPlaceholder.onClick { openDetails() }
+      contextMenuItemImage.onClick { if (detailsEnabled) openDetails() }
+      contextMenuItemPlaceholder.onClick { if (detailsEnabled) openDetails() }
     }
   }
 

@@ -139,7 +139,10 @@ class MovieDetailsCollectionBottomSheet : BaseBottomSheetFragment(R.layout.view_
       clearFragmentResultListener(NavigationArgs.REQUEST_ITEM_MENU)
     }
 
-    val bundle = ContextMenuBottomSheet.createBundle(item.movie.ids.trakt)
+    val bundle = ContextMenuBottomSheet.createBundle(
+      idTrakt = item.movie.ids.trakt,
+      detailsEnabled = false
+    )
     navigateTo(R.id.actionMovieCollectionDialogToContextDialog, bundle)
   }
 
