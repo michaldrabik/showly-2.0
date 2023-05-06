@@ -701,6 +701,7 @@ class Migrations(context: Context) {
             "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
             "`id_trakt` INTEGER NOT NULL, " +
             "`id_trakt_collection` INTEGER NOT NULL, " +
+            "`rank` INTEGER NOT NULL, " +
             "`created_at` INTEGER NOT NULL, " +
             "`updated_at` INTEGER NOT NULL, " +
             "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)"
