@@ -3,6 +3,7 @@ package com.michaldrabik.ui_people.list
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,8 +23,10 @@ import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_DEPARTMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_PERSON
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TITLE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_DETAILS
 import com.michaldrabik.ui_people.R
 import com.michaldrabik.ui_people.databinding.ViewPeopleListBinding
 import com.michaldrabik.ui_people.details.PersonDetailsBottomSheet
@@ -99,6 +102,7 @@ class PeopleListBottomSheet : BaseBottomSheetFragment(R.layout.view_people_list)
   }
 
   private fun openDetails(item: Person) {
+    setFragmentResult(REQUEST_DETAILS, bundleOf(ARG_PERSON to item))
     val bundle = PersonDetailsBottomSheet.createBundle(item, mediaIdTrakt)
     findNavController().navigate(R.id.actionPeopleListDialogToDetails, bundle)
   }

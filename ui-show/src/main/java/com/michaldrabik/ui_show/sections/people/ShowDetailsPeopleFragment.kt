@@ -66,15 +66,8 @@ class ShowDetailsPeopleFragment : BaseFragment<ShowDetailsPeopleViewModel>(R.lay
     }
   }
 
-  @Suppress("DEPRECATION")
   private fun openPersonSheet(show: Show, person: Person) {
-    requireParentFragment()
-      .setFragmentResultListener(REQUEST_DETAILS) { _, bundle ->
-        bundle.getParcelable<Person>(ARG_PERSON)?.let {
-          viewModel.saveLastPerson(it)
-          bundle.clear()
-        }
-      }
+    handleSheetResult()
     val bundle = PersonDetailsBottomSheet.createBundle(person, show.ids.trakt)
     (requireParentFragment() as BaseFragment<*>)
       .navigateToSafe(R.id.actionShowDetailsFragmentToPerson, bundle)
@@ -89,8 +82,7 @@ class ShowDetailsPeopleFragment : BaseFragment<ShowDetailsPeopleViewModel>(R.lay
       return
     }
 
-    requireParentFragment()
-      .clearFragmentResultListener(REQUEST_DETAILS)
+    handleSheetResult()
 
     val title = (requireParentFragment() as ShowDetailsFragment).binding.showDetailsTitle.text.toString()
     val bundle = PeopleListBottomSheet.createBundle(show.ids.trakt, title, Mode.SHOWS, department)
@@ -149,6 +141,18 @@ class ShowDetailsPeopleFragment : BaseFragment<ShowDetailsPeopleViewModel>(R.lay
       is OpenPersonSheet -> openPersonSheet(event.show, event.person)
       is OpenPeopleSheet -> openPeopleSheet(event)
     }
+  }
+
+  @Suppress("DEPRECATION")
+  private fun handleSheetResult() {
+    requireParentFragment()
+      .setFragmentResultListener(REQUEST_DETAILS) { _, bundle ->
+        bundle.getParcelable<Person>(ARG_PERSON)?.let {
+          viewModel.saveLastPerson(it)
+          bundle.clear()
+        }
+        requireParentFragment().clearFragmentResultListener(REQUEST_DETAILS)
+      }
   }
 
   override fun setupBackPressed() = Unit

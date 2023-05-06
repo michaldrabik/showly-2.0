@@ -65,15 +65,8 @@ class MovieDetailsPeopleFragment : BaseFragment<MovieDetailsPeopleViewModel>(R.l
     }
   }
 
-  @Suppress("DEPRECATION")
   private fun openPersonSheet(movie: Movie, person: Person) {
-    requireParentFragment()
-      .setFragmentResultListener(REQUEST_DETAILS) { _, bundle ->
-        bundle.getParcelable<Person>(ARG_PERSON)?.let {
-          viewModel.saveLastPerson(it)
-          bundle.clear()
-        }
-      }
+    handleSheetResult()
     val bundle = PersonDetailsBottomSheet.createBundle(person, movie.ids.trakt)
     (requireParentFragment() as BaseFragment<*>)
       .navigateToSafe(R.id.actionMovieDetailsFragmentToPerson, bundle)
@@ -88,8 +81,7 @@ class MovieDetailsPeopleFragment : BaseFragment<MovieDetailsPeopleViewModel>(R.l
       return
     }
 
-    requireParentFragment()
-      .clearFragmentResultListener(REQUEST_DETAILS)
+    handleSheetResult()
 
     val title = requireParentFragment().movieDetailsTitle.text.toString()
     val bundle = PeopleListBottomSheet.createBundle(movie.ids.trakt, title, Mode.MOVIES, department)
@@ -146,6 +138,18 @@ class MovieDetailsPeopleFragment : BaseFragment<MovieDetailsPeopleViewModel>(R.l
       is OpenPersonSheet -> openPersonSheet(event.movie, event.person)
       is OpenPeopleSheet -> openPeopleSheet(event)
     }
+  }
+
+  @Suppress("DEPRECATION")
+  private fun handleSheetResult() {
+    requireParentFragment()
+      .setFragmentResultListener(REQUEST_DETAILS) { _, bundle ->
+        bundle.getParcelable<Person>(ARG_PERSON)?.let {
+          viewModel.saveLastPerson(it)
+          bundle.clear()
+        }
+        requireParentFragment().clearFragmentResultListener(REQUEST_DETAILS)
+      }
   }
 
   override fun setupBackPressed() = Unit
