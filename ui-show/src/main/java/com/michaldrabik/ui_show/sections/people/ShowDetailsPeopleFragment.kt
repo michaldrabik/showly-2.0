@@ -25,7 +25,8 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_DETAILS
 import com.michaldrabik.ui_people.details.PersonDetailsBottomSheet
 import com.michaldrabik.ui_people.list.PeopleListBottomSheet
 import com.michaldrabik.ui_show.R
-import com.michaldrabik.ui_show.ShowDetailsEvent.*
+import com.michaldrabik.ui_show.ShowDetailsEvent.OpenPeopleSheet
+import com.michaldrabik.ui_show.ShowDetailsEvent.OpenPersonSheet
 import com.michaldrabik.ui_show.ShowDetailsFragment
 import com.michaldrabik.ui_show.ShowDetailsViewModel
 import com.michaldrabik.ui_show.databinding.FragmentShowDetailsPeopleBinding
