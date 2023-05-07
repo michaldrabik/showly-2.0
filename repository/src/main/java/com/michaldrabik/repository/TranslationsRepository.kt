@@ -67,7 +67,7 @@ class TranslationsRepository @Inject constructor(
 
     val remoteTranslation = try {
       remoteSource.trakt.fetchShowTranslations(show.traktId, language)
-        .firstOrNull { chineseLanguagePredicate(it) }
+        .firstOrNull { chineseLanguagePredicate(it) && frenchLanguagePredicate(it) }
     } catch (error: Throwable) {
       null
     }
@@ -107,7 +107,7 @@ class TranslationsRepository @Inject constructor(
 
     val remoteTranslation = try {
       remoteSource.trakt.fetchMovieTranslations(movie.traktId, language)
-        .firstOrNull { chineseLanguagePredicate(it) }
+        .firstOrNull { chineseLanguagePredicate(it) && frenchLanguagePredicate(it) }
     } catch (error: Throwable) {
       null
     }
@@ -235,6 +235,13 @@ class TranslationsRepository @Inject constructor(
     if (translation.language?.lowercase() != "zh") {
       true
     } else {
-      translation.country?.equals("cn", true) == true
+      translation.country?.equals("cn", ignoreCase = true) == true
+    }
+
+  private fun frenchLanguagePredicate(translation: TranslationRemote) =
+    if (translation.language?.lowercase() != "fr") {
+      true
+    } else {
+      translation.country?.equals("ca", ignoreCase = true) == true
     }
 }
