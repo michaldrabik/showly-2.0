@@ -14,7 +14,7 @@ import com.michaldrabik.ui_base.utilities.extensions.expandTouch
 import com.michaldrabik.ui_show.R
 import com.michaldrabik.ui_show.databinding.ViewSeasonBinding
 import java.util.Locale.ENGLISH
-import kotlin.math.roundToInt
+import kotlin.math.floor
 
 class SeasonView : FrameLayout {
 
@@ -48,7 +48,7 @@ class SeasonView : FrameLayout {
       val episodesCount = item.episodes.size
       var percent = 0
       if (episodesCount != 0) {
-        percent = ((progressCount.toFloat() / episodesCount.toFloat()) * 100F).roundToInt()
+        percent = floor((progressCount.toFloat() / episodesCount.toFloat()) * 100F).toInt()
       }
 
       seasonViewProgress.max = item.season.episodeCount
