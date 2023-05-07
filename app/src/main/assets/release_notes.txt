@@ -1,4 +1,5 @@
-* Added Ukrainian and Chinese (Simplified) language
+* Movies details will now display official collections they belong to
+* Added context menu (tap & hold) for "You may also like" items and movies collections items
 * Bugfixes
 
 Do you enjoy Showly and want to support the developer?
