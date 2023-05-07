@@ -242,6 +242,6 @@ class TranslationsRepository @Inject constructor(
     if (translation.language?.lowercase() != "fr") {
       true
     } else {
-      translation.country?.equals("ca", ignoreCase = true) == true
+      translation.country?.equals("fr", ignoreCase = true) == true
     }
 }
