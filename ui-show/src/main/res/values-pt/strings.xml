@@ -15,7 +15,7 @@
   <string name="textSeasons">Temporadas:</string>
   <string name="textSeasonsEmpty">Temporadas não disponíveis.</string>
   <string name="textTrailer">Trailer</string>
-  <string name="textYouMayAlsoLike">You may also like</string>
+  <string name="textYouMayAlsoLike">Você também pode gostar</string>
   <string name="textRuntimeLeftHours">~%sh %sm restantes</string>
   <string name="textRuntimeLeftMinutes">%sm restando</string>
   <string name="textShowManageLists">Gerenciar Listas</string>
