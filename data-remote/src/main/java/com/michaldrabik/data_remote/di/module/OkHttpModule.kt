@@ -14,7 +14,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import java.util.concurrent.TimeUnit.SECONDS
+import java.time.Duration
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -22,7 +22,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object OkHttpModule {
 
-  private const val TIMEOUT_DURATION = 20L
+  private val TIMEOUT_DURATION = Duration.ofSeconds(60)
 
   @Provides
   @Singleton
@@ -103,7 +103,7 @@ object OkHttpModule {
     }
 
   private fun createBaseOkHttpClient() = OkHttpClient.Builder()
-    .writeTimeout(TIMEOUT_DURATION, SECONDS)
-    .readTimeout(TIMEOUT_DURATION, SECONDS)
-    .callTimeout(TIMEOUT_DURATION, SECONDS)
+    .writeTimeout(TIMEOUT_DURATION)
+    .readTimeout(TIMEOUT_DURATION)
+    .callTimeout(TIMEOUT_DURATION)
 }

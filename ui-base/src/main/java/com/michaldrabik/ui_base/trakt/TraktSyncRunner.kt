@@ -11,8 +11,9 @@ abstract class TraktSyncRunner(
 
   companion object {
     const val TRAKT_LIMIT_DELAY_MS = 1100L
-    const val RETRY_DELAY_MS = 2000L
-    const val MAX_RETRY_COUNT = 3
+    const val RETRY_DELAY_MS = 3000L
+    const val MAX_EXPORT_RETRY_COUNT = 1
+    const val MAX_IMPORT_RETRY_COUNT = 3
   }
 
   val retryCount = AtomicInteger(0)

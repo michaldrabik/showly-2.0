@@ -46,7 +46,7 @@ class TraktExportListsRunner @Inject constructor(
     try {
       exportLists()
     } catch (error: Throwable) {
-      if (retryCount.getAndIncrement() < MAX_RETRY_COUNT) {
+      if (retryCount.getAndIncrement() < MAX_EXPORT_RETRY_COUNT) {
         Timber.w("exportLists failed. Will retry in $RETRY_DELAY_MS ms... $error")
         delay(RETRY_DELAY_MS)
         runExport()

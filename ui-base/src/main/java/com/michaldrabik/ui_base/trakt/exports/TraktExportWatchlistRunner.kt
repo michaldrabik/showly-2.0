@@ -81,7 +81,7 @@ class TraktExportWatchlistRunner @Inject constructor(
         Timber.w("Account limits reached for Watchlist.")
         throw error
       }
-      retryCount.getAndIncrement() < MAX_RETRY_COUNT -> {
+      retryCount.getAndIncrement() < MAX_EXPORT_RETRY_COUNT -> {
         Timber.w("exportWatchlist failed. Will retry in $RETRY_DELAY_MS ms... $error")
         delay(RETRY_DELAY_MS)
         runExport()
