@@ -128,6 +128,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   private fun setupView() {
     hideNavigation()
     movieDetailsImageGuideline.setGuidelineBegin((imageHeight * imageRatio).toInt())
+    movieDetailsExtraInfo.setInitialLines(1)
     movieDetailsBackArrow.onClick { requireActivity().onBackPressed() }
     movieDetailsImage.onClick {
       val bundle = bundleOf(
@@ -253,7 +254,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 
   private fun renderGenres(genres: List<String>) =
     genres
-      .take(3)
       .mapNotNull { Genre.fromSlug(it) }
       .joinToString(", ") { getString(it.displayName) }
 

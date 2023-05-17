@@ -129,7 +129,7 @@
         tools:visibility="visible"
         />
 
-      <TextView
+      <com.michaldrabik.ui_base.common.views.FoldableTextView
         android:id="@+id/showDetailsExtraInfo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -138,7 +138,6 @@
         android:layout_marginEnd="@dimen/spaceNormal"
         android:ellipsize="end"
         android:gravity="start"
-        android:maxLines="1"
         android:textAlignment="viewStart"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="14sp"

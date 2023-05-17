@@ -128,6 +128,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     with(binding) {
       hideNavigation()
       showDetailsImageGuideline.setGuidelineBegin((imageHeight * imageRatio).toInt())
+      showDetailsExtraInfo.setInitialLines(1)
       showDetailsBackArrow.onClick { requireActivity().onBackPressed() }
       showDetailsImage.onClick {
         val bundle = bundleOf(
@@ -258,7 +259,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private fun renderGenres(genres: List<String>) =
     genres
-      .take(2)
       .mapNotNull { Genre.fromSlug(it) }
       .joinToString(", ") { getString(it.displayName) }
 
