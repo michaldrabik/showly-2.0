@@ -46,6 +46,7 @@ import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.onLongClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.requireLong
 import com.michaldrabik.ui_base.utilities.extensions.screenHeight
@@ -150,6 +151,10 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     movieDetailsHideLabel.onClick { viewModel.addHiddenMovie() }
     movieDetailsTitle.onClick {
       requireContext().copyToClipboard(movieDetailsTitle.text.toString())
+      showSnack(MessageEvent.Info(R.string.textCopiedToClipboard))
+    }
+    movieDetailsDescription.onLongClick {
+      requireContext().copyToClipboard(movieDetailsDescription.text.toString())
       showSnack(MessageEvent.Info(R.string.textCopiedToClipboard))
     }
     movieDetailsPremiumAd.onClick {

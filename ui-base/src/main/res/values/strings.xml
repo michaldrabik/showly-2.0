@@ -38,7 +38,7 @@
   <string name="textLink">Link</string>
   <string name="textRateSaved">Your rating has been saved.</string>
   <string name="textRateRemoved">Your rating has been removed.</string>
-  <string name="textCopiedToClipboard" translatable="false">Title copied to clipboard.</string>
+  <string name="textCopiedToClipboard" translatable="false">Copied to clipboard</string>
   <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
     <item quantity="one">%d left</item>
     <item quantity="other">%d left</item>

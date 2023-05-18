@@ -45,6 +45,7 @@ import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.onLongClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.requireLong
 import com.michaldrabik.ui_base.utilities.extensions.screenHeight
@@ -152,6 +153,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       showDetailsHideLabel.onClick { viewModel.addHiddenShow() }
       showDetailsTitle.onClick {
         requireContext().copyToClipboard(showDetailsTitle.text.toString())
+        showSnack(MessageEvent.Info(R.string.textCopiedToClipboard))
+      }
+      showDetailsDescription.onLongClick {
+        requireContext().copyToClipboard(showDetailsDescription.text.toString())
         showSnack(MessageEvent.Info(R.string.textCopiedToClipboard))
       }
       showDetailsPremiumAd.onClick {
