@@ -17,6 +17,10 @@ android {
     buildConfig = true
   }
 
+  buildFeatures {
+    viewBinding true
+  }
+
   compileSdkVersion versions.compileSdk
 
   defaultConfig {

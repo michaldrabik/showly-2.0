@@ -40,7 +40,6 @@ import com.michaldrabik.ui_base.utilities.extensions.setCheckedSilent
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.MyMoviesSection
 import com.michaldrabik.ui_model.MyShowsSection.RECENTS
-import com.michaldrabik.ui_model.NotificationDelay
 import com.michaldrabik.ui_model.PremiumFeature
 import com.michaldrabik.ui_model.ProgressNextEpisodeType
 import com.michaldrabik.ui_model.ProgressNextEpisodeType.LAST_WATCHED
@@ -69,11 +68,9 @@ import kotlinx.android.synthetic.main.fragment_settings.settingsNewsEnabled
 import kotlinx.android.synthetic.main.fragment_settings.settingsNewsEnabledSwitch
 import kotlinx.android.synthetic.main.fragment_settings.settingsPremium
 import kotlinx.android.synthetic.main.fragment_settings.settingsProgressNextValue
-import kotlinx.android.synthetic.main.fragment_settings.settingsPushNotificationsSwitch
 import kotlinx.android.synthetic.main.fragment_settings.settingsRateApp
 import kotlinx.android.synthetic.main.fragment_settings.settingsRecentShowsAmount
 import kotlinx.android.synthetic.main.fragment_settings.settingsRoot
-import kotlinx.android.synthetic.main.fragment_settings.settingsShowsNotificationsSwitch
 import kotlinx.android.synthetic.main.fragment_settings.settingsStreamingsSwitch
 import kotlinx.android.synthetic.main.fragment_settings.settingsTheme
 import kotlinx.android.synthetic.main.fragment_settings.settingsThemeValue
@@ -96,7 +93,6 @@ import kotlinx.android.synthetic.main.fragment_settings.settingsTwitterIcon
 import kotlinx.android.synthetic.main.fragment_settings.settingsUpcomingSectionSwitch
 import kotlinx.android.synthetic.main.fragment_settings.settingsUserId
 import kotlinx.android.synthetic.main.fragment_settings.settingsVersion
-import kotlinx.android.synthetic.main.fragment_settings.settingsWhenToNotifyValue
 import kotlinx.android.synthetic.main.fragment_settings.settingsWidgetsLabelsSwitch
 import kotlinx.android.synthetic.main.fragment_settings.settingsWidgetsTheme
 import kotlinx.android.synthetic.main.fragment_settings.settingsWidgetsThemeValue
@@ -277,21 +273,6 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
       .setCheckedSilent(settings.traktQuickRateEnabled) { _, isChecked ->
         viewModel.enableQuickRate(isChecked)
       }
-
-    settingsPushNotificationsSwitch
-      .setCheckedSilent(settings.pushNotificationsEnabled) { _, isChecked ->
-        viewModel.enablePushNotifications(isChecked)
-      }
-
-    settingsShowsNotificationsSwitch
-      .setCheckedSilent(settings.episodesNotificationsEnabled) { _, isChecked ->
-        viewModel.enableAnnouncements(isChecked)
-      }
-
-    settingsWhenToNotifyValue.run {
-      setText(settings.episodesNotificationsDelay.stringRes)
-      onClick { showWhenToNotifyDialog(settings) }
-    }
 
     settingsIncludeSpecialsSwitch
       .setCheckedSilent(settings.specialSeasonsEnabled) { _, isChecked ->
@@ -567,19 +548,6 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
         if (index != selected) {
           viewModel.setWidgetsTransparency(options[index], requireAppContext())
         }
-        dialog.dismiss()
-      }
-      .show()
-  }
-
-  private fun showWhenToNotifyDialog(settings: Settings) {
-    val options = NotificationDelay.values()
-    val default = options.indexOf(settings.episodesNotificationsDelay)
-
-    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
-      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
-      .setSingleChoiceItems(options.map { getString(it.stringRes) }.toTypedArray(), default) { dialog, index ->
-        viewModel.setWhenToNotify(options[index])
         dialog.dismiss()
       }
       .show()

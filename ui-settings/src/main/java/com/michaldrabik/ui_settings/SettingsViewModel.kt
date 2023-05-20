@@ -22,7 +22,6 @@ import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
 import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.MyMoviesSection
 import com.michaldrabik.ui_model.MyShowsSection
-import com.michaldrabik.ui_model.NotificationDelay
 import com.michaldrabik.ui_model.ProgressNextEpisodeType
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_model.TraktSyncSchedule
@@ -111,22 +110,6 @@ class SettingsViewModel @Inject constructor(
     }
   }
 
-  fun enablePushNotifications(enable: Boolean) {
-    viewModelScope.launch {
-      mainCase.enablePushNotifications(enable)
-      refreshSettings()
-      Analytics.logSettingsPushNotifications(enable)
-    }
-  }
-
-  fun enableAnnouncements(enable: Boolean) {
-    viewModelScope.launch {
-      mainCase.enableAnnouncements(enable)
-      refreshSettings()
-      Analytics.logSettingsAnnouncements(enable)
-    }
-  }
-
   fun enableMyShowsSection(section: MyShowsSection, isEnabled: Boolean) {
     viewModelScope.launch {
       mainCase.enableMyShowsSection(section, isEnabled)
@@ -191,14 +174,6 @@ class SettingsViewModel @Inject constructor(
       refreshSettings()
     }
     Analytics.logSettingsWidgetsTitlesEnabled(enable)
-  }
-
-  fun setWhenToNotify(delay: NotificationDelay) {
-    viewModelScope.launch {
-      mainCase.setWhenToNotify(delay)
-      refreshSettings()
-      Analytics.logSettingsWhenToNotify(delay.name)
-    }
   }
 
   fun setLanguage(language: AppLanguage) {
@@ -376,6 +351,8 @@ class SettingsViewModel @Inject constructor(
       progressNextType = s17
     )
   }.stateIn(
-    scope = viewModelScope, started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT), initialValue = SettingsUiState()
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = SettingsUiState()
   )
 }

@@ -654,110 +654,16 @@
       tools:text="United States"
       />
 
-    <TextView
+    <androidx.fragment.app.FragmentContainerView
       android:id="@+id/settingsCategoryNotifications"
-      style="@style/Settings.Category"
-      android:text="@string/textSettingsNotifications"
-      app:layout_constraintBottom_toTopOf="@id/settingsPushNotifications"
+      android:name="com.michaldrabik.ui_settings.sections.notifications.SettingsNotificationsFragment"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      app:layout_constraintBottom_toTopOf="@id/settingsWidgetsTheme"
+      app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsRecentShowsAmount"
-      />
-
-    <LinearLayout
-      android:id="@+id/settingsPushNotifications"
-      style="@style/Settings.ItemLayout"
-      app:layout_constraintBottom_toTopOf="@id/settingsShowsNotifications"
-      app:layout_constraintEnd_toStartOf="@id/settingsPushNotificationsSwitch"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsCategoryNotifications"
-      >
-
-      <TextView
-        style="@style/Settings.Title"
-        android:text="@string/textSettingsPushNotificationsTitle"
-        />
-
-      <TextView
-        style="@style/Settings.Summary"
-        android:text="@string/textSettingsPushNotificationsSummary"
-        />
-
-    </LinearLayout>
-
-    <com.google.android.material.switchmaterial.SwitchMaterial
-      android:id="@+id/settingsPushNotificationsSwitch"
-      android:layout_width="wrap_content"
-      android:layout_height="0dp"
-      android:layout_marginEnd="@dimen/spaceNormal"
-      android:checked="true"
-      app:layout_constraintBottom_toBottomOf="@id/settingsPushNotifications"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toTopOf="@id/settingsPushNotifications"
-      />
-
-    <LinearLayout
-      android:id="@+id/settingsShowsNotifications"
-      style="@style/Settings.ItemLayout"
-      app:layout_constraintBottom_toTopOf="@id/settingsWhenToNotify"
-      app:layout_constraintEnd_toStartOf="@id/settingsShowsNotificationsSwitch"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsPushNotifications"
-      >
-
-      <TextView
-        style="@style/Settings.Title"
-        android:text="@string/textSettingsShowsNotificationsTitle"
-        />
-
-      <TextView
-        style="@style/Settings.Summary"
-        android:text="@string/textSettingsShowsNotificationsSummary"
-        />
-
-    </LinearLayout>
-
-    <com.google.android.material.switchmaterial.SwitchMaterial
-      android:id="@+id/settingsShowsNotificationsSwitch"
-      android:layout_width="wrap_content"
-      android:layout_height="0dp"
-      android:layout_marginEnd="@dimen/spaceNormal"
-      android:checked="true"
-      app:layout_constraintBottom_toBottomOf="@id/settingsShowsNotifications"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toTopOf="@id/settingsShowsNotifications"
-      />
-
-    <LinearLayout
-      android:id="@+id/settingsWhenToNotify"
-      style="@style/Settings.ItemLayout"
-      app:layout_constraintBottom_toTopOf="@id/settingsCategoryWidgets"
-      app:layout_constraintEnd_toStartOf="@id/settingsWhenToNotifyValue"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsShowsNotifications"
-      >
-
-      <TextView
-        style="@style/Settings.Title"
-        android:text="@string/textSettingsShowsNotificationsWhenTitle"
-        />
-
-      <TextView
-        style="@style/Settings.Summary"
-        android:text="@string/textSettingsShowsNotificationsWhenSummary"
-        />
-
-    </LinearLayout>
-
-    <TextView
-      android:id="@+id/settingsWhenToNotifyValue"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginEnd="@dimen/spaceNormal"
-      android:text="@string/textSettingsShowsNotificationsWhenAvailable"
-      android:textColor="?attr/colorAccent"
-      app:layout_constraintBottom_toBottomOf="@id/settingsWhenToNotify"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toTopOf="@id/settingsWhenToNotify"
+      tools:layout="@layout/fragment_settings_notifications"
       />
 
     <TextView
@@ -766,7 +672,7 @@
       android:text="@string/textSettingsWidgets"
       app:layout_constraintBottom_toTopOf="@id/settingsWidgetsTheme"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsWhenToNotify"
+      app:layout_constraintTop_toBottomOf="@id/settingsCategoryNotifications"
       />
 
     <LinearLayout

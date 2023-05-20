@@ -11,7 +11,7 @@ class SecretTextView : AppCompatTextView {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-  var isSwitchable = true
+  var isRevealable = true
     set(value) {
       field = value
       if (value) {
@@ -25,7 +25,7 @@ class SecretTextView : AppCompatTextView {
   private var isSecret = true
 
   init {
-    isSwitchable = true
+    isRevealable = true
   }
 
   fun setSecretText(text: String?, isSecret: Boolean = true) {
@@ -41,8 +41,10 @@ class SecretTextView : AppCompatTextView {
   }
 
   private fun toggle() {
-    if (!isSwitchable) return
+    if (!isRevealable) return
+    if (!isSecret) return
     text = if (isSecret) {
+      setOnClickListener(null)
       ellipsize = TextUtils.TruncateAt.END
       originalText
     } else {
