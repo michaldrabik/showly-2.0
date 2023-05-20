@@ -119,7 +119,6 @@
       app:layout_constraintHorizontal_chainStyle="spread_inside"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsWhenToNotifyTitle"
-      app:layout_constraintWidth_default="wrap"
       tools:text="@tools:sample/lorem/random"
       />
 

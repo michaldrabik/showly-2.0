@@ -13,8 +13,6 @@ import androidx.core.os.bundleOf
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
-import androidx.work.WorkInfo
-import androidx.work.WorkManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jakewharton.processphoenix.ProcessPhoenix
 import com.michaldrabik.common.Config
@@ -27,7 +25,6 @@ import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.OnTraktAuthorizeListener
 import com.michaldrabik.ui_base.dates.AppDateFormat
 import com.michaldrabik.ui_base.dates.DateFormatProvider
-import com.michaldrabik.ui_base.trakt.TraktSyncWorker
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
@@ -45,14 +42,12 @@ import com.michaldrabik.ui_model.ProgressNextEpisodeType
 import com.michaldrabik.ui_model.ProgressNextEpisodeType.LAST_WATCHED
 import com.michaldrabik.ui_model.ProgressNextEpisodeType.OLDEST
 import com.michaldrabik.ui_model.Settings
-import com.michaldrabik.ui_model.TraktSyncSchedule.OFF
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ITEM
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import com.michaldrabik.ui_settings.helpers.AppTheme
 import com.michaldrabik.ui_settings.helpers.PlayStoreHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_settings.*
-import com.michaldrabik.data_remote.Config as ConfigNetwork
 
 @AndroidEntryPoint
 class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_settings), OnTraktAuthorizeListener {
@@ -62,7 +57,6 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
-    setupWorkManager()
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
@@ -77,10 +71,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     settingsThemeValue.visibleIf(SHOW_PREMIUM)
     settingsNewsEnabled.visibleIf(SHOW_PREMIUM)
     settingsNewsEnabledSwitch.visibleIf(SHOW_PREMIUM)
-    settingsTraktQuickRate.visibleIf(SHOW_PREMIUM)
-    settingsTraktQuickRateSwitch.visibleIf(SHOW_PREMIUM)
     settingsPremium.onClick { navigateTo(R.id.actionSettingsFragmentToPremium) }
-    settingsTraktSync.onClick { navigateTo(R.id.actionSettingsFragmentToTraktSync) }
     settingsDeleteCache.onClick { viewModel.deleteImagesCache(requireAppContext()) }
     settingsTwitterIcon.onClick { openWebLink(Config.TWITTER_URL) }
     settingsTraktIcon.onClick { openWebLink(Config.TRAKT_URL) }
@@ -92,13 +83,6 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     }
   }
 
-  private fun setupWorkManager() {
-    WorkManager.getInstance(requireAppContext())
-      .getWorkInfosByTagLiveData(TraktSyncWorker.TAG_ID)
-      .observe(viewLifecycleOwner) {
-        settingsTraktSyncProgress.visibleIf(it.any { work -> work.state == WorkInfo.State.RUNNING })
-      }
-  }
 
   private fun render(uiState: SettingsUiState) {
     uiState.run {
@@ -115,38 +99,9 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
       country?.let { renderCountry(it) }
       dateFormat?.let { renderDateFormat(it, language) }
       progressNextType?.let { renderProgressType(it) }
-      isSigningIn.let { settingsTraktAuthorizeProgress.visibleIf(it) }
-      isSignedInTrakt.let { isSignedIn ->
-        settingsTraktSync.visibleIf(isSignedIn)
-        settingsTraktQuickSync.visibleIf(isSignedIn)
-        settingsTraktQuickSyncSwitch.visibleIf(isSignedIn)
-        settingsTraktQuickRemove.visibleIf(isSignedIn)
-        settingsTraktQuickRemoveSwitch.visibleIf(isSignedIn)
-        settingsTraktQuickRate.visibleIf(isSignedIn && SHOW_PREMIUM)
-        settingsTraktQuickRateSwitch.visibleIf(isSignedIn && SHOW_PREMIUM)
-        settingsTraktAuthorizeIcon.visibleIf(isSignedIn)
-        settingsTraktAuthorize.onClick {
-          if (isSignedIn) showLogoutDialog()
-          else openWebUrl(ConfigNetwork.TRAKT_AUTHORIZE_URL)
-        }
-        val summaryText = when {
-          isSignedIn -> {
-            when {
-              traktUsername.isNotEmpty() ->
-                getString(R.string.textSettingsTraktAuthorizeSummarySignOutUser, traktUsername)
-              else ->
-                getString(R.string.textSettingsTraktAuthorizeSummarySignOut)
-            }
-          }
-          else -> getString(R.string.textSettingsTraktAuthorizeSummarySignIn)
-        }
-        settingsTraktAuthorizeSummary.text = summaryText
-      }
       isPremium.let { isPremium ->
         settingsPremium.visibleIf(!isPremium && SHOW_PREMIUM)
         listOf(
-          settingsTraktQuickRate,
-          settingsTraktQuickRateSwitch,
           settingsTheme,
           settingsThemeValue,
           settingsNewsEnabled,
@@ -156,7 +111,6 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
         }
 
         listOf(
-          settingsTraktQuickRateSwitch,
           settingsThemeValue,
           settingsNewsEnabledSwitch
         ).forEach {
@@ -164,7 +118,6 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
         }
 
         listOf(
-          settingsTraktQuickRate,
           settingsTheme,
           settingsNewsEnabled
         ).onClick {
@@ -180,7 +133,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
           }
         }
       }
-      userId.let { settingsUserId.text = it }
+//      userId.let { settingsUserId.text = it }
       restartApp.let { if (it) restartApp() }
     }
   }
@@ -195,24 +148,6 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     settingsRecentShowsAmount.onClick { showRecentShowsDialog(settings) }
     settingsMyShowsSections.onClick { showSectionsDialog(settings) }
     settingsMyMoviesSections.onClick { showMoviesSectionsDialog(settings) }
-
-    settingsTraktQuickSyncSwitch
-      .setCheckedSilent(settings.traktQuickSyncEnabled) { _, isChecked ->
-        viewModel.enableQuickSync(isChecked)
-        if (isChecked && settings.traktSyncSchedule != OFF) {
-          showQuickSyncConfirmationDialog()
-        }
-      }
-
-    settingsTraktQuickRemoveSwitch
-      .setCheckedSilent(settings.traktQuickRemoveEnabled) { _, isChecked ->
-        viewModel.enableQuickRemove(isChecked)
-      }
-
-    settingsTraktQuickRateSwitch
-      .setCheckedSilent(settings.traktQuickRateEnabled) { _, isChecked ->
-        viewModel.enableQuickRate(isChecked)
-      }
 
     settingsIncludeSpecialsSwitch
       .setCheckedSilent(settings.specialSeasonsEnabled) { _, isChecked ->
@@ -294,17 +229,6 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     }
   }
 
-  private fun showQuickSyncConfirmationDialog() {
-    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
-      .setTitle(R.string.textSettingsQuickSyncConfirmationTitle)
-      .setMessage(R.string.textSettingsQuickSyncConfirmationMessage)
-      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
-      .setPositiveButton(R.string.textTurnOff) { _, _ ->
-        viewModel.setTraktSyncSchedule(OFF)
-      }
-      .setNegativeButton(R.string.textNotNow) { _, _ -> }
-      .show()
-  }
 
   private fun showRecentShowsDialog(settings: Settings) {
     val options = MY_SHOWS_RECENTS_OPTIONS.map { it.toString() }.toTypedArray()
@@ -444,18 +368,6 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
       .show()
   }
 
-  private fun showLogoutDialog() {
-    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
-      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
-      .setTitle(R.string.textSettingsLogoutTitle)
-      .setMessage(R.string.textSettingsLogoutMessage)
-      .setPositiveButton(R.string.textYes) { _, _ ->
-        viewModel.logoutTrakt()
-      }
-      .setNegativeButton(R.string.textCancel) { _, _ -> }
-      .show()
-  }
-
   private fun restartApp() {
     try {
       ProcessPhoenix.triggerRebirth(requireAppContext())
@@ -480,5 +392,9 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     }
   }
 
-  override fun onAuthorizationResult(authData: Uri?) = viewModel.authorizeTrakt(authData)
+  override fun onAuthorizationResult(authData: Uri?) {
+    childFragmentManager.fragments.forEach {
+      (it as? OnTraktAuthorizeListener)?.onAuthorizationResult(authData)
+    }
+  }
 }

@@ -50,199 +50,16 @@
       app:layout_constraintTop_toBottomOf="@id/settingsToolbar"
       />
 
-    <TextView
+    <androidx.fragment.app.FragmentContainerView
       android:id="@+id/settingsCategoryTrakt"
-      style="@style/Settings.Category"
-      android:layout_marginTop="@dimen/spaceNormal"
-      android:text="@string/textSettingsTrakt"
-      app:layout_constraintBottom_toTopOf="@id/settingsTraktAuthorize"
+      android:name="com.michaldrabik.ui_settings.sections.trakt.SettingsTraktFragment"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      app:layout_constraintBottom_toTopOf="@id/settingsCategoryGeneral"
+      app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsPremium"
-      app:layout_constraintVertical_bias="0"
-      app:layout_constraintVertical_chainStyle="packed"
-      app:layout_goneMarginTop="@dimen/spaceBig"
-      />
-
-    <LinearLayout
-      android:id="@+id/settingsTraktAuthorize"
-      style="@style/Settings.ItemLayout"
-      app:layout_constraintBottom_toTopOf="@id/settingsTraktSync"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsCategoryTrakt"
-      >
-
-      <TextView
-        style="@style/Settings.Title"
-        android:text="@string/textSettingsTraktAuthorizeTitle"
-        />
-
-      <TextView
-        android:id="@+id/settingsTraktAuthorizeSummary"
-        style="@style/Settings.Summary"
-        tools:text="@string/textSettingsTraktAuthorizeSummarySignIn"
-        />
-
-    </LinearLayout>
-
-    <ProgressBar
-      android:id="@+id/settingsTraktAuthorizeProgress"
-      style="@style/ProgressBar.Accent"
-      android:layout_width="24dp"
-      android:layout_height="24dp"
-      android:layout_marginEnd="@dimen/spaceNormal"
-      android:visibility="gone"
-      app:layout_constraintBottom_toBottomOf="@id/settingsTraktAuthorize"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toTopOf="@id/settingsTraktAuthorize"
-      tools:visibility="visible"
-      />
-
-    <ImageView
-      android:id="@+id/settingsTraktAuthorizeIcon"
-      android:layout_width="wrap_content"
-      android:layout_height="0dp"
-      android:layout_marginEnd="@dimen/spaceNormal"
-      android:visibility="gone"
-      app:layout_constraintBottom_toBottomOf="@id/settingsTraktAuthorize"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toTopOf="@id/settingsTraktAuthorize"
-      app:srcCompat="@drawable/ic_check"
-      app:tint="?attr/colorAccent"
-      tools:visibility="visible"
-      />
-
-    <LinearLayout
-      android:id="@+id/settingsTraktSync"
-      style="@style/Settings.ItemLayout"
-      android:visibility="gone"
-      app:layout_constraintBottom_toTopOf="@id/settingsTraktQuickSync"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsTraktAuthorize"
-      tools:visibility="visible"
-      >
-
-      <TextView
-        style="@style/Settings.Title"
-        android:text="@string/textSettingsTraktSyncTitle"
-        />
-
-      <TextView
-        style="@style/Settings.Summary"
-        android:text="@string/textSettingsTraktSyncSummary"
-        />
-
-    </LinearLayout>
-
-    <ProgressBar
-      android:id="@+id/settingsTraktSyncProgress"
-      style="@style/ProgressBar.Accent"
-      android:layout_width="24dp"
-      android:layout_height="24dp"
-      android:layout_marginEnd="@dimen/spaceNormal"
-      android:visibility="gone"
-      app:layout_constraintBottom_toBottomOf="@id/settingsTraktSync"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toTopOf="@id/settingsTraktSync"
-      tools:visibility="visible"
-      />
-
-    <LinearLayout
-      android:id="@+id/settingsTraktQuickSync"
-      style="@style/Settings.ItemLayout"
-      app:layout_constraintBottom_toTopOf="@id/settingsTraktQuickRemove"
-      app:layout_constraintEnd_toStartOf="@id/settingsTraktQuickSyncSwitch"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsTraktSync"
-      >
-
-      <TextView
-        style="@style/Settings.Title"
-        android:text="@string/textSettingsTraktQuickSyncTitle"
-        />
-
-      <TextView
-        style="@style/Settings.Summary"
-        android:text="@string/textSettingsTraktQuickSyncSummary"
-        />
-
-    </LinearLayout>
-
-    <com.google.android.material.switchmaterial.SwitchMaterial
-      android:id="@+id/settingsTraktQuickSyncSwitch"
-      android:layout_width="wrap_content"
-      android:layout_height="0dp"
-      android:layout_marginEnd="@dimen/spaceNormal"
-      android:checked="false"
-      app:layout_constraintBottom_toBottomOf="@id/settingsTraktQuickSync"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toTopOf="@id/settingsTraktQuickSync"
-      />
-
-    <LinearLayout
-      android:id="@+id/settingsTraktQuickRemove"
-      style="@style/Settings.ItemLayout"
-      app:layout_constraintBottom_toTopOf="@id/settingsTraktQuickRate"
-      app:layout_constraintEnd_toStartOf="@id/settingsTraktQuickRemoveSwitch"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsTraktQuickSync"
-      >
-
-      <TextView
-        style="@style/Settings.Title"
-        android:text="@string/textSettingsTraktQuickRemoveTitle"
-        />
-
-      <TextView
-        style="@style/Settings.Summary"
-        android:text="@string/textSettingsTraktQuickRemoveSummary"
-        />
-
-    </LinearLayout>
-
-    <com.google.android.material.switchmaterial.SwitchMaterial
-      android:id="@+id/settingsTraktQuickRemoveSwitch"
-      android:layout_width="wrap_content"
-      android:layout_height="0dp"
-      android:layout_marginEnd="@dimen/spaceNormal"
-      android:checked="false"
-      app:layout_constraintBottom_toBottomOf="@id/settingsTraktQuickRemove"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toTopOf="@id/settingsTraktQuickRemove"
-      />
-
-    <LinearLayout
-      android:id="@+id/settingsTraktQuickRate"
-      style="@style/Settings.ItemLayoutNoRipple"
-      android:tag="@string/tagQuickRating"
-      app:layout_constraintBottom_toTopOf="@id/settingsCategoryGeneral"
-      app:layout_constraintEnd_toStartOf="@id/settingsTraktQuickRateSwitch"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsTraktQuickRemove"
-      >
-
-      <TextView
-        style="@style/Settings.Title"
-        android:text="@string/textSettingsTraktQuickRateTitle"
-        />
-
-      <TextView
-        style="@style/Settings.Summary"
-        android:text="@string/textSettingsTraktQuickRateSummary"
-        />
-
-    </LinearLayout>
-
-    <com.google.android.material.switchmaterial.SwitchMaterial
-      android:id="@+id/settingsTraktQuickRateSwitch"
-      android:layout_width="wrap_content"
-      android:layout_height="0dp"
-      android:layout_marginEnd="@dimen/spaceNormal"
-      android:checked="false"
-      app:layout_constraintBottom_toBottomOf="@id/settingsTraktQuickRate"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toTopOf="@id/settingsTraktQuickRate"
+      tools:layout="@layout/fragment_settings_trakt"
       />
 
     <TextView
@@ -251,7 +68,7 @@
       android:text="@string/textSettingsGeneral"
       app:layout_constraintBottom_toTopOf="@id/settingsLanguage"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsTraktQuickRate"
+      app:layout_constraintTop_toBottomOf="@id/settingsCategoryTrakt"
       app:layout_constraintVertical_bias="0"
       app:layout_constraintVertical_chainStyle="packed"
       app:layout_goneMarginTop="@dimen/spaceBig"

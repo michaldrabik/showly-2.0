@@ -165,8 +165,6 @@ class SettingsMainCase @Inject constructor(
 
   fun getDateFormat() = AppDateFormat.valueOf(settingsRepository.dateFormat)
 
-  fun getUserId() = settingsRepository.userId
-
   suspend fun deleteImagesCache() {
     showsImagesProvider.deleteLocalCache()
     moviesImagesProvider.deleteLocalCache()

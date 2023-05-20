@@ -1,35 +1,26 @@
 package com.michaldrabik.ui_settings
 
 import android.content.Context
-import android.net.Uri
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
-import com.michaldrabik.common.errors.ErrorHelper
-import com.michaldrabik.common.errors.ShowlyError.AccountLockedError
-import com.michaldrabik.common.errors.ShowlyError.CoroutineCancellation
 import com.michaldrabik.ui_base.Analytics
-import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.dates.AppDateFormat
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.combine
-import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
 import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
 import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.MyMoviesSection
 import com.michaldrabik.ui_model.MyShowsSection
 import com.michaldrabik.ui_model.ProgressNextEpisodeType
 import com.michaldrabik.ui_model.Settings
-import com.michaldrabik.ui_model.TraktSyncSchedule
 import com.michaldrabik.ui_settings.cases.SettingsMainCase
-import com.michaldrabik.ui_settings.cases.SettingsRatingsCase
 import com.michaldrabik.ui_settings.cases.SettingsStreamingsCase
 import com.michaldrabik.ui_settings.cases.SettingsThemesCase
-import com.michaldrabik.ui_settings.cases.SettingsTraktCase
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import com.michaldrabik.ui_settings.helpers.AppTheme
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -40,17 +31,14 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 import javax.inject.Inject
 
 // TODO Settings are getting too big. Refactor into smaller parts.
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
   private val mainCase: SettingsMainCase,
-  private val traktCase: SettingsTraktCase,
   private val themesCase: SettingsThemesCase,
   private val streamingsCase: SettingsStreamingsCase,
-  private val ratingsCase: SettingsRatingsCase,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val settingsState = MutableStateFlow<Settings?>(null)
@@ -61,11 +49,7 @@ class SettingsViewModel @Inject constructor(
   private val moviesEnabledState = MutableStateFlow(true)
   private val newsEnabledState = MutableStateFlow(false)
   private val streamingsEnabledState = MutableStateFlow(true)
-  private val signedInTraktState = MutableStateFlow(false)
-  private val signingInState = MutableStateFlow(false)
   private val premiumState = MutableStateFlow(false)
-  private val traktNameState = MutableStateFlow("")
-  private val userIdState = MutableStateFlow("")
   private val restartAppState = MutableStateFlow(false)
   private val progressTypeState = MutableStateFlow<ProgressNextEpisodeType?>(null)
 
@@ -80,30 +64,6 @@ class SettingsViewModel @Inject constructor(
       mainCase.setRecentShowsAmount(amount)
       refreshSettings()
       Analytics.logSettingsRecentlyAddedAmount(amount.toLong())
-    }
-  }
-
-  fun enableQuickSync(enable: Boolean) {
-    viewModelScope.launch {
-      traktCase.enableTraktQuickSync(enable)
-      refreshSettings()
-      Analytics.logSettingsTraktQuickSync(enable)
-    }
-  }
-
-  fun enableQuickRemove(enable: Boolean) {
-    viewModelScope.launch {
-      traktCase.enableTraktQuickRemove(enable)
-      refreshSettings()
-      Analytics.logSettingsTraktQuickRemove(enable)
-    }
-  }
-
-  fun enableQuickRate(enable: Boolean) {
-    viewModelScope.launch {
-      traktCase.enableTraktQuickRate(enable)
-      refreshSettings()
-      Analytics.logSettingsTraktQuickRate(enable)
     }
   }
 
@@ -207,57 +167,6 @@ class SettingsViewModel @Inject constructor(
     Analytics.logSettingsDateFormat(format.name)
   }
 
-  fun setTraktSyncSchedule(schedule: TraktSyncSchedule) {
-    viewModelScope.launch {
-      traktCase.setTraktSyncSchedule(schedule)
-      refreshSettings()
-    }
-  }
-
-  fun authorizeTrakt(authData: Uri?) {
-    if (authData == null) return
-    viewModelScope.launch {
-      try {
-        signingInState.value = true
-        traktCase.authorizeTrakt(authData)
-        traktCase.enableTraktQuickRemove(true)
-        refreshSettings()
-        preloadRatings()
-        messageChannel.send(MessageEvent.Info(R.string.textTraktLoginSuccess))
-        Analytics.logTraktLogin()
-      } catch (error: Throwable) {
-        when (ErrorHelper.parse(error)) {
-          is CoroutineCancellation -> rethrowCancellation(error)
-          is AccountLockedError -> messageChannel.send(MessageEvent.Error(R.string.errorTraktLocked))
-          else -> messageChannel.send(MessageEvent.Error(R.string.errorAuthorization))
-        }
-        Logger.record(error, "SettingsViewModel::authorizeTrakt()")
-      } finally {
-        signingInState.value = false
-      }
-    }
-  }
-
-  fun logoutTrakt() {
-    viewModelScope.launch {
-      traktCase.logoutTrakt()
-      messageChannel.send(MessageEvent.Info(R.string.textTraktLogoutSuccess))
-      refreshSettings()
-      Analytics.logTraktLogout()
-    }
-  }
-
-  private fun preloadRatings() {
-    viewModelScope.launch {
-      try {
-        ratingsCase.preloadRatings()
-      } catch (error: Throwable) {
-        Timber.e("Failed to preload some of ratings")
-        rethrowCancellation(error)
-      }
-    }
-  }
-
   fun deleteImagesCache(context: Context) {
     viewModelScope.launch {
       withContext(IO) { Glide.get(context).clearDiskCache() }
@@ -276,10 +185,10 @@ class SettingsViewModel @Inject constructor(
     moviesEnabledState.value = mainCase.isMoviesEnabled()
     newsEnabledState.value = mainCase.isNewsEnabled()
     streamingsEnabledState.value = mainCase.isStreamingsEnabled()
-    signedInTraktState.value = traktCase.isTraktAuthorized()
+//    signedInTraktState.value = traktCase.isTraktAuthorized()
     premiumState.value = mainCase.isPremium()
-    traktNameState.value = traktCase.getTraktUsername()
-    userIdState.value = mainCase.getUserId()
+//    traktNameState.value = traktCase.getTraktUsername()
+//    userIdState.value = mainCase.getUserId()
     restartAppState.value = restartApp
     progressTypeState.value = mainCase.getProgressType()
   }
@@ -293,14 +202,10 @@ class SettingsViewModel @Inject constructor(
     moviesEnabledState,
     newsEnabledState,
     streamingsEnabledState,
-    signedInTraktState,
     premiumState,
-    traktNameState,
-    userIdState,
     restartAppState,
-    signingInState,
     progressTypeState
-  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15 ->
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ->
     SettingsUiState(
       settings = s1,
       language = s2,
@@ -310,13 +215,9 @@ class SettingsViewModel @Inject constructor(
       moviesEnabled = s6,
       newsEnabled = s7,
       streamingsEnabled = s8,
-      isSignedInTrakt = s9,
-      isPremium = s10,
-      traktUsername = s11,
-      userId = s12,
-      restartApp = s13,
-      isSigningIn = s14,
-      progressNextType = s15
+      isPremium = s9,
+      restartApp = s10,
+      progressNextType = s11
     )
   }.stateIn(
     scope = viewModelScope,

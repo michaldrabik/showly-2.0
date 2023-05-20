@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_settings.cases
+package com.michaldrabik.ui_settings.sections.trakt.cases
 
 import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.repository.RatingsRepository
