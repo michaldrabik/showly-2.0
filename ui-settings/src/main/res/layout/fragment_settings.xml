@@ -659,126 +659,23 @@
       android:name="com.michaldrabik.ui_settings.sections.notifications.SettingsNotificationsFragment"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      app:layout_constraintBottom_toTopOf="@id/settingsWidgetsTheme"
+      app:layout_constraintBottom_toTopOf="@id/settingsCategoryWidgets"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsRecentShowsAmount"
       tools:layout="@layout/fragment_settings_notifications"
       />
 
-    <TextView
+    <androidx.fragment.app.FragmentContainerView
       android:id="@+id/settingsCategoryWidgets"
-      style="@style/Settings.Category"
-      android:text="@string/textSettingsWidgets"
-      app:layout_constraintBottom_toTopOf="@id/settingsWidgetsTheme"
+      android:name="com.michaldrabik.ui_settings.sections.widgets.SettingsWidgetsFragment"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      app:layout_constraintBottom_toTopOf="@id/settingsCategoryMisc"
+      app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsCategoryNotifications"
-      />
-
-    <LinearLayout
-      android:id="@+id/settingsWidgetsLabels"
-      style="@style/Settings.ItemLayout"
-      app:layout_constraintBottom_toTopOf="@id/settingsCategoryMisc"
-      app:layout_constraintEnd_toStartOf="@id/settingsWidgetsLabelsSwitch"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/settingsWidgetsTransparency"
-      >
-
-      <TextView
-        style="@style/Settings.Title"
-        android:text="@string/textSettingsWidgetsLabelsTitle"
-        />
-
-      <TextView
-        style="@style/Settings.Summary"
-        android:text="@string/textSettingsWidgetsLabelsSummary"
-        />
-
-    </LinearLayout>
-
-    <com.google.android.material.switchmaterial.SwitchMaterial
-      android:id="@+id/settingsWidgetsLabelsSwitch"
-      android:layout_width="wrap_content"
-      android:layout_height="0dp"
-      android:layout_marginEnd="@dimen/spaceNormal"
-      android:checked="true"
-      app:layout_constraintBottom_toBottomOf="@id/settingsWidgetsLabels"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toTopOf="@id/settingsWidgetsLabels"
-      />
-
-    <LinearLayout
-      android:id="@+id/settingsWidgetsTheme"
-      style="@style/Settings.ItemLayoutNoRipple"
-      android:tag="@string/tagTheme"
-      app:layout_constraintBottom_toTopOf="@+id/settingsWidgetsTransparency"
-      app:layout_constraintEnd_toStartOf="@id/settingsWidgetsThemeValue"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsCategoryWidgets"
-      >
-
-      <TextView
-        style="@style/Settings.Title"
-        android:text="@string/textSettingsThemeWidgetsTitle"
-        />
-
-      <TextView
-        style="@style/Settings.Summary"
-        android:layout_width="wrap_content"
-        android:text="@string/textSettingsThemeWidgetsSummary"
-        />
-
-    </LinearLayout>
-
-    <TextView
-      android:id="@+id/settingsWidgetsThemeValue"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_marginEnd="@dimen/spaceNormal"
-      android:gravity="end"
-      android:minWidth="50dp"
-      android:text="@string/textThemeDark"
-      android:textColor="?attr/colorAccent"
-      app:layout_constraintBottom_toBottomOf="@id/settingsWidgetsTheme"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toTopOf="@id/settingsWidgetsTheme"
-      />
-
-    <LinearLayout
-      android:id="@+id/settingsWidgetsTransparency"
-      style="@style/Settings.ItemLayoutNoRipple"
-      android:tag="@string/tagWidgetTransparency"
-      app:layout_constraintBottom_toTopOf="@id/settingsWidgetsLabels"
-      app:layout_constraintEnd_toStartOf="@id/settingsWidgetsTransparencyValue"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsWidgetsTheme"
-      >
-
-      <TextView
-        style="@style/Settings.Title"
-        android:text="@string/textSettingsWidgetsTransparencyTitle"
-        />
-
-      <TextView
-        style="@style/Settings.Summary"
-        android:layout_width="wrap_content"
-        android:text="@string/textSettingsWidgetsTransparencySummary"
-        />
-
-    </LinearLayout>
-
-    <TextView
-      android:id="@+id/settingsWidgetsTransparencyValue"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_marginEnd="@dimen/spaceNormal"
-      android:gravity="end"
-      android:minWidth="50dp"
-      android:text="@string/textNo"
-      android:textColor="?attr/colorAccent"
-      app:layout_constraintBottom_toBottomOf="@id/settingsWidgetsTransparency"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toTopOf="@id/settingsWidgetsTransparency"
+      tools:layout="@layout/fragment_settings_widgets"
       />
 
     <TextView
@@ -787,7 +684,7 @@
       android:text="@string/textSettingsMisc"
       app:layout_constraintBottom_toTopOf="@id/settingsRateApp"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsWidgetsLabels"
+      app:layout_constraintTop_toBottomOf="@id/settingsCategoryWidgets"
       />
 
     <LinearLayout

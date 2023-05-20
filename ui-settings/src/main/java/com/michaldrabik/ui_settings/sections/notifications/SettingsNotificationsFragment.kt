@@ -6,7 +6,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
-import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.viewBinding
@@ -56,7 +55,6 @@ class SettingsNotificationsFragment :
 
   private fun renderSettings(settings: Settings) {
     with(binding) {
-      settingsContent.fadeIn(200)
       settingsPushNotificationsSwitch.isChecked = settings.pushNotificationsEnabled
       settingsShowsNotificationsSwitch.isChecked = settings.episodesNotificationsEnabled
       settingsWhenToNotifyValue.run {

@@ -32,7 +32,6 @@ import com.michaldrabik.ui_settings.cases.SettingsThemesCase
 import com.michaldrabik.ui_settings.cases.SettingsTraktCase
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import com.michaldrabik.ui_settings.helpers.AppTheme
-import com.michaldrabik.ui_settings.helpers.WidgetTransparency
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.delay
@@ -57,8 +56,6 @@ class SettingsViewModel @Inject constructor(
   private val settingsState = MutableStateFlow<Settings?>(null)
   private val languageState = MutableStateFlow(AppLanguage.ENGLISH)
   private val themeState = MutableStateFlow(AppTheme.DARK)
-  private val widgetThemeState = MutableStateFlow(AppTheme.DARK)
-  private val widgetTransparencyState = MutableStateFlow(WidgetTransparency.SOLID)
   private val countryState = MutableStateFlow<AppCountry?>(null)
   private val dateFormatState = MutableStateFlow<AppDateFormat?>(null)
   private val moviesEnabledState = MutableStateFlow(true)
@@ -168,14 +165,6 @@ class SettingsViewModel @Inject constructor(
     Analytics.logSettingsStreamingsEnabled(enable)
   }
 
-  fun enableWidgetsTitles(enable: Boolean, context: Context) {
-    viewModelScope.launch {
-      mainCase.enableWidgetsTitles(enable, context)
-      refreshSettings()
-    }
-    Analytics.logSettingsWidgetsTitlesEnabled(enable)
-  }
-
   fun setLanguage(language: AppLanguage) {
     viewModelScope.launch {
       mainCase.setLanguage(language)
@@ -191,21 +180,6 @@ class SettingsViewModel @Inject constructor(
       refreshSettings()
     }
     Analytics.logSettingsTheme(theme.code)
-  }
-
-  fun setWidgetsTheme(theme: AppTheme, context: Context) {
-    viewModelScope.launch {
-      themesCase.setWidgetsTheme(theme, context)
-      refreshSettings()
-    }
-    Analytics.logSettingsWidgetsTheme(theme.code)
-  }
-
-  fun setWidgetsTransparency(transparency: WidgetTransparency, context: Context) {
-    viewModelScope.launch {
-      themesCase.setWidgetsTransparency(transparency, context)
-      refreshSettings()
-    }
   }
 
   fun setCountry(country: AppCountry) {
@@ -297,8 +271,6 @@ class SettingsViewModel @Inject constructor(
     settingsState.value = mainCase.getSettings()
     languageState.value = mainCase.getLanguage()
     themeState.value = themesCase.getTheme()
-    widgetThemeState.value = themesCase.getWidgetsTheme()
-    widgetTransparencyState.value = themesCase.getWidgetsTransparency()
     countryState.value = mainCase.getCountry()
     dateFormatState.value = mainCase.getDateFormat()
     moviesEnabledState.value = mainCase.isMoviesEnabled()
@@ -316,8 +288,6 @@ class SettingsViewModel @Inject constructor(
     settingsState,
     languageState,
     themeState,
-    widgetThemeState,
-    widgetTransparencyState,
     countryState,
     dateFormatState,
     moviesEnabledState,
@@ -330,25 +300,23 @@ class SettingsViewModel @Inject constructor(
     restartAppState,
     signingInState,
     progressTypeState
-  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17 ->
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15 ->
     SettingsUiState(
       settings = s1,
       language = s2,
       theme = s3,
-      themeWidgets = s4,
-      widgetsTransparency = s5,
-      country = s6,
-      dateFormat = s7,
-      moviesEnabled = s8,
-      newsEnabled = s9,
-      streamingsEnabled = s10,
-      isSignedInTrakt = s11,
-      isPremium = s12,
-      traktUsername = s13,
-      userId = s14,
-      restartApp = s15,
-      isSigningIn = s16,
-      progressNextType = s17
+      country = s4,
+      dateFormat = s5,
+      moviesEnabled = s6,
+      newsEnabled = s7,
+      streamingsEnabled = s8,
+      isSignedInTrakt = s9,
+      isPremium = s10,
+      traktUsername = s11,
+      userId = s12,
+      restartApp = s13,
+      isSigningIn = s14,
+      progressNextType = s15
     )
   }.stateIn(
     scope = viewModelScope,

@@ -50,54 +50,8 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ITEM
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import com.michaldrabik.ui_settings.helpers.AppTheme
 import com.michaldrabik.ui_settings.helpers.PlayStoreHelper
-import com.michaldrabik.ui_settings.helpers.WidgetTransparency
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_settings.settingsContactDevs
-import kotlinx.android.synthetic.main.fragment_settings.settingsContent
-import kotlinx.android.synthetic.main.fragment_settings.settingsCountryValue
-import kotlinx.android.synthetic.main.fragment_settings.settingsDateFormat
-import kotlinx.android.synthetic.main.fragment_settings.settingsDateFormatValue
-import kotlinx.android.synthetic.main.fragment_settings.settingsDeleteCache
-import kotlinx.android.synthetic.main.fragment_settings.settingsIncludeSpecialsSwitch
-import kotlinx.android.synthetic.main.fragment_settings.settingsJustWatchIcon
-import kotlinx.android.synthetic.main.fragment_settings.settingsLanguageValue
-import kotlinx.android.synthetic.main.fragment_settings.settingsMoviesEnabledSwitch
-import kotlinx.android.synthetic.main.fragment_settings.settingsMyMoviesSections
-import kotlinx.android.synthetic.main.fragment_settings.settingsMyShowsSections
-import kotlinx.android.synthetic.main.fragment_settings.settingsNewsEnabled
-import kotlinx.android.synthetic.main.fragment_settings.settingsNewsEnabledSwitch
-import kotlinx.android.synthetic.main.fragment_settings.settingsPremium
-import kotlinx.android.synthetic.main.fragment_settings.settingsProgressNextValue
-import kotlinx.android.synthetic.main.fragment_settings.settingsRateApp
-import kotlinx.android.synthetic.main.fragment_settings.settingsRecentShowsAmount
-import kotlinx.android.synthetic.main.fragment_settings.settingsRoot
-import kotlinx.android.synthetic.main.fragment_settings.settingsStreamingsSwitch
-import kotlinx.android.synthetic.main.fragment_settings.settingsTheme
-import kotlinx.android.synthetic.main.fragment_settings.settingsThemeValue
-import kotlinx.android.synthetic.main.fragment_settings.settingsTmdbIcon
-import kotlinx.android.synthetic.main.fragment_settings.settingsToolbar
-import kotlinx.android.synthetic.main.fragment_settings.settingsTraktAuthorize
-import kotlinx.android.synthetic.main.fragment_settings.settingsTraktAuthorizeIcon
-import kotlinx.android.synthetic.main.fragment_settings.settingsTraktAuthorizeProgress
-import kotlinx.android.synthetic.main.fragment_settings.settingsTraktAuthorizeSummary
-import kotlinx.android.synthetic.main.fragment_settings.settingsTraktIcon
-import kotlinx.android.synthetic.main.fragment_settings.settingsTraktQuickRate
-import kotlinx.android.synthetic.main.fragment_settings.settingsTraktQuickRateSwitch
-import kotlinx.android.synthetic.main.fragment_settings.settingsTraktQuickRemove
-import kotlinx.android.synthetic.main.fragment_settings.settingsTraktQuickRemoveSwitch
-import kotlinx.android.synthetic.main.fragment_settings.settingsTraktQuickSync
-import kotlinx.android.synthetic.main.fragment_settings.settingsTraktQuickSyncSwitch
-import kotlinx.android.synthetic.main.fragment_settings.settingsTraktSync
-import kotlinx.android.synthetic.main.fragment_settings.settingsTraktSyncProgress
-import kotlinx.android.synthetic.main.fragment_settings.settingsTwitterIcon
-import kotlinx.android.synthetic.main.fragment_settings.settingsUpcomingSectionSwitch
-import kotlinx.android.synthetic.main.fragment_settings.settingsUserId
-import kotlinx.android.synthetic.main.fragment_settings.settingsVersion
-import kotlinx.android.synthetic.main.fragment_settings.settingsWidgetsLabelsSwitch
-import kotlinx.android.synthetic.main.fragment_settings.settingsWidgetsTheme
-import kotlinx.android.synthetic.main.fragment_settings.settingsWidgetsThemeValue
-import kotlinx.android.synthetic.main.fragment_settings.settingsWidgetsTransparency
-import kotlinx.android.synthetic.main.fragment_settings.settingsWidgetsTransparencyValue
+import kotlinx.android.synthetic.main.fragment_settings.*
 import com.michaldrabik.data_remote.Config as ConfigNetwork
 
 @AndroidEntryPoint
@@ -123,10 +77,6 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     settingsThemeValue.visibleIf(SHOW_PREMIUM)
     settingsNewsEnabled.visibleIf(SHOW_PREMIUM)
     settingsNewsEnabledSwitch.visibleIf(SHOW_PREMIUM)
-    settingsWidgetsTheme.visibleIf(SHOW_PREMIUM)
-    settingsWidgetsThemeValue.visibleIf(SHOW_PREMIUM)
-    settingsWidgetsTransparency.visibleIf(SHOW_PREMIUM)
-    settingsWidgetsTransparencyValue.visibleIf(SHOW_PREMIUM)
     settingsTraktQuickRate.visibleIf(SHOW_PREMIUM)
     settingsTraktQuickRateSwitch.visibleIf(SHOW_PREMIUM)
     settingsPremium.onClick { navigateTo(R.id.actionSettingsFragmentToPremium) }
@@ -162,8 +112,6 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
       }
       renderLanguage(language)
       renderTheme(theme)
-      renderWidgetsTransparency(widgetsTransparency)
-      themeWidgets?.let { renderWidgetsTheme(it) }
       country?.let { renderCountry(it) }
       dateFormat?.let { renderDateFormat(it, language) }
       progressNextType?.let { renderProgressType(it) }
@@ -203,10 +151,6 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
           settingsThemeValue,
           settingsNewsEnabled,
           settingsNewsEnabledSwitch,
-          settingsWidgetsTheme,
-          settingsWidgetsThemeValue,
-          settingsWidgetsTransparency,
-          settingsWidgetsTransparencyValue
         ).forEach {
           it.alpha = if (isPremium) 1F else 0.5F
         }
@@ -214,8 +158,6 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
         listOf(
           settingsTraktQuickRateSwitch,
           settingsThemeValue,
-          settingsWidgetsThemeValue,
-          settingsWidgetsTransparencyValue,
           settingsNewsEnabledSwitch
         ).forEach {
           it.isEnabled = isPremium
@@ -224,8 +166,6 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
         listOf(
           settingsTraktQuickRate,
           settingsTheme,
-          settingsWidgetsTheme,
-          settingsWidgetsTransparency,
           settingsNewsEnabled
         ).onClick {
           if (!isPremium) {
@@ -299,11 +239,6 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
         viewModel.enableStreamings(isChecked)
       }
 
-    settingsWidgetsLabelsSwitch
-      .setCheckedSilent(settings.widgetsShowLabel) { _, isChecked ->
-        viewModel.enableWidgetsTitles(isChecked, requireAppContext())
-      }
-
     settingsContactDevs.onClick {
       openMailMessage()
     }
@@ -330,22 +265,6 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     }
   }
 
-  private fun renderWidgetsTheme(theme: AppTheme) {
-    settingsWidgetsThemeValue.run {
-      expandTouch()
-      setText(theme.displayName)
-      onClick { showWidgetsThemeDialog(theme) }
-    }
-  }
-
-  private fun renderWidgetsTransparency(value: WidgetTransparency) {
-    settingsWidgetsTransparencyValue.run {
-      expandTouch()
-      setText(value.displayName)
-      onClick { showWidgetsTransparencyDialog(value) }
-    }
-  }
-
   private fun renderCountry(country: AppCountry) {
     settingsCountryValue.run {
       text = country.displayName
@@ -365,7 +284,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
 
   private fun renderDateFormat(
     format: AppDateFormat,
-    language: AppLanguage
+    language: AppLanguage,
   ) {
     settingsDateFormat.run {
       settingsDateFormatValue.text = DateFormatProvider
@@ -489,7 +408,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
 
   private fun showDateFormatDialog(
     format: AppDateFormat,
-    language: AppLanguage
+    language: AppLanguage,
   ) {
     val options = AppDateFormat.values()
     val selected = options.indexOf(format)
@@ -519,34 +438,6 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
         if (index != selected) {
           viewModel.setTheme(options[index])
           setDefaultNightMode(options[index].code)
-        }
-        dialog.dismiss()
-      }
-      .show()
-  }
-
-  private fun showWidgetsThemeDialog(theme: AppTheme) {
-    val options = AppTheme.values().filter { it != AppTheme.SYSTEM }
-    val selected = options.indexOf(theme)
-    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
-      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
-      .setSingleChoiceItems(options.map { getString(it.displayName) }.toTypedArray(), selected) { dialog, index ->
-        if (index != selected) {
-          viewModel.setWidgetsTheme(options[index], requireAppContext())
-        }
-        dialog.dismiss()
-      }
-      .show()
-  }
-
-  private fun showWidgetsTransparencyDialog(transparency: WidgetTransparency) {
-    val options = WidgetTransparency.values()
-    val selected = options.indexOf(transparency)
-    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
-      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
-      .setSingleChoiceItems(options.map { getString(it.displayName) }.toTypedArray(), selected) { dialog, index ->
-        if (index != selected) {
-          viewModel.setWidgetsTransparency(options[index], requireAppContext())
         }
         dialog.dismiss()
       }
