@@ -1,22 +1,9 @@
 package com.michaldrabik.ui_settings
 
-import com.michaldrabik.ui_base.common.AppCountry
-import com.michaldrabik.ui_base.dates.AppDateFormat
-import com.michaldrabik.ui_model.ProgressNextEpisodeType
 import com.michaldrabik.ui_model.Settings
-import com.michaldrabik.ui_settings.helpers.AppLanguage
-import com.michaldrabik.ui_settings.helpers.AppTheme
 
 data class SettingsUiState(
-  val language: AppLanguage = AppLanguage.ENGLISH,
-  val theme: AppTheme = AppTheme.DARK,
-  val country: AppCountry? = null,
-  val dateFormat: AppDateFormat? = null,
   val settings: Settings? = null,
   val isPremium: Boolean = false,
-  val moviesEnabled: Boolean = true,
-  val newsEnabled: Boolean = false,
-  val streamingsEnabled: Boolean = true,
-  val restartApp: Boolean = false,
-  val progressNextType: ProgressNextEpisodeType? = null,
+  val userId: String = "",
 )

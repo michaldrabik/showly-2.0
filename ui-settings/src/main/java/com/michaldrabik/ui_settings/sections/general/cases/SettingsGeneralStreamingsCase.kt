@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_settings.cases
+package com.michaldrabik.ui_settings.sections.general.cases
 
 import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.repository.movies.MovieStreamingsRepository
@@ -8,7 +8,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ViewModelScoped
-class SettingsStreamingsCase @Inject constructor(
+class SettingsGeneralStreamingsCase @Inject constructor(
   private val dispatchers: CoroutineDispatchers,
   private val showStreamingsRepository: ShowStreamingsRepository,
   private val movieStreamingsRepository: MovieStreamingsRepository,
