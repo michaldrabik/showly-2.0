@@ -32,5 +32,4 @@ class SettingsWidgetsMainCase @Inject constructor(
       requestMoviesWidgetsUpdate()
     }
   }
-
 }

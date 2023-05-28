@@ -18,7 +18,7 @@
     app:layout_constraintTop_toTopOf="parent"
     />
 
-  <LinearLayout
+  <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/settingsWidgetsLabels"
     style="@style/Settings.ItemLayout"
     app:layout_constraintBottom_toBottomOf="parent"
@@ -28,32 +28,46 @@
     >
 
     <TextView
+      android:id="@+id/settingsWidgetsLabelsTitle"
       style="@style/Settings.Title"
       android:text="@string/textSettingsWidgetsLabelsTitle"
+      app:layout_constraintBottom_toTopOf="@id/settingsWidgetsLabelsDescription"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
       />
 
     <TextView
+      android:id="@+id/settingsWidgetsLabelsDescription"
       style="@style/Settings.Summary"
+      android:layout_marginEnd="@dimen/spaceSmall"
       android:text="@string/textSettingsWidgetsLabelsSummary"
+      app:layout_constrainedWidth="true"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/settingsWidgetsLabelsSwitch"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsWidgetsLabelsTitle"
+      tools:text="@tools:sample/lorem/random"
       />
 
-  </LinearLayout>
+    <com.google.android.material.switchmaterial.SwitchMaterial
+      android:id="@+id/settingsWidgetsLabelsSwitch"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:background="@null"
+      android:checked="true"
+      android:clickable="false"
+      app:layout_constraintBottom_toBottomOf="@id/settingsWidgetsLabels"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/settingsWidgetsLabels"
+      />
 
-  <com.google.android.material.switchmaterial.SwitchMaterial
-    android:id="@+id/settingsWidgetsLabelsSwitch"
-    android:layout_width="wrap_content"
-    android:layout_height="0dp"
-    android:layout_marginEnd="@dimen/spaceNormal"
-    android:checked="true"
-    android:clickable="false"
-    app:layout_constraintBottom_toBottomOf="@id/settingsWidgetsLabels"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="@id/settingsWidgetsLabels"
-    />
+  </androidx.constraintlayout.widget.ConstraintLayout>
 
   <LinearLayout
     android:id="@+id/settingsWidgetsTheme"
-    style="@style/Settings.ItemLayoutNoRipple"
+    style="@style/Settings.ItemLayout"
     android:tag="@string/tagTheme"
     app:layout_constraintBottom_toTopOf="@+id/settingsWidgetsTransparency"
     app:layout_constraintEnd_toEndOf="parent"
@@ -91,7 +105,7 @@
 
   <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/settingsWidgetsTransparency"
-    style="@style/Settings.ItemLayoutNoRipple"
+    style="@style/Settings.ItemLayout"
     android:tag="@string/tagWidgetTransparency"
     app:layout_constraintBottom_toTopOf="@id/settingsWidgetsLabels"
     app:layout_constraintEnd_toEndOf="parent"

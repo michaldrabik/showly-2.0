@@ -16,4 +16,6 @@ class SettingsTraktMainCase @Inject constructor(
   suspend fun getSettings(): Settings = withContext(dispatchers.IO) {
     settingsRepository.load()
   }
+
+  fun isPremium() = settingsRepository.isPremium
 }

@@ -78,7 +78,7 @@ class SettingsWidgetsViewModel @Inject constructor(
       themeWidgets = s3,
       widgetsTransparency = s4,
 
-      )
+    )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),

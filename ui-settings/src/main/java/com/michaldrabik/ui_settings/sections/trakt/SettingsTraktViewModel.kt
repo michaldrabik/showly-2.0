@@ -36,6 +36,7 @@ class SettingsTraktViewModel @Inject constructor(
 
   private val settingsState = MutableStateFlow<Settings?>(null)
 
+  private val premiumState = MutableStateFlow(false)
   private val signedInTraktState = MutableStateFlow(false)
   private val signingInState = MutableStateFlow(false)
   private val traktNameState = MutableStateFlow("")
@@ -50,6 +51,7 @@ class SettingsTraktViewModel @Inject constructor(
     settingsState.value = mainCase.getSettings()
     signedInTraktState.value = traktCase.isTraktAuthorized()
     traktNameState.value = traktCase.getTraktUsername()
+    premiumState.value = mainCase.isPremium()
   }
 
   fun authorizeTrakt(authData: Uri?) {
@@ -132,12 +134,14 @@ class SettingsTraktViewModel @Inject constructor(
     signingInState,
     signedInTraktState,
     traktNameState,
-  ) { s1, s2, s3, s4 ->
+    premiumState
+  ) { s1, s2, s3, s4, s5 ->
     SettingsTraktUiState(
       settings = s1,
       isSigningIn = s2,
       isSignedInTrakt = s3,
       traktUsername = s4,
+      isPremium = s5
     )
   }.stateIn(
     scope = viewModelScope,
