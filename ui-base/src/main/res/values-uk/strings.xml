@@ -55,7 +55,7 @@
   <string name="textAiredAlready">Прем\'єра відбулася</string>
   <string name="textAirsNow">Прем\'єра зараз</string>
   <plurals name="textDaysToAir">
-    <item quantity="one">Прем\'єра завтра</item>
+    <item quantity="one">Прем\'єра за %d день</item>
     <item quantity="few">Прем\'єра за %d дні</item>
     <item quantity="many">Прем\'єра за %d днів</item>
     <item quantity="other">Прем\'єра за %d днів</item>
