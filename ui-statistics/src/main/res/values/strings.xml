@@ -2,7 +2,7 @@
 <resources>
 
   <string name="textStatistics">Statistics</string>
-  <string name="textStatisticsEmpty">At least one show must be present in <b>My Shows</b>\nor <b>Watchlist</b> before statistics can be displayed.</string>
+  <string name="textStatisticsEmpty">At least one show must be present in <b>My Shows</b>\nbefore statistics can be displayed.</string>
   <string name="textStatisticsMostWatchedShows">Most Viewed Shows</string>
   <string name="textStatisticsTotalTimeSpent">Total Time Spent Watching</string>
   <string name="textStatisticsTotalTimeItIs">and it is</string>
