@@ -54,9 +54,10 @@ class StatisticsViewModel @Inject constructor(
       val language = translationsRepository.getLanguage()
 
       val myShows = showsRepository.myShows.loadAll()
+      val watchlistShows = showsRepository.watchlistShows.loadAll() // Add shows from watchlist
       val hiddenShows = showsRepository.hiddenShows.loadAll()
 
-      val shows = (myShows + hiddenShows).distinctBy { it.traktId }
+      val shows = (myShows + watchlistShows + hiddenShows).distinctBy { it.traktId }
       val showsIds = shows.map { it.traktId }
 
       val episodes = batchEpisodes(showsIds)
