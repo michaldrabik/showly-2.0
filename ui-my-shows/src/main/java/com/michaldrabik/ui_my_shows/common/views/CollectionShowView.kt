@@ -7,6 +7,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.ui_base.common.views.ShowView
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
@@ -39,6 +40,8 @@ class CollectionShowView : ShowView<CollectionListItem.ShowItem> {
   override val placeholderView: ImageView = collectionShowPlaceholder
 
   private var nowUtc = nowUtc()
+  private var spoilerRegex = "\\S".toRegex()
+
   private lateinit var item: CollectionListItem.ShowItem
 
   override fun bind(item: CollectionListItem.ShowItem) {
@@ -49,16 +52,13 @@ class CollectionShowView : ShowView<CollectionListItem.ShowItem> {
       if (item.translation?.title.isNullOrBlank()) item.show.title
       else item.translation?.title
 
-    collectionShowDescription.text =
-      if (item.translation?.overview.isNullOrBlank()) item.show.overview
-      else item.translation?.overview
+    bindDescription(item)
 
     collectionShowNetwork.text =
       if (item.show.year > 0) context.getString(R.string.textNetwork, item.show.network, item.show.year.toString())
       else String.format("%s", item.show.network)
 
     collectionShowRating.text = String.format(ENGLISH, "%.1f", item.show.rating)
-    collectionShowDescription.visibleIf(item.show.overview.isNotBlank())
     collectionShowNetwork.visibleIf(item.show.network.isNotBlank())
 
     with(collectionShowReleaseDate) {
@@ -78,6 +78,19 @@ class CollectionShowView : ShowView<CollectionListItem.ShowItem> {
     }
 
     loadImage(item)
+  }
+
+  private fun bindDescription(item: CollectionListItem.ShowItem) {
+    collectionShowDescription.text =
+      if (item.translation?.overview.isNullOrBlank()) item.show.overview
+      else item.translation?.overview
+
+    if (item.isSpoilerHidden) {
+      collectionShowDescription.text =
+        spoilerRegex.replace(collectionShowDescription.text, SPOILERS_HIDE_SYMBOL)
+    }
+
+    collectionShowDescription.visibleIf(item.show.overview.isNotBlank())
   }
 
   private fun loadTranslation() {

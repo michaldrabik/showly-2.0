@@ -29,6 +29,7 @@ sealed class CollectionListItem(
     val translation: Translation? = null,
     val userRating: Int? = null,
     val sortOrder: SortOrder? = null,
+    val isSpoilerHidden: Boolean = false
   ) : CollectionListItem(
     show = show,
     image = image,

@@ -44,6 +44,7 @@ class WatchlistLoadShowsCase @Inject constructor(
       val translations =
         if (language == Config.DEFAULT_LANGUAGE) emptyMap()
         else translationsRepository.loadAllShowsLocal(language)
+      val isSpoilersHidden = settingsRepository.spoilers.isShowsListsHidden
 
       val filtersItem = loadFiltersItem()
       val filtersNetworks = filtersItem.networks
@@ -57,7 +58,8 @@ class WatchlistLoadShowsCase @Inject constructor(
             translation = translations[it.traktId],
             userRating = ratings[it.ids.trakt],
             dateFormat = dateFormat,
-            sortOrder = filtersItem.sortOrder
+            sortOrder = filtersItem.sortOrder,
+            isSpoilersHidden = isSpoilersHidden
           )
         }
         .awaitAll()
@@ -92,6 +94,7 @@ class WatchlistLoadShowsCase @Inject constructor(
     userRating: TraktRating?,
     dateFormat: DateTimeFormatter,
     sortOrder: SortOrder,
+    isSpoilersHidden: Boolean
   ) = async {
     val image = imagesProvider.findCachedImage(show, ImageType.POSTER)
     CollectionListItem.ShowItem(
@@ -101,7 +104,8 @@ class WatchlistLoadShowsCase @Inject constructor(
       dateFormat = dateFormat,
       translation = translation,
       userRating = userRating?.rating,
-      sortOrder = sortOrder
+      sortOrder = sortOrder,
+      isSpoilerHidden = isSpoilersHidden
     )
   }
 }

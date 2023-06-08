@@ -60,6 +60,7 @@ object Config {
   val PEOPLE_IMAGES_CACHE_DURATION by lazy { DAYS.toMillis(7) }
 
   const val SHOW_WHATS_NEW = true
+  const val SPOILERS_HIDE_SYMBOL = "•"
 
   val REMOTE_CONFIG_DEFAULTS by lazy {
     mapOf("in_app_enabled" to false)
