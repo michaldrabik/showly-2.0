@@ -2,6 +2,7 @@ package com.michaldrabik.showly2
 
 import android.app.Application
 import android.app.NotificationChannel
+import android.app.UiModeManager
 import android.os.Build
 import android.os.StrictMode
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
@@ -90,7 +91,7 @@ class App :
     }
 
     fun setupTheme() {
-      setDefaultNightMode(settingsRepository.theme)
+      setDefaultNightMode(UiModeManager.MODE_NIGHT_NO)
     }
 
     fun setupRemoteConfig() {

@@ -58,4 +58,13 @@ class PreferencesModule {
       "PREFERENCES_MISC",
       Context.MODE_PRIVATE
     )
+
+  @Provides
+  @Singleton
+  @Named("spoilersPreferences")
+  fun providesSpoilersPreferences(@ApplicationContext context: Context): SharedPreferences =
+    context.applicationContext.getSharedPreferences(
+      "PREFERENCES_SPOILERS",
+      Context.MODE_PRIVATE
+    )
 }

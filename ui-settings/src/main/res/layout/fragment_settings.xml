@@ -65,11 +65,23 @@
       android:name="com.michaldrabik.ui_settings.sections.general.SettingsGeneralFragment"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      app:layout_constraintBottom_toTopOf="@id/settingsCategoryNotifications"
+      app:layout_constraintBottom_toTopOf="@id/settingsCategorySpoilers"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsCategoryTrakt"
       tools:layout="@layout/fragment_settings_general"
+      />
+
+    <androidx.fragment.app.FragmentContainerView
+      android:id="@+id/settingsCategorySpoilers"
+      android:name="com.michaldrabik.ui_settings.sections.spoilers.SettingsSpoilersFragment"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      app:layout_constraintBottom_toTopOf="@id/settingsCategoryNotifications"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsCategoryGeneral"
+      tools:layout="@layout/fragment_settings_spoilers"
       />
 
     <androidx.fragment.app.FragmentContainerView
@@ -80,7 +92,7 @@
       app:layout_constraintBottom_toTopOf="@id/settingsCategoryWidgets"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsCategoryGeneral"
+      app:layout_constraintTop_toBottomOf="@id/settingsCategorySpoilers"
       tools:layout="@layout/fragment_settings_notifications"
       />
 

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/settingsSpoilersContent"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:orientation="vertical"
+  tools:theme="@style/AppTheme"
+  >
+
+  <TextView
+    android:id="@+id/settingsCategorySpoilers"
+    style="@style/Settings.Category"
+    android:text="@string/textSettingsSpoilers"
+    />
+
+  <LinearLayout
+    android:id="@+id/settingsSpoilersShows"
+    style="@style/Settings.ItemLayout"
+    android:layout_width="match_parent"
+    >
+
+    <TextView
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsSpoilersShows"
+      />
+
+    <TextView
+      style="@style/Settings.Summary"
+      android:text="@string/textSettingsSpoilersShowsSummary"
+      />
+
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/settingsSpoilersMovies"
+    style="@style/Settings.ItemLayout"
+    android:layout_width="match_parent"
+    >
+
+    <TextView
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsSpoilersMovies"
+      />
+
+    <TextView
+      style="@style/Settings.Summary"
+      android:text="@string/textSettingsSpoilersMoviesSummary"
+      />
+
+  </LinearLayout>
+
+</LinearLayout>

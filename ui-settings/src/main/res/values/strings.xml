@@ -70,6 +70,17 @@
   <string name="textSettingsProgressNextEpisodeTitle">Next Episode</string>
   <string name="textSettingsProgressNextEpisodeMessage">Calculate next episode using:</string>
 
+  <string name="textSettingsSpoilers">Spoilers</string>
+  <string name="textSettingsSpoilersShows">Shows</string>
+  <string name="textSettingsSpoilersShowsSummary">Manage spoiler settings for unwatched shows.</string>
+  <string name="textSettingsSpoilersShowsOverviewsTitle">Hide details overviews</string>
+  <string name="textSettingsSpoilersShowsOverviewsDescription">Hide overviews in details screen.</string>
+  <string name="textSettingsSpoilersShowsOverviewsListsTitle">Hide lists overviews</string>
+  <string name="textSettingsSpoilersShowsOverviewsListsDescription">Hide overviews in lists.</string>
+
+  <string name="textSettingsSpoilersMovies">Movies</string>
+  <string name="textSettingsSpoilersMoviesSummary">Manage spoiler settings for unwatched movies.</string>
+
   <string name="textNextEpisodeLastWatched">Last watched episode</string>
   <string name="textNextEpisodeOldest">Oldest unwatched episode</string>
 

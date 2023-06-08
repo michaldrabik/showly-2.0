@@ -778,6 +778,11 @@
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
       />
+    <action
+      android:id="@+id/actionSettingsFragmentToSpoilersShows"
+      app:destination="@id/settingsSpoilersShowsDialog"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment
@@ -1094,6 +1099,12 @@
     android:id="@+id/collectionMoviesFiltersGenreDialog"
     android:name="com.michaldrabik.ui_my_movies.filters.genre.CollectionFiltersGenreBottomSheet"
     android:label="dialogCollectionFiltersGenre"
+    />
+
+  <dialog
+    android:id="@+id/settingsSpoilersShowsDialog"
+    android:name="com.michaldrabik.ui_settings.sections.spoilers.shows.SpoilersShowsBottomSheet"
+    android:label="dialogSettingsSpoilersShows"
     />
 
   <dialog

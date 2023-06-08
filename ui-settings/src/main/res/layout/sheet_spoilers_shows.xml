@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/root"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:background="@drawable/bg_bottom_sheet"
+  android:clipChildren="false"
+  android:clipToPadding="false"
+  android:focusableInTouchMode="true"
+  tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
+  tools:theme="@style/AppTheme"
+  >
+
+  <TextView
+    android:id="@+id/title"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceNormal"
+    android:layout_marginTop="@dimen/spaceNormal"
+    android:layout_marginEnd="@dimen/spaceNormal"
+    android:gravity="start"
+    android:text="@string/textSettingsSpoilersShows"
+    android:textAlignment="viewStart"
+    android:textAllCaps="true"
+    android:textColor="?android:attr/textColorPrimary"
+    android:textSize="20sp"
+    android:textStyle="bold"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    />
+
+  <TextView
+    android:id="@+id/subtitle"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceNormal"
+    android:layout_marginTop="@dimen/spaceMicro"
+    android:layout_marginEnd="@dimen/spaceNormal"
+    android:gravity="start"
+    android:text="@string/textSettingsSpoilersShowsSummary"
+    android:textAlignment="viewStart"
+    android:textColor="?android:attr/textColorSecondary"
+    android:textSize="14sp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/title"
+    />
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/showsOverviewsDetailsLayout"
+    style="@style/Settings.ItemLayout"
+    android:layout_marginTop="@dimen/spaceNormal"
+    app:layout_constraintBottom_toTopOf="@id/showsOverviewsListsLayout"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/subtitle"
+    >
+
+    <TextView
+      android:id="@+id/showsOverviewsDetailsTitle"
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsSpoilersShowsOverviewsTitle"
+      app:layout_constraintBottom_toTopOf="@id/showsOverviewsDetailsDescription"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      />
+
+    <TextView
+      android:id="@+id/showsOverviewsDetailsDescription"
+      style="@style/Settings.Summary"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:text="@string/textSettingsSpoilersShowsOverviewsDescription"
+      app:layout_constrainedWidth="true"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/showsOverviewsDetailsSwitch"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/showsOverviewsDetailsTitle"
+      />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+      android:id="@+id/showsOverviewsDetailsSwitch"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:background="@null"
+      android:checked="false"
+      android:clickable="false"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/showsOverviewsListsLayout"
+    style="@style/Settings.ItemLayout"
+    app:layout_constraintBottom_toTopOf="@id/closeButton"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/showsOverviewsDetailsLayout"
+    >
+
+    <TextView
+      android:id="@+id/showsOverviewsListsTitle"
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsSpoilersShowsOverviewsListsTitle"
+      app:layout_constraintBottom_toTopOf="@id/showsOverviewsListsDescription"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      />
+
+    <TextView
+      android:id="@+id/showsOverviewsListsDescription"
+      style="@style/Settings.Summary"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:text="@string/textSettingsSpoilersShowsOverviewsListsDescription"
+      app:layout_constrainedWidth="true"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/showsOverviewsListsSwitch"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/showsOverviewsListsTitle"
+      />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+      android:id="@+id/showsOverviewsListsSwitch"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:background="@null"
+      android:checked="false"
+      android:clickable="false"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/closeButton"
+    style="@style/RoundMaterialButton"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/spaceNormal"
+    android:backgroundTint="@color/selector_main_button"
+    android:gravity="center"
+    android:text="@string/textClose"
+    android:textColor="?attr/textColorOnSurface"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/showsOverviewsListsLayout"
+    app:rippleColor="?android:attr/textColorPrimary"
+    />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
