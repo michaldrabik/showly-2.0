@@ -13,13 +13,15 @@ import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_base.utilities.viewBinding
+import com.michaldrabik.ui_settings.databinding.FragmentSettingsBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_settings.*
 
 @AndroidEntryPoint
 class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_settings), OnTraktAuthorizeListener {
 
   override val viewModel by viewModels<SettingsViewModel>()
+  private val binding by viewBinding(FragmentSettingsBinding::bind)
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -33,17 +35,19 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
   }
 
   private fun setupView() {
-    settingsToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
-    settingsPremium.onClick { navigateTo(R.id.actionSettingsFragmentToPremium) }
-    settingsRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
-      val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
-      view.updatePadding(top = padding.top + inset)
+    with(binding) {
+      settingsToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+      settingsPremium.onClick { navigateTo(R.id.actionSettingsFragmentToPremium) }
+      settingsRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
+        val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+        view.updatePadding(top = padding.top + inset)
+      }
     }
   }
 
   private fun render(uiState: SettingsUiState) {
     uiState.run {
-      settingsPremium.visibleIf(!isPremium && SHOW_PREMIUM)
+      binding.settingsPremium.visibleIf(!isPremium && SHOW_PREMIUM)
     }
   }
 
