@@ -44,6 +44,8 @@ class SearchQueryCase @Inject constructor(
       val watchlistShowsIds = showsRepository.watchlistShows.loadAllIds()
       val myMoviesIds = moviesRepository.myMovies.loadAllIds()
       val watchlistMoviesIds = moviesRepository.watchlistMovies.loadAllIds()
+      val isShowsSpoilersHidden = settingsRepository.spoilers.isShowsListsHidden
+      val isMoviesSpoilersHidden = settingsRepository.spoilers.isMoviesListsHidden
 
       val results = remoteSource.trakt.fetchSearch(query, withMovies)
       results
@@ -78,7 +80,9 @@ class SearchQueryCase @Inject constructor(
               score = result.score,
               isFollowed = isFollowed,
               isWatchlist = isWatchlist,
-              translation = translation
+              translation = translation,
+              isShowSpoilerHidden = isShowsSpoilersHidden,
+              isMovieSpoilerHidden = isMoviesSpoilersHidden
             )
           }
         }.awaitAll()

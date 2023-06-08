@@ -60,6 +60,8 @@ class ListDetailsItemsCase @Inject constructor(
       val moviesEnabled = settingsRepository.isMoviesEnabled
       val language = translationsRepository.getLanguage()
       val listItems = listsRepository.loadItemsById(list.id)
+      val isShowsSpoilersHidden = settingsRepository.spoilers.isShowsListsHidden
+      val isMoviesSpoilersHidden = settingsRepository.spoilers.isMoviesListsHidden
 
       val showsAsync = async {
         val ids = listItems.filter { it.type == SHOWS.type }.map { it.idTrakt }
@@ -105,7 +107,16 @@ class ListDetailsItemsCase @Inject constructor(
               val show = mappers.show.fromDatabase(listShow)
               val translation = showsTranslations[show.traktId]
               val rating = showsRatings.find { it.idTrakt == show.ids.trakt }
-              createListDetailsItem(show, listItem, translation, rating, isRankSort, listedAt, list.sortByLocal)
+              createListDetailsItem(
+                show = show,
+                listItem = listItem,
+                translation = translation,
+                userRating = rating,
+                isRankSort = isRankSort,
+                listedAt = listedAt,
+                sortOrder = list.sortByLocal,
+                isSpoilerHidden = isShowsSpoilersHidden
+              )
             }
             MOVIES.type -> {
               val listMovie = movies.firstOrNull { it.idTrakt == listItem.idTrakt }
@@ -116,7 +127,17 @@ class ListDetailsItemsCase @Inject constructor(
               val movie = mappers.movie.fromDatabase(listMovie)
               val translation = moviesTranslations[movie.traktId]
               val rating = moviesRatings.find { it.idTrakt == movie.ids.trakt }
-              createListDetailsItem(movie, listItem, translation, rating, isRankSort, listedAt, moviesEnabled, list.sortByLocal)
+              createListDetailsItem(
+                movie = movie,
+                listItem = listItem,
+                translation = translation,
+                userRating = rating,
+                isRankSort = isRankSort,
+                listedAt = listedAt,
+                moviesEnabled = moviesEnabled,
+                sortOrder = list.sortByLocal,
+                isSpoilerHidden = isMoviesSpoilersHidden
+              )
             }
             else -> throw IllegalStateException("Unsupported list item type.")
           }
@@ -144,7 +165,8 @@ class ListDetailsItemsCase @Inject constructor(
     isRankSort: Boolean,
     listedAt: ZonedDateTime,
     moviesEnabled: Boolean,
-    sortOrder: SortOrder
+    sortOrder: SortOrder,
+    isSpoilerHidden: Boolean
   ): ListDetailsItem {
     val image = movieImagesProvider.findCachedImage(movie, ImageType.POSTER)
     return ListDetailsItem(
@@ -163,7 +185,8 @@ class ListDetailsItemsCase @Inject constructor(
       isWatched = moviesRepository.myMovies.exists(movie.ids.trakt),
       isWatchlist = moviesRepository.watchlistMovies.exists(movie.ids.trakt),
       listedAt = listedAt,
-      sortOrder = sortOrder
+      sortOrder = sortOrder,
+      isSpoilerHidden = isSpoilerHidden
     )
   }
 
@@ -174,7 +197,8 @@ class ListDetailsItemsCase @Inject constructor(
     userRating: TraktRating?,
     isRankSort: Boolean,
     listedAt: ZonedDateTime,
-    sortOrder: SortOrder
+    sortOrder: SortOrder,
+    isSpoilerHidden: Boolean
   ): ListDetailsItem {
     val image = showImagesProvider.findCachedImage(show, ImageType.POSTER)
     return ListDetailsItem(
@@ -193,7 +217,8 @@ class ListDetailsItemsCase @Inject constructor(
       isWatched = showsRepository.myShows.exists(show.ids.trakt),
       isWatchlist = showsRepository.watchlistShows.exists(show.ids.trakt),
       listedAt = listedAt,
-      sortOrder = sortOrder
+      sortOrder = sortOrder,
+      isSpoilerHidden = isSpoilerHidden
     )
   }
 

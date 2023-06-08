@@ -40,7 +40,6 @@ class CollectionShowView : ShowView<CollectionListItem.ShowItem> {
   override val placeholderView: ImageView = collectionShowPlaceholder
 
   private var nowUtc = nowUtc()
-  private var spoilerRegex = "\\S".toRegex()
 
   private lateinit var item: CollectionListItem.ShowItem
 

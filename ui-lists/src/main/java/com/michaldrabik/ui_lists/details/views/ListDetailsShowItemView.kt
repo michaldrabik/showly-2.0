@@ -12,12 +12,14 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.expandTouch
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_lists.R
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
+import com.michaldrabik.ui_model.Show
 import kotlinx.android.synthetic.main.view_list_details_show_item.view.*
 import java.util.Locale.ENGLISH
 import kotlin.math.abs
@@ -82,14 +84,7 @@ class ListDetailsShowItemView : ListDetailsItemView {
       if (item.translation?.title.isNullOrBlank()) show.title
       else item.translation?.title
 
-    listDetailsShowDescription.text =
-      when {
-        item.translation?.overview.isNullOrBlank() -> {
-          if (show.overview.isNotBlank()) show.overview
-          else context.getString(R.string.textNoDescription)
-        }
-        else -> item.translation?.overview
-      }
+    bindDescription(item, show)
 
     listDetailsShowHeader.text =
       if (show.year > 0) context.getString(R.string.textNetwork, show.year.toString(), show.network)
@@ -117,5 +112,23 @@ class ListDetailsShowItemView : ListDetailsItemView {
     }
 
     loadImage(item)
+  }
+
+  private fun bindDescription(
+    item: ListDetailsItem,
+    show: Show
+  ) {
+    var description = when {
+      item.translation?.overview.isNullOrBlank() -> show.overview.ifBlank {
+        context.getString(R.string.textNoDescription)
+      }
+      else -> item.translation?.overview
+    }
+
+    if (item.isSpoilerHidden && !item.isWatched) {
+      description = spoilerRegex.replace(description.toString(), SPOILERS_HIDE_SYMBOL)
+    }
+
+    listDetailsShowDescription.text = description
   }
 }

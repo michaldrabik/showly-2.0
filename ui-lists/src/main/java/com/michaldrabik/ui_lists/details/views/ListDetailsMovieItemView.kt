@@ -12,12 +12,14 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.expandTouch
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_lists.R
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
+import com.michaldrabik.ui_model.Movie
 import kotlinx.android.synthetic.main.view_list_details_movie_item.view.*
 import java.util.Locale.ENGLISH
 import kotlin.math.abs
@@ -81,14 +83,7 @@ class ListDetailsMovieItemView : ListDetailsItemView {
       if (item.translation?.title.isNullOrBlank()) movie.title
       else item.translation?.title
 
-    listDetailsMovieDescription.text =
-      when {
-        item.translation?.overview.isNullOrBlank() -> {
-          if (movie.overview.isNotBlank()) movie.overview
-          else context.getString(R.string.textNoDescription)
-        }
-        else -> item.translation?.overview
-      }
+    bindDescription(item, movie)
 
     listDetailsMovieHeader.text = String.format(ENGLISH, "%d", movie.year)
     listDetailsMovieRating.text = String.format(ENGLISH, "%.1f", movie.rating)
@@ -114,5 +109,24 @@ class ListDetailsMovieItemView : ListDetailsItemView {
 
     listDetailsMovieRoot.alpha = if (item.isEnabled) 1F else 0.45F
     loadImage(item)
+  }
+
+  private fun bindDescription(
+    item: ListDetailsItem,
+    movie: Movie
+  ) {
+    var description =
+      when {
+        item.translation?.overview.isNullOrBlank() -> movie.overview.ifBlank {
+          context.getString(R.string.textNoDescription)
+        }
+        else -> item.translation?.overview
+      }
+
+    if (item.isSpoilerHidden && !item.isWatched) {
+      description = spoilerRegex.replace(description.toString(), Config.SPOILERS_HIDE_SYMBOL)
+    }
+
+    listDetailsMovieDescription.text = description
   }
 }
