@@ -18,31 +18,49 @@ class SpoilersShowsViewModel @Inject constructor(
 
   private val initialState = SpoilersShowsUiState()
 
-  private val isDetailsHiddenState = MutableStateFlow(initialState.isDetailsHidden)
-  private val isListsHiddenState = MutableStateFlow(initialState.isListsHidden)
+  private val isMyShowsHiddenState = MutableStateFlow(initialState.isMyShowsHidden)
+  private val isWatchlistShowsHiddenState = MutableStateFlow(initialState.isWatchlistShowsHidden)
+  private val isHiddenShowsHiddenState = MutableStateFlow(initialState.isHiddenShowsHidden)
+  private val isNotCollectedShowsHiddenState = MutableStateFlow(initialState.isNotCollectedShowsHidden)
 
   fun refreshSettings() {
-    isDetailsHiddenState.value = settingsRepository.isShowsDetailsHidden
-    isListsHiddenState.value = settingsRepository.isShowsListsHidden
+    isMyShowsHiddenState.value = settingsRepository.isMyShowsHidden
+    isWatchlistShowsHiddenState.value = settingsRepository.isWatchlistShowsHidden
+    isHiddenShowsHiddenState.value = settingsRepository.isHiddenShowsHidden
+    isNotCollectedShowsHiddenState.value = settingsRepository.isUncollectedShowsHidden
   }
 
-  fun setHideDetails(hide: Boolean) {
-    settingsRepository.isShowsDetailsHidden = hide
+  fun setHideMyShows(hide: Boolean) {
+    settingsRepository.isMyShowsHidden = hide
     refreshSettings()
   }
 
-  fun setHideLists(hide: Boolean) {
-    settingsRepository.isShowsListsHidden = hide
+  fun setHideWatchlistShows(hide: Boolean) {
+    settingsRepository.isWatchlistShowsHidden = hide
+    refreshSettings()
+  }
+
+  fun setHideHiddenShows(hide: Boolean) {
+    settingsRepository.isHiddenShowsHidden = hide
+    refreshSettings()
+  }
+
+  fun setHideNotCollectedShows(hide: Boolean) {
+    settingsRepository.isUncollectedShowsHidden = hide
     refreshSettings()
   }
 
   val uiState = combine(
-    isDetailsHiddenState,
-    isListsHiddenState
-  ) { s1, s2 ->
+    isMyShowsHiddenState,
+    isWatchlistShowsHiddenState,
+    isHiddenShowsHiddenState,
+    isNotCollectedShowsHiddenState
+  ) { s1, s2, s3, s4 ->
     SpoilersShowsUiState(
-      isDetailsHidden = s1,
-      isListsHidden = s2
+      isMyShowsHidden = s1,
+      isWatchlistShowsHidden = s2,
+      isHiddenShowsHidden = s3,
+      isNotCollectedShowsHidden = s4,
     )
   }.stateIn(
     scope = viewModelScope,

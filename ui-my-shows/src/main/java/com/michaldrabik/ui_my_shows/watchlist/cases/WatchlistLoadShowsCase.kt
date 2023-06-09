@@ -44,7 +44,7 @@ class WatchlistLoadShowsCase @Inject constructor(
       val translations =
         if (language == Config.DEFAULT_LANGUAGE) emptyMap()
         else translationsRepository.loadAllShowsLocal(language)
-      val isSpoilersHidden = settingsRepository.spoilers.isShowsListsHidden
+      val isSpoilersHidden = settingsRepository.spoilers.isWatchlistShowsHidden
 
       val filtersItem = loadFiltersItem()
       val filtersNetworks = filtersItem.networks

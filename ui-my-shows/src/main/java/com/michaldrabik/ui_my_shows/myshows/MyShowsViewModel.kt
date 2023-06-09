@@ -93,6 +93,7 @@ class MyShowsViewModel @Inject constructor(
       val sortOrder = settingsRepository.sorting.myShowsAllSortOrder
       val networks = settingsRepository.filters.myShowsNetworks
       val genres = settingsRepository.filters.myShowsGenres
+      val isSpoilersHidden = settingsRepository.spoilers.isMyShowsHidden
 
       val shows = loadShowsCase.loadAllShows()
         .map {
@@ -101,7 +102,8 @@ class MyShowsViewModel @Inject constructor(
             show = it,
             type = POSTER,
             userRating = ratings[it.ids.trakt],
-            sortOrder = sortOrder
+            sortOrder = sortOrder,
+            isSpoilersHidden = isSpoilersHidden
           )
         }
         .awaitAll()
@@ -117,7 +119,7 @@ class MyShowsViewModel @Inject constructor(
 
       val recentShows = if (settings.myShowsRecentIsEnabled) {
         loadShowsCase.loadRecentShows().map {
-          toListItemAsync(Type.RECENT_SHOWS, it, ImageType.FANART, ratings[it.ids.trakt], null)
+          toListItemAsync(Type.RECENT_SHOWS, it, ImageType.FANART, ratings[it.ids.trakt], null, false)
         }.awaitAll()
       } else {
         emptyList()
@@ -204,10 +206,22 @@ class MyShowsViewModel @Inject constructor(
     type: ImageType = POSTER,
     userRating: TraktRating?,
     sortOrder: SortOrder?,
+    isSpoilersHidden: Boolean,
   ) = async {
     val image = imagesProvider.findCachedImage(show, type)
     val translation = translationsCase.loadTranslation(show, true)
-    MyShowsItem(itemType, null, null, show, image, false, translation, userRating?.rating, sortOrder)
+    MyShowsItem(
+      type = itemType,
+      header = null,
+      recentsSection = null,
+      show = show,
+      image = image,
+      isLoading = false,
+      translation = translation,
+      userRating = userRating?.rating,
+      sortOrder = sortOrder,
+      isSpoilerHidden = isSpoilersHidden
+    )
   }
 
   private fun onEvent(event: EventSync) =

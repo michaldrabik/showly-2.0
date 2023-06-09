@@ -7,7 +7,9 @@ import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.repository.mappers.Mappers
+import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.repository.settings.SettingsRepository
+import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.SearchResult
@@ -16,6 +18,7 @@ import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_search.recycler.SearchListItem
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
 import java.util.UUID
 import javax.inject.Inject
@@ -27,6 +30,8 @@ class SearchSuggestionsCase @Inject constructor(
   private val dispatchers: CoroutineDispatchers,
   private val localSource: LocalDataSource,
   private val mappers: Mappers,
+  private val showsRepository: ShowsRepository,
+  private val moviesRepository: MoviesRepository,
   private val translationsRepository: TranslationsRepository,
   private val settingsRepository: SettingsRepository,
   private val showsImagesProvider: ShowImagesProvider,
@@ -67,22 +72,44 @@ class SearchSuggestionsCase @Inject constructor(
       }
     }
 
+    val spoilers = SearchListItem.SpoilersSettings(
+      isNotCollectedShowsHidden = settingsRepository.spoilers.isUncollectedShowsHidden,
+      isMyShowsHidden = settingsRepository.spoilers.isMyShowsHidden,
+      isWatchlistShowsHidden = settingsRepository.spoilers.isWatchlistShowsHidden,
+      isNotCollectedMoviesHidden = settingsRepository.spoilers.isUncollectedMoviesHidden,
+      isMyMoviesHidden = settingsRepository.spoilers.isMyMoviesHidden,
+      isWatchlistMoviesHidden = settingsRepository.spoilers.isWatchlistMoviesHidden
+    )
+
     suggestions.map {
-      val image =
-        if (it.isShow) showsImagesProvider.findCachedImage(it.show, ImageType.POSTER)
-        else moviesImagesProvider.findCachedImage(it.movie, ImageType.POSTER)
-      val translation = loadTranslation(it)
-      SearchListItem(
-        id = UUID.randomUUID(),
-        show = it.show,
-        movie = it.movie,
-        image = image,
-        score = it.score,
-        isFollowed = false,
-        isWatchlist = false,
-        translation = translation
-      )
-    }.sortedByDescending { it.votes }
+      async {
+        val isFollowed =
+          if (it.isShow) showsRepository.myShows.exists(it.show.ids.trakt)
+          else moviesRepository.myMovies.exists(it.movie.ids.trakt)
+
+        val isWatchlist =
+          if (it.isShow) showsRepository.watchlistShows.exists(it.show.ids.trakt)
+          else moviesRepository.watchlistMovies.exists(it.movie.ids.trakt)
+
+        val image =
+          if (it.isShow) showsImagesProvider.findCachedImage(it.show, ImageType.POSTER)
+          else moviesImagesProvider.findCachedImage(it.movie, ImageType.POSTER)
+
+        SearchListItem(
+          id = UUID.randomUUID(),
+          show = it.show,
+          movie = it.movie,
+          image = image,
+          score = it.score,
+          isFollowed = isFollowed,
+          isWatchlist = isWatchlist,
+          translation = loadTranslation(it),
+          spoilers = spoilers
+        )
+      }
+    }
+      .awaitAll()
+      .sortedByDescending { it.votes }
   }
 
   private suspend fun loadShows(query: String, limit: Int): List<Show> {

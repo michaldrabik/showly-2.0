@@ -12,6 +12,7 @@ class SuggestionItemDiffCallback : DiffUtil.ItemCallback<SearchListItem>() {
     oldItem.image == newItem.image &&
       oldItem.isFollowed == newItem.isFollowed &&
       oldItem.isWatchlist == newItem.isWatchlist &&
+      oldItem.spoilers == newItem.spoilers &&
       oldItem.isLoading == newItem.isLoading &&
       oldItem.translation == newItem.translation
 }

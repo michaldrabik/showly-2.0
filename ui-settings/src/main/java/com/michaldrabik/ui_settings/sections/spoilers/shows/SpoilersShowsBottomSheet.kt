@@ -30,11 +30,17 @@ class SpoilersShowsBottomSheet : RemoveTraktBottomSheet<SpoilersShowsViewModel>(
 
   private fun setupView() {
     with(binding) {
-      showsOverviewsDetailsLayout.onClick {
-        viewModel.setHideDetails(!showsOverviewsDetailsSwitch.isChecked)
+      myShowsLayout.onClick {
+        viewModel.setHideMyShows(!myShowsSwitch.isChecked)
       }
-      showsOverviewsListsLayout.onClick {
-        viewModel.setHideLists(!showsOverviewsListsSwitch.isChecked)
+      watchlistShowsLayout.onClick {
+        viewModel.setHideWatchlistShows(!watchlistShowsSwitch.isChecked)
+      }
+      hiddenShowsLayout.onClick {
+        viewModel.setHideHiddenShows(!hiddenShowsSwitch.isChecked)
+      }
+      notCollectedShowsLayout.onClick {
+        viewModel.setHideNotCollectedShows(!notCollectedShowsSwitch.isChecked)
       }
       closeButton.onClick { dismiss() }
     }
@@ -44,8 +50,10 @@ class SpoilersShowsBottomSheet : RemoveTraktBottomSheet<SpoilersShowsViewModel>(
   private fun render(uiState: SpoilersShowsUiState) {
     uiState.run {
       with(binding) {
-        showsOverviewsDetailsSwitch.isChecked = uiState.isDetailsHidden
-        showsOverviewsListsSwitch.isChecked = uiState.isListsHidden
+        myShowsSwitch.isChecked = uiState.isMyShowsHidden
+        watchlistShowsSwitch.isChecked = uiState.isWatchlistShowsHidden
+        hiddenShowsSwitch.isChecked = uiState.isHiddenShowsHidden
+        notCollectedShowsSwitch.isChecked = uiState.isNotCollectedShowsHidden
       }
     }
   }

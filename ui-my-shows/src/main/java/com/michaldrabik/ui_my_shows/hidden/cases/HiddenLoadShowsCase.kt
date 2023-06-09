@@ -43,7 +43,7 @@ class HiddenLoadShowsCase @Inject constructor(
       val translations =
         if (language == Config.DEFAULT_LANGUAGE) emptyMap()
         else translationsRepository.loadAllShowsLocal(language)
-      val isSpoilersHidden = settingsRepository.spoilers.isShowsListsHidden
+      val isSpoilersHidden = settingsRepository.spoilers.isHiddenShowsHidden
 
       val sortOrder = settingsRepository.sorting.hiddenShowsSortOrder
       val sortType = settingsRepository.sorting.hiddenShowsSortType

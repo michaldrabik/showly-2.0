@@ -76,10 +76,22 @@ class SearchItemView : ShowView<SearchListItem> {
         item.translation?.overview
       }
 
-      val isShowSpoilerHidden = item.isShow && item.isShowSpoilerHidden && !item.isFollowed
-      val isMovieSpoilerHidden = item.isMovie && item.isMovieSpoilerHidden && !item.isFollowed
-      if (isShowSpoilerHidden || isMovieSpoilerHidden) {
-        overview = spoilerRegex.replace(overview.toString(), SPOILERS_HIDE_SYMBOL)
+      if (item.isShow) {
+        val isMyHidden = item.spoilers.isMyShowsHidden && item.isFollowed
+        val isWatchlistHidden = item.spoilers.isWatchlistShowsHidden && item.isWatchlist
+        val isNotCollectedHidden = item.spoilers.isNotCollectedShowsHidden && !(item.isFollowed && item.isWatchlist)
+        if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
+          overview = spoilerRegex.replace(overview.toString(), SPOILERS_HIDE_SYMBOL)
+        }
+      }
+
+      if (item.isMovie) {
+        val isMyHidden = item.spoilers.isMyMoviesHidden && item.isFollowed
+        val isWatchlistHidden = item.spoilers.isWatchlistMoviesHidden && item.isWatchlist
+        val isNotCollectedHidden = item.spoilers.isNotCollectedMoviesHidden && !(item.isFollowed && item.isWatchlist)
+        if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
+          overview = spoilerRegex.replace(overview.toString(), SPOILERS_HIDE_SYMBOL)
+        }
       }
 
       showSearchDescription.text = overview

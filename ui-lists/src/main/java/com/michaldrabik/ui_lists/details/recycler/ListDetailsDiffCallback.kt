@@ -31,7 +31,7 @@ class ListDetailsDiffCallback(
           oldItem.listedAt == newItem.listedAt &&
           oldItem.sortOrder == newItem.sortOrder &&
           oldItem.rankDisplay == newItem.rankDisplay &&
-          oldItem.isSpoilerHidden == newItem.isSpoilerHidden &&
+          oldItem.spoilers == newItem.spoilers &&
           oldItem.rank == newItem.rank
       }
       oldItem.isMovie() -> {
@@ -48,7 +48,7 @@ class ListDetailsDiffCallback(
           oldItem.listedAt == newItem.listedAt &&
           oldItem.sortOrder == newItem.sortOrder &&
           oldItem.rankDisplay == newItem.rankDisplay &&
-          oldItem.isSpoilerHidden == newItem.isSpoilerHidden &&
+          oldItem.spoilers == newItem.spoilers &&
           oldItem.rank == newItem.rank
       }
       else -> throw IllegalStateException()

@@ -38,7 +38,6 @@
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/spaceNormal"
-    android:layout_marginTop="@dimen/spaceMicro"
     android:layout_marginEnd="@dimen/spaceNormal"
     android:gravity="start"
     android:text="@string/textSettingsSpoilersShowsSummary"
@@ -50,98 +49,191 @@
     app:layout_constraintTop_toBottomOf="@id/title"
     />
 
-  <androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/showsOverviewsDetailsLayout"
-    style="@style/Settings.ItemLayout"
+  <LinearLayout
+    android:id="@+id/settingsLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/spaceNormal"
-    app:layout_constraintBottom_toTopOf="@id/showsOverviewsListsLayout"
+    android:orientation="vertical"
+    app:layout_constraintBottom_toTopOf="@id/closeButton"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/subtitle"
     >
 
-    <TextView
-      android:id="@+id/showsOverviewsDetailsTitle"
-      style="@style/Settings.Title"
-      android:text="@string/textSettingsSpoilersShowsOverviewsTitle"
-      app:layout_constraintBottom_toTopOf="@id/showsOverviewsDetailsDescription"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintVertical_chainStyle="packed"
-      />
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:id="@+id/notCollectedShowsLayout"
+      style="@style/Settings.ItemLayout"
+      android:layout_width="match_parent"
+      >
 
-    <TextView
-      android:id="@+id/showsOverviewsDetailsDescription"
-      style="@style/Settings.Summary"
-      android:layout_marginEnd="@dimen/spaceNormal"
-      android:text="@string/textSettingsSpoilersShowsOverviewsDescription"
-      app:layout_constrainedWidth="true"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toStartOf="@id/showsOverviewsDetailsSwitch"
-      app:layout_constraintHorizontal_bias="0"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/showsOverviewsDetailsTitle"
-      />
+      <TextView
+        android:id="@+id/notCollectedShowsTitle"
+        style="@style/Settings.Title"
+        android:text="@string/textSettingsSpoilersShowsOverviewsNotCollectedTitle"
+        app:layout_constraintBottom_toTopOf="@id/notCollectedShowsDescription"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        />
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
-      android:id="@+id/showsOverviewsDetailsSwitch"
-      android:layout_width="wrap_content"
-      android:layout_height="0dp"
-      android:background="@null"
-      android:checked="false"
-      android:clickable="false"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      />
+      <TextView
+        android:id="@+id/notCollectedShowsDescription"
+        style="@style/Settings.Summary"
+        android:layout_marginEnd="@dimen/spaceNormal"
+        android:text="@string/textSettingsSpoilersShowsOverviewsNotCollectedDescription"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/notCollectedShowsSwitch"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/notCollectedShowsTitle"
+        />
 
-  </androidx.constraintlayout.widget.ConstraintLayout>
+      <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/notCollectedShowsSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="@null"
+        android:checked="false"
+        android:clickable="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
-  <androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/showsOverviewsListsLayout"
-    style="@style/Settings.ItemLayout"
-    app:layout_constraintBottom_toTopOf="@id/closeButton"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/showsOverviewsDetailsLayout"
-    >
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-      android:id="@+id/showsOverviewsListsTitle"
-      style="@style/Settings.Title"
-      android:text="@string/textSettingsSpoilersShowsOverviewsListsTitle"
-      app:layout_constraintBottom_toTopOf="@id/showsOverviewsListsDescription"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintVertical_chainStyle="packed"
-      />
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:id="@+id/myShowsLayout"
+      style="@style/Settings.ItemLayout"
+      android:layout_width="match_parent"
+      >
 
-    <TextView
-      android:id="@+id/showsOverviewsListsDescription"
-      style="@style/Settings.Summary"
-      android:layout_marginEnd="@dimen/spaceNormal"
-      android:text="@string/textSettingsSpoilersShowsOverviewsListsDescription"
-      app:layout_constrainedWidth="true"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toStartOf="@id/showsOverviewsListsSwitch"
-      app:layout_constraintHorizontal_bias="0"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/showsOverviewsListsTitle"
-      />
+      <TextView
+        android:id="@+id/myShowsTitle"
+        style="@style/Settings.Title"
+        android:text="@string/textSettingsSpoilersShowsOverviewsMyTitle"
+        app:layout_constraintBottom_toTopOf="@id/myShowsDescription"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        />
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
-      android:id="@+id/showsOverviewsListsSwitch"
-      android:layout_width="wrap_content"
-      android:layout_height="0dp"
-      android:background="@null"
-      android:checked="false"
-      android:clickable="false"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      />
+      <TextView
+        android:id="@+id/myShowsDescription"
+        style="@style/Settings.Summary"
+        android:layout_marginEnd="@dimen/spaceNormal"
+        android:text="@string/textSettingsSpoilersShowsOverviewsMyDescription"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/myShowsSwitch"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/myShowsTitle"
+        />
 
-  </androidx.constraintlayout.widget.ConstraintLayout>
+      <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/myShowsSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="@null"
+        android:checked="false"
+        android:clickable="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:id="@+id/watchlistShowsLayout"
+      style="@style/Settings.ItemLayout"
+      android:layout_width="match_parent"
+      >
+
+      <TextView
+        android:id="@+id/watchlistShowsTitle"
+        style="@style/Settings.Title"
+        android:text="@string/textSettingsSpoilersShowsOverviewsWatchlistTitle"
+        app:layout_constraintBottom_toTopOf="@id/watchlistShowsDescription"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        />
+
+      <TextView
+        android:id="@+id/watchlistShowsDescription"
+        style="@style/Settings.Summary"
+        android:layout_marginEnd="@dimen/spaceNormal"
+        android:text="@string/textSettingsSpoilersShowsOverviewsWatchlistDescription"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/watchlistShowsSwitch"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/watchlistShowsTitle"
+        />
+
+      <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/watchlistShowsSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="@null"
+        android:checked="false"
+        android:clickable="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:id="@+id/hiddenShowsLayout"
+      style="@style/Settings.ItemLayout"
+      android:layout_width="match_parent"
+      >
+
+      <TextView
+        android:id="@+id/hiddenShowsTitle"
+        style="@style/Settings.Title"
+        android:text="@string/textSettingsSpoilersShowsOverviewsHiddenTitle"
+        app:layout_constraintBottom_toTopOf="@id/hiddenShowsDescription"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        />
+
+      <TextView
+        android:id="@+id/hiddenShowsDescription"
+        style="@style/Settings.Summary"
+        android:layout_marginEnd="@dimen/spaceNormal"
+        android:text="@string/textSettingsSpoilersShowsOverviewsHiddenDescription"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/hiddenShowsSwitch"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/hiddenShowsTitle"
+        />
+
+      <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/hiddenShowsSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="@null"
+        android:checked="false"
+        android:clickable="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+  </LinearLayout>
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/closeButton"
@@ -156,7 +248,7 @@
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/showsOverviewsListsLayout"
+    app:layout_constraintTop_toBottomOf="@id/settingsLayout"
     app:rippleColor="?android:attr/textColorPrimary"
     />
 

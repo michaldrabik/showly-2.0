@@ -27,7 +27,7 @@ data class ListDetailsItem(
   val isWatchlist: Boolean,
   val listedAt: ZonedDateTime,
   val sortOrder: SortOrder,
-  val isSpoilerHidden: Boolean
+  val spoilers: SpoilersSettings
 ) {
 
   fun getTitleNoThe(): String {
@@ -71,4 +71,13 @@ data class ListDetailsItem(
   fun requireShow() = show!!
 
   fun requireMovie() = movie!!
+
+  data class SpoilersSettings(
+    val isNotCollectedShowsHidden: Boolean,
+    val isMyShowsHidden: Boolean,
+    val isWatchlistShowsHidden: Boolean,
+    val isNotCollectedMoviesHidden: Boolean,
+    val isMyMoviesHidden: Boolean,
+    val isWatchlistMoviesHidden: Boolean,
+  )
 }

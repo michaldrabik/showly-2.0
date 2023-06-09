@@ -12,16 +12,24 @@ class SettingsSpoilersRepository @Inject constructor(
 ) {
 
   companion object Key {
-    private const val SHOWS_DETAILS_HIDDEN = "SHOWS_DETAILS_HIDDEN"
-    private const val SHOWS_LISTS_HIDDEN = "SHOWS_LISTS_HIDDEN"
+    private const val SHOWS_UNCOLLECTED_SHOWS_HIDDEN = "SHOWS_UNCOLLECTED_SHOWS_HIDDEN"
+    private const val SHOWS_MY_SHOWS_HIDDEN = "SHOWS_MY_SHOWS_HIDDEN"
+    private const val SHOWS_WATCHLIST_SHOWS_HIDDEN = "SHOWS_WATCHLIST_SHOWS_HIDDEN"
+    private const val SHOWS_HIDDEN_SHOWS_HIDDEN = "SHOWS_HIDDEN_SHOWS_HIDDEN"
 
-    private const val MOVIES_DETAILS_HIDDEN = "MOVIES_DETAILS_HIDDEN"
-    private const val MOVIES_LISTS_HIDDEN = "MOVIES_LISTS_HIDDEN"
+    private const val MOVIES_UNCOLLECTED_MOVIES_HIDDEN = "MOVIES_UNCOLLECTED_MOVIES_HIDDEN"
+    private const val MOVIES_MY_MOVIES_HIDDEN = "MOVIES_MY_MOVIES_HIDDEN"
+    private const val MOVIES_WATCHLIST_MOVIES_HIDDEN = "MOVIES_WATCHLIST_MOVIES_HIDDEN"
+    private const val MOVIES_HIDDEN_MOVIES_HIDDEN = "MOVIES_HIDDEN_MOVIES_HIDDEN"
   }
 
-  var isShowsDetailsHidden by BooleanPreference(preferences, SHOWS_DETAILS_HIDDEN, false)
-  var isShowsListsHidden by BooleanPreference(preferences, SHOWS_LISTS_HIDDEN, false)
+  var isMyShowsHidden by BooleanPreference(preferences, SHOWS_MY_SHOWS_HIDDEN, false)
+  var isWatchlistShowsHidden by BooleanPreference(preferences, SHOWS_WATCHLIST_SHOWS_HIDDEN, false)
+  var isHiddenShowsHidden by BooleanPreference(preferences, SHOWS_HIDDEN_SHOWS_HIDDEN, false)
+  var isUncollectedShowsHidden by BooleanPreference(preferences, SHOWS_UNCOLLECTED_SHOWS_HIDDEN, false)
 
-  var isMoviesDetailsHidden by BooleanPreference(preferences, MOVIES_DETAILS_HIDDEN, false)
-  var isMoviesListsHidden by BooleanPreference(preferences, MOVIES_LISTS_HIDDEN, false)
+  var isMyMoviesHidden by BooleanPreference(preferences, MOVIES_MY_MOVIES_HIDDEN, false)
+  var isWatchlistMoviesHidden by BooleanPreference(preferences, MOVIES_WATCHLIST_MOVIES_HIDDEN, false)
+  var isHiddenMoviesHidden by BooleanPreference(preferences, MOVIES_HIDDEN_MOVIES_HIDDEN, false)
+  var isUncollectedMoviesHidden by BooleanPreference(preferences, MOVIES_UNCOLLECTED_MOVIES_HIDDEN, false)
 }

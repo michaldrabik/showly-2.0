@@ -123,7 +123,10 @@ class ListDetailsMovieItemView : ListDetailsItemView {
         else -> item.translation?.overview
       }
 
-    if (item.isSpoilerHidden && !item.isWatched) {
+    val isMyHidden = item.spoilers.isMyMoviesHidden && item.isWatched
+    val isWatchlistHidden = item.spoilers.isWatchlistMoviesHidden && item.isWatchlist
+    val isNotCollectedHidden = item.spoilers.isNotCollectedMoviesHidden && !(item.isWatched && item.isWatchlist)
+    if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
       description = spoilerRegex.replace(description.toString(), Config.SPOILERS_HIDE_SYMBOL)
     }
 

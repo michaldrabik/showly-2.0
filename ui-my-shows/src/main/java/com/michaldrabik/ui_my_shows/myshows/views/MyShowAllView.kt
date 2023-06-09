@@ -7,6 +7,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
 import com.michaldrabik.ui_base.common.views.ShowView
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -46,16 +47,13 @@ class MyShowAllView : ShowView<MyShowsItem> {
       if (item.translation?.title.isNullOrBlank()) item.show.title
       else item.translation?.title
 
-    collectionShowDescription.text =
-      if (item.translation?.overview.isNullOrBlank()) item.show.overview
-      else item.translation?.overview
+    bindDescription(item)
 
     collectionShowNetwork.text =
       if (item.show.year > 0) context.getString(R.string.textNetwork, item.show.network, item.show.year.toString())
       else String.format("%s", item.show.network)
 
     collectionShowRating.text = String.format(ENGLISH, "%.1f", item.show.rating)
-    collectionShowDescription.visibleIf(item.show.overview.isNotBlank())
     collectionShowNetwork.visibleIf(item.show.network.isNotBlank())
 
     item.userRating?.let {
@@ -65,6 +63,19 @@ class MyShowAllView : ShowView<MyShowsItem> {
     }
 
     loadImage(item)
+  }
+
+  private fun bindDescription(item: MyShowsItem) {
+    var description =
+      if (item.translation?.overview.isNullOrBlank()) item.show.overview
+      else item.translation?.overview
+
+    if (item.isSpoilerHidden) {
+      description = spoilerRegex.replace(description.toString(), SPOILERS_HIDE_SYMBOL)
+    }
+
+    collectionShowDescription.text = description
+    collectionShowDescription.visibleIf(item.show.overview.isNotBlank())
   }
 
   private fun loadTranslation() {

@@ -17,8 +17,7 @@ data class SearchListItem(
   val isFollowed: Boolean = false,
   val isWatchlist: Boolean = false,
   val translation: Translation? = null,
-  val isShowSpoilerHidden: Boolean = false,
-  val isMovieSpoilerHidden: Boolean = false
+  val spoilers: SpoilersSettings
 ) : ListItem {
 
   val isShow = show != Show.EMPTY
@@ -31,4 +30,13 @@ data class SearchListItem(
   val network = if (isShow) show.network else ""
 
   override fun isSameAs(other: ListItem) = (id == (other as SearchListItem).id)
+
+  data class SpoilersSettings(
+    val isNotCollectedShowsHidden: Boolean,
+    val isMyShowsHidden: Boolean,
+    val isWatchlistShowsHidden: Boolean,
+    val isNotCollectedMoviesHidden: Boolean,
+    val isMyMoviesHidden: Boolean,
+    val isWatchlistMoviesHidden: Boolean,
+  )
 }

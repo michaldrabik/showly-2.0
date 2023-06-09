@@ -60,8 +60,14 @@ class ListDetailsItemsCase @Inject constructor(
       val moviesEnabled = settingsRepository.isMoviesEnabled
       val language = translationsRepository.getLanguage()
       val listItems = listsRepository.loadItemsById(list.id)
-      val isShowsSpoilersHidden = settingsRepository.spoilers.isShowsListsHidden
-      val isMoviesSpoilersHidden = settingsRepository.spoilers.isMoviesListsHidden
+      val spoilers = ListDetailsItem.SpoilersSettings(
+        isNotCollectedShowsHidden = settingsRepository.spoilers.isUncollectedShowsHidden,
+        isMyShowsHidden = settingsRepository.spoilers.isMyShowsHidden,
+        isWatchlistShowsHidden = settingsRepository.spoilers.isWatchlistShowsHidden,
+        isNotCollectedMoviesHidden = settingsRepository.spoilers.isUncollectedMoviesHidden,
+        isMyMoviesHidden = settingsRepository.spoilers.isMyMoviesHidden,
+        isWatchlistMoviesHidden = settingsRepository.spoilers.isWatchlistMoviesHidden
+      )
 
       val showsAsync = async {
         val ids = listItems.filter { it.type == SHOWS.type }.map { it.idTrakt }
@@ -115,7 +121,7 @@ class ListDetailsItemsCase @Inject constructor(
                 isRankSort = isRankSort,
                 listedAt = listedAt,
                 sortOrder = list.sortByLocal,
-                isSpoilerHidden = isShowsSpoilersHidden
+                spoilers = spoilers
               )
             }
             MOVIES.type -> {
@@ -136,7 +142,7 @@ class ListDetailsItemsCase @Inject constructor(
                 listedAt = listedAt,
                 moviesEnabled = moviesEnabled,
                 sortOrder = list.sortByLocal,
-                isSpoilerHidden = isMoviesSpoilersHidden
+                spoilers = spoilers
               )
             }
             else -> throw IllegalStateException("Unsupported list item type.")
@@ -166,7 +172,7 @@ class ListDetailsItemsCase @Inject constructor(
     listedAt: ZonedDateTime,
     moviesEnabled: Boolean,
     sortOrder: SortOrder,
-    isSpoilerHidden: Boolean
+    spoilers: ListDetailsItem.SpoilersSettings
   ): ListDetailsItem {
     val image = movieImagesProvider.findCachedImage(movie, ImageType.POSTER)
     return ListDetailsItem(
@@ -186,7 +192,7 @@ class ListDetailsItemsCase @Inject constructor(
       isWatchlist = moviesRepository.watchlistMovies.exists(movie.ids.trakt),
       listedAt = listedAt,
       sortOrder = sortOrder,
-      isSpoilerHidden = isSpoilerHidden
+      spoilers = spoilers
     )
   }
 
@@ -198,7 +204,7 @@ class ListDetailsItemsCase @Inject constructor(
     isRankSort: Boolean,
     listedAt: ZonedDateTime,
     sortOrder: SortOrder,
-    isSpoilerHidden: Boolean
+    spoilers: ListDetailsItem.SpoilersSettings
   ): ListDetailsItem {
     val image = showImagesProvider.findCachedImage(show, ImageType.POSTER)
     return ListDetailsItem(
@@ -218,7 +224,7 @@ class ListDetailsItemsCase @Inject constructor(
       isWatchlist = showsRepository.watchlistShows.exists(show.ids.trakt),
       listedAt = listedAt,
       sortOrder = sortOrder,
-      isSpoilerHidden = isSpoilerHidden
+      spoilers = spoilers
     )
   }
 
