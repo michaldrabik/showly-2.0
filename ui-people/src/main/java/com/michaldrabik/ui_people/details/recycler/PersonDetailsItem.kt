@@ -42,7 +42,8 @@ sealed class PersonDetailsItem {
     val isMy: Boolean,
     val isWatchlist: Boolean,
     val translation: Translation?,
-    val isLoading: Boolean = false
+    val spoilers: SpoilersSettings,
+    val isLoading: Boolean = false,
   ) : PersonDetailsItem() {
     override fun getId() = "${show.traktId}show"
     override fun getReleaseDate() =
@@ -59,6 +60,7 @@ sealed class PersonDetailsItem {
     val isMy: Boolean,
     val isWatchlist: Boolean,
     val translation: Translation?,
+    val spoilers: SpoilersSettings,
     val moviesEnabled: Boolean,
     val isLoading: Boolean = false
   ) : PersonDetailsItem() {
@@ -71,4 +73,13 @@ sealed class PersonDetailsItem {
   ) : PersonDetailsItem()
 
   object CreditsLoadingItem : PersonDetailsItem()
+
+  data class SpoilersSettings(
+    val isNotCollectedShowsHidden: Boolean,
+    val isMyShowsHidden: Boolean,
+    val isWatchlistShowsHidden: Boolean,
+    val isNotCollectedMoviesHidden: Boolean,
+    val isMyMoviesHidden: Boolean,
+    val isWatchlistMoviesHidden: Boolean,
+  )
 }

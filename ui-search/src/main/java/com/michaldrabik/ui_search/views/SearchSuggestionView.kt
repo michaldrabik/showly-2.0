@@ -78,7 +78,7 @@ class SearchSuggestionView : ShowView<SearchListItem> {
       if (item.isShow) {
         val isMyHidden = item.spoilers.isMyShowsHidden && item.isFollowed
         val isWatchlistHidden = item.spoilers.isWatchlistShowsHidden && item.isWatchlist
-        val isNotCollectedHidden = item.spoilers.isNotCollectedShowsHidden && !(item.isFollowed && item.isWatchlist)
+        val isNotCollectedHidden = item.spoilers.isNotCollectedShowsHidden && (!item.isFollowed && !item.isWatchlist)
         if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
           overview = spoilerRegex.replace(overview.toString(), SPOILERS_HIDE_SYMBOL)
         }
@@ -87,7 +87,7 @@ class SearchSuggestionView : ShowView<SearchListItem> {
       if (item.isMovie) {
         val isMyHidden = item.spoilers.isMyMoviesHidden && item.isFollowed
         val isWatchlistHidden = item.spoilers.isWatchlistMoviesHidden && item.isWatchlist
-        val isNotCollectedHidden = item.spoilers.isNotCollectedMoviesHidden && !(item.isFollowed && item.isWatchlist)
+        val isNotCollectedHidden = item.spoilers.isNotCollectedMoviesHidden && (!item.isFollowed && !item.isWatchlist)
         if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
           overview = spoilerRegex.replace(overview.toString(), SPOILERS_HIDE_SYMBOL)
         }

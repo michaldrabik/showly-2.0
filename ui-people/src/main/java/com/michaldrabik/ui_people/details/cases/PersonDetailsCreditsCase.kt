@@ -48,6 +48,15 @@ class PersonDetailsCreditsCase @Inject constructor(
         watchlistMoviesIdsAsync
       )
 
+      val spoilers = PersonDetailsItem.SpoilersSettings(
+        isMyShowsHidden = settingsRepository.spoilers.isMyShowsHidden,
+        isMyMoviesHidden = settingsRepository.spoilers.isMyMoviesHidden,
+        isWatchlistShowsHidden = settingsRepository.spoilers.isWatchlistShowsHidden,
+        isWatchlistMoviesHidden = settingsRepository.spoilers.isWatchlistMoviesHidden,
+        isNotCollectedShowsHidden = settingsRepository.spoilers.isUncollectedShowsHidden,
+        isNotCollectedMoviesHidden = settingsRepository.spoilers.isUncollectedMoviesHidden
+      )
+
       val credits = peopleRepository.loadCredits(person)
       credits
         .filter {
@@ -65,8 +74,18 @@ class PersonDetailsCreditsCase @Inject constructor(
         .map {
           async {
             when {
-              it.show != null -> createShowItem(it.requireShow(), myShowsIds, watchlistShowsId)
-              it.movie != null -> createMovieItem(it.requireMovie(), myMoviesIds, watchlistMoviesIds)
+              it.show != null -> createShowItem(
+                show = it.requireShow(),
+                myShowsIds = myShowsIds,
+                watchlistShowsId = watchlistShowsId,
+                spoilersSettings = spoilers
+              )
+              it.movie != null -> createMovieItem(
+                movie = it.requireMovie(),
+                myMoviesIds = myMoviesIds,
+                watchlistMoviesId = watchlistMoviesIds,
+                spoilersSettings = spoilers
+              )
               else -> throw IllegalStateException()
             }
           }
@@ -79,31 +98,46 @@ class PersonDetailsCreditsCase @Inject constructor(
     show: Show,
     myShowsIds: List<Long>,
     watchlistShowsId: List<Long>,
+    spoilersSettings: PersonDetailsItem.SpoilersSettings
   ) = show.let {
     val isMy = it.traktId in myShowsIds
     val isWatchlist = it.traktId in watchlistShowsId
     val image = showImagesProvider.findCachedImage(it, ImageType.POSTER)
-    val language = translationsRepository.getLanguage()
-    val translation = when (language) {
+    val translation = when (val language = translationsRepository.getLanguage()) {
       Config.DEFAULT_LANGUAGE -> null
       else -> translationsRepository.loadTranslation(it, language, onlyLocal = true)
     }
-    PersonDetailsItem.CreditsShowItem(it, image, isMy, isWatchlist, translation)
+    PersonDetailsItem.CreditsShowItem(
+      show = it,
+      image = image,
+      isMy = isMy,
+      isWatchlist = isWatchlist,
+      translation = translation,
+      spoilers = spoilersSettings
+    )
   }
 
   private suspend fun createMovieItem(
     movie: Movie,
     myMoviesIds: List<Long>,
     watchlistMoviesId: List<Long>,
+    spoilersSettings: PersonDetailsItem.SpoilersSettings
   ) = movie.let {
     val isMy = it.traktId in myMoviesIds
     val isWatchlist = it.traktId in watchlistMoviesId
     val image = movieImagesProvider.findCachedImage(it, ImageType.POSTER)
-    val language = translationsRepository.getLanguage()
-    val translation = when (language) {
+    val translation = when (val language = translationsRepository.getLanguage()) {
       Config.DEFAULT_LANGUAGE -> null
       else -> translationsRepository.loadTranslation(it, language, onlyLocal = true)
     }
-    PersonDetailsItem.CreditsMovieItem(it, image, isMy, isWatchlist, translation, settingsRepository.isMoviesEnabled)
+    PersonDetailsItem.CreditsMovieItem(
+      movie = it,
+      image = image,
+      isMy = isMy,
+      isWatchlist = isWatchlist,
+      translation = translation,
+      spoilers = spoilersSettings,
+      moviesEnabled = settingsRepository.isMoviesEnabled
+    )
   }
 }
