@@ -25,6 +25,7 @@ sealed class ProgressMovieListItem(
     val dateFormat: DateTimeFormatter? = null,
     val sortOrder: SortOrder? = null,
     val userRating: Int? = null,
+    val isSpoilerHidden: Boolean
   ) : ProgressMovieListItem(movie, image, isLoading)
 
   data class Header(

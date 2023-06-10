@@ -26,6 +26,8 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withC
 import com.google.android.material.snackbar.Snackbar
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
+import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
+import com.michaldrabik.common.Config.SPOILERS_REGEX
 import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseFragment
@@ -51,12 +53,12 @@ import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.requireLong
 import com.michaldrabik.ui_base.utilities.extensions.screenHeight
 import com.michaldrabik.ui_base.utilities.extensions.screenWidth
-import com.michaldrabik.ui_base.utilities.extensions.setTextIfEmpty
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_comments.fragment.CommentsFragment
 import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.IdTrakt
@@ -67,10 +69,12 @@ import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.PremiumFeature
 import com.michaldrabik.ui_model.RatingState
+import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_movie.MovieDetailsEvent.Finish
 import com.michaldrabik.ui_movie.MovieDetailsEvent.RemoveFromTrakt
 import com.michaldrabik.ui_movie.MovieDetailsEvent.RequestWidgetsUpdate
+import com.michaldrabik.ui_movie.databinding.FragmentMovieDetailsBinding
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.ADD
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_HIDDEN
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_MY_MOVIES
@@ -85,7 +89,6 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MANAGE_LISTS
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_movie_details.*
 import timber.log.Timber
 import java.util.Locale.ENGLISH
 import java.util.Locale.ROOT
@@ -94,8 +97,10 @@ import java.util.Locale.ROOT
 @AndroidEntryPoint
 class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragment_movie_details) {
 
-  override val viewModel by viewModels<MovieDetailsViewModel>()
   override val navigationId = R.id.movieDetailsFragment
+  val binding by viewBinding(FragmentMovieDetailsBinding::bind)
+
+  override val viewModel by viewModels<MovieDetailsViewModel>()
 
   private val movieId by lazy { IdTrakt(requireLong(ARG_MOVIE_ID)) }
 
@@ -127,132 +132,173 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   }
 
   private fun setupView() {
-    hideNavigation()
-    movieDetailsImageGuideline.setGuidelineBegin((imageHeight * imageRatio).toInt())
-    movieDetailsBackArrow.onClick { requireActivity().onBackPressed() }
-    movieDetailsImage.onClick {
-      val bundle = bundleOf(
-        ARG_MOVIE_ID to movieId.id,
-        ARG_FAMILY to MOVIE,
-        ARG_TYPE to FANART
-      )
-      navigateToSafe(R.id.actionMovieDetailsFragmentToArtGallery, bundle)
-      Analytics.logMovieGalleryClick(movieId.id)
-    }
-    movieDetailsAddButton.run {
-      isEnabled = false
-      onAddMyMoviesClickListener = {
-        viewModel.addFollowedMovie()
+    with(binding) {
+      hideNavigation()
+      movieDetailsImageGuideline.setGuidelineBegin((imageHeight * imageRatio).toInt())
+      movieDetailsBackArrow.onClick { requireActivity().onBackPressed() }
+      movieDetailsImage.onClick {
+        val bundle = bundleOf(
+          ARG_MOVIE_ID to movieId.id,
+          ARG_FAMILY to MOVIE,
+          ARG_TYPE to FANART
+        )
+        navigateToSafe(R.id.actionMovieDetailsFragmentToArtGallery, bundle)
+        Analytics.logMovieGalleryClick(movieId.id)
       }
-      onAddWatchLaterClickListener = { viewModel.addWatchlistMovie() }
-      onRemoveClickListener = { viewModel.removeFromFollowed() }
-    }
-    movieDetailsManageListsLabel.onClick { openListsDialog() }
-    movieDetailsHideLabel.onClick { viewModel.addHiddenMovie() }
-    movieDetailsTitle.onClick {
-      requireContext().copyToClipboard(movieDetailsTitle.text.toString())
-      showSnack(MessageEvent.Info(R.string.textCopiedToClipboard))
-    }
-    movieDetailsDescription.onLongClick {
-      requireContext().copyToClipboard(movieDetailsDescription.text.toString())
-      showSnack(MessageEvent.Info(R.string.textCopiedToClipboard))
-    }
-    movieDetailsPremiumAd.onClick {
-      navigateTo(R.id.actionMovieDetailsFragmentToPremium)
+      movieDetailsAddButton.run {
+        isEnabled = false
+        onAddMyMoviesClickListener = {
+          viewModel.addFollowedMovie()
+        }
+        onAddWatchLaterClickListener = { viewModel.addWatchlistMovie() }
+        onRemoveClickListener = { viewModel.removeFromFollowed() }
+      }
+      movieDetailsManageListsLabel.onClick { openListsDialog() }
+      movieDetailsHideLabel.onClick { viewModel.addHiddenMovie() }
+      movieDetailsTitle.onClick {
+        requireContext().copyToClipboard(movieDetailsTitle.text.toString())
+        showSnack(MessageEvent.Info(R.string.textCopiedToClipboard))
+      }
+      movieDetailsDescription.onLongClick {
+        requireContext().copyToClipboard(movieDetailsDescription.text.toString())
+        showSnack(MessageEvent.Info(R.string.textCopiedToClipboard))
+      }
+      movieDetailsPremiumAd.onClick {
+        navigateTo(R.id.actionMovieDetailsFragmentToPremium)
+      }
     }
   }
 
   private fun setupStatusBar() {
-    movieDetailsBackArrow.doOnApplyWindowInsets { view, insets, _, _ ->
-      val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
-      if (imagePadded) {
-        movieDetailsMainLayout
-          .updatePadding(top = inset)
-      } else {
-        (movieDetailsShareButton.layoutParams as ViewGroup.MarginLayoutParams)
-          .updateMargins(top = inset)
+    with(binding) {
+      movieDetailsBackArrow.doOnApplyWindowInsets { view, insets, _, _ ->
+        val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+        if (imagePadded) {
+          movieDetailsMainLayout
+            .updatePadding(top = inset)
+        } else {
+          (movieDetailsShareButton.layoutParams as ViewGroup.MarginLayoutParams)
+            .updateMargins(top = inset)
+        }
+        (view.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(top = inset)
       }
-      (view.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(top = inset)
     }
   }
 
   private fun render(uiState: MovieDetailsUiState) {
     uiState.run {
-      movie?.let { movie ->
-        movieDetailsTitle.text = movie.title
-        movieDetailsDescription.setTextIfEmpty(movie.overview.ifBlank { getString(R.string.textNoDescription) })
-        movieDetailsStatus.text = getString(movie.status.displayName)
+      with(binding) {
+        movie?.let { movie ->
+          renderTitleDescription(movie, translation, followedState, spoilers)
+          movieDetailsStatus.text = getString(movie.status.displayName)
 
-        val releaseDate =
+          val releaseDate =
+            when {
+              movie.released != null -> String.format(ENGLISH, "%s", meta?.dateFormat?.format(movie.released)?.capitalizeWords())
+              movie.year > 0 -> movie.year.toString()
+              else -> ""
+            }
+
+          val country = if (movie.country.isNotBlank()) String.format(ENGLISH, "(%s)", movie.country) else ""
+          movieDetailsExtraInfo.text = getString(
+            R.string.textMovieExtraInfo,
+            releaseDate,
+            country.uppercase(ROOT),
+            movie.runtime.toString(),
+            getString(R.string.textMinutesShort),
+            renderGenres(movie.genres)
+          )
+          movieDetailsCommentsButton.visible()
+          movieDetailsShareButton.run {
+            isEnabled = movie.ids.imdb.id.isNotBlank()
+            alpha = if (isEnabled) 1.0F else 0.35F
+            onClick { openShareSheet(movie) }
+          }
+          movieDetailsTrailerButton.run {
+            isEnabled = movie.trailer.isNotBlank()
+            alpha = if (isEnabled) 1.0F else 0.35F
+            onClick {
+              openWebUrl(movie.trailer) ?: showSnack(MessageEvent.Info(R.string.errorCouldNotFindApp))
+              Analytics.logMovieTrailerClick(movie)
+            }
+          }
+          movieDetailsLinksButton.run {
+            onClick {
+              val args = LinksBottomSheet.createBundle(movie)
+              navigateTo(R.id.actionMovieDetailsFragmentToLinks, args)
+            }
+          }
+          separator5.visible()
+          movieDetailsCustomImagesLabel.visibleIf(Config.SHOW_PREMIUM)
+          movieDetailsCustomImagesLabel.onClick { openCustomImagesSheet(movie.traktId, meta?.isPremium) }
+          movieDetailsCommentsButton.onClick {
+            val bundle = CommentsFragment.createBundle(movie)
+            navigateToSafe(R.id.actionMovieDetailsFragmentToComments, bundle)
+          }
+          movieDetailsAddButton.isEnabled = true
+        }
+        movieLoading?.let {
+          movieDetailsMainLayout.fadeIf(!it, hardware = true)
+          movieDetailsMainProgress.visibleIf(it)
+        }
+        followedState?.let {
           when {
-            movie.released != null -> String.format(ENGLISH, "%s", meta?.dateFormat?.format(movie.released)?.capitalizeWords())
-            movie.year > 0 -> movie.year.toString()
-            else -> ""
+            it.isMyMovie -> movieDetailsAddButton.setState(IN_MY_MOVIES, it.withAnimation)
+            it.isWatchlist -> movieDetailsAddButton.setState(IN_WATCHLIST, it.withAnimation)
+            it.isHidden -> movieDetailsAddButton.setState(IN_HIDDEN, it.withAnimation)
+            else -> movieDetailsAddButton.setState(ADD, it.withAnimation)
           }
+          movieDetailsHideLabel.visibleIf(!it.isHidden)
+        }
+        image?.let { renderImage(it) }
+        listsCount?.let {
+          val text =
+            if (it > 0) getString(R.string.textMovieManageListsCount, it)
+            else getString(R.string.textMovieManageLists)
+          movieDetailsManageListsLabel.text = text
+        }
+        ratingState?.let { renderRating(it) }
+        meta?.isPremium.let {
+          movieDetailsPremiumAd.visibleIf(it != true)
+        }
+      }
+    }
+  }
 
-        val country = if (movie.country.isNotBlank()) String.format(ENGLISH, "(%s)", movie.country) else ""
-        movieDetailsExtraInfo.text = getString(
-          R.string.textMovieExtraInfo,
-          releaseDate,
-          country.uppercase(ROOT),
-          movie.runtime.toString(),
-          getString(R.string.textMinutesShort),
-          renderGenres(movie.genres)
-        )
-        movieDetailsCommentsButton.visible()
-        movieDetailsShareButton.run {
-          isEnabled = movie.ids.imdb.id.isNotBlank()
-          alpha = if (isEnabled) 1.0F else 0.35F
-          onClick { openShareSheet(movie) }
-        }
-        movieDetailsTrailerButton.run {
-          isEnabled = movie.trailer.isNotBlank()
-          alpha = if (isEnabled) 1.0F else 0.35F
-          onClick {
-            openWebUrl(movie.trailer) ?: showSnack(MessageEvent.Info(R.string.errorCouldNotFindApp))
-            Analytics.logMovieTrailerClick(movie)
-          }
-        }
-        movieDetailsLinksButton.run {
-          onClick {
-            val args = LinksBottomSheet.createBundle(movie)
-            navigateTo(R.id.actionMovieDetailsFragmentToLinks, args)
-          }
-        }
-        separator5.visible()
-        movieDetailsCustomImagesLabel.visibleIf(Config.SHOW_PREMIUM)
-        movieDetailsCustomImagesLabel.onClick { openCustomImagesSheet(movie.traktId, meta?.isPremium) }
-        movieDetailsCommentsButton.onClick {
-          val bundle = CommentsFragment.createBundle(movie)
-          navigateToSafe(R.id.actionMovieDetailsFragmentToComments, bundle)
-        }
-        movieDetailsAddButton.isEnabled = true
+  private fun renderTitleDescription(
+    movie: Movie,
+    translation: Translation?,
+    followedState: MovieDetailsUiState.FollowedState?,
+    spoilersSettings: SpoilersSettings?
+  ) {
+    with(binding) {
+      var title = movie.title
+      var description = movie.overview
+
+      if (translation?.title?.isNotBlank() == true) {
+        title = translation.title
       }
-      movieLoading?.let {
-        movieDetailsMainLayout.fadeIf(!it, hardware = true)
-        movieDetailsMainProgress.visibleIf(it)
+      if (translation?.overview?.isNotBlank() == true) {
+        description = translation.overview
       }
-      followedState?.let {
-        when {
-          it.isMyMovie -> movieDetailsAddButton.setState(IN_MY_MOVIES, it.withAnimation)
-          it.isWatchlist -> movieDetailsAddButton.setState(IN_WATCHLIST, it.withAnimation)
-          it.isHidden -> movieDetailsAddButton.setState(IN_HIDDEN, it.withAnimation)
-          else -> movieDetailsAddButton.setState(ADD, it.withAnimation)
-        }
-        movieDetailsHideLabel.visibleIf(!it.isHidden)
+
+      if (followedState == null || spoilersSettings == null) {
+        movieDetailsTitle.text = title
+        movieDetailsDescription.text = description
+        return
       }
-      image?.let { renderImage(it) }
-      translation?.let { renderTranslation(it) }
-      listsCount?.let {
-        val text =
-          if (it > 0) getString(R.string.textMovieManageListsCount, it)
-          else getString(R.string.textMovieManageLists)
-        movieDetailsManageListsLabel.text = text
+
+      val isMyMovieHidden = spoilersSettings.isMyMoviesHidden && followedState.isMyMovie
+      val isWatchlistHidden = spoilersSettings.isWatchlistMoviesHidden && followedState.isWatchlist
+      val isHiddenMovieHidden = spoilersSettings.isHiddenMoviesHidden && followedState.isHidden
+      val isNotCollectedHidden = spoilersSettings.isNotCollectedMoviesHidden && (!followedState.isInCollection())
+
+      if (isMyMovieHidden || isWatchlistHidden || isHiddenMovieHidden || isNotCollectedHidden) {
+        description = SPOILERS_REGEX.replace(description, SPOILERS_HIDE_SYMBOL)
       }
-      ratingState?.let { renderRating(it) }
-      meta?.isPremium.let {
-        movieDetailsPremiumAd.visibleIf(it != true)
-      }
+
+      movieDetailsTitle.text = title
+      movieDetailsDescription.text = description
     }
   }
 
@@ -263,56 +309,51 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       .joinToString(", ") { getString(it.displayName) }
 
   private fun renderRating(rating: RatingState) {
-    movieDetailsRateButton.visibleIf(rating.rateLoading == false, gone = false)
-    movieDetailsRateProgress.visibleIf(rating.rateLoading == true)
+    with(binding) {
+      movieDetailsRateButton.visibleIf(rating.rateLoading == false, gone = false)
+      movieDetailsRateProgress.visibleIf(rating.rateLoading == true)
 
-    movieDetailsRateButton.text =
-      if (rating.hasRating()) "${rating.userRating?.rating}/10"
-      else getString(R.string.textMovieRate)
+      movieDetailsRateButton.text =
+        if (rating.hasRating()) "${rating.userRating?.rating}/10"
+        else getString(R.string.textMovieRate)
 
-    val typeFace = if (rating.hasRating()) BOLD else NORMAL
-    movieDetailsRateButton.setTypeface(null, typeFace)
+      val typeFace = if (rating.hasRating()) BOLD else NORMAL
+      movieDetailsRateButton.setTypeface(null, typeFace)
 
-    movieDetailsRateButton.onClick {
-      if (rating.rateAllowed == true) {
-        openRateDialog()
-      } else {
-        showSnack(MessageEvent.Info(R.string.textSignBeforeRateMovie))
+      movieDetailsRateButton.onClick {
+        if (rating.rateAllowed == true) {
+          openRateDialog()
+        } else {
+          showSnack(MessageEvent.Info(R.string.textSignBeforeRateMovie))
+        }
       }
     }
   }
 
   private fun renderImage(image: Image) {
-    if (image.status == UNAVAILABLE) {
-      movieDetailsImageProgress.gone()
-      movieDetailsPlaceholder.visible()
-      movieDetailsImage.isClickable = false
-      movieDetailsImage.isEnabled = false
-      return
-    }
-    Glide.with(this)
-      .load(image.fullFileUrl)
-      .transform(CenterCrop())
-      .transition(withCrossFade(IMAGE_FADE_DURATION_MS))
-      .withFailListener {
+    with(binding) {
+      if (image.status == UNAVAILABLE) {
         movieDetailsImageProgress.gone()
         movieDetailsPlaceholder.visible()
-        movieDetailsImage.isClickable = true
-        movieDetailsImage.isEnabled = true
+        movieDetailsImage.isClickable = false
+        movieDetailsImage.isEnabled = false
+        return
       }
-      .withSuccessListener {
-        movieDetailsImageProgress.gone()
-        movieDetailsPlaceholder.gone()
-      }
-      .into(movieDetailsImage)
-  }
-
-  private fun renderTranslation(translation: Translation?) {
-    if (translation?.overview?.isNotBlank() == true) {
-      movieDetailsDescription.text = translation.overview
-    }
-    if (translation?.title?.isNotBlank() == true) {
-      movieDetailsTitle.text = translation.title
+      Glide.with(this@MovieDetailsFragment)
+        .load(image.fullFileUrl)
+        .transform(CenterCrop())
+        .transition(withCrossFade(IMAGE_FADE_DURATION_MS))
+        .withFailListener {
+          movieDetailsImageProgress.gone()
+          movieDetailsPlaceholder.visible()
+          movieDetailsImage.isClickable = true
+          movieDetailsImage.isEnabled = true
+        }
+        .withSuccessListener {
+          movieDetailsImageProgress.gone()
+          movieDetailsPlaceholder.gone()
+        }
+        .into(movieDetailsImage)
     }
   }
 
@@ -405,36 +446,40 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   }
 
   fun showStreamingsView(animate: Boolean) {
-    if (!animate) {
-      movieDetailsStreamingsFragment.visible()
-      return
+    with(binding) {
+      if (!animate) {
+        movieDetailsStreamingsFragment.visible()
+        return
+      }
+      val animation = ConstraintSet().apply {
+        clone(movieDetailsMainContent)
+        setVisibility(movieDetailsStreamingsFragment.id, View.VISIBLE)
+      }
+      val transition = AutoTransition().apply {
+        interpolator = DecelerateInterpolator(1.5F)
+        duration = 200
+      }
+      TransitionManager.beginDelayedTransition(movieDetailsMainContent, transition)
+      animation.applyTo(movieDetailsMainContent)
     }
-    val animation = ConstraintSet().apply {
-      clone(movieDetailsMainContent)
-      setVisibility(movieDetailsStreamingsFragment.id, View.VISIBLE)
-    }
-    val transition = AutoTransition().apply {
-      interpolator = DecelerateInterpolator(1.5F)
-      duration = 200
-    }
-    TransitionManager.beginDelayedTransition(movieDetailsMainContent, transition)
-    animation.applyTo(movieDetailsMainContent)
   }
 
   fun showCollectionsView(animate: Boolean) {
-    if (!animate) {
-      movieDetailsCollectionsFragment.visible()
-      return
+    with(binding) {
+      if (!animate) {
+        movieDetailsCollectionsFragment.visible()
+        return
+      }
+      val animation = ConstraintSet().apply {
+        clone(movieDetailsMainContent)
+        setVisibility(movieDetailsCollectionsFragment.id, View.VISIBLE)
+      }
+      val transition = AutoTransition().apply {
+        interpolator = DecelerateInterpolator(1.5F)
+        duration = 200
+      }
+      TransitionManager.beginDelayedTransition(movieDetailsMainContent, transition)
+      animation.applyTo(movieDetailsMainContent)
     }
-    val animation = ConstraintSet().apply {
-      clone(movieDetailsMainContent)
-      setVisibility(movieDetailsCollectionsFragment.id, View.VISIBLE)
-    }
-    val transition = AutoTransition().apply {
-      interpolator = DecelerateInterpolator(1.5F)
-      duration = 200
-    }
-    TransitionManager.beginDelayedTransition(movieDetailsMainContent, transition)
-    animation.applyTo(movieDetailsMainContent)
   }
 }

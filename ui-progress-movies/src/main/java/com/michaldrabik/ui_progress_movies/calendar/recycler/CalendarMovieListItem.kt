@@ -6,6 +6,7 @@ import com.michaldrabik.ui_model.CalendarMode
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
+import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.Translation
 import java.time.format.DateTimeFormatter
 
@@ -20,8 +21,10 @@ sealed class CalendarMovieListItem(
     override val image: Image,
     override val isLoading: Boolean = false,
     val isWatched: Boolean,
+    val isWatchlist: Boolean,
     val translation: Translation? = null,
     val dateFormat: DateTimeFormatter? = null,
+    val spoilers: SpoilersSettings
   ) : CalendarMovieListItem(movie, image, isLoading)
 
   data class Header(

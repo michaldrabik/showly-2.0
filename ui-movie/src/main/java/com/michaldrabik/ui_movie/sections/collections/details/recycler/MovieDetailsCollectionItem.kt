@@ -2,6 +2,7 @@ package com.michaldrabik.ui_movie.sections.collections.details.recycler
 
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Movie
+import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.Translation
 import java.util.UUID
 
@@ -22,6 +23,7 @@ sealed class MovieDetailsCollectionItem {
     val isMyMovie: Boolean,
     val isWatchlist: Boolean,
     val translation: Translation?,
+    val spoilers: SpoilersSettings,
     val isLoading: Boolean,
   ) : MovieDetailsCollectionItem() {
     override val id get() = "${movie.traktId}"

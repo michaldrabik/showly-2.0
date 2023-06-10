@@ -7,6 +7,7 @@ import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.movies.MovieCollectionsRepository
 import com.michaldrabik.repository.movies.MyMoviesRepository
 import com.michaldrabik.repository.movies.WatchlistMoviesRepository
+import com.michaldrabik.repository.settings.SettingsSpoilersRepository
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.Movie
@@ -25,6 +26,7 @@ class MovieDetailsCollectionMoviesCase @Inject constructor(
   private val myMoviesRepository: MyMoviesRepository,
   private val watchlistMoviesRepository: WatchlistMoviesRepository,
   private val translationsRepository: TranslationsRepository,
+  private val settingsSpoilersRepository: SettingsSpoilersRepository,
   private val imagesProvider: MovieImagesProvider,
 ) {
 
@@ -42,6 +44,7 @@ class MovieDetailsCollectionMoviesCase @Inject constructor(
           isMyMovie = myMoviesRepository.exists(movie.ids.trakt),
           isWatchlist = watchlistMoviesRepository.exists(movie.ids.trakt),
           translation = loadTranslation(movie, language),
+          spoilers = settingsSpoilersRepository.getAll(),
           isLoading = false
         )
       }

@@ -44,6 +44,7 @@ class WatchlistLoadMoviesCase @Inject constructor(
       val translations =
         if (language == Config.DEFAULT_LANGUAGE) emptyMap()
         else translationsRepository.loadAllMoviesLocal(language)
+      val isSpoilersHidden = settingsRepository.spoilers.isWatchlistMoviesHidden
 
       val filtersItem = loadFiltersItem()
       val filtersGenres = filtersItem.genres.map { it.slug.lowercase() }
@@ -55,7 +56,8 @@ class WatchlistLoadMoviesCase @Inject constructor(
             translation = translations[it.traktId],
             userRating = ratings[it.ids.trakt],
             dateFormat = dateFormat,
-            fullDateFormat = fullDateFormat
+            fullDateFormat = fullDateFormat,
+            isSpoilersHidden = isSpoilersHidden
           )
         }
         .awaitAll()
@@ -97,6 +99,7 @@ class WatchlistLoadMoviesCase @Inject constructor(
     userRating: TraktRating?,
     dateFormat: DateTimeFormatter,
     fullDateFormat: DateTimeFormatter,
+    isSpoilersHidden: Boolean
   ) = async {
     val image = imagesProvider.findCachedImage(movie, ImageType.POSTER)
     CollectionListItem.MovieItem(
@@ -106,7 +109,8 @@ class WatchlistLoadMoviesCase @Inject constructor(
       dateFormat = dateFormat,
       fullDateFormat = fullDateFormat,
       translation = translation,
-      userRating = userRating?.rating
+      userRating = userRating?.rating,
+      isSpoilerHidden = isSpoilersHidden
     )
   }
 }

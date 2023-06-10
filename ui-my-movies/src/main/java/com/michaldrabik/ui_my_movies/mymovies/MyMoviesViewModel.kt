@@ -89,9 +89,17 @@ class MyMoviesViewModel @Inject constructor(
       val ratings = ratingsCase.loadRatings()
       val sortOrder = sortingCase.loadSortOrder()
       val genresFilter = settingsRepository.filters.myMoviesGenres
+      val isSpoilersHidden = settingsRepository.spoilers.isMyMoviesHidden
 
       val movies = loadMoviesCase.loadAll().map {
-        toListItemAsync(ALL_MOVIES_ITEM, it, dateFormat, POSTER, ratings[it.ids.trakt])
+        toListItemAsync(
+          itemType = ALL_MOVIES_ITEM,
+          movie = it,
+          dateFormat = dateFormat,
+          type = POSTER,
+          userRating = ratings[it.ids.trakt],
+          isSpoilersHidden = isSpoilersHidden
+        )
       }.awaitAll()
 
       val allMovies = loadMoviesCase.filterSectionMovies(
@@ -102,7 +110,14 @@ class MyMoviesViewModel @Inject constructor(
       )
       val recentMovies = if (settings.myMoviesRecentIsEnabled) {
         loadMoviesCase.loadRecentMovies().map {
-          toListItemAsync(RECENT_MOVIES, it, dateFormat, ImageType.FANART, ratings[it.ids.trakt])
+          toListItemAsync(
+            itemType = RECENT_MOVIES,
+            movie = it,
+            dateFormat = dateFormat,
+            type = ImageType.FANART,
+            userRating = ratings[it.ids.trakt],
+            isSpoilersHidden = isSpoilersHidden
+          )
         }.awaitAll()
       } else {
         emptyList()
@@ -189,10 +204,22 @@ class MyMoviesViewModel @Inject constructor(
     dateFormat: DateTimeFormatter,
     type: ImageType = POSTER,
     userRating: TraktRating?,
+    isSpoilersHidden: Boolean
   ) = async {
     val image = loadMoviesCase.findCachedImage(movie, type)
     val translation = loadMoviesCase.loadTranslation(movie, true)
-    MyMoviesItem(itemType, null, null, movie, image, false, translation, userRating?.rating, dateFormat)
+    MyMoviesItem(
+      type = itemType,
+      header = null,
+      recentsSection = null,
+      movie = movie,
+      image = image,
+      isLoading = false,
+      translation = translation,
+      userRating = userRating?.rating,
+      dateFormat = dateFormat,
+      isSpoilerHidden = isSpoilersHidden
+    )
   }
 
   private fun onEvent(event: EventSync) =

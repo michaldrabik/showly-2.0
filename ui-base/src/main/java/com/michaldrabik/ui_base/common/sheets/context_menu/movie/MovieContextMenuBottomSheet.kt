@@ -126,12 +126,12 @@ class MovieContextMenuBottomSheet : ContextMenuBottomSheet() {
         if (item.translation?.overview.isNullOrBlank()) item.movie.overview
         else item.translation?.overview
 
-      val isMyShowHidden = item.spoilers.isMyMoviesHidden && item.isMyMovie
+      val isMyMovieHidden = item.spoilers.isMyMoviesHidden && item.isMyMovie
       val isWatchlistHidden = item.spoilers.isWatchlistMoviesHidden && item.isWatchlist
-      val isHiddenShowHidden = item.spoilers.isHiddenMoviesHidden && item.isHidden
+      val isHiddenMovieHidden = item.spoilers.isHiddenMoviesHidden && item.isHidden
       val isNotCollectedHidden = item.spoilers.isNotCollectedMoviesHidden && (!item.isInCollection())
 
-      if (isMyShowHidden || isWatchlistHidden || isHiddenShowHidden || isNotCollectedHidden) {
+      if (isMyMovieHidden || isWatchlistHidden || isHiddenMovieHidden || isNotCollectedHidden) {
         val hiddenDescription = SPOILERS_REGEX.replace(contextMenuItemDescription.text.toString(), SPOILERS_HIDE_SYMBOL)
         contextMenuItemDescription.text = hiddenDescription
       }

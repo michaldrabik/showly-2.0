@@ -22,6 +22,7 @@ data class MyMoviesItem(
   val userRating: Int? = null,
   val dateFormat: DateTimeFormatter? = null,
   val sortOrder: SortOrder? = null,
+  val isSpoilerHidden: Boolean = false
 ) : MovieListItem {
 
   enum class Type {

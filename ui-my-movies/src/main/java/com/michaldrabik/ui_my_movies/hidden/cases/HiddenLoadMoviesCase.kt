@@ -45,6 +45,7 @@ class HiddenLoadMoviesCase @Inject constructor(
       val translations =
         if (language == Config.DEFAULT_LANGUAGE) emptyMap()
         else translationsRepository.loadAllMoviesLocal(language)
+      val isSpoilersHidden = settingsRepository.spoilers.isHiddenMoviesHidden
 
       val sortOrder = settingsRepository.sorting.hiddenMoviesSortOrder
       val sortType = settingsRepository.sorting.hiddenMoviesSortType
@@ -58,7 +59,8 @@ class HiddenLoadMoviesCase @Inject constructor(
             translation = translations[it.traktId],
             userRating = ratings[it.ids.trakt],
             dateFormat = dateFormat,
-            fullDateFormat = fullDateFormat
+            fullDateFormat = fullDateFormat,
+            isSpoilersHidden = isSpoilersHidden
           )
         }
         .awaitAll()
@@ -110,6 +112,7 @@ class HiddenLoadMoviesCase @Inject constructor(
     userRating: TraktRating?,
     dateFormat: DateTimeFormatter,
     fullDateFormat: DateTimeFormatter,
+    isSpoilersHidden: Boolean
   ) = async {
     val image = imagesProvider.findCachedImage(movie, ImageType.POSTER)
     CollectionListItem.MovieItem(
@@ -119,7 +122,8 @@ class HiddenLoadMoviesCase @Inject constructor(
       dateFormat = dateFormat,
       fullDateFormat = fullDateFormat,
       translation = translation,
-      userRating = userRating?.rating
+      userRating = userRating?.rating,
+      isSpoilerHidden = isSpoilersHidden
     )
   }
 }

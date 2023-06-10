@@ -7,6 +7,8 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.michaldrabik.common.Config
+import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
 import com.michaldrabik.ui_base.common.views.MovieView
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.gone
@@ -47,14 +49,7 @@ class MyMovieAllView : MovieView<MyMoviesItem> {
       if (item.translation?.title.isNullOrBlank()) item.movie.title
       else item.translation?.title
 
-    collectionMovieDescription.text =
-      when {
-        item.translation?.overview.isNullOrBlank() -> {
-          if (item.movie.overview.isNotBlank()) item.movie.overview
-          else context.getString(R.string.textNoDescription)
-        }
-        else -> item.translation?.overview
-      }
+    bindDescription(item)
 
     collectionMovieRating.text = String.format(ENGLISH, "%.1f", item.movie.rating)
     collectionMovieYear.visibleIf(item.movie.released != null || item.movie.year > 0)
@@ -70,6 +65,19 @@ class MyMovieAllView : MovieView<MyMoviesItem> {
     }
 
     loadImage(item)
+  }
+
+  private fun bindDescription(item: MyMoviesItem) {
+    var description =
+      if (item.translation?.overview.isNullOrBlank()) item.movie.overview
+      else item.translation?.overview
+
+    if (item.isSpoilerHidden) {
+      description = Config.SPOILERS_REGEX.replace(description.toString(), SPOILERS_HIDE_SYMBOL)
+    }
+
+    collectionMovieDescription.text = description
+    collectionMovieDescription.visibleIf(item.movie.overview.isNotBlank())
   }
 
   private fun loadTranslation() {
