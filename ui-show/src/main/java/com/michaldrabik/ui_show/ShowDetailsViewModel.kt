@@ -24,6 +24,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_show.ShowDetailsEvent.Finish
@@ -80,6 +81,7 @@ class ShowDetailsViewModel @Inject constructor(
   private val ratingState = MutableStateFlow<RatingState?>(null)
   private val translationState = MutableStateFlow<Translation?>(null)
   private val listsCountState = MutableStateFlow(0)
+  private val spoilersState = MutableStateFlow<SpoilersSettings?>(null)
   private val metaState = MutableStateFlow<ShowDetailsMeta?>(null)
 
   fun loadDetails(id: IdTrakt) {
@@ -108,6 +110,7 @@ class ShowDetailsViewModel @Inject constructor(
         showLoadingState.value = false
         followedState.value = isFollowed
         ratingState.value = RatingState(rateAllowed = isSignedIn, rateLoading = false)
+        spoilersState.value = settingsRepository.spoilers.getAll()
         metaState.value = ShowDetailsMeta(
           isSignedIn = isSignedIn,
           isPremium = settingsRepository.isPremium
@@ -308,17 +311,19 @@ class ShowDetailsViewModel @Inject constructor(
     ratingState,
     translationState,
     listsCountState,
-    metaState
-  ) { s1, s2, s4, s9, s10, s11, s15, s16 ->
+    metaState,
+    spoilersState
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9 ->
     ShowDetailsUiState(
       show = s1,
       showLoading = s2,
-      image = s4,
-      followedState = s9,
-      ratingState = s10,
-      translation = s11,
-      listsCount = s15,
-      meta = s16
+      image = s3,
+      followedState = s4,
+      ratingState = s5,
+      translation = s6,
+      listsCount = s7,
+      meta = s8,
+      spoilers = s9
     )
   }.stateIn(
     scope = viewModelScope,

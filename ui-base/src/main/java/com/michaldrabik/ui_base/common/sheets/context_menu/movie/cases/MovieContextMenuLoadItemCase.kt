@@ -6,6 +6,7 @@ import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.movies.MoviesRepository
+import com.michaldrabik.repository.settings.SettingsSpoilersRepository
 import com.michaldrabik.ui_base.common.sheets.context_menu.movie.helpers.MovieContextItem
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_model.IdTrakt
@@ -23,6 +24,7 @@ class MovieContextMenuLoadItemCase @Inject constructor(
   private val imagesProvider: MovieImagesProvider,
   private val translationsRepository: TranslationsRepository,
   private val ratingsRepository: RatingsRepository,
+  private val settingsSpoilersRepository: SettingsSpoilersRepository,
   private val dateFormatProvider: DateFormatProvider,
 ) {
 
@@ -30,6 +32,7 @@ class MovieContextMenuLoadItemCase @Inject constructor(
     val movie = moviesRepository.movieDetails.load(traktId)
     val dateFormat = dateFormatProvider.loadShortDayFormat()
     val language = translationsRepository.getLanguage()
+    val spoilers = settingsSpoilersRepository.getAll()
 
     val imageAsync = async { imagesProvider.findCachedImage(movie, ImageType.POSTER) }
     val translationAsync = async { translationsRepository.loadTranslation(movie, language = language, onlyLocal = true) }
@@ -50,7 +53,8 @@ class MovieContextMenuLoadItemCase @Inject constructor(
       isWatchlist = isWatchlistAsync.await(),
       isHidden = isHiddenAsync.await(),
       isPinnedTop = isPinnedAsync.await(),
-      dateFormat = dateFormat
+      dateFormat = dateFormat,
+      spoilers = spoilers
     )
   }
 }

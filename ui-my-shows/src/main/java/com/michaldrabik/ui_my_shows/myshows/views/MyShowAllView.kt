@@ -8,6 +8,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
+import com.michaldrabik.common.Config.SPOILERS_REGEX
 import com.michaldrabik.ui_base.common.views.ShowView
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -71,7 +72,7 @@ class MyShowAllView : ShowView<MyShowsItem> {
       else item.translation?.overview
 
     if (item.isSpoilerHidden) {
-      description = spoilerRegex.replace(description.toString(), SPOILERS_HIDE_SYMBOL)
+      description = SPOILERS_REGEX.replace(description.toString(), SPOILERS_HIDE_SYMBOL)
     }
 
     collectionShowDescription.text = description

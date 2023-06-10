@@ -11,6 +11,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
+import com.michaldrabik.common.Config.SPOILERS_REGEX
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.gone
@@ -46,7 +47,6 @@ class PersonDetailsCreditsItemView : FrameLayout {
   private val spaceNano by lazy { context.dimenToPx(R.dimen.spaceNano).toFloat() }
   private val centerCropTransformation by lazy { CenterCrop() }
   private val cornersTransformation by lazy { RoundedCorners(cornerRadius) }
-  private val spoilerRegex = "\\S".toRegex()
 
   private lateinit var item: PersonDetailsItem
 
@@ -107,7 +107,7 @@ class PersonDetailsCreditsItemView : FrameLayout {
     val isWatchlistHidden = item.spoilers.isWatchlistShowsHidden && item.isWatchlist
     val isNotCollectedHidden = item.spoilers.isNotCollectedShowsHidden && (!item.isMy && !item.isWatchlist)
     if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
-      description = spoilerRegex.replace(description, SPOILERS_HIDE_SYMBOL)
+      description = SPOILERS_REGEX.replace(description, SPOILERS_HIDE_SYMBOL)
     }
 
     viewPersonCreditsItemDescription.text = description
@@ -129,7 +129,7 @@ class PersonDetailsCreditsItemView : FrameLayout {
     val isWatchlistHidden = item.spoilers.isWatchlistMoviesHidden && item.isWatchlist
     val isNotCollectedHidden = item.spoilers.isNotCollectedMoviesHidden && (!item.isMy && !item.isWatchlist)
     if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
-      description = spoilerRegex.replace(description, SPOILERS_HIDE_SYMBOL)
+      description = SPOILERS_REGEX.replace(description, SPOILERS_HIDE_SYMBOL)
     }
 
     viewPersonCreditsItemDescription.text = description

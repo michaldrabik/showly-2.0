@@ -35,7 +35,6 @@ abstract class ShowView<Item : ListItem> : FrameLayout {
   private val gridPadding by lazy { context.dimenToPx(R.dimen.gridPadding) }
   private val centerCropTransformation by lazy { CenterCrop() }
   private val cornersTransformation by lazy { RoundedCorners(cornerRadius) }
-  protected val spoilerRegex = "\\S".toRegex()
 
   private val width by lazy { (screenWidth().toFloat() - (2.0 * gridPadding)) / MAIN_GRID_SPAN }
   private val height by lazy { width * ASPECT_RATIO }

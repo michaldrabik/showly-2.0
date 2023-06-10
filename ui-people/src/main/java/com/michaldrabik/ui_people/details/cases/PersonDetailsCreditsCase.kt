@@ -15,6 +15,7 @@ import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.PersonCredit
 import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_people.details.recycler.PersonDetailsItem
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
@@ -40,21 +41,13 @@ class PersonDetailsCreditsCase @Inject constructor(
       val myMoviesIdsAsync = async { moviesRepository.myMovies.loadAllIds() }
       val watchlistShowsIdsAsync = async { showsRepository.watchlistShows.loadAllIds() }
       val watchlistMoviesIdsAsync = async { moviesRepository.watchlistMovies.loadAllIds() }
+      val spoilers = settingsRepository.spoilers.getAll()
 
       val (myShowsIds, myMoviesIds, watchlistShowsId, watchlistMoviesIds) = awaitAll(
         myShowsIdsAsync,
         myMoviesIdsAsync,
         watchlistShowsIdsAsync,
         watchlistMoviesIdsAsync
-      )
-
-      val spoilers = PersonDetailsItem.SpoilersSettings(
-        isMyShowsHidden = settingsRepository.spoilers.isMyShowsHidden,
-        isMyMoviesHidden = settingsRepository.spoilers.isMyMoviesHidden,
-        isWatchlistShowsHidden = settingsRepository.spoilers.isWatchlistShowsHidden,
-        isWatchlistMoviesHidden = settingsRepository.spoilers.isWatchlistMoviesHidden,
-        isNotCollectedShowsHidden = settingsRepository.spoilers.isUncollectedShowsHidden,
-        isNotCollectedMoviesHidden = settingsRepository.spoilers.isUncollectedMoviesHidden
       )
 
       val credits = peopleRepository.loadCredits(person)
@@ -98,7 +91,7 @@ class PersonDetailsCreditsCase @Inject constructor(
     show: Show,
     myShowsIds: List<Long>,
     watchlistShowsId: List<Long>,
-    spoilersSettings: PersonDetailsItem.SpoilersSettings
+    spoilersSettings: SpoilersSettings
   ) = show.let {
     val isMy = it.traktId in myShowsIds
     val isWatchlist = it.traktId in watchlistShowsId
@@ -121,7 +114,7 @@ class PersonDetailsCreditsCase @Inject constructor(
     movie: Movie,
     myMoviesIds: List<Long>,
     watchlistMoviesId: List<Long>,
-    spoilersSettings: PersonDetailsItem.SpoilersSettings
+    spoilersSettings: SpoilersSettings
   ) = movie.let {
     val isMy = it.traktId in myMoviesIds
     val isWatchlist = it.traktId in watchlistMoviesId

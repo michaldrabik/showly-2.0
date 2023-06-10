@@ -13,6 +13,7 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.michaldrabik.common.Config
+import com.michaldrabik.common.Config.SPOILERS_REGEX
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.expandTouch
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -127,7 +128,7 @@ class ListDetailsMovieItemView : ListDetailsItemView {
     val isWatchlistHidden = item.spoilers.isWatchlistMoviesHidden && item.isWatchlist
     val isNotCollectedHidden = item.spoilers.isNotCollectedMoviesHidden && (!item.isWatched && !item.isWatchlist)
     if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
-      description = spoilerRegex.replace(description.toString(), Config.SPOILERS_HIDE_SYMBOL)
+      description = SPOILERS_REGEX.replace(description.toString(), Config.SPOILERS_HIDE_SYMBOL)
     }
 
     listDetailsMovieDescription.text = description

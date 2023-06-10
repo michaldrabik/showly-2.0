@@ -34,7 +34,6 @@ abstract class ListDetailsItemView : FrameLayout {
   private val cornerRadius by lazy { context.dimenToPx(R.dimen.mediaTileCorner) }
   private val centerCropTransformation by lazy { CenterCrop() }
   private val cornersTransformation by lazy { RoundedCorners(cornerRadius) }
-  protected val spoilerRegex = "\\S".toRegex()
 
   protected abstract val imageView: ImageView
   protected abstract val placeholderView: ImageView

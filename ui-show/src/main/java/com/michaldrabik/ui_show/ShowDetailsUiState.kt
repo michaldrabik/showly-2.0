@@ -3,6 +3,7 @@ package com.michaldrabik.ui_show
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_show.helpers.ShowDetailsMeta
 
@@ -14,7 +15,8 @@ data class ShowDetailsUiState(
   val followedState: FollowedState? = null,
   val ratingState: RatingState? = null,
   val translation: Translation? = null,
-  val meta: ShowDetailsMeta? = null
+  val meta: ShowDetailsMeta? = null,
+  val spoilers: SpoilersSettings? = null
 ) {
 
   data class FollowedState(
@@ -23,6 +25,8 @@ data class ShowDetailsUiState(
     val isHidden: Boolean,
     val withAnimation: Boolean,
   ) {
+
+    fun isInCollection() = isMyShows || isWatchlist || isHidden
 
     companion object {
       fun idle() = FollowedState(isMyShows = false, isWatchlist = false, isHidden = false, withAnimation = true)

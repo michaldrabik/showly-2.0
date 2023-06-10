@@ -61,6 +61,8 @@ class SearchSuggestionsCase @Inject constructor(
   }
 
   suspend fun loadSuggestions(query: String) = withContext(dispatchers.IO) {
+    val spoilers = settingsRepository.spoilers.getAll()
+
     val showsDef = async { loadShows(query.trim(), 5) }
     val moviesDef = async { loadMovies(query.trim(), 5) }
 
@@ -71,15 +73,6 @@ class SearchSuggestionsCase @Inject constructor(
         else -> throw IllegalStateException()
       }
     }
-
-    val spoilers = SearchListItem.SpoilersSettings(
-      isNotCollectedShowsHidden = settingsRepository.spoilers.isUncollectedShowsHidden,
-      isMyShowsHidden = settingsRepository.spoilers.isMyShowsHidden,
-      isWatchlistShowsHidden = settingsRepository.spoilers.isWatchlistShowsHidden,
-      isNotCollectedMoviesHidden = settingsRepository.spoilers.isUncollectedMoviesHidden,
-      isMyMoviesHidden = settingsRepository.spoilers.isMyMoviesHidden,
-      isWatchlistMoviesHidden = settingsRepository.spoilers.isWatchlistMoviesHidden
-    )
 
     suggestions.map {
       async {

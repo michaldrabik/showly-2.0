@@ -5,6 +5,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.Translation
 import java.time.LocalDate
 import java.time.ZonedDateTime
@@ -73,13 +74,4 @@ sealed class PersonDetailsItem {
   ) : PersonDetailsItem()
 
   object CreditsLoadingItem : PersonDetailsItem()
-
-  data class SpoilersSettings(
-    val isNotCollectedShowsHidden: Boolean,
-    val isMyShowsHidden: Boolean,
-    val isWatchlistShowsHidden: Boolean,
-    val isNotCollectedMoviesHidden: Boolean,
-    val isMyMoviesHidden: Boolean,
-    val isWatchlistMoviesHidden: Boolean,
-  )
 }

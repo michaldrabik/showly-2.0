@@ -26,6 +26,8 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withC
 import com.google.android.material.snackbar.Snackbar
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
+import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
+import com.michaldrabik.common.Config.SPOILERS_REGEX
 import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseFragment
@@ -50,7 +52,6 @@ import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.requireLong
 import com.michaldrabik.ui_base.utilities.extensions.screenHeight
 import com.michaldrabik.ui_base.utilities.extensions.screenWidth
-import com.michaldrabik.ui_base.utilities.extensions.setTextIfEmpty
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
@@ -67,6 +68,7 @@ import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.PremiumFeature
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_GALLERY
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_navigation.java.NavigationArgs
@@ -156,8 +158,11 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         showSnack(MessageEvent.Info(R.string.textCopiedToClipboard))
       }
       showDetailsDescription.onLongClick {
-        requireContext().copyToClipboard(showDetailsDescription.text.toString())
-        showSnack(MessageEvent.Info(R.string.textCopiedToClipboard))
+        val text = showDetailsDescription.text.toString()
+        if (text.count { it.toString() == SPOILERS_HIDE_SYMBOL } == 0) {
+          requireContext().copyToClipboard(text)
+          showSnack(MessageEvent.Info(R.string.textCopiedToClipboard))
+        }
       }
       showDetailsPremiumAd.onClick {
         navigateToSafe(R.id.actionShowDetailsFragmentToPremium)
@@ -191,8 +196,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     uiState.run {
       with(binding) {
         show?.let { show ->
-          showDetailsTitle.text = show.title
-          showDetailsDescription.setTextIfEmpty(show.overview)
+          renderTitleDescription(show, translation, followedState, spoilers)
           showDetailsStatus.text = getString(show.status.displayName)
           val year = if (show.year > 0) String.format(ENGLISH, "%d", show.year) else ""
           val country = if (show.country.isNotBlank()) String.format(ENGLISH, "(%s)", show.country) else ""
@@ -252,12 +256,48 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           showDetailsManageListsLabel.text = text
         }
         image?.let { renderImage(it) }
-        translation?.let { renderTranslation(it) }
         ratingState?.let { renderRating(it) }
         meta?.isPremium.let {
           showDetailsPremiumAd.visibleIf(it != true)
         }
       }
+    }
+  }
+
+  private fun renderTitleDescription(
+    show: Show,
+    translation: Translation?,
+    followedState: ShowDetailsUiState.FollowedState?,
+    spoilersSettings: SpoilersSettings?
+  ) {
+    with(binding) {
+      var title = show.title
+      var description = show.overview
+
+      if (translation?.title?.isNotBlank() == true) {
+        title = translation.title
+      }
+      if (translation?.overview?.isNotBlank() == true) {
+        description = translation.overview
+      }
+
+      if (followedState == null || spoilersSettings == null) {
+        showDetailsTitle.text = title
+        showDetailsDescription.text = description
+        return
+      }
+
+      val isMyShowHidden = spoilersSettings.isMyShowsHidden && followedState.isMyShows
+      val isWatchlistHidden = spoilersSettings.isWatchlistShowsHidden && followedState.isWatchlist
+      val isHiddenShowHidden = spoilersSettings.isHiddenShowsHidden && followedState.isHidden
+      val isNotCollectedHidden = spoilersSettings.isNotCollectedShowsHidden && (!followedState.isInCollection())
+
+      if (isMyShowHidden || isWatchlistHidden || isHiddenShowHidden || isNotCollectedHidden) {
+        description = SPOILERS_REGEX.replace(description, SPOILERS_HIDE_SYMBOL)
+      }
+
+      showDetailsTitle.text = title
+      showDetailsDescription.text = description
     }
   }
 
@@ -314,17 +354,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           showDetailsTipGallery.fadeIf(!isTipShown(SHOW_DETAILS_GALLERY))
         }
         .into(showDetailsImage)
-    }
-  }
-
-  private fun renderTranslation(translation: Translation?) {
-    with(binding) {
-      if (translation?.overview?.isNotBlank() == true) {
-        showDetailsDescription.text = translation.overview
-      }
-      if (translation?.title?.isNotBlank() == true) {
-        showDetailsTitle.text = translation.title
-      }
     }
   }
 

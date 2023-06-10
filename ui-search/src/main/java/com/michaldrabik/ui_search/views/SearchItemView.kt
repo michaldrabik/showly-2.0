@@ -9,6 +9,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
+import com.michaldrabik.common.Config.SPOILERS_REGEX
 import com.michaldrabik.ui_base.common.views.ShowView
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.gone
@@ -81,7 +82,7 @@ class SearchItemView : ShowView<SearchListItem> {
         val isWatchlistHidden = item.spoilers.isWatchlistShowsHidden && item.isWatchlist
         val isNotCollectedHidden = item.spoilers.isNotCollectedShowsHidden && (!item.isFollowed && !item.isWatchlist)
         if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
-          overview = spoilerRegex.replace(overview.toString(), SPOILERS_HIDE_SYMBOL)
+          overview = SPOILERS_REGEX.replace(overview.toString(), SPOILERS_HIDE_SYMBOL)
         }
       }
 
@@ -90,7 +91,7 @@ class SearchItemView : ShowView<SearchListItem> {
         val isWatchlistHidden = item.spoilers.isWatchlistMoviesHidden && item.isWatchlist
         val isNotCollectedHidden = item.spoilers.isNotCollectedMoviesHidden && (!item.isFollowed && !item.isWatchlist)
         if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
-          overview = spoilerRegex.replace(overview.toString(), SPOILERS_HIDE_SYMBOL)
+          overview = SPOILERS_REGEX.replace(overview.toString(), SPOILERS_HIDE_SYMBOL)
         }
       }
 

@@ -6,6 +6,8 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.viewModels
+import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
+import com.michaldrabik.common.Config.SPOILERS_REGEX
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
 import com.michaldrabik.ui_base.common.sheets.context_menu.events.FinishUiEvent
@@ -77,9 +79,7 @@ class MovieContextMenuBottomSheet : ContextMenuBottomSheet() {
         if (item.translation?.title.isNullOrBlank()) item.movie.title
         else item.translation?.title
 
-      contextMenuItemDescription.text =
-        if (item.translation?.overview.isNullOrBlank()) item.movie.overview
-        else item.translation?.overview
+      renderItemDescription(item)
 
       contextMenuItemNetwork.text = when {
         item.movie.released != null -> item.dateFormat?.format(item.movie.released)?.capitalizeWords()
@@ -116,6 +116,24 @@ class MovieContextMenuBottomSheet : ContextMenuBottomSheet() {
         contextMenuItemMoveToMyButton.text = getString(R.string.textAddToMyMovies)
         contextMenuItemMoveToWatchlistButton.text = getString(R.string.textAddToWatchlist)
         contextMenuItemMoveToHiddenButton.text = getString(R.string.textHide)
+      }
+    }
+  }
+
+  private fun renderItemDescription(item: MovieContextItem) {
+    with(binding) {
+      contextMenuItemDescription.text =
+        if (item.translation?.overview.isNullOrBlank()) item.movie.overview
+        else item.translation?.overview
+
+      val isMyShowHidden = item.spoilers.isMyMoviesHidden && item.isMyMovie
+      val isWatchlistHidden = item.spoilers.isWatchlistMoviesHidden && item.isWatchlist
+      val isHiddenShowHidden = item.spoilers.isHiddenMoviesHidden && item.isHidden
+      val isNotCollectedHidden = item.spoilers.isNotCollectedMoviesHidden && (!item.isInCollection())
+
+      if (isMyShowHidden || isWatchlistHidden || isHiddenShowHidden || isNotCollectedHidden) {
+        val hiddenDescription = SPOILERS_REGEX.replace(contextMenuItemDescription.text.toString(), SPOILERS_HIDE_SYMBOL)
+        contextMenuItemDescription.text = hiddenDescription
       }
     }
   }

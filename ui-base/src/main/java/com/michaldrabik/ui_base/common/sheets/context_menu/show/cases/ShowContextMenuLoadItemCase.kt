@@ -30,9 +30,11 @@ class ShowContextMenuLoadItemCase @Inject constructor(
 
   suspend fun loadItem(traktId: IdTrakt) = withContext(dispatchers.IO) {
     val show = showsRepository.detailsShow.load(traktId)
+    val language = translationsRepository.getLanguage()
+    val spoilers = settingsRepository.spoilers.getAll()
 
     val imageAsync = async { imagesProvider.findCachedImage(show, ImageType.POSTER) }
-    val translationAsync = async { translationsRepository.loadTranslation(show, language = settingsRepository.language, onlyLocal = true) }
+    val translationAsync = async { translationsRepository.loadTranslation(show, language = language, onlyLocal = true) }
     val ratingAsync = async { ratingsRepository.shows.loadRatings(listOf(show)) }
 
     val isMyShowAsync = async { showsRepository.myShows.exists(traktId) }
@@ -51,7 +53,8 @@ class ShowContextMenuLoadItemCase @Inject constructor(
       isWatchlist = isWatchlistAsync.await(),
       isHidden = isHiddenAsync.await(),
       isPinnedTop = isPinnedAsync.await(),
-      isOnHold = isOnHoldAsync.await()
+      isOnHold = isOnHoldAsync.await(),
+      spoilers = spoilers
     )
   }
 }

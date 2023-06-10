@@ -4,6 +4,7 @@ import com.michaldrabik.ui_base.common.ListItem
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.Translation
 import java.util.UUID
 
@@ -30,13 +31,4 @@ data class SearchListItem(
   val network = if (isShow) show.network else ""
 
   override fun isSameAs(other: ListItem) = (id == (other as SearchListItem).id)
-
-  data class SpoilersSettings(
-    val isNotCollectedShowsHidden: Boolean,
-    val isMyShowsHidden: Boolean,
-    val isWatchlistShowsHidden: Boolean,
-    val isNotCollectedMoviesHidden: Boolean,
-    val isMyMoviesHidden: Boolean,
-    val isWatchlistMoviesHidden: Boolean,
-  )
 }

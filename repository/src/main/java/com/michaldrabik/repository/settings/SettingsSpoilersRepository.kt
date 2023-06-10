@@ -2,6 +2,7 @@ package com.michaldrabik.repository.settings
 
 import android.content.SharedPreferences
 import com.michaldrabik.repository.utilities.BooleanPreference
+import com.michaldrabik.ui_model.SpoilersSettings
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
@@ -32,4 +33,15 @@ class SettingsSpoilersRepository @Inject constructor(
   var isWatchlistMoviesHidden by BooleanPreference(preferences, MOVIES_WATCHLIST_MOVIES_HIDDEN, false)
   var isHiddenMoviesHidden by BooleanPreference(preferences, MOVIES_HIDDEN_MOVIES_HIDDEN, false)
   var isUncollectedMoviesHidden by BooleanPreference(preferences, MOVIES_UNCOLLECTED_MOVIES_HIDDEN, false)
+
+  fun getAll(): SpoilersSettings = SpoilersSettings(
+    isMyShowsHidden = isMyShowsHidden,
+    isMyMoviesHidden = isMyMoviesHidden,
+    isWatchlistShowsHidden = isWatchlistShowsHidden,
+    isWatchlistMoviesHidden = isWatchlistMoviesHidden,
+    isHiddenShowsHidden = isHiddenShowsHidden,
+    isHiddenMoviesHidden = isHiddenMoviesHidden,
+    isNotCollectedShowsHidden = isUncollectedShowsHidden,
+    isNotCollectedMoviesHidden = isUncollectedMoviesHidden,
+  )
 }

@@ -8,6 +8,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
+import com.michaldrabik.common.Config.SPOILERS_REGEX
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.ui_base.common.views.ShowView
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
@@ -86,7 +87,7 @@ class CollectionShowView : ShowView<CollectionListItem.ShowItem> {
 
     if (item.isSpoilerHidden) {
       collectionShowDescription.text =
-        spoilerRegex.replace(collectionShowDescription.text, SPOILERS_HIDE_SYMBOL)
+        SPOILERS_REGEX.replace(collectionShowDescription.text, SPOILERS_HIDE_SYMBOL)
     }
 
     collectionShowDescription.visibleIf(item.show.overview.isNotBlank())

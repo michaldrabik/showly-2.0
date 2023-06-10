@@ -26,6 +26,7 @@ import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
+import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -60,14 +61,7 @@ class ListDetailsItemsCase @Inject constructor(
       val moviesEnabled = settingsRepository.isMoviesEnabled
       val language = translationsRepository.getLanguage()
       val listItems = listsRepository.loadItemsById(list.id)
-      val spoilers = ListDetailsItem.SpoilersSettings(
-        isNotCollectedShowsHidden = settingsRepository.spoilers.isUncollectedShowsHidden,
-        isMyShowsHidden = settingsRepository.spoilers.isMyShowsHidden,
-        isWatchlistShowsHidden = settingsRepository.spoilers.isWatchlistShowsHidden,
-        isNotCollectedMoviesHidden = settingsRepository.spoilers.isUncollectedMoviesHidden,
-        isMyMoviesHidden = settingsRepository.spoilers.isMyMoviesHidden,
-        isWatchlistMoviesHidden = settingsRepository.spoilers.isWatchlistMoviesHidden
-      )
+      val spoilers = settingsRepository.spoilers.getAll()
 
       val showsAsync = async {
         val ids = listItems.filter { it.type == SHOWS.type }.map { it.idTrakt }
@@ -172,7 +166,7 @@ class ListDetailsItemsCase @Inject constructor(
     listedAt: ZonedDateTime,
     moviesEnabled: Boolean,
     sortOrder: SortOrder,
-    spoilers: ListDetailsItem.SpoilersSettings
+    spoilers: SpoilersSettings
   ): ListDetailsItem {
     val image = movieImagesProvider.findCachedImage(movie, ImageType.POSTER)
     return ListDetailsItem(
@@ -204,7 +198,7 @@ class ListDetailsItemsCase @Inject constructor(
     isRankSort: Boolean,
     listedAt: ZonedDateTime,
     sortOrder: SortOrder,
-    spoilers: ListDetailsItem.SpoilersSettings
+    spoilers: SpoilersSettings
   ): ListDetailsItem {
     val image = showImagesProvider.findCachedImage(show, ImageType.POSTER)
     return ListDetailsItem(
