@@ -84,6 +84,14 @@
 
   <string name="textSettingsSpoilersMovies">Movies</string>
   <string name="textSettingsSpoilersMoviesSummary">Manage spoiler settings for movies.</string>
+  <string name="textSettingsSpoilersMoviesOverviewsMyTitle">My Movies</string>
+  <string name="textSettingsSpoilersMoviesOverviewsMyDescription">Hide description of movies added to <b>My Movies</b></string>
+  <string name="textSettingsSpoilersMoviesOverviewsWatchlistTitle">Watchlist</string>
+  <string name="textSettingsSpoilersMoviesOverviewsWatchlistDescription">Hide description of movies added to <b>Watchlist</b></string>
+  <string name="textSettingsSpoilersMoviesOverviewsHiddenTitle">Hidden</string>
+  <string name="textSettingsSpoilersMoviesOverviewsHiddenDescription">Hide description of movies added to <b>Hidden</b></string>
+  <string name="textSettingsSpoilersMoviesOverviewsNotCollectedTitle">Not Collected</string>
+  <string name="textSettingsSpoilersMoviesOverviewsNotCollectedDescription">Hide description of movies that are not in your <b>Collection</b></string>
 
   <string name="textNextEpisodeLastWatched">Last watched episode</string>
   <string name="textNextEpisodeOldest">Oldest unwatched episode</string>

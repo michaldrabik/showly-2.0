@@ -783,6 +783,11 @@
       app:destination="@id/settingsSpoilersShowsDialog"
       app:launchSingleTop="true"
       />
+    <action
+      android:id="@+id/actionSettingsFragmentToSpoilersMovies"
+      app:destination="@id/settingsSpoilersMoviesDialog"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment
@@ -1105,6 +1110,12 @@
     android:id="@+id/settingsSpoilersShowsDialog"
     android:name="com.michaldrabik.ui_settings.sections.spoilers.shows.SpoilersShowsBottomSheet"
     android:label="dialogSettingsSpoilersShows"
+    />
+
+  <dialog
+    android:id="@+id/settingsSpoilersMoviesDialog"
+    android:name="com.michaldrabik.ui_settings.sections.spoilers.movies.SpoilersMoviesBottomSheet"
+    android:label="dialogSettingsSpoilersMovies"
     />
 
   <dialog
