@@ -24,6 +24,7 @@ import com.michaldrabik.ui_model.MyShowsSection.RECENTS
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
+import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_my_shows.main.FollowedShowsUiEvent.OpenPremium
 import com.michaldrabik.ui_my_shows.main.FollowedShowsUiState
@@ -93,7 +94,7 @@ class MyShowsViewModel @Inject constructor(
       val sortOrder = settingsRepository.sorting.myShowsAllSortOrder
       val networks = settingsRepository.filters.myShowsNetworks
       val genres = settingsRepository.filters.myShowsGenres
-      val isSpoilersHidden = settingsRepository.spoilers.isMyShowsHidden
+      val spoilers = settingsRepository.spoilers.getAll()
 
       val shows = loadShowsCase.loadAllShows()
         .map {
@@ -103,7 +104,7 @@ class MyShowsViewModel @Inject constructor(
             type = POSTER,
             userRating = ratings[it.ids.trakt],
             sortOrder = sortOrder,
-            isSpoilersHidden = isSpoilersHidden
+            spoilersSettings = spoilers
           )
         }
         .awaitAll()
@@ -119,7 +120,7 @@ class MyShowsViewModel @Inject constructor(
 
       val recentShows = if (settings.myShowsRecentIsEnabled) {
         loadShowsCase.loadRecentShows().map {
-          toListItemAsync(Type.RECENT_SHOWS, it, ImageType.FANART, ratings[it.ids.trakt], null, false)
+          toListItemAsync(Type.RECENT_SHOWS, it, ImageType.FANART, ratings[it.ids.trakt], null, spoilers)
         }.awaitAll()
       } else {
         emptyList()
@@ -206,7 +207,7 @@ class MyShowsViewModel @Inject constructor(
     type: ImageType = POSTER,
     userRating: TraktRating?,
     sortOrder: SortOrder?,
-    isSpoilersHidden: Boolean,
+    spoilersSettings: SpoilersSettings,
   ) = async {
     val image = imagesProvider.findCachedImage(show, type)
     val translation = translationsCase.loadTranslation(show, true)
@@ -220,7 +221,8 @@ class MyShowsViewModel @Inject constructor(
       translation = translation,
       userRating = userRating?.rating,
       sortOrder = sortOrder,
-      isSpoilerHidden = isSpoilersHidden
+      isSpoilerHidden = spoilersSettings.isMyShowsHidden,
+      isSpoilerRatingsHidden = spoilersSettings.isMyShowsRatingsHidden,
     )
   }
 

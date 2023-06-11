@@ -64,8 +64,7 @@ class MyShowGridTitleView : ShowView<MyShowsItem> {
         else item.translation?.title
 
       if (item.sortOrder == SortOrder.RATING) {
-        collectionShowRating.visible()
-        collectionShowRating.text = String.format(Locale.ENGLISH, "%.1f", item.show.rating)
+        bindRating(item)
       } else if (item.sortOrder == SortOrder.USER_RATING && item.userRating != null) {
         collectionShowRating.visible()
         collectionShowRating.text = String.format(Locale.ENGLISH, "%d", item.userRating)
@@ -75,6 +74,19 @@ class MyShowGridTitleView : ShowView<MyShowsItem> {
     }
 
     loadImage(item)
+  }
+
+  private fun bindRating(item: MyShowsItem) {
+    with(binding) {
+      var rating = String.format(Locale.ENGLISH, "%.1f", item.show.rating)
+
+      if (item.isSpoilerRatingsHidden) {
+        rating = Config.SPOILERS_RATINGS_REGEX.replace(rating, Config.SPOILERS_HIDE_SYMBOL)
+      }
+
+      collectionShowRating.visible()
+      collectionShowRating.text = rating
+    }
   }
 
   private fun loadTranslation() {

@@ -62,6 +62,7 @@ object Config {
 
   const val SPOILERS_HIDE_SYMBOL = "•"
   val SPOILERS_REGEX = "\\S".toRegex()
+  val SPOILERS_RATINGS_REGEX = "[^.]+".toRegex()
 
   val REMOTE_CONFIG_DEFAULTS by lazy {
     mapOf("in_app_enabled" to false)

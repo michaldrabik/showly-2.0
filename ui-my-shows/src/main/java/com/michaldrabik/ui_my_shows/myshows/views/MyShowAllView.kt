@@ -8,6 +8,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
+import com.michaldrabik.common.Config.SPOILERS_RATINGS_REGEX
 import com.michaldrabik.common.Config.SPOILERS_REGEX
 import com.michaldrabik.ui_base.common.views.ShowView
 import com.michaldrabik.ui_base.utilities.extensions.gone
@@ -49,12 +50,12 @@ class MyShowAllView : ShowView<MyShowsItem> {
       else item.translation?.title
 
     bindDescription(item)
+    bindRating(item)
 
     collectionShowNetwork.text =
       if (item.show.year > 0) context.getString(R.string.textNetwork, item.show.network, item.show.year.toString())
       else String.format("%s", item.show.network)
 
-    collectionShowRating.text = String.format(ENGLISH, "%.1f", item.show.rating)
     collectionShowNetwork.visibleIf(item.show.network.isNotBlank())
 
     item.userRating?.let {
@@ -77,6 +78,16 @@ class MyShowAllView : ShowView<MyShowsItem> {
 
     collectionShowDescription.text = description
     collectionShowDescription.visibleIf(item.show.overview.isNotBlank())
+  }
+
+  private fun bindRating(item: MyShowsItem) {
+    var rating = String.format(ENGLISH, "%.1f", item.show.rating)
+
+    if (item.isSpoilerRatingsHidden) {
+      rating = SPOILERS_RATINGS_REGEX.replace(rating, SPOILERS_HIDE_SYMBOL)
+    }
+
+    collectionShowRating.text = rating
   }
 
   private fun loadTranslation() {

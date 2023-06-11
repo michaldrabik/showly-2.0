@@ -8,6 +8,8 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.common.Config
+import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
+import com.michaldrabik.common.Config.SPOILERS_RATINGS_REGEX
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.views.ShowView
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -61,8 +63,7 @@ class MyShowGridView : ShowView<MyShowsItem> {
       collectionShowProgress.visibleIf(item.isLoading)
 
       if (item.sortOrder == RATING) {
-        collectionShowRating.visible()
-        collectionShowRating.text = String.format(ENGLISH, "%.1f", item.show.rating)
+        bindRating(item)
       } else if (item.sortOrder == USER_RATING && item.userRating != null) {
         collectionShowRating.visible()
         collectionShowRating.text = String.format(ENGLISH, "%d", item.userRating)
@@ -72,6 +73,19 @@ class MyShowGridView : ShowView<MyShowsItem> {
     }
 
     loadImage(item)
+  }
+
+  private fun bindRating(item: MyShowsItem) {
+    with(binding) {
+      var rating = String.format(ENGLISH, "%.1f", item.show.rating)
+
+      if (item.isSpoilerRatingsHidden) {
+        rating = SPOILERS_RATINGS_REGEX.replace(rating, SPOILERS_HIDE_SYMBOL)
+      }
+
+      collectionShowRating.visible()
+      collectionShowRating.text = rating
+    }
   }
 
   private fun loadTranslation() {

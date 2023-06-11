@@ -7,6 +7,8 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
+import com.michaldrabik.common.Config.SPOILERS_RATINGS_REGEX
 import com.michaldrabik.ui_base.common.views.ShowView
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -15,6 +17,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
+import kotlinx.android.synthetic.main.view_collection_show.view.collectionShowRating
 import kotlinx.android.synthetic.main.view_collection_show_compact.view.*
 import java.util.Locale.ENGLISH
 
@@ -50,7 +53,7 @@ class MyShowAllCompactView : ShowView<MyShowsItem> {
       if (item.show.year > 0) context.getString(R.string.textNetwork, item.show.network, item.show.year.toString())
       else String.format("%s", item.show.network)
 
-    collectionShowRating.text = String.format(ENGLISH, "%.1f", item.show.rating)
+    bindRating(item)
     collectionShowNetwork.visibleIf(item.show.network.isNotBlank())
 
     item.userRating?.let {
@@ -60,6 +63,16 @@ class MyShowAllCompactView : ShowView<MyShowsItem> {
     }
 
     loadImage(item)
+  }
+
+  private fun bindRating(item: MyShowsItem) {
+    var rating = String.format(ENGLISH, "%.1f", item.show.rating)
+
+    if (item.isSpoilerRatingsHidden) {
+      rating = SPOILERS_RATINGS_REGEX.replace(rating, SPOILERS_HIDE_SYMBOL)
+    }
+
+    collectionShowRating.text = rating
   }
 
   private fun loadTranslation() {

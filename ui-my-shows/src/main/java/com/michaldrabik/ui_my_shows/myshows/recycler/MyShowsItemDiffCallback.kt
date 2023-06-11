@@ -22,6 +22,7 @@ class MyShowsItemDiffCallback : DiffUtil.ItemCallback<MyShowsItem>() {
           oldItem.translation == newItem.translation &&
           oldItem.userRating == newItem.userRating &&
           oldItem.isSpoilerHidden == newItem.isSpoilerHidden &&
+          oldItem.isSpoilerRatingsHidden == newItem.isSpoilerRatingsHidden &&
           oldItem.sortOrder == newItem.sortOrder
     }
 }
