@@ -74,24 +74,28 @@
   <string name="textSettingsSpoilersShows">Shows</string>
   <string name="textSettingsSpoilersShowsSummary">Manage spoiler settings for shows.</string>
   <string name="textSettingsSpoilersShowsOverviewsMyTitle">My Shows</string>
-  <string name="textSettingsSpoilersShowsOverviewsMyDescription">Hide description of shows added to <b>My Shows</b></string>
+  <string name="textSettingsSpoilersShowsOverviewsMyDescription">Hide <b>description</b> of shows added to My Shows</string>
+  <string name="textSettingsSpoilersShowsRatingsMyDescription">Hide <b>rating</b> of shows added to My Shows</string>
   <string name="textSettingsSpoilersShowsOverviewsWatchlistTitle">Watchlist</string>
-  <string name="textSettingsSpoilersShowsOverviewsWatchlistDescription">Hide description of shows added to <b>Watchlist</b></string>
+  <string name="textSettingsSpoilersShowsOverviewsWatchlistDescription">Hide <b>description</b> of shows added to Watchlist</string>
+  <string name="textSettingsSpoilersShowsRatingsWatchlistDescription">Hide <b>rating</b> of shows added to Watchlist</string>
   <string name="textSettingsSpoilersShowsOverviewsHiddenTitle">Hidden</string>
-  <string name="textSettingsSpoilersShowsOverviewsHiddenDescription">Hide description of shows added to <b>Hidden</b></string>
+  <string name="textSettingsSpoilersShowsOverviewsHiddenDescription">Hide <b>description</b> of shows added to Hidden</string>
+  <string name="textSettingsSpoilersShowsRatingsHiddenDescription">Hide <b>rating</b> of shows added to Hidden</string>
   <string name="textSettingsSpoilersShowsOverviewsNotCollectedTitle">Not Collected</string>
-  <string name="textSettingsSpoilersShowsOverviewsNotCollectedDescription">Hide description of shows that are not in your <b>Collection</b></string>
+  <string name="textSettingsSpoilersShowsOverviewsNotCollectedDescription">Hide <b>description</b> of shows that are not in your Collection</string>
+  <string name="textSettingsSpoilersShowsRatingsNotCollectedDescription">Hide <b>rating</b> of shows that are not in your Collection</string>
 
   <string name="textSettingsSpoilersMovies">Movies</string>
   <string name="textSettingsSpoilersMoviesSummary">Manage spoiler settings for movies.</string>
   <string name="textSettingsSpoilersMoviesOverviewsMyTitle">My Movies</string>
-  <string name="textSettingsSpoilersMoviesOverviewsMyDescription">Hide description of movies added to <b>My Movies</b></string>
+  <string name="textSettingsSpoilersMoviesOverviewsMyDescription">Hide description of movies added to My Movies</string>
   <string name="textSettingsSpoilersMoviesOverviewsWatchlistTitle">Watchlist</string>
-  <string name="textSettingsSpoilersMoviesOverviewsWatchlistDescription">Hide description of movies added to <b>Watchlist</b></string>
+  <string name="textSettingsSpoilersMoviesOverviewsWatchlistDescription">Hide description of movies added to Watchlist</string>
   <string name="textSettingsSpoilersMoviesOverviewsHiddenTitle">Hidden</string>
-  <string name="textSettingsSpoilersMoviesOverviewsHiddenDescription">Hide description of movies added to <b>Hidden</b></string>
+  <string name="textSettingsSpoilersMoviesOverviewsHiddenDescription">Hide description of movies added to Hidden</string>
   <string name="textSettingsSpoilersMoviesOverviewsNotCollectedTitle">Not Collected</string>
-  <string name="textSettingsSpoilersMoviesOverviewsNotCollectedDescription">Hide description of movies that are not in your <b>Collection</b></string>
+  <string name="textSettingsSpoilersMoviesOverviewsNotCollectedDescription">Hide description of movies that are not in your Collection</string>
 
   <string name="textNextEpisodeLastWatched">Last watched episode</string>
   <string name="textNextEpisodeOldest">Oldest unwatched episode</string>

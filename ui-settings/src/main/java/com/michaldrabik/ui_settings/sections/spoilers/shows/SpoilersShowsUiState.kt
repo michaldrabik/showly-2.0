@@ -1,8 +1,7 @@
 package com.michaldrabik.ui_settings.sections.spoilers.shows
 
+import com.michaldrabik.ui_model.SpoilersSettings
+
 data class SpoilersShowsUiState(
-  val isMyShowsHidden: Boolean = false,
-  val isWatchlistShowsHidden: Boolean = false,
-  val isHiddenShowsHidden: Boolean = false,
-  val isNotCollectedShowsHidden: Boolean = false,
+  val settings: SpoilersSettings = SpoilersSettings.INITIAL,
 )

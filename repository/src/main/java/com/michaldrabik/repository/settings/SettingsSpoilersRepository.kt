@@ -14,9 +14,13 @@ class SettingsSpoilersRepository @Inject constructor(
 
   companion object Key {
     private const val SHOWS_UNCOLLECTED_SHOWS_HIDDEN = "SHOWS_UNCOLLECTED_SHOWS_HIDDEN"
+    private const val SHOWS_UNCOLLECTED_SHOWS_RATINGS_HIDDEN = "SHOWS_UNCOLLECTED_SHOWS_RATINGS_HIDDEN"
     private const val SHOWS_MY_SHOWS_HIDDEN = "SHOWS_MY_SHOWS_HIDDEN"
+    private const val SHOWS_MY_SHOWS_RATINGS_HIDDEN = "SHOWS_MY_SHOWS_RATINGS_HIDDEN"
     private const val SHOWS_WATCHLIST_SHOWS_HIDDEN = "SHOWS_WATCHLIST_SHOWS_HIDDEN"
+    private const val SHOWS_WATCHLIST_SHOWS_RATINGS_HIDDEN = "SHOWS_WATCHLIST_SHOWS_RATINGS_HIDDEN"
     private const val SHOWS_HIDDEN_SHOWS_HIDDEN = "SHOWS_HIDDEN_SHOWS_HIDDEN"
+    private const val SHOWS_HIDDEN_SHOWS_RATINGS_HIDDEN = "SHOWS_HIDDEN_SHOWS_RATINGS_HIDDEN"
 
     private const val MOVIES_UNCOLLECTED_MOVIES_HIDDEN = "MOVIES_UNCOLLECTED_MOVIES_HIDDEN"
     private const val MOVIES_MY_MOVIES_HIDDEN = "MOVIES_MY_MOVIES_HIDDEN"
@@ -25,9 +29,13 @@ class SettingsSpoilersRepository @Inject constructor(
   }
 
   var isMyShowsHidden by BooleanPreference(preferences, SHOWS_MY_SHOWS_HIDDEN, false)
+  var isMyShowsRatingsHidden by BooleanPreference(preferences, SHOWS_MY_SHOWS_RATINGS_HIDDEN, false)
   var isWatchlistShowsHidden by BooleanPreference(preferences, SHOWS_WATCHLIST_SHOWS_HIDDEN, false)
+  var isWatchlistShowsRatingsHidden by BooleanPreference(preferences, SHOWS_WATCHLIST_SHOWS_RATINGS_HIDDEN, false)
   var isHiddenShowsHidden by BooleanPreference(preferences, SHOWS_HIDDEN_SHOWS_HIDDEN, false)
+  var isHiddenShowsRatingsHidden by BooleanPreference(preferences, SHOWS_HIDDEN_SHOWS_RATINGS_HIDDEN, false)
   var isUncollectedShowsHidden by BooleanPreference(preferences, SHOWS_UNCOLLECTED_SHOWS_HIDDEN, false)
+  var isUncollectedShowsRatingsHidden by BooleanPreference(preferences, SHOWS_UNCOLLECTED_SHOWS_RATINGS_HIDDEN, false)
 
   var isMyMoviesHidden by BooleanPreference(preferences, MOVIES_MY_MOVIES_HIDDEN, false)
   var isWatchlistMoviesHidden by BooleanPreference(preferences, MOVIES_WATCHLIST_MOVIES_HIDDEN, false)
@@ -36,12 +44,16 @@ class SettingsSpoilersRepository @Inject constructor(
 
   fun getAll(): SpoilersSettings = SpoilersSettings(
     isMyShowsHidden = isMyShowsHidden,
+    isMyShowsRatingsHidden = isMyShowsRatingsHidden,
     isMyMoviesHidden = isMyMoviesHidden,
     isWatchlistShowsHidden = isWatchlistShowsHidden,
+    isWatchlistShowsRatingsHidden = isWatchlistShowsRatingsHidden,
     isWatchlistMoviesHidden = isWatchlistMoviesHidden,
     isHiddenShowsHidden = isHiddenShowsHidden,
+    isHiddenShowsRatingsHidden = isHiddenShowsRatingsHidden,
     isHiddenMoviesHidden = isHiddenMoviesHidden,
     isNotCollectedShowsHidden = isUncollectedShowsHidden,
+    isNotCollectedShowsRatingsHidden = isUncollectedShowsRatingsHidden,
     isNotCollectedMoviesHidden = isUncollectedMoviesHidden,
   )
 }

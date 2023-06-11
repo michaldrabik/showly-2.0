@@ -7,6 +7,7 @@ import androidx.fragment.app.viewModels
 import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.setCheckedSilent
 import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_settings.R
 import com.michaldrabik.ui_settings.databinding.SheetSpoilersShowsBinding
@@ -30,17 +31,29 @@ class SpoilersShowsBottomSheet : RemoveTraktBottomSheet<SpoilersShowsViewModel>(
 
   private fun setupView() {
     with(binding) {
-      myShowsLayout.onClick {
-        viewModel.setHideMyShows(!myShowsSwitch.isChecked)
+      myShowsDescription.onClick {
+        myShowsListener.invoke(it, !myShowsSwitch.isChecked)
       }
-      watchlistShowsLayout.onClick {
-        viewModel.setHideWatchlistShows(!watchlistShowsSwitch.isChecked)
+      myShowsRatingDescription.onClick {
+        myShowsRatingsListener.invoke(it, !myShowsRatingsSwitch.isChecked)
       }
-      hiddenShowsLayout.onClick {
-        viewModel.setHideHiddenShows(!hiddenShowsSwitch.isChecked)
+      watchlistShowsDescription.onClick {
+        watchlistShowsListener.invoke(it, !watchlistShowsSwitch.isChecked)
       }
-      notCollectedShowsLayout.onClick {
-        viewModel.setHideNotCollectedShows(!notCollectedShowsSwitch.isChecked)
+      watchlistShowsRatingDescription.onClick {
+        watchlistShowsRatingsListener.invoke(it, !watchlistShowsRatingsSwitch.isChecked)
+      }
+      hiddenShowsDescription.onClick {
+        hiddenShowsListener.invoke(it, !hiddenShowsSwitch.isChecked)
+      }
+      hiddenShowsRatingDescription.onClick {
+        hiddenShowsRatingsListener.invoke(it, !hiddenShowsRatingsSwitch.isChecked)
+      }
+      notCollectedShowsDescription.onClick {
+        notCollectedShowsListener.invoke(it, !notCollectedShowsSwitch.isChecked)
+      }
+      notCollectedShowsRatingDescription.onClick {
+        notCollectedShowsRatingsListener.invoke(it, !notCollectedShowsRatingsSwitch.isChecked)
       }
       closeButton.onClick { dismiss() }
     }
@@ -48,13 +61,42 @@ class SpoilersShowsBottomSheet : RemoveTraktBottomSheet<SpoilersShowsViewModel>(
 
   @SuppressLint("SetTextI18n")
   private fun render(uiState: SpoilersShowsUiState) {
-    uiState.run {
+    uiState.settings.run {
       with(binding) {
-        myShowsSwitch.isChecked = uiState.isMyShowsHidden
-        watchlistShowsSwitch.isChecked = uiState.isWatchlistShowsHidden
-        hiddenShowsSwitch.isChecked = uiState.isHiddenShowsHidden
-        notCollectedShowsSwitch.isChecked = uiState.isNotCollectedShowsHidden
+        notCollectedShowsSwitch.setCheckedSilent(isNotCollectedShowsHidden, notCollectedShowsListener)
+        notCollectedShowsRatingsSwitch.setCheckedSilent(isNotCollectedShowsRatingsHidden, notCollectedShowsRatingsListener)
+        myShowsSwitch.setCheckedSilent(isMyShowsHidden, myShowsListener)
+        myShowsRatingsSwitch.setCheckedSilent(isMyShowsRatingsHidden, myShowsRatingsListener)
+        watchlistShowsSwitch.setCheckedSilent(isWatchlistShowsHidden, watchlistShowsListener)
+        watchlistShowsRatingsSwitch.setCheckedSilent(isWatchlistShowsRatingsHidden, watchlistShowsRatingsListener)
+        hiddenShowsSwitch.setCheckedSilent(isHiddenShowsHidden, hiddenShowsListener)
+        hiddenShowsRatingsSwitch.setCheckedSilent(isHiddenShowsRatingsHidden, hiddenShowsRatingsListener)
       }
     }
+  }
+
+  private val notCollectedShowsListener: (View, Boolean) -> Unit = { _, isChecked ->
+    viewModel.setHideNotCollectedShows(isChecked)
+  }
+  private val notCollectedShowsRatingsListener: (View, Boolean) -> Unit = { _, isChecked ->
+    viewModel.setHideNotCollectedRatingsShows(isChecked)
+  }
+  private val myShowsListener: (View, Boolean) -> Unit = { _, isChecked ->
+    viewModel.setHideMyShows(isChecked)
+  }
+  private val myShowsRatingsListener: (View, Boolean) -> Unit = { _, isChecked ->
+    viewModel.setHideMyRatingsShows(isChecked)
+  }
+  private val watchlistShowsListener: (View, Boolean) -> Unit = { _, isChecked ->
+    viewModel.setHideWatchlistShows(isChecked)
+  }
+  private val watchlistShowsRatingsListener: (View, Boolean) -> Unit = { _, isChecked ->
+    viewModel.setHideWatchlistRatingsShows(isChecked)
+  }
+  private val hiddenShowsListener: (View, Boolean) -> Unit = { _, isChecked ->
+    viewModel.setHideHiddenShows(isChecked)
+  }
+  private val hiddenShowsRatingsListener: (View, Boolean) -> Unit = { _, isChecked ->
+    viewModel.setHideHiddenRatingsShows(isChecked)
   }
 }

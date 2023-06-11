@@ -7,8 +7,9 @@ import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,21 +18,19 @@ class SpoilersShowsViewModel @Inject constructor(
 ) : ViewModel() {
 
   private val initialState = SpoilersShowsUiState()
-
-  private val isMyShowsHiddenState = MutableStateFlow(initialState.isMyShowsHidden)
-  private val isWatchlistShowsHiddenState = MutableStateFlow(initialState.isWatchlistShowsHidden)
-  private val isHiddenShowsHiddenState = MutableStateFlow(initialState.isHiddenShowsHidden)
-  private val isNotCollectedShowsHiddenState = MutableStateFlow(initialState.isNotCollectedShowsHidden)
+  private val settingsState = MutableStateFlow(initialState.settings)
 
   fun refreshSettings() {
-    isMyShowsHiddenState.value = settingsRepository.isMyShowsHidden
-    isWatchlistShowsHiddenState.value = settingsRepository.isWatchlistShowsHidden
-    isHiddenShowsHiddenState.value = settingsRepository.isHiddenShowsHidden
-    isNotCollectedShowsHiddenState.value = settingsRepository.isUncollectedShowsHidden
+    settingsState.update { settingsRepository.getAll() }
   }
 
   fun setHideMyShows(hide: Boolean) {
     settingsRepository.isMyShowsHidden = hide
+    refreshSettings()
+  }
+
+  fun setHideMyRatingsShows(hide: Boolean) {
+    settingsRepository.isMyShowsRatingsHidden = hide
     refreshSettings()
   }
 
@@ -40,8 +39,18 @@ class SpoilersShowsViewModel @Inject constructor(
     refreshSettings()
   }
 
+  fun setHideWatchlistRatingsShows(hide: Boolean) {
+    settingsRepository.isWatchlistShowsRatingsHidden = hide
+    refreshSettings()
+  }
+
   fun setHideHiddenShows(hide: Boolean) {
     settingsRepository.isHiddenShowsHidden = hide
+    refreshSettings()
+  }
+
+  fun setHideHiddenRatingsShows(hide: Boolean) {
+    settingsRepository.isHiddenShowsRatingsHidden = hide
     refreshSettings()
   }
 
@@ -50,21 +59,16 @@ class SpoilersShowsViewModel @Inject constructor(
     refreshSettings()
   }
 
-  val uiState = combine(
-    isMyShowsHiddenState,
-    isWatchlistShowsHiddenState,
-    isHiddenShowsHiddenState,
-    isNotCollectedShowsHiddenState
-  ) { s1, s2, s3, s4 ->
-    SpoilersShowsUiState(
-      isMyShowsHidden = s1,
-      isWatchlistShowsHidden = s2,
-      isHiddenShowsHidden = s3,
-      isNotCollectedShowsHidden = s4,
+  fun setHideNotCollectedRatingsShows(hide: Boolean) {
+    settingsRepository.isUncollectedShowsRatingsHidden = hide
+    refreshSettings()
+  }
+
+  val uiState = settingsState
+    .map { SpoilersShowsUiState(it) }
+    .stateIn(
+      scope = viewModelScope,
+      started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+      initialValue = SpoilersShowsUiState()
     )
-  }.stateIn(
-    scope = viewModelScope,
-    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = SpoilersShowsUiState()
-  )
 }
