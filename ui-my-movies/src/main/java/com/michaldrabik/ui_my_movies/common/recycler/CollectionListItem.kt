@@ -25,7 +25,8 @@ sealed class CollectionListItem(
     val translation: Translation? = null,
     val userRating: Int? = null,
     val sortOrder: SortOrder? = null,
-    val isSpoilerHidden: Boolean = false
+    val isSpoilerHidden: Boolean = false,
+    val isSpoilerRatingsHidden: Boolean = false
   ) : CollectionListItem(
     movie = movie,
     image = image,

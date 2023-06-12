@@ -9,6 +9,7 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
+import com.michaldrabik.common.Config.SPOILERS_RATINGS_HIDE_SYMBOL
 import com.michaldrabik.ui_base.common.views.MovieView
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.gone
@@ -50,8 +51,8 @@ class MyMovieAllView : MovieView<MyMoviesItem> {
       else item.translation?.title
 
     bindDescription(item)
+    bindRating(item)
 
-    collectionMovieRating.text = String.format(ENGLISH, "%.1f", item.movie.rating)
     collectionMovieYear.visibleIf(item.movie.released != null || item.movie.year > 0)
     collectionMovieYear.text = when {
       item.movie.released != null -> item.dateFormat?.format(item.movie.released)?.capitalizeWords()
@@ -78,6 +79,16 @@ class MyMovieAllView : MovieView<MyMoviesItem> {
 
     collectionMovieDescription.text = description
     collectionMovieDescription.visibleIf(item.movie.overview.isNotBlank())
+  }
+
+  private fun bindRating(item: MyMoviesItem) {
+    var rating = String.format(ENGLISH, "%.1f", item.movie.rating)
+
+    if (item.isSpoilerRatingsHidden) {
+      rating = SPOILERS_RATINGS_HIDE_SYMBOL
+    }
+
+    collectionMovieRating.text = rating
   }
 
   private fun loadTranslation() {

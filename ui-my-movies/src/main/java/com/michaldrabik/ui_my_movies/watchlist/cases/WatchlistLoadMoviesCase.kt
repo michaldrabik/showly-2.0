@@ -9,6 +9,7 @@ import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
+import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_my_movies.common.helpers.CollectionItemFilter
@@ -44,7 +45,7 @@ class WatchlistLoadMoviesCase @Inject constructor(
       val translations =
         if (language == Config.DEFAULT_LANGUAGE) emptyMap()
         else translationsRepository.loadAllMoviesLocal(language)
-      val isSpoilersHidden = settingsRepository.spoilers.isWatchlistMoviesHidden
+      val spoilersSettings = settingsRepository.spoilers.getAll()
 
       val filtersItem = loadFiltersItem()
       val filtersGenres = filtersItem.genres.map { it.slug.lowercase() }
@@ -57,7 +58,9 @@ class WatchlistLoadMoviesCase @Inject constructor(
             userRating = ratings[it.ids.trakt],
             dateFormat = dateFormat,
             fullDateFormat = fullDateFormat,
-            isSpoilersHidden = isSpoilersHidden
+            sortOrder = filtersItem.sortOrder,
+            isSpoilersHidden = spoilersSettings.isWatchlistMoviesHidden,
+            isSpoilersRatingsHidden = spoilersSettings.isWatchlistMoviesRatingsHidden,
           )
         }
         .awaitAll()
@@ -99,7 +102,9 @@ class WatchlistLoadMoviesCase @Inject constructor(
     userRating: TraktRating?,
     dateFormat: DateTimeFormatter,
     fullDateFormat: DateTimeFormatter,
-    isSpoilersHidden: Boolean
+    sortOrder: SortOrder,
+    isSpoilersHidden: Boolean,
+    isSpoilersRatingsHidden: Boolean,
   ) = async {
     val image = imagesProvider.findCachedImage(movie, ImageType.POSTER)
     CollectionListItem.MovieItem(
@@ -110,7 +115,9 @@ class WatchlistLoadMoviesCase @Inject constructor(
       fullDateFormat = fullDateFormat,
       translation = translation,
       userRating = userRating?.rating,
-      isSpoilerHidden = isSpoilersHidden
+      sortOrder = sortOrder,
+      isSpoilerHidden = isSpoilersHidden,
+      isSpoilerRatingsHidden = isSpoilersRatingsHidden
     )
   }
 }

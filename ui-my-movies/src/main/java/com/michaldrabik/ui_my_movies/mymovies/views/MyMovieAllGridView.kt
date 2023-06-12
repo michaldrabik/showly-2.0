@@ -8,6 +8,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.common.Config
+import com.michaldrabik.common.Config.SPOILERS_RATINGS_HIDE_SYMBOL
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.views.MovieView
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -61,8 +62,7 @@ class MyMovieAllGridView : MovieView<MyMoviesItem> {
       collectionMovieProgress.visibleIf(item.isLoading)
 
       if (item.sortOrder == RATING) {
-        collectionMovieRating.visible()
-        collectionMovieRating.text = String.format(ENGLISH, "%.1f", item.movie.rating)
+        bindRating(item)
       } else if (item.sortOrder == USER_RATING && item.userRating != null) {
         collectionMovieRating.visible()
         collectionMovieRating.text = String.format(ENGLISH, "%d", item.userRating)
@@ -72,6 +72,19 @@ class MyMovieAllGridView : MovieView<MyMoviesItem> {
     }
 
     loadImage(item)
+  }
+
+  private fun bindRating(item: MyMoviesItem) {
+    with(binding) {
+      var rating = String.format(ENGLISH, "%.1f", item.movie.rating)
+
+      if (item.isSpoilerRatingsHidden) {
+        rating = SPOILERS_RATINGS_HIDE_SYMBOL
+      }
+
+      collectionMovieRating.visible()
+      collectionMovieRating.text = rating
+    }
   }
 
   private fun loadTranslation() {

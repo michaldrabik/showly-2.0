@@ -22,7 +22,8 @@ data class MyMoviesItem(
   val userRating: Int? = null,
   val dateFormat: DateTimeFormatter? = null,
   val sortOrder: SortOrder? = null,
-  val isSpoilerHidden: Boolean = false
+  val isSpoilerHidden: Boolean = false,
+  val isSpoilerRatingsHidden: Boolean = false,
 ) : MovieListItem {
 
   enum class Type {
@@ -35,7 +36,7 @@ data class MyMoviesItem(
     val section: MyMoviesSection,
     val itemCount: Int,
     val sortOrder: Pair<SortOrder, SortType>?,
-    val genres: List<Genre>?
+    val genres: List<Genre>?,
   )
 
   data class RecentsSection(
@@ -48,7 +49,7 @@ data class MyMoviesItem(
       section: MyMoviesSection,
       itemCount: Int,
       sortOrder: Pair<SortOrder, SortType>?,
-      genres: List<Genre>?
+      genres: List<Genre>?,
     ) = MyMoviesItem(
       Type.HEADER,
       Header(section, itemCount, sortOrder, genres),

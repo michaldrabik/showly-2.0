@@ -96,7 +96,7 @@ class WatchlistLoadShowsCase @Inject constructor(
     dateFormat: DateTimeFormatter,
     sortOrder: SortOrder,
     isSpoilersHidden: Boolean,
-    isSpoilersRatingsHidden: Boolean
+    isSpoilersRatingsHidden: Boolean,
   ) = async {
     val image = imagesProvider.findCachedImage(show, ImageType.POSTER)
     CollectionListItem.ShowItem(

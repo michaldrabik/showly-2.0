@@ -7,6 +7,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.common.views.MovieView
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.gone
@@ -16,7 +17,17 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_my_movies.R
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem
+import kotlinx.android.synthetic.main.view_collection_movie.view.*
 import kotlinx.android.synthetic.main.view_collection_movie_compact.view.*
+import kotlinx.android.synthetic.main.view_collection_movie_compact.view.collectionMovieImage
+import kotlinx.android.synthetic.main.view_collection_movie_compact.view.collectionMoviePlaceholder
+import kotlinx.android.synthetic.main.view_collection_movie_compact.view.collectionMovieProgress
+import kotlinx.android.synthetic.main.view_collection_movie_compact.view.collectionMovieRating
+import kotlinx.android.synthetic.main.view_collection_movie_compact.view.collectionMovieRoot
+import kotlinx.android.synthetic.main.view_collection_movie_compact.view.collectionMovieTitle
+import kotlinx.android.synthetic.main.view_collection_movie_compact.view.collectionMovieUserRating
+import kotlinx.android.synthetic.main.view_collection_movie_compact.view.collectionMovieUserStarIcon
+import kotlinx.android.synthetic.main.view_collection_movie_compact.view.collectionMovieYear
 import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n")
@@ -47,7 +58,8 @@ class MyMovieAllCompactView : MovieView<MyMoviesItem> {
       if (item.translation?.title.isNullOrBlank()) item.movie.title
       else item.translation?.title
 
-    collectionMovieRating.text = String.format(ENGLISH, "%.1f", item.movie.rating)
+    bindRating(item)
+
     collectionMovieYear.visibleIf(item.movie.released != null || item.movie.year > 0)
     collectionMovieYear.text = when {
       item.movie.released != null -> item.dateFormat?.format(item.movie.released)?.capitalizeWords()
@@ -61,6 +73,16 @@ class MyMovieAllCompactView : MovieView<MyMoviesItem> {
     }
 
     loadImage(item)
+  }
+
+  private fun bindRating(item: MyMoviesItem) {
+    var rating = String.format(ENGLISH, "%.1f", item.movie.rating)
+
+    if (item.isSpoilerRatingsHidden) {
+      rating = Config.SPOILERS_RATINGS_HIDE_SYMBOL
+    }
+
+    collectionMovieRating.text = rating
   }
 
   private fun loadTranslation() {

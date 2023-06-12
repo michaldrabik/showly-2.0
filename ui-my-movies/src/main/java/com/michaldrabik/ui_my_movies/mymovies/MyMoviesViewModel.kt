@@ -23,6 +23,7 @@ import com.michaldrabik.ui_model.MyMoviesSection.ALL
 import com.michaldrabik.ui_model.MyMoviesSection.RECENTS
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
+import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesUiEvent
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesUiState
@@ -89,7 +90,7 @@ class MyMoviesViewModel @Inject constructor(
       val ratings = ratingsCase.loadRatings()
       val sortOrder = sortingCase.loadSortOrder()
       val genresFilter = settingsRepository.filters.myMoviesGenres
-      val isSpoilersHidden = settingsRepository.spoilers.isMyMoviesHidden
+      val spoilers = settingsRepository.spoilers.getAll()
 
       val movies = loadMoviesCase.loadAll().map {
         toListItemAsync(
@@ -98,7 +99,8 @@ class MyMoviesViewModel @Inject constructor(
           dateFormat = dateFormat,
           type = POSTER,
           userRating = ratings[it.ids.trakt],
-          isSpoilersHidden = isSpoilersHidden
+          sortOrder = sortOrder.first,
+          spoilers = spoilers
         )
       }.awaitAll()
 
@@ -116,7 +118,8 @@ class MyMoviesViewModel @Inject constructor(
             dateFormat = dateFormat,
             type = ImageType.FANART,
             userRating = ratings[it.ids.trakt],
-            isSpoilersHidden = isSpoilersHidden
+            sortOrder = sortOrder.first,
+            spoilers = spoilers
           )
         }.awaitAll()
       } else {
@@ -204,7 +207,8 @@ class MyMoviesViewModel @Inject constructor(
     dateFormat: DateTimeFormatter,
     type: ImageType = POSTER,
     userRating: TraktRating?,
-    isSpoilersHidden: Boolean
+    sortOrder: SortOrder?,
+    spoilers: SpoilersSettings,
   ) = async {
     val image = loadMoviesCase.findCachedImage(movie, type)
     val translation = loadMoviesCase.loadTranslation(movie, true)
@@ -218,7 +222,9 @@ class MyMoviesViewModel @Inject constructor(
       translation = translation,
       userRating = userRating?.rating,
       dateFormat = dateFormat,
-      isSpoilerHidden = isSpoilersHidden
+      sortOrder = sortOrder,
+      isSpoilerHidden = spoilers.isMyMoviesHidden,
+      isSpoilerRatingsHidden = spoilers.isMyMoviesRatingsHidden,
     )
   }
 

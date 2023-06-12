@@ -8,6 +8,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
+import com.michaldrabik.common.Config.SPOILERS_RATINGS_HIDE_SYMBOL
 import com.michaldrabik.common.Config.SPOILERS_REGEX
 import com.michaldrabik.common.extensions.nowUtcDay
 import com.michaldrabik.ui_base.common.views.MovieView
@@ -52,6 +53,7 @@ class CollectionMovieView : MovieView<CollectionListItem.MovieItem> {
       else item.translation?.title
 
     bindDescription(item)
+    bindRating(item)
 
     val releaseDate = item.movie.released
     val isUpcoming = releaseDate?.let { it.toEpochDay() > nowUtc.toEpochDay() } ?: false
@@ -77,7 +79,6 @@ class CollectionMovieView : MovieView<CollectionListItem.MovieItem> {
       }
     }
 
-    collectionMovieRating.text = String.format(ENGLISH, "%.1f", item.movie.rating)
     item.userRating?.let {
       collectionMovieUserStarIcon.visible()
       collectionMovieUserRating.visible()
@@ -98,6 +99,16 @@ class CollectionMovieView : MovieView<CollectionListItem.MovieItem> {
     }
 
     collectionMovieDescription.visibleIf(item.movie.overview.isNotBlank())
+  }
+
+  private fun bindRating(item: CollectionListItem.MovieItem) {
+    var rating = String.format(ENGLISH, "%.1f", item.movie.rating)
+
+    if (item.isSpoilerRatingsHidden) {
+      rating = SPOILERS_RATINGS_HIDE_SYMBOL
+    }
+
+    collectionMovieRating.text = rating
   }
 
   private fun loadTranslation() {

@@ -41,6 +41,7 @@ class CollectionItemDiffCallback : DiffUtil.ItemCallback<CollectionListItem>() {
       oldItem.translation == newItem.translation &&
       oldItem.sortOrder == newItem.sortOrder &&
       oldItem.isSpoilerHidden == newItem.isSpoilerHidden &&
+      oldItem.isSpoilerRatingsHidden == newItem.isSpoilerRatingsHidden &&
       oldItem.userRating == newItem.userRating
   }
 
