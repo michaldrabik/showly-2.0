@@ -18,7 +18,7 @@
   <string name="textSettingsTraktQuickRemoveSummary">Tarjoa tietojen poistoa Trakt.tv-tililtäsi, kun olet poistanut ne sovelluksesta.</string>
   <string name="textSettingsTraktQuickRateTitle">Trakt.tv-pika-arviointi</string>
   <string name="textSettingsTraktQuickRateSummary">Arvioi jaksot ja elokuvat aina kun merkitset ne katselutilanteessa katselluiksi.</string>
-  <string name="textSettingsGeneral">Yleiset &amp; käyttölittymä</string>
+  <string name="textSettingsGeneral">Yleiset ja käyttölittymä</string>
   <string name="textSettingsRecentShowsTitle">Hiljattain lisättyjä</string>
   <string name="textSettingsRecentShowsSummary">Kokoelmassa näytettävien, hiljattain lisättyjen kohteiden määrä.</string>
   <string name="textSettingsUpcomingSectionTitle">Tulevien osio</string>
