@@ -16,9 +16,9 @@
   <string name="textConfirmDeleteListSubtitle">Haluatko varmasti poistaa listan?</string>
   <string name="textChangeRanks">Muuta sijoituksia</string>
   <string name="textChangeRanksSubtitle">Muuta listan kohteen sijoitusta vetämällä ja pudottamalla</string>
-  <string name="textManageLists">Hallinnoi listoja</string>
-  <string name="textManageListsShows">Hallinnoi sarjaan liitettyjä listoja.</string>
-  <string name="textManageListsMovies">Hallinnoi elokuvaan liitettyjä listoja.</string>
+  <string name="textManageLists">Hallitse listoja</string>
+  <string name="textManageListsShows">Hallitse sarjan listoja.</string>
+  <string name="textManageListsMovies">Hallitse elokuvan listoja.</string>
   <string name="errorCouldNotCreateList">Listan luonti Trakt.tv-kokoelmaasi ei juuri nyt onnistunut.\nTarkista Internet-yhteytesi ja yritä uudelleen.</string>
   <string name="errorCouldNotUpdateList">Listan päivitys Trakt.tv-kokoelmaasi ei juuri nyt onnistunut.\nTarkista Internet-yhteytesi ja yritä uudelleen.</string>
   <string name="errorCouldNotDeleteList">Listan poisto Trakt.tv-kokoelmastasi ei juuri nyt onnistunut.\nTarkista Internet-yhteytesi ja yritä uudelleen.</string>
