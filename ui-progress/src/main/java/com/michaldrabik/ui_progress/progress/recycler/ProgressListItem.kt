@@ -33,6 +33,7 @@ sealed class ProgressListItem(
     val isUpcoming: Boolean,
     val isPinned: Boolean,
     val isOnHold: Boolean,
+    val isSpoilerRatingHidden: Boolean,
     val translations: TranslationsBundle? = null,
     val dateFormat: DateTimeFormatter? = null,
     val sortOrder: SortOrder? = null,

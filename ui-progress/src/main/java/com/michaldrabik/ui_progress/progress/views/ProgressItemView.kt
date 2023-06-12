@@ -8,6 +8,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import android.widget.LinearLayout
 import com.bumptech.glide.Glide
+import com.michaldrabik.common.Config.SPOILERS_RATINGS_HIDE_SYMBOL
 import com.michaldrabik.ui_base.common.views.ShowView
 import com.michaldrabik.ui_base.utilities.DurationPrinter
 import com.michaldrabik.ui_base.utilities.extensions.addRipple
@@ -104,7 +105,11 @@ class ProgressItemView : ShowView<ProgressListItem.Episode> {
         progressItemRating.visibleIf(!isNew && !isUpcoming)
         progressItemRatingStar.visibleIf(!isNew && !isUpcoming)
         progressItemRatingStar.imageTintList = context.colorStateListFromAttr(android.R.attr.colorAccent)
-        progressItemRating.text = String.format(ENGLISH, "%.1f", episodeItem.show.rating)
+        progressItemRating.text = if (item.isSpoilerRatingHidden) {
+          SPOILERS_RATINGS_HIDE_SYMBOL
+        } else {
+          String.format(ENGLISH, "%.1f", episodeItem.show.rating)
+        }
       }
       USER_RATING -> {
         val hasRating = episodeItem.userRating != null

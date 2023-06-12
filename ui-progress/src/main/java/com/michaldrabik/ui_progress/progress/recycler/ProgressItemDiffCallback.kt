@@ -46,6 +46,7 @@ class ProgressItemDiffCallback : DiffUtil.ItemCallback<ProgressListItem>() {
       oldItem.translations == newItem.translations &&
       oldItem.isUpcoming == newItem.isUpcoming &&
       oldItem.sortOrder == newItem.sortOrder &&
+      oldItem.isSpoilerRatingHidden == newItem.isSpoilerRatingHidden &&
       oldItem.isOnHold == newItem.isOnHold &&
       oldItem.userRating == newItem.userRating &&
       oldItem.isPinned == newItem.isPinned
