@@ -6,6 +6,7 @@ data class Ratings(
   val metascore: Value? = null,
   val rottenTomatoes: Value? = null,
   val rottenTomatoesUrl: String? = null,
+  val isHidden: Boolean = false
 ) {
 
   fun isAnyLoading() =

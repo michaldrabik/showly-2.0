@@ -8,12 +8,28 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.michaldrabik.common.Config.SPOILERS_RATINGS_HIDE_SYMBOL
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Ratings
-import kotlinx.android.synthetic.main.view_ratings_strip.view.*
+import kotlinx.android.synthetic.main.view_ratings_strip.view.viewRatingsStripImdb
+import kotlinx.android.synthetic.main.view_ratings_strip.view.viewRatingsStripImdbLinkIcon
+import kotlinx.android.synthetic.main.view_ratings_strip.view.viewRatingsStripImdbProgress
+import kotlinx.android.synthetic.main.view_ratings_strip.view.viewRatingsStripImdbValue
+import kotlinx.android.synthetic.main.view_ratings_strip.view.viewRatingsStripMeta
+import kotlinx.android.synthetic.main.view_ratings_strip.view.viewRatingsStripMetaLinkIcon
+import kotlinx.android.synthetic.main.view_ratings_strip.view.viewRatingsStripMetaProgress
+import kotlinx.android.synthetic.main.view_ratings_strip.view.viewRatingsStripMetaValue
+import kotlinx.android.synthetic.main.view_ratings_strip.view.viewRatingsStripRotten
+import kotlinx.android.synthetic.main.view_ratings_strip.view.viewRatingsStripRottenLinkIcon
+import kotlinx.android.synthetic.main.view_ratings_strip.view.viewRatingsStripRottenProgress
+import kotlinx.android.synthetic.main.view_ratings_strip.view.viewRatingsStripRottenValue
+import kotlinx.android.synthetic.main.view_ratings_strip.view.viewRatingsStripTrakt
+import kotlinx.android.synthetic.main.view_ratings_strip.view.viewRatingsStripTraktLinkIcon
+import kotlinx.android.synthetic.main.view_ratings_strip.view.viewRatingsStripTraktProgress
+import kotlinx.android.synthetic.main.view_ratings_strip.view.viewRatingsStripTraktValue
 
 class RatingsStripView : LinearLayout {
 
@@ -50,12 +66,13 @@ class RatingsStripView : LinearLayout {
       valueView: TextView,
       progressView: View,
       linkView: View,
+      isHidden: Boolean
     ) {
       val rating = ratings?.value
       val isLoading = ratings?.isLoading == true
       with(valueView) {
         visibleIf(!isLoading && !rating.isNullOrBlank(), gone = false)
-        text = rating
+        text = if (isHidden) SPOILERS_RATINGS_HIDE_SYMBOL else rating
         setTextColor(if (rating != null) colorPrimary else colorSecondary)
       }
       progressView.visibleIf(isLoading)
@@ -63,10 +80,37 @@ class RatingsStripView : LinearLayout {
     }
 
     this.ratings = ratings
-    bindValue(ratings.trakt, viewRatingsStripTraktValue, viewRatingsStripTraktProgress, viewRatingsStripTraktLinkIcon)
-    bindValue(ratings.imdb, viewRatingsStripImdbValue, viewRatingsStripImdbProgress, viewRatingsStripImdbLinkIcon)
-    bindValue(ratings.metascore, viewRatingsStripMetaValue, viewRatingsStripMetaProgress, viewRatingsStripMetaLinkIcon)
-    bindValue(ratings.rottenTomatoes, viewRatingsStripRottenValue, viewRatingsStripRottenProgress, viewRatingsStripRottenLinkIcon)
+    bindValue(
+      ratings = ratings.trakt,
+      valueView = viewRatingsStripTraktValue,
+      progressView = viewRatingsStripTraktProgress,
+      linkView = viewRatingsStripTraktLinkIcon,
+      isHidden = ratings.isHidden
+    )
+
+    bindValue(
+      ratings = ratings.imdb,
+      valueView = viewRatingsStripImdbValue,
+      progressView = viewRatingsStripImdbProgress,
+      linkView = viewRatingsStripImdbLinkIcon,
+      isHidden = ratings.isHidden
+    )
+
+    bindValue(
+      ratings = ratings.metascore,
+      valueView = viewRatingsStripMetaValue,
+      progressView = viewRatingsStripMetaProgress,
+      linkView = viewRatingsStripMetaLinkIcon,
+      isHidden = ratings.isHidden
+    )
+
+    bindValue(
+      ratings = ratings.rottenTomatoes,
+      valueView = viewRatingsStripRottenValue,
+      progressView = viewRatingsStripRottenProgress,
+      linkView = viewRatingsStripRottenLinkIcon,
+      isHidden = ratings.isHidden
+    )
   }
 
   fun isBound() = this::ratings.isInitialized && !this.ratings.isAnyLoading()

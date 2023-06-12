@@ -5,5 +5,6 @@ import com.michaldrabik.ui_model.Show
 
 data class ShowDetailsRatingsUiState(
   val show: Show? = null,
-  val ratings: Ratings? = null
+  val ratings: Ratings? = null,
+  val isRefreshingRatings: Boolean = false
 )

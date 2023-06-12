@@ -7,6 +7,7 @@ import androidx.core.os.bundleOf
 import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.viewModels
 import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
+import com.michaldrabik.common.Config.SPOILERS_RATINGS_HIDE_SYMBOL
 import com.michaldrabik.common.Config.SPOILERS_REGEX
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
@@ -90,14 +91,11 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet() {
         else item.translation?.title
 
       renderItemDescription(item)
+      renderItemRating(item)
 
       contextMenuItemNetwork.text =
         if (item.show.year > 0) getString(R.string.textNetwork, item.show.network, item.show.year.toString())
         else String.format("%s", item.show.network)
-
-      contextMenuRating.text = String.format(Locale.ENGLISH, "%.1f", item.show.rating)
-      contextMenuRating.visibleIf(item.show.rating > 0)
-      contextMenuRatingStar.visibleIf(item.show.rating > 0)
 
       contextMenuUserRating.text = String.format(Locale.ENGLISH, "%d", item.userRating)
       contextMenuUserRating.visibleIf(item.userRating != null)
@@ -146,6 +144,25 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet() {
         val hiddenDescription = SPOILERS_REGEX.replace(contextMenuItemDescription.text.toString(), SPOILERS_HIDE_SYMBOL)
         contextMenuItemDescription.text = hiddenDescription
       }
+    }
+  }
+
+  private fun renderItemRating(item: ShowContextItem) {
+    with(binding) {
+      var rating = String.format(Locale.ENGLISH, "%.1f", item.show.rating)
+
+      val isMyShowHidden = item.spoilers.isMyShowsRatingsHidden && item.isMyShow
+      val isWatchlistHidden = item.spoilers.isWatchlistShowsRatingsHidden && item.isWatchlist
+      val isHiddenShowHidden = item.spoilers.isHiddenShowsRatingsHidden && item.isHidden
+      val isNotCollectedHidden = item.spoilers.isNotCollectedShowsRatingsHidden && (!item.isInCollection())
+
+      if (isMyShowHidden || isWatchlistHidden || isHiddenShowHidden || isNotCollectedHidden) {
+        rating = SPOILERS_RATINGS_HIDE_SYMBOL
+      }
+
+      contextMenuRating.visibleIf(item.show.rating > 0)
+      contextMenuRatingStar.visibleIf(item.show.rating > 0)
+      contextMenuRating.text = rating
     }
   }
 

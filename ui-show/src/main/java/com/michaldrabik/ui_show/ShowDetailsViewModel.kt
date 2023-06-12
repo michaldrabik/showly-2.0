@@ -74,7 +74,6 @@ class ShowDetailsViewModel @Inject constructor(
   val parentEvents = _parentEvents.asSharedFlow()
 
   private val showState = MutableStateFlow<Show?>(null)
-  val parentShowState = showState.asStateFlow()
   private val showLoadingState = MutableStateFlow<Boolean?>(null)
   private val imageState = MutableStateFlow<Image?>(null)
   private val followedState = MutableStateFlow<FollowedState?>(null)
@@ -83,6 +82,9 @@ class ShowDetailsViewModel @Inject constructor(
   private val listsCountState = MutableStateFlow(0)
   private val spoilersState = MutableStateFlow<SpoilersSettings?>(null)
   private val metaState = MutableStateFlow<ShowDetailsMeta?>(null)
+
+  val parentShowState = showState.asStateFlow()
+  val parentFollowedState = followedState.asStateFlow()
 
   fun loadDetails(id: IdTrakt) {
     viewModelScope.launch {

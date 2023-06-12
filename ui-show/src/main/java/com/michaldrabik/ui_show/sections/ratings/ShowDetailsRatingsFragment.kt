@@ -29,6 +29,7 @@ class ShowDetailsRatingsFragment : BaseFragment<ShowDetailsRatingsViewModel>(R.l
     super.onViewCreated(view, savedInstanceState)
     launchAndRepeatStarted(
       { parentViewModel.parentShowState.collect { it?.let { viewModel.loadRatings(it) } } },
+      { parentViewModel.parentFollowedState.collect { it?.let { viewModel.refreshRatings() } } },
       { viewModel.uiState.collect { render(it) } }
     )
   }
@@ -37,7 +38,9 @@ class ShowDetailsRatingsFragment : BaseFragment<ShowDetailsRatingsViewModel>(R.l
     with(uiState) {
       with(binding) {
         ratings?.let {
-          if (showDetailsRatings.isBound()) return
+          if (showDetailsRatings.isBound() && !isRefreshingRatings) {
+            return
+          }
           showDetailsRatings.bind(ratings)
           show?.let {
             showDetailsRatings.onTraktClick = { openLink(ShowLink.TRAKT, show.traktId.toString()) }
