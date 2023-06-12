@@ -2,20 +2,20 @@
 <resources>
   <string name="textStatistics">Tilastot</string>
   <string name="textStatisticsEmpty"><b>Omissa sarjoissa</b> on oltava ainakin\nyksi sarja ennen kuin tilastoja voidaan näyttää.</string>
-  <string name="textStatisticsMostWatchedShows">Katselluimmat sarjat</string>
-  <string name="textStatisticsTotalTimeSpent">Katseluun käytetty kokonaisaika</string>
-  <string name="textStatisticsTotalTimeItIs">ja se on</string>
+  <string name="textStatisticsMostWatchedShows">Katsotuimmat sarjat</string>
+  <string name="textStatisticsTotalTimeSpent">Kokonaiskatseluaika on</string>
+  <string name="textStatisticsTotalTimeItIs">joka on</string>
   <string name="textStatisticsTotalTimeSpentHours">%s tuntia</string>
   <string name="textStatisticsTotalTimeSpentMinutes">%s minuuttia</string>
-  <string name="textStatisticsTotalTimeSpentDays">joka on noin %s päivää.</string>
-  <string name="textStatisticsTotalEpisodes">Jaksoja katseltu kaikkiaan</string>
+  <string name="textStatisticsTotalTimeSpentDays">eli noin %s päivää.</string>
+  <string name="textStatisticsTotalEpisodes">Jaksoja katsottu</string>
   <string name="textStatisticsTotalEpisodesCount">%s jaksoa</string>
   <string name="textStatisticsTotalEpisodesShowsCount">kattaen %s sarjaa.</string>
   <string name="textStatisticsTopGenre">Suosituimmat tyylilajit</string>
   <string name="textStatisticsTopGenreSubValue">näyttävät olevan juttusi. Napauta nähdäksesi lisää.</string>
   <string name="textStatisticsTopGenreSubValue2">näyttävät olevan juttusi.</string>
   <string name="textStatisticsShowMore">Näytä lisää</string>
-  <string name="textStatisticsRatings">Hiljattain arvioitu</string>
+  <string name="textStatisticsRatings">Viimeksi arvioidut</string>
   <string name="textStatisticsHours">tuntia</string>
   <string name="textStatisticsEpisodes">jaksoa</string>
   <string name="textStatisticsSeasons">kautta</string>
