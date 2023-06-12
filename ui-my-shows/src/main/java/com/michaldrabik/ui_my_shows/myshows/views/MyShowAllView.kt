@@ -7,8 +7,8 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
-import com.michaldrabik.common.Config.SPOILERS_RATINGS_REGEX
 import com.michaldrabik.common.Config.SPOILERS_REGEX
 import com.michaldrabik.ui_base.common.views.ShowView
 import com.michaldrabik.ui_base.utilities.extensions.gone
@@ -84,7 +84,7 @@ class MyShowAllView : ShowView<MyShowsItem> {
     var rating = String.format(ENGLISH, "%.1f", item.show.rating)
 
     if (item.isSpoilerRatingsHidden) {
-      rating = SPOILERS_RATINGS_REGEX.replace(rating, SPOILERS_HIDE_SYMBOL)
+      rating = Config.SPOILERS_RATINGS_HIDE_SYMBOL
     }
 
     collectionShowRating.text = rating

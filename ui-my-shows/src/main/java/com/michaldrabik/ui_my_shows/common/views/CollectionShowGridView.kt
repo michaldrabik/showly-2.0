@@ -79,7 +79,7 @@ class CollectionShowGridView : ShowView<CollectionListItem.ShowItem> {
       var rating = String.format(ENGLISH, "%.1f", item.show.rating)
 
       if (item.isSpoilerRatingsHidden) {
-        rating = Config.SPOILERS_RATINGS_REGEX.replace(rating, Config.SPOILERS_HIDE_SYMBOL)
+        rating = Config.SPOILERS_RATINGS_HIDE_SYMBOL
       }
 
       collectionShowRating.visible()
