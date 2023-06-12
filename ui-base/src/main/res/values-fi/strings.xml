@@ -32,7 +32,7 @@
   <string name="textMinutesShort">min</string>
   <string name="textNoDescription">Yhteenvetoa ei ole saatavilla.</string>
   <string name="textPleaseWait">Odota…</string>
-  <string name="textRate">Avioi</string>
+  <string name="textRate">Arvioi</string>
   <string name="textLink">Linkki</string>
   <string name="textRateSaved">Arviosi tallennettiin.</string>
   <string name="textRateRemoved">Arviosi poistettiin.</string>
@@ -43,7 +43,7 @@
   <string name="textPeople">Henkilöt:</string>
   <string name="textDirecting">Ohjaus</string>
   <string name="textDirector">Ohjaaja</string>
-  <string name="textWriting">Kirjoitus</string>
+  <string name="textWriting">Käsikirjoitus</string>
   <string name="textScreenplay">Käsikirjoitus</string>
   <string name="textSound">Ääni</string>
   <string name="textMusic">Musiikki</string>
@@ -96,7 +96,7 @@
   <string name="textRemoveFromTrakt">Poistetaanko Trakt.tv-kokoelmastasi?</string>
   <string name="textRemoveFromTraktHidden">Haluatko poistaa kohteen Trakt.tv-tilisi \'Hidden Items\' (Piilotetut kohteet) -osiosta?</string>
   <string name="textRemoveFromTraktWatchlist">Haluatko poistaa kohteen Trakt.tv-tilisi \'Watchlist\' (Katselulista) -osiosta?</string>
-  <string name="textRemoveFromTraktProgress">Haluatko poistaa kohteen Trakt.tv-tilisi \'Progress\' (Katselutilanne) -osiosta?</string>
+  <string name="textRemoveFromTraktProgress">Haluatko poistaa kohteen Trakt.tv-tilisi \"Progress\" (Katselutila) -osiosta?</string>
   <string name="textAddToMyShows">Lisää omiin sarjoihin</string>
   <string name="textAddToMyMovies">Lisää omiin elokuviin</string>
   <string name="textAddToWatchlist">Lisää katselulistalle</string>
@@ -122,7 +122,7 @@
   <string name="errorTraktAuthorization">Trakt.tv-tilin valtuutus epäonnistui.\nKirjaudu sisään ja yritä uudelleen.</string>
   <string name="errorSeasonsNotLoaded">Odota kun tuotantokausien tiedot ladataan.</string>
   <string name="errorEpisodeNotAired">Jaksoa ei ole vielä esitetty.</string>
-  <string name="errorCouldNotLoadDiscover">Etsinnän lataus ei juuri nyt onnistunut.\nOta meihin yhteyttä, jos tämä jatkuu.</string>
+  <string name="errorCouldNotLoadDiscover">Etsinntäosion lataus ei juuri nyt onnistunut.\nOta yhteyttä, jos tämä jatkuu.</string>
   <string name="errorMalformedShow">Sarjaa ei näyttäisi enää olevan Trakt.tv:n tietokannassa tai se on kaksoiskappale.\n\nPoista se sovelluksesta napauttamalla \'OK\'.</string>
   <string name="errorMalformedMovie">Näyttäisi siltä, ettei elokuvaa enää ole Trakt.tv:n tietokannassa tai se on kaksoiskappale.\n\nPoista se sovelluksesta napauttamalla \'OK\'.</string>
   <string name="errorCouldNotLoadShow">Sarjan tietoja ei voitu ladata.\nOta meihin yhteyttä, jos tämä jatkuu.</string>
