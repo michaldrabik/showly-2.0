@@ -70,7 +70,6 @@ class MovieDetailsViewModel @Inject constructor(
   private var movie by notNull<Movie>()
 
   private val movieState = MutableStateFlow<Movie?>(null)
-  val parentMovieState = movieState.asStateFlow()
   private val movieLoadingState = MutableStateFlow<Boolean?>(null)
   private val imageState = MutableStateFlow<Image?>(null)
   private val followedState = MutableStateFlow<FollowedState?>(null)
@@ -79,6 +78,9 @@ class MovieDetailsViewModel @Inject constructor(
   private val metaState = MutableStateFlow<MovieDetailsMeta?>(null)
   private val spoilersState = MutableStateFlow<SpoilersSettings?>(null)
   private val listsCountState = MutableStateFlow(0)
+
+  val parentMovieState = movieState.asStateFlow()
+  val parentFollowedState = followedState.asStateFlow()
 
   fun loadDetails(id: IdTrakt) {
     viewModelScope.launch {
