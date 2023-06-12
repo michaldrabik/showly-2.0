@@ -117,7 +117,7 @@ class ListDetailsShowItemView : ListDetailsItemView {
 
   private fun bindDescription(
     item: ListDetailsItem,
-    show: Show
+    show: Show,
   ) {
     var description = when {
       item.translation?.overview.isNullOrBlank() -> show.overview.ifBlank {
@@ -138,7 +138,7 @@ class ListDetailsShowItemView : ListDetailsItemView {
 
   private fun bindRating(
     item: ListDetailsItem,
-    show: Show
+    show: Show,
   ) {
     var rating = String.format(ENGLISH, "%.1f", show.rating)
 
