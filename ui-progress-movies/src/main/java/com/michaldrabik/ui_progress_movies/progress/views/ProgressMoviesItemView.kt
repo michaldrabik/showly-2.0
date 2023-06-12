@@ -8,6 +8,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
+import com.michaldrabik.common.Config.SPOILERS_RATINGS_HIDE_SYMBOL
 import com.michaldrabik.common.Config.SPOILERS_REGEX
 import com.michaldrabik.ui_base.common.views.MovieView
 import com.michaldrabik.ui_base.utilities.extensions.addRipple
@@ -90,7 +91,11 @@ class ProgressMoviesItemView : MovieView<ProgressMovieListItem.MovieItem> {
         progressMovieItemRating.visible()
         progressMovieItemRatingStar.visible()
         progressMovieItemRatingStar.imageTintList = context.colorStateListFromAttr(android.R.attr.colorAccent)
-        progressMovieItemRating.text = String.format(Locale.ENGLISH, "%.1f", item.movie.rating)
+        progressMovieItemRating.text = if (item.isSpoilerRatingsHidden) {
+          SPOILERS_RATINGS_HIDE_SYMBOL
+        } else {
+          String.format(Locale.ENGLISH, "%.1f", item.movie.rating)
+        }
       }
       USER_RATING -> {
         val hasRating = item.userRating != null
