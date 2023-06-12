@@ -71,6 +71,7 @@
   <string name="textSettingsProgressNextEpisodeMessage">Calculate next episode using:</string>
 
   <string name="textSettingsSpoilers">Spoilers</string>
+
   <string name="textSettingsSpoilersShows">Shows</string>
   <string name="textSettingsSpoilersShowsSummary">Manage spoiler settings for shows.</string>
   <string name="textSettingsSpoilersShowsOverviewsMyTitle">My Shows</string>
@@ -89,13 +90,17 @@
   <string name="textSettingsSpoilersMovies">Movies</string>
   <string name="textSettingsSpoilersMoviesSummary">Manage spoiler settings for movies.</string>
   <string name="textSettingsSpoilersMoviesOverviewsMyTitle">My Movies</string>
-  <string name="textSettingsSpoilersMoviesOverviewsMyDescription">Hide description of movies added to My Movies</string>
+  <string name="textSettingsSpoilersMoviesOverviewsMyDescription">Hide <b>description</b> of movies added to My Movies</string>
+  <string name="textSettingsSpoilersMoviesRatingsMyDescription">Hide <b>rating</b> of movies added to My Movies</string>
   <string name="textSettingsSpoilersMoviesOverviewsWatchlistTitle">Watchlist</string>
-  <string name="textSettingsSpoilersMoviesOverviewsWatchlistDescription">Hide description of movies added to Watchlist</string>
+  <string name="textSettingsSpoilersMoviesOverviewsWatchlistDescription">Hide <b>description</b> of movies added to Watchlist</string>
+  <string name="textSettingsSpoilersMoviesRatingsWatchlistDescription">Hide <b>rating</b> of movies added to Watchlist</string>
   <string name="textSettingsSpoilersMoviesOverviewsHiddenTitle">Hidden</string>
-  <string name="textSettingsSpoilersMoviesOverviewsHiddenDescription">Hide description of movies added to Hidden</string>
+  <string name="textSettingsSpoilersMoviesOverviewsHiddenDescription">Hide <b>description</b> of movies added to Hidden</string>
+  <string name="textSettingsSpoilersMoviesRatingsHiddenDescription">Hide <b>rating</b> of movies added to Hidden</string>
   <string name="textSettingsSpoilersMoviesOverviewsNotCollectedTitle">Not Collected</string>
-  <string name="textSettingsSpoilersMoviesOverviewsNotCollectedDescription">Hide description of movies that are not in your Collection</string>
+  <string name="textSettingsSpoilersMoviesOverviewsNotCollectedDescription">Hide <b>description</b> of movies that are not in your Collection</string>
+  <string name="textSettingsSpoilersMoviesRatingsNotCollectedDescription">Hide <b>rating</b> of movies that are not in your Collection</string>
 
   <string name="textNextEpisodeLastWatched">Last watched episode</string>
   <string name="textNextEpisodeOldest">Oldest unwatched episode</string>

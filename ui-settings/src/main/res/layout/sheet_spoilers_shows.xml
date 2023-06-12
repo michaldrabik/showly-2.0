@@ -51,7 +51,6 @@
         <TextView
           android:id="@+id/notCollectedShowsDescription"
           style="@style/Settings.Summary"
-          android:layout_marginTop="@dimen/spaceSmall"
           android:layout_marginEnd="@dimen/spaceNormal"
           android:text="@string/textSettingsSpoilersShowsOverviewsNotCollectedDescription"
           app:layout_constrainedWidth="true"
@@ -121,7 +120,6 @@
         <TextView
           android:id="@+id/myShowsDescription"
           style="@style/Settings.Summary"
-          android:layout_marginTop="@dimen/spaceSmall"
           android:layout_marginEnd="@dimen/spaceNormal"
           android:text="@string/textSettingsSpoilersShowsOverviewsMyDescription"
           app:layout_constrainedWidth="true"
@@ -191,7 +189,6 @@
         <TextView
           android:id="@+id/watchlistShowsDescription"
           style="@style/Settings.Summary"
-          android:layout_marginTop="@dimen/spaceSmall"
           android:layout_marginEnd="@dimen/spaceNormal"
           android:text="@string/textSettingsSpoilersShowsOverviewsWatchlistDescription"
           app:layout_constrainedWidth="true"
@@ -261,7 +258,6 @@
         <TextView
           android:id="@+id/hiddenShowsDescription"
           style="@style/Settings.Summary"
-          android:layout_marginTop="@dimen/spaceSmall"
           android:layout_marginEnd="@dimen/spaceNormal"
           android:text="@string/textSettingsSpoilersShowsOverviewsHiddenDescription"
           app:layout_constrainedWidth="true"

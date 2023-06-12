@@ -23,9 +23,13 @@ class SettingsSpoilersRepository @Inject constructor(
     private const val SHOWS_HIDDEN_SHOWS_RATINGS_HIDDEN = "SHOWS_HIDDEN_SHOWS_RATINGS_HIDDEN"
 
     private const val MOVIES_UNCOLLECTED_MOVIES_HIDDEN = "MOVIES_UNCOLLECTED_MOVIES_HIDDEN"
+    private const val MOVIES_UNCOLLECTED_MOVIES_RATINGS_HIDDEN = "MOVIES_UNCOLLECTED_MOVIES_RATINGS_HIDDEN"
     private const val MOVIES_MY_MOVIES_HIDDEN = "MOVIES_MY_MOVIES_HIDDEN"
+    private const val MOVIES_MY_MOVIES_RATINGS_HIDDEN = "MOVIES_MY_MOVIES_RATINGS_HIDDEN"
     private const val MOVIES_WATCHLIST_MOVIES_HIDDEN = "MOVIES_WATCHLIST_MOVIES_HIDDEN"
+    private const val MOVIES_WATCHLIST_MOVIES_RATINGS_HIDDEN = "MOVIES_WATCHLIST_MOVIES_RATINGS_HIDDEN"
     private const val MOVIES_HIDDEN_MOVIES_HIDDEN = "MOVIES_HIDDEN_MOVIES_HIDDEN"
+    private const val MOVIES_HIDDEN_MOVIES_RATINGS_HIDDEN = "MOVIES_HIDDEN_MOVIES_RATINGS_HIDDEN"
   }
 
   var isMyShowsHidden by BooleanPreference(preferences, SHOWS_MY_SHOWS_HIDDEN, false)
@@ -38,22 +42,30 @@ class SettingsSpoilersRepository @Inject constructor(
   var isUncollectedShowsRatingsHidden by BooleanPreference(preferences, SHOWS_UNCOLLECTED_SHOWS_RATINGS_HIDDEN, false)
 
   var isMyMoviesHidden by BooleanPreference(preferences, MOVIES_MY_MOVIES_HIDDEN, false)
+  var isMyMoviesRatingsHidden by BooleanPreference(preferences, MOVIES_MY_MOVIES_RATINGS_HIDDEN, false)
   var isWatchlistMoviesHidden by BooleanPreference(preferences, MOVIES_WATCHLIST_MOVIES_HIDDEN, false)
+  var isWatchlistMoviesRatingsHidden by BooleanPreference(preferences, MOVIES_WATCHLIST_MOVIES_RATINGS_HIDDEN, false)
   var isHiddenMoviesHidden by BooleanPreference(preferences, MOVIES_HIDDEN_MOVIES_HIDDEN, false)
+  var isHiddenMoviesRatingsHidden by BooleanPreference(preferences, MOVIES_HIDDEN_MOVIES_RATINGS_HIDDEN, false)
   var isUncollectedMoviesHidden by BooleanPreference(preferences, MOVIES_UNCOLLECTED_MOVIES_HIDDEN, false)
+  var isUncollectedMoviesRatingsHidden by BooleanPreference(preferences, MOVIES_UNCOLLECTED_MOVIES_RATINGS_HIDDEN, false)
 
   fun getAll(): SpoilersSettings = SpoilersSettings(
     isMyShowsHidden = isMyShowsHidden,
     isMyShowsRatingsHidden = isMyShowsRatingsHidden,
     isMyMoviesHidden = isMyMoviesHidden,
+    isMyMoviesRatingsHidden = isMyMoviesRatingsHidden,
     isWatchlistShowsHidden = isWatchlistShowsHidden,
     isWatchlistShowsRatingsHidden = isWatchlistShowsRatingsHidden,
     isWatchlistMoviesHidden = isWatchlistMoviesHidden,
+    isWatchlistMoviesRatingsHidden = isWatchlistMoviesRatingsHidden,
     isHiddenShowsHidden = isHiddenShowsHidden,
     isHiddenShowsRatingsHidden = isHiddenShowsRatingsHidden,
     isHiddenMoviesHidden = isHiddenMoviesHidden,
+    isHiddenMoviesRatingsHidden = isHiddenMoviesRatingsHidden,
     isNotCollectedShowsHidden = isUncollectedShowsHidden,
     isNotCollectedShowsRatingsHidden = isUncollectedShowsRatingsHidden,
     isNotCollectedMoviesHidden = isUncollectedMoviesHidden,
+    isNotCollectedMoviesRatingsHidden = isUncollectedMoviesRatingsHidden,
   )
 }
