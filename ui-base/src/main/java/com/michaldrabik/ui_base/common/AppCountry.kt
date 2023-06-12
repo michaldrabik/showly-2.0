@@ -49,6 +49,7 @@ enum class AppCountry(
   SWITZERLAND("ch", "Switzerland", "Suche"),
   THAILAND("th", "Thailand"),
   TURKEY("tr", "Turkey", "arama"),
+  UKRAINE("ua", "Ukraine", "пошук"),
   UNITED_KINGDOM("uk", "United Kingdom"),
   UNITED_STATES("us", "United States"),
   VENEZUELA("ve", "Venezuela", "buscar");
