@@ -17,12 +17,12 @@
   <string name="textSettingsTraktQuickRemoveTitle">Poista tiedot Trakt.tv-tililtä</string>
   <string name="textSettingsTraktQuickRemoveSummary">Tarjoa tietojen poistoa Trakt.tv-tililtäsi, kun olet poistanut ne sovelluksesta.</string>
   <string name="textSettingsTraktQuickRateTitle">Trakt.tv-pika-arviointi</string>
-  <string name="textSettingsTraktQuickRateSummary">Arvioi jaksot ja elokuvat aina kun merkitset ne katselutilanteessa katselluiksi.</string>
+  <string name="textSettingsTraktQuickRateSummary">Arvioi jaksot ja elokuvat aina kun merkitset ne katsotuiksi Katselutila-osiossa.</string>
   <string name="textSettingsGeneral">Yleiset ja käyttölittymä</string>
   <string name="textSettingsRecentShowsTitle">Hiljattain lisättyjä</string>
   <string name="textSettingsRecentShowsSummary">Kokoelmassa näytettävien, hiljattain lisättyjen kohteiden määrä.</string>
   <string name="textSettingsUpcomingSectionTitle">Tulevien osio</string>
-  <string name="textSettingsUpcomingSectionSummary">Ota katselutilanteen tulevien osio käyttöön/poista se käytöstä.</string>
+  <string name="textSettingsUpcomingSectionSummary">Ota Katselutilan Tulevat-osio käyttöön/poista se käytöstä.</string>
   <string name="textSettingsMyShowsSectionsTitle">Omien sarjojen osiot</string>
   <string name="textSettingsMyShowsSectionSummary">Ota omien sarjojen osioita käyttöön/poista niitä käytöstä.</string>
   <string name="textSettingsMyMoviesSectionsTitle">Omien elokuvien osiot</string>
@@ -49,7 +49,7 @@
   <string name="textSettingsContactDevsTitle">Ota yhteyttä kehittäjiin</string>
   <string name="textSettingsContactDevsSummary">Onko ongelmia? Lähetä meille sähköpostia napauttamalla (showlyapp@gmail.com).</string>
   <string name="textSettingsRateAppTitle">Anna palautetta</string>
-  <string name="textSettingsRateAppSummary">Nautitko Showlysta? Kirjoita arvostelu Play Kaupassa. Kiitos!</string>
+  <string name="textSettingsRateAppSummary">Nautitko Showlysta? Arvostele se Play Kaupassa, kiitos!</string>
   <string name="textSettingsDeleteCacheTitle">Tyhjennä kuvavälimuisti</string>
   <string name="textSettingsDeleteCacheSummary">Tyhjennä paikallinen kuvavälimuisti napauttamalla. Tämä saattaa auttaa, jos sarjojen kuvat eivät lataudu oikein.</string>
   <string name="textSettingsQuickSyncConfirmationTitle">Poista automaattinen synkronointi käytöstä</string>
