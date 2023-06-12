@@ -15,7 +15,7 @@
   <string name="textSeasons">季：</string>
   <string name="textSeasonsEmpty">暂无剧季信息</string>
   <string name="textTrailer">预告片</string>
-  <string name="textYouMayAlsoLike">You may also like</string>
+  <string name="textYouMayAlsoLike">您还可能喜欢</string>
   <string name="textRuntimeLeftHours">剩余约 %s 小时 %s 分钟</string>
   <string name="textRuntimeLeftMinutes">剩余约 %s 分钟</string>
   <string name="textShowManageLists">管理列表</string>
