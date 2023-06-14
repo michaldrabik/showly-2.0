@@ -102,6 +102,13 @@
   <string name="textSettingsSpoilersMoviesOverviewsNotCollectedDescription">Hide <b>description</b> of movies that are not in your Collection</string>
   <string name="textSettingsSpoilersMoviesRatingsNotCollectedDescription">Hide <b>rating</b> of movies that are not in your Collection</string>
 
+  <string name="textSettingsSpoilersEpisodes">Episodes</string>
+  <string name="textSettingsSpoilersEpisodesSummary">Manage spoiler settings for episodes.</string>
+  <string name="textSettingsSpoilersEpisodesImage">Hide <b>image</b> of unwatched episodes.</string>
+  <string name="textSettingsSpoilersEpisodesTitle">Hide <b>title</b> of unwatched episodes.</string>
+  <string name="textSettingsSpoilersEpisodesDescription">Hide <b>description</b> of unwatched episodes.</string>
+  <string name="textSettingsSpoilersEpisodesRating">Hide <b>rating</b> of unwatched episodes.</string>
+
   <string name="textNextEpisodeLastWatched">Last watched episode</string>
   <string name="textNextEpisodeOldest">Oldest unwatched episode</string>
 

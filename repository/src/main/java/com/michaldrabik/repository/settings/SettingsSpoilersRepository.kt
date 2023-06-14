@@ -30,6 +30,11 @@ class SettingsSpoilersRepository @Inject constructor(
     private const val MOVIES_WATCHLIST_MOVIES_RATINGS_HIDDEN = "MOVIES_WATCHLIST_MOVIES_RATINGS_HIDDEN"
     private const val MOVIES_HIDDEN_MOVIES_HIDDEN = "MOVIES_HIDDEN_MOVIES_HIDDEN"
     private const val MOVIES_HIDDEN_MOVIES_RATINGS_HIDDEN = "MOVIES_HIDDEN_MOVIES_RATINGS_HIDDEN"
+
+    private const val EPISODES_TITLE_HIDDEN = "EPISODES_TITLE_HIDDEN"
+    private const val EPISODES_DESCRIPTION_HIDDEN = "EPISODES_DESCRIPTION_HIDDEN"
+    private const val EPISODES_RATING_HIDDEN = "EPISODES_RATING_HIDDEN"
+    private const val EPISODES_IMAGE_HIDDEN = "EPISODES_IMAGE_HIDDEN"
   }
 
   var isMyShowsHidden by BooleanPreference(preferences, SHOWS_MY_SHOWS_HIDDEN, false)
@@ -50,6 +55,11 @@ class SettingsSpoilersRepository @Inject constructor(
   var isUncollectedMoviesHidden by BooleanPreference(preferences, MOVIES_UNCOLLECTED_MOVIES_HIDDEN, false)
   var isUncollectedMoviesRatingsHidden by BooleanPreference(preferences, MOVIES_UNCOLLECTED_MOVIES_RATINGS_HIDDEN, false)
 
+  var isEpisodesTitleHidden by BooleanPreference(preferences, EPISODES_TITLE_HIDDEN, false)
+  var isEpisodesDescriptionHidden by BooleanPreference(preferences, EPISODES_DESCRIPTION_HIDDEN, false)
+  var isEpisodesRatingHidden by BooleanPreference(preferences, EPISODES_RATING_HIDDEN, false)
+  var isEpisodesImageHidden by BooleanPreference(preferences, EPISODES_IMAGE_HIDDEN, false)
+
   fun getAll(): SpoilersSettings = SpoilersSettings(
     isMyShowsHidden = isMyShowsHidden,
     isMyShowsRatingsHidden = isMyShowsRatingsHidden,
@@ -67,5 +77,9 @@ class SettingsSpoilersRepository @Inject constructor(
     isNotCollectedShowsRatingsHidden = isUncollectedShowsRatingsHidden,
     isNotCollectedMoviesHidden = isUncollectedMoviesHidden,
     isNotCollectedMoviesRatingsHidden = isUncollectedMoviesRatingsHidden,
+    isEpisodeTitleHidden = isEpisodesTitleHidden,
+    isEpisodeDescriptionHidden = isEpisodesDescriptionHidden,
+    isEpisodeRatingHidden = isEpisodesRatingHidden,
+    isEpisodeImageHidden = isEpisodesImageHidden,
   )
 }

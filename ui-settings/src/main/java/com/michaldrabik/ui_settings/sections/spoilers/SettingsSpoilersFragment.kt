@@ -33,6 +33,9 @@ class SettingsSpoilersFragment :
       settingsSpoilersMovies.onClick {
         navigateToSafe(R.id.actionSettingsFragmentToSpoilersMovies)
       }
+      settingsSpoilersEpisodes.onClick {
+        navigateToSafe(R.id.actionSettingsFragmentToSpoilersEpisodes)
+      }
     }
   }
 }

@@ -51,4 +51,22 @@
 
   </LinearLayout>
 
+  <LinearLayout
+    android:id="@+id/settingsSpoilersEpisodes"
+    style="@style/Settings.ItemLayout"
+    android:layout_width="match_parent"
+    >
+
+    <TextView
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsSpoilersEpisodes"
+      />
+
+    <TextView
+      style="@style/Settings.Summary"
+      android:text="@string/textSettingsSpoilersEpisodesSummary"
+      />
+
+  </LinearLayout>
+
 </LinearLayout>

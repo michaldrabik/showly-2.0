@@ -17,6 +17,10 @@ data class SpoilersSettings(
   val isWatchlistMoviesRatingsHidden: Boolean,
   val isHiddenMoviesHidden: Boolean,
   val isHiddenMoviesRatingsHidden: Boolean,
+  val isEpisodeTitleHidden: Boolean,
+  val isEpisodeDescriptionHidden: Boolean,
+  val isEpisodeRatingHidden: Boolean,
+  val isEpisodeImageHidden: Boolean,
 ) {
 
   companion object {
@@ -37,6 +41,10 @@ data class SpoilersSettings(
       isWatchlistMoviesRatingsHidden = false,
       isHiddenMoviesHidden = false,
       isHiddenMoviesRatingsHidden = false,
+      isEpisodeTitleHidden = false,
+      isEpisodeDescriptionHidden = false,
+      isEpisodeRatingHidden = false,
+      isEpisodeImageHidden = false,
     )
   }
 }
