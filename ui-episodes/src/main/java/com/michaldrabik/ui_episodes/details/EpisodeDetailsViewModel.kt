@@ -11,6 +11,7 @@ import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.images.EpisodeImagesProvider
+import com.michaldrabik.repository.settings.SettingsSpoilersRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
@@ -28,6 +29,7 @@ import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.RatingState
+import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.Translation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -47,6 +49,7 @@ class EpisodeDetailsViewModel @Inject constructor(
   private val ratingsRepository: RatingsRepository,
   private val translationsRepository: TranslationsRepository,
   private val commentsRepository: CommentsRepository,
+  private val settingsSpoilersRepository: SettingsSpoilersRepository,
   private val userTraktManager: UserTraktManager,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
@@ -60,9 +63,11 @@ class EpisodeDetailsViewModel @Inject constructor(
   private val translationEvent = MutableStateFlow<Event<Translation>?>(null)
   private val dateFormatState = MutableStateFlow<DateTimeFormatter?>(null)
   private val commentsDateFormatState = MutableStateFlow<DateTimeFormatter?>(null)
+  private val spoilersState = MutableStateFlow<SpoilersSettings?>(null)
 
   init {
     dateFormatState.value = dateFormatProvider.loadFullHourFormat()
+    spoilersState.value = settingsSpoilersRepository.getAll()
   }
 
   fun loadImage(showId: IdTmdb, episode: Episode) {
@@ -244,8 +249,9 @@ class EpisodeDetailsViewModel @Inject constructor(
     ratingState,
     translationEvent,
     dateFormatState,
-    commentsDateFormatState
-  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10 ->
+    commentsDateFormatState,
+    spoilersState
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ->
     EpisodeDetailsUiState(
       image = s1,
       isImageLoading = s2,
@@ -256,7 +262,8 @@ class EpisodeDetailsViewModel @Inject constructor(
       ratingState = s7,
       translation = s8,
       dateFormat = s9,
-      commentsDateFormat = s10
+      commentsDateFormat = s10,
+      spoilers = s11
     )
   }.stateIn(
     scope = viewModelScope,

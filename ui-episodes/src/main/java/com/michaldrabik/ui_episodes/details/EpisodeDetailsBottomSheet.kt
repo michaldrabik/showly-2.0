@@ -19,6 +19,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
+import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
+import com.michaldrabik.common.Config.SPOILERS_REGEX
 import com.michaldrabik.common.extensions.dateFromMillis
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
@@ -48,6 +50,8 @@ import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.SpoilersSettings
+import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_TAB_SELECTED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_WATCHED
@@ -123,8 +127,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
         "Episode ${episode.number}" -> String.format(ENGLISH, requireContext().getString(R.string.textEpisode), episode.number)
         else -> episode.title
       }
-      episodeDetailsOverview.text =
-        if (episode.overview.isBlank()) getString(R.string.textNoDescription) else episode.overview
+      episodeDetailsOverview.text = episode.overview.ifBlank { getString(R.string.textNoDescription) }
       episodeDetailsButton.run {
         visibleIf(showButton && !isWatched)
         onClick {
@@ -242,16 +245,65 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
             episodeDetailsRateButton.setText(R.string.textRate)
           }
         }
-        translation?.let { t ->
-          t.consume()?.let {
-            if (it.title.isNotBlank()) {
-              episodeDetailsTitle.setTextFade(it.title, duration = 0)
-            }
-            if (it.overview.isNotBlank()) {
-              episodeDetailsOverview.setTextFade(it.overview, duration = 0)
-            }
+        val translation = translation?.consume()
+        renderTitle(translation, spoilers)
+        renderDescription(translation, spoilers)
+      }
+    }
+  }
+
+  private fun renderTitle(
+    translation: Translation?,
+    spoilersSettings: SpoilersSettings?
+  ) {
+    with(binding) {
+      var title =
+        if (translation?.title?.isNotBlank() == true) {
+          translation.title
+        } else if (episodeDetailsTitle.text.isBlank()) {
+          when (options.episode.title) {
+            "Episode ${options.episode.number}" ->
+              String.format(ENGLISH, requireContext().getString(R.string.textEpisode), options.episode.number)
+            else -> options.episode.title
           }
+        } else {
+          episodeDetailsTitle.text.toString()
         }
+
+      val isEpisodeTitleHidden = !options.isWatched && spoilersSettings?.isEpisodeTitleHidden == true
+      if (isEpisodeTitleHidden) {
+        title = SPOILERS_REGEX.replace(title, SPOILERS_HIDE_SYMBOL)
+      }
+
+      if (title.isNotBlank()) {
+        episodeDetailsTitle.setTextFade(title, duration = 0)
+      }
+    }
+  }
+
+  private fun renderDescription(
+    translation: Translation?,
+    spoilersSettings: SpoilersSettings?
+  ) {
+    with(binding) {
+      var description =
+        if (translation?.overview?.isNotBlank() == true) {
+          translation.overview
+        } else if (episodeDetailsOverview.text.isBlank()) {
+          options.episode.overview.ifBlank {
+            getString(R.string.textNoDescription)
+          }
+        } else {
+          episodeDetailsOverview.text.toString()
+        }
+
+      val isEpisodeDescriptionHidden = !options.isWatched && spoilersSettings?.isEpisodeDescriptionHidden == true
+      if (isEpisodeDescriptionHidden) {
+        description = SPOILERS_REGEX.replace(description, SPOILERS_HIDE_SYMBOL)
+      }
+
+      if (description.isNotBlank()) {
+        episodeDetailsOverview.setTextFade(description, duration = 0)
       }
     }
   }

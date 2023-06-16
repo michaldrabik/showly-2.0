@@ -5,6 +5,7 @@ import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.RatingState
+import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.Translation
 import java.time.format.DateTimeFormatter
 
@@ -19,4 +20,5 @@ data class EpisodeDetailsUiState(
   val translation: Event<Translation>? = null,
   val dateFormat: DateTimeFormatter? = null,
   val commentsDateFormat: DateTimeFormatter? = null,
+  val spoilers: SpoilersSettings? = null
 )
