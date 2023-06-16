@@ -62,6 +62,7 @@ object Config {
 
   const val SPOILERS_HIDE_SYMBOL = "•"
   const val SPOILERS_RATINGS_HIDE_SYMBOL = "•.•"
+  const val SPOILERS_RATINGS_VOTES_HIDE_SYMBOL = "•.• (•••••)"
   val SPOILERS_REGEX = "\\S".toRegex()
 
   val REMOTE_CONFIG_DEFAULTS by lazy {

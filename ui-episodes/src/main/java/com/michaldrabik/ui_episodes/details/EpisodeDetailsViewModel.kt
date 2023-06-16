@@ -43,13 +43,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EpisodeDetailsViewModel @Inject constructor(
+  settingsSpoilersRepository: SettingsSpoilersRepository,
   private val seasonsCase: EpisodeDetailsSeasonCase,
   private val imagesProvider: EpisodeImagesProvider,
   private val dateFormatProvider: DateFormatProvider,
   private val ratingsRepository: RatingsRepository,
   private val translationsRepository: TranslationsRepository,
   private val commentsRepository: CommentsRepository,
-  private val settingsSpoilersRepository: SettingsSpoilersRepository,
   private val userTraktManager: UserTraktManager,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
@@ -259,7 +259,7 @@ class EpisodeDetailsViewModel @Inject constructor(
       comments = s4,
       isCommentsLoading = s5,
       isSignedIn = s6,
-      ratingState = s7,
+      rating = s7,
       translation = s8,
       dateFormat = s9,
       commentsDateFormat = s10,

@@ -16,7 +16,7 @@ data class EpisodeDetailsUiState(
   val comments: List<Comment>? = null,
   val isCommentsLoading: Boolean = false,
   val isSignedIn: Boolean = false,
-  val ratingState: RatingState? = null,
+  val rating: RatingState? = null,
   val translation: Event<Translation>? = null,
   val dateFormat: DateTimeFormatter? = null,
   val commentsDateFormat: DateTimeFormatter? = null,

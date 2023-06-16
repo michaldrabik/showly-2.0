@@ -227,7 +227,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
           episodeDetailsCommentsButton.isEnabled = false
           episodeDetailsCommentsButton.text = String.format(ENGLISH, getString(R.string.textLoadCommentsCount), comments.size)
         }
-        ratingState?.let { state ->
+        rating?.let { state ->
           episodeDetailsRateProgress.visibleIf(state.rateLoading == true)
           episodeDetailsRateButton.visibleIf(state.rateLoading == false)
           episodeDetailsRateButton.onClick {
@@ -245,6 +245,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
             episodeDetailsRateButton.setText(R.string.textRate)
           }
         }
+        spoilers?.let { renderRating(it) }
         val translation = translation?.consume()
         renderTitle(translation, spoilers)
         renderDescription(translation, spoilers)
@@ -304,6 +305,15 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
 
       if (description.isNotBlank()) {
         episodeDetailsOverview.setTextFade(description, duration = 0)
+      }
+    }
+  }
+
+  private fun renderRating(spoilersSettings: SpoilersSettings) {
+    with(binding) {
+      val isSpoilerHidden = !options.isWatched && spoilersSettings.isEpisodeRatingHidden
+      if (isSpoilerHidden) {
+        episodeDetailsRating.text = Config.SPOILERS_RATINGS_VOTES_HIDE_SYMBOL
       }
     }
   }
