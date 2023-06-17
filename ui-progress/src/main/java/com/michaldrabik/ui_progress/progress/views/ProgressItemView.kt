@@ -8,7 +8,9 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import android.widget.LinearLayout
 import com.bumptech.glide.Glide
+import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
 import com.michaldrabik.common.Config.SPOILERS_RATINGS_HIDE_SYMBOL
+import com.michaldrabik.common.Config.SPOILERS_REGEX
 import com.michaldrabik.ui_base.common.views.ShowView
 import com.michaldrabik.ui_base.utilities.DurationPrinter
 import com.michaldrabik.ui_base.utilities.extensions.addRipple
@@ -79,13 +81,7 @@ class ProgressItemView : ShowView<ProgressListItem.Episode> {
       item.episode?.numberAbs?.let { if (it > 0 && item.show.isAnime) " ($it)" else "" } ?: ""
     )
 
-    val episodeTitle = when {
-      item.episode?.title?.isBlank() == true -> context.getString(R.string.textTba)
-      item.translations?.episode?.title?.isBlank() == false -> item.translations.episode.title
-      item.episode?.title == "Episode ${item.episode?.number}" -> String.format(ENGLISH, context.getString(R.string.textEpisode), item.episode.number)
-      else -> item.episode?.title
-    }
-    progressItemSubtitle2.text = episodeTitle
+    bindEpisodeTitle(item)
     progressItemNewBadge.visibleIf(item.isNew())
     progressItemPin.visibleIf(item.isPinned)
     progressItemPause.visibleIf(item.isOnHold)
@@ -97,6 +93,27 @@ class ProgressItemView : ShowView<ProgressListItem.Episode> {
     loadImage(item)
   }
 
+  private fun bindEpisodeTitle(item: ProgressListItem.Episode) {
+    var episodeTitle = when {
+      item.episode?.title?.isBlank() == true -> {
+        context.getString(R.string.textTba)
+      }
+      item.translations?.episode?.title?.isBlank() == false -> {
+        item.episode?.title
+      }
+      item.episode?.title == "Episode ${item.episode?.number}" -> {
+        String.format(ENGLISH, context.getString(R.string.textEpisode), item.episode.number)
+      }
+      else -> item.episode?.title
+    }
+
+    if (item.spoilers?.isEpisodeTitleHidden == true) {
+      episodeTitle = SPOILERS_REGEX.replace(episodeTitle.toString(), SPOILERS_HIDE_SYMBOL)
+    }
+
+    progressItemSubtitle2.text = episodeTitle
+  }
+
   private fun bindRating(episodeItem: ProgressListItem.Episode) {
     val isNew = episodeItem.isNew()
     val isUpcoming = episodeItem.isUpcoming
@@ -105,7 +122,7 @@ class ProgressItemView : ShowView<ProgressListItem.Episode> {
         progressItemRating.visibleIf(!isNew && !isUpcoming)
         progressItemRatingStar.visibleIf(!isNew && !isUpcoming)
         progressItemRatingStar.imageTintList = context.colorStateListFromAttr(android.R.attr.colorAccent)
-        progressItemRating.text = if (item.isSpoilerRatingHidden) {
+        progressItemRating.text = if (item.spoilers?.isMyShowsRatingsHidden == true) {
           SPOILERS_RATINGS_HIDE_SYMBOL
         } else {
           String.format(ENGLISH, "%.1f", episodeItem.show.rating)

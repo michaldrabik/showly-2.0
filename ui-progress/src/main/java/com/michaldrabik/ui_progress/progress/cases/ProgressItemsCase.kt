@@ -63,7 +63,7 @@ class ProgressItemsCase @Inject constructor(
       val upcomingLimit = nowUtc.plusMonths(UPCOMING_MONTHS_LIMIT).toMillis()
       val nextEpisodeType = settingsRepository.progressNextEpisodeType
       val filtersItem = loadFiltersItem()
-      val isSpoilerRatingHidden = settingsRepository.spoilers.isMyShowsRatingsHidden
+      val spoilers = settingsRepository.spoilers.getAll()
 
       val items = showsRepository.myShows.loadAll()
         .map { show ->
@@ -89,7 +89,7 @@ class ProgressItemsCase @Inject constructor(
               isUpcoming = isUpcoming,
               isPinned = false,
               isOnHold = false,
-              isSpoilerRatingHidden = isSpoilerRatingHidden,
+              spoilers = spoilers,
               dateFormat = dateFormat,
               sortOrder = filtersItem.sortOrder
             )
