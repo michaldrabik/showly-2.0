@@ -6,6 +6,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.michaldrabik.common.Config
+import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
+import com.michaldrabik.common.Config.SPOILERS_REGEX
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_base.utilities.extensions.addRipple
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
@@ -41,22 +44,18 @@ class EpisodeView : ConstraintLayout {
   ) {
     clear()
     with(binding) {
-      val hasAired = item.episode.hasAired(item.season) || item.season.isSpecial()
-      val episodeTitleText = String.format(ENGLISH, context.getString(R.string.textEpisode), item.episode.number)
-        .plus(item.episode.numberAbs?.let { if (it > 0 && item.isAnime) " ($it)" else "" } ?: "")
+      bindTitle(item)
 
-      episodeTitle.text = episodeTitleText
-      episodeOverview.text = when {
-        !item.translation?.title.isNullOrBlank() -> item.translation?.title
-        item.episode.title.isEmpty() -> context.getString(R.string.textTba)
-        item.episode.title == "Episode ${item.episode.number}" -> episodeTitleText
-        else -> item.episode.title
-      }
+      val hasAired = item.episode.hasAired(item.season) || item.season.isSpecial()
       episodeCheckbox.isChecked = item.isWatched
       episodeCheckbox.isEnabled = hasAired || !isLocked
 
       episodeRating.visibleIf(item.episode.rating != 0F)
-      episodeRating.text = String.format(ENGLISH, "%.1f", item.episode.rating)
+      episodeRating.text = if (!item.isWatched && item.spoilers.isEpisodeRatingHidden) {
+        Config.SPOILERS_RATINGS_HIDE_SYMBOL
+      } else {
+        String.format(ENGLISH, "%.1f", item.episode.rating)
+      }
 
       item.myRating?.let {
         episodeMyStarIcon.visible()
@@ -72,6 +71,27 @@ class EpisodeView : ConstraintLayout {
 
       episodeCheckbox.setOnCheckedChangeListener { _, isChecked -> itemCheckedListener(item.episode, isChecked) }
       onClick { itemClickListener(item.episode, item.isWatched) }
+    }
+  }
+
+  private fun bindTitle(item: EpisodeListItem) {
+    with(binding) {
+      val titleText = String.format(ENGLISH, context.getString(R.string.textEpisode), item.episode.number)
+        .plus(item.episode.numberAbs?.let { if (it > 0 && item.isAnime) " ($it)" else "" } ?: "")
+
+      var overviewText = when {
+        !item.translation?.title.isNullOrBlank() -> item.translation?.title
+        item.episode.title.isEmpty() -> context.getString(R.string.textTba)
+        item.episode.title == "Episode ${item.episode.number}" -> titleText
+        else -> item.episode.title
+      }
+
+      if (!item.isWatched && item.spoilers.isEpisodeTitleHidden) {
+        overviewText = SPOILERS_REGEX.replace(overviewText.toString(), SPOILERS_HIDE_SYMBOL)
+      }
+
+      episodeTitle.text = titleText
+      episodeOverview.text = overviewText
     }
   }
 
