@@ -7,6 +7,8 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
+import com.michaldrabik.common.Config.SPOILERS_REGEX
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_base.common.views.ShowView
 import com.michaldrabik.ui_base.utilities.extensions.addRipple
@@ -68,10 +70,15 @@ class CalendarItemView : ShowView<CalendarListItem.Episode> {
 
     val isNewSeason = item.episode.number == 1
     if (isNewSeason) {
-      calendarItemSubtitle2.text = String.format(ENGLISH, context.getString(R.string.textSeason), item.episode.season)
+      val title = String.format(ENGLISH, context.getString(R.string.textSeason), item.episode.season)
       calendarItemSubtitle.text = context.getString(R.string.textNewSeason)
+      calendarItemSubtitle2.text =
+        if (item.isSpoilerHidden && item.spoilers?.isEpisodeTitleHidden == true) {
+          SPOILERS_REGEX.replace(title, SPOILERS_HIDE_SYMBOL)
+        } else {
+          title
+        }
     } else {
-      calendarItemSubtitle2.text = episodeTitle
       calendarItemSubtitle.text = String.format(
         ENGLISH,
         context.getString(R.string.textSeasonEpisode),
@@ -80,6 +87,12 @@ class CalendarItemView : ShowView<CalendarListItem.Episode> {
       ).plus(
         item.episode.numberAbs?.let { if (it > 0 && item.show.isAnime) " ($it)" else "" } ?: ""
       )
+      calendarItemSubtitle2.text =
+        if (item.isSpoilerHidden && item.spoilers?.isEpisodeTitleHidden == true) {
+          SPOILERS_REGEX.replace(episodeTitle, SPOILERS_HIDE_SYMBOL)
+        } else {
+          episodeTitle
+        }
     }
 
     calendarItemCheckButton.visibleIf(!item.isWatched && !item.isWatchlist)

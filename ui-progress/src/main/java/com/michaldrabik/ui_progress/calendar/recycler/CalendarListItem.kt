@@ -7,6 +7,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_progress.helpers.TranslationsBundle
 import java.time.format.DateTimeFormatter
 import com.michaldrabik.ui_model.Episode as EpisodeModel
@@ -25,8 +26,10 @@ sealed class CalendarListItem(
     val season: Season,
     val isWatched: Boolean,
     val isWatchlist: Boolean,
+    val isSpoilerHidden: Boolean,
     val translations: TranslationsBundle? = null,
     val dateFormat: DateTimeFormatter? = null,
+    val spoilers: SpoilersSettings? = null,
   ) : CalendarListItem(show, image, isLoading) {
 
     override fun isSameAs(other: ListItem) =

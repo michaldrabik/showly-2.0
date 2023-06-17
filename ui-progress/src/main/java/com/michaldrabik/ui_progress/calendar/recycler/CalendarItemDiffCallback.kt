@@ -38,7 +38,10 @@ class CalendarItemDiffCallback : DiffUtil.ItemCallback<CalendarListItem>() {
       oldItem.show == newItem.show &&
       oldItem.image == newItem.image &&
       oldItem.isLoading == newItem.isLoading &&
+      oldItem.isSpoilerHidden == newItem.isSpoilerHidden &&
+      oldItem.isWatchlist == newItem.isWatchlist &&
       oldItem.translations == newItem.translations &&
+      oldItem.spoilers == newItem.spoilers &&
       oldItem.isWatched == newItem.isWatched
 
   private fun areContentsTheSame(oldItem: CalendarListItem.Header, newItem: CalendarListItem.Header) =
