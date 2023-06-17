@@ -5,6 +5,7 @@ import android.graphics.Typeface.BOLD
 import android.graphics.Typeface.NORMAL
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
@@ -247,7 +248,6 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
           }
         }
         spoilers?.let { renderRating(it) }
-        val translation = translation?.consume()
         renderTitle(translation, spoilers)
         renderDescription(translation, spoilers)
       }
@@ -277,6 +277,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
         title = SPOILERS_REGEX.replace(title, SPOILERS_HIDE_SYMBOL)
       }
 
+      Log.d("MESSI", "renderTitle: $title")
       if (title.isNotBlank()) {
         episodeDetailsTitle.setTextFade(title, duration = 0)
       }
@@ -299,8 +300,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
           episodeDetailsOverview.text.toString()
         }
 
-      val isEpisodeDescriptionHidden = !options.isWatched && spoilersSettings?.isEpisodeDescriptionHidden == true
-      if (isEpisodeDescriptionHidden) {
+      if (!options.isWatched && spoilersSettings?.isEpisodeDescriptionHidden == true) {
         description = SPOILERS_REGEX.replace(description, SPOILERS_HIDE_SYMBOL)
       }
 

@@ -85,6 +85,7 @@ class ProgressItemsCase @Inject constructor(
               season = seasonUi,
               totalCount = 0,
               watchedCount = 0,
+              isWatched = nextEpisode?.isWatched == true,
               isUpcoming = isUpcoming,
               isPinned = false,
               isOnHold = false,

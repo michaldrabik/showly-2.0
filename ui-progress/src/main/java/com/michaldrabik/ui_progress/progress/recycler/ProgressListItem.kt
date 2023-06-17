@@ -30,6 +30,7 @@ sealed class ProgressListItem(
     val season: Season?,
     val totalCount: Int,
     val watchedCount: Int,
+    val isWatched: Boolean,
     val isUpcoming: Boolean,
     val isPinned: Boolean,
     val isOnHold: Boolean,

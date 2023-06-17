@@ -13,7 +13,6 @@ import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.images.EpisodeImagesProvider
 import com.michaldrabik.repository.settings.SettingsSpoilersRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
-import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.combine
@@ -60,7 +59,7 @@ class EpisodeDetailsViewModel @Inject constructor(
   private val commentsLoadingState = MutableStateFlow(false)
   private val signedInState = MutableStateFlow(false)
   private val ratingState = MutableStateFlow<RatingState?>(null)
-  private val translationEvent = MutableStateFlow<Event<Translation>?>(null)
+  private val translationState = MutableStateFlow<Translation?>(null)
   private val dateFormatState = MutableStateFlow<DateTimeFormatter?>(null)
   private val commentsDateFormatState = MutableStateFlow<DateTimeFormatter?>(null)
   private val spoilersState = MutableStateFlow<SpoilersSettings?>(null)
@@ -97,10 +96,12 @@ class EpisodeDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       try {
         val language = translationsRepository.getLanguage()
-        if (language == Config.DEFAULT_LANGUAGE) return@launch
+        if (language == Config.DEFAULT_LANGUAGE) {
+          return@launch
+        }
         val translation = translationsRepository.loadTranslation(episode, showTraktId, language)
         translation?.let {
-          translationEvent.value = Event(it)
+          translationState.value = it
         }
       } catch (error: Throwable) {
         Timber.e(error)
@@ -247,7 +248,7 @@ class EpisodeDetailsViewModel @Inject constructor(
     commentsLoadingState,
     signedInState,
     ratingState,
-    translationEvent,
+    translationState,
     dateFormatState,
     commentsDateFormatState,
     spoilersState
