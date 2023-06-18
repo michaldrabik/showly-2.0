@@ -35,10 +35,12 @@ class ProgressMainEpisodesCase @Inject constructor(
   ): Boolean {
     return withContext(dispatchers.IO) {
       // No need to query DB if spoilers settings are all off in that case.
-      if (!(spoilersSettings.isEpisodesTitleHidden ||
+      if (!(
+        spoilersSettings.isEpisodesTitleHidden ||
           spoilersSettings.isEpisodesDescriptionHidden ||
           spoilersSettings.isEpisodesImageHidden ||
-          spoilersSettings.isEpisodesRatingHidden)
+          spoilersSettings.isEpisodesRatingHidden
+        )
       ) {
         return@withContext false
       }
