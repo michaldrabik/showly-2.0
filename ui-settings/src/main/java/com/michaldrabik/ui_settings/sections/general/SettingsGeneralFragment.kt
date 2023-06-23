@@ -16,7 +16,6 @@ import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.dates.AppDateFormat
 import com.michaldrabik.ui_base.dates.DateFormatProvider
-import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
@@ -146,8 +145,8 @@ class SettingsGeneralFragment : BaseFragment<SettingsGeneralViewModel>(R.layout.
     if (type == null) return
     with(binding) {
       settingsProgressNextValue.text = when (type) {
-        LAST_WATCHED -> getString(R.string.textNextEpisodeLastWatched).capitalizeWords()
-        OLDEST -> getString(R.string.textNextEpisodeOldest).capitalizeWords()
+        LAST_WATCHED -> getString(R.string.textNextEpisodeLastWatched)
+        OLDEST -> getString(R.string.textNextEpisodeOldest)
       }
       settingsProgressNext.onClick { showProgressTypeDialog(type) }
     }
