@@ -81,5 +81,6 @@ class SettingsSpoilersRepository @Inject constructor(
     isEpisodeDescriptionHidden = isEpisodesDescriptionHidden,
     isEpisodeRatingHidden = isEpisodesRatingHidden,
     isEpisodeImageHidden = isEpisodesImageHidden,
+    isTapToReveal = true // TODO
   )
 }

@@ -21,6 +21,7 @@ data class SpoilersSettings(
   val isEpisodeDescriptionHidden: Boolean,
   val isEpisodeRatingHidden: Boolean,
   val isEpisodeImageHidden: Boolean,
+  val isTapToReveal: Boolean,
 ) {
 
   companion object {
@@ -45,6 +46,7 @@ data class SpoilersSettings(
       isEpisodeDescriptionHidden = false,
       isEpisodeRatingHidden = false,
       isEpisodeImageHidden = false,
+      isTapToReveal = false,
     )
   }
 }

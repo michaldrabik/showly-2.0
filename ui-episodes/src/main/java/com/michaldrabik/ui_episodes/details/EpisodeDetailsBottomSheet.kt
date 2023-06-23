@@ -5,7 +5,6 @@ import android.graphics.Typeface.BOLD
 import android.graphics.Typeface.NORMAL
 import android.os.Bundle
 import android.os.Parcelable
-import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
@@ -100,6 +99,10 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
 
   private val options by lazy { requireParcelable<Options>(ARG_OPTIONS) }
   private val cornerRadius by lazy { dimenToPx(R.dimen.bottomSheetCorner).toFloat() }
+
+  private var spoilerTitle: String? = null
+  private var spoilerDescription: String? = null
+  private var spoilerRating: String? = null
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
@@ -274,12 +277,22 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
 
       val isEpisodeTitleHidden = !options.isWatched && spoilersSettings?.isEpisodeTitleHidden == true
       if (isEpisodeTitleHidden) {
+        if (spoilerTitle == null) {
+          spoilerTitle = String(title.toCharArray())
+        }
         title = SPOILERS_REGEX.replace(title, SPOILERS_HIDE_SYMBOL)
       }
 
-      Log.d("MESSI", "renderTitle: $title")
       if (title.isNotBlank()) {
         episodeDetailsTitle.setTextFade(title, duration = 0)
+      }
+
+      if (spoilersSettings?.isTapToReveal == true) {
+        episodeDetailsTitle.onClick {
+          spoilerTitle?.let {
+            episodeDetailsTitle.setTextFade(it, duration = 0)
+          }
+        }
       }
     }
   }
@@ -301,11 +314,22 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
         }
 
       if (!options.isWatched && spoilersSettings?.isEpisodeDescriptionHidden == true) {
+        if (spoilerDescription == null) {
+          spoilerDescription = String(description.toCharArray())
+        }
         description = SPOILERS_REGEX.replace(description, SPOILERS_HIDE_SYMBOL)
       }
 
       if (description.isNotBlank()) {
         episodeDetailsOverview.setTextFade(description, duration = 0)
+      }
+
+      if (spoilersSettings?.isTapToReveal == true) {
+        episodeDetailsOverview.onClick {
+          spoilerDescription?.let {
+            episodeDetailsOverview.setTextFade(it, duration = 0)
+          }
+        }
       }
     }
   }
@@ -314,7 +338,18 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
     with(binding) {
       val isSpoilerHidden = !options.isWatched && spoilersSettings.isEpisodeRatingHidden
       if (isSpoilerHidden) {
+        if (spoilerRating == null) {
+          spoilerRating = episodeDetailsRating.text.toString()
+        }
         episodeDetailsRating.text = Config.SPOILERS_RATINGS_VOTES_HIDE_SYMBOL
+      }
+
+      if (spoilersSettings.isTapToReveal) {
+        episodeDetailsRating.onClick {
+          spoilerRating?.let {
+            episodeDetailsRating.text = it
+          }
+        }
       }
     }
   }
