@@ -132,8 +132,19 @@ class MovieContextMenuBottomSheet : ContextMenuBottomSheet() {
       val isNotCollectedHidden = item.spoilers.isNotCollectedMoviesHidden && (!item.isInCollection())
 
       if (isMyMovieHidden || isWatchlistHidden || isHiddenMovieHidden || isNotCollectedHidden) {
-        val hiddenDescription = SPOILERS_REGEX.replace(contextMenuItemDescription.text.toString(), SPOILERS_HIDE_SYMBOL)
+        val spoilerDescription = contextMenuItemDescription.text.toString()
+        val hiddenDescription = SPOILERS_REGEX.replace(spoilerDescription, SPOILERS_HIDE_SYMBOL)
+        contextMenuItemDescription.tag = spoilerDescription
         contextMenuItemDescription.text = hiddenDescription
+      }
+
+      if (item.spoilers.isTapToReveal) {
+        contextMenuItemDescription.onClick {
+          contextMenuItemDescription.tag?.let {
+            contextMenuItemDescription.text = it.toString()
+          }
+          contextMenuItemDescription.enableExpandOnClick()
+        }
       }
     }
   }

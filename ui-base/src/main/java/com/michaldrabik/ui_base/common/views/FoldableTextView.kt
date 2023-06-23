@@ -19,13 +19,17 @@ class FoldableTextView : AppCompatTextView {
 
   init {
     maxLines = initialLines
-    setOnClickListener {
-      maxLines = if (maxLines == MAX_LINES) initialLines else MAX_LINES
-    }
+    enableExpandOnClick()
   }
 
   fun setInitialLines(lines: Int) {
     initialLines = lines
     maxLines = lines
+  }
+
+  fun enableExpandOnClick() {
+    setOnClickListener {
+      maxLines = if (maxLines == MAX_LINES) initialLines else MAX_LINES
+    }
   }
 }

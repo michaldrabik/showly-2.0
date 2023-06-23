@@ -141,8 +141,19 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet() {
       val isNotCollectedHidden = item.spoilers.isNotCollectedShowsHidden && (!item.isInCollection())
 
       if (isMyShowHidden || isWatchlistHidden || isHiddenShowHidden || isNotCollectedHidden) {
+        val spoilerDescription = contextMenuItemDescription.text.toString()
         val hiddenDescription = SPOILERS_REGEX.replace(contextMenuItemDescription.text.toString(), SPOILERS_HIDE_SYMBOL)
+//        contextMenuItemDescription.tag = spoilerDescription
         contextMenuItemDescription.text = hiddenDescription
+      }
+
+      if (item.spoilers.isTapToReveal) {
+        contextMenuItemDescription.onClick {
+          contextMenuItemDescription.tag?.let {
+            contextMenuItemDescription.text = it.toString()
+          }
+          contextMenuItemDescription.enableExpandOnClick()
+        }
       }
     }
   }
