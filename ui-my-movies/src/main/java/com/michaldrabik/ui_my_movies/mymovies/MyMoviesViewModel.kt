@@ -223,8 +223,11 @@ class MyMoviesViewModel @Inject constructor(
       userRating = userRating?.rating,
       dateFormat = dateFormat,
       sortOrder = sortOrder,
-      isSpoilerHidden = spoilers.isMyMoviesHidden,
-      isSpoilerRatingsHidden = spoilers.isMyMoviesRatingsHidden,
+      spoilers = MyMoviesItem.Spoilers(
+        isSpoilerHidden = spoilers.isMyMoviesHidden,
+        isSpoilerRatingsHidden = spoilers.isMyMoviesRatingsHidden,
+        isSpoilerTapToReveal = spoilers.isTapToReveal
+      )
     )
   }
 

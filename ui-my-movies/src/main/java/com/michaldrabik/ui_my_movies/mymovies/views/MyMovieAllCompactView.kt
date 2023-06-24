@@ -78,7 +78,7 @@ class MyMovieAllCompactView : MovieView<MyMoviesItem> {
   private fun bindRating(item: MyMoviesItem) {
     var rating = String.format(ENGLISH, "%.1f", item.movie.rating)
 
-    if (item.isSpoilerRatingsHidden) {
+    if (item.spoilers.isSpoilerRatingsHidden) {
       rating = Config.SPOILERS_RATINGS_HIDE_SYMBOL
     }
 

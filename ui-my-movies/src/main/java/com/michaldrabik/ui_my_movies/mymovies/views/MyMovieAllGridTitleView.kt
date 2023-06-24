@@ -81,7 +81,7 @@ class MyMovieAllGridTitleView : MovieView<MyMoviesItem> {
     with(binding) {
       var rating = String.format(Locale.ENGLISH, "%.1f", item.movie.rating)
 
-      if (item.isSpoilerRatingsHidden) {
+      if (item.spoilers.isSpoilerRatingsHidden) {
         rating = SPOILERS_RATINGS_HIDE_SYMBOL
       }
 
