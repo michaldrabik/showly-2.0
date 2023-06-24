@@ -74,6 +74,7 @@ class CalendarItemView : ShowView<CalendarListItem.Episode> {
       calendarItemSubtitle.text = context.getString(R.string.textNewSeason)
       calendarItemSubtitle2.text =
         if (item.isSpoilerHidden && item.spoilers?.isEpisodeTitleHidden == true) {
+          calendarItemSubtitle2.tag = title
           SPOILERS_REGEX.replace(title, SPOILERS_HIDE_SYMBOL)
         } else {
           title
@@ -89,10 +90,18 @@ class CalendarItemView : ShowView<CalendarListItem.Episode> {
       )
       calendarItemSubtitle2.text =
         if (item.isSpoilerHidden && item.spoilers?.isEpisodeTitleHidden == true) {
+          calendarItemSubtitle2.tag = episodeTitle
           SPOILERS_REGEX.replace(episodeTitle, SPOILERS_HIDE_SYMBOL)
         } else {
           episodeTitle
         }
+    }
+
+    if (item.isSpoilerHidden && item.spoilers?.isTapToReveal == true) {
+      calendarItemSubtitle2.onClick { view ->
+        view.tag?.let { calendarItemSubtitle2.text = it.toString() }
+        view.isClickable = false
+      }
     }
 
     calendarItemCheckButton.visibleIf(!item.isWatched && !item.isWatchlist)
