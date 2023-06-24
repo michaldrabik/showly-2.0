@@ -294,7 +294,17 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       val isNotCollectedHidden = spoilersSettings.isNotCollectedMoviesHidden && (!followedState.isInCollection())
 
       if (isMyMovieHidden || isWatchlistHidden || isHiddenMovieHidden || isNotCollectedHidden) {
+        movieDetailsDescription.tag = description
         description = SPOILERS_REGEX.replace(description, SPOILERS_HIDE_SYMBOL)
+
+        if (spoilersSettings.isTapToReveal) {
+          with(movieDetailsDescription) {
+            onClick {
+              tag?.let { text = it.toString() }
+              enableFoldOnClick()
+            }
+          }
+        }
       }
 
       movieDetailsTitle.text = title
