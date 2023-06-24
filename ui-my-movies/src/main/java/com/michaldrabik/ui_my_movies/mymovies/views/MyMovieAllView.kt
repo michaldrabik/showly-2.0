@@ -74,7 +74,7 @@ class MyMovieAllView : MovieView<MyMoviesItem> {
       else item.translation?.overview
 
     if (item.spoilers.isSpoilerHidden) {
-      collectionMovieDescription.tag = description
+      collectionMovieDescription.tag = description.toString()
       description = SPOILERS_REGEX.replace(description.toString(), SPOILERS_HIDE_SYMBOL)
 
       if (item.spoilers.isSpoilerTapToReveal) {

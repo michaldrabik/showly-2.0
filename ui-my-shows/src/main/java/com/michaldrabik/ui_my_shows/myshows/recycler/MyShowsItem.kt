@@ -18,11 +18,10 @@ data class MyShowsItem(
   override val show: Show,
   override val image: Image,
   override val isLoading: Boolean,
+  val spoilers: Spoilers,
   val translation: Translation? = null,
   val userRating: Int? = null,
   val sortOrder: SortOrder? = null,
-  val isSpoilerHidden: Boolean = false,
-  val isSpoilerRatingsHidden: Boolean = false
 ) : ListItem {
 
   enum class Type {
@@ -43,6 +42,12 @@ data class MyShowsItem(
     val items: List<MyShowsItem>,
   )
 
+  data class Spoilers(
+    val isSpoilerHidden: Boolean,
+    val isSpoilerRatingsHidden: Boolean,
+    val isSpoilerTapToReveal: Boolean,
+  )
+
   companion object {
     fun createHeader(
       section: MyShowsSection,
@@ -56,7 +61,12 @@ data class MyShowsItem(
       recentsSection = null,
       show = Show.EMPTY,
       image = Image.createUnavailable(POSTER),
-      isLoading = false
+      isLoading = false,
+      spoilers = Spoilers(
+        isSpoilerHidden = false,
+        isSpoilerRatingsHidden = false,
+        isSpoilerTapToReveal = false
+      )
     )
 
     fun createRecentsSection(
@@ -67,7 +77,12 @@ data class MyShowsItem(
       recentsSection = RecentsSection(shows),
       show = Show.EMPTY,
       image = Image.createUnavailable(POSTER),
-      isLoading = false
+      isLoading = false,
+      spoilers = Spoilers(
+        isSpoilerHidden = false,
+        isSpoilerRatingsHidden = false,
+        isSpoilerTapToReveal = false
+      )
     )
   }
 }

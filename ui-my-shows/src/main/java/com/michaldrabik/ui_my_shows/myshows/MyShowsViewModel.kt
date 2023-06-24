@@ -104,7 +104,7 @@ class MyShowsViewModel @Inject constructor(
             type = POSTER,
             userRating = ratings[it.ids.trakt],
             sortOrder = sortOrder,
-            spoilersSettings = spoilers
+            spoilers = spoilers
           )
         }
         .awaitAll()
@@ -207,7 +207,7 @@ class MyShowsViewModel @Inject constructor(
     type: ImageType = POSTER,
     userRating: TraktRating?,
     sortOrder: SortOrder?,
-    spoilersSettings: SpoilersSettings,
+    spoilers: SpoilersSettings,
   ) = async {
     val image = imagesProvider.findCachedImage(show, type)
     val translation = translationsCase.loadTranslation(show, true)
@@ -221,8 +221,11 @@ class MyShowsViewModel @Inject constructor(
       translation = translation,
       userRating = userRating?.rating,
       sortOrder = sortOrder,
-      isSpoilerHidden = spoilersSettings.isMyShowsHidden,
-      isSpoilerRatingsHidden = spoilersSettings.isMyShowsRatingsHidden,
+      spoilers = MyShowsItem.Spoilers(
+        isSpoilerHidden = spoilers.isMyShowsHidden,
+        isSpoilerRatingsHidden = spoilers.isMyShowsRatingsHidden,
+        isSpoilerTapToReveal = spoilers.isTapToReveal
+      )
     )
   }
 

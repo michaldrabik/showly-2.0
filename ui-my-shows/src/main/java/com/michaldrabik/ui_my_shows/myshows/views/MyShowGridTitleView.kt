@@ -80,7 +80,7 @@ class MyShowGridTitleView : ShowView<MyShowsItem> {
     with(binding) {
       var rating = String.format(Locale.ENGLISH, "%.1f", item.show.rating)
 
-      if (item.isSpoilerRatingsHidden) {
+      if (item.spoilers.isSpoilerRatingsHidden) {
         rating = Config.SPOILERS_RATINGS_HIDE_SYMBOL
       }
 
