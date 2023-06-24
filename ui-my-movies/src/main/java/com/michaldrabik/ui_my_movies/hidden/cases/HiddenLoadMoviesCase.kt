@@ -12,6 +12,7 @@ import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
+import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_my_movies.common.helpers.CollectionItemSorter
@@ -61,8 +62,7 @@ class HiddenLoadMoviesCase @Inject constructor(
             dateFormat = dateFormat,
             fullDateFormat = fullDateFormat,
             sortOrder = sortOrder,
-            isSpoilersHidden = spoilersSettings.isHiddenMoviesHidden,
-            isSpoilersRatingHidden = spoilersSettings.isHiddenMoviesRatingsHidden
+            spoilers = spoilersSettings
           )
         }
         .awaitAll()
@@ -115,8 +115,7 @@ class HiddenLoadMoviesCase @Inject constructor(
     dateFormat: DateTimeFormatter,
     fullDateFormat: DateTimeFormatter,
     sortOrder: SortOrder,
-    isSpoilersHidden: Boolean,
-    isSpoilersRatingHidden: Boolean,
+    spoilers: SpoilersSettings,
   ) = async {
     val image = imagesProvider.findCachedImage(movie, ImageType.POSTER)
     CollectionListItem.MovieItem(
@@ -128,8 +127,11 @@ class HiddenLoadMoviesCase @Inject constructor(
       translation = translation,
       sortOrder = sortOrder,
       userRating = userRating?.rating,
-      isSpoilerHidden = isSpoilersHidden,
-      isSpoilerRatingsHidden = isSpoilersRatingHidden
+      spoilers = CollectionListItem.MovieItem.Spoilers(
+        isSpoilerHidden = spoilers.isHiddenMoviesHidden,
+        isSpoilerRatingsHidden = spoilers.isHiddenMoviesRatingsHidden,
+        isSpoilerTapToReveal = spoilers.isTapToReveal
+      )
     )
   }
 }

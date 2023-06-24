@@ -93,9 +93,19 @@ class CollectionMovieView : MovieView<CollectionListItem.MovieItem> {
       if (item.translation?.overview.isNullOrBlank()) item.movie.overview
       else item.translation?.overview
 
-    if (item.isSpoilerHidden) {
+    if (item.spoilers.isSpoilerHidden) {
+      collectionMovieDescription.tag = collectionMovieDescription.text
       collectionMovieDescription.text =
         SPOILERS_REGEX.replace(collectionMovieDescription.text, SPOILERS_HIDE_SYMBOL)
+
+      if (item.spoilers.isSpoilerTapToReveal) {
+        collectionMovieDescription.onClick { view ->
+          view.tag?.let {
+            collectionMovieDescription.text = it.toString()
+          }
+          view.isClickable = false
+        }
+      }
     }
 
     collectionMovieDescription.visibleIf(item.movie.overview.isNotBlank())
@@ -104,8 +114,18 @@ class CollectionMovieView : MovieView<CollectionListItem.MovieItem> {
   private fun bindRating(item: CollectionListItem.MovieItem) {
     var rating = String.format(ENGLISH, "%.1f", item.movie.rating)
 
-    if (item.isSpoilerRatingsHidden) {
+    if (item.spoilers.isSpoilerRatingsHidden) {
+      collectionMovieRating.tag = rating
       rating = SPOILERS_RATINGS_HIDE_SYMBOL
+
+      if (item.spoilers.isSpoilerTapToReveal) {
+        collectionMovieRating.onClick { view ->
+          view.tag?.let {
+            collectionMovieRating.text = it.toString()
+          }
+          view.isClickable = false
+        }
+      }
     }
 
     collectionMovieRating.text = rating

@@ -10,6 +10,7 @@ import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_my_movies.common.helpers.CollectionItemFilter
@@ -42,10 +43,12 @@ class WatchlistLoadMoviesCase @Inject constructor(
       val dateFormat = dateFormatProvider.loadShortDayFormat()
       val fullDateFormat = dateFormatProvider.loadFullDayFormat()
       val language = translationsRepository.getLanguage()
-      val translations =
-        if (language == Config.DEFAULT_LANGUAGE) emptyMap()
-        else translationsRepository.loadAllMoviesLocal(language)
-      val spoilersSettings = settingsRepository.spoilers.getAll()
+      val spoilers = settingsRepository.spoilers.getAll()
+      val translations = if (language == Config.DEFAULT_LANGUAGE) {
+        emptyMap()
+      } else {
+        translationsRepository.loadAllMoviesLocal(language)
+      }
 
       val filtersItem = loadFiltersItem()
       val filtersGenres = filtersItem.genres.map { it.slug.lowercase() }
@@ -59,8 +62,7 @@ class WatchlistLoadMoviesCase @Inject constructor(
             dateFormat = dateFormat,
             fullDateFormat = fullDateFormat,
             sortOrder = filtersItem.sortOrder,
-            isSpoilersHidden = spoilersSettings.isWatchlistMoviesHidden,
-            isSpoilersRatingsHidden = spoilersSettings.isWatchlistMoviesRatingsHidden,
+            spoilers = spoilers
           )
         }
         .awaitAll()
@@ -103,21 +105,22 @@ class WatchlistLoadMoviesCase @Inject constructor(
     dateFormat: DateTimeFormatter,
     fullDateFormat: DateTimeFormatter,
     sortOrder: SortOrder,
-    isSpoilersHidden: Boolean,
-    isSpoilersRatingsHidden: Boolean,
+    spoilers: SpoilersSettings
   ) = async {
-    val image = imagesProvider.findCachedImage(movie, ImageType.POSTER)
     CollectionListItem.MovieItem(
       isLoading = false,
       movie = movie,
-      image = image,
+      image = imagesProvider.findCachedImage(movie, ImageType.POSTER),
       dateFormat = dateFormat,
       fullDateFormat = fullDateFormat,
       translation = translation,
       userRating = userRating?.rating,
       sortOrder = sortOrder,
-      isSpoilerHidden = isSpoilersHidden,
-      isSpoilerRatingsHidden = isSpoilersRatingsHidden
+      spoilers = CollectionListItem.MovieItem.Spoilers(
+        isSpoilerHidden = spoilers.isWatchlistMoviesHidden,
+        isSpoilerRatingsHidden = spoilers.isWatchlistMoviesRatingsHidden,
+        isSpoilerTapToReveal = spoilers.isTapToReveal
+      )
     )
   }
 }
