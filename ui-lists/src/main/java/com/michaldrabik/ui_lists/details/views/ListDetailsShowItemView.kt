@@ -130,10 +130,19 @@ class ListDetailsShowItemView : ListDetailsItemView {
     val isWatchlistHidden = item.spoilers.isWatchlistShowsHidden && item.isWatchlist
     val isNotCollectedHidden = item.spoilers.isNotCollectedShowsHidden && (!item.isWatched && !item.isWatchlist)
     if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
+      listDetailsShowDescription.tag = description
       description = SPOILERS_REGEX.replace(description.toString(), SPOILERS_HIDE_SYMBOL)
     }
 
     listDetailsShowDescription.text = description
+    if (item.spoilers.isTapToReveal) {
+      with(listDetailsShowDescription) {
+        onClick {
+          tag?.let { text = it.toString() }
+          isClickable = false
+        }
+      }
+    }
   }
 
   private fun bindRating(
@@ -146,10 +155,20 @@ class ListDetailsShowItemView : ListDetailsItemView {
     val isWatchlistHidden = item.spoilers.isWatchlistShowsRatingsHidden && item.isWatchlist
     val isNotCollectedHidden = item.spoilers.isNotCollectedShowsRatingsHidden && (!item.isWatched && !item.isWatchlist)
     if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
+      listDetailsShowRating.tag = rating
       rating = SPOILERS_RATINGS_HIDE_SYMBOL
     }
 
     listDetailsShowRating.visibleIf(!item.isManageMode)
     listDetailsShowRating.text = rating
+
+    if (item.spoilers.isTapToReveal) {
+      with(listDetailsShowRating) {
+        onClick {
+          tag?.let { text = it.toString() }
+          isClickable = false
+        }
+      }
+    }
   }
 }
