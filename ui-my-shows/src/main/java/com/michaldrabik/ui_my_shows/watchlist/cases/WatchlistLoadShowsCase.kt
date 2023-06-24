@@ -10,6 +10,7 @@ import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_my_shows.common.recycler.CollectionListItem
@@ -44,7 +45,7 @@ class WatchlistLoadShowsCase @Inject constructor(
       val translations =
         if (language == Config.DEFAULT_LANGUAGE) emptyMap()
         else translationsRepository.loadAllShowsLocal(language)
-      val spoilersSettings = settingsRepository.spoilers.getAll()
+      val spoilers = settingsRepository.spoilers.getAll()
 
       val filtersItem = loadFiltersItem()
       val filtersNetworks = filtersItem.networks
@@ -59,8 +60,7 @@ class WatchlistLoadShowsCase @Inject constructor(
             userRating = ratings[it.ids.trakt],
             dateFormat = dateFormat,
             sortOrder = filtersItem.sortOrder,
-            isSpoilersHidden = spoilersSettings.isWatchlistShowsHidden,
-            isSpoilersRatingsHidden = spoilersSettings.isWatchlistShowsRatingsHidden,
+            spoilers = spoilers
           )
         }
         .awaitAll()
@@ -95,8 +95,7 @@ class WatchlistLoadShowsCase @Inject constructor(
     userRating: TraktRating?,
     dateFormat: DateTimeFormatter,
     sortOrder: SortOrder,
-    isSpoilersHidden: Boolean,
-    isSpoilersRatingsHidden: Boolean,
+    spoilers: SpoilersSettings
   ) = async {
     val image = imagesProvider.findCachedImage(show, ImageType.POSTER)
     CollectionListItem.ShowItem(
@@ -107,8 +106,11 @@ class WatchlistLoadShowsCase @Inject constructor(
       translation = translation,
       userRating = userRating?.rating,
       sortOrder = sortOrder,
-      isSpoilerHidden = isSpoilersHidden,
-      isSpoilerRatingsHidden = isSpoilersRatingsHidden
+      spoilers = CollectionListItem.ShowItem.Spoilers(
+        isSpoilerHidden = spoilers.isWatchlistShowsHidden,
+        isSpoilerRatingsHidden = spoilers.isWatchlistShowsRatingsHidden,
+        isSpoilerTapToReveal = spoilers.isTapToReveal
+      )
     )
   }
 }

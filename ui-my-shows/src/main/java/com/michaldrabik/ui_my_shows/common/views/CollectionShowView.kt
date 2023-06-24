@@ -86,9 +86,17 @@ class CollectionShowView : ShowView<CollectionListItem.ShowItem> {
       if (item.translation?.overview.isNullOrBlank()) item.show.overview
       else item.translation?.overview
 
-    if (item.isSpoilerHidden) {
+    if (item.spoilers.isSpoilerHidden) {
+      collectionShowDescription.tag = collectionShowDescription.text
       collectionShowDescription.text =
         SPOILERS_REGEX.replace(collectionShowDescription.text, SPOILERS_HIDE_SYMBOL)
+
+      if (item.spoilers.isSpoilerTapToReveal) {
+        collectionShowDescription.onClick { view ->
+          view.tag?.let { collectionShowDescription.text = it.toString() }
+          view.isClickable = false
+        }
+      }
     }
 
     collectionShowDescription.visibleIf(item.show.overview.isNotBlank())
@@ -97,8 +105,17 @@ class CollectionShowView : ShowView<CollectionListItem.ShowItem> {
   private fun bindRating(item: CollectionListItem.ShowItem) {
     var rating = String.format(ENGLISH, "%.1f", item.show.rating)
 
-    if (item.isSpoilerRatingsHidden) {
+    if (item.spoilers.isSpoilerRatingsHidden) {
+      collectionShowRating.tag = rating
       rating = Config.SPOILERS_RATINGS_HIDE_SYMBOL
+
+      if (item.spoilers.isSpoilerTapToReveal) {
+        collectionShowRating.onClick { view ->
+          view.tag?.let { collectionShowRating.text = it.toString() }
+          view.isClickable = false
+        }
+      }
+
     }
 
     collectionShowRating.text = rating

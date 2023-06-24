@@ -78,7 +78,7 @@ class CollectionShowGridView : ShowView<CollectionListItem.ShowItem> {
     with(binding) {
       var rating = String.format(ENGLISH, "%.1f", item.show.rating)
 
-      if (item.isSpoilerRatingsHidden) {
+      if (item.spoilers.isSpoilerRatingsHidden) {
         rating = Config.SPOILERS_RATINGS_HIDE_SYMBOL
       }
 

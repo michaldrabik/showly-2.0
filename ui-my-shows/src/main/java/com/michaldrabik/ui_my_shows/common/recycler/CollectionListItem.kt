@@ -29,13 +29,19 @@ sealed class CollectionListItem(
     val translation: Translation? = null,
     val userRating: Int? = null,
     val sortOrder: SortOrder? = null,
-    val isSpoilerHidden: Boolean = false,
-    val isSpoilerRatingsHidden: Boolean = false
+    val spoilers: Spoilers
   ) : CollectionListItem(
     show = show,
     image = image,
     isLoading = isLoading
-  )
+  ) {
+
+    data class Spoilers(
+      val isSpoilerHidden: Boolean,
+      val isSpoilerRatingsHidden: Boolean,
+      val isSpoilerTapToReveal: Boolean,
+    )
+  }
 
   data class FiltersItem(
     val sortOrder: SortOrder,
