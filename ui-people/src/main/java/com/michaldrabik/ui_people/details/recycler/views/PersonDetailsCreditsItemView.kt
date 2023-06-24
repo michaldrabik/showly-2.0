@@ -107,7 +107,17 @@ class PersonDetailsCreditsItemView : FrameLayout {
     val isWatchlistHidden = item.spoilers.isWatchlistShowsHidden && item.isWatchlist
     val isNotCollectedHidden = item.spoilers.isNotCollectedShowsHidden && (!item.isMy && !item.isWatchlist)
     if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
+      viewPersonCreditsItemDescription.tag = description
       description = SPOILERS_REGEX.replace(description, SPOILERS_HIDE_SYMBOL)
+
+      if (item.spoilers.isTapToReveal) {
+        viewPersonCreditsItemDescription.onClick { view ->
+          view.tag?.let {
+            viewPersonCreditsItemDescription.text = it.toString()
+          }
+          view.isClickable = false
+        }
+      }
     }
 
     viewPersonCreditsItemDescription.text = description
@@ -129,7 +139,17 @@ class PersonDetailsCreditsItemView : FrameLayout {
     val isWatchlistHidden = item.spoilers.isWatchlistMoviesHidden && item.isWatchlist
     val isNotCollectedHidden = item.spoilers.isNotCollectedMoviesHidden && (!item.isMy && !item.isWatchlist)
     if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
+      viewPersonCreditsItemDescription.tag = description
       description = SPOILERS_REGEX.replace(description, SPOILERS_HIDE_SYMBOL)
+
+      if (item.spoilers.isTapToReveal) {
+        viewPersonCreditsItemDescription.onClick { view ->
+          view.tag?.let {
+            viewPersonCreditsItemDescription.text = it.toString()
+          }
+          view.isClickable = false
+        }
+      }
     }
 
     viewPersonCreditsItemDescription.text = description
