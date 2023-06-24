@@ -92,8 +92,17 @@ class MovieDetailsCollectionItemView : FrameLayout {
       val isNotCollectedHidden = item.spoilers.isNotCollectedMoviesHidden && (!item.isMyMovie && !item.isWatchlist)
 
       if (isMyMovieHidden || isWatchlistHidden || isNotCollectedHidden) {
-        val hiddenDescription = SPOILERS_REGEX.replace(description, SPOILERS_HIDE_SYMBOL)
-        description = hiddenDescription
+        descriptionText.tag = description
+        description = SPOILERS_REGEX.replace(description, SPOILERS_HIDE_SYMBOL)
+
+        if (item.spoilers.isTapToReveal) {
+          with(descriptionText) {
+            onClick {
+              tag?.let { text = it.toString() }
+              isClickable = false
+            }
+          }
+        }
       }
 
       descriptionText.text = description
