@@ -19,7 +19,7 @@ class FoldableTextView : AppCompatTextView {
 
   init {
     maxLines = initialLines
-    enableExpandOnClick()
+    enableFoldOnClick()
   }
 
   fun setInitialLines(lines: Int) {
@@ -27,7 +27,7 @@ class FoldableTextView : AppCompatTextView {
     maxLines = lines
   }
 
-  fun enableExpandOnClick() {
+  fun enableFoldOnClick() {
     setOnClickListener {
       maxLines = if (maxLines == MAX_LINES) initialLines else MAX_LINES
     }

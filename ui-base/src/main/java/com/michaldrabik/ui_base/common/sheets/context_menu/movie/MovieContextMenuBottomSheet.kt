@@ -139,11 +139,11 @@ class MovieContextMenuBottomSheet : ContextMenuBottomSheet() {
       }
 
       if (item.spoilers.isTapToReveal) {
-        contextMenuItemDescription.onClick {
-          contextMenuItemDescription.tag?.let {
-            contextMenuItemDescription.text = it.toString()
+        with(contextMenuItemDescription) {
+          onClick {
+            tag?.let { text = it.toString() }
+            enableFoldOnClick()
           }
-          contextMenuItemDescription.enableExpandOnClick()
         }
       }
     }
@@ -159,12 +159,21 @@ class MovieContextMenuBottomSheet : ContextMenuBottomSheet() {
       val isNotCollectedHidden = item.spoilers.isNotCollectedMoviesRatingsHidden && (!item.isInCollection())
 
       if (isMyHidden || isWatchlistHidden || isHiddenShowHidden || isNotCollectedHidden) {
+        contextMenuRating.tag = rating
         rating = SPOILERS_RATINGS_HIDE_SYMBOL
       }
 
       contextMenuRating.visibleIf(item.movie.rating > 0)
       contextMenuRatingStar.visibleIf(item.movie.rating > 0)
       contextMenuRating.text = rating
+
+      if (item.spoilers.isTapToReveal) {
+        with(contextMenuRating) {
+          onClick {
+            tag?.let { text = it.toString() }
+          }
+        }
+      }
     }
   }
 

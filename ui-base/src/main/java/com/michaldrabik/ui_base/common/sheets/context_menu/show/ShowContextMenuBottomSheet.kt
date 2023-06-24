@@ -143,16 +143,16 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet() {
       if (isMyShowHidden || isWatchlistHidden || isHiddenShowHidden || isNotCollectedHidden) {
         val spoilerDescription = contextMenuItemDescription.text.toString()
         val hiddenDescription = SPOILERS_REGEX.replace(contextMenuItemDescription.text.toString(), SPOILERS_HIDE_SYMBOL)
-//        contextMenuItemDescription.tag = spoilerDescription
+        contextMenuItemDescription.tag = spoilerDescription
         contextMenuItemDescription.text = hiddenDescription
       }
 
       if (item.spoilers.isTapToReveal) {
-        contextMenuItemDescription.onClick {
-          contextMenuItemDescription.tag?.let {
-            contextMenuItemDescription.text = it.toString()
+        with(contextMenuItemDescription) {
+          onClick {
+            tag?.let { text = it.toString() }
+            enableFoldOnClick()
           }
-          contextMenuItemDescription.enableExpandOnClick()
         }
       }
     }
@@ -168,12 +168,21 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet() {
       val isNotCollectedHidden = item.spoilers.isNotCollectedShowsRatingsHidden && (!item.isInCollection())
 
       if (isMyShowHidden || isWatchlistHidden || isHiddenShowHidden || isNotCollectedHidden) {
+        contextMenuRating.tag = rating
         rating = SPOILERS_RATINGS_HIDE_SYMBOL
       }
 
       contextMenuRating.visibleIf(item.show.rating > 0)
       contextMenuRatingStar.visibleIf(item.show.rating > 0)
       contextMenuRating.text = rating
+
+      if (item.spoilers.isTapToReveal) {
+        with(contextMenuRating) {
+          onClick {
+            tag?.let { text = it.toString() }
+          }
+        }
+      }
     }
   }
 
