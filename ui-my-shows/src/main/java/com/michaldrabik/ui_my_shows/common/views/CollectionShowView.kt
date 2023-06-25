@@ -115,7 +115,6 @@ class CollectionShowView : ShowView<CollectionListItem.ShowItem> {
           view.isClickable = false
         }
       }
-
     }
 
     collectionShowRating.text = rating

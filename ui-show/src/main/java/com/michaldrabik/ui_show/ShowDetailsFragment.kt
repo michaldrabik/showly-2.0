@@ -293,7 +293,17 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       val isNotCollectedHidden = spoilersSettings.isNotCollectedShowsHidden && (!followedState.isInCollection())
 
       if (isMyShowHidden || isWatchlistHidden || isHiddenShowHidden || isNotCollectedHidden) {
+        showDetailsDescription.tag = description
         description = SPOILERS_REGEX.replace(description, SPOILERS_HIDE_SYMBOL)
+
+        if (spoilersSettings.isTapToReveal) {
+          with(showDetailsDescription) {
+            onClick {
+              tag?.let { text = it.toString() }
+              enableFoldOnClick()
+            }
+          }
+        }
       }
 
       showDetailsTitle.text = title

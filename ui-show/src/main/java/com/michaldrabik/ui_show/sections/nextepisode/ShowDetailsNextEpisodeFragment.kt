@@ -48,11 +48,32 @@ class ShowDetailsNextEpisodeFragment : BaseFragment<ShowDetailsNextEpisodeViewMo
 
           var episodeTitle = episode.title
           if (!episodeBundle.isWatched && spoilersSettings?.isEpisodeTitleHidden == true) {
+            showDetailsEpisodeText.tag = episodeTitle
             episodeTitle = SPOILERS_REGEX.replace(episodeTitle, SPOILERS_HIDE_SYMBOL)
+
+            if (spoilersSettings.isTapToReveal) {
+              showDetailsEpisodeText.onClick { view ->
+                view.tag?.let {
+                  showDetailsEpisodeText.text = String.format(
+                    Locale.ENGLISH,
+                    getString(R.string.textEpisodeTitle),
+                    episode.season,
+                    episode.number,
+                    it.toString()
+                  )
+                }
+                view.isClickable = false
+              }
+            }
           }
 
-          showDetailsEpisodeText.text =
-            String.format(Locale.ENGLISH, getString(R.string.textEpisodeTitle), episode.season, episode.number, episodeTitle)
+          showDetailsEpisodeText.text = String.format(
+            Locale.ENGLISH,
+            getString(R.string.textEpisodeTitle),
+            episode.season,
+            episode.number,
+            episodeTitle
+          )
 
           episode.firstAired?.let { date ->
             val displayDate = episodeBundle.dateFormat?.format(date.toLocalZone())?.capitalizeWords()

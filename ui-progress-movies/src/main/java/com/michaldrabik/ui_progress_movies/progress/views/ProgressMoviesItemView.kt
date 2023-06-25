@@ -78,8 +78,16 @@ class ProgressMoviesItemView : MovieView<ProgressMovieListItem.MovieItem> {
       item.translation?.overview
     }
 
-    if (item.isSpoilerHidden) {
+    if (item.spoilers.isWatchlistMoviesHidden) {
+      progressMovieItemSubtitle.tag = description
       description = SPOILERS_REGEX.replace(description.toString(), SPOILERS_HIDE_SYMBOL)
+
+      if (item.spoilers.isTapToReveal) {
+        progressMovieItemSubtitle.onClick { view ->
+          view.tag?.let { progressMovieItemSubtitle.text = it.toString() }
+          view.isClickable = false
+        }
+      }
     }
 
     progressMovieItemSubtitle.text = description
@@ -91,7 +99,7 @@ class ProgressMoviesItemView : MovieView<ProgressMovieListItem.MovieItem> {
         progressMovieItemRating.visible()
         progressMovieItemRatingStar.visible()
         progressMovieItemRatingStar.imageTintList = context.colorStateListFromAttr(android.R.attr.colorAccent)
-        progressMovieItemRating.text = if (item.isSpoilerRatingsHidden) {
+        progressMovieItemRating.text = if (item.spoilers.isWatchlistMoviesRatingsHidden) {
           SPOILERS_RATINGS_HIDE_SYMBOL
         } else {
           String.format(Locale.ENGLISH, "%.1f", item.movie.rating)

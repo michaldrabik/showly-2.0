@@ -87,7 +87,15 @@ class EpisodeView : ConstraintLayout {
       }
 
       if (!item.isWatched && item.spoilers.isEpisodeTitleHidden) {
+        episodeOverview.tag = overviewText.toString()
         overviewText = SPOILERS_REGEX.replace(overviewText.toString(), SPOILERS_HIDE_SYMBOL)
+
+        if (item.spoilers.isTapToReveal) {
+          episodeOverview.onClick { view ->
+            view.tag?.let { episodeOverview.text = it.toString() }
+            view.isClickable = false
+          }
+        }
       }
 
       episodeTitle.text = titleText

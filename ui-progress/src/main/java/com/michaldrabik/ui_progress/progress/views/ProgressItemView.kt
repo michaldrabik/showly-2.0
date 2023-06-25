@@ -108,7 +108,15 @@ class ProgressItemView : ShowView<ProgressListItem.Episode> {
     }
 
     if (item.spoilers?.isEpisodeTitleHidden == true) {
+      progressItemSubtitle2.tag = episodeTitle
       episodeTitle = SPOILERS_REGEX.replace(episodeTitle.toString(), SPOILERS_HIDE_SYMBOL)
+
+      if (item.spoilers.isTapToReveal) {
+        progressItemSubtitle2.onClick { view ->
+          view.tag?.let { progressItemSubtitle2.text = it.toString() }
+          view.isClickable = false
+        }
+      }
     }
 
     progressItemSubtitle2.text = episodeTitle

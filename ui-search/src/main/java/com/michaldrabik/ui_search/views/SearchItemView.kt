@@ -82,6 +82,7 @@ class SearchItemView : ShowView<SearchListItem> {
         val isWatchlistHidden = item.spoilers.isWatchlistShowsHidden && item.isWatchlist
         val isNotCollectedHidden = item.spoilers.isNotCollectedShowsHidden && (!item.isFollowed && !item.isWatchlist)
         if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
+          showSearchDescription.tag = overview.toString()
           overview = SPOILERS_REGEX.replace(overview.toString(), SPOILERS_HIDE_SYMBOL)
         }
       }
@@ -91,12 +92,19 @@ class SearchItemView : ShowView<SearchListItem> {
         val isWatchlistHidden = item.spoilers.isWatchlistMoviesHidden && item.isWatchlist
         val isNotCollectedHidden = item.spoilers.isNotCollectedMoviesHidden && (!item.isFollowed && !item.isWatchlist)
         if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
+          showSearchDescription.tag = overview.toString()
           overview = SPOILERS_REGEX.replace(overview.toString(), SPOILERS_HIDE_SYMBOL)
         }
       }
 
-      showSearchDescription.text = overview
-      showSearchDescription.visibleIf(item.overview.isNotBlank())
+      with(showSearchDescription) {
+        text = overview
+        visibleIf(item.overview.isNotBlank())
+        onClick { view ->
+          view.tag?.let { text = it.toString() }
+          view.isClickable = false
+        }
+      }
     }
   }
 
