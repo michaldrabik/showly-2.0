@@ -151,6 +151,7 @@ class ListDetailsGridTitleItemView : ListDetailsItemView {
         val isWatchlistHidden = item.spoilers.isWatchlistShowsRatingsHidden && item.isWatchlist
         val isNotCollectedHidden = item.spoilers.isNotCollectedShowsRatingsHidden && (!item.isWatched && !item.isWatchlist)
         if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
+          listDetailsGridItemRating.tag = rating
           rating = Config.SPOILERS_RATINGS_HIDE_SYMBOL
         }
       }
@@ -160,7 +161,17 @@ class ListDetailsGridTitleItemView : ListDetailsItemView {
         val isWatchlistHidden = item.spoilers.isWatchlistMoviesRatingsHidden && item.isWatchlist
         val isNotCollectedHidden = item.spoilers.isNotCollectedMoviesRatingsHidden && (!item.isWatched && !item.isWatchlist)
         if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
+          listDetailsGridItemRating.tag = rating
           rating = Config.SPOILERS_RATINGS_HIDE_SYMBOL
+        }
+      }
+
+      if (item.spoilers.isTapToReveal) {
+        with(listDetailsGridItemRating) {
+          onClick {
+            tag?.let { text = it.toString() }
+            isClickable = false
+          }
         }
       }
 

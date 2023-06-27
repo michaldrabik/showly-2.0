@@ -120,7 +120,17 @@ class ListDetailsCompactMovieItemView : ListDetailsItemView {
     val isWatchlistHidden = item.spoilers.isWatchlistMoviesRatingsHidden && item.isWatchlist
     val isNotCollectedHidden = item.spoilers.isNotCollectedMoviesRatingsHidden && (!item.isWatched && !item.isWatchlist)
     if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
+      listDetailsMovieRating.tag = rating
       rating = SPOILERS_RATINGS_HIDE_SYMBOL
+
+      if (item.spoilers.isTapToReveal) {
+        with(listDetailsMovieRating) {
+          onClick {
+            tag?.let { text = it.toString() }
+            isClickable = false
+          }
+        }
+      }
     }
 
     listDetailsMovieRating.visibleIf(!item.isManageMode)

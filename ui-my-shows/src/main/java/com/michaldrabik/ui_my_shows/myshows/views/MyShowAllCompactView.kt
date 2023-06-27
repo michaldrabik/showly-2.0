@@ -68,7 +68,17 @@ class MyShowAllCompactView : ShowView<MyShowsItem> {
     var rating = String.format(ENGLISH, "%.1f", item.show.rating)
 
     if (item.spoilers.isSpoilerRatingsHidden) {
+      collectionShowRating.tag = rating
       rating = Config.SPOILERS_RATINGS_HIDE_SYMBOL
+
+      if (item.spoilers.isSpoilerTapToReveal) {
+        with(collectionShowRating) {
+          onClick {
+            tag?.let { text = it.toString() }
+            isClickable = false
+          }
+        }
+      }
     }
 
     collectionShowRating.text = rating

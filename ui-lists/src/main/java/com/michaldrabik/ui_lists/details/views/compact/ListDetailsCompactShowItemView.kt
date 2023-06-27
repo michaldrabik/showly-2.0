@@ -136,7 +136,17 @@ class ListDetailsCompactShowItemView : ListDetailsItemView {
     val isWatchlistHidden = item.spoilers.isWatchlistShowsRatingsHidden && item.isWatchlist
     val isNotCollectedHidden = item.spoilers.isNotCollectedShowsRatingsHidden && (!item.isWatched && !item.isWatchlist)
     if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
+      listDetailsShowRating.tag = rating
       rating = SPOILERS_RATINGS_HIDE_SYMBOL
+
+      if (item.spoilers.isTapToReveal) {
+        with(listDetailsShowRating) {
+          onClick {
+            tag?.let { text = it.toString() }
+            isClickable = false
+          }
+        }
+      }
     }
 
     listDetailsShowRating.visibleIf(!item.isManageMode)

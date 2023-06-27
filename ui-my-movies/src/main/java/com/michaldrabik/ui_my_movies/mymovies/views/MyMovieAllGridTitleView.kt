@@ -82,7 +82,17 @@ class MyMovieAllGridTitleView : MovieView<MyMoviesItem> {
       var rating = String.format(Locale.ENGLISH, "%.1f", item.movie.rating)
 
       if (item.spoilers.isSpoilerRatingsHidden) {
+        collectionMovieRating.tag = rating
         rating = SPOILERS_RATINGS_HIDE_SYMBOL
+
+        if (item.spoilers.isSpoilerTapToReveal) {
+          with(collectionMovieRating) {
+            onClick {
+              tag?.let { text = it.toString() }
+              isClickable = false
+            }
+          }
+        }
       }
 
       collectionMovieRating.visible()
