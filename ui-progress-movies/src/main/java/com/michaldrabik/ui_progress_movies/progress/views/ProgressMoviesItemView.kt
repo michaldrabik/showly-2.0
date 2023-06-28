@@ -99,10 +99,20 @@ class ProgressMoviesItemView : MovieView<ProgressMovieListItem.MovieItem> {
         progressMovieItemRating.visible()
         progressMovieItemRatingStar.visible()
         progressMovieItemRatingStar.imageTintList = context.colorStateListFromAttr(android.R.attr.colorAccent)
-        progressMovieItemRating.text = if (item.spoilers.isWatchlistMoviesRatingsHidden) {
-          SPOILERS_RATINGS_HIDE_SYMBOL
+        val rating = String.format(Locale.ENGLISH, "%.1f", item.movie.rating)
+        if (item.spoilers.isMyShowsRatingsHidden) {
+          progressMovieItemRating.tag = rating
+          progressMovieItemRating.text = SPOILERS_RATINGS_HIDE_SYMBOL
+          if (item.spoilers.isTapToReveal) {
+            progressMovieItemRating.onClick { view ->
+              view.tag?.let {
+                progressMovieItemRating.text = it.toString()
+              }
+              view.isClickable = false
+            }
+          }
         } else {
-          String.format(Locale.ENGLISH, "%.1f", item.movie.rating)
+          progressMovieItemRating.text = rating
         }
       }
       USER_RATING -> {

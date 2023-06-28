@@ -130,10 +130,20 @@ class ProgressItemView : ShowView<ProgressListItem.Episode> {
         progressItemRating.visibleIf(!isNew && !isUpcoming)
         progressItemRatingStar.visibleIf(!isNew && !isUpcoming)
         progressItemRatingStar.imageTintList = context.colorStateListFromAttr(android.R.attr.colorAccent)
-        progressItemRating.text = if (item.spoilers?.isMyShowsRatingsHidden == true) {
-          SPOILERS_RATINGS_HIDE_SYMBOL
+        val rating = String.format(ENGLISH, "%.1f", episodeItem.show.rating)
+        if (item.spoilers?.isMyShowsRatingsHidden == true) {
+          progressItemRating.tag = rating
+          progressItemRating.text = SPOILERS_RATINGS_HIDE_SYMBOL
+          if (item.spoilers?.isTapToReveal == true) {
+            progressItemRating.onClick { view ->
+              view.tag?.let {
+                progressItemRating.text = it.toString()
+              }
+              view.isClickable = false
+            }
+          }
         } else {
-          String.format(ENGLISH, "%.1f", episodeItem.show.rating)
+          progressItemRating.text = rating
         }
       }
       USER_RATING -> {
