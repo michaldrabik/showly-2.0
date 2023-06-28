@@ -72,9 +72,22 @@ class RatingsStripView : LinearLayout {
       val isLoading = ratings?.isLoading == true
       with(valueView) {
         visibleIf(!isLoading && !rating.isNullOrBlank(), gone = false)
-        text = if (isHidden) SPOILERS_RATINGS_HIDE_SYMBOL else rating
+        text = if (isHidden) {
+          tag = rating
+          SPOILERS_RATINGS_HIDE_SYMBOL
+        } else {
+          rating
+        }
         setTextColor(if (rating != null) colorPrimary else colorSecondary)
+
+        if (isHidden) {
+          onClick { view ->
+            view.tag?.let { text = it.toString() }
+            view.isClickable = false
+          }
+        }
       }
+
       progressView.visibleIf(isLoading)
       linkView.visibleIf(!isLoading && rating.isNullOrBlank())
     }
