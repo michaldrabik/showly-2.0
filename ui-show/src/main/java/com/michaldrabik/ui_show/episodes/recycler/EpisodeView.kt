@@ -12,7 +12,6 @@ import com.michaldrabik.common.Config.SPOILERS_REGEX
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_base.utilities.extensions.addRipple
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
-import com.michaldrabik.ui_base.utilities.extensions.expandTouch
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
@@ -33,7 +32,6 @@ class EpisodeView : ConstraintLayout {
   init {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     addRipple()
-    post { binding.episodeCheckbox.expandTouch() }
   }
 
   fun bind(
@@ -50,11 +48,21 @@ class EpisodeView : ConstraintLayout {
       episodeCheckbox.isChecked = item.isWatched
       episodeCheckbox.isEnabled = hasAired || !isLocked
 
+      val rating = String.format(ENGLISH, "%.1f", item.episode.rating)
       episodeRating.visibleIf(item.episode.rating != 0F)
-      episodeRating.text = if (!item.isWatched && item.spoilers.isEpisodeRatingHidden) {
-        Config.SPOILERS_RATINGS_HIDE_SYMBOL
+      if (!item.isWatched && item.spoilers.isEpisodeRatingHidden) {
+        episodeRating.tag = rating
+        episodeRating.text = Config.SPOILERS_RATINGS_HIDE_SYMBOL
+        if (item.spoilers.isTapToReveal) {
+          with(episodeRating) {
+            onClick {
+              tag?.let { text = it.toString() }
+              isClickable = false
+            }
+          }
+        }
       } else {
-        String.format(ENGLISH, "%.1f", item.episode.rating)
+        episodeRating.text = rating
       }
 
       item.myRating?.let {
