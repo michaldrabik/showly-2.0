@@ -97,7 +97,6 @@ class CollectionShowCompactView : ShowView<CollectionListItem.ShowItem> {
             }
           }
         }
-
       }
 
       collectionShowRating.text = rating

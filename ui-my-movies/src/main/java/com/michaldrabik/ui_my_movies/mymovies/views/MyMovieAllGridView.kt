@@ -90,7 +90,6 @@ class MyMovieAllGridView : MovieView<MyMoviesItem> {
             }
           }
         }
-
       }
 
       collectionMovieRating.visible()

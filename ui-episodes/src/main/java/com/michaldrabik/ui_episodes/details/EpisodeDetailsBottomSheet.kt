@@ -80,7 +80,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
       seasonEpisodesIds: List<Int>?,
       isWatched: Boolean,
       showButton: Boolean,
-      showTabs: Boolean
+      showTabs: Boolean,
     ): Bundle {
       val options = Options(
         ids = ids,
@@ -259,7 +259,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
 
   private fun renderTitle(
     translation: Translation?,
-    spoilersSettings: SpoilersSettings?
+    spoilersSettings: SpoilersSettings?,
   ) {
     with(binding) {
       var title =
@@ -299,7 +299,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
 
   private fun renderDescription(
     translation: Translation?,
-    spoilersSettings: SpoilersSettings?
+    spoilersSettings: SpoilersSettings?,
   ) {
     with(binding) {
       var description =
@@ -354,19 +354,33 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
     }
   }
 
-  private fun renderImage(image: Image, spoilers: SpoilersSettings?) {
+  private fun renderImage(
+    image: Image,
+    spoilers: SpoilersSettings?,
+    tapToReveal: Boolean = false,
+  ) {
     with(binding) {
-      if (!options.isWatched && spoilers?.isEpisodeImageHidden == true) {
+      if (!options.isWatched && spoilers?.isEpisodeImageHidden == true && !tapToReveal) {
         episodeDetailsImage.invisible()
         episodeDetailsImagePlaceholder.visible()
         episodeDetailsImagePlaceholder.setImageResource(R.drawable.ic_eye_no)
+        if (spoilers.isTapToReveal) {
+          episodeDetailsImagePlaceholder.onClick {
+            renderImage(image, spoilers, tapToReveal = true)
+          }
+        }
         return
       }
+      episodeDetailsImage.visible()
+      episodeDetailsImagePlaceholder.invisible()
       Glide.with(this@EpisodeDetailsBottomSheet)
         .load("${Config.TMDB_IMAGE_BASE_STILL_URL}${image.fileUrl}")
         .transform(CenterCrop(), GranularRoundedCorners(cornerRadius, cornerRadius, 0F, 0F))
         .transition(DrawableTransitionOptions.withCrossFade(IMAGE_FADE_DURATION_MS))
-        .withFailListener { episodeDetailsImagePlaceholder.visible() }
+        .withFailListener {
+          episodeDetailsImagePlaceholder.visible()
+          episodeDetailsImagePlaceholder.setImageResource(R.drawable.ic_television)
+        }
         .into(episodeDetailsImage)
     }
   }
@@ -432,6 +446,6 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
     val seasonEpisodesIds: List<Int>?,
     val isWatched: Boolean,
     val showButton: Boolean,
-    val showTabs: Boolean
+    val showTabs: Boolean,
   ) : Parcelable
 }

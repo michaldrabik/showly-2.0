@@ -14,22 +14,7 @@ import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Ratings
-import kotlinx.android.synthetic.main.view_ratings_strip.view.viewRatingsStripImdb
-import kotlinx.android.synthetic.main.view_ratings_strip.view.viewRatingsStripImdbLinkIcon
-import kotlinx.android.synthetic.main.view_ratings_strip.view.viewRatingsStripImdbProgress
-import kotlinx.android.synthetic.main.view_ratings_strip.view.viewRatingsStripImdbValue
-import kotlinx.android.synthetic.main.view_ratings_strip.view.viewRatingsStripMeta
-import kotlinx.android.synthetic.main.view_ratings_strip.view.viewRatingsStripMetaLinkIcon
-import kotlinx.android.synthetic.main.view_ratings_strip.view.viewRatingsStripMetaProgress
-import kotlinx.android.synthetic.main.view_ratings_strip.view.viewRatingsStripMetaValue
-import kotlinx.android.synthetic.main.view_ratings_strip.view.viewRatingsStripRotten
-import kotlinx.android.synthetic.main.view_ratings_strip.view.viewRatingsStripRottenLinkIcon
-import kotlinx.android.synthetic.main.view_ratings_strip.view.viewRatingsStripRottenProgress
-import kotlinx.android.synthetic.main.view_ratings_strip.view.viewRatingsStripRottenValue
-import kotlinx.android.synthetic.main.view_ratings_strip.view.viewRatingsStripTrakt
-import kotlinx.android.synthetic.main.view_ratings_strip.view.viewRatingsStripTraktLinkIcon
-import kotlinx.android.synthetic.main.view_ratings_strip.view.viewRatingsStripTraktProgress
-import kotlinx.android.synthetic.main.view_ratings_strip.view.viewRatingsStripTraktValue
+import kotlinx.android.synthetic.main.view_ratings_strip.view.*
 
 class RatingsStripView : LinearLayout {
 
@@ -108,7 +93,8 @@ class RatingsStripView : LinearLayout {
       valueView = viewRatingsStripImdbValue,
       progressView = viewRatingsStripImdbProgress,
       linkView = viewRatingsStripImdbLinkIcon,
-      isHidden = ratings.isHidden
+      isHidden = ratings.isHidden,
+      isTapToReveal = ratings.isHidden
     )
 
     bindValue(
@@ -116,7 +102,8 @@ class RatingsStripView : LinearLayout {
       valueView = viewRatingsStripMetaValue,
       progressView = viewRatingsStripMetaProgress,
       linkView = viewRatingsStripMetaLinkIcon,
-      isHidden = ratings.isHidden
+      isHidden = ratings.isHidden,
+      isTapToReveal = ratings.isHidden
     )
 
     bindValue(
@@ -124,7 +111,8 @@ class RatingsStripView : LinearLayout {
       valueView = viewRatingsStripRottenValue,
       progressView = viewRatingsStripRottenProgress,
       linkView = viewRatingsStripRottenLinkIcon,
-      isHidden = ratings.isHidden
+      isHidden = ratings.isHidden,
+      isTapToReveal = ratings.isHidden
     )
   }
 
