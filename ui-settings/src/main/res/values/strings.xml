@@ -109,6 +109,9 @@
   <string name="textSettingsSpoilersEpisodesDescription">Hide <b>description</b> of unwatched episodes.</string>
   <string name="textSettingsSpoilersEpisodesRating">Hide <b>rating</b> of unwatched episodes.</string>
 
+  <string name="textSettingsSpoilersTapToRevealTitle">Tap To Reveal</string>
+  <string name="textSettingsSpoilersTapToRevealDescription">Tap hidden content to temporarily reveal it.</string>
+
   <string name="textNextEpisodeLastWatched">Last watched episode</string>
   <string name="textNextEpisodeOldest">Oldest unwatched episode</string>
 

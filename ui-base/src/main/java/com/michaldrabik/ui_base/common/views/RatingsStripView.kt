@@ -66,7 +66,8 @@ class RatingsStripView : LinearLayout {
       valueView: TextView,
       progressView: View,
       linkView: View,
-      isHidden: Boolean
+      isHidden: Boolean,
+      isTapToReveal: Boolean
     ) {
       val rating = ratings?.value
       val isLoading = ratings?.isLoading == true
@@ -80,7 +81,7 @@ class RatingsStripView : LinearLayout {
         }
         setTextColor(if (rating != null) colorPrimary else colorSecondary)
 
-        if (isHidden) {
+        if (isHidden && isTapToReveal) {
           onClick { view ->
             view.tag?.let { text = it.toString() }
             view.isClickable = false
@@ -98,7 +99,8 @@ class RatingsStripView : LinearLayout {
       valueView = viewRatingsStripTraktValue,
       progressView = viewRatingsStripTraktProgress,
       linkView = viewRatingsStripTraktLinkIcon,
-      isHidden = ratings.isHidden
+      isHidden = ratings.isHidden,
+      isTapToReveal = ratings.isHidden
     )
 
     bindValue(

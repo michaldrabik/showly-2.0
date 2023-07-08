@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.viewBinding
@@ -23,6 +24,10 @@ class SettingsSpoilersFragment :
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
+    launchAndRepeatStarted(
+      { viewModel.uiState.collect { render(it) } },
+      doAfterLaunch = { viewModel.loadSettings() }
+    )
   }
 
   private fun setupView() {
@@ -35,6 +40,17 @@ class SettingsSpoilersFragment :
       }
       settingsSpoilersEpisodes.onClick {
         navigateToSafe(R.id.actionSettingsFragmentToSpoilersEpisodes)
+      }
+      settingsSpoilersTapToReveal.onClick {
+        viewModel.setTapToReveal(!settingsSpoilersTapToRevealSwitch.isChecked)
+      }
+    }
+  }
+
+  private fun render(uiState: SettingsSpoilersUiState) {
+    uiState.run {
+      with(binding) {
+        settingsSpoilersTapToRevealSwitch.isChecked = isTapToReveal
       }
     }
   }

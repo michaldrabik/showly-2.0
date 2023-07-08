@@ -35,6 +35,8 @@ class SettingsSpoilersRepository @Inject constructor(
     private const val EPISODES_DESCRIPTION_HIDDEN = "EPISODES_DESCRIPTION_HIDDEN"
     private const val EPISODES_RATING_HIDDEN = "EPISODES_RATING_HIDDEN"
     private const val EPISODES_IMAGE_HIDDEN = "EPISODES_IMAGE_HIDDEN"
+
+    private const val TAP_TO_REVEAL = "TAP_TO_REVEAL"
   }
 
   var isMyShowsHidden by BooleanPreference(preferences, SHOWS_MY_SHOWS_HIDDEN, false)
@@ -60,6 +62,8 @@ class SettingsSpoilersRepository @Inject constructor(
   var isEpisodesRatingHidden by BooleanPreference(preferences, EPISODES_RATING_HIDDEN, false)
   var isEpisodesImageHidden by BooleanPreference(preferences, EPISODES_IMAGE_HIDDEN, false)
 
+  var isTapToReveal by BooleanPreference(preferences, TAP_TO_REVEAL, false)
+
   fun getAll(): SpoilersSettings = SpoilersSettings(
     isMyShowsHidden = isMyShowsHidden,
     isMyShowsRatingsHidden = isMyShowsRatingsHidden,
@@ -81,6 +85,6 @@ class SettingsSpoilersRepository @Inject constructor(
     isEpisodeDescriptionHidden = isEpisodesDescriptionHidden,
     isEpisodeRatingHidden = isEpisodesRatingHidden,
     isEpisodeImageHidden = isEpisodesImageHidden,
-    isTapToReveal = true // TODO
+    isTapToReveal = isTapToReveal
   )
 }
