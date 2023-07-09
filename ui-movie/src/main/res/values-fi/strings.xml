@@ -5,12 +5,12 @@
   <string name="textInHidden">Piilotetut</string>
   <string name="textMovieActorsEmpty">Näyttelijät eivät ole saatavilla</string>
   <string name="textMovieTrailer">Traileri</string>
-  <string name="textMovieRate">Avioi</string>
+  <string name="textMovieRate">Arvioi</string>
   <string name="textMovieComments2">Kommentit</string>
   <string name="textMovieYouMayAlsoLike">Saattaisit pitää myös näistä</string>
   <string name="textMovieCollections">Kokoelmat</string>
   <string name="textMovieExtraInfo">%s %s | %s %s | %s</string>
-  <string name="textMovieManageLists">Hallinnoi listoja</string>
-  <string name="textMovieManageListsCount">Hallinnoi listoja (%d)</string>
+  <string name="textMovieManageLists">Hallitse listoja</string>
+  <string name="textMovieManageListsCount">Hallitse listoja (%d)</string>
   <string name="textTraktSyncMovieRemovedFromTrakt">Trakt.tv synkronoitiin.</string>
 </resources>

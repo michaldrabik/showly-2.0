@@ -7,10 +7,10 @@
   <string name="textSortRatedUser">Oma arvio</string>
   <string name="textSortDateAdded">Lisätty hiljattain</string>
   <string name="textSortDateUpdated">Hiljattain päivitetyt</string>
-  <string name="textSortRecentlyWatched">Katseltu hiljattain</string>
+  <string name="textSortRecentlyWatched">Katsottu hiljattain</string>
   <string name="textSortEpisodesLeft">Jaksoja jäljellä</string>
   <string name="textHeaderRecentlyAdded">Lisätty hiljattain</string>
-  <string name="textHeaderWatching">Katseltavana</string>
+  <string name="textHeaderWatching">Katsottavana</string>
   <string name="textHeaderFinished">Katsellut</string>
   <string name="textHeaderReturning">Jatkuvat ja tulevat</string>
   <string name="textHeaderAll">Kaikki</string>

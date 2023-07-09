@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="menuProgress">Katselutilanne</string>
+  <string name="menuProgress">Katselutila</string>
   <string name="menuDiscover">Etsi</string>
   <string name="menuCollection">Kokoelma</string>
   <string name="menuNews">Uutiset</string>
@@ -16,5 +16,5 @@
   <string name="shortcutDiscover">Etsi</string>
   <string name="shortcutCollection">Kokoelma</string>
   <string name="shortcutSearch">Haku</string>
-  <string name="shortcutProgress">Katselutilanne</string>
+  <string name="shortcutProgress">Katselutila</string>
 </resources>

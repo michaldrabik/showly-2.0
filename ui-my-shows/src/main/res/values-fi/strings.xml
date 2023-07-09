@@ -3,7 +3,7 @@
   <string name="menuMyShows">Omat sarjat</string>
   <string name="menuWatchlist">Katselulista</string>
   <string name="menuHidden">Piilotetut</string>
-  <string name="textMyShowsEmpty">Sarjakokoelmasi on tyhjä.\n\nSiirry <b>etsintään</b> lisätäksesi ensimmäisen sarjasi.</string>
-  <string name="textWatchlistEmpty"><b>Katselulistasi</b> on tyhjä.\n\nSiirry <b>etsintään</b> lisätäksesi sarjoja, joita haluat katsella tulevaisuudessa.</string>
-  <string name="textHiddenEmpty"><b>Piilotetut</b>-listasi on tyhjä.\n\n<b>Piilotetut</b> on lista kohteista, joista et ole kiinnostunut.\n\nPiilotettuja kohteita ei enää näytetä mm. <b>Katselutilanne</b>- ja <b>Etsi</b>-osioissa.</string>
+  <string name="textMyShowsEmpty">Sarjakokoelmasi on tyhjä.\n\nLisää ensimmäinen sarjasi <b>Etsi</b>-osiosta.</string>
+  <string name="textWatchlistEmpty"><b>Katselulista</b> on tyhjä.\n\nLisää <b>Etsi</b>-osiosta sarjoja, joita haluat katsella tulevaisuudessa.</string>
+  <string name="textHiddenEmpty"><b>Piilotetut</b>-lista on tyhjä.\n\n<b>Piilotetut</b> on lista kohteista, joista et ole kiinnostunut.\n\nPiilotettuja kohteita ei enää näytetä mm. <b>Katselutila</b>- ja <b>Etsi</b>-osioissa.</string>
 </resources>

@@ -2,5 +2,5 @@
 <resources>
   <string name="textSearchInitial1">Mitä etsit?</string>
   <string name="textSearchInitial2">Haun voimanlähteenä Trakt.tv</string>
-  <string name="textClear">Tyhjennä viimeaikaiset haut</string>
+  <string name="textClear">Tyhjennä aiemmat haut</string>
 </resources>

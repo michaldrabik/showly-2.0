@@ -15,6 +15,6 @@
   <string name="textNewsTitle">Uutisosio</string>
   <string name="textNewsDesc">Ota käyttöön uutisosio, josta näet uusimmat sarjat ja elokuvat, artikkelit, uutiset ja trailerit. Voimanlähteenä Reddit.</string>
   <string name="textViewsTitle">Listausnäkymät</string>
-  <string name="textViewsDesc">Ota käyttöön kompaktin listan tai ruudukon tapaisia kokoelman listausten esitystapoja.</string>
+  <string name="textViewsDesc">Käytä kompaktin listan tai ruudukon kaltaisia kokoelman esitystapoja.</string>
   <string name="textPurchaseThanks">Olet nyt Showlyn tukija!\nKiitos ja nauti sovelluksesta!</string>
 </resources>

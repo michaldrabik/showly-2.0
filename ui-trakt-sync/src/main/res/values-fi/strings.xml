@@ -6,7 +6,7 @@
   <string name="textTraktSyncSchedule">Ajoitus</string>
   <string name="textTraktSyncFromTraktToShowly">Tuo Trakt.tv-kokoelmasta Showlyyn</string>
   <string name="textTraktSyncFromShowlyToTrakt">Vie Showlysta Trakt.tv-kokoelmaan</string>
-  <string name="textTraktSyncDescription">Synkronoi katselutilanteesi ja -listasi Showlyn kanssa.\n\nNykyisestä kokoelmastasi ei poisteta mitään, vaan synkronointi käsittelee vain kokoelmistasi puuttuvia kohteita.</string>
+  <string name="textTraktSyncDescription">Synkronoi katselutilasi ja -listasi Showlyn kanssa.\n\nNykyisestä kokoelmastasi ei poisteta mitään, vaan synkronointi käsittelee vain kokoelmistasi puuttuvia kohteita.</string>
   <string name="textTraktSyncLastTimestamp">Viimeisin synkronointi: %s</string>
   <string name="textSettingsTraktAuthorizeTitle">Trakt.tv-valtuutus</string>
   <string name="textSettingsScheduleImportConfirmationTitle">Pikasynkronointi on käytössä</string>
