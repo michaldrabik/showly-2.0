@@ -8,6 +8,7 @@ import com.michaldrabik.repository.mappers.SettingsMapper
 import com.michaldrabik.repository.settings.SettingsFiltersRepository
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.settings.SettingsSortRepository
+import com.michaldrabik.repository.settings.SettingsSpoilersRepository
 import com.michaldrabik.repository.settings.SettingsViewModeRepository
 import com.michaldrabik.repository.settings.SettingsWidgetsRepository
 import com.michaldrabik.ui_model.Settings
@@ -30,6 +31,7 @@ class SettingsRepositoryTest : BaseMockTest() {
   @MockK lateinit var settingsFilterRepository: SettingsFiltersRepository
   @MockK lateinit var settingsWidgetsRepository: SettingsWidgetsRepository
   @MockK lateinit var settingsViewModeRepository: SettingsViewModeRepository
+  @MockK lateinit var settingsSpoilerRepositoryTest: SettingsSpoilersRepository
 
   private lateinit var SUT: SettingsRepository
 
@@ -38,15 +40,16 @@ class SettingsRepositoryTest : BaseMockTest() {
     super.setUp()
     every { database.settings } returns settingsDao
     SUT = SettingsRepository(
-      settingsSortRepository,
-      settingsFilterRepository,
-      settingsWidgetsRepository,
-      settingsViewModeRepository,
-      testDispatchers,
-      database,
-      transactions,
-      mappers,
-      sharedPreferences
+      sorting = settingsSortRepository,
+      filters = settingsFilterRepository,
+      widgets = settingsWidgetsRepository,
+      viewMode = settingsViewModeRepository,
+      spoilers = settingsSpoilerRepositoryTest,
+      dispatchers = testDispatchers,
+      localSource = database,
+      transactions = transactions,
+      mappers = mappers,
+      preferences = sharedPreferences
     )
   }
 

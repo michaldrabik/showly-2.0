@@ -4,6 +4,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_search.recycler.SearchListItem
 import java.util.UUID
 
@@ -19,5 +20,6 @@ object TestData {
     isFollowed = false,
     isLoading = false,
     isWatchlist = false,
+    spoilers = SpoilersSettings.INITIAL
   )
 }

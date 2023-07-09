@@ -8,7 +8,9 @@ import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.repository.mappers.Mappers
+import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.repository.settings.SettingsRepository
+import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_search.BaseMockTest
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
@@ -27,6 +29,8 @@ class SearchSuggestionsCaseTest : BaseMockTest() {
   @RelaxedMockK lateinit var showsDao: ShowsDao
   @RelaxedMockK lateinit var moviesDao: MoviesDao
   @RelaxedMockK lateinit var mappers: Mappers
+  @RelaxedMockK lateinit var showsRepository: ShowsRepository
+  @RelaxedMockK lateinit var moviesRepository: MoviesRepository
   @RelaxedMockK lateinit var settingsRepository: SettingsRepository
   @RelaxedMockK lateinit var translationsRepository: TranslationsRepository
   @RelaxedMockK lateinit var showImagesProvider: ShowImagesProvider
@@ -44,13 +48,15 @@ class SearchSuggestionsCaseTest : BaseMockTest() {
     coEvery { database.movies } returns moviesDao
 
     SUT = SearchSuggestionsCase(
-      testDispatchers,
-      database,
-      mappers,
-      translationsRepository,
-      settingsRepository,
-      showImagesProvider,
-      movieImagesProvider
+      dispatchers = testDispatchers,
+      localSource = database,
+      mappers = mappers,
+      showsRepository = showsRepository,
+      moviesRepository = moviesRepository,
+      translationsRepository = translationsRepository,
+      settingsRepository = settingsRepository,
+      showsImagesProvider = showImagesProvider,
+      moviesImagesProvider = movieImagesProvider
     )
   }
 

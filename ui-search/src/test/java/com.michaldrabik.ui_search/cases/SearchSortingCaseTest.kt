@@ -7,6 +7,7 @@ import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
+import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_search.BaseMockTest
 import com.michaldrabik.ui_search.recycler.SearchListItem
 import com.michaldrabik.ui_search.utilities.SearchOptions
@@ -34,6 +35,7 @@ class SearchSortingCaseTest : BaseMockTest() {
       show = Show.EMPTY,
       movie = Movie.EMPTY,
       image = Image.createUnknown(ImageType.POSTER),
+      spoilers = SpoilersSettings.INITIAL,
       score = 1F,
     )
 
