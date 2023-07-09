@@ -12,6 +12,7 @@ import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
+import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_progress.helpers.TranslationsBundle
 import java.time.format.DateTimeFormatter
 import com.michaldrabik.ui_model.Episode as EpisodeModel
@@ -30,6 +31,7 @@ sealed class ProgressListItem(
     val season: Season?,
     val totalCount: Int,
     val watchedCount: Int,
+    val isWatched: Boolean,
     val isUpcoming: Boolean,
     val isPinned: Boolean,
     val isOnHold: Boolean,
@@ -37,6 +39,7 @@ sealed class ProgressListItem(
     val dateFormat: DateTimeFormatter? = null,
     val sortOrder: SortOrder? = null,
     val userRating: Int? = null,
+    val spoilers: SpoilersSettings? = null
   ) : ProgressListItem(show, image, isLoading) {
 
     fun isNew() = episode?.firstAired?.isBefore(nowUtc()) ?: false &&

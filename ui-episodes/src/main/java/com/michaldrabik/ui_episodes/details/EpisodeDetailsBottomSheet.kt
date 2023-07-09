@@ -19,6 +19,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
+import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
+import com.michaldrabik.common.Config.SPOILERS_REGEX
 import com.michaldrabik.common.extensions.dateFromMillis
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
@@ -31,6 +33,7 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.gone
+import com.michaldrabik.ui_base.utilities.extensions.invisible
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.requireParcelable
@@ -48,6 +51,8 @@ import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.SpoilersSettings
+import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_TAB_SELECTED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_WATCHED
@@ -75,7 +80,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
       seasonEpisodesIds: List<Int>?,
       isWatched: Boolean,
       showButton: Boolean,
-      showTabs: Boolean
+      showTabs: Boolean,
     ): Bundle {
       val options = Options(
         ids = ids,
@@ -94,6 +99,10 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
 
   private val options by lazy { requireParcelable<Options>(ARG_OPTIONS) }
   private val cornerRadius by lazy { dimenToPx(R.dimen.bottomSheetCorner).toFloat() }
+
+  private var spoilerTitle: String? = null
+  private var spoilerDescription: String? = null
+  private var spoilerRating: String? = null
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
@@ -123,8 +132,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
         "Episode ${episode.number}" -> String.format(ENGLISH, requireContext().getString(R.string.textEpisode), episode.number)
         else -> episode.title
       }
-      episodeDetailsOverview.text =
-        if (episode.overview.isBlank()) getString(R.string.textNoDescription) else episode.overview
+      episodeDetailsOverview.text = episode.overview.ifBlank { getString(R.string.textNoDescription) }
       episodeDetailsButton.run {
         visibleIf(showButton && !isWatched)
         onClick {
@@ -194,7 +202,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
           episodeDetailsName.text = if (episode.runtime > 0) "$name | $runtime" else name
         }
         isImageLoading.let { episodeDetailsProgress.visibleIf(it) }
-        image?.let { renderImage(it) }
+        image?.let { renderImage(it, spoilers) }
         isCommentsLoading.let {
           episodeDetailsButtons.visibleIf(!it)
           episodeDetailsCommentsProgress.visibleIf(it)
@@ -224,7 +232,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
           episodeDetailsCommentsButton.isEnabled = false
           episodeDetailsCommentsButton.text = String.format(ENGLISH, getString(R.string.textLoadCommentsCount), comments.size)
         }
-        ratingState?.let { state ->
+        rating?.let { state ->
           episodeDetailsRateProgress.visibleIf(state.rateLoading == true)
           episodeDetailsRateButton.visibleIf(state.rateLoading == false)
           episodeDetailsRateButton.onClick {
@@ -242,27 +250,141 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
             episodeDetailsRateButton.setText(R.string.textRate)
           }
         }
-        translation?.let { t ->
-          t.consume()?.let {
-            if (it.title.isNotBlank()) {
-              episodeDetailsTitle.setTextFade(it.title, duration = 0)
-            }
-            if (it.overview.isNotBlank()) {
-              episodeDetailsOverview.setTextFade(it.overview, duration = 0)
-            }
+        spoilers?.let { renderRating(it) }
+        renderTitle(translation, spoilers)
+        renderDescription(translation, spoilers)
+      }
+    }
+  }
+
+  private fun renderTitle(
+    translation: Translation?,
+    spoilersSettings: SpoilersSettings?,
+  ) {
+    with(binding) {
+      var title =
+        if (translation?.title?.isNotBlank() == true) {
+          translation.title
+        } else if (episodeDetailsTitle.text.isBlank()) {
+          when (options.episode.title) {
+            "Episode ${options.episode.number}" ->
+              String.format(ENGLISH, requireContext().getString(R.string.textEpisode), options.episode.number)
+            else -> options.episode.title
+          }
+        } else {
+          episodeDetailsTitle.text.toString()
+        }
+
+      val isEpisodeTitleHidden = !options.isWatched && spoilersSettings?.isEpisodeTitleHidden == true
+      if (isEpisodeTitleHidden) {
+        if (spoilerTitle == null) {
+          spoilerTitle = String(title.toCharArray())
+        }
+        title = SPOILERS_REGEX.replace(title, SPOILERS_HIDE_SYMBOL)
+      }
+
+      if (title.isNotBlank()) {
+        episodeDetailsTitle.setTextFade(title, duration = 0)
+      }
+
+      if (spoilersSettings?.isTapToReveal == true) {
+        episodeDetailsTitle.onClick {
+          spoilerTitle?.let {
+            episodeDetailsTitle.setTextFade(it, duration = 0)
           }
         }
       }
     }
   }
 
-  private fun renderImage(image: Image) =
-    Glide.with(this@EpisodeDetailsBottomSheet)
-      .load("${Config.TMDB_IMAGE_BASE_STILL_URL}${image.fileUrl}")
-      .transform(CenterCrop(), GranularRoundedCorners(cornerRadius, cornerRadius, 0F, 0F))
-      .transition(DrawableTransitionOptions.withCrossFade(IMAGE_FADE_DURATION_MS))
-      .withFailListener { binding.episodeDetailsImagePlaceholder.visible() }
-      .into(binding.episodeDetailsImage)
+  private fun renderDescription(
+    translation: Translation?,
+    spoilersSettings: SpoilersSettings?,
+  ) {
+    with(binding) {
+      var description =
+        if (translation?.overview?.isNotBlank() == true) {
+          translation.overview
+        } else if (episodeDetailsOverview.text.isBlank()) {
+          options.episode.overview.ifBlank {
+            getString(R.string.textNoDescription)
+          }
+        } else {
+          episodeDetailsOverview.text.toString()
+        }
+
+      if (!options.isWatched && spoilersSettings?.isEpisodeDescriptionHidden == true) {
+        if (spoilerDescription == null) {
+          spoilerDescription = String(description.toCharArray())
+        }
+        description = SPOILERS_REGEX.replace(description, SPOILERS_HIDE_SYMBOL)
+      }
+
+      if (description.isNotBlank()) {
+        episodeDetailsOverview.setTextFade(description, duration = 0)
+      }
+
+      if (spoilersSettings?.isTapToReveal == true) {
+        episodeDetailsOverview.onClick {
+          spoilerDescription?.let {
+            episodeDetailsOverview.setTextFade(it, duration = 0)
+          }
+        }
+      }
+    }
+  }
+
+  private fun renderRating(spoilersSettings: SpoilersSettings) {
+    with(binding) {
+      val isSpoilerHidden = !options.isWatched && spoilersSettings.isEpisodeRatingHidden
+      if (isSpoilerHidden) {
+        if (spoilerRating == null) {
+          spoilerRating = episodeDetailsRating.text.toString()
+        }
+        episodeDetailsRating.text = Config.SPOILERS_RATINGS_VOTES_HIDE_SYMBOL
+      }
+
+      if (spoilersSettings.isTapToReveal) {
+        episodeDetailsRating.onClick {
+          spoilerRating?.let {
+            episodeDetailsRating.text = it
+          }
+        }
+      }
+    }
+  }
+
+  private fun renderImage(
+    image: Image,
+    spoilers: SpoilersSettings?,
+    tapToReveal: Boolean = false,
+  ) {
+    with(binding) {
+      if (!options.isWatched && spoilers?.isEpisodeImageHidden == true && !tapToReveal) {
+        episodeDetailsImage.invisible()
+        episodeDetailsImagePlaceholder.visible()
+        episodeDetailsImagePlaceholder.setImageResource(R.drawable.ic_eye_no)
+        if (spoilers.isTapToReveal) {
+          episodeDetailsImagePlaceholder.onClick {
+            renderImage(image, spoilers, tapToReveal = true)
+          }
+        }
+        return
+      }
+      episodeDetailsImage.visible()
+      episodeDetailsImagePlaceholder.invisible()
+      Glide.with(this@EpisodeDetailsBottomSheet)
+        .load("${Config.TMDB_IMAGE_BASE_STILL_URL}${image.fileUrl}")
+        .transform(CenterCrop(), GranularRoundedCorners(cornerRadius, cornerRadius, 0F, 0F))
+        .transition(DrawableTransitionOptions.withCrossFade(IMAGE_FADE_DURATION_MS))
+        .withFailListener {
+          episodeDetailsImagePlaceholder.visible()
+          episodeDetailsImagePlaceholder.setImageResource(R.drawable.ic_television)
+          episodeDetailsImagePlaceholder.setOnClickListener(null)
+        }
+        .into(episodeDetailsImage)
+    }
+  }
 
   private fun renderEpisodes(episodes: List<Episode>) {
     with(binding.episodeDetailsTabs) {
@@ -325,6 +447,6 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
     val seasonEpisodesIds: List<Int>?,
     val isWatched: Boolean,
     val showButton: Boolean,
-    val showTabs: Boolean
+    val showTabs: Boolean,
   ) : Parcelable
 }

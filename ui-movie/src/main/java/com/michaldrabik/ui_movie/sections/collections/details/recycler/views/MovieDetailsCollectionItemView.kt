@@ -14,6 +14,8 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
+import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
+import com.michaldrabik.common.Config.SPOILERS_REGEX
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.invisible
@@ -24,7 +26,6 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
 import com.michaldrabik.ui_model.ImageStatus
-import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_movie.R
 import com.michaldrabik.ui_movie.databinding.ViewMovieCollectionListItemBinding
 import com.michaldrabik.ui_movie.sections.collections.details.recycler.MovieDetailsCollectionItem
@@ -64,7 +65,7 @@ class MovieDetailsCollectionItemView : FrameLayout {
     clear()
     this.item = item
 
-    bindTitleDescription(item.movie.title, item.movie.overview, item.translation)
+    bindTitleDescription(item)
     bindBadge(item.isMyMovie, item.isWatchlist)
 
     binding.headerText.text = String.format("%s", item.movie.released?.year ?: "TBA")
@@ -73,21 +74,38 @@ class MovieDetailsCollectionItemView : FrameLayout {
     if (!item.isLoading) loadImage(item)
   }
 
-  private fun bindTitleDescription(
-    title: String,
-    description: String,
-    translation: Translation?,
-  ) {
+  private fun bindTitleDescription(item: MovieItem) {
     with(binding) {
       titleText.text = when {
-        translation?.title?.isNotBlank() == true -> translation.title
-        else -> title
+        item.translation?.title?.isNotBlank() == true -> item.translation.title
+        else -> item.movie.title
       }
-      descriptionText.text = when {
-        translation?.overview?.isNotBlank() == true -> translation.overview
-        description.isNotBlank() -> description
+
+      var description = when {
+        item.translation?.overview?.isNotBlank() == true -> item.translation.overview
+        item.movie.overview.isNotBlank() -> item.movie.overview
         else -> context.getString(R.string.textNoDescription)
       }
+
+      val isMyMovieHidden = item.spoilers.isMyMoviesHidden && item.isMyMovie
+      val isWatchlistHidden = item.spoilers.isWatchlistMoviesHidden && item.isWatchlist
+      val isNotCollectedHidden = item.spoilers.isNotCollectedMoviesHidden && (!item.isMyMovie && !item.isWatchlist)
+
+      if (isMyMovieHidden || isWatchlistHidden || isNotCollectedHidden) {
+        descriptionText.tag = description
+        description = SPOILERS_REGEX.replace(description, SPOILERS_HIDE_SYMBOL)
+
+        if (item.spoilers.isTapToReveal) {
+          with(descriptionText) {
+            onClick {
+              tag?.let { text = it.toString() }
+              isClickable = false
+            }
+          }
+        }
+      }
+
+      descriptionText.text = description
     }
   }
 

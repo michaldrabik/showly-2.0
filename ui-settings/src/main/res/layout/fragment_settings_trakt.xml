@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/settingsContent"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:theme="@style/AppTheme"
+  >
+
+  <TextView
+    android:id="@+id/settingsCategoryTrakt"
+    style="@style/Settings.Category"
+    android:layout_marginTop="@dimen/spaceNormal"
+    android:text="@string/textSettingsTrakt"
+    app:layout_constraintBottom_toTopOf="@id/settingsTraktAuthorize"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_bias="0"
+    app:layout_constraintVertical_chainStyle="packed"
+    app:layout_goneMarginTop="@dimen/spaceBig"
+    />
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/settingsTraktAuthorize"
+    style="@style/Settings.ItemLayout"
+    app:layout_constraintBottom_toTopOf="@id/settingsTraktSync"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/settingsCategoryTrakt"
+    >
+
+    <androidx.constraintlayout.widget.Barrier
+      android:id="@+id/barrier1"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:barrierDirection="start"
+      app:constraint_referenced_ids="settingsTraktAuthorizeProgress, settingsTraktAuthorizeIcon, settingsTraktIcon"
+      />
+
+    <TextView
+      android:id="@+id/settingsTraktAuthorizeTitle"
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsTraktAuthorizeTitle"
+      app:layout_constraintBottom_toTopOf="@id/settingsTraktAuthorizeSummary"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      />
+
+    <TextView
+      android:id="@+id/settingsTraktAuthorizeSummary"
+      style="@style/Settings.Summary"
+      android:layout_marginEnd="@dimen/spaceSmall"
+      app:layout_constrainedWidth="true"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/barrier1"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsTraktAuthorizeTitle"
+      tools:text="@tools:sample/lorem/random"
+      />
+
+    <ProgressBar
+      android:id="@+id/settingsTraktAuthorizeProgress"
+      style="@style/ProgressBar.Accent"
+      android:layout_width="24dp"
+      android:layout_height="24dp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="@id/settingsTraktAuthorize"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/settingsTraktAuthorize"
+      tools:visibility="visible"
+      />
+
+    <ImageView
+      android:id="@+id/settingsTraktAuthorizeIcon"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="@id/settingsTraktAuthorize"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/settingsTraktAuthorize"
+      app:srcCompat="@drawable/ic_check"
+      app:tint="?attr/colorAccent"
+      tools:visibility="visible"
+      />
+
+    <ImageView
+      android:id="@+id/settingsTraktIcon"
+      android:layout_width="26dp"
+      android:layout_height="26dp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="@id/settingsTraktAuthorize"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/settingsTraktAuthorize"
+      app:srcCompat="@drawable/ic_trakt"
+      tools:visibility="visible"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/settingsTraktSync"
+    style="@style/Settings.ItemLayout"
+    android:visibility="gone"
+    app:layout_constraintBottom_toTopOf="@id/settingsTraktQuickSync"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/settingsTraktAuthorize"
+    tools:visibility="visible"
+    >
+
+    <TextView
+      android:id="@+id/settingsTraktSyncTitle"
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsTraktSyncTitle"
+      app:layout_constraintBottom_toTopOf="@id/settingsTraktSyncDescription"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      />
+
+    <TextView
+      android:id="@+id/settingsTraktSyncDescription"
+      style="@style/Settings.Summary"
+      android:layout_marginEnd="@dimen/spaceSmall"
+      android:text="@string/textSettingsTraktSyncSummary"
+      app:layout_constrainedWidth="true"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/settingsTraktSyncProgress"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsTraktSyncTitle"
+      tools:text="@tools:sample/lorem/random"
+      />
+
+    <ProgressBar
+      android:id="@+id/settingsTraktSyncProgress"
+      style="@style/ProgressBar.Accent"
+      android:layout_width="24dp"
+      android:layout_height="24dp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="@id/settingsTraktSync"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/settingsTraktSync"
+      tools:visibility="visible"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/settingsTraktQuickSync"
+    style="@style/Settings.ItemLayout"
+    app:layout_constraintBottom_toTopOf="@id/settingsTraktQuickRemove"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/settingsTraktSync"
+    >
+
+    <TextView
+      android:id="@+id/settingsTraktQuickSyncTitle"
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsTraktQuickSyncTitle"
+      app:layout_constraintBottom_toTopOf="@id/settingsTraktQuickSyncDescription"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      />
+
+    <TextView
+      android:id="@+id/settingsTraktQuickSyncDescription"
+      style="@style/Settings.Summary"
+      android:layout_marginEnd="@dimen/spaceSmall"
+      android:text="@string/textSettingsTraktQuickSyncSummary"
+      app:layout_constrainedWidth="true"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/settingsTraktQuickSyncSwitch"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsTraktQuickSyncTitle"
+      tools:text="@tools:sample/lorem/random"
+      />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+      android:id="@+id/settingsTraktQuickSyncSwitch"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:background="@null"
+      android:checked="false"
+      android:clickable="false"
+      app:layout_constraintBottom_toBottomOf="@id/settingsTraktQuickSync"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/settingsTraktQuickSync"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/settingsTraktQuickRemove"
+    style="@style/Settings.ItemLayout"
+    app:layout_constraintBottom_toTopOf="@id/settingsTraktQuickRate"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/settingsTraktQuickSync"
+    >
+
+    <TextView
+      android:id="@+id/settingsTraktQuickRemoveTitle"
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsTraktQuickRemoveTitle"
+      app:layout_constraintBottom_toTopOf="@id/settingsTraktQuickRemoveDescription"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      />
+
+    <TextView
+      android:id="@+id/settingsTraktQuickRemoveDescription"
+      style="@style/Settings.Summary"
+      android:layout_marginEnd="@dimen/spaceSmall"
+      android:text="@string/textSettingsTraktQuickRemoveSummary"
+      app:layout_constrainedWidth="true"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/settingsTraktQuickRemoveSwitch"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsTraktQuickRemoveTitle"
+      tools:text="@tools:sample/lorem/random"
+      />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+      android:id="@+id/settingsTraktQuickRemoveSwitch"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:background="@null"
+      android:checked="false"
+      android:clickable="false"
+      app:layout_constraintBottom_toBottomOf="@id/settingsTraktQuickRemove"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/settingsTraktQuickRemove"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/settingsTraktQuickRate"
+    style="@style/Settings.ItemLayoutNoRipple"
+    android:tag="@string/tagQuickRating"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/settingsTraktQuickRemove"
+    >
+
+    <TextView
+      android:id="@+id/settingsTraktQuickRateTitle"
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsTraktQuickRateTitle"
+      app:layout_constraintBottom_toTopOf="@id/settingsTraktQuickRateDescription"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      />
+
+    <TextView
+      android:id="@+id/settingsTraktQuickRateDescription"
+      style="@style/Settings.Summary"
+      android:layout_marginEnd="@dimen/spaceSmall"
+      android:background="@null"
+      android:text="@string/textSettingsTraktQuickRateSummary"
+      app:layout_constrainedWidth="true"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/settingsTraktQuickRateSwitch"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsTraktQuickRateTitle"
+      tools:text="@tools:sample/lorem/random"
+      />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+      android:id="@+id/settingsTraktQuickRateSwitch"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:checked="false"
+      android:clickable="false"
+      app:layout_constraintBottom_toBottomOf="@id/settingsTraktQuickRate"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/settingsTraktQuickRate"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

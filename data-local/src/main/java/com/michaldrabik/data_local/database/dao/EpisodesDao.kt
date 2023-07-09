@@ -22,6 +22,9 @@ interface EpisodesDao : EpisodesLocalDataSource {
     chunks.forEach { chunk -> upsert(chunk) }
   }
 
+  @Query("SELECT EXISTS(SELECT 1 FROM episodes WHERE id_show_trakt = :showTraktId AND id_trakt = :episodeTraktId AND is_watched = 1)")
+  override suspend fun isEpisodeWatched(showTraktId: Long, episodeTraktId: Long): Boolean
+
   @Query("SELECT * FROM episodes WHERE id_season = :seasonTraktId")
   override suspend fun getAllForSeason(seasonTraktId: Long): List<Episode>
 

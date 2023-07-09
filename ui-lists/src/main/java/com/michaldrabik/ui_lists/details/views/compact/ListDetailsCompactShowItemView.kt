@@ -12,6 +12,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import com.michaldrabik.common.Config.SPOILERS_RATINGS_HIDE_SYMBOL
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.expandTouch
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -19,7 +20,22 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_lists.R
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
 import com.michaldrabik.ui_lists.details.views.ListDetailsItemView
+import com.michaldrabik.ui_model.Show
+import kotlinx.android.synthetic.main.view_list_details_show_item.view.*
 import kotlinx.android.synthetic.main.view_list_details_show_item_compact.view.*
+import kotlinx.android.synthetic.main.view_list_details_show_item_compact.view.listDetailsShowHandle
+import kotlinx.android.synthetic.main.view_list_details_show_item_compact.view.listDetailsShowHeader
+import kotlinx.android.synthetic.main.view_list_details_show_item_compact.view.listDetailsShowHeaderBadge
+import kotlinx.android.synthetic.main.view_list_details_show_item_compact.view.listDetailsShowImage
+import kotlinx.android.synthetic.main.view_list_details_show_item_compact.view.listDetailsShowPlaceholder
+import kotlinx.android.synthetic.main.view_list_details_show_item_compact.view.listDetailsShowProgress
+import kotlinx.android.synthetic.main.view_list_details_show_item_compact.view.listDetailsShowRank
+import kotlinx.android.synthetic.main.view_list_details_show_item_compact.view.listDetailsShowRating
+import kotlinx.android.synthetic.main.view_list_details_show_item_compact.view.listDetailsShowRoot
+import kotlinx.android.synthetic.main.view_list_details_show_item_compact.view.listDetailsShowStarIcon
+import kotlinx.android.synthetic.main.view_list_details_show_item_compact.view.listDetailsShowTitle
+import kotlinx.android.synthetic.main.view_list_details_show_item_compact.view.listDetailsShowUserRating
+import kotlinx.android.synthetic.main.view_list_details_show_item_compact.view.listDetailsShowUserStarIcon
 import java.util.Locale.ENGLISH
 import kotlin.math.abs
 
@@ -87,7 +103,7 @@ class ListDetailsCompactShowItemView : ListDetailsItemView {
       if (show.year > 0) context.getString(R.string.textNetwork, show.year.toString(), show.network)
       else String.format("%s", show.network)
 
-    listDetailsShowRating.text = String.format(ENGLISH, "%.1f", show.rating)
+    bindRating(item, show)
     listDetailsShowUserRating.text = String.format(ENGLISH, "%d", item.userRating)
 
     listDetailsShowRank.visibleIf(item.isRankDisplayed)
@@ -95,7 +111,6 @@ class ListDetailsCompactShowItemView : ListDetailsItemView {
 
     listDetailsShowHandle.visibleIf(item.isManageMode)
     listDetailsShowStarIcon.visibleIf(!item.isManageMode)
-    listDetailsShowRating.visibleIf(!item.isManageMode)
     listDetailsShowUserStarIcon.visibleIf(!item.isManageMode && item.userRating != null)
     listDetailsShowUserRating.visibleIf(!item.isManageMode && item.userRating != null)
 
@@ -109,5 +124,32 @@ class ListDetailsCompactShowItemView : ListDetailsItemView {
     }
 
     loadImage(item)
+  }
+
+  private fun bindRating(
+    item: ListDetailsItem,
+    show: Show,
+  ) {
+    var rating = String.format(ENGLISH, "%.1f", show.rating)
+
+    val isMyHidden = item.spoilers.isMyShowsRatingsHidden && item.isWatched
+    val isWatchlistHidden = item.spoilers.isWatchlistShowsRatingsHidden && item.isWatchlist
+    val isNotCollectedHidden = item.spoilers.isNotCollectedShowsRatingsHidden && (!item.isWatched && !item.isWatchlist)
+    if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
+      listDetailsShowRating.tag = rating
+      rating = SPOILERS_RATINGS_HIDE_SYMBOL
+
+      if (item.spoilers.isTapToReveal) {
+        with(listDetailsShowRating) {
+          onClick {
+            tag?.let { text = it.toString() }
+            isClickable = false
+          }
+        }
+      }
+    }
+
+    listDetailsShowRating.visibleIf(!item.isManageMode)
+    listDetailsShowRating.text = rating
   }
 }

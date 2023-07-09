@@ -15,7 +15,9 @@ import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
 import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.CalendarMode
+import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.EpisodeBundle
+import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.main.cases.ProgressMainEpisodesCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -60,6 +62,19 @@ class ProgressMainViewModel @Inject constructor(
 
   fun onSearchQuery(searchQuery: String?) {
     searchQueryState.value = searchQuery ?: ""
+  }
+
+  fun onEpisodeDetails(show: Show, episode: Episode) {
+    viewModelScope.launch {
+      val isWatched = episodesCase.isWatched(show, episode)
+      eventChannel.send(
+        OpenEpisodeDetails(
+          show = show,
+          episode = episode,
+          isWatched = isWatched
+        )
+      )
+    }
   }
 
   fun toggleCalendarMode() {

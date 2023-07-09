@@ -12,12 +12,16 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
+import com.michaldrabik.common.Config.SPOILERS_RATINGS_HIDE_SYMBOL
+import com.michaldrabik.common.Config.SPOILERS_REGEX
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.expandTouch
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_lists.R
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
+import com.michaldrabik.ui_model.Show
 import kotlinx.android.synthetic.main.view_list_details_show_item.view.*
 import java.util.Locale.ENGLISH
 import kotlin.math.abs
@@ -82,20 +86,13 @@ class ListDetailsShowItemView : ListDetailsItemView {
       if (item.translation?.title.isNullOrBlank()) show.title
       else item.translation?.title
 
-    listDetailsShowDescription.text =
-      when {
-        item.translation?.overview.isNullOrBlank() -> {
-          if (show.overview.isNotBlank()) show.overview
-          else context.getString(R.string.textNoDescription)
-        }
-        else -> item.translation?.overview
-      }
+    bindDescription(item, show)
+    bindRating(item, show)
 
     listDetailsShowHeader.text =
       if (show.year > 0) context.getString(R.string.textNetwork, show.year.toString(), show.network)
       else String.format("%s", show.network)
 
-    listDetailsShowRating.text = String.format(ENGLISH, "%.1f", show.rating)
     listDetailsShowUserRating.text = String.format(ENGLISH, "%d", item.userRating)
 
     listDetailsShowRank.visibleIf(item.isRankDisplayed)
@@ -103,7 +100,6 @@ class ListDetailsShowItemView : ListDetailsItemView {
 
     listDetailsShowHandle.visibleIf(item.isManageMode)
     listDetailsShowStarIcon.visibleIf(!item.isManageMode)
-    listDetailsShowRating.visibleIf(!item.isManageMode)
     listDetailsShowUserStarIcon.visibleIf(!item.isManageMode && item.userRating != null)
     listDetailsShowUserRating.visibleIf(!item.isManageMode && item.userRating != null)
 
@@ -117,5 +113,62 @@ class ListDetailsShowItemView : ListDetailsItemView {
     }
 
     loadImage(item)
+  }
+
+  private fun bindDescription(
+    item: ListDetailsItem,
+    show: Show,
+  ) {
+    var description = when {
+      item.translation?.overview.isNullOrBlank() -> show.overview.ifBlank {
+        context.getString(R.string.textNoDescription)
+      }
+      else -> item.translation?.overview
+    }
+
+    val isMyHidden = item.spoilers.isMyShowsHidden && item.isWatched
+    val isWatchlistHidden = item.spoilers.isWatchlistShowsHidden && item.isWatchlist
+    val isNotCollectedHidden = item.spoilers.isNotCollectedShowsHidden && (!item.isWatched && !item.isWatchlist)
+    if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
+      listDetailsShowDescription.tag = description
+      description = SPOILERS_REGEX.replace(description.toString(), SPOILERS_HIDE_SYMBOL)
+    }
+
+    listDetailsShowDescription.text = description
+    if (item.spoilers.isTapToReveal) {
+      with(listDetailsShowDescription) {
+        onClick {
+          tag?.let { text = it.toString() }
+          isClickable = false
+        }
+      }
+    }
+  }
+
+  private fun bindRating(
+    item: ListDetailsItem,
+    show: Show,
+  ) {
+    var rating = String.format(ENGLISH, "%.1f", show.rating)
+
+    val isMyHidden = item.spoilers.isMyShowsRatingsHidden && item.isWatched
+    val isWatchlistHidden = item.spoilers.isWatchlistShowsRatingsHidden && item.isWatchlist
+    val isNotCollectedHidden = item.spoilers.isNotCollectedShowsRatingsHidden && (!item.isWatched && !item.isWatchlist)
+    if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
+      listDetailsShowRating.tag = rating
+      rating = SPOILERS_RATINGS_HIDE_SYMBOL
+    }
+
+    listDetailsShowRating.visibleIf(!item.isManageMode)
+    listDetailsShowRating.text = rating
+
+    if (item.spoilers.isTapToReveal) {
+      with(listDetailsShowRating) {
+        onClick {
+          tag?.let { text = it.toString() }
+          isClickable = false
+        }
+      }
+    }
   }
 }

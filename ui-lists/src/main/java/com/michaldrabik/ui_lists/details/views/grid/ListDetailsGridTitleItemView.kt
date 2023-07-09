@@ -125,10 +125,7 @@ class ListDetailsGridTitleItemView : ListDetailsItemView {
       with(listDetailsGridItemRating) {
         when {
           item.isRankDisplayed -> gone()
-          item.sortOrder == RATING -> {
-            visible()
-            text = String.format(ENGLISH, "%.1f", item.getRating())
-          }
+          item.sortOrder == RATING -> bindRating(item)
           item.sortOrder == USER_RATING && item.userRating != null -> {
             visible()
             text = String.format(ENGLISH, "%d", item.userRating)
@@ -143,6 +140,44 @@ class ListDetailsGridTitleItemView : ListDetailsItemView {
       listDetailsGridItemHandle.visibleIf(item.isManageMode)
     }
     loadImage(item)
+  }
+
+  private fun bindRating(item: ListDetailsItem) {
+    with(contentBinding) {
+      var rating = String.format(ENGLISH, "%.1f", item.getRating())
+
+      if (item.isShow()) {
+        val isMyHidden = item.spoilers.isMyShowsRatingsHidden && item.isWatched
+        val isWatchlistHidden = item.spoilers.isWatchlistShowsRatingsHidden && item.isWatchlist
+        val isNotCollectedHidden = item.spoilers.isNotCollectedShowsRatingsHidden && (!item.isWatched && !item.isWatchlist)
+        if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
+          listDetailsGridItemRating.tag = rating
+          rating = Config.SPOILERS_RATINGS_HIDE_SYMBOL
+        }
+      }
+
+      if (item.isMovie()) {
+        val isMyHidden = item.spoilers.isMyMoviesRatingsHidden && item.isWatched
+        val isWatchlistHidden = item.spoilers.isWatchlistMoviesRatingsHidden && item.isWatchlist
+        val isNotCollectedHidden = item.spoilers.isNotCollectedMoviesRatingsHidden && (!item.isWatched && !item.isWatchlist)
+        if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
+          listDetailsGridItemRating.tag = rating
+          rating = Config.SPOILERS_RATINGS_HIDE_SYMBOL
+        }
+      }
+
+      if (item.spoilers.isTapToReveal) {
+        with(listDetailsGridItemRating) {
+          onClick {
+            tag?.let { text = it.toString() }
+            isClickable = false
+          }
+        }
+      }
+
+      listDetailsGridItemRating.visible()
+      listDetailsGridItemRating.text = rating
+    }
   }
 
   private fun loadTranslation() {

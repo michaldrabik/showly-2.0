@@ -21,8 +21,10 @@ class CalendarMovieItemDiffCallback : DiffUtil.ItemCallback<CalendarMovieListIte
     if (oldItem is CalendarMovieListItem.MovieItem && newItem is CalendarMovieListItem.MovieItem) {
       return oldItem.image == newItem.image &&
         oldItem.isWatched == newItem.isWatched &&
+        oldItem.isWatchlist == newItem.isWatchlist &&
         oldItem.isLoading == newItem.isLoading &&
         oldItem.translation == newItem.translation &&
+        oldItem.spoilers == newItem.spoilers &&
         oldItem.movie == newItem.movie
     }
     return false

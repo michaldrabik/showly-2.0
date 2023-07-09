@@ -10,6 +10,8 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.michaldrabik.common.Config
+import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
+import com.michaldrabik.common.Config.SPOILERS_REGEX
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.gone
@@ -19,10 +21,17 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
 import com.michaldrabik.ui_model.ImageStatus
-import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_people.R
 import com.michaldrabik.ui_people.details.recycler.PersonDetailsItem
-import kotlinx.android.synthetic.main.view_person_details_credits_item.view.*
+import kotlinx.android.synthetic.main.view_person_details_credits_item.view.viewPersonCreditsItemBadge
+import kotlinx.android.synthetic.main.view_person_details_credits_item.view.viewPersonCreditsItemDescription
+import kotlinx.android.synthetic.main.view_person_details_credits_item.view.viewPersonCreditsItemIcon
+import kotlinx.android.synthetic.main.view_person_details_credits_item.view.viewPersonCreditsItemImage
+import kotlinx.android.synthetic.main.view_person_details_credits_item.view.viewPersonCreditsItemNetwork
+import kotlinx.android.synthetic.main.view_person_details_credits_item.view.viewPersonCreditsItemPlaceholder
+import kotlinx.android.synthetic.main.view_person_details_credits_item.view.viewPersonCreditsItemRoot
+import kotlinx.android.synthetic.main.view_person_details_credits_item.view.viewPersonCreditsItemTitle
+import kotlinx.android.synthetic.main.view_person_details_credits_item.view.viewPersonCreditsItemWatchlistBadge
 
 class PersonDetailsCreditsItemView : FrameLayout {
 
@@ -50,7 +59,7 @@ class PersonDetailsCreditsItemView : FrameLayout {
   fun bind(item: PersonDetailsItem.CreditsShowItem) {
     clear()
     this.item = item
-    bindTitleDescription(item.show.title, item.show.overview, item.translation)
+    bindTitleDescription(item)
 
     val year = if (item.show.year > 0) item.show.year.toString() else "TBA"
     viewPersonCreditsItemNetwork.text =
@@ -69,7 +78,7 @@ class PersonDetailsCreditsItemView : FrameLayout {
   fun bind(item: PersonDetailsItem.CreditsMovieItem) {
     clear()
     this.item = item
-    bindTitleDescription(item.movie.title, item.movie.overview, item.translation)
+    bindTitleDescription(item)
     viewPersonCreditsItemNetwork.text = String.format("%s", item.movie.released?.year ?: "TBA")
 
     viewPersonCreditsItemPlaceholder.setImageResource(R.drawable.ic_film)
@@ -83,16 +92,67 @@ class PersonDetailsCreditsItemView : FrameLayout {
     if (!item.isLoading) loadImage(item)
   }
 
-  private fun bindTitleDescription(title: String, description: String, translation: Translation?) {
+  private fun bindTitleDescription(item: PersonDetailsItem.CreditsShowItem) {
     viewPersonCreditsItemTitle.text = when {
-      translation?.title?.isNotBlank() == true -> translation.title
-      else -> title
+      item.translation?.title?.isNotBlank() == true -> item.translation.title
+      else -> item.show.title
     }
-    viewPersonCreditsItemDescription.text = when {
-      translation?.overview?.isNotBlank() == true -> translation.overview
-      description.isNotBlank() -> description
+    var description = when {
+      item.translation?.overview?.isNotBlank() == true -> item.translation.overview
+      item.show.overview.isNotBlank() -> item.show.overview
       else -> context.getString(R.string.textNoDescription)
     }
+
+    val isMyHidden = item.spoilers.isMyShowsHidden && item.isMy
+    val isWatchlistHidden = item.spoilers.isWatchlistShowsHidden && item.isWatchlist
+    val isNotCollectedHidden = item.spoilers.isNotCollectedShowsHidden && (!item.isMy && !item.isWatchlist)
+    if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
+      viewPersonCreditsItemDescription.tag = description
+      description = SPOILERS_REGEX.replace(description, SPOILERS_HIDE_SYMBOL)
+
+      if (item.spoilers.isTapToReveal) {
+        viewPersonCreditsItemDescription.onClick { view ->
+          view.tag?.let {
+            viewPersonCreditsItemDescription.text = it.toString()
+          }
+          view.isClickable = false
+        }
+      }
+    }
+
+    viewPersonCreditsItemDescription.text = description
+  }
+
+  private fun bindTitleDescription(item: PersonDetailsItem.CreditsMovieItem) {
+    viewPersonCreditsItemTitle.text = when {
+      item.translation?.title?.isNotBlank() == true -> item.translation.title
+      else -> item.movie.title
+    }
+
+    var description = when {
+      item.translation?.overview?.isNotBlank() == true -> item.translation.overview
+      item.movie.overview.isNotBlank() -> item.movie.overview
+      else -> context.getString(R.string.textNoDescription)
+    }
+
+    val isMyHidden = item.spoilers.isMyMoviesHidden && item.isMy
+    val isWatchlistHidden = item.spoilers.isWatchlistMoviesHidden && item.isWatchlist
+    val isNotCollectedHidden = item.spoilers.isNotCollectedMoviesHidden && (!item.isMy && !item.isWatchlist)
+    if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
+      viewPersonCreditsItemDescription.tag = description
+      description = SPOILERS_REGEX.replace(description, SPOILERS_HIDE_SYMBOL)
+
+      if (item.spoilers.isTapToReveal) {
+        viewPersonCreditsItemDescription.onClick { view ->
+          view.tag?.let {
+            viewPersonCreditsItemDescription.text = it.toString()
+          }
+          view.isClickable = false
+        }
+      }
+    }
+
+    viewPersonCreditsItemDescription.text = description
   }
 
   private fun loadImage(item: PersonDetailsItem) {

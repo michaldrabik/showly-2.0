@@ -8,6 +8,8 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
+import com.michaldrabik.common.Config.SPOILERS_REGEX
 import com.michaldrabik.ui_base.common.views.ShowView
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.gone
@@ -19,7 +21,7 @@ import com.michaldrabik.ui_search.databinding.ViewShowSearchBinding
 import com.michaldrabik.ui_search.recycler.SearchListItem
 
 @SuppressLint("SetTextI18n")
-class ShowSearchView : ShowView<SearchListItem> {
+class SearchItemView : ShowView<SearchListItem> {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -46,22 +48,17 @@ class ShowSearchView : ShowView<SearchListItem> {
     clear()
     this.item = item
     with(view) {
-      val translationTitle = item.translation?.title
       showSearchTitle.text =
-        if (translationTitle.isNullOrBlank()) item.title
-        else translationTitle
+        if (item.translation?.title.isNullOrBlank()) item.title
+        else item.translation?.title
 
-      val translationOverview = item.translation?.overview
-      showSearchDescription.text =
-        if (translationOverview.isNullOrBlank()) item.overview
-        else translationOverview
+      bindDescription(item)
 
       val year = if (item.year > 0) item.year.toString() else ""
       showSearchNetwork.text =
         if (item.network.isNotBlank()) context.getString(R.string.textNetwork, year, item.network)
         else String.format("%s", year)
 
-      showSearchDescription.visibleIf(item.overview.isNotBlank())
       showSearchBadge.visibleIf(item.isFollowed)
       showSearchWatchlistBadge.visibleIf(item.isWatchlist)
 
@@ -72,6 +69,45 @@ class ShowSearchView : ShowView<SearchListItem> {
     }
   }
 
+  private fun bindDescription(item: SearchListItem) {
+    with(view) {
+      var overview = if (item.translation?.overview.isNullOrBlank()) {
+        item.overview
+      } else {
+        item.translation?.overview
+      }
+
+      if (item.isShow) {
+        val isMyHidden = item.spoilers.isMyShowsHidden && item.isFollowed
+        val isWatchlistHidden = item.spoilers.isWatchlistShowsHidden && item.isWatchlist
+        val isNotCollectedHidden = item.spoilers.isNotCollectedShowsHidden && (!item.isFollowed && !item.isWatchlist)
+        if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
+          showSearchDescription.tag = overview.toString()
+          overview = SPOILERS_REGEX.replace(overview.toString(), SPOILERS_HIDE_SYMBOL)
+        }
+      }
+
+      if (item.isMovie) {
+        val isMyHidden = item.spoilers.isMyMoviesHidden && item.isFollowed
+        val isWatchlistHidden = item.spoilers.isWatchlistMoviesHidden && item.isWatchlist
+        val isNotCollectedHidden = item.spoilers.isNotCollectedMoviesHidden && (!item.isFollowed && !item.isWatchlist)
+        if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
+          showSearchDescription.tag = overview.toString()
+          overview = SPOILERS_REGEX.replace(overview.toString(), SPOILERS_HIDE_SYMBOL)
+        }
+      }
+
+      with(showSearchDescription) {
+        text = overview
+        visibleIf(item.overview.isNotBlank())
+        onClick { view ->
+          view.tag?.let { text = it.toString() }
+          view.isClickable = false
+        }
+      }
+    }
+  }
+
   private fun clear() {
     with(view) {
       showSearchTitle.text = ""
@@ -79,7 +115,7 @@ class ShowSearchView : ShowView<SearchListItem> {
       showSearchNetwork.text = ""
       showSearchPlaceholder.gone()
       showSearchBadge.gone()
-      Glide.with(this@ShowSearchView).clear(showSearchImage)
+      Glide.with(this@SearchItemView).clear(showSearchImage)
     }
   }
 }

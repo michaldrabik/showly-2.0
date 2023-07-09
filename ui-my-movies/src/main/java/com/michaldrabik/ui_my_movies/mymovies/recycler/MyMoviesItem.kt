@@ -18,10 +18,11 @@ data class MyMoviesItem(
   override val movie: Movie,
   override val image: Image,
   override val isLoading: Boolean,
+  val spoilers: Spoilers,
   val translation: Translation? = null,
   val userRating: Int? = null,
   val dateFormat: DateTimeFormatter? = null,
-  val sortOrder: SortOrder? = null,
+  val sortOrder: SortOrder? = null
 ) : MovieListItem {
 
   enum class Type {
@@ -34,11 +35,17 @@ data class MyMoviesItem(
     val section: MyMoviesSection,
     val itemCount: Int,
     val sortOrder: Pair<SortOrder, SortType>?,
-    val genres: List<Genre>?
+    val genres: List<Genre>?,
   )
 
   data class RecentsSection(
     val items: List<MyMoviesItem>,
+  )
+
+  data class Spoilers(
+    val isSpoilerHidden: Boolean,
+    val isSpoilerRatingsHidden: Boolean,
+    val isSpoilerTapToReveal: Boolean,
   )
 
   companion object {
@@ -47,25 +54,35 @@ data class MyMoviesItem(
       section: MyMoviesSection,
       itemCount: Int,
       sortOrder: Pair<SortOrder, SortType>?,
-      genres: List<Genre>?
+      genres: List<Genre>?,
     ) = MyMoviesItem(
-      Type.HEADER,
-      Header(section, itemCount, sortOrder, genres),
-      null,
-      Movie.EMPTY,
-      Image.createUnavailable(POSTER),
-      false
+      type = Type.HEADER,
+      header = Header(section, itemCount, sortOrder, genres),
+      recentsSection = null,
+      movie = Movie.EMPTY,
+      image = Image.createUnavailable(POSTER),
+      isLoading = false,
+      spoilers = Spoilers(
+        isSpoilerHidden = false,
+        isSpoilerRatingsHidden = false,
+        isSpoilerTapToReveal = false
+      )
     )
 
     fun createRecentsSection(
       movies: List<MyMoviesItem>,
     ) = MyMoviesItem(
-      Type.RECENT_MOVIES,
-      null,
-      RecentsSection(movies),
-      Movie.EMPTY,
-      Image.createUnavailable(POSTER),
-      false
+      type = Type.RECENT_MOVIES,
+      header = null,
+      recentsSection = RecentsSection(movies),
+      movie = Movie.EMPTY,
+      image = Image.createUnavailable(POSTER),
+      isLoading = false,
+      spoilers = Spoilers(
+        isSpoilerHidden = false,
+        isSpoilerRatingsHidden = false,
+        isSpoilerTapToReveal = false
+      )
     )
   }
 }

@@ -8,6 +8,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtcDay
 import com.michaldrabik.ui_base.common.views.MovieView
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
@@ -18,6 +19,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_my_movies.common.recycler.CollectionListItem
 import com.michaldrabik.ui_my_movies.databinding.ViewCollectionMovieCompactBinding
+import kotlinx.android.synthetic.main.view_collection_movie.view.*
 import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n")
@@ -76,7 +78,7 @@ class CollectionMovieCompactView : MovieView<CollectionListItem.MovieItem> {
         }
       }
 
-      collectionMovieRating.text = String.format(ENGLISH, "%.1f", item.movie.rating)
+      bindRating(item)
       item.userRating?.let {
         collectionMovieUserStarIcon.visible()
         collectionMovieUserRating.visible()
@@ -85,6 +87,28 @@ class CollectionMovieCompactView : MovieView<CollectionListItem.MovieItem> {
     }
 
     loadImage(item)
+  }
+
+  private fun bindRating(item: CollectionListItem.MovieItem) {
+    with(binding) {
+      var rating = String.format(ENGLISH, "%.1f", item.movie.rating)
+
+      if (item.spoilers.isSpoilerRatingsHidden) {
+        collectionMovieRating.tag = rating
+        rating = Config.SPOILERS_RATINGS_HIDE_SYMBOL
+
+        if (item.spoilers.isSpoilerTapToReveal) {
+          with(collectionMovieRating) {
+            onClick {
+              tag?.let { text = it.toString() }
+              isClickable = false
+            }
+          }
+        }
+      }
+
+      collectionMovieRating.text = rating
+    }
   }
 
   private fun loadTranslation() {

@@ -12,5 +12,6 @@ class SearchItemDiffCallback : DiffUtil.ItemCallback<SearchListItem>() {
       oldItem.isFollowed == newItem.isFollowed &&
       oldItem.isWatchlist == newItem.isWatchlist &&
       oldItem.isLoading == newItem.isLoading &&
+      oldItem.spoilers == newItem.spoilers &&
       oldItem.translation == newItem.translation
 }

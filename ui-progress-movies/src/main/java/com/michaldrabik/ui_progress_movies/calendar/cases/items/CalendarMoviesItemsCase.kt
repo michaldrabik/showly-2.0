@@ -7,6 +7,7 @@ import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.movies.MoviesRepository
+import com.michaldrabik.repository.settings.SettingsSpoilersRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Translation
@@ -22,6 +23,7 @@ abstract class CalendarMoviesItemsCase constructor(
   private val dispatchers: CoroutineDispatchers,
   private val moviesRepository: MoviesRepository,
   private val translationsRepository: TranslationsRepository,
+  private val settingsSpoilersRepository: SettingsSpoilersRepository,
   private val imagesProvider: MovieImagesProvider,
   private val dateFormatProvider: DateFormatProvider,
 ) {
@@ -35,6 +37,7 @@ abstract class CalendarMoviesItemsCase constructor(
       val now = nowUtc().toLocalZone()
       val language = translationsRepository.getLanguage()
       val dateFormat = dateFormatProvider.loadFullDayFormat()
+      val spoilers = settingsSpoilersRepository.getAll()
 
       val (myMovies, watchlistMovies) = awaitAll(
         async { moviesRepository.myMovies.loadAll() },
@@ -54,8 +57,10 @@ abstract class CalendarMoviesItemsCase constructor(
               movie = movie,
               image = imagesProvider.findCachedImage(movie, ImageType.POSTER),
               isWatched = myMovies.any { it.traktId == movie.traktId },
+              isWatchlist = watchlistMovies.any { it.traktId == movie.traktId },
               dateFormat = dateFormat,
-              translation = translation
+              translation = translation,
+              spoilers = spoilers
             )
           }
         }.awaitAll()

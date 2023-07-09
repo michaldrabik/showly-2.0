@@ -62,8 +62,7 @@ class CollectionShowGridView : ShowView<CollectionListItem.ShowItem> {
       collectionShowProgress.visibleIf(item.isLoading)
 
       if (item.sortOrder == RATING) {
-        collectionShowRating.visible()
-        collectionShowRating.text = String.format(ENGLISH, "%.1f", item.show.rating)
+        bindRating(item)
       } else if (item.sortOrder == USER_RATING && item.userRating != null) {
         collectionShowRating.visible()
         collectionShowRating.text = String.format(ENGLISH, "%d", item.userRating)
@@ -73,6 +72,29 @@ class CollectionShowGridView : ShowView<CollectionListItem.ShowItem> {
     }
 
     loadImage(item)
+  }
+
+  private fun bindRating(item: CollectionListItem.ShowItem) {
+    with(binding) {
+      var rating = String.format(ENGLISH, "%.1f", item.show.rating)
+
+      if (item.spoilers.isSpoilerRatingsHidden) {
+        collectionShowRating.tag = rating
+        rating = Config.SPOILERS_RATINGS_HIDE_SYMBOL
+
+        if (item.spoilers.isSpoilerTapToReveal) {
+          with(collectionShowRating) {
+            onClick {
+              tag?.let { text = it.toString() }
+              isClickable = false
+            }
+          }
+        }
+      }
+
+      collectionShowRating.visible()
+      collectionShowRating.text = rating
+    }
   }
 
   private fun loadTranslation() {

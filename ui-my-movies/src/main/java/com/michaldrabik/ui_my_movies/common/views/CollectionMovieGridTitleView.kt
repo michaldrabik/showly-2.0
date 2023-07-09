@@ -64,8 +64,7 @@ class CollectionMovieGridTitleView : MovieView<CollectionListItem.MovieItem> {
         else item.translation?.title
 
       if (item.sortOrder == SortOrder.RATING) {
-        collectionMovieRating.visible()
-        collectionMovieRating.text = String.format(Locale.ENGLISH, "%.1f", item.movie.rating)
+        bindRating(item)
       } else if (item.sortOrder == SortOrder.USER_RATING && item.userRating != null) {
         collectionMovieRating.visible()
         collectionMovieRating.text = String.format(Locale.ENGLISH, "%d", item.userRating)
@@ -75,6 +74,29 @@ class CollectionMovieGridTitleView : MovieView<CollectionListItem.MovieItem> {
     }
 
     loadImage(item)
+  }
+
+  private fun bindRating(item: CollectionListItem.MovieItem) {
+    with(binding) {
+      var rating = String.format(Locale.ENGLISH, "%.1f", item.movie.rating)
+
+      if (item.spoilers.isSpoilerRatingsHidden) {
+        collectionMovieRating.tag = rating
+        rating = Config.SPOILERS_RATINGS_HIDE_SYMBOL
+
+        if (item.spoilers.isSpoilerTapToReveal) {
+          with(collectionMovieRating) {
+            onClick {
+              tag?.let { text = it.toString() }
+              isClickable = false
+            }
+          }
+        }
+      }
+
+      collectionMovieRating.visible()
+      collectionMovieRating.text = rating
+    }
   }
 
   private fun loadTranslation() {

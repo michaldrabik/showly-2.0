@@ -84,6 +84,7 @@ class ShowDetailsLoadSeasonsCase @Inject constructor(
     val isSignedIn = userManager.isAuthorized()
     val format = dateFormatProvider.loadFullHourFormat()
     val seasonsRatings = ratingsRepository.shows.loadRatingsSeasons(remoteSeasons)
+    val spoilers = settingsRepository.spoilers.getAll()
     remoteSeasons
       .map {
         val userRating = RatingState(
@@ -94,7 +95,16 @@ class ShowDetailsLoadSeasonsCase @Inject constructor(
           async {
             val rating = ratingsRepository.shows.loadRating(episode)
             val translation = translationsRepository.loadTranslation(episode, show.ids.trakt, onlyLocal = true)
-            EpisodeListItem(episode, it, false, translation, rating, format, isAnime = show.isAnime)
+            EpisodeListItem(
+              episode = episode,
+              season = it,
+              isWatched = false,
+              translation = translation,
+              myRating = rating,
+              dateFormat = format,
+              isAnime = show.isAnime,
+              spoilers = spoilers
+            )
           }
         }.awaitAll()
         SeasonListItem(

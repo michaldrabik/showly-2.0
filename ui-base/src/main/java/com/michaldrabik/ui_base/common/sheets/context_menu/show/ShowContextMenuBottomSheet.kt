@@ -6,6 +6,9 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.viewModels
+import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
+import com.michaldrabik.common.Config.SPOILERS_RATINGS_HIDE_SYMBOL
+import com.michaldrabik.common.Config.SPOILERS_REGEX
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
 import com.michaldrabik.ui_base.common.sheets.context_menu.events.FinishUiEvent
@@ -87,17 +90,12 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet() {
         if (item.translation?.title.isNullOrBlank()) item.show.title
         else item.translation?.title
 
-      contextMenuItemDescription.text =
-        if (item.translation?.overview.isNullOrBlank()) item.show.overview
-        else item.translation?.overview
+      renderItemDescription(item)
+      renderItemRating(item)
 
       contextMenuItemNetwork.text =
         if (item.show.year > 0) getString(R.string.textNetwork, item.show.network, item.show.year.toString())
         else String.format("%s", item.show.network)
-
-      contextMenuRating.text = String.format(Locale.ENGLISH, "%.1f", item.show.rating)
-      contextMenuRating.visibleIf(item.show.rating > 0)
-      contextMenuRatingStar.visibleIf(item.show.rating > 0)
 
       contextMenuUserRating.text = String.format(Locale.ENGLISH, "%d", item.userRating)
       contextMenuUserRating.visibleIf(item.userRating != null)
@@ -127,6 +125,63 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet() {
         contextMenuItemMoveToMyButton.text = getString(R.string.textAddToMyShows)
         contextMenuItemMoveToWatchlistButton.text = getString(R.string.textAddToWatchlist)
         contextMenuItemMoveToHiddenButton.text = getString(R.string.textHide)
+      }
+    }
+  }
+
+  private fun renderItemDescription(item: ShowContextItem) {
+    with(binding) {
+      contextMenuItemDescription.text =
+        if (item.translation?.overview.isNullOrBlank()) item.show.overview
+        else item.translation?.overview
+
+      val isMyShowHidden = item.spoilers.isMyShowsHidden && item.isMyShow
+      val isWatchlistHidden = item.spoilers.isWatchlistShowsHidden && item.isWatchlist
+      val isHiddenShowHidden = item.spoilers.isHiddenShowsHidden && item.isHidden
+      val isNotCollectedHidden = item.spoilers.isNotCollectedShowsHidden && (!item.isInCollection())
+
+      if (isMyShowHidden || isWatchlistHidden || isHiddenShowHidden || isNotCollectedHidden) {
+        val spoilerDescription = contextMenuItemDescription.text.toString()
+        val hiddenDescription = SPOILERS_REGEX.replace(contextMenuItemDescription.text.toString(), SPOILERS_HIDE_SYMBOL)
+        contextMenuItemDescription.tag = spoilerDescription
+        contextMenuItemDescription.text = hiddenDescription
+      }
+
+      if (item.spoilers.isTapToReveal) {
+        with(contextMenuItemDescription) {
+          onClick {
+            tag?.let { text = it.toString() }
+            enableFoldOnClick()
+          }
+        }
+      }
+    }
+  }
+
+  private fun renderItemRating(item: ShowContextItem) {
+    with(binding) {
+      var rating = String.format(Locale.ENGLISH, "%.1f", item.show.rating)
+
+      val isMyShowHidden = item.spoilers.isMyShowsRatingsHidden && item.isMyShow
+      val isWatchlistHidden = item.spoilers.isWatchlistShowsRatingsHidden && item.isWatchlist
+      val isHiddenShowHidden = item.spoilers.isHiddenShowsRatingsHidden && item.isHidden
+      val isNotCollectedHidden = item.spoilers.isNotCollectedShowsRatingsHidden && (!item.isInCollection())
+
+      if (isMyShowHidden || isWatchlistHidden || isHiddenShowHidden || isNotCollectedHidden) {
+        contextMenuRating.tag = rating
+        rating = SPOILERS_RATINGS_HIDE_SYMBOL
+      }
+
+      contextMenuRating.visibleIf(item.show.rating > 0)
+      contextMenuRatingStar.visibleIf(item.show.rating > 0)
+      contextMenuRating.text = rating
+
+      if (item.spoilers.isTapToReveal) {
+        with(contextMenuRating) {
+          onClick {
+            tag?.let { text = it.toString() }
+          }
+        }
       }
     }
   }

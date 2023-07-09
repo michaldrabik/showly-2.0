@@ -8,6 +8,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.ui_base.common.views.ShowView
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
@@ -57,7 +58,7 @@ class CollectionShowCompactView : ShowView<CollectionListItem.ShowItem> {
         if (item.show.year > 0) context.getString(R.string.textNetwork, item.show.network, item.show.year.toString())
         else String.format("%s", item.show.network)
 
-      collectionShowRating.text = String.format(ENGLISH, "%.1f", item.show.rating)
+      bindRating(item)
       collectionShowNetwork.visibleIf(item.show.network.isNotBlank())
 
       with(collectionShowReleaseDate) {
@@ -78,6 +79,28 @@ class CollectionShowCompactView : ShowView<CollectionListItem.ShowItem> {
     }
 
     loadImage(item)
+  }
+
+  private fun bindRating(item: CollectionListItem.ShowItem) {
+    with(binding) {
+      var rating = String.format(ENGLISH, "%.1f", item.show.rating)
+
+      if (item.spoilers.isSpoilerRatingsHidden) {
+        collectionShowRating.tag = rating
+        rating = Config.SPOILERS_RATINGS_HIDE_SYMBOL
+
+        if (item.spoilers.isSpoilerTapToReveal) {
+          with(collectionShowRating) {
+            onClick {
+              tag?.let { text = it.toString() }
+              isClickable = false
+            }
+          }
+        }
+      }
+
+      collectionShowRating.text = rating
+    }
   }
 
   private fun loadTranslation() {

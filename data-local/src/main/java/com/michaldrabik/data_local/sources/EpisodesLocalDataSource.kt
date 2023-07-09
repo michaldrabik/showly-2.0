@@ -11,6 +11,8 @@ interface EpisodesLocalDataSource {
 
   suspend fun upsertChunked(items: List<Episode>)
 
+  suspend fun isEpisodeWatched(showTraktId: Long, episodeTraktId: Long): Boolean
+
   suspend fun getAllForSeason(seasonTraktId: Long): List<Episode>
 
   suspend fun getAllByShowId(showTraktId: Long): List<Episode>

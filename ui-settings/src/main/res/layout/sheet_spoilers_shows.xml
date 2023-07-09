@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:overScrollMode="never"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bottom_sheet"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:focusableInTouchMode="true"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
+    tools:theme="@style/AppTheme"
+    >
+
+    <LinearLayout
+      android:id="@+id/settingsLayout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:layout_constraintBottom_toTopOf="@id/closeButton"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      >
+
+      <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/notCollectedShowsLayout"
+        style="@style/Settings.ItemLayout"
+        android:layout_width="match_parent"
+        >
+
+        <TextView
+          android:id="@+id/notCollectedShowsTitle"
+          style="@style/Settings.Title"
+          android:text="@string/textSettingsSpoilersShowsOverviewsNotCollectedTitle"
+          android:textStyle="bold"
+          app:layout_constraintBottom_toTopOf="@id/notCollectedShowsDescription"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintVertical_chainStyle="spread"
+          />
+
+        <TextView
+          android:id="@+id/notCollectedShowsDescription"
+          style="@style/Settings.Summary"
+          android:layout_marginEnd="@dimen/spaceNormal"
+          android:text="@string/textSettingsSpoilersShowsOverviewsNotCollectedDescription"
+          app:layout_constrainedWidth="true"
+          app:layout_constraintBottom_toTopOf="@id/notCollectedShowsRatingDescription"
+          app:layout_constraintEnd_toStartOf="@id/notCollectedShowsSwitch"
+          app:layout_constraintHorizontal_bias="0"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/notCollectedShowsTitle"
+          />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+          android:id="@+id/notCollectedShowsSwitch"
+          style="@style/ShowlyCheckbox"
+          android:layout_width="30dp"
+          android:layout_height="30dp"
+          android:checked="false"
+          app:layout_constraintBottom_toBottomOf="@id/notCollectedShowsDescription"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="@id/notCollectedShowsDescription"
+          />
+
+        <TextView
+          android:id="@+id/notCollectedShowsRatingDescription"
+          style="@style/Settings.Summary"
+          android:layout_marginTop="@dimen/spaceNormal"
+          android:layout_marginEnd="@dimen/spaceNormal"
+          android:text="@string/textSettingsSpoilersShowsRatingsNotCollectedDescription"
+          app:layout_constrainedWidth="true"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toStartOf="@id/notCollectedShowsRatingsSwitch"
+          app:layout_constraintHorizontal_bias="0"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/notCollectedShowsDescription"
+          />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+          android:id="@+id/notCollectedShowsRatingsSwitch"
+          style="@style/ShowlyCheckbox"
+          android:layout_width="30dp"
+          android:layout_height="30dp"
+          android:checked="false"
+          app:layout_constraintBottom_toBottomOf="@id/notCollectedShowsRatingDescription"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="@id/notCollectedShowsRatingDescription"
+          />
+
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
+      <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/myShowsLayout"
+        style="@style/Settings.ItemLayout"
+        android:layout_width="match_parent"
+        android:paddingTop="0dp"
+        >
+
+        <TextView
+          android:id="@+id/myShowsTitle"
+          style="@style/Settings.Title"
+          android:text="@string/textSettingsSpoilersShowsOverviewsMyTitle"
+          android:textStyle="bold"
+          app:layout_constraintBottom_toTopOf="@id/myShowsDescription"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintVertical_chainStyle="spread"
+          />
+
+        <TextView
+          android:id="@+id/myShowsDescription"
+          style="@style/Settings.Summary"
+          android:layout_marginEnd="@dimen/spaceNormal"
+          android:text="@string/textSettingsSpoilersShowsOverviewsMyDescription"
+          app:layout_constrainedWidth="true"
+          app:layout_constraintBottom_toTopOf="@id/myShowsRatingDescription"
+          app:layout_constraintEnd_toStartOf="@id/myShowsSwitch"
+          app:layout_constraintHorizontal_bias="0"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/myShowsTitle"
+          />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+          android:id="@+id/myShowsSwitch"
+          style="@style/ShowlyCheckbox"
+          android:layout_width="30dp"
+          android:layout_height="30dp"
+          android:checked="false"
+          app:layout_constraintBottom_toBottomOf="@id/myShowsDescription"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="@id/myShowsDescription"
+          />
+
+        <TextView
+          android:id="@+id/myShowsRatingDescription"
+          style="@style/Settings.Summary"
+          android:layout_marginTop="@dimen/spaceNormal"
+          android:layout_marginEnd="@dimen/spaceNormal"
+          android:text="@string/textSettingsSpoilersShowsRatingsMyDescription"
+          app:layout_constrainedWidth="true"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toStartOf="@id/myShowsRatingsSwitch"
+          app:layout_constraintHorizontal_bias="0"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/myShowsDescription"
+          />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+          android:id="@+id/myShowsRatingsSwitch"
+          style="@style/ShowlyCheckbox"
+          android:layout_width="30dp"
+          android:layout_height="30dp"
+          android:checked="false"
+          app:layout_constraintBottom_toBottomOf="@id/myShowsRatingDescription"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="@id/myShowsRatingDescription"
+          />
+
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
+      <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/watchlistShowsLayout"
+        style="@style/Settings.ItemLayout"
+        android:layout_width="match_parent"
+        android:paddingTop="0dp"
+        >
+
+        <TextView
+          android:id="@+id/watchlistShowsTitle"
+          style="@style/Settings.Title"
+          android:text="@string/textSettingsSpoilersShowsOverviewsWatchlistTitle"
+          android:textStyle="bold"
+          app:layout_constraintBottom_toTopOf="@id/watchlistShowsDescription"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintVertical_chainStyle="spread"
+          />
+
+        <TextView
+          android:id="@+id/watchlistShowsDescription"
+          style="@style/Settings.Summary"
+          android:layout_marginEnd="@dimen/spaceNormal"
+          android:text="@string/textSettingsSpoilersShowsOverviewsWatchlistDescription"
+          app:layout_constrainedWidth="true"
+          app:layout_constraintBottom_toTopOf="@id/watchlistShowsRatingDescription"
+          app:layout_constraintEnd_toStartOf="@id/watchlistShowsSwitch"
+          app:layout_constraintHorizontal_bias="0"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/watchlistShowsTitle"
+          />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+          android:id="@+id/watchlistShowsSwitch"
+          style="@style/ShowlyCheckbox"
+          android:layout_width="30dp"
+          android:layout_height="30dp"
+          android:checked="false"
+          app:layout_constraintBottom_toBottomOf="@id/watchlistShowsDescription"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="@id/watchlistShowsDescription"
+          />
+
+        <TextView
+          android:id="@+id/watchlistShowsRatingDescription"
+          style="@style/Settings.Summary"
+          android:layout_marginTop="@dimen/spaceNormal"
+          android:layout_marginEnd="@dimen/spaceNormal"
+          android:text="@string/textSettingsSpoilersShowsRatingsWatchlistDescription"
+          app:layout_constrainedWidth="true"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toStartOf="@id/watchlistShowsRatingsSwitch"
+          app:layout_constraintHorizontal_bias="0"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/watchlistShowsDescription"
+          />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+          android:id="@+id/watchlistShowsRatingsSwitch"
+          style="@style/ShowlyCheckbox"
+          android:layout_width="30dp"
+          android:layout_height="30dp"
+          android:checked="false"
+          app:layout_constraintBottom_toBottomOf="@id/watchlistShowsRatingDescription"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="@id/watchlistShowsRatingDescription"
+          />
+
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
+      <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/hiddenShowsLayout"
+        style="@style/Settings.ItemLayout"
+        android:layout_width="match_parent"
+        android:paddingTop="0dp"
+        >
+
+        <TextView
+          android:id="@+id/hiddenShowsTitle"
+          style="@style/Settings.Title"
+          android:text="@string/textSettingsSpoilersShowsOverviewsHiddenTitle"
+          android:textStyle="bold"
+          app:layout_constraintBottom_toTopOf="@id/hiddenShowsDescription"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintVertical_chainStyle="spread"
+          />
+
+        <TextView
+          android:id="@+id/hiddenShowsDescription"
+          style="@style/Settings.Summary"
+          android:layout_marginEnd="@dimen/spaceNormal"
+          android:text="@string/textSettingsSpoilersShowsOverviewsHiddenDescription"
+          app:layout_constrainedWidth="true"
+          app:layout_constraintBottom_toTopOf="@id/hiddenShowsRatingDescription"
+          app:layout_constraintEnd_toStartOf="@id/hiddenShowsSwitch"
+          app:layout_constraintHorizontal_bias="0"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/hiddenShowsTitle"
+          />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+          android:id="@+id/hiddenShowsSwitch"
+          style="@style/ShowlyCheckbox"
+          android:layout_width="30dp"
+          android:layout_height="30dp"
+          android:checked="false"
+          app:layout_constraintBottom_toBottomOf="@id/hiddenShowsDescription"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="@id/hiddenShowsDescription"
+          />
+
+        <TextView
+          android:id="@+id/hiddenShowsRatingDescription"
+          style="@style/Settings.Summary"
+          android:layout_marginTop="@dimen/spaceNormal"
+          android:layout_marginEnd="@dimen/spaceNormal"
+          android:text="@string/textSettingsSpoilersShowsRatingsHiddenDescription"
+          app:layout_constrainedWidth="true"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toStartOf="@id/hiddenShowsRatingsSwitch"
+          app:layout_constraintHorizontal_bias="0"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/hiddenShowsDescription"
+          />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+          android:id="@+id/hiddenShowsRatingsSwitch"
+          style="@style/ShowlyCheckbox"
+          android:layout_width="30dp"
+          android:layout_height="30dp"
+          android:checked="false"
+          app:layout_constraintBottom_toBottomOf="@id/hiddenShowsRatingDescription"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="@id/hiddenShowsRatingDescription"
+          />
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/closeButton"
+      style="@style/RoundMaterialButton"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_margin="@dimen/spaceNormal"
+      android:backgroundTint="@color/selector_main_button"
+      android:gravity="center"
+      android:text="@string/textClose"
+      android:textColor="?attr/textColorOnSurface"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsLayout"
+      app:rippleColor="?android:attr/textColorPrimary"
+      />
+
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

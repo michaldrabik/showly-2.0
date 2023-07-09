@@ -7,6 +7,9 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.michaldrabik.common.Config
+import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
+import com.michaldrabik.common.Config.SPOILERS_REGEX
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.ui_base.common.views.ShowView
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
@@ -39,6 +42,7 @@ class CollectionShowView : ShowView<CollectionListItem.ShowItem> {
   override val placeholderView: ImageView = collectionShowPlaceholder
 
   private var nowUtc = nowUtc()
+
   private lateinit var item: CollectionListItem.ShowItem
 
   override fun bind(item: CollectionListItem.ShowItem) {
@@ -49,16 +53,13 @@ class CollectionShowView : ShowView<CollectionListItem.ShowItem> {
       if (item.translation?.title.isNullOrBlank()) item.show.title
       else item.translation?.title
 
-    collectionShowDescription.text =
-      if (item.translation?.overview.isNullOrBlank()) item.show.overview
-      else item.translation?.overview
+    bindDescription(item)
+    bindRating(item)
 
     collectionShowNetwork.text =
       if (item.show.year > 0) context.getString(R.string.textNetwork, item.show.network, item.show.year.toString())
       else String.format("%s", item.show.network)
 
-    collectionShowRating.text = String.format(ENGLISH, "%.1f", item.show.rating)
-    collectionShowDescription.visibleIf(item.show.overview.isNotBlank())
     collectionShowNetwork.visibleIf(item.show.network.isNotBlank())
 
     with(collectionShowReleaseDate) {
@@ -78,6 +79,45 @@ class CollectionShowView : ShowView<CollectionListItem.ShowItem> {
     }
 
     loadImage(item)
+  }
+
+  private fun bindDescription(item: CollectionListItem.ShowItem) {
+    collectionShowDescription.text =
+      if (item.translation?.overview.isNullOrBlank()) item.show.overview
+      else item.translation?.overview
+
+    if (item.spoilers.isSpoilerHidden) {
+      collectionShowDescription.tag = collectionShowDescription.text
+      collectionShowDescription.text =
+        SPOILERS_REGEX.replace(collectionShowDescription.text, SPOILERS_HIDE_SYMBOL)
+
+      if (item.spoilers.isSpoilerTapToReveal) {
+        collectionShowDescription.onClick { view ->
+          view.tag?.let { collectionShowDescription.text = it.toString() }
+          view.isClickable = false
+        }
+      }
+    }
+
+    collectionShowDescription.visibleIf(item.show.overview.isNotBlank())
+  }
+
+  private fun bindRating(item: CollectionListItem.ShowItem) {
+    var rating = String.format(ENGLISH, "%.1f", item.show.rating)
+
+    if (item.spoilers.isSpoilerRatingsHidden) {
+      collectionShowRating.tag = rating
+      rating = Config.SPOILERS_RATINGS_HIDE_SYMBOL
+
+      if (item.spoilers.isSpoilerTapToReveal) {
+        collectionShowRating.onClick { view ->
+          view.tag?.let { collectionShowRating.text = it.toString() }
+          view.isClickable = false
+        }
+      }
+    }
+
+    collectionShowRating.text = rating
   }
 
   private fun loadTranslation() {

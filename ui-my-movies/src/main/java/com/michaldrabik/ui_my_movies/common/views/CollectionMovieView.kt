@@ -7,6 +7,9 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
+import com.michaldrabik.common.Config.SPOILERS_RATINGS_HIDE_SYMBOL
+import com.michaldrabik.common.Config.SPOILERS_REGEX
 import com.michaldrabik.common.extensions.nowUtcDay
 import com.michaldrabik.ui_base.common.views.MovieView
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
@@ -49,15 +52,8 @@ class CollectionMovieView : MovieView<CollectionListItem.MovieItem> {
       if (item.translation?.title.isNullOrBlank()) item.movie.title
       else item.translation?.title
 
-    collectionMovieDescription.text =
-      when {
-        item.translation?.overview.isNullOrBlank() -> {
-          item.movie.overview.ifBlank {
-            context.getString(R.string.textNoDescription)
-          }
-        }
-        else -> item.translation?.overview
-      }
+    bindDescription(item)
+    bindRating(item)
 
     val releaseDate = item.movie.released
     val isUpcoming = releaseDate?.let { it.toEpochDay() > nowUtc.toEpochDay() } ?: false
@@ -83,7 +79,6 @@ class CollectionMovieView : MovieView<CollectionListItem.MovieItem> {
       }
     }
 
-    collectionMovieRating.text = String.format(ENGLISH, "%.1f", item.movie.rating)
     item.userRating?.let {
       collectionMovieUserStarIcon.visible()
       collectionMovieUserRating.visible()
@@ -91,6 +86,49 @@ class CollectionMovieView : MovieView<CollectionListItem.MovieItem> {
     }
 
     loadImage(item)
+  }
+
+  private fun bindDescription(item: CollectionListItem.MovieItem) {
+    collectionMovieDescription.text =
+      if (item.translation?.overview.isNullOrBlank()) item.movie.overview
+      else item.translation?.overview
+
+    if (item.spoilers.isSpoilerHidden) {
+      collectionMovieDescription.tag = collectionMovieDescription.text
+      collectionMovieDescription.text =
+        SPOILERS_REGEX.replace(collectionMovieDescription.text, SPOILERS_HIDE_SYMBOL)
+
+      if (item.spoilers.isSpoilerTapToReveal) {
+        collectionMovieDescription.onClick { view ->
+          view.tag?.let {
+            collectionMovieDescription.text = it.toString()
+          }
+          view.isClickable = false
+        }
+      }
+    }
+
+    collectionMovieDescription.visibleIf(item.movie.overview.isNotBlank())
+  }
+
+  private fun bindRating(item: CollectionListItem.MovieItem) {
+    var rating = String.format(ENGLISH, "%.1f", item.movie.rating)
+
+    if (item.spoilers.isSpoilerRatingsHidden) {
+      collectionMovieRating.tag = rating
+      rating = SPOILERS_RATINGS_HIDE_SYMBOL
+
+      if (item.spoilers.isSpoilerTapToReveal) {
+        collectionMovieRating.onClick { view ->
+          view.tag?.let {
+            collectionMovieRating.text = it.toString()
+          }
+          view.isClickable = false
+        }
+      }
+    }
+
+    collectionMovieRating.text = rating
   }
 
   private fun loadTranslation() {

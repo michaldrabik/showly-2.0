@@ -11,8 +11,8 @@ import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.images.EpisodeImagesProvider
+import com.michaldrabik.repository.settings.SettingsSpoilersRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
-import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.combine
@@ -28,6 +28,7 @@ import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.RatingState
+import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.Translation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -41,6 +42,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EpisodeDetailsViewModel @Inject constructor(
+  settingsSpoilersRepository: SettingsSpoilersRepository,
   private val seasonsCase: EpisodeDetailsSeasonCase,
   private val imagesProvider: EpisodeImagesProvider,
   private val dateFormatProvider: DateFormatProvider,
@@ -57,12 +59,14 @@ class EpisodeDetailsViewModel @Inject constructor(
   private val commentsLoadingState = MutableStateFlow(false)
   private val signedInState = MutableStateFlow(false)
   private val ratingState = MutableStateFlow<RatingState?>(null)
-  private val translationEvent = MutableStateFlow<Event<Translation>?>(null)
+  private val translationState = MutableStateFlow<Translation?>(null)
   private val dateFormatState = MutableStateFlow<DateTimeFormatter?>(null)
   private val commentsDateFormatState = MutableStateFlow<DateTimeFormatter?>(null)
+  private val spoilersState = MutableStateFlow<SpoilersSettings?>(null)
 
   init {
     dateFormatState.value = dateFormatProvider.loadFullHourFormat()
+    spoilersState.value = settingsSpoilersRepository.getAll()
   }
 
   fun loadImage(showId: IdTmdb, episode: Episode) {
@@ -92,10 +96,12 @@ class EpisodeDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       try {
         val language = translationsRepository.getLanguage()
-        if (language == Config.DEFAULT_LANGUAGE) return@launch
+        if (language == Config.DEFAULT_LANGUAGE) {
+          return@launch
+        }
         val translation = translationsRepository.loadTranslation(episode, showTraktId, language)
         translation?.let {
-          translationEvent.value = Event(it)
+          translationState.value = it
         }
       } catch (error: Throwable) {
         Timber.e(error)
@@ -242,10 +248,11 @@ class EpisodeDetailsViewModel @Inject constructor(
     commentsLoadingState,
     signedInState,
     ratingState,
-    translationEvent,
+    translationState,
     dateFormatState,
-    commentsDateFormatState
-  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10 ->
+    commentsDateFormatState,
+    spoilersState
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ->
     EpisodeDetailsUiState(
       image = s1,
       isImageLoading = s2,
@@ -253,10 +260,11 @@ class EpisodeDetailsViewModel @Inject constructor(
       comments = s4,
       isCommentsLoading = s5,
       isSignedIn = s6,
-      ratingState = s7,
+      rating = s7,
       translation = s8,
       dateFormat = s9,
-      commentsDateFormat = s10
+      commentsDateFormat = s10,
+      spoilers = s11
     )
   }.stateIn(
     scope = viewModelScope,

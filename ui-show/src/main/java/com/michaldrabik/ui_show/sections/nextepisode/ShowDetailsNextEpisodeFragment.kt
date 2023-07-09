@@ -3,6 +3,8 @@ package com.michaldrabik.ui_show.sections.nextepisode
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
+import com.michaldrabik.common.Config.SPOILERS_REGEX
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
@@ -13,12 +15,11 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_episodes.details.EpisodeDetailsBottomSheet
-import com.michaldrabik.ui_model.Episode
-import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_show.R
 import com.michaldrabik.ui_show.ShowDetailsFragment
 import com.michaldrabik.ui_show.ShowDetailsViewModel
 import com.michaldrabik.ui_show.databinding.FragmentShowDetailsNextEpisodeBinding
+import com.michaldrabik.ui_show.sections.nextepisode.helpers.NextEpisodeBundle
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
@@ -42,18 +43,45 @@ class ShowDetailsNextEpisodeFragment : BaseFragment<ShowDetailsNextEpisodeViewMo
   private fun render(uiState: ShowDetailsNextEpisodeUiState) {
     with(uiState) {
       with(binding) {
-        nextEpisode?.let {
-          val (show, episode) = it.nextEpisode
-          showDetailsEpisodeText.text =
-            String.format(Locale.ENGLISH, getString(R.string.textEpisodeTitle), episode.season, episode.number, episode.title)
+        nextEpisode?.let { episodeBundle ->
+          val episode = episodeBundle.nextEpisode.second
+
+          var episodeTitle = episode.title
+          if (!episodeBundle.isWatched && spoilersSettings?.isEpisodeTitleHidden == true) {
+            showDetailsEpisodeText.tag = episodeTitle
+            episodeTitle = SPOILERS_REGEX.replace(episodeTitle, SPOILERS_HIDE_SYMBOL)
+
+            if (spoilersSettings.isTapToReveal) {
+              showDetailsEpisodeText.onClick { view ->
+                view.tag?.let {
+                  showDetailsEpisodeText.text = String.format(
+                    Locale.ENGLISH,
+                    getString(R.string.textEpisodeTitle),
+                    episode.season,
+                    episode.number,
+                    it.toString()
+                  )
+                }
+                view.isClickable = false
+              }
+            }
+          }
+
+          showDetailsEpisodeText.text = String.format(
+            Locale.ENGLISH,
+            getString(R.string.textEpisodeTitle),
+            episode.season,
+            episode.number,
+            episodeTitle
+          )
 
           episode.firstAired?.let { date ->
-            val displayDate = it.dateFormat?.format(date.toLocalZone())?.capitalizeWords()
+            val displayDate = episodeBundle.dateFormat?.format(date.toLocalZone())?.capitalizeWords()
             showDetailsEpisodeAirtime.visible()
             showDetailsEpisodeAirtime.text = displayDate
           }
 
-          showDetailsEpisodeRoot.onClick { openDetails(show, episode) }
+          showDetailsEpisodeRoot.onClick { openDetails(episodeBundle) }
           (requireParentFragment() as ShowDetailsFragment)
             .binding.showDetailsEpisodeFragment.fadeIn(withHardware = true)
         }
@@ -61,12 +89,13 @@ class ShowDetailsNextEpisodeFragment : BaseFragment<ShowDetailsNextEpisodeViewMo
     }
   }
 
-  private fun openDetails(show: Show, episode: Episode) {
+  private fun openDetails(episodeBundle: NextEpisodeBundle) {
+    val (show, episode) = episodeBundle.nextEpisode
     val bundle = EpisodeDetailsBottomSheet.createBundle(
       ids = show.ids,
       episode = episode,
       seasonEpisodesIds = null,
-      isWatched = false,
+      isWatched = episodeBundle.isWatched,
       showButton = false,
       showTabs = false
     )

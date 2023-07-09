@@ -1,0 +1,151 @@
+package com.michaldrabik.ui_settings.sections.trakt
+
+import android.net.Uri
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.michaldrabik.common.errors.ErrorHelper
+import com.michaldrabik.common.errors.ShowlyError
+import com.michaldrabik.ui_base.Analytics
+import com.michaldrabik.ui_base.Logger
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
+import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
+import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
+import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
+import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
+import com.michaldrabik.ui_model.Settings
+import com.michaldrabik.ui_model.TraktSyncSchedule
+import com.michaldrabik.ui_settings.R
+import com.michaldrabik.ui_settings.sections.trakt.cases.SettingsRatingsCase
+import com.michaldrabik.ui_settings.sections.trakt.cases.SettingsTraktCase
+import com.michaldrabik.ui_settings.sections.trakt.cases.SettingsTraktMainCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import timber.log.Timber
+import javax.inject.Inject
+
+@HiltViewModel
+class SettingsTraktViewModel @Inject constructor(
+  private val mainCase: SettingsTraktMainCase,
+  private val traktCase: SettingsTraktCase,
+  private val ratingsCase: SettingsRatingsCase,
+) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+
+  private val settingsState = MutableStateFlow<Settings?>(null)
+
+  private val premiumState = MutableStateFlow(false)
+  private val signedInTraktState = MutableStateFlow(false)
+  private val signingInState = MutableStateFlow(false)
+  private val traktNameState = MutableStateFlow("")
+
+  fun loadSettings() {
+    viewModelScope.launch {
+      refreshSettings()
+    }
+  }
+
+  private suspend fun refreshSettings() {
+    settingsState.value = mainCase.getSettings()
+    signedInTraktState.value = traktCase.isTraktAuthorized()
+    traktNameState.value = traktCase.getTraktUsername()
+    premiumState.value = mainCase.isPremium()
+  }
+
+  fun authorizeTrakt(authData: Uri?) {
+    if (authData == null) return
+    viewModelScope.launch {
+      try {
+        signingInState.value = true
+        traktCase.authorizeTrakt(authData)
+        traktCase.enableTraktQuickRemove(true)
+        refreshSettings()
+        preloadRatings()
+        messageChannel.send(MessageEvent.Info(R.string.textTraktLoginSuccess))
+        Analytics.logTraktLogin()
+      } catch (error: Throwable) {
+        when (ErrorHelper.parse(error)) {
+          is ShowlyError.CoroutineCancellation -> rethrowCancellation(error)
+          is ShowlyError.AccountLockedError -> messageChannel.send(MessageEvent.Error(R.string.errorTraktLocked))
+          else -> messageChannel.send(MessageEvent.Error(R.string.errorAuthorization))
+        }
+        Logger.record(error, "SettingsViewModel::authorizeTrakt()")
+      } finally {
+        signingInState.value = false
+      }
+    }
+  }
+
+  private fun preloadRatings() {
+    viewModelScope.launch {
+      try {
+        ratingsCase.preloadRatings()
+      } catch (error: Throwable) {
+        Timber.e("Failed to preload some of ratings")
+        rethrowCancellation(error)
+      }
+    }
+  }
+
+  fun logoutTrakt() {
+    viewModelScope.launch {
+      traktCase.logoutTrakt()
+      messageChannel.send(MessageEvent.Info(R.string.textTraktLogoutSuccess))
+      refreshSettings()
+      Analytics.logTraktLogout()
+    }
+  }
+
+  fun enableQuickRate(enable: Boolean) {
+    viewModelScope.launch {
+      traktCase.enableTraktQuickRate(enable)
+      refreshSettings()
+      Analytics.logSettingsTraktQuickRate(enable)
+    }
+  }
+
+  fun enableQuickRemove(enable: Boolean) {
+    viewModelScope.launch {
+      traktCase.enableTraktQuickRemove(enable)
+      refreshSettings()
+      Analytics.logSettingsTraktQuickRemove(enable)
+    }
+  }
+
+  fun enableQuickSync(enable: Boolean) {
+    viewModelScope.launch {
+      traktCase.enableTraktQuickSync(enable)
+      refreshSettings()
+      Analytics.logSettingsTraktQuickSync(enable)
+    }
+  }
+
+  fun setTraktSyncSchedule(schedule: TraktSyncSchedule) {
+    viewModelScope.launch {
+      traktCase.setTraktSyncSchedule(schedule)
+      refreshSettings()
+    }
+  }
+
+  val uiState = combine(
+    settingsState,
+    signingInState,
+    signedInTraktState,
+    traktNameState,
+    premiumState
+  ) { s1, s2, s3, s4, s5 ->
+    SettingsTraktUiState(
+      settings = s1,
+      isSigningIn = s2,
+      isSignedInTrakt = s3,
+      traktUsername = s4,
+      isPremium = s5
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = SettingsTraktUiState()
+  )
+}

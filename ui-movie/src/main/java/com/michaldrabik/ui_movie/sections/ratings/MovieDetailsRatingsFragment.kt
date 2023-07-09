@@ -14,7 +14,7 @@ import com.michaldrabik.ui_movie.MovieDetailsViewModel
 import com.michaldrabik.ui_movie.R
 import com.michaldrabik.ui_movie.helpers.MovieLink
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_movie_details_ratings.*
+import kotlinx.android.synthetic.main.fragment_movie_details_ratings.movieDetailsRatings
 
 @AndroidEntryPoint
 class MovieDetailsRatingsFragment : BaseFragment<MovieDetailsRatingsViewModel>(R.layout.fragment_movie_details_ratings) {
@@ -26,6 +26,7 @@ class MovieDetailsRatingsFragment : BaseFragment<MovieDetailsRatingsViewModel>(R
     super.onViewCreated(view, savedInstanceState)
     launchAndRepeatStarted(
       { parentViewModel.parentMovieState.collect { it?.let { viewModel.loadRatings(it) } } },
+      { parentViewModel.parentFollowedState.collect { it?.let { viewModel.refreshRatings() } } },
       { viewModel.uiState.collect { render(it) } }
     )
   }
@@ -33,7 +34,9 @@ class MovieDetailsRatingsFragment : BaseFragment<MovieDetailsRatingsViewModel>(R
   private fun render(uiState: MovieDetailsRatingsUiState) {
     with(uiState) {
       ratings?.let {
-        if (movieDetailsRatings.isBound()) return
+        if (movieDetailsRatings.isBound() && !isRefreshingRatings) {
+          return
+        }
         movieDetailsRatings.bind(ratings)
         movie?.let {
           movieDetailsRatings.onTraktClick = { openMovieLink(MovieLink.TRAKT, movie.traktId.toString()) }

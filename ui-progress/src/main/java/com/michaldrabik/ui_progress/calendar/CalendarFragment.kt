@@ -88,7 +88,13 @@ class CalendarFragment :
       itemClickListener = { requireMainFragment().openShowDetails(it.show) },
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) },
       checkClickListener = { viewModel.onEpisodeChecked(it) },
-      detailsClickListener = { requireMainFragment().openEpisodeDetails(it.show, it.episode, it.season) },
+      detailsClickListener = {
+        requireMainFragment().openEpisodeDetails(
+          show = it.show,
+          episode = it.episode,
+          season = it.season
+        )
+      },
       missingTranslationListener = { viewModel.findMissingTranslation(it) }
     )
     progressCalendarRecycler.apply {

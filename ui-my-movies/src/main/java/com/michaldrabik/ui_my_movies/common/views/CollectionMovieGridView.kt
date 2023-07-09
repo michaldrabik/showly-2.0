@@ -61,8 +61,7 @@ class CollectionMovieGridView : MovieView<CollectionListItem.MovieItem> {
       collectionMovieProgress.visibleIf(item.isLoading)
 
       if (item.sortOrder == RATING) {
-        collectionMovieRating.visible()
-        collectionMovieRating.text = String.format(ENGLISH, "%.1f", item.movie.rating)
+        bindRating(item)
       } else if (item.sortOrder == USER_RATING && item.userRating != null) {
         collectionMovieRating.visible()
         collectionMovieRating.text = String.format(ENGLISH, "%d", item.userRating)
@@ -72,6 +71,29 @@ class CollectionMovieGridView : MovieView<CollectionListItem.MovieItem> {
     }
 
     loadImage(item)
+  }
+
+  private fun bindRating(item: CollectionListItem.MovieItem) {
+    with(binding) {
+      var rating = String.format(ENGLISH, "%.1f", item.movie.rating)
+
+      if (item.spoilers.isSpoilerRatingsHidden) {
+        collectionMovieRating.tag = rating
+        rating = Config.SPOILERS_RATINGS_HIDE_SYMBOL
+
+        if (item.spoilers.isSpoilerTapToReveal) {
+          with(collectionMovieRating) {
+            onClick {
+              tag?.let { text = it.toString() }
+              isClickable = false
+            }
+          }
+        }
+      }
+
+      collectionMovieRating.visible()
+      collectionMovieRating.text = rating
+    }
   }
 
   private fun loadTranslation() {

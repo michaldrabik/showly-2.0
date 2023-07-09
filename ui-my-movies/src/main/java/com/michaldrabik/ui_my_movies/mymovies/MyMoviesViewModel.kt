@@ -23,6 +23,7 @@ import com.michaldrabik.ui_model.MyMoviesSection.ALL
 import com.michaldrabik.ui_model.MyMoviesSection.RECENTS
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
+import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesUiEvent
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesUiState
@@ -89,9 +90,18 @@ class MyMoviesViewModel @Inject constructor(
       val ratings = ratingsCase.loadRatings()
       val sortOrder = sortingCase.loadSortOrder()
       val genresFilter = settingsRepository.filters.myMoviesGenres
+      val spoilers = settingsRepository.spoilers.getAll()
 
       val movies = loadMoviesCase.loadAll().map {
-        toListItemAsync(ALL_MOVIES_ITEM, it, dateFormat, POSTER, ratings[it.ids.trakt])
+        toListItemAsync(
+          itemType = ALL_MOVIES_ITEM,
+          movie = it,
+          dateFormat = dateFormat,
+          type = POSTER,
+          userRating = ratings[it.ids.trakt],
+          sortOrder = sortOrder.first,
+          spoilers = spoilers
+        )
       }.awaitAll()
 
       val allMovies = loadMoviesCase.filterSectionMovies(
@@ -102,7 +112,15 @@ class MyMoviesViewModel @Inject constructor(
       )
       val recentMovies = if (settings.myMoviesRecentIsEnabled) {
         loadMoviesCase.loadRecentMovies().map {
-          toListItemAsync(RECENT_MOVIES, it, dateFormat, ImageType.FANART, ratings[it.ids.trakt])
+          toListItemAsync(
+            itemType = RECENT_MOVIES,
+            movie = it,
+            dateFormat = dateFormat,
+            type = ImageType.FANART,
+            userRating = ratings[it.ids.trakt],
+            sortOrder = sortOrder.first,
+            spoilers = spoilers
+          )
         }.awaitAll()
       } else {
         emptyList()
@@ -189,10 +207,28 @@ class MyMoviesViewModel @Inject constructor(
     dateFormat: DateTimeFormatter,
     type: ImageType = POSTER,
     userRating: TraktRating?,
+    sortOrder: SortOrder?,
+    spoilers: SpoilersSettings,
   ) = async {
     val image = loadMoviesCase.findCachedImage(movie, type)
     val translation = loadMoviesCase.loadTranslation(movie, true)
-    MyMoviesItem(itemType, null, null, movie, image, false, translation, userRating?.rating, dateFormat)
+    MyMoviesItem(
+      type = itemType,
+      header = null,
+      recentsSection = null,
+      movie = movie,
+      image = image,
+      isLoading = false,
+      translation = translation,
+      userRating = userRating?.rating,
+      dateFormat = dateFormat,
+      sortOrder = sortOrder,
+      spoilers = MyMoviesItem.Spoilers(
+        isSpoilerHidden = spoilers.isMyMoviesHidden,
+        isSpoilerRatingsHidden = spoilers.isMyMoviesRatingsHidden,
+        isSpoilerTapToReveal = spoilers.isTapToReveal
+      )
+    )
   }
 
   private fun onEvent(event: EventSync) =

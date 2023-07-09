@@ -12,6 +12,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import com.michaldrabik.common.Config.SPOILERS_RATINGS_HIDE_SYMBOL
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.expandTouch
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -19,7 +20,9 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_lists.R
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
 import com.michaldrabik.ui_lists.details.views.ListDetailsItemView
+import com.michaldrabik.ui_model.Movie
 import kotlinx.android.synthetic.main.view_list_details_movie_item_compact.view.*
+import kotlinx.android.synthetic.main.view_list_details_show_item_compact.view.*
 import java.util.Locale.ENGLISH
 import kotlin.math.abs
 
@@ -83,15 +86,14 @@ class ListDetailsCompactMovieItemView : ListDetailsItemView {
       else item.translation?.title
 
     listDetailsMovieHeader.text = String.format(ENGLISH, "%d", movie.year)
-    listDetailsMovieRating.text = String.format(ENGLISH, "%.1f", movie.rating)
     listDetailsMovieUserRating.text = String.format(ENGLISH, "%d", item.userRating)
+    bindRating(item, movie)
 
     listDetailsMovieRank.visibleIf(item.isRankDisplayed)
     listDetailsMovieRank.text = String.format(ENGLISH, "%d", item.rankDisplay)
 
     listDetailsMovieHandle.visibleIf(item.isManageMode)
     listDetailsMovieStarIcon.visibleIf(!item.isManageMode)
-    listDetailsMovieRating.visibleIf(!item.isManageMode)
     listDetailsMovieUserStarIcon.visibleIf(!item.isManageMode && item.userRating != null)
     listDetailsMovieUserRating.visibleIf(!item.isManageMode && item.userRating != null)
 
@@ -106,5 +108,32 @@ class ListDetailsCompactMovieItemView : ListDetailsItemView {
 
     listDetailsMovieRoot.alpha = if (item.isEnabled) 1F else 0.45F
     loadImage(item)
+  }
+
+  private fun bindRating(
+    item: ListDetailsItem,
+    movie: Movie,
+  ) {
+    var rating = String.format(ENGLISH, "%.1f", movie.rating)
+
+    val isMyHidden = item.spoilers.isMyMoviesRatingsHidden && item.isWatched
+    val isWatchlistHidden = item.spoilers.isWatchlistMoviesRatingsHidden && item.isWatchlist
+    val isNotCollectedHidden = item.spoilers.isNotCollectedMoviesRatingsHidden && (!item.isWatched && !item.isWatchlist)
+    if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
+      listDetailsMovieRating.tag = rating
+      rating = SPOILERS_RATINGS_HIDE_SYMBOL
+
+      if (item.spoilers.isTapToReveal) {
+        with(listDetailsMovieRating) {
+          onClick {
+            tag?.let { text = it.toString() }
+            isClickable = false
+          }
+        }
+      }
+    }
+
+    listDetailsMovieRating.visibleIf(!item.isManageMode)
+    listDetailsMovieRating.text = rating
   }
 }

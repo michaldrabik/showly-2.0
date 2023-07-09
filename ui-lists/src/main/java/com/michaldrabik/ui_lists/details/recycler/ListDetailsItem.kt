@@ -6,6 +6,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.Translation
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
@@ -26,7 +27,8 @@ data class ListDetailsItem(
   val isWatched: Boolean,
   val isWatchlist: Boolean,
   val listedAt: ZonedDateTime,
-  val sortOrder: SortOrder
+  val sortOrder: SortOrder,
+  val spoilers: SpoilersSettings
 ) {
 
   fun getTitleNoThe(): String {

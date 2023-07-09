@@ -126,19 +126,24 @@ class ProgressFragment :
       itemClickListener = { requireMainFragment().openShowDetails(it.show) },
       itemLongClickListener = { requireMainFragment().openShowMenu(it.show) },
       headerClickListener = { viewModel.toggleHeaderCollapsed(it.type) },
-      detailsClickListener = { requireMainFragment().openEpisodeDetails(it.show, it.requireEpisode(), it.requireSeason()) },
-      checkClickListener = { viewModel.onEpisodeChecked(it) },
-      sortChipClickListener = { viewModel.loadSortOrder() },
-      upcomingChipClickListener = { viewModel.setUpcomingFilter(it) },
-      onHoldChipClickListener = { viewModel.setOnHoldFilter(it) },
+      detailsClickListener = {
+        requireMainFragment().openEpisodeDetails(
+          show = it.show,
+          episode = it.requireEpisode(),
+          season = it.requireSeason()
+        )
+      },
+      checkClickListener = viewModel::onEpisodeChecked,
+      sortChipClickListener = viewModel::loadSortOrder,
+      upcomingChipClickListener = viewModel::setUpcomingFilter,
+      onHoldChipClickListener = viewModel::setOnHoldFilter,
+      missingTranslationListener = viewModel::findMissingTranslation,
       missingImageListener = { item: ProgressListItem, force -> viewModel.findMissingImage(item, force) },
-      missingTranslationListener = { viewModel.findMissingTranslation(it) },
       listChangeListener = {
         requireMainFragment().resetTranslations()
         layoutManager?.scrollToPosition(0)
       }
-    ).apply {
-    }
+    )
     progressRecycler.apply {
       adapter = this@ProgressFragment.adapter
       layoutManager = this@ProgressFragment.layoutManager

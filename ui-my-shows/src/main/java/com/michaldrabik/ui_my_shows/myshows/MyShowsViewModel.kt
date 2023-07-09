@@ -24,6 +24,7 @@ import com.michaldrabik.ui_model.MyShowsSection.RECENTS
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
+import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_my_shows.main.FollowedShowsUiEvent.OpenPremium
 import com.michaldrabik.ui_my_shows.main.FollowedShowsUiState
@@ -93,6 +94,7 @@ class MyShowsViewModel @Inject constructor(
       val sortOrder = settingsRepository.sorting.myShowsAllSortOrder
       val networks = settingsRepository.filters.myShowsNetworks
       val genres = settingsRepository.filters.myShowsGenres
+      val spoilers = settingsRepository.spoilers.getAll()
 
       val shows = loadShowsCase.loadAllShows()
         .map {
@@ -101,7 +103,8 @@ class MyShowsViewModel @Inject constructor(
             show = it,
             type = POSTER,
             userRating = ratings[it.ids.trakt],
-            sortOrder = sortOrder
+            sortOrder = sortOrder,
+            spoilers = spoilers
           )
         }
         .awaitAll()
@@ -117,7 +120,7 @@ class MyShowsViewModel @Inject constructor(
 
       val recentShows = if (settings.myShowsRecentIsEnabled) {
         loadShowsCase.loadRecentShows().map {
-          toListItemAsync(Type.RECENT_SHOWS, it, ImageType.FANART, ratings[it.ids.trakt], null)
+          toListItemAsync(Type.RECENT_SHOWS, it, ImageType.FANART, ratings[it.ids.trakt], null, spoilers)
         }.awaitAll()
       } else {
         emptyList()
@@ -204,10 +207,26 @@ class MyShowsViewModel @Inject constructor(
     type: ImageType = POSTER,
     userRating: TraktRating?,
     sortOrder: SortOrder?,
+    spoilers: SpoilersSettings,
   ) = async {
     val image = imagesProvider.findCachedImage(show, type)
     val translation = translationsCase.loadTranslation(show, true)
-    MyShowsItem(itemType, null, null, show, image, false, translation, userRating?.rating, sortOrder)
+    MyShowsItem(
+      type = itemType,
+      header = null,
+      recentsSection = null,
+      show = show,
+      image = image,
+      isLoading = false,
+      translation = translation,
+      userRating = userRating?.rating,
+      sortOrder = sortOrder,
+      spoilers = MyShowsItem.Spoilers(
+        isSpoilerHidden = spoilers.isMyShowsHidden,
+        isSpoilerRatingsHidden = spoilers.isMyShowsRatingsHidden,
+        isSpoilerTapToReveal = spoilers.isTapToReveal
+      )
+    )
   }
 
   private fun onEvent(event: EventSync) =

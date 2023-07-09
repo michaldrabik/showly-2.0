@@ -10,6 +10,7 @@ import com.michaldrabik.data_local.database.model.Season
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.repository.mappers.Mappers
+import com.michaldrabik.repository.settings.SettingsSpoilersRepository
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_model.ImageType
@@ -30,6 +31,7 @@ abstract class CalendarItemsCase constructor(
   private val mappers: Mappers,
   private val showsRepository: ShowsRepository,
   private val translationsRepository: TranslationsRepository,
+  private val spoilersRepository: SettingsSpoilersRepository,
   private val imagesProvider: ShowImagesProvider,
   private val dateFormatProvider: DateFormatProvider,
   private val watchlistAppender: WatchlistAppender,
@@ -40,6 +42,7 @@ abstract class CalendarItemsCase constructor(
 
   abstract fun sortEpisodes(): Comparator<Episode>
   abstract fun isWatched(episode: Episode): Boolean
+  abstract fun isSpoilerHidden(episode: Episode): Boolean
 
   suspend fun loadItems(searchQuery: String? = "") =
     withContext(dispatchers.IO) {
@@ -47,6 +50,7 @@ abstract class CalendarItemsCase constructor(
 
       val language = translationsRepository.getLanguage()
       val dateFormat = dateFormatProvider.loadFullHourFormat()
+      val spoilers = spoilersRepository.getAll()
 
       val (myShows, watchlistShows) = coroutineScope {
         val async1 = async { showsRepository.myShows.loadAll() }
@@ -114,8 +118,10 @@ abstract class CalendarItemsCase constructor(
               season = seasonUi,
               isWatched = isWatched(episode),
               isWatchlist = show.traktId in watchlistShowsIds,
+              isSpoilerHidden = isSpoilerHidden(episode),
               dateFormat = dateFormat,
-              translations = translations
+              translations = translations,
+              spoilers = spoilers
             )
           }
         }

@@ -5,6 +5,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.Translation
 import java.time.LocalDate
 import java.time.ZonedDateTime
@@ -42,7 +43,8 @@ sealed class PersonDetailsItem {
     val isMy: Boolean,
     val isWatchlist: Boolean,
     val translation: Translation?,
-    val isLoading: Boolean = false
+    val spoilers: SpoilersSettings,
+    val isLoading: Boolean = false,
   ) : PersonDetailsItem() {
     override fun getId() = "${show.traktId}show"
     override fun getReleaseDate() =
@@ -59,6 +61,7 @@ sealed class PersonDetailsItem {
     val isMy: Boolean,
     val isWatchlist: Boolean,
     val translation: Translation?,
+    val spoilers: SpoilersSettings,
     val moviesEnabled: Boolean,
     val isLoading: Boolean = false
   ) : PersonDetailsItem() {

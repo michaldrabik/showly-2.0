@@ -21,6 +21,7 @@ import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Operation
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Type
 import com.michaldrabik.ui_base.common.views.exSearchLocalViewInput
+import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -36,6 +37,7 @@ import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.nextPage
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.requireParcelable
 import com.michaldrabik.ui_base.utilities.extensions.showKeyboard
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
@@ -53,7 +55,15 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_ITEM_MENU
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.main.adapters.ProgressMainAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_progress_main.*
+import kotlinx.android.synthetic.main.fragment_progress_main.progressMainCalendarIcon
+import kotlinx.android.synthetic.main.fragment_progress_main.progressMainPager
+import kotlinx.android.synthetic.main.fragment_progress_main.progressMainPagerModeTabs
+import kotlinx.android.synthetic.main.fragment_progress_main.progressMainRoot
+import kotlinx.android.synthetic.main.fragment_progress_main.progressMainSearchIcon
+import kotlinx.android.synthetic.main.fragment_progress_main.progressMainSearchLocalView
+import kotlinx.android.synthetic.main.fragment_progress_main.progressMainSearchView
+import kotlinx.android.synthetic.main.fragment_progress_main.progressMainSideIcons
+import kotlinx.android.synthetic.main.fragment_progress_main.progressMainTabs
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -96,6 +106,7 @@ class ProgressMainFragment :
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
       { viewModel.messageFlow.collect { showSnack(it) } },
+      { viewModel.eventFlow.collect { handleEvent(it) } },
       doAfterLaunch = { viewModel.loadProgress() }
     )
   }
@@ -245,24 +256,20 @@ class ProgressMainFragment :
     navigateToSafe(R.id.actionProgressFragmentToItemMenu, bundle)
   }
 
-  fun openEpisodeDetails(show: Show, episode: Episode, season: Season) {
+  fun openEpisodeDetails(
+    show: Show,
+    episode: Episode,
+    season: Season
+  ) {
     setFragmentResultListener(REQUEST_EPISODE_DETAILS) { _, bundle ->
       when {
         bundle.containsKey(ACTION_EPISODE_TAB_SELECTED) -> {
-          val selectedEpisode = bundle.getParcelable<Episode>(ACTION_EPISODE_TAB_SELECTED)!!
+          val selectedEpisode = bundle.requireParcelable<Episode>(ACTION_EPISODE_TAB_SELECTED)
           openEpisodeDetails(show, selectedEpisode, season)
         }
       }
     }
-    val bundle = EpisodeDetailsBottomSheet.createBundle(
-      ids = show.ids,
-      episode = episode,
-      seasonEpisodesIds = null,
-      isWatched = false,
-      showButton = false,
-      showTabs = true
-    )
-    navigateToSafe(R.id.actionProgressFragmentToEpisodeDetails, bundle)
+    viewModel.onEpisodeDetails(show, episode)
   }
 
   fun openRateDialog(episodeBundle: EpisodeBundle) {
@@ -349,6 +356,22 @@ class ProgressMainFragment :
       CalendarMode.PRESENT_FUTURE -> progressMainCalendarIcon.setImageResource(R.drawable.ic_history)
       CalendarMode.RECENTS -> progressMainCalendarIcon.setImageResource(R.drawable.ic_calendar)
       else -> Unit
+    }
+  }
+
+  private fun handleEvent(event: Event<*>) {
+    when (event) {
+      is OpenEpisodeDetails -> {
+        val bundle = EpisodeDetailsBottomSheet.createBundle(
+          ids = event.show.ids,
+          episode = event.episode,
+          seasonEpisodesIds = null,
+          isWatched = event.isWatched,
+          showButton = false,
+          showTabs = true
+        )
+        navigateToSafe(R.id.actionProgressFragmentToEpisodeDetails, bundle)
+      }
     }
   }
 

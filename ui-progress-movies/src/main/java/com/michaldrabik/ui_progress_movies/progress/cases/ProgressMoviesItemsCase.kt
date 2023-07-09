@@ -38,6 +38,7 @@ class ProgressMoviesItemsCase @Inject constructor(
     withContext(dispatchers.IO) {
       val language = translationsRepository.getLanguage()
       val dateFormat = dateFormatProvider.loadFullDayFormat()
+      val spoilers = settingsRepository.spoilers.getAll()
 
       val sortOrder = settingsRepository.sorting.progressMoviesSortOrder
       val sortType = settingsRepository.sorting.progressMoviesSortType
@@ -59,7 +60,8 @@ class ProgressMoviesItemsCase @Inject constructor(
             translation = translation,
             dateFormat = dateFormat,
             sortOrder = sortOrder,
-            userRating = rating.firstOrNull()?.rating
+            userRating = rating.firstOrNull()?.rating,
+            spoilers = spoilers
           )
         }
       }.awaitAll()

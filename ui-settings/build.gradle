@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
 apply from: '../versions.gradle'
@@ -15,6 +14,10 @@ android {
 
   buildFeatures {
     buildConfig = true
+  }
+
+  buildFeatures {
+    viewBinding true
   }
 
   compileSdkVersion versions.compileSdk

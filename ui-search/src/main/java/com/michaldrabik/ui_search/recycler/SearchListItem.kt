@@ -4,6 +4,7 @@ import com.michaldrabik.ui_base.common.ListItem
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.Translation
 import java.util.UUID
 
@@ -16,7 +17,8 @@ data class SearchListItem(
   val score: Float,
   val isFollowed: Boolean = false,
   val isWatchlist: Boolean = false,
-  val translation: Translation? = null
+  val translation: Translation? = null,
+  val spoilers: SpoilersSettings
 ) : ListItem {
 
   val isShow = show != Show.EMPTY

@@ -3,6 +3,7 @@ package com.michaldrabik.ui_movie
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.RatingState
+import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_movie.helpers.MovieDetailsMeta
 
@@ -14,7 +15,8 @@ data class MovieDetailsUiState(
   val followedState: FollowedState? = null,
   val ratingState: RatingState? = null,
   val translation: Translation? = null,
-  val meta: MovieDetailsMeta? = null
+  val meta: MovieDetailsMeta? = null,
+  val spoilers: SpoilersSettings? = null
 ) {
 
   data class FollowedState(
@@ -23,6 +25,8 @@ data class MovieDetailsUiState(
     val isHidden: Boolean,
     val withAnimation: Boolean,
   ) {
+
+    fun isInCollection() = isMyMovie || isWatchlist || isHidden
 
     companion object {
       fun idle() = FollowedState(isMyMovie = false, isWatchlist = false, isHidden = false, withAnimation = true)

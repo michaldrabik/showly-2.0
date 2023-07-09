@@ -7,6 +7,9 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
+import com.michaldrabik.common.Config.SPOILERS_RATINGS_HIDE_SYMBOL
+import com.michaldrabik.common.Config.SPOILERS_REGEX
 import com.michaldrabik.ui_base.common.views.MovieView
 import com.michaldrabik.ui_base.utilities.extensions.addRipple
 import com.michaldrabik.ui_base.utilities.extensions.bump
@@ -57,24 +60,37 @@ class ProgressMoviesItemView : MovieView<ProgressMovieListItem.MovieItem> {
       if (translationTitle.isNullOrBlank()) item.movie.title
       else translationTitle
 
-    val translationOverview = item.translation?.overview
-    progressMovieItemSubtitle.text =
-      when {
-        translationOverview.isNullOrBlank() -> {
-          if (item.movie.overview.isBlank()) context.getString(R.string.textNoDescription)
-          else item.movie.overview
-        }
-        else -> translationOverview
-      }
+    bindDescription(item)
+    bindRating(item)
 
     progressMovieItemPin.visibleIf(item.isPinned)
-
     progressMovieItemCheckButton.onClick {
       it.bump { checkClickListener?.invoke(item) }
     }
 
-    bindRating(item)
     loadImage(item)
+  }
+
+  private fun bindDescription(item: ProgressMovieListItem.MovieItem) {
+    var description = if (item.translation?.overview.isNullOrBlank()) {
+      item.movie.overview.ifBlank { context.getString(R.string.textNoDescription) }
+    } else {
+      item.translation?.overview
+    }
+
+    if (item.spoilers.isWatchlistMoviesHidden) {
+      progressMovieItemSubtitle.tag = description
+      description = SPOILERS_REGEX.replace(description.toString(), SPOILERS_HIDE_SYMBOL)
+
+      if (item.spoilers.isTapToReveal) {
+        progressMovieItemSubtitle.onClick { view ->
+          view.tag?.let { progressMovieItemSubtitle.text = it.toString() }
+          view.isClickable = false
+        }
+      }
+    }
+
+    progressMovieItemSubtitle.text = description
   }
 
   private fun bindRating(item: ProgressMovieListItem.MovieItem) {
@@ -83,7 +99,21 @@ class ProgressMoviesItemView : MovieView<ProgressMovieListItem.MovieItem> {
         progressMovieItemRating.visible()
         progressMovieItemRatingStar.visible()
         progressMovieItemRatingStar.imageTintList = context.colorStateListFromAttr(android.R.attr.colorAccent)
-        progressMovieItemRating.text = String.format(Locale.ENGLISH, "%.1f", item.movie.rating)
+        val rating = String.format(Locale.ENGLISH, "%.1f", item.movie.rating)
+        if (item.spoilers.isMyShowsRatingsHidden) {
+          progressMovieItemRating.tag = rating
+          progressMovieItemRating.text = SPOILERS_RATINGS_HIDE_SYMBOL
+          if (item.spoilers.isTapToReveal) {
+            progressMovieItemRating.onClick { view ->
+              view.tag?.let {
+                progressMovieItemRating.text = it.toString()
+              }
+              view.isClickable = false
+            }
+          }
+        } else {
+          progressMovieItemRating.text = rating
+        }
       }
       USER_RATING -> {
         val hasRating = item.userRating != null

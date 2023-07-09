@@ -6,6 +6,9 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.viewModels
+import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
+import com.michaldrabik.common.Config.SPOILERS_RATINGS_HIDE_SYMBOL
+import com.michaldrabik.common.Config.SPOILERS_REGEX
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
 import com.michaldrabik.ui_base.common.sheets.context_menu.events.FinishUiEvent
@@ -77,17 +80,14 @@ class MovieContextMenuBottomSheet : ContextMenuBottomSheet() {
         if (item.translation?.title.isNullOrBlank()) item.movie.title
         else item.translation?.title
 
-      contextMenuItemDescription.text =
-        if (item.translation?.overview.isNullOrBlank()) item.movie.overview
-        else item.translation?.overview
+      renderItemDescription(item)
+      renderItemRating(item)
 
       contextMenuItemNetwork.text = when {
         item.movie.released != null -> item.dateFormat?.format(item.movie.released)?.capitalizeWords()
         else -> String.format(Locale.ENGLISH, "%d", item.movie.year)
       }
 
-      contextMenuRating.text = String.format(Locale.ENGLISH, "%.1f", item.movie.rating)
-      contextMenuRating.visibleIf(item.movie.rating > 0)
       contextMenuRatingStar.visibleIf(item.movie.rating > 0)
 
       contextMenuUserRating.text = String.format(Locale.ENGLISH, "%d", item.userRating)
@@ -116,6 +116,63 @@ class MovieContextMenuBottomSheet : ContextMenuBottomSheet() {
         contextMenuItemMoveToMyButton.text = getString(R.string.textAddToMyMovies)
         contextMenuItemMoveToWatchlistButton.text = getString(R.string.textAddToWatchlist)
         contextMenuItemMoveToHiddenButton.text = getString(R.string.textHide)
+      }
+    }
+  }
+
+  private fun renderItemDescription(item: MovieContextItem) {
+    with(binding) {
+      contextMenuItemDescription.text =
+        if (item.translation?.overview.isNullOrBlank()) item.movie.overview
+        else item.translation?.overview
+
+      val isMyMovieHidden = item.spoilers.isMyMoviesHidden && item.isMyMovie
+      val isWatchlistHidden = item.spoilers.isWatchlistMoviesHidden && item.isWatchlist
+      val isHiddenMovieHidden = item.spoilers.isHiddenMoviesHidden && item.isHidden
+      val isNotCollectedHidden = item.spoilers.isNotCollectedMoviesHidden && (!item.isInCollection())
+
+      if (isMyMovieHidden || isWatchlistHidden || isHiddenMovieHidden || isNotCollectedHidden) {
+        val spoilerDescription = contextMenuItemDescription.text.toString()
+        val hiddenDescription = SPOILERS_REGEX.replace(spoilerDescription, SPOILERS_HIDE_SYMBOL)
+        contextMenuItemDescription.tag = spoilerDescription
+        contextMenuItemDescription.text = hiddenDescription
+      }
+
+      if (item.spoilers.isTapToReveal) {
+        with(contextMenuItemDescription) {
+          onClick {
+            tag?.let { text = it.toString() }
+            enableFoldOnClick()
+          }
+        }
+      }
+    }
+  }
+
+  private fun renderItemRating(item: MovieContextItem) {
+    with(binding) {
+      var rating = String.format(Locale.ENGLISH, "%.1f", item.movie.rating)
+
+      val isMyHidden = item.spoilers.isMyMoviesRatingsHidden && item.isMyMovie
+      val isWatchlistHidden = item.spoilers.isWatchlistMoviesRatingsHidden && item.isWatchlist
+      val isHiddenShowHidden = item.spoilers.isHiddenMoviesRatingsHidden && item.isHidden
+      val isNotCollectedHidden = item.spoilers.isNotCollectedMoviesRatingsHidden && (!item.isInCollection())
+
+      if (isMyHidden || isWatchlistHidden || isHiddenShowHidden || isNotCollectedHidden) {
+        contextMenuRating.tag = rating
+        rating = SPOILERS_RATINGS_HIDE_SYMBOL
+      }
+
+      contextMenuRating.visibleIf(item.movie.rating > 0)
+      contextMenuRatingStar.visibleIf(item.movie.rating > 0)
+      contextMenuRating.text = rating
+
+      if (item.spoilers.isTapToReveal) {
+        with(contextMenuRating) {
+          onClick {
+            tag?.let { text = it.toString() }
+          }
+        }
       }
     }
   }

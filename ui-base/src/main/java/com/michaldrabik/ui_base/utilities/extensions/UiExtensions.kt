@@ -126,10 +126,6 @@ fun View.updateTopMargin(margin: Int) {
   (layoutParams as ViewGroup.MarginLayoutParams).updateMargins(top = margin)
 }
 
-fun TextView.setTextIfEmpty(text: String) {
-  if (this.text.isBlank()) this.text = text
-}
-
 fun TextView.setTextFade(text: String, duration: Long = 125) {
   fadeOut(
     duration = duration,
@@ -138,6 +134,13 @@ fun TextView.setTextFade(text: String, duration: Long = 125) {
       fadeIn(duration = duration)
     }
   )
+}
+
+fun TextView.isSpoilerHidden(): Boolean {
+  return text.toString()
+    .trim()
+    .replace(" ", "")
+    .none { it.isLetterOrDigit() }
 }
 
 fun Fragment.disableUi() {

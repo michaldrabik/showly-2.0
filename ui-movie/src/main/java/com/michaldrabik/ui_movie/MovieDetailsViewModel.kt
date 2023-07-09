@@ -24,6 +24,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.RatingState
+import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_movie.MovieDetailsEvent.Finish
@@ -40,10 +41,8 @@ import com.michaldrabik.ui_movie.helpers.MovieDetailsMeta
 import com.michaldrabik.ui_movie.sections.ratings.cases.MovieDetailsRatingCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -70,18 +69,18 @@ class MovieDetailsViewModel @Inject constructor(
 
   private var movie by notNull<Movie>()
 
-  private val _parentEvents = MutableSharedFlow<MovieDetailsEvent<*>>()
-  val parentEvents = _parentEvents.asSharedFlow()
-
   private val movieState = MutableStateFlow<Movie?>(null)
-  val parentMovieState = movieState.asStateFlow()
   private val movieLoadingState = MutableStateFlow<Boolean?>(null)
   private val imageState = MutableStateFlow<Image?>(null)
   private val followedState = MutableStateFlow<FollowedState?>(null)
   private val ratingState = MutableStateFlow<RatingState?>(null)
   private val translationState = MutableStateFlow<Translation?>(null)
   private val metaState = MutableStateFlow<MovieDetailsMeta?>(null)
+  private val spoilersState = MutableStateFlow<SpoilersSettings?>(null)
   private val listsCountState = MutableStateFlow(0)
+
+  val parentMovieState = movieState.asStateFlow()
+  val parentFollowedState = followedState.asStateFlow()
 
   fun loadDetails(id: IdTrakt) {
     viewModelScope.launch {
@@ -109,6 +108,7 @@ class MovieDetailsViewModel @Inject constructor(
         movieLoadingState.value = false
         followedState.value = isFollowed
         ratingState.value = RatingState(rateAllowed = isSignedIn, rateLoading = false)
+        spoilersState.value = settingsRepository.spoilers.getAll()
         metaState.value = MovieDetailsMeta(
           dateFormat = dateFormatProvider.loadShortDayFormat(),
           commentsDateFormat = dateFormatProvider.loadFullHourFormat(),
@@ -283,8 +283,9 @@ class MovieDetailsViewModel @Inject constructor(
     ratingState,
     translationState,
     listsCountState,
-    metaState
-  ) { s1, s2, s3, s4, s5, s6, s7, s8 ->
+    metaState,
+    spoilersState
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9 ->
     MovieDetailsUiState(
       movie = s1,
       movieLoading = s2,
@@ -293,7 +294,8 @@ class MovieDetailsViewModel @Inject constructor(
       ratingState = s5,
       translation = s6,
       listsCount = s7,
-      meta = s8
+      meta = s8,
+      spoilers = s9
     )
   }.stateIn(
     scope = viewModelScope,

@@ -1,27 +1,20 @@
-package com.michaldrabik.ui_settings.cases
+package com.michaldrabik.ui_settings.sections.general.cases
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.os.Build.VERSION_CODES.TIRAMISU
 import androidx.appcompat.app.AppCompatDelegate
-import com.google.firebase.messaging.FirebaseMessaging
 import com.michaldrabik.common.Config
-import com.michaldrabik.common.ConfigVariant
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.dispatchers.CoroutineDispatchers
-import com.michaldrabik.repository.images.MovieImagesProvider
-import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.dates.AppDateFormat
-import com.michaldrabik.ui_base.fcm.NotificationChannel
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_model.MyMoviesSection
 import com.michaldrabik.ui_model.MyShowsSection
 import com.michaldrabik.ui_model.MyShowsSection.RECENTS
-import com.michaldrabik.ui_model.NotificationDelay
 import com.michaldrabik.ui_model.ProgressNextEpisodeType
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_settings.helpers.AppLanguage
@@ -30,12 +23,10 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ViewModelScoped
-class SettingsMainCase @Inject constructor(
+class SettingsGeneralMainCase @Inject constructor(
   private val dispatchers: CoroutineDispatchers,
   private val settingsRepository: SettingsRepository,
   private val announcementManager: AnnouncementManager,
-  private val showsImagesProvider: ShowImagesProvider,
-  private val moviesImagesProvider: MovieImagesProvider,
 ) {
 
   suspend fun getSettings(): Settings = withContext(dispatchers.IO) {
@@ -50,35 +41,6 @@ class SettingsMainCase @Inject constructor(
         val new = it.copy(myRecentsAmount = amount)
         settingsRepository.update(new)
       }
-    }
-  }
-
-  @SuppressLint("NewApi")
-  suspend fun enablePushNotifications(enable: Boolean) {
-    val settings = settingsRepository.load()
-    settings.let {
-      val new = it.copy(pushNotificationsEnabled = enable)
-      settingsRepository.update(new)
-    }
-    FirebaseMessaging.getInstance().run {
-      val suffix = ConfigVariant.FIREBASE_SUFFIX
-      if (enable) {
-        subscribeToTopic(NotificationChannel.GENERAL_INFO.topicName + suffix)
-        subscribeToTopic(NotificationChannel.SHOWS_INFO.topicName + suffix)
-      } else {
-        unsubscribeFromTopic(NotificationChannel.GENERAL_INFO.topicName + suffix)
-        unsubscribeFromTopic(NotificationChannel.SHOWS_INFO.topicName + suffix)
-      }
-    }
-  }
-
-  suspend fun enableAnnouncements(enable: Boolean) {
-    val settings = settingsRepository.load()
-    settings.let {
-      val new = it.copy(episodesNotificationsEnabled = enable)
-      settingsRepository.update(new)
-      announcementManager.refreshShowsAnnouncements()
-      announcementManager.refreshMoviesAnnouncements()
     }
   }
 
@@ -149,27 +111,6 @@ class SettingsMainCase @Inject constructor(
     }
   }
 
-  suspend fun enableWidgetsTitles(enable: Boolean, context: Context) {
-    val settings = settingsRepository.load()
-    settings.let {
-      val new = it.copy(widgetsShowLabel = enable)
-      settingsRepository.update(new)
-    }
-    (context.applicationContext as WidgetsProvider).run {
-      requestShowsWidgetsUpdate()
-      requestMoviesWidgetsUpdate()
-    }
-  }
-
-  suspend fun setWhenToNotify(delay: NotificationDelay) {
-    val settings = settingsRepository.load()
-    settings.let {
-      val new = it.copy(episodesNotificationsDelay = delay)
-      settingsRepository.update(new)
-      announcementManager.refreshShowsAnnouncements()
-    }
-  }
-
   suspend fun getLanguage(): AppLanguage {
     if (Build.VERSION.SDK_INT >= TIRAMISU) {
       val locales = AppCompatDelegate.getApplicationLocales()
@@ -219,11 +160,4 @@ class SettingsMainCase @Inject constructor(
   }
 
   fun getDateFormat() = AppDateFormat.valueOf(settingsRepository.dateFormat)
-
-  fun getUserId() = settingsRepository.userId
-
-  suspend fun deleteImagesCache() {
-    showsImagesProvider.deleteLocalCache()
-    moviesImagesProvider.deleteLocalCache()
-  }
 }

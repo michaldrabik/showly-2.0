@@ -8,6 +8,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.michaldrabik.common.Config.SPOILERS_RATINGS_HIDE_SYMBOL
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -50,23 +51,69 @@ class RatingsStripView : LinearLayout {
       valueView: TextView,
       progressView: View,
       linkView: View,
+      isHidden: Boolean,
+      isTapToReveal: Boolean
     ) {
       val rating = ratings?.value
       val isLoading = ratings?.isLoading == true
       with(valueView) {
         visibleIf(!isLoading && !rating.isNullOrBlank(), gone = false)
-        text = rating
+        text = if (isHidden) {
+          tag = rating
+          SPOILERS_RATINGS_HIDE_SYMBOL
+        } else {
+          rating
+        }
         setTextColor(if (rating != null) colorPrimary else colorSecondary)
+
+        if (isHidden && isTapToReveal) {
+          onClick { view ->
+            view.tag?.let { text = it.toString() }
+            view.isClickable = false
+          }
+        }
       }
+
       progressView.visibleIf(isLoading)
       linkView.visibleIf(!isLoading && rating.isNullOrBlank())
     }
 
     this.ratings = ratings
-    bindValue(ratings.trakt, viewRatingsStripTraktValue, viewRatingsStripTraktProgress, viewRatingsStripTraktLinkIcon)
-    bindValue(ratings.imdb, viewRatingsStripImdbValue, viewRatingsStripImdbProgress, viewRatingsStripImdbLinkIcon)
-    bindValue(ratings.metascore, viewRatingsStripMetaValue, viewRatingsStripMetaProgress, viewRatingsStripMetaLinkIcon)
-    bindValue(ratings.rottenTomatoes, viewRatingsStripRottenValue, viewRatingsStripRottenProgress, viewRatingsStripRottenLinkIcon)
+    bindValue(
+      ratings = ratings.trakt,
+      valueView = viewRatingsStripTraktValue,
+      progressView = viewRatingsStripTraktProgress,
+      linkView = viewRatingsStripTraktLinkIcon,
+      isHidden = ratings.isHidden,
+      isTapToReveal = ratings.isHidden
+    )
+
+    bindValue(
+      ratings = ratings.imdb,
+      valueView = viewRatingsStripImdbValue,
+      progressView = viewRatingsStripImdbProgress,
+      linkView = viewRatingsStripImdbLinkIcon,
+      isHidden = ratings.isHidden,
+      isTapToReveal = ratings.isHidden
+    )
+
+    bindValue(
+      ratings = ratings.metascore,
+      valueView = viewRatingsStripMetaValue,
+      progressView = viewRatingsStripMetaProgress,
+      linkView = viewRatingsStripMetaLinkIcon,
+      isHidden = ratings.isHidden,
+      isTapToReveal = ratings.isHidden
+    )
+
+    bindValue(
+      ratings = ratings.rottenTomatoes,
+      valueView = viewRatingsStripRottenValue,
+      progressView = viewRatingsStripRottenProgress,
+      linkView = viewRatingsStripRottenLinkIcon,
+      isHidden = ratings.isHidden,
+      isTapToReveal = ratings.isHidden
+    )
   }
 
   fun isBound() = this::ratings.isInitialized && !this.ratings.isAnyLoading()

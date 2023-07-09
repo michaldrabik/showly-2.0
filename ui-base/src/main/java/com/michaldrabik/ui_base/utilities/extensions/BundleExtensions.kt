@@ -1,5 +1,7 @@
 package com.michaldrabik.ui_base.utilities.extensions
 
+import android.os.Build
+import android.os.Bundle
 import android.os.Parcelable
 import androidx.fragment.app.Fragment
 
@@ -28,5 +30,7 @@ fun <T : Parcelable> Fragment.requireParcelable(key: String?) =
 fun <T : Parcelable> Fragment.optionalParcelable(key: String?) =
   requireArguments().getParcelable<T>(key)
 
-fun Fragment.optionalIntArray(key: String?) =
-  requireArguments().getIntArray(key)
+inline fun <reified T : Parcelable> Bundle.requireParcelable(key: String): T = when {
+  Build.VERSION.SDK_INT >= 33 -> getParcelable(key, T::class.java)!!
+  else -> @Suppress("DEPRECATION") (getParcelable(key) as? T)!!
+}

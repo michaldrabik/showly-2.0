@@ -6,6 +6,7 @@
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   tools:parentTag="android.widget.FrameLayout"
+  tools:theme="@style/AppTheme"
   >
 
   <androidx.constraintlayout.widget.ConstraintLayout
@@ -39,13 +40,39 @@
       android:layout_gravity="center"
       android:background="@drawable/bg_media_view_placeholder"
       android:elevation="@dimen/elevationTiny"
-      android:padding="10dp"
+      android:padding="12dp"
       android:visibility="gone"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       app:srcCompat="@drawable/ic_television"
       app:tint="?attr/colorPlaceholderIcon"
+      tools:visibility="visible"
+      />
+
+    <ImageView
+      android:id="@+id/suggestionBadge"
+      style="@style/Badge"
+      android:layout_width="14dp"
+      android:layout_height="14dp"
+      android:layout_marginTop="1dp"
+      android:layout_marginEnd="12dp"
+      app:layout_constraintEnd_toStartOf="@id/suggestionTitle"
+      app:layout_constraintTop_toTopOf="@id/suggestionRoot"
+      app:srcCompat="@drawable/ic_bookmark_full"
+      tools:visibility="visible"
+      />
+
+    <ImageView
+      android:id="@+id/suggestionWatchlistBadge"
+      style="@style/Badge.Watchlist"
+      android:layout_width="14dp"
+      android:layout_height="14dp"
+      android:layout_marginTop="1dp"
+      android:layout_marginEnd="12dp"
+      app:layout_constraintEnd_toStartOf="@id/suggestionTitle"
+      app:layout_constraintTop_toTopOf="@id/suggestionRoot"
+      app:srcCompat="@drawable/ic_bookmark_full"
       tools:visibility="visible"
       />
 

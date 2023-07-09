@@ -42,6 +42,7 @@ class ProgressMovieItemDiffCallback : DiffUtil.ItemCallback<ProgressMovieListIte
       oldItem.movie == newItem.movie &&
       oldItem.sortOrder == newItem.sortOrder &&
       oldItem.userRating == newItem.userRating &&
+      oldItem.spoilers == newItem.spoilers &&
       oldItem.translation == newItem.translation
   }
 

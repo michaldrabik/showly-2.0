@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_settings.cases
+package com.michaldrabik.ui_settings.sections.trakt.cases
 
 import android.net.Uri
 import androidx.work.WorkManager

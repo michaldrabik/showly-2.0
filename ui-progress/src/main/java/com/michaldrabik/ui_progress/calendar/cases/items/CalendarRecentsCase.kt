@@ -6,6 +6,7 @@ import com.michaldrabik.data_local.database.model.Episode
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.repository.mappers.Mappers
+import com.michaldrabik.repository.settings.SettingsSpoilersRepository
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_progress.calendar.helpers.WatchlistAppender
@@ -21,6 +22,7 @@ class CalendarRecentsCase @Inject constructor(
   mappers: Mappers,
   showsRepository: ShowsRepository,
   translationsRepository: TranslationsRepository,
+  spoilersRepository: SettingsSpoilersRepository,
   imagesProvider: ShowImagesProvider,
   dateFormatProvider: DateFormatProvider,
   watchlistAppender: WatchlistAppender,
@@ -32,6 +34,7 @@ class CalendarRecentsCase @Inject constructor(
   mappers,
   showsRepository,
   translationsRepository,
+  spoilersRepository,
   imagesProvider,
   dateFormatProvider,
   watchlistAppender
@@ -43,4 +46,6 @@ class CalendarRecentsCase @Inject constructor(
       .thenByDescending { it.episodeNumber }
 
   override fun isWatched(episode: Episode) = episode.isWatched
+
+  override fun isSpoilerHidden(episode: Episode) = !episode.isWatched
 }

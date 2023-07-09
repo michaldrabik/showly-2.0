@@ -11,6 +11,7 @@ import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
+import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_my_shows.common.recycler.CollectionListItem
@@ -43,6 +44,7 @@ class HiddenLoadShowsCase @Inject constructor(
       val translations =
         if (language == Config.DEFAULT_LANGUAGE) emptyMap()
         else translationsRepository.loadAllShowsLocal(language)
+      val spoilers = settingsRepository.spoilers.getAll()
 
       val sortOrder = settingsRepository.sorting.hiddenShowsSortOrder
       val sortType = settingsRepository.sorting.hiddenShowsSortType
@@ -60,6 +62,7 @@ class HiddenLoadShowsCase @Inject constructor(
             userRating = ratings[it.ids.trakt],
             dateFormat = dateFormat,
             sortOrder = sortOrder,
+            spoilers = spoilers
           )
         }
         .awaitAll()
@@ -106,6 +109,7 @@ class HiddenLoadShowsCase @Inject constructor(
     userRating: TraktRating?,
     dateFormat: DateTimeFormatter,
     sortOrder: SortOrder,
+    spoilers: SpoilersSettings,
   ) = async {
     val image = imagesProvider.findCachedImage(show, ImageType.POSTER)
     CollectionListItem.ShowItem(
@@ -116,6 +120,11 @@ class HiddenLoadShowsCase @Inject constructor(
       userRating = userRating?.rating,
       dateFormat = dateFormat,
       sortOrder = sortOrder,
+      spoilers = CollectionListItem.ShowItem.Spoilers(
+        isSpoilerHidden = spoilers.isHiddenShowsHidden,
+        isSpoilerRatingsHidden = spoilers.isHiddenShowsRatingsHidden,
+        isSpoilerTapToReveal = spoilers.isTapToReveal
+      )
     )
   }
 }

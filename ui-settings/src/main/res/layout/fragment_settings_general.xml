@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/settingsContent"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:theme="@style/AppTheme"
+  >
+
+  <TextView
+    android:id="@+id/settingsCategoryGeneral"
+    style="@style/Settings.Category"
+    android:text="@string/textSettingsGeneral"
+    app:layout_constraintBottom_toTopOf="@id/settingsLanguage"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_bias="0"
+    app:layout_constraintVertical_chainStyle="packed"
+    app:layout_goneMarginTop="@dimen/spaceBig"
+    />
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/settingsLanguage"
+    style="@style/Settings.ItemLayout"
+    app:layout_constraintBottom_toTopOf="@+id/settingsCountry"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/settingsCategoryGeneral"
+    >
+
+    <TextView
+      android:id="@+id/settingsLanguageTitle"
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsMyShowsLanguageTitle"
+      app:layout_constraintBottom_toTopOf="@id/settingsLanguageDescription"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      />
+
+    <TextView
+      android:id="@+id/settingsLanguageDescription"
+      style="@style/Settings.Summary"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:text="@string/textSettingsMyShowsLanguageSummary"
+      app:layout_constrainedWidth="true"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/settingsLanguageValue"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsLanguageTitle"
+      />
+
+    <TextView
+      android:id="@+id/settingsLanguageValue"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:text="@string/textLanguageEnglish"
+      android:textColor="?attr/colorAccent"
+      app:layout_constraintBottom_toBottomOf="@id/settingsLanguage"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/settingsLanguage"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/settingsCountry"
+    style="@style/Settings.ItemLayout"
+    app:layout_constraintBottom_toTopOf="@+id/settingsTheme"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/settingsLanguage"
+    >
+
+    <TextView
+      android:id="@+id/settingsCountryTitle"
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsMyShowsCountryTitle"
+      app:layout_constraintBottom_toTopOf="@id/settingsCountryDescription"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      />
+
+    <TextView
+      android:id="@+id/settingsCountryDescription"
+      style="@style/Settings.Summary"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:text="@string/textSettingsMyShowsCountrySummary"
+      app:layout_constrainedWidth="true"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/settingsCountryValue"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsCountryTitle"
+      />
+
+    <TextView
+      android:id="@+id/settingsCountryValue"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:textColor="?attr/colorAccent"
+      app:layout_constraintBottom_toBottomOf="@id/settingsCountry"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/settingsCountry"
+      tools:text="@tools:sample/lorem"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/settingsTheme"
+    style="@style/Settings.ItemLayout"
+    android:tag="@string/tagTheme"
+    app:layout_constraintBottom_toTopOf="@+id/settingsDateFormat"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/settingsCountry"
+    >
+
+    <TextView
+      android:id="@+id/settingsThemeTitle"
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsThemeTitle"
+      app:layout_constraintBottom_toTopOf="@id/settingsThemeDescription"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      />
+
+    <TextView
+      android:id="@+id/settingsThemeDescription"
+      style="@style/Settings.Summary"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:text="@string/textSettingsThemeSummary"
+      app:layout_constrainedWidth="true"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/settingsThemeValue"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsThemeTitle"
+      />
+
+    <TextView
+      android:id="@+id/settingsThemeValue"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:textColor="?attr/colorAccent"
+      app:layout_constraintBottom_toBottomOf="@id/settingsTheme"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/settingsTheme"
+      tools:text="@tools:sample/lorem"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <LinearLayout
+    android:id="@+id/settingsDateFormat"
+    style="@style/Settings.ItemLayout"
+    app:layout_constraintBottom_toTopOf="@id/settingsMoviesEnabled"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/settingsTheme"
+    >
+
+    <TextView
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsDateFormatTitle"
+      />
+
+    <TextView
+      android:id="@+id/settingsDateFormatValue"
+      style="@style/Settings.Summary"
+      tools:text="MMM dd, yyyy HH:mm (EEEE)"
+      />
+
+  </LinearLayout>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/settingsMoviesEnabled"
+    style="@style/Settings.ItemLayout"
+    app:layout_constraintBottom_toTopOf="@id/settingsNewsEnabled"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/settingsDateFormat"
+    >
+
+    <TextView
+      android:id="@+id/settingsMoviesEnabledTitle"
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsMoviesEnabledTitle"
+      app:layout_constraintBottom_toTopOf="@id/settingsMoviesEnabledDescription"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      />
+
+    <TextView
+      android:id="@+id/settingsMoviesEnabledDescription"
+      style="@style/Settings.Summary"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:text="@string/textSettingsMoviesEnabledSummary"
+      app:layout_constrainedWidth="true"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/settingsMoviesEnabledSwitch"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsMoviesEnabledTitle"
+      />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+      android:id="@+id/settingsMoviesEnabledSwitch"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:background="@null"
+      android:checked="true"
+      android:clickable="false"
+      app:layout_constraintBottom_toBottomOf="@id/settingsMoviesEnabled"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/settingsMoviesEnabled"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/settingsNewsEnabled"
+    style="@style/Settings.ItemLayout"
+    android:tag="@string/tagNews"
+    app:layout_constraintBottom_toTopOf="@id/settingsStreamingsEnabled"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/settingsMoviesEnabled"
+    >
+
+    <TextView
+      android:id="@+id/settingsNewsEnabledTitle"
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsNewsEnabledTitle"
+      app:layout_constraintBottom_toTopOf="@id/settingsNewsEnabledDescription"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      />
+
+    <TextView
+      android:id="@+id/settingsNewsEnabledDescription"
+      style="@style/Settings.Summary"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:text="@string/textSettingsNewsEnabledSummary"
+      app:layout_constrainedWidth="true"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/settingsNewsEnabledSwitch"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsNewsEnabledTitle"
+      />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+      android:id="@+id/settingsNewsEnabledSwitch"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:background="@null"
+      android:checked="true"
+      android:clickable="false"
+      app:layout_constraintBottom_toBottomOf="@id/settingsNewsEnabled"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/settingsNewsEnabled"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/settingsStreamingsEnabled"
+    style="@style/Settings.ItemLayout"
+    app:layout_constraintBottom_toTopOf="@+id/settingsIncludeSpecials"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/settingsNewsEnabled"
+    >
+
+    <TextView
+      android:id="@+id/settingsStreamingsEnabledTitle"
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsStreamingServicesTitle"
+      app:layout_constraintBottom_toTopOf="@id/settingsStreamingsEnabledDescription"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      />
+
+    <TextView
+      android:id="@+id/settingsStreamingsEnabledDescription"
+      style="@style/Settings.Summary"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:text="@string/textSettingsStreamingServicesMessage"
+      app:layout_constrainedWidth="true"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/settingsStreamingsEnabledSwitch"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsStreamingsEnabledTitle"
+      />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+      android:id="@+id/settingsStreamingsEnabledSwitch"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:background="@null"
+      android:checked="true"
+      android:clickable="false"
+      app:layout_constraintBottom_toBottomOf="@id/settingsStreamingsEnabled"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/settingsStreamingsEnabled"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/settingsIncludeSpecials"
+    style="@style/Settings.ItemLayout"
+    app:layout_constraintBottom_toTopOf="@id/settingsSeparator1"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/settingsStreamingsEnabled"
+    >
+
+    <TextView
+      android:id="@+id/settingsIncludeSpecialsTitle"
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsIncludeSpecialsTitle"
+      app:layout_constraintBottom_toTopOf="@id/settingsIncludeSpecialsDescription"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      />
+
+    <TextView
+      android:id="@+id/settingsIncludeSpecialsDescription"
+      style="@style/Settings.Summary"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:text="@string/textSettingsIncludeSpecialsSummary"
+      app:layout_constrainedWidth="true"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/settingsIncludeSpecialsSwitch"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsIncludeSpecialsTitle"
+      />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+      android:id="@+id/settingsIncludeSpecialsSwitch"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:background="@null"
+      android:checked="true"
+      android:clickable="false"
+      app:layout_constraintBottom_toBottomOf="@id/settingsIncludeSpecials"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/settingsIncludeSpecials"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <View
+    android:id="@+id/settingsSeparator1"
+    style="@style/Settings.Separator"
+    app:layout_constraintBottom_toTopOf="@id/settingsProgressNext"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/settingsIncludeSpecials"
+    />
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/settingsProgressNext"
+    style="@style/Settings.ItemLayout"
+    app:layout_constrainedWidth="true"
+    app:layout_constraintBottom_toTopOf="@+id/settingsUpcomingSection"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/settingsSeparator1"
+    >
+
+    <TextView
+      android:id="@+id/settingsProgressNextTitle"
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsProgressNextEpisodeTitle"
+      app:layout_constraintBottom_toTopOf="@id/settingsProgressNextDescription"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      />
+
+    <TextView
+      android:id="@+id/settingsProgressNextDescription"
+      style="@style/Settings.Summary"
+      android:layout_width="wrap_content"
+      android:layout_marginEnd="@dimen/spaceSmall"
+      android:text="@string/textSettingsProgressNextEpisodeMessage"
+      app:layout_constrainedWidth="true"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/settingsProgressNextValue"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsProgressNextTitle"
+      tools:text="@tools:sample/lorem/random"
+      />
+
+    <TextView
+      android:id="@+id/settingsProgressNextValue"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="end"
+      android:maxLines="2"
+      android:text="@string/textNextEpisodeLastWatched"
+      android:textColor="?attr/colorAccent"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/settingsUpcomingSection"
+    style="@style/Settings.ItemLayout"
+    app:layout_constraintBottom_toTopOf="@id/settingsMyShowsSections"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/settingsProgressNext"
+    >
+
+    <TextView
+      android:id="@+id/settingsUpcomingSectionTitle"
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsUpcomingSectionTitle"
+      app:layout_constraintBottom_toTopOf="@id/settingsUpcomingSectionDescription"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      />
+
+    <TextView
+      android:id="@+id/settingsUpcomingSectionDescription"
+      style="@style/Settings.Summary"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:text="@string/textSettingsUpcomingSectionSummary"
+      app:layout_constrainedWidth="true"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/settingsUpcomingSectionSwitch"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsUpcomingSectionTitle"
+      />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+      android:id="@+id/settingsUpcomingSectionSwitch"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:background="@null"
+      android:checked="true"
+      android:clickable="false"
+      app:layout_constraintBottom_toBottomOf="@id/settingsUpcomingSection"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/settingsUpcomingSection"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+  <LinearLayout
+    android:id="@+id/settingsMyShowsSections"
+    style="@style/Settings.ItemLayout"
+    app:layout_constraintBottom_toTopOf="@id/settingsMyMoviesSections"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/settingsUpcomingSection"
+    >
+
+    <TextView
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsMyShowsSectionsTitle"
+      />
+
+    <TextView
+      style="@style/Settings.Summary"
+      android:text="@string/textSettingsMyShowsSectionSummary"
+      />
+
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/settingsMyMoviesSections"
+    style="@style/Settings.ItemLayout"
+    app:layout_constraintBottom_toTopOf="@id/settingsRecentShowsAmount"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/settingsMyShowsSections"
+    >
+
+    <TextView
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsMyMoviesSectionsTitle"
+      />
+
+    <TextView
+      style="@style/Settings.Summary"
+      android:text="@string/textSettingsMyMoviesSectionSummary"
+      />
+
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/settingsRecentShowsAmount"
+    style="@style/Settings.ItemLayout"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/settingsMyMoviesSections"
+    >
+
+    <TextView
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsRecentShowsTitle"
+      />
+
+    <TextView
+      style="@style/Settings.Summary"
+      android:text="@string/textSettingsRecentShowsSummary"
+      />
+
+  </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

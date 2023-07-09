@@ -5,5 +5,6 @@ import com.michaldrabik.ui_model.Ratings
 
 data class MovieDetailsRatingsUiState(
   val movie: Movie? = null,
-  val ratings: Ratings? = null
+  val ratings: Ratings? = null,
+  val isRefreshingRatings: Boolean = false
 )

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/settingsContent"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:theme="@style/AppTheme"
+  >
+
+  <TextView
+    android:id="@+id/settingsCategoryNotifications"
+    style="@style/Settings.Category"
+    android:text="@string/textSettingsNotifications"
+    app:layout_constraintBottom_toTopOf="@id/settingsPushNotifications"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    />
+
+  <LinearLayout
+    android:id="@+id/settingsPushNotifications"
+    style="@style/Settings.ItemLayout"
+    app:layout_constraintBottom_toTopOf="@id/settingsShowsNotifications"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/settingsCategoryNotifications"
+    >
+
+    <TextView
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsPushNotificationsTitle"
+      />
+
+    <TextView
+      style="@style/Settings.Summary"
+      android:layout_marginEnd="@dimen/spaceHuge"
+      android:text="@string/textSettingsPushNotificationsSummary"
+      tools:text="@tools:sample/lorem/random"
+      />
+
+  </LinearLayout>
+
+  <com.google.android.material.switchmaterial.SwitchMaterial
+    android:id="@+id/settingsPushNotificationsSwitch"
+    android:layout_width="wrap_content"
+    android:layout_height="0dp"
+    android:layout_marginEnd="@dimen/spaceNormal"
+    android:checked="true"
+    android:clickable="false"
+    app:layout_constraintBottom_toBottomOf="@id/settingsPushNotifications"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="@id/settingsPushNotifications"
+    />
+
+  <LinearLayout
+    android:id="@+id/settingsShowsNotifications"
+    style="@style/Settings.ItemLayout"
+    app:layout_constraintBottom_toTopOf="@id/settingsWhenToNotify"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/settingsPushNotifications"
+    >
+
+    <TextView
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsShowsNotificationsTitle"
+      />
+
+    <TextView
+      style="@style/Settings.Summary"
+      android:layout_marginEnd="@dimen/spaceHuge"
+      android:text="@string/textSettingsShowsNotificationsSummary"
+      tools:text="@tools:sample/lorem/random"
+      />
+
+  </LinearLayout>
+
+  <com.google.android.material.switchmaterial.SwitchMaterial
+    android:id="@+id/settingsShowsNotificationsSwitch"
+    android:layout_width="wrap_content"
+    android:layout_height="0dp"
+    android:layout_marginEnd="@dimen/spaceNormal"
+    android:checked="true"
+    android:clickable="false"
+    app:layout_constraintBottom_toBottomOf="@id/settingsShowsNotifications"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="@id/settingsShowsNotifications"
+    />
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/settingsWhenToNotify"
+    style="@style/Settings.ItemLayout"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/settingsShowsNotifications"
+    >
+
+    <TextView
+      android:id="@+id/settingsWhenToNotifyTitle"
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsShowsNotificationsWhenTitle"
+      app:layout_constraintBottom_toTopOf="@id/settingsWhenToNotifyDescription"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      />
+
+    <TextView
+      android:id="@+id/settingsWhenToNotifyDescription"
+      style="@style/Settings.Summary"
+      android:layout_marginEnd="@dimen/spaceSmall"
+      android:text="@string/textSettingsShowsNotificationsWhenSummary"
+      app:layout_constrainedWidth="true"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/settingsWhenToNotifyValue"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintHorizontal_chainStyle="spread_inside"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsWhenToNotifyTitle"
+      tools:text="@tools:sample/lorem/random"
+      />
+
+    <TextView
+      android:id="@+id/settingsWhenToNotifyValue"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/textSettingsShowsNotificationsWhenAvailable"
+      android:textColor="?attr/colorAccent"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/settingsWhenToNotifyDescription"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
