@@ -27,7 +27,7 @@
   <string name="textSettingsShowsNotificationsWhen12Hours">بعد توفرها ب 12 ساعة</string>
   <string name="textSettingsShowsNotificationsWhenNextDay">بعد توفرها بيوم</string>
   <string name="textTipDiscover">اُنقر نقرًا مزدوجًا على زر صفحة \"اكتشف\" لِفتح صفحة البحث بسرعة.</string>
-  <string name="textTipMyShows">اُنقر نقرًا مزدوجًا على زر صفحة \"المجموعة\" للتنقل بين النوافذ بسرعة.</string>
+  <string name="textTipMyShows">اُنقر نقرًا مزدوجًا على زر قائمة \"المجموعة\" للتنقل بين النوافذ بسرعة.</string>
   <string name="textTipShowDetailsGallery">انقر على أي صورة لفتح معرض الصور.</string>
   <string name="textTipWatchlistPinItem">اضغط مطولًا على أي عنصر لتثبيته في الأعلى.</string>
   <string name="textTipBottomModeMenu">مرر أسفل القائمة لليسار أو لليمين للتنقل بين المسلسلات والأفلام.</string>
