@@ -380,6 +380,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
         .withFailListener {
           episodeDetailsImagePlaceholder.visible()
           episodeDetailsImagePlaceholder.setImageResource(R.drawable.ic_television)
+          episodeDetailsImagePlaceholder.setOnClickListener(null)
         }
         .into(episodeDetailsImage)
     }
