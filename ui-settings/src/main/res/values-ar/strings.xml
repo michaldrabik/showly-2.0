@@ -99,10 +99,10 @@
   <string name="textSettingsSpoilersMoviesRatingsNotCollectedDescription">إخفاء <b>تقييم</b> الأفلام التي ليست في مجموعتك</string>
   <string name="textSettingsSpoilersEpisodes">حلقات</string>
   <string name="textSettingsSpoilersEpisodesSummary">إدارة إعدادات الحرق للحلقات.</string>
-  <string name="textSettingsSpoilersEpisodesImage">إخفاء <b>صورة</b> الحلَقات التي لم تتم مشاهدتها.</string>
-  <string name="textSettingsSpoilersEpisodesTitle">إخفاء <b>عنوان</b> الحلَقات التي لم تتم مشاهدتها.</string>
-  <string name="textSettingsSpoilersEpisodesDescription">إخفاء <b>وصف</b> الحلَقات التي لم تتم مشاهدتها.</string>
-  <string name="textSettingsSpoilersEpisodesRating">إخفاء <b>تقييم</b> الحلَقات التي لم تتم مشاهدتها.</string>
+  <string name="textSettingsSpoilersEpisodesImage">إخفاء <b>صورة</b> الحلَقات التي لم تتم مشاهدتها</string>
+  <string name="textSettingsSpoilersEpisodesTitle">إخفاء <b>عنوان</b> الحلَقات التي لم تتم مشاهدتها</string>
+  <string name="textSettingsSpoilersEpisodesDescription">إخفاء <b>وصف</b> الحلَقات التي لم تتم مشاهدتها</string>
+  <string name="textSettingsSpoilersEpisodesRating">إخفاء <b>تقييم</b> الحلَقات التي لم تتم مشاهدتها</string>
   <string name="textSettingsSpoilersTapToRevealTitle">انقر للكَشف</string>
   <string name="textSettingsSpoilersTapToRevealDescription">انقر على المحتوى المخفي للكشف عنه مؤقتًا.</string>
   <string name="textNextEpisodeLastWatched">آخر حلقة شاهدتها</string>
