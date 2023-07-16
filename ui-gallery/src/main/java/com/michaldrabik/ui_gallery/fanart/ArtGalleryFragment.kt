@@ -32,7 +32,10 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_gallery.R
+import com.michaldrabik.ui_gallery.databinding.FragmentArtGalleryBinding
+import com.michaldrabik.ui_gallery.databinding.ViewGalleryUrlDialogBinding
 import com.michaldrabik.ui_gallery.fanart.recycler.ArtGalleryAdapter
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.ImageFamily
@@ -46,9 +49,6 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_art_gallery.*
-import kotlinx.android.synthetic.main.view_gallery_url_dialog.view.*
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -61,6 +61,7 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
   }
 
   override val viewModel by viewModels<ArtGalleryViewModel>()
+  private val binding by viewBinding(FragmentArtGalleryBinding::bind)
 
   private val showId by lazy { IdTrakt(arguments?.getLong(ARG_SHOW_ID, -1) ?: -1) }
   private val movieId by lazy { IdTrakt(arguments?.getLong(ARG_MOVIE_ID, -1) ?: -1) }
@@ -97,98 +98,105 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
 
   override fun onConfigurationChanged(newConfig: Configuration) {
     super.onConfigurationChanged(newConfig)
-    when (newConfig.orientation) {
-      ORIENTATION_LANDSCAPE -> {
-        val color = requireContext().colorStateListFromAttr(R.attr.textColorOnSurface)
-        artGalleryBackArrow.imageTintList = color
-        artGalleryPagerIndicatorWhite.visible()
-        artGalleryPagerIndicator.gone()
-        artGalleryPagerIndicatorWhite.setViewPager(artGalleryPager)
+    with(binding) {
+      when (newConfig.orientation) {
+        ORIENTATION_LANDSCAPE -> {
+          val color = requireContext().colorStateListFromAttr(R.attr.textColorOnSurface)
+          artGalleryBackArrow.imageTintList = color
+          artGalleryPagerIndicatorWhite.visible()
+          artGalleryPagerIndicator.gone()
+          artGalleryPagerIndicatorWhite.setViewPager(artGalleryPager)
+        }
+        ORIENTATION_PORTRAIT -> {
+          val color = requireContext().colorStateListFromAttr(android.R.attr.textColorPrimary)
+          artGalleryBackArrow.imageTintList = color
+          artGalleryPagerIndicatorWhite.gone()
+          artGalleryPagerIndicator.visible()
+          artGalleryPagerIndicator.setViewPager(artGalleryPager)
+        }
+        else -> Timber.d("Unused orientation")
       }
-      ORIENTATION_PORTRAIT -> {
-        val color = requireContext().colorStateListFromAttr(android.R.attr.textColorPrimary)
-        artGalleryBackArrow.imageTintList = color
-        artGalleryPagerIndicatorWhite.gone()
-        artGalleryPagerIndicator.visible()
-        artGalleryPagerIndicator.setViewPager(artGalleryPager)
-      }
-      else -> Timber.d("Unused orientation")
     }
   }
 
   private fun setupView() {
-    artGalleryBackArrow.onClick {
-      if (isPickMode == true) setFragmentResult(REQUEST_CUSTOM_IMAGE, bundleOf())
-      requireActivity().onBackPressed()
-    }
-    artGalleryBrowserIcon.onClick {
-      val currentIndex = artGalleryPager.currentItem
-      val image = galleryAdapter?.getItem(currentIndex)
-      image?.fullFileUrl?.let { openWebUrl(it) }
-    }
-    galleryAdapter = ArtGalleryAdapter(
-      onItemClickListener = { artGalleryPager.nextPage() }
-    )
-    artGalleryPager.run {
-      adapter = galleryAdapter
-      offscreenPageLimit = 2
-      artGalleryPagerIndicator.setViewPager(this)
-      adapter?.registerAdapterDataObserver(artGalleryPagerIndicator.adapterDataObserver)
-    }
-    artGallerySelectButton.run {
-      onClick {
-        val id = if (family == SHOW) showId else movieId
-        val currentImage = galleryAdapter?.getItem(artGalleryPager.currentItem)
-        currentImage?.let {
-          viewModel.saveCustomImage(id, it, family, type)
+    with(binding) {
+      artGalleryBackArrow.onClick {
+        if (isPickMode == true) setFragmentResult(REQUEST_CUSTOM_IMAGE, bundleOf())
+        requireActivity().onBackPressed()
+      }
+      artGalleryBrowserIcon.onClick {
+        val currentIndex = artGalleryPager.currentItem
+        val image = galleryAdapter?.getItem(currentIndex)
+        image?.fullFileUrl?.let { openWebUrl(it) }
+      }
+      galleryAdapter = ArtGalleryAdapter(
+        onItemClickListener = { artGalleryPager.nextPage() }
+      )
+      artGalleryPager.run {
+        adapter = galleryAdapter
+        offscreenPageLimit = 2
+        artGalleryPagerIndicator.setViewPager(this)
+        adapter?.registerAdapterDataObserver(artGalleryPagerIndicator.adapterDataObserver)
+      }
+      artGallerySelectButton.run {
+        onClick {
+          val id = if (family == SHOW) showId else movieId
+          val currentImage = galleryAdapter?.getItem(artGalleryPager.currentItem)
+          currentImage?.let {
+            viewModel.saveCustomImage(id, it, family, type)
+          }
         }
       }
+      artGalleryUrlButton.onClick { showUrlInput() }
     }
-    artGalleryUrlButton.onClick { showUrlInput() }
   }
 
   private fun setupStatusBar() {
     requireView().doOnApplyWindowInsets { _, insets, _, _ ->
       val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
-      artGalleryBackArrow.updateTopMargin(inset)
-      artGalleryBrowserIcon.updateTopMargin(inset)
-      artGallerySelectButton.updateTopMargin(inset)
+      with(binding) {
+        artGalleryBackArrow.updateTopMargin(inset)
+        artGalleryBrowserIcon.updateTopMargin(inset)
+        artGallerySelectButton.updateTopMargin(inset)
+      }
     }
   }
 
   private fun showUrlInput() {
 
-    fun onUrlInput(view: View) {
-      val input = view.urlDialogInput.text.toString()
-      if (input.matches(IMAGE_URL_PATTERN.toRegex())) {
-        artGalleryUrlProgress.visible()
-        artGalleryUrlButton.gone()
-        artGallerySelectButton.gone()
-        Glide.with(requireContext())
-          .load(input)
-          .withSuccessListener {
-            viewModel.addImageFromUrl(input, family, type)
-            artGalleryUrlProgress.gone()
-            artGalleryUrlButton.visible()
-            artGallerySelectButton.visible()
-          }
-          .withFailListener {
-            showSnack(MessageEvent.Error(R.string.textUrlDialogInvalidImage))
-            artGalleryUrlProgress.gone()
-            artGalleryUrlButton.visible()
-            artGallerySelectButton.visible()
-          }
-          .preload(100, 100)
-      } else {
-        showSnack(MessageEvent.Error(R.string.textUrlDialogInvalidUrl))
+    fun onUrlInput(input: String) {
+      with(binding) {
+        if (input.matches(IMAGE_URL_PATTERN.toRegex())) {
+          artGalleryUrlProgress.visible()
+          artGalleryUrlButton.gone()
+          artGallerySelectButton.gone()
+          Glide.with(requireContext())
+            .load(input)
+            .withSuccessListener {
+              viewModel.addImageFromUrl(input, family, type)
+              artGalleryUrlProgress.gone()
+              artGalleryUrlButton.visible()
+              artGallerySelectButton.visible()
+            }
+            .withFailListener {
+              showSnack(MessageEvent.Error(R.string.textUrlDialogInvalidImage))
+              artGalleryUrlProgress.gone()
+              artGalleryUrlButton.visible()
+              artGallerySelectButton.visible()
+            }
+            .preload(100, 100)
+        } else {
+          showSnack(MessageEvent.Error(R.string.textUrlDialogInvalidUrl))
+        }
       }
     }
 
     AlertDialog.Builder(requireContext(), R.style.UrlInputDialog).apply {
-      val view = LayoutInflater.from(requireContext()).inflate(R.layout.view_gallery_url_dialog, fanartGalleryRoot, false)
-      setView(view)
+      val view = ViewGalleryUrlDialogBinding.inflate(LayoutInflater.from(context), binding.fanartGalleryRoot, false)
+      setView(view.root)
       setTitle(R.string.textUrlDialogTitle)
-      setPositiveButton(R.string.textOk) { _, _ -> onUrlInput(view) }
+      setPositiveButton(R.string.textOk) { _, _ -> onUrlInput(view.urlDialogInput.text.toString()) }
       setNegativeButton(R.string.textCancel) { dialog, _ -> dialog.dismiss() }
       show()
     }
@@ -196,20 +204,22 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
 
   private fun render(uiState: ArtGalleryUiState) {
     uiState.run {
-      images?.let {
-        galleryAdapter?.setItems(it, type)
-        artGalleryEmptyView.visibleIf(it.isEmpty())
-        artGallerySelectButton.visibleIf(it.isNotEmpty() && isPickMode == true)
-        artGalleryBrowserIcon.visibleIf(it.isNotEmpty() && isPickMode == false)
-        artGalleryUrlButton.visibleIf(isPickMode == true)
-      }
-      pickedImage?.let {
-        it.consume()?.let {
-          setFragmentResult(REQUEST_CUSTOM_IMAGE, bundleOf())
-          requireActivity().onBackPressed()
+      with(binding) {
+        images?.let {
+          galleryAdapter?.setItems(it, type)
+          artGalleryEmptyView.visibleIf(it.isEmpty())
+          artGallerySelectButton.visibleIf(it.isNotEmpty() && isPickMode == true)
+          artGalleryBrowserIcon.visibleIf(it.isNotEmpty() && isPickMode == false)
+          artGalleryUrlButton.visibleIf(isPickMode == true)
         }
+        pickedImage?.let {
+          it.consume()?.let {
+            setFragmentResult(REQUEST_CUSTOM_IMAGE, bundleOf())
+            requireActivity().onBackPressed()
+          }
+        }
+        artGalleryImagesProgress.visibleIf(isLoading)
       }
-      artGalleryImagesProgress.visibleIf(isLoading)
     }
   }
 
