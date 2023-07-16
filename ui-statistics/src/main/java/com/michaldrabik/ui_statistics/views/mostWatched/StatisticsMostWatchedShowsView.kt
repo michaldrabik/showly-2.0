@@ -3,6 +3,7 @@ package com.michaldrabik.ui_statistics.views.mostWatched
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -13,8 +14,8 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_statistics.R
+import com.michaldrabik.ui_statistics.databinding.ViewStatisticsCardMostWatchedShowsBinding
 import com.michaldrabik.ui_statistics.views.mostWatched.recycler.MostWatchedAdapter
-import kotlinx.android.synthetic.main.view_statistics_card_most_watched_shows.view.*
 
 @SuppressLint("SetTextI18n")
 class StatisticsMostWatchedShowsView : ConstraintLayout {
@@ -23,6 +24,8 @@ class StatisticsMostWatchedShowsView : ConstraintLayout {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
+  private val binding = ViewStatisticsCardMostWatchedShowsBinding.inflate(LayoutInflater.from(context), this)
+
   private var adapter: MostWatchedAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
 
@@ -30,7 +33,6 @@ class StatisticsMostWatchedShowsView : ConstraintLayout {
   var onShowClickListener: ((Show) -> Unit)? = null
 
   init {
-    inflate(context, R.layout.view_statistics_card_most_watched_shows, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     setupRecycler()
   }
@@ -40,7 +42,7 @@ class StatisticsMostWatchedShowsView : ConstraintLayout {
     adapter = MostWatchedAdapter(
       itemClickListener = { onShowClickListener?.invoke(it.show) }
     )
-    viewMostWatchedShowsRecycler.apply {
+    binding.viewMostWatchedShowsRecycler.apply {
       adapter = this@StatisticsMostWatchedShowsView.adapter
       layoutManager = this@StatisticsMostWatchedShowsView.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
@@ -53,7 +55,7 @@ class StatisticsMostWatchedShowsView : ConstraintLayout {
     totalCount: Int
   ) {
     adapter?.setItems(items)
-    viewMostWatchedShowsMoreButton.run {
+    binding.viewMostWatchedShowsMoreButton.run {
       visibleIf(items.size < totalCount)
       onClick { onLoadMoreClickListener?.invoke(10) }
     }

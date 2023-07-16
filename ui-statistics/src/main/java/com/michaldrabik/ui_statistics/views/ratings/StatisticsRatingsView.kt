@@ -3,6 +3,7 @@ package com.michaldrabik.ui_statistics.views.ratings
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
@@ -13,9 +14,9 @@ import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_statistics.R
+import com.michaldrabik.ui_statistics.databinding.ViewStatisticsCardRatingsBinding
 import com.michaldrabik.ui_statistics.views.ratings.recycler.StatisticsRatingItem
 import com.michaldrabik.ui_statistics.views.ratings.recycler.StatisticsRatingsAdapter
-import kotlinx.android.synthetic.main.view_statistics_card_ratings.view.*
 
 @SuppressLint("SetTextI18n")
 class StatisticsRatingsView : MaterialCardView {
@@ -24,13 +25,14 @@ class StatisticsRatingsView : MaterialCardView {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
+  private val binding = ViewStatisticsCardRatingsBinding.inflate(LayoutInflater.from(context), this)
+
   private lateinit var adapter: StatisticsRatingsAdapter
   private val layoutManager by lazy { LinearLayoutManager(context, HORIZONTAL, false) }
 
   var onShowClickListener: ((ListItem) -> Unit)? = null
 
   init {
-    inflate(context, R.layout.view_statistics_card_ratings, this)
     layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
     clipToPadding = false
     clipChildren = false
@@ -44,7 +46,7 @@ class StatisticsRatingsView : MaterialCardView {
     adapter = StatisticsRatingsAdapter(
       itemClickListener = { onShowClickListener?.invoke(it) }
     )
-    viewRatingsRecycler.apply {
+    binding.viewRatingsRecycler.apply {
       setHasFixedSize(true)
       adapter = this@StatisticsRatingsView.adapter
       layoutManager = this@StatisticsRatingsView.layoutManager

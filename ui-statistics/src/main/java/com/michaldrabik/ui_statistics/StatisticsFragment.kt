@@ -13,16 +13,18 @@ import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
+import com.michaldrabik.ui_statistics.databinding.FragmentStatisticsBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_statistics.*
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_statistics) {
 
   override val viewModel by viewModels<StatisticsViewModel>()
+
+  private val binding by viewBinding(FragmentStatisticsBinding::bind)
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -44,20 +46,22 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
   }
 
   private fun setupView() {
-    statisticsToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
-    statisticsMostWatchedShows.run {
-      onLoadMoreClickListener = { addLimit -> viewModel.loadData(addLimit) }
-      onShowClickListener = {
-        openShowDetails(it.traktId)
+    with(binding) {
+      statisticsToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+      statisticsMostWatchedShows.run {
+        onLoadMoreClickListener = { addLimit -> viewModel.loadData(addLimit) }
+        onShowClickListener = {
+          openShowDetails(it.traktId)
+        }
       }
-    }
-    statisticsRatings.onShowClickListener = {
-      openShowDetails(it.show.traktId)
+      statisticsRatings.onShowClickListener = {
+        openShowDetails(it.show.traktId)
+      }
     }
   }
 
   private fun setupStatusBar() {
-    statisticsRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
+    binding.statisticsRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
       val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
       view.updatePadding(top = padding.top + inset)
     }
@@ -65,16 +69,18 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
 
   private fun render(uiState: StatisticsUiState) {
     uiState.run {
-      statisticsMostWatchedShows.bind(mostWatchedShows ?: emptyList(), mostWatchedTotalCount ?: 0)
-      statisticsTotalTimeSpent.bind(totalTimeSpentMinutes ?: 0)
-      statisticsTotalEpisodes.bind(totalWatchedEpisodes ?: 0, totalWatchedEpisodesShows ?: 0)
-      statisticsTopGenres.bind(topGenres ?: emptyList())
-      statisticsRatings.bind(ratings ?: emptyList())
+      with(binding) {
+        statisticsMostWatchedShows.bind(mostWatchedShows ?: emptyList(), mostWatchedTotalCount ?: 0)
+        statisticsTotalTimeSpent.bind(totalTimeSpentMinutes ?: 0)
+        statisticsTotalEpisodes.bind(totalWatchedEpisodes ?: 0, totalWatchedEpisodesShows ?: 0)
+        statisticsTopGenres.bind(topGenres ?: emptyList())
+        statisticsRatings.bind(ratings ?: emptyList())
 
-      ratings?.let { statisticsRatings.visibleIf(it.isNotEmpty()) }
-      mostWatchedShows?.let {
-        statisticsContent.fadeIf(it.isNotEmpty())
-        statisticsEmptyView.fadeIf(it.isEmpty())
+        ratings?.let { statisticsRatings.visibleIf(it.isNotEmpty()) }
+        mostWatchedShows?.let {
+          statisticsContent.fadeIf(it.isNotEmpty())
+          statisticsEmptyView.rootLayout.fadeIf(it.isEmpty())
+        }
       }
     }
   }
