@@ -39,13 +39,14 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.showKeyboard
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.CalendarMode
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_progress_movies.R
+import com.michaldrabik.ui_progress_movies.databinding.FragmentProgressMainMoviesBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_progress_main_movies.*
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -58,8 +59,10 @@ class ProgressMoviesMainFragment :
     private const val TRANSLATION_DURATION = 225L
   }
 
-  override val viewModel by viewModels<ProgressMoviesMainViewModel>()
   override val navigationId = R.id.progressMoviesMainFragment
+
+  override val viewModel by viewModels<ProgressMoviesMainViewModel>()
+  private val binding by viewBinding(FragmentProgressMainMoviesBinding::bind)
 
   private var searchViewTranslation = 0F
   private var tabsTranslation = 0F
@@ -91,10 +94,12 @@ class ProgressMoviesMainFragment :
 
   override fun onSaveInstanceState(outState: Bundle) {
     super.onSaveInstanceState(outState)
-    outState.putFloat("ARG_SEARCH_POSITION", progressMoviesSearchView?.translationY ?: 0F)
-    outState.putFloat("ARG_TABS_POSITION", progressMoviesTabs?.translationY ?: 0F)
-    outState.putFloat("ARG_SIDE_ICON_POSITION", progressMoviesSideIcons?.translationY ?: 0F)
-    outState.putInt("ARG_PAGE", progressMoviesPager?.currentItem ?: 0)
+    with(binding) {
+      outState.putFloat("ARG_SEARCH_POSITION", progressMoviesSearchView.translationY)
+      outState.putFloat("ARG_TABS_POSITION", progressMoviesTabs.translationY)
+      outState.putFloat("ARG_SIDE_ICON_POSITION", progressMoviesSideIcons.translationY)
+      outState.putInt("ARG_PAGE", progressMoviesPager.currentItem)
+    }
   }
 
   override fun onResume() {
@@ -104,74 +109,77 @@ class ProgressMoviesMainFragment :
 
   override fun onPause() {
     enableUi()
-    tabsTranslation = progressMoviesTabs.translationY
-    searchViewTranslation = progressMoviesSearchView.translationY
-    sideIconTranslation = progressMoviesSideIcons.translationY
+    with(binding) {
+      tabsTranslation = progressMoviesTabs.translationY
+      searchViewTranslation = progressMoviesSearchView.translationY
+      sideIconTranslation = progressMoviesSideIcons.translationY
+    }
     super.onPause()
   }
 
-  override fun onDestroyView() {
-    progressMoviesPager.removeOnPageChangeListener(pageChangeListener)
-    super.onDestroyView()
-  }
-
   private fun setupView() {
-    with(progressMoviesCalendarIcon) {
-      visibleIf(currentPage == 1)
-      onClick { toggleCalendarMode() }
-    }
+    with(binding) {
+      with(progressMoviesCalendarIcon) {
+        visibleIf(currentPage == 1)
+        onClick { toggleCalendarMode() }
+      }
 
-    with(progressMoviesSearchIcon) {
-      onClick { if (!isSearching) enterSearch() else exitSearch() }
-    }
+      with(progressMoviesSearchIcon) {
+        onClick { if (!isSearching) enterSearch() else exitSearch() }
+      }
 
-    with(progressMoviesSearchView) {
-      hint = getString(R.string.textSearchFor)
-      settingsIconVisible = true
-      traktIconVisible = true
-      isClickable = false
-      onClick { openMainSearch() }
-      onSettingsClickListener = { openSettings() }
-      onTraktClickListener = { navigateTo(R.id.actionProgressMoviesFragmentToTraktSyncFragment) }
-    }
+      with(progressMoviesSearchView) {
+        hint = getString(R.string.textSearchFor)
+        settingsIconVisible = true
+        traktIconVisible = true
+        isClickable = false
+        onClick { openMainSearch() }
+        onSettingsClickListener = { openSettings() }
+        onTraktClickListener = { navigateTo(R.id.actionProgressMoviesFragmentToTraktSyncFragment) }
+      }
 
-    with(progressMoviesModeTabs) {
-      visibleIf(moviesEnabled)
-      onModeSelected = { mode = it }
-      selectMovies()
-    }
+      with(progressMoviesModeTabs) {
+        visibleIf(moviesEnabled)
+        onModeSelected = { mode = it }
+        selectMovies()
+      }
 
-    with(progressMoviesSearchLocalView) {
-      onCloseClickListener = { exitSearch() }
-    }
+      with(progressMoviesSearchLocalView) {
+        onCloseClickListener = { exitSearch() }
+      }
 
-    progressMoviesTabs.translationY = tabsTranslation
-    progressMoviesModeTabs.translationY = tabsTranslation
-    progressMoviesSearchView.translationY = searchViewTranslation
-    progressMoviesSideIcons.translationY = sideIconTranslation
+      progressMoviesTabs.translationY = tabsTranslation
+      progressMoviesModeTabs.translationY = tabsTranslation
+      progressMoviesSearchView.translationY = searchViewTranslation
+      progressMoviesSideIcons.translationY = sideIconTranslation
+    }
   }
 
   private fun setupPager() {
-    progressMoviesPager.run {
-      offscreenPageLimit = ProgressMoviesMainAdapter.PAGES_COUNT
-      adapter = ProgressMoviesMainAdapter(childFragmentManager, requireContext())
-      addOnPageChangeListener(pageChangeListener)
+    with(binding) {
+      progressMoviesPager.run {
+        offscreenPageLimit = ProgressMoviesMainAdapter.PAGES_COUNT
+        adapter = ProgressMoviesMainAdapter(childFragmentManager, requireContext())
+        addOnPageChangeListener(pageChangeListener)
+      }
+      progressMoviesTabs.setupWithViewPager(progressMoviesPager)
     }
-    progressMoviesTabs.setupWithViewPager(progressMoviesPager)
   }
 
   private fun setupStatusBar() {
-    progressMoviesRoot.doOnApplyWindowInsets { _, insets, _, _ ->
-      val statusBarSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
-      (progressMoviesSearchView.layoutParams as ViewGroup.MarginLayoutParams)
-        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceMedium))
-      (progressMoviesModeTabs.layoutParams as ViewGroup.MarginLayoutParams)
-        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.collectionTabsMargin))
-      (progressMoviesSearchLocalView.layoutParams as ViewGroup.MarginLayoutParams)
-        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.progressMoviesSearchLocalViewPadding))
-      arrayOf(progressMoviesSideIcons, progressMoviesTabs).forEach {
-        val margin = statusBarSize + dimenToPx(R.dimen.progressMoviesSearchViewPadding)
-        (it.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(top = margin)
+    with(binding) {
+      progressMoviesRoot.doOnApplyWindowInsets { _, insets, _, _ ->
+        val statusBarSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+        (progressMoviesSearchView.layoutParams as ViewGroup.MarginLayoutParams)
+          .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceMedium))
+        (progressMoviesModeTabs.layoutParams as ViewGroup.MarginLayoutParams)
+          .updateMargins(top = statusBarSize + dimenToPx(R.dimen.collectionTabsMargin))
+        (progressMoviesSearchLocalView.layoutParams as ViewGroup.MarginLayoutParams)
+          .updateMargins(top = statusBarSize + dimenToPx(R.dimen.progressMoviesSearchLocalViewPadding))
+        arrayOf(progressMoviesSideIcons, progressMoviesTabs).forEach {
+          val margin = statusBarSize + dimenToPx(R.dimen.progressMoviesSearchViewPadding)
+          (it.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(top = margin)
+        }
       }
     }
   }
@@ -190,7 +198,7 @@ class ProgressMoviesMainFragment :
 
   fun openMovieDetails(movie: Movie) {
     hideNavigation()
-    progressMoviesRoot.fadeOut(150) {
+    binding.progressMoviesRoot.fadeOut(150) {
       val bundle = Bundle().apply { putLong(ARG_MOVIE_ID, movie.ids.trakt.id) }
       navigateTo(R.id.actionProgressMoviesFragmentToMovieDetailsFragment, bundle)
       exitSearch()
@@ -236,16 +244,18 @@ class ProgressMoviesMainFragment :
   private fun openMainSearch() {
     disableUi()
     hideNavigation()
-    progressMoviesModeTabs.fadeOut(duration = 200).add(animations)
-    progressMoviesTabs.fadeOut(duration = 200).add(animations)
-    progressMoviesSideIcons.fadeOut(duration = 200).add(animations)
-    progressMoviesPager.fadeOut(duration = 200) {
-      super.navigateTo(R.id.actionProgressMoviesFragmentToSearch, null)
-    }.add(animations)
+    with(binding) {
+      progressMoviesModeTabs.fadeOut(duration = 200).add(animations)
+      progressMoviesTabs.fadeOut(duration = 200).add(animations)
+      progressMoviesSideIcons.fadeOut(duration = 200).add(animations)
+      progressMoviesPager.fadeOut(duration = 200) {
+        super.navigateTo(R.id.actionProgressMoviesFragmentToSearch, null)
+      }.add(animations)
+    }
   }
 
   private fun enterSearch() {
-    progressMoviesSearchLocalView.fadeIn(150)
+    binding.progressMoviesSearchLocalView.fadeIn(150)
     resetTranslations()
     with(exSearchLocalViewInput) {
       setText("")
@@ -261,7 +271,7 @@ class ProgressMoviesMainFragment :
   private fun exitSearch() {
     isSearching = false
     childFragmentManager.fragments.forEach { (it as? OnSearchClickListener)?.onExitSearch() }
-    progressMoviesSearchLocalView.gone()
+    binding.progressMoviesSearchLocalView.gone()
     resetTranslations()
     with(exSearchLocalViewInput) {
       setText("")
@@ -282,20 +292,22 @@ class ProgressMoviesMainFragment :
 
   override fun onTabReselected() {
     resetTranslations(duration = 0)
-    progressMoviesPager?.nextPage()
+    binding.progressMoviesPager.nextPage()
     onScrollReset()
   }
 
   fun resetTranslations(duration: Long = TRANSLATION_DURATION) {
     if (view == null) return
-    arrayOf(
-      progressMoviesSearchView,
-      progressMoviesTabs,
-      progressMoviesModeTabs,
-      progressMoviesSideIcons,
-      progressMoviesSearchLocalView
-    ).forEach {
-      it.animate().translationY(0F).setDuration(duration).add(animations)?.start()
+    with(binding) {
+      arrayOf(
+        progressMoviesSearchView,
+        progressMoviesTabs,
+        progressMoviesModeTabs,
+        progressMoviesSideIcons,
+        progressMoviesSearchLocalView
+      ).forEach {
+        it.animate().translationY(0F).setDuration(duration).add(animations)?.start()
+      }
     }
   }
 
@@ -303,12 +315,14 @@ class ProgressMoviesMainFragment :
     childFragmentManager.fragments.forEach { (it as? OnScrollResetListener)?.onScrollReset() }
 
   private fun render(uiState: ProgressMoviesMainUiState) {
-    progressMoviesSearchView.setTraktProgress(uiState.isSyncing, withIcon = true)
-    progressMoviesSearchView.isEnabled = !uiState.isSyncing
-    when (uiState.calendarMode) {
-      CalendarMode.PRESENT_FUTURE -> progressMoviesCalendarIcon.setImageResource(R.drawable.ic_history)
-      CalendarMode.RECENTS -> progressMoviesCalendarIcon.setImageResource(R.drawable.ic_calendar)
-      else -> Unit
+    with(binding) {
+      progressMoviesSearchView.setTraktProgress(uiState.isSyncing, withIcon = true)
+      progressMoviesSearchView.isEnabled = !uiState.isSyncing
+      when (uiState.calendarMode) {
+        CalendarMode.PRESENT_FUTURE -> progressMoviesCalendarIcon.setImageResource(R.drawable.ic_history)
+        CalendarMode.RECENTS -> progressMoviesCalendarIcon.setImageResource(R.drawable.ic_calendar)
+        else -> Unit
+      }
     }
   }
 
@@ -316,8 +330,8 @@ class ProgressMoviesMainFragment :
     override fun onPageSelected(position: Int) {
       if (currentPage == position) return
 
-      progressMoviesCalendarIcon.fadeIf(position == 1, duration = 150)
-      if (progressMoviesTabs.translationY != 0F) {
+      binding.progressMoviesCalendarIcon.fadeIf(position == 1, duration = 150)
+      if (binding.progressMoviesTabs.translationY != 0F) {
         resetTranslations()
         requireView().postDelayed({ onScrollReset() }, TRANSLATION_DURATION)
       }

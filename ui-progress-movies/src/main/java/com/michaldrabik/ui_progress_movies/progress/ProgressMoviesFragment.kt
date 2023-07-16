@@ -28,6 +28,7 @@ import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
 import com.michaldrabik.ui_model.SortOrder.NAME
@@ -39,6 +40,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_ORDE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_SORT_ORDER
 import com.michaldrabik.ui_progress_movies.R
+import com.michaldrabik.ui_progress_movies.databinding.FragmentProgressMoviesBinding
 import com.michaldrabik.ui_progress_movies.helpers.TopOverscrollAdapter
 import com.michaldrabik.ui_progress_movies.main.MovieCheckActionUiEvent
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainFragment
@@ -46,12 +48,6 @@ import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainViewModel
 import com.michaldrabik.ui_progress_movies.main.RequestWidgetsUpdate
 import com.michaldrabik.ui_progress_movies.progress.recycler.ProgressMoviesAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_progress_movies.progressMoviesEmptyView
-import kotlinx.android.synthetic.main.fragment_progress_movies.progressMoviesMainRecycler
-import kotlinx.android.synthetic.main.fragment_progress_movies.progressMoviesOverscroll
-import kotlinx.android.synthetic.main.fragment_progress_movies.progressMoviesOverscrollProgress
-import kotlinx.android.synthetic.main.layout_progress_movies_empty.progressMoviesEmptyDiscoverButton
-import kotlinx.android.synthetic.main.layout_progress_movies_empty.progressMoviesEmptyTraktButton
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -74,6 +70,8 @@ class ProgressMoviesFragment :
 
   private val parentViewModel by viewModels<ProgressMoviesMainViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<ProgressMoviesViewModel>()
+
+  private val binding by viewBinding(FragmentProgressMoviesBinding::bind)
 
   private var adapter: ProgressMoviesAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
@@ -104,9 +102,11 @@ class ProgressMoviesFragment :
   }
 
   private fun setupView() {
-    progressMoviesEmptyTraktButton.onClick { requireMainFragment().openTraktSync() }
-    progressMoviesEmptyDiscoverButton.onClick {
-      (requireActivity() as NavigationHost).navigateToDiscover()
+    with(binding) {
+      progressMoviesEmptyView.progressMoviesEmptyTraktButton.onClick { requireMainFragment().openTraktSync() }
+      progressMoviesEmptyView.progressMoviesEmptyDiscoverButton.onClick {
+        (requireActivity() as NavigationHost).navigateToDiscover()
+      }
     }
   }
 
@@ -124,7 +124,7 @@ class ProgressMoviesFragment :
         layoutManager?.scrollToPosition(0)
       }
     )
-    progressMoviesMainRecycler.apply {
+    binding.progressMoviesMainRecycler.apply {
       adapter = this@ProgressMoviesFragment.adapter
       layoutManager = this@ProgressMoviesFragment.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
@@ -135,13 +135,13 @@ class ProgressMoviesFragment :
   private fun setupOverscroll() {
     if (overscroll != null) return
     overscroll = VerticalOverScrollBounceEffectDecorator(
-      TopOverscrollAdapter(progressMoviesMainRecycler),
+      TopOverscrollAdapter(binding.progressMoviesMainRecycler),
       1F,
       OverScrollBounceEffectDecoratorBase.DEFAULT_TOUCH_DRAG_MOVE_RATIO_BCK,
       OverScrollBounceEffectDecoratorBase.DEFAULT_DECELERATE_FACTOR
     ).apply {
       setOverScrollUpdateListener { _, state, offset ->
-        progressMoviesOverscroll?.run {
+        binding.progressMoviesOverscroll?.run {
           if (offset > 0) {
             val value = (offset / OVERSCROLL_OFFSET).coerceAtMost(1F)
             val valueTranslation = offset / OVERSCROLL_OFFSET_TRANSLATION
@@ -165,7 +165,7 @@ class ProgressMoviesFragment :
                 translationY = valueTranslation
                 if (offset >= OVERSCROLL_OFFSET &&
                   overscrollEnabled &&
-                  progressMoviesOverscrollProgress.progress >= 100
+                  binding.progressMoviesOverscrollProgress.progress >= 100
                 ) {
                   overscrollEnabled = false
                   viewModel.startTraktSync()
@@ -189,9 +189,9 @@ class ProgressMoviesFragment :
     overscrollJob = viewLifecycleOwner.lifecycleScope.launch {
       repeat(100) {
         val progress = it + 1
-        progressMoviesOverscrollProgress.progress = progress
+        binding.progressMoviesOverscrollProgress.progress = progress
         if (progress >= 100) {
-          progressMoviesOverscroll.bump(200)
+          binding.progressMoviesOverscroll.bump(200)
         }
         delay(5)
       }
@@ -201,20 +201,20 @@ class ProgressMoviesFragment :
   private fun onOverscrollCancel() {
     overscrollJob?.cancel()
     overscrollJob = null
-    progressMoviesOverscrollProgress.progress = 0
+    binding.progressMoviesOverscrollProgress.progress = 0
   }
 
   private fun setupStatusBar() {
     if (statusBarHeight != 0) {
-      progressMoviesMainRecycler.updatePadding(top = statusBarHeight + dimenToPx(R.dimen.progressMoviesTabsViewPadding))
+      binding.progressMoviesMainRecycler.updatePadding(top = statusBarHeight + dimenToPx(R.dimen.progressMoviesTabsViewPadding))
       return
     }
-    progressMoviesMainRecycler.doOnApplyWindowInsets { view, insets, _, _ ->
+    binding.progressMoviesMainRecycler.doOnApplyWindowInsets { view, insets, _, _ ->
       statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
       view.updatePadding(top = statusBarHeight + dimenToPx(R.dimen.progressMoviesTabsViewPadding))
-      (progressMoviesEmptyView.layoutParams as ViewGroup.MarginLayoutParams)
+      (binding.progressMoviesEmptyView.rootLayout.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarHeight + dimenToPx(R.dimen.spaceBig))
-      (progressMoviesOverscroll.layoutParams as ViewGroup.MarginLayoutParams)
+      (binding.progressMoviesOverscroll.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarHeight + dimenToPx(R.dimen.progressMoviesOverscrollPadding))
     }
   }
@@ -235,8 +235,8 @@ class ProgressMoviesFragment :
   override fun onEnterSearch() {
     isSearching = true
 
-    progressMoviesMainRecycler.translationY = dimenToPx(R.dimen.progressMoviesSearchLocalOffset).toFloat()
-    progressMoviesMainRecycler.smoothScrollToPosition(0)
+    binding.progressMoviesMainRecycler.translationY = dimenToPx(R.dimen.progressMoviesSearchLocalOffset).toFloat()
+    binding.progressMoviesMainRecycler.smoothScrollToPosition(0)
 
     overscroll?.detach()
     overscroll = null
@@ -245,13 +245,13 @@ class ProgressMoviesFragment :
   override fun onExitSearch() {
     isSearching = false
 
-    progressMoviesMainRecycler.translationY = 0F
-    progressMoviesMainRecycler.smoothScrollToPosition(0)
+    binding.progressMoviesMainRecycler.translationY = 0F
+    binding.progressMoviesMainRecycler.smoothScrollToPosition(0)
 
     setupOverscroll()
   }
 
-  override fun onScrollReset() = progressMoviesMainRecycler.smoothScrollToPosition(0)
+  override fun onScrollReset() = binding.progressMoviesMainRecycler.smoothScrollToPosition(0)
 
   private fun handleEvent(event: Event<*>) {
     when (event) {
@@ -270,8 +270,8 @@ class ProgressMoviesFragment :
       items?.let {
         val resetScroll = scrollReset?.consume() == true
         adapter?.setItems(it, resetScroll)
-        progressMoviesEmptyView.fadeIf(items.isEmpty() && !isSearching)
-        progressMoviesMainRecycler.fadeIn(
+        binding.progressMoviesEmptyView.rootLayout.fadeIf(items.isEmpty() && !isSearching)
+        binding.progressMoviesMainRecycler.fadeIn(
           duration = 200,
           withHardware = true
         ).add(animations)

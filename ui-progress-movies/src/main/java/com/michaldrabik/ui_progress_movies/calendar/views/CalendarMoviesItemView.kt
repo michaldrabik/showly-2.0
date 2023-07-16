@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
@@ -20,7 +21,7 @@ import com.michaldrabik.ui_base.utilities.extensions.onLongClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_progress_movies.R
 import com.michaldrabik.ui_progress_movies.calendar.recycler.CalendarMovieListItem
-import kotlinx.android.synthetic.main.view_progress_movies_calendar_item.view.*
+import com.michaldrabik.ui_progress_movies.databinding.ViewProgressMoviesCalendarItemBinding
 
 @SuppressLint("SetTextI18n")
 class CalendarMoviesItemView : MovieView<CalendarMovieListItem.MovieItem> {
@@ -29,8 +30,9 @@ class CalendarMoviesItemView : MovieView<CalendarMovieListItem.MovieItem> {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
+  private val binding = ViewProgressMoviesCalendarItemBinding.inflate(LayoutInflater.from(context), this)
+
   init {
-    inflate(context, R.layout.view_progress_movies_calendar_item, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     addRipple()
     onClick { itemClickListener?.invoke(item) }
@@ -40,31 +42,33 @@ class CalendarMoviesItemView : MovieView<CalendarMovieListItem.MovieItem> {
 
   private lateinit var item: CalendarMovieListItem.MovieItem
 
-  override val imageView: ImageView = progressMovieCalendarItemImage
-  override val placeholderView: ImageView = progressMovieCalendarItemPlaceholder
+  override val imageView: ImageView = binding.progressMovieCalendarItemImage
+  override val placeholderView: ImageView = binding.progressMovieCalendarItemPlaceholder
 
   override fun bind(item: CalendarMovieListItem.MovieItem) {
     this.item = item
     clear()
 
-    progressMovieCalendarItemTitle.text =
-      if (item.translation?.title.isNullOrBlank()) item.movie.title
-      else item.translation?.title
+    with(binding) {
+      progressMovieCalendarItemTitle.text =
+        if (item.translation?.title.isNullOrBlank()) item.movie.title
+        else item.translation?.title
 
-    bindDescription(item)
-    bindBadge(item)
+      bindDescription(item)
+      bindBadge(item)
 
-    if (item.movie.released != null) {
-      progressMovieCalendarItemDate.text = item.dateFormat?.format(item.movie.released)?.capitalizeWords()
-    } else {
-      progressMovieCalendarItemDate.text = context.getString(R.string.textTba)
+      if (item.movie.released != null) {
+        progressMovieCalendarItemDate.text = item.dateFormat?.format(item.movie.released)?.capitalizeWords()
+      } else {
+        progressMovieCalendarItemDate.text = context.getString(R.string.textTba)
+      }
+
+      loadImage(item)
     }
-
-    loadImage(item)
   }
 
   private fun bindBadge(item: CalendarMovieListItem.MovieItem) {
-    with(progressMovieCalendarItemBadge) {
+    with(binding.progressMovieCalendarItemBadge) {
       val inCollection = item.isWatched || item.isWatchlist
       visibleIf(inCollection)
       if (inCollection) {
@@ -81,22 +85,24 @@ class CalendarMoviesItemView : MovieView<CalendarMovieListItem.MovieItem> {
       item.translation?.overview
     }
 
-    val isMyHidden = item.spoilers.isMyMoviesHidden && item.isWatched
-    val isWatchlistHidden = item.spoilers.isWatchlistMoviesHidden && item.isWatchlist
-    val isNotCollectedHidden = item.spoilers.isNotCollectedMoviesHidden && (!item.isWatched && !item.isWatchlist)
-    if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
-      progressMovieCalendarItemSubtitle.tag = description
-      description = SPOILERS_REGEX.replace(description.toString(), SPOILERS_HIDE_SYMBOL)
+    with(binding) {
+      val isMyHidden = item.spoilers.isMyMoviesHidden && item.isWatched
+      val isWatchlistHidden = item.spoilers.isWatchlistMoviesHidden && item.isWatchlist
+      val isNotCollectedHidden = item.spoilers.isNotCollectedMoviesHidden && (!item.isWatched && !item.isWatchlist)
+      if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
+        progressMovieCalendarItemSubtitle.tag = description
+        description = SPOILERS_REGEX.replace(description.toString(), SPOILERS_HIDE_SYMBOL)
 
-      if (item.spoilers.isTapToReveal) {
-        progressMovieCalendarItemSubtitle.onClick { view ->
-          view.tag?.let { progressMovieCalendarItemSubtitle.text = it.toString() }
-          view.isClickable = false
+        if (item.spoilers.isTapToReveal) {
+          progressMovieCalendarItemSubtitle.onClick { view ->
+            view.tag?.let { progressMovieCalendarItemSubtitle.text = it.toString() }
+            view.isClickable = false
+          }
         }
       }
-    }
 
-    progressMovieCalendarItemSubtitle.text = description
+      progressMovieCalendarItemSubtitle.text = description
+    }
   }
 
   private fun loadTranslation() {
@@ -106,9 +112,11 @@ class CalendarMoviesItemView : MovieView<CalendarMovieListItem.MovieItem> {
   }
 
   private fun clear() {
-    progressMovieCalendarItemTitle.text = ""
-    progressMovieCalendarItemSubtitle.text = ""
-    progressMovieCalendarItemPlaceholder.gone()
-    Glide.with(this).clear(progressMovieCalendarItemImage)
+    with(binding) {
+      progressMovieCalendarItemTitle.text = ""
+      progressMovieCalendarItemSubtitle.text = ""
+      progressMovieCalendarItemPlaceholder.gone()
+      Glide.with(this@CalendarMoviesItemView).clear(progressMovieCalendarItemImage)
+    }
   }
 }
