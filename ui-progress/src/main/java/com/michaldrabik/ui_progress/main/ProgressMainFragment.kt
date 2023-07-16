@@ -20,7 +20,6 @@ import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomShee
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Operation
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Type
-import com.michaldrabik.ui_base.common.views.exSearchLocalViewInput
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.add
@@ -294,7 +293,7 @@ class ProgressMainFragment :
   private fun enterSearch() {
     resetTranslations()
     progressMainSearchLocalView.fadeIn(150)
-    with(exSearchLocalViewInput) {
+    with(progressMainSearchLocalView.binding.searchViewLocalInput) {
       setText("")
       doAfterTextChanged { viewModel.onSearchQuery(it?.toString()) }
       visible()
@@ -310,7 +309,7 @@ class ProgressMainFragment :
     childFragmentManager.fragments.forEach { (it as? OnSearchClickListener)?.onExitSearch() }
     resetTranslations()
     progressMainSearchLocalView.gone()
-    with(exSearchLocalViewInput) {
+    with(progressMainSearchLocalView.binding.searchViewLocalInput) {
       setText("")
       gone()
       hideKeyboard()

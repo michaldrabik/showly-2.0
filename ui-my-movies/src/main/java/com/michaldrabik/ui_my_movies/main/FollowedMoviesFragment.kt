@@ -15,7 +15,6 @@ import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
-import com.michaldrabik.ui_base.common.views.exSearchLocalViewInput
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.disableUi
@@ -173,7 +172,7 @@ class FollowedMoviesFragment :
   private fun enterSearch() {
     resetTranslations()
     followedMoviesSearchLocalView.fadeIn(150)
-    with(exSearchLocalViewInput) {
+    with(followedMoviesSearchLocalView.binding.searchViewLocalInput) {
       setText("")
       doAfterTextChanged { viewModel.onSearchQuery(it?.toString()) }
       visible()
@@ -189,7 +188,7 @@ class FollowedMoviesFragment :
     childFragmentManager.fragments.forEach { (it as? OnSearchClickListener)?.onExitSearch() }
     resetTranslations()
     followedMoviesSearchLocalView.gone()
-    with(exSearchLocalViewInput) {
+    with(followedMoviesSearchLocalView.binding.searchViewLocalInput) {
       setText("")
       gone()
       hideKeyboard()

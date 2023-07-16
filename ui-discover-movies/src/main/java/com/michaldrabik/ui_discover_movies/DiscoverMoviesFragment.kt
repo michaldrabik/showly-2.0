@@ -270,7 +270,6 @@ class DiscoverMoviesFragment :
       isLoading?.let {
         discoverMoviesSwipeRefresh.isRefreshing = it
         discoverMoviesSearchView.isEnabled = !it
-        discoverMoviesSearchView.sortIconClickable = !it
         discoverMoviesTabsView.isEnabled = !it
         discoverMoviesFiltersView.isEnabled = !it
         discoverMoviesRecycler.isEnabled = !it

@@ -286,7 +286,6 @@ class DiscoverFragment :
         discoverSearchView.isEnabled = !it
       }
       isLoading?.let {
-        discoverSearchView.sortIconClickable = !it
         discoverSearchView.isEnabled = !it
         discoverSwipeRefresh.isRefreshing = it
         discoverModeTabsView.isEnabled = !it

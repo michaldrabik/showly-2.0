@@ -2,24 +2,20 @@ package com.michaldrabik.ui_base.common.views
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
-import androidx.fragment.app.Fragment
-import com.google.android.material.textfield.TextInputEditText
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.behaviour.SearchViewBehaviour
+import com.michaldrabik.ui_base.databinding.ViewSearchBinding
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.expandTouch
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
-import kotlinx.android.synthetic.main.view_search.*
-import kotlinx.android.synthetic.main.view_search.view.*
 
 class SearchView : FrameLayout, CoordinatorLayout.AttachedBehavior {
 
@@ -27,63 +23,46 @@ class SearchView : FrameLayout, CoordinatorLayout.AttachedBehavior {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
+  val binding = ViewSearchBinding.inflate(LayoutInflater.from(context), this, true)
+
   var onSettingsClickListener: (() -> Unit)? = null
-  var onSortClickListener: (() -> Unit)? = null
   var onStatsClickListener: (() -> Unit)? = null
   var onTraktClickListener: (() -> Unit)? = null
 
   init {
-    inflate(context, R.layout.view_search, this)
-
-    searchSortIcon.expandTouch()
-    searchSettingsIcon.expandTouch()
-    searchSortIcon.onClick { onSortClickListener?.invoke() }
-    searchSettingsIcon.onClick { onSettingsClickListener?.invoke() }
-    searchStatsIcon.onClick { onStatsClickListener?.invoke() }
-    searchTraktIcon.onClick { onTraktClickListener?.invoke() }
+    with(binding) {
+      searchSettingsIcon.expandTouch()
+      searchSettingsIcon.onClick { onSettingsClickListener?.invoke() }
+      searchStatsIcon.onClick { onStatsClickListener?.invoke() }
+      searchTraktIcon.onClick { onTraktClickListener?.invoke() }
+    }
   }
 
   var hint: String
-    get() = searchViewInput.hint.toString()
+    get() = binding.searchViewInput.hint.toString()
     set(value) {
-      searchViewInput.hint = value
-      searchViewText.text = value
+      with(binding) {
+        searchViewInput.hint = value
+        searchViewText.text = value
+      }
     }
 
   var settingsIconVisible
-    get() = searchSettingsIcon.isVisible
+    get() = binding.searchSettingsIcon.isVisible
     set(value) {
-      searchSettingsIcon.visibleIf(value)
-    }
-
-  var sortIconVisible
-    get() = searchSortIcon.isVisible
-    set(value) {
-      searchSortIcon.visibleIf(value)
+      binding.searchSettingsIcon.visibleIf(value)
     }
 
   var statsIconVisible
-    get() = searchStatsIcon.isVisible
+    get() = binding.searchStatsIcon.isVisible
     set(value) {
-      searchStatsIcon.visibleIf(value)
+      binding.searchStatsIcon.visibleIf(value)
     }
 
   var traktIconVisible
-    get() = searchTraktIcon.isVisible
+    get() = binding.searchTraktIcon.isVisible
     set(value) {
-      searchTraktIcon.visibleIf(value)
-    }
-
-  var sortIconClickable
-    get() = searchSortIcon.isClickable
-    set(value) {
-      searchSortIcon.isClickable = value
-    }
-
-  var iconBadgeVisible
-    get() = searchDotBadge.isVisible
-    set(value) {
-      searchDotBadge.visibleIf(value)
+      binding.searchTraktIcon.visibleIf(value)
     }
 
   var isSearching = false
@@ -105,18 +84,16 @@ class SearchView : FrameLayout, CoordinatorLayout.AttachedBehavior {
   override fun getBehavior() = SearchViewBehaviour(context.dimenToPx(R.dimen.spaceNormal))
 
   override fun setEnabled(enabled: Boolean) {
-    searchViewInput.isEnabled = enabled
+    binding.searchViewInput.isEnabled = enabled
     super.setEnabled(enabled)
   }
 
   fun setTraktProgress(isProgress: Boolean, withIcon: Boolean = false) {
-    searchViewIcon.visibleIf(!isProgress)
-    searchViewText.visibleIf(!isProgress)
-    searchTraktIcon.visibleIf(!isProgress && withIcon)
-    searchViewTraktSync.visibleIf(isProgress)
+    with(binding) {
+      searchViewIcon.visibleIf(!isProgress)
+      searchViewText.visibleIf(!isProgress)
+      searchTraktIcon.visibleIf(!isProgress && withIcon)
+      searchViewTraktSync.visibleIf(isProgress)
+    }
   }
 }
-
-inline val Fragment.exSearchViewInput: TextInputEditText get() = searchViewInput
-inline val Fragment.exSearchViewText: TextView get() = searchViewText
-inline val Fragment.exSearchViewIcon: ImageView get() = searchViewIcon

@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
-import com.michaldrabik.ui_base.common.views.exSearchLocalViewInput
 import com.michaldrabik.ui_base.events.Event
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.TraktListQuickSyncSuccess
@@ -55,7 +54,17 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_LIST
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CREATE_LIST
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_lists.*
+import kotlinx.android.synthetic.main.fragment_lists.fragmentListsCreateListButton
+import kotlinx.android.synthetic.main.fragment_lists.fragmentListsEmptyView
+import kotlinx.android.synthetic.main.fragment_lists.fragmentListsFilters
+import kotlinx.android.synthetic.main.fragment_lists.fragmentListsIcons
+import kotlinx.android.synthetic.main.fragment_lists.fragmentListsModeTabs
+import kotlinx.android.synthetic.main.fragment_lists.fragmentListsRecycler
+import kotlinx.android.synthetic.main.fragment_lists.fragmentListsRoot
+import kotlinx.android.synthetic.main.fragment_lists.fragmentListsSearchButton
+import kotlinx.android.synthetic.main.fragment_lists.fragmentListsSearchLocalView
+import kotlinx.android.synthetic.main.fragment_lists.fragmentListsSearchView
+import kotlinx.android.synthetic.main.fragment_lists.fragmentListsSnackHost
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -224,7 +233,7 @@ class ListsFragment :
     fragmentListsSearchLocalView.fadeIn(150)
     fragmentListsIcons.gone()
     fragmentListsRecycler.smoothScrollToPosition(0)
-    with(exSearchLocalViewInput) {
+    with(fragmentListsSearchLocalView.binding.searchViewLocalInput) {
       setText("")
       doAfterTextChanged {
         viewModel.loadItems(
@@ -246,7 +255,7 @@ class ListsFragment :
     fragmentListsIcons.visible()
     fragmentListsRecycler.translationY = 0F
     fragmentListsRecycler.postDelayed(200) { layoutManager?.scrollToPosition(0) }
-    with(exSearchLocalViewInput) {
+    with(fragmentListsSearchLocalView.binding.searchViewLocalInput) {
       setText("")
       gone()
       hideKeyboard()

@@ -70,18 +70,6 @@
         />
 
       <ImageView
-        android:id="@+id/searchSortIcon"
-        android:layout_width="40dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="end"
-        android:padding="8dp"
-        android:visibility="gone"
-        app:srcCompat="@drawable/ic_sort"
-        app:tint="?attr/colorSearchViewControl"
-        tools:visibility="visible"
-        />
-
-      <ImageView
         android:id="@+id/searchStatsIcon"
         android:layout_width="40dp"
         android:layout_height="match_parent"

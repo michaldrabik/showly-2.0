@@ -20,7 +20,6 @@ import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomShee
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Operation
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Type
-import com.michaldrabik.ui_base.common.views.exSearchLocalViewInput
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -257,7 +256,7 @@ class ProgressMoviesMainFragment :
   private fun enterSearch() {
     binding.progressMoviesSearchLocalView.fadeIn(150)
     resetTranslations()
-    with(exSearchLocalViewInput) {
+    with(binding.progressMoviesSearchLocalView.binding.searchViewLocalInput) {
       setText("")
       doAfterTextChanged { viewModel.onSearchQuery(it?.toString() ?: "") }
       visible()
@@ -273,7 +272,7 @@ class ProgressMoviesMainFragment :
     childFragmentManager.fragments.forEach { (it as? OnSearchClickListener)?.onExitSearch() }
     binding.progressMoviesSearchLocalView.gone()
     resetTranslations()
-    with(exSearchLocalViewInput) {
+    with(binding.progressMoviesSearchLocalView.binding.searchViewLocalInput) {
       setText("")
       gone()
       hideKeyboard()

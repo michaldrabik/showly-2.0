@@ -19,9 +19,6 @@ import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
-import com.michaldrabik.ui_base.common.views.exSearchViewIcon
-import com.michaldrabik.ui_base.common.views.exSearchViewInput
-import com.michaldrabik.ui_base.common.views.exSearchViewText
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -55,7 +52,16 @@ import com.michaldrabik.ui_search.recycler.suggestions.SuggestionAdapter
 import com.michaldrabik.ui_search.utilities.TextWatcherAdapter
 import com.michaldrabik.ui_search.views.RecentSearchView
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_search.*
+import kotlinx.android.synthetic.main.fragment_search.searchEmptyView
+import kotlinx.android.synthetic.main.fragment_search.searchFiltersView
+import kotlinx.android.synthetic.main.fragment_search.searchInitialView
+import kotlinx.android.synthetic.main.fragment_search.searchRecentsClearButton
+import kotlinx.android.synthetic.main.fragment_search.searchRecentsLayout
+import kotlinx.android.synthetic.main.fragment_search.searchRecycler
+import kotlinx.android.synthetic.main.fragment_search.searchRoot
+import kotlinx.android.synthetic.main.fragment_search.searchSwipeRefresh
+import kotlinx.android.synthetic.main.fragment_search.searchViewLayout
+import kotlinx.android.synthetic.main.fragment_search.suggestionsRecycler
 
 @AndroidEntryPoint
 class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), TextWatcherAdapter {
@@ -110,8 +116,8 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
 
   override fun onStop() {
     viewModel.clearSuggestions()
-    exSearchViewInput.removeTextChangedListener(this)
-    exSearchViewInput.setText("")
+    searchViewLayout.binding.searchViewInput.removeTextChangedListener(this)
+    searchViewLayout.binding.searchViewInput.setText("")
     super.onStop()
   }
 
@@ -122,18 +128,18 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
   }
 
   private fun setupView() {
-    exSearchViewInput.visible()
-    exSearchViewText.gone()
-    (exSearchViewIcon.drawable as Animatable).start()
+    searchViewLayout.binding.searchViewInput.visible()
+    searchViewLayout.binding.searchViewText.gone()
+    (searchViewLayout.binding.searchViewIcon.drawable as Animatable).start()
     searchViewLayout.settingsIconVisible = false
     viewModel.preloadSuggestions()
     if (!isInitialized) {
-      exSearchViewInput.showKeyboard()
-      exSearchViewInput.requestFocus()
+      searchViewLayout.binding.searchViewInput.showKeyboard()
+      searchViewLayout.binding.searchViewInput.requestFocus()
       viewModel.loadRecentSearches()
     }
 
-    exSearchViewInput.run {
+    searchViewLayout.binding.searchViewInput.run {
       addTextChangedListener(this@SearchFragment)
       setOnEditorActionListener { textView, id, _ ->
         if (id == EditorInfo.IME_ACTION_SEARCH) {
@@ -143,14 +149,14 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
             return@setOnEditorActionListener true
           }
           viewModel.search(query)
-          exSearchViewInput.hideKeyboard()
-          exSearchViewInput.clearFocus()
+          searchViewLayout.binding.searchViewInput.hideKeyboard()
+          searchViewLayout.binding.searchViewInput.clearFocus()
         }
         true
       }
     }
-    exSearchViewIcon.onClick {
-      exSearchViewInput.hideKeyboard()
+    searchViewLayout.binding.searchViewIcon.onClick {
+      searchViewLayout.binding.searchViewInput.hideKeyboard()
       requireActivity().onBackPressed()
     }
     with(searchFiltersView) {
@@ -326,7 +332,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
         bind(item)
         onClick {
           viewModel.search(item.text)
-          exSearchViewInput.setText(item.text)
+          searchViewLayout.binding.searchViewInput.setText(item.text)
         }
       }
       searchRecentsLayout.addView(view)
