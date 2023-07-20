@@ -11,6 +11,7 @@ import com.michaldrabik.common.errors.ShowlyError.AccountLockedError
 import com.michaldrabik.common.errors.ShowlyError.CoroutineCancellation
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.settings.SettingsRepository
+import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.events.Event
 import com.michaldrabik.ui_base.events.EventsManager
@@ -97,6 +98,7 @@ class TraktSyncViewModel @Inject constructor(
           is AccountLockedError -> messageChannel.send(MessageEvent.Error(R.string.errorTraktLocked))
           else -> messageChannel.send(MessageEvent.Error(R.string.errorAuthorization))
         }
+        Logger.record(error, "TraktSyncViewModel::authorizeTrakt()")
       }
     }
   }
