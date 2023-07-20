@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_model
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import java.time.ZonedDateTime
 
 @Parcelize
@@ -20,7 +20,7 @@ data class Comment(
   val isMe: Boolean,
   val isSignedIn: Boolean,
   val isLoading: Boolean,
-  val hasRepliesLoaded: Boolean
+  val hasRepliesLoaded: Boolean,
 ) : Parcelable {
 
   fun hasSpoilers() = spoiler || comment.contains("spoiler", true)

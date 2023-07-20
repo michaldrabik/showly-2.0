@@ -3,7 +3,7 @@ package com.michaldrabik.ui_model
 import android.os.Parcelable
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.extensions.nowUtc
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import java.time.ZonedDateTime
 
 @Parcelize

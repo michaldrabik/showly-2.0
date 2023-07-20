@@ -2,6 +2,7 @@ package com.michaldrabik.ui_streamings.views
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import com.bumptech.glide.Glide
@@ -13,7 +14,7 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_model.StreamingService
 import com.michaldrabik.ui_streamings.R
-import kotlinx.android.synthetic.main.view_streaming.view.*
+import com.michaldrabik.ui_streamings.databinding.ViewStreamingBinding
 
 class StreamingView : FrameLayout {
 
@@ -23,6 +24,8 @@ class StreamingView : FrameLayout {
     private const val GOOGLE_PLAY = "Google Play Movies"
     private const val YOU_TUBE = "YouTube"
   }
+
+  private val binding = ViewStreamingBinding.inflate(LayoutInflater.from(context), this)
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -38,9 +41,8 @@ class StreamingView : FrameLayout {
   private lateinit var streaming: StreamingService
 
   init {
-    inflate(context, R.layout.view_streaming, this)
     layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
-    viewStreamingContent.onClick {
+    binding.viewStreamingContent.onClick {
       when (streaming.name) {
         NETFLIX, NETFLIX_FREE -> openWebUrl("https://www.netflix.com/search/${streaming.mediaName}")
         GOOGLE_PLAY -> openWebUrl("https://play.google.com/store/search?c=movies&gl=${streaming.countryCode}&q=${streaming.mediaName}")
@@ -52,13 +54,15 @@ class StreamingView : FrameLayout {
 
   fun bind(streaming: StreamingService) {
     this.streaming = streaming
-    viewStreamingName.text = streaming.name
-    viewStreamingOptions.text = streaming.options.joinToString(", ") { context.getString(it.resId) }
+    with(binding) {
+      viewStreamingName.text = streaming.name
+      viewStreamingOptions.text = streaming.options.joinToString(", ") { context.getString(it.resId) }
 
-    val corners = if (streaming.name == "Apple iTunes") cornersAppleTransformation else cornersTransformation
-    Glide.with(this)
-      .load("${Config.TMDB_IMAGE_BASE_LOGO_URL}${streaming.imagePath}")
-      .transform(centerCropTransformation, corners)
-      .into(viewStreamingImage)
+      val corners = if (streaming.name == "Apple iTunes") cornersAppleTransformation else cornersTransformation
+      Glide.with(this@StreamingView)
+        .load("${Config.TMDB_IMAGE_BASE_LOGO_URL}${streaming.imagePath}")
+        .transform(centerCropTransformation, corners)
+        .into(viewStreamingImage)
+    }
   }
 }

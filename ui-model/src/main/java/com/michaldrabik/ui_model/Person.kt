@@ -2,7 +2,7 @@ package com.michaldrabik.ui_model
 
 import android.os.Parcelable
 import com.michaldrabik.common.extensions.nowUtcDay
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import java.time.LocalDate
 import java.time.Period
 
