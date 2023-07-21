@@ -55,7 +55,10 @@ class SettingsTraktViewModel @Inject constructor(
   }
 
   fun authorizeTrakt(authData: Uri?) {
-    if (authData == null) return
+    if (authData == null) {
+      Logger.record(Error("authData is null"), "SettingsViewModel::authorizeTrakt()")
+      return
+    }
     viewModelScope.launch {
       try {
         signingInState.value = true
@@ -66,12 +69,12 @@ class SettingsTraktViewModel @Inject constructor(
         messageChannel.send(MessageEvent.Info(R.string.textTraktLoginSuccess))
         Analytics.logTraktLogin()
       } catch (error: Throwable) {
+        Logger.record(error, "SettingsViewModel::authorizeTrakt()")
         when (ErrorHelper.parse(error)) {
           is ShowlyError.CoroutineCancellation -> rethrowCancellation(error)
           is ShowlyError.AccountLockedError -> messageChannel.send(MessageEvent.Error(R.string.errorTraktLocked))
           else -> messageChannel.send(MessageEvent.Error(R.string.errorAuthorization))
         }
-        Logger.record(error, "SettingsViewModel::authorizeTrakt()")
       } finally {
         signingInState.value = false
       }
