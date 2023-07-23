@@ -51,7 +51,7 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
   companion object {
     fun createBundle(
       showId: IdTrakt,
-      seasonId: IdTrakt
+      seasonId: IdTrakt,
     ): Bundle = bundleOf(
       NavigationArgs.ARG_OPTIONS to Options(showId, seasonId)
     )
@@ -85,7 +85,7 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
 
   private fun setupView() {
     with(binding) {
-      episodesBackArrow.onClick { requireActivity().onBackPressed() }
+      episodesBackArrow.onClick { findNavControl()?.popBackStack() }
       episodesUnlockButton.onClick(safe = false) { toggleEpisodesLock() }
       listOf(episodesSeasonRateButton, episodesSeasonMyStarIcon).onClick {
         viewModel.openRateSeasonDialog()
@@ -173,12 +173,13 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
       is OpenEpisodeDetails -> openEpisodeDetails(event.bundle, event.isWatched)
       is OpenRateSeason -> openRateSeasonDialog(event.season)
       is RequestWidgetsUpdate -> (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
-      is Finish -> requireActivity().onBackPressed()
+      is Finish -> findNavControl()?.popBackStack()
     }
   }
 
   private fun toggleEpisodesLock() {
     isLocked = !isLocked
+
     with(binding) {
       episodesUnlockButton.setImageResource(if (isLocked) R.drawable.ic_locked else R.drawable.ic_unlocked)
       episodesCheckbox.isEnabled = !isLocked
@@ -188,7 +189,7 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
 
   private fun openEpisodeDetails(
     episodeBundle: EpisodeBundle,
-    isWatched: Boolean
+    isWatched: Boolean,
   ) {
     val (episode, season, show) = episodeBundle
     setFragmentResultListener(NavigationArgs.REQUEST_EPISODE_DETAILS) { _, bundle ->
@@ -250,6 +251,6 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
   @Parcelize
   data class Options(
     val showId: IdTrakt,
-    val seasonId: IdTrakt
+    val seasonId: IdTrakt,
   ) : Parcelable
 }
