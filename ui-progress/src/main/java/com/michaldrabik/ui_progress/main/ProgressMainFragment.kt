@@ -54,15 +54,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_ITEM_MENU
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.main.adapters.ProgressMainAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_progress_main.progressMainCalendarIcon
-import kotlinx.android.synthetic.main.fragment_progress_main.progressMainPager
-import kotlinx.android.synthetic.main.fragment_progress_main.progressMainPagerModeTabs
-import kotlinx.android.synthetic.main.fragment_progress_main.progressMainRoot
-import kotlinx.android.synthetic.main.fragment_progress_main.progressMainSearchIcon
-import kotlinx.android.synthetic.main.fragment_progress_main.progressMainSearchLocalView
-import kotlinx.android.synthetic.main.fragment_progress_main.progressMainSearchView
-import kotlinx.android.synthetic.main.fragment_progress_main.progressMainSideIcons
-import kotlinx.android.synthetic.main.fragment_progress_main.progressMainTabs
+import kotlinx.android.synthetic.main.fragment_progress_main.*
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -154,7 +146,7 @@ class ProgressMainFragment :
       isClickable = false
       onClick { openMainSearch() }
       onSettingsClickListener = { openSettings() }
-      onTraktClickListener = { navigateTo(R.id.actionProgressFragmentToTraktSyncFragment) }
+      onTraktClickListener = { openTraktSync() }
     }
 
     with(progressMainSearchLocalView) {
@@ -220,14 +212,14 @@ class ProgressMainFragment :
     progressMainTabs.fadeOut(duration = 200).add(animations)
     progressMainSideIcons.fadeOut(duration = 200).add(animations)
     progressMainPager.fadeOut(duration = 200) {
-      super.navigateTo(R.id.actionProgressFragmentToSearch, null)
+      navigateToSafe(R.id.actionProgressFragmentToSearch)
     }.add(animations)
   }
 
   fun openTraktSync() {
     hideNavigation()
     exitSearch()
-    navigateTo(R.id.actionProgressFragmentToTraktSyncFragment)
+    navigateToSafe(R.id.actionProgressFragmentToTraktSyncFragment)
   }
 
   fun openShowDetails(show: Show) {
@@ -235,7 +227,7 @@ class ProgressMainFragment :
     progressMainRoot.fadeOut(150) {
       if (findNavControl()?.currentDestination?.id == R.id.progressMainFragment) {
         val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.traktId) }
-        navigateTo(R.id.actionProgressFragmentToShowDetailsFragment, bundle)
+        navigateToSafe(R.id.actionProgressFragmentToShowDetailsFragment, bundle)
         exitSearch()
       } else {
         showNavigation()
@@ -258,7 +250,7 @@ class ProgressMainFragment :
   fun openEpisodeDetails(
     show: Show,
     episode: Episode,
-    season: Season
+    season: Season,
   ) {
     setFragmentResultListener(REQUEST_EPISODE_DETAILS) { _, bundle ->
       when {
@@ -281,13 +273,13 @@ class ProgressMainFragment :
       viewModel.setWatchedEpisode(episodeBundle)
     }
     val bundle = RatingsBottomSheet.createBundle(episodeBundle.episode.ids.trakt, Type.EPISODE)
-    navigateTo(R.id.actionProgressFragmentToRating, bundle)
+    navigateToSafe(R.id.actionProgressFragmentToRating, bundle)
   }
 
   private fun openSettings() {
     hideNavigation()
     exitSearch()
-    navigateTo(R.id.actionProgressFragmentToSettingsFragment)
+    navigateToSafe(R.id.actionProgressFragmentToSettingsFragment)
   }
 
   private fun enterSearch() {

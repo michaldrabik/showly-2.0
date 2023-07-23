@@ -40,12 +40,7 @@ import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_ITEM_MENU
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_discover.discoverFiltersView
-import kotlinx.android.synthetic.main.fragment_discover.discoverModeTabsView
-import kotlinx.android.synthetic.main.fragment_discover.discoverRecycler
-import kotlinx.android.synthetic.main.fragment_discover.discoverRoot
-import kotlinx.android.synthetic.main.fragment_discover.discoverSearchView
-import kotlinx.android.synthetic.main.fragment_discover.discoverSwipeRefresh
+import kotlinx.android.synthetic.main.fragment_discover.*
 import kotlin.random.Random
 
 @AndroidEntryPoint
@@ -215,7 +210,7 @@ class DiscoverFragment :
     discoverModeTabsView.fadeOut(duration = 200).add(animations)
     discoverFiltersView.fadeOut(duration = 200).add(animations)
     discoverRecycler.fadeOut(duration = 200) {
-      super.navigateTo(R.id.actionDiscoverFragmentToSearchFragment, null)
+      navigateToSafe(R.id.actionDiscoverFragmentToSearchFragment)
     }.add(animations)
   }
 

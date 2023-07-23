@@ -248,7 +248,7 @@ class ProgressMoviesMainFragment :
       progressMoviesTabs.fadeOut(duration = 200).add(animations)
       progressMoviesSideIcons.fadeOut(duration = 200).add(animations)
       progressMoviesPager.fadeOut(duration = 200) {
-        super.navigateTo(R.id.actionProgressMoviesFragmentToSearch, null)
+        navigateToSafe(R.id.actionProgressMoviesFragmentToSearch)
       }.add(animations)
     }
   }

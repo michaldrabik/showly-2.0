@@ -27,6 +27,7 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.gone
+import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.SortOrder
@@ -72,6 +73,8 @@ class ProgressFragment :
     const val OVERSCROLL_OFFSET = 225F
     const val OVERSCROLL_OFFSET_TRANSLATION = 4.5F
   }
+
+  override val navigationId = R.id.progressMainFragment
 
   private val parentViewModel by viewModels<ProgressMainViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<ProgressViewModel>()
@@ -250,7 +253,7 @@ class ProgressFragment :
       viewModel.setSortOrder(sortOrder, sortType, newTop)
     }
 
-    navigateTo(R.id.actionProgressFragmentToSortOrder, args)
+    navigateToSafe(R.id.actionProgressFragmentToSortOrder, args)
   }
 
   override fun onEnterSearch() {

@@ -36,12 +36,7 @@ import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_discover_movies.discoverMoviesFiltersView
-import kotlinx.android.synthetic.main.fragment_discover_movies.discoverMoviesRecycler
-import kotlinx.android.synthetic.main.fragment_discover_movies.discoverMoviesRoot
-import kotlinx.android.synthetic.main.fragment_discover_movies.discoverMoviesSearchView
-import kotlinx.android.synthetic.main.fragment_discover_movies.discoverMoviesSwipeRefresh
-import kotlinx.android.synthetic.main.fragment_discover_movies.discoverMoviesTabsView
+import kotlinx.android.synthetic.main.fragment_discover_movies.*
 import kotlin.random.Random
 
 @AndroidEntryPoint
@@ -197,7 +192,7 @@ class DiscoverMoviesFragment :
     discoverMoviesTabsView.fadeOut(duration = 200).add(animations)
     discoverMoviesFiltersView.fadeOut(duration = 200).add(animations)
     discoverMoviesRecycler.fadeOut(duration = 200) {
-      super.navigateTo(R.id.actionDiscoverMoviesFragmentToSearchFragment, null)
+      navigateToSafe(R.id.actionDiscoverMoviesFragmentToSearchFragment)
     }.add(animations)
   }
 
