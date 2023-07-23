@@ -24,7 +24,7 @@ class ShowDetailsRatingSpoilersCase @Inject constructor(
 
   suspend fun hideSpoilerRatings(
     show: Show,
-    ratings: Ratings
+    ratings: Ratings,
   ): Ratings = withContext(dispatchers.IO) {
     val spoilers = settingsSpoilersRepository.getAll()
 
@@ -45,7 +45,8 @@ class ShowDetailsRatingSpoilersCase @Inject constructor(
     val isNotCollectedHidden = spoilers.isNotCollectedShowsRatingsHidden && !state.isInCollection()
 
     return@withContext ratings.copy(
-      isHidden = isMyHidden || isWatchlistHidden || isHiddenHidden || isNotCollectedHidden
+      isHidden = isMyHidden || isWatchlistHidden || isHiddenHidden || isNotCollectedHidden,
+      isTapToReveal = settingsSpoilersRepository.isTapToReveal
     )
   }
 }

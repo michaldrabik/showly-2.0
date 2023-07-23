@@ -38,84 +38,98 @@ class RatingsStripView : LinearLayout {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     orientation = HORIZONTAL
     gravity = Gravity.TOP
-
-    with(binding) {
-      viewRatingsStripTrakt.onClick { onTraktClick?.invoke(ratings) }
-      viewRatingsStripImdb.onClick { if (!ratings.isAnyLoading()) onImdbClick?.invoke(ratings) }
-      viewRatingsStripMeta.onClick { if (!ratings.isAnyLoading()) onMetaClick?.invoke(ratings) }
-      viewRatingsStripRotten.onClick { if (!ratings.isAnyLoading()) onRottenClick?.invoke(ratings) }
-    }
   }
 
   fun bind(ratings: Ratings) {
-
-    fun bindValue(
-      ratings: Ratings.Value?,
-      valueView: TextView,
-      progressView: View,
-      linkView: View,
-      isHidden: Boolean,
-      isTapToReveal: Boolean
-    ) {
-      val rating = ratings?.value
-      val isLoading = ratings?.isLoading == true
-      with(valueView) {
-        visibleIf(!isLoading && !rating.isNullOrBlank(), gone = false)
-        text = if (isHidden) {
-          tag = rating
-          SPOILERS_RATINGS_HIDE_SYMBOL
-        } else {
-          rating
-        }
-        setTextColor(if (rating != null) colorPrimary else colorSecondary)
-
-        if (isHidden && isTapToReveal) {
-          onClick { view ->
-            view.tag?.let { text = it.toString() }
-            view.isClickable = false
-          }
-        }
-      }
-
-      progressView.visibleIf(isLoading)
-      linkView.visibleIf(!isLoading && rating.isNullOrBlank())
-    }
-
     this.ratings = ratings
     with(binding) {
       bindValue(
-        ratings = ratings.trakt,
+        ratingsValue = ratings.trakt,
+        layoutView = viewRatingsStripTrakt,
         valueView = viewRatingsStripTraktValue,
         progressView = viewRatingsStripTraktProgress,
         linkView = viewRatingsStripTraktLinkIcon,
         isHidden = ratings.isHidden,
-        isTapToReveal = ratings.isHidden
+        isTapToReveal = ratings.isTapToReveal,
+        callback = onTraktClick
       )
       bindValue(
-        ratings = ratings.imdb,
+        ratingsValue = ratings.imdb,
+        layoutView = viewRatingsStripImdb,
         valueView = viewRatingsStripImdbValue,
         progressView = viewRatingsStripImdbProgress,
         linkView = viewRatingsStripImdbLinkIcon,
         isHidden = ratings.isHidden,
-        isTapToReveal = ratings.isHidden
+        isTapToReveal = ratings.isTapToReveal,
+        callback = onImdbClick
       )
       bindValue(
-        ratings = ratings.metascore,
+        ratingsValue = ratings.metascore,
+        layoutView = viewRatingsStripMeta,
         valueView = viewRatingsStripMetaValue,
         progressView = viewRatingsStripMetaProgress,
         linkView = viewRatingsStripMetaLinkIcon,
         isHidden = ratings.isHidden,
-        isTapToReveal = ratings.isHidden
+        isTapToReveal = ratings.isTapToReveal,
+        callback = onMetaClick
       )
       bindValue(
-        ratings = ratings.rottenTomatoes,
+        ratingsValue = ratings.rottenTomatoes,
+        layoutView = viewRatingsStripRotten,
         valueView = viewRatingsStripRottenValue,
         progressView = viewRatingsStripRottenProgress,
         linkView = viewRatingsStripRottenLinkIcon,
         isHidden = ratings.isHidden,
-        isTapToReveal = ratings.isHidden
+        isTapToReveal = ratings.isTapToReveal,
+        callback = onRottenClick
       )
     }
+  }
+
+  private fun bindValue(
+    ratingsValue: Ratings.Value?,
+    layoutView: View,
+    valueView: TextView,
+    progressView: View,
+    linkView: View,
+    isHidden: Boolean,
+    isTapToReveal: Boolean,
+    callback: ((Ratings) -> Unit)?,
+  ) {
+    val rating = ratingsValue?.value
+    val isLoading = ratingsValue?.isLoading == true
+    with(valueView) {
+      visibleIf(!isLoading && !rating.isNullOrBlank(), gone = false)
+      text = if (isHidden) {
+        tag = rating
+        SPOILERS_RATINGS_HIDE_SYMBOL
+      } else {
+        rating
+      }
+      setTextColor(if (rating != null) colorPrimary else colorSecondary)
+    }
+
+    with(layoutView) {
+      if (isHidden && isTapToReveal && !rating.isNullOrBlank()) {
+        onClick {
+          valueView.tag?.let { valueView.text = it.toString() }
+          onClick {
+            if (!ratings.isAnyLoading()) {
+              callback?.invoke(ratings)
+            }
+          }
+        }
+      } else {
+        onClick {
+          if (!ratings.isAnyLoading()) {
+            callback?.invoke(ratings)
+          }
+        }
+      }
+    }
+
+    progressView.visibleIf(isLoading)
+    linkView.visibleIf(!isLoading && rating.isNullOrBlank())
   }
 
   fun isBound() = this::ratings.isInitialized && !this.ratings.isAnyLoading()
