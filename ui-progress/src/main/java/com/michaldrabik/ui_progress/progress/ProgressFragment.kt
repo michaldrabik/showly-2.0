@@ -51,13 +51,8 @@ import com.michaldrabik.ui_progress.main.RequestWidgetsUpdate
 import com.michaldrabik.ui_progress.progress.recycler.ProgressAdapter
 import com.michaldrabik.ui_progress.progress.recycler.ProgressListItem
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_progress.progressEmptyView
-import kotlinx.android.synthetic.main.fragment_progress.progressOverscroll
-import kotlinx.android.synthetic.main.fragment_progress.progressOverscrollProgress
-import kotlinx.android.synthetic.main.fragment_progress.progressRecycler
-import kotlinx.android.synthetic.main.fragment_progress.progressTipItem
-import kotlinx.android.synthetic.main.layout_progress_empty.progressEmptyDiscoverButton
-import kotlinx.android.synthetic.main.layout_progress_empty.progressEmptyTraktButton
+import kotlinx.android.synthetic.main.fragment_progress.*
+import kotlinx.android.synthetic.main.layout_progress_empty.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -317,7 +312,9 @@ class ProgressFragment :
     }
   }
 
-  override fun onScrollReset() = progressRecycler.smoothScrollToPosition(0)
+  override fun onScrollReset() {
+    progressRecycler?.smoothScrollToPosition(0)
+  }
 
   private fun requireMainFragment() = requireParentFragment() as ProgressMainFragment
 
