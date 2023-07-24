@@ -71,6 +71,7 @@ class SearchItemView : ShowView<SearchListItem> {
 
   private fun bindDescription(item: SearchListItem) {
     with(view) {
+      var isSpoilerHidden = false
       var overview = if (item.translation?.overview.isNullOrBlank()) {
         item.overview
       } else {
@@ -84,6 +85,7 @@ class SearchItemView : ShowView<SearchListItem> {
         if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
           showSearchDescription.tag = overview.toString()
           overview = SPOILERS_REGEX.replace(overview.toString(), SPOILERS_HIDE_SYMBOL)
+          isSpoilerHidden = true
         }
       }
 
@@ -94,15 +96,18 @@ class SearchItemView : ShowView<SearchListItem> {
         if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
           showSearchDescription.tag = overview.toString()
           overview = SPOILERS_REGEX.replace(overview.toString(), SPOILERS_HIDE_SYMBOL)
+          isSpoilerHidden = true
         }
       }
 
       with(showSearchDescription) {
         text = overview
         visibleIf(item.overview.isNotBlank())
-        onClick { view ->
-          view.tag?.let { text = it.toString() }
-          view.isClickable = false
+        if (isSpoilerHidden && item.spoilers.isTapToReveal) {
+          onClick { view ->
+            view.tag?.let { text = it.toString() }
+            view.isClickable = false
+          }
         }
       }
     }
