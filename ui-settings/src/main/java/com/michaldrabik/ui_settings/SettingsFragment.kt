@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import com.michaldrabik.common.Config.SHOW_PREMIUM
 import com.michaldrabik.ui_base.BaseFragment
@@ -15,13 +16,27 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_settings.databinding.FragmentSettingsBinding
+import com.michaldrabik.ui_settings.sections.spoilers.SettingsSpoilersFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_settings), OnTraktAuthorizeListener {
 
+  companion object {
+    const val REQUEST_SETTINGS = "REQUEST_SETTINGS"
+  }
+
   override val viewModel by viewModels<SettingsViewModel>()
   private val binding by viewBinding(FragmentSettingsBinding::bind)
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setFragmentResultListener(REQUEST_SETTINGS) { _, _ ->
+      childFragmentManager.fragments.forEach { fragment ->
+        (fragment as? SettingsSpoilersFragment)?.refreshSettings()
+      }
+    }
+  }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

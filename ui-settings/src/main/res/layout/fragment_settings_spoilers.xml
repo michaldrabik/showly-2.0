@@ -16,59 +16,125 @@
     android:text="@string/textSettingsSpoilers"
     />
 
-  <LinearLayout
+  <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/settingsSpoilersShows"
     style="@style/Settings.ItemLayout"
     android:layout_width="match_parent"
     >
 
     <TextView
+      android:id="@+id/settingsSpoilersShowsTitle"
       style="@style/Settings.Title"
       android:text="@string/textSettingsSpoilersShows"
+      app:layout_constraintBottom_toTopOf="@id/settingsSpoilersShowsSummary"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
       />
 
     <TextView
+      android:id="@+id/settingsSpoilersShowsSummary"
       style="@style/Settings.Summary"
       android:text="@string/textSettingsSpoilersShowsSummary"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsSpoilersShowsTitle"
       />
 
-  </LinearLayout>
+    <ImageView
+      android:id="@+id/settingsSpoilersShowsCheck"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_check"
+      app:tint="?attr/colorAccent"
+      tools:visibility="visible"
+      />
 
-  <LinearLayout
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/settingsSpoilersMovies"
     style="@style/Settings.ItemLayout"
     android:layout_width="match_parent"
     >
 
     <TextView
+      android:id="@+id/settingsSpoilersMoviesTitle"
       style="@style/Settings.Title"
       android:text="@string/textSettingsSpoilersMovies"
+      app:layout_constraintBottom_toTopOf="@id/settingsSpoilersMoviesSummary"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
       />
 
     <TextView
+      android:id="@+id/settingsSpoilersMoviesSummary"
       style="@style/Settings.Summary"
       android:text="@string/textSettingsSpoilersMoviesSummary"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsSpoilersMoviesTitle"
       />
 
-  </LinearLayout>
+    <ImageView
+      android:id="@+id/settingsSpoilersMoviesCheck"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_check"
+      app:tint="?attr/colorAccent"
+      tools:visibility="visible"
+      />
 
-  <LinearLayout
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/settingsSpoilersEpisodes"
     style="@style/Settings.ItemLayout"
     android:layout_width="match_parent"
     >
 
     <TextView
+      android:id="@+id/settingsSpoilersEpisodesTitle"
       style="@style/Settings.Title"
       android:text="@string/textSettingsSpoilersEpisodes"
+      app:layout_constraintBottom_toTopOf="@id/settingsSpoilersEpisodesSummary"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
       />
 
     <TextView
+      android:id="@+id/settingsSpoilersEpisodesSummary"
       style="@style/Settings.Summary"
       android:text="@string/textSettingsSpoilersEpisodesSummary"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsSpoilersEpisodesTitle"
       />
 
-  </LinearLayout>
+    <ImageView
+      android:id="@+id/settingsSpoilersEpisodesCheck"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_check"
+      app:tint="?attr/colorAccent"
+      tools:visibility="visible"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
 
   <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/settingsSpoilersTapToReveal"

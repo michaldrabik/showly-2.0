@@ -7,6 +7,7 @@ import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_settings.R
 import com.michaldrabik.ui_settings.databinding.FragmentSettingsSpoilersBinding
@@ -24,6 +25,7 @@ class SettingsSpoilersFragment :
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
+
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
       doAfterLaunch = { viewModel.loadSettings() }
@@ -50,8 +52,13 @@ class SettingsSpoilersFragment :
   private fun render(uiState: SettingsSpoilersUiState) {
     uiState.run {
       with(binding) {
+        settingsSpoilersShowsCheck.visibleIf(hasShowsSettingActive)
+        settingsSpoilersMoviesCheck.visibleIf(hasMoviesSettingActive)
+        settingsSpoilersEpisodesCheck.visibleIf(hasEpisodesSettingActive)
         settingsSpoilersTapToRevealSwitch.isChecked = isTapToReveal
       }
     }
   }
+
+  fun refreshSettings() = viewModel.loadSettings()
 }
