@@ -2,6 +2,7 @@ package com.michaldrabik.ui_people.gallery.recycler.views
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bumptech.glide.Glide
@@ -11,7 +12,7 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_people.R
-import kotlinx.android.synthetic.main.view_person_gallery_image.view.*
+import com.michaldrabik.ui_people.databinding.ViewPersonGalleryImageBinding
 
 class PersonGalleryImageView : ConstraintLayout {
 
@@ -19,8 +20,9 @@ class PersonGalleryImageView : ConstraintLayout {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
+  private val binding = ViewPersonGalleryImageBinding.inflate(LayoutInflater.from(context), this)
+
   init {
-    inflate(context, R.layout.view_person_gallery_image, this)
     layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
   }
 
@@ -29,7 +31,7 @@ class PersonGalleryImageView : ConstraintLayout {
 
   fun bind(image: Image) {
     clear()
-    viewPersonGalleryImage.onClick { onItemClickListener?.invoke() }
+    binding.viewPersonGalleryImage.onClick { onItemClickListener?.invoke() }
     loadImage(image)
   }
 
@@ -37,10 +39,10 @@ class PersonGalleryImageView : ConstraintLayout {
     Glide.with(this)
       .load(image.fullFileUrl)
       .transform(CenterCrop(), RoundedCorners(cornerRadius))
-      .into(viewPersonGalleryImage)
+      .into(binding.viewPersonGalleryImage)
   }
 
   private fun clear() {
-    Glide.with(this).clear(viewPersonGalleryImage)
+    Glide.with(this).clear(binding.viewPersonGalleryImage)
   }
 }

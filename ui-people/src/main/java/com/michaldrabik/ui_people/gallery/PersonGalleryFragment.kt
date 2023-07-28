@@ -15,13 +15,14 @@ import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.requireParcelable
 import com.michaldrabik.ui_base.utilities.extensions.updateTopMargin
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
 import com.michaldrabik.ui_people.R
+import com.michaldrabik.ui_people.databinding.FragmentPersonGalleryBinding
 import com.michaldrabik.ui_people.gallery.recycler.PersonGalleryAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_person_gallery.*
 
 @AndroidEntryPoint
 class PersonGalleryFragment : BaseFragment<PersonGalleryViewModel>(R.layout.fragment_person_gallery) {
@@ -33,6 +34,7 @@ class PersonGalleryFragment : BaseFragment<PersonGalleryViewModel>(R.layout.frag
   }
 
   override val viewModel by viewModels<PersonGalleryViewModel>()
+  private val binding by viewBinding(FragmentPersonGalleryBinding::bind)
 
   private val personId by lazy { requireParcelable<IdTmdb>(ARG_ID) }
 
@@ -55,42 +57,48 @@ class PersonGalleryFragment : BaseFragment<PersonGalleryViewModel>(R.layout.frag
   }
 
   private fun setupView() {
-    personGalleryBackArrow.onClick {
-      requireActivity().onBackPressed()
-    }
-    personGalleryBrowserIcon.onClick {
-      val currentIndex = personGalleryPager.currentItem
-      val image = galleryAdapter?.getItem(currentIndex)
-      openImageInBrowser(image?.fullFileUrl)
-    }
-    galleryAdapter = PersonGalleryAdapter(
-      onItemClickListener = { personGalleryPager.nextPage() }
-    )
-    personGalleryPager.run {
-      adapter = galleryAdapter
-      offscreenPageLimit = 2
-      personGalleryPagerIndicator.setViewPager(this)
-      adapter?.registerAdapterDataObserver(personGalleryPagerIndicator.adapterDataObserver)
+    with(binding) {
+      personGalleryBackArrow.onClick {
+        requireActivity().onBackPressed()
+      }
+      personGalleryBrowserIcon.onClick {
+        val currentIndex = personGalleryPager.currentItem
+        val image = galleryAdapter?.getItem(currentIndex)
+        openImageInBrowser(image?.fullFileUrl)
+      }
+      galleryAdapter = PersonGalleryAdapter(
+        onItemClickListener = { personGalleryPager.nextPage() }
+      )
+      personGalleryPager.run {
+        adapter = galleryAdapter
+        offscreenPageLimit = 2
+        personGalleryPagerIndicator.setViewPager(this)
+        adapter?.registerAdapterDataObserver(personGalleryPagerIndicator.adapterDataObserver)
+      }
     }
   }
 
   private fun setupStatusBar() {
     requireView().doOnApplyWindowInsets { _, insets, _, _ ->
       val margin = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
-      personGalleryBackArrow.updateTopMargin(margin)
-      personGalleryBrowserIcon.updateTopMargin(margin)
+      with(binding) {
+        personGalleryBackArrow.updateTopMargin(margin)
+        personGalleryBrowserIcon.updateTopMargin(margin)
+      }
     }
   }
 
   private fun render(uiState: PersonGalleryUiState) {
     uiState.run {
-      images?.let {
-        galleryAdapter?.setItems(it)
-        personGalleryEmptyView.visibleIf(it.isEmpty())
-        personGalleryBrowserIcon.visibleIf(it.isNotEmpty())
-      }
-      isLoading.let {
-        personGalleryImagesProgress.visibleIf(it)
+      with(binding) {
+        images?.let {
+          galleryAdapter?.setItems(it)
+          personGalleryEmptyView.visibleIf(it.isEmpty())
+          personGalleryBrowserIcon.visibleIf(it.isNotEmpty())
+        }
+        isLoading.let {
+          personGalleryImagesProgress.visibleIf(it)
+        }
       }
     }
   }
