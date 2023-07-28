@@ -1,4 +1,2 @@
-* Movies details will now display official collections they belong to
-* Added context menu (tap & hold) for "You may also like" items and movies collections items
-* French translations will no longer use Canada variant
+* Spoilers hiding controls has been added. Visit Settings for more.
 * Bugfixes
