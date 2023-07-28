@@ -18,7 +18,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_people.R
 import com.michaldrabik.ui_people.databinding.ViewPersonLinksBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @AndroidEntryPoint
 class PersonLinksBottomSheet : BaseBottomSheetFragment(R.layout.view_person_links) {

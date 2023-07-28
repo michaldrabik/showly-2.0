@@ -14,7 +14,7 @@ import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 abstract class RemoveTraktBottomSheet<T : ViewModel>(@LayoutRes layoutResId: Int) : BaseBottomSheetFragment(layoutResId) {
 
