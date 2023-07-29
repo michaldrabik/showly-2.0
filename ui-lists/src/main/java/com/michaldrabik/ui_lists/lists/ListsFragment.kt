@@ -42,7 +42,9 @@ import com.michaldrabik.ui_base.utilities.extensions.showKeyboard
 import com.michaldrabik.ui_base.utilities.extensions.updateTopMargin
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_lists.R
+import com.michaldrabik.ui_lists.databinding.FragmentListsBinding
 import com.michaldrabik.ui_lists.lists.recycler.ListsAdapter
 import com.michaldrabik.ui_lists.lists.recycler.ListsItem
 import com.michaldrabik.ui_model.SortOrder
@@ -54,17 +56,6 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_LIST
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CREATE_LIST
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_lists.fragmentListsCreateListButton
-import kotlinx.android.synthetic.main.fragment_lists.fragmentListsEmptyView
-import kotlinx.android.synthetic.main.fragment_lists.fragmentListsFilters
-import kotlinx.android.synthetic.main.fragment_lists.fragmentListsIcons
-import kotlinx.android.synthetic.main.fragment_lists.fragmentListsModeTabs
-import kotlinx.android.synthetic.main.fragment_lists.fragmentListsRecycler
-import kotlinx.android.synthetic.main.fragment_lists.fragmentListsRoot
-import kotlinx.android.synthetic.main.fragment_lists.fragmentListsSearchButton
-import kotlinx.android.synthetic.main.fragment_lists.fragmentListsSearchLocalView
-import kotlinx.android.synthetic.main.fragment_lists.fragmentListsSearchView
-import kotlinx.android.synthetic.main.fragment_lists.fragmentListsSnackHost
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -77,6 +68,7 @@ class ListsFragment :
   }
 
   override val viewModel by viewModels<ListsViewModel>()
+  private val binding by viewBinding(FragmentListsBinding::bind)
 
   @Inject lateinit var eventsManager: EventsManager
 
@@ -118,60 +110,68 @@ class ListsFragment :
 
   override fun onSaveInstanceState(outState: Bundle) {
     super.onSaveInstanceState(outState)
-    outState.putFloat("ARG_SEARCH_POSITION", fragmentListsSearchView?.translationY ?: 0F)
-    outState.putFloat("ARG_TABS_POSITION", fragmentListsModeTabs?.translationY ?: 0F)
-    outState.putBoolean("ARG_FAB_HIDDEN", fragmentListsCreateListButton?.visibility != VISIBLE)
+    with(binding) {
+      outState.putFloat("ARG_SEARCH_POSITION", fragmentListsSearchView?.translationY ?: 0F)
+      outState.putFloat("ARG_TABS_POSITION", fragmentListsModeTabs?.translationY ?: 0F)
+      outState.putBoolean("ARG_FAB_HIDDEN", fragmentListsCreateListButton?.visibility != VISIBLE)
+    }
   }
 
   override fun onPause() {
     enableUi()
-    tabsTranslation = fragmentListsModeTabs.translationY
-    searchViewTranslation = fragmentListsSearchView.translationY
+    with(binding) {
+      tabsTranslation = fragmentListsModeTabs.translationY
+      searchViewTranslation = fragmentListsSearchView.translationY
+    }
     super.onPause()
   }
 
   private fun setupView() {
-    fragmentListsSearchView.run {
-      hint = getString(R.string.textSearchFor)
-      onSettingsClickListener = { openSettings() }
-    }
-    with(fragmentListsSearchLocalView) {
-      onCloseClickListener = { exitSearch() }
-    }
-    fragmentListsModeTabs.run {
-      onModeSelected = { (requireActivity() as ModeHost).setMode(it, force = true) }
-      showMovies(moviesEnabled)
-      showLists(true, anchorEnd = moviesEnabled)
-      selectLists()
-    }
-    fragmentListsCreateListButton.run {
-      if (!isFabHidden) fadeIn()
-      onClick { openCreateList() }
-    }
-    fragmentListsFilters.onSortClickListener = { sortOrder, sortType ->
-      showSortOrderDialog(sortOrder, sortType)
-    }
-    fragmentListsSearchButton.run {
-      onClick { if (!isSearching) enterSearch() else exitSearch() }
-    }
-    fragmentListsSearchView.onClick { openMainSearch() }
+    with(binding) {
+      fragmentListsSearchView.run {
+        hint = getString(R.string.textSearchFor)
+        onSettingsClickListener = { openSettings() }
+      }
+      with(fragmentListsSearchLocalView) {
+        onCloseClickListener = { exitSearch() }
+      }
+      fragmentListsModeTabs.run {
+        onModeSelected = { (requireActivity() as ModeHost).setMode(it, force = true) }
+        showMovies(moviesEnabled)
+        showLists(true, anchorEnd = moviesEnabled)
+        selectLists()
+      }
+      fragmentListsCreateListButton.run {
+        if (!isFabHidden) fadeIn()
+        onClick { openCreateList() }
+      }
+      fragmentListsFilters.onSortClickListener = { sortOrder, sortType ->
+        showSortOrderDialog(sortOrder, sortType)
+      }
+      fragmentListsSearchButton.run {
+        onClick { if (!isSearching) enterSearch() else exitSearch() }
+      }
+      fragmentListsSearchView.onClick { openMainSearch() }
 
-    fragmentListsSearchView.translationY = searchViewTranslation
-    fragmentListsModeTabs.translationY = tabsTranslation
-    fragmentListsIcons.translationY = tabsTranslation
+      fragmentListsSearchView.translationY = searchViewTranslation
+      fragmentListsModeTabs.translationY = tabsTranslation
+      fragmentListsIcons.translationY = tabsTranslation
+    }
   }
 
   private fun setupStatusBar() {
-    fragmentListsRoot.doOnApplyWindowInsets { _, insets, _, _ ->
-      val statusBarSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
-      fragmentListsRecycler
-        .updatePadding(top = statusBarSize + dimenToPx(R.dimen.listsRecyclerPaddingTop))
-      fragmentListsSearchView.applyWindowInsetBehaviour(dimenToPx(R.dimen.spaceNormal) + statusBarSize)
-      fragmentListsSearchView.updateTopMargin(dimenToPx(R.dimen.spaceMedium) + statusBarSize)
-      fragmentListsModeTabs.updateTopMargin(dimenToPx(R.dimen.collectionTabsMargin) + statusBarSize)
-      fragmentListsIcons.updateTopMargin(dimenToPx(R.dimen.listsIconsPadding) + statusBarSize)
-      fragmentListsSearchLocalView.updateTopMargin(dimenToPx(R.dimen.listsSearchLocalViewPadding) + statusBarSize)
-      fragmentListsEmptyView.updateTopMargin(statusBarSize)
+    with(binding) {
+      fragmentListsRoot.doOnApplyWindowInsets { _, insets, _, _ ->
+        val statusBarSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+        fragmentListsRecycler
+          .updatePadding(top = statusBarSize + dimenToPx(R.dimen.listsRecyclerPaddingTop))
+        fragmentListsSearchView.applyWindowInsetBehaviour(dimenToPx(R.dimen.spaceNormal) + statusBarSize)
+        fragmentListsSearchView.updateTopMargin(dimenToPx(R.dimen.spaceMedium) + statusBarSize)
+        fragmentListsModeTabs.updateTopMargin(dimenToPx(R.dimen.collectionTabsMargin) + statusBarSize)
+        fragmentListsIcons.updateTopMargin(dimenToPx(R.dimen.listsIconsPadding) + statusBarSize)
+        fragmentListsSearchLocalView.updateTopMargin(dimenToPx(R.dimen.listsSearchLocalViewPadding) + statusBarSize)
+        fragmentListsEmptyView.root.updateTopMargin(statusBarSize)
+      }
     }
   }
 
@@ -188,31 +188,33 @@ class ListsFragment :
         viewModel.loadMissingImage(item, itemImage, force)
       }
     }
-    fragmentListsRecycler.apply {
-      adapter = this@ListsFragment.adapter
-      layoutManager = this@ListsFragment.layoutManager
-      (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-      setHasFixedSize(true)
-      clearOnScrollListeners()
-      addOnScrollListener(object : RecyclerView.OnScrollListener() {
-        var isFading = false
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-          if (isFading) return
-          val position = this@ListsFragment.layoutManager?.findFirstCompletelyVisibleItemPosition() ?: 0
-          if (position > 1) {
-            if (fragmentListsCreateListButton.visibility != VISIBLE) return
-            fragmentListsCreateListButton
-              .fadeOut(125, endAction = { isFading = false })
-              .add(animations)
-          } else {
-            if (fragmentListsCreateListButton.visibility != GONE) return
-            fragmentListsCreateListButton
-              .fadeIn(125, endAction = { isFading = false })
-              .add(animations)
+    with(binding) {
+      fragmentListsRecycler.apply {
+        adapter = this@ListsFragment.adapter
+        layoutManager = this@ListsFragment.layoutManager
+        (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+        setHasFixedSize(true)
+        clearOnScrollListeners()
+        addOnScrollListener(object : RecyclerView.OnScrollListener() {
+          var isFading = false
+          override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            if (isFading) return
+            val position = this@ListsFragment.layoutManager?.findFirstCompletelyVisibleItemPosition() ?: 0
+            if (position > 1) {
+              if (fragmentListsCreateListButton.visibility != VISIBLE) return
+              fragmentListsCreateListButton
+                .fadeOut(125, endAction = { isFading = false })
+                .add(animations)
+            } else {
+              if (fragmentListsCreateListButton.visibility != GONE) return
+              fragmentListsCreateListButton
+                .fadeIn(125, endAction = { isFading = false })
+                .add(animations)
+            }
+            isFading = true
           }
-          isFading = true
-        }
-      })
+        })
+      }
     }
   }
 
@@ -230,36 +232,40 @@ class ListsFragment :
 
   private fun enterSearch() {
     resetTranslations()
-    fragmentListsSearchLocalView.fadeIn(150)
-    fragmentListsIcons.gone()
-    fragmentListsRecycler.smoothScrollToPosition(0)
-    with(fragmentListsSearchLocalView.binding.searchViewLocalInput) {
-      setText("")
-      doAfterTextChanged {
-        viewModel.loadItems(
-          searchQuery = it.toString().trim(),
-          resetScroll = true
-        )
+    with(binding) {
+      fragmentListsSearchLocalView.fadeIn(150)
+      fragmentListsIcons.gone()
+      fragmentListsRecycler.smoothScrollToPosition(0)
+      with(fragmentListsSearchLocalView.binding.searchViewLocalInput) {
+        setText("")
+        doAfterTextChanged {
+          viewModel.loadItems(
+            searchQuery = it.toString().trim(),
+            resetScroll = true
+          )
+        }
+        visible()
+        showKeyboard()
+        requestFocus()
       }
-      visible()
-      showKeyboard()
-      requestFocus()
     }
     isSearching = true
   }
 
   private fun exitSearch() {
-    isSearching = false
-    resetTranslations()
-    fragmentListsSearchLocalView.gone()
-    fragmentListsIcons.visible()
-    fragmentListsRecycler.translationY = 0F
-    fragmentListsRecycler.postDelayed(200) { layoutManager?.scrollToPosition(0) }
-    with(fragmentListsSearchLocalView.binding.searchViewLocalInput) {
-      setText("")
-      gone()
-      hideKeyboard()
-      clearFocus()
+    with(binding) {
+      isSearching = false
+      resetTranslations()
+      fragmentListsSearchLocalView.gone()
+      fragmentListsIcons.visible()
+      fragmentListsRecycler.translationY = 0F
+      fragmentListsRecycler.postDelayed(200) { layoutManager?.scrollToPosition(0) }
+      with(fragmentListsSearchLocalView.binding.searchViewLocalInput) {
+        setText("")
+        gone()
+        hideKeyboard()
+        clearFocus()
+      }
     }
   }
 
@@ -278,19 +284,21 @@ class ListsFragment :
 
   private fun render(uiState: ListsUiState) {
     uiState.run {
-      items?.let {
-        fragmentListsEmptyView.fadeIf(it.isEmpty() && !isSearching)
-        fragmentListsSearchButton.visibleIf(it.isNotEmpty() || isSearching)
+      with(binding) {
+        items?.let {
+          fragmentListsEmptyView.root.fadeIf(it.isEmpty() && !isSearching)
+          fragmentListsSearchButton.visibleIf(it.isNotEmpty() || isSearching)
 
-        val resetScroll = resetScroll.consume() == true
-        adapter?.setItems(it, resetScroll)
-      }
-      sortOrder?.let {
-        fragmentListsFilters.setSorting(it.first, it.second)
-      }
-      isSyncing?.let {
-        fragmentListsSearchView.setTraktProgress(it)
-        fragmentListsSearchView.isEnabled = !it
+          val resetScroll = resetScroll.consume() == true
+          adapter?.setItems(it, resetScroll)
+        }
+        sortOrder?.let {
+          fragmentListsFilters.setSorting(it.first, it.second)
+        }
+        isSyncing?.let {
+          fragmentListsSearchView.setTraktProgress(it)
+          fragmentListsSearchView.isEnabled = !it
+        }
       }
     }
   }
@@ -298,17 +306,19 @@ class ListsFragment :
   private fun openMainSearch() {
     disableUi()
     hideNavigation()
-    fragmentListsModeTabs.fadeOut(duration = 200).add(animations)
-    fragmentListsIcons.fadeOut(duration = 200).add(animations)
-    fragmentListsRecycler.fadeOut(duration = 200) {
-      super.navigateTo(R.id.actionListsFragmentToSearch, null)
-    }.add(animations)
+    with(binding) {
+      fragmentListsModeTabs.fadeOut(duration = 200).add(animations)
+      fragmentListsIcons.fadeOut(duration = 200).add(animations)
+      fragmentListsRecycler.fadeOut(duration = 200) {
+        super.navigateTo(R.id.actionListsFragmentToSearch, null)
+      }.add(animations)
+    }
   }
 
   private fun openListDetails(listItem: ListsItem) {
     disableUi()
     hideNavigation()
-    fragmentListsRoot.fadeOut(150) {
+    binding.fragmentListsRoot.fadeOut(150) {
       val bundle = bundleOf(ARG_LIST to listItem.list)
       navigateTo(R.id.actionListsFragmentToDetailsFragment, bundle)
       exitSearch()
@@ -328,13 +338,15 @@ class ListsFragment :
 
   private fun resetTranslations(duration: Long = TRANSLATION_DURATION) {
     if (view == null) return
-    arrayOf(
-      fragmentListsSearchView,
-      fragmentListsModeTabs,
-      fragmentListsIcons,
-      fragmentListsSearchLocalView
-    ).forEach {
-      it.animate().translationY(0F).setDuration(duration).add(animations)?.start()
+    with(binding) {
+      arrayOf(
+        fragmentListsSearchView,
+        fragmentListsModeTabs,
+        fragmentListsIcons,
+        fragmentListsSearchLocalView
+      ).forEach {
+        it.animate().translationY(0F).setDuration(duration).add(animations)?.start()
+      }
     }
   }
 
@@ -342,12 +354,12 @@ class ListsFragment :
     when (event) {
       is TraktListQuickSyncSuccess -> {
         val text = resources.getQuantityString(R.plurals.textTraktQuickSyncComplete, 1, 1)
-        fragmentListsSnackHost.showInfoSnackbar(text)
+        binding.fragmentListsSnackHost.showInfoSnackbar(text)
       }
 
       is TraktQuickSyncSuccess -> {
         val text = resources.getQuantityString(R.plurals.textTraktQuickSyncComplete, event.count, event.count)
-        fragmentListsSnackHost.showInfoSnackbar(text)
+        binding.fragmentListsSnackHost.showInfoSnackbar(text)
       }
 
       else -> Unit
@@ -356,7 +368,7 @@ class ListsFragment :
 
   override fun onTabReselected() {
     resetTranslations()
-    fragmentListsRecycler.smoothScrollToPosition(0)
+    binding.fragmentListsRecycler.smoothScrollToPosition(0)
   }
 
   override fun onDestroyView() {

@@ -25,10 +25,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.BaseFragment
-import com.michaldrabik.ui_base.common.ListViewMode.GRID
-import com.michaldrabik.ui_base.common.ListViewMode.GRID_TITLE
-import com.michaldrabik.ui_base.common.ListViewMode.LIST_COMPACT
-import com.michaldrabik.ui_base.common.ListViewMode.LIST_NORMAL
+import com.michaldrabik.ui_base.common.ListViewMode
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.extensions.add
@@ -44,7 +41,9 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.requireParcelable
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_lists.R
+import com.michaldrabik.ui_lists.databinding.FragmentListDetailsBinding
 import com.michaldrabik.ui_lists.details.ListDetailsUiEvent.OpenPremium
 import com.michaldrabik.ui_lists.details.helpers.ListItemDragListener
 import com.michaldrabik.ui_lists.details.helpers.ListItemSwipeListener
@@ -72,16 +71,6 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_SORT_ORDER
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_list_details.fragmentListDetailsEmptyView
-import kotlinx.android.synthetic.main.fragment_list_details.fragmentListDetailsFiltersView
-import kotlinx.android.synthetic.main.fragment_list_details.fragmentListDetailsLoadingView
-import kotlinx.android.synthetic.main.fragment_list_details.fragmentListDetailsManageButton
-import kotlinx.android.synthetic.main.fragment_list_details.fragmentListDetailsMoreButton
-import kotlinx.android.synthetic.main.fragment_list_details.fragmentListDetailsRecycler
-import kotlinx.android.synthetic.main.fragment_list_details.fragmentListDetailsRoot
-import kotlinx.android.synthetic.main.fragment_list_details.fragmentListDetailsToolbar
-import kotlinx.android.synthetic.main.fragment_list_details.fragmentListDetailsViewModeButton
-import kotlinx.android.synthetic.main.view_list_delete_confirm.view.viewListDeleteConfirmCheckbox
 
 @AndroidEntryPoint
 class ListDetailsFragment :
@@ -95,6 +84,7 @@ class ListDetailsFragment :
 
   override val navigationId = R.id.listDetailsFragment
   override val viewModel by viewModels<ListDetailsViewModel>()
+  private val binding by viewBinding(FragmentListDetailsBinding::bind)
 
   private val list by lazy { requireParcelable<CustomList>(ARG_LIST) }
 
@@ -136,30 +126,32 @@ class ListDetailsFragment :
 
   override fun onPause() {
     enableUi()
-    headerTranslation = fragmentListDetailsFiltersView.translationY
+    headerTranslation = binding.fragmentListDetailsFiltersView.translationY
     super.onPause()
   }
 
   private fun setupView() {
-    fragmentListDetailsRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
-      val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
-      view.updatePadding(top = padding.top + inset)
-    }
-    with(fragmentListDetailsToolbar) {
-      title = list.name
-      subtitle = list.description
-      setNavigationOnClickListener {
-        if (isReorderMode) toggleReorderMode()
-        else activity?.onBackPressed()
+    with(binding) {
+      fragmentListDetailsRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
+        val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+        view.updatePadding(top = padding.top + inset)
       }
+      with(fragmentListDetailsToolbar) {
+        title = list.name
+        subtitle = list.description
+        setNavigationOnClickListener {
+          if (isReorderMode) toggleReorderMode()
+          else activity?.onBackPressed()
+        }
+      }
+      with(fragmentListDetailsFiltersView) {
+        onTypesChangeListener = { viewModel.setFilterTypes(list.id, it) }
+        onSortClickListener = { order, type -> openSortOrderDialog(order, type) }
+        translationY = headerTranslation
+      }
+      fragmentListDetailsManageButton.onClick { toggleReorderMode() }
+      fragmentListDetailsViewModeButton.onClick(safe = false) { viewModel.toggleViewMode() }
     }
-    with(fragmentListDetailsFiltersView) {
-      onTypesChangeListener = { viewModel.setFilterTypes(list.id, it) }
-      onSortClickListener = { order, type -> openSortOrderDialog(order, type) }
-      translationY = headerTranslation
-    }
-    fragmentListDetailsManageButton.onClick { toggleReorderMode() }
-    fragmentListDetailsViewModeButton.onClick(safe = false) { viewModel.toggleViewMode() }
   }
 
   private fun setupRecycler() {
@@ -173,8 +165,10 @@ class ListDetailsFragment :
         viewModel.loadMissingTranslation(it)
       },
       itemsChangedListener = {
-        fragmentListDetailsRecycler.scrollToPosition(0)
-        fragmentListDetailsFiltersView.translationY = 0F
+        with(binding) {
+          fragmentListDetailsRecycler.scrollToPosition(0)
+          fragmentListDetailsFiltersView.translationY = 0F
+        }
       },
       itemsClearedListener = {
         if (isReorderMode) viewModel.updateRanks(list.id, it)
@@ -187,7 +181,7 @@ class ListDetailsFragment :
     ).apply {
       stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
     }
-    fragmentListDetailsRecycler.apply {
+    binding.fragmentListDetailsRecycler.apply {
       adapter = this@ListDetailsFragment.adapter
       layoutManager = this@ListDetailsFragment.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
@@ -197,10 +191,10 @@ class ListDetailsFragment :
 
     val touchCallback = ReorderListCallback(adapter as ReorderListCallbackAdapter)
     touchHelper = ItemTouchHelper(touchCallback)
-    touchHelper?.attachToRecyclerView(fragmentListDetailsRecycler)
+    touchHelper?.attachToRecyclerView(binding.fragmentListDetailsRecycler)
   }
 
-  private fun setupRecyclerPaddings() {
+  private fun setupRecyclerPaddings() = with(binding) {
     if (layoutManager is GridLayoutManager) {
       fragmentListDetailsRecycler.updatePadding(
         top = recyclerPaddingGridTop,
@@ -249,7 +243,7 @@ class ListDetailsFragment :
       .setTitle(R.string.textConfirmDeleteListTitle)
       .setMessage(R.string.textConfirmDeleteListSubtitle)
       .setPositiveButton(R.string.textYes) { _, _ ->
-        val removeFromTrakt = view.viewListDeleteConfirmCheckbox?.isChecked
+        val removeFromTrakt = view.binding.viewListDeleteConfirmCheckbox?.isChecked
         viewModel.deleteList(list.id, removeFromTrakt == true)
       }
       .setNegativeButton(R.string.textNo) { _, _ -> }
@@ -266,7 +260,7 @@ class ListDetailsFragment :
 
   private fun openItemDetails(listItem: ListDetailsItem) {
     disableUi()
-    fragmentListDetailsRoot.fadeOut(150) {
+    binding.fragmentListDetailsRoot.fadeOut(150) {
       val bundle = bundleOf(
         ARG_SHOW_ID to listItem.show?.traktId,
         ARG_MOVIE_ID to listItem.movie?.traktId
@@ -282,7 +276,7 @@ class ListDetailsFragment :
   }
 
   private fun openPopupMenu(quickRemoveEnabled: Boolean) {
-    PopupMenu(requireContext(), fragmentListDetailsMoreButton, Gravity.CENTER).apply {
+    PopupMenu(requireContext(), binding.fragmentListDetailsMoreButton, Gravity.CENTER).apply {
       inflate(R.menu.menu_list_details)
       setOnMenuItemClickListener { menuItem ->
         when (menuItem.itemId) {
@@ -304,7 +298,7 @@ class ListDetailsFragment :
 
     fun renderTitle(name: String?, itemsCount: Int? = null) {
       if (name.isNullOrBlank()) return
-      fragmentListDetailsToolbar.title = when {
+      binding.fragmentListDetailsToolbar.title = when {
         itemsCount != null && itemsCount > 0 -> "$name ($itemsCount)"
         else -> name
       }
@@ -312,83 +306,85 @@ class ListDetailsFragment :
 
     uiState.run {
       renderTitle(listDetails?.name, listItems?.size)
-      viewMode.let {
-        if (adapter?.listViewMode != it) {
-          layoutManager = when (it) {
-            LIST_NORMAL, LIST_COMPACT -> LinearLayoutManager(requireContext(), VERTICAL, false)
-            GRID, GRID_TITLE -> GridLayoutManager(context, Config.LISTS_GRID_SPAN)
-          }
-          adapter?.listViewMode = it
-          fragmentListDetailsRecycler?.let { recycler ->
-            recycler.layoutManager = layoutManager
-            recycler.adapter = adapter
-          }
-          setupRecyclerPaddings()
-          fragmentListDetailsViewModeButton.setImageResource(
-            when (it) {
-              LIST_NORMAL, LIST_COMPACT -> R.drawable.ic_view_list
-              GRID, GRID_TITLE -> R.drawable.ic_view_grid
+      with(binding) {
+        viewMode.let {
+          if (adapter?.listViewMode != it) {
+            layoutManager = when (it) {
+              ListViewMode.LIST_NORMAL, ListViewMode.LIST_COMPACT -> LinearLayoutManager(requireContext(), VERTICAL, false)
+              ListViewMode.GRID, ListViewMode.GRID_TITLE -> GridLayoutManager(context, Config.LISTS_GRID_SPAN)
             }
-          )
+            adapter?.listViewMode = it
+            fragmentListDetailsRecycler?.let { recycler ->
+              recycler.layoutManager = layoutManager
+              recycler.adapter = adapter
+            }
+            setupRecyclerPaddings()
+            fragmentListDetailsViewModeButton.setImageResource(
+              when (it) {
+                ListViewMode.LIST_NORMAL, ListViewMode.LIST_COMPACT -> R.drawable.ic_view_list
+                ListViewMode.GRID, ListViewMode.GRID_TITLE -> R.drawable.ic_view_grid
+              }
+            )
+          }
         }
-      }
-      listDetails?.let { details ->
-        val isQuickRemoveEnabled = isQuickRemoveEnabled
-        fragmentListDetailsToolbar.subtitle = details.description
-        fragmentListDetailsMoreButton.onClick { openPopupMenu(isQuickRemoveEnabled) }
-        fragmentListDetailsFiltersView.setFilters(details.filterTypeLocal, details.sortByLocal, details.sortHowLocal)
-      }
-      listItems?.let {
-        val isRealEmpty = it.isEmpty() && listDetails?.filterTypeLocal?.containsAll(Mode.getAll()) == true
-        fragmentListDetailsEmptyView.fadeIf(it.isEmpty())
-        fragmentListDetailsManageButton.visibleIf(!isRealEmpty)
-        fragmentListDetailsViewModeButton.visibleIf(!isRealEmpty)
+        listDetails?.let { details ->
+          val isQuickRemoveEnabled = isQuickRemoveEnabled
+          fragmentListDetailsToolbar.subtitle = details.description
+          fragmentListDetailsMoreButton.onClick { openPopupMenu(isQuickRemoveEnabled) }
+          fragmentListDetailsFiltersView.setFilters(details.filterTypeLocal, details.sortByLocal, details.sortHowLocal)
+        }
+        listItems?.let {
+          val isRealEmpty = it.isEmpty() && listDetails?.filterTypeLocal?.containsAll(Mode.getAll()) == true
+          fragmentListDetailsEmptyView.root.fadeIf(it.isEmpty())
+          fragmentListDetailsManageButton.visibleIf(!isRealEmpty)
+          fragmentListDetailsViewModeButton.visibleIf(!isRealEmpty)
 
-        val scrollTop = resetScroll?.consume() == true
-        adapter?.setItems(it, scrollTop)
-        (layoutManager as? GridLayoutManager)?.withSpanSizeLookup { pos ->
-          adapter?.items?.get(pos)?.image?.type?.spanSize!!
+          val scrollTop = resetScroll?.consume() == true
+          adapter?.setItems(it, scrollTop)
+          (layoutManager as? GridLayoutManager)?.withSpanSizeLookup { pos ->
+            adapter?.items?.get(pos)?.image?.type?.spanSize!!
+          }
         }
-      }
-      isManageMode.let { isManageMode ->
-        if (listItems?.isEmpty() == true && listDetails?.filterTypeLocal?.containsAll(Mode.getAll()) == true) {
-          return@let
-        }
+        isManageMode.let { isManageMode ->
+          if (listItems?.isEmpty() == true && listDetails?.filterTypeLocal?.containsAll(Mode.getAll()) == true) {
+            return@let
+          }
 
-        fragmentListDetailsManageButton.visibleIf(!isManageMode)
-        fragmentListDetailsMoreButton.visibleIf(!isManageMode)
-        fragmentListDetailsViewModeButton.visibleIf(!isManageMode)
+          fragmentListDetailsManageButton.visibleIf(!isManageMode)
+          fragmentListDetailsMoreButton.visibleIf(!isManageMode)
+          fragmentListDetailsViewModeButton.visibleIf(!isManageMode)
 
-        if (isManageMode) {
-          fragmentListDetailsToolbar.title = getString(R.string.textChangeRanks)
-          fragmentListDetailsToolbar.subtitle = getString(R.string.textChangeRanksSubtitle)
-          fragmentListDetailsRecycler.updatePadding(
-            top = if (layoutManager is GridLayoutManager) dimenToPx(R.dimen.spaceTiny) else 0,
-            bottom = recyclerPaddingBottom
-          )
-        } else {
-          renderTitle(listDetails?.name ?: list.name, listItems?.size)
-          fragmentListDetailsToolbar.subtitle = listDetails?.description
-          fragmentListDetailsRecycler.updatePadding(
-            top = if (layoutManager is GridLayoutManager) recyclerPaddingGridTop else recyclerPaddingTop,
-            bottom = recyclerPaddingBottom
-          )
-        }
+          if (isManageMode) {
+            fragmentListDetailsToolbar.title = getString(R.string.textChangeRanks)
+            fragmentListDetailsToolbar.subtitle = getString(R.string.textChangeRanksSubtitle)
+            fragmentListDetailsRecycler.updatePadding(
+              top = if (layoutManager is GridLayoutManager) dimenToPx(R.dimen.spaceTiny) else 0,
+              bottom = recyclerPaddingBottom
+            )
+          } else {
+            renderTitle(listDetails?.name ?: list.name, listItems?.size)
+            fragmentListDetailsToolbar.subtitle = listDetails?.description
+            fragmentListDetailsRecycler.updatePadding(
+              top = if (layoutManager is GridLayoutManager) recyclerPaddingGridTop else recyclerPaddingTop,
+              bottom = recyclerPaddingBottom
+            )
+          }
 
-        if (resetScroll?.consume() == true) {
-          fragmentListDetailsRecycler.scrollToPosition(0)
-          fragmentListDetailsFiltersView.translationY = 0F
+          if (resetScroll?.consume() == true) {
+            fragmentListDetailsRecycler.scrollToPosition(0)
+            fragmentListDetailsFiltersView.translationY = 0F
+          }
         }
-      }
-      isFiltersVisible.let {
-        fragmentListDetailsFiltersView.visibleIf(it)
-      }
-      isLoading.let {
-        fragmentListDetailsLoadingView.visibleIf(it)
-        if (it) disableUi() else enableUi()
-      }
-      deleteEvent?.let { event ->
-        event.consume()?.let { activity?.onBackPressed() }
+        isFiltersVisible.let {
+          fragmentListDetailsFiltersView.visibleIf(it)
+        }
+        isLoading.let {
+          fragmentListDetailsLoadingView.visibleIf(it)
+          if (it) disableUi() else enableUi()
+        }
+        deleteEvent?.let { event ->
+          event.consume()?.let { activity?.onBackPressed() }
+        }
       }
     }
   }
@@ -412,7 +408,7 @@ class ListDetailsFragment :
 
   override fun onSaveInstanceState(outState: Bundle) {
     super.onSaveInstanceState(outState)
-    outState.putFloat(ARG_HEADER_TRANSLATION, fragmentListDetailsFiltersView?.translationY ?: 0F)
+    outState.putFloat(ARG_HEADER_TRANSLATION, binding.fragmentListDetailsFiltersView?.translationY ?: 0F)
   }
 
   override fun onDestroyView() {

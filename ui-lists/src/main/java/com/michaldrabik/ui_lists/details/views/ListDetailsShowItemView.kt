@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.MotionEvent.ACTION_DOWN
 import android.view.MotionEvent.ACTION_MOVE
 import android.view.MotionEvent.ACTION_UP
@@ -20,9 +21,9 @@ import com.michaldrabik.ui_base.utilities.extensions.expandTouch
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_lists.R
+import com.michaldrabik.ui_lists.databinding.ViewListDetailsShowItemBinding
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
 import com.michaldrabik.ui_model.Show
-import kotlinx.android.synthetic.main.view_list_details_show_item.view.*
 import java.util.Locale.ENGLISH
 import kotlin.math.abs
 
@@ -33,8 +34,9 @@ class ListDetailsShowItemView : ListDetailsItemView {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
+  private val binding = ViewListDetailsShowItemBinding.inflate(LayoutInflater.from(context), this)
+
   init {
-    inflate(context, R.layout.view_list_details_show_item, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     setBackgroundColor(context.colorFromAttr(android.R.attr.windowBackground))
 
@@ -44,71 +46,76 @@ class ListDetailsShowItemView : ListDetailsItemView {
       }
     }
 
-    listDetailsShowHandle.expandTouch(100)
-    listDetailsShowHandle.setOnTouchListener { _, event ->
-      if (item.isManageMode && event.action == ACTION_DOWN) {
-        itemDragStartListener?.invoke()
+    with(binding) {
+      listDetailsShowHandle.expandTouch(100)
+      listDetailsShowHandle.setOnTouchListener { _, event ->
+        if (item.isManageMode && event.action == ACTION_DOWN) {
+          itemDragStartListener?.invoke()
+        }
+        false
       }
-      false
-    }
 
-    var x = 0F
-    listDetailsShowRoot.setOnTouchListener { _, event ->
-      if (item.isManageMode) {
-        return@setOnTouchListener false
+      var x = 0F
+      listDetailsShowRoot.setOnTouchListener { _, event ->
+        if (item.isManageMode) {
+          return@setOnTouchListener false
+        }
+        if (event.action == ACTION_DOWN) x = event.x
+        if (event.action == ACTION_UP) x = 0F
+        if (event.action == ACTION_MOVE && abs(x - event.x) > 50F) {
+          itemSwipeStartListener?.invoke()
+          return@setOnTouchListener true
+        }
+        false
       }
-      if (event.action == ACTION_DOWN) x = event.x
-      if (event.action == ACTION_UP) x = 0F
-      if (event.action == ACTION_MOVE && abs(x - event.x) > 50F) {
-        itemSwipeStartListener?.invoke()
-        return@setOnTouchListener true
-      }
-      false
-    }
 
-    listDetailsShowRoot.onClick {
-      if (!item.isManageMode) itemClickListener?.invoke(item)
+      listDetailsShowRoot.onClick {
+        if (!item.isManageMode) itemClickListener?.invoke(item)
+      }
     }
   }
 
-  override val imageView: ImageView = listDetailsShowImage
-  override val placeholderView: ImageView = listDetailsShowPlaceholder
+  override val imageView: ImageView = binding.listDetailsShowImage
+  override val placeholderView: ImageView = binding.listDetailsShowPlaceholder
 
   override fun bind(item: ListDetailsItem) {
     super.bind(item)
-    Glide.with(this).clear(listDetailsShowImage)
 
-    val show = item.requireShow()
+    with(binding) {
+      Glide.with(this@ListDetailsShowItemView).clear(listDetailsShowImage)
 
-    listDetailsShowProgress.visibleIf(item.isLoading)
+      val show = item.requireShow()
 
-    listDetailsShowTitle.text =
-      if (item.translation?.title.isNullOrBlank()) show.title
-      else item.translation?.title
+      listDetailsShowProgress.visibleIf(item.isLoading)
 
-    bindDescription(item, show)
-    bindRating(item, show)
+      listDetailsShowTitle.text =
+        if (item.translation?.title.isNullOrBlank()) show.title
+        else item.translation?.title
 
-    listDetailsShowHeader.text =
-      if (show.year > 0) context.getString(R.string.textNetwork, show.year.toString(), show.network)
-      else String.format("%s", show.network)
+      bindDescription(item, show)
+      bindRating(item, show)
 
-    listDetailsShowUserRating.text = String.format(ENGLISH, "%d", item.userRating)
+      listDetailsShowHeader.text =
+        if (show.year > 0) context.getString(R.string.textNetwork, show.year.toString(), show.network)
+        else String.format("%s", show.network)
 
-    listDetailsShowRank.visibleIf(item.isRankDisplayed)
-    listDetailsShowRank.text = String.format(ENGLISH, "%d", item.rankDisplay)
+      listDetailsShowUserRating.text = String.format(ENGLISH, "%d", item.userRating)
 
-    listDetailsShowHandle.visibleIf(item.isManageMode)
-    listDetailsShowStarIcon.visibleIf(!item.isManageMode)
-    listDetailsShowUserStarIcon.visibleIf(!item.isManageMode && item.userRating != null)
-    listDetailsShowUserRating.visibleIf(!item.isManageMode && item.userRating != null)
+      listDetailsShowRank.visibleIf(item.isRankDisplayed)
+      listDetailsShowRank.text = String.format(ENGLISH, "%d", item.rankDisplay)
 
-    with(listDetailsShowHeaderBadge) {
-      val inCollection = item.isWatched || item.isWatchlist
-      visibleIf(inCollection)
-      if (inCollection) {
-        val color = if (item.isWatched) R.color.colorAccent else R.color.colorGrayLight
-        imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, color))
+      listDetailsShowHandle.visibleIf(item.isManageMode)
+      listDetailsShowStarIcon.visibleIf(!item.isManageMode)
+      listDetailsShowUserStarIcon.visibleIf(!item.isManageMode && item.userRating != null)
+      listDetailsShowUserRating.visibleIf(!item.isManageMode && item.userRating != null)
+
+      with(listDetailsShowHeaderBadge) {
+        val inCollection = item.isWatched || item.isWatchlist
+        visibleIf(inCollection)
+        if (inCollection) {
+          val color = if (item.isWatched) R.color.colorAccent else R.color.colorGrayLight
+          imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, color))
+        }
       }
     }
 
@@ -130,13 +137,13 @@ class ListDetailsShowItemView : ListDetailsItemView {
     val isWatchlistHidden = item.spoilers.isWatchlistShowsHidden && item.isWatchlist
     val isNotCollectedHidden = item.spoilers.isNotCollectedShowsHidden && (!item.isWatched && !item.isWatchlist)
     if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
-      listDetailsShowDescription.tag = description
+      binding.listDetailsShowDescription.tag = description
       description = SPOILERS_REGEX.replace(description.toString(), SPOILERS_HIDE_SYMBOL)
     }
 
-    listDetailsShowDescription.text = description
+    binding.listDetailsShowDescription.text = description
     if (item.spoilers.isTapToReveal) {
-      with(listDetailsShowDescription) {
+      with(binding.listDetailsShowDescription) {
         onClick {
           tag?.let { text = it.toString() }
           isClickable = false
@@ -155,15 +162,15 @@ class ListDetailsShowItemView : ListDetailsItemView {
     val isWatchlistHidden = item.spoilers.isWatchlistShowsRatingsHidden && item.isWatchlist
     val isNotCollectedHidden = item.spoilers.isNotCollectedShowsRatingsHidden && (!item.isWatched && !item.isWatchlist)
     if (isMyHidden || isWatchlistHidden || isNotCollectedHidden) {
-      listDetailsShowRating.tag = rating
+      binding.listDetailsShowRating.tag = rating
       rating = SPOILERS_RATINGS_HIDE_SYMBOL
     }
 
-    listDetailsShowRating.visibleIf(!item.isManageMode)
-    listDetailsShowRating.text = rating
+    binding.listDetailsShowRating.visibleIf(!item.isManageMode)
+    binding.listDetailsShowRating.text = rating
 
     if (item.spoilers.isTapToReveal) {
-      with(listDetailsShowRating) {
+      with(binding.listDetailsShowRating) {
         onClick {
           tag?.let { text = it.toString() }
           isClickable = false
