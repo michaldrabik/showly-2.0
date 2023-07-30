@@ -3,6 +3,7 @@ package com.michaldrabik.ui_news
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.extensions.nowUtcMillis
+import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
@@ -21,7 +22,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -85,7 +85,7 @@ class NewsViewModel @Inject constructor(
           previousRefresh = nowUtcMillis()
         }
       } catch (error: Throwable) {
-        Timber.e(error)
+        Logger.record(error, "NewsViewModel::loadItems()")
         messageChannel.send(MessageEvent.Error(R.string.errorGeneral))
         loadingState.value = false
         rethrowCancellation(error)
