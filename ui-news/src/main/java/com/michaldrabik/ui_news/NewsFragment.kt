@@ -84,8 +84,7 @@ class NewsFragment :
 
   override fun onSaveInstanceState(outState: Bundle) {
     super.onSaveInstanceState(outState)
-    val headerTranslation = view?.findViewById<View>(R.id.fragmentNewsHeaderView)?.translationY
-    outState.putFloat(ARG_HEADER_POSITION, headerTranslation ?: 0F)
+    outState.putFloat(ARG_HEADER_POSITION, headerTranslation)
   }
 
   override fun onPause() {

@@ -75,16 +75,24 @@ class DiscoverMoviesFragment :
 
   override fun onSaveInstanceState(outState: Bundle) {
     super.onSaveInstanceState(outState)
-    with(binding) {
-      outState.putFloat("ARG_SEARCH_POS", discoverMoviesSearchView.translationY)
-      outState.putFloat("ARG_TABS_POS", discoverMoviesTabsView.translationY)
-      outState.putFloat("ARG_FILTERS_POS", discoverMoviesFiltersView.translationY)
-    }
+    outState.putFloat("ARG_SEARCH_POS", searchViewPosition)
+    outState.putFloat("ARG_TABS_POS", tabsViewPosition)
+    outState.putFloat("ARG_FILTERS_POS", filtersViewPosition)
   }
 
   override fun onResume() {
     super.onResume()
     showNavigation()
+  }
+
+  override fun onPause() {
+    enableUi()
+    with(binding) {
+      searchViewPosition = discoverMoviesSearchView.translationY
+      tabsViewPosition = discoverMoviesTabsView.translationY
+      filtersViewPosition = discoverMoviesFiltersView.translationY
+    }
+    super.onPause()
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -294,16 +302,6 @@ class DiscoverMoviesFragment :
   }
 
   override fun onTabReselected() = openSearch()
-
-  override fun onPause() {
-    enableUi()
-    with(binding) {
-      searchViewPosition = discoverMoviesSearchView.translationY
-      tabsViewPosition = discoverMoviesTabsView.translationY
-      filtersViewPosition = discoverMoviesFiltersView.translationY
-    }
-    super.onPause()
-  }
 
   override fun onDestroyView() {
     adapter = null

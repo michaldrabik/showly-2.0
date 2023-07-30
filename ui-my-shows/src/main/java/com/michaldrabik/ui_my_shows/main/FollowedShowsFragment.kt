@@ -38,14 +38,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ITEM
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_ITEM_MENU
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_followed_shows.followedShowsIcons
-import kotlinx.android.synthetic.main.fragment_followed_shows.followedShowsModeTabs
-import kotlinx.android.synthetic.main.fragment_followed_shows.followedShowsPager
-import kotlinx.android.synthetic.main.fragment_followed_shows.followedShowsRoot
-import kotlinx.android.synthetic.main.fragment_followed_shows.followedShowsSearchIcon
-import kotlinx.android.synthetic.main.fragment_followed_shows.followedShowsSearchLocalView
-import kotlinx.android.synthetic.main.fragment_followed_shows.followedShowsSearchView
-import kotlinx.android.synthetic.main.fragment_followed_shows.followedShowsTabs
+import kotlinx.android.synthetic.main.fragment_followed_shows.*
 
 @AndroidEntryPoint
 class FollowedShowsFragment :
@@ -92,9 +85,9 @@ class FollowedShowsFragment :
 
   override fun onSaveInstanceState(outState: Bundle) {
     super.onSaveInstanceState(outState)
-    outState.putFloat("ARG_SEARCH_POSITION", followedShowsSearchView?.translationY ?: 0F)
-    outState.putFloat("ARG_TABS_POSITION", followedShowsTabs?.translationY ?: 0F)
-    outState.putInt("ARG_PAGE", followedShowsPager?.currentItem ?: 0)
+    outState.putFloat("ARG_SEARCH_POSITION", searchViewTranslation)
+    outState.putFloat("ARG_TABS_POSITION", tabsViewTranslation)
+    outState.putInt("ARG_PAGE", currentPage)
   }
 
   override fun onResume() {

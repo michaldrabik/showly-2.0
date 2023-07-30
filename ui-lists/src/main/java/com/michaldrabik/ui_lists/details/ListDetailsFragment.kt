@@ -130,6 +130,11 @@ class ListDetailsFragment :
     super.onPause()
   }
 
+  override fun onSaveInstanceState(outState: Bundle) {
+    super.onSaveInstanceState(outState)
+    outState.putFloat(ARG_HEADER_TRANSLATION, headerTranslation)
+  }
+
   private fun setupView() {
     with(binding) {
       fragmentListDetailsRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
@@ -404,11 +409,6 @@ class ListDetailsFragment :
 
   override fun onListItemSwipeStarted(viewHolder: RecyclerView.ViewHolder) {
     touchHelper?.startSwipe(viewHolder)
-  }
-
-  override fun onSaveInstanceState(outState: Bundle) {
-    super.onSaveInstanceState(outState)
-    outState.putFloat(ARG_HEADER_TRANSLATION, binding.fragmentListDetailsFiltersView?.translationY ?: 0F)
   }
 
   override fun onDestroyView() {

@@ -76,14 +76,9 @@ class DiscoverFragment :
 
   override fun onSaveInstanceState(outState: Bundle) {
     super.onSaveInstanceState(outState)
-    outState.putFloat("ARG_SEARCH_POS", discoverSearchView?.translationY ?: 0F)
-    outState.putFloat("ARG_TABS_POS", discoverModeTabsView?.translationY ?: 0F)
-    outState.putFloat("ARG_FILTERS_POS", discoverFiltersView?.translationY ?: 0F)
-  }
-
-  override fun onResume() {
-    super.onResume()
-    showNavigation()
+    outState.putFloat("ARG_SEARCH_POS", searchViewPosition)
+    outState.putFloat("ARG_TABS_POS", tabsViewPosition)
+    outState.putFloat("ARG_FILTERS_POS", filtersViewPosition)
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -102,6 +97,25 @@ class DiscoverFragment :
     setFragmentResultListener(REQUEST_DISCOVER_FILTERS) { _, _ ->
       viewModel.loadShows(scrollToTop = true, skipCache = true, instantProgress = true)
     }
+  }
+
+  override fun onResume() {
+    super.onResume()
+    showNavigation()
+  }
+
+  override fun onPause() {
+    enableUi()
+    searchViewPosition = discoverSearchView.translationY
+    tabsViewPosition = discoverModeTabsView.translationY
+    filtersViewPosition = discoverFiltersView.translationY
+    super.onPause()
+  }
+
+  override fun onDestroyView() {
+    adapter = null
+    layoutManager = null
+    super.onDestroyView()
   }
 
   private fun setupView() {
@@ -297,18 +311,4 @@ class DiscoverFragment :
   }
 
   override fun onTabReselected() = openSearch()
-
-  override fun onPause() {
-    enableUi()
-    searchViewPosition = discoverSearchView.translationY
-    tabsViewPosition = discoverModeTabsView.translationY
-    filtersViewPosition = discoverFiltersView.translationY
-    super.onPause()
-  }
-
-  override fun onDestroyView() {
-    adapter = null
-    layoutManager = null
-    super.onDestroyView()
-  }
 }

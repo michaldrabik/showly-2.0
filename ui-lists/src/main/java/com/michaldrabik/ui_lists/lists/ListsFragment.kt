@@ -110,11 +110,9 @@ class ListsFragment :
 
   override fun onSaveInstanceState(outState: Bundle) {
     super.onSaveInstanceState(outState)
-    with(binding) {
-      outState.putFloat("ARG_SEARCH_POSITION", fragmentListsSearchView?.translationY ?: 0F)
-      outState.putFloat("ARG_TABS_POSITION", fragmentListsModeTabs?.translationY ?: 0F)
-      outState.putBoolean("ARG_FAB_HIDDEN", fragmentListsCreateListButton?.visibility != VISIBLE)
-    }
+    outState.putFloat("ARG_SEARCH_POSITION", searchViewTranslation)
+    outState.putFloat("ARG_TABS_POSITION", tabsTranslation)
+    outState.putBoolean("ARG_FAB_HIDDEN", isFabHidden)
   }
 
   override fun onPause() {
@@ -122,6 +120,7 @@ class ListsFragment :
     with(binding) {
       tabsTranslation = fragmentListsModeTabs.translationY
       searchViewTranslation = fragmentListsSearchView.translationY
+      isFabHidden = fragmentListsCreateListButton.visibility != VISIBLE
     }
     super.onPause()
   }

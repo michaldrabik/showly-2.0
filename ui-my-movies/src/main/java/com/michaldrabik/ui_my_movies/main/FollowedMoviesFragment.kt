@@ -38,14 +38,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ITEM
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_followed_movies.followedMoviesIcons
-import kotlinx.android.synthetic.main.fragment_followed_movies.followedMoviesModeTabs
-import kotlinx.android.synthetic.main.fragment_followed_movies.followedMoviesPager
-import kotlinx.android.synthetic.main.fragment_followed_movies.followedMoviesRoot
-import kotlinx.android.synthetic.main.fragment_followed_movies.followedMoviesSearchIcon
-import kotlinx.android.synthetic.main.fragment_followed_movies.followedMoviesSearchLocalView
-import kotlinx.android.synthetic.main.fragment_followed_movies.followedMoviesSearchView
-import kotlinx.android.synthetic.main.fragment_followed_movies.followedMoviesTabs
+import kotlinx.android.synthetic.main.fragment_followed_movies.*
 
 @AndroidEntryPoint
 class FollowedMoviesFragment :
@@ -87,9 +80,9 @@ class FollowedMoviesFragment :
 
   override fun onSaveInstanceState(outState: Bundle) {
     super.onSaveInstanceState(outState)
-    outState.putFloat("ARG_SEARCH_POSITION", followedMoviesSearchView?.translationY ?: 0F)
-    outState.putFloat("ARG_TABS_POSITION", followedMoviesTabs?.translationY ?: 0F)
-    outState.putInt("ARG_PAGE", followedMoviesPager?.currentItem ?: 0)
+    outState.putFloat("ARG_SEARCH_POSITION", searchViewTranslation)
+    outState.putFloat("ARG_TABS_POSITION", tabsViewTranslation)
+    outState.putInt("ARG_PAGE", currentPage)
   }
 
   override fun onResume() {

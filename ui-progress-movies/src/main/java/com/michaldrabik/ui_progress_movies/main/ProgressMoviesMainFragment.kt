@@ -93,12 +93,10 @@ class ProgressMoviesMainFragment :
 
   override fun onSaveInstanceState(outState: Bundle) {
     super.onSaveInstanceState(outState)
-    with(binding) {
-      outState.putFloat("ARG_SEARCH_POSITION", progressMoviesSearchView.translationY)
-      outState.putFloat("ARG_TABS_POSITION", progressMoviesTabs.translationY)
-      outState.putFloat("ARG_SIDE_ICON_POSITION", progressMoviesSideIcons.translationY)
-      outState.putInt("ARG_PAGE", progressMoviesPager.currentItem)
-    }
+    outState.putFloat("ARG_SEARCH_POSITION", searchViewTranslation)
+    outState.putFloat("ARG_TABS_POSITION", tabsTranslation)
+    outState.putFloat("ARG_SIDE_ICON_POSITION", sideIconTranslation)
+    outState.putInt("ARG_PAGE", currentPage)
   }
 
   override fun onResume() {
@@ -109,8 +107,8 @@ class ProgressMoviesMainFragment :
   override fun onPause() {
     enableUi()
     with(binding) {
-      tabsTranslation = progressMoviesTabs.translationY
       searchViewTranslation = progressMoviesSearchView.translationY
+      tabsTranslation = progressMoviesTabs.translationY
       sideIconTranslation = progressMoviesSideIcons.translationY
     }
     super.onPause()
