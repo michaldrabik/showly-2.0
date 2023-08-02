@@ -198,7 +198,7 @@
         android:layout_marginEnd="@dimen/spaceNormal"
         android:ellipsize="end"
         android:gravity="start"
-        android:maxLines="12"
+        android:maxLines="20"
         android:textAlignment="viewStart"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="14sp"

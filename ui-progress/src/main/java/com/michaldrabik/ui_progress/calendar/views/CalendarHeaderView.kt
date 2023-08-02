@@ -2,6 +2,7 @@ package com.michaldrabik.ui_progress.calendar.views
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.LinearLayout
@@ -11,7 +12,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.CalendarMode
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarListItem
-import kotlinx.android.synthetic.main.view_calendar_header.view.*
+import com.michaldrabik.ui_progress.databinding.ViewCalendarHeaderBinding
 
 class CalendarHeaderView : LinearLayout {
 
@@ -19,8 +20,9 @@ class CalendarHeaderView : LinearLayout {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
+  private val binding = ViewCalendarHeaderBinding.inflate(LayoutInflater.from(context), this)
+
   init {
-    inflate(context, R.layout.view_calendar_header, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     orientation = HORIZONTAL
     updatePadding(
@@ -32,7 +34,9 @@ class CalendarHeaderView : LinearLayout {
   }
 
   fun bind(item: CalendarListItem.Header) {
-    calendarHeaderText.setText(item.textResId)
-    calendarHeaderIcon.visibleIf(item.calendarMode == CalendarMode.RECENTS)
+    with(binding) {
+      calendarHeaderText.setText(item.textResId)
+      calendarHeaderIcon.visibleIf(item.calendarMode == CalendarMode.RECENTS)
+    }
   }
 }

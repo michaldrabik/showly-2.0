@@ -30,6 +30,7 @@ import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.EPISODES_LEFT
 import com.michaldrabik.ui_model.SortOrder.NAME
@@ -44,6 +45,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_ORDE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_SORT_ORDER
 import com.michaldrabik.ui_progress.R
+import com.michaldrabik.ui_progress.databinding.FragmentProgressBinding
 import com.michaldrabik.ui_progress.helpers.TopOverscrollAdapter
 import com.michaldrabik.ui_progress.main.EpisodeCheckActionUiEvent
 import com.michaldrabik.ui_progress.main.ProgressMainFragment
@@ -52,8 +54,6 @@ import com.michaldrabik.ui_progress.main.RequestWidgetsUpdate
 import com.michaldrabik.ui_progress.progress.recycler.ProgressAdapter
 import com.michaldrabik.ui_progress.progress.recycler.ProgressListItem
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_progress.*
-import kotlinx.android.synthetic.main.layout_progress_empty.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -78,6 +78,7 @@ class ProgressFragment :
 
   private val parentViewModel by viewModels<ProgressMainViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<ProgressViewModel>()
+  private val binding by viewBinding(FragmentProgressBinding::bind)
 
   private var adapter: ProgressAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
@@ -108,13 +109,15 @@ class ProgressFragment :
   }
 
   private fun setupView() {
-    progressEmptyTraktButton.onClick { requireMainFragment().openTraktSync() }
-    progressEmptyDiscoverButton.onClick {
-      (requireActivity() as NavigationHost).navigateToDiscover()
-    }
-    progressTipItem.onClick {
-      it.gone()
-      showTip(Tip.WATCHLIST_ITEM_PIN)
+    with(binding) {
+      progressEmptyView.progressEmptyTraktButton.onClick { requireMainFragment().openTraktSync() }
+      progressEmptyView.progressEmptyDiscoverButton.onClick {
+        (requireActivity() as NavigationHost).navigateToDiscover()
+      }
+      progressTipItem.onClick {
+        it.gone()
+        showTip(Tip.WATCHLIST_ITEM_PIN)
+      }
     }
   }
 
@@ -142,7 +145,7 @@ class ProgressFragment :
         layoutManager?.scrollToPosition(0)
       }
     )
-    progressRecycler.apply {
+    binding.progressRecycler.apply {
       adapter = this@ProgressFragment.adapter
       layoutManager = this@ProgressFragment.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
@@ -151,27 +154,29 @@ class ProgressFragment :
   }
 
   private fun setupStatusBar() {
-    val recyclerPadding = if (moviesEnabled) R.dimen.progressTabsViewPadding else R.dimen.progressTabsViewPaddingNoModes
-    val overscrollPadding = if (moviesEnabled) R.dimen.progressOverscrollPadding else R.dimen.progressOverscrollPaddingNoModes
-    if (statusBarHeight != 0) {
-      progressRecycler.updatePadding(top = statusBarHeight + dimenToPx(recyclerPadding))
-      (progressOverscroll.layoutParams as ViewGroup.MarginLayoutParams)
-        .updateMargins(top = statusBarHeight + dimenToPx(overscrollPadding))
-      return
-    }
-    progressRecycler.doOnApplyWindowInsets { view, insets, _, _ ->
-      statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
-      view.updatePadding(top = statusBarHeight + dimenToPx(recyclerPadding))
-      (progressEmptyView.layoutParams as ViewGroup.MarginLayoutParams)
-        .updateMargins(top = statusBarHeight + dimenToPx(R.dimen.spaceBig))
-      (progressOverscroll.layoutParams as ViewGroup.MarginLayoutParams)
-        .updateMargins(top = statusBarHeight + dimenToPx(overscrollPadding))
+    with(binding) {
+      val recyclerPadding = if (moviesEnabled) R.dimen.progressTabsViewPadding else R.dimen.progressTabsViewPaddingNoModes
+      val overscrollPadding = if (moviesEnabled) R.dimen.progressOverscrollPadding else R.dimen.progressOverscrollPaddingNoModes
+      if (statusBarHeight != 0) {
+        progressRecycler.updatePadding(top = statusBarHeight + dimenToPx(recyclerPadding))
+        (progressOverscroll.layoutParams as ViewGroup.MarginLayoutParams)
+          .updateMargins(top = statusBarHeight + dimenToPx(overscrollPadding))
+        return
+      }
+      progressRecycler.doOnApplyWindowInsets { view, insets, _, _ ->
+        statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+        view.updatePadding(top = statusBarHeight + dimenToPx(recyclerPadding))
+        (progressEmptyView.root.layoutParams as ViewGroup.MarginLayoutParams)
+          .updateMargins(top = statusBarHeight + dimenToPx(R.dimen.spaceBig))
+        (progressOverscroll.layoutParams as ViewGroup.MarginLayoutParams)
+          .updateMargins(top = statusBarHeight + dimenToPx(overscrollPadding))
+      }
     }
   }
 
   private fun setupOverscroll() {
     if (overscroll != null) return
-    val adapt = TopOverscrollAdapter(progressRecycler)
+    val adapt = TopOverscrollAdapter(binding.progressRecycler)
     overscroll = VerticalOverScrollBounceEffectDecorator(
       adapt,
       1F,
@@ -179,7 +184,7 @@ class ProgressFragment :
       OverScrollBounceEffectDecoratorBase.DEFAULT_DECELERATE_FACTOR
     ).apply {
       setOverScrollUpdateListener { _, state, offset ->
-        progressOverscroll?.run {
+        binding.progressOverscroll.run {
           if (offset > 0) {
             val value = (offset / OVERSCROLL_OFFSET).coerceAtMost(1F)
             val valueTranslation = offset / OVERSCROLL_OFFSET_TRANSLATION
@@ -203,7 +208,7 @@ class ProgressFragment :
                 translationY = valueTranslation
                 if (offset >= OVERSCROLL_OFFSET &&
                   overscrollEnabled &&
-                  progressOverscrollProgress.progress >= 100
+                  binding.progressOverscrollProgress.progress >= 100
                 ) {
                   overscrollEnabled = false
                   viewModel.startTraktSync()
@@ -227,9 +232,9 @@ class ProgressFragment :
     overscrollJob = viewLifecycleOwner.lifecycleScope.launch {
       repeat(100) {
         val progress = it + 1
-        progressOverscrollProgress.progress = progress
+        binding.progressOverscrollProgress.progress = progress
         if (progress >= 100) {
-          progressOverscroll.bump(200)
+          binding.progressOverscroll.bump(200)
         }
         delay(5)
       }
@@ -239,7 +244,7 @@ class ProgressFragment :
   private fun onOverscrollCancel() {
     overscrollJob?.cancel()
     overscrollJob = null
-    progressOverscrollProgress.progress = 0
+    binding.progressOverscrollProgress.progress = 0
   }
 
   private fun openSortOrderDialog(order: SortOrder, type: SortType, newAtTop: Boolean) {
@@ -259,8 +264,10 @@ class ProgressFragment :
   override fun onEnterSearch() {
     isSearching = true
 
-    progressRecycler.translationY = dimenToPx(R.dimen.progressSearchLocalOffset).toFloat()
-    progressRecycler.smoothScrollToPosition(0)
+    with(binding) {
+      progressRecycler.translationY = dimenToPx(R.dimen.progressSearchLocalOffset).toFloat()
+      progressRecycler.smoothScrollToPosition(0)
+    }
 
     overscroll?.detach()
     overscroll = null
@@ -269,8 +276,10 @@ class ProgressFragment :
   override fun onExitSearch() {
     isSearching = false
 
-    progressRecycler.translationY = 0F
-    progressRecycler.smoothScrollToPosition(0)
+    with(binding) {
+      progressRecycler.translationY = 0F
+      progressRecycler.smoothScrollToPosition(0)
+    }
 
     setupOverscroll()
   }
@@ -289,15 +298,17 @@ class ProgressFragment :
 
   private fun render(uiState: ProgressUiState) {
     uiState.run {
-      items?.let {
-        val resetScroll = scrollReset?.consume() == true
-        adapter?.setItems(it, resetScroll)
-        progressEmptyView.visibleIf(it.isEmpty() && !isLoading && !isSearching)
-        progressTipItem.visibleIf(it.count() >= 3 && !isTipShown(Tip.WATCHLIST_ITEM_PIN))
-        progressRecycler.fadeIn(
-          duration = 200,
-          withHardware = true
-        ).add(animations)
+      with(binding) {
+        items?.let {
+          val resetScroll = scrollReset?.consume() == true
+          adapter?.setItems(it, resetScroll)
+          progressEmptyView.root.visibleIf(it.isEmpty() && !isLoading && !isSearching)
+          progressTipItem.visibleIf(it.count() >= 3 && !isTipShown(Tip.WATCHLIST_ITEM_PIN))
+          progressRecycler.fadeIn(
+            duration = 200,
+            withHardware = true
+          ).add(animations)
+        }
       }
       isOverScrollEnabled.let {
         if (it) {
@@ -316,7 +327,7 @@ class ProgressFragment :
   }
 
   override fun onScrollReset() {
-    progressRecycler?.smoothScrollToPosition(0)
+    binding.progressRecycler.smoothScrollToPosition(0)
   }
 
   private fun requireMainFragment() = requireParentFragment() as ProgressMainFragment
