@@ -37,6 +37,7 @@ import com.michaldrabik.ui_base.utilities.extensions.shake
 import com.michaldrabik.ui_base.utilities.extensions.showKeyboard
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.RecentSearch
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
@@ -46,22 +47,13 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_ORDE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_SORT_ORDER
+import com.michaldrabik.ui_search.databinding.FragmentSearchBinding
 import com.michaldrabik.ui_search.recycler.SearchAdapter
 import com.michaldrabik.ui_search.recycler.SearchListItem
 import com.michaldrabik.ui_search.recycler.suggestions.SuggestionAdapter
 import com.michaldrabik.ui_search.utilities.TextWatcherAdapter
 import com.michaldrabik.ui_search.views.RecentSearchView
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_search.searchEmptyView
-import kotlinx.android.synthetic.main.fragment_search.searchFiltersView
-import kotlinx.android.synthetic.main.fragment_search.searchInitialView
-import kotlinx.android.synthetic.main.fragment_search.searchRecentsClearButton
-import kotlinx.android.synthetic.main.fragment_search.searchRecentsLayout
-import kotlinx.android.synthetic.main.fragment_search.searchRecycler
-import kotlinx.android.synthetic.main.fragment_search.searchRoot
-import kotlinx.android.synthetic.main.fragment_search.searchSwipeRefresh
-import kotlinx.android.synthetic.main.fragment_search.searchViewLayout
-import kotlinx.android.synthetic.main.fragment_search.suggestionsRecycler
 
 @AndroidEntryPoint
 class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), TextWatcherAdapter {
@@ -70,8 +62,10 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
     private const val ARG_HEADER_TRANSLATION = "ARG_HEADER_TRANSLATION"
   }
 
-  override val viewModel by viewModels<SearchViewModel>()
   override val navigationId = R.id.searchFragment
+
+  override val viewModel by viewModels<SearchViewModel>()
+  private val binding by viewBinding(FragmentSearchBinding::bind)
 
   private var adapter: SearchAdapter? = null
   private var suggestionsAdapter: SuggestionAdapter? = null
@@ -110,14 +104,16 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
 
   override fun onPause() {
     enableUi()
-    headerTranslation = searchFiltersView.translationY
+    headerTranslation = binding.searchFiltersView.translationY
     super.onPause()
   }
 
   override fun onStop() {
     viewModel.clearSuggestions()
-    searchViewLayout.binding.searchViewInput.removeTextChangedListener(this)
-    searchViewLayout.binding.searchViewInput.setText("")
+    with(binding) {
+      searchViewLayout.binding.searchViewInput.removeTextChangedListener(this@SearchFragment)
+      searchViewLayout.binding.searchViewInput.setText("")
+    }
     super.onStop()
   }
 
@@ -128,72 +124,76 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
   }
 
   private fun setupView() {
-    searchViewLayout.binding.searchViewInput.visible()
-    searchViewLayout.binding.searchViewText.gone()
-    (searchViewLayout.binding.searchViewIcon.drawable as Animatable).start()
-    searchViewLayout.settingsIconVisible = false
-    viewModel.preloadSuggestions()
-    if (!isInitialized) {
-      searchViewLayout.binding.searchViewInput.showKeyboard()
-      searchViewLayout.binding.searchViewInput.requestFocus()
-      viewModel.loadRecentSearches()
-    }
-
-    searchViewLayout.binding.searchViewInput.run {
-      addTextChangedListener(this@SearchFragment)
-      setOnEditorActionListener { textView, id, _ ->
-        if (id == EditorInfo.IME_ACTION_SEARCH) {
-          val query = textView.text.toString()
-          if (query.trim().isBlank()) {
-            searchViewLayout?.shake()
-            return@setOnEditorActionListener true
-          }
-          viewModel.search(query)
-          searchViewLayout.binding.searchViewInput.hideKeyboard()
-          searchViewLayout.binding.searchViewInput.clearFocus()
-        }
-        true
+    with(binding) {
+      searchViewLayout.binding.searchViewInput.visible()
+      searchViewLayout.binding.searchViewText.gone()
+      (searchViewLayout.binding.searchViewIcon.drawable as Animatable).start()
+      searchViewLayout.settingsIconVisible = false
+      viewModel.preloadSuggestions()
+      if (!isInitialized) {
+        searchViewLayout.binding.searchViewInput.showKeyboard()
+        searchViewLayout.binding.searchViewInput.requestFocus()
+        viewModel.loadRecentSearches()
       }
-    }
-    searchViewLayout.binding.searchViewIcon.onClick {
-      searchViewLayout.binding.searchViewInput.hideKeyboard()
-      requireActivity().onBackPressed()
-    }
-    with(searchFiltersView) {
-      onChipsChangeListener = viewModel::setFilters
-      onSortClickListener = ::openSortingDialog
-      translationY = headerTranslation
+
+      searchViewLayout.binding.searchViewInput.run {
+        addTextChangedListener(this@SearchFragment)
+        setOnEditorActionListener { textView, id, _ ->
+          if (id == EditorInfo.IME_ACTION_SEARCH) {
+            val query = textView.text.toString()
+            if (query.trim().isBlank()) {
+              searchViewLayout.shake()
+              return@setOnEditorActionListener true
+            }
+            viewModel.search(query)
+            searchViewLayout.binding.searchViewInput.hideKeyboard()
+            searchViewLayout.binding.searchViewInput.clearFocus()
+          }
+          true
+        }
+      }
+      searchViewLayout.binding.searchViewIcon.onClick {
+        searchViewLayout.binding.searchViewInput.hideKeyboard()
+        requireActivity().onBackPressed()
+      }
+      with(searchFiltersView) {
+        onChipsChangeListener = viewModel::setFilters
+        onSortClickListener = ::openSortingDialog
+        translationY = headerTranslation
+      }
     }
   }
 
   private fun setupRecycler() {
-    layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
-    adapter = SearchAdapter(
-      itemClickListener = { openShowDetails(it) },
-      itemLongClickListener = { openContextMenu(it) },
-      missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) },
-      listChangeListener = { searchRecycler.scrollToPosition(0) }
-    )
-    searchRecycler.apply {
-      setHasFixedSize(true)
-      adapter = this@SearchFragment.adapter
-      layoutManager = this@SearchFragment.layoutManager
-      itemAnimator = null
-      clearOnScrollListeners()
-      addOnScrollListener(object : RecyclerView.OnScrollListener() {
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-          val value = searchFiltersView.translationY - dy
-          searchFiltersView.translationY = value.coerceAtMost(0F)
-        }
-      })
-    }
+    with(binding) {
+      layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
+      adapter = SearchAdapter(
+        itemClickListener = { openShowDetails(it) },
+        itemLongClickListener = { openContextMenu(it) },
+        missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) },
+        listChangeListener = { searchRecycler.scrollToPosition(0) }
+      )
+      searchRecycler.apply {
+        setHasFixedSize(true)
+        adapter = this@SearchFragment.adapter
+        layoutManager = this@SearchFragment.layoutManager
+        itemAnimator = null
+        clearOnScrollListeners()
+        addOnScrollListener(object : RecyclerView.OnScrollListener() {
+          override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            val value = searchFiltersView.translationY - dy
+            searchFiltersView.translationY = value.coerceAtMost(0F)
+          }
+        })
+      }
 
-    searchSwipeRefresh.apply {
-      isEnabled = false
-      val color = requireContext().colorFromAttr(R.attr.colorAccent)
-      setProgressBackgroundColorSchemeColor(requireContext().colorFromAttr(R.attr.colorSearchViewBackground))
-      setColorSchemeColors(color, color, color)
-      setProgressViewOffset(false, swipeRefreshStartOffset, swipeRefreshEndOffset)
+      searchSwipeRefresh.apply {
+        isEnabled = false
+        val color = requireContext().colorFromAttr(R.attr.colorAccent)
+        setProgressBackgroundColorSchemeColor(requireContext().colorFromAttr(R.attr.colorSearchViewBackground))
+        setColorSchemeColors(color, color, color)
+        setProgressViewOffset(false, swipeRefreshStartOffset, swipeRefreshEndOffset)
+      }
     }
   }
 
@@ -210,7 +210,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
       missingImageListener = { ids, force -> viewModel.loadMissingSuggestionImage(ids, force) },
       missingTranslationListener = { viewModel.loadMissingSuggestionTranslation(it) }
     )
-    suggestionsRecycler.apply {
+    binding.suggestionsRecycler.apply {
       adapter = this@SearchFragment.suggestionsAdapter
       layoutManager = this@SearchFragment.suggestionsLayoutManager
       itemAnimator = null
@@ -218,7 +218,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
   }
 
   private fun setupStatusBar() {
-    searchRoot.doOnApplyWindowInsets { view, insets, _, _ ->
+    binding.searchRoot.doOnApplyWindowInsets { view, insets, _, _ ->
       val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
       view.updatePadding(top = inset)
     }
@@ -239,7 +239,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
 
   private fun openShowDetails(item: SearchListItem) {
     disableUi()
-    searchRoot?.fadeOut(150) {
+    binding.searchRoot.fadeOut(150) {
       openDetails(item)
     }.add(animations)
   }
@@ -272,70 +272,74 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
 
   private fun render(uiState: SearchUiState) {
     uiState.run {
-      searchItems?.let {
-        val resetScroll = resetScroll?.consume() == true
-        adapter?.setItems(it, resetScroll)
-        if (searchItemsAnimate?.consume() == true) {
-          searchRecycler.scheduleLayoutAnimation()
+      with(binding) {
+        searchItems?.let {
+          val resetScroll = resetScroll?.consume() == true
+          adapter?.setItems(it, resetScroll)
+          if (searchItemsAnimate?.consume() == true) {
+            searchRecycler.scheduleLayoutAnimation()
+          }
+          if (resetScroll) {
+            searchFiltersView.translationY = 0F
+          }
         }
-        if (resetScroll) {
-          searchFiltersView.translationY = 0F
+        recentSearchItems?.let { renderRecentSearches(it) }
+        suggestionsItems?.let {
+          suggestionsAdapter?.setItems(it)
+          suggestionsRecycler.visibleIf(it.isNotEmpty())
         }
-      }
-      recentSearchItems?.let { renderRecentSearches(it) }
-      suggestionsItems?.let {
-        suggestionsAdapter?.setItems(it)
-        suggestionsRecycler.visibleIf(it.isNotEmpty())
-      }
-      searchOptions?.let {
-        searchFiltersView.setTypes(it.filters)
-        searchFiltersView.setSorting(it.sortOrder, it.sortType)
-      }
-      isSearching.let {
-        searchSwipeRefresh.isRefreshing = it
-        searchViewLayout.isEnabled = !it
-      }
-      sortOrder?.let { event ->
-        event.consume()?.let { openSortingDialog(it.first, it.second) }
-      }
-      isMoviesEnabled.let { isEnabled ->
-        val types = mutableListOf(Mode.SHOWS).apply {
-          if (isEnabled) add(Mode.MOVIES)
+        searchOptions?.let {
+          searchFiltersView.setTypes(it.filters)
+          searchFiltersView.setSorting(it.sortOrder, it.sortType)
         }
-        searchFiltersView.setEnabledTypes(types)
+        isSearching.let {
+          searchSwipeRefresh.isRefreshing = it
+          searchViewLayout.isEnabled = !it
+        }
+        sortOrder?.let { event ->
+          event.consume()?.let { openSortingDialog(it.first, it.second) }
+        }
+        isMoviesEnabled.let { isEnabled ->
+          val types = mutableListOf(Mode.SHOWS).apply {
+            if (isEnabled) add(Mode.MOVIES)
+          }
+          searchFiltersView.setEnabledTypes(types)
+        }
+        searchEmptyView.fadeIf(isEmpty)
+        searchInitialView.fadeIf(isInitial)
+        searchFiltersView.visibleIf(isFiltersVisible)
       }
-      searchEmptyView.fadeIf(isEmpty)
-      searchInitialView.fadeIf(isInitial)
-      searchFiltersView.visibleIf(isFiltersVisible)
     }
   }
 
   private fun renderRecentSearches(it: List<RecentSearch>) {
-    if (it.isEmpty()) {
-      searchRecentsClearButton.gone()
-      searchRecentsLayout.removeAllViews()
-      searchRecentsLayout.gone()
-      return
-    }
-
-    searchRecentsLayout.fadeIn()
-    searchRecentsClearButton.fadeIn()
-    searchRecentsClearButton.onClick { viewModel.clearRecentSearches() }
-
-    val paddingH = requireContext().dimenToPx(R.dimen.searchViewItemPaddingHorizontal)
-    val paddingV = requireContext().dimenToPx(R.dimen.spaceMedium)
-
-    searchRecentsLayout.removeAllViews()
-    it.forEach { item ->
-      val view = RecentSearchView(requireContext()).apply {
-        setPadding(paddingH, paddingV, paddingH, paddingV)
-        bind(item)
-        onClick {
-          viewModel.search(item.text)
-          searchViewLayout.binding.searchViewInput.setText(item.text)
-        }
+    with(binding) {
+      if (it.isEmpty()) {
+        searchRecentsClearButton.gone()
+        searchRecentsLayout.removeAllViews()
+        searchRecentsLayout.gone()
+        return
       }
-      searchRecentsLayout.addView(view)
+
+      searchRecentsLayout.fadeIn()
+      searchRecentsClearButton.fadeIn()
+      searchRecentsClearButton.onClick { viewModel.clearRecentSearches() }
+
+      val paddingH = requireContext().dimenToPx(R.dimen.searchViewItemPaddingHorizontal)
+      val paddingV = requireContext().dimenToPx(R.dimen.spaceMedium)
+
+      searchRecentsLayout.removeAllViews()
+      it.forEach { item ->
+        val view = RecentSearchView(requireContext()).apply {
+          setPadding(paddingH, paddingV, paddingH, paddingV)
+          bind(item)
+          onClick {
+            viewModel.search(item.text)
+            searchViewLayout.binding.searchViewInput.setText(item.text)
+          }
+        }
+        searchRecentsLayout.addView(view)
+      }
     }
   }
 
