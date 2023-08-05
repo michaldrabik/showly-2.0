@@ -1,0 +1,31 @@
+<resources>
+  <string name="app_name" translatable="false">Showly</string>
+
+  <string name="menuProgress">ကြည့်ရှု့မှု</string>
+  <string name="menuDiscover">စူးစမ်းမည်။</string>
+  <string name="menuCollection">စု​ဆောင်းမှု</string>
+  <string name="menuNews">သတင်းများ</string>
+
+  <string name="textRateAppTitle">ဒီအက်ပ်ကိုနှစ်သက်ပါသလား။</string>
+  <string name="textRateAppMessage">ဒီအက်ပ်ကိုအဆင့်သတ်မှတ်​ပေးချင်ပါသလား။အချိန်ခဏပဲ​ပေးရမှာပါ။အက်ပ်ကိုဆက်သုံးလို့ရမှာပါ။</string>
+  <string name="textRateAppYesButton">အခုလုပ်မည်။</string>
+  <string name="textRateAppNoButton">အခုမလုပ်​သေး။</string>
+
+  <string name="textDisclaimerTitle">ကြိုဆိုပါတယ်</string>
+  <string name="textDisclaimerText">သတိပြုရန်မှာ ဒီအက်ပ်မှာ ရုပ်ရှင်နဲ့ဇာတ်လမ်းတွဲ​တွေကိုမကြည့်ရှုနိုင်ပါ။နက်ဖလစ်ကဲ့သို့​သောဝန်​ဆောင်မှုများကိုအသုံးပြုနိုင်ပါသည်။</string>
+  <string name="textDisclaimerConfirmText">ဟုတ်ပြီကျွန်ုပ်နားလည်ပါသည်။</string>
+  <string name="textLanguagesChoose2" translatable="false">Language can always be changed later via Settings.</string>
+  <string name="textLeaveEnglish" translatable="false">No, I prefer English</string>
+  <string name="textChangeLanguage" translatable="false">Yes</string>
+
+  <string name="textWhatsNewTitle">အသစ်များ</string>
+  <string name="textWhatsNewSubtitle">ဗားရှင်း %s</string>
+
+  <string name="shortcutDiscover">ရှာ​ဖွေမှု</string>
+  <string name="shortcutCollection">စု​ဆောင်းမှု</string>
+  <string name="shortcutSearch">ရှာရန်</string>
+  <string name="shortcutProgress">ကြည့်ရှု့မှု</string>
+
+  <string name="textUpdateDownloaded" translatable="false">Update is now available.</string>
+  <string name="textUpdateInstall" translatable="false">Install</string>
+</resources>
