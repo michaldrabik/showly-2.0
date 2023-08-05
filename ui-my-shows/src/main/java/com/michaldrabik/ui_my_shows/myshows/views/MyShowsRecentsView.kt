@@ -2,6 +2,7 @@ package com.michaldrabik.ui_my_shows.myshows.views
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
@@ -16,8 +17,8 @@ import com.michaldrabik.ui_base.common.ListViewMode.LIST_NORMAL
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.screenWidth
 import com.michaldrabik.ui_my_shows.R
+import com.michaldrabik.ui_my_shows.databinding.ViewMyShowsRecentsBinding
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
-import kotlinx.android.synthetic.main.view_my_shows_recents.view.*
 
 class MyShowsRecentsView : FrameLayout {
 
@@ -25,8 +26,9 @@ class MyShowsRecentsView : FrameLayout {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
+  private val binding = ViewMyShowsRecentsBinding.inflate(LayoutInflater.from(context), this)
+
   init {
-    inflate(context, R.layout.view_my_shows_recents, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     clipChildren = false
   }
@@ -41,7 +43,7 @@ class MyShowsRecentsView : FrameLayout {
     itemClickListener: ((MyShowsItem) -> Unit)?,
     itemLongClickListener: ((MyShowsItem) -> Unit)?,
   ) {
-    myShowsRecentsContainer.removeAllViews()
+    binding.myShowsRecentsContainer.removeAllViews()
 
     val clickListener: (MyShowsItem) -> Unit = { itemClickListener?.invoke(it) }
     val longClickListener: (MyShowsItem, View) -> Unit = { i, _ -> itemLongClickListener?.invoke(i) }
@@ -57,7 +59,7 @@ class MyShowsRecentsView : FrameLayout {
         columnSpec = GridLayout.spec(index % 2, 1F)
         setMargins(itemMargin, itemMargin, itemMargin, itemMargin)
       }
-      myShowsRecentsContainer.addView(view, layoutParams)
+      binding.myShowsRecentsContainer.addView(view, layoutParams)
     }
 
     bindMargins(viewMode)
@@ -66,13 +68,13 @@ class MyShowsRecentsView : FrameLayout {
   private fun bindMargins(viewMode: ListViewMode) {
     when (viewMode) {
       GRID, GRID_TITLE -> {
-        myShowsRecentsContainer.updatePadding(
+        binding.myShowsRecentsContainer.updatePadding(
           left = resources.getDimensionPixelSize(R.dimen.myShowsRecentsGridPadding),
           right = resources.getDimensionPixelSize(R.dimen.myShowsRecentsGridPadding),
         )
       }
       LIST_NORMAL, LIST_COMPACT -> {
-        myShowsRecentsContainer.updatePadding(
+        binding.myShowsRecentsContainer.updatePadding(
           left = resources.getDimensionPixelSize(R.dimen.spaceSmall),
           right = resources.getDimensionPixelSize(R.dimen.spaceSmall),
         )

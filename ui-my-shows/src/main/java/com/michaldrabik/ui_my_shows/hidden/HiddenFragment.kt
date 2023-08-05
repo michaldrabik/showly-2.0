@@ -29,6 +29,7 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
@@ -44,6 +45,7 @@ import com.michaldrabik.ui_my_shows.common.filters.genre.CollectionFiltersGenreB
 import com.michaldrabik.ui_my_shows.common.filters.network.CollectionFiltersNetworkBottomSheet
 import com.michaldrabik.ui_my_shows.common.filters.network.CollectionFiltersNetworkBottomSheet.Companion.REQUEST_COLLECTION_FILTERS_NETWORK
 import com.michaldrabik.ui_my_shows.common.recycler.CollectionAdapter
+import com.michaldrabik.ui_my_shows.databinding.FragmentHiddenBinding
 import com.michaldrabik.ui_my_shows.main.FollowedShowsFragment
 import com.michaldrabik.ui_my_shows.main.FollowedShowsUiEvent.OpenPremium
 import com.michaldrabik.ui_my_shows.main.FollowedShowsViewModel
@@ -51,9 +53,6 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_ORDE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_SORT_ORDER
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_hidden.hiddenContent
-import kotlinx.android.synthetic.main.fragment_hidden.hiddenEmptyView
-import kotlinx.android.synthetic.main.fragment_hidden.hiddenRecycler
 
 @AndroidEntryPoint
 class HiddenFragment :
@@ -61,9 +60,11 @@ class HiddenFragment :
   OnScrollResetListener,
   OnSearchClickListener {
 
+  override val navigationId = R.id.followedShowsFragment
+
   private val parentViewModel by viewModels<FollowedShowsViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<HiddenViewModel>()
-  override val navigationId = R.id.followedShowsFragment
+  private val binding by viewBinding(FragmentHiddenBinding::bind)
 
   private var adapter: CollectionAdapter? = null
   private var layoutManager: LayoutManager? = null
@@ -96,14 +97,14 @@ class HiddenFragment :
       genresChipClickListener = ::openGenresDialog,
       upcomingChipClickListener = {},
       listChangeListener = {
-        hiddenRecycler.scrollToPosition(0)
+        binding.hiddenRecycler.scrollToPosition(0)
         (requireParentFragment() as FollowedShowsFragment).resetTranslations()
       },
       upcomingChipVisible = false
     ).apply {
       stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
     }
-    hiddenRecycler.apply {
+    binding.hiddenRecycler.apply {
       setHasFixedSize(true)
       adapter = this@HiddenFragment.adapter
       layoutManager = this@HiddenFragment.layoutManager
@@ -114,12 +115,12 @@ class HiddenFragment :
 
   private fun setupRecyclerPaddings() {
     if (layoutManager is GridLayoutManager) {
-      hiddenRecycler.updatePadding(
+      binding.hiddenRecycler.updatePadding(
         left = dimenToPx(R.dimen.gridRecyclerPadding),
         right = dimenToPx(R.dimen.gridRecyclerPadding)
       )
     } else {
-      hiddenRecycler.updatePadding(
+      binding.hiddenRecycler.updatePadding(
         left = 0,
         right = 0
       )
@@ -127,41 +128,45 @@ class HiddenFragment :
   }
 
   private fun setupStatusBar() {
-    if (statusBarHeight != 0) {
-      hiddenContent.updatePadding(top = hiddenContent.paddingTop + statusBarHeight)
-      hiddenRecycler.updatePadding(top = dimenToPx(R.dimen.archiveTabsViewPadding))
-      return
-    }
-    hiddenContent.doOnApplyWindowInsets { view, insets, padding, _ ->
-      statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
-      view.updatePadding(top = padding.top + statusBarHeight)
-      hiddenRecycler.updatePadding(top = dimenToPx(R.dimen.archiveTabsViewPadding))
+    with(binding) {
+      if (statusBarHeight != 0) {
+        hiddenContent.updatePadding(top = hiddenContent.paddingTop + statusBarHeight)
+        hiddenRecycler.updatePadding(top = dimenToPx(R.dimen.archiveTabsViewPadding))
+        return
+      }
+      hiddenContent.doOnApplyWindowInsets { view, insets, padding, _ ->
+        statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+        view.updatePadding(top = padding.top + statusBarHeight)
+        hiddenRecycler.updatePadding(top = dimenToPx(R.dimen.archiveTabsViewPadding))
+      }
     }
   }
 
   private fun render(uiState: HiddenUiState) {
     uiState.run {
-      viewMode.let {
-        if (adapter?.listViewMode != it) {
-          layoutManager = when (it) {
-            LIST_NORMAL, LIST_COMPACT -> LinearLayoutManager(requireContext(), VERTICAL, false)
-            GRID, GRID_TITLE -> GridLayoutManager(context, Config.LISTS_GRID_SPAN)
+      with(binding) {
+        viewMode.let {
+          if (adapter?.listViewMode != it) {
+            layoutManager = when (it) {
+              LIST_NORMAL, LIST_COMPACT -> LinearLayoutManager(requireContext(), VERTICAL, false)
+              GRID, GRID_TITLE -> GridLayoutManager(context, Config.LISTS_GRID_SPAN)
+            }
+            adapter?.listViewMode = it
+            hiddenRecycler?.let { recycler ->
+              recycler.layoutManager = layoutManager
+              recycler.adapter = adapter
+            }
+            setupRecyclerPaddings()
           }
-          adapter?.listViewMode = it
-          hiddenRecycler?.let { recycler ->
-            recycler.layoutManager = layoutManager
-            recycler.adapter = adapter
+        }
+        items.let {
+          val notifyChange = resetScroll?.consume() == true
+          adapter?.setItems(it, notifyChange = notifyChange)
+          (layoutManager as? GridLayoutManager)?.withSpanSizeLookup { pos ->
+            adapter?.getItems()?.get(pos)?.image?.type?.spanSize!!
           }
-          setupRecyclerPaddings()
+          hiddenEmptyView.root.fadeIf(it.isEmpty() && !isSearching)
         }
-      }
-      items.let {
-        val notifyChange = resetScroll?.consume() == true
-        adapter?.setItems(it, notifyChange = notifyChange)
-        (layoutManager as? GridLayoutManager)?.withSpanSizeLookup { pos ->
-          adapter?.getItems()?.get(pos)?.image?.type?.spanSize!!
-        }
-        hiddenEmptyView.fadeIf(it.isEmpty() && !isSearching)
       }
       sortOrder?.let { event ->
         event.consume()?.let { openSortOrderDialog(it.first, it.second) }
@@ -210,13 +215,15 @@ class HiddenFragment :
 
   override fun onEnterSearch() {
     isSearching = true
-    hiddenRecycler.translationY = dimenToPx(R.dimen.myShowsSearchLocalOffset).toFloat()
-    hiddenRecycler.smoothScrollToPosition(0)
+    with(binding) {
+      hiddenRecycler.translationY = dimenToPx(R.dimen.myShowsSearchLocalOffset).toFloat()
+      hiddenRecycler.smoothScrollToPosition(0)
+    }
   }
 
   override fun onExitSearch() {
     isSearching = false
-    with(hiddenRecycler) {
+    with(binding.hiddenRecycler) {
       translationY = 0F
       postDelayed(200) { layoutManager?.scrollToPosition(0) }
     }
@@ -230,7 +237,7 @@ class HiddenFragment :
     }
   }
 
-  override fun onScrollReset() = hiddenRecycler.scrollToPosition(0)
+  override fun onScrollReset() = binding.hiddenRecycler.scrollToPosition(0)
 
   override fun setupBackPressed() = Unit
 

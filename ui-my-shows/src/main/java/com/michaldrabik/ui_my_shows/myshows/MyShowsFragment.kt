@@ -29,6 +29,7 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.MyShowsSection
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
@@ -45,6 +46,7 @@ import com.michaldrabik.ui_my_shows.common.filters.genre.CollectionFiltersGenreB
 import com.michaldrabik.ui_my_shows.common.filters.genre.CollectionFiltersGenreBottomSheet.Companion.REQUEST_COLLECTION_FILTERS_GENRE
 import com.michaldrabik.ui_my_shows.common.filters.network.CollectionFiltersNetworkBottomSheet
 import com.michaldrabik.ui_my_shows.common.filters.network.CollectionFiltersNetworkBottomSheet.Companion.REQUEST_COLLECTION_FILTERS_NETWORK
+import com.michaldrabik.ui_my_shows.databinding.FragmentMyShowsBinding
 import com.michaldrabik.ui_my_shows.main.FollowedShowsFragment
 import com.michaldrabik.ui_my_shows.main.FollowedShowsUiEvent.OpenPremium
 import com.michaldrabik.ui_my_shows.main.FollowedShowsViewModel
@@ -55,8 +57,6 @@ import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem.Type.ALL_SHOWS_
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem.Type.RECENT_SHOWS
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_my_shows.*
-import kotlinx.android.synthetic.main.fragment_watchlist.*
 
 @AndroidEntryPoint
 class MyShowsFragment :
@@ -64,9 +64,11 @@ class MyShowsFragment :
   OnScrollResetListener,
   OnSearchClickListener {
 
+  override val navigationId = R.id.followedShowsFragment
+
   private val parentViewModel by viewModels<FollowedShowsViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<MyShowsViewModel>()
-  override val navigationId = R.id.followedShowsFragment
+  private val binding by viewBinding(FragmentMyShowsBinding::bind)
 
   private var adapter: MyShowsAdapter? = null
   private var layoutManager: LayoutManager? = null
@@ -105,7 +107,7 @@ class MyShowsFragment :
     ).apply {
       stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
     }
-    myShowsRecycler.apply {
+    binding.myShowsRecycler.apply {
       adapter = this@MyShowsFragment.adapter
       layoutManager = this@MyShowsFragment.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
@@ -116,12 +118,12 @@ class MyShowsFragment :
 
   private fun setupRecyclerPaddings() {
     if (layoutManager is GridLayoutManager) {
-      myShowsRecycler.updatePadding(
+      binding.myShowsRecycler.updatePadding(
         left = dimenToPx(R.dimen.gridRecyclerPadding),
         right = dimenToPx(R.dimen.gridRecyclerPadding)
       )
     } else {
-      myShowsRecycler.updatePadding(
+      binding.myShowsRecycler.updatePadding(
         left = 0,
         right = 0
       )
@@ -130,47 +132,49 @@ class MyShowsFragment :
 
   private fun setupStatusBar() {
     if (statusBarHeight != 0) {
-      myShowsRoot.updatePadding(top = statusBarHeight)
-      myShowsRecycler.updatePadding(top = dimenToPx(R.dimen.myShowsTabsViewPadding))
+      binding.myShowsRoot.updatePadding(top = statusBarHeight)
+      binding.myShowsRecycler.updatePadding(top = dimenToPx(R.dimen.myShowsTabsViewPadding))
       return
     }
-    myShowsRoot.doOnApplyWindowInsets { view, insets, _, _ ->
+    binding.myShowsRoot.doOnApplyWindowInsets { view, insets, _, _ ->
       statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
       view.updatePadding(top = statusBarHeight)
-      myShowsRecycler.updatePadding(top = dimenToPx(R.dimen.myShowsTabsViewPadding))
+      binding.myShowsRecycler.updatePadding(top = dimenToPx(R.dimen.myShowsTabsViewPadding))
     }
   }
 
   private fun render(uiState: MyShowsUiState) {
     uiState.run {
-      viewMode.let {
-        if (adapter?.listViewMode != it) {
-          val state = myShowsRecycler.layoutManager?.onSaveInstanceState()
-          layoutManager = when (it) {
-            LIST_NORMAL, LIST_COMPACT -> LinearLayoutManager(requireContext(), VERTICAL, false)
-            GRID, GRID_TITLE -> GridLayoutManager(context, Config.LISTS_GRID_SPAN)
-          }
-          adapter?.listViewMode = it
-          myShowsRecycler?.let { recycler ->
-            recycler.layoutManager = layoutManager
-            recycler.adapter = adapter
-            recycler.layoutManager?.onRestoreInstanceState(state)
-          }
-          setupRecyclerPaddings()
-        }
-      }
-      items?.let { items ->
-        val notifyChangeList = resetScrollMap?.consume()
-        adapter?.setItems(items, notifyChangeList)
-        (layoutManager as? GridLayoutManager)?.withSpanSizeLookup { pos ->
-          val item = adapter?.getItems()?.get(pos)
-          when (item?.type) {
-            RECENT_SHOWS, ALL_SHOWS_HEADER -> Config.LISTS_GRID_SPAN
-            ALL_SHOWS_ITEM -> item.image.type.spanSize
-            null -> throw Error("Unsupported span size!")
+      with(binding) {
+        viewMode.let {
+          if (adapter?.listViewMode != it) {
+            val state = myShowsRecycler.layoutManager?.onSaveInstanceState()
+            layoutManager = when (it) {
+              LIST_NORMAL, LIST_COMPACT -> LinearLayoutManager(requireContext(), VERTICAL, false)
+              GRID, GRID_TITLE -> GridLayoutManager(context, Config.LISTS_GRID_SPAN)
+            }
+            adapter?.listViewMode = it
+            myShowsRecycler?.let { recycler ->
+              recycler.layoutManager = layoutManager
+              recycler.adapter = adapter
+              recycler.layoutManager?.onRestoreInstanceState(state)
+            }
+            setupRecyclerPaddings()
           }
         }
-        myShowsEmptyView.fadeIf(showEmptyView && !isSearching)
+        items?.let { items ->
+          val notifyChangeList = resetScrollMap?.consume()
+          adapter?.setItems(items, notifyChangeList)
+          (layoutManager as? GridLayoutManager)?.withSpanSizeLookup { pos ->
+            val item = adapter?.getItems()?.get(pos)
+            when (item?.type) {
+              RECENT_SHOWS, ALL_SHOWS_HEADER -> Config.LISTS_GRID_SPAN
+              ALL_SHOWS_ITEM -> item.image.type.spanSize
+              null -> throw Error("Unsupported span size!")
+            }
+          }
+          myShowsEmptyView.root.fadeIf(showEmptyView && !isSearching)
+        }
       }
     }
   }
@@ -232,19 +236,21 @@ class MyShowsFragment :
 
   override fun onEnterSearch() {
     isSearching = true
-    myShowsRecycler.translationY = dimenToPx(R.dimen.myShowsSearchLocalOffset).toFloat()
-    myShowsRecycler.smoothScrollToPosition(0)
+    with(binding) {
+      myShowsRecycler.translationY = dimenToPx(R.dimen.myShowsSearchLocalOffset).toFloat()
+      myShowsRecycler.smoothScrollToPosition(0)
+    }
   }
 
   override fun onExitSearch() {
     isSearching = false
-    with(myShowsRecycler) {
+    with(binding.myShowsRecycler) {
       translationY = 0F
       postDelayed(200) { layoutManager?.scrollToPosition(0) }
     }
   }
 
-  override fun onScrollReset() = myShowsRecycler.scrollToPosition(0)
+  override fun onScrollReset() = binding.myShowsRecycler.scrollToPosition(0)
 
   override fun setupBackPressed() = Unit
 
