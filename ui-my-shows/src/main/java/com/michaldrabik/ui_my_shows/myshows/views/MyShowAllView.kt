@@ -68,7 +68,6 @@ class MyShowAllView : ShowView<MyShowsItem> {
         collectionShowUserRating.visible()
         collectionShowUserRating.text = String.format(ENGLISH, "%d", it)
       }
-
     }
     loadImage(item)
   }
