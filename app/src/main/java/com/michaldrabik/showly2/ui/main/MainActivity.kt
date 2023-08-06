@@ -30,7 +30,9 @@ import com.michaldrabik.showly2.databinding.ActivityMainBinding
 import com.michaldrabik.showly2.ui.BaseActivity
 import com.michaldrabik.showly2.ui.main.delegates.BillingDelegate
 import com.michaldrabik.showly2.ui.main.delegates.MainBillingDelegate
+import com.michaldrabik.showly2.ui.main.delegates.MainTipsDelegate
 import com.michaldrabik.showly2.ui.main.delegates.MainUpdateDelegate
+import com.michaldrabik.showly2.ui.main.delegates.TipsDelegate
 import com.michaldrabik.showly2.ui.main.delegates.UpdateDelegate
 import com.michaldrabik.showly2.ui.views.WhatsNewView
 import com.michaldrabik.showly2.utilities.deeplink.DeepLinkResolver
@@ -49,20 +51,14 @@ import com.michaldrabik.ui_base.utilities.ModeHost
 import com.michaldrabik.ui_base.utilities.MoviesStatusHost
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.SnackbarHost
-import com.michaldrabik.ui_base.utilities.TipsHost
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
-import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
-import com.michaldrabik.ui_model.Tip
-import com.michaldrabik.ui_model.Tip.MENU_DISCOVER
-import com.michaldrabik.ui_model.Tip.MENU_MODES
-import com.michaldrabik.ui_model.Tip.MENU_MY_SHOWS
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -74,9 +70,9 @@ class MainActivity :
   BaseActivity(),
   SnackbarHost,
   NavigationHost,
-  TipsHost,
   ModeHost,
   MoviesStatusHost,
+  TipsDelegate by MainTipsDelegate(),
   UpdateDelegate by MainUpdateDelegate(),
   BillingDelegate by MainBillingDelegate() {
 
@@ -91,13 +87,6 @@ class MainActivity :
   private val navigationHeightPad by lazy { dimenToPx(R.dimen.bottomNavigationHeightPadded) }
   private val navigationHeight by lazy { dimenToPx(R.dimen.bottomNavigationHeight) }
   private val decelerateInterpolator by lazy { DecelerateInterpolator(2F) }
-  private val tips by lazy {
-    mapOf(
-      MENU_DISCOVER to binding.tutorialTipDiscover,
-      MENU_MY_SHOWS to binding.tutorialTipMyShows,
-      MENU_MODES to binding.tutorialTipModeMenu
-    )
-  }
 
   @Inject lateinit var workManager: WorkManager
   @Inject lateinit var eventsManager: EventsManager
@@ -112,10 +101,10 @@ class MainActivity :
 
     registerBilling(this, settingsRepository)
     registerUpdate(this) { onUpdateDownloaded(it) }
+    registerTipsDelegate(viewModel, binding)
 
     setupViewModel()
     setupNavigation()
-    setupTips()
     setupView()
     setupNetworkObserver()
 
@@ -248,32 +237,13 @@ class MainActivity :
     }
   }
 
-  private fun setupTips() {
-    tips.entries.forEach { (tip, view) ->
-      view.visibleIf(!isTipShown(tip))
-      view.onClick {
-        it.gone()
-        showTip(tip)
-      }
-    }
-  }
-
-  override fun showTip(tip: Tip) {
-    binding.tutorialView.showTip(tip)
-    setTipShow(tip)
-  }
-
-  override fun setTipShow(tip: Tip) = viewModel.setTipShown(tip)
-
-  override fun isTipShown(tip: Tip) = viewModel.isTipShown(tip)
-
   override fun hideNavigation(animate: Boolean) {
     with(binding) {
+      hideAllTips()
       bottomMenuView.binding.bottomNavigationView.run {
         isEnabled = false
         isClickable = false
       }
-      tips.values.forEach { it.gone() }
       snackbarHost.translationY = navigationHeight.toFloat()
       bottomNavigationWrapper.animate().translationYBy(navigationHeightPad.toFloat())
         .setDuration(if (animate) NAVIGATION_TRANSITION_DURATION_MS else 0)
@@ -282,11 +252,11 @@ class MainActivity :
   }
 
   override fun showNavigation(animate: Boolean) {
+    showAllTips()
     binding.bottomMenuView.binding.bottomNavigationView.run {
       isEnabled = true
       isClickable = true
     }
-    tips.entries.forEach { (tip, view) -> view.visibleIf(!isTipShown(tip)) }
     binding.snackbarHost.translationY = 0F
     binding.bottomNavigationWrapper
       .animate()
