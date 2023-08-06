@@ -13,16 +13,17 @@ import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
+import com.michaldrabik.ui_statistics_movies.databinding.FragmentStatisticsMoviesBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_statistics_movies.*
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class StatisticsMoviesFragment : BaseFragment<StatisticsMoviesViewModel>(R.layout.fragment_statistics_movies) {
 
   override val viewModel by viewModels<StatisticsMoviesViewModel>()
+  private val binding by viewBinding(FragmentStatisticsMoviesBinding::bind)
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -44,14 +45,16 @@ class StatisticsMoviesFragment : BaseFragment<StatisticsMoviesViewModel>(R.layou
   }
 
   private fun setupView() {
-    statisticsMoviesToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
-    statisticsMoviesRatings.onMovieClickListener = {
-      openMovieDetails(it.movie.traktId)
+    with(binding) {
+      statisticsMoviesToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+      statisticsMoviesRatings.onMovieClickListener = {
+        openMovieDetails(it.movie.traktId)
+      }
     }
   }
 
   private fun setupStatusBar() {
-    statisticsMoviesRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
+    binding.statisticsMoviesRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
       val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
       view.updatePadding(top = padding.top + inset)
     }
@@ -59,14 +62,16 @@ class StatisticsMoviesFragment : BaseFragment<StatisticsMoviesViewModel>(R.layou
 
   private fun render(uiState: StatisticsMoviesUiState) {
     uiState.run {
-      statisticsMoviesTotalTimeSpent.bind(totalTimeSpentMinutes ?: 0)
-      statisticsMoviesTotalMovies.bind(totalWatchedMovies ?: 0)
-      statisticsMoviesTopGenres.bind(topGenres ?: emptyList())
-      statisticsMoviesRatings.bind(ratings ?: emptyList())
-      ratings?.let { statisticsMoviesRatings.visibleIf(it.isNotEmpty()) }
-      totalWatchedMovies?.let {
-        statisticsMoviesContent.fadeIf(it > 0)
-        statisticsMoviesEmptyView.fadeIf(it <= 0)
+      with(binding) {
+        statisticsMoviesTotalTimeSpent.bind(totalTimeSpentMinutes ?: 0)
+        statisticsMoviesTotalMovies.bind(totalWatchedMovies ?: 0)
+        statisticsMoviesTopGenres.bind(topGenres ?: emptyList())
+        statisticsMoviesRatings.bind(ratings ?: emptyList())
+        ratings?.let { statisticsMoviesRatings.visibleIf(it.isNotEmpty()) }
+        totalWatchedMovies?.let {
+          statisticsMoviesContent.fadeIf(it > 0)
+          statisticsMoviesEmptyView.root.fadeIf(it <= 0)
+        }
       }
     }
   }
