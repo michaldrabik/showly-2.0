@@ -31,14 +31,15 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.showKeyboard
 import com.michaldrabik.ui_base.utilities.extensions.updateTopMargin
 import com.michaldrabik.ui_base.utilities.extensions.visible
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.PremiumFeature
 import com.michaldrabik.ui_my_movies.R
+import com.michaldrabik.ui_my_movies.databinding.FragmentFollowedMoviesBinding
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ITEM
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_followed_movies.*
 
 @AndroidEntryPoint
 class FollowedMoviesFragment :
@@ -49,8 +50,10 @@ class FollowedMoviesFragment :
     private const val TRANSLATION_DURATION = 225L
   }
 
-  override val viewModel by viewModels<FollowedMoviesViewModel>()
   override val navigationId = R.id.followedMoviesFragment
+
+  override val viewModel by viewModels<FollowedMoviesViewModel>()
+  private val binding by viewBinding(FragmentFollowedMoviesBinding::bind)
 
   private var searchViewTranslation = 0F
   private var tabsViewTranslation = 0F
@@ -92,61 +95,67 @@ class FollowedMoviesFragment :
 
   override fun onPause() {
     enableUi()
-    tabsViewTranslation = followedMoviesTabs.translationY
-    searchViewTranslation = followedMoviesSearchView.translationY
+    tabsViewTranslation = binding.followedMoviesTabs.translationY
+    searchViewTranslation = binding.followedMoviesSearchView.translationY
     super.onPause()
   }
 
   override fun onDestroyView() {
-    followedMoviesPager.removeOnPageChangeListener(pageChangeListener)
+    binding.followedMoviesPager.removeOnPageChangeListener(pageChangeListener)
     super.onDestroyView()
   }
 
   private fun setupView() {
-    followedMoviesSearchView.run {
-      hint = getString(R.string.textSearchFor)
-      statsIconVisible = true
-      onClick { openMainSearch() }
-      onSettingsClickListener = { openSettings() }
-      onStatsClickListener = { openStatistics() }
-    }
-    with(followedMoviesSearchLocalView) {
-      onCloseClickListener = { exitSearch() }
-    }
-    followedMoviesModeTabs.run {
-      onModeSelected = { mode = it }
-      onListsSelected = { navigateTo(R.id.actionNavigateListsFragment) }
-      showLists(true)
-      selectMovies()
-    }
-    followedMoviesSearchIcon.run {
-      onClick { if (!isSearching) enterSearch() else exitSearch() }
-    }
+    with(binding) {
+      followedMoviesSearchView.run {
+        hint = getString(R.string.textSearchFor)
+        statsIconVisible = true
+        onClick { openMainSearch() }
+        onSettingsClickListener = { openSettings() }
+        onStatsClickListener = { openStatistics() }
+      }
+      with(followedMoviesSearchLocalView) {
+        onCloseClickListener = { exitSearch() }
+      }
+      followedMoviesModeTabs.run {
+        onModeSelected = { mode = it }
+        onListsSelected = { navigateTo(R.id.actionNavigateListsFragment) }
+        showLists(true)
+        selectMovies()
+      }
+      followedMoviesSearchIcon.run {
+        onClick { if (!isSearching) enterSearch() else exitSearch() }
+      }
 
-    followedMoviesSearchView.translationY = searchViewTranslation
-    followedMoviesTabs.translationY = tabsViewTranslation
-    followedMoviesModeTabs.translationY = tabsViewTranslation
-    followedMoviesIcons.translationY = tabsViewTranslation
+      followedMoviesSearchView.translationY = searchViewTranslation
+      followedMoviesTabs.translationY = tabsViewTranslation
+      followedMoviesModeTabs.translationY = tabsViewTranslation
+      followedMoviesIcons.translationY = tabsViewTranslation
+    }
   }
 
   private fun setupPager() {
-    followedMoviesPager.run {
-      offscreenPageLimit = FollowedPagesAdapter.PAGES_COUNT
-      adapter = FollowedPagesAdapter(childFragmentManager, requireContext())
-      addOnPageChangeListener(pageChangeListener)
+    with(binding) {
+      followedMoviesPager.run {
+        offscreenPageLimit = FollowedPagesAdapter.PAGES_COUNT
+        adapter = FollowedPagesAdapter(childFragmentManager, requireContext())
+        addOnPageChangeListener(pageChangeListener)
+      }
+      followedMoviesTabs.setupWithViewPager(followedMoviesPager)
     }
-    followedMoviesTabs.setupWithViewPager(followedMoviesPager)
   }
 
   private fun setupStatusBar() {
-    followedMoviesRoot.doOnApplyWindowInsets { _, insets, _, _ ->
-      val statusBarSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
-      followedMoviesSearchView.applyWindowInsetBehaviour(dimenToPx(R.dimen.spaceNormal) + statusBarSize)
-      followedMoviesSearchView.updateTopMargin(dimenToPx(R.dimen.spaceMedium) + statusBarSize)
-      followedMoviesTabs.updateTopMargin(dimenToPx(R.dimen.myMoviesSearchViewPadding) + statusBarSize)
-      followedMoviesModeTabs.updateTopMargin(dimenToPx(R.dimen.collectionTabsMargin) + statusBarSize)
-      followedMoviesIcons.updateTopMargin(dimenToPx(R.dimen.myMoviesSearchViewPadding) + statusBarSize)
-      followedMoviesSearchLocalView.updateTopMargin(dimenToPx(R.dimen.myMoviesSearchLocalViewPadding) + statusBarSize)
+    with(binding) {
+      followedMoviesRoot.doOnApplyWindowInsets { _, insets, _, _ ->
+        val statusBarSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+        followedMoviesSearchView.applyWindowInsetBehaviour(dimenToPx(R.dimen.spaceNormal) + statusBarSize)
+        followedMoviesSearchView.updateTopMargin(dimenToPx(R.dimen.spaceMedium) + statusBarSize)
+        followedMoviesTabs.updateTopMargin(dimenToPx(R.dimen.myMoviesSearchViewPadding) + statusBarSize)
+        followedMoviesModeTabs.updateTopMargin(dimenToPx(R.dimen.collectionTabsMargin) + statusBarSize)
+        followedMoviesIcons.updateTopMargin(dimenToPx(R.dimen.myMoviesSearchViewPadding) + statusBarSize)
+        followedMoviesSearchLocalView.updateTopMargin(dimenToPx(R.dimen.myMoviesSearchLocalViewPadding) + statusBarSize)
+      }
     }
   }
 
@@ -164,8 +173,8 @@ class FollowedMoviesFragment :
 
   private fun enterSearch() {
     resetTranslations()
-    followedMoviesSearchLocalView.fadeIn(150)
-    with(followedMoviesSearchLocalView.binding.searchViewLocalInput) {
+    binding.followedMoviesSearchLocalView.fadeIn(150)
+    with(binding.followedMoviesSearchLocalView.binding.searchViewLocalInput) {
       setText("")
       doAfterTextChanged { viewModel.onSearchQuery(it?.toString()) }
       visible()
@@ -180,8 +189,8 @@ class FollowedMoviesFragment :
     isSearching = false
     childFragmentManager.fragments.forEach { (it as? OnSearchClickListener)?.onExitSearch() }
     resetTranslations()
-    followedMoviesSearchLocalView.gone()
-    with(followedMoviesSearchLocalView.binding.searchViewLocalInput) {
+    binding.followedMoviesSearchLocalView.gone()
+    with(binding.followedMoviesSearchLocalView.binding.searchViewLocalInput) {
       setText("")
       gone()
       hideKeyboard()
@@ -192,18 +201,20 @@ class FollowedMoviesFragment :
   private fun openMainSearch() {
     disableUi()
     hideNavigation()
-    followedMoviesModeTabs.fadeOut(duration = 200).add(animations)
-    followedMoviesTabs.fadeOut(duration = 200).add(animations)
-    followedMoviesIcons.fadeOut(duration = 200).add(animations)
-    followedMoviesPager.fadeOut(duration = 200) {
-      super.navigateTo(R.id.actionFollowedMoviesFragmentToSearch, null)
-    }.add(animations)
+    with(binding) {
+      followedMoviesModeTabs.fadeOut(duration = 200).add(animations)
+      followedMoviesTabs.fadeOut(duration = 200).add(animations)
+      followedMoviesIcons.fadeOut(duration = 200).add(animations)
+      followedMoviesPager.fadeOut(duration = 200) {
+        super.navigateTo(R.id.actionFollowedMoviesFragmentToSearch, null)
+      }.add(animations)
+    }
   }
 
   fun openMovieDetails(movie: Movie) {
     disableUi()
     hideNavigation()
-    followedMoviesRoot.fadeOut(150) {
+    binding.followedMoviesRoot.fadeOut(150) {
       val bundle = Bundle().apply { putLong(ARG_MOVIE_ID, movie.traktId) }
       navigateToSafe(R.id.actionFollowedMoviesFragmentToMovieDetailsFragment, bundle)
       exitSearch()
@@ -242,7 +253,7 @@ class FollowedMoviesFragment :
 
   override fun onTabReselected() {
     resetTranslations(duration = 0)
-    followedMoviesPager.nextPage()
+    binding.followedMoviesPager.nextPage()
     childFragmentManager.fragments.forEach {
       (it as? OnScrollResetListener)?.onScrollReset()
     }
@@ -250,21 +261,23 @@ class FollowedMoviesFragment :
 
   fun resetTranslations(duration: Long = TRANSLATION_DURATION) {
     if (view == null) return
-    arrayOf(
-      followedMoviesSearchView,
-      followedMoviesTabs,
-      followedMoviesModeTabs,
-      followedMoviesIcons,
-      followedMoviesSearchLocalView
-    ).forEach {
-      it.animate().translationY(0F).setDuration(duration).add(animations)?.start()
+    with(binding) {
+      arrayOf(
+        followedMoviesSearchView,
+        followedMoviesTabs,
+        followedMoviesModeTabs,
+        followedMoviesIcons,
+        followedMoviesSearchLocalView
+      ).forEach {
+        it.animate().translationY(0F).setDuration(duration).add(animations)?.start()
+      }
     }
   }
 
   private fun render(uiState: FollowedMoviesUiState) {
     uiState.isSyncing?.let {
-      followedMoviesSearchView.setTraktProgress(it)
-      followedMoviesSearchView.isEnabled = !it
+      binding.followedMoviesSearchView.setTraktProgress(it)
+      binding.followedMoviesSearchView.isEnabled = !it
     }
   }
 
@@ -272,7 +285,7 @@ class FollowedMoviesFragment :
     override fun onPageSelected(position: Int) {
       if (currentPage == position) return
 
-      if (followedMoviesTabs.translationY != 0F) {
+      if (binding.followedMoviesTabs.translationY != 0F) {
         resetTranslations()
         requireView().postDelayed(
           {

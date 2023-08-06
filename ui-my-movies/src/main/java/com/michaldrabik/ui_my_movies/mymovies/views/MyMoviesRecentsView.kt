@@ -2,6 +2,7 @@ package com.michaldrabik.ui_my_movies.mymovies.views
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
@@ -15,8 +16,8 @@ import com.michaldrabik.ui_base.common.ListViewMode.LIST_NORMAL
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.screenWidth
 import com.michaldrabik.ui_my_movies.R
+import com.michaldrabik.ui_my_movies.databinding.ViewMyMoviesRecentsBinding
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem
-import kotlinx.android.synthetic.main.view_my_movies_recents.view.*
 
 class MyMoviesRecentsView : FrameLayout {
 
@@ -24,8 +25,9 @@ class MyMoviesRecentsView : FrameLayout {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
+  private val binding = ViewMyMoviesRecentsBinding.inflate(LayoutInflater.from(context), this)
+
   init {
-    inflate(context, R.layout.view_my_movies_recents, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     clipChildren = false
   }
@@ -40,7 +42,7 @@ class MyMoviesRecentsView : FrameLayout {
     itemClickListener: ((MyMoviesItem) -> Unit)?,
     itemLongClickListener: ((MyMoviesItem) -> Unit)?,
   ) {
-    myMoviesRecentsContainer.removeAllViews()
+    binding.myMoviesRecentsContainer.removeAllViews()
 
     val clickListener: (MyMoviesItem) -> Unit = { itemClickListener?.invoke(it) }
     val longClickListener: (MyMoviesItem) -> Unit = { itemLongClickListener?.invoke(it) }
@@ -56,7 +58,7 @@ class MyMoviesRecentsView : FrameLayout {
         columnSpec = GridLayout.spec(index % 2, 1F)
         setMargins(itemMargin, itemMargin, itemMargin, itemMargin)
       }
-      myMoviesRecentsContainer.addView(view, layoutParams)
+      binding.myMoviesRecentsContainer.addView(view, layoutParams)
     }
 
     bindMargins(viewMode)
@@ -65,13 +67,13 @@ class MyMoviesRecentsView : FrameLayout {
   private fun bindMargins(viewMode: ListViewMode) {
     when (viewMode) {
       GRID, GRID_TITLE -> {
-        myMoviesRecentsContainer.updatePadding(
+        binding.myMoviesRecentsContainer.updatePadding(
           left = resources.getDimensionPixelSize(R.dimen.myMoviesRecentsGridPadding),
           right = resources.getDimensionPixelSize(R.dimen.myMoviesRecentsGridPadding),
         )
       }
       LIST_NORMAL, LIST_COMPACT -> {
-        myMoviesRecentsContainer.updatePadding(
+        binding.myMoviesRecentsContainer.updatePadding(
           left = resources.getDimensionPixelSize(R.dimen.spaceSmall),
           right = resources.getDimensionPixelSize(R.dimen.spaceSmall),
         )
