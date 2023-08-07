@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
-import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.databinding.ViewWelcomeLanguageBinding
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_settings.helpers.AppLanguage
@@ -24,7 +23,6 @@ class WelcomeLanguageView : FrameLayout {
   var onNoClick: (() -> Unit)? = null
 
   init {
-    inflate(context, R.layout.view_welcome_language, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     with(binding) {
       viewWelcomeLanguageYesButton.onClick { onYesClick?.invoke() }
