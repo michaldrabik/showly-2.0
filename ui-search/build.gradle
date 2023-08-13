@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
 apply from: '../versions.gradle'
 
@@ -45,7 +44,7 @@ dependencies {
   implementation project(':ui-navigation')
 
   implementation libs.hilt.android
-  kapt libs.hilt.compiler
+  ksp libs.hilt.compiler
 
   testImplementation project(':common-test')
   testImplementation libs.bundles.testing

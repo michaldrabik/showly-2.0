@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
 apply from: '../versions.gradle'
 
@@ -34,12 +33,12 @@ android {
 dependencies {
   api libs.android.room.ktx
   api libs.android.room.runtime
-  kapt libs.android.room.compiler
+  ksp libs.android.room.compiler
 
   implementation libs.timber
 
   implementation libs.hilt.android
-  kapt libs.hilt.compiler
+  ksp libs.hilt.compiler
 
   testImplementation libs.junit
   androidTestImplementation libs.truth

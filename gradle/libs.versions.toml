@@ -5,10 +5,11 @@ androidxPlayUpdate = "2.1.0"
 androidNavigation = "2.6.0"
 androidRoom = "2.5.2"
 androidLifecycle = "2.6.1"
-androidTest = "1.5.2"
-glide = "4.14.2"
+androidTestRunner = "1.5.2"
+androidTestTruth = "1.5.0"
+glide = "4.15.1"
 retrofit = "2.9.0"
-hilt = "2.46.1"
+hilt = "2.47"
 hiltWork = "1.0.0"
 
 [libraries]
@@ -16,7 +17,7 @@ hiltWork = "1.0.0"
 gradle = { group = "com.android.tools.build", name ="gradle", version = "8.1.0" }
 gradle-firebase-crashlytics = { group = "com.google.firebase", name ="firebase-crashlytics-gradle", version = "2.9.8" }
 gradle-firebase-appdistribution = { group = "com.google.firebase", name ="firebase-appdistribution-gradle", version = "4.0.0" }
-gradle-kotlin-plugin = { group = "org.jetbrains.kotlin", name ="kotlin-gradle-plugin", version = "1.8.20" }
+gradle-kotlin-plugin = { group = "org.jetbrains.kotlin", name ="kotlin-gradle-plugin", version = "1.9.0" }
 gradle-ktlint = { group = "org.jlleitschuh.gradle", name ="ktlint-gradle", version = "10.2.1" }
 google-services = { group = "com.google.gms", name ="google-services", version = "4.3.15" }
 
@@ -81,8 +82,8 @@ coroutinesTest = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-t
 android-test-core = { group = "androidx.arch.core", name = "core-testing", version = "2.2.0" }
 
 # Android Testing
-android-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidTest" }
-android-test-truth = { group = "androidx.test.ext", name = "truth", version.ref = "androidTest" }
+android-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidTestRunner" }
+android-test-truth = { group = "androidx.test.ext", name = "truth", version.ref = "androidTestTruth" }
 
 [bundles]
 

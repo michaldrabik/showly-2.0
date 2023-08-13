@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
 apply from: '../versions.gradle'
 
 android {
@@ -35,7 +34,7 @@ dependencies {
   implementation libs.retrofit
 
   implementation libs.hilt.android
-  kapt libs.hilt.compiler
+  ksp libs.hilt.compiler
 
   implementation libs.coroutinesTest
   coreLibraryDesugaring libs.android.desugar
