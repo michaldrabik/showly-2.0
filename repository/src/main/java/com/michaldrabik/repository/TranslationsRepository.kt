@@ -82,7 +82,7 @@ class TranslationsRepository @Inject constructor(
     )
 
     if (translationDb.overview.isNotBlank() || translationDb.title.isNotBlank()) {
-      localSource.showTranslations.insert(translationDb)
+      localSource.showTranslations.insertSingle(translationDb)
     }
     localSource.translationsShowsSyncLog.upsert(TranslationsSyncLog(show.traktId, nowUtcMillis()))
 
@@ -122,7 +122,7 @@ class TranslationsRepository @Inject constructor(
     )
 
     if (translationDb.overview.isNotBlank() || translationDb.title.isNotBlank()) {
-      localSource.movieTranslations.insert(translationDb)
+      localSource.movieTranslations.insertSingle(translationDb)
     }
     localSource.translationsMoviesSyncLog.upsert(TranslationsMoviesSyncLog(movie.traktId, nowUtcMillis()))
 
@@ -162,7 +162,7 @@ class TranslationsRepository @Inject constructor(
           language = language,
           createdAt = nowMillis
         )
-        localSource.episodesTranslations.insert(dbItem)
+        localSource.episodesTranslations.insertSingle(dbItem)
       }
 
     remoteTranslations
@@ -214,7 +214,7 @@ class TranslationsRepository @Inject constructor(
           item.overview,
           nowUtcMillis()
         )
-        localSource.episodesTranslations.insert(dbItem)
+        localSource.episodesTranslations.insertSingle(dbItem)
       }
 
     return episodes.map { episode ->

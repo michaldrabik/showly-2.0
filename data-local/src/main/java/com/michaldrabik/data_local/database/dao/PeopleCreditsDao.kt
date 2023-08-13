@@ -31,7 +31,7 @@ interface PeopleCreditsDao : BaseDao<PersonCredits>, PeopleCreditsLocalDataSourc
   override suspend fun deleteAllForPerson(personTraktId: Long)
 
   @Transaction
-  override suspend fun insert(personTraktId: Long, credits: List<PersonCredits>) {
+  override suspend fun insertSingle(personTraktId: Long, credits: List<PersonCredits>) {
     deleteAllForPerson(personTraktId)
     insert(credits)
   }

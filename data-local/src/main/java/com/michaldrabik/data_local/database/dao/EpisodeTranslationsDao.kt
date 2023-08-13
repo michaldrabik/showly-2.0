@@ -17,7 +17,7 @@ interface EpisodeTranslationsDao : BaseDao<EpisodeTranslation>, EpisodeTranslati
   override suspend fun getByIds(traktEpisodeIds: List<Long>, traktShowId: Long, language: String): List<EpisodeTranslation>
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  override suspend fun insert(translation: EpisodeTranslation)
+  override suspend fun insertSingle(translation: EpisodeTranslation)
 
   @Query("DELETE FROM episodes_translations WHERE language IN (:languages)")
   override suspend fun deleteByLanguage(languages: List<String>)

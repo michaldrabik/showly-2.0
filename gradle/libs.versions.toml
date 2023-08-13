@@ -1,21 +1,22 @@
 [versions]
 
-androidxPlay = "2.0.1"
-androidNavigation = "2.5.3"
-androidRoom = "2.4.3"
-androidLifecycle = "2.5.1"
-androidTest = "1.4.0"
+androidxPlayReview = "2.0.1"
+androidxPlayUpdate = "2.1.0"
+androidNavigation = "2.6.0"
+androidRoom = "2.5.2"
+androidLifecycle = "2.6.1"
+androidTest = "1.5.2"
 glide = "4.14.2"
 retrofit = "2.9.0"
-hilt = "2.45"
+hilt = "2.46.1"
 hiltWork = "1.0.0"
 
 [libraries]
 
 gradle = { group = "com.android.tools.build", name ="gradle", version = "8.1.0" }
-gradle-firebase-crashlytics = { group = "com.google.firebase", name ="firebase-crashlytics-gradle", version = "2.9.4" }
+gradle-firebase-crashlytics = { group = "com.google.firebase", name ="firebase-crashlytics-gradle", version = "2.9.8" }
 gradle-firebase-appdistribution = { group = "com.google.firebase", name ="firebase-appdistribution-gradle", version = "4.0.0" }
-gradle-kotlin-plugin = { group = "org.jetbrains.kotlin", name ="kotlin-gradle-plugin", version = "1.7.20" }
+gradle-kotlin-plugin = { group = "org.jetbrains.kotlin", name ="kotlin-gradle-plugin", version = "1.8.20" }
 gradle-ktlint = { group = "org.jlleitschuh.gradle", name ="ktlint-gradle", version = "10.2.1" }
 google-services = { group = "com.google.gms", name ="google-services", version = "4.3.15" }
 
@@ -33,8 +34,8 @@ android-constraintlayout = { group = "androidx.constraintlayout", name = "constr
 android-recycler = { group = "androidx.recyclerview", name = "recyclerview", version = "1.3.0" }
 android-fragment = { group = "androidx.fragment", name = "fragment-ktx", version = "1.5.6" }
 
-android-play-reviews = { group = "com.google.android.play", name = "review", version.ref = "androidxPlay" }
-android-play-updates = { group = "com.google.android.play", name = "app-update", version.ref = "androidxPlay" }
+android-play-reviews = { group = "com.google.android.play", name = "review-ktx", version.ref = "androidxPlayReview" }
+android-play-updates = { group = "com.google.android.play", name = "app-update-ktx", version.ref = "androidxPlayUpdate" }
 
 android-navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "androidNavigation" }
 android-navigation-ui = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "androidNavigation" }
@@ -75,7 +76,7 @@ overscrollDecor = { group = "io.github.everythingme", name = "overscroll-decor-a
 # Testing
 junit = { group = "junit", name = "junit", version = "4.13.2" }
 mockk = { group = "io.mockk", name = "mockk", version = "1.13.5" }
-truth = { group = "com.google.truth", name = "truth", version = "1.1.3" }
+truth = { group = "com.google.truth", name = "truth", version = "1.1.5" }
 coroutinesTest = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version = "1.6.4" }
 android-test-core = { group = "androidx.arch.core", name = "core-testing", version = "2.2.0" }
 
