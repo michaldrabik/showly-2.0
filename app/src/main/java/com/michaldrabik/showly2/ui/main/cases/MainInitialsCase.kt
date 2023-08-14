@@ -19,6 +19,7 @@ import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.showly2.BuildConfig
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.fcm.NotificationChannel
+import com.michaldrabik.ui_base.utilities.extensions.withApiAtLeast
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -82,6 +83,15 @@ class MainInitialsCase @Inject constructor(
           settingsRepository.country = appCountry.code
           return
         }
+      }
+    }
+  }
+
+  suspend fun setInitialNotifications() {
+    withApiAtLeast(33) {
+      val settings = settingsRepository.load()
+      settings.let {
+        settingsRepository.update(it.copy(episodesNotificationsEnabled = false))
       }
     }
   }

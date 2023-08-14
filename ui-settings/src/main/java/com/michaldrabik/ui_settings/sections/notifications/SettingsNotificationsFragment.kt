@@ -27,7 +27,7 @@ class SettingsNotificationsFragment :
     setupView()
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
-      doAfterLaunch = { viewModel.loadSettings() }
+      doAfterLaunch = { viewModel.loadSettings(requireAppContext()) }
     )
   }
 
@@ -42,10 +42,7 @@ class SettingsNotificationsFragment :
   private fun setupView() {
     with(binding) {
       settingsShowsNotifications.onClick {
-        viewModel.enableNotifications(!settingsShowsNotificationsSwitch.isChecked)
-      }
-      settingsShowsNotifications.onClick {
-        viewModel.enableNotifications(!settingsShowsNotificationsSwitch.isChecked)
+        viewModel.enableNotifications(!settingsShowsNotificationsSwitch.isChecked, requireAppContext())
       }
     }
   }

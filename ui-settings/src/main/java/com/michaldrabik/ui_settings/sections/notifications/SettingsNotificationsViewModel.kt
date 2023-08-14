@@ -1,5 +1,7 @@
 package com.michaldrabik.ui_settings.sections.notifications
 
+import android.content.Context
+import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_base.Analytics
@@ -23,14 +25,19 @@ class SettingsNotificationsViewModel @Inject constructor(
   private val settingsState = MutableStateFlow<Settings?>(null)
   private val loadingState = MutableStateFlow(false)
 
-  fun loadSettings() {
+  fun loadSettings(context: Context) {
     viewModelScope.launch {
+      ensureNotificationsPermission(context)
       refreshSettings()
     }
   }
 
-  fun enableNotifications(enable: Boolean) {
+  fun enableNotifications(enable: Boolean, context: Context) {
     viewModelScope.launch {
+      if (enable && !ensureNotificationsPermission(context)) {
+        //Ask for notification permission
+        return@launch
+      }
       mainCase.enableNotifications(enable)
       refreshSettings()
       Analytics.logSettingsAnnouncements(enable)
@@ -47,6 +54,18 @@ class SettingsNotificationsViewModel @Inject constructor(
 
   private suspend fun refreshSettings() {
     settingsState.value = mainCase.getSettings()
+  }
+
+  private suspend fun ensureNotificationsPermission(context: Context): Boolean {
+    val areNotificationsEnabled = NotificationManagerCompat
+      .from(context.applicationContext)
+      .areNotificationsEnabled()
+
+    if (!areNotificationsEnabled) {
+      mainCase.enableNotifications(false)
+    }
+
+    return areNotificationsEnabled
   }
 
   val uiState = combine(
