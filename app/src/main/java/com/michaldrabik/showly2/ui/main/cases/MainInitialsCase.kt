@@ -54,7 +54,7 @@ class MainInitialsCase @Inject constructor(
   @SuppressLint("NewApi")
   suspend fun initializeFcm() {
     FirebaseMessaging.getInstance().run {
-      val isEnabled = settingsRepository.load().pushNotificationsEnabled
+      val isEnabled = settingsRepository.load().episodesNotificationsEnabled
       val suffix = if (BuildConfig.DEBUG) "-debug" else ""
       if (isEnabled) {
         subscribeToTopic(NotificationChannel.GENERAL_INFO.topicName + suffix)

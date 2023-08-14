@@ -42,8 +42,6 @@
   <string name="textSettingsIncludeSpecialsSummary">Exibir temporadas \'Especiais\' na tela de detalhes da série.</string>
   <string name="textSettingsNotifications">Notificações</string>
   <string name="textSettingsPushNotificationsTitle">Notificações push</string>
-  <string name="textSettingsPushNotificationsSummary">Receba notificações de push de informações gerais.</string>
-  <string name="textSettingsShowsNotificationsTitle">Avisos</string>
   <string name="textSettingsShowsNotificationsSummary">Receber notificações sobre novos filmes, episódios, temporadas para séries que você está seguindo.</string>
   <string name="textSettingsMisc">Outros</string>
   <string name="textSettingsContactDevsTitle">Contate os desenvolvedores</string>

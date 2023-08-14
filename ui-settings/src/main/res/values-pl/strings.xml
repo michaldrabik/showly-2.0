@@ -42,8 +42,6 @@
   <string name="textSettingsIncludeSpecialsSummary">Pokaż \'Specjalne\' sezony na ekranie informacji o serialu.</string>
   <string name="textSettingsNotifications">Powiadomienia</string>
   <string name="textSettingsPushNotificationsTitle">Powiadomienia Push</string>
-  <string name="textSettingsPushNotificationsSummary">Otrzymuj powiadomienia na ogólne tematy.</string>
-  <string name="textSettingsShowsNotificationsTitle">Powiadomienia</string>
   <string name="textSettingsShowsNotificationsSummary">Otrzymuj powiadomienia o nowych filmach, odcinkach, sezonach.</string>
   <string name="textSettingsMisc">Różne</string>
   <string name="textSettingsContactDevsTitle">Kontakt</string>

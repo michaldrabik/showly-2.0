@@ -42,20 +42,16 @@ class SettingsNotificationsFragment :
   private fun setupView() {
     with(binding) {
       settingsShowsNotifications.onClick {
-        viewModel.enableAnnouncements(!settingsShowsNotificationsSwitch.isChecked)
-      }
-      settingsPushNotifications.onClick {
-        viewModel.enablePushNotifications(!settingsPushNotificationsSwitch.isChecked)
+        viewModel.enableNotifications(!settingsShowsNotificationsSwitch.isChecked)
       }
       settingsShowsNotifications.onClick {
-        viewModel.enableAnnouncements(!settingsShowsNotificationsSwitch.isChecked)
+        viewModel.enableNotifications(!settingsShowsNotificationsSwitch.isChecked)
       }
     }
   }
 
   private fun renderSettings(settings: Settings) {
     with(binding) {
-      settingsPushNotificationsSwitch.isChecked = settings.pushNotificationsEnabled
       settingsShowsNotificationsSwitch.isChecked = settings.episodesNotificationsEnabled
       settingsWhenToNotifyValue.run {
         setText(settings.episodesNotificationsDelay.stringRes)

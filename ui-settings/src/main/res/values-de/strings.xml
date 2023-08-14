@@ -42,8 +42,6 @@
   <string name="textSettingsIncludeSpecialsSummary">Zeige \'Spezial\' Staffeln in den Seriendetails.</string>
   <string name="textSettingsNotifications">Benachrichtigungen </string>
   <string name="textSettingsPushNotificationsTitle">Pushbenachrichtigungen</string>
-  <string name="textSettingsPushNotificationsSummary">Erhalte allgemeine Push-Benachrichtigungen.</string>
-  <string name="textSettingsShowsNotificationsTitle">Ankündigungen</string>
   <string name="textSettingsShowsNotificationsSummary">Erhalte Benachrichtigungen über neue Filme, Folgen &amp; Staffeln von Serien die du gespeichert hast.</string>
   <string name="textSettingsMisc">Gemischt</string>
   <string name="textSettingsContactDevsTitle">Entwickler kontaktieren</string>

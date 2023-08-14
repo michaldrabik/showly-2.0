@@ -42,8 +42,6 @@
   <string name="textSettingsIncludeSpecialsSummary">Отображать \"Специальные\" сезоны в экране деталей сериала.</string>
   <string name="textSettingsNotifications">Уведомления</string>
   <string name="textSettingsPushNotificationsTitle">Push-уведомления</string>
-  <string name="textSettingsPushNotificationsSummary">Получать главную информацию от push-уведомлений.</string>
-  <string name="textSettingsShowsNotificationsTitle">Анонсы</string>
   <string name="textSettingsShowsNotificationsSummary">Получать уведомления о новых фильмах, эпизодах, сезонах для сериалов, на которые вы подписаны.</string>
   <string name="textSettingsMisc">Прочее</string>
   <string name="textSettingsContactDevsTitle">Связаться с разработчиками</string>

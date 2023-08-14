@@ -29,17 +29,9 @@ class SettingsNotificationsViewModel @Inject constructor(
     }
   }
 
-  fun enablePushNotifications(enable: Boolean) {
+  fun enableNotifications(enable: Boolean) {
     viewModelScope.launch {
-      mainCase.enablePushNotifications(enable)
-      refreshSettings()
-      Analytics.logSettingsPushNotifications(enable)
-    }
-  }
-
-  fun enableAnnouncements(enable: Boolean) {
-    viewModelScope.launch {
-      mainCase.enableAnnouncements(enable)
+      mainCase.enableNotifications(enable)
       refreshSettings()
       Analytics.logSettingsAnnouncements(enable)
     }
