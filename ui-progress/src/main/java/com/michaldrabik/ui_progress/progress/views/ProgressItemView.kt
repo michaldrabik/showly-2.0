@@ -103,7 +103,7 @@ class ProgressItemView : ShowView<ProgressListItem.Episode> {
         context.getString(R.string.textTba)
       }
       item.translations?.episode?.title?.isBlank() == false -> {
-        item.episode?.title
+        item.translations.episode.title
       }
       item.episode?.title == "Episode ${item.episode?.number}" -> {
         String.format(ENGLISH, context.getString(R.string.textEpisode), item.episode.number)
