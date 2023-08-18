@@ -1,4 +1,4 @@
-* Spoilers hiding controls has been added. Visit Settings for more.
+* Added Paramount and Peacock to networks filters
 * Bugfixes
 
 Do you enjoy Showly and want to support the developer?

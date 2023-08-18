@@ -120,7 +120,7 @@ enum class Network(
     "Disney+ Hotstar"
   ),
   HBO(
-    "HBO",
+    "HBO Max",
     "HBO Asia",
     "HBO Brasil",
     "HBO Canada",
@@ -130,8 +130,10 @@ enum class Network(
     "HBO Latin",
     "HBO America",
     "HBO Magyarország",
-    "HBO Max",
     "HBO Nordic",
+    "HBO",
+    "Max",
+    "MAX",
   ),
   FOX(
     "FOX",
@@ -159,6 +161,17 @@ enum class Network(
     "NBCUniversal"
   ),
   NETFLIX("Netflix"),
+  PARAMOUNT(
+    "Paramount",
+    "Paramount (GB)",
+    "Paramount Network",
+    "Paramount+",
+    "Paramount+ (AU)",
+    "Paramount+ (MX)",
+  ),
+  PEACOCK(
+    "Peacock",
+  ),
+  RAKUTEN("Rakuten TV"),
   SHOWTIME("Showtime"),
-  RAKUTEN("Rakuten TV")
 }
