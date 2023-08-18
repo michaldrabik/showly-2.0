@@ -6,8 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
+import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
+import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.NotificationDelay
 import com.michaldrabik.ui_model.Settings
+import com.michaldrabik.ui_settings.sections.notifications.SettingsNotificationsUiEvent.RequestNotificationsPermission
 import com.michaldrabik.ui_settings.sections.notifications.cases.SettingsNotificationsMainCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsNotificationsViewModel @Inject constructor(
   private val mainCase: SettingsNotificationsMainCase,
-) : ViewModel() {
+) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val settingsState = MutableStateFlow<Settings?>(null)
   private val loadingState = MutableStateFlow(false)
@@ -35,7 +38,7 @@ class SettingsNotificationsViewModel @Inject constructor(
   fun enableNotifications(enable: Boolean, context: Context) {
     viewModelScope.launch {
       if (enable && !ensureNotificationsPermission(context)) {
-        //Ask for notification permission
+        eventChannel.send(RequestNotificationsPermission)
         return@launch
       }
       mainCase.enableNotifications(enable)
