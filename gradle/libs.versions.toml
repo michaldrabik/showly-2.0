@@ -71,7 +71,7 @@ coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-andro
 phoenix = { group = "com.jakewharton", name = "process-phoenix", version = "2.1.2" }
 timber = { group = "com.jakewharton.timber", name = "timber", version = "5.0.1" }
 circleIndicator = { group = "me.relex", name = "circleindicator", version = "2.1.6" }
-loggingInterceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version = "4.10.0" }
+loggingInterceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version = "4.11.0" }
 overscrollDecor = { group = "io.github.everythingme", name = "overscroll-decor-android", version = "1.1.1" }
 
 # Testing
