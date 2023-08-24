@@ -433,7 +433,7 @@
       <com.michaldrabik.ui_base.common.views.PremiumAdView
         android:id="@+id/movieDetailsPremiumAd"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:layout_marginStart="@dimen/spaceNormal"
         android:layout_marginTop="18dp"
         android:layout_marginEnd="@dimen/spaceNormal"
