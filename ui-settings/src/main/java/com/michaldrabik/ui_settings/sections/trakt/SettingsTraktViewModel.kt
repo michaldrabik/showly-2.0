@@ -1,6 +1,8 @@
 package com.michaldrabik.ui_settings.sections.trakt
 
+import android.content.Context
 import android.net.Uri
+import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.errors.ErrorHelper
@@ -10,11 +12,14 @@ import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
+import com.michaldrabik.ui_base.utilities.extensions.withApiAtLeast
 import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
 import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_model.TraktSyncSchedule
 import com.michaldrabik.ui_settings.R
+import com.michaldrabik.ui_settings.sections.trakt.SettingsTraktUiEvent.RequestNotificationsPermission
+import com.michaldrabik.ui_settings.sections.trakt.SettingsTraktUiEvent.StartAuthorization
 import com.michaldrabik.ui_settings.sections.trakt.cases.SettingsRatingsCase
 import com.michaldrabik.ui_settings.sections.trakt.cases.SettingsTraktCase
 import com.michaldrabik.ui_settings.sections.trakt.cases.SettingsTraktMainCase
@@ -54,6 +59,33 @@ class SettingsTraktViewModel @Inject constructor(
     premiumState.value = mainCase.isPremium()
   }
 
+  private fun preloadRatings() {
+    viewModelScope.launch {
+      try {
+        ratingsCase.preloadRatings()
+      } catch (error: Throwable) {
+        Timber.e("Failed to preload some of ratings")
+        rethrowCancellation(error)
+      }
+    }
+  }
+
+  fun startAuthorization(context: Context) {
+    viewModelScope.launch {
+      withApiAtLeast(33) {
+        val areNotificationsEnabled = NotificationManagerCompat
+          .from(context.applicationContext)
+          .areNotificationsEnabled()
+
+        if (!areNotificationsEnabled) {
+          eventChannel.send(RequestNotificationsPermission)
+          return@launch
+        }
+      }
+      eventChannel.send(StartAuthorization)
+    }
+  }
+
   fun authorizeTrakt(authData: Uri?) {
     if (authData == null) {
       Logger.record(Error("authData is null"), "SettingsViewModel::authorizeTrakt()")
@@ -77,17 +109,6 @@ class SettingsTraktViewModel @Inject constructor(
         }
       } finally {
         signingInState.value = false
-      }
-    }
-  }
-
-  private fun preloadRatings() {
-    viewModelScope.launch {
-      try {
-        ratingsCase.preloadRatings()
-      } catch (error: Throwable) {
-        Timber.e("Failed to preload some of ratings")
-        rethrowCancellation(error)
       }
     }
   }

@@ -118,7 +118,6 @@ class TraktSyncFragment :
     val view = NotificationsRationaleView(context)
     MaterialAlertDialogBuilder(context, R.style.AlertDialog)
       .setBackground(ContextCompat.getDrawable(context, R.drawable.bg_dialog))
-      .setCancelable(false)
       .setView(view)
       .setPositiveButton(R.string.textYes) { _, _ ->
         requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
