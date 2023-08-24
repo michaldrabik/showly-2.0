@@ -2,7 +2,7 @@ plugins {
   id 'com.github.triplet.play'
   id 'com.android.application'
   id 'kotlin-android'
-  id 'kotlin-kapt'
+  id 'com.google.devtools.ksp'
   id 'dagger.hilt.android.plugin'
   id 'com.google.gms.google-services'
   id 'com.google.firebase.appdistribution'
@@ -17,11 +17,11 @@ play {
 }
 
 android {
-  kotlinOptions { jvmTarget = "1.8" }
+  kotlinOptions { jvmTarget = "17" }
   compileOptions {
     coreLibraryDesugaringEnabled true
-    sourceCompatibility JavaVersion.VERSION_1_8
-    targetCompatibility JavaVersion.VERSION_1_8
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
   }
 
   buildFeatures {
@@ -115,9 +115,9 @@ dependencies {
   implementation project(':ui-widgets')
 
   implementation libs.hilt.android
-  kapt libs.hilt.compiler
+  ksp libs.hilt.compiler
   implementation libs.hilt.work
-  kapt libs.hilt.work.compiler
+  ksp libs.hilt.work.compiler
 
   implementation libs.android.play.updates
   implementation libs.android.play.reviews

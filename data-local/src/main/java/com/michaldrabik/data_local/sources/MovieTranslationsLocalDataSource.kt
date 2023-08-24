@@ -8,7 +8,7 @@ interface MovieTranslationsLocalDataSource {
 
   suspend fun getAll(language: String): List<MovieTranslation>
 
-  suspend fun insert(translation: MovieTranslation)
+  suspend fun insertSingle(translation: MovieTranslation)
 
   suspend fun deleteByLanguage(languages: List<String>)
 }

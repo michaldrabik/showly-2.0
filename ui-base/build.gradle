@@ -1,17 +1,16 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-parcelize'
 apply plugin: 'dagger.hilt.android.plugin'
 apply from: '../versions.gradle'
 
 android {
-  kotlinOptions { jvmTarget = "1.8" }
+  kotlinOptions { jvmTarget = "17" }
 
   compileOptions {
     coreLibraryDesugaringEnabled true
-    sourceCompatibility JavaVersion.VERSION_1_8
-    targetCompatibility JavaVersion.VERSION_1_8
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
   }
 
   buildFeatures {
@@ -62,13 +61,13 @@ dependencies {
   api libs.bundles.firebase
 
   api libs.glide
-  kapt libs.glide.compiler
+  ksp libs.glide.compiler
 
   implementation libs.hilt.android
-  kapt libs.hilt.compiler
+  ksp libs.hilt.compiler
 
   implementation libs.hilt.work
-  kapt libs.hilt.work.compiler
+  ksp libs.hilt.work.compiler
 
   coreLibraryDesugaring libs.android.desugar
 }

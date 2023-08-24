@@ -1,8 +1,11 @@
 package com.michaldrabik.ui_trakt_sync
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -24,7 +27,11 @@ import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.TraktSyncSchedule
+import com.michaldrabik.ui_trakt_sync.TraktSyncUiEvent.Finish
+import com.michaldrabik.ui_trakt_sync.TraktSyncUiEvent.RequestNotificationsPermission
+import com.michaldrabik.ui_trakt_sync.TraktSyncUiEvent.StartAuthorization
 import com.michaldrabik.ui_trakt_sync.databinding.FragmentTraktSyncBinding
+import com.michaldrabik.ui_trakt_sync.views.NotificationsRationaleView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -105,10 +112,22 @@ class TraktSyncFragment :
     viewModel.authorizeTrakt(code)
   }
 
-  private fun handleEvent(event: Event<*>) {
-    when (event) {
-      TraktSyncUiEvent.Finish -> activity?.onBackPressed()
-    }
+  @SuppressLint("InlinedApi")
+  private fun showNotificationsRationaleDialog() {
+    val context = requireContext()
+    val view = NotificationsRationaleView(context)
+    MaterialAlertDialogBuilder(context, R.style.AlertDialog)
+      .setBackground(ContextCompat.getDrawable(context, R.drawable.bg_dialog))
+      .setView(view)
+      .setPositiveButton(R.string.textYes) { _, _ ->
+        requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+      }
+      .setNegativeButton(R.string.textNo) { _, _ -> openTraktAuthWebsite() }
+      .show()
+  }
+
+  private fun openTraktAuthWebsite() {
+    openWebUrl(Config.TRAKT_AUTHORIZE_URL) ?: showSnack(MessageEvent.Error(R.string.errorCouldNotFindApp))
   }
 
   private fun render(uiState: TraktSyncUiState) {
@@ -142,11 +161,24 @@ class TraktSyncFragment :
         } else {
           traktSyncButton.text = getString(R.string.textSettingsTraktAuthorizeTitle)
           traktSyncButton.onClick {
-            openWebUrl(Config.TRAKT_AUTHORIZE_URL) ?: showSnack(MessageEvent.Error(R.string.errorCouldNotFindApp))
+            viewModel.checkNotificationsPermission(requireAppContext())
           }
           traktSyncScheduleButton.gone()
         }
       }
     }
   }
+
+  private fun handleEvent(event: Event<*>) {
+    when (event) {
+      StartAuthorization -> openTraktAuthWebsite()
+      RequestNotificationsPermission -> showNotificationsRationaleDialog()
+      Finish -> activity?.onBackPressed()
+    }
+  }
+
+  private val requestPermissionLauncher =
+    registerForActivityResult(RequestPermission()) { _ ->
+      openTraktAuthWebsite()
+    }
 }

@@ -17,7 +17,7 @@ interface MovieTranslationsDao : BaseDao<MovieTranslation>, MovieTranslationsLoc
   override suspend fun getAll(language: String): List<MovieTranslation>
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  override suspend fun insert(translation: MovieTranslation)
+  override suspend fun insertSingle(translation: MovieTranslation)
 
   @Query("DELETE FROM movies_translations WHERE language IN (:languages)")
   override suspend fun deleteByLanguage(languages: List<String>)

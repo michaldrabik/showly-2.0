@@ -42,8 +42,6 @@
   <string name="textSettingsIncludeSpecialsSummary">عرض \'الحلقات الخاصة\' في صفحة تفاصيل المسلسل</string>
   <string name="textSettingsNotifications">الإشعارات</string>
   <string name="textSettingsPushNotificationsTitle">ضبط الإشعارات</string>
-  <string name="textSettingsPushNotificationsSummary">تلقي إشعارات عامة.</string>
-  <string name="textSettingsShowsNotificationsTitle">إشعارات الحلقات</string>
   <string name="textSettingsShowsNotificationsSummary">تلقي إشعارات للأفلام والحلقات والمواسم الجديدة للمحتويات التي تتابعها.</string>
   <string name="textSettingsMisc">إعدادات متنوعة</string>
   <string name="textSettingsContactDevsTitle">التواصل مع المطورين</string>

@@ -142,7 +142,7 @@ class PeopleRepository @Inject constructor(
       transactions.withTransaction {
         shows.upsert(remoteShows.map { mappers.show.toDatabase(it) })
         movies.upsert(remoteMovies.map { mappers.movie.toDatabase(it) })
-        peopleCredits.insert(idTrakt!!, localCredits)
+        peopleCredits.insertSingle(idTrakt!!, localCredits)
       }
     }
 

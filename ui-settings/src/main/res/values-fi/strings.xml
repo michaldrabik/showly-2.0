@@ -42,8 +42,6 @@
   <string name="textSettingsIncludeSpecialsSummary">Näytä erikoistuotantokaudet sarjojen tiedoissa.</string>
   <string name="textSettingsNotifications">Ilmoitukset</string>
   <string name="textSettingsPushNotificationsTitle">Push-ilmoitukset</string>
-  <string name="textSettingsPushNotificationsSummary">Vastaanota yleistä tietoa push-ilmoituksina.</string>
-  <string name="textSettingsShowsNotificationsTitle">Julkaisut</string>
   <string name="textSettingsShowsNotificationsSummary">Vastaanota ilmoituksia uusista elokuvista sekä seuraamiesi sarjojen jaksoista ja tuotantokausista.</string>
   <string name="textSettingsMisc">Sekalaiset</string>
   <string name="textSettingsContactDevsTitle">Ota yhteyttä kehittäjiin</string>

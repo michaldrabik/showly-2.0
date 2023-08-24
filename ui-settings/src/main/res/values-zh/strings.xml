@@ -42,8 +42,6 @@
   <string name="textSettingsIncludeSpecialsSummary">在节目详细页面上显示 「特别」季。</string>
   <string name="textSettingsNotifications">通知</string>
   <string name="textSettingsPushNotificationsTitle">通知推送</string>
-  <string name="textSettingsPushNotificationsSummary">接收一般信息的推送通知。</string>
-  <string name="textSettingsShowsNotificationsTitle">宣告</string>
   <string name="textSettingsShowsNotificationsSummary">接到关于您正在关注电影、剧集的更新通知。</string>
   <string name="textSettingsMisc">杂项</string>
   <string name="textSettingsContactDevsTitle">联系开发者</string>

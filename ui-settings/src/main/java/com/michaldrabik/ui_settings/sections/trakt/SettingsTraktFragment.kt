@@ -1,8 +1,11 @@
 package com.michaldrabik.ui_settings.sections.trakt
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
@@ -14,6 +17,8 @@ import com.michaldrabik.data_remote.Config.TRAKT_AUTHORIZE_URL
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTraktAuthorizeListener
 import com.michaldrabik.ui_base.trakt.TraktSyncWorker
+import com.michaldrabik.ui_base.utilities.events.Event
+import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
@@ -24,6 +29,9 @@ import com.michaldrabik.ui_model.TraktSyncSchedule.OFF
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ITEM
 import com.michaldrabik.ui_settings.R
 import com.michaldrabik.ui_settings.databinding.FragmentSettingsTraktBinding
+import com.michaldrabik.ui_settings.sections.notifications.views.NotificationsRationaleView
+import com.michaldrabik.ui_settings.sections.trakt.SettingsTraktUiEvent.RequestNotificationsPermission
+import com.michaldrabik.ui_settings.sections.trakt.SettingsTraktUiEvent.StartAuthorization
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -40,6 +48,7 @@ class SettingsTraktFragment :
     setupWorkManager()
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
+      { viewModel.eventFlow.collect { handleEvent(it) } },
       { viewModel.messageFlow.collect { showSnack(it) } },
       doAfterLaunch = { viewModel.loadSettings() }
     )
@@ -102,7 +111,7 @@ class SettingsTraktFragment :
           if (isSignedInTrakt) {
             showLogoutDialog()
           } else if (!isSigningIn) {
-            openWebUrl(TRAKT_AUTHORIZE_URL)
+            viewModel.startAuthorization(requireAppContext())
           }
         }
 
@@ -114,6 +123,13 @@ class SettingsTraktFragment :
           else -> getString(R.string.textSettingsTraktAuthorizeSummarySignIn)
         }
       }
+    }
+  }
+
+  private fun handleEvent(event: Event<*>) {
+    when (event) {
+      StartAuthorization -> openTraktAuthWebsite()
+      RequestNotificationsPermission -> showNotificationsRationaleDialog()
     }
   }
 
@@ -160,7 +176,30 @@ class SettingsTraktFragment :
       .show()
   }
 
+  @SuppressLint("InlinedApi")
+  private fun showNotificationsRationaleDialog() {
+    val context = requireContext()
+    val view = NotificationsRationaleView(context)
+    MaterialAlertDialogBuilder(context, R.style.AlertDialog)
+      .setBackground(ContextCompat.getDrawable(context, R.drawable.bg_dialog))
+      .setView(view)
+      .setPositiveButton(R.string.textYes) { _, _ ->
+        requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+      }
+      .setNegativeButton(R.string.textNo) { _, _ -> openTraktAuthWebsite() }
+      .show()
+  }
+
+  private fun openTraktAuthWebsite() {
+    openWebUrl(TRAKT_AUTHORIZE_URL) ?: showSnack(MessageEvent.Error(R.string.errorCouldNotFindApp))
+  }
+
   override fun onAuthorizationResult(authData: Uri?) {
     viewModel.authorizeTrakt(authData)
   }
+
+  private val requestPermissionLauncher =
+    registerForActivityResult(RequestPermission()) { _ ->
+      openTraktAuthWebsite()
+    }
 }

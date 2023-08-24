@@ -66,7 +66,7 @@ class PeopleImagesProvider @Inject constructor(
       )
     }
 
-    localSource.peopleImages.insert(personTmdbId.id, dbImages)
+    localSource.peopleImages.insertSingle(personTmdbId.id, dbImages)
 
     return@withContext images.map {
       Image.createAvailable(

@@ -23,31 +23,25 @@ class SettingsNotificationsMainCase @Inject constructor(
     settingsRepository.load()
   }
 
-  suspend fun enablePushNotifications(enable: Boolean) {
-    val settings = settingsRepository.load()
-    settings.let {
-      val new = it.copy(pushNotificationsEnabled = enable)
-      settingsRepository.update(new)
-    }
-    FirebaseMessaging.getInstance().run {
-      val suffix = ConfigVariant.FIREBASE_SUFFIX
-      if (enable) {
-        subscribeToTopic(NotificationChannel.GENERAL_INFO.topicName + suffix)
-        subscribeToTopic(NotificationChannel.SHOWS_INFO.topicName + suffix)
-      } else {
-        unsubscribeFromTopic(NotificationChannel.GENERAL_INFO.topicName + suffix)
-        unsubscribeFromTopic(NotificationChannel.SHOWS_INFO.topicName + suffix)
-      }
-    }
-  }
-
-  suspend fun enableAnnouncements(enable: Boolean) {
+  suspend fun enableNotifications(enable: Boolean) {
     val settings = settingsRepository.load()
     settings.let {
       val new = it.copy(episodesNotificationsEnabled = enable)
       settingsRepository.update(new)
+
       announcementManager.refreshShowsAnnouncements()
       announcementManager.refreshMoviesAnnouncements()
+
+      FirebaseMessaging.getInstance().run {
+        val suffix = ConfigVariant.FIREBASE_SUFFIX
+        if (enable) {
+          subscribeToTopic(NotificationChannel.GENERAL_INFO.topicName + suffix)
+          subscribeToTopic(NotificationChannel.SHOWS_INFO.topicName + suffix)
+        } else {
+          unsubscribeFromTopic(NotificationChannel.GENERAL_INFO.topicName + suffix)
+          unsubscribeFromTopic(NotificationChannel.SHOWS_INFO.topicName + suffix)
+        }
+      }
     }
   }
 

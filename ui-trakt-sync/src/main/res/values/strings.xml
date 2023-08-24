@@ -8,6 +8,7 @@
   <string name="textTraktSyncFromShowlyToTrakt">Export from Showly to Trakt.tv</string>
   <string name="textTraktSyncDescription">Sync your Trakt.tv account progress and watchlist data with Showly.\n\nNone of the items from your current collection will be deleted. Sync will only handle missing items in your collections.</string>
   <string name="textTraktSyncLastTimestamp">Last Sync: %s</string>
+  <string name="textTraktNotificationsRationale">Please grant the application a permission to display information about synchronization progress and results.\n\nWould you like to do it now?</string>
 
   <string name="textSettingsTraktAuthorizeTitle">Trakt.tv Authorization</string>
   <string name="textSettingsScheduleImportConfirmationTitle">Instant Sync Enabled</string>

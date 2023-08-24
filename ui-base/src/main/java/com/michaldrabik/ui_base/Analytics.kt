@@ -223,12 +223,6 @@ object Analytics {
     }
   }
 
-  fun logSettingsPushNotifications(enabled: Boolean) {
-    firebaseAnalytics.logEvent("settings_push_notifications") {
-      param("enabled", enabled.toString())
-    }
-  }
-
   fun logSettingsAnnouncements(enabled: Boolean) {
     firebaseAnalytics.logEvent("settings_announcements") {
       param("enabled", enabled.toString())

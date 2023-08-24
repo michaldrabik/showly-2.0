@@ -8,7 +8,7 @@ interface ShowTranslationsLocalDataSource {
 
   suspend fun getAll(language: String): List<ShowTranslation>
 
-  suspend fun insert(translation: ShowTranslation)
+  suspend fun insertSingle(translation: ShowTranslation)
 
   suspend fun deleteByLanguage(languages: List<String>)
 }

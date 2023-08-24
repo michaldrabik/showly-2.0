@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_base.notifications
 
+import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.app.PendingIntent.FLAG_UPDATE_CURRENT
@@ -29,6 +30,7 @@ class AnnouncementWorker(context: Context, workerParams: WorkerParameters) : Wor
     const val DATA_THEME = "DATA_THEME"
   }
 
+  @SuppressLint("MissingPermission")
   override fun doWork(): Result {
     val color = when (inputData.getInt(DATA_THEME, MODE_NIGHT_YES)) {
       MODE_NIGHT_YES -> R.color.colorNotificationDark
