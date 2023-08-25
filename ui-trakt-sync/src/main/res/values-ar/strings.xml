@@ -8,6 +8,7 @@
   <string name="textTraktSyncFromShowlyToTrakt">رفع من Showly ل Trakt.tv</string>
   <string name="textTraktSyncDescription">مزامنة مستوى تقدمك وقائمة مشاهدتك في Trakt.tv مع Showly.\n\nلن يتم حذف أي شيء في التطبيق، سيتم إضافة العناصر الغير موجودة فقط.</string>
   <string name="textTraktSyncLastTimestamp">وقت آخر مزامنة: %s</string>
+  <string name="textTraktNotificationsRationale">الرجاء منح التطبيق الإذن لعرض معلومات حول تقدم المزامنة ونتائجها.\n\nهل ترغب في القيام بذلك الآن؟</string>
   <string name="textSettingsTraktAuthorizeTitle">مصادقة Trakt.tv</string>
   <string name="textSettingsScheduleImportConfirmationTitle">تم تفعيل المزامنة الفورية</string>
   <string name="textSettingsScheduleImportConfirmationMessage">\nالمزامنة الفورية مفعلة بالفعل.\n\nأمازلت ترغب في تفعيل المزامنة التلقائية؟\n</string>
