@@ -8,6 +8,7 @@
   <string name="textTraktSyncFromShowlyToTrakt">Showly uygulamasından Trakt.tv hizmetine aktar</string>
   <string name="textTraktSyncDescription">Trakt.tv hesabınızın ilerleme ve istek listesi verilerini Showly ile eşitleyin.\n\nMevcut koleksiyonunuzdaki ögelerden hiçbiri silinmeyecek. Eşitleme, yalnızca koleksiyonlarınızdaki eksik ögeleri ele alır.</string>
   <string name="textTraktSyncLastTimestamp">Son Eşitleme: %s</string>
+  <string name="textTraktNotificationsRationale">Lütfen uygulamaya senkronizasyon ilerlemesi ve sonuçları hakkında bilgiler göstermesi için izin verin\n\nBunu şimdi yapmak ister misiniz?</string>
   <string name="textSettingsTraktAuthorizeTitle">Trakt.tv Yetkilendirmesi</string>
   <string name="textSettingsScheduleImportConfirmationTitle">Anlık Eşitleme Etkinleştirildi</string>
   <string name="textSettingsScheduleImportConfirmationMessage">\nAnlık Eşitleme zaten açık gibi görünüyor.\n\nHala otomatik eşitlemeyi programlamak istiyor musunuz?\n</string>
