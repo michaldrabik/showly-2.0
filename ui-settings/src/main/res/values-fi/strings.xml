@@ -43,6 +43,7 @@
   <string name="textSettingsNotifications">Ilmoitukset</string>
   <string name="textSettingsPushNotificationsTitle">Push-ilmoitukset</string>
   <string name="textSettingsShowsNotificationsSummary">Vastaanota ilmoituksia uusista elokuvista sekä seuraamiesi sarjojen jaksoista ja tuotantokausista.</string>
+  <string name="textSettingsShowsNotificationsRationale">Myönnä sovellukselle ilmoitusten näyttöoikeus.\n\nHaluatko tämän nyt?</string>
   <string name="textSettingsMisc">Sekalaiset</string>
   <string name="textSettingsContactDevsTitle">Ota yhteyttä kehittäjiin</string>
   <string name="textSettingsContactDevsSummary">Onko ongelmia? Lähetä meille sähköpostia napauttamalla (showlyapp@gmail.com).</string>
@@ -97,10 +98,10 @@
   <string name="textSettingsSpoilersMoviesRatingsNotCollectedDescription">Piilota kokoelman ulkopuolisten elokuvien <b>arviot</b>.</string>
   <string name="textSettingsSpoilersEpisodes">jaksoa</string>
   <string name="textSettingsSpoilersEpisodesSummary">Hallitse jaksojen jounipaljastusasetuksia.</string>
-  <string name="textSettingsSpoilersEpisodesImage">Piilota katsomattomien jaksojen <b>kuvat</b>.</string>
-  <string name="textSettingsSpoilersEpisodesTitle">Piilota katsomattomien jaksojen <b>nimet</b>.</string>
-  <string name="textSettingsSpoilersEpisodesDescription">Piilota katsomattomien jaksojen <b>kuvaukset</b>.</string>
-  <string name="textSettingsSpoilersEpisodesRating">Piilota katsomattomien jaksojen <b>arviot</b>.</string>
+  <string name="textSettingsSpoilersEpisodesImage">Piilota katsomattomien jaksojen <b>kuva</b>.</string>
+  <string name="textSettingsSpoilersEpisodesTitle">Piilota katsomattomien jaksojen <b>nimi</b>.</string>
+  <string name="textSettingsSpoilersEpisodesDescription">Piilota katsomattomien jaksojen <b>kuvaus</b>.</string>
+  <string name="textSettingsSpoilersEpisodesRating">Piilota katsomattomien jaksojen <b>arvio</b>.</string>
   <string name="textSettingsSpoilersTapToRevealTitle">Paljasta napauttamalla</string>
   <string name="textSettingsSpoilersTapToRevealDescription">Paljasta piilotettu sisältö väliaikaisesti napauttamalla sitä.</string>
   <string name="textNextEpisodeLastWatched">Viimeksi katsottu jakso</string>
