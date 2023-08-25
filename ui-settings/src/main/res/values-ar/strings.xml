@@ -43,6 +43,7 @@
   <string name="textSettingsNotifications">الإشعارات</string>
   <string name="textSettingsPushNotificationsTitle">ضبط الإشعارات</string>
   <string name="textSettingsShowsNotificationsSummary">تلقي إشعارات للأفلام والحلقات والمواسم الجديدة للمحتويات التي تتابعها.</string>
+  <string name="textSettingsShowsNotificationsRationale">الرجاء منح التطبيق الإذن لعرض الإشعارات. \n\nهل ترغب في القيام بذلك الآن؟</string>
   <string name="textSettingsMisc">إعدادات متنوعة</string>
   <string name="textSettingsContactDevsTitle">التواصل مع المطورين</string>
   <string name="textSettingsContactDevsSummary">واجهتك مشكلة؟ إضغط للتواصل معنا عبر (showlyapp@gmail.com).</string>
@@ -97,10 +98,10 @@
   <string name="textSettingsSpoilersMoviesRatingsNotCollectedDescription">إخفاء <b>تقييم</b> الأفلام التي ليست في مجموعتك</string>
   <string name="textSettingsSpoilersEpisodes">حلقات</string>
   <string name="textSettingsSpoilersEpisodesSummary">إدارة إعدادات الحرق للحلقات.</string>
-  <string name="textSettingsSpoilersEpisodesImage">إخفاء <b>صورة</b> الحلَقات التي لم تتم مشاهدتها</string>
-  <string name="textSettingsSpoilersEpisodesTitle">إخفاء <b>عنوان</b> الحلَقات التي لم تتم مشاهدتها</string>
-  <string name="textSettingsSpoilersEpisodesDescription">إخفاء <b>وصف</b> الحلَقات التي لم تتم مشاهدتها</string>
-  <string name="textSettingsSpoilersEpisodesRating">إخفاء <b>تقييم</b> الحلَقات التي لم تتم مشاهدتها</string>
+  <string name="textSettingsSpoilersEpisodesImage">إخفاء <b>صورة</b> الحلَقات التي لم تتم مشاهدتها.</string>
+  <string name="textSettingsSpoilersEpisodesTitle">إخفاء <b>عنوان</b> الحلَقات التي لم تتم مشاهدتها.</string>
+  <string name="textSettingsSpoilersEpisodesDescription">إخفاء <b>وصف</b> الحلَقات التي لم تتم مشاهدتها.</string>
+  <string name="textSettingsSpoilersEpisodesRating">إخفاء <b>تقييم</b> الحلَقات التي لم تتم مشاهدتها.</string>
   <string name="textSettingsSpoilersTapToRevealTitle">انقر للكَشف</string>
   <string name="textSettingsSpoilersTapToRevealDescription">انقر على المحتوى المخفي للكشف عنه مؤقتًا.</string>
   <string name="textNextEpisodeLastWatched">آخر حلقة شاهدتها</string>
