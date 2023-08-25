@@ -8,6 +8,7 @@
   <string name="textTraktSyncFromShowlyToTrakt">Vie Showlysta Trakt.tv-kokoelmaan</string>
   <string name="textTraktSyncDescription">Synkronoi katselutilasi ja -listasi Showlyn kanssa.\n\nNykyisestä kokoelmastasi ei poisteta mitään, vaan synkronointi käsittelee vain kokoelmistasi puuttuvia kohteita.</string>
   <string name="textTraktSyncLastTimestamp">Viimeisin synkronointi: %s</string>
+  <string name="textTraktNotificationsRationale">Myönnä sovellukselle tietojen synkronoinnin edistymisen ja tulosten näyttöoikeus.\n\nHaluatko tehdä tämän nyt?</string>
   <string name="textSettingsTraktAuthorizeTitle">Trakt.tv-valtuutus</string>
   <string name="textSettingsScheduleImportConfirmationTitle">Pikasynkronointi on käytössä</string>
   <string name="textSettingsScheduleImportConfirmationMessage">\nPikasynkronointi näyttäisi olevan jo käytössä.\n\nHaluatko silti ajoittaa automaattisen synkronoinnin?\n</string>
