@@ -12,9 +12,6 @@ import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.dates.AppDateFormat
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
-import com.michaldrabik.ui_model.MyMoviesSection
-import com.michaldrabik.ui_model.MyShowsSection
-import com.michaldrabik.ui_model.MyShowsSection.RECENTS
 import com.michaldrabik.ui_model.ProgressNextEpisodeType
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_settings.helpers.AppLanguage
@@ -41,28 +38,6 @@ class SettingsGeneralMainCase @Inject constructor(
         val new = it.copy(myRecentsAmount = amount)
         settingsRepository.update(new)
       }
-    }
-  }
-
-  suspend fun enableMyShowsSection(section: MyShowsSection, isEnabled: Boolean) {
-    val settings = settingsRepository.load()
-    settings.let {
-      val new = when (section) {
-        RECENTS -> it.copy(myShowsRecentIsEnabled = isEnabled)
-        else -> error("Should not be used here.")
-      }
-      settingsRepository.update(new)
-    }
-  }
-
-  suspend fun enableMyMoviesSection(section: MyMoviesSection, isEnabled: Boolean) {
-    val settings = settingsRepository.load()
-    settings.let {
-      val new = when (section) {
-        MyMoviesSection.RECENTS -> it.copy(myMoviesRecentIsEnabled = isEnabled)
-        else -> error("Should not be used here.")
-      }
-      settingsRepository.update(new)
     }
   }
 

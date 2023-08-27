@@ -118,7 +118,7 @@ class MyShowsViewModel @Inject constructor(
         genres = genres.map { it.slug }
       )
 
-      val recentShows = if (settings.myShowsRecentIsEnabled) {
+      val recentShows = if (settings.myRecentsAmount > 0) {
         loadShowsCase.loadRecentShows().map {
           toListItemAsync(Type.RECENT_SHOWS, it, ImageType.FANART, ratings[it.ids.trakt], null, spoilers)
         }.awaitAll()
