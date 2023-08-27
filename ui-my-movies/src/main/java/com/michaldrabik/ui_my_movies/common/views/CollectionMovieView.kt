@@ -3,6 +3,7 @@ package com.michaldrabik.ui_my_movies.common.views
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
@@ -18,9 +19,8 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.onLongClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
-import com.michaldrabik.ui_my_movies.R
 import com.michaldrabik.ui_my_movies.common.recycler.CollectionListItem
-import kotlinx.android.synthetic.main.view_collection_movie.view.*
+import com.michaldrabik.ui_my_movies.databinding.ViewCollectionMovieBinding
 import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n")
@@ -30,16 +30,19 @@ class CollectionMovieView : MovieView<CollectionListItem.MovieItem> {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
+  private val binding = ViewCollectionMovieBinding.inflate(LayoutInflater.from(context), this)
+
   init {
-    inflate(context, R.layout.view_collection_movie, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-    collectionMovieRoot.onClick { itemClickListener?.invoke(item) }
-    collectionMovieRoot.onLongClick { itemLongClickListener?.invoke(item) }
+    with(binding) {
+      collectionMovieRoot.onClick { itemClickListener?.invoke(item) }
+      collectionMovieRoot.onLongClick { itemLongClickListener?.invoke(item) }
+    }
     imageLoadCompleteListener = { loadTranslation() }
   }
 
-  override val imageView: ImageView = collectionMovieImage
-  override val placeholderView: ImageView = collectionMoviePlaceholder
+  override val imageView: ImageView = binding.collectionMovieImage
+  override val placeholderView: ImageView = binding.collectionMoviePlaceholder
 
   private var nowUtc = nowUtcDay()
   private lateinit var item: CollectionListItem.MovieItem
@@ -47,88 +50,95 @@ class CollectionMovieView : MovieView<CollectionListItem.MovieItem> {
   override fun bind(item: CollectionListItem.MovieItem) {
     clear()
     this.item = item
-    collectionMovieProgress.visibleIf(item.isLoading)
-    collectionMovieTitle.text =
-      if (item.translation?.title.isNullOrBlank()) item.movie.title
-      else item.translation?.title
 
-    bindDescription(item)
-    bindRating(item)
+    with(binding) {
+      collectionMovieProgress.visibleIf(item.isLoading)
+      collectionMovieTitle.text =
+        if (item.translation?.title.isNullOrBlank()) item.movie.title
+        else item.translation?.title
 
-    val releaseDate = item.movie.released
-    val isUpcoming = releaseDate?.let { it.toEpochDay() > nowUtc.toEpochDay() } ?: false
+      bindDescription(item)
+      bindRating(item)
 
-    with(collectionMovieYear) {
-      when {
-        isUpcoming -> gone()
-        releaseDate != null -> {
-          visible()
-          text = item.dateFormat.format(releaseDate)?.capitalizeWords()
-        }
-        item.movie.year > 0 -> {
-          visible()
-          text = String.format(ENGLISH, "%d", item.movie.year)
+      val releaseDate = item.movie.released
+      val isUpcoming = releaseDate?.let { it.toEpochDay() > nowUtc.toEpochDay() } ?: false
+
+      with(collectionMovieYear) {
+        when {
+          isUpcoming -> gone()
+          releaseDate != null -> {
+            visible()
+            text = item.dateFormat.format(releaseDate)?.capitalizeWords()
+          }
+          item.movie.year > 0 -> {
+            visible()
+            text = String.format(ENGLISH, "%d", item.movie.year)
+          }
         }
       }
-    }
 
-    with(collectionMovieReleaseDate) {
-      visibleIf(isUpcoming)
-      releaseDate?.let {
-        text = item.fullDateFormat.format(it)?.capitalizeWords()
+      with(collectionMovieReleaseDate) {
+        visibleIf(isUpcoming)
+        releaseDate?.let {
+          text = item.fullDateFormat.format(it)?.capitalizeWords()
+        }
       }
-    }
 
-    item.userRating?.let {
-      collectionMovieUserStarIcon.visible()
-      collectionMovieUserRating.visible()
-      collectionMovieUserRating.text = String.format(ENGLISH, "%d", it)
+      item.userRating?.let {
+        collectionMovieUserStarIcon.visible()
+        collectionMovieUserRating.visible()
+        collectionMovieUserRating.text = String.format(ENGLISH, "%d", it)
+      }
     }
 
     loadImage(item)
   }
 
   private fun bindDescription(item: CollectionListItem.MovieItem) {
-    collectionMovieDescription.text =
-      if (item.translation?.overview.isNullOrBlank()) item.movie.overview
-      else item.translation?.overview
-
-    if (item.spoilers.isSpoilerHidden) {
-      collectionMovieDescription.tag = collectionMovieDescription.text
+    with(binding) {
       collectionMovieDescription.text =
-        SPOILERS_REGEX.replace(collectionMovieDescription.text, SPOILERS_HIDE_SYMBOL)
+        if (item.translation?.overview.isNullOrBlank()) item.movie.overview
+        else item.translation?.overview
 
-      if (item.spoilers.isSpoilerTapToReveal) {
-        collectionMovieDescription.onClick { view ->
-          view.tag?.let {
-            collectionMovieDescription.text = it.toString()
+      if (item.spoilers.isSpoilerHidden) {
+        collectionMovieDescription.tag = collectionMovieDescription.text
+        collectionMovieDescription.text =
+          SPOILERS_REGEX.replace(collectionMovieDescription.text, SPOILERS_HIDE_SYMBOL)
+
+        if (item.spoilers.isSpoilerTapToReveal) {
+          collectionMovieDescription.onClick { view ->
+            view.tag?.let {
+              collectionMovieDescription.text = it.toString()
+            }
+            view.isClickable = false
           }
-          view.isClickable = false
         }
       }
-    }
 
-    collectionMovieDescription.visibleIf(item.movie.overview.isNotBlank())
+      collectionMovieDescription.visibleIf(item.movie.overview.isNotBlank())
+    }
   }
 
   private fun bindRating(item: CollectionListItem.MovieItem) {
-    var rating = String.format(ENGLISH, "%.1f", item.movie.rating)
+    with(binding) {
+      var rating = String.format(ENGLISH, "%.1f", item.movie.rating)
 
-    if (item.spoilers.isSpoilerRatingsHidden) {
-      collectionMovieRating.tag = rating
-      rating = SPOILERS_RATINGS_HIDE_SYMBOL
+      if (item.spoilers.isSpoilerRatingsHidden) {
+        collectionMovieRating.tag = rating
+        rating = SPOILERS_RATINGS_HIDE_SYMBOL
 
-      if (item.spoilers.isSpoilerTapToReveal) {
-        collectionMovieRating.onClick { view ->
-          view.tag?.let {
-            collectionMovieRating.text = it.toString()
+        if (item.spoilers.isSpoilerTapToReveal) {
+          collectionMovieRating.onClick { view ->
+            view.tag?.let {
+              collectionMovieRating.text = it.toString()
+            }
+            view.isClickable = false
           }
-          view.isClickable = false
         }
       }
-    }
 
-    collectionMovieRating.text = rating
+      collectionMovieRating.text = rating
+    }
   }
 
   private fun loadTranslation() {
@@ -138,15 +148,17 @@ class CollectionMovieView : MovieView<CollectionListItem.MovieItem> {
   }
 
   private fun clear() {
-    collectionMovieTitle.text = ""
-    collectionMovieDescription.text = ""
-    collectionMovieYear.text = ""
-    collectionMovieRating.text = ""
-    collectionMovieYear.gone()
-    collectionMoviePlaceholder.gone()
-    collectionMovieUserStarIcon.gone()
-    collectionMovieUserRating.gone()
-    collectionMovieReleaseDate.gone()
-    Glide.with(this).clear(collectionMovieImage)
+    with(binding) {
+      collectionMovieTitle.text = ""
+      collectionMovieDescription.text = ""
+      collectionMovieYear.text = ""
+      collectionMovieRating.text = ""
+      collectionMovieYear.gone()
+      collectionMoviePlaceholder.gone()
+      collectionMovieUserStarIcon.gone()
+      collectionMovieUserRating.gone()
+      collectionMovieReleaseDate.gone()
+      Glide.with(this@CollectionMovieView).clear(collectionMovieImage)
+    }
   }
 }

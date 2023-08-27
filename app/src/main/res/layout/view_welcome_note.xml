@@ -11,7 +11,7 @@
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_welcome"
+    android:background="@drawable/bg_dialog"
     android:elevation="@dimen/elevationNormal"
     android:paddingStart="@dimen/spaceNormal"
     android:paddingTop="@dimen/spaceNormal"

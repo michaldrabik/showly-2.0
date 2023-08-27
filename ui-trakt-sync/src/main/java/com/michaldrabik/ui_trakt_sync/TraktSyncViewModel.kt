@@ -1,6 +1,8 @@
 package com.michaldrabik.ui_trakt_sync
 
+import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -25,9 +27,12 @@ import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
+import com.michaldrabik.ui_base.utilities.extensions.withApiAtLeast
 import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
 import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.TraktSyncSchedule
+import com.michaldrabik.ui_trakt_sync.TraktSyncUiEvent.RequestNotificationsPermission
+import com.michaldrabik.ui_trakt_sync.TraktSyncUiEvent.StartAuthorization
 import com.michaldrabik.ui_trakt_sync.cases.TraktSyncRatingsCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -78,6 +83,22 @@ class TraktSyncViewModel @Inject constructor(
       quickSyncEnabledState.value = settings.traktQuickSyncEnabled
       dateFormatState.value = dateFormatProvider.loadFullHourFormat()
       traktSyncTimestampState.value = miscPreferences.getLong(TraktSyncWorker.KEY_LAST_SYNC_TIMESTAMP, 0)
+    }
+  }
+
+  fun checkNotificationsPermission(context: Context) {
+    viewModelScope.launch {
+      withApiAtLeast(33) {
+        val areNotificationsEnabled = NotificationManagerCompat
+          .from(context.applicationContext)
+          .areNotificationsEnabled()
+
+        if (!areNotificationsEnabled) {
+          eventChannel.send(RequestNotificationsPermission)
+          return@launch
+        }
+      }
+      eventChannel.send(StartAuthorization)
     }
   }
 
@@ -174,9 +195,8 @@ class TraktSyncViewModel @Inject constructor(
     TraktSyncWorker.scheduleOneOff(workManager, isImport, isExport, false)
   }
 
-  override fun onChanged(workInfo: MutableList<WorkInfo>) {
-    Timber.d("WorkInfo changed")
-    val isAnyRunning = workInfo.any { it.state == WorkInfo.State.RUNNING }
+  override fun onChanged(value: MutableList<WorkInfo>) {
+    val isAnyRunning = value.any { it.state == WorkInfo.State.RUNNING }
     progressState.value = isAnyRunning
   }
 

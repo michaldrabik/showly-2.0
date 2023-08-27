@@ -1,11 +1,16 @@
 package com.michaldrabik.ui_settings.sections.notifications
 
+import android.content.Context
+import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
+import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
+import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.NotificationDelay
 import com.michaldrabik.ui_model.Settings
+import com.michaldrabik.ui_settings.sections.notifications.SettingsNotificationsUiEvent.RequestNotificationsPermission
 import com.michaldrabik.ui_settings.sections.notifications.cases.SettingsNotificationsMainCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,28 +23,25 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsNotificationsViewModel @Inject constructor(
   private val mainCase: SettingsNotificationsMainCase,
-) : ViewModel() {
+) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val settingsState = MutableStateFlow<Settings?>(null)
   private val loadingState = MutableStateFlow(false)
 
-  fun loadSettings() {
+  fun loadSettings(context: Context) {
     viewModelScope.launch {
+      ensureNotificationsPermission(context)
       refreshSettings()
     }
   }
 
-  fun enablePushNotifications(enable: Boolean) {
+  fun enableNotifications(enable: Boolean, context: Context) {
     viewModelScope.launch {
-      mainCase.enablePushNotifications(enable)
-      refreshSettings()
-      Analytics.logSettingsPushNotifications(enable)
-    }
-  }
-
-  fun enableAnnouncements(enable: Boolean) {
-    viewModelScope.launch {
-      mainCase.enableAnnouncements(enable)
+      if (enable && !ensureNotificationsPermission(context)) {
+        eventChannel.send(RequestNotificationsPermission)
+        return@launch
+      }
+      mainCase.enableNotifications(enable)
       refreshSettings()
       Analytics.logSettingsAnnouncements(enable)
     }
@@ -55,6 +57,18 @@ class SettingsNotificationsViewModel @Inject constructor(
 
   private suspend fun refreshSettings() {
     settingsState.value = mainCase.getSettings()
+  }
+
+  private suspend fun ensureNotificationsPermission(context: Context): Boolean {
+    val areNotificationsEnabled = NotificationManagerCompat
+      .from(context.applicationContext)
+      .areNotificationsEnabled()
+
+    if (!areNotificationsEnabled) {
+      mainCase.enableNotifications(false)
+    }
+
+    return areNotificationsEnabled
   }
 
   val uiState = combine(

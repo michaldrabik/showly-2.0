@@ -28,6 +28,7 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
@@ -38,6 +39,7 @@ import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_movies.R
 import com.michaldrabik.ui_my_movies.common.recycler.CollectionAdapter
+import com.michaldrabik.ui_my_movies.databinding.FragmentHiddenMoviesBinding
 import com.michaldrabik.ui_my_movies.filters.CollectionFiltersOrigin.HIDDEN_MOVIES
 import com.michaldrabik.ui_my_movies.filters.genre.CollectionFiltersGenreBottomSheet
 import com.michaldrabik.ui_my_movies.filters.genre.CollectionFiltersGenreBottomSheet.Companion.REQUEST_COLLECTION_FILTERS_GENRE
@@ -46,9 +48,6 @@ import com.michaldrabik.ui_my_movies.main.FollowedMoviesUiEvent.OpenPremium
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesViewModel
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_hidden_movies.hiddenMoviesContent
-import kotlinx.android.synthetic.main.fragment_hidden_movies.hiddenMoviesEmptyView
-import kotlinx.android.synthetic.main.fragment_hidden_movies.hiddenMoviesRecycler
 
 @AndroidEntryPoint
 class HiddenFragment :
@@ -56,9 +55,11 @@ class HiddenFragment :
   OnScrollResetListener,
   OnSearchClickListener {
 
+  override val navigationId = R.id.followedMoviesFragment
+
   private val parentViewModel by viewModels<FollowedMoviesViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<HiddenViewModel>()
-  override val navigationId = R.id.followedMoviesFragment
+  private val binding by viewBinding(FragmentHiddenMoviesBinding::bind)
 
   private var adapter: CollectionAdapter? = null
   private var layoutManager: LayoutManager? = null
@@ -91,11 +92,11 @@ class HiddenFragment :
       upcomingChipVisible = false,
       upcomingChipClickListener = {},
       listChangeListener = {
-        hiddenMoviesRecycler.scrollToPosition(0)
+        binding.hiddenMoviesRecycler.scrollToPosition(0)
         (requireParentFragment() as FollowedMoviesFragment).resetTranslations()
       },
     )
-    hiddenMoviesRecycler.apply {
+    binding.hiddenMoviesRecycler.apply {
       setHasFixedSize(true)
       adapter = this@HiddenFragment.adapter
       layoutManager = this@HiddenFragment.layoutManager
@@ -106,12 +107,12 @@ class HiddenFragment :
 
   private fun setupRecyclerPaddings() {
     if (layoutManager is GridLayoutManager) {
-      hiddenMoviesRecycler.updatePadding(
+      binding.hiddenMoviesRecycler.updatePadding(
         left = dimenToPx(R.dimen.gridRecyclerPadding),
         right = dimenToPx(R.dimen.gridRecyclerPadding)
       )
     } else {
-      hiddenMoviesRecycler.updatePadding(
+      binding.hiddenMoviesRecycler.updatePadding(
         left = 0,
         right = 0
       )
@@ -119,15 +120,17 @@ class HiddenFragment :
   }
 
   private fun setupStatusBar() {
-    if (statusBarHeight != 0) {
-      hiddenMoviesContent.updatePadding(top = hiddenMoviesContent.paddingTop + statusBarHeight)
-      hiddenMoviesRecycler.updatePadding(top = dimenToPx(R.dimen.collectionTabsViewPadding))
-      return
-    }
-    hiddenMoviesContent.doOnApplyWindowInsets { view, insets, padding, _ ->
-      statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
-      view.updatePadding(top = padding.top + statusBarHeight)
-      hiddenMoviesRecycler.updatePadding(top = dimenToPx(R.dimen.collectionTabsViewPadding))
+    with(binding) {
+      if (statusBarHeight != 0) {
+        hiddenMoviesContent.updatePadding(top = hiddenMoviesContent.paddingTop + statusBarHeight)
+        hiddenMoviesRecycler.updatePadding(top = dimenToPx(R.dimen.collectionTabsViewPadding))
+        return
+      }
+      hiddenMoviesContent.doOnApplyWindowInsets { view, insets, padding, _ ->
+        statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+        view.updatePadding(top = padding.top + statusBarHeight)
+        hiddenMoviesRecycler.updatePadding(top = dimenToPx(R.dimen.collectionTabsViewPadding))
+      }
     }
   }
 
@@ -140,7 +143,7 @@ class HiddenFragment :
             GRID, GRID_TITLE -> GridLayoutManager(context, Config.LISTS_GRID_SPAN)
           }
           adapter?.listViewMode = it
-          hiddenMoviesRecycler?.let { recycler ->
+          binding.hiddenMoviesRecycler?.let { recycler ->
             recycler.layoutManager = layoutManager
             recycler.adapter = adapter
           }
@@ -153,7 +156,7 @@ class HiddenFragment :
         (layoutManager as? GridLayoutManager)?.withSpanSizeLookup { pos ->
           adapter?.getItems()?.get(pos)?.image?.type?.spanSize!!
         }
-        hiddenMoviesEmptyView.fadeIf(it.isEmpty() && !isSearching)
+        binding.hiddenMoviesEmptyView.root.fadeIf(it.isEmpty() && !isSearching)
       }
       sortOrder?.let { event ->
         event.consume()?.let { openSortOrderDialog(it.first, it.second) }
@@ -201,7 +204,7 @@ class HiddenFragment :
 
   override fun onEnterSearch() {
     isSearching = true
-    with(hiddenMoviesRecycler) {
+    with(binding.hiddenMoviesRecycler) {
       translationY = dimenToPx(R.dimen.myMoviesSearchLocalOffset).toFloat()
       smoothScrollToPosition(0)
     }
@@ -209,13 +212,13 @@ class HiddenFragment :
 
   override fun onExitSearch() {
     isSearching = false
-    with(hiddenMoviesRecycler) {
+    with(binding.hiddenMoviesRecycler) {
       translationY = 0F
       postDelayed(200) { layoutManager?.scrollToPosition(0) }
     }
   }
 
-  override fun onScrollReset() = hiddenMoviesRecycler.scrollToPosition(0)
+  override fun onScrollReset() = binding.hiddenMoviesRecycler.scrollToPosition(0)
 
   override fun setupBackPressed() = Unit
 

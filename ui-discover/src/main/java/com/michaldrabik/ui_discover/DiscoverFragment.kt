@@ -33,6 +33,8 @@ import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
+import com.michaldrabik.ui_base.utilities.viewBinding
+import com.michaldrabik.ui_discover.databinding.FragmentDiscoverBinding
 import com.michaldrabik.ui_discover.recycler.DiscoverAdapter
 import com.michaldrabik.ui_discover.recycler.DiscoverListItem
 import com.michaldrabik.ui_model.ImageType
@@ -40,7 +42,6 @@ import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_ITEM_MENU
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_discover.*
 import kotlin.random.Random
 
 @AndroidEntryPoint
@@ -52,8 +53,10 @@ class DiscoverFragment :
     const val REQUEST_DISCOVER_FILTERS = "REQUEST_DISCOVER_FILTERS"
   }
 
-  override val viewModel by viewModels<DiscoverViewModel>()
   override val navigationId = R.id.discoverFragment
+
+  override val viewModel by viewModels<DiscoverViewModel>()
+  private val binding by viewBinding(FragmentDiscoverBinding::bind)
 
   private val swipeRefreshStartOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshStartOffset) }
   private val swipeRefreshEndOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshEndOffset) }
@@ -106,9 +109,11 @@ class DiscoverFragment :
 
   override fun onPause() {
     enableUi()
-    searchViewPosition = discoverSearchView.translationY
-    tabsViewPosition = discoverModeTabsView.translationY
-    filtersViewPosition = discoverFiltersView.translationY
+    with(binding) {
+      searchViewPosition = discoverSearchView.translationY
+      tabsViewPosition = discoverModeTabsView.translationY
+      filtersViewPosition = discoverFiltersView.translationY
+    }
     super.onPause()
   }
 
@@ -119,29 +124,31 @@ class DiscoverFragment :
   }
 
   private fun setupView() {
-    discoverSearchView.run {
-      settingsIconVisible = true
-      isEnabled = false
-      onClick { openSearch() }
-      onSettingsClickListener = {
-        hideNavigation()
-        navigateToSafe(R.id.actionDiscoverFragmentToSettingsFragment)
+    with(binding) {
+      discoverSearchView.run {
+        settingsIconVisible = true
+        isEnabled = false
+        onClick { openSearch() }
+        onSettingsClickListener = {
+          hideNavigation()
+          navigateToSafe(R.id.actionDiscoverFragmentToSettingsFragment)
+        }
+        translationY = searchViewPosition
       }
-      translationY = searchViewPosition
-    }
-    discoverModeTabsView.run {
-      visibleIf(moviesEnabled)
-      translationY = tabsViewPosition
-      onModeSelected = { mode = it }
-      selectShows()
-    }
-    discoverFiltersView.run {
-      translationY = filtersViewPosition
-      onGenresChipClick = { navigateToSafe(R.id.actionDiscoverFragmentToFiltersGenres) }
-      onNetworksChipClick = { navigateToSafe(R.id.actionDiscoverFragmentToFiltersNetworks) }
-      onFeedChipClick = { navigateToSafe(R.id.actionDiscoverFragmentToFiltersFeed) }
-      onHideAnticipatedChipClick = { viewModel.toggleAnticipated() }
-      onHideCollectionChipClick = { viewModel.toggleCollection() }
+      discoverModeTabsView.run {
+        visibleIf(moviesEnabled)
+        translationY = tabsViewPosition
+        onModeSelected = { mode = it }
+        selectShows()
+      }
+      discoverFiltersView.run {
+        translationY = filtersViewPosition
+        onGenresChipClick = { navigateToSafe(R.id.actionDiscoverFragmentToFiltersGenres) }
+        onNetworksChipClick = { navigateToSafe(R.id.actionDiscoverFragmentToFiltersNetworks) }
+        onFeedChipClick = { navigateToSafe(R.id.actionDiscoverFragmentToFiltersFeed) }
+        onHideAnticipatedChipClick = { viewModel.toggleAnticipated() }
+        onHideCollectionChipClick = { viewModel.toggleCollection() }
+      }
     }
   }
 
@@ -157,12 +164,12 @@ class DiscoverFragment :
       },
       itemLongClickListener = { item -> openShowMenu(item.show) },
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) },
-      listChangeListener = { discoverRecycler.scrollToPosition(0) },
+      listChangeListener = { binding.discoverRecycler.scrollToPosition(0) },
       twitterCancelClickListener = { viewModel.cancelTwitterAd() }
     ).apply {
       stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
     }
-    discoverRecycler.apply {
+    binding.discoverRecycler.apply {
       adapter = this@DiscoverFragment.adapter
       layoutManager = this@DiscoverFragment.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
@@ -171,7 +178,7 @@ class DiscoverFragment :
   }
 
   private fun setupSwipeRefresh() {
-    discoverSwipeRefresh.apply {
+    binding.discoverSwipeRefresh.apply {
       val color = requireContext().colorFromAttr(R.attr.colorAccent)
       setProgressBackgroundColorSchemeColor(requireContext().colorFromAttr(R.attr.colorSearchViewBackground))
       setColorSchemeColors(color, color, color)
@@ -184,29 +191,31 @@ class DiscoverFragment :
   }
 
   private fun setupStatusBar() {
-    discoverRoot.doOnApplyWindowInsets { _, insets, _, _ ->
-      val statusBarSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
-      val recyclerPadding =
-        if (moviesEnabled) R.dimen.discoverRecyclerPadding
-        else R.dimen.discoverRecyclerPaddingNoTabs
+    with(binding) {
+      discoverRoot.doOnApplyWindowInsets { _, insets, _, _ ->
+        val statusBarSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+        val recyclerPadding =
+          if (moviesEnabled) R.dimen.discoverRecyclerPadding
+          else R.dimen.discoverRecyclerPaddingNoTabs
 
-      val filtersPadding =
-        if (moviesEnabled) R.dimen.collectionFiltersMargin
-        else R.dimen.collectionFiltersMarginNoTabs
+        val filtersPadding =
+          if (moviesEnabled) R.dimen.collectionFiltersMargin
+          else R.dimen.collectionFiltersMarginNoTabs
 
-      discoverRecycler
-        .updatePadding(top = statusBarSize + dimenToPx(recyclerPadding))
-      (discoverSearchView.layoutParams as MarginLayoutParams)
-        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceMedium))
-      (discoverModeTabsView.layoutParams as MarginLayoutParams)
-        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.collectionTabsMargin))
-      (discoverFiltersView.layoutParams as MarginLayoutParams)
-        .updateMargins(top = statusBarSize + dimenToPx(filtersPadding))
-      discoverSwipeRefresh.setProgressViewOffset(
-        true,
-        swipeRefreshStartOffset + statusBarSize,
-        swipeRefreshEndOffset
-      )
+        discoverRecycler
+          .updatePadding(top = statusBarSize + dimenToPx(recyclerPadding))
+        (discoverSearchView.layoutParams as MarginLayoutParams)
+          .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceMedium))
+        (discoverModeTabsView.layoutParams as MarginLayoutParams)
+          .updateMargins(top = statusBarSize + dimenToPx(R.dimen.collectionTabsMargin))
+        (discoverFiltersView.layoutParams as MarginLayoutParams)
+          .updateMargins(top = statusBarSize + dimenToPx(filtersPadding))
+        discoverSwipeRefresh.setProgressViewOffset(
+          true,
+          swipeRefreshStartOffset + statusBarSize,
+          swipeRefreshEndOffset
+        )
+      }
     }
   }
 
@@ -221,29 +230,31 @@ class DiscoverFragment :
   private fun openSearch() {
     disableUi()
     hideNavigation()
-    discoverModeTabsView.fadeOut(duration = 200).add(animations)
-    discoverFiltersView.fadeOut(duration = 200).add(animations)
-    discoverRecycler.fadeOut(duration = 200) {
-      navigateToSafe(R.id.actionDiscoverFragmentToSearchFragment)
-    }.add(animations)
+    with(binding) {
+      discoverModeTabsView.fadeOut(duration = 200).add(animations)
+      discoverFiltersView.fadeOut(duration = 200).add(animations)
+      discoverRecycler.fadeOut(duration = 200) {
+        navigateToSafe(R.id.actionDiscoverFragmentToSearchFragment)
+      }.add(animations)
+    }
   }
 
   private fun openDetails(item: DiscoverListItem) {
-    if (discoverRecycler?.isEnabled == false) return
+    if (!binding.discoverRecycler.isEnabled) return
     disableUi()
     hideNavigation()
     animateItemsExit(item)
   }
 
   private fun openPremium() {
-    if (discoverRecycler?.isEnabled == false) return
+    if (!binding.discoverRecycler.isEnabled) return
     disableUi()
     hideNavigation()
     navigateToSafe(R.id.actionDiscoverFragmentToPremium, Bundle.EMPTY)
   }
 
   private fun openShowMenu(show: Show) {
-    if (discoverRecycler?.isEnabled == false) return
+    if (!binding.discoverRecycler.isEnabled) return
     setFragmentResultListener(REQUEST_ITEM_MENU) { requestKey, _ ->
       if (requestKey == REQUEST_ITEM_MENU) {
         viewModel.loadShows()
@@ -255,57 +266,61 @@ class DiscoverFragment :
   }
 
   private fun animateItemsExit(item: DiscoverListItem) {
-    discoverSearchView.fadeOut().add(animations)
-    discoverModeTabsView.fadeOut().add(animations)
-    discoverFiltersView.fadeOut().add(animations)
+    with(binding) {
+      discoverSearchView.fadeOut().add(animations)
+      discoverModeTabsView.fadeOut().add(animations)
+      discoverFiltersView.fadeOut().add(animations)
 
-    val clickedIndex = adapter?.indexOf(item) ?: 0
-    val itemsCount = adapter?.itemCount ?: 0
-    (0..itemsCount).forEach {
-      if (it != clickedIndex) {
-        val view = discoverRecycler.findViewHolderForAdapterPosition(it)
-        view?.let { v ->
-          val randomDelay = Random.nextLong(50, 200)
-          v.itemView.fadeOut(duration = 150, startDelay = randomDelay).add(animations)
+      val clickedIndex = adapter?.indexOf(item) ?: 0
+      val itemsCount = adapter?.itemCount ?: 0
+      (0..itemsCount).forEach {
+        if (it != clickedIndex) {
+          val view = discoverRecycler.findViewHolderForAdapterPosition(it)
+          view?.let { v ->
+            val randomDelay = Random.nextLong(50, 200)
+            v.itemView.fadeOut(duration = 150, startDelay = randomDelay).add(animations)
+          }
         }
       }
-    }
 
-    val clickedView = discoverRecycler.findViewHolderForAdapterPosition(clickedIndex)
-    clickedView?.itemView?.fadeOut(
-      duration = 150, startDelay = 350,
-      endAction = {
-        if (!isResumed) return@fadeOut
-        val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.traktId) }
-        navigateToSafe(R.id.actionDiscoverFragmentToShowDetailsFragment, bundle)
-      }
-    ).add(animations)
+      val clickedView = discoverRecycler.findViewHolderForAdapterPosition(clickedIndex)
+      clickedView?.itemView?.fadeOut(
+        duration = 150, startDelay = 350,
+        endAction = {
+          if (!isResumed) return@fadeOut
+          val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.traktId) }
+          navigateToSafe(R.id.actionDiscoverFragmentToShowDetailsFragment, bundle)
+        }
+      ).add(animations)
+    }
   }
 
   private fun render(uiState: DiscoverUiState) {
     uiState.run {
-      items?.let {
-        val resetScroll = resetScroll?.consume() == true
-        adapter?.setItems(it, resetScroll)
-        layoutManager?.withSpanSizeLookup { pos -> adapter?.getItems()?.get(pos)?.image?.type?.spanSize!! }
-        discoverRecycler.fadeIn(200, withHardware = true)
-      }
-      isSyncing?.let {
-        discoverSearchView.setTraktProgress(it)
-        discoverSearchView.isEnabled = !it
-      }
-      isLoading?.let {
-        discoverSearchView.isEnabled = !it
-        discoverSwipeRefresh.isRefreshing = it
-        discoverModeTabsView.isEnabled = !it
-        discoverFiltersView.isEnabled = !it
-        discoverRecycler.isEnabled = !it
-      }
-      filters?.let {
-        if (discoverFiltersView.visibility != View.VISIBLE) {
-          discoverFiltersView.visible()
+      with(binding) {
+        items?.let {
+          val resetScroll = resetScroll?.consume() == true
+          adapter?.setItems(it, resetScroll)
+          layoutManager?.withSpanSizeLookup { pos -> adapter?.getItems()?.get(pos)?.image?.type?.spanSize!! }
+          discoverRecycler.fadeIn(200, withHardware = true)
         }
-        discoverFiltersView.bind(it)
+        isSyncing?.let {
+          discoverSearchView.setTraktProgress(it)
+          discoverSearchView.isEnabled = !it
+        }
+        isLoading?.let {
+          discoverSearchView.isEnabled = !it
+          discoverSwipeRefresh.isRefreshing = it
+          discoverModeTabsView.isEnabled = !it
+          discoverFiltersView.isEnabled = !it
+          discoverRecycler.isEnabled = !it
+        }
+        filters?.let {
+          if (discoverFiltersView.visibility != View.VISIBLE) {
+            discoverFiltersView.visible()
+          }
+          discoverFiltersView.bind(it)
+        }
       }
     }
   }

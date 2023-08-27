@@ -29,5 +29,7 @@ class NetworkIconProvider @Inject constructor() {
       Network.NETFLIX -> R.drawable.ic_netflix
       Network.SHOWTIME -> R.drawable.ic_showtime
       Network.RAKUTEN -> R.drawable.ic_rakuten
+      Network.PARAMOUNT -> R.drawable.ic_paramount
+      Network.PEACOCK -> R.drawable.ic_peacock
     }
 }

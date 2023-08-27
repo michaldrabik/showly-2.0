@@ -15,7 +15,6 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_widgets.BaseWidgetProvider.Companion.EXTRA_MOVIE_ID
 import com.michaldrabik.ui_widgets.BaseWidgetProvider.Companion.EXTRA_SHOW_ID
 import com.michaldrabik.ui_widgets.search.SearchWidgetProvider
-import kotlinx.android.synthetic.main.view_bottom_menu.*
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -26,6 +25,8 @@ abstract class BaseActivity : AppCompatActivity() {
   )
 
   protected fun findNavHostFragment() = supportFragmentManager.findFragmentById(R.id.navigationHost) as? NavHostFragment
+
+  protected abstract fun handleSearchWidgetClick(bundle: Bundle?)
 
   fun handleNotification(extras: Bundle?, action: () -> Unit = {}) {
     if (extras == null) return
@@ -60,27 +61,6 @@ abstract class BaseActivity : AppCompatActivity() {
         action()
       } catch (error: Throwable) {
         Logger.record(error, "BaseActivity::handleShowMovieExtra()")
-      }
-    }
-  }
-
-  private fun handleSearchWidgetClick(extras: Bundle?) {
-    findNavHostFragment()?.findNavController()?.run {
-      try {
-        when (currentDestination?.id) {
-          R.id.searchFragment -> return@run
-          R.id.showDetailsFragment, R.id.movieDetailsFragment -> navigateUp()
-        }
-        if (currentDestination?.id != R.id.discoverFragment) {
-          bottomNavigationView.selectedItemId = R.id.menuDiscover
-        }
-        when (currentDestination?.id) {
-          R.id.discoverFragment -> navigate(R.id.actionDiscoverFragmentToSearchFragment)
-          R.id.discoverMoviesFragment -> navigate(R.id.actionDiscoverMoviesFragmentToSearchFragment)
-        }
-        extras?.clear()
-      } catch (error: Throwable) {
-        Logger.record(error, "BaseActivity::handleSearchWidgetClick()")
       }
     }
   }

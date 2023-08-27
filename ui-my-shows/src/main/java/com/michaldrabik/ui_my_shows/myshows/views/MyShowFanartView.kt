@@ -2,6 +2,7 @@ package com.michaldrabik.ui_my_shows.myshows.views
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import com.bumptech.glide.Glide
@@ -18,8 +19,8 @@ import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageStatus
 import com.michaldrabik.ui_my_shows.R
+import com.michaldrabik.ui_my_shows.databinding.ViewMyShowsFanartBinding
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
-import kotlinx.android.synthetic.main.view_my_shows_fanart.view.*
 
 class MyShowFanartView : FrameLayout {
 
@@ -27,8 +28,9 @@ class MyShowFanartView : FrameLayout {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
+  private val binding = ViewMyShowsFanartBinding.inflate(LayoutInflater.from(context), this)
+
   init {
-    inflate(context, R.layout.view_my_shows_fanart, this)
     setBackgroundResource(R.drawable.bg_media_view_elevation)
     elevation = context.dimenToPx(R.dimen.elevationSmall).toFloat()
   }
@@ -38,39 +40,45 @@ class MyShowFanartView : FrameLayout {
   fun bind(
     showItem: MyShowsItem,
     clickListener: (MyShowsItem) -> Unit,
-    longClickListener: (MyShowsItem, View) -> Unit
+    longClickListener: (MyShowsItem, View) -> Unit,
   ) {
     clear()
-    myShowFanartTitle.visible()
-    myShowFanartTitle.text =
-      if (showItem.translation?.title.isNullOrBlank()) showItem.show.title
-      else showItem.translation?.title
+    with(binding) {
+      myShowFanartTitle.visible()
+      myShowFanartTitle.text =
+        if (showItem.translation?.title.isNullOrBlank()) showItem.show.title
+        else showItem.translation?.title
+    }
     onClick { clickListener(showItem) }
     onLongClick { longClickListener(showItem, it) }
     loadImage(showItem.image)
   }
 
   private fun loadImage(image: Image) {
-    if (image.status != ImageStatus.AVAILABLE) {
-      myShowFanartPlaceholder.visible()
-      myShowFanartRoot.setBackgroundResource(R.drawable.bg_media_view_placeholder)
-      return
-    }
-    Glide.with(this)
-      .load(image.fullFileUrl)
-      .transform(CenterCrop(), RoundedCorners(cornerRadius))
-      .transition(DrawableTransitionOptions.withCrossFade(IMAGE_FADE_DURATION_MS))
-      .withFailListener {
+    with(binding) {
+      if (image.status != ImageStatus.AVAILABLE) {
         myShowFanartPlaceholder.visible()
-        myShowFanartImage.gone()
+        myShowFanartRoot.setBackgroundResource(R.drawable.bg_media_view_placeholder)
+        return
       }
-      .into(myShowFanartImage)
+      Glide.with(this@MyShowFanartView)
+        .load(image.fullFileUrl)
+        .transform(CenterCrop(), RoundedCorners(cornerRadius))
+        .transition(DrawableTransitionOptions.withCrossFade(IMAGE_FADE_DURATION_MS))
+        .withFailListener {
+          myShowFanartPlaceholder.visible()
+          myShowFanartImage.gone()
+        }
+        .into(myShowFanartImage)
+    }
   }
 
   private fun clear() {
-    myShowFanartPlaceholder.gone()
-    myShowFanartTitle.text = ""
-    myShowFanartRoot.setBackgroundResource(0)
-    Glide.with(this).clear(myShowFanartImage)
+    with(binding) {
+      myShowFanartPlaceholder.gone()
+      myShowFanartTitle.text = ""
+      myShowFanartRoot.setBackgroundResource(0)
+      Glide.with(this@MyShowFanartView).clear(myShowFanartImage)
+    }
   }
 }

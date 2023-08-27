@@ -29,6 +29,7 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
@@ -44,6 +45,7 @@ import com.michaldrabik.ui_my_shows.common.filters.genre.CollectionFiltersGenreB
 import com.michaldrabik.ui_my_shows.common.filters.network.CollectionFiltersNetworkBottomSheet
 import com.michaldrabik.ui_my_shows.common.filters.network.CollectionFiltersNetworkBottomSheet.Companion.REQUEST_COLLECTION_FILTERS_NETWORK
 import com.michaldrabik.ui_my_shows.common.recycler.CollectionAdapter
+import com.michaldrabik.ui_my_shows.databinding.FragmentWatchlistBinding
 import com.michaldrabik.ui_my_shows.main.FollowedShowsFragment
 import com.michaldrabik.ui_my_shows.main.FollowedShowsUiEvent.OpenPremium
 import com.michaldrabik.ui_my_shows.main.FollowedShowsViewModel
@@ -51,9 +53,6 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_ORDE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_SORT_ORDER
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_watchlist.watchlistContent
-import kotlinx.android.synthetic.main.fragment_watchlist.watchlistEmptyView
-import kotlinx.android.synthetic.main.fragment_watchlist.watchlistRecycler
 
 @AndroidEntryPoint
 class WatchlistFragment :
@@ -61,9 +60,11 @@ class WatchlistFragment :
   OnScrollResetListener,
   OnSearchClickListener {
 
+  override val navigationId = R.id.followedShowsFragment
+
   private val parentViewModel by viewModels<FollowedShowsViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<WatchlistViewModel>()
-  override val navigationId = R.id.followedShowsFragment
+  private val binding by viewBinding(FragmentWatchlistBinding::bind)
 
   private var adapter: CollectionAdapter? = null
   private var layoutManager: LayoutManager? = null
@@ -96,13 +97,13 @@ class WatchlistFragment :
       missingImageListener = viewModel::loadMissingImage,
       missingTranslationListener = viewModel::loadMissingTranslation,
       listChangeListener = {
-        watchlistRecycler.scrollToPosition(0)
+        binding.watchlistRecycler.scrollToPosition(0)
         (requireParentFragment() as FollowedShowsFragment).resetTranslations()
       }
     ).apply {
       stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
     }
-    watchlistRecycler.apply {
+    binding.watchlistRecycler.apply {
       setHasFixedSize(true)
       adapter = this@WatchlistFragment.adapter
       layoutManager = this@WatchlistFragment.layoutManager
@@ -113,12 +114,12 @@ class WatchlistFragment :
 
   private fun setupRecyclerPaddings() {
     if (layoutManager is GridLayoutManager) {
-      watchlistRecycler.updatePadding(
+      binding.watchlistRecycler.updatePadding(
         left = dimenToPx(R.dimen.gridRecyclerPadding),
         right = dimenToPx(R.dimen.gridRecyclerPadding)
       )
     } else {
-      watchlistRecycler.updatePadding(
+      binding.watchlistRecycler.updatePadding(
         left = 0,
         right = 0
       )
@@ -126,15 +127,17 @@ class WatchlistFragment :
   }
 
   private fun setupStatusBar() {
-    if (statusBarHeight != 0) {
-      watchlistContent.updatePadding(top = watchlistContent.paddingTop + statusBarHeight)
-      watchlistRecycler.updatePadding(top = dimenToPx(R.dimen.collectionTabsViewPadding))
-      return
-    }
-    watchlistContent.doOnApplyWindowInsets { view, insets, padding, _ ->
-      statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
-      view.updatePadding(top = padding.top + statusBarHeight)
-      watchlistRecycler.updatePadding(top = dimenToPx(R.dimen.collectionTabsViewPadding))
+    with(binding) {
+      if (statusBarHeight != 0) {
+        watchlistContent.updatePadding(top = watchlistContent.paddingTop + statusBarHeight)
+        watchlistRecycler.updatePadding(top = dimenToPx(R.dimen.collectionTabsViewPadding))
+        return
+      }
+      watchlistContent.doOnApplyWindowInsets { view, insets, padding, _ ->
+        statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+        view.updatePadding(top = padding.top + statusBarHeight)
+        watchlistRecycler.updatePadding(top = dimenToPx(R.dimen.collectionTabsViewPadding))
+      }
     }
   }
 
@@ -147,7 +150,7 @@ class WatchlistFragment :
             GRID, GRID_TITLE -> GridLayoutManager(context, LISTS_GRID_SPAN)
           }
           adapter?.listViewMode = it
-          watchlistRecycler?.let { recycler ->
+          binding.watchlistRecycler.let { recycler ->
             recycler.layoutManager = layoutManager
             recycler.adapter = adapter
           }
@@ -160,7 +163,7 @@ class WatchlistFragment :
         (layoutManager as? GridLayoutManager)?.withSpanSizeLookup { pos ->
           adapter?.getItems()?.get(pos)?.image?.type?.spanSize!!
         }
-        watchlistEmptyView.fadeIf(it.isEmpty() && !isSearching)
+        binding.watchlistEmptyView.root.fadeIf(it.isEmpty() && !isSearching)
       }
       sortOrder?.let { event ->
         event.consume()?.let { openSortOrderDialog(it.first, it.second) }
@@ -209,13 +212,15 @@ class WatchlistFragment :
 
   override fun onEnterSearch() {
     isSearching = true
-    watchlistRecycler.translationY = dimenToPx(R.dimen.myShowsSearchLocalOffset).toFloat()
-    watchlistRecycler.smoothScrollToPosition(0)
+    with(binding) {
+      watchlistRecycler.translationY = dimenToPx(R.dimen.myShowsSearchLocalOffset).toFloat()
+      watchlistRecycler.smoothScrollToPosition(0)
+    }
   }
 
   override fun onExitSearch() {
     isSearching = false
-    with(watchlistRecycler) {
+    with(binding.watchlistRecycler) {
       translationY = 0F
       postDelayed(200) { layoutManager?.scrollToPosition(0) }
     }
@@ -229,7 +234,7 @@ class WatchlistFragment :
     }
   }
 
-  override fun onScrollReset() = watchlistRecycler.scrollToPosition(0)
+  override fun onScrollReset() = binding.watchlistRecycler.scrollToPosition(0)
 
   override fun setupBackPressed() = Unit
 

@@ -38,7 +38,7 @@
     <com.michaldrabik.ui_base.common.views.PremiumAdView
       android:id="@+id/settingsPremium"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      android:layout_height="100dp"
       android:layout_marginStart="@dimen/spaceNormal"
       android:layout_marginTop="@dimen/spaceTiny"
       android:layout_marginEnd="@dimen/spaceNormal"
@@ -53,10 +53,12 @@
       android:name="com.michaldrabik.ui_settings.sections.trakt.SettingsTraktFragment"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/spaceSmall"
       app:layout_constraintBottom_toTopOf="@id/settingsCategoryGeneral"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsPremium"
+      app:layout_goneMarginTop="0dp"
       tools:layout="@layout/fragment_settings_trakt"
       />
 
@@ -65,7 +67,7 @@
       android:name="com.michaldrabik.ui_settings.sections.general.SettingsGeneralFragment"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      app:layout_constraintBottom_toTopOf="@id/settingsCategorySpoilers"
+      app:layout_constraintBottom_toTopOf="@+id/settingsCategoryNotifications"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsCategoryTrakt"
@@ -77,10 +79,10 @@
       android:name="com.michaldrabik.ui_settings.sections.spoilers.SettingsSpoilersFragment"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      app:layout_constraintBottom_toTopOf="@id/settingsCategoryNotifications"
+      app:layout_constraintBottom_toTopOf="@id/settingsCategoryWidgets"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsCategoryGeneral"
+      app:layout_constraintTop_toBottomOf="@+id/settingsCategoryNotifications"
       tools:layout="@layout/fragment_settings_spoilers"
       />
 
@@ -89,10 +91,10 @@
       android:name="com.michaldrabik.ui_settings.sections.notifications.SettingsNotificationsFragment"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      app:layout_constraintBottom_toTopOf="@id/settingsCategoryWidgets"
+      app:layout_constraintBottom_toTopOf="@id/settingsCategorySpoilers"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsCategorySpoilers"
+      app:layout_constraintTop_toBottomOf="@id/settingsCategoryGeneral"
       tools:layout="@layout/fragment_settings_notifications"
       />
 
@@ -104,7 +106,7 @@
       app:layout_constraintBottom_toTopOf="@id/settingsCategoryMisc"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsCategoryNotifications"
+      app:layout_constraintTop_toBottomOf="@id/settingsCategorySpoilers"
       tools:layout="@layout/fragment_settings_widgets"
       />
 

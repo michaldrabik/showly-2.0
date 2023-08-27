@@ -14,20 +14,22 @@ import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_movie.MovieDetailsViewModel
 import com.michaldrabik.ui_movie.R
+import com.michaldrabik.ui_movie.databinding.FragmentMovieDetailsRelatedBinding
 import com.michaldrabik.ui_movie.sections.related.recycler.RelatedListItem
 import com.michaldrabik.ui_movie.sections.related.recycler.RelatedMovieAdapter
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_ITEM_MENU
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_movie_details_related.*
 
 @AndroidEntryPoint
 class MovieDetailsRelatedFragment : BaseFragment<MovieDetailsRelatedViewModel>(R.layout.fragment_movie_details_related) {
 
   private val parentViewModel by viewModels<MovieDetailsViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<MovieDetailsRelatedViewModel>()
+  private val binding by viewBinding(FragmentMovieDetailsRelatedBinding::bind)
 
   private var relatedAdapter: RelatedMovieAdapter? = null
 
@@ -46,7 +48,7 @@ class MovieDetailsRelatedFragment : BaseFragment<MovieDetailsRelatedViewModel>(R
       itemLongClickListener = ::openContextMenu,
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
     )
-    movieDetailsRelatedRecycler.apply {
+    binding.movieDetailsRelatedRecycler.apply {
       setHasFixedSize(true)
       adapter = relatedAdapter
       layoutManager = LinearLayoutManager(requireContext(), HORIZONTAL, false)
@@ -75,13 +77,15 @@ class MovieDetailsRelatedFragment : BaseFragment<MovieDetailsRelatedViewModel>(R
 
   private fun render(uiState: MovieDetailsRelatedUiState) {
     with(uiState) {
-      relatedMovies?.let {
-        relatedAdapter?.setItems(it)
-        movieDetailsRelatedRecycler.visibleIf(it.isNotEmpty())
-        movieDetailsRelatedLabel.fadeIf(it.isNotEmpty(), hardware = true)
-      }
-      isLoading.let {
-        movieDetailsRelatedProgress.visibleIf(it)
+      with(binding) {
+        relatedMovies?.let {
+          relatedAdapter?.setItems(it)
+          movieDetailsRelatedRecycler.visibleIf(it.isNotEmpty())
+          movieDetailsRelatedLabel.fadeIf(it.isNotEmpty(), hardware = true)
+        }
+        isLoading.let {
+          movieDetailsRelatedProgress.visibleIf(it)
+        }
       }
     }
   }

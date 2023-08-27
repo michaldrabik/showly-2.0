@@ -77,7 +77,11 @@ class App :
       if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
 
       fun createChannel(channel: AppNotificationChannel) =
-        NotificationChannel(channel.name, channel.displayName, channel.importance).apply {
+        NotificationChannel(
+          /* id = */ channel.name,
+          /* name = */ channel.displayName,
+          /* importance = */ channel.importance
+        ).apply {
           description = channel.description
         }
 

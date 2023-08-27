@@ -2,7 +2,7 @@ package com.michaldrabik.data_local.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
-import androidx.room.OnConflictStrategy
+import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Query
 import com.michaldrabik.data_local.database.model.ShowTranslation
 import com.michaldrabik.data_local.sources.ShowTranslationsLocalDataSource
@@ -16,8 +16,8 @@ interface ShowTranslationsDao : BaseDao<ShowTranslation>, ShowTranslationsLocalD
   @Query("SELECT * FROM shows_translations WHERE language == :language")
   override suspend fun getAll(language: String): List<ShowTranslation>
 
-  @Insert(onConflict = OnConflictStrategy.REPLACE)
-  override suspend fun insert(translation: ShowTranslation)
+  @Insert(onConflict = REPLACE)
+  override suspend fun insertSingle(translation: ShowTranslation)
 
   @Query("DELETE FROM shows_translations WHERE language IN (:languages)")
   override suspend fun deleteByLanguage(languages: List<String>)

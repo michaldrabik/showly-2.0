@@ -31,14 +31,15 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.showKeyboard
 import com.michaldrabik.ui_base.utilities.extensions.updateTopMargin
 import com.michaldrabik.ui_base.utilities.extensions.visible
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.PremiumFeature
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_my_shows.R
+import com.michaldrabik.ui_my_shows.databinding.FragmentFollowedShowsBinding
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ITEM
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_ITEM_MENU
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_followed_shows.*
 
 @AndroidEntryPoint
 class FollowedShowsFragment :
@@ -50,8 +51,10 @@ class FollowedShowsFragment :
     private const val TRANSLATION_DURATION = 225L
   }
 
-  override val viewModel by viewModels<FollowedShowsViewModel>()
   override val navigationId = R.id.followedShowsFragment
+
+  override val viewModel by viewModels<FollowedShowsViewModel>()
+  private val binding by viewBinding(FragmentFollowedShowsBinding::bind)
 
   private var searchViewTranslation = 0F
   private var tabsViewTranslation = 0F
@@ -97,61 +100,67 @@ class FollowedShowsFragment :
 
   override fun onPause() {
     enableUi()
-    tabsViewTranslation = followedShowsTabs.translationY
-    searchViewTranslation = followedShowsSearchView.translationY
+    tabsViewTranslation = binding.followedShowsTabs.translationY
+    searchViewTranslation = binding.followedShowsSearchView.translationY
     super.onPause()
   }
 
   override fun onDestroyView() {
-    followedShowsPager.removeOnPageChangeListener(pageChangeListener)
+    binding.followedShowsPager.removeOnPageChangeListener(pageChangeListener)
     super.onDestroyView()
   }
 
   private fun setupView() {
-    followedShowsSearchView.run {
-      hint = getString(R.string.textSearchFor)
-      statsIconVisible = true
-      onClick { openMainSearch() }
-      onSettingsClickListener = { openSettings() }
-      onStatsClickListener = { openStatistics() }
+    with(binding) {
+      followedShowsSearchView.run {
+        hint = getString(R.string.textSearchFor)
+        statsIconVisible = true
+        onClick { openMainSearch() }
+        onSettingsClickListener = { openSettings() }
+        onStatsClickListener = { openStatistics() }
+      }
+      with(followedShowsSearchLocalView) {
+        onCloseClickListener = { exitSearch() }
+      }
+      followedShowsModeTabs.run {
+        onModeSelected = { mode = it }
+        onListsSelected = { navigateTo(R.id.actionNavigateListsFragment) }
+        showMovies(moviesEnabled)
+        showLists(true, anchorEnd = moviesEnabled)
+        selectShows()
+      }
+      followedShowsSearchIcon.onClick {
+        if (!isSearching) enterSearch() else exitSearch()
+      }
+      followedShowsSearchView.translationY = searchViewTranslation
+      followedShowsTabs.translationY = tabsViewTranslation
+      followedShowsModeTabs.translationY = tabsViewTranslation
+      followedShowsIcons.translationY = tabsViewTranslation
     }
-    with(followedShowsSearchLocalView) {
-      onCloseClickListener = { exitSearch() }
-    }
-    followedShowsModeTabs.run {
-      onModeSelected = { mode = it }
-      onListsSelected = { navigateTo(R.id.actionNavigateListsFragment) }
-      showMovies(moviesEnabled)
-      showLists(true, anchorEnd = moviesEnabled)
-      selectShows()
-    }
-    followedShowsSearchIcon.onClick {
-      if (!isSearching) enterSearch() else exitSearch()
-    }
-    followedShowsSearchView.translationY = searchViewTranslation
-    followedShowsTabs.translationY = tabsViewTranslation
-    followedShowsModeTabs.translationY = tabsViewTranslation
-    followedShowsIcons.translationY = tabsViewTranslation
   }
 
   private fun setupPager() {
-    followedShowsPager.run {
-      offscreenPageLimit = FollowedPagesAdapter.PAGES_COUNT
-      adapter = FollowedPagesAdapter(childFragmentManager, requireContext())
-      addOnPageChangeListener(pageChangeListener)
+    with(binding) {
+      followedShowsPager.run {
+        offscreenPageLimit = FollowedPagesAdapter.PAGES_COUNT
+        adapter = FollowedPagesAdapter(childFragmentManager, requireContext())
+        addOnPageChangeListener(pageChangeListener)
+      }
+      followedShowsTabs.setupWithViewPager(followedShowsPager)
     }
-    followedShowsTabs.setupWithViewPager(followedShowsPager)
   }
 
   private fun setupStatusBar() {
-    followedShowsRoot.doOnApplyWindowInsets { _, insets, _, _ ->
-      val statusBarSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
-      followedShowsSearchView.applyWindowInsetBehaviour(dimenToPx(R.dimen.spaceNormal) + statusBarSize)
-      followedShowsSearchView.updateTopMargin(dimenToPx(R.dimen.spaceMedium) + statusBarSize)
-      followedShowsModeTabs.updateTopMargin(dimenToPx(R.dimen.collectionTabsMargin) + statusBarSize)
-      followedShowsTabs.updateTopMargin(dimenToPx(R.dimen.myShowsSearchViewPadding) + statusBarSize)
-      followedShowsIcons.updateTopMargin(dimenToPx(R.dimen.myShowsSearchViewPadding) + statusBarSize)
-      followedShowsSearchLocalView.updateTopMargin(dimenToPx(R.dimen.myShowsSearchLocalViewPadding) + statusBarSize)
+    with(binding) {
+      followedShowsRoot.doOnApplyWindowInsets { _, insets, _, _ ->
+        val statusBarSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+        followedShowsSearchView.applyWindowInsetBehaviour(dimenToPx(R.dimen.spaceNormal) + statusBarSize)
+        followedShowsSearchView.updateTopMargin(dimenToPx(R.dimen.spaceMedium) + statusBarSize)
+        followedShowsModeTabs.updateTopMargin(dimenToPx(R.dimen.collectionTabsMargin) + statusBarSize)
+        followedShowsTabs.updateTopMargin(dimenToPx(R.dimen.myShowsSearchViewPadding) + statusBarSize)
+        followedShowsIcons.updateTopMargin(dimenToPx(R.dimen.myShowsSearchViewPadding) + statusBarSize)
+        followedShowsSearchLocalView.updateTopMargin(dimenToPx(R.dimen.myShowsSearchLocalViewPadding) + statusBarSize)
+      }
     }
   }
 
@@ -168,47 +177,53 @@ class FollowedShowsFragment :
   }
 
   private fun enterSearch() {
-    resetTranslations()
-    followedShowsSearchLocalView.fadeIn(150)
-    with(followedShowsSearchLocalView.binding.searchViewLocalInput) {
-      setText("")
-      doAfterTextChanged { viewModel.onSearchQuery(it?.toString()) }
-      visible()
-      showKeyboard()
-      requestFocus()
+    with(binding) {
+      resetTranslations()
+      followedShowsSearchLocalView.fadeIn(150)
+      with(followedShowsSearchLocalView.binding.searchViewLocalInput) {
+        setText("")
+        doAfterTextChanged { viewModel.onSearchQuery(it?.toString()) }
+        visible()
+        showKeyboard()
+        requestFocus()
+      }
+      isSearching = true
+      childFragmentManager.fragments.forEach { (it as? OnSearchClickListener)?.onEnterSearch() }
     }
-    isSearching = true
-    childFragmentManager.fragments.forEach { (it as? OnSearchClickListener)?.onEnterSearch() }
   }
 
   private fun exitSearch() {
-    isSearching = false
-    childFragmentManager.fragments.forEach { (it as? OnSearchClickListener)?.onExitSearch() }
-    resetTranslations()
-    followedShowsSearchLocalView.gone()
-    with(followedShowsSearchLocalView.binding.searchViewLocalInput) {
-      setText("")
-      gone()
-      hideKeyboard()
-      clearFocus()
+    with(binding) {
+      isSearching = false
+      childFragmentManager.fragments.forEach { (it as? OnSearchClickListener)?.onExitSearch() }
+      resetTranslations()
+      followedShowsSearchLocalView.gone()
+      with(followedShowsSearchLocalView.binding.searchViewLocalInput) {
+        setText("")
+        gone()
+        hideKeyboard()
+        clearFocus()
+      }
     }
   }
 
   private fun openMainSearch() {
-    disableUi()
-    hideNavigation()
-    followedShowsModeTabs.fadeOut(duration = 200).add(animations)
-    followedShowsTabs.fadeOut(duration = 200).add(animations)
-    followedShowsIcons.fadeOut(duration = 200).add(animations)
-    followedShowsPager.fadeOut(duration = 200) {
-      super.navigateTo(R.id.actionFollowedShowsFragmentToSearch, null)
-    }.add(animations)
+    with(binding) {
+      disableUi()
+      hideNavigation()
+      followedShowsModeTabs.fadeOut(duration = 200).add(animations)
+      followedShowsTabs.fadeOut(duration = 200).add(animations)
+      followedShowsIcons.fadeOut(duration = 200).add(animations)
+      followedShowsPager.fadeOut(duration = 200) {
+        super.navigateTo(R.id.actionFollowedShowsFragmentToSearch, null)
+      }.add(animations)
+    }
   }
 
   fun openShowDetails(show: Show) {
     disableUi()
     hideNavigation()
-    followedShowsRoot.fadeOut(150) {
+    binding.followedShowsRoot.fadeOut(150) {
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.traktId) }
       navigateToSafe(R.id.actionFollowedShowsFragmentToShowDetailsFragment, bundle)
       exitSearch()
@@ -247,7 +262,7 @@ class FollowedShowsFragment :
 
   override fun onTabReselected() {
     resetTranslations(duration = 0)
-    followedShowsPager?.nextPage()
+    binding.followedShowsPager.nextPage()
     childFragmentManager.fragments.forEach {
       (it as? OnScrollResetListener)?.onScrollReset()
     }
@@ -255,21 +270,23 @@ class FollowedShowsFragment :
 
   fun resetTranslations(duration: Long = TRANSLATION_DURATION) {
     if (view == null) return
-    arrayOf(
-      followedShowsSearchView,
-      followedShowsTabs,
-      followedShowsModeTabs,
-      followedShowsIcons,
-      followedShowsSearchLocalView
-    ).forEach {
-      it.animate().translationY(0F).setDuration(duration).add(animations)?.start()
+    with(binding) {
+      arrayOf(
+        followedShowsSearchView,
+        followedShowsTabs,
+        followedShowsModeTabs,
+        followedShowsIcons,
+        followedShowsSearchLocalView
+      ).forEach {
+        it.animate().translationY(0F).setDuration(duration).add(animations)?.start()
+      }
     }
   }
 
   private fun render(uiState: FollowedShowsUiState) {
     uiState.isSyncing?.let {
-      followedShowsSearchView.setTraktProgress(it)
-      followedShowsSearchView.isEnabled = !it
+      binding.followedShowsSearchView.setTraktProgress(it)
+      binding.followedShowsSearchView.isEnabled = !it
     }
   }
 
@@ -278,7 +295,7 @@ class FollowedShowsFragment :
     override fun onPageSelected(position: Int) {
       if (currentPage == position) return
 
-      if (followedShowsTabs.translationY != 0F) {
+      if (binding.followedShowsTabs.translationY != 0F) {
         resetTranslations()
         requireView().postDelayed(
           {

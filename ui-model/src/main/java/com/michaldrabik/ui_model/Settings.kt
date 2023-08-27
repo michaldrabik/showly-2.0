@@ -2,7 +2,6 @@ package com.michaldrabik.ui_model
 
 data class Settings(
   val isInitialRun: Boolean,
-  val pushNotificationsEnabled: Boolean,
   val episodesNotificationsEnabled: Boolean,
   val episodesNotificationsDelay: NotificationDelay,
   val watchlistShowsSortBy: SortOrder,
@@ -47,7 +46,6 @@ data class Settings(
   companion object {
     fun createInitial() = Settings(
       isInitialRun = true,
-      pushNotificationsEnabled = true,
       episodesNotificationsEnabled = true,
       episodesNotificationsDelay = NotificationDelay.WHEN_AVAILABLE,
       myShowsFinishedSortBy = SortOrder.NAME,

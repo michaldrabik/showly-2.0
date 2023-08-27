@@ -3,6 +3,7 @@ package com.michaldrabik.ui_movie.sections.related.recycler
 import android.content.Context
 import android.content.res.ColorStateList
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
@@ -17,7 +18,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.ImageStatus.AVAILABLE
 import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
 import com.michaldrabik.ui_movie.R
-import kotlinx.android.synthetic.main.view_related_movie.view.*
+import com.michaldrabik.ui_movie.databinding.ViewRelatedMovieBinding
 
 class RelatedMovieView : MovieView<RelatedListItem> {
 
@@ -25,8 +26,9 @@ class RelatedMovieView : MovieView<RelatedListItem> {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
+  private val binding = ViewRelatedMovieBinding.inflate(LayoutInflater.from(context), this)
+
   init {
-    inflate(context, R.layout.view_related_movie, this)
     layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
     clipChildren = false
     onClick { itemClickListener?.invoke(item) }
@@ -36,26 +38,26 @@ class RelatedMovieView : MovieView<RelatedListItem> {
   private val colorAccent by lazy { ContextCompat.getColor(context, R.color.colorAccent) }
   private val colorGray by lazy { ContextCompat.getColor(context, R.color.colorGrayLight) }
 
-  override val imageView: ImageView = relatedMovieImage
-  override val placeholderView: ImageView = relatedMoviePlaceholder
+  override val imageView: ImageView = binding.relatedMovieImage
+  override val placeholderView: ImageView = binding.relatedMoviePlaceholder
 
   private lateinit var item: RelatedListItem
 
   override fun bind(item: RelatedListItem) {
     clear()
     this.item = item
-    relatedMovieTitle.text = item.movie.title
+    binding.relatedMovieTitle.text = item.movie.title
 
-    relatedMovieBadge.visibleIf(item.isFollowed || item.isWatchlist)
+    binding.relatedMovieBadge.visibleIf(item.isFollowed || item.isWatchlist)
     val color = if (item.isFollowed) colorAccent else colorGray
-    ImageViewCompat.setImageTintList(relatedMovieBadge, ColorStateList.valueOf(color))
+    ImageViewCompat.setImageTintList(binding.relatedMovieBadge, ColorStateList.valueOf(color))
 
     loadImage(item)
   }
 
   override fun loadImage(item: RelatedListItem) {
     if (item.image.status == UNAVAILABLE) {
-      relatedMovieTitle.visible()
+      binding.relatedMovieTitle.visible()
     }
     super.loadImage(item)
   }
@@ -63,13 +65,16 @@ class RelatedMovieView : MovieView<RelatedListItem> {
   override fun onImageLoadFail(item: RelatedListItem) {
     super.onImageLoadFail(item)
     if (item.image.status == AVAILABLE) {
-      relatedMovieTitle.visible()
+      binding.relatedMovieTitle.visible()
     }
   }
 
   private fun clear() {
-    relatedMoviePlaceholder.gone()
-    relatedMovieTitle.gone()
-    Glide.with(this).clear(relatedMovieImage)
+    with(binding) {
+      relatedMoviePlaceholder.gone()
+      relatedMovieTitle.gone()
+      Glide.with(this@RelatedMovieView)
+        .clear(relatedMovieImage)
+    }
   }
 }

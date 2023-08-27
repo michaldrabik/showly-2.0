@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.MotionEvent.ACTION_CANCEL
 import android.view.MotionEvent.ACTION_DOWN
@@ -12,17 +13,17 @@ import android.view.MotionEvent.ACTION_UP
 import android.view.ViewGroup
 import android.view.ViewPropertyAnimator
 import android.widget.FrameLayout
-import androidx.core.view.forEach
+import androidx.core.view.children
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.michaldrabik.common.Mode
 import com.michaldrabik.showly2.R
+import com.michaldrabik.showly2.databinding.ViewBottomMenuBinding
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.screenWidth
 import com.michaldrabik.ui_base.utilities.extensions.visible
-import kotlinx.android.synthetic.main.view_bottom_menu.view.*
 import kotlin.math.abs
 
 class BottomMenuView : FrameLayout {
@@ -36,9 +37,7 @@ class BottomMenuView : FrameLayout {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-  init {
-    inflate(context, R.layout.view_bottom_menu, this)
-  }
+  val binding = ViewBottomMenuBinding.inflate(LayoutInflater.from(context), this)
 
   var isModeMenuEnabled = true
   var onModeSelected: ((Mode) -> Unit)? = null
@@ -66,13 +65,15 @@ class BottomMenuView : FrameLayout {
           isModeMenu = true
           showModeMenu()
         }
-        if (isModeMenu) {
-          if (ev.x > screenWidth / 2) {
-            bottomMenuModeShows.setTextColor(itemIdleColor)
-            bottomMenuModeMovies.setTextColor(itemSelectedColor)
-          } else {
-            bottomMenuModeShows.setTextColor(itemSelectedColor)
-            bottomMenuModeMovies.setTextColor(itemIdleColor)
+        with(binding) {
+          if (isModeMenu) {
+            if (ev.x > screenWidth / 2) {
+              bottomMenuModeShows.setTextColor(itemIdleColor)
+              bottomMenuModeMovies.setTextColor(itemSelectedColor)
+            } else {
+              bottomMenuModeShows.setTextColor(itemSelectedColor)
+              bottomMenuModeMovies.setTextColor(itemIdleColor)
+            }
           }
         }
       }
@@ -92,34 +93,37 @@ class BottomMenuView : FrameLayout {
   }
 
   private fun showModeMenu() {
-    bottomMenuModeShows.setTextColor(itemIdleColor)
-    bottomMenuModeMovies.setTextColor(itemIdleColor)
-
-    bottomNavigationView.fadeOut(FADE_DELAY).add(animations)
-    bottomMenuModeLayout.fadeIn(FADE_DELAY).add(animations)
+    with(binding) {
+      bottomMenuModeShows.setTextColor(itemIdleColor)
+      bottomMenuModeMovies.setTextColor(itemIdleColor)
+      bottomNavigationView.fadeOut(FADE_DELAY).add(animations)
+      bottomMenuModeLayout.fadeIn(FADE_DELAY).add(animations)
+    }
   }
 
   private fun hideModeMenu() {
-    with(animations) {
-      forEach {
-        it?.setListener(object : AnimatorListenerAdapter() {
-          override fun onAnimationCancel(animation: Animator) {
-            bottomNavigationView.visible()
-            bottomNavigationView.alpha = 1F
-          }
-        })
-        it?.cancel()
+    with(binding) {
+      with(animations) {
+        forEach {
+          it?.setListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationCancel(animation: Animator) {
+              bottomNavigationView.visible()
+              bottomNavigationView.alpha = 1F
+            }
+          })
+          it?.cancel()
+        }
+        clear()
       }
-      clear()
+      bottomNavigationView.fadeIn(FADE_DELAY).add(animations)
+      bottomMenuModeLayout.fadeOut(FADE_DELAY).add(animations)
     }
-    bottomNavigationView.fadeIn(FADE_DELAY).add(animations)
-    bottomMenuModeLayout.fadeOut(FADE_DELAY).add(animations)
   }
 
   private fun disableTooltips() {
-    val content = bottomNavigationView.getChildAt(0)
+    val content = binding.bottomNavigationView.getChildAt(0)
     if (content is ViewGroup) {
-      content.forEach {
+      content.children.forEach {
         if (it is BottomNavigationItemView) {
           it.setOnLongClickListener(null)
         }

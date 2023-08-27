@@ -19,7 +19,6 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_my_movies.common.recycler.CollectionListItem
 import com.michaldrabik.ui_my_movies.databinding.ViewCollectionMovieCompactBinding
-import kotlinx.android.synthetic.main.view_collection_movie.view.*
 import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n")

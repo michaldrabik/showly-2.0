@@ -13,15 +13,15 @@
     android:id="@+id/settingsCategoryNotifications"
     style="@style/Settings.Category"
     android:text="@string/textSettingsNotifications"
-    app:layout_constraintBottom_toTopOf="@id/settingsPushNotifications"
+    app:layout_constraintBottom_toTopOf="@id/settingsShowsNotifications"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     />
 
   <LinearLayout
-    android:id="@+id/settingsPushNotifications"
+    android:id="@+id/settingsShowsNotifications"
     style="@style/Settings.ItemLayout"
-    app:layout_constraintBottom_toTopOf="@id/settingsShowsNotifications"
+    app:layout_constraintBottom_toTopOf="@id/settingsWhenToNotify"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/settingsCategoryNotifications"
@@ -35,43 +35,7 @@
     <TextView
       style="@style/Settings.Summary"
       android:layout_marginEnd="@dimen/spaceHuge"
-      android:text="@string/textSettingsPushNotificationsSummary"
-      tools:text="@tools:sample/lorem/random"
-      />
-
-  </LinearLayout>
-
-  <com.google.android.material.switchmaterial.SwitchMaterial
-    android:id="@+id/settingsPushNotificationsSwitch"
-    android:layout_width="wrap_content"
-    android:layout_height="0dp"
-    android:layout_marginEnd="@dimen/spaceNormal"
-    android:checked="true"
-    android:clickable="false"
-    app:layout_constraintBottom_toBottomOf="@id/settingsPushNotifications"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="@id/settingsPushNotifications"
-    />
-
-  <LinearLayout
-    android:id="@+id/settingsShowsNotifications"
-    style="@style/Settings.ItemLayout"
-    app:layout_constraintBottom_toTopOf="@id/settingsWhenToNotify"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/settingsPushNotifications"
-    >
-
-    <TextView
-      style="@style/Settings.Title"
-      android:text="@string/textSettingsShowsNotificationsTitle"
-      />
-
-    <TextView
-      style="@style/Settings.Summary"
-      android:layout_marginEnd="@dimen/spaceHuge"
       android:text="@string/textSettingsShowsNotificationsSummary"
-      tools:text="@tools:sample/lorem/random"
       />
 
   </LinearLayout>
@@ -119,7 +83,6 @@
       app:layout_constraintHorizontal_chainStyle="spread_inside"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsWhenToNotifyTitle"
-      tools:text="@tools:sample/lorem/random"
       />
 
     <TextView

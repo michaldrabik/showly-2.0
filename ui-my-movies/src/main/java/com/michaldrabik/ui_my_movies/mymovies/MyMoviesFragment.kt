@@ -27,6 +27,7 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
@@ -36,6 +37,7 @@ import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_movies.R
+import com.michaldrabik.ui_my_movies.databinding.FragmentMyMoviesBinding
 import com.michaldrabik.ui_my_movies.filters.CollectionFiltersOrigin.MY_MOVIES
 import com.michaldrabik.ui_my_movies.filters.genre.CollectionFiltersGenreBottomSheet
 import com.michaldrabik.ui_my_movies.filters.genre.CollectionFiltersGenreBottomSheet.Companion.REQUEST_COLLECTION_FILTERS_GENRE
@@ -48,9 +50,6 @@ import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem.Type.HEADER
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem.Type.RECENT_MOVIES
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_my_movies.myMoviesEmptyView
-import kotlinx.android.synthetic.main.fragment_my_movies.myMoviesRecycler
-import kotlinx.android.synthetic.main.fragment_my_movies.myMoviesRoot
 
 @AndroidEntryPoint
 class MyMoviesFragment :
@@ -58,9 +57,11 @@ class MyMoviesFragment :
   OnScrollResetListener,
   OnSearchClickListener {
 
+  override val navigationId = R.id.followedMoviesFragment
+
   private val parentViewModel by viewModels<FollowedMoviesViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<MyMoviesViewModel>()
-  override val navigationId = R.id.followedMoviesFragment
+  private val binding by viewBinding(FragmentMyMoviesBinding::bind)
 
   private var adapter: MyMoviesAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
@@ -95,7 +96,7 @@ class MyMoviesFragment :
         (requireParentFragment() as FollowedMoviesFragment).resetTranslations()
       }
     )
-    myMoviesRecycler.apply {
+    binding.myMoviesRecycler.apply {
       adapter = this@MyMoviesFragment.adapter
       layoutManager = this@MyMoviesFragment.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
@@ -105,26 +106,28 @@ class MyMoviesFragment :
   }
 
   private fun setupStatusBar() {
-    if (statusBarHeight != 0) {
-      myMoviesRoot.updatePadding(top = statusBarHeight)
-      myMoviesRecycler.updatePadding(top = dimenToPx(R.dimen.myMoviesTabsViewPadding))
-      return
-    }
-    myMoviesRoot.doOnApplyWindowInsets { view, insets, _, _ ->
-      statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
-      view.updatePadding(top = statusBarHeight)
-      myMoviesRecycler.updatePadding(top = dimenToPx(R.dimen.myMoviesTabsViewPadding))
+    with(binding) {
+      if (statusBarHeight != 0) {
+        myMoviesRoot.updatePadding(top = statusBarHeight)
+        myMoviesRecycler.updatePadding(top = dimenToPx(R.dimen.myMoviesTabsViewPadding))
+        return
+      }
+      myMoviesRoot.doOnApplyWindowInsets { view, insets, _, _ ->
+        statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+        view.updatePadding(top = statusBarHeight)
+        myMoviesRecycler.updatePadding(top = dimenToPx(R.dimen.myMoviesTabsViewPadding))
+      }
     }
   }
 
   private fun setupRecyclerPaddings() {
     if (layoutManager is GridLayoutManager) {
-      myMoviesRecycler.updatePadding(
+      binding.myMoviesRecycler.updatePadding(
         left = dimenToPx(R.dimen.gridRecyclerPadding),
         right = dimenToPx(R.dimen.gridRecyclerPadding)
       )
     } else {
-      myMoviesRecycler.updatePadding(
+      binding.myMoviesRecycler.updatePadding(
         left = 0,
         right = 0
       )
@@ -133,34 +136,36 @@ class MyMoviesFragment :
 
   private fun render(uiState: MyMoviesUiState) {
     uiState.run {
-      viewMode.let {
-        if (adapter?.listViewMode != it) {
-          val state = myMoviesRecycler.layoutManager?.onSaveInstanceState()
-          layoutManager = when (it) {
-            LIST_NORMAL, LIST_COMPACT -> LinearLayoutManager(requireContext(), VERTICAL, false)
-            GRID, GRID_TITLE -> GridLayoutManager(context, Config.LISTS_GRID_SPAN)
-          }
-          adapter?.listViewMode = it
-          myMoviesRecycler?.let { recycler ->
-            recycler.layoutManager = layoutManager
-            recycler.adapter = adapter
-            recycler.layoutManager?.onRestoreInstanceState(state)
-          }
-          setupRecyclerPaddings()
-        }
-      }
-      items?.let {
-        val notifyChange = resetScroll?.consume() == true
-        adapter?.setItems(it, notifyChange)
-        (layoutManager as? GridLayoutManager)?.withSpanSizeLookup { pos ->
-          val item = adapter?.getItems()?.get(pos)
-          when (item?.type) {
-            RECENT_MOVIES, HEADER -> Config.LISTS_GRID_SPAN
-            ALL_MOVIES_ITEM -> item.image.type.spanSize
-            null -> throw Error("Unsupported span size!")
+      with(binding) {
+        viewMode.let {
+          if (adapter?.listViewMode != it) {
+            val state = myMoviesRecycler.layoutManager?.onSaveInstanceState()
+            layoutManager = when (it) {
+              LIST_NORMAL, LIST_COMPACT -> LinearLayoutManager(requireContext(), VERTICAL, false)
+              GRID, GRID_TITLE -> GridLayoutManager(context, Config.LISTS_GRID_SPAN)
+            }
+            adapter?.listViewMode = it
+            myMoviesRecycler?.let { recycler ->
+              recycler.layoutManager = layoutManager
+              recycler.adapter = adapter
+              recycler.layoutManager?.onRestoreInstanceState(state)
+            }
+            setupRecyclerPaddings()
           }
         }
-        myMoviesEmptyView.fadeIf(showEmptyView && !isSearching)
+        items?.let {
+          val notifyChange = resetScroll?.consume() == true
+          adapter?.setItems(it, notifyChange)
+          (layoutManager as? GridLayoutManager)?.withSpanSizeLookup { pos ->
+            val item = adapter?.getItems()?.get(pos)
+            when (item?.type) {
+              RECENT_MOVIES, HEADER -> Config.LISTS_GRID_SPAN
+              ALL_MOVIES_ITEM -> item.image.type.spanSize
+              null -> throw Error("Unsupported span size!")
+            }
+          }
+          myMoviesEmptyView.root.fadeIf(showEmptyView && !isSearching)
+        }
       }
     }
   }
@@ -204,7 +209,7 @@ class MyMoviesFragment :
 
   override fun onEnterSearch() {
     isSearching = true
-    with(myMoviesRecycler) {
+    with(binding.myMoviesRecycler) {
       translationY = dimenToPx(R.dimen.myMoviesSearchLocalOffset).toFloat()
       smoothScrollToPosition(0)
     }
@@ -212,13 +217,13 @@ class MyMoviesFragment :
 
   override fun onExitSearch() {
     isSearching = false
-    with(myMoviesRecycler) {
+    with(binding.myMoviesRecycler) {
       translationY = 0F
       postDelayed(200) { layoutManager?.scrollToPosition(0) }
     }
   }
 
-  override fun onScrollReset() = myMoviesRecycler.scrollToPosition(0)
+  override fun onScrollReset() = binding.myMoviesRecycler.scrollToPosition(0)
 
   override fun setupBackPressed() = Unit
 

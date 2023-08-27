@@ -42,8 +42,6 @@
   <string name="textSettingsIncludeSpecialsSummary">Mostra le stagioni \"Speciali\" nei dettagli dello show.</string>
   <string name="textSettingsNotifications">Notifiche</string>
   <string name="textSettingsPushNotificationsTitle">Notifiche istantanee</string>
-  <string name="textSettingsPushNotificationsSummary">Ricevi notifiche di carattere generale istantaneamente.</string>
-  <string name="textSettingsShowsNotificationsTitle">Annunci</string>
   <string name="textSettingsShowsNotificationsSummary">Ricevi notifiche riguardo nuovi film, episodi e stagioni per gli show che segui.</string>
   <string name="textSettingsMisc">Varie</string>
   <string name="textSettingsContactDevsTitle">Contatta gli sviluppatori</string>

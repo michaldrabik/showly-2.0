@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_base.utilities.extensions
 
-import android.app.NotificationManager
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -16,6 +15,7 @@ import android.widget.CompoundButton
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.annotation.DimenRes
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -30,7 +30,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.Locale
 
-fun Context.notificationManager() = (applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
+fun Context.notificationManager() = NotificationManagerCompat.from(this)
 
 fun CoroutineWorker.notificationManager() = applicationContext.notificationManager()
 

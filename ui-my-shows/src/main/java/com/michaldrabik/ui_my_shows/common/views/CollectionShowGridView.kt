@@ -21,7 +21,6 @@ import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_my_shows.common.recycler.CollectionListItem
 import com.michaldrabik.ui_my_shows.databinding.ViewCollectionShowGridBinding
-import kotlinx.android.synthetic.main.view_collection_show.view.*
 import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n")

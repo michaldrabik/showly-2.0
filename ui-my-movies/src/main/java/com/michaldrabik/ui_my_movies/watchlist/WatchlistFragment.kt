@@ -28,6 +28,7 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
@@ -38,6 +39,7 @@ import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_movies.R
 import com.michaldrabik.ui_my_movies.common.recycler.CollectionAdapter
+import com.michaldrabik.ui_my_movies.databinding.FragmentWatchlistMoviesBinding
 import com.michaldrabik.ui_my_movies.filters.CollectionFiltersOrigin.WATCHLIST_MOVIES
 import com.michaldrabik.ui_my_movies.filters.genre.CollectionFiltersGenreBottomSheet
 import com.michaldrabik.ui_my_movies.filters.genre.CollectionFiltersGenreBottomSheet.Companion.REQUEST_COLLECTION_FILTERS_GENRE
@@ -46,9 +48,6 @@ import com.michaldrabik.ui_my_movies.main.FollowedMoviesUiEvent.OpenPremium
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesViewModel
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_watchlist_movies.watchlistMoviesContent
-import kotlinx.android.synthetic.main.fragment_watchlist_movies.watchlistMoviesEmptyView
-import kotlinx.android.synthetic.main.fragment_watchlist_movies.watchlistMoviesRecycler
 
 @AndroidEntryPoint
 class WatchlistFragment :
@@ -56,9 +55,11 @@ class WatchlistFragment :
   OnScrollResetListener,
   OnSearchClickListener {
 
+  override val navigationId = R.id.followedMoviesFragment
+
   private val parentViewModel by viewModels<FollowedMoviesViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<WatchlistViewModel>()
-  override val navigationId = R.id.followedMoviesFragment
+  private val binding by viewBinding(FragmentWatchlistMoviesBinding::bind)
 
   private var adapter: CollectionAdapter? = null
   private var layoutManager: LayoutManager? = null
@@ -90,11 +91,11 @@ class WatchlistFragment :
       missingTranslationListener = viewModel::loadMissingTranslation,
       listViewChipClickListener = viewModel::setNextViewMode,
       listChangeListener = {
-        watchlistMoviesRecycler.scrollToPosition(0)
+        binding.watchlistMoviesRecycler.scrollToPosition(0)
         (requireParentFragment() as FollowedMoviesFragment).resetTranslations()
       },
     )
-    watchlistMoviesRecycler.apply {
+    binding.watchlistMoviesRecycler.apply {
       setHasFixedSize(true)
       adapter = this@WatchlistFragment.adapter
       layoutManager = this@WatchlistFragment.layoutManager
@@ -104,29 +105,33 @@ class WatchlistFragment :
   }
 
   private fun setupRecyclerPaddings() {
-    if (layoutManager is GridLayoutManager) {
-      watchlistMoviesRecycler.updatePadding(
-        left = dimenToPx(R.dimen.gridRecyclerPadding),
-        right = dimenToPx(R.dimen.gridRecyclerPadding)
-      )
-    } else {
-      watchlistMoviesRecycler.updatePadding(
-        left = 0,
-        right = 0
-      )
+    with(binding) {
+      if (layoutManager is GridLayoutManager) {
+        watchlistMoviesRecycler.updatePadding(
+          left = dimenToPx(R.dimen.gridRecyclerPadding),
+          right = dimenToPx(R.dimen.gridRecyclerPadding)
+        )
+      } else {
+        watchlistMoviesRecycler.updatePadding(
+          left = 0,
+          right = 0
+        )
+      }
     }
   }
 
   private fun setupStatusBar() {
-    if (statusBarHeight != 0) {
-      watchlistMoviesContent.updatePadding(top = watchlistMoviesContent.paddingTop + statusBarHeight)
-      watchlistMoviesRecycler.updatePadding(top = dimenToPx(R.dimen.collectionTabsViewPadding))
-      return
-    }
-    watchlistMoviesContent.doOnApplyWindowInsets { view, insets, padding, _ ->
-      statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
-      view.updatePadding(top = padding.top + statusBarHeight)
-      watchlistMoviesRecycler.updatePadding(top = dimenToPx(R.dimen.collectionTabsViewPadding))
+    with(binding) {
+      if (statusBarHeight != 0) {
+        watchlistMoviesContent.updatePadding(top = watchlistMoviesContent.paddingTop + statusBarHeight)
+        watchlistMoviesRecycler.updatePadding(top = dimenToPx(R.dimen.collectionTabsViewPadding))
+        return
+      }
+      watchlistMoviesContent.doOnApplyWindowInsets { view, insets, padding, _ ->
+        statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+        view.updatePadding(top = padding.top + statusBarHeight)
+        watchlistMoviesRecycler.updatePadding(top = dimenToPx(R.dimen.collectionTabsViewPadding))
+      }
     }
   }
 
@@ -139,7 +144,7 @@ class WatchlistFragment :
             GRID, GRID_TITLE -> GridLayoutManager(context, Config.LISTS_GRID_SPAN)
           }
           adapter?.listViewMode = it
-          watchlistMoviesRecycler?.let { recycler ->
+          binding.watchlistMoviesRecycler.let { recycler ->
             recycler.layoutManager = layoutManager
             recycler.adapter = adapter
           }
@@ -152,7 +157,7 @@ class WatchlistFragment :
         (layoutManager as? GridLayoutManager)?.withSpanSizeLookup { pos ->
           adapter?.getItems()?.get(pos)?.image?.type?.spanSize!!
         }
-        watchlistMoviesEmptyView.fadeIf(it.isEmpty() && !isSearching)
+        binding.watchlistMoviesEmptyView.root.fadeIf(it.isEmpty() && !isSearching)
       }
       sortOrder?.let { event ->
         event.consume()?.let { openSortOrderDialog(it.first, it.second) }
@@ -200,19 +205,21 @@ class WatchlistFragment :
 
   override fun onEnterSearch() {
     isSearching = true
-    watchlistMoviesRecycler.translationY = dimenToPx(R.dimen.myMoviesSearchLocalOffset).toFloat()
-    watchlistMoviesRecycler.smoothScrollToPosition(0)
+    with(binding) {
+      watchlistMoviesRecycler.translationY = dimenToPx(R.dimen.myMoviesSearchLocalOffset).toFloat()
+      watchlistMoviesRecycler.smoothScrollToPosition(0)
+    }
   }
 
   override fun onExitSearch() {
     isSearching = false
-    with(watchlistMoviesRecycler) {
+    with(binding.watchlistMoviesRecycler) {
       translationY = 0F
       postDelayed(200) { layoutManager?.scrollToPosition(0) }
     }
   }
 
-  override fun onScrollReset() = watchlistMoviesRecycler.scrollToPosition(0)
+  override fun onScrollReset() = binding.watchlistMoviesRecycler.scrollToPosition(0)
 
   override fun setupBackPressed() = Unit
 

@@ -26,14 +26,18 @@ import com.michaldrabik.common.Mode.SHOWS
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.showly2.BuildConfig
 import com.michaldrabik.showly2.R
+import com.michaldrabik.showly2.databinding.ActivityMainBinding
 import com.michaldrabik.showly2.ui.BaseActivity
 import com.michaldrabik.showly2.ui.main.delegates.BillingDelegate
 import com.michaldrabik.showly2.ui.main.delegates.MainBillingDelegate
+import com.michaldrabik.showly2.ui.main.delegates.MainTipsDelegate
 import com.michaldrabik.showly2.ui.main.delegates.MainUpdateDelegate
+import com.michaldrabik.showly2.ui.main.delegates.TipsDelegate
 import com.michaldrabik.showly2.ui.main.delegates.UpdateDelegate
 import com.michaldrabik.showly2.ui.views.WhatsNewView
 import com.michaldrabik.showly2.utilities.deeplink.DeepLinkResolver
 import com.michaldrabik.ui_base.Analytics
+import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.OnShowsMoviesSyncedListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.events.Event
@@ -47,24 +51,16 @@ import com.michaldrabik.ui_base.utilities.ModeHost
 import com.michaldrabik.ui_base.utilities.MoviesStatusHost
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.SnackbarHost
-import com.michaldrabik.ui_base.utilities.TipsHost
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
-import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
-import com.michaldrabik.ui_model.Tip
-import com.michaldrabik.ui_model.Tip.MENU_DISCOVER
-import com.michaldrabik.ui_model.Tip.MENU_MODES
-import com.michaldrabik.ui_model.Tip.MENU_MY_SHOWS
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.view_bottom_menu.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -74,9 +70,9 @@ class MainActivity :
   BaseActivity(),
   SnackbarHost,
   NavigationHost,
-  TipsHost,
   ModeHost,
   MoviesStatusHost,
+  TipsDelegate by MainTipsDelegate(),
   UpdateDelegate by MainUpdateDelegate(),
   BillingDelegate by MainBillingDelegate() {
 
@@ -86,15 +82,11 @@ class MainActivity :
   }
 
   private val viewModel by viewModels<MainViewModel>()
+  private lateinit var binding: ActivityMainBinding
 
   private val navigationHeightPad by lazy { dimenToPx(R.dimen.bottomNavigationHeightPadded) }
   private val navigationHeight by lazy { dimenToPx(R.dimen.bottomNavigationHeight) }
   private val decelerateInterpolator by lazy { DecelerateInterpolator(2F) }
-  private val tips by lazy {
-    mapOf(
-      MENU_DISCOVER to tutorialTipDiscover, MENU_MY_SHOWS to tutorialTipMyShows, MENU_MODES to tutorialTipModeMenu
-    )
-  }
 
   @Inject lateinit var workManager: WorkManager
   @Inject lateinit var eventsManager: EventsManager
@@ -104,14 +96,15 @@ class MainActivity :
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_main)
+    binding = ActivityMainBinding.inflate(layoutInflater)
+    setContentView(binding.root)
 
     registerBilling(this, settingsRepository)
     registerUpdate(this) { onUpdateDownloaded(it) }
+    registerTipsDelegate(viewModel, binding)
 
     setupViewModel()
     setupNavigation()
-    setupTips()
     setupView()
     setupNetworkObserver()
 
@@ -154,11 +147,11 @@ class MainActivity :
   }
 
   private fun setupView() {
-    with(bottomMenuView) {
+    with(binding.bottomMenuView) {
       isModeMenuEnabled = hasMoviesEnabled()
       onModeSelected = { setMode(it) }
     }
-    viewMask.onClick { /* NOOP */ }
+    binding.viewMask.onClick { /* NOOP */ }
   }
 
   private fun setupNetworkObserver() {
@@ -167,8 +160,8 @@ class MainActivity :
       repeatOnLifecycle(Lifecycle.State.STARTED) {
         launch {
           networkStatusProvider.status.collect {
-            statusView.visibleIf(!it)
-            statusView.text = getString(R.string.errorNoInternetConnection)
+            binding.statusView.visibleIf(!it)
+            binding.statusView.text = getString(R.string.errorNoInternetConnection)
           }
         }
       }
@@ -187,7 +180,7 @@ class MainActivity :
       }
       setGraph(graph, Bundle.EMPTY)
     }
-    with(bottomNavigationView) {
+    with(binding.bottomMenuView.binding.bottomNavigationView) {
       setOnItemSelectedListener { item ->
         if (selectedItemId == item.itemId) {
           doForFragments { (it as? OnTabReselectedListener)?.onTabReselected() }
@@ -217,80 +210,69 @@ class MainActivity :
   }
 
   private fun setupBackPressed() {
-    onBackPressedDispatcher.addCallback(this) {
-      if (tutorialView.isVisible) {
-        tutorialView.fadeOut()
-        return@addCallback
-      }
-      findNavControl()?.run {
-        when (currentDestination?.id) {
-          R.id.discoverFragment,
-          R.id.discoverMoviesFragment,
-          R.id.followedShowsFragment,
-          R.id.followedMoviesFragment,
-          R.id.listsFragment,
-          R.id.newsFragment,
-          -> {
-            bottomNavigationView.selectedItemId = R.id.menuProgress
-          }
-          else -> {
-            remove()
-            super.onBackPressed()
+    with(binding) {
+      onBackPressedDispatcher.addCallback(this@MainActivity) {
+        if (tutorialView.isVisible) {
+          tutorialView.fadeOut()
+          return@addCallback
+        }
+        findNavControl()?.run {
+          when (currentDestination?.id) {
+            R.id.discoverFragment,
+            R.id.discoverMoviesFragment,
+            R.id.followedShowsFragment,
+            R.id.followedMoviesFragment,
+            R.id.listsFragment,
+            R.id.newsFragment,
+            -> {
+              bottomMenuView.binding.bottomNavigationView.selectedItemId = R.id.menuProgress
+            }
+            else -> {
+              remove()
+              super.onBackPressed()
+            }
           }
         }
       }
     }
   }
 
-  private fun setupTips() {
-    tips.entries.forEach { (tip, view) ->
-      view.visibleIf(!isTipShown(tip))
-      view.onClick {
-        it.gone()
-        showTip(tip)
-      }
-    }
-  }
-
-  override fun showTip(tip: Tip) {
-    tutorialView.showTip(tip)
-    setTipShow(tip)
-  }
-
-  override fun setTipShow(tip: Tip) = viewModel.setTipShown(tip)
-
-  override fun isTipShown(tip: Tip) = viewModel.isTipShown(tip)
-
   override fun hideNavigation(animate: Boolean) {
-    bottomNavigationView.run {
-      isEnabled = false
-      isClickable = false
+    with(binding) {
+      hideAllTips()
+      bottomMenuView.binding.bottomNavigationView.run {
+        isEnabled = false
+        isClickable = false
+      }
+      snackbarHost.translationY = navigationHeight.toFloat()
+      bottomNavigationWrapper.animate().translationYBy(navigationHeightPad.toFloat())
+        .setDuration(if (animate) NAVIGATION_TRANSITION_DURATION_MS else 0)
+        .setInterpolator(decelerateInterpolator).start()
     }
-    tips.values.forEach { it.gone() }
-    snackbarHost.translationY = navigationHeight.toFloat()
-    bottomNavigationWrapper.animate().translationYBy(navigationHeightPad.toFloat()).setDuration(if (animate) NAVIGATION_TRANSITION_DURATION_MS else 0)
-      .setInterpolator(decelerateInterpolator).start()
   }
 
   override fun showNavigation(animate: Boolean) {
-    bottomNavigationView.run {
+    showAllTips()
+    binding.bottomMenuView.binding.bottomNavigationView.run {
       isEnabled = true
       isClickable = true
     }
-    tips.entries.forEach { (tip, view) -> view.visibleIf(!isTipShown(tip)) }
-    snackbarHost.translationY = 0F
-    bottomNavigationWrapper.animate().translationY(0F).setDuration(if (animate) NAVIGATION_TRANSITION_DURATION_MS else 0)
+    binding.snackbarHost.translationY = 0F
+    binding.bottomNavigationWrapper
+      .animate()
+      .translationY(0F)
+      .setDuration(if (animate) NAVIGATION_TRANSITION_DURATION_MS else 0)
       .setInterpolator(decelerateInterpolator).start()
   }
 
   override fun navigateToDiscover() {
-    bottomNavigationView.selectedItemId = R.id.menuDiscover
+    binding.bottomMenuView.binding.bottomNavigationView.selectedItemId = R.id.menuDiscover
   }
 
   override fun setMode(mode: Mode, force: Boolean) {
     if (force || viewModel.getMode() != mode) {
       viewModel.setMode(mode)
-      val target = when (bottomNavigationView.selectedItemId) {
+      val target = when (binding.bottomMenuView.binding.bottomNavigationView.selectedItemId) {
         R.id.menuDiscover -> getMenuDiscoverAction()
         R.id.menuCollection -> getMenuCollectionAction()
         R.id.menuProgress -> getMenuProgressAction()
@@ -308,40 +290,42 @@ class MainActivity :
   override fun hasMoviesEnabled() = viewModel.hasMoviesEnabled()
 
   private fun render(uiState: MainUiState) {
-    uiState.run {
-      isLoading.let {
-        mainProgress.visibleIf(it)
-      }
-      showMask.let {
-        viewMask.visibleIf(it)
-      }
-      isInitialRun?.let {
-        if (it.consume() == true) {
-          viewModel.checkInitialLanguage()
+    with(binding) {
+      uiState.run {
+        isLoading.let {
+          mainProgress.visibleIf(it)
         }
-      }
-      showWhatsNew?.let {
-        if (it.consume() == true) showWhatsNewDialog()
-      }
-      showRateApp?.let {
-        if (it.consume() == true) {
-          launchInAppReview()
-          Analytics.logInAppRateDisplayed()
+        showMask.let {
+          viewMask.visibleIf(it)
         }
-      }
-      initialLanguage?.let { event ->
-        event.consume()?.let {
-          showWelcomeDialog(it)
+        isInitialRun?.let {
+          if (it.consume() == true) {
+            viewModel.checkInitialLanguage()
+          }
         }
-      }
-      openLink?.let { event ->
-        event.consume()?.let { bundle ->
-          findNavHostFragment()?.findNavController()?.let { nav ->
-            bundle.show?.let {
-              deepLinkResolver.resolveDestination(nav, bottomNavigationView, it)
-            }
-            bundle.movie?.let {
-              deepLinkResolver.resolveDestination(nav, bottomNavigationView, it)
+        showWhatsNew?.let {
+          if (it.consume() == true) showWhatsNewDialog()
+        }
+        showRateApp?.let {
+          if (it.consume() == true) {
+            launchInAppReview()
+            Analytics.logInAppRateDisplayed()
+          }
+        }
+        initialLanguage?.let { event ->
+          event.consume()?.let {
+            showWelcomeDialog(it)
+          }
+        }
+        openLink?.let { event ->
+          event.consume()?.let { bundle ->
+            findNavHostFragment()?.findNavController()?.let { nav ->
+              bundle.show?.let {
+                deepLinkResolver.resolveDestination(nav, bottomMenuView.binding.bottomNavigationView, it)
+              }
+              bundle.movie?.let {
+                deepLinkResolver.resolveDestination(nav, bottomMenuView.binding.bottomNavigationView, it)
+              }
             }
           }
         }
@@ -351,7 +335,7 @@ class MainActivity :
 
   private fun showWelcomeDialog(language: AppLanguage) {
     navigateToDiscover()
-    with(welcomeView) {
+    with(binding.welcomeView) {
       setLanguage(language)
       fadeIn()
       onOkClickListener = {
@@ -366,7 +350,7 @@ class MainActivity :
   }
 
   private fun showWelcomeLanguageDialog(language: AppLanguage) {
-    with(welcomeLanguageView) {
+    with(binding.welcomeLanguageView) {
       setLanguage(language)
       fadeIn()
       onYesClick = {
@@ -384,7 +368,7 @@ class MainActivity :
   }
 
   private fun showMask(show: Boolean) {
-    viewMask.visibleIf(show)
+    binding.viewMask.visibleIf(show)
     if (!show) viewModel.clearMask()
   }
 
@@ -401,7 +385,7 @@ class MainActivity :
 
   @SuppressLint("MissingSuperCall")
   override fun onSaveInstanceState(outState: Bundle) {
-    outState.putBoolean(ARG_NAVIGATION_VISIBLE, bottomNavigationWrapper.translationY == 0F)
+    outState.putBoolean(ARG_NAVIGATION_VISIBLE, binding.bottomNavigationWrapper.translationY == 0F)
     super.onSaveInstanceState(outState)
   }
 
@@ -439,17 +423,45 @@ class MainActivity :
   private fun handleAppShortcut(intent: Intent?) {
     when {
       intent == null -> return
-      intent.extras?.containsKey("extraShortcutProgress") == true -> bottomNavigationView.selectedItemId = R.id.menuProgress
-      intent.extras?.containsKey("extraShortcutDiscover") == true -> bottomNavigationView.selectedItemId = R.id.menuDiscover
-      intent.extras?.containsKey("extraShortcutCollection") == true -> bottomNavigationView.selectedItemId = R.id.menuCollection
+
+      intent.extras?.containsKey("extraShortcutProgress") == true ->
+        binding.bottomMenuView.binding.bottomNavigationView.selectedItemId = R.id.menuProgress
+
+      intent.extras?.containsKey("extraShortcutDiscover") == true ->
+        binding.bottomMenuView.binding.bottomNavigationView.selectedItemId = R.id.menuDiscover
+
+      intent.extras?.containsKey("extraShortcutCollection") == true ->
+        binding.bottomMenuView.binding.bottomNavigationView.selectedItemId = R.id.menuCollection
+
       intent.extras?.containsKey("extraShortcutSearch") == true -> {
-        bottomNavigationView.selectedItemId = R.id.menuDiscover
+        binding.bottomMenuView.binding.bottomNavigationView.selectedItemId = R.id.menuDiscover
         val action = when (viewModel.getMode()) {
           SHOWS -> R.id.actionDiscoverFragmentToSearchFragment
           MOVIES -> R.id.actionDiscoverMoviesFragmentToSearchFragment
           else -> throw IllegalStateException()
         }
         findNavControl()?.navigate(action)
+      }
+    }
+  }
+
+  override fun handleSearchWidgetClick(bundle: Bundle?) {
+    findNavHostFragment()?.findNavController()?.run {
+      try {
+        when (currentDestination?.id) {
+          R.id.searchFragment -> return@run
+          R.id.showDetailsFragment, R.id.movieDetailsFragment -> navigateUp()
+        }
+        if (currentDestination?.id != R.id.discoverFragment) {
+          binding.bottomMenuView.binding.bottomNavigationView.selectedItemId = R.id.menuDiscover
+        }
+        when (currentDestination?.id) {
+          R.id.discoverFragment -> navigate(R.id.actionDiscoverFragmentToSearchFragment)
+          R.id.discoverMoviesFragment -> navigate(R.id.actionDiscoverMoviesFragmentToSearchFragment)
+        }
+        bundle?.clear()
+      } catch (error: Throwable) {
+        Logger.record(error, "BaseActivity::handleSearchWidgetClick()")
       }
     }
   }
@@ -495,5 +507,5 @@ class MainActivity :
 
   override fun findNavControl() = findNavHostFragment()?.findNavController()
 
-  override fun provideSnackbarLayout(): ViewGroup = snackbarHost
+  override fun provideSnackbarLayout(): ViewGroup = binding.snackbarHost
 }

@@ -16,21 +16,22 @@ import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.trimWithSuffix
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.Person.Department
 import com.michaldrabik.ui_movie.MovieDetailsEvent.OpenPeopleSheet
 import com.michaldrabik.ui_movie.MovieDetailsEvent.OpenPersonSheet
+import com.michaldrabik.ui_movie.MovieDetailsFragment
 import com.michaldrabik.ui_movie.MovieDetailsViewModel
 import com.michaldrabik.ui_movie.R
+import com.michaldrabik.ui_movie.databinding.FragmentMovieDetailsPeopleBinding
 import com.michaldrabik.ui_movie.sections.people.recycler.ActorsAdapter
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_PERSON
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_DETAILS
 import com.michaldrabik.ui_people.details.PersonDetailsBottomSheet
 import com.michaldrabik.ui_people.list.PeopleListBottomSheet
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_movie_details.*
-import kotlinx.android.synthetic.main.fragment_movie_details_people.*
 
 @AndroidEntryPoint
 class MovieDetailsPeopleFragment : BaseFragment<MovieDetailsPeopleViewModel>(R.layout.fragment_movie_details_people) {
@@ -39,6 +40,7 @@ class MovieDetailsPeopleFragment : BaseFragment<MovieDetailsPeopleViewModel>(R.l
 
   private val parentViewModel by viewModels<MovieDetailsViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<MovieDetailsPeopleViewModel>()
+  private val binding by viewBinding(FragmentMovieDetailsPeopleBinding::bind)
 
   private var actorsAdapter: ActorsAdapter? = null
 
@@ -57,7 +59,7 @@ class MovieDetailsPeopleFragment : BaseFragment<MovieDetailsPeopleViewModel>(R.l
     actorsAdapter = ActorsAdapter().apply {
       itemClickListener = { viewModel.loadPersonDetails(it) }
     }
-    movieDetailsActorsRecycler.apply {
+    binding.movieDetailsActorsRecycler.apply {
       setHasFixedSize(true)
       adapter = actorsAdapter
       layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -83,22 +85,24 @@ class MovieDetailsPeopleFragment : BaseFragment<MovieDetailsPeopleViewModel>(R.l
 
     handleSheetResult()
 
-    val title = requireParentFragment().movieDetailsTitle.text.toString()
+    val title = (requireParentFragment() as MovieDetailsFragment).binding.movieDetailsTitle.text.toString()
     val bundle = PeopleListBottomSheet.createBundle(movie.ids.trakt, title, Mode.MOVIES, department)
     navigateToSafe(R.id.actionMovieDetailsFragmentToPeopleList, bundle)
   }
 
   private fun render(uiState: MovieDetailsPeopleUiState) {
     with(uiState) {
-      actors?.let {
-        if (actorsAdapter?.itemCount != 0) return@let
-        actorsAdapter?.setItems(it)
-        movieDetailsActorsRecycler.visibleIf(actors.isNotEmpty(), gone = false)
-        movieDetailsActorsEmptyView.visibleIf(actors.isEmpty())
-      }
-      crew?.let { renderCrew(it) }
-      isLoading.let {
-        movieDetailsActorsProgress.visibleIf(it)
+      with(binding) {
+        actors?.let {
+          if (actorsAdapter?.itemCount != 0) return@let
+          actorsAdapter?.setItems(it)
+          movieDetailsActorsRecycler.visibleIf(actors.isNotEmpty(), gone = false)
+          movieDetailsActorsEmptyView.visibleIf(actors.isEmpty())
+        }
+        crew?.let { renderCrew(it) }
+        isLoading.let {
+          movieDetailsActorsProgress.visibleIf(it)
+        }
       }
     }
   }
@@ -128,9 +132,11 @@ class MovieDetailsPeopleFragment : BaseFragment<MovieDetailsPeopleViewModel>(R.l
     val writers = crew[Department.WRITING] ?: emptyList()
     val sound = crew[Department.SOUND] ?: emptyList()
 
-    renderPeople(movieDetailsDirectingLabel, movieDetailsDirectingValue, directors, Department.DIRECTING)
-    renderPeople(movieDetailsWritingLabel, movieDetailsWritingValue, writers, Department.WRITING)
-    renderPeople(movieDetailsMusicLabel, movieDetailsMusicValue, sound, Department.SOUND)
+    with(binding) {
+      renderPeople(movieDetailsDirectingLabel, movieDetailsDirectingValue, directors, Department.DIRECTING)
+      renderPeople(movieDetailsWritingLabel, movieDetailsWritingValue, writers, Department.WRITING)
+      renderPeople(movieDetailsMusicLabel, movieDetailsMusicValue, sound, Department.SOUND)
+    }
   }
 
   private fun handleEvent(event: Event<*>) {

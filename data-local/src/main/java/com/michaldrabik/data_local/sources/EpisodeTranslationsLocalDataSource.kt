@@ -8,7 +8,7 @@ interface EpisodeTranslationsLocalDataSource {
 
   suspend fun getByIds(traktEpisodeIds: List<Long>, traktShowId: Long, language: String): List<EpisodeTranslation>
 
-  suspend fun insert(translation: EpisodeTranslation)
+  suspend fun insertSingle(translation: EpisodeTranslation)
 
   suspend fun deleteByLanguage(languages: List<String>)
 }

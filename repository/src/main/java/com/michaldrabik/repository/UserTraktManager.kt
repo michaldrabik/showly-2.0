@@ -1,6 +1,5 @@
 package com.michaldrabik.repository
 
-import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.common.errors.ShowlyError
 import com.michaldrabik.data_local.database.model.User
 import com.michaldrabik.data_local.sources.UserLocalDataSource
@@ -14,7 +13,6 @@ import com.michaldrabik.data_remote.trakt.model.User as UserModel
 
 @Singleton
 class UserTraktManager @Inject constructor(
-  private val dispatchers: CoroutineDispatchers,
   private val remoteSource: TraktRemoteDataSource,
   private val userLocalSource: UserLocalDataSource,
   private val transactions: TransactionsProvider,

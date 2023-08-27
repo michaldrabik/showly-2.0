@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class Settings(
   @PrimaryKey @ColumnInfo(name = "id") val id: Long = 1,
   @ColumnInfo(name = "is_initial_run", defaultValue = "0") val isInitialRun: Boolean,
-  @ColumnInfo(name = "push_notifications_enabled", defaultValue = "1") val pushNotificationsEnabled: Boolean,
+  @ColumnInfo(name = "push_notifications_enabled", defaultValue = "1") val pushNotificationsEnabled: Boolean, // Removed
   @ColumnInfo(name = "episodes_notifications_enabled", defaultValue = "1") val episodesNotificationsEnabled: Boolean,
   @ColumnInfo(name = "episodes_notifications_delay", defaultValue = "0") val episodesNotificationsDelay: Long,
   @ColumnInfo(name = "my_shows_recent_amount", defaultValue = "6") val myShowsRecentsAmount: Int,
