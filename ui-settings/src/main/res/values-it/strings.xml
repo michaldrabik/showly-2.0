@@ -43,6 +43,7 @@
   <string name="textSettingsNotifications">Notifiche</string>
   <string name="textSettingsPushNotificationsTitle">Notifiche istantanee</string>
   <string name="textSettingsShowsNotificationsSummary">Ricevi notifiche riguardo nuovi film, episodi e stagioni per gli show che segui.</string>
+  <string name="textSettingsShowsNotificationsRationale">È necessario concedere all\'applicazione un permesso per visualizzare le notifiche.\n\nVuoi farlo ora?</string>
   <string name="textSettingsMisc">Varie</string>
   <string name="textSettingsContactDevsTitle">Contatta gli sviluppatori</string>
   <string name="textSettingsContactDevsSummary">Hai un problema? Clicca qui per inviarci un\'email (showlyapp@gmail.com).</string>
