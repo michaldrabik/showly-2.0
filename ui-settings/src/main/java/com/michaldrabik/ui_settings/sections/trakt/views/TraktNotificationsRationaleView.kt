@@ -1,14 +1,14 @@
-package com.michaldrabik.ui_trakt_sync.views
+package com.michaldrabik.ui_settings.sections.trakt.views
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
-import com.michaldrabik.ui_trakt_sync.databinding.ViewTraktNotificationsRationaleBinding
+import com.michaldrabik.ui_settings.databinding.ViewTraktNotificationsRationaleBinding
 
 @SuppressLint("SetTextI18n")
-class NotificationsRationaleView : FrameLayout {
+class TraktNotificationsRationaleView : FrameLayout {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)

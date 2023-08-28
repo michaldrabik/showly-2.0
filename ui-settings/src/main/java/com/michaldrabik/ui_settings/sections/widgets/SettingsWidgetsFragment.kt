@@ -76,6 +76,10 @@ class SettingsWidgetsFragment :
           settingsWidgetsTheme.alpha = alpha
           settingsWidgetsThemeValue.alpha = alpha
           settingsWidgetsTransparency.alpha = alpha
+          if (it) {
+            settingsWidgetsThemeTitle.setCompoundDrawables(null, null, null, null)
+            settingsWidgetsTransparencyTitle.setCompoundDrawables(null, null, null, null)
+          }
         }
       }
     }

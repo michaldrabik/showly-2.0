@@ -77,8 +77,12 @@
     >
 
     <TextView
+      android:id="@+id/settingsWidgetsThemeTitle"
       style="@style/Settings.Title"
+      android:drawablePadding="@dimen/spaceSmall"
       android:text="@string/textSettingsThemeWidgetsTitle"
+      app:drawableStartCompat="@drawable/ic_crown_small"
+      app:drawableTint="?android:attr/textColorPrimary"
       />
 
     <TextView
@@ -117,6 +121,9 @@
       android:id="@+id/settingsWidgetsTransparencyTitle"
       style="@style/Settings.Title"
       android:text="@string/textSettingsWidgetsTransparencyTitle"
+      android:drawablePadding="@dimen/spaceSmall"
+      app:drawableStartCompat="@drawable/ic_crown_small"
+      app:drawableTint="?android:attr/textColorPrimary"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintVertical_chainStyle="packed"

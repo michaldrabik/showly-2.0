@@ -29,9 +29,9 @@ import com.michaldrabik.ui_model.TraktSyncSchedule.OFF
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ITEM
 import com.michaldrabik.ui_settings.R
 import com.michaldrabik.ui_settings.databinding.FragmentSettingsTraktBinding
-import com.michaldrabik.ui_settings.sections.notifications.views.NotificationsRationaleView
 import com.michaldrabik.ui_settings.sections.trakt.SettingsTraktUiEvent.RequestNotificationsPermission
 import com.michaldrabik.ui_settings.sections.trakt.SettingsTraktUiEvent.StartAuthorization
+import com.michaldrabik.ui_settings.sections.trakt.views.TraktNotificationsRationaleView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -179,7 +179,7 @@ class SettingsTraktFragment :
   @SuppressLint("InlinedApi")
   private fun showNotificationsRationaleDialog() {
     val context = requireContext()
-    val view = NotificationsRationaleView(context)
+    val view = TraktNotificationsRationaleView(context)
     MaterialAlertDialogBuilder(context, R.style.AlertDialog)
       .setBackground(ContextCompat.getDrawable(context, R.drawable.bg_dialog))
       .setView(view)

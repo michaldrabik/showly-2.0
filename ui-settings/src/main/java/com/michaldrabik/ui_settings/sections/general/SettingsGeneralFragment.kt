@@ -88,6 +88,10 @@ class SettingsGeneralFragment : BaseFragment<SettingsGeneralViewModel>(R.layout.
 
         settingsTheme.alpha = if (isPremium) 1F else 0.5F
         settingsNewsEnabled.alpha = if (isPremium) 1F else 0.5F
+        if (isPremium) {
+          settingsThemeTitle.setCompoundDrawables(null, null, null, null)
+          settingsNewsEnabledTitle.setCompoundDrawables(null, null, null, null)
+        }
 
         settingsNewsEnabled.onClick {
           onPremiumAction(isPremium, settingsNewsEnabled.tag) {
