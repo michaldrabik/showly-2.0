@@ -8,7 +8,6 @@
   <string name="textTraktSyncFromShowlyToTrakt">Exporter de Showly vers Trakt.tv</string>
   <string name="textTraktSyncDescription">Synchronisez la progression et les données de visionnement de votre compte Trakt.tv avec Showly.\n\nAucun des éléments de votre collection actuelle ne sera supprimé. La synchronisation ne prendra en compte que les éléments manquants dans vos collections.</string>
   <string name="textTraktSyncLastTimestamp">Dernière synchronisation : %s</string>
-  <string name="textTraktNotificationsRationale">Veuillez accorder à l\'application la permission d\'afficher des informations sur la progression et les résultats de la synchronisation.\n\nVoulez-vous le faire maintenant ?</string>
   <string name="textSettingsTraktAuthorizeTitle">Autorisation pour Trakt.tv</string>
   <string name="textSettingsScheduleImportConfirmationTitle">Synchronisation Instantanée Activée</string>
   <string name="textSettingsScheduleImportConfirmationMessage">\nIl semblerait que la synchronisation instantanée soit déjà activée.\n\nVoulez-vous toujours planifier la synchronisation automatique?\n</string>
