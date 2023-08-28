@@ -64,6 +64,7 @@ class ProgressItemDiffCallback : DiffUtil.ItemCallback<ProgressListItem>() {
       oldItem.sortType == newItem.sortType &&
       oldItem.newAtTop == newItem.newAtTop &&
       oldItem.isUpcoming == newItem.isUpcoming &&
+      oldItem.isUpcomingEnabled == newItem.isUpcomingEnabled &&
       oldItem.isOnHold == newItem.isOnHold
   }
 }

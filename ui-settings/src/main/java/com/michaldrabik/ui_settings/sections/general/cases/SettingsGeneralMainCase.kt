@@ -53,6 +53,9 @@ class SettingsGeneralMainCase @Inject constructor(
     with(settingsRepository) {
       val updatedSettings = load().copy(progressUpcomingEnabled = enable)
       update(updatedSettings)
+      if (!enable) {
+        settingsRepository.filters.progressShowsUpcoming = false
+      }
     }
     (context.applicationContext as WidgetsProvider).run {
       requestShowsWidgetsUpdate()

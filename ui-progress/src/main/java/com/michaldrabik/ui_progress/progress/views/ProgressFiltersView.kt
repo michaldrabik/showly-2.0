@@ -8,6 +8,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.SortType.ASCENDING
 import com.michaldrabik.ui_model.SortType.DESCENDING
 import com.michaldrabik.ui_progress.R
@@ -54,6 +55,7 @@ class ProgressFiltersView : FrameLayout {
       }
       progressFiltersSortingChip.closeIcon = ContextCompat.getDrawable(context, sortIcon)
       progressFiltersSortingChip.text = context.getText(filters.sortOrder.displayString)
+      progressFiltersUpcomingChip.visibleIf(filters.isUpcomingEnabled)
       progressFiltersUpcomingChip.isSelected = filters.isUpcoming
       progressFiltersOnHoldChip.isSelected = filters.isOnHold
     }
