@@ -93,6 +93,7 @@
   <string name="textTraktSyncErrorFull">La synchronisation avec Trakt.tv a échoué. Veuillez vérifier votre connexion Internet et réessayer ou contactez-nous si cela se produit à nouveau.</string>
   <string name="textTraktQuickSyncError">La synchronisation instantanée a échoué.</string>
   <string name="textTraktQuickSyncErrorFull">La synchronisation instantanée a échoué. Nous allons réessayer la prochaine fois que vous ouvrirez l\'application. Veuillez vérifier votre connexion Internet.</string>
+  <string name="textTraktNotificationsRationale">Veuillez accorder à l\'application la permission d\'afficher des informations sur la progression et les résultats de la synchronisation.\n\nVoulez-vous le faire maintenant ?</string>
   <string name="textRemoveFromTrakt">Retirer de Trakt.tv?</string>
   <string name="textRemoveFromTraktHidden">Voulez-vous retirer cet élément des \'Éléments masqués\' de votre compte Trakt.tv ?</string>
   <string name="textRemoveFromTraktWatchlist">Voulez-vous retirer cet élément de la liste \'Watchlist\' de votre compte Trakt.tv ?</string>
