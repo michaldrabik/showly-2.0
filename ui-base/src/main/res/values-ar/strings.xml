@@ -113,6 +113,7 @@
   <string name="textTraktSyncErrorFull">فشلت المزامنة مع Trakt.tv. رجاءً تأكد من أنك مُتصل بالإنترنت ثم حاول مجدداً، وإذا إستمرت المشكلة بالحدوث، تواصل معنا.</string>
   <string name="textTraktQuickSyncError">فشلت المزامنة الفورية.</string>
   <string name="textTraktQuickSyncErrorFull">فشلت المزامنة الفورية. سيتم محاولة المزامنة الفورية بعد تشغيل التطبيق مرة أخرى، رجاءً تأكد من إتصالك بالإنترنت.</string>
+  <string name="textTraktNotificationsRationale">الرجاء منح التطبيق الإذن لعرض معلومات حول تقدم المزامنة ونتائجها.\n\nهل ترغب في القيام بذلك الآن؟</string>
   <string name="textRemoveFromTrakt">حذف من Trakt.tv؟</string>
   <string name="textRemoveFromTraktHidden">أترغب في إزالته من قائمة \"المحتويات المخفية\" في حسابك على موقع Trakt.tv؟</string>
   <string name="textRemoveFromTraktWatchlist">أترغب في إزالته من \"قائمة المشاهدة\" في حسابك على موقع Trakt.tv؟</string>

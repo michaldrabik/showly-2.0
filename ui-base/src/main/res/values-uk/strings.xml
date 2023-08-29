@@ -103,6 +103,7 @@
   <string name="textTraktSyncErrorFull">Помилка синхронізації Trakt.tv. Будь ласка, перевірте ваше з\'єднання з інтернетом і спробуйте ще раз або зв\'яжіться з нами, якщо помилка не зникає.</string>
   <string name="textTraktQuickSyncError">Помилка миттєвої синхронізації.</string>
   <string name="textTraktQuickSyncErrorFull">Помилка миттєвої синхронізації. Ми спробуємо наступного разу, коли ви відкриєте додаток. Будь ласка, перевірте підключення до Інтернету.</string>
+  <string name="textTraktNotificationsRationale">Будь ласка, надайте додатку дозвіл на показ інформації про прогрес та результати синхронізації.\n\nВи хотіли б зробити це зараз?</string>
   <string name="textRemoveFromTrakt">Видалити з Trakt.tv?</string>
   <string name="textRemoveFromTraktHidden">Бажаєте видалити цей елемент з розділу \'Приховане\' вашого облікового запису Trakt.tv?</string>
   <string name="textRemoveFromTraktWatchlist">Бажаєте видалити цей елемент з розділу \'На потім\' вашого облікового запису Trakt.tv?</string>
