@@ -257,7 +257,10 @@
     <TextView
       android:id="@+id/settingsTraktQuickRateTitle"
       style="@style/Settings.Title"
+      android:drawablePadding="@dimen/spaceSmall"
       android:text="@string/textSettingsTraktQuickRateTitle"
+      app:drawableStartCompat="@drawable/ic_crown_small"
+      app:drawableTint="?android:attr/textColorPrimary"
       app:layout_constraintBottom_toTopOf="@id/settingsTraktQuickRateDescription"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"

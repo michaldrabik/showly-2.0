@@ -92,6 +92,9 @@ class SettingsTraktFragment :
             viewModel.enableQuickRate(!settingsTraktQuickRateSwitch.isChecked)
           }
         }
+        if (isPremium) {
+          settingsTraktQuickRateTitle.setCompoundDrawables(null, null, null, null)
+        }
 
         settingsTraktQuickRemoveSwitch.isChecked = settings?.traktQuickRemoveEnabled ?: false
         settingsTraktQuickRemove.onClick {
