@@ -43,6 +43,7 @@
   <string name="textSettingsNotifications">Уведомления</string>
   <string name="textSettingsPushNotificationsTitle">Push-уведомления</string>
   <string name="textSettingsShowsNotificationsSummary">Получать уведомления о новых фильмах, эпизодах, сезонах для сериалов, на которые вы подписаны.</string>
+  <string name="textSettingsShowsNotificationsRationale">Пожалуйста, предоставьте приложению разрешение на отображение уведомлений.\n\nХотели бы вы сделать это сейчас?</string>
   <string name="textSettingsMisc">Прочее</string>
   <string name="textSettingsContactDevsTitle">Связаться с разработчиками</string>
   <string name="textSettingsContactDevsSummary">Возникли проблемы? Нажмите, чтобы отправить нам письмо (showlyapp@gmail.com).</string>
