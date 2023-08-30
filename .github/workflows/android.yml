@@ -15,6 +15,14 @@ jobs:
           java-version: 17
           distribution: 'temurin'
 
+      - name: Cache Gradle and Wrapper
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+
   verify-lint:
     needs: setup
     runs-on: ubuntu-latest
