@@ -84,7 +84,7 @@
       android:clipChildren="false"
       android:clipToPadding="false"
       android:orientation="vertical"
-      android:paddingBottom="@dimen/spaceNormal"
+      android:paddingBottom="@dimen/spaceBig"
       >
 
       <com.google.android.material.tabs.TabLayout
@@ -211,38 +211,38 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="@dimen/spaceNormal"
+        android:layout_marginTop="@dimen/spaceBig"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:clipChildren="false"
-        android:gravity="center_vertical"
+        android:gravity="center_vertical|start"
         android:orientation="horizontal"
         >
 
-        <com.google.android.material.button.MaterialButton
+        <TextView
           android:id="@+id/episodeDetailsCommentsButton"
-          style="@style/RoundMaterialButton"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginEnd="@dimen/spaceTiny"
-          android:layout_weight="@integer/buttonCommentsWeight"
-          android:backgroundTint="@color/selector_comment_button"
-          android:gravity="center"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:layout_marginEnd="18dp"
+          android:drawablePadding="6dp"
+          android:gravity="center_vertical"
           android:text="@string/textLoadCommentsCount"
-          android:textColor="?attr/textColorOnSurface"
-          app:rippleColor="?android:attr/textColorPrimary"
+          android:textAllCaps="true"
+          android:textColor="?android:textColorPrimary"
+          app:drawableStartCompat="@drawable/ic_comment"
+          app:drawableTint="?android:textColorPrimary"
           />
 
-        <com.google.android.material.button.MaterialButton
+        <TextView
           android:id="@+id/episodeDetailsRateButton"
-          style="@style/RoundTextButton"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="@dimen/spaceTiny"
-          android:layout_weight="1"
-          android:gravity="center"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:drawablePadding="5dp"
+          android:gravity="center_vertical"
           android:text="@string/textRate"
-          android:textColor="?android:attr/textColorPrimary"
-          app:rippleColor="?android:attr/textColorPrimary"
+          android:textAllCaps="true"
+          android:textColor="?android:textColorPrimary"
+          app:drawableStartCompat="@drawable/ic_star"
+          app:drawableTint="?android:textColorPrimary"
           />
 
         <ProgressBar
@@ -251,7 +251,6 @@
           android:layout_width="0dp"
           android:layout_height="28dp"
           android:layout_gravity="center"
-          android:layout_marginStart="@dimen/spaceTiny"
           android:layout_weight="1"
           android:visibility="gone"
           tools:visibility="visible"
@@ -263,9 +262,9 @@
         android:id="@+id/episodeDetailsCommentsProgress"
         style="@style/ProgressBar.Accent"
         android:layout_width="30dp"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/spaceNormal"
+        android:layout_marginTop="18dp"
         android:visibility="gone"
         tools:visibility="visible"
         />
@@ -274,27 +273,12 @@
         android:id="@+id/episodeDetailsCommentsEmpty"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spaceNormal"
-        android:layout_marginBottom="50dp"
+        android:layout_marginTop="@dimen/spaceBig"
+        android:layout_marginBottom="@dimen/spaceNormal"
         android:gravity="center"
         android:text="@string/textNoComments"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="14sp"
-        android:visibility="gone"
-        tools:visibility="visible"
-        />
-
-      <TextView
-        android:id="@+id/episodeDetailsCommentsLabel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="@dimen/spaceNormal"
-        android:layout_marginEnd="@dimen/spaceNormal"
-        android:text="@string/textComments"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="18sp"
-        android:textStyle="bold"
         android:visibility="gone"
         tools:visibility="visible"
         />
@@ -309,7 +293,7 @@
         android:clipToPadding="false"
         android:divider="@drawable/divider_comments_list"
         android:orientation="vertical"
-        android:paddingTop="@dimen/spaceNormal"
+        android:paddingTop="@dimen/spaceBig"
         android:showDividers="middle|end"
         android:visibility="gone"
         tools:visibility="gone"
