@@ -122,8 +122,15 @@ class StatisticsViewModelTest : BaseMockTest() {
       Show.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(6)), runtime = 3, genres = listOf("war", "animation")),
     )
 
+    val shows3 = listOf(
+      Show.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(7)), runtime = 1, genres = listOf("war", "drama")),
+      Show.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(8)), runtime = 2, genres = listOf("war", "animation")),
+      Show.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(9)), runtime = 3, genres = listOf("war", "animation")),
+    )
+
     coEvery { showsRepository.myShows.loadAll() } returns shows
-    coEvery { showsRepository.hiddenShows.loadAll() } returns shows2
+    coEvery { showsRepository.watchlistShows.loadAll() } returns shows2
+    coEvery { showsRepository.hiddenShows.loadAll() } returns shows3
 
     coEvery { database.episodes.getAllWatchedForShows(any()) } returns listOf(
       TestData.createEpisode().copy(idShowTrakt = 1, runtime = 5),
@@ -138,7 +145,7 @@ class StatisticsViewModelTest : BaseMockTest() {
 
     val result = stateResult.last()
     assertThat(result.mostWatchedShows).hasSize(5)
-    assertThat(result.mostWatchedTotalCount).isEqualTo(6)
+    assertThat(result.mostWatchedTotalCount).isEqualTo(9)
     assertThat(result.totalTimeSpentMinutes).isEqualTo(25)
     assertThat(result.totalWatchedEpisodes).isEqualTo(4)
     assertThat(result.totalWatchedEpisodesShows).isEqualTo(3)

@@ -7,6 +7,7 @@ import androidx.work.WorkManager
 import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.settings.SettingsRepository
+import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.R.string
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.events.EventsManager
@@ -25,6 +26,7 @@ import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.just
+import io.mockk.mockkObject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -58,8 +60,10 @@ class TraktSyncViewModelTest : BaseMockTest() {
   override fun setUp() {
     super.setUp()
 
+    mockkObject(Logger)
     coEvery { userTraktManager.revokeToken() } just Runs
     coEvery { eventsManager.events } returns MutableSharedFlow()
+    coEvery { Logger.record(any(), any()) } just Runs
 
     SUT = TraktSyncViewModel(
       miscPreferences,
