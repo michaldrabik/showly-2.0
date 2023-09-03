@@ -61,7 +61,7 @@ class ProgressMoviesMainViewModelTest : BaseMockTest() {
     SUT.loadProgress()
 
     with(stateResult.last()) {
-      assertThat(timestamp).isGreaterThan(0)
+      assertThat(timestamp).isGreaterThan(0L)
       assertThat(calendarMode).isEqualTo(CalendarMode.PRESENT_FUTURE)
     }
 
@@ -103,7 +103,7 @@ class ProgressMoviesMainViewModelTest : BaseMockTest() {
     SUT.setWatchedMovie(Movie.EMPTY)
 
     assertThat(stateResult[0].timestamp).isEqualTo(null)
-    assertThat(stateResult[1].timestamp).isGreaterThan(0)
+    assertThat(stateResult[1].timestamp).isGreaterThan(0L)
 
     coVerify(exactly = 1) { mainCase.addToMyMovies(any<Movie>()) }
 

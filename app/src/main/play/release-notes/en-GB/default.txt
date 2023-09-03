@@ -1,2 +1,4 @@
 * Added Paramount and Peacock to networks filters
+* Update compatibility to Android 13
+* Settings simplifications
 * Bugfixes

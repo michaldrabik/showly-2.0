@@ -124,7 +124,10 @@
     <TextView
       android:id="@+id/settingsThemeTitle"
       style="@style/Settings.Title"
+      android:drawablePadding="@dimen/spaceSmall"
       android:text="@string/textSettingsThemeTitle"
+      app:drawableStartCompat="@drawable/ic_crown_small"
+      app:drawableTint="?android:attr/textColorPrimary"
       app:layout_constraintBottom_toTopOf="@id/settingsThemeDescription"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
@@ -238,7 +241,10 @@
     <TextView
       android:id="@+id/settingsNewsEnabledTitle"
       style="@style/Settings.Title"
+      android:drawablePadding="@dimen/spaceSmall"
       android:text="@string/textSettingsNewsEnabledTitle"
+      app:drawableStartCompat="@drawable/ic_crown_small"
+      app:drawableTint="?android:attr/textColorPrimary"
       app:layout_constraintBottom_toTopOf="@id/settingsNewsEnabledDescription"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
@@ -426,7 +432,7 @@
   <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/settingsUpcomingSection"
     style="@style/Settings.ItemLayout"
-    app:layout_constraintBottom_toTopOf="@id/settingsMyShowsSections"
+    app:layout_constraintBottom_toTopOf="@id/settingsRecentShowsAmount"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/settingsProgressNext"
@@ -469,56 +475,13 @@
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-  <LinearLayout
-    android:id="@+id/settingsMyShowsSections"
-    style="@style/Settings.ItemLayout"
-    app:layout_constraintBottom_toTopOf="@id/settingsMyMoviesSections"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/settingsUpcomingSection"
-    >
-
-    <TextView
-      style="@style/Settings.Title"
-      android:text="@string/textSettingsMyShowsSectionsTitle"
-      />
-
-    <TextView
-      style="@style/Settings.Summary"
-      android:text="@string/textSettingsMyShowsSectionSummary"
-      />
-
-  </LinearLayout>
-
-  <LinearLayout
-    android:id="@+id/settingsMyMoviesSections"
-    style="@style/Settings.ItemLayout"
-    app:layout_constraintBottom_toTopOf="@id/settingsRecentShowsAmount"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/settingsMyShowsSections"
-    >
-
-    <TextView
-      style="@style/Settings.Title"
-      android:text="@string/textSettingsMyMoviesSectionsTitle"
-      />
-
-    <TextView
-      style="@style/Settings.Summary"
-      android:text="@string/textSettingsMyMoviesSectionSummary"
-      />
-
-  </LinearLayout>
-
   <LinearLayout
     android:id="@+id/settingsRecentShowsAmount"
     style="@style/Settings.ItemLayout"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/settingsMyMoviesSections"
+    app:layout_constraintTop_toBottomOf="@id/settingsUpcomingSection"
     >
 
     <TextView

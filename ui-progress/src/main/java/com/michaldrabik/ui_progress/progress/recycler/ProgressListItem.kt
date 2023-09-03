@@ -85,6 +85,7 @@ sealed class ProgressListItem(
     val sortOrder: SortOrder,
     val sortType: SortType,
     val isUpcoming: Boolean,
+    val isUpcomingEnabled: Boolean,
     val isOnHold: Boolean,
     val newAtTop: Boolean
   ) : ProgressListItem(

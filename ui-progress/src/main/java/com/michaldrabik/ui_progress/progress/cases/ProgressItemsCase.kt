@@ -60,9 +60,11 @@ class ProgressItemsCase @Inject constructor(
 
       val settings = settingsRepository.load()
       val dateFormat = dateFormatProvider.loadFullHourFormat()
+      val language = translationsRepository.getLanguage()
+      val upcomingEnabled = settings.progressUpcomingEnabled
       val upcomingLimit = nowUtc.plusMonths(UPCOMING_MONTHS_LIMIT).toMillis()
       val nextEpisodeType = settingsRepository.progressNextEpisodeType
-      val filtersItem = loadFiltersItem()
+      val filtersItem = loadFiltersItem(upcomingEnabled)
       val spoilers = settingsRepository.spoilers.getAll()
 
       val items = showsRepository.myShows.loadAll()
@@ -95,9 +97,6 @@ class ProgressItemsCase @Inject constructor(
             )
           }
         }.awaitAll()
-
-      val upcomingEnabled = settings.progressUpcomingEnabled
-      val language = translationsRepository.getLanguage()
 
       val validItems = items
         .filter { if (upcomingEnabled) true else !it.isUpcoming }
@@ -260,12 +259,13 @@ class ProgressItemsCase @Inject constructor(
     }
   }
 
-  private fun loadFiltersItem(): ProgressListItem.Filters {
+  private fun loadFiltersItem(isUpcomingEnabled: Boolean): ProgressListItem.Filters {
     return ProgressListItem.Filters(
       newAtTop = settingsRepository.sorting.progressShowsNewAtTop,
       sortOrder = settingsRepository.sorting.progressShowsSortOrder,
       sortType = settingsRepository.sorting.progressShowsSortType,
       isUpcoming = settingsRepository.filters.progressShowsUpcoming,
+      isUpcomingEnabled = isUpcomingEnabled,
       isOnHold = settingsRepository.filters.progressShowsOnHold
     )
   }

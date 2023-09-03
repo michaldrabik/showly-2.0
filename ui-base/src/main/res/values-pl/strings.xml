@@ -103,6 +103,7 @@
   <string name="textTraktSyncErrorFull">Błąd synchronizacji Trakt.tv. Sprawdź połączenie z internetem lub skontaktuj się z nami jeżeli błąd się powtarza.</string>
   <string name="textTraktQuickSyncError">Błąd szybkiej synchronizacji.</string>
   <string name="textTraktQuickSyncErrorFull">Błąd szybkiej synchronizacji. Spróbujemy ponownie przy następnym uruchomieniu aplikacji.</string>
+  <string name="textTraktNotificationsRationale">Aby poprawnie wyświetlać informacje związane z synchronizacją aplikacja potrzebuje twojej zgody.\n\nCzy chcesz jej udzielić teraz?</string>
   <string name="textRemoveFromTrakt">Usunąć z Trakt.tv?</string>
   <string name="textRemoveFromTraktHidden">Czy chcesz usunąć ten element z sekcji \'Ukryte\' na twoim koncie Trakt.tv?</string>
   <string name="textRemoveFromTraktWatchlist">Czy chcesz usunąć ten element z sekcji \'Na Później\' na twoim koncie Trakt.tv?</string>

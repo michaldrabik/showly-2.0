@@ -20,8 +20,6 @@ import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.viewBinding
-import com.michaldrabik.ui_model.MyMoviesSection
-import com.michaldrabik.ui_model.MyShowsSection
 import com.michaldrabik.ui_model.PremiumFeature
 import com.michaldrabik.ui_model.ProgressNextEpisodeType
 import com.michaldrabik.ui_model.ProgressNextEpisodeType.LAST_WATCHED
@@ -75,8 +73,6 @@ class SettingsGeneralFragment : BaseFragment<SettingsGeneralViewModel>(R.layout.
     with(binding) {
       with(uiState) {
         settingsRecentShowsAmount.onClick { showRecentShowsDialog(settings) }
-        settingsMyShowsSections.onClick { showSectionsDialog(settings) }
-        settingsMyMoviesSections.onClick { showMoviesSectionsDialog(settings) }
 
         settingsMoviesEnabledSwitch.isChecked = moviesEnabled
         settingsNewsEnabledSwitch.isChecked = newsEnabled
@@ -92,6 +88,10 @@ class SettingsGeneralFragment : BaseFragment<SettingsGeneralViewModel>(R.layout.
 
         settingsTheme.alpha = if (isPremium) 1F else 0.5F
         settingsNewsEnabled.alpha = if (isPremium) 1F else 0.5F
+        if (isPremium) {
+          settingsThemeTitle.setCompoundDrawables(null, null, null, null)
+          settingsNewsEnabledTitle.setCompoundDrawables(null, null, null, null)
+        }
 
         settingsNewsEnabled.onClick {
           onPremiumAction(isPremium, settingsNewsEnabled.tag) {
@@ -285,45 +285,6 @@ class SettingsGeneralFragment : BaseFragment<SettingsGeneralViewModel>(R.layout.
       .setSingleChoiceItems(options, default) { dialog, index ->
         viewModel.setRecentShowsAmount(options[index].toInt())
         dialog.dismiss()
-      }
-      .show()
-  }
-
-  private fun showSectionsDialog(settings: Settings?) {
-    if (settings == null) return
-
-    val options = listOf(MyShowsSection.RECENTS)
-    val selected = booleanArrayOf(
-      settings.myShowsRecentIsEnabled,
-      settings.myShowsRunningIsEnabled,
-      settings.myShowsEndedIsEnabled,
-      settings.myShowsIncomingIsEnabled
-    )
-    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
-      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
-      .setMultiChoiceItems(
-        options.map { getString(it.displayString) }.toTypedArray(),
-        selected
-      ) { _, index, isChecked ->
-        viewModel.enableMyShowsSection(options[index], isChecked)
-      }
-      .show()
-  }
-
-  private fun showMoviesSectionsDialog(settings: Settings?) {
-    if (settings == null) return
-
-    val options = listOf(MyMoviesSection.RECENTS)
-    val selected = booleanArrayOf(
-      settings.myMoviesRecentIsEnabled
-    )
-    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
-      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
-      .setMultiChoiceItems(
-        options.map { getString(it.displayString) }.toTypedArray(),
-        selected
-      ) { _, index, isChecked ->
-        viewModel.enableMyMoviesSection(options[index], isChecked)
       }
       .show()
   }

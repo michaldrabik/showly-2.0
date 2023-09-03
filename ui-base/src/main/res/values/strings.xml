@@ -106,6 +106,7 @@
   <string name="textTraktSyncErrorFull">Trakt.tv sync failed. Please check your internet connection and try again or contact us if this keeps happening.</string>
   <string name="textTraktQuickSyncError">Instant Sync failed.</string>
   <string name="textTraktQuickSyncErrorFull">Instant Sync failed. We will try again next time you open the app. Please check your internet connection.</string>
+  <string name="textTraktNotificationsRationale">Please grant the application a permission to display information about synchronization progress and results.\n\nWould you like to do it now?</string>
 
   <string name="textRemoveFromTrakt">Remove from Trakt.tv?</string>
   <string name="textRemoveFromTraktHidden">Would you like to remove this item from your Trakt.tv account \'Hidden Items\'?</string>

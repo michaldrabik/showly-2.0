@@ -5,7 +5,7 @@ import android.content.Context.MODE_PRIVATE
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-const val DATABASE_VERSION = 36
+const val DATABASE_VERSION = 37
 const val DATABASE_NAME = "SHOWLY2_DB_2"
 
 class Migrations(context: Context) {
@@ -712,6 +712,22 @@ class Migrations(context: Context) {
     }
   }
 
+  private val migration37 = object : Migration(36, 37) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+      with(database) {
+        val cursor = database.query("SELECT my_shows_recent_is_enabled, my_movies_recent_is_enabled FROM settings")
+        while (cursor.moveToNext()) {
+          val myShowsRecentsEnabled = cursor.getInt(cursor.getColumnIndexOrThrow("my_shows_recent_is_enabled"))
+          val myMoviesRecentsEnabled = cursor.getInt(cursor.getColumnIndexOrThrow("my_movies_recent_is_enabled"))
+
+          if (myShowsRecentsEnabled != 1 && myMoviesRecentsEnabled != 1) {
+            execSQL("UPDATE settings SET my_shows_recent_amount = 0")
+          }
+        }
+      }
+    }
+  }
+
   fun getAll() = listOf(
     migration2,
     migration3,
@@ -747,6 +763,7 @@ class Migrations(context: Context) {
     migration33,
     migration34,
     migration35,
-    migration36
+    migration36,
+    migration37
   )
 }

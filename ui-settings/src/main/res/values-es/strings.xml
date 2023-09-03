@@ -43,6 +43,7 @@
   <string name="textSettingsNotifications">Notificaciones</string>
   <string name="textSettingsPushNotificationsTitle">Notificaciones Push</string>
   <string name="textSettingsShowsNotificationsSummary">Recibir notificaciones sobre nuevas películas, episodios y temporadas de las series que estás siguiendo.</string>
+  <string name="textSettingsShowsNotificationsRationale">Por favor, concede a la aplicación permiso para mostrar notificaciones.\n\n¿Te gustaría hacerlo ahora?</string>
   <string name="textSettingsMisc">Misceláneo</string>
   <string name="textSettingsContactDevsTitle">Contactar Desarrolladores</string>
   <string name="textSettingsContactDevsSummary">¿Tienes algún problema? Haz clic aquí para enviar un correo electrónico (showlyapp@gmail.com).</string>
@@ -97,10 +98,10 @@
   <string name="textSettingsSpoilersMoviesRatingsNotCollectedDescription">Ocultar <b>calificación</b> de películas que no están en tu Colección</string>
   <string name="textSettingsSpoilersEpisodes">Episodios</string>
   <string name="textSettingsSpoilersEpisodesSummary">Administrar ajustes de spoiler para episodios.</string>
-  <string name="textSettingsSpoilersEpisodesImage">Ocultar <b>imagen</b> de los episodios no vistos</string>
-  <string name="textSettingsSpoilersEpisodesTitle">Ocultar <b>título</b> de los episodios no vistos</string>
-  <string name="textSettingsSpoilersEpisodesDescription">Ocultar <b>descripción</b> de los episodios no vistos</string>
-  <string name="textSettingsSpoilersEpisodesRating">Ocultar <b>valoración</b> de los episodios no vistos</string>
+  <string name="textSettingsSpoilersEpisodesImage">Ocultar <b>imagen</b> de los episodios no vistos.</string>
+  <string name="textSettingsSpoilersEpisodesTitle">Ocultar <b>título</b> de los episodios no vistos.</string>
+  <string name="textSettingsSpoilersEpisodesDescription">Ocultar <b>descripción</b> de los episodios no vistos.</string>
+  <string name="textSettingsSpoilersEpisodesRating">Ocultar <b>valoración</b> de los episodios no vistos.</string>
   <string name="textSettingsSpoilersTapToRevealTitle">Pulsar para revelar</string>
   <string name="textSettingsSpoilersTapToRevealDescription">Toca el contenido oculto para revelarlo temporalmente.</string>
   <string name="textNextEpisodeLastWatched">Último episodio visto</string>

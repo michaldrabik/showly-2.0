@@ -245,7 +245,7 @@ class PeopleRepositoryTest : BaseMockTest() {
     coVerify { peopleDao.getById(any()) }
     coVerify(exactly = 1) { showsDao.upsert(any()) }
     coVerify(exactly = 1) { moviesDao.upsert(any()) }
-    coVerify(exactly = 1) { peopleCreditsDao.insert(any(), any()) }
+    coVerify(exactly = 1) { peopleCreditsDao.insertSingle(any(), any()) }
     coVerify(exactly = 0) { peopleDao.updateTraktId(any(), any()) }
   }
 }

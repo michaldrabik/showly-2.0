@@ -43,6 +43,7 @@
   <string name="textSettingsNotifications">Powiadomienia</string>
   <string name="textSettingsPushNotificationsTitle">Powiadomienia Push</string>
   <string name="textSettingsShowsNotificationsSummary">Otrzymuj powiadomienia o nowych filmach, odcinkach, sezonach.</string>
+  <string name="textSettingsShowsNotificationsRationale">Aplikacja potrzebuje twojej zgody aby poprawnie wyświetlać powiadomienia.\n\nCzy chcesz jej udzielić teraz?</string>
   <string name="textSettingsMisc">Różne</string>
   <string name="textSettingsContactDevsTitle">Kontakt</string>
   <string name="textSettingsContactDevsSummary">Masz problem/pytanie? Kliknij aby wysłać wiadomość email (showlyapp@gmail.com).</string>
@@ -97,10 +98,10 @@
   <string name="textSettingsSpoilersMoviesRatingsNotCollectedDescription">Ukryj <b>ocenę</b> filmów, które nie są w twojej kolekcji</string>
   <string name="textSettingsSpoilersEpisodes">Odcinki</string>
   <string name="textSettingsSpoilersEpisodesSummary">Ustawienia spoilerów dla odcinków.</string>
-  <string name="textSettingsSpoilersEpisodesImage">Ukryj <b>zdjęcie</b> nieobejrzanych odcinków</string>
-  <string name="textSettingsSpoilersEpisodesTitle">Ukryj <b>tytuł</b> nieobejrzanych odcinków</string>
-  <string name="textSettingsSpoilersEpisodesDescription">Ukryj <b>opis</b> nieobejrzanych odcinków</string>
-  <string name="textSettingsSpoilersEpisodesRating">Ukryj <b>ocenę</b> nieobejrzanych odcinków</string>
+  <string name="textSettingsSpoilersEpisodesImage">Ukryj <b>zdjęcie</b> nieobejrzanych odcinków.</string>
+  <string name="textSettingsSpoilersEpisodesTitle">Ukryj <b>tytuł</b> nieobejrzanych odcinków.</string>
+  <string name="textSettingsSpoilersEpisodesDescription">Ukryj <b>opis</b> nieobejrzanych odcinków.</string>
+  <string name="textSettingsSpoilersEpisodesRating">Ukryj <b>ocenę</b> nieobejrzanych odcinków.</string>
   <string name="textSettingsSpoilersTapToRevealTitle">Dotknij aby ujawnić</string>
   <string name="textSettingsSpoilersTapToRevealDescription">Dotknij ukrytej zawartości, aby tymczasowo ją ujawnić.</string>
   <string name="textNextEpisodeLastWatched">Ostatnio obejrzany odcinek</string>

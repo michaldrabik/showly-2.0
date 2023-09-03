@@ -10,8 +10,6 @@ import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.dates.AppDateFormat
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.combine
-import com.michaldrabik.ui_model.MyMoviesSection
-import com.michaldrabik.ui_model.MyShowsSection
 import com.michaldrabik.ui_model.ProgressNextEpisodeType
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_settings.helpers.AppLanguage
@@ -71,22 +69,6 @@ class SettingsGeneralViewModel @Inject constructor(
       mainCase.setRecentShowsAmount(amount)
       refreshSettings()
       Analytics.logSettingsRecentlyAddedAmount(amount.toLong())
-    }
-  }
-
-  fun enableMyShowsSection(section: MyShowsSection, isEnabled: Boolean) {
-    viewModelScope.launch {
-      mainCase.enableMyShowsSection(section, isEnabled)
-      refreshSettings()
-      Analytics.logSettingsMyShowsSection(section, isEnabled)
-    }
-  }
-
-  fun enableMyMoviesSection(section: MyMoviesSection, isEnabled: Boolean) {
-    viewModelScope.launch {
-      mainCase.enableMyMoviesSection(section, isEnabled)
-      refreshSettings()
-      Analytics.logSettingsMyMoviesSection(section, isEnabled)
     }
   }
 

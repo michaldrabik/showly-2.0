@@ -93,6 +93,7 @@
   <string name="textTraktSyncErrorFull">Trakt.tv-synkronointi epäonnistui. Tarkista Internet-yhteytesi ja yritä uudelleen tai ota meihin yhteyttä, jos tämä jatkuu.</string>
   <string name="textTraktQuickSyncError">Pikasynkronointi epäonnistui.</string>
   <string name="textTraktQuickSyncErrorFull">Pikasynkronointi epäonnistui. Yritämme uudelleen, kun avaat sovelluksen seuraavan kerran. Tarkista Internet-yhteytesi.</string>
+  <string name="textTraktNotificationsRationale">Myönnä sovellukselle tietojen synkronoinnin edistymisen ja tulosten näyttöoikeus.\n\nHaluatko tehdä tämän nyt?</string>
   <string name="textRemoveFromTrakt">Poistetaanko Trakt.tv-kokoelmastasi?</string>
   <string name="textRemoveFromTraktHidden">Haluatko poistaa kohteen Trakt.tv-tilisi \'Hidden Items\' (Piilotetut kohteet) -osiosta?</string>
   <string name="textRemoveFromTraktWatchlist">Haluatko poistaa kohteen Trakt.tv-tilisi \'Watchlist\' (Katselulista) -osiosta?</string>

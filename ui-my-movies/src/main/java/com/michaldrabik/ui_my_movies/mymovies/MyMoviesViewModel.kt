@@ -110,7 +110,7 @@ class MyMoviesViewModel @Inject constructor(
         genres = genresFilter.map { it.slug },
         searchQuery = searchQuery
       )
-      val recentMovies = if (settings.myMoviesRecentIsEnabled) {
+      val recentMovies = if (settings.myRecentsAmount > 0) {
         loadMoviesCase.loadRecentMovies().map {
           toListItemAsync(
             itemType = RECENT_MOVIES,

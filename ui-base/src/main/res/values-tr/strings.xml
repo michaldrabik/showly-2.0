@@ -93,6 +93,7 @@
   <string name="textTraktSyncErrorFull">Trakt.tv eşitlemesi başarısız oldu. Lütfen internet bağlantınızı kontrol edin ve tekrar deneyin veya bu sorun devam ederse bizimle iletişime geçin.</string>
   <string name="textTraktQuickSyncError">Anlık Eşitleme başarısız.</string>
   <string name="textTraktQuickSyncErrorFull">Anlık Eşitleme başarısız oldu. Uygulamayı bir sonraki başlattığınızda tekrar deneyeceğiz. Lütfen internet bağlantınızı kontrol edin.</string>
+  <string name="textTraktNotificationsRationale">Lütfen uygulamaya senkronizasyon ilerlemesi ve sonuçları hakkında bilgiler göstermesi için izin verin\n\nBunu şimdi yapmak ister misiniz?</string>
   <string name="textRemoveFromTrakt">Trakt.tv\'den silinsin mi?</string>
   <string name="textRemoveFromTraktHidden">Bu öğeyi Trakt.tv hesabınızdan \'Gizli\' kaldırmak ister misiniz?</string>
   <string name="textRemoveFromTraktWatchlist">Bu öğeyi Trakt.tv hesabınızdaki \'Watchlist\' kaldırmak ister misiniz?</string>

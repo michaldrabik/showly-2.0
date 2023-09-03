@@ -225,7 +225,6 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
             }
             episodeDetailsComments.addView(view)
           }
-          episodeDetailsCommentsLabel.fadeIf(comments.isNotEmpty())
           episodeDetailsComments.fadeIf(comments.isNotEmpty())
           episodeDetailsCommentsEmpty.fadeIf(comments.isEmpty())
           episodeDetailsPostCommentButton.fadeIf(isSignedIn)

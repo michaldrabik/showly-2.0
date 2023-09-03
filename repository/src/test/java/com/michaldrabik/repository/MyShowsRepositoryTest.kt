@@ -132,8 +132,8 @@ class MyShowsRepositoryTest : BaseMockTest() {
       slot.captured[0].run {
         assertThat(id).isEqualTo(0)
         assertThat(idTrakt).isEqualTo(10)
-        assertThat(createdAt).isGreaterThan(0)
-        assertThat(updatedAt).isGreaterThan(0)
+        assertThat(createdAt).isGreaterThan(0L)
+        assertThat(updatedAt).isGreaterThan(0L)
         assertThat(lastWatchedAt).isEqualTo(666)
       }
       coVerify(exactly = 1) { myShowsLocalSource.insert(any()) }

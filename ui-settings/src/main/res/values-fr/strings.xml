@@ -43,6 +43,7 @@
   <string name="textSettingsNotifications">Notifications</string>
   <string name="textSettingsPushNotificationsTitle">Notifications instantanées</string>
   <string name="textSettingsShowsNotificationsSummary">Recevoir des notifications pour les nouveaux films, épisodes, saisons pour les séries que vous suivez.</string>
+  <string name="textSettingsShowsNotificationsRationale">Veuillez accorder à l\'application la permission d\'afficher les notifications.\n\nVoulez-vous le faire maintenant ?</string>
   <string name="textSettingsMisc">Divers</string>
   <string name="textSettingsContactDevsTitle">Contacter les développeurs</string>
   <string name="textSettingsContactDevsSummary">Un problème? Envoyez-nous un courriel (showlyapp@gmail.com).</string>
@@ -97,10 +98,10 @@
   <string name="textSettingsSpoilersMoviesRatingsNotCollectedDescription">Cacher la <b>note</b> des films qui ne sont pas dans votre Collection</string>
   <string name="textSettingsSpoilersEpisodes">Épisodes</string>
   <string name="textSettingsSpoilersEpisodesSummary">Gérer les paramètres de spoiler pour les épisodes.</string>
-  <string name="textSettingsSpoilersEpisodesImage">Cacher l\'<b>image</b> des épisodes non vus</string>
-  <string name="textSettingsSpoilersEpisodesTitle">Cacher le <b>titre</b> des épisodes non vus</string>
-  <string name="textSettingsSpoilersEpisodesDescription">Cacher la <b>description</b> des épisodes non vus</string>
-  <string name="textSettingsSpoilersEpisodesRating">Cacher la <b>note</b> des épisodes non vus</string>
+  <string name="textSettingsSpoilersEpisodesImage">Cacher l\'<b>image</b> des épisodes non vus.</string>
+  <string name="textSettingsSpoilersEpisodesTitle">Cacher le <b>titre</b> des épisodes non vus.</string>
+  <string name="textSettingsSpoilersEpisodesDescription">Cacher la <b>description</b> des épisodes non vus.</string>
+  <string name="textSettingsSpoilersEpisodesRating">Cacher la <b>note</b> des épisodes non vus.</string>
   <string name="textSettingsSpoilersTapToRevealTitle">Appuyer pour révéler</string>
   <string name="textSettingsSpoilersTapToRevealDescription">Appuyer sur le contenu masqué pour le révéler temporairement.</string>
   <string name="textNextEpisodeLastWatched">Le dernier épisode vu</string>
