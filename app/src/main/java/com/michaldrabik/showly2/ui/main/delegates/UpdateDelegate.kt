@@ -32,7 +32,6 @@ class MainUpdateDelegate : UpdateDelegate, DefaultLifecycleObserver {
   private lateinit var updateListener: InstallStateUpdatedListener
 
   private var onUpdateDownloaded: ((AppUpdateManager) -> Unit)? = null
-  private var isStarted = false
 
   override fun registerUpdate(
     activity: Activity,
