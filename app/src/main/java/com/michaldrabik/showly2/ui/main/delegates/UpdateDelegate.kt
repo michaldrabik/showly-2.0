@@ -10,7 +10,6 @@ import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
-import timber.log.Timber
 
 interface UpdateDelegate {
 
@@ -24,7 +23,7 @@ class MainUpdateDelegate : UpdateDelegate, DefaultLifecycleObserver {
 
   companion object {
     private const val REQUEST_APP_UPDATE = 5278
-    private const val DAYS_FOR_UPDATE = 0
+    private const val DAYS_FOR_UPDATE = 3
   }
 
   private lateinit var activity: Activity
@@ -70,7 +69,6 @@ class MainUpdateDelegate : UpdateDelegate, DefaultLifecycleObserver {
       .addOnCompleteListener {
         if (it.isSuccessful) {
           val updateInfo = it.result
-          Timber.d("Update info success: $updateInfo")
 
           if (updateInfo.installStatus() == InstallStatus.DOWNLOADED) {
             onUpdateDownloaded?.invoke(appUpdateManager)
@@ -81,7 +79,6 @@ class MainUpdateDelegate : UpdateDelegate, DefaultLifecycleObserver {
             (updateInfo.clientVersionStalenessDays() ?: 0) >= DAYS_FOR_UPDATE &&
             updateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
           ) {
-            Timber.d("Starting update flow...")
             appUpdateManager.startUpdateFlowForResult(
               updateInfo,
               activity,
