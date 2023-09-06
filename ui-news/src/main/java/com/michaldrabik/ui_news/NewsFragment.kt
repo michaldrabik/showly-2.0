@@ -225,6 +225,7 @@ class NewsFragment :
   }
 
   private fun scrollToTop(smooth: Boolean = true) {
+    if (view == null) return
     with(binding) {
       fragmentNewsHeaderView.animate().translationY(0F).start()
       fragmentNewsFiltersView.animate().translationY(0F).start()
