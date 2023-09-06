@@ -1,21 +1,20 @@
 package com.michaldrabik.showly2.ui.main.delegates
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Activity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
-import timber.log.Timber
 
 interface UpdateDelegate {
 
   fun registerUpdate(
-    activity: AppCompatActivity,
+    activity: Activity,
     onUpdateDownloaded: (AppUpdateManager) -> Unit
   )
 }
@@ -27,26 +26,24 @@ class MainUpdateDelegate : UpdateDelegate, DefaultLifecycleObserver {
     private const val DAYS_FOR_UPDATE = 3
   }
 
-  private lateinit var activity: AppCompatActivity
+  private lateinit var activity: Activity
   private lateinit var appUpdateManager: AppUpdateManager
   private lateinit var updateListener: InstallStateUpdatedListener
 
   private var onUpdateDownloaded: ((AppUpdateManager) -> Unit)? = null
-  private var isCompleted = false
 
   override fun registerUpdate(
-    activity: AppCompatActivity,
+    activity: Activity,
     onUpdateDownloaded: (AppUpdateManager) -> Unit
   ) {
     this.activity = activity
-    this.activity.lifecycle.addObserver(this)
+    (this.activity as LifecycleOwner).lifecycle.addObserver(this)
     this.onUpdateDownloaded = onUpdateDownloaded
     this.appUpdateManager = AppUpdateManagerFactory.create(activity.applicationContext)
   }
 
   override fun onCreate(owner: LifecycleOwner) {
     super.onCreate(owner)
-    Timber.d("onCreate()")
 
     updateListener = InstallStateUpdatedListener {
       if (it.installStatus() == InstallStatus.DOWNLOADED) {
@@ -56,16 +53,22 @@ class MainUpdateDelegate : UpdateDelegate, DefaultLifecycleObserver {
         }
       }
     }
+    appUpdateManager.registerListener(updateListener)
 
-    getAppUpdateInfo()
+    startUpdate()
   }
 
-  private fun getAppUpdateInfo() {
+  override fun onDestroy(owner: LifecycleOwner) {
+    appUpdateManager.unregisterListener(updateListener)
+    onUpdateDownloaded = null
+    super.onDestroy(owner)
+  }
+
+  private fun startUpdate() {
     appUpdateManager.appUpdateInfo
       .addOnCompleteListener {
         if (it.isSuccessful) {
           val updateInfo = it.result
-          Timber.d("Update info success: $updateInfo")
 
           if (updateInfo.installStatus() == InstallStatus.DOWNLOADED) {
             onUpdateDownloaded?.invoke(appUpdateManager)
@@ -76,35 +79,14 @@ class MainUpdateDelegate : UpdateDelegate, DefaultLifecycleObserver {
             (updateInfo.clientVersionStalenessDays() ?: 0) >= DAYS_FOR_UPDATE &&
             updateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
           ) {
-            Timber.d("Starting update flow...")
-            startUpdate(appUpdateManager, updateInfo)
+            appUpdateManager.startUpdateFlowForResult(
+              updateInfo,
+              activity,
+              AppUpdateOptions.newBuilder(AppUpdateType.FLEXIBLE).build(),
+              REQUEST_APP_UPDATE
+            )
           }
         }
-        isCompleted = true
       }
-  }
-
-  override fun onDestroy(owner: LifecycleOwner) {
-    appUpdateManager.unregisterListener(updateListener)
-    onUpdateDownloaded = null
-    isCompleted = false
-    Timber.d("onDestroy()")
-    super.onDestroy(owner)
-  }
-
-  private fun startUpdate(
-    appUpdateManager: AppUpdateManager,
-    updateInfo: AppUpdateInfo,
-  ) {
-    if (isCompleted) {
-      return
-    }
-    appUpdateManager.registerListener(updateListener)
-    appUpdateManager.startUpdateFlowForResult(
-      updateInfo,
-      AppUpdateType.FLEXIBLE,
-      activity,
-      REQUEST_APP_UPDATE
-    )
   }
 }
