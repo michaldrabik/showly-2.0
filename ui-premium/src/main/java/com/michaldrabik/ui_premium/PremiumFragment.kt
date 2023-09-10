@@ -9,8 +9,8 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingFlowParams
+import com.android.billingclient.api.ProductDetails
 import com.android.billingclient.api.PurchasesUpdatedListener
-import com.android.billingclient.api.SkuDetails
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.extensions.bump
@@ -84,7 +84,7 @@ class PremiumFragment : BaseFragment<PremiumViewModel>(R.layout.fragment_premium
     }
   }
 
-  private fun renderPurchaseItems(items: List<SkuDetails>, isLoading: Boolean) {
+  private fun renderPurchaseItems(items: List<ProductDetails>, isLoading: Boolean) {
     with(binding) {
       premiumPurchaseItems.removeAllViews()
       premiumPurchaseItems.visibleIf(items.isNotEmpty() && !isLoading)
@@ -94,7 +94,13 @@ class PremiumFragment : BaseFragment<PremiumViewModel>(R.layout.fragment_premium
         val view = PurchaseItemView(requireContext()).apply {
           bind(item)
           val flowParams = BillingFlowParams.newBuilder()
-            .setSkuDetails(item)
+            .setProductDetailsParamsList(
+              listOf(
+                BillingFlowParams.ProductDetailsParams.newBuilder()
+                  .setProductDetails(item)
+                  .build()
+              )
+            )
             .build()
           onClick { billingClient.launchBillingFlow(requireActivity(), flowParams) }
         }

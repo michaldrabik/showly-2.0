@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.core.content.ContextCompat
-import com.android.billingclient.api.BillingClient
-import com.android.billingclient.api.SkuDetails
+import com.android.billingclient.api.BillingClient.ProductType
+import com.android.billingclient.api.ProductDetails
 import com.google.android.material.card.MaterialCardView
 import com.michaldrabik.ui_base.utilities.extensions.colorStateListFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.gone
@@ -36,41 +36,41 @@ class PurchaseItemView : MaterialCardView {
     setCardBackgroundColor(context.colorStateListFromAttr(R.attr.colorAccent))
   }
 
-  fun bind(item: SkuDetails) {
-    if (item.priceCurrencyCode == INDIA_CURRENCY_CODE) {
-      bindForIndia(item)
-      return
-    }
-    when (item.type) {
-      BillingClient.SkuType.SUBS -> bindSubscription(item)
-      BillingClient.SkuType.INAPP -> bindInApp(item)
+  fun bind(item: ProductDetails) {
+//    if (item.priceCurrencyCode == INDIA_CURRENCY_CODE) {
+//      bindForIndia(item)
+//      return
+//    }
+    when (item.productType) {
+      ProductType.SUBS -> bindSubscription(item)
+      ProductType.INAPP -> bindInApp(item)
     }
   }
 
-  private fun bindSubscription(item: SkuDetails) {
+  private fun bindSubscription(item: ProductDetails) {
     with(binding) {
       viewPurchaseItemTitle.text = item.title.substringBefore("(").trim()
       viewPurchaseItemDescription.text = "Try 7 days for free and then:"
-      val period = when (item.subscriptionPeriod) {
+      val period = when (item.subscriptionOfferDetails?.firstOrNull()?.offerId) {
         PERIOD_1_MONTH -> "month"
         PERIOD_1_YEAR -> "year"
         else -> ""
       }
       viewPurchaseItemDescriptionDetails.text =
         "You will be automatically enrolled in a paid subscription at the end of the free period. " +
-        "Cancel anytime during free period if you do not want to convert to a paid subscription. " +
-        "Subscription will be automatically renewed and charged every $period."
-      viewPurchaseItemPrice.text = "${item.price} / $period"
+          "Cancel anytime during free period if you do not want to convert to a paid subscription. " +
+          "Subscription will be automatically renewed and charged every $period."
+//      viewPurchaseItemPrice.text = "${item.price} / $period"
     }
   }
 
-  private fun bindInApp(item: SkuDetails) {
+  private fun bindInApp(item: ProductDetails) {
     with(binding) {
       viewPurchaseItemTitle.text = item.title.substringBefore("(").trim()
       viewPurchaseItemDescription.text = "Pay once, unlock forever!"
       viewPurchaseItemDescriptionDetails.text =
         "You will unlock all bonus features with a single payment and enjoy them forever."
-      viewPurchaseItemPrice.text = item.price
+      viewPurchaseItemPrice.text = item.oneTimePurchaseOfferDetails?.formattedPrice
 
       val colorBlack = ContextCompat.getColor(context, R.color.colorBlack)
       val colorWhite = ContextCompat.getColor(context, R.color.colorWhite)
@@ -87,16 +87,16 @@ class PurchaseItemView : MaterialCardView {
   /**
    * https://www.xda-developers.com/google-play-suspend-free-trials-auto-renewing-subscriptions/
    */
-  private fun bindForIndia(item: SkuDetails) {
+  private fun bindForIndia(item: ProductDetails) {
     with(binding) {
       viewPurchaseItemTitle.text = item.title.substringBefore("(").trim()
       viewPurchaseItemDescription.gone()
       viewPurchaseItemDescriptionDetails.gone()
       viewPurchaseItemSeparator.gone()
-      when (item.subscriptionPeriod) {
-        PERIOD_1_MONTH -> viewPurchaseItemPrice.text = "${item.price} for month"
-        PERIOD_1_YEAR -> viewPurchaseItemPrice.text = "${item.price} for year"
-      }
+//      when (item.subscriptionPeriod) {
+//        PERIOD_1_MONTH -> viewPurchaseItemPrice.text = "${item.price} for month"
+//        PERIOD_1_YEAR -> viewPurchaseItemPrice.text = "${item.price} for year"
+//      }
     }
   }
 }

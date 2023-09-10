@@ -5,19 +5,20 @@ import androidx.lifecycle.viewModelScope
 import com.android.billingclient.api.AcknowledgePurchaseParams
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClient.BillingResponseCode
-import com.android.billingclient.api.BillingClient.SkuType
+import com.android.billingclient.api.BillingClient.ProductType
 import com.android.billingclient.api.BillingClientStateListener
 import com.android.billingclient.api.BillingResult
+import com.android.billingclient.api.ProductDetails
+import com.android.billingclient.api.ProductDetailsResult
 import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.Purchase.PurchaseState.PENDING
 import com.android.billingclient.api.Purchase.PurchaseState.PURCHASED
 import com.android.billingclient.api.PurchasesResult
-import com.android.billingclient.api.SkuDetails
-import com.android.billingclient.api.SkuDetailsParams
-import com.android.billingclient.api.SkuDetailsResult
+import com.android.billingclient.api.QueryProductDetailsParams
+import com.android.billingclient.api.QueryPurchasesParams
 import com.android.billingclient.api.acknowledgePurchase
+import com.android.billingclient.api.queryProductDetails
 import com.android.billingclient.api.queryPurchasesAsync
-import com.android.billingclient.api.querySkuDetails
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.michaldrabik.common.Config
@@ -49,7 +50,7 @@ class PremiumViewModel @Inject constructor(
   private val settingsRepository: SettingsRepository,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
-  private val purchaseItemsState = MutableStateFlow<List<SkuDetails>?>(null)
+  private val purchaseItemsState = MutableStateFlow<List<ProductDetails>?>(null)
   private val purchasePendingState = MutableStateFlow(false)
   private val loadingState = MutableStateFlow(false)
   private val finishEvent = MutableStateFlow<Event<Boolean>?>(null)
@@ -97,15 +98,29 @@ class PremiumViewModel @Inject constructor(
     Timber.d("checkOwnedPurchases")
     viewModelScope.launch {
       loadingState.value = true
-
       try {
         val subscriptions =
-          if (subscriptionsAvailable) billingClient.queryPurchasesAsync(SkuType.SUBS)
-          else PurchasesResult(BillingResult(), emptyList())
-        val inApps = billingClient.queryPurchasesAsync(SkuType.INAPP)
+          if (subscriptionsAvailable) {
+            billingClient.queryPurchasesAsync(
+              QueryPurchasesParams.newBuilder()
+                .setProductType(ProductType.SUBS)
+                .build()
+            )
+          } else {
+            PurchasesResult(BillingResult(), emptyList())
+          }
+        val inApps = billingClient.queryPurchasesAsync(
+          QueryPurchasesParams.newBuilder()
+            .setProductType(ProductType.INAPP)
+            .build()
+        )
         val purchases = subscriptions.purchasesList + inApps.purchasesList
 
-        val eligibleProducts = mutableListOf(PREMIUM_MONTHLY_SUBSCRIPTION, PREMIUM_YEARLY_SUBSCRIPTION, PREMIUM_LIFETIME_INAPP)
+        val eligibleProducts = mutableListOf(
+          PREMIUM_MONTHLY_SUBSCRIPTION,
+          PREMIUM_YEARLY_SUBSCRIPTION,
+          PREMIUM_LIFETIME_INAPP
+        )
         if (Config.PROMOS_ENABLED) {
           eligibleProducts.add(PREMIUM_LIFETIME_INAPP_PROMO)
         }
@@ -175,23 +190,39 @@ class PremiumViewModel @Inject constructor(
 
         val inAppsEnabled = Firebase.remoteConfig.getBoolean("in_app_enabled")
 
-        val paramsSubs = SkuDetailsParams.newBuilder()
-          .setSkusList(listOf(PREMIUM_MONTHLY_SUBSCRIPTION, PREMIUM_YEARLY_SUBSCRIPTION))
-          .setType(SkuType.SUBS)
+        val paramsSubs = QueryProductDetailsParams.newBuilder()
+          .setProductList(
+            listOf(
+              QueryProductDetailsParams.Product.newBuilder()
+                .setProductId(PREMIUM_MONTHLY_SUBSCRIPTION)
+                .setProductType(ProductType.SUBS)
+                .build(),
+              QueryProductDetailsParams.Product.newBuilder()
+                .setProductId(PREMIUM_YEARLY_SUBSCRIPTION)
+                .setProductType(ProductType.SUBS)
+                .build()
+            )
+          )
           .build()
 
-        val paramsInApps = SkuDetailsParams.newBuilder()
-          .setSkusList(listOf(PREMIUM_LIFETIME_INAPP))
-          .setType(SkuType.INAPP)
+        val paramsInApps = QueryProductDetailsParams.newBuilder()
+          .setProductList(
+            listOf(
+              QueryProductDetailsParams.Product.newBuilder()
+                .setProductId(PREMIUM_LIFETIME_INAPP)
+                .setProductType(ProductType.INAPP)
+                .build()
+            )
+          )
           .build()
 
         val subsDetails =
-          if (subscriptionsAvailable) billingClient.querySkuDetails(paramsSubs)
-          else SkuDetailsResult(BillingResult(), emptyList())
-        val inAppsDetails = billingClient.querySkuDetails(paramsInApps)
+          if (subscriptionsAvailable) billingClient.queryProductDetails(paramsSubs)
+          else ProductDetailsResult(BillingResult(), emptyList())
+        val inAppsDetails = billingClient.queryProductDetails(paramsInApps)
 
-        val subsItems = subsDetails.skuDetailsList ?: emptyList()
-        val inAppsItems = if (inAppsEnabled) inAppsDetails.skuDetailsList ?: emptyList() else emptyList()
+        val subsItems = subsDetails.productDetailsList ?: emptyList()
+        val inAppsItems = if (inAppsEnabled) inAppsDetails.productDetailsList ?: emptyList() else emptyList()
 
         purchaseItemsState.value = subsItems + inAppsItems
         loadingState.value = false
