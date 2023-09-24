@@ -11,7 +11,6 @@ import com.android.billingclient.api.BillingClient.ProductType
 import com.android.billingclient.api.ProductDetails
 import com.google.android.material.card.MaterialCardView
 import com.michaldrabik.ui_base.utilities.extensions.colorStateListFromAttr
-import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_premium.R
 import com.michaldrabik.ui_premium.databinding.ViewPurchaseItemBinding
 
@@ -19,7 +18,6 @@ import com.michaldrabik.ui_premium.databinding.ViewPurchaseItemBinding
 class PurchaseItemView : MaterialCardView {
 
   companion object {
-    private const val INDIA_CURRENCY_CODE = "INR"
     private const val PERIOD_1_MONTH = "P1M"
     private const val PERIOD_1_YEAR = "P1Y"
   }
@@ -37,10 +35,6 @@ class PurchaseItemView : MaterialCardView {
   }
 
   fun bind(item: ProductDetails) {
-//    if (item.priceCurrencyCode == INDIA_CURRENCY_CODE) {
-//      bindForIndia(item)
-//      return
-//    }
     when (item.productType) {
       ProductType.SUBS -> bindSubscription(item)
       ProductType.INAPP -> bindInApp(item)
@@ -51,7 +45,7 @@ class PurchaseItemView : MaterialCardView {
     with(binding) {
       viewPurchaseItemTitle.text = item.title.substringBefore("(").trim()
       viewPurchaseItemDescription.text = "Try 7 days for free and then:"
-      val period = when (item.subscriptionOfferDetails?.firstOrNull()?.offerId) {
+      val period = when (item.subscriptionOfferDetails?.firstOrNull()?.basePlanId?.uppercase()) {
         PERIOD_1_MONTH -> "month"
         PERIOD_1_YEAR -> "year"
         else -> ""
@@ -60,7 +54,10 @@ class PurchaseItemView : MaterialCardView {
         "You will be automatically enrolled in a paid subscription at the end of the free period. " +
           "Cancel anytime during free period if you do not want to convert to a paid subscription. " +
           "Subscription will be automatically renewed and charged every $period."
-//      viewPurchaseItemPrice.text = "${item.price} / $period"
+      viewPurchaseItemPrice.text = "${
+        item.subscriptionOfferDetails?.firstOrNull()
+          ?.pricingPhases?.pricingPhaseList?.firstOrNull()?.formattedPrice
+      } / $period"
     }
   }
 
@@ -81,22 +78,6 @@ class PurchaseItemView : MaterialCardView {
       viewPurchaseItemPrice.setTextColor(colorBlack)
       viewPurchaseItemSeparator.setBackgroundColor(colorBlack)
       setCardBackgroundColor(colorWhite)
-    }
-  }
-
-  /**
-   * https://www.xda-developers.com/google-play-suspend-free-trials-auto-renewing-subscriptions/
-   */
-  private fun bindForIndia(item: ProductDetails) {
-    with(binding) {
-      viewPurchaseItemTitle.text = item.title.substringBefore("(").trim()
-      viewPurchaseItemDescription.gone()
-      viewPurchaseItemDescriptionDetails.gone()
-      viewPurchaseItemSeparator.gone()
-//      when (item.subscriptionPeriod) {
-//        PERIOD_1_MONTH -> viewPurchaseItemPrice.text = "${item.price} for month"
-//        PERIOD_1_YEAR -> viewPurchaseItemPrice.text = "${item.price} for year"
-//      }
     }
   }
 }

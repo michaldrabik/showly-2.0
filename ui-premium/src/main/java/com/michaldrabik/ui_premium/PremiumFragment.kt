@@ -97,6 +97,11 @@ class PremiumFragment : BaseFragment<PremiumViewModel>(R.layout.fragment_premium
             .setProductDetailsParamsList(
               listOf(
                 BillingFlowParams.ProductDetailsParams.newBuilder()
+                  .apply {
+                    if (item.productType == BillingClient.ProductType.SUBS) {
+                      setOfferToken(item.subscriptionOfferDetails?.get(0)!!.offerToken)
+                    }
+                  }
                   .setProductDetails(item)
                   .build()
               )
