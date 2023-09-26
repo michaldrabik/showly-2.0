@@ -13,6 +13,7 @@ import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.ProductDetails
 import com.android.billingclient.api.ProductDetailsResult
 import com.android.billingclient.api.Purchase
+import com.android.billingclient.api.Purchase.PurchaseState.PENDING
 import com.android.billingclient.api.Purchase.PurchaseState.PURCHASED
 import com.android.billingclient.api.PurchasesResult
 import com.android.billingclient.api.QueryProductDetailsParams
@@ -157,17 +158,17 @@ class PremiumViewModel @Inject constructor(
           }
 
         when {
-//          eligiblePurchases.any { it.isAcknowledged && it.purchaseState == PURCHASED } -> unlockAndFinish()
-//          eligiblePurchases.any { !it.isAcknowledged && it.purchaseState == PURCHASED } -> {
-//            val purchase = eligiblePurchases.first { !it.isAcknowledged && it.purchaseState == PURCHASED }
-//            val params = AcknowledgePurchaseParams.newBuilder().setPurchaseToken(purchase.purchaseToken)
-//            billingClient.acknowledgePurchase(params.build())
-//            unlockAndFinish()
-//          }
-//          eligiblePurchases.any { it.purchaseState == PENDING } -> {
-//            purchasePendingState.value = true
-//            loadingState.value = false
-//          }
+          eligiblePurchases.any { it.isAcknowledged && it.purchaseState == PURCHASED } -> unlockAndFinish()
+          eligiblePurchases.any { !it.isAcknowledged && it.purchaseState == PURCHASED } -> {
+            val purchase = eligiblePurchases.first { !it.isAcknowledged && it.purchaseState == PURCHASED }
+            val params = AcknowledgePurchaseParams.newBuilder().setPurchaseToken(purchase.purchaseToken)
+            billingClient.acknowledgePurchase(params.build())
+            unlockAndFinish()
+          }
+          eligiblePurchases.any { it.purchaseState == PENDING } -> {
+            purchasePendingState.value = true
+            loadingState.value = false
+          }
           else -> loadPurchases(billingClient, subscriptionsSupported)
         }
       } catch (error: Throwable) {
