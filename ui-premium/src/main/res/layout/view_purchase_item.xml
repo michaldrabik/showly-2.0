@@ -28,7 +28,7 @@
       android:lines="1"
       android:textAlignment="viewStart"
       android:textColor="?android:attr/textColorPrimary"
-      android:textSize="16sp"
+      android:textSize="18sp"
       android:textStyle="bold"
       app:layout_constraintBottom_toTopOf="@id/viewPurchaseItemDescription"
       app:layout_constraintEnd_toStartOf="@id/viewPurchaseItemPrice"

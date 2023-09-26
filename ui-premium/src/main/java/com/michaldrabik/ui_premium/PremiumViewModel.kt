@@ -5,19 +5,21 @@ import androidx.lifecycle.viewModelScope
 import com.android.billingclient.api.AcknowledgePurchaseParams
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClient.BillingResponseCode
-import com.android.billingclient.api.BillingClient.SkuType
+import com.android.billingclient.api.BillingClient.BillingResponseCode.OK
+import com.android.billingclient.api.BillingClient.FeatureType
+import com.android.billingclient.api.BillingClient.ProductType
 import com.android.billingclient.api.BillingClientStateListener
 import com.android.billingclient.api.BillingResult
+import com.android.billingclient.api.ProductDetails
+import com.android.billingclient.api.ProductDetailsResult
 import com.android.billingclient.api.Purchase
-import com.android.billingclient.api.Purchase.PurchaseState.PENDING
 import com.android.billingclient.api.Purchase.PurchaseState.PURCHASED
 import com.android.billingclient.api.PurchasesResult
-import com.android.billingclient.api.SkuDetails
-import com.android.billingclient.api.SkuDetailsParams
-import com.android.billingclient.api.SkuDetailsResult
+import com.android.billingclient.api.QueryProductDetailsParams
+import com.android.billingclient.api.QueryPurchasesParams
 import com.android.billingclient.api.acknowledgePurchase
+import com.android.billingclient.api.queryProductDetails
 import com.android.billingclient.api.queryPurchasesAsync
-import com.android.billingclient.api.querySkuDetails
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.michaldrabik.common.Config
@@ -44,12 +46,14 @@ import org.json.JSONObject
 import timber.log.Timber
 import javax.inject.Inject
 
+private const val INDIA_CURRENCY_CODE = "INR"
+
 @HiltViewModel
 class PremiumViewModel @Inject constructor(
   private val settingsRepository: SettingsRepository,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
-  private val purchaseItemsState = MutableStateFlow<List<SkuDetails>?>(null)
+  private val purchaseItemsState = MutableStateFlow<List<ProductDetails>?>(null)
   private val purchasePendingState = MutableStateFlow(false)
   private val loadingState = MutableStateFlow(false)
   private val finishEvent = MutableStateFlow<Event<Boolean>?>(null)
@@ -57,20 +61,30 @@ class PremiumViewModel @Inject constructor(
   private var connectionsCount = 0
 
   fun loadBilling(billingClient: BillingClient) {
+    if (billingClient.isReady) {
+      return
+    }
+
     loadingState.value = true
     connectionsCount += 1
+
     billingClient.startConnection(object : BillingClientStateListener {
       override fun onBillingSetupFinished(billingResult: BillingResult) {
         Timber.d("BillingClient Setup Finished ${billingResult.debugMessage}")
 
-        if (billingResult.responseCode == BillingResponseCode.OK) {
+        if (billingResult.responseCode == OK) {
           connectionsCount = 0
-          val featureResult = billingClient.isFeatureSupported(BillingClient.FeatureType.SUBSCRIPTIONS)
-          val subscriptionsAvailable = featureResult.responseCode == BillingResponseCode.OK
-          checkOwnedPurchases(billingClient, subscriptionsAvailable)
-          if (!subscriptionsAvailable) {
-            Analytics.logUnsupportedSubscriptions()
-          }
+
+          val isSubscriptionSupported = billingClient
+            .isFeatureSupported(FeatureType.SUBSCRIPTIONS).responseCode == OK
+
+          val isInAppsSupported = billingClient
+            .isFeatureSupported(FeatureType.PRODUCT_DETAILS).responseCode == OK
+
+          if (!isSubscriptionSupported) Analytics.logUnsupportedSubscriptions()
+          if (!isInAppsSupported) Analytics.logUnsupportedProductDetails()
+
+          checkOwnedPurchases(billingClient, isSubscriptionSupported, isInAppsSupported)
         } else {
           Analytics.logUnsupportedBilling(billingResult.responseCode)
           messageChannel.trySend(MessageEvent.Error(R.string.errorSubscriptionsNotAvailable))
@@ -92,42 +106,69 @@ class PremiumViewModel @Inject constructor(
 
   private fun checkOwnedPurchases(
     billingClient: BillingClient,
-    subscriptionsAvailable: Boolean
+    subscriptionsSupported: Boolean,
+    inAppsSupported: Boolean
   ) {
     Timber.d("checkOwnedPurchases")
     viewModelScope.launch {
       loadingState.value = true
-
       try {
-        val subscriptions =
-          if (subscriptionsAvailable) billingClient.queryPurchasesAsync(SkuType.SUBS)
-          else PurchasesResult(BillingResult(), emptyList())
-        val inApps = billingClient.queryPurchasesAsync(SkuType.INAPP)
-        val purchases = subscriptions.purchasesList + inApps.purchasesList
+        if (!inAppsSupported && !subscriptionsSupported) {
+          messageChannel.trySend(MessageEvent.Error(R.string.errorBillingProductsNotAvailable))
+          return@launch
+        }
 
-        val eligibleProducts = mutableListOf(PREMIUM_MONTHLY_SUBSCRIPTION, PREMIUM_YEARLY_SUBSCRIPTION, PREMIUM_LIFETIME_INAPP)
+        val subscriptions =
+          if (subscriptionsSupported) {
+            billingClient.queryPurchasesAsync(
+              QueryPurchasesParams.newBuilder()
+                .setProductType(ProductType.SUBS)
+                .build()
+            )
+          } else {
+            PurchasesResult(BillingResult(), emptyList())
+          }
+
+        val inApps =
+          if (inAppsSupported) {
+            billingClient.queryPurchasesAsync(
+              QueryPurchasesParams.newBuilder()
+                .setProductType(ProductType.INAPP)
+                .build()
+            )
+          } else {
+            PurchasesResult(BillingResult(), emptyList())
+          }
+
+        val eligibleProducts = mutableListOf(
+          PREMIUM_MONTHLY_SUBSCRIPTION,
+          PREMIUM_YEARLY_SUBSCRIPTION,
+          PREMIUM_LIFETIME_INAPP
+        )
         if (Config.PROMOS_ENABLED) {
           eligibleProducts.add(PREMIUM_LIFETIME_INAPP_PROMO)
         }
-        val eligiblePurchases = purchases.filter {
-          val json = JSONObject(it.originalJson)
-          val productId = json.optString("productId", "")
-          productId in eligibleProducts
-        }
+
+        val eligiblePurchases = (subscriptions.purchasesList + inApps.purchasesList)
+          .filter {
+            val json = JSONObject(it.originalJson)
+            val productId = json.optString("productId", "")
+            productId in eligibleProducts
+          }
 
         when {
-          eligiblePurchases.any { it.isAcknowledged && it.purchaseState == PURCHASED } -> unlockAndFinish()
-          eligiblePurchases.any { !it.isAcknowledged && it.purchaseState == PURCHASED } -> {
-            val purchase = eligiblePurchases.first { !it.isAcknowledged && it.purchaseState == PURCHASED }
-            val params = AcknowledgePurchaseParams.newBuilder().setPurchaseToken(purchase.purchaseToken)
-            billingClient.acknowledgePurchase(params.build())
-            unlockAndFinish()
-          }
-          eligiblePurchases.any { it.purchaseState == PENDING } -> {
-            purchasePendingState.value = true
-            loadingState.value = false
-          }
-          else -> loadPurchases(billingClient, subscriptionsAvailable)
+//          eligiblePurchases.any { it.isAcknowledged && it.purchaseState == PURCHASED } -> unlockAndFinish()
+//          eligiblePurchases.any { !it.isAcknowledged && it.purchaseState == PURCHASED } -> {
+//            val purchase = eligiblePurchases.first { !it.isAcknowledged && it.purchaseState == PURCHASED }
+//            val params = AcknowledgePurchaseParams.newBuilder().setPurchaseToken(purchase.purchaseToken)
+//            billingClient.acknowledgePurchase(params.build())
+//            unlockAndFinish()
+//          }
+//          eligiblePurchases.any { it.purchaseState == PENDING } -> {
+//            purchasePendingState.value = true
+//            loadingState.value = false
+//          }
+          else -> loadPurchases(billingClient, subscriptionsSupported)
         }
       } catch (error: Throwable) {
         purchaseItemsState.value = emptyList()
@@ -148,7 +189,7 @@ class PremiumViewModel @Inject constructor(
       Timber.d("${billingResult.responseCode} ${purchases.size}")
 
       when (billingResult.responseCode) {
-        BillingResponseCode.OK -> {
+        OK -> {
           if (purchases.isNotEmpty()) {
             val purchase = purchases.first()
             if (purchase.purchaseState == PURCHASED && !purchase.isAcknowledged) {
@@ -175,23 +216,54 @@ class PremiumViewModel @Inject constructor(
 
         val inAppsEnabled = Firebase.remoteConfig.getBoolean("in_app_enabled")
 
-        val paramsSubs = SkuDetailsParams.newBuilder()
-          .setSkusList(listOf(PREMIUM_MONTHLY_SUBSCRIPTION, PREMIUM_YEARLY_SUBSCRIPTION))
-          .setType(SkuType.SUBS)
+        val paramsSubs = QueryProductDetailsParams.newBuilder()
+          .setProductList(
+            listOf(
+              QueryProductDetailsParams.Product.newBuilder()
+                .setProductId(PREMIUM_MONTHLY_SUBSCRIPTION)
+                .setProductType(ProductType.SUBS)
+                .build(),
+              QueryProductDetailsParams.Product.newBuilder()
+                .setProductId(PREMIUM_YEARLY_SUBSCRIPTION)
+                .setProductType(ProductType.SUBS)
+                .build()
+            )
+          )
           .build()
 
-        val paramsInApps = SkuDetailsParams.newBuilder()
-          .setSkusList(listOf(PREMIUM_LIFETIME_INAPP))
-          .setType(SkuType.INAPP)
+        val paramsInApps = QueryProductDetailsParams.newBuilder()
+          .setProductList(
+            listOf(
+              QueryProductDetailsParams.Product.newBuilder()
+                .setProductId(PREMIUM_LIFETIME_INAPP)
+                .setProductType(ProductType.INAPP)
+                .build()
+            )
+          )
           .build()
 
-        val subsDetails =
-          if (subscriptionsAvailable) billingClient.querySkuDetails(paramsSubs)
-          else SkuDetailsResult(BillingResult(), emptyList())
-        val inAppsDetails = billingClient.querySkuDetails(paramsInApps)
+        val subsDetails = if (subscriptionsAvailable) {
+          billingClient.queryProductDetails(paramsSubs)
+        } else {
+          ProductDetailsResult(BillingResult(), emptyList())
+        }
+        val inAppsDetails = billingClient.queryProductDetails(paramsInApps)
 
-        val subsItems = subsDetails.skuDetailsList ?: emptyList()
-        val inAppsItems = if (inAppsEnabled) inAppsDetails.skuDetailsList ?: emptyList() else emptyList()
+        val subsItems = (subsDetails.productDetailsList ?: emptyList())
+          .filter {
+            val priceCode = it.subscriptionOfferDetails
+              ?.firstOrNull()
+              ?.pricingPhases
+              ?.pricingPhaseList
+              ?.firstOrNull()
+              ?.priceCurrencyCode
+            priceCode != INDIA_CURRENCY_CODE
+          }
+        val inAppsItems = if (inAppsEnabled) {
+          inAppsDetails.productDetailsList ?: emptyList()
+        } else {
+          emptyList()
+        }
 
         purchaseItemsState.value = subsItems + inAppsItems
         loadingState.value = false

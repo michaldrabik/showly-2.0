@@ -151,6 +151,7 @@
   <string name="errorNoInternetConnection">No Internet. Please check your connection.</string>
   <string name="errorTraktSyncGeneral">Trakt.tv sync error.\nPlease check your internet connection and try again.</string>
   <string name="errorTraktLocked">Your Trakt.tv account is currently locked.\nPlease contact Trakt.tv support at https://support.trakt.tv/ to unlock your account.</string>
+  <string name="errorBillingProductsNotAvailable" translatable="false">We were not able to load purchase options. Please make sure your Google Play Store app is updated to the latest version and try again.</string>
   <string name="errorSubscriptionsNotAvailable">Google Play Subscriptions are not available on this device.</string>
   <string name="errorCouldNotFindApp" translatable="false">Sorry, we could not find app on this device that could handle this link.</string>
   <string name="errorAccountListsLimitsReached" translatable="false">Sorry, you have reached your Trakt account limit for personal lists!\n\nPlease contact us if you need more assistance.</string>

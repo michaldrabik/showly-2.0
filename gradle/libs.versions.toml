@@ -14,8 +14,8 @@ hiltWork = "1.0.0"
 
 [libraries]
 
-gradle = { group = "com.android.tools.build", name = "gradle", version = "8.1.0" }
-gradle-firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version = "2.9.8" }
+gradle = { group = "com.android.tools.build", name = "gradle", version = "8.1.1" }
+gradle-firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version = "2.9.9" }
 gradle-firebase-appdistribution = { group = "com.google.firebase", name = "firebase-appdistribution-gradle", version = "4.0.0" }
 gradle-kotlin-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version = "1.9.0" }
 gradle-ktlint = { group = "org.jlleitschuh.gradle", name = "ktlint-gradle", version = "10.2.1" }
@@ -24,7 +24,7 @@ google-services = { group = "com.google.gms", name = "google-services", version 
 android-core = { group = "androidx.core", name = "core-ktx", version = "1.10.1" }
 android-appcompat = { group = "androidx.appcompat", name = "appcompat", version = "1.6.1" }
 android-gridlayout = { group = "androidx.gridlayout", name = "gridlayout", version = "1.0.0" }
-android-billing = { group = "com.android.billingclient", name = "billing-ktx", version = "4.0.0" }
+android-billing = { group = "com.android.billingclient", name = "billing-ktx", version = "6.0.1" }
 android-browser = { group = "androidx.browser", name = "browser", version = "1.5.0" }
 android-desugar = { group = "com.android.tools", name = "desugar_jdk_libs", version = "2.0.3" }
 android-material = { group = "com.google.android.material", name = "material", version = "1.9.0" }
@@ -55,7 +55,7 @@ glide-compiler = { group = "com.github.bumptech.glide", name = "compiler", versi
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit" }
 
-firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics", version = "18.4.0" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics", version = "18.4.1" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx", version = "21.3.0" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version = "23.2.1" }
 firebase-config = { group = "com.google.firebase", name = "firebase-config-ktx", version = "21.4.1" }
@@ -76,7 +76,7 @@ overscrollDecor = { group = "io.github.everythingme", name = "overscroll-decor-a
 
 # Testing
 junit = { group = "junit", name = "junit", version = "4.13.2" }
-mockk = { group = "io.mockk", name = "mockk", version = "1.13.5" }
+mockk = { group = "io.mockk", name = "mockk", version = "1.13.7" }
 truth = { group = "com.google.truth", name = "truth", version = "1.1.5" }
 coroutinesTest = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version = "1.7.3" }
 android-test-core = { group = "androidx.arch.core", name = "core-testing", version = "2.2.0" }
