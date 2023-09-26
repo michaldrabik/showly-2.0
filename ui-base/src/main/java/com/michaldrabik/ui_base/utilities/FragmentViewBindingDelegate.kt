@@ -28,7 +28,6 @@ class FragmentViewBindingDelegate<T : ViewBinding>(
   val fragment: Fragment,
   val viewBindingFactory: (View) -> T,
 ) : ReadOnlyProperty<Fragment, T> {
-
   private var binding: T? = null
 
   init {
@@ -56,7 +55,13 @@ class FragmentViewBindingDelegate<T : ViewBinding>(
       return binding
     }
 
-    val view = thisRef.view ?: throw IllegalStateException("Should not attempt to get bindings when the Fragment's view is null.")
+    val view = thisRef.view
+
+    @Suppress("FoldInitializerAndIfToElvis")
+    if (view == null) {
+      throw IllegalStateException("Should not attempt to get bindings when the Fragment's view is null.")
+    }
+
     return viewBindingFactory(view).also { this.binding = it }
   }
 }
