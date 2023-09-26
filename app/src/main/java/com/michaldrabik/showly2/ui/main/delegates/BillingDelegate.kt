@@ -21,7 +21,7 @@ import timber.log.Timber
 interface BillingDelegate {
   fun registerBilling(
     activity: AppCompatActivity,
-    settingsRepository: SettingsRepository
+    settingsRepository: SettingsRepository,
   )
 }
 
@@ -45,7 +45,7 @@ class MainBillingDelegate : BillingDelegate, DefaultLifecycleObserver {
 
   override fun registerBilling(
     activity: AppCompatActivity,
-    settingsRepository: SettingsRepository
+    settingsRepository: SettingsRepository,
   ) {
     this.settingsRepository = settingsRepository
     this.activity = activity
@@ -102,10 +102,10 @@ class MainBillingDelegate : BillingDelegate, DefaultLifecycleObserver {
 
             val purchases = subscriptions.purchasesList + inApps.purchasesList
             if (purchases.none {
-                val json = JSONObject(it.originalJson)
-                val productId = json.optString("productId", "")
-                it.isAcknowledged && productId in eligibleProducts
-              }
+              val json = JSONObject(it.originalJson)
+              val productId = json.optString("productId", "")
+              it.isAcknowledged && productId in eligibleProducts
+            }
             ) {
               Timber.d("No subscription found. Revoking...")
               settingsRepository.revokePremium()

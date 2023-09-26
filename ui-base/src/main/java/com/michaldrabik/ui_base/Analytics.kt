@@ -328,19 +328,19 @@ object Analytics {
 
   fun logUnsupportedBilling(responseCode: Int) {
     /**
-    int SERVICE_TIMEOUT = -3;
-    int FEATURE_NOT_SUPPORTED = -2;
-    int SERVICE_DISCONNECTED = -1;
-    int OK = 0;
-    int USER_CANCELED = 1;
-    int SERVICE_UNAVAILABLE = 2;
-    int BILLING_UNAVAILABLE = 3;
-    int ITEM_UNAVAILABLE = 4;
-    int DEVELOPER_ERROR = 5;
-    int ERROR = 6;
-    int ITEM_ALREADY_OWNED = 7;
-    int ITEM_NOT_OWNED = 8;
-    int NETWORK_ERROR = 12;
+     int SERVICE_TIMEOUT = -3;
+     int FEATURE_NOT_SUPPORTED = -2;
+     int SERVICE_DISCONNECTED = -1;
+     int OK = 0;
+     int USER_CANCELED = 1;
+     int SERVICE_UNAVAILABLE = 2;
+     int BILLING_UNAVAILABLE = 3;
+     int ITEM_UNAVAILABLE = 4;
+     int DEVELOPER_ERROR = 5;
+     int ERROR = 6;
+     int ITEM_ALREADY_OWNED = 7;
+     int ITEM_NOT_OWNED = 8;
+     int NETWORK_ERROR = 12;
      */
     if (responseCode in arrayOf(-2, 2, 3, 4, 5, 6, 12)) {
       firebaseAnalytics.logEvent("unsupported_billing") {
