@@ -34,6 +34,7 @@
   <string name="textPleaseWait">Odota…</string>
   <string name="textRate">Arvioi</string>
   <string name="textLink">Linkki</string>
+  <string name="textDisabled">Ei käytössä</string>
   <string name="textRateSaved">Arviosi tallennettiin.</string>
   <string name="textRateRemoved">Arviosi poistettiin.</string>
   <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
