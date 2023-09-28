@@ -27,15 +27,23 @@ class TraktRetryInterceptor @Inject constructor() : Interceptor {
 
       while (response.code == 429 && tryCount < 3) {
         Timber.w("429 Too Many Requests. Retrying...")
+
+        Firebase.analytics.logEvent(
+          "trakt_too_many_requests_retry",
+          Bundle().apply {
+            putString("url", response.request.url.toString())
+          }
+        )
+
         delay(3000)
+
         tryCount += 1
         response.close()
         response = chain.proceed(request)
       }
 
       if (response.code == 429) {
-        val error = Throwable("429 Too Many Requests")
-        Timber.e(error)
+        Timber.e(Throwable("429 Too Many Requests"))
         Firebase.analytics.logEvent(
           "trakt_too_many_requests",
           Bundle().apply {
