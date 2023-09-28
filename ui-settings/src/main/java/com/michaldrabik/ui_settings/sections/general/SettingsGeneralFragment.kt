@@ -57,9 +57,6 @@ class SettingsGeneralFragment : BaseFragment<SettingsGeneralViewModel>(R.layout.
       settingsIncludeSpecials.onClick {
         viewModel.enableSpecialSeasons(!settingsIncludeSpecialsSwitch.isChecked)
       }
-      settingsUpcomingSection.onClick {
-        viewModel.enableProgressUpcoming(!settingsUpcomingSectionSwitch.isChecked, requireAppContext())
-      }
       settingsMoviesEnabled.onClick {
         viewModel.enableMovies(!settingsMoviesEnabledSwitch.isChecked)
       }
@@ -84,6 +81,7 @@ class SettingsGeneralFragment : BaseFragment<SettingsGeneralViewModel>(R.layout.
         renderTheme(theme, isPremium)
         renderCountry(country)
         renderProgressType(progressNextType)
+        renderProgressUpcoming(progressUpcomingDays)
         renderDateFormat(dateFormat, language)
 
         settingsTheme.alpha = if (isPremium) 1F else 0.5F
@@ -108,7 +106,6 @@ class SettingsGeneralFragment : BaseFragment<SettingsGeneralViewModel>(R.layout.
     if (settings == null) return
     with(binding) {
       settingsIncludeSpecialsSwitch.isChecked = settings.specialSeasonsEnabled
-      settingsUpcomingSectionSwitch.isChecked = settings.progressUpcomingEnabled
     }
   }
 
@@ -138,6 +135,20 @@ class SettingsGeneralFragment : BaseFragment<SettingsGeneralViewModel>(R.layout.
     with(binding) {
       settingsCountryValue.text = country.displayName
       settingsCountry.onClick { showCountryDialog(country) }
+    }
+  }
+
+  private fun renderProgressUpcoming(progressUpcomingDays: Long?) {
+    if (progressUpcomingDays == null) return
+    with(binding) {
+      settingsUpcomingValue.text = if (progressUpcomingDays > 0L) {
+        getString(R.string.textDays, progressUpcomingDays)
+      } else {
+        getString(R.string.textDisabled)
+      }
+      settingsUpcomingSection.onClick {
+        showProgressUpcomingDialog(progressUpcomingDays)
+      }
     }
   }
 
@@ -193,6 +204,24 @@ class SettingsGeneralFragment : BaseFragment<SettingsGeneralViewModel>(R.layout.
       .setSingleChoiceItems(options.map { getString(it.displayName) }.toTypedArray(), selected) { dialog, index ->
         if (index != selected) {
           viewModel.setLanguage(options[index])
+        }
+        dialog.dismiss()
+      }
+      .show()
+  }
+
+  private fun showProgressUpcomingDialog(days: Long) {
+    val options = Config.PROGRESS_UPCOMING_OPTIONS
+    val selected = options.indexOfFirst { it.toLong() == days }
+
+    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
+      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
+      .setSingleChoiceItems(
+        options.map { if (it == 0) getString(R.string.textDisabled) else getString(R.string.textDays, it) }.toTypedArray(),
+        selected
+      ) { dialog, index ->
+        if (index != selected) {
+          viewModel.setProgressUpcomingDays(options[index].toLong())
         }
         dialog.dismiss()
       }

@@ -49,6 +49,7 @@ object Config {
   const val PREMIUM_LIFETIME_INAPP = "showly_premium_unlock2"
   const val PREMIUM_LIFETIME_INAPP_PROMO = "showly_premium_lifetime_promo"
 
+  val PROGRESS_UPCOMING_OPTIONS = arrayOf(0, 7, 14, 30, 45, 60, 90)
   val MY_SHOWS_RECENTS_OPTIONS = arrayOf(0, 2, 4, 6, 8)
   val DISCOVER_SHOWS_CACHE_DURATION by lazy { HOURS.toMillis(12) }
   val DISCOVER_MOVIES_CACHE_DURATION by lazy { HOURS.toMillis(12) }

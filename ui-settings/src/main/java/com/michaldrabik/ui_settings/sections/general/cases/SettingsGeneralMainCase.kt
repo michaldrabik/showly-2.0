@@ -127,6 +127,12 @@ class SettingsGeneralMainCase @Inject constructor(
     settingsRepository.progressNextEpisodeType = type
   }
 
+  fun getProgressUpcomingDays() = settingsRepository.progressUpcomingDays
+
+  fun setProgressUpcomingDays(days: Long) {
+    settingsRepository.progressUpcomingDays = days
+  }
+
   fun isPremium() = settingsRepository.isPremium
 
   fun setDateFormat(format: AppDateFormat, context: Context) {
