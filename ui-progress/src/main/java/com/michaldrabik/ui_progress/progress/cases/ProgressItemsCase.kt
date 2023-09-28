@@ -54,13 +54,13 @@ class ProgressItemsCase @Inject constructor(
     withContext(dispatchers.IO) {
       val nowUtc = nowUtc()
 
-      val settings = settingsRepository.load()
       val dateFormat = dateFormatProvider.loadFullHourFormat()
       val language = translationsRepository.getLanguage()
       val nextEpisodeType = settingsRepository.progressNextEpisodeType
-      val upcomingEnabled = settings.progressUpcomingEnabled
-      val upcomingLimit = nowUtc.plusDays(settingsRepository.progressUpcomingDays).toMillis()
-      val filtersItem = loadFiltersItem(upcomingEnabled)
+      val progressUpcomingDays = settingsRepository.progressUpcomingDays
+      val isUpcomingEnabled = progressUpcomingDays > 0
+      val upcomingLimit = nowUtc.plusDays(progressUpcomingDays).toMillis()
+      val filtersItem = loadFiltersItem(isUpcomingEnabled)
       val spoilers = settingsRepository.spoilers.getAll()
 
       val items = showsRepository.myShows.loadAll()
@@ -95,7 +95,7 @@ class ProgressItemsCase @Inject constructor(
         }.awaitAll()
 
       val validItems = items
-        .filter { if (upcomingEnabled) true else !it.isUpcoming }
+        .filter { if (isUpcomingEnabled) true else !it.isUpcoming }
         .filter { it.episode?.firstAired != null }
 
       val filledItems = validItems

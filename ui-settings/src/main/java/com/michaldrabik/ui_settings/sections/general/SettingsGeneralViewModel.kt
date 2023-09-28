@@ -82,14 +82,6 @@ class SettingsGeneralViewModel @Inject constructor(
     }
   }
 
-  fun enableProgressUpcoming(enable: Boolean, context: Context) {
-    viewModelScope.launch {
-      mainCase.enableProgressUpcoming(enable, context)
-      refreshSettings()
-      Analytics.logSettingsProgressUpcoming(enable)
-    }
-  }
-
   fun enableMovies(enable: Boolean) {
     viewModelScope.launch {
       mainCase.enableMovies(enable)
