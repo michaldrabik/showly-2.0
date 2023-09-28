@@ -305,6 +305,12 @@ object Analytics {
     }
   }
 
+  fun logSettingsProgressUpcomingDays(value: Long) {
+    firebaseAnalytics.logEvent("settings_progress_upcoming_days") {
+      param("value", value)
+    }
+  }
+
   fun logSettingsDateFormat(value: String) {
     firebaseAnalytics.logEvent("settings_date_format") {
       param("value", value.lowercase(ROOT))

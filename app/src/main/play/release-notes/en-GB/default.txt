@@ -1,4 +1,3 @@
-* Added Paramount and Peacock to networks filters
-* Update compatibility to Android 13
-* Settings simplifications
+* You can now configure (via Settings) days range for Progress -> Upcoming section
+* Updated billing library to latest version
 * Bugfixes

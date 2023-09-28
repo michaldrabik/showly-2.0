@@ -5,7 +5,7 @@ import android.content.Context.MODE_PRIVATE
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-const val DATABASE_VERSION = 37
+const val DATABASE_VERSION = 38
 const val DATABASE_NAME = "SHOWLY2_DB_2"
 
 class Migrations(context: Context) {
@@ -728,6 +728,24 @@ class Migrations(context: Context) {
     }
   }
 
+  private val migration38 = object : Migration(37, 38) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+      with(database) {
+        val cursor = database.query("SELECT progress_upcoming_enabled FROM settings")
+        while (cursor.moveToNext()) {
+          val isEnabled = cursor.getInt(cursor.getColumnIndexOrThrow("progress_upcoming_enabled"))
+          if (isEnabled != 1) {
+            val preferences = context.applicationContext.getSharedPreferences("PREFERENCES_MISC", MODE_PRIVATE)
+            preferences.edit().apply {
+              putLong("PROGRESS_UPCOMING_DAYS", 0)
+              apply()
+            }
+          }
+        }
+      }
+    }
+  }
+
   fun getAll() = listOf(
     migration2,
     migration3,
@@ -764,6 +782,7 @@ class Migrations(context: Context) {
     migration34,
     migration35,
     migration36,
-    migration37
+    migration37,
+    migration38
   )
 }

@@ -19,4 +19,5 @@ data class SettingsGeneralUiState(
   val streamingsEnabled: Boolean = true,
   val restartApp: Boolean = false,
   val progressNextType: ProgressNextEpisodeType? = null,
+  val progressUpcomingDays: Long? = null,
 )

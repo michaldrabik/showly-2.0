@@ -261,6 +261,7 @@ class FollowedShowsFragment :
   }
 
   override fun onTabReselected() {
+    if (view == null) return
     resetTranslations(duration = 0)
     binding.followedShowsPager.nextPage()
     childFragmentManager.fragments.forEach {

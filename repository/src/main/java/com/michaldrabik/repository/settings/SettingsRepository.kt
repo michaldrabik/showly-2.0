@@ -56,6 +56,7 @@ class SettingsRepository @Inject constructor(
     private const val USER_ID = "KEY_USER_ID"
     private const val INSTALL_TIMESTAMP = "INSTALL_TIMESTAMP"
     private const val PROGRESS_UPCOMING_COLLAPSED = "PROGRESS_UPCOMING_COLLAPSED"
+    private const val PROGRESS_UPCOMING_DAYS = "PROGRESS_UPCOMING_DAYS"
     private const val PROGRESS_ON_HOLD_COLLAPSED = "PROGRESS_ON_HOLD_COLLAPSED"
     private const val PROGRESS_NEXT_EPISODE_TYPE = "PROGRESS_NEXT_EPISODE_TYPE"
     private const val NEWS_FILTERS = "NEWS_FILTERS"
@@ -94,6 +95,7 @@ class SettingsRepository @Inject constructor(
   var country by StringPreference(preferences, COUNTRY, DEFAULT_COUNTRY)
   var dateFormat by StringPreference(preferences, DATE_FORMAT, DEFAULT_DATE_FORMAT)
 
+  var progressUpcomingDays by LongPreference(preferences, PROGRESS_UPCOMING_DAYS, 90)
   var isProgressUpcomingCollapsed by BooleanPreference(preferences, PROGRESS_UPCOMING_COLLAPSED)
   var isProgressOnHoldCollapsed by BooleanPreference(preferences, PROGRESS_ON_HOLD_COLLAPSED)
   var progressNextEpisodeType by EnumPreference(preferences, PROGRESS_NEXT_EPISODE_TYPE, LAST_WATCHED, ProgressNextEpisodeType::class.java)

@@ -43,6 +43,7 @@ class SettingsGeneralViewModel @Inject constructor(
   private val premiumState = MutableStateFlow(false)
   private val restartAppState = MutableStateFlow(false)
   private val progressTypeState = MutableStateFlow<ProgressNextEpisodeType?>(null)
+  private val progressUpcomingDaysState = MutableStateFlow<Long?>(null)
 
   fun loadSettings() {
     viewModelScope.launch {
@@ -61,6 +62,7 @@ class SettingsGeneralViewModel @Inject constructor(
     streamingsEnabledState.value = mainCase.isStreamingsEnabled()
     premiumState.value = mainCase.isPremium()
     progressTypeState.value = mainCase.getProgressType()
+    progressUpcomingDaysState.value = mainCase.getProgressUpcomingDays()
     restartAppState.value = restartApp
   }
 
@@ -148,6 +150,14 @@ class SettingsGeneralViewModel @Inject constructor(
     Analytics.logSettingsProgressType(type.name)
   }
 
+  fun setProgressUpcomingDays(days: Long) {
+    viewModelScope.launch {
+      mainCase.setProgressUpcomingDays(days)
+      refreshSettings()
+    }
+    Analytics.logSettingsProgressUpcomingDays(days)
+  }
+
   fun setDateFormat(format: AppDateFormat, context: Context) {
     viewModelScope.launch {
       mainCase.setDateFormat(format, context)
@@ -168,7 +178,8 @@ class SettingsGeneralViewModel @Inject constructor(
     streamingsEnabledState,
     progressTypeState,
     restartAppState,
-  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ->
+    progressUpcomingDaysState
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12 ->
     SettingsGeneralUiState(
       settings = s1,
       isPremium = s2,
@@ -180,7 +191,8 @@ class SettingsGeneralViewModel @Inject constructor(
       newsEnabled = s8,
       streamingsEnabled = s9,
       progressNextType = s10,
-      restartApp = s11
+      restartApp = s11,
+      progressUpcomingDays = s12
     )
   }.stateIn(
     scope = viewModelScope,
