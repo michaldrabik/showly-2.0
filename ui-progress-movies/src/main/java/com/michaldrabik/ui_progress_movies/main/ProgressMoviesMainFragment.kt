@@ -288,6 +288,7 @@ class ProgressMoviesMainFragment :
   override fun onShowsMoviesSyncFinished() = viewModel.loadProgress()
 
   override fun onTabReselected() {
+    if (view == null) return
     resetTranslations(duration = 0)
     binding.progressMoviesPager.nextPage()
     onScrollReset()

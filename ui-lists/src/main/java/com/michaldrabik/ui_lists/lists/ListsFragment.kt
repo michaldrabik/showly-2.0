@@ -366,6 +366,7 @@ class ListsFragment :
   }
 
   override fun onTabReselected() {
+    if (view == null) return
     resetTranslations()
     binding.fragmentListsRecycler.smoothScrollToPosition(0)
   }

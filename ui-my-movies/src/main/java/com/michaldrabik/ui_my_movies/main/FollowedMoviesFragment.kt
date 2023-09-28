@@ -252,6 +252,7 @@ class FollowedMoviesFragment :
   }
 
   override fun onTabReselected() {
+    if (view == null) return
     resetTranslations(duration = 0)
     binding.followedMoviesPager.nextPage()
     childFragmentManager.fragments.forEach {
