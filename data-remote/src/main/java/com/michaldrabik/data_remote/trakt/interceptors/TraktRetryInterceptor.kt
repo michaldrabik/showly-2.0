@@ -1,8 +1,6 @@
 package com.michaldrabik.data_remote.trakt.interceptors
 
-import android.os.Bundle
-import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
@@ -27,13 +25,10 @@ class TraktRetryInterceptor @Inject constructor() : Interceptor {
 
       while (response.code == 429 && tryCount < 3) {
         Timber.w("429 Too Many Requests. Retrying...")
-
-        Firebase.analytics.logEvent(
-          "trakt_too_many_requests_retry",
-          Bundle().apply {
-            putString("url", response.request.url.toString())
-          }
-        )
+        FirebaseCrashlytics.getInstance().run {
+          setCustomKey("Source", "TraktRetryInterceptor")
+          recordException(Error("429 Too Many Requests. Retrying..."))
+        }
 
         delay(3000)
 
@@ -44,12 +39,10 @@ class TraktRetryInterceptor @Inject constructor() : Interceptor {
 
       if (response.code == 429) {
         Timber.e(Throwable("429 Too Many Requests"))
-        Firebase.analytics.logEvent(
-          "trakt_too_many_requests",
-          Bundle().apply {
-            putString("url", response.request.url.toString())
-          }
-        )
+        FirebaseCrashlytics.getInstance().run {
+          setCustomKey("Source", "TraktRetryInterceptor")
+          recordException(Error("429 Too Many Requests"))
+        }
       }
 
       response
