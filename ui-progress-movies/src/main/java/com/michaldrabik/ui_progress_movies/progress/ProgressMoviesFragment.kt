@@ -133,7 +133,9 @@ class ProgressMoviesFragment :
   }
 
   private fun setupOverscroll() {
-    if (overscroll != null) return
+    if (overscroll != null || view == null) {
+      return
+    }
     overscroll = VerticalOverScrollBounceEffectDecorator(
       TopOverscrollAdapter(binding.progressMoviesMainRecycler),
       1F,

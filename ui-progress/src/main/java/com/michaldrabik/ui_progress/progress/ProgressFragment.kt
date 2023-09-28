@@ -175,7 +175,9 @@ class ProgressFragment :
   }
 
   private fun setupOverscroll() {
-    if (overscroll != null) return
+    if (overscroll != null || view == null) {
+      return
+    }
     val adapt = TopOverscrollAdapter(binding.progressRecycler)
     overscroll = VerticalOverScrollBounceEffectDecorator(
       adapt,
