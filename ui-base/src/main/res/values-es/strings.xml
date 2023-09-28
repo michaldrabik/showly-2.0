@@ -34,6 +34,7 @@
   <string name="textPleaseWait">Espera, por favor…</string>
   <string name="textRate">Calificar</string>
   <string name="textLink">Enlace</string>
+  <string name="textDisabled">Deshabilitado</string>
   <string name="textRateSaved">Tu calificación se ha guardado.</string>
   <string name="textRateRemoved">Tu calificación ha sido eliminada.</string>
   <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
