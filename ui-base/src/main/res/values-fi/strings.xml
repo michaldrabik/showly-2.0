@@ -37,6 +37,7 @@
   <string name="textDisabled">Ei käytössä</string>
   <string name="textRateSaved">Arviosi tallennettiin.</string>
   <string name="textRateRemoved">Arviosi poistettiin.</string>
+  <string name="textDays">%1$d päivää</string>
   <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
     <item quantity="one">%d jäljellä</item>
     <item quantity="other">%d jäljellä</item>
