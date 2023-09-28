@@ -50,10 +50,6 @@ class ProgressItemsCase @Inject constructor(
   private val sorter: ProgressItemsSorter,
 ) {
 
-  companion object {
-    private const val UPCOMING_MONTHS_LIMIT = 3L
-  }
-
   suspend fun loadItems(searchQuery: String): List<ProgressListItem> =
     withContext(dispatchers.IO) {
       val nowUtc = nowUtc()
@@ -61,9 +57,9 @@ class ProgressItemsCase @Inject constructor(
       val settings = settingsRepository.load()
       val dateFormat = dateFormatProvider.loadFullHourFormat()
       val language = translationsRepository.getLanguage()
-      val upcomingEnabled = settings.progressUpcomingEnabled
-      val upcomingLimit = nowUtc.plusMonths(UPCOMING_MONTHS_LIMIT).toMillis()
       val nextEpisodeType = settingsRepository.progressNextEpisodeType
+      val upcomingEnabled = settings.progressUpcomingEnabled
+      val upcomingLimit = nowUtc.plusDays(settingsRepository.progressUpcomingDays).toMillis()
       val filtersItem = loadFiltersItem(upcomingEnabled)
       val spoilers = settingsRepository.spoilers.getAll()
 
