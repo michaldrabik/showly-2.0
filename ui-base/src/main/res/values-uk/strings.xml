@@ -37,6 +37,7 @@
   <string name="textDisabled">Вимкнено</string>
   <string name="textRateSaved">Ваша оцінка була збережена.</string>
   <string name="textRateRemoved">Ваша оцінка була видалена.</string>
+  <string name="textDays">%1$d днів</string>
   <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
     <item quantity="one">%d залишився</item>
     <item quantity="few">%d залишилось</item>
