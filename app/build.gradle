@@ -63,14 +63,23 @@ android {
 
   buildTypes {
     debug {
+      applicationIdSuffix '.debug'
+      versionNameSuffix '-debug'
       minifyEnabled true
       proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-      versionNameSuffix '-debug'
+      manifestPlaceholders = [
+          appIcon: "@mipmap/ic_launcher_gray",
+          appIconRound: "@mipmap/ic_launcher_round_gray"
+      ]
     }
     release {
       minifyEnabled true
       signingConfig signingConfigs.release
       proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+      manifestPlaceholders = [
+          appIcon: "@mipmap/ic_launcher",
+          appIconRound: "@mipmap/ic_launcher_round"
+      ]
       firebaseAppDistribution {
         appId = "1:437530387781:android:7b5c191b8bc08486448a2c"
         serviceCredentialsFile = rootProject.file("app/firebase-service-key.json")
