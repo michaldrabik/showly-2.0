@@ -67,7 +67,7 @@
   <string name="textSettingsStreamingServicesMessage">Näytä suoratoistopalveluiden tiedot.</string>
   <string name="textSettingsProgressNextEpisodeTitle">Seuraava jakso</string>
   <string name="textSettingsProgressNextEpisodeMessage">Seuraavan jakson laskentaperuste:</string>
-  <string name="textSettingsSpoilers">Juonipaljastuksia</string>
+  <string name="textSettingsSpoilers">Juonipaljastukset</string>
   <string name="textSettingsSpoilersShows">Sarjat</string>
   <string name="textSettingsSpoilersShowsSummary">Hallitse sarjojen jounipaljastusasetuksia.</string>
   <string name="textSettingsSpoilersShowsOverviewsMyTitle">Omat sarjat</string>
