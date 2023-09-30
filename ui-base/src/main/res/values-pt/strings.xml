@@ -34,8 +34,10 @@
   <string name="textPleaseWait">Por favor, aguarde…</string>
   <string name="textRate">Avaliar</string>
   <string name="textLink">Link</string>
+  <string name="textDisabled">Desativado</string>
   <string name="textRateSaved">Sua avaliação foi salva.</string>
   <string name="textRateRemoved">Sua avaliação foi removida.</string>
+  <string name="textDays">%1$d dias</string>
   <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
     <item quantity="one">%d restante</item>
     <item quantity="other">%d restantes</item>
@@ -93,6 +95,7 @@
   <string name="textTraktSyncErrorFull">A sincronização do Trakt.tv falhou. Por favor, verifique sua conexão com a internet e tente novamente ou entre em contato conosco se isso continuar acontecendo.</string>
   <string name="textTraktQuickSyncError">Sincronização instantânea falhou.</string>
   <string name="textTraktQuickSyncErrorFull">A sincronização instantânea falhou. Tentaremos de novo na próxima vez que você abrir o aplicativo. Por favor, verifique sua conexão com a internet.</string>
+  <string name="textTraktNotificationsRationale">Por favor, conceda à aplicação permissão para exibir informações sobre o progresso e os resultados da sincronização.\n\nGostaria de fazê-lo agora?</string>
   <string name="textRemoveFromTrakt">Remover do Trakt.tv?</string>
   <string name="textRemoveFromTraktHidden">Você gostaria de remover este item da sua conta Trakt.tv \'Oculto\'?</string>
   <string name="textRemoveFromTraktWatchlist">Você gostaria de remover este item da sua conta do Trakt.tv \"Watchlist\"?</string>
