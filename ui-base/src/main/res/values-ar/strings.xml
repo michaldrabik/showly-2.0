@@ -34,8 +34,10 @@
   <string name="textPleaseWait">الرجاء الانتظار…</string>
   <string name="textRate">قيم</string>
   <string name="textLink">إفتح في</string>
+  <string name="textDisabled">تعطيل</string>
   <string name="textRateSaved">حُفظ تقييمك.</string>
   <string name="textRateRemoved">تم حذف تقييمك.</string>
+  <string name="textDays">%1$d يوم</string>
   <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
     <item quantity="zero">بقي %d</item>
     <item quantity="one">بقي %d</item>

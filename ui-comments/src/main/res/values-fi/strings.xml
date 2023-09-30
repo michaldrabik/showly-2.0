@@ -5,7 +5,7 @@
   <string name="textComments2">Kommentit</string>
   <string name="textNoComments">Ei kommentteja.</string>
   <string name="textCommentDisclaimer">Vain englanniksi, 5+ sanaa, kunnioita muita, merkitse juonipaljastukset!</string>
-  <string name="textSpoilers">Juonipaljastuksia</string>
+  <string name="textSpoilers">Juonipaljastukset</string>
   <string name="textCommentPosted">Kommenttisi julkaistiin.</string>
   <string name="textCommentDeleted">Kommenttisi poistettiin.</string>
   <string name="textCommentConfirmDeleteTitle">Poista kommentti</string>

@@ -34,8 +34,10 @@
   <string name="textPleaseWait">Lütfen bekleyin…</string>
   <string name="textRate">Oy Ver</string>
   <string name="textLink">Link</string>
+  <string name="textDisabled">Devre dışı</string>
   <string name="textRateSaved">Oyunuz kaydedildi.</string>
   <string name="textRateRemoved">Verdiğiniz oy kaldırıldı.</string>
+  <string name="textDays">%1$d gün</string>
   <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
     <item quantity="one">%d kaldı</item>
     <item quantity="other">%d kaldı</item>

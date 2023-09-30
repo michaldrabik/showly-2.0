@@ -34,8 +34,10 @@
   <string name="textPleaseWait">Proszę czekać…</string>
   <string name="textRate">Oceń</string>
   <string name="textLink">Link</string>
+  <string name="textDisabled">Wyłączone</string>
   <string name="textRateSaved">Ocena została zapisana.</string>
   <string name="textRateRemoved">Ocena została usunięta.</string>
+  <string name="textDays">%1$d dni</string>
   <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
     <item quantity="one">%d do obejrzenia</item>
     <item quantity="few">%d do obejrzenia</item>
