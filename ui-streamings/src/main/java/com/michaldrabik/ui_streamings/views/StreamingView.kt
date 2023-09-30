@@ -23,6 +23,9 @@ class StreamingView : FrameLayout {
     private const val NETFLIX_FREE = "Netflix Free"
     private const val GOOGLE_PLAY = "Google Play Movies"
     private const val YOU_TUBE = "YouTube"
+    private const val AMAZON = "Amazon Prime Video"
+    private const val DISNEY = "Disney Plus"
+    private const val HBO = "HBO Max"
   }
 
   private val binding = ViewStreamingBinding.inflate(LayoutInflater.from(context), this)
@@ -47,6 +50,9 @@ class StreamingView : FrameLayout {
         NETFLIX, NETFLIX_FREE -> openWebUrl("https://www.netflix.com/search/${streaming.mediaName}")
         GOOGLE_PLAY -> openWebUrl("https://play.google.com/store/search?c=movies&gl=${streaming.countryCode}&q=${streaming.mediaName}")
         YOU_TUBE -> openWebUrl("https://www.youtube.com/results?search_query=${streaming.mediaName} movie")
+        AMAZON -> openWebUrl("https://www.primevideo.com/search?phrase=${streaming.mediaName}")
+        DISNEY -> openWebUrl("https://www.disneyplus.com/")
+        HBO -> openWebUrl("https://play.hbomax.com/")
         else -> openWebUrl(streaming.link)
       }
     }
