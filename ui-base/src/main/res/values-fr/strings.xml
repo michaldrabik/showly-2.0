@@ -37,6 +37,7 @@
   <string name="textDisabled">Désactivé</string>
   <string name="textRateSaved">Votre note a été enregistrée.</string>
   <string name="textRateRemoved">Votre note a été supprimée.</string>
+  <string name="textDays">%1$d jours</string>
   <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
     <item quantity="one">%d restant</item>
     <item quantity="other">%d restants</item>
