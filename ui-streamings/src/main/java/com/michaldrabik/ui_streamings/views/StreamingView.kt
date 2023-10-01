@@ -48,7 +48,7 @@ class StreamingView : FrameLayout {
     binding.viewStreamingContent.onClick {
       when (streaming.name) {
         NETFLIX, NETFLIX_FREE -> openWebUrl("https://www.netflix.com/search/${streaming.mediaName}")
-        GOOGLE_PLAY -> openWebUrl("https://play.google.com/store/search?c=movies&gl=${streaming.countryCode}&q=${streaming.mediaName}")
+        GOOGLE_PLAY -> openWebUrl("https://tv.google.com/")
         YOU_TUBE -> openWebUrl("https://www.youtube.com/results?search_query=${streaming.mediaName} movie")
         AMAZON -> openWebUrl("https://www.primevideo.com/search?phrase=${streaming.mediaName}")
         DISNEY -> openWebUrl("https://www.disneyplus.com/")
