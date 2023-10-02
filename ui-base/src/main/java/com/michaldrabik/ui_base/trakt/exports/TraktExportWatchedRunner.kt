@@ -15,6 +15,7 @@ import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.trakt.TraktSyncRunner
+import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -46,6 +47,7 @@ class TraktExportWatchedRunner @Inject constructor(
     try {
       exportWatched()
     } catch (error: Throwable) {
+      rethrowCancellation(error)
       if (retryCount.getAndIncrement() < MAX_EXPORT_RETRY_COUNT) {
         Timber.w("exportWatched failed. Will retry in $RETRY_DELAY_MS ms... $error")
         delay(RETRY_DELAY_MS)
@@ -94,13 +96,41 @@ class TraktExportWatchedRunner @Inject constructor(
     if (episodes.isNotEmpty() || movies.isNotEmpty()) {
       Analytics.logExportHistory(episodes.size, movies.size, retryCount.get())
       val request = SyncExportRequest(episodes = episodes, movies = movies)
-      remoteSource.trakt.postSyncWatched(request)
+      postExportWatched(request)
     } else {
       Timber.d("Nothing to export. Skipping...")
     }
 
     delay(TRAKT_LIMIT_DELAY_MS)
     exportHidden()
+  }
+
+  private suspend fun postExportWatched(
+    request: SyncExportRequest,
+  ) {
+    val episodes = request.episodes.toList()
+    val movies = request.movies.toList()
+
+    if (episodes.isEmpty() && movies.isEmpty()) {
+      Timber.d("All batches exported.")
+      return
+    }
+
+    val batchRequest = request.copy(
+      episodes = episodes.take(1000),
+      movies = movies.take(500)
+    )
+
+    Timber.d("Exporting batch ${batchRequest.episodes.size} episodes & ${batchRequest.movies.size} movies...")
+    remoteSource.trakt.postSyncWatched(batchRequest)
+
+    delay(TRAKT_LIMIT_DELAY_MS)
+    postExportWatched(
+      request.copy(
+        episodes = request.episodes.filter { it !in batchRequest.episodes },
+        movies = request.movies.filter { it !in batchRequest.movies }
+      )
+    )
   }
 
   private suspend fun exportHidden() = coroutineScope {
@@ -165,7 +195,7 @@ class TraktExportWatchedRunner @Inject constructor(
     showsIds: List<Long>,
     allEpisodes: MutableList<Episode> = mutableListOf(),
   ): List<Episode> {
-    val batch = showsIds.take(500)
+    val batch = showsIds.take(250)
     if (batch.isEmpty()) return allEpisodes
 
     val episodes = localSource.episodes.getAllWatchedForShows(batch)
