@@ -176,7 +176,14 @@ class EpisodesManager @Inject constructor(
         var isAnyEpisodeUnwatched = false
 
         season.episodes.forEach { newEpisode ->
-          val localEpisode = localEpisodes.find { it.episodeNumber == newEpisode.number && it.seasonNumber == newEpisode.season }
+          var localEpisode = localEpisodes.find {
+            it.episodeNumber == newEpisode.number &&
+              it.seasonNumber == newEpisode.season
+          }
+          if (localEpisode == null) {
+            // Double check by Trakt ID as season/episode combination might be old.
+            localEpisode = localEpisodes.find { it.idTrakt == newEpisode.ids.trakt.id }
+          }
 
           val lastWatchedAt = localEpisode?.lastWatchedAt
           val isWatched = localEpisode?.isWatched ?: false
