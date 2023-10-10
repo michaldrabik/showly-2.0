@@ -2,6 +2,7 @@ package com.michaldrabik.data_remote.trakt.interceptors
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.data_remote.token.TokenProvider
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
 import okhttp3.Request
@@ -44,8 +45,10 @@ class TraktAuthenticator @Inject constructor(
           .header("Authorization", "Bearer ${refreshedTokens.access_token}")
           .build()
       } catch (error: Throwable) {
-        Timber.d(error)
-        FirebaseCrashlytics.getInstance().run { recordException(error) }
+        Timber.e(error)
+        if (error !is CancellationException && error.message != "Canceled") {
+          FirebaseCrashlytics.getInstance().run { recordException(error) }
+        }
         null
       }
     }
