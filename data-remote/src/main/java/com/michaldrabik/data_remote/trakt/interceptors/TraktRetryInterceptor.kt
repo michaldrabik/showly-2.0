@@ -27,7 +27,7 @@ class TraktRetryInterceptor @Inject constructor() : Interceptor {
         Timber.w("429 Too Many Requests. Retrying...")
         FirebaseCrashlytics.getInstance().run {
           setCustomKey("Source", "TraktRetryInterceptor")
-          setCustomKey("URL", request.toString())
+          setCustomKey("URL", "$${request.method} ${request.url} ${request.body?.toString()}")
           recordException(Error("429 Too Many Requests. Retrying..."))
         }
 
