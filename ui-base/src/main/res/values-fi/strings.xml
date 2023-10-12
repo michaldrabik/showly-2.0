@@ -125,7 +125,7 @@
   <string name="errorTraktAuthorization">Trakt.tv-tilin valtuutus epäonnistui.\nKirjaudu sisään ja yritä uudelleen.</string>
   <string name="errorSeasonsNotLoaded">Odota kun tuotantokausien tiedot ladataan.</string>
   <string name="errorEpisodeNotAired">Jaksoa ei ole vielä esitetty.</string>
-  <string name="errorCouldNotLoadDiscover">Etsinntäosion lataus ei juuri nyt onnistunut.\nOta yhteyttä, jos tämä jatkuu.</string>
+  <string name="errorCouldNotLoadDiscover">Etsintäosion lataus ei juuri nyt onnistunut.\nOta yhteyttä, jos tämä jatkuu.</string>
   <string name="errorMalformedShow">Sarjaa ei näyttäisi enää olevan Trakt.tv:n tietokannassa tai se on kaksoiskappale.\n\nPoista se sovelluksesta napauttamalla \'OK\'.</string>
   <string name="errorMalformedMovie">Näyttäisi siltä, ettei elokuvaa enää ole Trakt.tv:n tietokannassa tai se on kaksoiskappale.\n\nPoista se sovelluksesta napauttamalla \'OK\'.</string>
   <string name="errorCouldNotLoadShow">Sarjan tietoja ei voitu ladata.\nOta meihin yhteyttä, jos tämä jatkuu.</string>
