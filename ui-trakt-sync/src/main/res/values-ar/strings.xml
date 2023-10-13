@@ -4,8 +4,8 @@
   <string name="textTraktSyncStarted">بدأت المزامنة، ستستمر المزامنة في الخلفية.</string>
   <string name="textTraktSyncStart">المزامنة الآن</string>
   <string name="textTraktSyncSchedule">مزامنة مجدولة</string>
-  <string name="textTraktSyncFromTraktToShowly">إستيراد من Trakt.tv ل Showly</string>
-  <string name="textTraktSyncFromShowlyToTrakt">رفع من Showly ل Trakt.tv</string>
+  <string name="textTraktSyncFromTraktToShowly">إستيراد من Trakt.tv إلى Showly</string>
+  <string name="textTraktSyncFromShowlyToTrakt">تصدير من Showly إلى Trakt.tv</string>
   <string name="textTraktSyncDescription">مزامنة مستوى تقدمك وقائمة مشاهدتك في Trakt.tv مع Showly.\n\nلن يتم حذف أي شيء في التطبيق، سيتم إضافة العناصر الغير موجودة فقط.</string>
   <string name="textTraktSyncLastTimestamp">وقت آخر مزامنة: %s</string>
   <string name="textSettingsTraktAuthorizeTitle">مصادقة Trakt.tv</string>
