@@ -27,9 +27,7 @@ class NewsAdapter(
     }
   }
 
-  fun setItems(
-    newItems: List<NewsListItem>,
-  ) {
+  fun setItems(newItems: List<NewsListItem>) {
     with(asyncDiffer) {
       removeListListener(this@NewsAdapter)
       addListListener(this@NewsAdapter)
