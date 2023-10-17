@@ -40,7 +40,7 @@
     android:id="@+id/discoverMoviesTabsView"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/spaceMedium"
+    android:layout_marginStart="@dimen/screenMarginHorizontal"
     android:layout_marginTop="@dimen/collectionTabsMargin"
     app:layout_behavior="com.michaldrabik.ui_base.common.behaviour.ScrollableViewBehaviour"
     />
@@ -52,8 +52,8 @@
     android:layout_marginTop="@dimen/collectionFiltersMargin"
     android:clipChildren="false"
     android:clipToPadding="false"
-    android:paddingStart="@dimen/spaceMedium"
-    android:paddingEnd="@dimen/spaceMedium"
+    android:paddingStart="@dimen/screenMarginHorizontal"
+    android:paddingEnd="@dimen/screenMarginHorizontal"
     android:visibility="gone"
     app:layout_behavior="com.michaldrabik.ui_base.common.behaviour.ScrollableViewBehaviour"
     />
@@ -62,9 +62,9 @@
     android:id="@+id/discoverMoviesSearchView"
     android:layout_width="match_parent"
     android:layout_height="@dimen/searchViewHeight"
-    android:layout_marginLeft="@dimen/spaceMedium"
+    android:layout_marginLeft="@dimen/screenMarginHorizontal"
     android:layout_marginTop="@dimen/spaceSmall"
-    android:layout_marginRight="@dimen/spaceMedium"
+    android:layout_marginRight="@dimen/screenMarginHorizontal"
     />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

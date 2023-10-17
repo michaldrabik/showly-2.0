@@ -10,8 +10,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
@@ -21,12 +21,16 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
 import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.CalendarMode.PRESENT_FUTURE
 import com.michaldrabik.ui_model.CalendarMode.RECENTS
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarAdapter
+import com.michaldrabik.ui_progress.calendar.recycler.CalendarListItem
 import com.michaldrabik.ui_progress.databinding.FragmentCalendarBinding
+import com.michaldrabik.ui_progress.helpers.GRID_SPAN_SIZE
+import com.michaldrabik.ui_progress.helpers.ProgressLayoutManagerProvider
 import com.michaldrabik.ui_progress.helpers.TopOverscrollAdapter
 import com.michaldrabik.ui_progress.main.EpisodeCheckActionUiEvent
 import com.michaldrabik.ui_progress.main.ProgressMainFragment
@@ -56,7 +60,7 @@ class CalendarFragment :
   private val binding by viewBinding(FragmentCalendarBinding::bind)
 
   private var adapter: CalendarAdapter? = null
-  private var layoutManager: LinearLayoutManager? = null
+  private var layoutManager: LayoutManager? = null
   private var overscroll: IOverScrollDecor? = null
   private var statusBarHeight = 0
   private var overscrollEnabled = true
@@ -82,7 +86,16 @@ class CalendarFragment :
   }
 
   private fun setupRecycler() {
-    layoutManager = LinearLayoutManager(context, VERTICAL, false)
+    layoutManager = ProgressLayoutManagerProvider.provideLayoutManger(requireContext())
+    (layoutManager as? GridLayoutManager)?.run {
+      withSpanSizeLookup { position ->
+        when (adapter?.getItems()?.get(position)) {
+          is CalendarListItem.Header -> GRID_SPAN_SIZE
+          is CalendarListItem.Episode -> 1
+          else -> throw IllegalStateException()
+        }
+      }
+    }
     adapter = CalendarAdapter(
       itemClickListener = { requireMainFragment().openShowDetails(it.show) },
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) },
@@ -163,7 +176,8 @@ class CalendarFragment :
     }
 
     binding.progressCalendarRecycler.doOnApplyWindowInsets { view, insets, _, _ ->
-      statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+      val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
+      statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top + tabletOffset
       view.updatePadding(top = statusBarHeight + dimenToPx(recyclerPadding))
       (binding.progressCalendarOverscrollIcon.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarHeight + dimenToPx(overscrollPadding))

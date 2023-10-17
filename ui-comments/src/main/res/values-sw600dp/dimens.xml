@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="recyclerPaddingHorizontal">24dp</dimen>
+  <dimen name="fabButtonPadding">24dp</dimen>
+  <dimen name="fabButtonCommentsPadding">96dp</dimen>
+</resources>

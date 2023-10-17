@@ -36,7 +36,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class DiscoverViewModel @Inject constructor(
+internal class DiscoverViewModel @Inject constructor(
   private val showsCase: DiscoverShowsCase,
   private val filtersCase: DiscoverFiltersCase,
   private val twitterCase: DiscoverTwitterCase,

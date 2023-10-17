@@ -3,8 +3,6 @@
   <dimen name="myShowsTabsTranslation">-7dp</dimen>
   <dimen name="myShowsSearchViewPadding">104dp</dimen>
   <dimen name="myShowsTabsViewPadding">136dp</dimen>
-  <dimen name="myShowsHeaderGridPadding">3dp</dimen>
-  <dimen name="myShowsRecentsGridPadding">-1dp</dimen>
 
   <dimen name="myShowsSearchLocalViewPadding">150dp</dimen>
   <dimen name="myShowsSearchLocalOffset">40dp</dimen>
@@ -30,6 +28,9 @@
   <dimen name="collectionImageWidth">80dp</dimen>
   <dimen name="collectionImageCompactHeight">64dp</dimen>
   <dimen name="collectionImageCompactWidth">43dp</dimen>
+  <dimen name="collectionImageMargin">23dp</dimen>
+  <dimen name="collectionImageTitleMargin">4dp</dimen>
+  <dimen name="collectionImageTitleSize">11sp</dimen>
   <dimen name="collectionFiltersPaddingHorizontal">3dp</dimen>
   <dimen name="collectionFiltersPaddingBottom">5dp</dimen>
 </resources>

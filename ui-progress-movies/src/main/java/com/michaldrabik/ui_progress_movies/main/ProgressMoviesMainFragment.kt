@@ -166,7 +166,8 @@ class ProgressMoviesMainFragment :
   private fun setupStatusBar() {
     with(binding) {
       progressMoviesRoot.doOnApplyWindowInsets { _, insets, _, _ ->
-        val statusBarSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+        val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
+        val statusBarSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top + tabletOffset
         (progressMoviesSearchView.layoutParams as ViewGroup.MarginLayoutParams)
           .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceMedium))
         (progressMoviesModeTabs.layoutParams as ViewGroup.MarginLayoutParams)

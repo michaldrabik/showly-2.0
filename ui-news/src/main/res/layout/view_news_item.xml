@@ -15,10 +15,6 @@
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
     android:clipToPadding="false"
-    android:paddingStart="@dimen/newsItemPaddingHorizontal"
-    android:paddingTop="@dimen/spaceSmall"
-    android:paddingEnd="@dimen/newsItemPaddingHorizontal"
-    android:paddingBottom="@dimen/spaceSmall"
     >
 
     <ImageView

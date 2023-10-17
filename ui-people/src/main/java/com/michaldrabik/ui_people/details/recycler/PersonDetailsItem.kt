@@ -23,7 +23,7 @@ sealed class PersonDetailsItem {
   data class MainInfo(
     val person: Person,
     val dateFormat: DateTimeFormatter?,
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
   ) : PersonDetailsItem()
 
   data class MainBio(
@@ -63,15 +63,15 @@ sealed class PersonDetailsItem {
     val translation: Translation?,
     val spoilers: SpoilersSettings,
     val moviesEnabled: Boolean,
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
   ) : PersonDetailsItem() {
     override fun getId() = "${movie.traktId}movie"
     override fun getReleaseDate() = movie.released
   }
 
   data class CreditsFiltersItem(
-    val filters: List<Mode>
+    val filters: List<Mode>,
   ) : PersonDetailsItem()
 
-  object CreditsLoadingItem : PersonDetailsItem()
+  data object CreditsLoadingItem : PersonDetailsItem()
 }

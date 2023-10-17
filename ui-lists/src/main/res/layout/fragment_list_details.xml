@@ -18,7 +18,9 @@
     android:clipChildren="false"
     android:clipToPadding="false"
     android:overScrollMode="never"
+    android:paddingStart="@dimen/screenMarginHorizontal"
     android:paddingTop="@dimen/listDetailsRecyclerTopPadding"
+    android:paddingEnd="@dimen/screenMarginHorizontal"
     android:paddingBottom="@dimen/spaceSmall"
     />
 
@@ -26,9 +28,9 @@
     android:id="@+id/fragmentListDetailsFiltersView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/spaceMedium"
+    android:layout_marginStart="@dimen/screenMarginHorizontal"
     android:layout_marginTop="@dimen/listDetailsChipsTopPadding"
-    android:layout_marginEnd="@dimen/spaceMedium"
+    android:layout_marginEnd="@dimen/screenMarginHorizontal"
     android:visibility="gone"
     app:layout_behavior="com.michaldrabik.ui_base.common.behaviour.ScrollableViewBehaviour"
     tools:visibility="visible"

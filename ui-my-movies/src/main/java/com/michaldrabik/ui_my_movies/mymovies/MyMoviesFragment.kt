@@ -8,10 +8,11 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.michaldrabik.common.Config
+import com.michaldrabik.common.Config.LISTS_GRID_SPAN
+import com.michaldrabik.common.Config.LISTS_GRID_SPAN_TABLET
+import com.michaldrabik.common.Config.LISTS_STANDARD_GRID_SPAN_TABLET
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.ListViewMode.GRID
 import com.michaldrabik.ui_base.common.ListViewMode.GRID_TITLE
@@ -48,6 +49,9 @@ import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesAdapter
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem.Type.ALL_MOVIES_ITEM
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem.Type.HEADER
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem.Type.RECENT_MOVIES
+import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesLayoutManagerProvider
+import com.michaldrabik.ui_my_movies.mymovies.utilities.MyMoviesGridItemDecoration
+import com.michaldrabik.ui_my_movies.mymovies.utilities.MyMoviesListItemDecoration
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -64,7 +68,7 @@ class MyMoviesFragment :
   private val binding by viewBinding(FragmentMyMoviesBinding::bind)
 
   private var adapter: MyMoviesAdapter? = null
-  private var layoutManager: LinearLayoutManager? = null
+  private var layoutManager: LayoutManager? = null
   private var statusBarHeight = 0
   private var isSearching = false
 
@@ -82,7 +86,7 @@ class MyMoviesFragment :
   }
 
   private fun setupRecycler() {
-    layoutManager = LinearLayoutManager(context, VERTICAL, false)
+    layoutManager = MyMoviesLayoutManagerProvider.provideLayoutManger(requireContext(), LIST_NORMAL)
     adapter = MyMoviesAdapter(
       itemClickListener = { openMovieDetails(it.movie) },
       itemLongClickListener = { openMovieMenu(it.movie) },
@@ -101,8 +105,9 @@ class MyMoviesFragment :
       layoutManager = this@MyMoviesFragment.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
       setHasFixedSize(true)
+      addItemDecoration(MyMoviesGridItemDecoration(requireContext(), R.dimen.spaceSmall))
+      addItemDecoration(MyMoviesListItemDecoration(requireContext(), R.dimen.spaceSmall))
     }
-    setupRecyclerPaddings()
   }
 
   private fun setupStatusBar() {
@@ -113,24 +118,11 @@ class MyMoviesFragment :
         return
       }
       myMoviesRoot.doOnApplyWindowInsets { view, insets, _, _ ->
-        statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+        val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
+        statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top + tabletOffset
         view.updatePadding(top = statusBarHeight)
         myMoviesRecycler.updatePadding(top = dimenToPx(R.dimen.myMoviesTabsViewPadding))
       }
-    }
-  }
-
-  private fun setupRecyclerPaddings() {
-    if (layoutManager is GridLayoutManager) {
-      binding.myMoviesRecycler.updatePadding(
-        left = dimenToPx(R.dimen.gridRecyclerPadding),
-        right = dimenToPx(R.dimen.gridRecyclerPadding)
-      )
-    } else {
-      binding.myMoviesRecycler.updatePadding(
-        left = 0,
-        right = 0
-      )
     }
   }
 
@@ -140,17 +132,13 @@ class MyMoviesFragment :
         viewMode.let {
           if (adapter?.listViewMode != it) {
             val state = myMoviesRecycler.layoutManager?.onSaveInstanceState()
-            layoutManager = when (it) {
-              LIST_NORMAL, LIST_COMPACT -> LinearLayoutManager(requireContext(), VERTICAL, false)
-              GRID, GRID_TITLE -> GridLayoutManager(context, Config.LISTS_GRID_SPAN)
-            }
+            layoutManager = MyMoviesLayoutManagerProvider.provideLayoutManger(requireContext(), it)
             adapter?.listViewMode = it
-            myMoviesRecycler?.let { recycler ->
+            myMoviesRecycler.let { recycler ->
               recycler.layoutManager = layoutManager
               recycler.adapter = adapter
               recycler.layoutManager?.onRestoreInstanceState(state)
             }
-            setupRecyclerPaddings()
           }
         }
         items?.let {
@@ -159,8 +147,13 @@ class MyMoviesFragment :
           (layoutManager as? GridLayoutManager)?.withSpanSizeLookup { pos ->
             val item = adapter?.getItems()?.get(pos)
             when (item?.type) {
-              RECENT_MOVIES, HEADER -> Config.LISTS_GRID_SPAN
-              ALL_MOVIES_ITEM -> item.image.type.spanSize
+              RECENT_MOVIES, HEADER -> {
+                when (viewMode) {
+                  LIST_NORMAL, LIST_COMPACT -> if (isTablet) LISTS_STANDARD_GRID_SPAN_TABLET else LISTS_GRID_SPAN
+                  GRID, GRID_TITLE -> if (isTablet) LISTS_GRID_SPAN_TABLET else LISTS_GRID_SPAN
+                }
+              }
+              ALL_MOVIES_ITEM -> 1
               null -> throw Error("Unsupported span size!")
             }
           }

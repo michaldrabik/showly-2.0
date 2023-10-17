@@ -7,7 +7,6 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
-import androidx.core.view.updatePadding
 import com.michaldrabik.ui_base.common.ListViewMode
 import com.michaldrabik.ui_base.common.ListViewMode.GRID
 import com.michaldrabik.ui_base.common.ListViewMode.GRID_TITLE
@@ -45,7 +44,6 @@ class MyMovieHeaderView : FrameLayout {
     genresClickListener: () -> Unit,
     listModeClickListener: (() -> Unit)?,
   ) {
-    bindMargins(viewMode)
     bindLabel(item)
     with(binding) {
       myMoviesFilterChipsScroll.visibleIf(item.section == ALL)
@@ -90,35 +88,6 @@ class MyMovieHeaderView : FrameLayout {
     binding.myMoviesHeaderLabel.text = when (item.section) {
       RECENTS -> headerLabel
       else -> String.format(ENGLISH, "%s (%d)", headerLabel, item.itemCount)
-    }
-  }
-
-  private fun bindMargins(viewMode: ListViewMode) {
-    with(binding) {
-      when (viewMode) {
-        GRID, GRID_TITLE -> {
-          myMoviesFilterChipsScroll.updatePadding(
-            left = resources.getDimensionPixelSize(R.dimen.myMoviesHeaderGridPadding),
-            right = resources.getDimensionPixelSize(R.dimen.myMoviesHeaderGridPadding),
-            bottom = resources.getDimensionPixelSize(R.dimen.spaceTiny)
-          )
-          myMoviesHeaderLabel.updatePadding(
-            left = resources.getDimensionPixelSize(R.dimen.myMoviesHeaderGridPadding),
-            right = resources.getDimensionPixelSize(R.dimen.myMoviesHeaderGridPadding),
-          )
-        }
-        LIST_NORMAL, LIST_COMPACT -> {
-          myMoviesFilterChipsScroll.updatePadding(
-            left = resources.getDimensionPixelSize(R.dimen.spaceMedium),
-            right = resources.getDimensionPixelSize(R.dimen.spaceMedium),
-            bottom = 0
-          )
-          myMoviesHeaderLabel.updatePadding(
-            left = resources.getDimensionPixelSize(R.dimen.spaceMedium),
-            right = resources.getDimensionPixelSize(R.dimen.spaceMedium)
-          )
-        }
-      }
     }
   }
 }

@@ -8,6 +8,7 @@ import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.repository.settings.SettingsRepository
+import com.michaldrabik.ui_discover_movies.helpers.itemtype.ImageTypeProvider
 import com.michaldrabik.ui_discover_movies.recycler.DiscoverMovieListItem
 import com.michaldrabik.ui_model.DiscoverFilters
 import com.michaldrabik.ui_model.DiscoverSortOrder
@@ -16,8 +17,6 @@ import com.michaldrabik.ui_model.DiscoverSortOrder.NEWEST
 import com.michaldrabik.ui_model.DiscoverSortOrder.RATING
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
-import com.michaldrabik.ui_model.ImageType.FANART
-import com.michaldrabik.ui_model.ImageType.FANART_WIDE
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.ImageType.PREMIUM
 import com.michaldrabik.ui_model.Movie
@@ -29,10 +28,11 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ViewModelScoped
-class DiscoverMoviesCase @Inject constructor(
+internal class DiscoverMoviesCase @Inject constructor(
   private val dispatchers: CoroutineDispatchers,
   private val moviesRepository: MoviesRepository,
   private val imagesProvider: MovieImagesProvider,
+  private val imageTypeProvider: ImageTypeProvider,
   private val translationsRepository: TranslationsRepository,
   private val settingsRepository: SettingsRepository
 ) {
@@ -98,11 +98,7 @@ class DiscoverMoviesCase @Inject constructor(
       .sortedBy(filters?.feedOrder ?: HOT)
       .mapIndexed { index, movie ->
         async {
-          val itemType = when (index) {
-            in (0..500 step 14) -> FANART_WIDE
-            in (5..500 step 14), in (9..500 step 14) -> FANART
-            else -> POSTER
-          }
+          val itemType = imageTypeProvider.getImageType(index)
           val image = imagesProvider.findCachedImage(movie, itemType)
           val translation = loadTranslation(language, itemType, movie)
           DiscoverMovieListItem(

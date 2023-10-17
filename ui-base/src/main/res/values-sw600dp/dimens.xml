@@ -1,0 +1,10 @@
+<resources>
+
+  <dimen name="gridSpacing">4dp</dimen>
+  <dimen name="gridPadding">20dp</dimen>
+
+  <dimen name="screenMarginHorizontal">24dp</dimen>
+  <dimen name="mediaTileCorner">6dp</dimen>
+  <dimen name="tutorialTipSize">34dp</dimen>
+  <dimen name="tutorialTipMargin">128dp</dimen>
+</resources>

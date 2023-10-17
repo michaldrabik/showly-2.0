@@ -6,7 +6,6 @@
   android:id="@+id/showDetailsRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:layout_marginTop="-400dp"
   tools:theme="@style/AppTheme"
   >
 
@@ -455,7 +454,7 @@
         />
 
       <TextView
-        android:id="@+id/showDetailsCustomImagesLabel"
+        android:id="@+id/showDetailsCustomImagesButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
@@ -485,7 +484,7 @@
         android:layout_marginEnd="@dimen/spaceNormal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsCustomImagesLabel"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsCustomImagesButton"
         />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

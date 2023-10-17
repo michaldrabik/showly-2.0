@@ -14,16 +14,13 @@
     style="?attr/materialCardViewElevatedStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/newsItemPaddingHorizontal"
-    android:layout_marginTop="@dimen/spaceSmall"
-    android:layout_marginEnd="@dimen/newsItemPaddingHorizontal"
     app:cardBackgroundColor="?colorCardBackground"
     app:cardCornerRadius="@dimen/newsCardCornerRadius"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
+      android:layout_height="wrap_content"
       >
 
       <ImageView

@@ -33,11 +33,16 @@ class MyMovieAllView : MovieView<MyMoviesItem> {
 
   init {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-    imageLoadCompleteListener = { loadTranslation() }
+
+    clipChildren = false
+    clipToPadding = false
+
     with(binding) {
       collectionMovieRoot.onClick { itemClickListener?.invoke(item) }
       collectionMovieRoot.onLongClick { itemLongClickListener?.invoke(item) }
     }
+
+    imageLoadCompleteListener = { loadTranslation() }
   }
 
   override val imageView: ImageView = binding.collectionMovieImage
@@ -48,6 +53,7 @@ class MyMovieAllView : MovieView<MyMoviesItem> {
   override fun bind(item: MyMoviesItem) {
     clear()
     this.item = item
+
     with(binding) {
       collectionMovieProgress.visibleIf(item.isLoading)
       collectionMovieTitle.text =

@@ -7,12 +7,6 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import android.widget.GridLayout
-import androidx.core.view.updatePadding
-import com.michaldrabik.ui_base.common.ListViewMode
-import com.michaldrabik.ui_base.common.ListViewMode.GRID
-import com.michaldrabik.ui_base.common.ListViewMode.GRID_TITLE
-import com.michaldrabik.ui_base.common.ListViewMode.LIST_COMPACT
-import com.michaldrabik.ui_base.common.ListViewMode.LIST_NORMAL
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.screenWidth
 import com.michaldrabik.ui_my_movies.R
@@ -34,11 +28,13 @@ class MyMoviesRecentsView : FrameLayout {
 
   private val itemMargin by lazy { context.dimenToPx(R.dimen.spaceTiny) }
   private val itemHeight by lazy { context.dimenToPx(R.dimen.myMoviesFanartHeight) }
-  private val itemWidth by lazy { (screenWidth() - context.dimenToPx(R.dimen.spaceNormal) - (4 * itemMargin)) / 2 }
+  private val itemWidth by lazy {
+    val space = context.dimenToPx(R.dimen.screenMarginHorizontal) * 2
+    ((screenWidth() - space) / 2) - itemMargin
+  }
 
   fun bind(
     item: MyMoviesItem.RecentsSection,
-    viewMode: ListViewMode,
     itemClickListener: ((MyMoviesItem) -> Unit)?,
     itemLongClickListener: ((MyMoviesItem) -> Unit)?,
   ) {
@@ -56,28 +52,13 @@ class MyMoviesRecentsView : FrameLayout {
         width = itemWidth
         height = itemHeight
         columnSpec = GridLayout.spec(index % 2, 1F)
-        setMargins(itemMargin, itemMargin, itemMargin, itemMargin)
+        if (index % 2 == 0) {
+          setMargins(0, itemMargin, itemMargin, itemMargin)
+        } else {
+          setMargins(itemMargin, itemMargin, 0, itemMargin)
+        }
       }
       binding.myMoviesRecentsContainer.addView(view, layoutParams)
-    }
-
-    bindMargins(viewMode)
-  }
-
-  private fun bindMargins(viewMode: ListViewMode) {
-    when (viewMode) {
-      GRID, GRID_TITLE -> {
-        binding.myMoviesRecentsContainer.updatePadding(
-          left = resources.getDimensionPixelSize(R.dimen.myMoviesRecentsGridPadding),
-          right = resources.getDimensionPixelSize(R.dimen.myMoviesRecentsGridPadding),
-        )
-      }
-      LIST_NORMAL, LIST_COMPACT -> {
-        binding.myMoviesRecentsContainer.updatePadding(
-          left = resources.getDimensionPixelSize(R.dimen.spaceSmall),
-          right = resources.getDimensionPixelSize(R.dimen.spaceSmall),
-        )
-      }
     }
   }
 }

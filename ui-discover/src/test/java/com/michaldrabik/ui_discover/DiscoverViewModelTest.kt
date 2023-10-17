@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit
 @Suppress("EXPERIMENTAL_API_USAGE")
 class DiscoverViewModelTest : BaseMockTest() {
 
-  @MockK lateinit var showsCase: DiscoverShowsCase
+  @MockK internal lateinit var showsCase: DiscoverShowsCase
   @MockK lateinit var filtersCase: DiscoverFiltersCase
   @MockK lateinit var twitterCase: DiscoverTwitterCase
   @MockK lateinit var imagesProvider: ShowImagesProvider

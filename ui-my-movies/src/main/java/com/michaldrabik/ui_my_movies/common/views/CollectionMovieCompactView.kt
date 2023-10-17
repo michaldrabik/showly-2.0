@@ -32,15 +32,22 @@ class CollectionMovieCompactView : MovieView<CollectionListItem.MovieItem> {
 
   init {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-    binding.collectionMovieRoot.onClick { itemClickListener?.invoke(item) }
-    binding.collectionMovieRoot.onLongClick { itemLongClickListener?.invoke(item) }
+
+    clipChildren = false
+    clipToPadding = false
+
+    with(binding) {
+      collectionMovieRoot.onClick { itemClickListener?.invoke(item) }
+      collectionMovieRoot.onLongClick { itemLongClickListener?.invoke(item) }
+    }
+
     imageLoadCompleteListener = { loadTranslation() }
   }
 
   override val imageView: ImageView = binding.collectionMovieImage
   override val placeholderView: ImageView = binding.collectionMoviePlaceholder
 
-  private var nowUtc = nowUtcDay()
+  private val nowUtc = nowUtcDay()
   private lateinit var item: CollectionListItem.MovieItem
 
   override fun bind(item: CollectionListItem.MovieItem) {

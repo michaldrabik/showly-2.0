@@ -15,17 +15,17 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.michaldrabik.common.Config
 import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.BaseFragment
-import com.michaldrabik.ui_base.common.ListViewMode
+import com.michaldrabik.ui_base.common.ListViewMode.GRID
+import com.michaldrabik.ui_base.common.ListViewMode.GRID_TITLE
+import com.michaldrabik.ui_base.common.ListViewMode.LIST_COMPACT
+import com.michaldrabik.ui_base.common.ListViewMode.LIST_NORMAL
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.extensions.add
@@ -51,6 +51,9 @@ import com.michaldrabik.ui_lists.details.helpers.ReorderListCallback
 import com.michaldrabik.ui_lists.details.helpers.ReorderListCallbackAdapter
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsAdapter
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
+import com.michaldrabik.ui_lists.details.recycler.helpers.ListDetailsGridItemDecoration
+import com.michaldrabik.ui_lists.details.recycler.helpers.ListDetailsLayoutManagerProvider
+import com.michaldrabik.ui_lists.details.recycler.helpers.ListDetailsListItemDecoration
 import com.michaldrabik.ui_lists.details.views.ListDetailsDeleteConfirmView
 import com.michaldrabik.ui_model.CustomList
 import com.michaldrabik.ui_model.PremiumFeature
@@ -160,7 +163,7 @@ class ListDetailsFragment :
   }
 
   private fun setupRecycler() {
-    layoutManager = LinearLayoutManager(context, VERTICAL, false)
+    layoutManager = ListDetailsLayoutManagerProvider.provideLayoutManger(requireContext(), LIST_NORMAL)
     adapter = ListDetailsAdapter(
       itemClickListener = { openItemDetails(it) },
       missingImageListener = { item: ListDetailsItem, force: Boolean ->
@@ -191,28 +194,13 @@ class ListDetailsFragment :
       layoutManager = this@ListDetailsFragment.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
       setHasFixedSize(true)
+      addItemDecoration(ListDetailsGridItemDecoration(requireContext(), R.dimen.spaceSmall))
+      addItemDecoration(ListDetailsListItemDecoration(requireContext(), R.dimen.spaceSmall))
     }
-    setupRecyclerPaddings()
 
     val touchCallback = ReorderListCallback(adapter as ReorderListCallbackAdapter)
     touchHelper = ItemTouchHelper(touchCallback)
     touchHelper?.attachToRecyclerView(binding.fragmentListDetailsRecycler)
-  }
-
-  private fun setupRecyclerPaddings() = with(binding) {
-    if (layoutManager is GridLayoutManager) {
-      fragmentListDetailsRecycler.updatePadding(
-        top = recyclerPaddingGridTop,
-        left = dimenToPx(R.dimen.gridRecyclerPadding),
-        right = dimenToPx(R.dimen.gridRecyclerPadding)
-      )
-    } else {
-      fragmentListDetailsRecycler.updatePadding(
-        top = recyclerPaddingTop,
-        left = 0,
-        right = 0
-      )
-    }
   }
 
   override fun setupBackPressed() {
@@ -314,20 +302,16 @@ class ListDetailsFragment :
       with(binding) {
         viewMode.let {
           if (adapter?.listViewMode != it) {
-            layoutManager = when (it) {
-              ListViewMode.LIST_NORMAL, ListViewMode.LIST_COMPACT -> LinearLayoutManager(requireContext(), VERTICAL, false)
-              ListViewMode.GRID, ListViewMode.GRID_TITLE -> GridLayoutManager(context, Config.LISTS_GRID_SPAN)
-            }
+            layoutManager = ListDetailsLayoutManagerProvider.provideLayoutManger(requireContext(), it)
             adapter?.listViewMode = it
             fragmentListDetailsRecycler?.let { recycler ->
               recycler.layoutManager = layoutManager
               recycler.adapter = adapter
             }
-            setupRecyclerPaddings()
             fragmentListDetailsViewModeButton.setImageResource(
               when (it) {
-                ListViewMode.LIST_NORMAL, ListViewMode.LIST_COMPACT -> R.drawable.ic_view_list
-                ListViewMode.GRID, ListViewMode.GRID_TITLE -> R.drawable.ic_view_grid
+                LIST_NORMAL, LIST_COMPACT -> R.drawable.ic_view_list
+                GRID, GRID_TITLE -> R.drawable.ic_view_grid
               }
             )
           }
@@ -347,7 +331,7 @@ class ListDetailsFragment :
           val scrollTop = resetScroll?.consume() == true
           adapter?.setItems(it, scrollTop)
           (layoutManager as? GridLayoutManager)?.withSpanSizeLookup { pos ->
-            adapter?.items?.get(pos)?.image?.type?.spanSize!!
+            adapter?.items?.get(pos)?.image?.type?.getSpan(isTablet)!!
           }
         }
         isManageMode.let { isManageMode ->

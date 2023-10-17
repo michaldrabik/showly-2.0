@@ -19,7 +19,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    app:layout_constraintGuide_begin="96dp"
+    app:layout_constraintGuide_begin="@dimen/personImageWidthPadded"
     />
 
   <androidx.constraintlayout.widget.Guideline
@@ -27,7 +27,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    app:layout_constraintGuide_begin="120dp"
+    app:layout_constraintGuide_begin="@dimen/personImageHeight"
     />
 
   <ImageView
@@ -84,7 +84,7 @@
     android:maxLines="2"
     android:textAlignment="viewStart"
     android:textColor="?android:attr/textColorPrimary"
-    android:textSize="20sp"
+    android:textSize="@dimen/personDetailsInfoTitle"
     android:textStyle="bold"
     app:layout_constraintEnd_toStartOf="@id/viewPersonDetailsLinkIcon"
     app:layout_constraintStart_toEndOf="@id/viewPersonDetailsImageGuide1"
@@ -101,7 +101,7 @@
     android:maxLines="1"
     android:textAlignment="viewStart"
     android:textColor="@color/colorAccent"
-    android:textSize="14sp"
+    android:textSize="@dimen/personDetailsInfoSubtitle"
     app:layout_constraintEnd_toStartOf="@id/viewPersonDetailsLinkIcon"
     app:layout_constraintStart_toEndOf="@id/viewPersonDetailsImageGuide1"
     app:layout_constraintTop_toBottomOf="@id/viewPersonDetailsTitle"

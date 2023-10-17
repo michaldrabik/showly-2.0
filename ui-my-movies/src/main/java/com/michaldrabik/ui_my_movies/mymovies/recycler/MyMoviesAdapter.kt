@@ -83,7 +83,6 @@ class MyMoviesAdapter(
       )
       VIEW_TYPE_RECENTS_SECTION -> (holder.itemView as MyMoviesRecentsView).bind(
         item.recentsSection!!,
-        listViewMode,
         itemClickListener,
         itemLongClickListener
       )

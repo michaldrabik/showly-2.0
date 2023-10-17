@@ -1,0 +1,17 @@
+<resources>
+  <dimen name="personImageWidth">100dp</dimen>
+  <dimen name="personImageWidthPadded">116dp</dimen>
+  <dimen name="personImageHeight">150dp</dimen>
+  <dimen name="personImageCorner">18dp</dimen>
+
+  <dimen name="personDetailsInfoTitle">22sp</dimen>
+  <dimen name="personDetailsInfoSubtitle">16sp</dimen>
+
+  <dimen name="personCreditsImageWidth">67dp</dimen>
+  <dimen name="personCreditsImageHeight">100dp</dimen>
+  <dimen name="personCreditsImageGuide">83dp</dimen>
+  <dimen name="personCreditsHeaderTextSize">22sp</dimen>
+
+  <dimen name="personGalleryBackArrowMargin">8dp</dimen>
+  <item name="personGalleryImageRatio" format="float" type="dimen">0.67</item>
+</resources>

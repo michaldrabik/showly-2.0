@@ -5,7 +5,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.WidgetsProvider
@@ -30,6 +30,8 @@ import com.michaldrabik.ui_show.quicksetup.QuickSetupView
 import com.michaldrabik.ui_show.sections.seasons.ShowDetailsSeasonsEvent.RequestWidgetsUpdate
 import com.michaldrabik.ui_show.sections.seasons.recycler.SeasonListItem
 import com.michaldrabik.ui_show.sections.seasons.recycler.SeasonsAdapter
+import com.michaldrabik.ui_show.sections.seasons.recycler.helpers.SeasonsGridItemDecoration
+import com.michaldrabik.ui_show.sections.seasons.recycler.helpers.SeasonsLayoutManagerProvider
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.Duration
 
@@ -68,8 +70,11 @@ class ShowDetailsSeasonsFragment : BaseFragment<ShowDetailsSeasonsViewModel>(R.l
     )
     binding.showDetailsSeasonsRecycler.apply {
       adapter = seasonsAdapter
-      layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+      layoutManager = SeasonsLayoutManagerProvider.provideLayoutManger(requireContext())
       itemAnimator = null
+      if (layoutManager is GridLayoutManager) {
+        addItemDecoration(SeasonsGridItemDecoration(requireContext(), R.dimen.spaceBig))
+      }
     }
   }
 

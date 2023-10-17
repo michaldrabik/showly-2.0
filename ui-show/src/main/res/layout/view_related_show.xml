@@ -47,7 +47,7 @@
       android:layout_marginEnd="@dimen/spaceTiny"
       android:layout_marginBottom="@dimen/spaceMicro"
       android:maxLines="1"
-      android:textSize="11sp"
+      android:textSize="@dimen/relatedShowTextSize"
       android:translationZ="10dp"
       android:visibility="gone"
       tools:ignore="SmallSp"

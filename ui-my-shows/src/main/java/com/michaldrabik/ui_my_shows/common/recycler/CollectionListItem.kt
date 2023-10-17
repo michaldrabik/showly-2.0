@@ -51,7 +51,7 @@ sealed class CollectionListItem(
     val isUpcoming: Boolean,
   ) : CollectionListItem(
     show = Show.EMPTY,
-    image = Image.createUnknown(ImageType.FILTERS),
+    image = Image.createUnknown(ImageType.POSTER),
     isLoading = false
   ) {
 

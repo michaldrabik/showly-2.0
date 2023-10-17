@@ -49,6 +49,8 @@ class NewsItemRowView : FrameLayout {
 
   init {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+    clipChildren = false
+    clipToPadding = false
 
     with(binding) {
       newsItemRoot.onClick { itemClickListener?.invoke(item) }

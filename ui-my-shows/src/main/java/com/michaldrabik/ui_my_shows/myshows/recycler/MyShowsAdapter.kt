@@ -89,15 +89,16 @@ class MyShowsAdapter(
       )
       VIEW_TYPE_RECENTS_SECTION -> (holder.itemView as MyShowsRecentsView).bind(
         item.recentsSection!!,
-        listViewMode,
         itemClickListener,
         itemLongClickListener
       )
-      VIEW_TYPE_SHOW_ITEM -> when (listViewMode) {
-        LIST_NORMAL -> (holder.itemView as MyShowAllView).bind(item)
-        LIST_COMPACT -> (holder.itemView as MyShowAllCompactView).bind(item)
-        GRID -> (holder.itemView as MyShowGridView).bind(item)
-        GRID_TITLE -> (holder.itemView as MyShowGridTitleView).bind(item)
+      VIEW_TYPE_SHOW_ITEM -> {
+        when (listViewMode) {
+          LIST_NORMAL -> (holder.itemView as MyShowAllView).bind(item)
+          LIST_COMPACT -> (holder.itemView as MyShowAllCompactView).bind(item)
+          GRID -> (holder.itemView as MyShowGridView).bind(item)
+          GRID_TITLE -> (holder.itemView as MyShowGridTitleView).bind(item)
+        }
       }
     }
   }

@@ -8,12 +8,12 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.michaldrabik.common.Config
+import com.michaldrabik.common.Config.LISTS_GRID_SPAN
+import com.michaldrabik.common.Config.LISTS_GRID_SPAN_TABLET
+import com.michaldrabik.common.Config.LISTS_STANDARD_GRID_SPAN_TABLET
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.ListViewMode.GRID
 import com.michaldrabik.ui_base.common.ListViewMode.GRID_TITLE
@@ -55,6 +55,9 @@ import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem.Type.ALL_SHOWS_HEADER
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem.Type.ALL_SHOWS_ITEM
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem.Type.RECENT_SHOWS
+import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsLayoutManagerProvider
+import com.michaldrabik.ui_my_shows.utilities.MyShowsGridItemDecoration
+import com.michaldrabik.ui_my_shows.utilities.MyShowsListItemDecoration
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -89,7 +92,7 @@ class MyShowsFragment :
   }
 
   private fun setupRecycler() {
-    layoutManager = LinearLayoutManager(context, VERTICAL, false)
+    layoutManager = MyShowsLayoutManagerProvider.provideLayoutManger(requireContext(), LIST_NORMAL)
     adapter = MyShowsAdapter(
       itemClickListener = { openShowDetails(it.show) },
       itemLongClickListener = { item -> openShowMenu(item.show) },
@@ -112,21 +115,8 @@ class MyShowsFragment :
       layoutManager = this@MyShowsFragment.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
       setHasFixedSize(true)
-    }
-    setupRecyclerPaddings()
-  }
-
-  private fun setupRecyclerPaddings() {
-    if (layoutManager is GridLayoutManager) {
-      binding.myShowsRecycler.updatePadding(
-        left = dimenToPx(R.dimen.gridRecyclerPadding),
-        right = dimenToPx(R.dimen.gridRecyclerPadding)
-      )
-    } else {
-      binding.myShowsRecycler.updatePadding(
-        left = 0,
-        right = 0
-      )
+      addItemDecoration(MyShowsGridItemDecoration(requireContext(), R.dimen.spaceSmall))
+      addItemDecoration(MyShowsListItemDecoration(requireContext(), R.dimen.spaceSmall))
     }
   }
 
@@ -137,7 +127,8 @@ class MyShowsFragment :
       return
     }
     binding.myShowsRoot.doOnApplyWindowInsets { view, insets, _, _ ->
-      statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+      val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
+      statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top + tabletOffset
       view.updatePadding(top = statusBarHeight)
       binding.myShowsRecycler.updatePadding(top = dimenToPx(R.dimen.myShowsTabsViewPadding))
     }
@@ -149,17 +140,13 @@ class MyShowsFragment :
         viewMode.let {
           if (adapter?.listViewMode != it) {
             val state = myShowsRecycler.layoutManager?.onSaveInstanceState()
-            layoutManager = when (it) {
-              LIST_NORMAL, LIST_COMPACT -> LinearLayoutManager(requireContext(), VERTICAL, false)
-              GRID, GRID_TITLE -> GridLayoutManager(context, Config.LISTS_GRID_SPAN)
-            }
+            layoutManager = MyShowsLayoutManagerProvider.provideLayoutManger(requireContext(), it)
             adapter?.listViewMode = it
-            myShowsRecycler?.let { recycler ->
+            myShowsRecycler.let { recycler ->
               recycler.layoutManager = layoutManager
               recycler.adapter = adapter
               recycler.layoutManager?.onRestoreInstanceState(state)
             }
-            setupRecyclerPaddings()
           }
         }
         items?.let { items ->
@@ -168,8 +155,13 @@ class MyShowsFragment :
           (layoutManager as? GridLayoutManager)?.withSpanSizeLookup { pos ->
             val item = adapter?.getItems()?.get(pos)
             when (item?.type) {
-              RECENT_SHOWS, ALL_SHOWS_HEADER -> Config.LISTS_GRID_SPAN
-              ALL_SHOWS_ITEM -> item.image.type.spanSize
+              RECENT_SHOWS, ALL_SHOWS_HEADER -> {
+                when (viewMode) {
+                  LIST_NORMAL, LIST_COMPACT -> if (isTablet) LISTS_STANDARD_GRID_SPAN_TABLET else LISTS_GRID_SPAN
+                  GRID, GRID_TITLE -> if (isTablet) LISTS_GRID_SPAN_TABLET else LISTS_GRID_SPAN
+                }
+              }
+              ALL_SHOWS_ITEM -> 1
               null -> throw Error("Unsupported span size!")
             }
           }

@@ -31,10 +31,15 @@ class MyShowAllCompactView : ShowView<MyShowsItem> {
 
   init {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+
+    clipChildren = false
+    clipToPadding = false
+
     with(binding) {
       collectionShowRoot.onClick { itemClickListener?.invoke(item) }
       collectionShowRoot.onLongClick { itemLongClickListener?.invoke(item) }
     }
+
     imageLoadCompleteListener = { loadTranslation() }
   }
 

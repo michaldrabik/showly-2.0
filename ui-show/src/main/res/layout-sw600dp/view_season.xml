@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/seasonViewRoot"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/seasonViewHeight"
+    android:background="?android:attr/selectableItemBackground"
+    android:paddingTop="@dimen/spaceMedium"
+    android:paddingBottom="@dimen/spaceMedium"
+    >
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+      android:id="@+id/seasonViewCheckbox"
+      style="@style/ShowlyCheckbox"
+      android:layout_width="30dp"
+      android:layout_height="0dp"
+      android:gravity="center"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+    <TextView
+      android:id="@+id/seasonViewTitle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceSmall"
+      android:gravity="center_vertical"
+      android:minWidth="80dp"
+      android:paddingBottom="@dimen/spaceMicro"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="16sp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toEndOf="@id/seasonViewCheckbox"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:text="Season 00"
+      />
+
+    <ImageView
+      android:id="@+id/seasonViewArrow"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/seasonViewProgressText"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_arrow_right"
+      />
+
+    <TextView
+      android:id="@+id/seasonViewProgressText"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="end"
+      android:paddingBottom="@dimen/spaceMicro"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="16sp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/seasonViewArrow"
+      app:layout_constraintStart_toEndOf="@id/seasonViewProgress"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:text="20/20 (100%)"
+      />
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+      android:id="@+id/seasonViewProgress"
+      style="@style/Widget.MaterialComponents.LinearProgressIndicator"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/seasonViewProgressMargin"
+      android:layout_marginEnd="20dp"
+      app:indicatorColor="?attr/colorAccent"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/seasonViewProgressText"
+      app:layout_constraintStart_toEndOf="@id/seasonViewTitle"
+      app:layout_constraintTop_toTopOf="parent"
+      app:trackColor="?attr/colorProgressTrack"
+      app:trackCornerRadius="4dp"
+      app:trackThickness="4dp"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</merge>

@@ -153,7 +153,8 @@ class FollowedShowsFragment :
   private fun setupStatusBar() {
     with(binding) {
       followedShowsRoot.doOnApplyWindowInsets { _, insets, _, _ ->
-        val statusBarSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+        val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
+        val statusBarSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top + tabletOffset
         followedShowsSearchView.applyWindowInsetBehaviour(dimenToPx(R.dimen.spaceNormal) + statusBarSize)
         followedShowsSearchView.updateTopMargin(dimenToPx(R.dimen.spaceMedium) + statusBarSize)
         followedShowsModeTabs.updateTopMargin(dimenToPx(R.dimen.collectionTabsMargin) + statusBarSize)

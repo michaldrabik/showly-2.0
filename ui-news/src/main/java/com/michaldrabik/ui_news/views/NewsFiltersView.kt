@@ -19,6 +19,7 @@ class NewsFiltersView : FrameLayout, CoordinatorLayout.AttachedBehavior {
 
   init {
     setupListeners()
+    clipChildren = false
   }
 
   var onChipsChangeListener: ((List<NewsItem.Type>) -> Unit)? = null

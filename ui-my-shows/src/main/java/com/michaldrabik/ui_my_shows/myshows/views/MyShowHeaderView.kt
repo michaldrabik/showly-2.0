@@ -7,7 +7,6 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
-import androidx.core.view.updatePadding
 import com.michaldrabik.ui_base.common.ListViewMode
 import com.michaldrabik.ui_base.common.ListViewMode.GRID
 import com.michaldrabik.ui_base.common.ListViewMode.GRID_TITLE
@@ -48,7 +47,6 @@ class MyShowHeaderView : FrameLayout {
     genresClickListener: (() -> Unit)?,
     listModeClickListener: (() -> Unit)?,
   ) {
-    bindMargins(viewMode)
     bindLabel(item)
     with(binding) {
       myShowsFilterChipsScroll.visibleIf(item.section != RECENTS)
@@ -101,35 +99,6 @@ class MyShowHeaderView : FrameLayout {
           genres.size == 1 -> context.getString(genres.first().displayName)
           genres.size == 2 -> "${context.getString(genres[0].displayName)}, ${context.getString(genres[1].displayName)}"
           else -> "${context.getString(genres[0].displayName)}, ${context.getString(genres[1].displayName)} + ${genres.size - 2}"
-        }
-      }
-    }
-  }
-
-  private fun bindMargins(viewMode: ListViewMode) {
-    with(binding) {
-      when (viewMode) {
-        GRID, GRID_TITLE -> {
-          myShowsFilterChipsScroll.updatePadding(
-            left = resources.getDimensionPixelSize(R.dimen.myShowsHeaderGridPadding),
-            right = resources.getDimensionPixelSize(R.dimen.myShowsHeaderGridPadding),
-            bottom = resources.getDimensionPixelSize(R.dimen.spaceTiny)
-          )
-          myShowsHeaderLabel.updatePadding(
-            left = resources.getDimensionPixelSize(R.dimen.myShowsHeaderGridPadding),
-            right = resources.getDimensionPixelSize(R.dimen.myShowsHeaderGridPadding),
-          )
-        }
-        LIST_NORMAL, LIST_COMPACT -> {
-          myShowsFilterChipsScroll.updatePadding(
-            left = resources.getDimensionPixelSize(R.dimen.spaceMedium),
-            right = resources.getDimensionPixelSize(R.dimen.spaceMedium),
-            bottom = 0
-          )
-          myShowsHeaderLabel.updatePadding(
-            left = resources.getDimensionPixelSize(R.dimen.spaceMedium),
-            right = resources.getDimensionPixelSize(R.dimen.spaceMedium)
-          )
         }
       }
     }

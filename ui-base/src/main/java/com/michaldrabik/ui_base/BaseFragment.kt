@@ -17,6 +17,7 @@ import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.TipsHost
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
+import com.michaldrabik.ui_base.utilities.extensions.isTablet
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_model.Tip
@@ -40,6 +41,8 @@ abstract class BaseFragment<T : ViewModel>(@LayoutRes contentLayoutId: Int) :
 
   protected val moviesEnabled: Boolean
     get() = (requireActivity() as MoviesStatusHost).hasMoviesEnabled()
+
+  protected val isTablet by lazy { requireContext().isTablet() }
 
   override fun onResume() {
     super.onResume()

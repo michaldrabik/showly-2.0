@@ -33,11 +33,6 @@ fun View.visibleIf(condition: Boolean, gone: Boolean = true) =
     if (gone) gone() else invisible()
   }
 
-fun View.crossfadeTo(view: View, duration: Long = 250) {
-  fadeOut(duration)
-  view.fadeIn(duration)
-}
-
 fun View.fadeIf(
   condition: Boolean,
   duration: Long = 250,

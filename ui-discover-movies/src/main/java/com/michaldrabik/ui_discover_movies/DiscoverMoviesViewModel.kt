@@ -36,7 +36,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class DiscoverMoviesViewModel @Inject constructor(
+internal class DiscoverMoviesViewModel @Inject constructor(
   private val moviesCase: DiscoverMoviesCase,
   private val filtersCase: DiscoverFiltersCase,
   private val imagesProvider: MovieImagesProvider,
