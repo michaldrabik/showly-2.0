@@ -26,15 +26,15 @@ import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.CalendarMode.PRESENT_FUTURE
 import com.michaldrabik.ui_model.CalendarMode.RECENTS
 import com.michaldrabik.ui_progress.R
-import com.michaldrabik.ui_progress.calendar.providers.CalendarLayoutManagerProvider
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarAdapter
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarListItem
 import com.michaldrabik.ui_progress.databinding.FragmentCalendarBinding
+import com.michaldrabik.ui_progress.helpers.GRID_SPAN_SIZE
+import com.michaldrabik.ui_progress.helpers.ProgressLayoutManagerProvider
 import com.michaldrabik.ui_progress.helpers.TopOverscrollAdapter
 import com.michaldrabik.ui_progress.main.EpisodeCheckActionUiEvent
 import com.michaldrabik.ui_progress.main.ProgressMainFragment
 import com.michaldrabik.ui_progress.main.ProgressMainViewModel
-import com.michaldrabik.ui_progress.progress.providers.GRID_SPAN_SIZE
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -86,7 +86,7 @@ class CalendarFragment :
   }
 
   private fun setupRecycler() {
-    layoutManager = CalendarLayoutManagerProvider.provideLayoutManger(requireContext())
+    layoutManager = ProgressLayoutManagerProvider.provideLayoutManger(requireContext())
     (layoutManager as? GridLayoutManager)?.run {
       withSpanSizeLookup { position ->
         when (adapter?.getItems()?.get(position)) {

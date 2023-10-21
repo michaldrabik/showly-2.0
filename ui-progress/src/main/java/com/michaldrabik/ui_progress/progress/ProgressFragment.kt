@@ -47,13 +47,13 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_SORT_ORDER
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.databinding.FragmentProgressBinding
+import com.michaldrabik.ui_progress.helpers.GRID_SPAN_SIZE
+import com.michaldrabik.ui_progress.helpers.ProgressLayoutManagerProvider
 import com.michaldrabik.ui_progress.helpers.TopOverscrollAdapter
 import com.michaldrabik.ui_progress.main.EpisodeCheckActionUiEvent
 import com.michaldrabik.ui_progress.main.ProgressMainFragment
 import com.michaldrabik.ui_progress.main.ProgressMainViewModel
 import com.michaldrabik.ui_progress.main.RequestWidgetsUpdate
-import com.michaldrabik.ui_progress.progress.providers.GRID_SPAN_SIZE
-import com.michaldrabik.ui_progress.progress.providers.ProgressLayoutManagerProvider
 import com.michaldrabik.ui_progress.progress.recycler.ProgressAdapter
 import com.michaldrabik.ui_progress.progress.recycler.ProgressListItem
 import dagger.hilt.android.AndroidEntryPoint

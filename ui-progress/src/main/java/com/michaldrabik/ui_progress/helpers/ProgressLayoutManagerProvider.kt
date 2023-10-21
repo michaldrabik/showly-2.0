@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_progress.calendar.providers
+package com.michaldrabik.ui_progress.helpers
 
 import android.content.Context
 import androidx.recyclerview.widget.GridLayoutManager
@@ -9,7 +9,7 @@ import com.michaldrabik.ui_base.utilities.extensions.isTablet
 
 internal const val GRID_SPAN_SIZE = 2
 
-internal object CalendarLayoutManagerProvider {
+internal object ProgressLayoutManagerProvider {
 
   fun provideLayoutManger(context: Context): LayoutManager {
     return if (context.isTablet()) {
@@ -19,4 +19,3 @@ internal object CalendarLayoutManagerProvider {
     }
   }
 }
-
