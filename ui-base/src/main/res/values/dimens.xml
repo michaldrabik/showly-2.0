@@ -8,6 +8,8 @@
   <dimen name="spaceBig">24dp</dimen>
   <dimen name="spaceHuge">48dp</dimen>
 
+  <dimen name="screenMarginHorizontal">12dp</dimen>
+
   <dimen name="elevationTiny">0dp</dimen>
   <dimen name="elevationSmall">0dp</dimen>
   <dimen name="elevationNormal">0dp</dimen>
@@ -36,7 +38,7 @@
   <dimen name="relatedTileShowPlaceholder">24dp</dimen>
   <dimen name="collectionTileMoviePlaceholder">22dp</dimen>
   <dimen name="collectionTileShowPlaceholder">24dp</dimen>
-  
+
   <dimen name="searchViewHeight">48dp</dimen>
   <dimen name="searchViewHeightPadded">64dp</dimen>
   <dimen name="searchViewCorner">24dp</dimen>
