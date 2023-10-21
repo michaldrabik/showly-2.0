@@ -13,7 +13,9 @@ internal object NewsLayoutManagerProvider {
 
   fun provideLayoutManger(context: Context): LayoutManager {
     return if (context.isTablet()) {
-      StaggeredGridLayoutManager(GRID_SPAN_SIZE, VERTICAL)
+      StaggeredGridLayoutManager(GRID_SPAN_SIZE, VERTICAL).apply {
+        gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
+      }
     } else {
       LinearLayoutManager(context, VERTICAL, false)
     }

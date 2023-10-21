@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <dimen name="newsRecyclerHorizontalPadding">24dp</dimen>
+  <dimen name="newsRecyclerTopPadding">92dp</dimen>
+  <dimen name="newsRecyclerHorizontalPadding">8dp</dimen>
   <dimen name="newsItemImageSize">104dp</dimen>
 </resources>

@@ -23,7 +23,6 @@ import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
-import com.michaldrabik.ui_base.utilities.extensions.addStaggeredDivider
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
@@ -33,6 +32,7 @@ import com.michaldrabik.ui_base.utilities.extensions.isTablet
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.updateTopMargin
+import com.michaldrabik.ui_base.utilities.ui.EqualSpacingItemDecoration
 import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.NewsItem
 import com.michaldrabik.ui_news.databinding.FragmentNewsBinding
@@ -134,7 +134,7 @@ class NewsFragment :
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
       setHasFixedSize(true)
       if (requireContext().isTablet()) {
-        addStaggeredDivider(dimenToPx(R.dimen.spaceNormal))
+        addItemDecoration(EqualSpacingItemDecoration(dimenToPx(R.dimen.spaceNormal)))
       } else {
         addDivider(R.drawable.divider_news, VERTICAL)
       }

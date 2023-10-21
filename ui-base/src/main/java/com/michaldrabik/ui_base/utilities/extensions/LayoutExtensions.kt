@@ -9,19 +9,12 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
-import com.michaldrabik.ui_base.utilities.ui.StaggeredItemDecoration
 
 fun RecyclerView.addDivider(@DrawableRes dividerRes: Int, direction: Int = VERTICAL) {
   addItemDecoration(
     DividerItemDecoration(context, direction).apply {
       setDrawable(ContextCompat.getDrawable(context, dividerRes)!!)
     }
-  )
-}
-
-fun RecyclerView.addStaggeredDivider(offset: Int) {
-  addItemDecoration(
-    StaggeredItemDecoration(offset)
   )
 }
 
