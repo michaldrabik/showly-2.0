@@ -11,8 +11,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
@@ -30,6 +30,7 @@ import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
 import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.EPISODES_LEFT
@@ -51,6 +52,8 @@ import com.michaldrabik.ui_progress.main.EpisodeCheckActionUiEvent
 import com.michaldrabik.ui_progress.main.ProgressMainFragment
 import com.michaldrabik.ui_progress.main.ProgressMainViewModel
 import com.michaldrabik.ui_progress.main.RequestWidgetsUpdate
+import com.michaldrabik.ui_progress.progress.providers.GRID_SPAN_SIZE
+import com.michaldrabik.ui_progress.progress.providers.ProgressLayoutManagerProvider
 import com.michaldrabik.ui_progress.progress.recycler.ProgressAdapter
 import com.michaldrabik.ui_progress.progress.recycler.ProgressListItem
 import dagger.hilt.android.AndroidEntryPoint
@@ -81,7 +84,7 @@ class ProgressFragment :
   private val binding by viewBinding(FragmentProgressBinding::bind)
 
   private var adapter: ProgressAdapter? = null
-  private var layoutManager: LinearLayoutManager? = null
+  private var layoutManager: LayoutManager? = null
   private var overscroll: IOverScrollDecor? = null
   private var overscrollJob: Job? = null
   private var statusBarHeight = 0
@@ -122,7 +125,17 @@ class ProgressFragment :
   }
 
   private fun setupRecycler() {
-    layoutManager = LinearLayoutManager(context, VERTICAL, false)
+    layoutManager = ProgressLayoutManagerProvider.provideLayoutManger(requireContext())
+    (layoutManager as? GridLayoutManager)?.run {
+      withSpanSizeLookup { position ->
+        when (adapter?.getItems()?.get(position)) {
+          is ProgressListItem.Header -> GRID_SPAN_SIZE
+          is ProgressListItem.Filters -> GRID_SPAN_SIZE
+          is ProgressListItem.Episode -> 1
+          else -> throw IllegalStateException()
+        }
+      }
+    }
     adapter = ProgressAdapter(
       itemClickListener = { requireMainFragment().openShowDetails(it.show) },
       itemLongClickListener = { requireMainFragment().openShowMenu(it.show) },

@@ -1,0 +1,15 @@
+<resources>
+
+  <style name="ScrollableTabsStyle" parent="Widget.Design.TabLayout">
+    <item name="tabMode">fixed</item>
+    <item name="tabIndicatorColor">@color/colorAccent</item>
+    <item name="tabPaddingStart">8dp</item>
+    <item name="tabPaddingEnd">8dp</item>
+    <item name="tabTextAppearance">@style/ScrollableTabTextStyle</item>
+    <item name="tabSelectedTextColor">?attr/textColorTabSelected</item>
+    <item name="tabIndicatorFullWidth">false</item>
+    <item name="tabRippleColor">@android:color/transparent</item>
+    <item name="tabIndicatorAnimationDuration">200</item>
+  </style>
+
+</resources>
