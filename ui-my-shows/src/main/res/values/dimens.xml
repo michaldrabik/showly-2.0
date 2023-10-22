@@ -4,7 +4,7 @@
   <dimen name="myShowsSearchViewPadding">104dp</dimen>
   <dimen name="myShowsTabsViewPadding">136dp</dimen>
   <dimen name="myShowsHeaderGridPadding">3dp</dimen>
-  <dimen name="myShowsRecentsGridPadding">-1dp</dimen>
+  <dimen name="myShowsRecentsGridPadding">3dp</dimen>
 
   <dimen name="myShowsSearchLocalViewPadding">150dp</dimen>
   <dimen name="myShowsSearchLocalOffset">40dp</dimen>

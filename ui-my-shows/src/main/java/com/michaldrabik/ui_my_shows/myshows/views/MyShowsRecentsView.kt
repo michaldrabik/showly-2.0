@@ -80,7 +80,11 @@ class MyShowsRecentsView : FrameLayout {
     with(binding) {
       val padding = when (viewMode) {
         GRID, GRID_TITLE -> {
-          resources.getDimensionPixelSize(R.dimen.myShowsRecentsGridPadding)
+          if (context.isTablet()) {
+            resources.getDimensionPixelSize(R.dimen.myShowsRecyclerHorizontalPadding)
+          } else {
+            resources.getDimensionPixelSize(R.dimen.myShowsRecentsGridPadding)
+          }
         }
         LIST_NORMAL, LIST_COMPACT -> {
           if (context.isTablet()) {

@@ -12,6 +12,7 @@ import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.views.ShowView
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.gone
+import com.michaldrabik.ui_base.utilities.extensions.isTablet
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.onLongClick
 import com.michaldrabik.ui_base.utilities.extensions.screenWidth
@@ -32,7 +33,10 @@ class MyShowGridTitleView : ShowView<MyShowsItem> {
   private val binding = ViewCollectionShowGridTitleBinding.inflate(LayoutInflater.from(context), this)
 
   private val gridPadding by lazy { context.dimenToPx(R.dimen.gridListsPadding) }
-  private val width by lazy { (screenWidth().toFloat() - (2.0 * gridPadding)) / Config.LISTS_GRID_SPAN }
+  private val width by lazy {
+    val span = if (context.isTablet()) Config.LISTS_GRID_SPAN_TABLET else Config.LISTS_GRID_SPAN
+    (screenWidth().toFloat() - (2.0 * gridPadding)) / span
+  }
   private val height by lazy { width * 1.7305 }
 
   init {
