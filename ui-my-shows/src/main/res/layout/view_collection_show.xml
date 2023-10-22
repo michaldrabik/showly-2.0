@@ -13,11 +13,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
+    android:clipChildren="false"
     android:clipToPadding="false"
-    android:paddingLeft="@dimen/collectionMarginHorizontal"
-    android:paddingTop="@dimen/spaceSmall"
-    android:paddingRight="@dimen/collectionMarginHorizontal"
-    android:paddingBottom="@dimen/spaceSmall"
     >
 
     <ImageView

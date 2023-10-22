@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.ImageView
+import androidx.core.view.updatePadding
 import com.bumptech.glide.Glide
 import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.R
@@ -32,17 +33,26 @@ class MyShowGridTitleView : ShowView<MyShowsItem> {
 
   private val binding = ViewCollectionShowGridTitleBinding.inflate(LayoutInflater.from(context), this)
 
-  private val gridPadding by lazy { context.dimenToPx(R.dimen.gridListsPadding) }
+  private val spaceTiny by lazy { context.dimenToPx(R.dimen.spaceTiny) }
+  private val span by lazy { if (context.isTablet()) Config.LISTS_GRID_SPAN_TABLET else Config.LISTS_GRID_SPAN }
+
   private val width by lazy {
-    val span = if (context.isTablet()) Config.LISTS_GRID_SPAN_TABLET else Config.LISTS_GRID_SPAN
-    (screenWidth().toFloat() - (2.0 * gridPadding)) / span
+    val screenMargin = 2.0 * context.dimenToPx(R.dimen.screenMarginHorizontal)
+    (screenWidth().toFloat() - screenMargin) / span
   }
   private val height by lazy { width * 1.7305 }
 
   init {
     layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
-    binding.collectionShowRoot.onClick { itemClickListener?.invoke(item) }
-    binding.collectionShowRoot.onLongClick { itemLongClickListener?.invoke(item) }
+
+    clipChildren = false
+    clipToPadding = false
+
+    with(binding) {
+      collectionShowRoot.onClick { itemClickListener?.invoke(item) }
+      collectionShowRoot.onLongClick { itemLongClickListener?.invoke(item) }
+    }
+
     imageLoadCompleteListener = { loadTranslation() }
   }
 
@@ -51,11 +61,13 @@ class MyShowGridTitleView : ShowView<MyShowsItem> {
 
   private lateinit var item: MyShowsItem
 
-  override fun bind(item: MyShowsItem) {
-    layoutParams = LayoutParams(
-      (width * item.image.type.spanSize.toFloat()).toInt(),
-      height.toInt()
-    )
+  fun bind(item: MyShowsItem, position: Int) {
+    layoutParams = LayoutParams(width.toInt(), height.toInt())
+    when {
+      position % span == 0 -> updatePadding(left = 0, right = spaceTiny)
+      (position + 1) % span == 0 -> updatePadding(left = spaceTiny, right = 0)
+      else -> updatePadding(left = spaceTiny, right = spaceTiny)
+    }
 
     clear()
     this.item = item

@@ -3,13 +3,10 @@
   <dimen name="myShowsTabsTranslation">-7dp</dimen>
   <dimen name="myShowsSearchViewPadding">104dp</dimen>
   <dimen name="myShowsTabsViewPadding">136dp</dimen>
-  <dimen name="myShowsHeaderGridPadding">3dp</dimen>
-  <dimen name="myShowsRecentsGridPadding">3dp</dimen>
 
   <dimen name="myShowsSearchLocalViewPadding">150dp</dimen>
   <dimen name="myShowsSearchLocalOffset">40dp</dimen>
 
-  <dimen name="myShowsRecyclerHorizontalPadding">0dp</dimen>
   <dimen name="myShowsBottomPadding">76dp</dimen>
   <dimen name="myShowsFanartCorner">4dp</dimen>
   <dimen name="myShowsFanartHeight">126dp</dimen>

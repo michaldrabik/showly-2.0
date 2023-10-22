@@ -115,37 +115,6 @@ class MyShowsFragment :
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
       setHasFixedSize(true)
     }
-    setupRecyclerPaddings()
-  }
-
-  private fun setupRecyclerPaddings() {
-    with(binding) {
-      if (layoutManager is GridLayoutManager) {
-        if (requireContext().isTablet()) {
-          myShowsRecycler.updatePadding(
-            left = dimenToPx(R.dimen.myShowsRecyclerHorizontalPadding),
-            right = dimenToPx(R.dimen.myShowsRecyclerHorizontalPadding)
-          )
-        } else {
-          myShowsRecycler.updatePadding(
-            left = dimenToPx(R.dimen.gridRecyclerPadding),
-            right = dimenToPx(R.dimen.gridRecyclerPadding)
-          )
-        }
-      } else {
-        if (requireContext().isTablet()) {
-          myShowsRecycler.updatePadding(
-            left = dimenToPx(R.dimen.myShowsRecyclerHorizontalPadding),
-            right = dimenToPx(R.dimen.myShowsRecyclerHorizontalPadding)
-          )
-        } else {
-          myShowsRecycler.updatePadding(
-            left = 0,
-            right = 0
-          )
-        }
-      }
-    }
   }
 
   private fun setupStatusBar() {
@@ -169,12 +138,11 @@ class MyShowsFragment :
             val state = myShowsRecycler.layoutManager?.onSaveInstanceState()
             layoutManager = MyShowsLayoutManagerProvider.provideLayoutManger(requireContext(), it)
             adapter?.listViewMode = it
-            myShowsRecycler?.let { recycler ->
+            myShowsRecycler.let { recycler ->
               recycler.layoutManager = layoutManager
               recycler.adapter = adapter
               recycler.layoutManager?.onRestoreInstanceState(state)
             }
-            setupRecyclerPaddings()
           }
         }
         items?.let { items ->

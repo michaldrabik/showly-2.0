@@ -30,10 +30,8 @@ internal object MyShowsLayoutManagerProvider {
     viewMode: ListViewMode,
   ): RecyclerView.LayoutManager {
     return when (viewMode) {
-      LIST_NORMAL -> LinearLayoutManager(context, VERTICAL, false)
-      LIST_COMPACT -> LinearLayoutManager(context, VERTICAL, false)
-      GRID -> GridLayoutManager(context, LISTS_GRID_SPAN)
-      GRID_TITLE -> GridLayoutManager(context, LISTS_GRID_SPAN)
+      LIST_NORMAL, LIST_COMPACT -> LinearLayoutManager(context, VERTICAL, false)
+      GRID, GRID_TITLE -> GridLayoutManager(context, LISTS_GRID_SPAN)
     }
   }
 
@@ -42,10 +40,8 @@ internal object MyShowsLayoutManagerProvider {
     viewMode: ListViewMode,
   ): RecyclerView.LayoutManager {
     return when (viewMode) {
-      LIST_NORMAL -> GridLayoutManager(context, LISTS_STANDARD_GRID_SPAN_TABLET)
-      LIST_COMPACT -> GridLayoutManager(context, LISTS_STANDARD_GRID_SPAN_TABLET)
-      GRID -> GridLayoutManager(context, LISTS_GRID_SPAN_TABLET)
-      GRID_TITLE -> GridLayoutManager(context, LISTS_GRID_SPAN_TABLET)
+      LIST_NORMAL, LIST_COMPACT -> GridLayoutManager(context, LISTS_STANDARD_GRID_SPAN_TABLET)
+      GRID, GRID_TITLE -> GridLayoutManager(context, LISTS_GRID_SPAN_TABLET)
     }
   }
 }

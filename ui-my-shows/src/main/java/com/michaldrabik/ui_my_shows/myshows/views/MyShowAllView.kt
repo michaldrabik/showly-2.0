@@ -7,12 +7,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
+import androidx.core.view.updatePadding
 import com.bumptech.glide.Glide
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
 import com.michaldrabik.common.Config.SPOILERS_REGEX
 import com.michaldrabik.ui_base.common.views.ShowView
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.gone
+import com.michaldrabik.ui_base.utilities.extensions.isTablet
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.onLongClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
@@ -31,12 +34,21 @@ class MyShowAllView : ShowView<MyShowsItem> {
 
   private val binding = ViewCollectionShowBinding.inflate(LayoutInflater.from(context), this)
 
+  private val isTablet by lazy { context.isTablet() }
+  private val spaceSmall by lazy { context.dimenToPx(R.dimen.spaceSmall) }
+
   init {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+    updatePadding(top = spaceSmall, bottom = spaceSmall)
+
+    clipChildren = false
+    clipToPadding = false
+
     with(binding) {
       collectionShowRoot.onClick { itemClickListener?.invoke(item) }
       collectionShowRoot.onLongClick { itemLongClickListener?.invoke(item) }
     }
+
     imageLoadCompleteListener = { loadTranslation() }
   }
 
@@ -45,7 +57,15 @@ class MyShowAllView : ShowView<MyShowsItem> {
 
   private lateinit var item: MyShowsItem
 
-  override fun bind(item: MyShowsItem) {
+  fun bind(item: MyShowsItem, position: Int) {
+    if (isTablet) {
+      if (position % Config.LISTS_STANDARD_GRID_SPAN_TABLET == 0) {
+        updatePadding(left = 0, right = spaceSmall)
+      } else {
+        updatePadding(left = spaceSmall, right = 0)
+      }
+    }
+
     clear()
     this.item = item
     with(binding) {
