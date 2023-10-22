@@ -9,6 +9,7 @@
   <dimen name="myShowsSearchLocalViewPadding">150dp</dimen>
   <dimen name="myShowsSearchLocalOffset">40dp</dimen>
 
+  <dimen name="myShowsRecyclerHorizontalPadding">0dp</dimen>
   <dimen name="myShowsBottomPadding">76dp</dimen>
   <dimen name="myShowsFanartCorner">4dp</dimen>
   <dimen name="myShowsFanartHeight">126dp</dimen>

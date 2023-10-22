@@ -15,6 +15,7 @@ import com.michaldrabik.ui_base.common.ListViewMode.GRID_TITLE
 import com.michaldrabik.ui_base.common.ListViewMode.LIST_COMPACT
 import com.michaldrabik.ui_base.common.ListViewMode.LIST_NORMAL
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
+import com.michaldrabik.ui_base.utilities.extensions.isTablet
 import com.michaldrabik.ui_base.utilities.extensions.screenWidth
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.databinding.ViewMyShowsRecentsBinding
@@ -33,9 +34,16 @@ class MyShowsRecentsView : FrameLayout {
     clipChildren = false
   }
 
-  private val itemMargin by lazy { context.dimenToPx(R.dimen.spaceTiny) }
   private val itemHeight by lazy { context.dimenToPx(R.dimen.myShowsFanartHeight) }
-  private val itemWidth by lazy { (screenWidth() - context.dimenToPx(R.dimen.spaceNormal) - (4 * itemMargin)) / 2 }
+  private val itemMargin by lazy { context.dimenToPx(R.dimen.spaceTiny) }
+  private val itemWidth by lazy {
+    val space = if (context.isTablet()) {
+      context.dimenToPx(R.dimen.myShowsRecyclerHorizontalPadding) * 4
+    } else {
+      context.dimenToPx(R.dimen.screenMarginHorizontal) * 2
+    }
+    ((screenWidth() - space) / 2) - itemMargin
+  }
 
   fun bind(
     item: MyShowsItem.RecentsSection,
@@ -44,6 +52,7 @@ class MyShowsRecentsView : FrameLayout {
     itemLongClickListener: ((MyShowsItem) -> Unit)?,
   ) {
     binding.myShowsRecentsContainer.removeAllViews()
+    setPaddings(viewMode)
 
     val clickListener: (MyShowsItem) -> Unit = { itemClickListener?.invoke(it) }
     val longClickListener: (MyShowsItem, View) -> Unit = { i, _ -> itemLongClickListener?.invoke(i) }
@@ -57,28 +66,31 @@ class MyShowsRecentsView : FrameLayout {
         width = itemWidth
         height = itemHeight
         columnSpec = GridLayout.spec(index % 2, 1F)
-        setMargins(itemMargin, itemMargin, itemMargin, itemMargin)
+        if (index % 2 == 0) {
+          setMargins(0, itemMargin, itemMargin, itemMargin)
+        } else {
+          setMargins(itemMargin, itemMargin, 0, itemMargin)
+        }
       }
       binding.myShowsRecentsContainer.addView(view, layoutParams)
     }
-
-    bindMargins(viewMode)
   }
 
-  private fun bindMargins(viewMode: ListViewMode) {
-    when (viewMode) {
-      GRID, GRID_TITLE -> {
-        binding.myShowsRecentsContainer.updatePadding(
-          left = resources.getDimensionPixelSize(R.dimen.myShowsRecentsGridPadding),
-          right = resources.getDimensionPixelSize(R.dimen.myShowsRecentsGridPadding),
-        )
+  private fun setPaddings(viewMode: ListViewMode) {
+    with(binding) {
+      val padding = when (viewMode) {
+        GRID, GRID_TITLE -> {
+          resources.getDimensionPixelSize(R.dimen.myShowsRecentsGridPadding)
+        }
+        LIST_NORMAL, LIST_COMPACT -> {
+          if (context.isTablet()) {
+            resources.getDimensionPixelSize(R.dimen.myShowsRecyclerHorizontalPadding)
+          } else {
+            resources.getDimensionPixelSize(R.dimen.screenMarginHorizontal)
+          }
+        }
       }
-      LIST_NORMAL, LIST_COMPACT -> {
-        binding.myShowsRecentsContainer.updatePadding(
-          left = resources.getDimensionPixelSize(R.dimen.spaceSmall),
-          right = resources.getDimensionPixelSize(R.dimen.spaceSmall),
-        )
-      }
+      myShowsRecentsContainer.updatePadding(left = padding, right = padding)
     }
   }
 }
