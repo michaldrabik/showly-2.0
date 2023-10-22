@@ -12,9 +12,13 @@ import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.common.Config.LISTS_GRID_SPAN
+import com.michaldrabik.common.Config.LISTS_GRID_SPAN_TABLET
 import com.michaldrabik.common.Config.LISTS_STANDARD_GRID_SPAN_TABLET
 import com.michaldrabik.ui_base.BaseFragment
-import com.michaldrabik.ui_base.common.ListViewMode
+import com.michaldrabik.ui_base.common.ListViewMode.GRID
+import com.michaldrabik.ui_base.common.ListViewMode.GRID_TITLE
+import com.michaldrabik.ui_base.common.ListViewMode.LIST_COMPACT
+import com.michaldrabik.ui_base.common.ListViewMode.LIST_NORMAL
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
@@ -87,7 +91,7 @@ class MyShowsFragment :
   }
 
   private fun setupRecycler() {
-    layoutManager = MyShowsLayoutManagerProvider.provideLayoutManger(requireContext(), ListViewMode.LIST_NORMAL)
+    layoutManager = MyShowsLayoutManagerProvider.provideLayoutManger(requireContext(), LIST_NORMAL)
     adapter = MyShowsAdapter(
       itemClickListener = { openShowDetails(it.show) },
       itemLongClickListener = { item -> openShowMenu(item.show) },
@@ -179,7 +183,13 @@ class MyShowsFragment :
           (layoutManager as? GridLayoutManager)?.withSpanSizeLookup { pos ->
             val item = adapter?.getItems()?.get(pos)
             when (item?.type) {
-              RECENT_SHOWS, ALL_SHOWS_HEADER -> if (requireContext().isTablet()) LISTS_STANDARD_GRID_SPAN_TABLET else LISTS_GRID_SPAN
+              RECENT_SHOWS, ALL_SHOWS_HEADER -> {
+                val isTablet = requireContext().isTablet()
+                when (viewMode) {
+                  LIST_NORMAL, LIST_COMPACT -> if (isTablet) LISTS_STANDARD_GRID_SPAN_TABLET else LISTS_GRID_SPAN
+                  GRID, GRID_TITLE -> if (isTablet) LISTS_GRID_SPAN_TABLET else LISTS_GRID_SPAN
+                }
+              }
               ALL_SHOWS_ITEM -> item.image.type.spanSize
               null -> throw Error("Unsupported span size!")
             }

@@ -121,14 +121,15 @@ class MyShowHeaderView : FrameLayout {
           )
         }
         LIST_NORMAL, LIST_COMPACT -> {
+          val padding = resources.getDimensionPixelSize(R.dimen.spaceMedium)
           myShowsFilterChipsScroll.updatePadding(
-            left = resources.getDimensionPixelSize(R.dimen.spaceMedium),
-            right = resources.getDimensionPixelSize(R.dimen.spaceMedium),
+            left = padding,
+            right = padding,
             bottom = 0
           )
           myShowsHeaderLabel.updatePadding(
-            left = resources.getDimensionPixelSize(R.dimen.spaceMedium),
-            right = resources.getDimensionPixelSize(R.dimen.spaceMedium)
+            left = padding,
+            right = padding
           )
         }
       }

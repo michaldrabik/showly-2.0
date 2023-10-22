@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <dimen name="myShowsFanartHeight">176dp</dimen>
+  <dimen name="myShowsHeaderGridPadding">12dp</dimen>
   <dimen name="myShowsRecyclerHorizontalPadding">12dp</dimen>
 </resources>
