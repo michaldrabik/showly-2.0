@@ -26,7 +26,6 @@ import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
-import com.michaldrabik.ui_base.utilities.extensions.isTablet
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
@@ -156,7 +155,6 @@ class MyShowsFragment :
             val item = adapter?.getItems()?.get(pos)
             when (item?.type) {
               RECENT_SHOWS, ALL_SHOWS_HEADER -> {
-                val isTablet = requireContext().isTablet()
                 when (viewMode) {
                   LIST_NORMAL, LIST_COMPACT -> if (isTablet) LISTS_STANDARD_GRID_SPAN_TABLET else LISTS_GRID_SPAN
                   GRID, GRID_TITLE -> if (isTablet) LISTS_GRID_SPAN_TABLET else LISTS_GRID_SPAN
