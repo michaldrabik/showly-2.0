@@ -4,12 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.ImageView
-import androidx.core.view.updatePadding
 import com.bumptech.glide.Glide
 import com.michaldrabik.common.Config
-import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.views.ShowView
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.gone
@@ -21,6 +18,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_model.SortOrder.USER_RATING
+import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.databinding.ViewCollectionShowGridBinding
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
 import java.util.Locale.ENGLISH
@@ -34,17 +32,17 @@ class MyShowGridView : ShowView<MyShowsItem> {
 
   private val binding = ViewCollectionShowGridBinding.inflate(LayoutInflater.from(context), this)
 
-  private val spaceTiny by lazy { context.dimenToPx(R.dimen.spaceTiny) }
-  private val span by lazy { if (context.isTablet()) Config.LISTS_GRID_SPAN_TABLET else Config.LISTS_GRID_SPAN }
-
   private val width by lazy {
-    val screenMargin = 2.0 * context.dimenToPx(R.dimen.screenMarginHorizontal)
-    (screenWidth().toFloat() - screenMargin) / span
+    val span = if (context.isTablet()) Config.LISTS_GRID_SPAN_TABLET else Config.LISTS_GRID_SPAN
+    val itemSpacing = context.dimenToPx(R.dimen.spaceSmall)
+    val screenMargin = context.dimenToPx(R.dimen.screenMarginHorizontal)
+    val screenWidth = screenWidth().toFloat()
+    ((screenWidth - (screenMargin * 2.0)) - ((span - 1) * itemSpacing)) / span
   }
   private val height by lazy { width * ASPECT_RATIO }
 
   init {
-    layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
+    layoutParams = LayoutParams(width.toInt(), height.toInt())
 
     clipChildren = false
     clipToPadding = false
@@ -62,14 +60,7 @@ class MyShowGridView : ShowView<MyShowsItem> {
 
   private lateinit var item: MyShowsItem
 
-  fun bind(item: MyShowsItem, position: Int) {
-    layoutParams = LayoutParams(width.toInt(), height.toInt())
-    when {
-      position % span == 0 -> updatePadding(left = 0, right = spaceTiny)
-      (position + 1) % span == 0 -> updatePadding(left = spaceTiny, right = 0)
-      else -> updatePadding(left = spaceTiny, right = spaceTiny)
-    }
-
+  override fun bind(item: MyShowsItem) {
     clear()
     this.item = item
 

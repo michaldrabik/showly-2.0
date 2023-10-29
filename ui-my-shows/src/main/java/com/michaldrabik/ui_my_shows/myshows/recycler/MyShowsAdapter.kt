@@ -99,8 +99,8 @@ class MyShowsAdapter(
         when (listViewMode) {
           LIST_NORMAL -> (holder.itemView as MyShowAllView).bind(item, relativePosition)
           LIST_COMPACT -> (holder.itemView as MyShowAllCompactView).bind(item, relativePosition)
-          GRID -> (holder.itemView as MyShowGridView).bind(item, relativePosition)
-          GRID_TITLE -> (holder.itemView as MyShowGridTitleView).bind(item, relativePosition)
+          GRID -> (holder.itemView as MyShowGridView).bind(item)
+          GRID_TITLE -> (holder.itemView as MyShowGridTitleView).bind(item)
         }
       }
     }
