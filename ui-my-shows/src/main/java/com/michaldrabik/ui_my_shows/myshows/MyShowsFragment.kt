@@ -58,6 +58,7 @@ import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem.Type.ALL_SHOWS_
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem.Type.RECENT_SHOWS
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsLayoutManagerProvider
 import com.michaldrabik.ui_my_shows.utilities.MyShowsGridItemDecoration
+import com.michaldrabik.ui_my_shows.utilities.MyShowsListItemDecoration
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -116,6 +117,7 @@ class MyShowsFragment :
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
       setHasFixedSize(true)
       addItemDecoration(MyShowsGridItemDecoration(requireContext(), R.dimen.spaceSmall))
+      addItemDecoration(MyShowsListItemDecoration(requireContext(), R.dimen.spaceSmall))
     }
   }
 

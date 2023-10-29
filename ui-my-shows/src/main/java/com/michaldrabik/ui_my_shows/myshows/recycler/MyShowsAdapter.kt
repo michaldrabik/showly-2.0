@@ -49,11 +49,9 @@ class MyShowsAdapter(
       field = value
       notifyItemRangeChanged(0, asyncDiffer.currentList.size)
     }
-  private var nonAllShowItemsCount = 0
 
   fun setItems(newItems: List<MyShowsItem>, notifyChangeList: List<Type>?) {
     val notifyChange = notifyChangeList?.contains(Type.ALL_SHOWS_ITEM) == true
-    nonAllShowItemsCount = newItems.count { it.type != Type.ALL_SHOWS_ITEM }
     super.setItems(newItems, notifyChange)
   }
 
@@ -95,10 +93,9 @@ class MyShowsAdapter(
         itemLongClickListener
       )
       VIEW_TYPE_SHOW_ITEM -> {
-        val relativePosition = position - nonAllShowItemsCount
         when (listViewMode) {
-          LIST_NORMAL -> (holder.itemView as MyShowAllView).bind(item, relativePosition)
-          LIST_COMPACT -> (holder.itemView as MyShowAllCompactView).bind(item, relativePosition)
+          LIST_NORMAL -> (holder.itemView as MyShowAllView).bind(item)
+          LIST_COMPACT -> (holder.itemView as MyShowAllCompactView).bind(item)
           GRID -> (holder.itemView as MyShowGridView).bind(item)
           GRID_TITLE -> (holder.itemView as MyShowGridTitleView).bind(item)
         }

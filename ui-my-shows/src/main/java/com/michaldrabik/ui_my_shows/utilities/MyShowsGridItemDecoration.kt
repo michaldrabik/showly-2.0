@@ -31,17 +31,21 @@ class MyShowsGridItemDecoration : ItemDecoration {
     parent: RecyclerView,
     state: RecyclerView.State,
   ) {
-    val adapter = parent.adapter as MyShowsAdapter
-    val totalSpan = (parent.layoutManager as? GridLayoutManager)?.spanCount ?: 1
+    if (parent.layoutManager !is GridLayoutManager) return
+
+    val totalSpan = (parent.layoutManager as GridLayoutManager).spanCount
 
     if (view is MyShowGridView || view is MyShowGridTitleView) {
       outRect.top = halfSpacing
       outRect.bottom = halfSpacing
 
-      val nonMyShowItemCount = adapter.getItems().count { it.type != Type.ALL_SHOWS_ITEM }
-      val position = parent.getChildAdapterPosition(view) - nonMyShowItemCount
+      val nonMyShowItemCount = (parent.adapter as MyShowsAdapter)
+        .getItems()
+        .count { it.type != Type.ALL_SHOWS_ITEM }
 
+      val position = parent.getChildAdapterPosition(view) - nonMyShowItemCount
       val column = position % totalSpan
+
       outRect.left = spacing * column / totalSpan
       outRect.right = spacing * ((totalSpan - 1) - column) / totalSpan
     }
