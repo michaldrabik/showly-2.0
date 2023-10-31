@@ -22,7 +22,7 @@ class ProgressMovieItemDiffCallback : DiffUtil.ItemCallback<ProgressMovieListIte
     return when (oldItem) {
       is ProgressMovieListItem.MovieItem -> areContentsTheSame(oldItem, (newItem as ProgressMovieListItem.MovieItem))
       is ProgressMovieListItem.FiltersItem -> areContentsTheSame(oldItem, (newItem as ProgressMovieListItem.FiltersItem))
-      is ProgressMovieListItem.Header -> true
+      is ProgressMovieListItem.HeaderItem -> true
     }
   }
 

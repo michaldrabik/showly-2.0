@@ -2,6 +2,8 @@
 <resources>
   <dimen name="progressMoviesTabsViewTranslation">-7dp</dimen>
 
+  <dimen name="progressMoviesRecyclerHorizontalSpace">0dp</dimen>
+
   <dimen name="progressMoviesHeaderTextSize">22sp</dimen>
   <dimen name="progressMoviesSearchViewPadding">104dp</dimen>
   <dimen name="progressMoviesTabsViewPadding">148dp</dimen>
