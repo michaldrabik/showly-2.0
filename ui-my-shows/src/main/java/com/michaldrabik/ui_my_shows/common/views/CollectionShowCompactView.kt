@@ -48,7 +48,7 @@ class CollectionShowCompactView : ShowView<CollectionListItem.ShowItem> {
   override val imageView: ImageView = binding.collectionShowImage
   override val placeholderView: ImageView = binding.collectionShowPlaceholder
 
-  private var nowUtc = nowUtc()
+  private val nowUtc = nowUtc()
   private lateinit var item: CollectionListItem.ShowItem
 
   override fun bind(item: CollectionListItem.ShowItem) {

@@ -34,10 +34,15 @@ class CollectionMovieView : MovieView<CollectionListItem.MovieItem> {
 
   init {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+
+    clipChildren = false
+    clipToPadding = false
+
     with(binding) {
       collectionMovieRoot.onClick { itemClickListener?.invoke(item) }
       collectionMovieRoot.onLongClick { itemLongClickListener?.invoke(item) }
     }
+
     imageLoadCompleteListener = { loadTranslation() }
   }
 

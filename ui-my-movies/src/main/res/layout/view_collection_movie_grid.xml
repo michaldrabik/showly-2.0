@@ -12,7 +12,6 @@
     android:id="@+id/collectionMovieRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/gridListsSpacing"
     android:background="@drawable/bg_media_view_elevation"
     android:elevation="@dimen/elevationTiny"
     android:foreground="@drawable/bg_media_view_ripple"
