@@ -31,8 +31,15 @@ class MyMovieAllCompactView : MovieView<MyMoviesItem> {
 
   init {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-    binding.collectionMovieRoot.onClick { itemClickListener?.invoke(item) }
-    binding.collectionMovieRoot.onLongClick { itemLongClickListener?.invoke(item) }
+
+    clipChildren = false
+    clipToPadding = false
+
+    with(binding) {
+      collectionMovieRoot.onClick { itemClickListener?.invoke(item) }
+      collectionMovieRoot.onLongClick { itemLongClickListener?.invoke(item) }
+    }
+
     imageLoadCompleteListener = { loadTranslation() }
   }
 

@@ -14,10 +14,6 @@
     android:layout_height="wrap_content"
     android:clipChildren="false"
     android:clipToPadding="false"
-    android:divider="@drawable/divider_my_movies_fanart"
-    android:paddingStart="@dimen/spaceSmall"
-    android:paddingEnd="@dimen/spaceSmall"
-    android:showDividers="middle"
     app:columnCount="2"
     />
 
