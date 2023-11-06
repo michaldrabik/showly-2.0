@@ -149,14 +149,14 @@ class WatchlistFragment :
         val notifyChange = resetScroll?.consume() == true
         adapter?.setItems(it, notifyChange = notifyChange)
         (layoutManager as? GridLayoutManager)?.withSpanSizeLookup { pos ->
-          when (val item = adapter?.getItems()?.get(pos)) {
+          when (adapter?.getItems()?.get(pos)) {
             is FiltersItem -> {
               when (viewMode) {
                 LIST_NORMAL, LIST_COMPACT -> if (isTablet) LISTS_STANDARD_GRID_SPAN_TABLET else LISTS_GRID_SPAN
                 GRID, GRID_TITLE -> if (isTablet) LISTS_GRID_SPAN_TABLET else LISTS_GRID_SPAN
               }
             }
-            is ShowItem -> item.image.type.spanSize
+            is ShowItem -> 1
             else -> throw Error("Unsupported span size!")
           }
         }

@@ -13,7 +13,6 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
@@ -32,6 +31,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
 import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_discover_movies.databinding.FragmentDiscoverMoviesBinding
+import com.michaldrabik.ui_discover_movies.helpers.DiscoverMoviesLayoutManagerProvider
 import com.michaldrabik.ui_discover_movies.recycler.DiscoverMovieListItem
 import com.michaldrabik.ui_discover_movies.recycler.DiscoverMoviesAdapter
 import com.michaldrabik.ui_model.ImageType
@@ -41,7 +41,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlin.random.Random
 
 @AndroidEntryPoint
-class DiscoverMoviesFragment :
+internal class DiscoverMoviesFragment :
   BaseFragment<DiscoverMoviesViewModel>(R.layout.fragment_discover_movies),
   OnTabReselectedListener {
 
@@ -162,7 +162,7 @@ class DiscoverMoviesFragment :
   }
 
   private fun setupRecycler() {
-    layoutManager = GridLayoutManager(context, Config.MAIN_GRID_SPAN)
+    layoutManager = DiscoverMoviesLayoutManagerProvider.provideLayoutManager(requireContext())
     adapter = DiscoverMoviesAdapter(
       itemClickListener = {
         when (it.image.type) {
@@ -277,7 +277,9 @@ class DiscoverMoviesFragment :
         items?.let {
           val resetScroll = resetScroll?.consume() == true
           adapter?.setItems(it, resetScroll)
-          layoutManager?.withSpanSizeLookup { pos -> adapter?.getItems()?.get(pos)?.image?.type?.spanSize!! }
+          layoutManager?.withSpanSizeLookup { pos ->
+            adapter?.getItems()?.get(pos)?.image?.type?.getSpan(isTablet)!!
+          }
           discoverMoviesRecycler.fadeIn(200, withHardware = true)
         }
         isSyncing?.let {

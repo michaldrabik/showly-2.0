@@ -85,7 +85,7 @@ class ListDetailsGridTitleItemView : ListDetailsItemView {
 
   override fun bind(item: ListDetailsItem) {
     layoutParams = LayoutParams(
-      (width * item.image.type.spanSize.toFloat()).toInt(),
+      (width * item.image.type.getSpan(isTablet).toFloat()).toInt(),
       height.toInt()
     )
 

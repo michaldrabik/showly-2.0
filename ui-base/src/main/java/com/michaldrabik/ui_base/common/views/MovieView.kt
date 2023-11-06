@@ -10,9 +10,11 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.common.Config.MAIN_GRID_SPAN
+import com.michaldrabik.common.Config.MAIN_GRID_SPAN_TABLET
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.MovieListItem
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
+import com.michaldrabik.ui_base.utilities.extensions.isTablet
 import com.michaldrabik.ui_base.utilities.extensions.screenWidth
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
@@ -36,7 +38,9 @@ abstract class MovieView<Item : MovieListItem> : FrameLayout {
   private val centerCropTransformation by lazy { CenterCrop() }
   private val cornersTransformation by lazy { RoundedCorners(cornerRadius) }
 
-  private val width by lazy { (screenWidth().toFloat() - (2.0 * gridPadding)) / MAIN_GRID_SPAN }
+  private val isTablet by lazy { context.isTablet() }
+  private val span by lazy { if (isTablet) MAIN_GRID_SPAN_TABLET else MAIN_GRID_SPAN }
+  private val width by lazy { (screenWidth().toFloat() - (2.0 * gridPadding)) / span }
   private val height by lazy { width * ASPECT_RATIO }
 
   protected abstract val imageView: ImageView
@@ -49,7 +53,10 @@ abstract class MovieView<Item : MovieListItem> : FrameLayout {
   var missingTranslationListener: ((Item) -> Unit)? = null
 
   open fun bind(item: Item) {
-    layoutParams = LayoutParams((width * item.image.type.spanSize.toFloat()).toInt(), height.toInt())
+    layoutParams = LayoutParams(
+      (width * item.image.type.getSpan(isTablet).toFloat()).toInt(),
+      height.toInt()
+    )
   }
 
   protected open fun loadImage(item: Item) {

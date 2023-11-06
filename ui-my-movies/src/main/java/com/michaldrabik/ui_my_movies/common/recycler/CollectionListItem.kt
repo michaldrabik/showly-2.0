@@ -46,7 +46,7 @@ sealed class CollectionListItem(
     val genres: List<Genre>
   ) : CollectionListItem(
     movie = Movie.EMPTY,
-    image = Image.createUnknown(ImageType.FILTERS),
+    image = Image.createUnknown(ImageType.POSTER),
     isLoading = false
   ) {
 

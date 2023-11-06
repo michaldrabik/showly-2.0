@@ -60,11 +60,6 @@ class CollectionShowGridTitleView : ShowView<CollectionListItem.ShowItem> {
   private lateinit var item: CollectionListItem.ShowItem
 
   override fun bind(item: CollectionListItem.ShowItem) {
-    layoutParams = LayoutParams(
-      (width * item.image.type.spanSize.toFloat()).toInt(),
-      height.toInt()
-    )
-
     clear()
     this.item = item
 

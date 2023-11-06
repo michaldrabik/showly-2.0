@@ -41,12 +41,14 @@ class ShowPosterView : ShowView<DiscoverListItem> {
     super.bind(item)
     clear()
     this.item = item
+
     with(binding) {
       showPosterTitle.text = item.show.title
       showPosterProgress.visibleIf(item.isLoading)
       showPosterBadge.visibleIf(item.isFollowed)
       showPosterLaterBadge.visibleIf(item.isWatchlist)
     }
+
     loadImage(item)
   }
 

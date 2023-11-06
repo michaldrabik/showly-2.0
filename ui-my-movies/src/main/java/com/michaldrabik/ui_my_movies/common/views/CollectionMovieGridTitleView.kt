@@ -60,11 +60,6 @@ class CollectionMovieGridTitleView : MovieView<CollectionListItem.MovieItem> {
   private lateinit var item: CollectionListItem.MovieItem
 
   override fun bind(item: CollectionListItem.MovieItem) {
-    layoutParams = LayoutParams(
-      (width * item.image.type.spanSize.toFloat()).toInt(),
-      height.toInt()
-    )
-
     clear()
     this.item = item
 

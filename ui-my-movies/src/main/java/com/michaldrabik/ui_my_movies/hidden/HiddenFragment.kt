@@ -140,14 +140,14 @@ class HiddenFragment :
         val notifyChange = resetScroll?.consume() == true
         adapter?.setItems(it, notifyChange = notifyChange)
         (layoutManager as? GridLayoutManager)?.withSpanSizeLookup { pos ->
-          when (val item = adapter?.getItems()?.get(pos)) {
+          when (adapter?.getItems()?.get(pos)) {
             is FiltersItem -> {
               when (viewMode) {
                 LIST_NORMAL, LIST_COMPACT -> if (isTablet) Config.LISTS_STANDARD_GRID_SPAN_TABLET else Config.LISTS_GRID_SPAN
                 GRID, GRID_TITLE -> if (isTablet) Config.LISTS_GRID_SPAN_TABLET else Config.LISTS_GRID_SPAN
               }
             }
-            is MovieItem -> item.image.type.spanSize
+            is MovieItem -> 1
             else -> throw Error("Unsupported span size!")
           }
         }

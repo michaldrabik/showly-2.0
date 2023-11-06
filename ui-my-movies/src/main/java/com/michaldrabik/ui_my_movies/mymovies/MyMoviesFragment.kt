@@ -152,7 +152,7 @@ class MyMoviesFragment :
                   GRID, GRID_TITLE -> if (isTablet) LISTS_GRID_SPAN_TABLET else LISTS_GRID_SPAN
                 }
               }
-              ALL_MOVIES_ITEM -> item.image.type.spanSize
+              ALL_MOVIES_ITEM -> 1
               null -> throw Error("Unsupported span size!")
             }
           }

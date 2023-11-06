@@ -347,7 +347,7 @@ class ListDetailsFragment :
           val scrollTop = resetScroll?.consume() == true
           adapter?.setItems(it, scrollTop)
           (layoutManager as? GridLayoutManager)?.withSpanSizeLookup { pos ->
-            adapter?.items?.get(pos)?.image?.type?.spanSize!!
+            adapter?.items?.get(pos)?.image?.type?.getSpan(isTablet)!!
           }
         }
         isManageMode.let { isManageMode ->

@@ -27,6 +27,7 @@ object Config {
   const val TMDB_URL = "https://www.themoviedb.org/"
 
   const val MAIN_GRID_SPAN = 3
+  const val MAIN_GRID_SPAN_TABLET = 6
   const val LISTS_GRID_SPAN = 4
   const val LISTS_GRID_SPAN_TABLET = 6
   const val LISTS_STANDARD_GRID_SPAN_TABLET = 2

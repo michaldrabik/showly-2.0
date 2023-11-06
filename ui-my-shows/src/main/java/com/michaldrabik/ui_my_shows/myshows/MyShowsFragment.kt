@@ -160,7 +160,7 @@ class MyShowsFragment :
                   GRID, GRID_TITLE -> if (isTablet) LISTS_GRID_SPAN_TABLET else LISTS_GRID_SPAN
                 }
               }
-              ALL_SHOWS_ITEM -> item.image.type.spanSize
+              ALL_SHOWS_ITEM -> 1
               null -> throw Error("Unsupported span size!")
             }
           }
