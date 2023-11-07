@@ -15,6 +15,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
@@ -51,6 +52,7 @@ import com.michaldrabik.ui_search.databinding.FragmentSearchBinding
 import com.michaldrabik.ui_search.recycler.SearchAdapter
 import com.michaldrabik.ui_search.recycler.SearchListItem
 import com.michaldrabik.ui_search.recycler.suggestions.SuggestionAdapter
+import com.michaldrabik.ui_search.utilities.SearchLayoutManagerProvider
 import com.michaldrabik.ui_search.utilities.TextWatcherAdapter
 import com.michaldrabik.ui_search.views.RecentSearchView
 import dagger.hilt.android.AndroidEntryPoint
@@ -69,7 +71,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
 
   private var adapter: SearchAdapter? = null
   private var suggestionsAdapter: SuggestionAdapter? = null
-  private var layoutManager: LinearLayoutManager? = null
+  private var layoutManager: LayoutManager? = null
   private var suggestionsLayoutManager: LinearLayoutManager? = null
 
   private val swipeRefreshEndOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshEndOffset) }
@@ -166,7 +168,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
 
   private fun setupRecycler() {
     with(binding) {
-      layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
+      layoutManager = SearchLayoutManagerProvider.provideLayoutManger(requireContext())
       adapter = SearchAdapter(
         itemClickListener = { openShowDetails(it) },
         itemLongClickListener = { openContextMenu(it) },
