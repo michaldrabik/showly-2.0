@@ -12,8 +12,6 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.clearFragmentResultListener
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.michaldrabik.common.Mode
@@ -72,7 +70,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
   private var adapter: SearchAdapter? = null
   private var suggestionsAdapter: SuggestionAdapter? = null
   private var layoutManager: LayoutManager? = null
-  private var suggestionsLayoutManager: LinearLayoutManager? = null
+  private var suggestionsLayoutManager: LayoutManager? = null
 
   private val swipeRefreshEndOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshEndOffset) }
   private val swipeRefreshStartOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshStartOffset) }
@@ -200,7 +198,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
   }
 
   private fun setupSuggestionsRecycler() {
-    suggestionsLayoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
+    suggestionsLayoutManager = SearchLayoutManagerProvider.provideLayoutManger(requireContext())
     suggestionsAdapter = SuggestionAdapter(
       itemClickListener = {
         val query =
