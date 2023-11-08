@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="listsRecyclerPaddingHorizontal">12dp</dimen>
+  <dimen name="listsFabPadding">24dp</dimen>
+</resources>

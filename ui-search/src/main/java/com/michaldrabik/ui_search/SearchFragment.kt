@@ -325,7 +325,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
       searchRecentsClearButton.fadeIn()
       searchRecentsClearButton.onClick { viewModel.clearRecentSearches() }
 
-      val paddingH = requireContext().dimenToPx(R.dimen.searchViewItemPaddingHorizontal)
+      val paddingH = requireContext().dimenToPx(R.dimen.screenMarginHorizontal)
       val paddingV = requireContext().dimenToPx(R.dimen.spaceMedium)
 
       searchRecentsLayout.removeAllViews()

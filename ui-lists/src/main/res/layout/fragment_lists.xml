@@ -17,7 +17,9 @@
     android:clipChildren="false"
     android:clipToPadding="false"
     android:overScrollMode="never"
+    android:paddingStart="@dimen/listsRecyclerPaddingHorizontal"
     android:paddingTop="@dimen/listsRecyclerPaddingTop"
+    android:paddingEnd="@dimen/listsRecyclerPaddingHorizontal"
     android:paddingBottom="@dimen/listsBottomPadding"
     />
 
@@ -38,9 +40,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="end"
-    android:layout_marginStart="@dimen/spaceMedium"
+    android:layout_marginStart="@dimen/screenMarginHorizontal"
     android:layout_marginTop="@dimen/listsIconsPadding"
-    android:layout_marginEnd="@dimen/spaceMedium"
+    android:layout_marginEnd="@dimen/screenMarginHorizontal"
     app:layout_behavior="com.michaldrabik.ui_base.common.behaviour.ScrollableViewBehaviour"
     >
 
@@ -67,9 +69,9 @@
     android:id="@+id/fragmentListsModeTabs"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/spaceMedium"
+    android:layout_marginStart="@dimen/screenMarginHorizontal"
     android:layout_marginTop="@dimen/collectionTabsMargin"
-    android:layout_marginEnd="@dimen/spaceMedium"
+    android:layout_marginEnd="@dimen/screenMarginHorizontal"
     app:layout_behavior="com.michaldrabik.ui_base.common.behaviour.ScrollableViewBehaviour"
     />
 
@@ -77,9 +79,9 @@
     android:id="@+id/fragmentListsSearchLocalView"
     android:layout_width="match_parent"
     android:layout_height="@dimen/searchLocalViewHeight"
-    android:layout_marginLeft="@dimen/spaceMedium"
+    android:layout_marginLeft="@dimen/screenMarginHorizontal"
     android:layout_marginTop="@dimen/listsSearchLocalViewPadding"
-    android:layout_marginRight="@dimen/spaceMedium"
+    android:layout_marginRight="@dimen/screenMarginHorizontal"
     android:visibility="gone"
     tools:visibility="visible"
     />
@@ -88,9 +90,9 @@
     android:id="@+id/fragmentListsSearchView"
     android:layout_width="match_parent"
     android:layout_height="@dimen/searchViewHeight"
-    android:layout_marginLeft="@dimen/spaceMedium"
+    android:layout_marginLeft="@dimen/screenMarginHorizontal"
     android:layout_marginTop="@dimen/spaceSmall"
-    android:layout_marginRight="@dimen/spaceMedium"
+    android:layout_marginRight="@dimen/screenMarginHorizontal"
     />
 
   <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -106,7 +108,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="end"
-      android:layout_margin="16dp"
+      android:layout_margin="@dimen/listsFabPadding"
       android:elevation="@dimen/elevationSmall"
       android:visibility="gone"
       app:backgroundTint="?attr/colorAccent"
