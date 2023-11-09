@@ -40,6 +40,9 @@ class ListDetailsMovieItemView : ListDetailsItemView {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     setBackgroundColor(context.colorFromAttr(android.R.attr.windowBackground))
 
+    clipChildren = false
+    clipToPadding = false
+
     imageLoadCompleteListener = {
       if (item.translation == null) {
         missingTranslationListener?.invoke(item)

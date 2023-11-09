@@ -2,4 +2,9 @@
 <resources>
   <dimen name="listsRecyclerPaddingHorizontal">12dp</dimen>
   <dimen name="listsFabPadding">24dp</dimen>
+
+  <dimen name="listDetailsItemMarginBottom">29dp</dimen>
+  <dimen name="listDetailsItemTitleMarginBottom">8dp</dimen>
+  <dimen name="listDetailsItemTitleSize">12sp</dimen>
+
 </resources>
