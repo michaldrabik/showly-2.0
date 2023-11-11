@@ -14,7 +14,6 @@
   <dimen name="listsTripleImageWidth">116dp</dimen>
   <dimen name="listsMarginHorizontal">12dp</dimen>
 
-  <dimen name="listDetailsItemMarginHorizontal">12dp</dimen>
   <dimen name="listDetailsItemMarginBottom">23dp</dimen>
   <dimen name="listDetailsItemTitleMarginBottom">4dp</dimen>
   <dimen name="listDetailsItemTitleSize">12sp</dimen>

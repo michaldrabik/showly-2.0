@@ -37,7 +37,7 @@ class ListDetailsGridItemDecoration : ItemDecoration {
       outRect.top = halfSpacing
       outRect.bottom = halfSpacing
 
-      val position = parent.getChildAdapterPosition(view) - 1
+      val position = parent.getChildAdapterPosition(view)
       val column = position % totalSpan
 
       outRect.left = spacing * column / totalSpan

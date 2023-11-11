@@ -53,6 +53,7 @@ import com.michaldrabik.ui_lists.details.recycler.ListDetailsAdapter
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
 import com.michaldrabik.ui_lists.details.recycler.helpers.ListDetailsGridItemDecoration
 import com.michaldrabik.ui_lists.details.recycler.helpers.ListDetailsLayoutManagerProvider
+import com.michaldrabik.ui_lists.details.recycler.helpers.ListDetailsListItemDecoration
 import com.michaldrabik.ui_lists.details.views.ListDetailsDeleteConfirmView
 import com.michaldrabik.ui_model.CustomList
 import com.michaldrabik.ui_model.PremiumFeature
@@ -194,6 +195,7 @@ class ListDetailsFragment :
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
       setHasFixedSize(true)
       addItemDecoration(ListDetailsGridItemDecoration(requireContext(), R.dimen.spaceSmall))
+      addItemDecoration(ListDetailsListItemDecoration(requireContext(), R.dimen.spaceSmall))
     }
 
     val touchCallback = ReorderListCallback(adapter as ReorderListCallbackAdapter)
