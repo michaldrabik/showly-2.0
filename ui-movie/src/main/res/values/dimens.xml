@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <dimen name="dividerHorizontalList">8dp</dimen>
+
   <dimen name="actorMovieTileCorner">4dp</dimen>
   <dimen name="actorMovieTilePlaceholder">20dp</dimen>
   <dimen name="actorMovieTileImageHeight">120dp</dimen>
   <dimen name="actorMovieTileImageWidth">80dp</dimen>
+  <dimen name="actorMovieTileTextSize">11sp</dimen>
 
   <dimen name="relatedMovieHeight">120dp</dimen>
   <dimen name="relatedMovieWidth">80dp</dimen>

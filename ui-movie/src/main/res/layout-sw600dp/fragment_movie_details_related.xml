@@ -17,7 +17,7 @@
     android:layout_marginStart="@dimen/spaceBig"
     android:text="@string/textMovieYouMayAlsoLike"
     android:textColor="?android:attr/textColorPrimary"
-    android:textSize="16sp"
+    android:textSize="18sp"
     android:textStyle="bold"
     app:layout_constraintBottom_toTopOf="@id/movieDetailsRelatedRecycler"
     app:layout_constraintEnd_toEndOf="parent"

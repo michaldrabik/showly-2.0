@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <dimen name="actorMovieTileCorner">6dp</dimen>
+  <dimen name="dividerHorizontalList">12dp</dimen>
 
+  <dimen name="actorMovieTileCorner">6dp</dimen>
   <dimen name="actorMovieTileImageHeight">140dp</dimen>
   <dimen name="actorMovieTileImageWidth">93dp</dimen>
+  <dimen name="actorMovieTileTextSize">12sp</dimen>
 
   <dimen name="relatedMovieHeight">140dp</dimen>
   <dimen name="relatedMovieWidth">93dp</dimen>
