@@ -97,7 +97,7 @@
     android:id="@+id/settingsWidgetsThemeValue"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="@dimen/spaceNormal"
+    android:layout_marginEnd="@dimen/settingsValueMargin"
     android:gravity="end"
     android:minWidth="50dp"
     android:text="@string/textThemeDark"
@@ -120,8 +120,8 @@
     <TextView
       android:id="@+id/settingsWidgetsTransparencyTitle"
       style="@style/Settings.Title"
-      android:text="@string/textSettingsWidgetsTransparencyTitle"
       android:drawablePadding="@dimen/spaceSmall"
+      android:text="@string/textSettingsWidgetsTransparencyTitle"
       app:drawableStartCompat="@drawable/ic_crown_small"
       app:drawableTint="?android:attr/textColorPrimary"
       app:layout_constraintStart_toStartOf="parent"
