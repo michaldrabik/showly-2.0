@@ -13,4 +13,8 @@
   <dimen name="movieCollectionImageWidth">53dp</dimen>
   <dimen name="movieCollectionImageHeight">80dp</dimen>
   <dimen name="movieCollectionImageGuide">65dp</dimen>
+
+  <dimen name="movieCollectionHeaderSize">11sp</dimen>
+  <dimen name="movieCollectionTitleSize">16sp</dimen>
+  <dimen name="movieCollectionDescriptionSize">12sp</dimen>
 </resources>
