@@ -334,8 +334,19 @@
         android:text="@string/textLink"
         app:drawableTopCompat="@drawable/ic_link"
         app:layout_constraintBottom_toBottomOf="@id/movieDetailsCommentsButton"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/movieDetailsCustomImagesButton"
         app:layout_constraintStart_toEndOf="@+id/movieDetailsCommentsButton"
+        app:layout_constraintTop_toTopOf="@id/movieDetailsCommentsButton"
+        />
+
+      <TextView
+        android:id="@+id/movieDetailsCustomImagesButton"
+        style="@style/MovieDetails.ExtraButton"
+        android:text="@string/textSetCustomImages"
+        app:drawableTopCompat="@drawable/ic_custom_image"
+        app:layout_constraintBottom_toBottomOf="@id/movieDetailsCommentsButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/movieDetailsLinksButton"
         app:layout_constraintTop_toTopOf="@id/movieDetailsCommentsButton"
         />
 
@@ -401,29 +412,6 @@
         tools:layout="@layout/fragment_movie_details_related"
         />
 
-      <TextView
-        android:id="@+id/movieDetailsCustomImagesLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spaceBig"
-        android:layout_marginTop="@dimen/spaceSmall"
-        android:drawablePadding="@dimen/spaceTiny"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="center_vertical"
-        android:text="@string/textSetCustomImages"
-        android:textAllCaps="true"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="14sp"
-        android:visibility="gone"
-        app:drawableStartCompat="@drawable/ic_custom_image"
-        app:drawableTint="?android:attr/textColorPrimary"
-        app:layout_constraintBottom_toTopOf="@id/movieDetailsPremiumAd"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/movieDetailsRelatedFragment"
-        app:layout_goneMarginTop="0dp"
-        tools:visibility="visible"
-        />
-
       <View
         android:id="@+id/separator5"
         android:layout_width="0dp"
@@ -452,7 +440,7 @@
         android:layout_marginEnd="@dimen/spaceBig"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/movieDetailsCustomImagesLabel"
+        app:layout_constraintTop_toBottomOf="@id/movieDetailsRelatedFragment"
         />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

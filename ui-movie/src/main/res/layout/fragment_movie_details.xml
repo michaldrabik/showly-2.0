@@ -390,7 +390,7 @@
         />
 
       <TextView
-        android:id="@+id/movieDetailsCustomImagesLabel"
+        android:id="@+id/movieDetailsCustomImagesButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
@@ -439,7 +439,7 @@
         android:layout_marginEnd="@dimen/spaceNormal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/movieDetailsCustomImagesLabel"
+        app:layout_constraintTop_toBottomOf="@id/movieDetailsCustomImagesButton"
         />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
