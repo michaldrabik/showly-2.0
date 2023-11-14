@@ -40,7 +40,7 @@
           android:layout_height="wrap_content"
           android:fontFamily="sans-serif-medium"
           android:textColor="?android:attr/textColorPrimary"
-          android:textSize="20sp"
+          android:textSize="21sp"
           />
 
         <ProgressBar
@@ -72,7 +72,7 @@
         android:lineSpacingExtra="2dp"
         android:text="Trakt.tv"
         android:textColor="?android:attr/textColorSecondary"
-        android:textSize="12sp"
+        android:textSize="13sp"
         tools:ignore="HardcodedText"
         />
 
@@ -100,7 +100,7 @@
           android:layout_height="wrap_content"
           android:fontFamily="sans-serif-medium"
           android:textColor="?android:attr/textColorPrimary"
-          android:textSize="20sp"
+          android:textSize="21sp"
           />
 
         <ProgressBar
@@ -129,7 +129,7 @@
         android:layout_height="wrap_content"
         android:text="Metascore"
         android:textColor="?android:attr/textColorSecondary"
-        android:textSize="12sp"
+        android:textSize="13sp"
         tools:ignore="HardcodedText"
         />
 
@@ -167,7 +167,7 @@
           android:layout_height="wrap_content"
           android:fontFamily="sans-serif-medium"
           android:textColor="?android:attr/textColorPrimary"
-          android:textSize="20sp"
+          android:textSize="21sp"
           />
 
         <ProgressBar
@@ -198,7 +198,7 @@
         android:lineSpacingExtra="2dp"
         android:text="IMDb"
         android:textColor="?android:attr/textColorSecondary"
-        android:textSize="12sp"
+        android:textSize="13sp"
         tools:ignore="HardcodedText"
         />
 
@@ -226,7 +226,7 @@
           android:layout_height="wrap_content"
           android:fontFamily="sans-serif-medium"
           android:textColor="?android:attr/textColorPrimary"
-          android:textSize="20sp"
+          android:textSize="21sp"
           />
 
         <ProgressBar
@@ -257,7 +257,7 @@
         android:lineSpacingExtra="2dp"
         android:text="R. Tomatoes"
         android:textColor="?android:attr/textColorSecondary"
-        android:textSize="12sp"
+        android:textSize="13sp"
         tools:ignore="HardcodedText"
         />
 
