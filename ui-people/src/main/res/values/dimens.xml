@@ -5,10 +5,14 @@
   <dimen name="personImageCorner">17dp</dimen>
   <dimen name="personImageTipMargin">152dp</dimen>
 
+  <dimen name="personDetailsInfoTitle">20sp</dimen>
+  <dimen name="personDetailsInfoSubtitle">14sp</dimen>
+
   <dimen name="personCreditsImageWidth">53dp</dimen>
   <dimen name="personCreditsImageHeight">80dp</dimen>
   <dimen name="personCreditsImageGuide">65dp</dimen>
   <dimen name="personCreditsHeaderTextSize">20sp</dimen>
 
+  <dimen name="personGalleryBackArrowMargin">0dp</dimen>
   <item name="personGalleryImageRatio" format="float" type="dimen">0.8</item>
 </resources>
