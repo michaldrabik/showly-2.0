@@ -163,7 +163,8 @@ class ListsFragment :
   private fun setupStatusBar() {
     with(binding) {
       fragmentListsRoot.doOnApplyWindowInsets { _, insets, _, _ ->
-        val statusBarSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+        val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
+        val statusBarSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top + tabletOffset
         fragmentListsRecycler
           .updatePadding(top = statusBarSize + dimenToPx(R.dimen.listsRecyclerPaddingTop))
         fragmentListsSearchView.applyWindowInsetBehaviour(dimenToPx(R.dimen.spaceNormal) + statusBarSize)

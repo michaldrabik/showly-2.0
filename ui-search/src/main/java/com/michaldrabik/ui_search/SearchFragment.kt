@@ -219,7 +219,8 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
 
   private fun setupStatusBar() {
     binding.searchRoot.doOnApplyWindowInsets { view, insets, _, _ ->
-      val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+      val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
+      val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top + tabletOffset
       view.updatePadding(top = inset)
     }
   }

@@ -176,7 +176,8 @@ class CalendarFragment :
     }
 
     binding.progressCalendarRecycler.doOnApplyWindowInsets { view, insets, _, _ ->
-      statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+      val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
+      statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top + tabletOffset
       view.updatePadding(top = statusBarHeight + dimenToPx(recyclerPadding))
       (binding.progressCalendarOverscrollIcon.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarHeight + dimenToPx(overscrollPadding))

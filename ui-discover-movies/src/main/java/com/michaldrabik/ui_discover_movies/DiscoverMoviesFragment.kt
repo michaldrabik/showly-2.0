@@ -143,7 +143,8 @@ internal class DiscoverMoviesFragment :
   private fun setupStatusBar() {
     with(binding) {
       discoverMoviesRoot.doOnApplyWindowInsets { _, insets, _, _ ->
-        val statusBarSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+        val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
+        val statusBarSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top + tabletOffset
         discoverMoviesRecycler
           .updatePadding(top = statusBarSize + dimenToPx(R.dimen.discoverRecyclerPadding))
         (discoverMoviesSearchView.layoutParams as ViewGroup.MarginLayoutParams)
