@@ -17,6 +17,10 @@ class LinkItemView : FrameLayout {
   constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+
+    clipChildren = false
+    clipToPadding = false
+
     context.theme.obtainStyledAttributes(attrs, R.styleable.LinkItem, 0, 0).apply {
       try {
         with(binding) {
