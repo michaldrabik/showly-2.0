@@ -1,0 +1,8 @@
+<resources>
+  <dimen name="personImageWidth">100dp</dimen>
+  <dimen name="personImageWidthPadded">116dp</dimen>
+  <dimen name="personImageHeight">150dp</dimen>
+  <dimen name="personImageCorner">18dp</dimen>
+
+  <item name="personGalleryImageRatio" format="float" type="dimen">0.67</item>
+</resources>
