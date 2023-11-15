@@ -49,7 +49,7 @@
       android:gravity="start"
       android:maxLines="2"
       android:textAlignment="viewStart"
-      android:textSize="11sp"
+      android:textSize="@dimen/actorTileTextSize"
       android:translationZ="10dp"
       tools:ignore="SmallSp"
       tools:text="Erin Moriarty"

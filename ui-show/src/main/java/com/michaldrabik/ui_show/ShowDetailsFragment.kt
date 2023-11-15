@@ -223,8 +223,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
               Analytics.logShowTrailerClick(show)
             }
           }
-          showDetailsCustomImagesLabel.visibleIf(Config.SHOW_PREMIUM)
-          showDetailsCustomImagesLabel.onClick { openCustomImagesSheet(show.traktId, meta?.isPremium) }
+          showDetailsCustomImagesButton.visibleIf(Config.SHOW_PREMIUM)
+          showDetailsCustomImagesButton.onClick { openCustomImagesSheet(show.traktId, meta?.isPremium) }
           showDetailsLinksButton.onClick {
             val args = LinksBottomSheet.createBundle(show)
             navigateToSafe(R.id.actionShowDetailsFragmentToLinks, args)

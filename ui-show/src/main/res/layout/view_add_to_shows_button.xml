@@ -27,6 +27,7 @@
       android:includeFontPadding="false"
       android:text="@string/textAddToMyShows"
       android:textColor="?android:attr/textColorPrimary"
+      android:textSize="@dimen/addToButtonTextSize"
       app:rippleColor="?android:attr/textColorPrimary"
       app:strokeColor="?android:attr/textColorPrimary"
       />
@@ -43,6 +44,7 @@
       android:padding="0dp"
       android:text="@string/textWatchlist"
       android:textColor="?android:attr/textColorSecondary"
+      android:textSize="@dimen/addToButtonTextSize"
       app:rippleColor="?android:attr/textColorSecondary"
       app:strokeWidth="0dp"
       />
@@ -65,6 +67,7 @@
       android:includeFontPadding="false"
       android:text="@string/textInMyShows"
       android:textColor="?attr/colorAccent"
+      android:textSize="@dimen/addToButtonTextSize"
       android:visibility="gone"
       app:icon="@drawable/ic_bookmark_full"
       app:iconGravity="textStart"
