@@ -12,4 +12,7 @@
   <dimen name="seasonViewProgressMargin">0dp</dimen>
   <dimen name="episodeViewHeight">42dp</dimen>
   <dimen name="episodeNextViewHeight">74dp</dimen>
+
+  <dimen name="showDetailsMarginHorizontal">16dp</dimen>
+  <dimen name="showDetailsBackArrowMargin">0dp</dimen>
 </resources>
