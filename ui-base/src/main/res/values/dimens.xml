@@ -68,6 +68,7 @@
   <dimen name="collectionFiltersMarginNoTabs">66dp</dimen>
   <dimen name="commentViewSpace">16dp</dimen>
   <dimen name="tutorialTipSize">28dp</dimen>
+  <dimen name="tutorialTipMargin">32dp</dimen>
   <dimen name="scrollBarWidth">3dp</dimen>
   <dimen name="rateValueTranslation">80dp</dimen>
 
