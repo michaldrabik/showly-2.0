@@ -15,9 +15,9 @@ import androidx.browser.customtabs.CustomTabsServiceConnection
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
@@ -28,12 +28,15 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.enableUi
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
+import com.michaldrabik.ui_base.utilities.extensions.isTablet
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.updateTopMargin
+import com.michaldrabik.ui_base.utilities.ui.EqualSpacingItemDecoration
 import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.NewsItem
 import com.michaldrabik.ui_news.databinding.FragmentNewsBinding
+import com.michaldrabik.ui_news.providers.NewsLayoutManagerProvider
 import com.michaldrabik.ui_news.recycler.NewsAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -52,7 +55,7 @@ class NewsFragment :
   private var tabsService: ServiceConnection? = null
   private var tabsClient: CustomTabsClient? = null
   private var adapter: NewsAdapter? = null
-  private var layoutManager: LinearLayoutManager? = null
+  private var layoutManager: LayoutManager? = null
 
   private var headerTranslation = 0F
 
@@ -118,7 +121,7 @@ class NewsFragment :
   }
 
   private fun setupRecycler() {
-    layoutManager = LinearLayoutManager(context, VERTICAL, false)
+    layoutManager = NewsLayoutManagerProvider.provideLayoutManger(requireContext())
     adapter = NewsAdapter(
       itemClickListener = { openLink(it.item) },
       listChangeListener = { scrollToTop(false) }
@@ -130,7 +133,11 @@ class NewsFragment :
       layoutManager = this@NewsFragment.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
       setHasFixedSize(true)
-      addDivider(R.drawable.divider_news, VERTICAL)
+      if (requireContext().isTablet()) {
+        addItemDecoration(EqualSpacingItemDecoration(dimenToPx(R.dimen.spaceNormal)))
+      } else {
+        addDivider(R.drawable.divider_news, VERTICAL)
+      }
     }
   }
 

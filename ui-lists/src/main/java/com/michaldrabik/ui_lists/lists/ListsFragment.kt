@@ -12,10 +12,11 @@ import androidx.core.view.updatePadding
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
@@ -45,6 +46,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_lists.R
 import com.michaldrabik.ui_lists.databinding.FragmentListsBinding
+import com.michaldrabik.ui_lists.lists.helpers.ListsLayoutManagerProvider
 import com.michaldrabik.ui_lists.lists.recycler.ListsAdapter
 import com.michaldrabik.ui_lists.lists.recycler.ListsItem
 import com.michaldrabik.ui_model.SortOrder
@@ -73,7 +75,7 @@ class ListsFragment :
   @Inject lateinit var eventsManager: EventsManager
 
   private var adapter: ListsAdapter? = null
-  private var layoutManager: LinearLayoutManager? = null
+  private var layoutManager: LayoutManager? = null
 
   private var searchViewTranslation = 0F
   private var tabsTranslation = 0F
@@ -161,7 +163,8 @@ class ListsFragment :
   private fun setupStatusBar() {
     with(binding) {
       fragmentListsRoot.doOnApplyWindowInsets { _, insets, _, _ ->
-        val statusBarSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+        val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
+        val statusBarSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top + tabletOffset
         fragmentListsRecycler
           .updatePadding(top = statusBarSize + dimenToPx(R.dimen.listsRecyclerPaddingTop))
         fragmentListsSearchView.applyWindowInsetBehaviour(dimenToPx(R.dimen.spaceNormal) + statusBarSize)
@@ -175,7 +178,7 @@ class ListsFragment :
   }
 
   private fun setupRecycler() {
-    layoutManager = LinearLayoutManager(context, VERTICAL, false)
+    layoutManager = ListsLayoutManagerProvider.provideLayoutManger(requireContext())
     adapter = ListsAdapter().apply {
       stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
       itemClickListener = { openListDetails(it) }
@@ -198,8 +201,9 @@ class ListsFragment :
           var isFading = false
           override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             if (isFading) return
-            val position = this@ListsFragment.layoutManager?.findFirstCompletelyVisibleItemPosition() ?: 0
-            if (position > 1) {
+            val position = (this@ListsFragment.layoutManager as? LinearLayoutManager)?.findFirstCompletelyVisibleItemPosition()
+              ?: (this@ListsFragment.layoutManager as? GridLayoutManager)?.findFirstCompletelyVisibleItemPosition()
+            if ((position ?: 0) > 1) {
               if (fragmentListsCreateListButton.visibility != VISIBLE) return
               fragmentListsCreateListButton
                 .fadeOut(125, endAction = { isFading = false })

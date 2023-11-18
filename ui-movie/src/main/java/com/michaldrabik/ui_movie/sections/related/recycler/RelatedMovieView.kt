@@ -46,11 +46,14 @@ class RelatedMovieView : MovieView<RelatedListItem> {
   override fun bind(item: RelatedListItem) {
     clear()
     this.item = item
-    binding.relatedMovieTitle.text = item.movie.title
 
+    binding.relatedMovieTitle.text = item.movie.title
     binding.relatedMovieBadge.visibleIf(item.isFollowed || item.isWatchlist)
-    val color = if (item.isFollowed) colorAccent else colorGray
-    ImageViewCompat.setImageTintList(binding.relatedMovieBadge, ColorStateList.valueOf(color))
+
+    ImageViewCompat.setImageTintList(
+      binding.relatedMovieBadge,
+      ColorStateList.valueOf(if (item.isFollowed) colorAccent else colorGray)
+    )
 
     loadImage(item)
   }

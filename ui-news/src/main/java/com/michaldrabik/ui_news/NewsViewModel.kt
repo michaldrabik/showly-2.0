@@ -104,7 +104,8 @@ class NewsViewModel @Inject constructor(
 
   val uiState = combine(
     itemsState,
-    filtersState, viewTypeState,
+    filtersState,
+    viewTypeState,
     loadingState
   ) { items, filters, viewType, loading ->
     NewsUiState(

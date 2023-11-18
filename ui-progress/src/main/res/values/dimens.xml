@@ -3,6 +3,8 @@
   <dimen name="progressTabsViewTranslation">-7dp</dimen>
   <dimen name="progressHeaderTextSize">22sp</dimen>
 
+  <dimen name="progressRecyclerHorizontalSpace">0dp</dimen>
+
   <dimen name="progressSearchViewPaddingNoModes">68dp</dimen>
   <dimen name="progressSearchViewPadding">104dp</dimen>
 

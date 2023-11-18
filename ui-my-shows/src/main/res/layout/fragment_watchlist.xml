@@ -16,7 +16,9 @@
     android:clipChildren="false"
     android:clipToPadding="false"
     android:overScrollMode="never"
+    android:paddingStart="@dimen/screenMarginHorizontal"
     android:paddingTop="@dimen/collectionTabsViewPadding"
+    android:paddingEnd="@dimen/screenMarginHorizontal"
     android:paddingBottom="@dimen/myShowsBottomPadding"
     />
 

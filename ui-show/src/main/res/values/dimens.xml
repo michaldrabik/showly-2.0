@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <dimen name="addToButtonTextSize">14sp</dimen>
+  <dimen name="dividerHorizontalList">8dp</dimen>
+  <dimen name="showDetailsExtraButtonTextSize">12sp</dimen>
+
   <dimen name="actorTileCorner">4dp</dimen>
   <dimen name="actorTilePlaceholder">20dp</dimen>
   <dimen name="actorTileImageHeight">120dp</dimen>
   <dimen name="actorTileImageWidth">80dp</dimen>
+  <dimen name="actorTileTextSize">11sp</dimen>
 
   <dimen name="relatedShowHeight">120dp</dimen>
   <dimen name="relatedShowWidth">80dp</dimen>
+  <dimen name="relatedShowTextSize">12sp</dimen>
 
   <dimen name="seasonViewHeight">44dp</dimen>
   <dimen name="seasonViewProgressMargin">0dp</dimen>
   <dimen name="episodeViewHeight">42dp</dimen>
   <dimen name="episodeNextViewHeight">74dp</dimen>
+
+  <dimen name="showDetailsMarginHorizontal">16dp</dimen>
+  <dimen name="showDetailsBackArrowMargin">0dp</dimen>
 </resources>

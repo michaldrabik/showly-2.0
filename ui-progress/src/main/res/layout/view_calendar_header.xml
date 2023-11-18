@@ -6,9 +6,9 @@
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:orientation="horizontal"
-  android:paddingStart="@dimen/spaceMedium"
+  android:paddingStart="@dimen/screenMarginHorizontal"
   android:paddingTop="@dimen/spaceNormal"
-  android:paddingEnd="@dimen/spaceMedium"
+  android:paddingEnd="@dimen/screenMarginHorizontal"
   android:paddingBottom="@dimen/spaceTiny"
   tools:parentTag="android.widget.LinearLayout"
   >

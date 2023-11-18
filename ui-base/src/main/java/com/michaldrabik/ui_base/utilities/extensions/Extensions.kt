@@ -1,10 +1,6 @@
 package com.michaldrabik.ui_base.utilities.extensions
 
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.Context
-import android.content.res.ColorStateList
-import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Rect
 import android.util.TypedValue
@@ -12,11 +8,7 @@ import android.view.TouchDelegate
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.CompoundButton
-import androidx.annotation.AttrRes
-import androidx.annotation.ColorInt
 import androidx.annotation.DimenRes
-import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewpager.widget.ViewPager
@@ -28,9 +20,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.util.Locale
-
-fun Context.notificationManager() = NotificationManagerCompat.from(this)
 
 fun CoroutineWorker.notificationManager() = applicationContext.notificationManager()
 
@@ -43,42 +32,7 @@ fun View.onLongClick(action: (View) -> Unit) = setOnLongClickListener {
 
 fun List<View>.onClick(safe: Boolean = true, action: (View) -> Unit) = forEach { it.onClick(safe, action) }
 
-fun Context.dimenToPx(@DimenRes dimenResId: Int) = resources.getDimensionPixelSize(dimenResId)
-
 fun Fragment.dimenToPx(@DimenRes dimenResId: Int) = resources.getDimensionPixelSize(dimenResId)
-
-@ColorInt
-fun Context.colorFromAttr(
-  @AttrRes attrColor: Int,
-  typedValue: TypedValue = TypedValue(),
-  resolveRefs: Boolean = true,
-): Int {
-  theme.resolveAttribute(attrColor, typedValue, resolveRefs)
-  return typedValue.data
-}
-
-fun Context.colorStateListFromAttr(
-  @AttrRes attrColor: Int,
-  typedValue: TypedValue = TypedValue(),
-  resolveRefs: Boolean = true,
-): ColorStateList =
-  ColorStateList.valueOf(colorFromAttr(attrColor, typedValue, resolveRefs))
-
-fun Context.getLocaleStringResource(requestedLocale: Locale?, resourceId: Int): String {
-  val result: String
-  val config = Configuration(resources.configuration)
-  config.setLocale(requestedLocale)
-  result = createConfigurationContext(config).getText(resourceId).toString()
-  return result
-}
-
-fun Context.copyToClipboard(text: String) {
-  val clip = ClipData.newPlainText("label", text)
-  ContextCompat.getSystemService(this, ClipboardManager::class.java)
-    .apply {
-      this?.setPrimaryClip(clip)
-    }
-}
 
 fun screenWidth() = Resources.getSystem().displayMetrics.widthPixels
 

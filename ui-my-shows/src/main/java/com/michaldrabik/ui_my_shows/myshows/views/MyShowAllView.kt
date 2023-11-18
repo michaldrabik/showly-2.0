@@ -33,10 +33,15 @@ class MyShowAllView : ShowView<MyShowsItem> {
 
   init {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+
+    clipChildren = false
+    clipToPadding = false
+
     with(binding) {
       collectionShowRoot.onClick { itemClickListener?.invoke(item) }
       collectionShowRoot.onLongClick { itemLongClickListener?.invoke(item) }
     }
+
     imageLoadCompleteListener = { loadTranslation() }
   }
 
@@ -48,6 +53,7 @@ class MyShowAllView : ShowView<MyShowsItem> {
   override fun bind(item: MyShowsItem) {
     clear()
     this.item = item
+
     with(binding) {
       collectionShowProgress.visibleIf(item.isLoading)
       collectionShowTitle.text =

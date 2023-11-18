@@ -8,8 +8,6 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.common.Config
@@ -38,7 +36,12 @@ import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_movies.R
+import com.michaldrabik.ui_my_movies.common.layout.CollectionMovieGridItemDecoration
+import com.michaldrabik.ui_my_movies.common.layout.CollectionMovieLayoutManagerProvider
+import com.michaldrabik.ui_my_movies.common.layout.CollectionMovieListItemDecoration
 import com.michaldrabik.ui_my_movies.common.recycler.CollectionAdapter
+import com.michaldrabik.ui_my_movies.common.recycler.CollectionListItem.FiltersItem
+import com.michaldrabik.ui_my_movies.common.recycler.CollectionListItem.MovieItem
 import com.michaldrabik.ui_my_movies.databinding.FragmentHiddenMoviesBinding
 import com.michaldrabik.ui_my_movies.filters.CollectionFiltersOrigin.HIDDEN_MOVIES
 import com.michaldrabik.ui_my_movies.filters.genre.CollectionFiltersGenreBottomSheet
@@ -80,7 +83,7 @@ class HiddenFragment :
   }
 
   private fun setupRecycler() {
-    layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
+    layoutManager = CollectionMovieLayoutManagerProvider.provideLayoutManger(requireContext(), LIST_NORMAL)
     adapter = CollectionAdapter(
       itemClickListener = { openMovieDetails(it.movie) },
       itemLongClickListener = { openMovieMenu(it.movie) },
@@ -101,21 +104,8 @@ class HiddenFragment :
       adapter = this@HiddenFragment.adapter
       layoutManager = this@HiddenFragment.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-    }
-    setupRecyclerPaddings()
-  }
-
-  private fun setupRecyclerPaddings() {
-    if (layoutManager is GridLayoutManager) {
-      binding.hiddenMoviesRecycler.updatePadding(
-        left = dimenToPx(R.dimen.gridRecyclerPadding),
-        right = dimenToPx(R.dimen.gridRecyclerPadding)
-      )
-    } else {
-      binding.hiddenMoviesRecycler.updatePadding(
-        left = 0,
-        right = 0
-      )
+      addItemDecoration(CollectionMovieListItemDecoration(requireContext(), R.dimen.spaceSmall))
+      addItemDecoration(CollectionMovieGridItemDecoration(requireContext(), R.dimen.spaceSmall))
     }
   }
 
@@ -127,7 +117,8 @@ class HiddenFragment :
         return
       }
       hiddenMoviesContent.doOnApplyWindowInsets { view, insets, padding, _ ->
-        statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+        val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
+        statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top + tabletOffset
         view.updatePadding(top = padding.top + statusBarHeight)
         hiddenMoviesRecycler.updatePadding(top = dimenToPx(R.dimen.collectionTabsViewPadding))
       }
@@ -138,24 +129,30 @@ class HiddenFragment :
     uiState.run {
       viewMode.let {
         if (adapter?.listViewMode != it) {
-          layoutManager = when (it) {
-            LIST_NORMAL, LIST_COMPACT -> LinearLayoutManager(requireContext(), VERTICAL, false)
-            GRID, GRID_TITLE -> GridLayoutManager(context, Config.LISTS_GRID_SPAN)
-          }
+          layoutManager = CollectionMovieLayoutManagerProvider.provideLayoutManger(requireContext(), it)
           adapter?.listViewMode = it
           binding.hiddenMoviesRecycler?.let { recycler ->
             recycler.layoutManager = layoutManager
             recycler.adapter = adapter
           }
-          setupRecyclerPaddings()
         }
       }
       items.let {
         val notifyChange = resetScroll?.consume() == true
         adapter?.setItems(it, notifyChange = notifyChange)
         (layoutManager as? GridLayoutManager)?.withSpanSizeLookup { pos ->
-          adapter?.getItems()?.get(pos)?.image?.type?.spanSize!!
+          when (adapter?.getItems()?.get(pos)) {
+            is FiltersItem -> {
+              when (viewMode) {
+                LIST_NORMAL, LIST_COMPACT -> if (isTablet) Config.LISTS_STANDARD_GRID_SPAN_TABLET else Config.LISTS_GRID_SPAN
+                GRID, GRID_TITLE -> if (isTablet) Config.LISTS_GRID_SPAN_TABLET else Config.LISTS_GRID_SPAN
+              }
+            }
+            is MovieItem -> 1
+            else -> throw Error("Unsupported span size!")
+          }
         }
+
         binding.hiddenMoviesEmptyView.root.fadeIf(it.isEmpty() && !isSearching)
       }
       sortOrder?.let { event ->

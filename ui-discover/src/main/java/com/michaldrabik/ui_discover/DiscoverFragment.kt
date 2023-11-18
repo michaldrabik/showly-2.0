@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.common.Config
-import com.michaldrabik.common.Config.MAIN_GRID_SPAN
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
@@ -35,6 +34,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
 import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_discover.databinding.FragmentDiscoverBinding
+import com.michaldrabik.ui_discover.helpers.DiscoverLayoutManagerProvider
 import com.michaldrabik.ui_discover.recycler.DiscoverAdapter
 import com.michaldrabik.ui_discover.recycler.DiscoverListItem
 import com.michaldrabik.ui_model.ImageType
@@ -45,7 +45,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlin.random.Random
 
 @AndroidEntryPoint
-class DiscoverFragment :
+internal class DiscoverFragment :
   BaseFragment<DiscoverViewModel>(R.layout.fragment_discover),
   OnTabReselectedListener {
 
@@ -153,7 +153,7 @@ class DiscoverFragment :
   }
 
   private fun setupRecycler() {
-    layoutManager = GridLayoutManager(context, MAIN_GRID_SPAN)
+    layoutManager = DiscoverLayoutManagerProvider.provideLayoutManager(requireContext())
     adapter = DiscoverAdapter(
       itemClickListener = {
         when (it.image.type) {
@@ -193,7 +193,9 @@ class DiscoverFragment :
   private fun setupStatusBar() {
     with(binding) {
       discoverRoot.doOnApplyWindowInsets { _, insets, _, _ ->
-        val statusBarSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+        val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
+        val statusBarSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top + tabletOffset
+
         val recyclerPadding =
           if (moviesEnabled) R.dimen.discoverRecyclerPadding
           else R.dimen.discoverRecyclerPaddingNoTabs
@@ -301,7 +303,9 @@ class DiscoverFragment :
         items?.let {
           val resetScroll = resetScroll?.consume() == true
           adapter?.setItems(it, resetScroll)
-          layoutManager?.withSpanSizeLookup { pos -> adapter?.getItems()?.get(pos)?.image?.type?.spanSize!! }
+          layoutManager?.withSpanSizeLookup { pos ->
+            adapter?.getItems()?.get(pos)?.image?.type?.getSpan(isTablet)!!
+          }
           discoverRecycler.fadeIn(200, withHardware = true)
         }
         isSyncing?.let {

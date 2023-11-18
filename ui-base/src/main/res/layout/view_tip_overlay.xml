@@ -14,7 +14,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_margin="32dp"
+    android:layout_margin="@dimen/tutorialTipMargin"
     android:background="@drawable/bg_tip_view"
     android:elevation="8dp"
     android:paddingTop="@dimen/spaceNormal"

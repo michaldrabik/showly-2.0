@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <dimen name="listsRecyclerPaddingTop">156dp</dimen>
+  <dimen name="listsRecyclerPaddingHorizontal">0dp</dimen>
   <dimen name="listsIconsPadding">112dp</dimen>
   <dimen name="listsBottomPadding">78dp</dimen>
   <dimen name="listsFabBottomPadding">68dp</dimen>
+  <dimen name="listsFabPadding">16dp</dimen>
 
   <dimen name="listsSearchLocalViewPadding">114dp</dimen>
 
@@ -12,7 +14,9 @@
   <dimen name="listsTripleImageWidth">116dp</dimen>
   <dimen name="listsMarginHorizontal">12dp</dimen>
 
-  <dimen name="listDetailsItemMarginHorizontal">12dp</dimen>
+  <dimen name="listDetailsItemMarginBottom">23dp</dimen>
+  <dimen name="listDetailsItemTitleMarginBottom">4dp</dimen>
+  <dimen name="listDetailsItemTitleSize">12sp</dimen>
 
   <dimen name="listDetailsItemImageWidth">80dp</dimen>
   <dimen name="listDetailsItemImageHeight">120dp</dimen>

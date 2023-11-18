@@ -14,10 +14,6 @@
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
     android:clipToPadding="false"
-    android:paddingLeft="@dimen/listDetailsItemMarginHorizontal"
-    android:paddingTop="5dp"
-    android:paddingRight="@dimen/listDetailsItemMarginHorizontal"
-    android:paddingBottom="5dp"
     >
 
     <ImageView

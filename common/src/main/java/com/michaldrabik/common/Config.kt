@@ -27,7 +27,10 @@ object Config {
   const val TMDB_URL = "https://www.themoviedb.org/"
 
   const val MAIN_GRID_SPAN = 3
+  const val MAIN_GRID_SPAN_TABLET = 6
   const val LISTS_GRID_SPAN = 4
+  const val LISTS_GRID_SPAN_TABLET = 6
+  const val LISTS_STANDARD_GRID_SPAN_TABLET = 2
   const val IMAGE_FADE_DURATION_MS = 150
   const val SEARCH_RECENTS_AMOUNT = 5
   const val FANART_GALLERY_IMAGES_LIMIT = 20

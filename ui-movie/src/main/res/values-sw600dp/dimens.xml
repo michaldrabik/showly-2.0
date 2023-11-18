@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="addToButtonTextSize">15sp</dimen>
+  <dimen name="movieDetailsExtraButtonTextSize">13sp</dimen>
+  <dimen name="dividerHorizontalList">12dp</dimen>
+
+  <dimen name="actorMovieTileCorner">6dp</dimen>
+  <dimen name="actorMovieTileImageHeight">140dp</dimen>
+  <dimen name="actorMovieTileImageWidth">93dp</dimen>
+  <dimen name="actorMovieTileTextSize">12sp</dimen>
+
+  <dimen name="relatedMovieHeight">140dp</dimen>
+  <dimen name="relatedMovieWidth">93dp</dimen>
+
+  <dimen name="movieCollectionHeight">78dp</dimen>
+
+  <dimen name="movieCollectionImageWidth">67dp</dimen>
+  <dimen name="movieCollectionImageHeight">100dp</dimen>
+  <dimen name="movieCollectionImageGuide">83dp</dimen>
+
+  <dimen name="movieCollectionHeaderSize">13sp</dimen>
+  <dimen name="movieCollectionTitleSize">18sp</dimen>
+  <dimen name="movieCollectionDescriptionSize">14sp</dimen>
+</resources>

@@ -7,7 +7,6 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
-import androidx.core.view.updatePadding
 import com.michaldrabik.ui_base.common.ListViewMode
 import com.michaldrabik.ui_base.common.ListViewMode.GRID
 import com.michaldrabik.ui_base.common.ListViewMode.GRID_TITLE
@@ -52,7 +51,6 @@ class CollectionMovieFiltersView : FrameLayout {
     item: CollectionListItem.FiltersItem,
     viewMode: ListViewMode,
   ) {
-    bindMargins(viewMode)
     with(binding) {
       val sortIcon = when (item.sortType) {
         ASCENDING -> R.drawable.ic_arrow_alt_up
@@ -80,27 +78,6 @@ class CollectionMovieFiltersView : FrameLayout {
       followedMoviesSortingChip.onClick { onSortChipClicked?.invoke(item.sortOrder, item.sortType) }
       followedMoviesUpcomingChip.onClick { onFilterUpcomingClicked?.invoke(followedMoviesUpcomingChip.isChecked) }
       followedMoviesListViewChip.onClick { onListViewModeClicked?.invoke() }
-    }
-  }
-
-  private fun bindMargins(viewMode: ListViewMode) {
-    with(binding) {
-      when (viewMode) {
-        GRID, GRID_TITLE -> {
-          followedMoviesScroll.updatePadding(
-            left = resources.getDimensionPixelSize(R.dimen.collectionFiltersPaddingHorizontal),
-            right = resources.getDimensionPixelSize(R.dimen.collectionFiltersPaddingHorizontal),
-            bottom = resources.getDimensionPixelSize(R.dimen.collectionFiltersPaddingBottom)
-          )
-        }
-        LIST_NORMAL, LIST_COMPACT -> {
-          followedMoviesScroll.updatePadding(
-            left = resources.getDimensionPixelSize(R.dimen.spaceMedium),
-            right = resources.getDimensionPixelSize(R.dimen.spaceMedium),
-            bottom = 0
-          )
-        }
-      }
     }
   }
 }

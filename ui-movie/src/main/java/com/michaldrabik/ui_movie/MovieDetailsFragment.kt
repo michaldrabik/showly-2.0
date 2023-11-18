@@ -229,8 +229,8 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
             }
           }
           separator5.visible()
-          movieDetailsCustomImagesLabel.visibleIf(Config.SHOW_PREMIUM)
-          movieDetailsCustomImagesLabel.onClick { openCustomImagesSheet(movie.traktId, meta?.isPremium) }
+          movieDetailsCustomImagesButton.visibleIf(Config.SHOW_PREMIUM)
+          movieDetailsCustomImagesButton.onClick { openCustomImagesSheet(movie.traktId, meta?.isPremium) }
           movieDetailsCommentsButton.onClick {
             val bundle = CommentsFragment.createBundle(movie)
             navigateToSafe(R.id.actionMovieDetailsFragmentToComments, bundle)
@@ -269,7 +269,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     movie: Movie,
     translation: Translation?,
     followedState: MovieDetailsUiState.FollowedState?,
-    spoilersSettings: SpoilersSettings?
+    spoilersSettings: SpoilersSettings?,
   ) {
     with(binding) {
       var title = movie.title

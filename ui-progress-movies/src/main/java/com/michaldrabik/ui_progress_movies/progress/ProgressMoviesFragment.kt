@@ -11,8 +11,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
@@ -28,6 +28,7 @@ import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
 import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
@@ -41,11 +42,16 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_SORT_ORDER
 import com.michaldrabik.ui_progress_movies.R
 import com.michaldrabik.ui_progress_movies.databinding.FragmentProgressMoviesBinding
+import com.michaldrabik.ui_progress_movies.helpers.GRID_SPAN_SIZE
+import com.michaldrabik.ui_progress_movies.helpers.ProgressLayoutManagerProvider
 import com.michaldrabik.ui_progress_movies.helpers.TopOverscrollAdapter
 import com.michaldrabik.ui_progress_movies.main.MovieCheckActionUiEvent
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainFragment
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainViewModel
 import com.michaldrabik.ui_progress_movies.main.RequestWidgetsUpdate
+import com.michaldrabik.ui_progress_movies.progress.recycler.ProgressMovieListItem.FiltersItem
+import com.michaldrabik.ui_progress_movies.progress.recycler.ProgressMovieListItem.HeaderItem
+import com.michaldrabik.ui_progress_movies.progress.recycler.ProgressMovieListItem.MovieItem
 import com.michaldrabik.ui_progress_movies.progress.recycler.ProgressMoviesAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -74,7 +80,7 @@ class ProgressMoviesFragment :
   private val binding by viewBinding(FragmentProgressMoviesBinding::bind)
 
   private var adapter: ProgressMoviesAdapter? = null
-  private var layoutManager: LinearLayoutManager? = null
+  private var layoutManager: LayoutManager? = null
   private var statusBarHeight = 0
   private var overscroll: IOverScrollDecor? = null
   private var overscrollJob: Job? = null
@@ -111,7 +117,17 @@ class ProgressMoviesFragment :
   }
 
   private fun setupRecycler() {
-    layoutManager = LinearLayoutManager(context, VERTICAL, false)
+    layoutManager = ProgressLayoutManagerProvider.provideLayoutManger(requireContext())
+    (layoutManager as? GridLayoutManager)?.run {
+      withSpanSizeLookup { position ->
+        when (adapter?.getItems()?.get(position)) {
+          is HeaderItem -> GRID_SPAN_SIZE
+          is FiltersItem -> GRID_SPAN_SIZE
+          is MovieItem -> 1
+          else -> throw IllegalStateException()
+        }
+      }
+    }
     adapter = ProgressMoviesAdapter(
       itemClickListener = { requireMainFragment().openMovieDetails(it.movie) },
       itemLongClickListener = { requireMainFragment().openMovieMenu(it.movie) },
@@ -212,7 +228,8 @@ class ProgressMoviesFragment :
       return
     }
     binding.progressMoviesMainRecycler.doOnApplyWindowInsets { view, insets, _, _ ->
-      statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+      val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
+      statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top + tabletOffset
       view.updatePadding(top = statusBarHeight + dimenToPx(R.dimen.progressMoviesTabsViewPadding))
       (binding.progressMoviesEmptyView.rootLayout.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarHeight + dimenToPx(R.dimen.spaceBig))

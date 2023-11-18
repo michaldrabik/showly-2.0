@@ -11,7 +11,7 @@ abstract class BaseAdapter<Item : ListItem>(
 
   abstract val asyncDiffer: AsyncListDiffer<Item>
 
-  protected var notifyChange = false
+  private var notifyChange = false
 
   open fun setItems(newItems: List<Item>, notifyChange: Boolean = false) {
     this.notifyChange = notifyChange

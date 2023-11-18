@@ -8,6 +8,7 @@ import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
+import com.michaldrabik.ui_discover.helpers.itemtype.ImageTypeProvider
 import com.michaldrabik.ui_discover.recycler.DiscoverListItem
 import com.michaldrabik.ui_model.DiscoverFilters
 import com.michaldrabik.ui_model.DiscoverSortOrder
@@ -25,9 +26,10 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ViewModelScoped
-class DiscoverShowsCase @Inject constructor(
+internal class DiscoverShowsCase @Inject constructor(
   private val dispatchers: CoroutineDispatchers,
   private val showsRepository: ShowsRepository,
+  private val imageTypeProvider: ImageTypeProvider,
   private val imagesProvider: ShowImagesProvider,
   private val translationsRepository: TranslationsRepository,
   private val settingsRepository: SettingsRepository,
@@ -108,11 +110,7 @@ class DiscoverShowsCase @Inject constructor(
       .sortedBy(filters?.feedOrder ?: HOT)
       .mapIndexed { index, show ->
         async {
-          val itemType = when (index) {
-            in (0..500 step 14) -> ImageType.FANART_WIDE
-            in (5..500 step 14), in (9..500 step 14) -> ImageType.FANART
-            else -> ImageType.POSTER
-          }
+          val itemType = imageTypeProvider.getImageType(index)
           val image = imagesProvider.findCachedImage(show, itemType)
           val translation = loadTranslation(language, itemType, show)
           DiscoverListItem(

@@ -8,6 +8,8 @@
   <dimen name="spaceBig">24dp</dimen>
   <dimen name="spaceHuge">48dp</dimen>
 
+  <dimen name="screenMarginHorizontal">12dp</dimen>
+
   <dimen name="elevationTiny">0dp</dimen>
   <dimen name="elevationSmall">0dp</dimen>
   <dimen name="elevationNormal">0dp</dimen>
@@ -20,7 +22,7 @@
   <dimen name="backArrowSize">56dp</dimen>
   <dimen name="backArrowPadding">16dp</dimen>
 
-  <dimen name="gridSpacing">3dp</dimen>
+  <dimen name="gridSpacing">4dp</dimen>
   <dimen name="gridListsSpacing">4dp</dimen>
   <dimen name="gridPadding">8dp</dimen>
   <dimen name="gridListsPadding">9dp</dimen>
@@ -36,7 +38,7 @@
   <dimen name="relatedTileShowPlaceholder">24dp</dimen>
   <dimen name="collectionTileMoviePlaceholder">22dp</dimen>
   <dimen name="collectionTileShowPlaceholder">24dp</dimen>
-  
+
   <dimen name="searchViewHeight">48dp</dimen>
   <dimen name="searchViewHeightPadded">64dp</dimen>
   <dimen name="searchViewCorner">24dp</dimen>
@@ -66,6 +68,7 @@
   <dimen name="collectionFiltersMarginNoTabs">66dp</dimen>
   <dimen name="commentViewSpace">16dp</dimen>
   <dimen name="tutorialTipSize">28dp</dimen>
+  <dimen name="tutorialTipMargin">32dp</dimen>
   <dimen name="scrollBarWidth">3dp</dimen>
   <dimen name="rateValueTranslation">80dp</dimen>
 

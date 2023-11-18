@@ -19,6 +19,7 @@
     android:id="@+id/personGalleryBackArrow"
     android:layout_width="@dimen/backArrowSize"
     android:layout_height="@dimen/backArrowSize"
+    android:layout_marginStart="@dimen/personGalleryBackArrowMargin"
     android:background="?android:attr/selectableItemBackground"
     android:padding="@dimen/backArrowPadding"
     app:layout_constraintStart_toStartOf="parent"

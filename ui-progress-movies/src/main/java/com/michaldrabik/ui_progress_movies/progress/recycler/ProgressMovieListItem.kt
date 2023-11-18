@@ -29,7 +29,7 @@ sealed class ProgressMovieListItem(
     val spoilers: SpoilersSettings
   ) : ProgressMovieListItem(movie, image, isLoading)
 
-  data class Header(
+  data class HeaderItem(
     override val movie: Movie,
     override val image: Image,
     override val isLoading: Boolean = false,
@@ -38,7 +38,7 @@ sealed class ProgressMovieListItem(
 
     companion object {
       fun create(@StringRes textResId: Int) =
-        Header(
+        HeaderItem(
           movie = Movie.EMPTY,
           image = Image.createUnavailable(ImageType.POSTER),
           textResId = textResId
@@ -46,7 +46,7 @@ sealed class ProgressMovieListItem(
     }
 
     override fun isSameAs(other: MovieListItem) =
-      textResId == (other as? Header)?.textResId
+      textResId == (other as? HeaderItem)?.textResId
   }
 
   data class FiltersItem(
