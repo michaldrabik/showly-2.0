@@ -69,14 +69,12 @@
   <string name="textShowStatusPlanned">مُخطط له</string>
   <string name="textShowStatusCanceled">تم إلغاءه</string>
   <string name="textShowStatusEnded">إنتهى</string>
-  <string name="textShowStatusUnknown" translatable="false"></string>
   <string name="textMovieStatusReleased">توفر</string>
   <string name="textMovieStatusInProduction">قيد الإنتاج</string>
   <string name="textMovieStatusPostProduction">في مرحلة ما بعد الإنتاج</string>
   <string name="textMovieStatusPlanned">مُخطط له</string>
   <string name="textMovieStatusCanceled">تم إلغاءه</string>
   <string name="textMovieStatusRumored">يُشاع</string>
-  <string name="textMovieStatusUnknown" translatable="false"></string>
   <string name="textStreamingStream">بث</string>
   <string name="textStreamingAds">إعلانات</string>
   <string name="textStreamingBuy">شراء</string>
