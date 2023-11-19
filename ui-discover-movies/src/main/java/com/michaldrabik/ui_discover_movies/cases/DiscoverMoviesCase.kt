@@ -37,10 +37,6 @@ internal class DiscoverMoviesCase @Inject constructor(
   private val settingsRepository: SettingsRepository
 ) {
 
-  companion object {
-    private const val PREMIUM_AD_POSITION = 29
-  }
-
   suspend fun isCacheValid() = withContext(dispatchers.IO) {
     moviesRepository.discoverMovies.isCacheValid()
   }
@@ -122,8 +118,8 @@ internal class DiscoverMoviesCase @Inject constructor(
     if (isPremium || !isTimePassed) return
 
     val premiumAd = DiscoverMovieListItem(Movie.EMPTY, Image.createUnknown(PREMIUM))
-    if (items.size >= PREMIUM_AD_POSITION) {
-      items.add(PREMIUM_AD_POSITION, premiumAd)
+    if (items.size >= imageTypeProvider.premiumAdPosition) {
+      items.add(imageTypeProvider.premiumAdPosition, premiumAd)
     } else if (items.isNotEmpty()) {
       items.add(premiumAd)
     }
