@@ -5,7 +5,7 @@
   <string name="textComments2">التعليقات</string>
   <string name="textNoComments">لا توجد تعليقات.</string>
   <string name="textCommentDisclaimer">يجب أن يكون التعليق بالإنجليزية، وأكثر من 5 كلمات، وعند الحرق حدد أنه حرق!</string>
-  <string name="textSpoilers">حرق الأحداث</string>
+  <string name="textSpoilers">حرق</string>
   <string name="textCommentPosted">تم إرسال تعليقك.</string>
   <string name="textCommentDeleted">تم حذف تعليقك.</string>
   <string name="textCommentConfirmDeleteTitle">حذف التعليق</string>
