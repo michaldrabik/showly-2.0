@@ -69,14 +69,12 @@
   <string name="textShowStatusPlanned">已规划</string>
   <string name="textShowStatusCanceled">已取消</string>
   <string name="textShowStatusEnded">已完结</string>
-  <string name="textShowStatusUnknown" translatable="false"></string>
   <string name="textMovieStatusReleased">已发行</string>
   <string name="textMovieStatusInProduction">制片中</string>
   <string name="textMovieStatusPostProduction">后期制作中</string>
   <string name="textMovieStatusPlanned">已规划</string>
   <string name="textMovieStatusCanceled">已取消</string>
   <string name="textMovieStatusRumored">有传闻</string>
-  <string name="textMovieStatusUnknown" translatable="false"></string>
   <string name="textStreamingStream">串流</string>
   <string name="textStreamingAds">含广告</string>
   <string name="textStreamingBuy">购买</string>
