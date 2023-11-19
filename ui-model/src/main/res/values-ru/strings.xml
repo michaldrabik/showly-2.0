@@ -69,14 +69,12 @@
   <string name="textShowStatusPlanned">Запланировано</string>
   <string name="textShowStatusCanceled">Отменен</string>
   <string name="textShowStatusEnded">Завершен</string>
-  <string name="textShowStatusUnknown" translatable="false"></string>
   <string name="textMovieStatusReleased">Выпущен</string>
   <string name="textMovieStatusInProduction">В производстве</string>
   <string name="textMovieStatusPostProduction">Пост-продакшен</string>
   <string name="textMovieStatusPlanned">Запланировано</string>
   <string name="textMovieStatusCanceled">Отменен</string>
   <string name="textMovieStatusRumored">Ходят слухи</string>
-  <string name="textMovieStatusUnknown" translatable="false"></string>
   <string name="textStreamingStream">Стриминг</string>
   <string name="textStreamingAds">Реклама</string>
   <string name="textStreamingBuy">Покупка</string>
