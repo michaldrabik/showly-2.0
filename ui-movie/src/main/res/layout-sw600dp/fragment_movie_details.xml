@@ -27,7 +27,7 @@
       android:clipChildren="false"
       android:clipToPadding="false"
       android:descendantFocusability="blocksDescendants"
-      android:paddingBottom="@dimen/spaceNormal"
+      android:paddingBottom="@dimen/spaceBig"
       >
 
       <androidx.constraintlayout.widget.Guideline
@@ -433,7 +433,7 @@
         android:layout_width="0dp"
         android:layout_height="100dp"
         android:layout_marginStart="@dimen/spaceBig"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/spaceNormal"
         android:layout_marginEnd="@dimen/spaceBig"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
