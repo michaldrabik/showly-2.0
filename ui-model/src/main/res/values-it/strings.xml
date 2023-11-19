@@ -69,14 +69,12 @@
   <string name="textShowStatusPlanned">Pianificata</string>
   <string name="textShowStatusCanceled">Cancellata</string>
   <string name="textShowStatusEnded">Conclusa</string>
-  <string name="textShowStatusUnknown" translatable="false"></string>
   <string name="textMovieStatusReleased">Trasmessa</string>
   <string name="textMovieStatusInProduction">In Produzione</string>
   <string name="textMovieStatusPostProduction">Non in produzione</string>
   <string name="textMovieStatusPlanned">Pianificata</string>
   <string name="textMovieStatusCanceled">Cancellata</string>
   <string name="textMovieStatusRumored">Si vocifera</string>
-  <string name="textMovieStatusUnknown" translatable="false"></string>
   <string name="textStreamingStream">Streaming</string>
   <string name="textStreamingAds">Pubblicità</string>
   <string name="textStreamingBuy">Acquisto</string>

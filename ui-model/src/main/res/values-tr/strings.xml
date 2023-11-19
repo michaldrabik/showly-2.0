@@ -69,14 +69,12 @@
   <string name="textShowStatusPlanned">Planlanan</string>
   <string name="textShowStatusCanceled">İptal Edildi</string>
   <string name="textShowStatusEnded">Sona Erdi</string>
-  <string name="textShowStatusUnknown" translatable="false"></string>
   <string name="textMovieStatusReleased">Yayınlandı</string>
   <string name="textMovieStatusInProduction">Yapım Aşamasında</string>
   <string name="textMovieStatusPostProduction">Yapım Sonrası</string>
   <string name="textMovieStatusPlanned">Planlanan</string>
   <string name="textMovieStatusCanceled">İptal Edildi</string>
   <string name="textMovieStatusRumored">Söylenti</string>
-  <string name="textMovieStatusUnknown" translatable="false"></string>
   <string name="textStreamingStream">Yayın</string>
   <string name="textStreamingAds">Reklamlı</string>
   <string name="textStreamingBuy">Satın Al</string>

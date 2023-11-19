@@ -11,7 +11,7 @@
   <string name="textDescription">Kuvaus (valinnainen)</string>
   <string name="textDeleteList">Poista lista</string>
   <string name="textEditList">Muokkaa listaa</string>
-  <string name="textEditListDescription">Päivitä listasi tietoja.</string>
+  <string name="textEditListDescription">Päivitä mukautettu listasi.</string>
   <string name="textConfirmDeleteListTitle">Poista lista</string>
   <string name="textConfirmDeleteListSubtitle">Haluatko varmasti poistaa listan?</string>
   <string name="textChangeRanks">Muuta sijoituksia</string>

@@ -18,7 +18,7 @@
   <string name="textSettingsTraktQuickRemoveSummary">حذف فوري لبيانات المسلسلات والأفلام في Trakt.tv بعد أن تحذفهم في Showly.</string>
   <string name="textSettingsTraktQuickRateTitle">التقييم السريع على Trakt.tv</string>
   <string name="textSettingsTraktQuickRateSummary">قيّم الحلقات والأفلام كلما وضعت علامة على انك شاهدتهم في قسم \'مستوى التقدم\'.</string>
-  <string name="textSettingsGeneral">إعدادات عامة &amp; إعدادت واجهة المستخدم</string>
+  <string name="textSettingsGeneral">عام و واجهة المستخدم</string>
   <string name="textSettingsRecentShowsTitle">عدد المحتويات الأخيرة</string>
   <string name="textSettingsRecentShowsSummary">عدد المسلسلات والأفلام الأخيرة التي تابعتها التي سيتم عرضها في صفحة \'المجموعة\'.</string>
   <string name="textSettingsUpcomingSectionTitle">المحتويات القادمة</string>
@@ -67,7 +67,7 @@
   <string name="textSettingsStreamingServicesMessage">إظهار بيانات خدمات البث.</string>
   <string name="textSettingsProgressNextEpisodeTitle">الحلقة التالية</string>
   <string name="textSettingsProgressNextEpisodeMessage">حساب الحلقة التالية باِستخدام:</string>
-  <string name="textSettingsSpoilers">حرق</string>
+  <string name="textSettingsSpoilers">الحرق</string>
   <string name="textSettingsSpoilersShows">مسلسلات</string>
   <string name="textSettingsSpoilersShowsSummary">إدارة إعدادات الحرق للمسلسلات.</string>
   <string name="textSettingsSpoilersShowsOverviewsMyTitle">مسلسلاتي</string>
