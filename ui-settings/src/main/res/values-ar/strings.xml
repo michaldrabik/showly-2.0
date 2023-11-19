@@ -67,7 +67,7 @@
   <string name="textSettingsStreamingServicesMessage">إظهار بيانات خدمات البث.</string>
   <string name="textSettingsProgressNextEpisodeTitle">الحلقة التالية</string>
   <string name="textSettingsProgressNextEpisodeMessage">حساب الحلقة التالية باِستخدام:</string>
-  <string name="textSettingsSpoilers">حرق الأحداث</string>
+  <string name="textSettingsSpoilers">الحرق</string>
   <string name="textSettingsSpoilersShows">مسلسلات</string>
   <string name="textSettingsSpoilersShowsSummary">إدارة إعدادات الحرق للمسلسلات.</string>
   <string name="textSettingsSpoilersShowsOverviewsMyTitle">مسلسلاتي</string>
