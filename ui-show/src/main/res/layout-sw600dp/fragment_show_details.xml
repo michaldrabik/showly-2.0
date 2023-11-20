@@ -290,7 +290,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsStreamingsFragment"
         app:layout_goneMarginBottom="@dimen/spaceHuge"
-        app:layout_goneMarginTop="0dp"
+        app:layout_goneMarginTop="@dimen/spaceNormal"
         tools:targetApi="o"
         tools:text="Description"
         />
