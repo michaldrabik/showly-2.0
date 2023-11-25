@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.common.Mode
+import com.michaldrabik.repository.settings.SettingsViewModeRepository
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.ListViewMode.GRID
 import com.michaldrabik.ui_base.common.ListViewMode.GRID_TITLE
@@ -74,6 +75,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_SORT_ORDER
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ListDetailsFragment :
@@ -85,6 +87,8 @@ class ListDetailsFragment :
     private const val ARG_HEADER_TRANSLATION = "ARG_HEADER_TRANSLATION"
   }
 
+  @Inject lateinit var settings: SettingsViewModeRepository
+
   override val navigationId = R.id.listDetailsFragment
   override val viewModel by viewModels<ListDetailsViewModel>()
   private val binding by viewBinding(FragmentListDetailsBinding::bind)
@@ -94,6 +98,7 @@ class ListDetailsFragment :
   private val recyclerPaddingBottom by lazy { requireContext().dimenToPx(R.dimen.spaceSmall) }
   private val recyclerPaddingTop by lazy { requireContext().dimenToPx(R.dimen.listDetailsRecyclerTopPadding) }
   private val recyclerPaddingGridTop by lazy { requireContext().dimenToPx(R.dimen.listDetailsRecyclerTopGridPadding) }
+  private val tabletGridSpanSize by lazy { settings.tabletGridSpanSize }
 
   private var adapter: ListDetailsAdapter? = null
   private var touchHelper: ItemTouchHelper? = null
@@ -163,7 +168,7 @@ class ListDetailsFragment :
   }
 
   private fun setupRecycler() {
-    layoutManager = ListDetailsLayoutManagerProvider.provideLayoutManger(requireContext(), LIST_NORMAL)
+    layoutManager = ListDetailsLayoutManagerProvider.provideLayoutManger(requireContext(), LIST_NORMAL, tabletGridSpanSize)
     adapter = ListDetailsAdapter(
       itemClickListener = { openItemDetails(it) },
       missingImageListener = { item: ListDetailsItem, force: Boolean ->
@@ -302,7 +307,7 @@ class ListDetailsFragment :
       with(binding) {
         viewMode.let {
           if (adapter?.listViewMode != it) {
-            layoutManager = ListDetailsLayoutManagerProvider.provideLayoutManger(requireContext(), it)
+            layoutManager = ListDetailsLayoutManagerProvider.provideLayoutManger(requireContext(), it, tabletGridSpanSize)
             adapter?.listViewMode = it
             fragmentListDetailsRecycler?.let { recycler ->
               recycler.layoutManager = layoutManager

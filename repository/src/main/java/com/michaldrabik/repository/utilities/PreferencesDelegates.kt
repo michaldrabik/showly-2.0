@@ -35,6 +35,21 @@ class BooleanPreference(
       .apply()
 }
 
+class IntPreference(
+  private val sharedPreferences: SharedPreferences,
+  private val key: String,
+  private val defaultValue: Int = 0,
+) : ReadWriteProperty<Any, Int> {
+
+  override fun getValue(thisRef: Any, property: KProperty<*>): Int =
+    sharedPreferences.getInt(key, defaultValue)
+
+  override fun setValue(thisRef: Any, property: KProperty<*>, value: Int) =
+    sharedPreferences.edit()
+      .putInt(key, value)
+      .apply()
+}
+
 class LongPreference(
   private val sharedPreferences: SharedPreferences,
   private val key: String,
@@ -54,7 +69,7 @@ class EnumPreference<T : Enum<T>>(
   private val sharedPreferences: SharedPreferences,
   private val key: String,
   private val defaultValue: T,
-  private val clazz: Class<T>
+  private val clazz: Class<T>,
 ) : ReadWriteProperty<Any, T> {
 
   @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")

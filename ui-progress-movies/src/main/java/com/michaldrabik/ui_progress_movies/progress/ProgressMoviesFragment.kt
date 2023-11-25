@@ -14,6 +14,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.michaldrabik.repository.settings.SettingsViewModeRepository
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
@@ -42,8 +43,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_SORT_ORDER
 import com.michaldrabik.ui_progress_movies.R
 import com.michaldrabik.ui_progress_movies.databinding.FragmentProgressMoviesBinding
-import com.michaldrabik.ui_progress_movies.helpers.GRID_SPAN_SIZE
-import com.michaldrabik.ui_progress_movies.helpers.ProgressLayoutManagerProvider
+import com.michaldrabik.ui_progress_movies.helpers.ProgressMoviesLayoutManagerProvider
 import com.michaldrabik.ui_progress_movies.helpers.TopOverscrollAdapter
 import com.michaldrabik.ui_progress_movies.main.MovieCheckActionUiEvent
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainFragment
@@ -62,6 +62,7 @@ import me.everything.android.ui.overscroll.IOverScrollState.STATE_BOUNCE_BACK
 import me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_START_SIDE
 import me.everything.android.ui.overscroll.OverScrollBounceEffectDecoratorBase
 import me.everything.android.ui.overscroll.VerticalOverScrollBounceEffectDecorator
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ProgressMoviesFragment :
@@ -73,6 +74,8 @@ class ProgressMoviesFragment :
     const val OVERSCROLL_OFFSET = 225F
     const val OVERSCROLL_OFFSET_TRANSLATION = 4.5F
   }
+
+  @Inject lateinit var settings: SettingsViewModeRepository
 
   private val parentViewModel by viewModels<ProgressMoviesMainViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<ProgressMoviesViewModel>()
@@ -117,12 +120,13 @@ class ProgressMoviesFragment :
   }
 
   private fun setupRecycler() {
-    layoutManager = ProgressLayoutManagerProvider.provideLayoutManger(requireContext())
+    val gridSpanSize = settings.tabletGridSpanSize
+    layoutManager = ProgressMoviesLayoutManagerProvider.provideLayoutManger(requireContext(), gridSpanSize)
     (layoutManager as? GridLayoutManager)?.run {
       withSpanSizeLookup { position ->
         when (adapter?.getItems()?.get(position)) {
-          is HeaderItem -> GRID_SPAN_SIZE
-          is FiltersItem -> GRID_SPAN_SIZE
+          is HeaderItem -> gridSpanSize
+          is FiltersItem -> gridSpanSize
           is MovieItem -> 1
           else -> throw IllegalStateException()
         }

@@ -7,13 +7,14 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.ui_base.utilities.extensions.isTablet
 
-private const val GRID_SPAN_SIZE = 2
-
 internal object SearchLayoutManagerProvider {
 
-  fun provideLayoutManger(context: Context): RecyclerView.LayoutManager {
+  fun provideLayoutManger(
+    context: Context,
+    gridSpanSize: Int
+  ): RecyclerView.LayoutManager {
     return if (context.isTablet()) {
-      GridLayoutManager(context, GRID_SPAN_SIZE)
+      GridLayoutManager(context, gridSpanSize)
     } else {
       LinearLayoutManager(context, VERTICAL, false)
     }

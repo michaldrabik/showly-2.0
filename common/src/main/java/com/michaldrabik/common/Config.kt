@@ -30,7 +30,6 @@ object Config {
   const val MAIN_GRID_SPAN_TABLET = 6
   const val LISTS_GRID_SPAN = 4
   const val LISTS_GRID_SPAN_TABLET = 6
-  const val LISTS_STANDARD_GRID_SPAN_TABLET = 2
   const val IMAGE_FADE_DURATION_MS = 150
   const val SEARCH_RECENTS_AMOUNT = 5
   const val FANART_GALLERY_IMAGES_LIMIT = 20
@@ -40,6 +39,7 @@ object Config {
   const val DEFAULT_DATE_FORMAT = "DEFAULT_24"
   const val DEFAULT_NEWS_VIEW_TYPE = "ROW"
   const val DEFAULT_LIST_VIEW_MODE = "LIST_NORMAL"
+  const val DEFAULT_LISTS_GRID_SPAN = 2
   const val HOST_ACTIVITY_NAME = "com.michaldrabik.showly2.ui.main.MainActivity"
 
   const val SHOW_WHATS_NEW = true

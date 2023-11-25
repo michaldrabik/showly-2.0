@@ -2,6 +2,7 @@ package com.michaldrabik.repository.settings
 
 import android.content.SharedPreferences
 import com.michaldrabik.common.Config
+import com.michaldrabik.repository.utilities.IntPreference
 import com.michaldrabik.repository.utilities.StringPreference
 import javax.inject.Inject
 import javax.inject.Named
@@ -22,6 +23,7 @@ class SettingsViewModeRepository @Inject constructor(
     private const val HIDDEN_MOVIES_VIEW_MODE = "HIDDEN_MOVIES_VIEW_MODE"
 
     private const val CUSTOM_LIST_VIEW_MODE = "CUSTOM_LIST_VIEW_MODE"
+    private const val TABLET_GRID_SPAN_SIZE = "TABLET_GRID_SPAN_SIZE"
   }
 
   var myShowsViewMode by StringPreference(preferences, MY_SHOWS_VIEW_MODE, Config.DEFAULT_LIST_VIEW_MODE)
@@ -33,4 +35,5 @@ class SettingsViewModeRepository @Inject constructor(
   var hiddenMoviesViewMode by StringPreference(preferences, HIDDEN_MOVIES_VIEW_MODE, Config.DEFAULT_LIST_VIEW_MODE)
 
   var customListsViewMode by StringPreference(preferences, CUSTOM_LIST_VIEW_MODE, Config.DEFAULT_LIST_VIEW_MODE)
+  var tabletGridSpanSize by IntPreference(preferences, TABLET_GRID_SPAN_SIZE, Config.DEFAULT_LISTS_GRID_SPAN)
 }

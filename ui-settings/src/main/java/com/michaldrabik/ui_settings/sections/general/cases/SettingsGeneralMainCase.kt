@@ -49,19 +49,6 @@ class SettingsGeneralMainCase @Inject constructor(
     }
   }
 
-  suspend fun enableProgressUpcoming(enable: Boolean, context: Context) {
-    with(settingsRepository) {
-      val updatedSettings = load().copy(progressUpcomingEnabled = enable)
-      update(updatedSettings)
-      if (!enable) {
-        settingsRepository.filters.progressShowsUpcoming = false
-      }
-    }
-    (context.applicationContext as WidgetsProvider).run {
-      requestShowsWidgetsUpdate()
-    }
-  }
-
   fun isMoviesEnabled() = settingsRepository.isMoviesEnabled
 
   suspend fun enableMovies(enable: Boolean) {
@@ -144,4 +131,12 @@ class SettingsGeneralMainCase @Inject constructor(
   }
 
   fun getDateFormat() = AppDateFormat.valueOf(settingsRepository.dateFormat)
+
+  fun setTabletsColumns(columns: Int) {
+    settingsRepository.viewMode.tabletGridSpanSize = columns
+  }
+
+  fun getTabletsColumns(): Int {
+    return settingsRepository.viewMode.tabletGridSpanSize
+  }
 }

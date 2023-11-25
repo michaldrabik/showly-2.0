@@ -13,6 +13,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.michaldrabik.repository.settings.SettingsViewModeRepository
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
@@ -29,7 +30,6 @@ import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarAdapter
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarListItem
 import com.michaldrabik.ui_progress.databinding.FragmentCalendarBinding
-import com.michaldrabik.ui_progress.helpers.GRID_SPAN_SIZE
 import com.michaldrabik.ui_progress.helpers.ProgressLayoutManagerProvider
 import com.michaldrabik.ui_progress.helpers.TopOverscrollAdapter
 import com.michaldrabik.ui_progress.main.EpisodeCheckActionUiEvent
@@ -43,6 +43,7 @@ import me.everything.android.ui.overscroll.IOverScrollState
 import me.everything.android.ui.overscroll.OverScrollBounceEffectDecoratorBase.DEFAULT_DECELERATE_FACTOR
 import me.everything.android.ui.overscroll.OverScrollBounceEffectDecoratorBase.DEFAULT_TOUCH_DRAG_MOVE_RATIO_BCK
 import me.everything.android.ui.overscroll.VerticalOverScrollBounceEffectDecorator
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class CalendarFragment :
@@ -54,6 +55,8 @@ class CalendarFragment :
     const val OVERSCROLL_OFFSET = 100F
     const val OVERSCROLL_OFFSET_TRANSLATION = 5F
   }
+
+  @Inject lateinit var settings: SettingsViewModeRepository
 
   override val viewModel by viewModels<CalendarViewModel>()
   private val parentViewModel by viewModels<ProgressMainViewModel>({ requireParentFragment() })
@@ -86,11 +89,12 @@ class CalendarFragment :
   }
 
   private fun setupRecycler() {
-    layoutManager = ProgressLayoutManagerProvider.provideLayoutManger(requireContext())
+    val gridSpanSize = settings.tabletGridSpanSize
+    layoutManager = ProgressLayoutManagerProvider.provideLayoutManger(requireContext(), gridSpanSize)
     (layoutManager as? GridLayoutManager)?.run {
       withSpanSizeLookup { position ->
         when (adapter?.getItems()?.get(position)) {
-          is CalendarListItem.Header -> GRID_SPAN_SIZE
+          is CalendarListItem.Header -> gridSpanSize
           is CalendarListItem.Episode -> 1
           else -> throw IllegalStateException()
         }

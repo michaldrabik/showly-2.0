@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_settings.sections.general
 
+import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.dates.AppDateFormat
 import com.michaldrabik.ui_model.ProgressNextEpisodeType
@@ -20,4 +21,5 @@ data class SettingsGeneralUiState(
   val restartApp: Boolean = false,
   val progressNextType: ProgressNextEpisodeType? = null,
   val progressUpcomingDays: Long? = null,
+  val tabletColumns: Int = Config.DEFAULT_LISTS_GRID_SPAN,
 )

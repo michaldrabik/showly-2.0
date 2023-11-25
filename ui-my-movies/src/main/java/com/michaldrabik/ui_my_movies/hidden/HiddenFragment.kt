@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.common.Config
+import com.michaldrabik.repository.settings.SettingsViewModeRepository
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.ListViewMode.GRID
 import com.michaldrabik.ui_base.common.ListViewMode.GRID_TITLE
@@ -51,6 +52,7 @@ import com.michaldrabik.ui_my_movies.main.FollowedMoviesUiEvent.OpenPremium
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesViewModel
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class HiddenFragment :
@@ -58,16 +60,19 @@ class HiddenFragment :
   OnScrollResetListener,
   OnSearchClickListener {
 
+  @Inject lateinit var settings: SettingsViewModeRepository
+
   override val navigationId = R.id.followedMoviesFragment
+  private val binding by viewBinding(FragmentHiddenMoviesBinding::bind)
 
   private val parentViewModel by viewModels<FollowedMoviesViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<HiddenViewModel>()
-  private val binding by viewBinding(FragmentHiddenMoviesBinding::bind)
 
   private var adapter: CollectionAdapter? = null
   private var layoutManager: LayoutManager? = null
   private var statusBarHeight = 0
   private var isSearching = false
+  private val tabletGridSpanSize by lazy { settings.tabletGridSpanSize }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -83,7 +88,7 @@ class HiddenFragment :
   }
 
   private fun setupRecycler() {
-    layoutManager = CollectionMovieLayoutManagerProvider.provideLayoutManger(requireContext(), LIST_NORMAL)
+    layoutManager = CollectionMovieLayoutManagerProvider.provideLayoutManger(requireContext(), LIST_NORMAL, tabletGridSpanSize)
     adapter = CollectionAdapter(
       itemClickListener = { openMovieDetails(it.movie) },
       itemLongClickListener = { openMovieMenu(it.movie) },
@@ -129,7 +134,11 @@ class HiddenFragment :
     uiState.run {
       viewMode.let {
         if (adapter?.listViewMode != it) {
-          layoutManager = CollectionMovieLayoutManagerProvider.provideLayoutManger(requireContext(), it)
+          layoutManager = CollectionMovieLayoutManagerProvider.provideLayoutManger(
+            context = requireContext(),
+            viewMode = it,
+            gridSpanSize = tabletGridSpanSize
+          )
           adapter?.listViewMode = it
           binding.hiddenMoviesRecycler?.let { recycler ->
             recycler.layoutManager = layoutManager
@@ -144,7 +153,7 @@ class HiddenFragment :
           when (adapter?.getItems()?.get(pos)) {
             is FiltersItem -> {
               when (viewMode) {
-                LIST_NORMAL, LIST_COMPACT -> if (isTablet) Config.LISTS_STANDARD_GRID_SPAN_TABLET else Config.LISTS_GRID_SPAN
+                LIST_NORMAL, LIST_COMPACT -> if (isTablet) tabletGridSpanSize else Config.LISTS_GRID_SPAN
                 GRID, GRID_TITLE -> if (isTablet) Config.LISTS_GRID_SPAN_TABLET else Config.LISTS_GRID_SPAN
               }
             }

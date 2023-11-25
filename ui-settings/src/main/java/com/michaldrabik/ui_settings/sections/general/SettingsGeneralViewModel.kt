@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.dates.AppDateFormat
@@ -44,6 +45,7 @@ class SettingsGeneralViewModel @Inject constructor(
   private val restartAppState = MutableStateFlow(false)
   private val progressTypeState = MutableStateFlow<ProgressNextEpisodeType?>(null)
   private val progressUpcomingDaysState = MutableStateFlow<Long?>(null)
+  private val tabletsColumnsState = MutableStateFlow(Config.DEFAULT_LISTS_GRID_SPAN)
 
   fun loadSettings() {
     viewModelScope.launch {
@@ -63,6 +65,7 @@ class SettingsGeneralViewModel @Inject constructor(
     premiumState.value = mainCase.isPremium()
     progressTypeState.value = mainCase.getProgressType()
     progressUpcomingDaysState.value = mainCase.getProgressUpcomingDays()
+    tabletsColumnsState.value = mainCase.getTabletsColumns()
     restartAppState.value = restartApp
   }
 
@@ -125,6 +128,13 @@ class SettingsGeneralViewModel @Inject constructor(
     Analytics.logSettingsTheme(theme.code)
   }
 
+  fun setTabletColumns(columns: Int) {
+    viewModelScope.launch {
+      mainCase.setTabletsColumns(columns)
+      refreshSettings()
+    }
+  }
+
   fun setCountry(country: AppCountry) {
     viewModelScope.launch {
       mainCase.setCountry(country)
@@ -170,8 +180,9 @@ class SettingsGeneralViewModel @Inject constructor(
     streamingsEnabledState,
     progressTypeState,
     restartAppState,
-    progressUpcomingDaysState
-  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12 ->
+    progressUpcomingDaysState,
+    tabletsColumnsState
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13 ->
     SettingsGeneralUiState(
       settings = s1,
       isPremium = s2,
@@ -184,7 +195,8 @@ class SettingsGeneralViewModel @Inject constructor(
       streamingsEnabled = s9,
       progressNextType = s10,
       restartApp = s11,
-      progressUpcomingDays = s12
+      progressUpcomingDays = s12,
+      tabletColumns = s13
     )
   }.stateIn(
     scope = viewModelScope,

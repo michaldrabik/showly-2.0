@@ -53,6 +53,7 @@ class SettingsGeneralFragment : BaseFragment<SettingsGeneralViewModel>(R.layout.
       settingsThemeValue.visibleIf(SHOW_PREMIUM)
       settingsNewsEnabled.visibleIf(SHOW_PREMIUM)
       settingsNewsEnabledSwitch.visibleIf(SHOW_PREMIUM)
+      settingsTabletColumns.visibleIf(isTablet)
 
       settingsIncludeSpecials.onClick {
         viewModel.enableSpecialSeasons(!settingsIncludeSpecialsSwitch.isChecked)
@@ -83,6 +84,7 @@ class SettingsGeneralFragment : BaseFragment<SettingsGeneralViewModel>(R.layout.
         renderProgressType(progressNextType)
         renderProgressUpcoming(progressUpcomingDays)
         renderDateFormat(dateFormat, language)
+        renderTabletColumns(tabletColumns)
 
         settingsTheme.alpha = if (isPremium) 1F else 0.5F
         settingsNewsEnabled.alpha = if (isPremium) 1F else 0.5F
@@ -126,6 +128,15 @@ class SettingsGeneralFragment : BaseFragment<SettingsGeneralViewModel>(R.layout.
         onPremiumAction(isPremium, tag) {
           showThemeDialog(theme)
         }
+      }
+    }
+  }
+
+  private fun renderTabletColumns(columns: Int) {
+    with(binding) {
+      settingsTabletColumnsValue.text = columns.toString()
+      settingsTabletColumns.onClick {
+        showTabletColumnsDialog(columns)
       }
     }
   }
@@ -237,6 +248,20 @@ class SettingsGeneralFragment : BaseFragment<SettingsGeneralViewModel>(R.layout.
         if (index != selected) {
           viewModel.setTheme(options[index])
           AppCompatDelegate.setDefaultNightMode(options[index].code)
+        }
+        dialog.dismiss()
+      }
+      .show()
+  }
+
+  private fun showTabletColumnsDialog(columns: Int) {
+    val options = arrayOf(1, 2)
+    val selected = options.indexOf(columns)
+    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
+      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
+      .setSingleChoiceItems(options.map { it.toString() }.toTypedArray(), selected) { dialog, index ->
+        if (index != selected) {
+          viewModel.setTabletColumns(options[index])
         }
         dialog.dismiss()
       }

@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.michaldrabik.repository.settings.SettingsViewModeRepository
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
@@ -73,6 +74,7 @@ class ListsFragment :
   private val binding by viewBinding(FragmentListsBinding::bind)
 
   @Inject lateinit var eventsManager: EventsManager
+  @Inject lateinit var settings: SettingsViewModeRepository
 
   private var adapter: ListsAdapter? = null
   private var layoutManager: LayoutManager? = null
@@ -178,7 +180,7 @@ class ListsFragment :
   }
 
   private fun setupRecycler() {
-    layoutManager = ListsLayoutManagerProvider.provideLayoutManger(requireContext())
+    layoutManager = ListsLayoutManagerProvider.provideLayoutManger(requireContext(), settings)
     adapter = ListsAdapter().apply {
       stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
       itemClickListener = { openListDetails(it) }

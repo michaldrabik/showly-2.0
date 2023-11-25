@@ -7,6 +7,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.michaldrabik.repository.settings.SettingsViewModeRepository
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet
@@ -34,9 +35,12 @@ import com.michaldrabik.ui_show.sections.seasons.recycler.helpers.SeasonsGridIte
 import com.michaldrabik.ui_show.sections.seasons.recycler.helpers.SeasonsLayoutManagerProvider
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.Duration
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ShowDetailsSeasonsFragment : BaseFragment<ShowDetailsSeasonsViewModel>(R.layout.fragment_show_details_seasons) {
+
+  @Inject lateinit var settings: SettingsViewModeRepository
 
   override val navigationId = R.id.showDetailsFragment
   private val binding by viewBinding(FragmentShowDetailsSeasonsBinding::bind)
@@ -70,7 +74,7 @@ class ShowDetailsSeasonsFragment : BaseFragment<ShowDetailsSeasonsViewModel>(R.l
     )
     binding.showDetailsSeasonsRecycler.apply {
       adapter = seasonsAdapter
-      layoutManager = SeasonsLayoutManagerProvider.provideLayoutManger(requireContext())
+      layoutManager = SeasonsLayoutManagerProvider.provideLayoutManger(requireContext(), settings)
       itemAnimator = null
       if (layoutManager is GridLayoutManager) {
         addItemDecoration(SeasonsGridItemDecoration(requireContext(), R.dimen.spaceBig))

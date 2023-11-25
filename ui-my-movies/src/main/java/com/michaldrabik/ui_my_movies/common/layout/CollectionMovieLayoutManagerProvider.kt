@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.common.Config.LISTS_GRID_SPAN
 import com.michaldrabik.common.Config.LISTS_GRID_SPAN_TABLET
-import com.michaldrabik.common.Config.LISTS_STANDARD_GRID_SPAN_TABLET
 import com.michaldrabik.ui_base.common.ListViewMode
 import com.michaldrabik.ui_base.common.ListViewMode.GRID
 import com.michaldrabik.ui_base.common.ListViewMode.GRID_TITLE
@@ -17,9 +16,13 @@ import com.michaldrabik.ui_base.utilities.extensions.isTablet
 
 internal object CollectionMovieLayoutManagerProvider {
 
-  fun provideLayoutManger(context: Context, viewMode: ListViewMode): RecyclerView.LayoutManager {
+  fun provideLayoutManger(
+    context: Context,
+    viewMode: ListViewMode,
+    gridSpanSize: Int,
+  ): RecyclerView.LayoutManager {
     return if (context.isTablet()) {
-      provideTabletLayout(context, viewMode)
+      provideTabletLayout(context, viewMode, gridSpanSize)
     } else {
       providePhoneLayout(context, viewMode)
     }
@@ -38,9 +41,10 @@ internal object CollectionMovieLayoutManagerProvider {
   private fun provideTabletLayout(
     context: Context,
     viewMode: ListViewMode,
+    gridSpanSize: Int,
   ): RecyclerView.LayoutManager {
     return when (viewMode) {
-      LIST_NORMAL, LIST_COMPACT -> GridLayoutManager(context, LISTS_STANDARD_GRID_SPAN_TABLET)
+      LIST_NORMAL, LIST_COMPACT -> GridLayoutManager(context, gridSpanSize)
       GRID, GRID_TITLE -> GridLayoutManager(context, LISTS_GRID_SPAN_TABLET)
     }
   }

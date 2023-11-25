@@ -15,6 +15,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.michaldrabik.common.Mode
+import com.michaldrabik.repository.settings.SettingsViewModeRepository
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
@@ -54,6 +55,7 @@ import com.michaldrabik.ui_search.utilities.SearchLayoutManagerProvider
 import com.michaldrabik.ui_search.utilities.TextWatcherAdapter
 import com.michaldrabik.ui_search.views.RecentSearchView
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), TextWatcherAdapter {
@@ -61,6 +63,8 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
   companion object {
     private const val ARG_HEADER_TRANSLATION = "ARG_HEADER_TRANSLATION"
   }
+
+  @Inject lateinit var settings: SettingsViewModeRepository
 
   override val navigationId = R.id.searchFragment
 
@@ -166,7 +170,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
 
   private fun setupRecycler() {
     with(binding) {
-      layoutManager = SearchLayoutManagerProvider.provideLayoutManger(requireContext())
+      layoutManager = SearchLayoutManagerProvider.provideLayoutManger(requireContext(), settings.tabletGridSpanSize)
       adapter = SearchAdapter(
         itemClickListener = { openShowDetails(it) },
         itemLongClickListener = { openContextMenu(it) },
@@ -198,7 +202,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
   }
 
   private fun setupSuggestionsRecycler() {
-    suggestionsLayoutManager = SearchLayoutManagerProvider.provideLayoutManger(requireContext())
+    suggestionsLayoutManager = SearchLayoutManagerProvider.provideLayoutManger(requireContext(), settings.tabletGridSpanSize)
     suggestionsAdapter = SuggestionAdapter(
       itemClickListener = {
         val query =

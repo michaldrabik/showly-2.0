@@ -163,7 +163,7 @@
   <LinearLayout
     android:id="@+id/settingsDateFormat"
     style="@style/Settings.ItemLayout"
-    app:layout_constraintBottom_toTopOf="@id/settingsMoviesEnabled"
+    app:layout_constraintBottom_toTopOf="@id/settingsTabletColumns"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/settingsTheme"
@@ -183,12 +183,58 @@
   </LinearLayout>
 
   <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/settingsTabletColumns"
+    style="@style/Settings.ItemLayout"
+    android:tag="@string/tagTheme"
+    app:layout_constraintBottom_toTopOf="@+id/settingsMoviesEnabled"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/settingsDateFormat"
+    >
+
+    <TextView
+      android:id="@+id/settingsTabletColumnsTitle"
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsTabletColumnsTitle"
+      app:layout_constraintBottom_toTopOf="@id/settingsTabletColumnsDescription"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      />
+
+    <TextView
+      android:id="@+id/settingsTabletColumnsDescription"
+      style="@style/Settings.Summary"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:text="@string/textSettingsTabletColumnsSummary"
+      app:layout_constrainedWidth="true"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/settingsTabletColumnsValue"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsTabletColumnsTitle"
+      />
+
+    <TextView
+      android:id="@+id/settingsTabletColumnsValue"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:textColor="?attr/colorAccent"
+      app:layout_constraintBottom_toBottomOf="@id/settingsTabletColumns"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/settingsTabletColumns"
+      tools:text="@tools:sample/lorem"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/settingsMoviesEnabled"
     style="@style/Settings.ItemLayout"
     app:layout_constraintBottom_toTopOf="@id/settingsNewsEnabled"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/settingsDateFormat"
+    app:layout_constraintTop_toBottomOf="@id/settingsTabletColumns"
     >
 
     <TextView

@@ -14,6 +14,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.michaldrabik.repository.settings.SettingsViewModeRepository
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSearchClickListener
@@ -47,7 +48,6 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_SORT_ORDER
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.databinding.FragmentProgressBinding
-import com.michaldrabik.ui_progress.helpers.GRID_SPAN_SIZE
 import com.michaldrabik.ui_progress.helpers.ProgressLayoutManagerProvider
 import com.michaldrabik.ui_progress.helpers.TopOverscrollAdapter
 import com.michaldrabik.ui_progress.main.EpisodeCheckActionUiEvent
@@ -65,6 +65,7 @@ import me.everything.android.ui.overscroll.IOverScrollState.STATE_BOUNCE_BACK
 import me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_START_SIDE
 import me.everything.android.ui.overscroll.OverScrollBounceEffectDecoratorBase
 import me.everything.android.ui.overscroll.VerticalOverScrollBounceEffectDecorator
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ProgressFragment :
@@ -77,11 +78,13 @@ class ProgressFragment :
     const val OVERSCROLL_OFFSET_TRANSLATION = 4.5F
   }
 
+  @Inject lateinit var settings: SettingsViewModeRepository
+
   override val navigationId = R.id.progressMainFragment
+  private val binding by viewBinding(FragmentProgressBinding::bind)
 
   private val parentViewModel by viewModels<ProgressMainViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<ProgressViewModel>()
-  private val binding by viewBinding(FragmentProgressBinding::bind)
 
   private var adapter: ProgressAdapter? = null
   private var layoutManager: LayoutManager? = null
@@ -125,12 +128,13 @@ class ProgressFragment :
   }
 
   private fun setupRecycler() {
-    layoutManager = ProgressLayoutManagerProvider.provideLayoutManger(requireContext())
+    val gridSpanSize = settings.tabletGridSpanSize
+    layoutManager = ProgressLayoutManagerProvider.provideLayoutManger(requireContext(), gridSpanSize)
     (layoutManager as? GridLayoutManager)?.run {
       withSpanSizeLookup { position ->
         when (adapter?.getItems()?.get(position)) {
-          is ProgressListItem.Header -> GRID_SPAN_SIZE
-          is ProgressListItem.Filters -> GRID_SPAN_SIZE
+          is ProgressListItem.Header -> gridSpanSize
+          is ProgressListItem.Filters -> gridSpanSize
           is ProgressListItem.Episode -> 1
           else -> throw IllegalStateException()
         }

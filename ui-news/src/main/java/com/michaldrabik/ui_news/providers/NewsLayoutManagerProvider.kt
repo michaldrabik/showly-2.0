@@ -5,15 +5,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.michaldrabik.repository.settings.SettingsViewModeRepository
 import com.michaldrabik.ui_base.utilities.extensions.isTablet
-
-private const val GRID_SPAN_SIZE = 2
 
 internal object NewsLayoutManagerProvider {
 
-  fun provideLayoutManger(context: Context): LayoutManager {
+  fun provideLayoutManger(
+    context: Context,
+    settings: SettingsViewModeRepository,
+  ): LayoutManager {
     return if (context.isTablet()) {
-      StaggeredGridLayoutManager(GRID_SPAN_SIZE, VERTICAL).apply {
+      StaggeredGridLayoutManager(settings.tabletGridSpanSize, VERTICAL).apply {
         gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
       }
     } else {

@@ -68,6 +68,8 @@
   <string name="textSettingsStreamingServicesMessage">Display streaming services data.</string>
   <string name="textSettingsProgressNextEpisodeTitle">Next Episode</string>
   <string name="textSettingsProgressNextEpisodeMessage">Calculate next episode using:</string>
+  <string name="textSettingsTabletColumnsTitle">Lists Columns Number</string>
+  <string name="textSettingsTabletColumnsSummary">Select preferred columns number for lists.</string>
 
   <string name="textSettingsSpoilers">Spoilers</string>
 

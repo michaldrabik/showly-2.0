@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.common.Config.LISTS_GRID_SPAN
 import com.michaldrabik.common.Config.LISTS_GRID_SPAN_TABLET
-import com.michaldrabik.common.Config.LISTS_STANDARD_GRID_SPAN_TABLET
+import com.michaldrabik.repository.settings.SettingsViewModeRepository
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.ListViewMode.GRID
 import com.michaldrabik.ui_base.common.ListViewMode.GRID_TITLE
@@ -58,6 +58,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_ORDE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_SORT_ORDER
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class WatchlistFragment :
@@ -65,16 +66,19 @@ class WatchlistFragment :
   OnScrollResetListener,
   OnSearchClickListener {
 
+  @Inject lateinit var settings: SettingsViewModeRepository
+
   override val navigationId = R.id.followedShowsFragment
+  private val binding by viewBinding(FragmentWatchlistBinding::bind)
 
   private val parentViewModel by viewModels<FollowedShowsViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<WatchlistViewModel>()
-  private val binding by viewBinding(FragmentWatchlistBinding::bind)
 
   private var adapter: CollectionAdapter? = null
   private var layoutManager: LayoutManager? = null
   private var statusBarHeight = 0
   private var isSearching = false
+  private val tabletGridSpanSize by lazy { settings.tabletGridSpanSize }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -90,7 +94,7 @@ class WatchlistFragment :
   }
 
   private fun setupRecycler() {
-    layoutManager = CollectionShowLayoutManagerProvider.provideLayoutManger(requireContext(), LIST_NORMAL)
+    layoutManager = CollectionShowLayoutManagerProvider.provideLayoutManger(requireContext(), LIST_NORMAL, tabletGridSpanSize)
     adapter = CollectionAdapter(
       itemClickListener = { openShowDetails(it.show) },
       itemLongClickListener = { item -> openShowMenu(item.show) },
@@ -138,7 +142,7 @@ class WatchlistFragment :
     uiState.run {
       viewMode.let {
         if (adapter?.listViewMode != it) {
-          layoutManager = CollectionShowLayoutManagerProvider.provideLayoutManger(requireContext(), it)
+          layoutManager = CollectionShowLayoutManagerProvider.provideLayoutManger(requireContext(), it, tabletGridSpanSize)
           adapter?.listViewMode = it
           binding.watchlistRecycler.let { recycler ->
             recycler.layoutManager = layoutManager
@@ -153,7 +157,7 @@ class WatchlistFragment :
           when (adapter?.getItems()?.get(pos)) {
             is FiltersItem -> {
               when (viewMode) {
-                LIST_NORMAL, LIST_COMPACT -> if (isTablet) LISTS_STANDARD_GRID_SPAN_TABLET else LISTS_GRID_SPAN
+                LIST_NORMAL, LIST_COMPACT -> if (isTablet) tabletGridSpanSize else LISTS_GRID_SPAN
                 GRID, GRID_TITLE -> if (isTablet) LISTS_GRID_SPAN_TABLET else LISTS_GRID_SPAN
               }
             }

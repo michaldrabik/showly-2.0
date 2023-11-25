@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.michaldrabik.repository.settings.SettingsViewModeRepository
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
@@ -39,6 +40,7 @@ import com.michaldrabik.ui_news.databinding.FragmentNewsBinding
 import com.michaldrabik.ui_news.providers.NewsLayoutManagerProvider
 import com.michaldrabik.ui_news.recycler.NewsAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class NewsFragment :
@@ -48,6 +50,8 @@ class NewsFragment :
   companion object {
     private const val ARG_HEADER_POSITION = "ARG_HEADER_POSITION"
   }
+
+  @Inject lateinit var settingsRepository: SettingsViewModeRepository
 
   override val viewModel by viewModels<NewsViewModel>()
   private val binding by viewBinding(FragmentNewsBinding::bind)
@@ -121,7 +125,7 @@ class NewsFragment :
   }
 
   private fun setupRecycler() {
-    layoutManager = NewsLayoutManagerProvider.provideLayoutManger(requireContext())
+    layoutManager = NewsLayoutManagerProvider.provideLayoutManger(requireContext(), settingsRepository)
     adapter = NewsAdapter(
       itemClickListener = { openLink(it.item) },
       listChangeListener = { scrollToTop(false) }
