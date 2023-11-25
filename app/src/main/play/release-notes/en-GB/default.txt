@@ -1,3 +1,2 @@
-* UI/UX upgrades for tablets and foldable devices
-* Fix Metacritic links
+* UI/UX upgrades for tablets and foldable devices (can be changed via Settings)
 * Other bugfixes
