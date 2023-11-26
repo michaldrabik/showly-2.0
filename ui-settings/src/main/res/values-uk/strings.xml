@@ -67,6 +67,8 @@
   <string name="textSettingsStreamingServicesMessage">Показувати дані стрімінгових сервісів.</string>
   <string name="textSettingsProgressNextEpisodeTitle">Наступна серія</string>
   <string name="textSettingsProgressNextEpisodeMessage">Розрахувати наступну серію за допомогою:</string>
+  <string name="textSettingsTabletColumnsTitle">Кількість стовпців у списках</string>
+  <string name="textSettingsTabletColumnsSummary">Виберіть бажану кількість стовпців для списків.</string>
   <string name="textSettingsSpoilers">Спойлери</string>
   <string name="textSettingsSpoilersShows">Серіали</string>
   <string name="textSettingsSpoilersShowsSummary">Керування налаштуваннями спойлерів для серіалів.</string>

@@ -67,6 +67,8 @@
   <string name="textSettingsStreamingServicesMessage">Wyświetlaj dane usług streamingowych.</string>
   <string name="textSettingsProgressNextEpisodeTitle">Następny Odcinek</string>
   <string name="textSettingsProgressNextEpisodeMessage">Wybieraj następny odcinek z użyciem:</string>
+  <string name="textSettingsTabletColumnsTitle">Liczba kolumn w listach</string>
+  <string name="textSettingsTabletColumnsSummary">Wybierz preferowaną liczbę kolumn dla list.</string>
   <string name="textSettingsSpoilers">Spoilery</string>
   <string name="textSettingsSpoilersShows">Seriale</string>
   <string name="textSettingsSpoilersShowsSummary">Ustawienia spoilerów dla seriali.</string>
