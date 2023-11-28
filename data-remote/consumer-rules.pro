@@ -101,7 +101,7 @@
 -keep class com.michaldrabik.data_remote.omdb.model.** { *; }
 -keep class com.michaldrabik.data_remote.trakt.model.** { *; }
 -keep class com.michaldrabik.data_remote.aws.model.** { *; }
--keep class com.michaldrabik.data_remote.reddit.model.** { *; }
+-keep class com.michaldrabik.data_remote.gcloud.model.** { *; }
 
 ### OkHttp
 

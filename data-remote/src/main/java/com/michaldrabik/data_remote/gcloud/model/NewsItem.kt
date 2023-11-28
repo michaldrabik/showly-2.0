@@ -1,12 +1,12 @@
-package com.michaldrabik.data_remote.reddit.model
+package com.michaldrabik.data_remote.gcloud.model
 
-data class RedditItem(
+data class NewsItem(
   val id: String,
-  val is_self: Boolean,
   val title: String,
   val url: String,
   val score: Long,
   val preview: Preview?,
+  val is_self: Boolean,
   val created_utc: Long,
 ) {
 

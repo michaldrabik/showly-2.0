@@ -27,7 +27,7 @@ class NewsRepository @Inject constructor(
     localSource.news.getAllByType(type.slug)
       .map { mappers.news.fromDatabase(it) }
 
-  suspend fun loadShowsNews(token: RedditAuthToken, forceRefresh: Boolean): List<NewsItem> {
+  suspend fun loadShowsNews(forceRefresh: Boolean): List<NewsItem> {
     if (!forceRefresh) {
       val cachedNews = getCachedNews(SHOW)
       val cacheTimestamp = cachedNews.firstOrNull()?.createdAt?.toMillis() ?: 0
@@ -38,7 +38,7 @@ class NewsRepository @Inject constructor(
       }
     }
 
-    val remoteItems = remoteSource.reddit.fetchTelevisionItems(token.token)
+    val remoteItems = remoteSource.gcloud.fetchTelevisionItems()
       .map { mappers.news.fromNetwork(it, SHOW) }
 
     val dbItems = remoteItems.map { mappers.news.toDatabase(it) }
@@ -47,7 +47,7 @@ class NewsRepository @Inject constructor(
     return remoteItems.toList()
   }
 
-  suspend fun loadMoviesNews(token: RedditAuthToken, forceRefresh: Boolean): List<NewsItem> {
+  suspend fun loadMoviesNews(forceRefresh: Boolean): List<NewsItem> {
     if (!forceRefresh) {
       val cachedNews = getCachedNews(MOVIE)
       val cacheTimestamp = cachedNews.firstOrNull()?.createdAt?.toMillis() ?: 0
@@ -58,7 +58,7 @@ class NewsRepository @Inject constructor(
       }
     }
 
-    val remoteItems = remoteSource.reddit.fetchMoviesItems(token.token)
+    val remoteItems = remoteSource.gcloud.fetchMoviesItems()
       .map { mappers.news.fromNetwork(it, MOVIE) }
 
     val dbItems = remoteItems.map { mappers.news.toDatabase(it) }

@@ -33,8 +33,8 @@ android {
     buildConfigField("String", "TRAKT_CLIENT_ID", properties.getProperty("traktClientId"))
     buildConfigField("String", "TRAKT_CLIENT_SECRET", properties.getProperty("traktClientSecret"))
     buildConfigField("String", "TMDB_API_KEY", properties.getProperty("tmdbApiKey"))
+    buildConfigField("String", "CLOUD_API_KEY", properties.getProperty("gcloudApiKey"))
     buildConfigField("String", "OMDB_API_KEY", properties.getProperty("omdbApiKey"))
-    buildConfigField("String", "REDDIT_CLIENT_ID", properties.getProperty("redditClientId"))
     buildConfigField 'String', 'VER_NAME', "\"${versions.versionName}\""
   }
 

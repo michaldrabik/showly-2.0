@@ -1,6 +1,7 @@
 package com.michaldrabik.data_remote.di.module
 
 import com.michaldrabik.data_remote.BuildConfig
+import com.michaldrabik.data_remote.gcloud.interceptors.GCloudAuthorizationInterceptor
 import com.michaldrabik.data_remote.omdb.OmdbInterceptor
 import com.michaldrabik.data_remote.tmdb.TmdbInterceptor
 import com.michaldrabik.data_remote.trakt.interceptors.TraktAuthenticator
@@ -59,8 +60,8 @@ object OkHttpModule {
     httpLoggingInterceptor: HttpLoggingInterceptor,
     tmdbInterceptor: TmdbInterceptor,
   ) = createBaseOkHttpClient()
-    .addInterceptor(httpLoggingInterceptor)
     .addInterceptor(tmdbInterceptor)
+    .addInterceptor(httpLoggingInterceptor)
     .build()
 
   @Provides
@@ -70,8 +71,8 @@ object OkHttpModule {
     httpLoggingInterceptor: HttpLoggingInterceptor,
     omdbInterceptor: OmdbInterceptor,
   ) = createBaseOkHttpClient()
-    .addInterceptor(httpLoggingInterceptor)
     .addInterceptor(omdbInterceptor)
+    .addInterceptor(httpLoggingInterceptor)
     .build()
 
   @Provides
@@ -85,10 +86,12 @@ object OkHttpModule {
 
   @Provides
   @Singleton
-  @Named("okHttpReddit")
-  fun providesRedditOkHttp(
+  @Named("okHttpGCloud")
+  fun providesGCloudOkHttp(
     httpLoggingInterceptor: HttpLoggingInterceptor,
+    authInterceptor: GCloudAuthorizationInterceptor,
   ) = createBaseOkHttpClient()
+    .addInterceptor(authInterceptor)
     .addInterceptor(httpLoggingInterceptor)
     .build()
 

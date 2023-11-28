@@ -28,13 +28,7 @@ object Config {
   const val OMDB_BASE_URL = "https://private.omdbapi.com/"
   const val OMDB_API_KEY = BuildConfig.OMDB_API_KEY
 
-  const val REDDIT_BASE_URL = "https://www.reddit.com/api/v1/"
-  const val REDDIT_OAUTH_BASE_URL = "https://oauth.reddit.com/"
-  const val REDDIT_CLIENT_ID = BuildConfig.REDDIT_CLIENT_ID
-  const val REDDIT_GRANT_TYPE = "https://oauth.reddit.com/grants/installed_client"
-  const val REDDIT_DEVICE_ID = "DO_NOT_TRACK_THIS_DEVICE"
-  const val REDDIT_LIST_LIMIT = 75
-  const val REDDIT_LIST_PAGES = 2
+  const val GCLOUD_BASE_URL = "https://showly-gateway-5kzyanut.uc.gateway.dev/"
 
   const val AWS_BASE_URL = "https://showly2.s3.eu-west-2.amazonaws.com/"
 }

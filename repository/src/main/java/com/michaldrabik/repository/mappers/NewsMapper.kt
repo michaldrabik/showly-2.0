@@ -4,14 +4,14 @@ import com.michaldrabik.common.extensions.dateFromMillis
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.common.extensions.toMillis
-import com.michaldrabik.data_remote.reddit.model.RedditItem
 import com.michaldrabik.ui_model.NewsItem
 import javax.inject.Inject
 import com.michaldrabik.data_local.database.model.News as NewsDb
+import com.michaldrabik.data_remote.gcloud.model.NewsItem as NewsItemNetwork
 
 class NewsMapper @Inject constructor() {
 
-  fun fromNetwork(input: RedditItem, type: NewsItem.Type) = NewsItem(
+  fun fromNetwork(input: NewsItemNetwork, type: NewsItem.Type) = NewsItem(
     id = input.id,
     title = input.title,
     url = input.url,
