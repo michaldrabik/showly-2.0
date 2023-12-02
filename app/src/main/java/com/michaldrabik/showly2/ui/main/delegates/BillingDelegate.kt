@@ -102,10 +102,10 @@ class MainBillingDelegate : BillingDelegate, DefaultLifecycleObserver {
 
             val purchases = subscriptions.purchasesList + inApps.purchasesList
             if (purchases.none {
-                val json = JSONObject(it.originalJson)
-                val productId = json.optString("productId", "")
-                it.isAcknowledged && productId in eligibleProducts
-              }
+              val json = JSONObject(it.originalJson)
+              val productId = json.optString("productId", "")
+              it.isAcknowledged && productId in eligibleProducts
+            }
             ) {
               Timber.d("No subscription found. Revoking...")
               settingsRepository.revokePremium()
