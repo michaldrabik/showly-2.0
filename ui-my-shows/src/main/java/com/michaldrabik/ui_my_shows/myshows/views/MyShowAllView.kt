@@ -12,9 +12,11 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
 import com.michaldrabik.common.Config.SPOILERS_REGEX
 import com.michaldrabik.ui_base.common.views.ShowView
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.onLongClick
+import com.michaldrabik.ui_base.utilities.extensions.setOutboundRipple
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_my_shows.R
@@ -40,6 +42,10 @@ class MyShowAllView : ShowView<MyShowsItem> {
     with(binding) {
       collectionShowRoot.onClick { itemClickListener?.invoke(item) }
       collectionShowRoot.onLongClick { itemLongClickListener?.invoke(item) }
+      collectionShowRoot.setOutboundRipple(
+        size = (context.dimenToPx(R.dimen.collectionItemRippleSpace)).toFloat(),
+        corner = context.dimenToPx(R.dimen.mediaTileCorner).toFloat()
+      )
     }
 
     imageLoadCompleteListener = { loadTranslation() }

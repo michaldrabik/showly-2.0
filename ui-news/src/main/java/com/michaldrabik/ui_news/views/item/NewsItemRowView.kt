@@ -24,6 +24,7 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.invisible
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.setOutboundRipple
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
@@ -53,9 +54,13 @@ class NewsItemRowView : FrameLayout {
     clipToPadding = false
 
     with(binding) {
-      newsItemRoot.onClick { itemClickListener?.invoke(item) }
-      newsItemImage.onClick { itemClickListener?.invoke(item) }
       newsItemPlaceholder.onClick { itemClickListener?.invoke(item) }
+      newsItemImage.onClick { itemClickListener?.invoke(item) }
+      newsItemRoot.onClick { itemClickListener?.invoke(item) }
+      newsItemRoot.setOutboundRipple(
+        size = (context.dimenToPx(R.dimen.collectionItemRippleSpace)).toFloat(),
+        corner = context.dimenToPx(R.dimen.mediaTileCorner).toFloat()
+      )
     }
   }
 

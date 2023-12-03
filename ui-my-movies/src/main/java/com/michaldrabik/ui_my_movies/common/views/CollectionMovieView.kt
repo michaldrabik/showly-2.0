@@ -14,11 +14,14 @@ import com.michaldrabik.common.Config.SPOILERS_REGEX
 import com.michaldrabik.common.extensions.nowUtcDay
 import com.michaldrabik.ui_base.common.views.MovieView
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.onLongClick
+import com.michaldrabik.ui_base.utilities.extensions.setOutboundRipple
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_my_movies.R
 import com.michaldrabik.ui_my_movies.common.recycler.CollectionListItem
 import com.michaldrabik.ui_my_movies.databinding.ViewCollectionMovieBinding
 import java.util.Locale.ENGLISH
@@ -41,6 +44,10 @@ class CollectionMovieView : MovieView<CollectionListItem.MovieItem> {
     with(binding) {
       collectionMovieRoot.onClick { itemClickListener?.invoke(item) }
       collectionMovieRoot.onLongClick { itemLongClickListener?.invoke(item) }
+      collectionMovieRoot.setOutboundRipple(
+        size = (context.dimenToPx(R.dimen.collectionItemRippleSpace)).toFloat(),
+        corner = context.dimenToPx(R.dimen.mediaTileCorner).toFloat()
+      )
     }
 
     imageLoadCompleteListener = { loadTranslation() }

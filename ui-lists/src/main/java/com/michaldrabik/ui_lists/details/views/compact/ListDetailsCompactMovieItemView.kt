@@ -15,8 +15,10 @@ import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.michaldrabik.common.Config.SPOILERS_RATINGS_HIDE_SYMBOL
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.expandTouch
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.setOutboundRipple
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_lists.R
 import com.michaldrabik.ui_lists.databinding.ViewListDetailsMovieItemCompactBinding
@@ -74,6 +76,10 @@ class ListDetailsCompactMovieItemView : ListDetailsItemView {
       listDetailsMovieRoot.onClick {
         if (item.isEnabled && !item.isManageMode) itemClickListener?.invoke(item)
       }
+      listDetailsMovieRoot.setOutboundRipple(
+        size = (context.dimenToPx(R.dimen.collectionItemRippleSpace)).toFloat(),
+        corner = context.dimenToPx(R.dimen.mediaTileCorner).toFloat()
+      )
     }
   }
 

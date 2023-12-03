@@ -6,8 +6,8 @@
   android:id="@+id/fragmentListDetailsRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:clipChildren="true"
-  android:clipToPadding="true"
+  android:clipChildren="false"
+  android:clipToPadding="false"
   >
 
   <androidx.recyclerview.widget.RecyclerView

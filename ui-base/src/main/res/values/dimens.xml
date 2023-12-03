@@ -75,5 +75,7 @@
   <dimen name="collectionItemCorner">16dp</dimen>
   <dimen name="collectionItemImageHeight">120dp</dimen>
   <dimen name="collectionItemImageWidth">80dp</dimen>
+  <dimen name="collectionItemRippleSpace">6dp</dimen>
+  <dimen name="collectionItemRippleSpaceSmall">4dp</dimen>
 
 </resources>

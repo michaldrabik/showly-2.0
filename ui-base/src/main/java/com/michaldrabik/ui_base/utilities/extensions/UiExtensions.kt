@@ -3,12 +3,20 @@ package com.michaldrabik.ui_base.utilities.extensions
 import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.content.res.ColorStateList
+import android.graphics.Canvas
+import android.graphics.Path
+import android.graphics.RectF
+import android.graphics.drawable.RippleDrawable
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewPropertyAnimator
 import android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
 import android.widget.TextView
+import androidx.annotation.Px
 import androidx.core.animation.doOnEnd
+import androidx.core.graphics.toRect
+import androidx.core.view.doOnLayout
 import androidx.core.view.updateMargins
 import androidx.fragment.app.Fragment
 import timber.log.Timber
@@ -157,4 +165,35 @@ fun String.capitalizeWords() = this
 fun String.trimWithSuffix(length: Int, suffix: String): String {
   if (this.length <= length) return this
   return this.take(length).plus(suffix)
+}
+
+fun View.setOutboundRipple(
+  @Px size: Float = 0F,
+  @Px corner: Float = 0F,
+) {
+  val color = context.colorFromAttr(android.R.attr.colorControlHighlight)
+  doOnLayout { view ->
+    val boundsF = RectF(-size, -size, (view.width + size), (view.height + size))
+    val path = Path().apply {
+      addRoundRect(boundsF, corner, corner, Path.Direction.CW)
+    }
+    background = object : RippleDrawable(
+      ColorStateList.valueOf(color),
+      null,
+      null
+    ) {
+      override fun draw(canvas: Canvas) {
+        canvas.clipPath(path)
+        super.draw(canvas)
+      }
+    }.apply {
+      val bounds = boundsF.toRect()
+      setHotspotBounds(
+        bounds.left,
+        bounds.top,
+        bounds.right,
+        bounds.bottom
+      )
+    }
+  }
 }
