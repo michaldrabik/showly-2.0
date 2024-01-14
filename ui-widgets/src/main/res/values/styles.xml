@@ -1,0 +1,59 @@
+<resources>
+
+  <!-- Widgets -->
+
+  <style name="AppTheme.Widget.Dark" parent="AppTheme">
+    <item name="colorWidgetBackground">#121212</item>
+    <item name="colorWidgetBackground75">#BF121212</item>
+    <item name="colorWidgetBackground50">#80121212</item>
+    <item name="colorWidgetBackground25">#41121212</item>
+    <item name="colorWidgetBackground0">#00121212</item>
+    <item name="android:textColorPrimary">@color/colorWhite</item>
+    <item name="android:textColorSecondary">@color/colorGrayLight</item>
+    <item name="colorPlaceholderIcon">#6A6A6A</item>
+    <item name="colorPlaceholderStroke">#6A6A6A</item>
+    <item name="colorAccent">#F44336</item>
+    <item name="colorBadgeBackground">@color/colorGrayDark</item>
+  </style>
+
+  <style name="AppTheme.Widget.Light" parent="AppTheme">
+    <item name="colorWidgetBackground">#F6F7F9</item>
+    <item name="colorWidgetBackground75">#BEF6F7F9</item>
+    <item name="colorWidgetBackground50">#80F6F7F9</item>
+    <item name="colorWidgetBackground25">#40F6F7F9</item>
+    <item name="colorWidgetBackground0">#00F6F7F9</item>
+    <item name="android:textColorPrimary">@color/colorBlue</item>
+    <item name="android:textColorSecondary">@color/colorBlueLight</item>
+    <item name="colorPlaceholderIcon">#4B6383</item>
+    <item name="colorPlaceholderStroke">#4B6383</item>
+    <item name="colorAccent">#4B6383</item>
+    <item name="colorBadgeBackground">#E1E6EC</item>
+  </style>
+
+  <style name="WidgetItem" />
+
+  <style name="WidgetItem.CheckButton" parent="WidgetItem">
+    <item name="android:layout_width">@dimen/widgetCheckButtonWidth</item>
+    <item name="android:layout_height">@dimen/widgetCheckButtonHeight</item>
+    <item name="android:background">@drawable/bg_widget_check_button</item>
+    <item name="android:src">@drawable/ic_check_small</item>
+    <item name="android:tint">?android:attr/textColorPrimary</item>
+    <item name="tint">?android:attr/textColorPrimary</item>
+  </style>
+
+  <style name="WidgetItem.Title" parent="WidgetItem">
+    <item name="android:fontFamily">sans-serif-medium</item>
+    <item name="android:ellipsize">end</item>
+    <item name="android:maxLines">1</item>
+    <item name="android:textColor">?android:attr/textColorPrimary</item>
+    <item name="android:textSize">15sp</item>
+  </style>
+
+  <style name="WidgetItem.Subtitle" parent="WidgetItem">
+    <item name="android:ellipsize">end</item>
+    <item name="android:maxLines">2</item>
+    <item name="android:textColor">?android:attr/textColorSecondary</item>
+    <item name="android:textSize">11sp</item>
+  </style>
+
+</resources>

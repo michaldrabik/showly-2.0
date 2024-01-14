@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <TextView
+      android:id="@+id/viewQuickSetupItemTitle"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceSmall"
+      android:layout_marginTop="@dimen/spaceSmall"
+      android:ellipsize="end"
+      android:gravity="center_vertical|start"
+      android:maxLines="1"
+      android:textAlignment="viewStart"
+      android:textColor="?android:attr/textColorSecondary"
+      android:textSize="12sp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/viewQuickSetupItemRadio"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:text="Episode 1"
+      />
+
+    <TextView
+      android:id="@+id/viewQuickSetupItemSubtitle"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceSmall"
+      android:layout_marginBottom="@dimen/spaceSmall"
+      android:ellipsize="end"
+      android:gravity="center_vertical|start"
+      android:maxLines="1"
+      android:textAlignment="viewStart"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="16sp"
+      android:textStyle="bold"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/viewQuickSetupItemRadio"
+      app:layout_constraintTop_toBottomOf="@id/viewQuickSetupItemTitle"
+      tools:text="@tools:sample/lorem"
+      />
+
+    <com.google.android.material.radiobutton.MaterialRadioButton
+      android:id="@+id/viewQuickSetupItemRadio"
+      android:layout_width="30dp"
+      android:layout_height="wrap_content"
+      android:clickable="false"
+      android:ellipsize="end"
+      android:maxLines="1"
+      android:textColor="?android:attr/textColorPrimary"
+      app:buttonTint="@color/selector_main_checkbox"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textAge" comment="Person's age">العمر:</string>
+  <string name="textBorn" comment="For example - Born: 12 January 1990">الميلاد:</string>
+  <string name="textDied" comment="For example - Died: 12 January 2020">الوفاة:</string>
+  <string name="textCredits" comment="List of shows and movies the person appears on">الأعمال</string>
+  <string name="textEpisodes">حلقات</string>
+  <string name="textGalleryEmpty">لا توجد صور</string>
+</resources>

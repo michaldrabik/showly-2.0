@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textStatisticsMovies">İstatistikler</string>
+  <string name="textStatisticsMoviesEmpty">İstatistiklerin görüntülenebilmesi için <b>Filmlerim</b>\nbölümünde en az bir filmin bulunması gerekir.</string>
+  <string name="textStatisticsMoviesTotalTimeSpent">Harcanan Toplam Süre</string>
+  <string name="textStatisticsMoviesTotalTimeItIs">ve</string>
+  <string name="textStatisticsMoviesTotalTimeSpentHours">%s saat</string>
+  <string name="textStatisticsMoviesTotalTimeSpentMinutes">%s dakika</string>
+  <string name="textStatisticsMoviesTotalTimeSpentDays">yaklaşık %s güne karşılık gelmektedir.</string>
+  <string name="textStatisticsMoviesTotalMovies">İzlenen Toplam Film Sayısı</string>
+  <string name="textStatisticsMoviesTotalMoviesCount">%s Film</string>
+  <string name="textStatisticsMoviesTopGenre">En Popüler Türler</string>
+  <string name="textStatisticsMoviesTopGenreSubValue">tam sizin zevkinize uygun görünüyor. Daha fazlasını görmek için dokunun.</string>
+  <string name="textStatisticsMoviesTopGenreSubValue2">tam sizin zevkinize uygun görünüyor.</string>
+  <string name="textStatisticsMoviesRatings">En Son Derecelendirilenler</string>
+</resources>

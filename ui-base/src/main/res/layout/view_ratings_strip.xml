@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:gravity="top"
+  android:orientation="horizontal"
+  tools:parentTag="android.widget.LinearLayout"
+  >
+
+  <LinearLayout
+    android:id="@+id/viewRatingsStripTrakt"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:background="?android:attr/selectableItemBackgroundBorderless"
+    android:gravity="center"
+    android:orientation="vertical"
+    >
+
+    <FrameLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="@dimen/spaceMicro"
+      >
+
+      <TextView
+        android:id="@+id/viewRatingsStripTraktValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="20sp"
+        />
+
+      <ProgressBar
+        android:id="@+id/viewRatingsStripTraktProgress"
+        style="@style/ProgressBar.Dark"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_gravity="center"
+        />
+
+
+      <ImageView
+        android:id="@+id/viewRatingsStripTraktLinkIcon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_link"
+        app:tint="?android:attr/textColorSecondary"
+        />
+
+    </FrameLayout>
+
+    <TextView
+      android:id="@+id/viewRatingsStripTraktLabel"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:lineSpacingExtra="2dp"
+      android:text="Trakt.tv"
+      android:textColor="?android:attr/textColorSecondary"
+      android:textSize="12sp"
+      tools:ignore="HardcodedText"
+      />
+
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/viewRatingsStripImdb"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:background="?android:attr/selectableItemBackgroundBorderless"
+    android:gravity="center"
+    android:orientation="vertical"
+    >
+
+    <FrameLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="@dimen/spaceMicro"
+      >
+
+      <TextView
+        android:id="@+id/viewRatingsStripImdbValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="20sp"
+        />
+
+      <ProgressBar
+        android:id="@+id/viewRatingsStripImdbProgress"
+        style="@style/ProgressBar.Dark"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_gravity="center"
+        />
+
+      <ImageView
+        android:id="@+id/viewRatingsStripImdbLinkIcon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_link"
+        app:tint="?android:attr/textColorSecondary"
+        />
+
+    </FrameLayout>
+
+    <TextView
+      android:id="@+id/viewRatingsStripImdbLabel"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:lineSpacingExtra="2dp"
+      android:text="IMDb"
+      android:textColor="?android:attr/textColorSecondary"
+      android:textSize="12sp"
+      tools:ignore="HardcodedText"
+      />
+
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/viewRatingsStripMeta"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:background="?android:attr/selectableItemBackgroundBorderless"
+    android:gravity="center"
+    android:orientation="vertical"
+    >
+
+    <FrameLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="@dimen/spaceMicro"
+      >
+
+      <TextView
+        android:id="@+id/viewRatingsStripMetaValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="20sp"
+        />
+
+      <ProgressBar
+        android:id="@+id/viewRatingsStripMetaProgress"
+        style="@style/ProgressBar.Dark"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_gravity="center"
+        />
+
+      <ImageView
+        android:id="@+id/viewRatingsStripMetaLinkIcon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_link"
+        app:tint="?android:attr/textColorSecondary"
+        />
+
+    </FrameLayout>
+
+    <TextView
+      android:id="@+id/viewRatingsStripMetaLabel"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Metascore"
+      android:textColor="?android:attr/textColorSecondary"
+      android:textSize="12sp"
+      tools:ignore="HardcodedText"
+      />
+
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/viewRatingsStripRotten"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:background="?android:attr/selectableItemBackgroundBorderless"
+    android:gravity="center"
+    android:orientation="vertical"
+    >
+
+    <FrameLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="@dimen/spaceMicro"
+      >
+
+      <TextView
+        android:id="@+id/viewRatingsStripRottenValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="20sp"
+        />
+
+      <ProgressBar
+        android:id="@+id/viewRatingsStripRottenProgress"
+        style="@style/ProgressBar.Dark"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_gravity="center"
+        />
+
+      <ImageView
+        android:id="@+id/viewRatingsStripRottenLinkIcon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_link"
+        app:tint="?android:attr/textColorSecondary"
+        />
+
+    </FrameLayout>
+
+    <TextView
+      android:id="@+id/viewRatingsRottenLabel"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:lineSpacingExtra="2dp"
+      android:text="R. Tomatoes"
+      android:textColor="?android:attr/textColorSecondary"
+      android:textSize="12sp"
+      tools:ignore="HardcodedText"
+      />
+
+  </LinearLayout>
+
+</merge>

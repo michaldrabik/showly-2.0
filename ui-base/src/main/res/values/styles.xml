@@ -1,0 +1,345 @@
+<resources>
+
+  <!-- Base app theme -->
+  <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
+    <item name="android:windowBackground">@color/colorBackground</item>
+    <item name="android:navigationBarColor">@color/colorPrimary</item>
+    <item name="android:windowTranslucentStatus">true</item>
+    <item name="toolbarNavigationButtonStyle">@style/Toolbar.Button.Navigation.Tinted</item>
+    <item name="switchStyle">@style/ShowlySwitch</item>
+
+    <item name="colorPrimary">@color/colorPrimary</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <item name="colorAccent">@color/colorAccent</item>
+
+    <item name="android:textColorPrimary">@color/colorWhite</item>
+    <item name="android:textColorSecondary">@color/colorGrayLight</item>
+    <item name="textColorOnSurface">@color/colorWhite</item>
+    <item name="textColorGridTitle">@color/colorWhite</item>
+    <item name="textColorTab">#A1A1A1</item>
+    <item name="textColorTabSelected">@color/colorWhite</item>
+    <item name="textColorChip">?android:textColorPrimary</item>
+    <item name="textColorChipSelected">@color/colorAccent</item>
+    <item name="colorBackgroundChipSelected">@color/colorBackground</item>
+    <item name="colorBackgroundChipSelectedLight">?colorSearchViewBackground</item>
+    <item name="colorProgressTrack">#3C3C3C</item>
+
+    <item name="colorInfoSnackbar">@color/colorWhite</item>
+    <item name="textColorInfoSnackbar">@color/colorBlack</item>
+    <item name="colorErrorSnackbar">@color/colorError</item>
+    <item name="textColorErrorSnackbar">@color/colorWhite</item>
+
+    <item name="colorBottomMenuBackground">@color/colorPrimary</item>
+    <item name="colorBottomMenuItem">#838383</item>
+    <item name="colorBottomMenuItemChecked">@color/colorWhite</item>
+    <item name="colorBottomMenuSeparator">#464646</item>
+    <item name="colorBottomMenuIndicator">#E6323339</item>
+
+    <item name="colorSearchViewBackground">@color/colorPrimary</item>
+    <item name="colorSearchViewControl">@color/colorGrayLight</item>
+
+    <item name="colorSearchLocalViewBackground">@color/colorGrayDark</item>
+    <item name="colorSearchLocalViewControl">@color/colorGrayLight</item>
+
+    <item name="colorPlaceholderBackground">#222222</item>
+    <item name="colorPlaceholderStroke">#6A6A6A</item>
+    <item name="colorPlaceholderIcon">#6A6A6A</item>
+
+    <item name="colorSeparator">@color/colorGrayDark</item>
+    <item name="colorCardBackground">#282828</item>
+    <item name="colorBadgeBackground">@color/colorGrayDark</item>
+    <item name="colorWidgetStatusBackground">@color/colorBlackTranslucent</item>
+  </style>
+
+  <!--  Bottom Sheet Dialogs -->
+
+  <style name="CustomBottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
+    <item name="android:windowTranslucentStatus">false</item>
+    <item name="bottomSheetStyle">@style/CustomBottomSheet</item>
+  </style>
+
+  <style name="CustomBottomSheet" parent="Widget.MaterialComponents.BottomSheet">
+    <item name="backgroundTint">#00000000</item>
+    <item name="shapeAppearanceOverlay">@style/CustomShapeAppearanceBottomSheetDialog</item>
+  </style>
+
+  <style name="CustomShapeAppearanceBottomSheetDialog" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSizeTopRight">16dp</item>
+    <item name="cornerSizeTopLeft">16dp</item>
+    <item name="cornerSizeBottomRight">0dp</item>
+    <item name="cornerSizeBottomLeft">0dp</item>
+  </style>
+
+  <!-- Progress Bars -->
+
+  <style name="ProgressBar">
+    <item name="android:indeterminateTintMode">src_in</item>
+  </style>
+
+  <style name="ProgressBar.Dark" parent="ProgressBar">
+    <item name="android:indeterminateTint">@color/colorGrayDark</item>
+  </style>
+
+  <style name="ProgressBar.Accent" parent="ProgressBar">
+    <item name="android:indeterminateTint">@color/colorAccent</item>
+    <item name="colorAccent">@color/colorAccent</item>
+  </style>
+
+  <style name="ContentProgressBar" parent="Widget.AppCompat.ProgressBar">
+    <item name="android:indeterminateTintMode">src_in</item>
+  </style>
+
+  <style name="ContentProgressBar.Dark" parent="ContentProgressBar">
+    <item name="colorAccent">@color/colorGrayDark</item>
+    <item name="android:indeterminateTint">@color/colorGrayDark</item>
+  </style>
+
+  <style name="ContentProgressBar.Accent" parent="ContentProgressBar">
+    <item name="colorAccent">@color/colorAccent</item>
+    <item name="android:indeterminateTint">@color/colorAccent</item>
+  </style>
+
+  <!-- Scrollbars -->
+
+  <style name="ScrollbarsStyle">
+    <item name="android:scrollbarDefaultDelayBeforeFade">200</item>
+    <item name="android:scrollbarFadeDuration">100</item>
+    <item name="android:scrollbarSize">@dimen/scrollBarWidth</item>
+    <item name="android:scrollbarStyle">outsideOverlay</item>
+    <item name="android:scrollbarThumbVertical">@color/colorGrayDark</item>
+  </style>
+
+  <!-- Dialogs -->
+
+  <style name="AlertDialog" parent="@style/Theme.Material3.DayNight.Dialog">
+    <item name="colorAccent">@color/colorAccent</item>
+    <item name="colorPrimary">@color/colorAccent</item>
+    <item name="buttonBarNegativeButtonStyle">@style/AlertDialog.NegativeButton</item>
+  </style>
+
+  <style name="AlertDialog.NegativeButton" parent="Widget.Material3.Button.TextButton.Dialog">
+    <item name="android:textColor">@color/colorGrayLight</item>
+    <item name="cornerRadius">100dp</item>
+  </style>
+
+  <!-- Toolbar -->
+
+  <style name="Toolbar.Button.Navigation.Tinted" parent="Widget.AppCompat.Toolbar.Button.Navigation">
+    <item name="tint">?android:attr/textColorPrimary</item>
+  </style>
+
+  <style name="AlertDialog.SmallText" parent="AlertDialog">
+    <item name="android:textSize">13sp</item>
+  </style>
+
+  <!-- Other  -->
+
+  <style name="ImageTitle">
+    <item name="android:shadowColor">@color/colorBlack</item>
+    <item name="android:shadowDx">3</item>
+    <item name="android:shadowDy">3</item>
+    <item name="android:shadowRadius">1</item>
+    <item name="android:textColor">?attr/textColorOnSurface</item>
+    <item name="android:ellipsize">end</item>
+  </style>
+
+  <style name="ImageTitleGrid" parent="ImageTitle">
+    <item name="android:shadowColor">@color/colorBlack</item>
+    <item name="android:textColor">?attr/textColorGridTitle</item>
+    <item name="android:ellipsize">end</item>
+  </style>
+
+  <style name="ScrollableTabsStyle" parent="Widget.Design.TabLayout">
+    <item name="tabMode">scrollable</item>
+    <item name="tabIndicatorColor">@color/colorAccent</item>
+    <item name="tabPaddingStart">8dp</item>
+    <item name="tabPaddingEnd">8dp</item>
+    <item name="tabTextAppearance">@style/ScrollableTabTextStyle</item>
+    <item name="tabSelectedTextColor">?attr/textColorTabSelected</item>
+    <item name="tabIndicatorFullWidth">false</item>
+    <item name="tabRippleColor">@android:color/transparent</item>
+    <item name="tabIndicatorAnimationDuration">200</item>
+  </style>
+
+  <style name="ScrollableTabTextStyle" parent="TextAppearance.Design.Tab">
+    <item name="android:textSize">15sp</item>
+    <item name="android:textColor">?attr/textColorTab</item>
+    <item name="android:layout_gravity">start</item>
+    <item name="textAllCaps">false</item>
+  </style>
+
+  <style name="ScrollableTabsEpisodesStyle" parent="Widget.Design.TabLayout">
+    <item name="tabMode">scrollable</item>
+    <item name="tabMinWidth">0dp</item>
+    <item name="tabPaddingStart">8dp</item>
+    <item name="tabPaddingEnd">8dp</item>
+    <item name="tabIndicatorColor">@color/colorAccent</item>
+    <item name="tabTextAppearance">@style/ScrollableTabEpisodeTextStyle</item>
+    <item name="tabSelectedTextColor">?attr/textColorTabSelected</item>
+    <item name="tabIndicatorFullWidth">false</item>
+    <item name="tabRippleColor">@android:color/transparent</item>
+    <item name="tabIndicatorAnimationDuration">0</item>
+  </style>
+
+  <style name="ScrollableTabEpisodeTextStyle" parent="TextAppearance.Design.Tab">
+    <item name="android:textSize">14sp</item>
+    <item name="android:textColor">?attr/textColorTab</item>
+    <item name="android:layout_gravity">start</item>
+    <item name="textAllCaps">false</item>
+  </style>
+
+  <style name="Badge">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_gravity">top|end</item>
+    <item name="android:layout_marginEnd">@dimen/spaceTiny</item>
+    <item name="android:layout_marginTop">-2dp</item>
+    <item name="android:visibility">gone</item>
+    <item name="android:elevation">@dimen/elevationSmall</item>
+    <item name="android:tint">@color/colorAccent</item>
+  </style>
+
+  <style name="Badge.Watchlist" parent="Badge">
+    <item name="android:tint">@color/colorGrayLight</item>
+  </style>
+
+  <style name="CollectionItem" />
+
+  <style name="CollectionItem.Header" parent="CollectionItem">
+    <item name="android:ellipsize">end</item>
+    <item name="android:gravity">start|center_vertical</item>
+    <item name="android:maxLines">1</item>
+    <item name="android:textAlignment">viewStart</item>
+    <item name="android:textColor">?attr/colorAccent</item>
+    <item name="android:textSize">12sp</item>
+  </style>
+
+  <style name="CollectionItem.Title" parent="CollectionItem">
+    <item name="android:ellipsize">end</item>
+    <item name="android:fontFamily">sans-serif-medium</item>
+    <item name="android:gravity">start|center_vertical</item>
+    <item name="android:maxLines">1</item>
+    <item name="android:textAlignment">viewStart</item>
+    <item name="android:textColor">?android:attr/textColorPrimary</item>
+    <item name="android:textSize">18sp</item>
+  </style>
+
+  <style name="CollectionItem.Description" parent="CollectionItem">
+    <item name="android:ellipsize">end</item>
+    <item name="android:gravity">start|center_vertical</item>
+    <item name="android:maxLines">2</item>
+    <item name="android:textAlignment">viewStart</item>
+    <item name="android:textColor">?android:attr/textColorSecondary</item>
+    <item name="android:textSize">12sp</item>
+  </style>
+
+  <style name="ContextMenuItemButton.Move" parent="RoundOutlinedButton">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:gravity">center</item>
+    <item name="android:includeFontPadding">true</item>
+    <item name="android:textColor">?android:attr/textColorPrimary</item>
+    <item name="iconGravity">textStart</item>
+    <item name="iconPadding">@dimen/spaceTiny</item>
+    <item name="iconTint">?android:attr/textColorPrimary</item>
+    <item name="iconSize">22dp</item>
+    <item name="rippleColor">?android:attr/textColorPrimary</item>
+    <item name="strokeColor">?android:attr/textColorPrimary</item>
+  </style>
+
+  <style name="ContextMenuItemButton.Remove" parent="RoundTextButton">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:gravity">center</item>
+    <item name="android:includeFontPadding">false</item>
+    <item name="android:textColor">?android:attr/textColorPrimary</item>
+    <item name="icon">@drawable/ic_remove_list</item>
+    <item name="iconGravity">textStart</item>
+    <item name="iconSize">22dp</item>
+    <item name="iconPadding">@dimen/spaceTiny</item>
+    <item name="iconTint">?android:attr/textColorPrimary</item>
+    <item name="rippleColor">?android:attr/textColorPrimary</item>
+    <item name="strokeColor">?android:attr/textColorPrimary</item>
+  </style>
+
+  <style name="RoundMaterialButton" parent="Widget.Material3.Button">
+    <item name="cornerRadius">100dp</item>
+    <item name="android:textAllCaps">true</item>
+    <item name="android:letterSpacing">0.05</item>
+  </style>
+
+  <style name="RoundTextButton" parent="Widget.Material3.Button.TextButton">
+    <item name="cornerRadius">100dp</item>
+    <item name="android:textAllCaps">true</item>
+    <item name="android:letterSpacing">0.05</item>
+  </style>
+
+  <style name="RoundOutlinedButton" parent="Widget.Material3.Button.OutlinedButton">
+    <item name="cornerRadius">100dp</item>
+    <item name="android:textAllCaps">true</item>
+    <item name="android:letterSpacing">0.05</item>
+  </style>
+
+  <style name="DeclineOutlinedButton" parent="RoundOutlinedButton">
+    <item name="strokeColor">@color/colorGrayLight</item>
+  </style>
+
+  <style name="ShowlyBottomBar" parent="Widget.MaterialComponents.BottomNavigationView">
+    <item name="itemTextAppearanceInactive">@style/ShowlyBottomBar.Text</item>
+    <item name="itemTextAppearanceActive">@style/ShowlyBottomBar.Text</item>
+  </style>
+
+  <style name="ShowlyBottomBar.Text" parent="TextAppearance.Material3.LabelMedium">
+    <item name="android:textSize">12sp</item>
+  </style>
+
+  <style name="ShowlyBottomBar.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+    <item name="android:color">?colorBottomMenuIndicator</item>
+  </style>
+
+  <style name="ShowlySwitch" parent="Widget.Material3.CompoundButton.Switch">
+    <item name="materialThemeOverlay">@style/ShowlySwitch.Overlay</item>
+  </style>
+
+  <style name="ShowlySwitch.Overlay" parent="">
+    <item name="colorPrimary">@color/colorAccent</item>
+    <item name="colorPrimaryContainer">#4DF44336</item>
+  </style>
+
+  <style name="ShowlyChip" parent="Widget.Material3.Chip.Suggestion">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">30dp</item>
+    <item name="chipMinTouchTargetSize">0dp</item>
+  </style>
+
+  <style name="ShowlyChip.Sort" parent="ShowlyChip">
+    <item name="android:textColor">?android:textColorPrimary</item>
+    <item name="chipBackgroundColor">?android:windowBackground</item>
+    <item name="chipStrokeColor">?android:textColorSecondary</item>
+    <item name="closeIcon">@drawable/ic_arrow_alt_up</item>
+    <item name="closeIconEndPadding">0dp</item>
+    <item name="closeIconTint">?android:textColorPrimary</item>
+    <item name="closeIconVisible">true</item>
+    <item name="textStartPadding">@dimen/spaceSmall</item>
+  </style>
+
+  <style name="ShowlyChip.Filter" parent="ShowlyChip">
+    <item name="android:textColor">@color/selector_chip_text</item>
+    <item name="chipBackgroundColor">@color/selector_chip_background</item>
+    <item name="chipStrokeColor">@color/selector_chip_stroke</item>
+    <item name="closeIconVisible">false</item>
+  </style>
+
+  <style name="ShowlyCheckbox" parent="Widget.Material3.CompoundButton.CheckBox">
+    <item name="buttonTint">@color/selector_main_checkbox</item>
+    <item name="buttonIconTint">@color/colorBackground</item>
+    <item name="android:textColor">?android:textColorPrimary</item>
+  </style>
+
+  <style name="ShowlyCheckbox.Secondary" parent="ShowlyCheckbox">
+    <item name="buttonIconTint">?attr/colorBottomMenuBackground</item>
+    <item name="android:textColor">?android:textColorSecondary</item>
+  </style>
+
+</resources>

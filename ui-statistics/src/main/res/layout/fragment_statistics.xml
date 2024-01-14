@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/statisticsRoot"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:clipChildren="false"
+  android:clipToPadding="false"
+  android:fillViewport="true"
+  android:overScrollMode="never"
+  android:paddingBottom="@dimen/spaceSmall"
+  android:scrollbars="none"
+  tools:background="@color/colorBackground"
+  tools:theme="@style/AppTheme"
+  >
+
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/statisticsCoordinator"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <com.google.android.material.appbar.MaterialToolbar
+      android:id="@+id/statisticsToolbar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="?android:windowBackground"
+      android:elevation="@dimen/elevationNormal"
+      app:contentInsetStartWithNavigation="0dp"
+      app:layout_constraintBottom_toTopOf="@id/statisticsTotalTimeSpent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:navigationIcon="@drawable/ic_arrow_back"
+      app:subtitleTextAppearance="@style/ToolbarSubtitleAppearance"
+      app:title="@string/textStatistics"
+      />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:id="@+id/statisticsContent"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:clipChildren="false"
+      android:clipToPadding="false"
+      android:visibility="gone"
+      tools:visibility="visible"
+      >
+
+      <com.michaldrabik.ui_statistics.views.StatisticsTotalTimeSpentView
+        android:id="@+id/statisticsTotalTimeSpent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spaceMedium"
+        android:layout_marginTop="@dimen/statisticsTopPadding"
+        android:layout_marginEnd="@dimen/spaceMedium"
+        app:layout_constraintBottom_toTopOf="@id/statisticsTotalEpisodes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintVertical_chainStyle="packed"
+        />
+
+      <com.michaldrabik.ui_statistics.views.StatisticsTotalEpisodesView
+        android:id="@+id/statisticsTotalEpisodes"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spaceMedium"
+        android:layout_marginTop="@dimen/spaceNormal"
+        android:layout_marginEnd="@dimen/spaceMedium"
+        app:layout_constraintBottom_toTopOf="@id/statisticsTopGenres"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/statisticsTotalTimeSpent"
+        />
+
+      <com.michaldrabik.ui_statistics.views.StatisticsTopGenresView
+        android:id="@+id/statisticsTopGenres"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spaceMedium"
+        android:layout_marginTop="@dimen/spaceNormal"
+        android:layout_marginEnd="@dimen/spaceMedium"
+        app:layout_constraintBottom_toTopOf="@+id/statisticsRatings"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/statisticsTotalEpisodes"
+        />
+
+      <com.michaldrabik.ui_statistics.views.ratings.StatisticsRatingsView
+        android:id="@+id/statisticsRatings"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spaceMedium"
+        android:layout_marginTop="@dimen/spaceNormal"
+        android:layout_marginEnd="@dimen/spaceMedium"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/statisticsMostWatchedShows"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/statisticsTopGenres"
+        tools:visibility="visible"
+        />
+
+      <com.michaldrabik.ui_statistics.views.mostWatched.StatisticsMostWatchedShowsView
+        android:id="@+id/statisticsMostWatchedShows"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spaceMedium"
+        android:layout_marginTop="@dimen/spaceNormal"
+        android:layout_marginEnd="@dimen/spaceMedium"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/statisticsRatings"
+        />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include
+      android:id="@+id/statisticsEmptyView"
+      layout="@layout/layout_statistics_empty"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:layout_marginStart="@dimen/spaceBig"
+      android:layout_marginEnd="@dimen/spaceBig"
+      android:visibility="gone"
+      />
+
+  </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</androidx.core.widget.NestedScrollView>

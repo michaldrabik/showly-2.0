@@ -1,0 +1,31 @@
+<resources>
+  <string name="app_name" translatable="false">Showly</string>
+
+  <string name="menuProgress">Progress</string>
+  <string name="menuDiscover">Discover</string>
+  <string name="menuCollection">Collection</string>
+  <string name="menuNews">News</string>
+
+  <string name="textRateAppTitle">Enjoying Showly 2.0?</string>
+  <string name="textRateAppMessage">Would you like to rate the app?\nIt only takes a few seconds. Thanks!\n\n<i>The app will not be closed.</i></string>
+  <string name="textRateAppYesButton">Sure, why not?</string>
+  <string name="textRateAppNoButton">Not now</string>
+
+  <string name="textDisclaimerTitle">Welcome!</string>
+  <string name="textDisclaimerText">Please note that you <b>CAN\'T</b> watch, stream or download shows and movies with this app.\n\nUse apps like <b>Netflix</b> to stream and watch content.</string>
+  <string name="textDisclaimerConfirmText">OK, I understand</string>
+  <string name="textLanguagesChoose2" translatable="false">Language can always be changed later via Settings.</string>
+  <string name="textLeaveEnglish" translatable="false">No, I prefer English</string>
+  <string name="textChangeLanguage" translatable="false">Yes</string>
+
+  <string name="textWhatsNewTitle">What\'s New</string>
+  <string name="textWhatsNewSubtitle">Version %s</string>
+
+  <string name="shortcutDiscover">Discover</string>
+  <string name="shortcutCollection">Collection</string>
+  <string name="shortcutSearch">Search</string>
+  <string name="shortcutProgress">Progress</string>
+
+  <string name="textUpdateDownloaded" translatable="false">Update is now available.</string>
+  <string name="textUpdateInstall" translatable="false">Install</string>
+</resources>

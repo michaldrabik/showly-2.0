@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="menuMyMovies">My Movies</string>
+  <string name="menuWatchlistMovies">Watchlist</string>
+  <string name="menuHidden">Hidden</string>
+
+  <string name="textMyMoviesEmpty">Your movies collection is currently empty.\n\nVisit <b>Discover</b> tab to add your first movie.</string>
+  <string name="textWatchlistMoviesEmpty">Your <b>Watchlist</b> is currently empty.\n\nVisit <b>Discover</b> tab to add movies you want to watch in the future.</string>
+  <string name="textHiddenEmpty">Your <b>Hidden</b> list is currently empty.\n\n<b>Hidden</b> is a list of items that you are not interested in.\n\nHidden items will no longer appear in <b>Progress</b>, <b>Discover</b> and other sections.</string>
+</resources>

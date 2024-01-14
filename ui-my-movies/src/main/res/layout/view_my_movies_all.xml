@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/myMovieAllRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:clipToPadding="false"
+    android:paddingLeft="@dimen/myMovieAllMarginHorizontal"
+    android:paddingTop="@dimen/spaceSmall"
+    android:paddingRight="@dimen/myMovieAllMarginHorizontal"
+    android:paddingBottom="@dimen/spaceSmall"
+    >
+
+    <ImageView
+      android:id="@+id/myMovieAllImage"
+      android:layout_width="@dimen/myMovieAllImageWidth"
+      android:layout_height="@dimen/myMovieAllImageHeight"
+      android:background="@drawable/bg_media_view_elevation"
+      android:elevation="@dimen/elevationSmall"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+    <ImageView
+      android:id="@+id/myMovieAllPlaceholder"
+      android:layout_width="@dimen/myMovieAllImageWidth"
+      android:layout_height="@dimen/myMovieAllImageHeight"
+      android:layout_gravity="center"
+      android:background="@drawable/bg_media_view_placeholder"
+      android:elevation="@dimen/elevationSmall"
+      android:padding="@dimen/spaceBig"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_film"
+      app:tint="?attr/colorPlaceholderIcon"
+      tools:visibility="visible"
+      />
+
+    <ProgressBar
+      android:id="@+id/myMovieAllProgress"
+      style="@style/ProgressBar.Dark"
+      android:layout_width="28dp"
+      android:layout_height="28dp"
+      android:layout_gravity="center"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="@id/myMovieAllImage"
+      app:layout_constraintStart_toStartOf="@id/myMovieAllImage"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:visibility="visible"
+      />
+
+    <TextView
+      android:id="@+id/myMovieAllTitle"
+      style="@style/CollectionItem.Title"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceMedium"
+      app:layout_constraintBottom_toTopOf="@id/myMovieAllDescription"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/myMovieAllImage"
+      app:layout_constraintTop_toBottomOf="@id/myMovieAllYear"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:text="Game of Thrones"
+      />
+
+    <TextView
+      android:id="@+id/myMovieAllYear"
+      style="@style/CollectionItem.Header"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceMedium"
+      app:layout_constraintBottom_toTopOf="@id/myMovieAllTitle"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/myMovieAllImage"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:text="Netflix"
+      />
+
+    <ImageView
+      android:id="@+id/myMovieAllStarIcon"
+      android:layout_width="20dp"
+      android:layout_height="0dp"
+      app:layout_constraintBottom_toTopOf="@id/myMovieAllTitle"
+      app:layout_constraintEnd_toStartOf="@id/myMovieAllRating"
+      app:layout_constraintTop_toTopOf="@id/myMovieAllYear"
+      app:srcCompat="@drawable/ic_star"
+      app:tint="?attr/colorAccent"
+      />
+
+    <TextView
+      android:id="@+id/myMovieAllRating"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="end"
+      android:textColor="?android:attr/textColorSecondary"
+      android:textSize="12sp"
+      app:layout_constraintBottom_toTopOf="@id/myMovieAllTitle"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/myMovieAllYear"
+      tools:text="7.6"
+      />
+
+    <ImageView
+      android:id="@+id/myMovieAllUserStarIcon"
+      android:layout_width="20dp"
+      android:layout_height="0dp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toTopOf="@id/myMovieAllTitle"
+      app:layout_constraintEnd_toStartOf="@id/myMovieUserRating"
+      app:layout_constraintTop_toTopOf="@id/myMovieAllYear"
+      app:srcCompat="@drawable/ic_star"
+      app:tint="?android:attr/textColorPrimary"
+      tools:visibility="visible"
+      />
+
+    <TextView
+      android:id="@+id/myMovieUserRating"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/spaceTiny"
+      android:gravity="end"
+      android:textColor="?android:attr/textColorSecondary"
+      android:textSize="12sp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toTopOf="@id/myMovieAllTitle"
+      app:layout_constraintEnd_toStartOf="@id/myMovieAllStarIcon"
+      app:layout_constraintTop_toTopOf="@id/myMovieAllYear"
+      tools:text="10"
+      tools:visibility="visible"
+      />
+
+    <TextView
+      android:id="@+id/myMovieAllDescription"
+      style="@style/CollectionItem.Description"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceMedium"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/myMovieAllImage"
+      app:layout_constraintTop_toBottomOf="@id/myMovieAllTitle"
+      tools:text="Lorem Ipsum"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>

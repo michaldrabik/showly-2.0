@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:overScrollMode="never"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bottom_sheet"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:focusableInTouchMode="true"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
+    tools:theme="@style/AppTheme"
+    >
+
+    <LinearLayout
+      android:id="@+id/settingsLayout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:layout_constraintBottom_toTopOf="@id/closeButton"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      >
+
+      <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/episodesLayout"
+        style="@style/Settings.ItemLayout"
+        android:layout_width="match_parent"
+        >
+
+        <TextView
+          android:id="@+id/episodesTitle"
+          style="@style/Settings.Title"
+          android:text="@string/textSettingsSpoilersEpisodes"
+          android:textStyle="bold"
+          app:layout_constraintBottom_toTopOf="@id/episodesHideTitle"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintVertical_chainStyle="spread"
+          />
+
+        <TextView
+          android:id="@+id/episodesHideTitle"
+          style="@style/Settings.Summary"
+          android:layout_marginTop="@dimen/spaceTiny"
+          android:layout_marginEnd="@dimen/spaceNormal"
+          android:text="@string/textSettingsSpoilersEpisodesTitle"
+          app:layout_constrainedWidth="true"
+          app:layout_constraintBottom_toTopOf="@id/episodesHideDescription"
+          app:layout_constraintEnd_toStartOf="@id/episodesHideTitleSwitch"
+          app:layout_constraintHorizontal_bias="0"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/episodesTitle"
+          />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+          android:id="@+id/episodesHideTitleSwitch"
+          style="@style/ShowlyCheckbox"
+          android:layout_width="30dp"
+          android:layout_height="30dp"
+          android:checked="false"
+          app:layout_constraintBottom_toBottomOf="@id/episodesHideTitle"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="@id/episodesHideTitle"
+          />
+
+        <TextView
+          android:id="@+id/episodesHideDescription"
+          style="@style/Settings.Summary"
+          android:layout_marginTop="@dimen/spaceNormal"
+          android:layout_marginEnd="@dimen/spaceNormal"
+          android:text="@string/textSettingsSpoilersEpisodesDescription"
+          app:layout_constrainedWidth="true"
+          app:layout_constraintBottom_toTopOf="@id/episodesHideRating"
+          app:layout_constraintEnd_toStartOf="@id/episodesHideDescriptionSwitch"
+          app:layout_constraintHorizontal_bias="0"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/episodesHideTitle"
+          />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+          android:id="@+id/episodesHideDescriptionSwitch"
+          style="@style/ShowlyCheckbox"
+          android:layout_width="30dp"
+          android:layout_height="30dp"
+          android:checked="false"
+          app:layout_constraintBottom_toBottomOf="@id/episodesHideDescription"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="@id/episodesHideDescription"
+          />
+
+        <TextView
+          android:id="@+id/episodesHideRating"
+          style="@style/Settings.Summary"
+          android:layout_marginTop="@dimen/spaceNormal"
+          android:layout_marginEnd="@dimen/spaceNormal"
+          android:text="@string/textSettingsSpoilersEpisodesRating"
+          app:layout_constrainedWidth="true"
+          app:layout_constraintBottom_toTopOf="@id/episodesHideImages"
+          app:layout_constraintEnd_toStartOf="@id/episodesHideRatingSwitch"
+          app:layout_constraintHorizontal_bias="0"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/episodesHideDescription"
+          />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+          android:id="@+id/episodesHideRatingSwitch"
+          style="@style/ShowlyCheckbox"
+          android:layout_width="30dp"
+          android:layout_height="30dp"
+          android:checked="false"
+          app:layout_constraintBottom_toBottomOf="@id/episodesHideRating"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="@id/episodesHideRating"
+          />
+
+        <TextView
+          android:id="@+id/episodesHideImages"
+          style="@style/Settings.Summary"
+          android:layout_marginTop="@dimen/spaceNormal"
+          android:layout_marginEnd="@dimen/spaceNormal"
+          android:text="@string/textSettingsSpoilersEpisodesImage"
+          app:layout_constrainedWidth="true"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toStartOf="@id/episodesHideImagesSwitch"
+          app:layout_constraintHorizontal_bias="0"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/episodesHideRating"
+          />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+          android:id="@+id/episodesHideImagesSwitch"
+          style="@style/ShowlyCheckbox"
+          android:layout_width="30dp"
+          android:layout_height="30dp"
+          android:checked="false"
+          app:layout_constraintBottom_toBottomOf="@id/episodesHideImages"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="@id/episodesHideImages"
+          />
+
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/closeButton"
+      style="@style/RoundMaterialButton"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_margin="@dimen/spaceNormal"
+      android:backgroundTint="@color/selector_main_button"
+      android:gravity="center"
+      android:text="@string/textClose"
+      android:textColor="?attr/textColorOnSurface"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsLayout"
+      app:rippleColor="?android:attr/textColorPrimary"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

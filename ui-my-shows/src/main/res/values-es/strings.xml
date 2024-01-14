@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="menuMyShows">Mis Series</string>
+  <string name="menuWatchlist">Pendientes</string>
+  <string name="menuHidden">Ocultos</string>
+  <string name="textMyShowsEmpty">Tu colección de programas está actualmente vacía.\n\nVisita la pestaña <b>Descubrir</b> para agregar tu primera serie.</string>
+  <string name="textWatchlistEmpty">Tu lista <b>Pendientes</b> actualmente está vacía.\n\nVisita la pestaña<b>Descubrir</b> para añadir series que quizá desees ver en el futuro.</string>
+  <string name="textHiddenEmpty">Tu lista de <b>Ocultos</b> está actualmente vacía.\n\n<b>Ocultos</b> es una lista de elementos que no te interesan.\n\nLos elementos ocultos ya no aparecerán en <b>Progreso</b>, <b>Descubrir</b> y otras secciones.</string>
+</resources>

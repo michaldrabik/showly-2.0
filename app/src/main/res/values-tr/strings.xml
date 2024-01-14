@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="menuProgress">İlerleme</string>
+  <string name="menuDiscover">Keşfet</string>
+  <string name="menuCollection">Koleksiyon</string>
+  <string name="menuNews">Haberler</string>
+  <string name="textRateAppTitle">Showly 2.0 uygulamasından memnun musunuz?</string>
+  <string name="textRateAppMessage">Uygulamayı derecelendirmek ister misiniz?\nSadece birkaç saniye sürer. Teşekkürler!\n\n <i>Uygulama kapatılmayacaktır.</i></string>
+  <string name="textRateAppYesButton">Tabii ki, neden olmasın?</string>
+  <string name="textRateAppNoButton">Şimdi değil</string>
+  <string name="textDisclaimerTitle">Hoş geldiniz!</string>
+  <string name="textDisclaimerText">Lütfen bu uygulama ile dizileri ve filmleri izleyemeyeceğinizi veya indiremeyeceğinizi unutmayın!\n\n İçerikleri izlemek için <b>Netflix</b> gibi uygulamaları kullanın.</string>
+  <string name="textDisclaimerConfirmText">Tamam, anladım</string>
+  <string name="textWhatsNewTitle">Neler Yeni</string>
+  <string name="textWhatsNewSubtitle">%s Sürümü</string>
+  <string name="shortcutDiscover">Keşfet</string>
+  <string name="shortcutCollection">Koleksiyon</string>
+  <string name="shortcutSearch">Ara</string>
+  <string name="shortcutProgress">İlerleme</string>
+</resources>

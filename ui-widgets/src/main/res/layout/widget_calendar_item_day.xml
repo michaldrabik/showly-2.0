@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/calendarWidgetItem"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:clipChildren="false"
+  android:descendantFocusability="blocksDescendants"
+  android:orientation="horizontal"
+  android:theme="@style/AppTheme.Widget.Light"
+  >
+
+  <include
+    layout="@layout/layout_widget_calendar_item"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    />
+
+</LinearLayout>

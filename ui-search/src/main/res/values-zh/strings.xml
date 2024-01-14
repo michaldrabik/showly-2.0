@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textSearchInitial1">您想要查找什么？</string>
+  <string name="textSearchInitial2">由 Trakt.tv 提供搜索服务</string>
+  <string name="textClear">清除最近的搜索记录</string>
+</resources>

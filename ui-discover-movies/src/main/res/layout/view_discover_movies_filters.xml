@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  tools:theme="@style/AppTheme"
+  >
+
+  <HorizontalScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:overScrollMode="never"
+    android:scrollbars="none"
+    >
+
+    <com.google.android.material.chip.ChipGroup
+      android:id="@+id/discoverMoviesChips"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingTop="@dimen/spaceSmall"
+      android:paddingBottom="@dimen/spaceSmall"
+      app:singleLine="true"
+      >
+
+      <com.google.android.material.chip.Chip
+        android:id="@+id/discoverMoviesFeedChip"
+        style="@style/ShowlyChip.Filter"
+        android:checkable="false"
+        android:text="@string/textHot"
+        />
+
+      <com.google.android.material.chip.Chip
+        android:id="@+id/discoverMoviesGenresChip"
+        style="@style/ShowlyChip.Filter"
+        android:checkable="false"
+        android:text="@string/textGenres"
+        />
+
+      <com.google.android.material.chip.Chip
+        android:id="@+id/discoverMoviesCollectionChip"
+        style="@style/ShowlyChip.Filter"
+        android:text="@string/textDiscoverFilterCollectionMovies"
+        />
+
+      <com.google.android.material.chip.Chip
+        android:id="@+id/discoverMoviesAnticipatedChip"
+        style="@style/ShowlyChip.Filter"
+        android:checked="true"
+        android:text="@string/textDiscoverFilterAnticipatedMovies"
+        />
+
+    </com.google.android.material.chip.ChipGroup>
+
+  </HorizontalScrollView>
+
+</merge>

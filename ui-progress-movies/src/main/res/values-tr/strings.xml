@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="tabMoviesCalendar">Takvim</string>
+  <string name="tabMoviesProgress">İlerleme</string>
+  <string name="textMoviesCalendarEmpty">Yaklaşan yeni hiçbir film yok.</string>
+  <string name="textMoviesCalendarRecentsEmpty">Yakın zamanda yayınlanan film yok.</string>
+  <string name="textDiscoverMovies">Filmleri Keşfet</string>
+  <string name="textMoviesTraktSynchronize">Trakt.tv hizmetinden aktar</string>
+  <string name="textMoviesProgressEmpty"><b>İlerlemeniz</b> şu anda boştur.\n\nFilmler eklemek için <b>Keşfet</b> sekmesini ziyaret edin veya Trakt.tv koleksiyonunuzdan aktarın.</string>
+</resources>

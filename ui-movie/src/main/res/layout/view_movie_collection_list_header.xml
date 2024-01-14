@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:clipToPadding="false"
+    android:paddingBottom="@dimen/spaceMedium"
+    >
+
+    <TextView
+      android:id="@+id/titleText"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceNormal"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:ellipsize="end"
+      android:gravity="start"
+      android:maxLines="2"
+      android:textAlignment="viewStart"
+      android:textAllCaps="true"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="20sp"
+      android:textStyle="bold"
+      app:layout_constraintBottom_toTopOf="@id/subtitleText"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:text="Marvel Movies Collection"
+      />
+
+    <com.michaldrabik.ui_base.common.views.FoldableTextView
+      android:id="@+id/subtitleText"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceNormal"
+      android:layout_marginTop="@dimen/spaceMicro"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:ellipsize="end"
+      android:gravity="start"
+      android:textAlignment="viewStart"
+      android:textColor="?android:attr/textColorSecondary"
+      android:textSize="13sp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/titleText"
+      tools:text="@tools:sample/lorem/random"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>

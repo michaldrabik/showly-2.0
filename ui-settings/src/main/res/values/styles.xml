@@ -1,0 +1,56 @@
+<resources>
+
+  <style name="Settings" />
+
+  <style name="Settings.Category" parent="Settings">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:paddingStart">@dimen/spaceNormal</item>
+    <item name="android:paddingEnd">@dimen/spaceNormal</item>
+    <item name="android:layout_marginTop">@dimen/spaceBig</item>
+    <item name="android:textColor">?attr/colorAccent</item>
+    <item name="android:textSize">14sp</item>
+    <item name="android:textStyle">bold</item>
+  </style>
+
+  <style name="Settings.Title" parent="Settings">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:textColor">?android:attr/textColorPrimary</item>
+    <item name="android:textSize">16sp</item>
+  </style>
+
+  <style name="Settings.Summary" parent="Settings">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:textColor">?android:attr/textColorSecondary</item>
+    <item name="android:textSize">12sp</item>
+    <item name="android:maxLines">3</item>
+  </style>
+
+  <style name="Settings.ItemLayout" parent="Settings">
+    <item name="android:layout_width">0dp</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:paddingStart">@dimen/spaceNormal</item>
+    <item name="android:paddingEnd">@dimen/spaceNormal</item>
+    <item name="android:paddingTop">14dp</item>
+    <item name="android:paddingBottom">14dp</item>
+    <item name="android:orientation">vertical</item>
+    <item name="android:background">?android:attr/selectableItemBackground</item>
+  </style>
+
+  <style name="Settings.ItemLayoutNoRipple" parent="Settings.ItemLayout">
+    <item name="android:background">@null</item>
+  </style>
+
+  <style name="Settings.Separator" parent="Settings">
+    <item name="android:layout_width">0dp</item>
+    <item name="android:layout_height">1dp</item>
+    <item name="android:layout_marginStart">@dimen/spaceNormal</item>
+    <item name="android:layout_marginEnd">@dimen/spaceNormal</item>
+    <item name="android:layout_marginTop">@dimen/spaceSmall</item>
+    <item name="android:layout_marginBottom">6dp</item>
+    <item name="android:background">?attr/colorSeparator</item>
+  </style>
+
+</resources>

@@ -1,0 +1,69 @@
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+apply plugin: 'dagger.hilt.android.plugin'
+apply from: '../versions.gradle'
+
+android {
+  kotlinOptions { jvmTarget = "17" }
+  compileOptions {
+    coreLibraryDesugaringEnabled true
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
+  }
+
+  compileSdkVersion versions.compileSdk
+
+  buildFeatures {
+    buildConfig = true
+  }
+
+  defaultConfig {
+    minSdkVersion versions.minSdk
+    targetSdkVersion versions.targetSdk
+    compileSdkVersion versions.compileSdk
+
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    consumerProguardFiles "consumer-rules.pro"
+  }
+
+  buildTypes.all {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+    buildConfigField("String", "TRAKT_CLIENT_ID", properties.getProperty("traktClientId"))
+    buildConfigField("String", "TRAKT_CLIENT_SECRET", properties.getProperty("traktClientSecret"))
+    buildConfigField("String", "TMDB_API_KEY", properties.getProperty("tmdbApiKey"))
+    buildConfigField("String", "CLOUD_API_KEY", properties.getProperty("gcloudApiKey"))
+    buildConfigField("String", "OMDB_API_KEY", properties.getProperty("omdbApiKey"))
+    buildConfigField 'String', 'VER_NAME', "\"${versions.versionName}\""
+  }
+
+  buildTypes {
+    debug {
+      minifyEnabled false
+    }
+
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+    }
+  }
+
+  namespace 'com.michaldrabik.data_remote'
+}
+
+dependencies {
+  api libs.retrofit
+  api libs.retrofit.moshi
+  api libs.loggingInterceptor
+
+  implementation libs.coroutines
+  implementation libs.timber
+
+  implementation libs.hilt.android
+  ksp libs.hilt.compiler
+
+  testImplementation libs.junit
+
+  coreLibraryDesugaring libs.android.desugar
+}

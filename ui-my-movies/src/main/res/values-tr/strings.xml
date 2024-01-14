@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="menuMyMovies">Filmlerim</string>
+  <string name="menuWatchlistMovies">İstek Listesi</string>
+  <string name="menuHidden">Gizlenmiş</string>
+  <string name="textMyMoviesEmpty">Film koleksiyonunuz şu anda boştur.\n\nİlk filminizi eklemek için <b>Keşfet</b> sekmesini ziyaret edin.</string>
+  <string name="textWatchlistMoviesEmpty"><b>İstek Listeniz</b> şu anda boştur.\n\nGelecekte izlemek istediğiniz filmleri eklemek için <b>Keşfet</b> sekmesini ziyaret edin.</string>
+  <string name="textHiddenEmpty">&lt;b&gt;Gizli&lt;/b&gt; listeniz şu anda boş.\n\n&lt;b&gt;Gizli&lt;/b&gt;, ilgilenmediğiniz öğelerin listesidir.\n\nGizli öğeler artık &lt;b içinde görünmeyecek &gt;İlerleme&lt;/b&gt;, &lt;b&gt;Keşfet&lt;/b&gt; ve diğer bölümler.</string>
+</resources>

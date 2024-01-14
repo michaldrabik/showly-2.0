@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:parentTag="android.widget.FrameLayout"
+  tools:targetApi="m"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/viewTwitterRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/gridSpacing"
+    android:background="@drawable/bg_twitter"
+    android:elevation="@dimen/elevationSmall"
+    android:foreground="@drawable/bg_media_view_ripple"
+    >
+
+    <ImageView
+      android:id="@+id/viewTwitterLogo"
+      android:layout_width="120dp"
+      android:layout_height="120dp"
+      android:layout_gravity="start|center_vertical"
+      android:layout_marginStart="@dimen/elevationNormal"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_twitter"
+      />
+
+    <TextView
+      android:id="@+id/viewTwitterTitle"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:gravity="start"
+      android:text="@string/textTwitterTitle"
+      android:textAlignment="viewStart"
+      android:textColor="@color/colorWhite"
+      android:textSize="22sp"
+      android:textStyle="bold"
+      app:layout_constraintBottom_toTopOf="@id/viewTwitterDescription"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/viewTwitterLogo"
+      app:layout_constraintTop_toTopOf="@id/viewTwitterLogo"
+      app:layout_constraintVertical_chainStyle="packed"
+      />
+
+    <TextView
+      android:id="@+id/viewTwitterDescription"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/spaceMicro"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:gravity="start"
+      android:text="@string/textTwitterDescription"
+      android:textAlignment="viewStart"
+      android:textColor="@color/colorWhite"
+      android:textSize="13sp"
+      app:layout_constraintBottom_toBottomOf="@id/viewTwitterLogo"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintStart_toStartOf="@id/viewTwitterTitle"
+      app:layout_constraintTop_toBottomOf="@id/viewTwitterTitle"
+      />
+
+    <ImageView
+      android:id="@+id/viewTwitterCancel"
+      android:layout_width="30dp"
+      android:layout_height="30dp"
+      android:layout_gravity="end"
+      android:layout_margin="@dimen/spaceMedium"
+      android:background="@drawable/bg_twitter_cancel"
+      android:padding="5dp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_close"
+      app:tint="@color/colorWhite"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>

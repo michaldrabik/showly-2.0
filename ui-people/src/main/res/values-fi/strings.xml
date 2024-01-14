@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textAge" comment="Person's age">Ikä:</string>
+  <string name="textBorn" comment="For example - Born: 12 January 1990">Syntynyt:</string>
+  <string name="textDied" comment="For example - Died: 12 January 2020">Kuollut:</string>
+  <string name="textCredits" comment="List of shows and movies the person appears on">Työt</string>
+  <string name="textEpisodes">jaksoa</string>
+  <string name="textGalleryEmpty">Kuvia ei ole saatavilla</string>
+</resources>

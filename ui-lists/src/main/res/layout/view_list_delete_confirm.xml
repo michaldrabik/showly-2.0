@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <com.google.android.material.checkbox.MaterialCheckBox
+    android:id="@+id/viewListDeleteConfirmCheckbox"
+    style="@style/ShowlyCheckbox"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceNormal"
+    android:layout_marginEnd="@dimen/spaceNormal"
+    android:checked="true"
+    android:gravity="center"
+    android:text="@string/textRemoveFromTrakt"
+    />
+
+</merge>

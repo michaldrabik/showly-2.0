@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textOk">OK</string>
+  <string name="textYes">Kyllä</string>
+  <string name="textNo">Ei</string>
+  <string name="textApply">Käytä</string>
+  <string name="textCancel">Peruuta</string>
+  <string name="textClose">Sulje</string>
+  <string name="textNotNow">Ei nyt</string>
+  <string name="textNew">Uusi</string>
+  <string name="textSelect">Valitse</string>
+  <string name="textHot">Kuuma</string>
+  <string name="textSubmit">Lähetä</string>
+  <string name="textHide">Piilota</string>
+  <string name="textRemove">Poista</string>
+  <string name="textEmptyResults">Ei tuloksia…</string>
+  <string name="textSearchFor">Haku</string>
+  <string name="textTip">Vinkki:</string>
+  <string name="textSeason">Kausi %1$d</string>
+  <string name="textSpecials">Erikoisjaksot</string>
+  <string name="textEpisode">Jakso %1$d</string>
+  <string name="textSeasonEpisode">K.%02d J.%02d</string>
+  <string name="textSortBy">Lajittele:</string>
+  <string name="textSpoilersWarning">Kommentti sisältää juonipaljastuksia.\nLue napauttamalla.</string>
+  <string name="textCommentedOn">Kirjoittanut %s</string>
+  <string name="textNetwork">%1$s (%2$s)</string>
+  <string name="textNetworks" comment="TV network like HBO, AMC, Showtime, Disney etc.">Verkko:</string>
+  <string name="textGenres">Tyylilajit:</string>
+  <string name="textShows">Sarjat</string>
+  <string name="textMovies">Elokuvat</string>
+  <string name="textLists">Listat</string>
+  <string name="textMinutesShort">min</string>
+  <string name="textNoDescription">Yhteenvetoa ei ole saatavilla.</string>
+  <string name="textPleaseWait">Odota…</string>
+  <string name="textRate">Arvioi</string>
+  <string name="textLink">Linkki</string>
+  <string name="textDisabled">Ei käytössä</string>
+  <string name="textRateSaved">Arviosi tallennettiin.</string>
+  <string name="textRateRemoved">Arviosi poistettiin.</string>
+  <string name="textDays">%1$d päivää</string>
+  <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
+    <item quantity="one">%d jäljellä</item>
+    <item quantity="other">%d jäljellä</item>
+  </plurals>
+  <string name="textPeople">Henkilöt:</string>
+  <string name="textDirecting">Ohjaus</string>
+  <string name="textDirector">Ohjaaja</string>
+  <string name="textWriting">Käsikirjoitus</string>
+  <string name="textScreenplay">Käsikirjoitus</string>
+  <string name="textSound">Ääni</string>
+  <string name="textMusic">Musiikki</string>
+  <string name="textActing">Näyttely</string>
+  <string name="textAiredAlready">Esitetty</string>
+  <string name="textAirsNow">Esitetään nyt</string>
+  <plurals name="textDaysToAir">
+    <item quantity="one">Esitetään huomenna</item>
+    <item quantity="other">Esitetään %d päivän kuluttua</item>
+  </plurals>
+  <plurals name="textHoursToAir">
+    <item quantity="one">Esitetään tunnin kuluttua</item>
+    <item quantity="other">Esitetään %d tunnin kuluttua</item>
+  </plurals>
+  <plurals name="textMinutesToAir">
+    <item quantity="one">Esitetään nyt</item>
+    <item quantity="other">Esitetään %d minuutin kuluttua</item>
+  </plurals>
+  <plurals name="textTraktQuickSyncComplete">
+    <item quantity="one">1 kohde synkronoitiin.</item>
+    <item quantity="other">%d kohdetta synkronoitiin.</item>
+  </plurals>
+  <string name="textToday">Tänään</string>
+  <string name="textTomorrow">Huomenna</string>
+  <string name="textThisWeek">Tällä viikolla</string>
+  <string name="textNextWeek">Ensi viikolla</string>
+  <string name="textThisMonth">Tässä kuussa</string>
+  <string name="textNextMonth">Ensi kuussa</string>
+  <string name="textThisYear">Tänä vuonna</string>
+  <string name="textNextYear">Ensi vuonna</string>
+  <string name="textLater">Myöhemmin</string>
+  <string name="textYesterday">Eilen</string>
+  <string name="textLast7Days">Viimeisinä 7 päivänä</string>
+  <string name="textLast30Days">Viimeisinä 30 päivänä</string>
+  <string name="textLast90Days">Viimeisinä 90 päivänä</string>
+  <string name="textNewEpisodeAvailable">Uusi jakso on julkaistu!</string>
+  <string name="textNewEpisodeAvailableSoon">Uusi jakso julkaistaan pian!</string>
+  <string name="textNewSeasonAvailable">Uusi tuotantokausi on julkaistu!</string>
+  <string name="textNewSeasonAvailableSoon">Uusi tuotantokausi julkaistaan pian!</string>
+  <string name="textNewMovieAvailable">Elokuva on julkaistu!</string>
+  <string name="textTraktSync">Trakt.tv-synkronointi</string>
+  <string name="textTraktSyncComplete">Synkronointi suoritettiin.</string>
+  <string name="textTraktSyncRunning">Käynnissä…</string>
+  <string name="textTraktSyncError">Trakt.tv-synkronointi epäonnistui.</string>
+  <string name="textTraktSyncErrorFull">Trakt.tv-synkronointi epäonnistui. Tarkista Internet-yhteytesi ja yritä uudelleen tai ota meihin yhteyttä, jos tämä jatkuu.</string>
+  <string name="textTraktQuickSyncError">Pikasynkronointi epäonnistui.</string>
+  <string name="textTraktQuickSyncErrorFull">Pikasynkronointi epäonnistui. Yritämme uudelleen, kun avaat sovelluksen seuraavan kerran. Tarkista Internet-yhteytesi.</string>
+  <string name="textTraktNotificationsRationale">Myönnä sovellukselle tietojen synkronoinnin edistymisen ja tulosten näyttöoikeus.\n\nHaluatko tehdä tämän nyt?</string>
+  <string name="textRemoveFromTrakt">Poistetaanko Trakt.tv-kokoelmastasi?</string>
+  <string name="textRemoveFromTraktHidden">Haluatko poistaa kohteen Trakt.tv-tilisi \'Hidden Items\' (Piilotetut kohteet) -osiosta?</string>
+  <string name="textRemoveFromTraktWatchlist">Haluatko poistaa kohteen Trakt.tv-tilisi \'Watchlist\' (Katselulista) -osiosta?</string>
+  <string name="textRemoveFromTraktProgress">Haluatko poistaa kohteen Trakt.tv-tilisi \"Progress\" (Katselutila) -osiosta?</string>
+  <string name="textAddToMyShows">Lisää omiin sarjoihin</string>
+  <string name="textAddToMyMovies">Lisää omiin elokuviin</string>
+  <string name="textAddToWatchlist">Lisää katselulistalle</string>
+  <string name="textAddToHidden">Lisää piilotettuihin</string>
+  <string name="textMoveToMyShows">Siirrä omiin sarjoihin</string>
+  <string name="textMoveToMyMovies">Siirrä omiin elokuviin</string>
+  <string name="textMoveToWatchlist">Siirrä katselulistalle</string>
+  <string name="textMoveToHidden">Siirrä piilotettuihin</string>
+  <string name="textRemoveFromMyShows">Poista omista sarjoista</string>
+  <string name="textRemoveFromMyMovies">Poista omista elokuvista</string>
+  <string name="textRemoveFromWatchlist">Poista katselulistalta</string>
+  <string name="textRemoveFromHidden">Poista piilotetuista</string>
+  <string name="textWatchlist">Katselulista</string>
+  <string name="textWatchlistIncoming">Tulossa</string>
+  <string name="textNewAlwaysAtTop">Uudet jaksot aina ensin</string>
+  <string name="textPremiumAd">Ryhdy tukijaksi, niin saat käyttöösi lisäominaisuuksia! Napauta nähdäksesi lisää.</string>
+  <string name="menuPin">Kiinnitä listan ylälaitaan</string>
+  <string name="menuUnpin">Irrota listan ylälaidasta</string>
+  <string name="menuAddOnHold" comment="This is a button for Progress subsection. It will contain pending shows marked by user.">Kiinnitä \'pitoon\'</string>
+  <string name="menuRemoveOnHold" comment="This is a button for Progress subsection. It will contain pending shows marked by user.">Irrota \'pidosta\'</string>
+  <string name="errorGeneral">Hups… Jotain meni pieleen.\nOta meihin yhteyttä, jos tämä jatkuu.</string>
+  <string name="errorAuthorization">Valtuutus epäonnistui. Ota meihin yhteyttä, jos tämä jatkuu.</string>
+  <string name="errorTraktAuthorization">Trakt.tv-tilin valtuutus epäonnistui.\nKirjaudu sisään ja yritä uudelleen.</string>
+  <string name="errorSeasonsNotLoaded">Odota kun tuotantokausien tiedot ladataan.</string>
+  <string name="errorEpisodeNotAired">Jaksoa ei ole vielä esitetty.</string>
+  <string name="errorCouldNotLoadDiscover">Etsintäosion lataus ei juuri nyt onnistunut.\nOta yhteyttä, jos tämä jatkuu.</string>
+  <string name="errorMalformedShow">Sarjaa ei näyttäisi enää olevan Trakt.tv:n tietokannassa tai se on kaksoiskappale.\n\nPoista se sovelluksesta napauttamalla \'OK\'.</string>
+  <string name="errorMalformedMovie">Näyttäisi siltä, ettei elokuvaa enää ole Trakt.tv:n tietokannassa tai se on kaksoiskappale.\n\nPoista se sovelluksesta napauttamalla \'OK\'.</string>
+  <string name="errorCouldNotLoadShow">Sarjan tietoja ei voitu ladata.\nOta meihin yhteyttä, jos tämä jatkuu.</string>
+  <string name="errorCouldNotLoadMovie">Elokuvan tietoja ei voitu ladata.\nOta meihin yhteyttä, jos tämä jatkuu.</string>
+  <string name="errorCouldNotLoadSearchResults">Hakutuloksia ei voitu ladata.\nOta meihin yhteyttä, jos tämä jatkuu.</string>
+  <string name="errorNoInternetConnection">Ei Internet-yhteyttä. Tarkista yhteys.</string>
+  <string name="errorTraktSyncGeneral">Trakt.tv-synkronointivirhe.\nTarkista Internet-yhteys ja yritä uudelleen.</string>
+  <string name="errorTraktLocked">Trakt.tv-tilisi on lukittu.\nOta yhteyttä Trakt.tv:n tukeen osoitteessa https://support.trakt.tv/ poistaaksesi lukituksen.</string>
+  <string name="errorSubscriptionsNotAvailable">Google Play -tilaukset eivät ole käytettävissä tällä laitteella.</string>
+</resources>

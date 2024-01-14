@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/premiumRoot"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:clipToPadding="false"
+  android:overScrollMode="never"
+  android:scrollbars="none"
+  tools:background="@color/colorBackground"
+  tools:layout_marginTop="0dp"
+  tools:theme="@style/AppTheme"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/premiumContent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/spaceBig"
+    >
+
+    <com.google.android.material.appbar.MaterialToolbar
+      android:id="@+id/premiumToolbar"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:background="?android:windowBackground"
+      android:elevation="@dimen/elevationNormal"
+      app:contentInsetStartWithNavigation="0dp"
+      app:layout_constraintBottom_toTopOf="@id/premiumCrown"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0"
+      app:layout_constraintVertical_chainStyle="packed"
+      app:navigationIcon="@drawable/ic_arrow_back"
+      app:title="@string/textPremium"
+      />
+
+    <TextView
+      android:id="@+id/premiumTitle"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceNormal"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:gravity="center_vertical"
+      android:text="@string/textPremiumAdFull"
+      android:textAlignment="viewStart"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="14sp"
+      app:layout_constraintBottom_toBottomOf="@id/premiumCrown"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/premiumCrown"
+      app:layout_constraintTop_toTopOf="@id/premiumCrown"
+      />
+
+    <ImageView
+      android:id="@+id/premiumCrown"
+      style="@style/Premium.Image"
+      android:layout_marginStart="@dimen/spaceNormal"
+      android:layout_marginTop="@dimen/spaceSmall"
+      android:layout_marginBottom="@dimen/spaceSmall"
+      app:layout_constraintBottom_toTopOf="@id/premiumPurchaseItems"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/premiumToolbar"
+      app:layout_goneMarginBottom="36dp"
+      app:srcCompat="@drawable/ic_crown"
+      app:tint="?android:attr/textColorPrimary"
+      />
+
+    <ProgressBar
+      android:id="@+id/premiumProgress"
+      style="@style/ProgressBar.Accent"
+      android:layout_width="30dp"
+      android:layout_height="wrap_content"
+      android:layout_margin="@dimen/spaceNormal"
+      app:layout_constraintBottom_toBottomOf="@id/premiumPurchaseItems"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="@id/premiumPurchaseItems"
+      tools:visibility="visible"
+      />
+
+    <LinearLayout
+      android:id="@+id/premiumPurchaseItems"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_margin="@dimen/spaceNormal"
+      android:divider="@drawable/divider_purchase_items"
+      android:gravity="center"
+      android:minHeight="152dp"
+      android:orientation="vertical"
+      android:showDividers="middle"
+      app:layout_constraintBottom_toTopOf="@id/premiumLightThemeTitle"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/premiumCrown"
+      >
+
+      <TextView
+        android:id="@+id/premiumOssText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spaceNormal"
+        android:layout_marginEnd="@dimen/spaceNormal"
+        android:gravity="center"
+        android:text="Premium features are only available in Google Play Store version of the app."
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/premiumCrown"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/premiumCrown"
+        app:layout_constraintTop_toTopOf="@id/premiumCrown"
+        />
+    </LinearLayout>
+
+    <TextView
+      android:id="@+id/premiumStatus"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceNormal"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:gravity="center"
+      android:text="@string/textPurchasePending"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="14sp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toTopOf="@id/premiumLightThemeTitle"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/premiumTitle"
+      />
+
+    <ImageView
+      android:id="@+id/premiumLightThemeImage"
+      style="@style/Premium.Image"
+      android:tag="@string/tagTheme"
+      app:layout_constraintBottom_toBottomOf="@id/premiumLightThemeDescription"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="@id/premiumLightThemeTitle"
+      app:srcCompat="@drawable/ic_yoda"
+      />
+
+    <TextView
+      android:id="@+id/premiumLightThemeTitle"
+      style="@style/Premium.Title"
+      android:layout_marginTop="@dimen/spaceSmall"
+      android:tag="@string/tagTheme"
+      android:text="@string/textLightThemeTitle"
+      app:layout_constraintBottom_toTopOf="@id/premiumLightThemeDescription"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/premiumLightThemeImage"
+      app:layout_constraintTop_toBottomOf="@id/premiumPurchaseItems"
+      app:layout_goneMarginTop="36dp"
+      />
+
+    <TextView
+      android:id="@+id/premiumLightThemeDescription"
+      style="@style/Premium.Description"
+      android:tag="@string/tagTheme"
+      android:text="@string/textLightThemeDesc"
+      app:layout_constraintBottom_toTopOf="@id/premiumSeparator4"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/premiumLightThemeImage"
+      app:layout_constraintTop_toBottomOf="@id/premiumLightThemeTitle"
+      />
+
+    <View
+      android:id="@+id/premiumSeparator4"
+      style="@style/Premium.Separator"
+      app:layout_constraintBottom_toTopOf="@id/premiumNewsTitle"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/premiumLightThemeDescription"
+      />
+
+    <ImageView
+      android:id="@+id/premiumNewsImage"
+      style="@style/Premium.Image"
+      android:tag="@string/tagNews"
+      app:layout_constraintBottom_toBottomOf="@id/premiumNewsDescription"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="@id/premiumNewsTitle"
+      app:srcCompat="@drawable/ic_spongebob"
+      />
+
+    <TextView
+      android:id="@+id/premiumNewsTitle"
+      style="@style/Premium.Title"
+      android:tag="@string/tagNews"
+      android:text="@string/textNewsTitle"
+      app:layout_constraintBottom_toTopOf="@id/premiumNewsDescription"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/premiumNewsImage"
+      app:layout_constraintTop_toBottomOf="@id/premiumSeparator4"
+      />
+
+    <TextView
+      android:id="@+id/premiumNewsDescription"
+      style="@style/Premium.Description"
+      android:tag="@string/tagNews"
+      android:text="@string/textNewsDesc"
+      app:layout_constraintBottom_toTopOf="@id/premiumSeparator1"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="1.0"
+      app:layout_constraintStart_toEndOf="@id/premiumNewsImage"
+      app:layout_constraintTop_toBottomOf="@id/premiumNewsTitle"
+      />
+
+    <View
+      android:id="@+id/premiumSeparator1"
+      style="@style/Premium.Separator"
+      app:layout_constraintBottom_toTopOf="@id/premiumCustomImagesTitle"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/premiumNewsDescription"
+      />
+
+    <ImageView
+      android:id="@+id/premiumCustomImagesImage"
+      style="@style/Premium.Image"
+      android:tag="@string/tagCustomImages"
+      app:layout_constraintBottom_toBottomOf="@id/premiumCustomImagesDescription"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="@id/premiumCustomImagesTitle"
+      app:srcCompat="@drawable/ic_walter_white"
+      />
+
+    <TextView
+      android:id="@+id/premiumCustomImagesTitle"
+      style="@style/Premium.Title"
+      android:tag="@string/tagCustomImages"
+      android:text="@string/textCustomImagesTitle"
+      app:layout_constraintBottom_toTopOf="@id/premiumCustomImagesDescription"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/premiumCustomImagesImage"
+      app:layout_constraintTop_toBottomOf="@id/premiumSeparator1"
+      />
+
+    <TextView
+      android:id="@+id/premiumCustomImagesDescription"
+      style="@style/Premium.Description"
+      android:tag="@string/tagCustomImages"
+      android:text="@string/textCustomImagesDesc"
+      app:layout_constraintBottom_toTopOf="@id/premiumSeparator2"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/premiumCustomImagesImage"
+      app:layout_constraintTop_toBottomOf="@id/premiumCustomImagesTitle"
+      />
+
+    <View
+      android:id="@+id/premiumSeparator2"
+      style="@style/Premium.Separator"
+      app:layout_constraintBottom_toTopOf="@id/premiumListTypesTitle"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/premiumCustomImagesDescription"
+      />
+
+    <ImageView
+      android:id="@+id/premiumListTypesImage"
+      style="@style/Premium.Image"
+      android:tag="@string/tagViewsTypes"
+      app:layout_constraintBottom_toBottomOf="@id/premiumListTypesDescription"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="@id/premiumListTypesTitle"
+      app:srcCompat="@drawable/ic_homer"
+      />
+
+    <TextView
+      android:id="@+id/premiumListTypesTitle"
+      style="@style/Premium.Title"
+      android:tag="@string/tagViewsTypes"
+      android:text="@string/textViewsTitle"
+      app:layout_constraintBottom_toTopOf="@id/premiumListTypesDescription"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/premiumListTypesImage"
+      app:layout_constraintTop_toBottomOf="@id/premiumSeparator2"
+      />
+
+    <TextView
+      android:id="@+id/premiumListTypesDescription"
+      style="@style/Premium.Description"
+      android:tag="@string/tagViewsTypes"
+      android:text="@string/textViewsDesc"
+      app:layout_constraintBottom_toTopOf="@id/premiumSeparator6"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/premiumListTypesImage"
+      app:layout_constraintTop_toBottomOf="@id/premiumListTypesTitle"
+      />
+
+    <View
+      android:id="@+id/premiumSeparator6"
+      style="@style/Premium.Separator"
+      app:layout_constraintBottom_toTopOf="@id/premiumQuickRateTitle"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/premiumListTypesDescription"
+      />
+
+    <ImageView
+      android:id="@+id/premiumQuickRateImage"
+      style="@style/Premium.Image"
+      android:tag="@string/tagQuickRating"
+      app:layout_constraintBottom_toBottomOf="@id/premiumQuickRateDescription"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="@id/premiumQuickRateTitle"
+      app:srcCompat="@drawable/ic_flash"
+      />
+
+    <TextView
+      android:id="@+id/premiumQuickRateTitle"
+      style="@style/Premium.Title"
+      android:tag="@string/tagQuickRating"
+      android:text="@string/textQuickRatingTitle"
+      app:layout_constraintBottom_toTopOf="@id/premiumQuickRateDescription"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/premiumQuickRateImage"
+      app:layout_constraintTop_toBottomOf="@id/premiumSeparator6"
+      />
+
+    <TextView
+      android:id="@+id/premiumQuickRateDescription"
+      style="@style/Premium.Description"
+      android:tag="@string/tagQuickRating"
+      android:text="@string/textQuickRatingDesc"
+      app:layout_constraintBottom_toTopOf="@id/premiumSeparator3"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/premiumQuickRateImage"
+      app:layout_constraintTop_toBottomOf="@id/premiumQuickRateTitle"
+      />
+
+    <View
+      android:id="@+id/premiumSeparator3"
+      style="@style/Premium.Separator"
+      app:layout_constraintBottom_toTopOf="@id/premiumWidgetsTitle"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/premiumQuickRateDescription"
+      />
+
+    <ImageView
+      android:id="@+id/premiumWidgetsImage"
+      style="@style/Premium.Image"
+      android:tag="@string/tagWidgetTransparency"
+      app:layout_constraintBottom_toBottomOf="@id/premiumWidgetsDescription"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="@id/premiumWidgetsTitle"
+      app:srcCompat="@drawable/ic_zoidberg"
+      />
+
+    <TextView
+      android:id="@+id/premiumWidgetsTitle"
+      style="@style/Premium.Title"
+      android:tag="@string/tagWidgetTransparency"
+      android:text="@string/textWidgetsTitle"
+      app:layout_constraintBottom_toTopOf="@id/premiumWidgetsDescription"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/premiumWidgetsImage"
+      app:layout_constraintTop_toBottomOf="@id/premiumSeparator3"
+      />
+
+    <TextView
+      android:id="@+id/premiumWidgetsDescription"
+      style="@style/Premium.Description"
+      android:tag="@string/tagWidgetTransparency"
+      android:text="@string/textWidgetsDesc"
+      app:layout_constraintBottom_toTopOf="@id/premiumSeparator5"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="1.0"
+      app:layout_constraintStart_toEndOf="@id/premiumWidgetsImage"
+      app:layout_constraintTop_toBottomOf="@id/premiumWidgetsTitle"
+      />
+
+    <View
+      android:id="@+id/premiumSeparator5"
+      style="@style/Premium.Separator"
+      app:layout_constraintBottom_toTopOf="@id/premiumAdsTitle"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/premiumWidgetsDescription"
+      />
+
+    <ImageView
+      android:id="@+id/premiumAdsImage"
+      style="@style/Premium.Image"
+      app:layout_constraintBottom_toBottomOf="@id/premiumAdsDescription"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="@id/premiumAdsTitle"
+      app:srcCompat="@drawable/ic_genie"
+      />
+
+    <TextView
+      android:id="@+id/premiumAdsTitle"
+      style="@style/Premium.Title"
+      android:text="@string/textRemoveAdsTitle"
+      app:layout_constraintBottom_toTopOf="@id/premiumAdsDescription"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/premiumAdsImage"
+      app:layout_constraintTop_toBottomOf="@id/premiumSeparator5"
+      />
+
+    <TextView
+      android:id="@+id/premiumAdsDescription"
+      style="@style/Premium.Description"
+      android:text="@string/textRemoveAdsDesc"
+      app:layout_constraintBottom_toTopOf="@id/premiumSeparator5"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="1.0"
+      app:layout_constraintStart_toEndOf="@id/premiumAdsImage"
+      app:layout_constraintTop_toBottomOf="@id/premiumAdsTitle"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

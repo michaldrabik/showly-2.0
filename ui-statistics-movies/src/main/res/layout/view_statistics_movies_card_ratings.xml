@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  app:cardBackgroundColor="?attr/colorCardBackground"
+  tools:cardBackgroundColor="@color/colorBackground"
+  tools:parentTag="com.google.android.material.card.MaterialCardView"
+  tools:theme="@style/AppTheme"
+  >
+
+  <LinearLayout
+    android:id="@+id/viewMoviesRatingsContent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:orientation="vertical"
+    >
+
+    <TextView
+      android:id="@+id/viewMoviesRatingsTitle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceMedium"
+      android:layout_marginTop="@dimen/spaceNormal"
+      android:layout_marginEnd="@dimen/spaceMedium"
+      android:layout_marginBottom="@dimen/spaceMedium"
+      android:drawablePadding="@dimen/spaceSmall"
+      android:gravity="center_vertical"
+      android:text="@string/textStatisticsMoviesRatings"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="@dimen/statisticsMoviesHeaderSize"
+      android:textStyle="bold"
+      app:drawableStartCompat="@drawable/ic_star"
+      app:drawableTint="?android:attr/textColorPrimary"
+      />
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/viewMoviesRatingsRecycler"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="@dimen/spaceSmall"
+      android:clipChildren="false"
+      android:clipToPadding="false"
+      android:nestedScrollingEnabled="false"
+      android:overScrollMode="never"
+      android:paddingStart="@dimen/spaceMedium"
+      android:paddingEnd="@dimen/spaceMedium"
+      />
+
+  </LinearLayout>
+
+</merge>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:clipChildren="false"
+  android:clipToPadding="false"
+  >
+
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/showDetailsActorsRecycler"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:minHeight="@dimen/actorTileImageHeight"
+    android:overScrollMode="never"
+    android:paddingStart="@dimen/spaceNormal"
+    android:paddingEnd="@dimen/spaceNormal"
+    android:visibility="invisible"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    />
+
+  <ProgressBar
+    android:id="@+id/showDetailsActorsProgress"
+    style="@style/ProgressBar.Dark"
+    android:layout_width="30dp"
+    android:layout_height="30dp"
+    android:layout_gravity="center"
+    android:layout_margin="@dimen/spaceNormal"
+    app:layout_constraintBottom_toBottomOf="@id/showDetailsActorsRecycler"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    />
+
+  <TextView
+    android:id="@+id/showDetailsActorsEmptyView"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="@dimen/spaceNormal"
+    android:gravity="center"
+    android:text="@string/textActorsEmpty"
+    android:textColor="?android:attr/textColorSecondary"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="@id/showDetailsActorsRecycler"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:visibility="visible"
+    />
+
+  <TextView
+    android:id="@+id/showDetailsDirectingLabel"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceNormal"
+    android:layout_marginTop="13dp"
+    android:gravity="center_vertical"
+    android:text="@string/textDirecting"
+    android:textColor="?android:attr/textColorSecondary"
+    android:textSize="11sp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toTopOf="@id/showDetailsDirectingValue"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/showDetailsActorsRecycler"
+    app:layout_goneMarginTop="@dimen/spaceHuge"
+    tools:visibility="visible"
+    />
+
+  <TextView
+    android:id="@+id/showDetailsDirectingValue"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:minWidth="50dp"
+    android:text="-"
+    android:textColor="?android:attr/textColorPrimary"
+    android:textSize="11sp"
+    android:visibility="gone"
+    app:layout_constraintStart_toStartOf="@id/showDetailsDirectingLabel"
+    app:layout_constraintTop_toBottomOf="@id/showDetailsDirectingLabel"
+    tools:ignore="HardcodedText"
+    tools:text="Steven"
+    tools:visibility="visible"
+    />
+
+  <TextView
+    android:id="@+id/showDetailsWritingLabel"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceBig"
+    android:text="@string/textWriting"
+    android:textColor="?android:attr/textColorSecondary"
+    android:textSize="11sp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="@id/showDetailsDirectingLabel"
+    app:layout_constraintStart_toEndOf="@id/showDetailsDirectingValue"
+    app:layout_constraintTop_toTopOf="@id/showDetailsDirectingLabel"
+    tools:visibility="visible"
+    />
+
+  <TextView
+    android:id="@+id/showDetailsWritingValue"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:minWidth="50dp"
+    android:text="-"
+    android:textColor="?android:attr/textColorPrimary"
+    android:textSize="11sp"
+    android:visibility="gone"
+    app:layout_constraintStart_toStartOf="@id/showDetailsWritingLabel"
+    app:layout_constraintTop_toBottomOf="@id/showDetailsWritingLabel"
+    tools:ignore="HardcodedText"
+    tools:text="Steven Spilberg\nTest"
+    tools:visibility="visible"
+    />
+
+  <TextView
+    android:id="@+id/showDetailsMusicLabel"
+    android:layout_width="wrap_content"
+    android:layout_height="0dp"
+    android:layout_marginStart="@dimen/spaceBig"
+    android:layout_marginEnd="@dimen/spaceNormal"
+    android:text="@string/textMusic"
+    android:textColor="?android:attr/textColorSecondary"
+    android:textSize="11sp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="@id/showDetailsDirectingLabel"
+    app:layout_constraintStart_toEndOf="@id/showDetailsWritingValue"
+    app:layout_constraintTop_toTopOf="@id/showDetailsDirectingLabel"
+    tools:visibility="visible"
+    />
+
+  <TextView
+    android:id="@+id/showDetailsMusicValue"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/spaceNormal"
+    android:text="-"
+    android:textColor="?android:attr/textColorPrimary"
+    android:textSize="11sp"
+    android:visibility="gone"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="@id/showDetailsMusicLabel"
+    app:layout_constraintTop_toBottomOf="@id/showDetailsMusicLabel"
+    tools:ignore="HardcodedText"
+    tools:text="Steven Spilberg"
+    tools:visibility="visible"
+    />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

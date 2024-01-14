@@ -1,0 +1,12 @@
+<manifest
+  xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <queries>
+    <intent>
+      <action android:name="android.intent.action.SENDTO" />
+      <category android:name="android.intent.category.DEFAULT" />
+      <data android:scheme="mailto" />
+    </intent>
+  </queries>
+
+</manifest>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/viewStreamingContent"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/streamingTileHeight"
+    android:background="@drawable/bg_streaming_ripple"
+    android:elevation="@dimen/elevationTiny"
+    android:paddingStart="@dimen/spaceSmall"
+    android:paddingTop="@dimen/spaceTiny"
+    android:paddingEnd="@dimen/spaceSmall"
+    android:paddingBottom="@dimen/spaceTiny"
+    >
+
+    <ImageView
+      android:id="@+id/viewStreamingImage"
+      android:layout_width="@dimen/streamingImageSize"
+      android:layout_height="@dimen/streamingImageSize"
+      android:adjustViewBounds="true"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+    <TextView
+      android:id="@+id/viewStreamingName"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceSmall"
+      android:fontFamily="sans-serif-medium"
+      android:gravity="start|center_vertical"
+      android:maxLines="1"
+      android:textAlignment="viewStart"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="12sp"
+      app:layout_constraintBottom_toTopOf="@id/viewStreamingOptions"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintStart_toEndOf="@id/viewStreamingImage"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:text="Google Play Movies"
+      />
+
+    <TextView
+      android:id="@+id/viewStreamingOptions"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceSmall"
+      android:gravity="start|center_vertical"
+      android:maxLines="1"
+      android:textAlignment="viewStart"
+      android:textColor="?android:attr/textColorSecondary"
+      android:textSize="10sp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintStart_toEndOf="@id/viewStreamingImage"
+      app:layout_constraintTop_toBottomOf="@id/viewStreamingName"
+      tools:text="Google Play Movies"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>

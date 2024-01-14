@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textTraktLoginSuccess">Zalogowano.</string>
+  <string name="textTraktSyncStarted">Synchronizacja rozpoczęta i będzie kontynuowana w tle.</string>
+  <string name="textTraktSyncStart">Synchronizuj</string>
+  <string name="textTraktSyncSchedule">Zaplanuj</string>
+  <string name="textTraktSyncFromTraktToShowly">Import z Trakt.tv do Showly</string>
+  <string name="textTraktSyncFromShowlyToTrakt">Export z Showly do Trakt.tv</string>
+  <string name="textTraktSyncDescription">Zsynchronizuj swoją kolekcję Trakt.tv z aplikacją Showly.\n\nŻadne z twoich obecnych danych nie zostaną usunięte. Synchronizacja uzupełni kolekcję o brakujące elementy.</string>
+  <string name="textTraktSyncLastTimestamp">Ostatnio: %s</string>
+  <string name="textSettingsTraktAuthorizeTitle">Autoryzacja Trakt.tv</string>
+  <string name="textSettingsScheduleImportConfirmationTitle">Szybka Synchronizacja</string>
+  <string name="textSettingsScheduleImportConfirmationMessage">\nOpcja \'Szybka Synchronizacja\' jest już włączona.\n\nCzy wciąż chcesz włączyć planowaną synchronizację?\n</string>
+</resources>

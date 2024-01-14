@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textComment">تعليق</string>
+  <string name="textComments">التعليقات:</string>
+  <string name="textComments2">التعليقات</string>
+  <string name="textNoComments">لا توجد تعليقات.</string>
+  <string name="textCommentDisclaimer">يجب أن يكون التعليق بالإنجليزية، وأكثر من 5 كلمات، وعند الحرق حدد أنه حرق!</string>
+  <string name="textSpoilers">حرق</string>
+  <string name="textCommentPosted">تم إرسال تعليقك.</string>
+  <string name="textCommentDeleted">تم حذف تعليقك.</string>
+  <string name="textCommentConfirmDeleteTitle">حذف التعليق</string>
+  <string name="textCommentConfirmDelete">أمتأكد أنك تريد حذف هذا التعليق؟</string>
+  <string name="textSignBeforeRate">رجاءً قُم بتسجيل الدخول قبل تقييم المسلسل.</string>
+  <string name="textSignBeforeRateMovie">رجاءً قُم بتسجيل الدخول قبل تقييم الفيلم.</string>
+  <string name="errorCommentFormat">يجب أن يكون التعليق بالإنجليزية، وأكثر من 5 كلمات.</string>
+  <string name="errorCommentDelete">لا يُمكن حذف التعليق.</string>
+</resources>

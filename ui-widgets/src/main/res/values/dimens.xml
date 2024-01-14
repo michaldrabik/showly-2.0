@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="widgetImageHeight">60dp</dimen>
+  <dimen name="widgetImageWidth">40dp</dimen>
+  <dimen name="widgetPaddingTop">26dp</dimen>
+  <dimen name="widgetCorner">6dp</dimen>
+  <dimen name="widgetLabelHeight">24dp</dimen>
+  <dimen name="widgetCheckButtonWidth">46dp</dimen>
+  <dimen name="widgetCheckButtonHeight">60dp</dimen>
+</resources>

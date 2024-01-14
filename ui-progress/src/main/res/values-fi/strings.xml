@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="tabCalendar">Kalenteri</string>
+  <string name="tabProgress">Katselutila</string>
+  <string name="textCalendarEmpty">Uusia jaksoja ei ole tulossa.</string>
+  <string name="textRecentsEmpty">Hiljattain esitettyjä jaksoja ei ole.</string>
+  <string name="textOnHold" comment="This is a header for Progress subsection. It will contain pending shows marked by user.">Pidossa</string>
+  <string name="textDiscoverShows">Etsi sarjoja</string>
+  <string name="textEpisodeInfo">Tiedot</string>
+  <string name="textTraktSynchronize">Tuo Trakt.tv:sta</string>
+  <string name="textProgressEmpty"><b>Katselutila</b> on tyhjä.\n\nLisää sarjoja <b>Etsi</b>-osiosta tai tuo Trakt.tv-kokoelmasi.</string>
+  <string name="textNewSeason">Kauden aloitus</string>
+</resources>

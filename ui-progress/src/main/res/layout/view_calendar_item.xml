@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clipChildren="false"
+    >
+
+    <ImageView
+      android:id="@+id/calendarItemImage"
+      android:layout_width="@dimen/progressImageWidth"
+      android:layout_height="@dimen/progressImageHeight"
+      android:layout_marginStart="@dimen/spaceMedium"
+      android:layout_marginTop="8dp"
+      android:layout_marginBottom="8dp"
+      android:background="@drawable/bg_media_view_elevation"
+      android:elevation="@dimen/elevationSmall"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+    <ImageView
+      android:id="@+id/calendarItemPlaceholder"
+      android:layout_width="@dimen/progressImageWidth"
+      android:layout_height="@dimen/progressImageHeight"
+      android:layout_marginStart="@dimen/spaceMedium"
+      android:background="@drawable/bg_media_view_placeholder"
+      android:elevation="@dimen/elevationSmall"
+      android:padding="@dimen/spaceBig"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_television"
+      app:tint="?attr/colorPlaceholderIcon"
+      tools:visibility="visible"
+      />
+
+    <ImageView
+      android:id="@+id/calendarItemBadge"
+      style="@style/Badge.Watchlist"
+      android:layout_width="22dp"
+      android:layout_height="22dp"
+      android:layout_marginEnd="2dp"
+      android:translationY="-3dp"
+      app:layout_constraintEnd_toEndOf="@id/calendarItemImage"
+      app:layout_constraintTop_toTopOf="@id/calendarItemImage"
+      app:srcCompat="@drawable/ic_bookmark_full"
+      tools:visibility="visible"
+      />
+
+    <TextView
+      android:id="@+id/calendarItemTitle"
+      style="@style/CollectionItem.Title"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceNormal"
+      android:layout_marginEnd="@dimen/spaceMedium"
+      app:layout_constraintBottom_toTopOf="@id/calendarItemSubtitle"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/calendarItemImage"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      app:layout_goneMarginEnd="@dimen/spaceMedium"
+      tools:ignore="RtlSymmetry"
+      tools:text="Breaking Bad"
+      />
+
+    <TextView
+      android:id="@+id/calendarItemSubtitle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceNormal"
+      android:layout_marginTop="@dimen/spaceTiny"
+      android:layout_marginEnd="6dp"
+      android:layout_marginBottom="@dimen/spaceTiny"
+      android:background="@drawable/bg_badge"
+      android:elevation="@dimen/elevationTiny"
+      android:ellipsize="end"
+      android:includeFontPadding="false"
+      android:maxLines="1"
+      android:paddingStart="6dp"
+      android:paddingTop="2dp"
+      android:paddingEnd="6dp"
+      android:paddingBottom="2dp"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="14sp"
+      app:layout_constraintBottom_toTopOf="@id/calendarItemDateText"
+      app:layout_constraintEnd_toStartOf="@id/calendarItemSubtitle2"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintHorizontal_chainStyle="packed"
+      app:layout_constraintStart_toEndOf="@id/calendarItemImage"
+      app:layout_constraintTop_toBottomOf="@id/calendarItemTitle"
+      tools:text="S.01 E.01"
+      />
+
+    <TextView
+      android:id="@+id/calendarItemSubtitle2"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:layout_marginEnd="@dimen/spaceMedium"
+      android:ellipsize="end"
+      android:gravity="center_vertical|start"
+      android:includeFontPadding="false"
+      android:maxLines="1"
+      android:textAlignment="viewStart"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="14sp"
+      app:layout_constraintBottom_toTopOf="@id/calendarItemDateText"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintStart_toEndOf="@id/calendarItemSubtitle"
+      app:layout_constraintTop_toBottomOf="@id/calendarItemTitle"
+      tools:text="Some Title of an Episode"
+      />
+
+    <TextView
+      android:id="@+id/calendarItemDateText"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceNormal"
+      android:gravity="start|center_vertical"
+      android:textAlignment="viewStart"
+      android:textColor="?android:attr/textColorSecondary"
+      android:textSize="12sp"
+      app:layout_constraintBottom_toTopOf="@id/calendarItemButtons"
+      app:layout_constraintStart_toEndOf="@id/calendarItemImage"
+      app:layout_constraintTop_toBottomOf="@id/calendarItemSubtitle"
+      tools:text="Wednesday, 27 June 2019"
+      />
+
+    <LinearLayout
+      android:id="@+id/calendarItemButtons"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceNormal"
+      android:layout_marginTop="@dimen/spaceMicro"
+      android:layout_marginEnd="@dimen/spaceMedium"
+      android:clipChildren="false"
+      android:gravity="end|center_vertical"
+      android:orientation="horizontal"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="1"
+      app:layout_constraintTop_toBottomOf="@id/calendarItemDateText"
+      >
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/calendarItemInfoButton"
+        style="@style/RoundOutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/progressItemButtonHeight"
+        android:gravity="center"
+        android:text="@string/textEpisodeInfo"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="12sp"
+        app:rippleColor="?android:attr/textColorSecondary"
+        app:strokeWidth="0dp"
+        />
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/calendarItemCheckButton"
+        style="@style/RoundOutlinedButton"
+        android:layout_width="@dimen/progressItemCheckButtonWidth"
+        android:layout_height="@dimen/progressItemButtonHeight"
+        android:layout_marginStart="@dimen/spaceTiny"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:icon="@drawable/ic_check"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconSize="21dp"
+        app:iconTint="?android:attr/textColorPrimary"
+        app:rippleColor="?android:attr/textColorPrimary"
+        app:strokeColor="?android:attr/textColorPrimary"
+        />
+
+    </LinearLayout>
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>

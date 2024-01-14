@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textNextEpisode">Sonraki Bölüm:</string>
+  <string name="textInMyShows">Dizilerime eklendi</string>
+  <string name="textInWatchlist">İstek listesine eklendi</string>
+  <string name="textInHidden">Gizlenmiş</string>
+  <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
+  <string name="textShowQuickProgressTitle">Hızlı İlerleme</string>
+  <string name="textShowQuickProgressSubTitle">İlerlemenizi hızlı bir şekilde güncellemek için en son izlediğiniz bölümü seçin.</string>
+  <string name="textShowQuickProgressDone">İlerlemeniz güncellendi.</string>
+  <string name="textEpisodeDate">Bölüm %1$d | %2$s</string>
+  <string name="textEpisodeTitle">S.%02d B.%02d - \'%s\'</string>
+  <string name="textTraktSyncRemovedFromTrakt">Trakt.tv eşitlemesi başarılı.</string>
+  <string name="textActorsEmpty">Oyuncular mevcut değil</string>
+  <string name="textSeasons">Sezonlar:</string>
+  <string name="textSeasonsEmpty">Sezonlar mevcut değil.</string>
+  <string name="textTrailer">Fragman</string>
+  <string name="textYouMayAlsoLike">Bunlar da hoşunuza gidebilir</string>
+  <string name="textRuntimeLeftHours">~%s sa %s dk kaldı</string>
+  <string name="textRuntimeLeftMinutes">~%s dk kaldı</string>
+  <string name="textShowManageLists">Listeleri Yönet</string>
+  <string name="textShowManageListsCount">Listeleri Yönet (%d)</string>
+</resources>

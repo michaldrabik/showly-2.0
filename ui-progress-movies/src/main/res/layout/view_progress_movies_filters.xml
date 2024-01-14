@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  tools:theme="@style/AppTheme"
+  >
+
+  <com.google.android.material.chip.ChipGroup
+    android:id="@+id/progressFiltersChips"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceMedium"
+    android:layout_marginEnd="@dimen/spaceMedium"
+    android:paddingTop="@dimen/spaceSmall"
+    android:paddingBottom="@dimen/spaceSmall"
+    app:singleLine="true"
+    >
+
+    <com.google.android.material.chip.Chip
+      android:id="@+id/progressFiltersSortingChip"
+      style="@style/ShowlyChip.Sort"
+      android:text="@string/textSortName"
+      />
+
+  </com.google.android.material.chip.ChipGroup>
+
+</merge>

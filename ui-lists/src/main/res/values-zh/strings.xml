@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="menuLists">列表</string>
+  <string name="menuList">列表</string>
+  <string name="textFilters">筛选：</string>
+  <string name="textListsEmpty">当前您的列表合集为空。</string>
+  <string name="textListEmpty">当前您的列表为空。</string>
+  <string name="textCreateList">创建列表</string>
+  <string name="textCreateListDescription">创建一个新的自定义列表</string>
+  <string name="textName">名称</string>
+  <string name="textDescription">描述（选填）</string>
+  <string name="textDeleteList">删除列表</string>
+  <string name="textEditList">编辑列表</string>
+  <string name="textEditListDescription">更新自定义列表</string>
+  <string name="textConfirmDeleteListTitle">删除列表</string>
+  <string name="textConfirmDeleteListSubtitle">您确定要删除此列表吗？</string>
+  <string name="textChangeRanks">修改排行</string>
+  <string name="textChangeRanksSubtitle">拖放列表项以更改排行</string>
+  <string name="textManageLists">管理列表</string>
+  <string name="textManageListsShows">管理这部剧所在的列表。</string>
+  <string name="textManageListsMovies">管理这部电影所在的列表。</string>
+  <string name="errorCouldNotCreateList">目前无法在您 Trakt 账号中创建新的列表。\n请检查网络连接并重试。</string>
+  <string name="errorCouldNotUpdateList">目前无法更新您 Trakt 账号中的此列表。\n请检查网络连接并重试。</string>
+  <string name="errorCouldNotDeleteList">目前无法删除您 Trakt 账号中的此列表。\n请检查网络连接并重试。</string>
+</resources>

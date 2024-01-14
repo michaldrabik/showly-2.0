@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="welcomeDialogSpace">112dp</dimen>
+
+  <item name="tipModeMenuRatio" format="float" type="dimen">0.32</item>
+  <item name="tipDiscoverRatio" format="float" type="dimen">0.55</item>
+  <item name="tipMyShows" format="float" type="dimen">0.77</item>
+</resources>

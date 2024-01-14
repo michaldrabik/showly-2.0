@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:clipToPadding="false"
+  android:focusable="true"
+  android:focusableInTouchMode="true"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <com.google.android.material.textfield.TextInputLayout
+    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceNormal"
+    android:layout_marginTop="@dimen/spaceSmall"
+    android:layout_marginEnd="@dimen/spaceNormal"
+    android:minWidth="300dp"
+    app:boxStrokeColor="@color/selector_url_input_layout"
+    app:hintTextColor="?android:attr/textColorPrimary"
+    >
+
+    <com.google.android.material.textfield.TextInputEditText
+      android:id="@+id/urlDialogInput"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:hint="@string/textUrlDialogHint"
+      android:imeOptions="actionDone"
+      android:inputType="text"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textColorHint="?android:attr/textColorPrimary"
+      android:textCursorDrawable="@null"
+      />
+
+  </com.google.android.material.textfield.TextInputLayout>
+
+</FrameLayout>

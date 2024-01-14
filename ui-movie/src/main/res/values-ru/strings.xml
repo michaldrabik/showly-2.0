@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textInMyMovies">Добавлено в мои фильмы</string>
+  <string name="textInMoviesWatchlist">Добавлено в Буду смотреть</string>
+  <string name="textInHidden">Скрытое</string>
+  <string name="textMovieActorsEmpty">Актеры недоступны</string>
+  <string name="textMovieTrailer">Трейлер</string>
+  <string name="textMovieRate">Оценить</string>
+  <string name="textMovieComments2">Мнения</string>
+  <string name="textMovieYouMayAlsoLike">Вам также может понравиться</string>
+  <string name="textMovieCollections">Коллекция</string>
+  <string name="textMovieExtraInfo">%s %s | %s %s | %s</string>
+  <string name="textMovieManageLists">Управление списками</string>
+  <string name="textMovieManageListsCount">Управление списками (%d)</string>
+  <string name="textTraktSyncMovieRemovedFromTrakt">Trakt.tv успешно синхронизирован.</string>
+</resources>

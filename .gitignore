@@ -1,0 +1,15 @@
+*.iml
+.gradle
+/local.properties
+/.idea
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+ktlint2.jar
+/app/google-services.json
+/app/keystore.properties
+/app/keystore
+/app/firebase-service-key.json
+/app/gpp-services-key.json

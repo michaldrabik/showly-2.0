@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textSortOrder">Feed:</string>
+  <string name="textDiscoverFilterAnticipated">Ocultar series anticipadas</string>
+  <string name="textDiscoverFilterCollection">Ocultar Colección</string>
+</resources>

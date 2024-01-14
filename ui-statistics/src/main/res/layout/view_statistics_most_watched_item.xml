@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:background="@color/colorBackground"
+  tools:parentTag="android.widget.FrameLayout"
+  tools:theme="@style/AppTheme"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/viewMostWatchedItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/statisticsMostWatchedItemImageHeight"
+    >
+
+    <ImageView
+      android:id="@+id/viewMostWatchedItemImage"
+      android:layout_width="@dimen/statisticsMostWatchedItemImageWidth"
+      android:layout_height="0dp"
+      android:background="@drawable/bg_media_view_elevation"
+      android:elevation="@dimen/elevationSmall"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+    <ImageView
+      android:id="@+id/viewMostWatchedItemPlaceholder"
+      android:layout_width="@dimen/statisticsMostWatchedItemImageWidth"
+      android:layout_height="0dp"
+      android:layout_gravity="center"
+      android:background="@drawable/bg_media_view_placeholder"
+      android:elevation="@dimen/elevationSmall"
+      android:padding="20dp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_television"
+      app:tint="?attr/colorPlaceholderIcon"
+      tools:visibility="visible"
+      />
+
+    <ProgressBar
+      android:id="@+id/viewMostWatchedItemProgress"
+      style="@style/ProgressBar.Dark"
+      android:layout_width="28dp"
+      android:layout_height="28dp"
+      android:layout_gravity="center"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="@id/viewMostWatchedItemImage"
+      app:layout_constraintStart_toStartOf="@id/viewMostWatchedItemImage"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:visibility="visible"
+      />
+
+    <TextView
+      android:id="@+id/viewMostWatchedItemTitle"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceMedium"
+      android:layout_marginTop="@dimen/spaceSmall"
+      android:ellipsize="end"
+      android:gravity="center"
+      android:maxLines="1"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="20sp"
+      android:textStyle="bold"
+      app:layout_constraintBottom_toTopOf="@id/viewMostWatchedItemSeparator1"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/viewMostWatchedItemImage"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:text="Game of Thrones"
+      />
+
+    <TextView
+      android:id="@+id/viewMostWatchedItemHoursValue"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:layout_marginStart="@dimen/spaceMedium"
+      android:ellipsize="end"
+      android:gravity="center|bottom"
+      android:maxLines="1"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="22sp"
+      app:layout_constraintBottom_toTopOf="@id/viewMostWatchedItemHoursLabel"
+      app:layout_constraintEnd_toStartOf="@id/viewMostWatchedItemSeparator1"
+      app:layout_constraintStart_toEndOf="@id/viewMostWatchedItemImage"
+      app:layout_constraintTop_toBottomOf="@id/viewMostWatchedItemTitle"
+      tools:text="999"
+      />
+
+    <TextView
+      android:id="@+id/viewMostWatchedItemHoursLabel"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:layout_marginStart="@dimen/spaceMedium"
+      android:ellipsize="end"
+      android:gravity="center|top"
+      android:maxLines="1"
+      android:text="@string/textStatisticsHours"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="14sp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/viewMostWatchedItemSeparator1"
+      app:layout_constraintStart_toEndOf="@id/viewMostWatchedItemImage"
+      app:layout_constraintTop_toBottomOf="@id/viewMostWatchedItemHoursValue"
+      />
+
+    <View
+      android:id="@+id/viewMostWatchedItemSeparator1"
+      android:layout_width="1dp"
+      android:layout_height="0dp"
+      android:layout_marginTop="@dimen/spaceSmall"
+      android:layout_marginBottom="@dimen/spaceSmall"
+      android:background="?attr/colorAccent"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/viewMostWatchedItemSeasonsValue"
+      app:layout_constraintStart_toEndOf="@id/viewMostWatchedItemHoursLabel"
+      app:layout_constraintTop_toBottomOf="@id/viewMostWatchedItemTitle"
+      />
+
+    <TextView
+      android:id="@+id/viewMostWatchedItemSeasonsValue"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:ellipsize="end"
+      android:gravity="center|bottom"
+      android:maxLines="1"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="22sp"
+      app:layout_constraintBottom_toTopOf="@id/viewMostWatchedItemSeasonsLabel"
+      app:layout_constraintEnd_toStartOf="@id/viewMostWatchedItemSeparator2"
+      app:layout_constraintStart_toEndOf="@id/viewMostWatchedItemSeparator1"
+      app:layout_constraintTop_toBottomOf="@id/viewMostWatchedItemTitle"
+      tools:text="11"
+      />
+
+    <TextView
+      android:id="@+id/viewMostWatchedItemSeasonsLabel"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:ellipsize="end"
+      android:gravity="center|top"
+      android:maxLines="1"
+      android:text="@string/textStatisticsSeasons"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="14sp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/viewMostWatchedItemSeparator2"
+      app:layout_constraintStart_toEndOf="@id/viewMostWatchedItemSeparator1"
+      app:layout_constraintTop_toBottomOf="@id/viewMostWatchedItemSeasonsValue"
+      />
+
+    <View
+      android:id="@+id/viewMostWatchedItemSeparator2"
+      android:layout_width="1dp"
+      android:layout_height="0dp"
+      android:layout_marginTop="@dimen/spaceSmall"
+      android:layout_marginBottom="@dimen/spaceSmall"
+      android:background="?attr/colorAccent"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/viewMostWatchedItemEpisodesValue"
+      app:layout_constraintStart_toEndOf="@id/viewMostWatchedItemSeasonsLabel"
+      app:layout_constraintTop_toBottomOf="@id/viewMostWatchedItemTitle"
+      />
+
+    <TextView
+      android:id="@+id/viewMostWatchedItemEpisodesValue"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:ellipsize="end"
+      android:gravity="center|bottom"
+      android:maxLines="1"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="22sp"
+      app:layout_constraintBottom_toTopOf="@id/viewMostWatchedItemEpisodesLabel"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/viewMostWatchedItemSeparator2"
+      app:layout_constraintTop_toBottomOf="@id/viewMostWatchedItemTitle"
+      tools:text="11"
+      />
+
+    <TextView
+      android:id="@+id/viewMostWatchedItemEpisodesLabel"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:ellipsize="end"
+      android:gravity="center|top"
+      android:maxLines="1"
+      android:text="@string/textStatisticsEpisodes"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="14sp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/viewMostWatchedItemSeparator2"
+      app:layout_constraintTop_toBottomOf="@id/viewMostWatchedItemEpisodesValue"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>

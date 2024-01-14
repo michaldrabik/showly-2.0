@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="streamingTileHeight">40dp</dimen>
+  <dimen name="streamingImageSize">26dp</dimen>
+  <dimen name="streamingImageCorner">4dp</dimen>
+  <dimen name="streamingImageCornerApple">8dp</dimen>
+</resources>

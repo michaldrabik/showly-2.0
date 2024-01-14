@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:clipToPadding="false"
+    android:paddingStart="@dimen/spaceNormal"
+    android:paddingTop="@dimen/spaceSmall"
+    android:paddingEnd="@dimen/spaceNormal"
+    android:paddingBottom="@dimen/spaceSmall"
+    >
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline1"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:layout_constraintGuide_begin="@dimen/movieCollectionImageGuide"
+      />
+
+    <ImageView
+      android:id="@+id/movieImage"
+      android:layout_width="@dimen/movieCollectionImageWidth"
+      android:layout_height="@dimen/movieCollectionImageHeight"
+      android:background="@drawable/bg_media_view_elevation"
+      android:elevation="@dimen/elevationSmall"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+    <ImageView
+      android:id="@+id/placeholderImage"
+      android:layout_width="@dimen/movieCollectionImageWidth"
+      android:layout_height="@dimen/movieCollectionImageHeight"
+      android:layout_gravity="center"
+      android:background="@drawable/bg_media_view_placeholder"
+      android:elevation="@dimen/elevationSmall"
+      android:padding="18dp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_film"
+      app:tint="?attr/colorPlaceholderIcon"
+      tools:visibility="visible"
+      />
+
+    <TextView
+      android:id="@+id/rankText"
+      android:layout_width="17dp"
+      android:layout_height="17dp"
+      android:layout_margin="@dimen/spaceTiny"
+      android:background="@drawable/bg_rank"
+      android:gravity="center"
+      android:includeFontPadding="false"
+      android:textColor="?attr/textColorOnSurface"
+      android:textSize="10sp"
+      android:textStyle="bold"
+      android:translationZ="@dimen/elevationSmall"
+      app:layout_constraintBottom_toBottomOf="@id/movieImage"
+      app:layout_constraintEnd_toEndOf="@id/movieImage"
+      tools:ignore="SmallSp"
+      tools:text="10"
+      />
+
+    <ImageView
+      android:id="@+id/badgeImage"
+      style="@style/Badge"
+      android:layout_width="18dp"
+      android:layout_height="18dp"
+      android:layout_marginEnd="1dp"
+      android:translationY="-3dp"
+      app:layout_constraintEnd_toEndOf="@id/movieImage"
+      app:layout_constraintTop_toTopOf="@id/movieImage"
+      app:srcCompat="@drawable/ic_bookmark_full"
+      tools:visibility="visible"
+      />
+
+    <TextView
+      android:id="@+id/headerText"
+      style="@style/CollectionItem.Header"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:textSize="@dimen/movieCollectionHeaderSize"
+      app:layout_constraintBottom_toTopOf="@id/titleText"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/guideline1"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:ignore="SmallSp"
+      tools:text="2023"
+      />
+
+    <TextView
+      android:id="@+id/titleText"
+      style="@style/CollectionItem.Title"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:textSize="@dimen/movieCollectionTitleSize"
+      app:layout_constraintBottom_toTopOf="@id/descriptionText"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/guideline1"
+      app:layout_constraintTop_toBottomOf="@id/headerText"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:text="Kill Bill"
+      />
+
+    <TextView
+      android:id="@+id/descriptionText"
+      style="@style/CollectionItem.Description"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:textSize="@dimen/movieCollectionDescriptionSize"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/guideline1"
+      app:layout_constraintTop_toBottomOf="@id/titleText"
+      tools:text="@tools:sample/lorem/random"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>

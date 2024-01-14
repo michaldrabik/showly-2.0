@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="tabMoviesCalendar">时间表</string>
+  <string name="tabMoviesProgress">进度</string>
+  <string name="textMoviesCalendarEmpty">目前暂无将要上映的新电影。</string>
+  <string name="textMoviesCalendarRecentsEmpty">目前暂无即将上映的新电影。</string>
+  <string name="textDiscoverMovies">发现电影</string>
+  <string name="textMoviesTraktSynchronize">从 Trakt.tv 导入数据</string>
+  <string name="textMoviesProgressEmpty">您的 <b>进度</b> 目前为空。\n\n访问 <b>发现</b> 选项卡去添加电影或从 Trakt.tv 导入数据。</string>
+</resources>

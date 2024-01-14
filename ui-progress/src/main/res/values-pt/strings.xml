@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="tabCalendar">Calendário</string>
+  <string name="tabProgress">Progresso</string>
+  <string name="textCalendarEmpty">Não há novos episódios a caminho.</string>
+  <string name="textRecentsEmpty">Não há episódios recentes.</string>
+  <string name="textOnHold" comment="This is a header for Progress subsection. It will contain pending shows marked by user.">Em Espera</string>
+  <string name="textDiscoverShows">Descubra séries</string>
+  <string name="textEpisodeInfo">Detalhes</string>
+  <string name="textTraktSynchronize">Importar de Trakt.tv</string>
+  <string name="textProgressEmpty">Seu <b>Progresso</b> está vazio atualmente.\n\nVisite a guia <b>Explorar</b> para adicionar séries ou importar seu acervo de Trakt.tv.</string>
+  <string name="textNewSeason">Pré estreia</string>
+</resources>

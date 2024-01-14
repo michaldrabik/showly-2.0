@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textSortOrder">Akış:</string>
+  <string name="textDiscoverFilterAnticipated">Beklenen Dizileri Gizle</string>
+  <string name="textDiscoverFilterCollection">Koleksiyonu Gizle</string>
+</resources>

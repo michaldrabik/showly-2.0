@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/episodeDetailsRoot"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@drawable/bg_bottom_sheet"
+  tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
+  >
+
+  <ImageView
+    android:id="@+id/episodeDetailsImage"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/episodeDetailsImageHeight"
+    app:layout_constraintBottom_toTopOf="@id/episodeDetailsSeparator"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_bias="0"
+    app:layout_constraintVertical_chainStyle="packed"
+    />
+
+  <ImageView
+    android:id="@+id/episodeDetailsImagePlaceholder"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/episodeDetailsImageHeight"
+    android:background="@drawable/bg_bottom_sheet_placeholder"
+    android:paddingLeft="70dp"
+    android:paddingTop="70dp"
+    android:paddingRight="70dp"
+    android:paddingBottom="84dp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toTopOf="@id/episodeDetailsSeparator"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:srcCompat="@drawable/ic_television"
+    app:tint="?attr/colorPlaceholderIcon"
+    tools:visibility="visible"
+    />
+
+  <ProgressBar
+    android:id="@+id/episodeDetailsProgress"
+    style="@style/ProgressBar.Dark"
+    android:layout_width="30dp"
+    android:layout_height="30dp"
+    app:layout_constraintBottom_toBottomOf="@id/episodeDetailsImage"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="@id/episodeDetailsImage"
+    />
+
+  <View
+    android:id="@+id/episodeDetailsSeparator"
+    android:layout_width="0dp"
+    android:layout_height="1dp"
+    android:background="?attr/colorAccent"
+    app:layout_constraintBottom_toTopOf="@id/episodeDetailsRootScroll"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/episodeDetailsImage"
+    />
+
+  <androidx.core.widget.NestedScrollView
+    android:id="@+id/episodeDetailsRootScroll"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:fillViewport="true"
+    android:overScrollMode="never"
+    android:paddingTop="@dimen/spaceTiny"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/episodeDetailsSeparator"
+    >
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:clipChildren="false"
+      android:clipToPadding="false"
+      android:orientation="vertical"
+      android:paddingBottom="@dimen/spaceBig"
+      >
+
+      <com.google.android.material.tabs.TabLayout
+        android:id="@+id/episodeDetailsTabs"
+        style="@style/ScrollableTabsEpisodesStyle"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_marginBottom="@dimen/spaceTiny"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:paddingStart="@dimen/spaceSmall"
+        android:paddingEnd="@dimen/spaceSmall"
+        android:visibility="invisible"
+        tools:visibility="visible"
+        />
+
+      <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spaceNormal"
+        android:layout_marginTop="@dimen/spaceSmall"
+        android:layout_marginEnd="@dimen/spaceNormal"
+        android:layout_marginBottom="@dimen/spaceNormal"
+        >
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          >
+
+          <TextView
+            android:id="@+id/episodeDetailsTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="52dp"
+            android:layout_marginBottom="@dimen/spaceMicro"
+            android:ellipsize="end"
+            android:gravity="center_vertical|start"
+            android:maxLines="2"
+            android:textAlignment="viewStart"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:text="That is not an example."
+            />
+
+          <TextView
+            android:id="@+id/episodeDetailsName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="48dp"
+            android:ellipsize="end"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textSize="12sp"
+            tools:text="S.01 E.99 | Thursday, 23 December 2019 at 15:00 | 23 mins"
+            />
+
+          <LinearLayout
+            android:id="@+id/episodeDetailsRatingLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spaceMicro"
+            android:gravity="center_vertical|start"
+            android:orientation="horizontal"
+            android:translationX="-1dp"
+            >
+
+            <ImageView
+              android:id="@+id/episodeDetailsRatingIcon"
+              android:layout_width="16dp"
+              android:layout_height="match_parent"
+              android:layout_marginEnd="@dimen/spaceMicro"
+              app:srcCompat="@drawable/ic_star"
+              app:tint="?attr/colorAccent"
+              />
+
+            <TextView
+              android:id="@+id/episodeDetailsRating"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:ellipsize="end"
+              android:gravity="center_vertical"
+              android:textColor="?android:attr/textColorSecondary"
+              android:textSize="12sp"
+              tools:text="8.2 (1000 votes)"
+              />
+
+          </LinearLayout>
+
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+          android:id="@+id/episodeDetailsButton"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_vertical|end"
+          app:backgroundTint="?attr/colorAccent"
+          app:fabCustomSize="42dp"
+          app:srcCompat="@drawable/ic_check"
+          app:tint="?attr/textColorOnSurface"
+          />
+
+      </FrameLayout>
+
+      <TextView
+        android:id="@+id/episodeDetailsOverview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spaceNormal"
+        android:layout_marginEnd="@dimen/spaceNormal"
+        android:ellipsize="end"
+        android:gravity="start"
+        android:maxLines="20"
+        android:textAlignment="viewStart"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="14sp"
+        tools:targetApi="o"
+        tools:text="That is not an example."
+        />
+
+      <LinearLayout
+        android:id="@+id/episodeDetailsButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spaceNormal"
+        android:layout_marginTop="@dimen/spaceBig"
+        android:layout_marginEnd="@dimen/spaceNormal"
+        android:clipChildren="false"
+        android:gravity="center_vertical|start"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+          android:id="@+id/episodeDetailsCommentsButton"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:layout_marginEnd="18dp"
+          android:drawablePadding="6dp"
+          android:gravity="center_vertical"
+          android:text="@string/textLoadCommentsCount"
+          android:textAllCaps="true"
+          android:textColor="?android:textColorPrimary"
+          app:drawableStartCompat="@drawable/ic_comment"
+          app:drawableTint="?android:textColorPrimary"
+          />
+
+        <TextView
+          android:id="@+id/episodeDetailsRateButton"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:drawablePadding="5dp"
+          android:gravity="center_vertical"
+          android:text="@string/textRate"
+          android:textAllCaps="true"
+          android:textColor="?android:textColorPrimary"
+          app:drawableStartCompat="@drawable/ic_star"
+          app:drawableTint="?android:textColorPrimary"
+          />
+
+        <ProgressBar
+          android:id="@+id/episodeDetailsRateProgress"
+          style="@style/ProgressBar.Dark"
+          android:layout_width="0dp"
+          android:layout_height="28dp"
+          android:layout_gravity="center"
+          android:layout_weight="1"
+          android:visibility="gone"
+          tools:visibility="visible"
+          />
+
+      </LinearLayout>
+
+      <ProgressBar
+        android:id="@+id/episodeDetailsCommentsProgress"
+        style="@style/ProgressBar.Accent"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="18dp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        />
+
+      <TextView
+        android:id="@+id/episodeDetailsCommentsEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spaceBig"
+        android:layout_marginBottom="@dimen/spaceNormal"
+        android:gravity="center"
+        android:text="@string/textNoComments"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="14sp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        />
+
+      <LinearLayout
+        android:id="@+id/episodeDetailsComments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spaceNormal"
+        android:layout_marginEnd="@dimen/spaceNormal"
+        android:layout_marginBottom="260dp"
+        android:clipToPadding="false"
+        android:divider="@drawable/divider_comments_list"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/spaceBig"
+        android:showDividers="middle|end"
+        android:visibility="gone"
+        tools:visibility="gone"
+        />
+
+    </LinearLayout>
+
+  </androidx.core.widget.NestedScrollView>
+
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/episodeDetailsPostCommentButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/spaceNormal"
+    android:layout_marginBottom="@dimen/spaceNormal"
+    android:visibility="gone"
+    app:backgroundTint="?attr/colorAccent"
+    app:fabSize="mini"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:srcCompat="@drawable/ic_add_comment"
+    app:tint="?attr/textColorOnSurface"
+    tools:visibility="visible"
+    />
+
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/episodeDetailsSnackbarHost"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="60dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textStatistics">Statistik</string>
+  <string name="textStatisticsEmpty">Es muss mindestens eine <b>Serie</b>\n vorhanden sein, bevor deine Statistik angezeigt werden kann.</string>
+  <string name="textStatisticsMostWatchedShows">Meist geschaute Serie</string>
+  <string name="textStatisticsTotalTimeSpent">Gesamtzeit</string>
+  <string name="textStatisticsTotalTimeItIs">und es ist</string>
+  <string name="textStatisticsTotalTimeSpentHours">%s Stunden</string>
+  <string name="textStatisticsTotalTimeSpentMinutes">%s Minuten</string>
+  <string name="textStatisticsTotalTimeSpentDays">welches ist etwa %s Tage.</string>
+  <string name="textStatisticsTotalEpisodes">Insgesamt geguckte Folgen</string>
+  <string name="textStatisticsTotalEpisodesCount">%s Folgen</string>
+  <string name="textStatisticsTotalEpisodesShowsCount">über %s Serien verteilt.</string>
+  <string name="textStatisticsTopGenre">Top Genre</string>
+  <string name="textStatisticsTopGenreSubValue">Scheint eine Tasse Tee zu sein. Tippe hier für mehr Informationen.</string>
+  <string name="textStatisticsTopGenreSubValue2">Scheint eine Tasse Tee zu sein.</string>
+  <string name="textStatisticsShowMore">Mehr</string>
+  <string name="textStatisticsRatings">Zuletzt Bewertet</string>
+  <string name="textStatisticsHours">Stunden</string>
+  <string name="textStatisticsEpisodes">Folgen</string>
+  <string name="textStatisticsSeasons">Staffel</string>
+</resources>

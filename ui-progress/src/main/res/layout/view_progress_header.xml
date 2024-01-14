@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:orientation="horizontal"
+  tools:parentTag="android.widget.LinearLayout"
+  >
+
+  <TextView
+    android:id="@+id/progressHeaderText"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceMedium"
+    android:layout_marginTop="@dimen/spaceMedium"
+    android:layout_marginBottom="@dimen/spaceNormal"
+    android:textColor="?android:attr/textColorPrimary"
+    android:textSize="@dimen/progressHeaderTextSize"
+    android:textStyle="bold"
+    tools:text="Coming Soon"
+    />
+
+  <ImageView
+    android:id="@+id/progressHeaderArrow"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="6dp"
+    android:layout_marginTop="@dimen/spaceNormal"
+    android:layout_marginEnd="@dimen/spaceMedium"
+    android:layout_marginBottom="@dimen/spaceNormal"
+    android:rotation="90"
+    app:srcCompat="@drawable/ic_arrow_right"
+    app:tint="?android:attr/textColorPrimary"
+    />
+
+</merge>

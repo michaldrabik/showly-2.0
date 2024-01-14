@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textTraktLoginSuccess">Ви успішно авторизовані.</string>
+  <string name="textTraktSyncStarted">Синхронізацію розпочато. Процес продовжить роботу у фоновому режимі.</string>
+  <string name="textTraktSyncStart">Синхронізувати</string>
+  <string name="textTraktSyncSchedule">Розклад</string>
+  <string name="textTraktSyncFromTraktToShowly">Імпорт з Trakt.tv до Showly</string>
+  <string name="textTraktSyncFromShowlyToTrakt">Експорт з Showly до Trakt.tv</string>
+  <string name="textTraktSyncDescription">Синхронізуйте дані вашого облікового запису Trakt.tv з Showly.\n\nЖоден з елементів вашої поточної колекції не буде видалений. Синхронізація буде обробляти тільки відсутні елементи в ваших колекціях.</string>
+  <string name="textTraktSyncLastTimestamp">Востаннє синхронізовано: %s</string>
+  <string name="textSettingsTraktAuthorizeTitle">Авторизація Trakt.tv</string>
+  <string name="textSettingsScheduleImportConfirmationTitle">Миттєва синхронізація увімкнена</string>
+  <string name="textSettingsScheduleImportConfirmationMessage">\nСхоже, що миттєва синхронізація вже увімкнена.\n\nВи все ще хочете запланувати автоматичну синхронізацію?\n</string>
+</resources>

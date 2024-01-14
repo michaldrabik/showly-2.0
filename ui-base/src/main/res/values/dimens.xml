@@ -1,0 +1,81 @@
+<resources>
+  <dimen name="spaceNano">1dp</dimen>
+  <dimen name="spaceMicro">2dp</dimen>
+  <dimen name="spaceTiny">4dp</dimen>
+  <dimen name="spaceSmall">8dp</dimen>
+  <dimen name="spaceMedium">12dp</dimen>
+  <dimen name="spaceNormal">16dp</dimen>
+  <dimen name="spaceBig">24dp</dimen>
+  <dimen name="spaceHuge">48dp</dimen>
+
+  <dimen name="screenMarginHorizontal">12dp</dimen>
+
+  <dimen name="elevationTiny">0dp</dimen>
+  <dimen name="elevationSmall">0dp</dimen>
+  <dimen name="elevationNormal">0dp</dimen>
+  <dimen name="elevationSuggestions">1dp</dimen>
+
+  <dimen name="bottomNavigationHeight">68dp</dimen>
+  <dimen name="bottomNavigationHeightPadded">76dp</dimen>
+  <dimen name="bottomNoInternetViewHeight">24dp</dimen>
+
+  <dimen name="backArrowSize">56dp</dimen>
+  <dimen name="backArrowPadding">16dp</dimen>
+
+  <dimen name="gridSpacing">4dp</dimen>
+  <dimen name="gridListsSpacing">4dp</dimen>
+  <dimen name="gridPadding">8dp</dimen>
+  <dimen name="gridListsPadding">9dp</dimen>
+  <dimen name="gridRecyclerPadding">9dp</dimen>
+
+  <dimen name="mediaTileCorner">4dp</dimen>
+  <dimen name="galleryImageCorner">8dp</dimen>
+  <dimen name="showTilePlaceholder">40dp</dimen>
+  <dimen name="movieTilePlaceholder">40dp</dimen>
+
+  <dimen name="bottomSheetCorner">16dp</dimen>
+  <dimen name="relatedTileMoviePlaceholder">22dp</dimen>
+  <dimen name="relatedTileShowPlaceholder">24dp</dimen>
+  <dimen name="collectionTileMoviePlaceholder">22dp</dimen>
+  <dimen name="collectionTileShowPlaceholder">24dp</dimen>
+
+  <dimen name="searchViewHeight">48dp</dimen>
+  <dimen name="searchViewHeightPadded">64dp</dimen>
+  <dimen name="searchViewCorner">24dp</dimen>
+  <dimen name="searchViewDotTranslation">-10dp</dimen>
+  <dimen name="searchViewImageWidth">67dp</dimen>
+  <dimen name="searchViewImageHeight">100dp</dimen>
+  <dimen name="searchSuggestionViewImageWidth">40dp</dimen>
+  <dimen name="searchSuggestionViewImageHeight">60dp</dimen>
+  <dimen name="searchViewItemPaddingHorizontal">12dp</dimen>
+
+  <dimen name="searchLocalViewHeight">32dp</dimen>
+  <dimen name="searchLocalViewCorner">16dp</dimen>
+
+  <dimen name="discoverFilterChipStroke">1dp</dimen>
+  <dimen name="discoverRecyclerPadding">158dp</dimen>
+  <dimen name="discoverRecyclerPaddingNoTabs">116dp</dimen>
+
+  <dimen name="linkItemTileHeight">42dp</dimen>
+  <dimen name="linkItemImageWidth">50dp</dimen>
+  <dimen name="linkItemImageHeight">26dp</dimen>
+
+  <dimen name="swipeRefreshStartOffset">8dp</dimen>
+  <dimen name="swipeRefreshEndOffset">194dp</dimen>
+
+  <dimen name="collectionTabsMargin">70dp</dimen>
+  <dimen name="collectionFiltersMargin">106dp</dimen>
+  <dimen name="collectionFiltersMarginNoTabs">66dp</dimen>
+  <dimen name="commentViewSpace">16dp</dimen>
+  <dimen name="tutorialTipSize">28dp</dimen>
+  <dimen name="tutorialTipMargin">32dp</dimen>
+  <dimen name="scrollBarWidth">3dp</dimen>
+  <dimen name="rateValueTranslation">80dp</dimen>
+
+  <dimen name="collectionItemCorner">16dp</dimen>
+  <dimen name="collectionItemImageHeight">120dp</dimen>
+  <dimen name="collectionItemImageWidth">80dp</dimen>
+  <dimen name="collectionItemRippleSpace">6dp</dimen>
+  <dimen name="collectionItemRippleSpaceSmall">4dp</dimen>
+
+</resources>

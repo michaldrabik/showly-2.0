@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:background="@color/colorBackground"
+  tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
+  tools:theme="@style/AppTheme"
+  >
+
+  <TextView
+    android:id="@+id/viewMostWatchedShowsTitle"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:text="@string/textStatisticsMostWatchedShows"
+    android:textColor="?android:attr/textColorPrimary"
+    android:textSize="@dimen/statisticsHeaderSize"
+    android:textStyle="bold"
+    app:layout_constraintBottom_toTopOf="@id/viewMostWatchedShowsRecycler"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_bias="0"
+    app:layout_constraintVertical_chainStyle="packed"
+    />
+
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/viewMostWatchedShowsRecycler"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clipToPadding="false"
+    android:nestedScrollingEnabled="false"
+    android:overScrollMode="never"
+    android:paddingTop="@dimen/spaceMedium"
+    app:layout_constrainedHeight="true"
+    app:layout_constraintBottom_toTopOf="@id/viewMostWatchedShowsMoreButton"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/viewMostWatchedShowsTitle"
+    app:layout_goneMarginBottom="@dimen/spaceMedium"
+    />
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/viewMostWatchedShowsMoreButton"
+    style="@style/RoundTextButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|center_horizontal"
+    android:text="@string/textStatisticsShowMore"
+    android:textColor="?android:attr/textColorSecondary"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/viewMostWatchedShowsRecycler"
+    app:rippleColor="?android:attr/textColorSecondary"
+    />
+
+</merge>

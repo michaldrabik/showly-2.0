@@ -1,0 +1,49 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'dagger.hilt.android.plugin'
+apply from: '../versions.gradle'
+
+android {
+  kotlinOptions { jvmTarget = "17" }
+  compileOptions {
+    coreLibraryDesugaringEnabled true
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
+  }
+
+  compileSdkVersion versions.compileSdk
+
+  defaultConfig {
+    minSdkVersion versions.minSdk
+    targetSdkVersion versions.targetSdk
+    compileSdkVersion versions.compileSdk
+
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
+    }
+  }
+
+  namespace 'com.michaldrabik.data_local'
+}
+
+dependencies {
+  api libs.android.room.ktx
+  api libs.android.room.runtime
+  ksp libs.android.room.compiler
+
+  implementation libs.timber
+
+  implementation libs.hilt.android
+  ksp libs.hilt.compiler
+
+  testImplementation libs.junit
+  androidTestImplementation libs.truth
+  androidTestImplementation libs.android.test.runner
+  androidTestImplementation libs.android.test.truth
+
+  coreLibraryDesugaring libs.android.desugar
+}

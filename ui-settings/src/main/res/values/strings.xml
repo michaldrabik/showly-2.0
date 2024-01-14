@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textTraktLoginSuccess">You\'ve been successfully authorized.</string>
+  <string name="textTraktLogoutSuccess">You\'ve been signed out.</string>
+  <string name="textImagesCacheCleared">Images cache has been cleared.</string>
+  <string name="textTurnOff">Turn Off</string>
+
+  <string name="textSettings">Settings</string>
+  <string name="textSettingsTrakt">Trakt.tv</string>
+  <string name="textSettingsTraktAuthorizeTitle">Trakt.tv Authorization</string>
+  <string name="textSettingsTraktAuthorizeSummarySignIn">Click to sign in into your Trakt.tv account.</string>
+  <string name="textSettingsTraktAuthorizeSummarySignOut">Signed in. Click to sign out.</string>
+  <string name="textSettingsTraktAuthorizeSummarySignOutUser">Signed in as %1$s. Click to sign out.</string>
+  <string name="textSettingsTraktSyncTitle">Trakt.tv Sync</string>
+  <string name="textSettingsTraktSyncSummary">Sync data between Trakt.tv and Showly.</string>
+  <string name="textSettingsTraktQuickSyncTitle">Trakt.tv Instant Upload</string>
+  <string name="textSettingsTraktQuickSyncSummary">Instantly upload data to Trakt.tv after you add it in the app.</string>
+  <string name="textSettingsTraktQuickRemoveTitle">Trakt.tv Data Remove</string>
+  <string name="textSettingsTraktQuickRemoveSummary">Offer to remove data from your Trakt.tv account after you remove it in the app.</string>
+  <string name="textSettingsTraktQuickRateTitle">Trakt.tv Quick Rate</string>
+  <string name="textSettingsTraktQuickRateSummary">Rate episodes and movies whenever you mark them as watched in \'Progress\' screen.</string>
+  <string name="textSettingsGeneral">General &amp; UX</string>
+  <string name="textSettingsRecentShowsTitle">Recently Added Amount</string>
+  <string name="textSettingsRecentShowsSummary">Number of recent items to display in \'Collection\'.</string>
+  <string name="textSettingsUpcomingSectionTitle">Upcoming Section</string>
+  <string name="textSettingsUpcomingSectionSummary">Enable/disable \'Upcoming\' section in \'Progress\' tab.</string>
+  <string name="textSettingsMyShowsSectionsTitle">My Shows Sections</string>
+  <string name="textSettingsMyShowsSectionSummary">Enable/disable sections in \'My Shows\' tab.</string>
+  <string name="textSettingsMyMoviesSectionsTitle">My Movies Sections</string>
+  <string name="textSettingsMyMoviesSectionSummary">Enable/disable sections in \'My Movies\' tab.</string>
+  <string name="textSettingsThemeTitle">Theme</string>
+  <string name="textSettingsThemeSummary">Select main theme.</string>
+  <string name="textSettingsThemeWidgetsTitle">Theme</string>
+  <string name="textSettingsThemeWidgetsSummary">Select widgets theme.</string>
+  <string name="textSettingsWidgetsTransparencyTitle">Background</string>
+  <string name="textSettingsWidgetsTransparencySummary">Set level of widgets background transparency.</string>
+  <string name="textSettingsMyShowsCountryTitle">Region</string>
+  <string name="textSettingsMyShowsCountrySummary">Select region to use with streaming services data.</string>
+  <string name="textSettingsMyShowsLanguageTitle">Language</string>
+  <string name="textSettingsMyShowsLanguageSummary">Descriptions and titles will be translated when available. App will restart.</string>
+  <string name="textSettingsDateFormatTitle">Date / Time Format</string>
+  <string name="textSettingsIncludeSpecialsTitle">Special Seasons</string>
+  <string name="textSettingsIncludeSpecialsSummary">Display \'Special\' seasons in show\'s details screen.</string>
+  <string name="textSettingsNotifications">Notifications</string>
+  <string name="textSettingsPushNotificationsTitle">Push Notifications</string>
+  <string name="textSettingsShowsNotificationsSummary">Receive notifications about new movies, episodes, seasons for shows you are following.</string>
+  <string name="textSettingsShowsNotificationsRationale">Please grant the application a permission to display notifications.\n\nWould you like to do it now?</string>
+  <string name="textSettingsMisc">Misc</string>
+  <string name="textSettingsContactDevsTitle">Contact Developers</string>
+  <string name="textSettingsContactDevsSummary">Got an issue? Click to send us an email (showlyapp@gmail.com).</string>
+  <string name="textSettingsRateAppTitle">Give Feedback</string>
+  <string name="textSettingsRateAppSummary">Enjoying Showly? Drop us a review on PlayStore. Thanks!</string>
+  <string name="textSettingsDeleteCacheTitle">Clear Images Cache</string>
+  <string name="textSettingsDeleteCacheSummary">Click to clear local images cache. This may help if shows images are not being loaded correctly.</string>
+  <string name="textSettingsQuickSyncConfirmationTitle">Disable Automatic Sync</string>
+  <string name="textSettingsQuickSyncConfirmationMessage">\nIt seems like Automatic Sync is already turned on.\n\nWould you like to turn it off before enabling instant sync (advised)?\n</string>
+  <string name="textSettingsLogoutTitle">Trakt.tv Sign Out</string>
+  <string name="textSettingsLogoutMessage">\nAre you sure you want to sign out?\n</string>
+  <string name="textSettingsMoviesEnabledTitle">Movies</string>
+  <string name="textSettingsMoviesEnabledSummary">Enable/disable movies support. App will restart.</string>
+  <string name="textSettingsWidgets">Widgets</string>
+  <string name="textSettingsWidgetsLabelsTitle">Titles</string>
+  <string name="textSettingsWidgetsLabelsSummary">Display translucent widgets titles.</string>
+  <string name="textSettingsStreamingsDisclaimer">Streaming services data is provided by</string>
+  <string name="textSettingsStreamingServicesTitle">Streaming Services</string>
+  <string name="textSettingsStreamingServicesMessage">Display streaming services data.</string>
+  <string name="textSettingsProgressNextEpisodeTitle">Next Episode</string>
+  <string name="textSettingsProgressNextEpisodeMessage">Calculate next episode using:</string>
+  <string name="textSettingsTabletColumnsTitle">Lists Columns Number</string>
+  <string name="textSettingsTabletColumnsSummary">Select preferred columns number for lists.</string>
+
+  <string name="textSettingsSpoilers">Spoilers</string>
+
+  <string name="textSettingsSpoilersShows">Shows</string>
+  <string name="textSettingsSpoilersShowsSummary">Manage spoiler settings for shows.</string>
+  <string name="textSettingsSpoilersShowsOverviewsMyTitle">My Shows</string>
+  <string name="textSettingsSpoilersShowsOverviewsMyDescription">Hide <b>description</b> of shows added to My Shows</string>
+  <string name="textSettingsSpoilersShowsRatingsMyDescription">Hide <b>rating</b> of shows added to My Shows</string>
+  <string name="textSettingsSpoilersShowsOverviewsWatchlistTitle">Watchlist</string>
+  <string name="textSettingsSpoilersShowsOverviewsWatchlistDescription">Hide <b>description</b> of shows added to Watchlist</string>
+  <string name="textSettingsSpoilersShowsRatingsWatchlistDescription">Hide <b>rating</b> of shows added to Watchlist</string>
+  <string name="textSettingsSpoilersShowsOverviewsHiddenTitle">Hidden</string>
+  <string name="textSettingsSpoilersShowsOverviewsHiddenDescription">Hide <b>description</b> of shows added to Hidden</string>
+  <string name="textSettingsSpoilersShowsRatingsHiddenDescription">Hide <b>rating</b> of shows added to Hidden</string>
+  <string name="textSettingsSpoilersShowsOverviewsNotCollectedTitle">Not Collected</string>
+  <string name="textSettingsSpoilersShowsOverviewsNotCollectedDescription">Hide <b>description</b> of shows that are not in your Collection</string>
+  <string name="textSettingsSpoilersShowsRatingsNotCollectedDescription">Hide <b>rating</b> of shows that are not in your Collection</string>
+
+  <string name="textSettingsSpoilersMovies">Movies</string>
+  <string name="textSettingsSpoilersMoviesSummary">Manage spoiler settings for movies.</string>
+  <string name="textSettingsSpoilersMoviesOverviewsMyTitle">My Movies</string>
+  <string name="textSettingsSpoilersMoviesOverviewsMyDescription">Hide <b>description</b> of movies added to My Movies</string>
+  <string name="textSettingsSpoilersMoviesRatingsMyDescription">Hide <b>rating</b> of movies added to My Movies</string>
+  <string name="textSettingsSpoilersMoviesOverviewsWatchlistTitle">Watchlist</string>
+  <string name="textSettingsSpoilersMoviesOverviewsWatchlistDescription">Hide <b>description</b> of movies added to Watchlist</string>
+  <string name="textSettingsSpoilersMoviesRatingsWatchlistDescription">Hide <b>rating</b> of movies added to Watchlist</string>
+  <string name="textSettingsSpoilersMoviesOverviewsHiddenTitle">Hidden</string>
+  <string name="textSettingsSpoilersMoviesOverviewsHiddenDescription">Hide <b>description</b> of movies added to Hidden</string>
+  <string name="textSettingsSpoilersMoviesRatingsHiddenDescription">Hide <b>rating</b> of movies added to Hidden</string>
+  <string name="textSettingsSpoilersMoviesOverviewsNotCollectedTitle">Not Collected</string>
+  <string name="textSettingsSpoilersMoviesOverviewsNotCollectedDescription">Hide <b>description</b> of movies that are not in your Collection</string>
+  <string name="textSettingsSpoilersMoviesRatingsNotCollectedDescription">Hide <b>rating</b> of movies that are not in your Collection</string>
+
+  <string name="textSettingsSpoilersEpisodes">Episodes</string>
+  <string name="textSettingsSpoilersEpisodesSummary">Manage spoiler settings for episodes.</string>
+  <string name="textSettingsSpoilersEpisodesImage">Hide <b>image</b> of unwatched episodes.</string>
+  <string name="textSettingsSpoilersEpisodesTitle">Hide <b>title</b> of unwatched episodes.</string>
+  <string name="textSettingsSpoilersEpisodesDescription">Hide <b>description</b> of unwatched episodes.</string>
+  <string name="textSettingsSpoilersEpisodesRating">Hide <b>rating</b> of unwatched episodes.</string>
+
+  <string name="textSettingsSpoilersTapToRevealTitle">Tap To Reveal</string>
+  <string name="textSettingsSpoilersTapToRevealDescription">Tap hidden content to temporarily reveal it.</string>
+
+  <string name="textNextEpisodeLastWatched">Last watched episode</string>
+  <string name="textNextEpisodeOldest">Oldest unwatched episode</string>
+
+  <string name="textLanguageEnglish" translatable="false">English</string>
+  <string name="textLanguagePolish" translatable="false">Polski</string>
+  <string name="textLanguageArabic" translatable="false">العربية</string>
+  <string name="textLanguageChinese" translatable="false">中文简体</string>
+  <string name="textLanguageSpanish" translatable="false">Español</string>
+  <string name="textLanguageItalian" translatable="false">Italiano</string>
+  <string name="textLanguageFrench" translatable="false">Français</string>
+  <string name="textLanguagePortugalBrasil" translatable="false">Português brasileiro</string>
+  <string name="textLanguageTurkish" translatable="false">Türkçe</string>
+  <string name="textLanguageUkrainian" translatable="false">Українська</string>
+  <string name="textLanguageGerman" translatable="false">Deutsch</string>
+  <string name="textLanguageRussian" translatable="false">Pусский</string>
+  <string name="textLanguageFinnish" translatable="false">Suomi</string>
+
+  <string name="textThemeDark">Dark</string>
+  <string name="textThemeLight">Light</string>
+  <string name="textThemeSystem">System</string>
+  <string name="textTransparency0" translatable="false">100%</string>
+  <string name="textTransparency25" translatable="false">25%</string>
+  <string name="textTransparency50" translatable="false">50%</string>
+  <string name="textTransparency75" translatable="false">75%</string>
+  <string name="textTransparency100">Opaque</string>
+</resources>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/searchViewRoot"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  app:cardBackgroundColor="?attr/colorSearchViewBackground"
+  app:cardCornerRadius="@dimen/searchViewCorner"
+  app:cardElevation="@dimen/elevationSmall"
+  app:strokeWidth="0dp"
+  >
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="@dimen/spaceMedium"
+    android:layout_marginEnd="@dimen/spaceMicro"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    >
+
+    <ImageView
+      android:id="@+id/searchViewIcon"
+      android:layout_width="24dp"
+      android:layout_height="match_parent"
+      android:layout_marginEnd="@dimen/spaceMedium"
+      app:srcCompat="@drawable/ic_anim_search_to_close"
+      app:tint="?attr/colorSearchViewControl"
+      />
+
+    <FrameLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:paddingEnd="@dimen/spaceTiny"
+      >
+
+      <TextView
+        android:id="@+id/searchViewText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical|start"
+        android:text="@string/textSearchFor"
+        android:textAlignment="viewStart"
+        android:textColor="?attr/colorSearchViewControl"
+        android:textSize="16sp"
+        />
+
+      <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/searchViewInput"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="84dp"
+        android:background="@android:color/transparent"
+        android:gravity="start|center_vertical"
+        android:hint="@string/textSearchFor"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:maxLength="50"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:textAlignment="viewStart"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textColorHint="?attr/colorSearchViewControl"
+        android:textSize="16sp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        />
+
+      <ImageView
+        android:id="@+id/searchStatsIcon"
+        android:layout_width="40dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:layout_marginEnd="40dp"
+        android:padding="8dp"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_insight"
+        app:tint="?attr/colorSearchViewControl"
+        tools:visibility="visible"
+        />
+
+      <ImageView
+        android:id="@+id/searchTraktIcon"
+        android:layout_width="40dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:layout_marginEnd="40dp"
+        android:padding="11dp"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_trakt"
+        app:tint="?attr/colorSearchViewControl"
+        tools:visibility="visible"
+        />
+
+      <ImageView
+        android:id="@+id/searchSettingsIcon"
+        android:layout_width="40dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:padding="9dp"
+        app:srcCompat="@drawable/ic_settings"
+        app:tint="?attr/colorSearchViewControl"
+        />
+
+      <ImageView
+        android:id="@+id/searchDotBadge"
+        android:layout_width="6dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:translationX="@dimen/searchViewDotTranslation"
+        android:translationY="6dp"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_circle"
+        app:tint="?attr/colorAccent"
+        />
+
+    </FrameLayout>
+
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/searchViewTraktSync"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="@dimen/spaceMedium"
+    android:layout_marginEnd="@dimen/spaceMicro"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:visibility="gone"
+    >
+
+    <ProgressBar
+      style="@style/ProgressBar.Accent"
+      android:layout_width="20dp"
+      android:layout_height="match_parent"
+      android:layout_marginEnd="@dimen/spaceSmall"
+      />
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/textTraktSync"
+      android:textColor="?attr/colorAccent"
+      />
+
+  </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

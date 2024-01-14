@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textStatistics">Estatísticas</string>
+  <string name="textStatisticsEmpty">Pelo menos uma série deve estar presente na aba <b>Minhas Séries</b>\nantes que as estatísticas possam ser exibidas.</string>
+  <string name="textStatisticsMostWatchedShows">Séries mais assistidas</string>
+  <string name="textStatisticsTotalTimeSpent">Tempo total gasto assistindo</string>
+  <string name="textStatisticsTotalTimeItIs">e é</string>
+  <string name="textStatisticsTotalTimeSpentHours">%s horas</string>
+  <string name="textStatisticsTotalTimeSpentMinutes">%s minutos</string>
+  <string name="textStatisticsTotalTimeSpentDays">que é aproximadamente %s dias.</string>
+  <string name="textStatisticsTotalEpisodes">Episódios assistidos</string>
+  <string name="textStatisticsTotalEpisodesCount">%s episódios</string>
+  <string name="textStatisticsTotalEpisodesShowsCount">espalhou-se por %s séries.</string>
+  <string name="textStatisticsTopGenre">Top Gêneros</string>
+  <string name="textStatisticsTopGenreSubValue">Seus favoritos. Toque para ver mais.</string>
+  <string name="textStatisticsTopGenreSubValue2">Seus favoritos</string>
+  <string name="textStatisticsShowMore">Mostrar mais</string>
+  <string name="textStatisticsRatings">Avaliado recentemente</string>
+  <string name="textStatisticsHours">Horas</string>
+  <string name="textStatisticsEpisodes">Episódios</string>
+  <string name="textStatisticsSeasons">Temporadas</string>
+</resources>

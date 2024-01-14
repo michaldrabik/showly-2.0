@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textPoster">Afiş</string>
+  <string name="textFanart">Hayran Çalışması</string>
+  <string name="textGalleryEmpty">Kullanılabilir fotoğraf yok</string>
+  <string name="textUrlDialogTitle">Fotoğraf İndir</string>
+  <string name="textUrlDialogHint">Fotoğrafın URL\'si</string>
+  <string name="textUrlDialogInvalidUrl">Geçersiz URL formatı.\nÖrnek: https://test.com/image.jpg</string>
+  <string name="textUrlDialogInvalidImage">Üzgünüz. Bu fotoğraf yüklenemedi.</string>
+</resources>

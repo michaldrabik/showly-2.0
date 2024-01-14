@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textComment">Yorum</string>
+  <string name="textComments">Yorumlar:</string>
+  <string name="textComments2">Yorumlar</string>
+  <string name="textNoComments">Hiçbir yorum yok.</string>
+  <string name="textCommentDisclaimer">Saygılı bir şekilde İngilizce dilinde en az 5 kelimeyle yazın ve spoilerları belirtin!</string>
+  <string name="textSpoilers">Spoiler</string>
+  <string name="textCommentPosted">Yorumunuz gönderildi.</string>
+  <string name="textCommentDeleted">Yorumunuz silindi.</string>
+  <string name="textCommentConfirmDeleteTitle">Yorumu Sil</string>
+  <string name="textCommentConfirmDelete">Bu yorumu silmek istediğinizden emin misiniz?</string>
+  <string name="textSignBeforeRate">Bir diziye oy vermeden önce lütfen oturum açın.</string>
+  <string name="textSignBeforeRateMovie">Bir filme oy vermeden önce lütfen oturum açın.</string>
+  <string name="errorCommentFormat">Yorumunuz İngilizce dilinde olmalı ve en az 5 kelime içermelidir.</string>
+  <string name="errorCommentDelete">Bu yorum artık silinemez.</string>
+</resources>

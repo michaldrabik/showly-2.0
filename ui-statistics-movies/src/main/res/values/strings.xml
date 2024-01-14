@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textStatisticsMovies">Statistics</string>
+  <string name="textStatisticsMoviesEmpty">At least one movie must be present in <b>My Movies</b>\nbefore statistics can be displayed.</string>
+  <string name="textStatisticsMoviesTotalTimeSpent">Total Time Spent Watching</string>
+  <string name="textStatisticsMoviesTotalTimeItIs">and it is</string>
+  <string name="textStatisticsMoviesTotalTimeSpentHours">%s hours</string>
+  <string name="textStatisticsMoviesTotalTimeSpentMinutes">%s minutes</string>
+  <string name="textStatisticsMoviesTotalTimeSpentDays">which is about %s days.</string>
+  <string name="textStatisticsMoviesTotalMovies">Total Movies Watched</string>
+  <string name="textStatisticsMoviesTotalMoviesCount">%s Movies</string>
+  <string name="textStatisticsMoviesTopGenre">Top Genres</string>
+  <string name="textStatisticsMoviesTopGenreSubValue">seem to be your cup of tea. Tap to see more.</string>
+  <string name="textStatisticsMoviesTopGenreSubValue2">seem to be your cup of tea.</string>
+  <string name="textStatisticsMoviesRatings">Recently Rated</string>
+</resources>

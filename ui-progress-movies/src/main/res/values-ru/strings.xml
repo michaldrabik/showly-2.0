@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="tabMoviesCalendar">Календарь</string>
+  <string name="tabMoviesProgress">Прогресс</string>
+  <string name="textMoviesCalendarEmpty">Нет новых фильмов.</string>
+  <string name="textMoviesCalendarRecentsEmpty">Недавно вышедших фильмов нет.</string>
+  <string name="textDiscoverMovies">Найти фильмы</string>
+  <string name="textMoviesTraktSynchronize">Импортировать из Trakt.tv</string>
+  <string name="textMoviesProgressEmpty">Ваш <b>Прогресс</b> в настоящее время пуст.\n\nПосетите вкладку <b>Открытия</b>, чтобы добавить сериалы или импортировать вашу коллекцию Trakt.tv.</string>
+</resources>

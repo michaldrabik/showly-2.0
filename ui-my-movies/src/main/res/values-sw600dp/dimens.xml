@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="collectionImageMargin">29dp</dimen>
+  <dimen name="collectionImageTitleMargin">8dp</dimen>
+  <dimen name="collectionImageTitleSize">12sp</dimen>
+
+  <dimen name="myMoviesFanartHeight">176dp</dimen>
+  <dimen name="myMoviesFanartCorner">6dp</dimen>
+  <dimen name="myMoviesBottomPadding">86dp</dimen>
+</resources>

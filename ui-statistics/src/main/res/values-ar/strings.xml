@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textStatistics">الإحصائيات</string>
+  <string name="textStatisticsEmpty">أضف مسلسل واحد على الأقل في قائمة <b>مسلسلاتي</b>\nلعرض قائمة الإحصائيات.</string>
+  <string name="textStatisticsMostWatchedShows">المسلسلات الأكثر مشاهدة</string>
+  <string name="textStatisticsTotalTimeSpent">إجمالي الوقت المنقضي في المشاهدة</string>
+  <string name="textStatisticsTotalTimeItIs">يساوي</string>
+  <string name="textStatisticsTotalTimeSpentHours">%s ساعات</string>
+  <string name="textStatisticsTotalTimeSpentMinutes">%s دقائق</string>
+  <string name="textStatisticsTotalTimeSpentDays">وهو حوالي %s أيام.</string>
+  <string name="textStatisticsTotalEpisodes">إجمالي الحلقات التي تمت مشاهدتها</string>
+  <string name="textStatisticsTotalEpisodesCount">%s حلقة</string>
+  <string name="textStatisticsTotalEpisodesShowsCount">مقسمة على %s مسلسلات</string>
+  <string name="textStatisticsTopGenre">أعلى التصنيفات</string>
+  <string name="textStatisticsTopGenreSubValue">يبدو أنهم تصنيفاتك المفضلة. انقر للمزيد.</string>
+  <string name="textStatisticsTopGenreSubValue2">يبدو أنهم تصنيفاتك المفضلة.</string>
+  <string name="textStatisticsShowMore">عرض المزيد</string>
+  <string name="textStatisticsRatings">تم تقييمه مؤخراً</string>
+  <string name="textStatisticsHours">ساعات</string>
+  <string name="textStatisticsEpisodes">حلقات</string>
+  <string name="textStatisticsSeasons">مواسم</string>
+</resources>

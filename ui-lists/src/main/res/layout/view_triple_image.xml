@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:layout_width="130dp"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <ImageView
+    android:id="@+id/viewTripleImagePlaceholder3"
+    android:layout_width="@dimen/listsImageWidth"
+    android:layout_height="@dimen/listsImageHeight"
+    android:layout_gravity="start"
+    android:background="@drawable/bg_media_view_placeholder"
+    android:elevation="3dp"
+    android:padding="@dimen/spaceBig"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:srcCompat="@drawable/ic_list_alt"
+    app:tint="?attr/colorPlaceholderIcon"
+    />
+
+
+  <ImageView
+    android:id="@+id/viewTripleImage3"
+    android:layout_width="@dimen/listsImageWidth"
+    android:layout_height="@dimen/listsImageHeight"
+    android:layout_gravity="start"
+    android:background="@drawable/bg_media_view_elevation"
+    android:elevation="3dp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:visibility="visible"
+    />
+
+  <ImageView
+    android:id="@+id/viewTripleImagePlaceholder2"
+    android:layout_width="@dimen/listsImageWidth"
+    android:layout_height="@dimen/listsImageHeight"
+    android:layout_gravity="center"
+    android:background="@drawable/bg_media_view_placeholder"
+    android:elevation="3dp"
+    android:padding="@dimen/spaceBig"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:srcCompat="@drawable/ic_list_alt"
+    app:tint="?attr/colorPlaceholderIcon"
+    tools:visibility="visible"
+    />
+
+  <ImageView
+    android:id="@+id/viewTripleImage2"
+    android:layout_width="@dimen/listsImageWidth"
+    android:layout_height="@dimen/listsImageHeight"
+    android:layout_gravity="center"
+    android:background="@drawable/bg_media_view_elevation"
+    android:elevation="3dp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:visibility="visible"
+    />
+
+  <ImageView
+    android:id="@+id/viewTripleImagePlaceholder1"
+    android:layout_width="@dimen/listsImageWidth"
+    android:layout_height="@dimen/listsImageHeight"
+    android:layout_gravity="end"
+    android:background="@drawable/bg_media_view_placeholder"
+    android:elevation="3dp"
+    android:padding="@dimen/spaceBig"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:srcCompat="@drawable/ic_list_alt"
+    app:tint="?attr/colorPlaceholderIcon"
+    tools:visibility="visible"
+    />
+
+  <ImageView
+    android:id="@+id/viewTripleImage1"
+    android:layout_width="@dimen/listsImageWidth"
+    android:layout_height="@dimen/listsImageHeight"
+    android:layout_gravity="end"
+    android:background="@drawable/bg_media_view_elevation"
+    android:elevation="3dp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:visibility="visible"
+    />
+
+</merge>

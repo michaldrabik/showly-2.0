@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textSearchInitial1">Что вы ищете?</string>
+  <string name="textSearchInitial2">Поиск с помощью Trakt.tv</string>
+  <string name="textClear">Очистить историю поиска</string>
+</resources>

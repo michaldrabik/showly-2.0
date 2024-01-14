@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  tools:theme="@style/AppTheme"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/myShowsHeaderRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    >
+
+    <androidx.appcompat.widget.AppCompatTextView
+      android:id="@+id/myShowsHeaderLabel"
+      style="@style/MyShows.Label"
+      android:layout_marginTop="@dimen/spaceNormal"
+      app:layout_constraintBottom_toTopOf="@id/myShowsFilterChipsScroll"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_goneMarginBottom="@dimen/spaceSmall"
+      tools:text="Section Label"
+      />
+
+    <HorizontalScrollView
+      android:id="@+id/myShowsFilterChipsScroll"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="14dp"
+      android:layout_marginBottom="@dimen/spaceSmall"
+      android:clipToPadding="false"
+      android:overScrollMode="never"
+      android:scrollbars="none"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/myShowsHeaderLabel"
+      >
+
+      <com.google.android.material.chip.ChipGroup
+        android:id="@+id/myShowsFilterChips"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:singleLine="true"
+        >
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/myShowsTypeChip"
+          style="@style/ShowlyChip.Filter"
+          android:checkable="false"
+          android:text="@string/textHeaderAll"
+          />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/myShowsSortChip"
+          style="@style/ShowlyChip.Sort"
+          android:text="@string/textSortName"
+          android:visibility="gone"
+          tools:visibility="visible"
+          />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/myShowsNetworksChip"
+          style="@style/ShowlyChip.Filter"
+          android:checkable="false"
+          android:text="@string/textNetworks"
+          android:visibility="gone"
+          tools:visibility="visible"
+          />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/myShowsGenresChip"
+          style="@style/ShowlyChip.Filter"
+          android:checkable="false"
+          android:text="@string/textGenres"
+          android:visibility="gone"
+          tools:visibility="visible"
+          />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/myShowsSortListViewChip"
+          style="@style/ShowlyChip.Filter"
+          android:checkable="false"
+          app:chipIcon="@drawable/ic_view_grid"
+          app:chipIconEnabled="true"
+          app:chipIconTint="?android:textColorPrimary"
+          app:iconEndPadding="-14dp"
+          app:iconStartPadding="2dp"
+          />
+
+      </com.google.android.material.chip.ChipGroup>
+
+    </HorizontalScrollView>
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>

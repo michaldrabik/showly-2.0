@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:overScrollMode="never"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bottom_sheet"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:focusableInTouchMode="true"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
+    tools:theme="@style/AppTheme"
+    >
+
+    <LinearLayout
+      android:id="@+id/settingsLayout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:layout_constraintBottom_toTopOf="@id/closeButton"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      >
+
+      <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/notCollectedMoviesLayout"
+        style="@style/Settings.ItemLayout"
+        android:layout_width="match_parent"
+        >
+
+        <TextView
+          android:id="@+id/notCollectedMoviesTitle"
+          style="@style/Settings.Title"
+          android:text="@string/textSettingsSpoilersMoviesOverviewsNotCollectedTitle"
+          android:textStyle="bold"
+          app:layout_constraintBottom_toTopOf="@id/notCollectedMoviesDescription"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintVertical_chainStyle="spread"
+          />
+
+        <TextView
+          android:id="@+id/notCollectedMoviesDescription"
+          style="@style/Settings.Summary"
+          android:layout_marginEnd="@dimen/spaceNormal"
+          android:text="@string/textSettingsSpoilersMoviesOverviewsNotCollectedDescription"
+          app:layout_constrainedWidth="true"
+          app:layout_constraintBottom_toTopOf="@id/notCollectedMoviesRatingDescription"
+          app:layout_constraintEnd_toStartOf="@id/notCollectedMoviesSwitch"
+          app:layout_constraintHorizontal_bias="0"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/notCollectedMoviesTitle"
+          />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+          android:id="@+id/notCollectedMoviesSwitch"
+          style="@style/ShowlyCheckbox"
+          android:layout_width="30dp"
+          android:layout_height="30dp"
+          android:checked="false"
+          app:layout_constraintBottom_toBottomOf="@id/notCollectedMoviesDescription"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="@id/notCollectedMoviesDescription"
+          />
+
+        <TextView
+          android:id="@+id/notCollectedMoviesRatingDescription"
+          style="@style/Settings.Summary"
+          android:layout_marginTop="@dimen/spaceNormal"
+          android:layout_marginEnd="@dimen/spaceNormal"
+          android:text="@string/textSettingsSpoilersMoviesRatingsNotCollectedDescription"
+          app:layout_constrainedWidth="true"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toStartOf="@id/notCollectedMoviesRatingsSwitch"
+          app:layout_constraintHorizontal_bias="0"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/notCollectedMoviesDescription"
+          />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+          android:id="@+id/notCollectedMoviesRatingsSwitch"
+          style="@style/ShowlyCheckbox"
+          android:layout_width="30dp"
+          android:layout_height="30dp"
+          android:checked="false"
+          app:layout_constraintBottom_toBottomOf="@id/notCollectedMoviesRatingDescription"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="@id/notCollectedMoviesRatingDescription"
+          />
+
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
+      <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/myMoviesLayout"
+        style="@style/Settings.ItemLayout"
+        android:layout_width="match_parent"
+        android:paddingTop="0dp"
+        >
+
+        <TextView
+          android:id="@+id/myMoviesTitle"
+          style="@style/Settings.Title"
+          android:text="@string/textSettingsSpoilersMoviesOverviewsMyTitle"
+          android:textStyle="bold"
+          app:layout_constraintBottom_toTopOf="@id/myMoviesDescription"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintVertical_chainStyle="spread"
+          />
+
+        <TextView
+          android:id="@+id/myMoviesDescription"
+          style="@style/Settings.Summary"
+          android:layout_marginEnd="@dimen/spaceNormal"
+          android:text="@string/textSettingsSpoilersMoviesOverviewsMyDescription"
+          app:layout_constrainedWidth="true"
+          app:layout_constraintBottom_toTopOf="@id/myMoviesRatingDescription"
+          app:layout_constraintEnd_toStartOf="@id/myMoviesSwitch"
+          app:layout_constraintHorizontal_bias="0"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/myMoviesTitle"
+          />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+          android:id="@+id/myMoviesSwitch"
+          style="@style/ShowlyCheckbox"
+          android:layout_width="30dp"
+          android:layout_height="30dp"
+          android:checked="false"
+          app:layout_constraintBottom_toBottomOf="@id/myMoviesDescription"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="@id/myMoviesDescription"
+          />
+
+        <TextView
+          android:id="@+id/myMoviesRatingDescription"
+          style="@style/Settings.Summary"
+          android:layout_marginTop="@dimen/spaceNormal"
+          android:layout_marginEnd="@dimen/spaceNormal"
+          android:text="@string/textSettingsSpoilersMoviesRatingsMyDescription"
+          app:layout_constrainedWidth="true"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toStartOf="@id/myMoviesRatingsSwitch"
+          app:layout_constraintHorizontal_bias="0"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/myMoviesDescription"
+          />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+          android:id="@+id/myMoviesRatingsSwitch"
+          style="@style/ShowlyCheckbox"
+          android:layout_width="30dp"
+          android:layout_height="30dp"
+          android:checked="false"
+          app:layout_constraintBottom_toBottomOf="@id/myMoviesRatingDescription"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="@id/myMoviesRatingDescription"
+          />
+
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
+      <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/watchlistMoviesLayout"
+        style="@style/Settings.ItemLayout"
+        android:layout_width="match_parent"
+        android:paddingTop="0dp"
+        >
+
+        <TextView
+          android:id="@+id/watchlistMoviesTitle"
+          style="@style/Settings.Title"
+          android:text="@string/textSettingsSpoilersMoviesOverviewsWatchlistTitle"
+          android:textStyle="bold"
+          app:layout_constraintBottom_toTopOf="@id/watchlistMoviesDescription"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintVertical_chainStyle="spread"
+          />
+
+        <TextView
+          android:id="@+id/watchlistMoviesDescription"
+          style="@style/Settings.Summary"
+          android:layout_marginEnd="@dimen/spaceNormal"
+          android:text="@string/textSettingsSpoilersMoviesOverviewsWatchlistDescription"
+          app:layout_constrainedWidth="true"
+          app:layout_constraintBottom_toTopOf="@id/watchlistMoviesRatingDescription"
+          app:layout_constraintEnd_toStartOf="@id/watchlistMoviesSwitch"
+          app:layout_constraintHorizontal_bias="0"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/watchlistMoviesTitle"
+          />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+          android:id="@+id/watchlistMoviesSwitch"
+          style="@style/ShowlyCheckbox"
+          android:layout_width="30dp"
+          android:layout_height="30dp"
+          android:checked="false"
+          app:layout_constraintBottom_toBottomOf="@id/watchlistMoviesDescription"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="@id/watchlistMoviesDescription"
+          />
+
+        <TextView
+          android:id="@+id/watchlistMoviesRatingDescription"
+          style="@style/Settings.Summary"
+          android:layout_marginTop="@dimen/spaceNormal"
+          android:layout_marginEnd="@dimen/spaceNormal"
+          android:text="@string/textSettingsSpoilersMoviesRatingsWatchlistDescription"
+          app:layout_constrainedWidth="true"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toStartOf="@id/watchlistMoviesRatingsSwitch"
+          app:layout_constraintHorizontal_bias="0"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/watchlistMoviesDescription"
+          />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+          android:id="@+id/watchlistMoviesRatingsSwitch"
+          style="@style/ShowlyCheckbox"
+          android:layout_width="30dp"
+          android:layout_height="30dp"
+          android:checked="false"
+          app:layout_constraintBottom_toBottomOf="@id/watchlistMoviesRatingDescription"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="@id/watchlistMoviesRatingDescription"
+          />
+
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
+      <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/hiddenMoviesLayout"
+        style="@style/Settings.ItemLayout"
+        android:layout_width="match_parent"
+        android:paddingTop="0dp"
+        >
+
+        <TextView
+          android:id="@+id/hiddenMoviesTitle"
+          style="@style/Settings.Title"
+          android:text="@string/textSettingsSpoilersMoviesOverviewsHiddenTitle"
+          android:textStyle="bold"
+          app:layout_constraintBottom_toTopOf="@id/hiddenMoviesDescription"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintVertical_chainStyle="spread"
+          />
+
+        <TextView
+          android:id="@+id/hiddenMoviesDescription"
+          style="@style/Settings.Summary"
+          android:layout_marginEnd="@dimen/spaceNormal"
+          android:text="@string/textSettingsSpoilersMoviesOverviewsHiddenDescription"
+          app:layout_constrainedWidth="true"
+          app:layout_constraintBottom_toTopOf="@id/hiddenMoviesRatingDescription"
+          app:layout_constraintEnd_toStartOf="@id/hiddenMoviesSwitch"
+          app:layout_constraintHorizontal_bias="0"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/hiddenMoviesTitle"
+          />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+          android:id="@+id/hiddenMoviesSwitch"
+          style="@style/ShowlyCheckbox"
+          android:layout_width="30dp"
+          android:layout_height="30dp"
+          android:checked="false"
+          app:layout_constraintBottom_toBottomOf="@id/hiddenMoviesDescription"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="@id/hiddenMoviesDescription"
+          />
+
+        <TextView
+          android:id="@+id/hiddenMoviesRatingDescription"
+          style="@style/Settings.Summary"
+          android:layout_marginTop="@dimen/spaceNormal"
+          android:layout_marginEnd="@dimen/spaceNormal"
+          android:text="@string/textSettingsSpoilersMoviesRatingsHiddenDescription"
+          app:layout_constrainedWidth="true"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toStartOf="@id/hiddenMoviesRatingsSwitch"
+          app:layout_constraintHorizontal_bias="0"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/hiddenMoviesDescription"
+          />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+          android:id="@+id/hiddenMoviesRatingsSwitch"
+          style="@style/ShowlyCheckbox"
+          android:layout_width="30dp"
+          android:layout_height="30dp"
+          android:checked="false"
+          app:layout_constraintBottom_toBottomOf="@id/hiddenMoviesRatingDescription"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="@id/hiddenMoviesRatingDescription"
+          />
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/closeButton"
+      style="@style/RoundMaterialButton"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_margin="@dimen/spaceNormal"
+      android:backgroundTint="@color/selector_main_button"
+      android:gravity="center"
+      android:text="@string/textClose"
+      android:textColor="?attr/textColorOnSurface"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsLayout"
+      app:rippleColor="?android:attr/textColorPrimary"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="menuLists">Listen</string>
+  <string name="menuList">Liste</string>
+  <string name="textFilters">Filter:</string>
+  <string name="textListsEmpty">Ihre Listensammlung ist derzeit leer.</string>
+  <string name="textListEmpty">Die Liste ist aktuell leer.</string>
+  <string name="textCreateList">Liste erstellen</string>
+  <string name="textCreateListDescription">Erstelle eine neue Liste.</string>
+  <string name="textName">Name</string>
+  <string name="textDescription">Beschreibung (optional)</string>
+  <string name="textDeleteList">Liste löschen</string>
+  <string name="textEditList">Liste bearbeiten</string>
+  <string name="textEditListDescription">Aktualisiere deine Liste.</string>
+  <string name="textConfirmDeleteListTitle">Liste löschen</string>
+  <string name="textConfirmDeleteListSubtitle">Bist du sicher, dass du diese Liste löschen möchtest?</string>
+  <string name="textChangeRanks">Ränge ändern</string>
+  <string name="textChangeRanksSubtitle">Ziehe ein Listenelement um seinen Rang zu ändern</string>
+  <string name="textManageLists">Listen verwalten</string>
+  <string name="textManageListsShows">Verwalte deine Listen für diese Serie.</string>
+  <string name="textManageListsMovies">Verwalte deine Listen für diesen Film.</string>
+  <string name="errorCouldNotCreateList">Wir konnten derzeit keine neue Liste in deinem Trakt Konto erstellen.\nBitte überprüfe deine Internetverbindung und versuche es erneut.</string>
+  <string name="errorCouldNotUpdateList">Wir konnten diese Liste derzeit nicht in deinem Trakt Konto aktualisieren.\nBitte überprüfe deine Internetverbindung und versuche es erneut.</string>
+  <string name="errorCouldNotDeleteList">Wir konnten diese Liste momentan nicht von deinem Trakt Konto löschen.\nBitte überprüfe deine Internetverbindung und versuche es erneut.</string>
+</resources>

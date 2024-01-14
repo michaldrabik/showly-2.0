@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="menuMyMovies">Mis Películas</string>
+  <string name="menuWatchlistMovies">Pendientes</string>
+  <string name="menuHidden">Ocultos</string>
+  <string name="textMyMoviesEmpty">Tu colección de películas actualmente está vacía.\n\nVisita la pestaña <b>Descubrir</b> para añadir tu primera película.</string>
+  <string name="textWatchlistMoviesEmpty">Tu lista <b>Pendientes</b> actualmente está vacía.\n\nVisita la pestaña <b>Descubrir</b> para añadir  películas que quieras ver en el futuro.</string>
+  <string name="textHiddenEmpty">Tu lista de <b>Ocultos</b> está actualmente vacía.\n\n<b>Ocultos</b> es una lista de elementos que no te interesan.\n\nLos elementos ocultos ya no aparecerán en <b>Progreso</b>, <b>Descubrir</b> y otras secciones.</string>
+</resources>

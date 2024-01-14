@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textSortOrderMovies">Feed:</string>
+  <string name="textDiscoverFilterAnticipatedMovies">Hide Anticipated Movies</string>
+  <string name="textDiscoverFilterCollectionMovies">Hide Collection</string>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textPoster">ملصق</string>
+  <string name="textFanart">فان أرت</string>
+  <string name="textGalleryEmpty">لا توجد صور</string>
+  <string name="textUrlDialogTitle">تحميل صورة</string>
+  <string name="textUrlDialogHint">رابط الصورة</string>
+  <string name="textUrlDialogInvalidUrl">رابط الصورة غير صالح.\nتأكد أنه بالصيغة التالية: https://test.com/image.jpg</string>
+  <string name="textUrlDialogInvalidImage">عفوًا، لا يمكن تحميل الصورة.</string>
+</resources>

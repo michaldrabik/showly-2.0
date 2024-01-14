@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textSeasonEpisodeDate">الموسم %02d الحلقة %02d | %s</string>
+  <string name="textLoadCommentsCount">تعليقات (%d)</string>
+  <string name="textVotes">%.1f (%d تقييم)</string>
+</resources>

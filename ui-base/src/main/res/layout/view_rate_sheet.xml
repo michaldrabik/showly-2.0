@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/viewRateSheetRoot"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:background="@drawable/bg_bottom_sheet"
+  android:clipChildren="false"
+  android:clipToPadding="false"
+  android:focusableInTouchMode="true"
+  android:padding="@dimen/spaceNormal"
+  >
+
+  <com.michaldrabik.ui_base.common.views.RateValueView
+    android:id="@+id/viewRateSheetRating"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/spaceNormal"
+    app:layout_constraintBottom_toTopOf="@id/viewRateSheetStarsLayout"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_bias="0"
+    app:layout_constraintVertical_chainStyle="packed"
+    />
+
+  <LinearLayout
+    android:id="@+id/viewRateSheetStarsLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:visibility="gone"
+    app:layout_constraintBottom_toTopOf="@id/viewRateSheetSaveButton"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/viewRateSheetRating"
+    tools:visibility="visible"
+    >
+
+    <ImageView
+      android:id="@+id/star1"
+      android:layout_width="25dp"
+      android:layout_height="30dp"
+      android:layout_marginEnd="2dp"
+      android:layout_weight="1"
+      android:adjustViewBounds="true"
+      android:src="@drawable/ic_star_empty"
+      android:tag="1"
+      app:tint="?android:attr/textColorPrimary"
+      />
+
+    <ImageView
+      android:id="@+id/star2"
+      android:layout_width="25dp"
+      android:layout_height="30dp"
+      android:layout_marginEnd="2dp"
+      android:layout_weight="1"
+      android:adjustViewBounds="true"
+      android:src="@drawable/ic_star_empty"
+      android:tag="2"
+      app:tint="?android:attr/textColorPrimary"
+      />
+
+    <ImageView
+      android:id="@+id/star3"
+      android:layout_width="25dp"
+      android:layout_height="30dp"
+      android:layout_marginEnd="2dp"
+      android:layout_weight="1"
+      android:adjustViewBounds="true"
+      android:src="@drawable/ic_star_empty"
+      android:tag="3"
+      app:tint="?android:attr/textColorPrimary"
+      />
+
+    <ImageView
+      android:id="@+id/star4"
+      android:layout_width="25dp"
+      android:layout_height="30dp"
+      android:layout_marginEnd="2dp"
+      android:layout_weight="1"
+      android:adjustViewBounds="true"
+      android:src="@drawable/ic_star_empty"
+      android:tag="4"
+      app:tint="?android:attr/textColorPrimary"
+      />
+
+    <ImageView
+      android:id="@+id/star5"
+      android:layout_width="25dp"
+      android:layout_height="30dp"
+      android:layout_marginEnd="2dp"
+      android:layout_weight="1"
+      android:adjustViewBounds="true"
+      android:src="@drawable/ic_star_empty"
+      android:tag="5"
+      app:tint="?android:attr/textColorPrimary"
+      />
+
+    <ImageView
+      android:id="@+id/star6"
+      android:layout_width="25dp"
+      android:layout_height="30dp"
+      android:layout_marginEnd="2dp"
+      android:layout_weight="1"
+      android:adjustViewBounds="true"
+      android:src="@drawable/ic_star_empty"
+      android:tag="6"
+      app:tint="?android:attr/textColorPrimary"
+      />
+
+    <ImageView
+      android:id="@+id/star7"
+      android:layout_width="25dp"
+      android:layout_height="30dp"
+      android:layout_marginEnd="2dp"
+      android:layout_weight="1"
+      android:adjustViewBounds="true"
+      android:src="@drawable/ic_star_empty"
+      android:tag="7"
+      app:tint="?android:attr/textColorPrimary"
+      />
+
+    <ImageView
+      android:id="@+id/star8"
+      android:layout_width="25dp"
+      android:layout_height="30dp"
+      android:layout_marginEnd="2dp"
+      android:layout_weight="1"
+      android:adjustViewBounds="true"
+      android:src="@drawable/ic_star_empty"
+      android:tag="8"
+      app:tint="?android:attr/textColorPrimary"
+      />
+
+    <ImageView
+      android:id="@+id/star9"
+      android:layout_width="25dp"
+      android:layout_height="30dp"
+      android:layout_marginEnd="2dp"
+      android:layout_weight="1"
+      android:adjustViewBounds="true"
+      android:src="@drawable/ic_star_empty"
+      android:tag="9"
+      app:tint="?android:attr/textColorPrimary"
+      />
+
+    <ImageView
+      android:id="@+id/star10"
+      android:layout_width="25dp"
+      android:layout_height="30dp"
+      android:layout_weight="1"
+      android:adjustViewBounds="true"
+      android:src="@drawable/ic_star_empty"
+      android:tag="10"
+      app:tint="?android:attr/textColorPrimary"
+      />
+
+  </LinearLayout>
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/viewRateSheetSaveButton"
+    style="@style/RoundMaterialButton"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceSmall"
+    android:layout_marginTop="@dimen/spaceNormal"
+    android:backgroundTint="@color/selector_main_button"
+    android:enabled="false"
+    android:gravity="center"
+    android:text="@string/textRate"
+    android:textColor="?attr/textColorOnSurface"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@id/viewRateSheetRemoveButton"
+    app:layout_constraintTop_toBottomOf="@id/viewRateSheetStarsLayout"
+    app:layout_goneMarginStart="0dp"
+    app:rippleColor="?android:attr/textColorPrimary"
+    />
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/viewRateSheetRemoveButton"
+    style="@style/DeclineOutlinedButton"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/spaceNormal"
+    android:layout_marginEnd="@dimen/spaceSmall"
+    android:gravity="center"
+    android:text="@string/textRemove"
+    android:textColor="?android:attr/textColorSecondary"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toStartOf="@id/viewRateSheetSaveButton"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/viewRateSheetStarsLayout"
+    app:rippleColor="?android:attr/textColorPrimary"
+    tools:visibility="visible"
+    />
+
+  <ProgressBar
+    android:id="@+id/viewRateSheetProgress"
+    style="@style/ProgressBar.Accent"
+    android:layout_width="36dp"
+    android:layout_height="36dp"
+    android:layout_gravity="center"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="@id/viewRateSheetSaveButton"
+    app:layout_goneMarginBottom="@dimen/spaceMedium"
+    tools:visibility="visible"
+    />
+
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/viewRateSheetSnackHost"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintBottom_toBottomOf="parent"
+    />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

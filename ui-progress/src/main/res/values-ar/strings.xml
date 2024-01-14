@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="tabCalendar">تقويم المسلسلات</string>
+  <string name="tabProgress">مستوى التقدم</string>
+  <string name="textCalendarEmpty">لا توجد أي حلقات جديدة قريباً.</string>
+  <string name="textRecentsEmpty">لا تُوجد أي حلقات جديدة.</string>
+  <string name="textOnHold" comment="This is a header for Progress subsection. It will contain pending shows marked by user.">المعلقة</string>
+  <string name="textDiscoverShows">إكتشف مسلسلات</string>
+  <string name="textEpisodeInfo">تفاصيل الحلقة</string>
+  <string name="textTraktSynchronize">إستيراد البيانات من Trakt.tv</string>
+  <string name="textProgressEmpty">قائمة <b>مستوى التقدم</b> فارغة حالياً.\n\nإذهب إلى صفحة <b>إكتشف</b> لإضافة مسلسلات، أو اِستورد البيانات من Trakt.tv.</string>
+  <string name="textNewSeason">إفتتاحية الموسم</string>
+</resources>

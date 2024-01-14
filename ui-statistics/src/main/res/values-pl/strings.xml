@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textStatistics">Statystyki</string>
+  <string name="textStatisticsEmpty">Dodaj przynajmniej jeden serial do <b>Kolekcji</b> aby zobaczyć statystyki</string>
+  <string name="textStatisticsMostWatchedShows">Najwięcej Obejrzanych</string>
+  <string name="textStatisticsTotalTimeSpent">Całkowity Czas</string>
+  <string name="textStatisticsTotalTimeItIs">czyli</string>
+  <string name="textStatisticsTotalTimeSpentHours">%s godzin</string>
+  <string name="textStatisticsTotalTimeSpentMinutes">%s minut</string>
+  <string name="textStatisticsTotalTimeSpentDays">co daje około %s dni.</string>
+  <string name="textStatisticsTotalEpisodes">Całkowita Ilość Odcinków</string>
+  <string name="textStatisticsTotalEpisodesCount">%s odcinków</string>
+  <string name="textStatisticsTotalEpisodesShowsCount">w %s serialach.</string>
+  <string name="textStatisticsTopGenre">Ulubione Gatunki</string>
+  <string name="textStatisticsTopGenreSubValue">zdają się być ulubionymi. Kliknij po więcej.</string>
+  <string name="textStatisticsTopGenreSubValue2">zdają się być ulubionymi.</string>
+  <string name="textStatisticsShowMore">Pokaż Więcej</string>
+  <string name="textStatisticsRatings">Niedawno Ocenione</string>
+  <string name="textStatisticsHours">Godziny</string>
+  <string name="textStatisticsEpisodes">Odcinki</string>
+  <string name="textStatisticsSeasons">Sezony</string>
+</resources>

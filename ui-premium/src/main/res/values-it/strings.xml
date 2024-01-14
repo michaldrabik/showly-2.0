@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textPremium">Showly Premium</string>
+  <string name="textPremiumAdFull">Diventa un sostenitore di Showly, aiuta il suo sviluppo e ottieni l\'accesso a fantastiche funzioni bonus!</string>
+  <string name="textLightThemeTitle">Tema chiaro</string>
+  <string name="textLightThemeDesc">Unisciti al lato chiaro della forza con un tema chiaro aggiuntivo applicabile per l\'app principale e i widget.</string>
+  <string name="textCustomImagesTitle">Immagini personalizzate</string>
+  <string name="textCustomImagesDesc">Imposta i tuoi poster e fanart preferiti per gli show e i film. Seleziona un\'immagine dalla galleria o carica il tuo URL.</string>
+  <string name="textQuickRatingTitle">Valutazioni rapide</string>
+  <string name="textQuickRatingDesc">Non dimenticare mai di valutare un film o l\'episodio di uno show che hai appena visto. Con la funzione di valutazione rapida sarai in grado di valutare automaticamente un elemento ogni volta che lo contrassegni come visto.</string>
+  <string name="textWidgetsTitle">Widget trasparenti</string>
+  <string name="textWidgetsDesc">Imposta la trasparenza dello sfondo dei widget per abbinarli meglio alla tua schermata iniziale.</string>
+  <string name="textRemoveAdsTitle">Rimuovere le pubblicità</string>
+  <string name="textRemoveAdsDesc">Rimuovi tutti gli annunci premium visibili nell\'app.</string>
+  <string name="textNewsTitle">Sezione notizie</string>
+  <string name="textNewsDesc">Attiva la sezione notizie con gli ultimi articoli di show e film, notizie e trailer. Offerto da Reddit.</string>
+  <string name="textViewsTitle">Tipi di visualizzazione elenchi</string>
+  <string name="textViewsDesc">Abilita ulteriori tipi di visualizzazione della collezione come elenco compatto o visualizzazione a griglia.</string>
+  <string name="textPurchaseThanks">Ora sei un sostenitore di Showly!\nGrazie e goditi l\'app!</string>
+</resources>

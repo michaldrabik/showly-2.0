@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textInMyMovies">W moich filmach</string>
+  <string name="textInMoviesWatchlist">Na później</string>
+  <string name="textInHidden">Ukryte</string>
+  <string name="textMovieActorsEmpty">Obsada niedostępna</string>
+  <string name="textMovieTrailer">Trailer</string>
+  <string name="textMovieRate">Oceń</string>
+  <string name="textMovieComments2">Opinie</string>
+  <string name="textMovieYouMayAlsoLike">Zobacz również</string>
+  <string name="textMovieCollections">Kolekcje</string>
+  <string name="textMovieExtraInfo">%s %s | %s %s | %s</string>
+  <string name="textMovieManageLists">Zarządzaj listami</string>
+  <string name="textMovieManageListsCount">Zarządzaj listami (%d)</string>
+  <string name="textTraktSyncMovieRemovedFromTrakt">Trakt.tv zostało zaktualizowane.</string>
+</resources>

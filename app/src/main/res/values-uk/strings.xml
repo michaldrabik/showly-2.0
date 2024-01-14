@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="menuProgress">Прогрес</string>
+  <string name="menuDiscover">Огляд</string>
+  <string name="menuCollection">Колекція</string>
+  <string name="menuNews">Новини</string>
+  <string name="textRateAppTitle">Подобається Showly 2.0?</string>
+  <string name="textRateAppMessage">Ви хотіли б оцінити додаток?\nЦе займає лише декілька секунд. Дякуємо!\n\n<i>Додаток не буде закрито.</i></string>
+  <string name="textRateAppYesButton">Авжеж, чому ні?</string>
+  <string name="textRateAppNoButton">Не зараз</string>
+  <string name="textDisclaimerTitle">Вітаємо!</string>
+  <string name="textDisclaimerText">Будь ласка, зверніть увагу, що ви <b>НЕ МОЖЕТЕ</b> дивитися або завантажувати серіали та фільми з цим додатком.\n\nВикористовуйте додатки, такі як <b>Netflix</b> для завантаження та перегляду вмісту.</string>
+  <string name="textDisclaimerConfirmText">ОК, зрозуміло</string>
+  <string name="textWhatsNewTitle">Що нового</string>
+  <string name="textWhatsNewSubtitle">Версія: %s</string>
+  <string name="shortcutDiscover">Огляд</string>
+  <string name="shortcutCollection">Колекція</string>
+  <string name="shortcutSearch">Пошук</string>
+  <string name="shortcutProgress">Прогрес</string>
+</resources>

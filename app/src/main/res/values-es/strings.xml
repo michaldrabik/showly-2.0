@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="menuProgress">Progreso</string>
+  <string name="menuDiscover">Descubrir</string>
+  <string name="menuCollection">Colección</string>
+  <string name="menuNews">Noticias</string>
+  <string name="textRateAppTitle">¿Disfrutando Showly 2.0?</string>
+  <string name="textRateAppMessage">¿Le gustaría calificar la aplicación?\nSolo toma unos segundos. ¡Gracias!\n\n<i>La aplicación no se cerrará.</i></string>
+  <string name="textRateAppYesButton">Sí, ¿por qué no?</string>
+  <string name="textRateAppNoButton">Ahora no</string>
+  <string name="textDisclaimerTitle">Bienvenido!</string>
+  <string name="textDisclaimerText">Ten en cuenta que <b>NO PUEDES</b> ver, transmitir o descargar series y películas con esta aplicación.\n\nUsa aplicaciones como <b>Netflix</b> para transmitir y ver el contenido.</string>
+  <string name="textDisclaimerConfirmText">Vale, lo entiendo</string>
+  <string name="textWhatsNewTitle">Novedades</string>
+  <string name="textWhatsNewSubtitle">Versión %s</string>
+  <string name="shortcutDiscover">Descubrir</string>
+  <string name="shortcutCollection">Colección</string>
+  <string name="shortcutSearch">Buscar</string>
+  <string name="shortcutProgress">Progreso</string>
+</resources>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_dialog"
+    android:elevation="@dimen/elevationNormal"
+    android:paddingStart="@dimen/spaceNormal"
+    android:paddingTop="@dimen/spaceNormal"
+    android:paddingEnd="@dimen/spaceNormal"
+    android:paddingBottom="@dimen/spaceSmall"
+    >
+
+    <TextView
+      android:id="@+id/viewWelcomeNoteTitle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/textDisclaimerTitle"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="28sp"
+      android:textStyle="bold"
+      app:layout_constraintBottom_toTopOf="@id/viewWelcomeEyeIcon"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+    <ImageView
+      android:id="@+id/viewWelcomeEyeIcon"
+      android:layout_width="80dp"
+      android:layout_height="80dp"
+      android:layout_margin="@dimen/spaceBig"
+      app:layout_constraintBottom_toTopOf="@id/viewWelcomeNoteMessage"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/viewWelcomeNoteTitle"
+      app:srcCompat="@drawable/ic_eye_off"
+      />
+
+    <TextView
+      android:id="@+id/viewWelcomeNoteMessage"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="@dimen/spaceNormal"
+      android:text="@string/textDisclaimerText"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="15sp"
+      app:layout_constraintBottom_toTopOf="@id/viewWelcomeNoteYesButton"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/viewWelcomeEyeIcon"
+      />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/viewWelcomeNoteYesButton"
+      style="@style/RoundTextButton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceSmall"
+      android:text="@string/textDisclaimerConfirmText"
+      android:textColor="?android:attr/textColorPrimary"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>

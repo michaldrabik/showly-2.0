@@ -1,0 +1,5 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:color="?attr/textColorChipSelected" android:state_checked="true" />
+  <item android:color="?attr/textColorChipSelected" android:state_selected="true" />
+  <item android:color="?android:textColorSecondary" android:state_checked="false" />
+</selector>

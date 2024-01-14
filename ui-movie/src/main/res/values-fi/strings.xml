@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textInMyMovies">Lisätty omiin elokuviin</string>
+  <string name="textInMoviesWatchlist">Lisätty katselulistalle</string>
+  <string name="textInHidden">Piilotetut</string>
+  <string name="textMovieActorsEmpty">Näyttelijät eivät ole saatavilla</string>
+  <string name="textMovieTrailer">Traileri</string>
+  <string name="textMovieRate">Arvioi</string>
+  <string name="textMovieComments2">Kommentit</string>
+  <string name="textMovieYouMayAlsoLike">Saattaisit pitää myös näistä</string>
+  <string name="textMovieCollections">Kokoelmat</string>
+  <string name="textMovieExtraInfo">%s %s | %s %s | %s</string>
+  <string name="textMovieManageLists">Hallitse listoja</string>
+  <string name="textMovieManageListsCount">Hallitse listoja (%d)</string>
+  <string name="textTraktSyncMovieRemovedFromTrakt">Trakt.tv synkronoitiin.</string>
+</resources>

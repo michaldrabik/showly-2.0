@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="menuMyMovies">Mes films</string>
+  <string name="menuWatchlistMovies">Watchlist</string>
+  <string name="menuHidden">Masqué</string>
+  <string name="textMyMoviesEmpty">Votre collection de films est présentement vide.\n\nVisitez l\'onglet <b>Découvrir</b> pour ajouter votre premier film.</string>
+  <string name="textWatchlistMoviesEmpty">Votre liste <b>Watchlist</b> est présentement vide.\n\nVisitez l\'onglet <b>Découvrir</b> pour ajouter des films que vous souhaitez visionner plus tard.</string>
+  <string name="textHiddenEmpty">Votre liste <b>masqué</b> est actuellement vide.\n\n<b>Masqué</b> est une liste d\'éléments qui ne vous intéressent pas.\n\nLes éléments masqués n\'apparaîtront plus dans <b>Progression</b>, <b>Découvrir</b> et d\'autres sections.</string>
+</resources>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <attr name="colorInfoSnackbar" format="color" />
+  <attr name="colorErrorSnackbar" format="color" />
+  <attr name="textColorInfoSnackbar" format="color" />
+  <attr name="textColorErrorSnackbar" format="color" />
+
+  <attr name="colorBottomMenuBackground" format="color" />
+  <attr name="colorBottomMenuItemChecked" format="color" />
+  <attr name="colorBottomMenuItem" format="color" />
+  <attr name="colorBottomMenuSeparator" format="color" />
+  <attr name="colorBottomMenuIndicator" format="color" />
+
+  <attr name="colorSearchViewBackground" format="color" />
+  <attr name="colorSearchViewControl" format="color" />
+
+  <attr name="colorSearchLocalViewBackground" format="color" />
+  <attr name="colorSearchLocalViewControl" format="color" />
+
+  <attr name="colorSeparator" format="color" />
+  <attr name="colorCardBackground" format="color" />
+  <attr name="colorBadgeBackground" format="color" />
+
+  <attr name="colorPlaceholderBackground" format="color" />
+  <attr name="colorPlaceholderStroke" format="color" />
+  <attr name="colorPlaceholderIcon" format="color" />
+
+  <attr name="textColorOnSurface" format="color" />
+  <attr name="textColorGridTitle" format="color" />
+
+  <attr name="textColorChip" format="color" />
+  <attr name="textColorChipSelected" format="color" />
+  <attr name="colorBackgroundChipSelected" format="color" />
+  <attr name="colorBackgroundChipSelectedLight" format="color" />
+  <attr name="colorProgressTrack" format="color" />
+
+  <attr name="textColorTab" format="color" />
+  <attr name="textColorTabSelected" format="color" />
+
+  <attr name="colorWidgetBackground" format="color" />
+  <attr name="colorWidgetBackground75" format="color" />
+  <attr name="colorWidgetBackground50" format="color" />
+  <attr name="colorWidgetBackground25" format="color" />
+  <attr name="colorWidgetBackground0" format="color" />
+  <attr name="colorWidgetStatusBackground" format="color" />
+
+  <declare-styleable name="LinkItem">
+    <attr name="text" format="string" />
+    <attr name="icon" format="reference" />
+  </declare-styleable>
+
+</resources>

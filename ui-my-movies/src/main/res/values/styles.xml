@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <style name="MyMovies" />
+
+  <style name="MyMovies.Label" parent="MyMovies">
+    <item name="android:layout_width">0dp</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:textColor">?android:attr/textColorPrimary</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:textAlignment">viewStart</item>
+    <item name="android:textSize">22sp</item>
+    <item name="android:gravity">start|center_vertical</item>
+    <item name="android:maxLines">1</item>
+  </style>
+
+</resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textStatistics">Статистика</string>
+  <string name="textStatisticsEmpty">По крайней мере один фильм должен присутствовать в <b>Мои фильмы</b>\nперед отображением статистики.</string>
+  <string name="textStatisticsMostWatchedShows">Самые просматриваемые сериалы</string>
+  <string name="textStatisticsTotalTimeSpent">Общее время, потраченное на просмотр</string>
+  <string name="textStatisticsTotalTimeItIs">это</string>
+  <string name="textStatisticsTotalTimeSpentHours">%s часов</string>
+  <string name="textStatisticsTotalTimeSpentMinutes">%s минут</string>
+  <string name="textStatisticsTotalTimeSpentDays">которые составляют около %s дней.</string>
+  <string name="textStatisticsTotalEpisodes">Количество просмотренных эпизодов</string>
+  <string name="textStatisticsTotalEpisodesCount">%s эпизодов</string>
+  <string name="textStatisticsTotalEpisodesShowsCount">из %s сериалов.</string>
+  <string name="textStatisticsTopGenre">Топ жанров</string>
+  <string name="textStatisticsTopGenreSubValue">кажется, это ваша чашка чая. Нажмите, чтобы увидеть больше.</string>
+  <string name="textStatisticsTopGenreSubValue2">кажется, это ваша чашка чая.</string>
+  <string name="textStatisticsShowMore">Показать больше</string>
+  <string name="textStatisticsRatings">Недавно оцененные</string>
+  <string name="textStatisticsHours">Часов</string>
+  <string name="textStatisticsEpisodes">Эпизоды</string>
+  <string name="textStatisticsSeasons">Сезоны</string>
+</resources>

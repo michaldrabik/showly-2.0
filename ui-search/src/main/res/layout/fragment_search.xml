@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/searchRoot"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:clipChildren="false"
+  android:clipToPadding="true"
+  >
+
+  <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    android:id="@+id/searchSwipeRefresh"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/searchRecycler"
+      style="@style/ScrollbarsStyle"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="@android:color/transparent"
+      android:clipToPadding="false"
+      android:layoutAnimation="@anim/anim_recycler_fall_down"
+      android:overScrollMode="never"
+      android:paddingStart="@dimen/searchRecyclerHorizontalPadding"
+      android:paddingTop="@dimen/searchRecyclerTopPadding"
+      android:paddingEnd="@dimen/searchRecyclerHorizontalPadding"
+      android:paddingBottom="@dimen/spaceMedium"
+      android:scrollbars="vertical"
+      />
+
+  </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+  <com.michaldrabik.ui_search.views.SearchFiltersView
+    android:id="@+id/searchFiltersView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/screenMarginHorizontal"
+    android:layout_marginTop="18dp"
+    android:layout_marginEnd="@dimen/screenMarginHorizontal"
+    android:visibility="gone"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/searchViewLayout"
+    tools:visibility="visible"
+    />
+
+  <View
+    android:id="@+id/separator"
+    android:layout_width="match_parent"
+    android:layout_height="36dp"
+    android:background="?android:windowBackground"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    />
+
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/suggestionsRecycler"
+    style="@style/ScrollbarsStyle"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_suggestions"
+    android:clipChildren="true"
+    android:elevation="@dimen/elevationSuggestions"
+    android:overScrollMode="never"
+    android:paddingTop="24dp"
+    android:paddingBottom="1px"
+    android:translationY="-24dp"
+    android:translationZ="0dp"
+    android:visibility="gone"
+    app:layout_constrainedHeight="true"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="@id/searchViewLayout"
+    app:layout_constraintHeight_max="@dimen/suggestionsMaxHeight"
+    app:layout_constraintStart_toStartOf="@id/searchViewLayout"
+    app:layout_constraintTop_toBottomOf="@id/searchViewLayout"
+    app:layout_constraintVertical_bias="0"
+    tools:visibility="visible"
+    />
+
+  <com.michaldrabik.ui_base.common.views.SearchView
+    android:id="@+id/searchViewLayout"
+    android:layout_width="0dp"
+    android:layout_height="@dimen/searchViewHeight"
+    android:layout_marginLeft="@dimen/screenMarginHorizontal"
+    android:layout_marginTop="@dimen/spaceMedium"
+    android:layout_marginRight="@dimen/screenMarginHorizontal"
+    android:translationZ="3dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    />
+
+  <LinearLayout
+    android:id="@+id/searchRecentsLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/spaceMedium"
+    android:orientation="vertical"
+    app:layout_constraintTop_toBottomOf="@id/searchViewLayout"
+    tools:visibility="visible"
+    />
+
+  <TextView
+    android:id="@+id/searchRecentsClearButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/screenMarginHorizontal"
+    android:layout_marginTop="@dimen/spaceSmall"
+    android:text="@string/textClear"
+    android:textAllCaps="true"
+    android:textColor="?android:attr/textColorSecondary"
+    android:visibility="gone"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/searchRecentsLayout"
+    />
+
+  <com.michaldrabik.ui_base.common.views.EmptySearchView
+    android:id="@+id/searchEmptyView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/spaceNormal"
+    android:visibility="gone"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/searchViewLayout"
+    tools:visibility="visible"
+    />
+
+  <com.michaldrabik.ui_search.views.InitialSearchView
+    android:id="@+id/searchInitialView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/spaceNormal"
+    android:visibility="gone"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/searchViewLayout"
+    tools:visibility="visible"
+    />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

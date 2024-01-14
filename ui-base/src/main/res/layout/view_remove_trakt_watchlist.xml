@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/viewRemoveTraktWatchlistRoot"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:background="@drawable/bg_bottom_sheet"
+  android:clipToPadding="false"
+  android:focusableInTouchMode="true"
+  android:paddingStart="@dimen/spaceNormal"
+  android:paddingTop="@dimen/spaceMedium"
+  android:paddingEnd="@dimen/spaceNormal"
+  android:paddingBottom="@dimen/spaceNormal"
+  tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
+  >
+
+  <TextView
+    android:id="@+id/viewRemoveTraktWatchlistTitle"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:gravity="start"
+    android:text="@string/textRemoveFromTrakt"
+    android:textAlignment="viewStart"
+    android:textAllCaps="true"
+    android:textColor="?android:attr/textColorPrimary"
+    android:textSize="20sp"
+    android:textStyle="bold"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    />
+
+  <TextView
+    android:id="@+id/viewRemoveTraktWatchlistSubtitle"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/spaceMedium"
+    android:gravity="start"
+    android:text="@string/textRemoveFromTraktWatchlist"
+    android:textAlignment="viewStart"
+    android:textColor="?android:attr/textColorSecondary"
+    android:textSize="14sp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/viewRemoveTraktWatchlistTitle"
+    />
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/viewRemoveTraktWatchlistButtonNo"
+    style="@style/DeclineOutlinedButton"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/spaceMedium"
+    android:layout_marginEnd="@dimen/spaceSmall"
+    android:gravity="center"
+    android:text="@string/textNo"
+    android:textColor="?android:attr/textColorSecondary"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toStartOf="@id/viewRemoveTraktWatchlistButtonYes"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/viewRemoveTraktWatchlistSubtitle"
+    app:rippleColor="?android:attr/textColorPrimary"
+    />
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/viewRemoveTraktWatchlistButtonYes"
+    style="@style/RoundMaterialButton"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceSmall"
+    android:layout_marginTop="@dimen/spaceMedium"
+    android:backgroundTint="@color/selector_main_button"
+    android:gravity="center"
+    android:text="@string/textYes"
+    android:textColor="?attr/textColorOnSurface"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@id/viewRemoveTraktWatchlistButtonNo"
+    app:layout_constraintTop_toBottomOf="@id/viewRemoveTraktWatchlistSubtitle"
+    app:rippleColor="?android:attr/textColorPrimary"
+    />
+
+  <ProgressBar
+    android:id="@+id/viewRemoveTraktWatchlistProgress"
+    style="@style/ProgressBar.Accent"
+    android:layout_width="30dp"
+    android:layout_height="30dp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="@id/viewRemoveTraktWatchlistButtonYes"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="@id/viewRemoveTraktWatchlistButtonYes"
+    />
+
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/viewRemoveTraktWatchlistSnackHost"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:translationZ="10dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

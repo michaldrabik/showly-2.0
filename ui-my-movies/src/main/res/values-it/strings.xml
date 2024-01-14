@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="menuMyMovies">I miei film</string>
+  <string name="menuWatchlistMovies">Da vedere</string>
+  <string name="menuHidden">Nascosti</string>
+  <string name="textMyMoviesEmpty">La tua raccolta di film è vuota.\n\nVisita la pagina <b>Scopri</b> per aggiungere il tuo primo film.</string>
+  <string name="textWatchlistMoviesEmpty">La tua lista <b>Da vedere</b> è vuota.\n\nVisita la pagina <b>Scopri</b> per aggiungere i film che hai intenzione di vedere più avanti.</string>
+  <string name="textHiddenEmpty">La tua lista <b>Nascosti</b> è attualmente vuota.\n\n<b>Nascosti</b> è un elenco di elementi a cui non sei interessato.\n\nGli elementi nascosti non appariranno più in <b>Progressi</b>, <b>Scopri</b> e altre sezioni.</string>
+</resources>

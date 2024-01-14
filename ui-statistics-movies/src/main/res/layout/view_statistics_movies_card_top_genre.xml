@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  app:cardBackgroundColor="?attr/colorCardBackground"
+  tools:background="@color/colorBackground"
+  tools:parentTag="com.google.android.material.card.MaterialCardView"
+  tools:theme="@style/AppTheme"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/viewMoviesTopGenresContent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="@dimen/spaceMedium"
+    android:paddingTop="@dimen/spaceNormal"
+    android:paddingEnd="@dimen/spaceSmall"
+    android:paddingBottom="@dimen/spaceNormal"
+    >
+
+    <TextView
+      android:id="@+id/viewMoviesTopGenresTitle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:drawablePadding="@dimen/spaceSmall"
+      android:gravity="center_vertical"
+      android:text="@string/textStatisticsMoviesTopGenre"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="@dimen/statisticsMoviesHeaderSize"
+      android:textStyle="bold"
+      app:drawableStartCompat="@drawable/ic_stars_round"
+      app:drawableTint="?android:attr/textColorPrimary"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:drawableStart="@drawable/ic_stars_round"
+      />
+
+    <TextView
+      android:id="@+id/viewMoviesTopGenresValue"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/spaceSmall"
+      android:lineSpacingExtra="2dp"
+      android:textColor="?attr/colorAccent"
+      android:textSize="24sp"
+      android:textStyle="bold"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/viewMoviesTopGenresTitle"
+      tools:text="Drama\nComedy\nThriller"
+      />
+
+    <TextView
+      android:id="@+id/viewMoviesTopGenresSubValue"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/spaceTiny"
+      android:text="@string/textStatisticsMoviesTopGenreSubValue"
+      android:textColor="?android:attr/textColorSecondary"
+      android:textSize="14sp"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/viewMoviesTopGenresValue"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>

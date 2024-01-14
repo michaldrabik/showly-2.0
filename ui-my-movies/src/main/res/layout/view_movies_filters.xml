@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  tools:theme="@style/AppTheme"
+  >
+
+  <HorizontalScrollView
+    android:id="@+id/followedMoviesScroll"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clipToPadding="false"
+    android:overScrollMode="never"
+    android:scrollbars="none"
+    >
+
+    <com.google.android.material.chip.ChipGroup
+      android:id="@+id/followedMoviesChips"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingTop="@dimen/spaceSmall"
+      android:paddingBottom="@dimen/spaceSmall"
+      app:singleLine="true"
+      >
+
+      <com.google.android.material.chip.Chip
+        android:id="@+id/followedMoviesSortingChip"
+        style="@style/ShowlyChip.Sort"
+        android:text="@string/textSortName"
+        />
+
+      <com.google.android.material.chip.Chip
+        android:id="@+id/followedMoviesGenresChip"
+        style="@style/ShowlyChip.Filter"
+        android:checkable="false"
+        android:text="@string/textGenres"
+        />
+
+      <com.google.android.material.chip.Chip
+        android:id="@+id/followedMoviesUpcomingChip"
+        style="@style/ShowlyChip.Filter"
+        android:text="@string/textWatchlistIncoming"
+        android:visibility="gone"
+        tools:visibility="visible"
+        />
+
+      <com.google.android.material.chip.Chip
+        android:id="@+id/followedMoviesListViewChip"
+        style="@style/ShowlyChip.Filter"
+        android:checkable="false"
+        app:chipIcon="@drawable/ic_view_grid"
+        app:chipIconEnabled="true"
+        app:chipIconTint="?android:textColorPrimary"
+        app:iconEndPadding="-14dp"
+        app:iconStartPadding="2dp"
+        />
+
+    </com.google.android.material.chip.ChipGroup>
+
+  </HorizontalScrollView>
+
+</merge>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textOk">OK</string>
+  <string name="textYes">Yes</string>
+  <string name="textNo">No</string>
+  <string name="textApply">Apply</string>
+  <string name="textCancel">Cancel</string>
+  <string name="textClose">Close</string>
+  <string name="textNotNow">Not Now</string>
+  <string name="textNew">New</string>
+  <string name="textSelect">Select</string>
+  <string name="textHot">Hot</string>
+  <string name="textSubmit">Submit</string>
+  <string name="textHide">Hide</string>
+  <string name="textRemove">Remove</string>
+  <string name="textEmptyResults">There were no results…</string>
+  <string name="textSearchFor">Search</string>
+  <string name="textTip">Tip:</string>
+  <string name="textSeason">Season %1$d</string>
+  <string name="textSpecials">Specials</string>
+  <string name="textEpisode">Episode %1$d</string>
+  <string name="textSeasonEpisode">S.%02d E.%02d</string>
+  <string name="textSortBy">Sort by:</string>
+  <string name="textSpoilersWarning">This comment contains spoilers.\nTap to read.</string>
+  <string name="textCommentedOn">Commented by %s</string>
+  <string name="textNetwork">%1$s (%2$s)</string>
+  <string name="textNetworks" comment="TV network like HBO, AMC, Showtime, Disney etc.">Network:</string>
+  <string name="textGenres">Genres:</string>
+  <string name="textTba" translatable="false">TBA</string>
+  <string name="textShows">Shows</string>
+  <string name="textMovies">Movies</string>
+  <string name="textLists">Lists</string>
+  <string name="textMinutesShort">min</string>
+  <string name="textActorRole" translatable="false">%s\n(%s)</string>
+  <string name="textNoDescription">Overview not available.</string>
+  <string name="textPleaseWait">Please wait…</string>
+  <string name="textRate">Rate</string>
+  <string name="textLink">Link</string>
+  <string name="textDisabled">Disabled</string>
+  <string name="textRateSaved">Your rating has been saved.</string>
+  <string name="textRateRemoved">Your rating has been removed.</string>
+  <string name="textCopiedToClipboard" translatable="false">Copied to clipboard</string>
+  <string name="textDays">%1$d days</string>
+
+  <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
+    <item quantity="one">%d left</item>
+    <item quantity="other">%d left</item>
+  </plurals>
+
+  <string name="textPeople">People:</string>
+  <string name="textDirecting">Directing</string>
+  <string name="textDirector">Director</string>
+  <string name="textWriting">Writing</string>
+  <string name="textScreenplay">Screenplay</string>
+  <string name="textSound">Sound</string>
+  <string name="textMusic">Music</string>
+  <string name="textActing">Acting</string>
+
+  <string name="textAiredAlready">Aired</string>
+  <string name="textAirsNow">Airs Now</string>
+
+  <plurals name="textDaysToAir">
+    <item quantity="one">Airs tomorrow</item>
+    <item quantity="other">Airs in %d days</item>
+  </plurals>
+
+  <plurals name="textHoursToAir">
+    <item quantity="one">Airs in 1 hour</item>
+    <item quantity="other">Airs in %d hours</item>
+  </plurals>
+
+  <plurals name="textMinutesToAir">
+    <item quantity="one">Airs now</item>
+    <item quantity="other">Airs in %d minutes</item>
+  </plurals>
+
+  <plurals name="textTraktQuickSyncComplete">
+    <item quantity="one">1 item synced successfully.</item>
+    <item quantity="other">%d items synced successfully.</item>
+  </plurals>
+
+  <string name="textToday">Today</string>
+  <string name="textTomorrow">Tomorrow</string>
+  <string name="textThisWeek">This Week</string>
+  <string name="textNextWeek">Next Week</string>
+  <string name="textThisMonth">This Month</string>
+  <string name="textNextMonth">Next Month</string>
+  <string name="textThisYear">This Year</string>
+  <string name="textNextYear">Next Year</string>
+  <string name="textLater">Later</string>
+  <string name="textYesterday">Yesterday</string>
+  <string name="textLast7Days">Last 7 Days</string>
+  <string name="textLast30Days">Last 30 Days</string>
+  <string name="textLast90Days">Last 90 Days</string>
+
+  <string name="textNewEpisodeAvailable">New episode is available now!</string>
+  <string name="textNewEpisodeAvailableSoon">New episode will be available soon!</string>
+  <string name="textNewSeasonAvailable">New season is available now!</string>
+  <string name="textNewSeasonAvailableSoon">New season will be available soon!</string>
+  <string name="textNewMovieAvailable">Movie has been released!</string>
+
+  <string name="textTraktSync">Trakt.tv Sync</string>
+  <string name="textTraktSyncComplete">Sync completed successfully.</string>
+  <string name="textTraktSyncRunning">Running…</string>
+  <string name="textTraktSyncError">Trakt.tv sync failed.</string>
+  <string name="textTraktSyncErrorFull">Trakt.tv sync failed. Please check your internet connection and try again or contact us if this keeps happening.</string>
+  <string name="textTraktQuickSyncError">Instant Sync failed.</string>
+  <string name="textTraktQuickSyncErrorFull">Instant Sync failed. We will try again next time you open the app. Please check your internet connection.</string>
+  <string name="textTraktNotificationsRationale">Please grant the application a permission to display information about synchronization progress and results.\n\nWould you like to do it now?</string>
+
+  <string name="textRemoveFromTrakt">Remove from Trakt.tv?</string>
+  <string name="textRemoveFromTraktHidden">Would you like to remove this item from your Trakt.tv account \'Hidden Items\'?</string>
+  <string name="textRemoveFromTraktWatchlist">Would you like to remove this item from your Trakt.tv account \'Watchlist\'?</string>
+  <string name="textRemoveFromTraktProgress">Would you like to remove this item from your Trakt.tv account \'Progress\'?</string>
+
+  <string name="textAddToMyShows">Add to My Shows</string>
+  <string name="textAddToMyMovies">Add to My Movies</string>
+  <string name="textAddToWatchlist">Add to Watchlist</string>
+  <string name="textAddToHidden">Add to Hidden</string>
+  <string name="textMoveToMyShows">Move to My Shows</string>
+  <string name="textMoveToMyMovies">Move to My Movies</string>
+  <string name="textMoveToWatchlist">Move to Watchlist</string>
+  <string name="textMoveToHidden">Move to Hidden</string>
+  <string name="textRemoveFromMyShows">Remove from My Shows</string>
+  <string name="textRemoveFromMyMovies">Remove from My Movies</string>
+  <string name="textRemoveFromWatchlist">Remove from Watchlist</string>
+  <string name="textRemoveFromHidden">Remove from Hidden</string>
+  <string name="textWatchlist">Watchlist</string>
+  <string name="textWatchlistIncoming">Upcoming</string>
+  <string name="textNewAlwaysAtTop">New episodes always first</string>
+
+  <string name="textPremium" translatable="false">Showly Premium</string>
+  <string name="textPremiumAd">Become a supporter and get access to bonus features! Click to see more.</string>
+
+  <string name="menuPin">Pin to top</string>
+  <string name="menuUnpin">Unpin from top</string>
+  <string name="menuAddOnHold" comment="This is a button for Progress subsection. It will contain pending shows marked by user.">Pin to \'on hold\'</string>
+  <string name="menuRemoveOnHold" comment="This is a button for Progress subsection. It will contain pending shows marked by user.">Unpin from \'on hold\'</string>
+
+  <string name="errorGeneral">Oops… Something went wrong.\nPlease contact us if this keeps happening.</string>
+  <string name="errorAuthorization">Authorization failed. Please contact us if this keeps happening.</string>
+  <string name="errorTraktAuthorization">Trakt account authorization failed.\nPlease login and try again.</string>
+  <string name="errorSeasonsNotLoaded">Please wait for seasons data to load.</string>
+  <string name="errorEpisodeNotAired">This episode hasn\'t been aired yet.</string>
+  <string name="errorCouldNotLoadDiscover">We could not load discover page at this moment.\nPlease contact us if this keeps happening.</string>
+  <string name="errorMalformedShow">It looks like this show no longer exists in Trakt.tv database or is a duplicate.\n\nTap \'OK\' to remove it from the app.</string>
+  <string name="errorMalformedMovie">It looks like this movie no longer exists in Trakt.tv database or is a duplicate.\n\nTap \'OK\' to remove it from the app.</string>
+  <string name="errorCouldNotLoadShow">We could not load this show\'s details at this moment.\nPlease contact us if this keeps happening.</string>
+  <string name="errorCouldNotLoadMovie">We could not load this movie\'s details at this moment.\nPlease contact us if this keeps happening.</string>
+  <string name="errorCouldNotLoadSearchResults">We could not load search results at this moment.\nPlease contact us if this keeps happening.</string>
+  <string name="errorNoInternetConnection">No Internet. Please check your connection.</string>
+  <string name="errorTraktSyncGeneral">Trakt.tv sync error.\nPlease check your internet connection and try again.</string>
+  <string name="errorTraktLocked">Your Trakt.tv account is currently locked.\nPlease contact Trakt.tv support at https://support.trakt.tv/ to unlock your account.</string>
+  <string name="errorCouldNotFindApp" translatable="false">Sorry, we could not find app on this device that could handle this link.</string>
+  <string name="errorAccountListsLimitsReached" translatable="false">Sorry, you have reached your Trakt account limit for personal lists!\n\nPlease contact us if you need more assistance.</string>
+  <string name="errorTraktSyncListsLimitsReached" translatable="false">You have reached your Trakt account limit for personal lists! Not all of your personal lists were synchronized.</string>
+  <string name="errorTraktSyncWatchlistLimitsReached" translatable="false">You have reached your Trakt account limit for watchlist items! Please contact us if you need more assistance.</string>
+
+</resources>

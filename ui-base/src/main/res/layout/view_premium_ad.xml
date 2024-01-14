@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/viewPremiumAdRoot"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@drawable/bg_premium_ad"
+  android:paddingStart="@dimen/spaceMedium"
+  android:paddingTop="@dimen/spaceMedium"
+  android:paddingEnd="@dimen/spaceSmall"
+  android:paddingBottom="@dimen/spaceMedium"
+  >
+
+  <TextView
+    android:id="@+id/viewPremiumAdTitle"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:drawablePadding="@dimen/spaceSmall"
+    android:gravity="start|center_vertical"
+    android:text="@string/textPremium"
+    android:textAlignment="viewStart"
+    android:textColor="?android:attr/textColorPrimary"
+    android:textSize="20sp"
+    android:textStyle="bold"
+    app:drawableStartCompat="@drawable/ic_crown"
+    app:drawableTint="?android:attr/textColorPrimary"
+    app:layout_constraintBottom_toTopOf="@id/viewPremiumAdDescription"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_chainStyle="packed"
+    />
+
+  <TextView
+    android:id="@+id/viewPremiumAdDescription"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/spaceTiny"
+    android:layout_marginEnd="@dimen/spaceNormal"
+    android:drawablePadding="@dimen/spaceSmall"
+    android:gravity="start|center_vertical"
+    android:text="@string/textPremiumAd"
+    android:textAlignment="viewStart"
+    android:textColor="?android:attr/textColorPrimary"
+    android:textSize="13sp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toStartOf="@id/viewPremiumAdArrow"
+    app:layout_constraintHorizontal_bias="0"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/viewPremiumAdTitle"
+    />
+
+  <ImageView
+    android:id="@+id/viewPremiumAdArrow"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:srcCompat="@drawable/ic_arrow_right"
+    app:tint="?android:attr/textColorPrimary"
+    />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

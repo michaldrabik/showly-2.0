@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textSearchInitial1">ما الذي تبحث عنه؟</string>
+  <string name="textSearchInitial2">نتائج البحث من موقع Trakt.tv</string>
+  <string name="textClear">مسح سجلات البحث</string>
+</resources>

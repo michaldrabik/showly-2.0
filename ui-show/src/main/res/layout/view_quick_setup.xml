@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="800dp"
+    >
+
+    <TextView
+      android:id="@+id/viewQuickSetupTitle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_margin="@dimen/spaceNormal"
+      android:text="@string/textShowQuickProgressTitle"
+      android:textAllCaps="true"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="18sp"
+      android:textStyle="bold"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+    <TextView
+      android:id="@+id/viewQuickSetupSubTitle"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceNormal"
+      android:layout_marginTop="@dimen/spaceMicro"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:text="@string/textShowQuickProgressSubTitle"
+      android:textColor="?android:attr/textColorSecondary"
+      android:textSize="12sp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/viewQuickSetupTitle"
+      />
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/viewQuickSetupRecycler"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceNormal"
+      android:layout_marginTop="@dimen/spaceMedium"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:overScrollMode="never"
+      android:paddingBottom="80dp"
+      android:scrollbarStyle="outsideOverlay"
+      android:scrollbars="vertical"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/viewQuickSetupSubTitle"
+      app:layout_constraintVertical_bias="0"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>

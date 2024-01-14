@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/viewPurchaseItemCard"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  app:cardBackgroundColor="@color/colorAccent"
+  tools:parentTag="com.google.android.material.card.MaterialCardView"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/viewPurchaseItemRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="70dp"
+    android:padding="@dimen/spaceMedium"
+    >
+
+    <TextView
+      android:id="@+id/viewPurchaseItemTitle"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:ellipsize="end"
+      android:gravity="center_vertical"
+      android:lines="1"
+      android:textAlignment="viewStart"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="18sp"
+      android:textStyle="bold"
+      app:layout_constraintBottom_toTopOf="@id/viewPurchaseItemDescription"
+      app:layout_constraintEnd_toStartOf="@id/viewPurchaseItemPrice"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:text="3 Months Subscription"
+      />
+
+    <TextView
+      android:id="@+id/viewPurchaseItemDescription"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:drawablePadding="@dimen/spaceSmall"
+      android:ellipsize="end"
+      android:gravity="center_vertical"
+      android:textAlignment="viewStart"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="12sp"
+      app:layout_constraintBottom_toTopOf="@id/viewPurchaseItemSeparator"
+      app:layout_constraintEnd_toStartOf="@id/viewPurchaseItemPrice"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/viewPurchaseItemTitle"
+      tools:text="Description"
+      />
+
+    <View
+      android:id="@+id/viewPurchaseItemSeparator"
+      android:layout_width="0dp"
+      android:layout_height="1dp"
+      android:layout_marginTop="10dp"
+      android:layout_marginBottom="10dp"
+      android:alpha="0.75"
+      android:background="@color/colorWhite"
+      app:layout_constraintBottom_toTopOf="@id/viewPurchaseItemDescriptionDetails"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/viewPurchaseItemDescription"
+      />
+
+    <TextView
+      android:id="@+id/viewPurchaseItemDescriptionDetails"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:drawablePadding="@dimen/spaceSmall"
+      android:ellipsize="end"
+      android:gravity="center_vertical"
+      android:textAlignment="viewStart"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="10sp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/viewPurchaseItemSeparator"
+      tools:text="@tools:sample/lorem/random"
+      />
+
+    <TextView
+      android:id="@+id/viewPurchaseItemPrice"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/spaceSmall"
+      android:gravity="center"
+      android:textAlignment="viewStart"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="16sp"
+      android:textStyle="bold"
+      app:layout_constraintBottom_toBottomOf="@id/viewPurchaseItemDescription"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/viewPurchaseItemTitle"
+      app:layout_constraintTop_toTopOf="@id/viewPurchaseItemTitle"
+      tools:text="USD 12.99 / year"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>
+

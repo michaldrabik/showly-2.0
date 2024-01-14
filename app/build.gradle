@@ -1,0 +1,128 @@
+plugins {
+  id 'com.github.triplet.play'
+  id 'com.android.application'
+  id 'kotlin-android'
+  id 'com.google.devtools.ksp'
+  id 'dagger.hilt.android.plugin'
+}
+
+apply from: '../versions.gradle'
+
+play {
+  serviceAccountCredentials.set(file("gpp-service-key.json"))
+  track.set("internal")
+}
+
+android {
+  kotlinOptions { jvmTarget = "17" }
+  compileOptions {
+    coreLibraryDesugaringEnabled true
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
+  }
+
+  buildFeatures {
+    buildConfig = true
+    viewBinding true
+  }
+
+  hilt {
+    enableExperimentalClasspathAggregation = true
+  }
+
+  compileSdkVersion versions.compileSdk
+
+  defaultConfig {
+    applicationId "com.michaldrabik.showly2"
+    minSdkVersion versions.minSdk
+    targetSdkVersion versions.targetSdk
+    compileSdkVersion versions.compileSdk
+    compileSdkVersion versions.compileSdk
+    versionCode versions.versionCode
+    versionName versions.versionName
+    resourceConfigurations += ['en', 'ar', 'de', 'es', 'fi', 'fr', 'it', 'pl', 'pt', 'ru', 'tr', 'zh', 'uk']
+
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+  }
+
+  signingConfigs {
+    def keystorePropertiesFile = rootProject.file("app/keystore.properties")
+    def keystoreProperties = new Properties()
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+    release {
+      storeFile file("keystore")
+      storePassword keystoreProperties['storePassword']
+      keyAlias keystoreProperties['keyAlias']
+      keyPassword keystoreProperties['keyPassword']
+    }
+  }
+
+  buildTypes {
+    debug {
+      applicationIdSuffix '.debug'
+      versionNameSuffix '-debug'
+      minifyEnabled true
+      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+      manifestPlaceholders = [
+          appIcon     : "@mipmap/ic_launcher_gray",
+          appIconRound: "@mipmap/ic_launcher_round_gray"
+      ]
+    }
+    release {
+      minifyEnabled true
+      signingConfig signingConfigs.release
+      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+      manifestPlaceholders = [
+          appIcon     : "@mipmap/ic_launcher",
+          appIconRound: "@mipmap/ic_launcher_round"
+      ]
+    }
+  }
+
+  lint {
+    checkReleaseBuilds false
+  }
+
+  namespace 'com.michaldrabik.showly2'
+}
+
+dependencies {
+  implementation project(':common')
+  implementation project(':data-remote')
+  implementation project(':data-local')
+  implementation project(':repository')
+  implementation project(':ui-base')
+  implementation project(':ui-model')
+  implementation project(':ui-navigation')
+  implementation project(':ui-trakt-sync')
+  implementation project(':ui-discover')
+  implementation project(':ui-discover-movies')
+  implementation project(':ui-episodes')
+  implementation project(':ui-comments')
+  implementation project(':ui-lists')
+  implementation project(':ui-show')
+  implementation project(':ui-movie')
+  implementation project(':ui-gallery')
+  implementation project(':ui-my-shows')
+  implementation project(':ui-my-movies')
+  implementation project(':ui-search')
+  implementation project(':ui-statistics')
+  implementation project(':ui-statistics-movies')
+  implementation project(':ui-settings')
+  implementation project(':ui-progress')
+  implementation project(':ui-progress-movies')
+  implementation project(':ui-premium')
+  implementation project(':ui-widgets')
+
+  implementation libs.hilt.android
+  ksp libs.hilt.compiler
+  implementation libs.hilt.work
+  ksp libs.hilt.work.compiler
+
+  testImplementation libs.bundles.testing
+  androidTestImplementation libs.android.test.runner
+
+  //  debugImplementation "com.squareup.leakcanary:leakcanary-android:$versions.leakCanary"
+  coreLibraryDesugaring libs.android.desugar
+}

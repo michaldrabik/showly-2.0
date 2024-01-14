@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:layout_gravity="center"
+  android:overScrollMode="never"
+  tools:parentTag="android.widget.ScrollView"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/spaceNormal"
+    >
+
+    <TextView
+      android:id="@+id/viewWhatsNewTitle"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:text="@string/textWhatsNewTitle"
+      android:textAllCaps="true"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="20sp"
+      android:textStyle="bold"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+    <TextView
+      android:id="@+id/viewWhatsNewSubtitle"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:text="@string/textWhatsNewSubtitle"
+      android:textColor="?android:attr/textColorSecondary"
+      android:textSize="12sp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/viewWhatsNewTitle"
+      />
+
+    <TextView
+      android:id="@+id/viewWhatsNewMessage"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/spaceNormal"
+      android:lineSpacingExtra="1dp"
+      android:textColor="?android:attr/textColorPrimary"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/viewWhatsNewSubtitle"
+      tools:text="@tools:sample/lorem/random"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>

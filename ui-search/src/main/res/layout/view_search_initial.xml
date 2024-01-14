@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:gravity="center"
+  android:orientation="vertical"
+  tools:background="@color/colorBackground"
+  tools:parentTag="android.widget.LinearLayout"
+  tools:theme="@style/AppTheme"
+  >
+
+  <ImageView
+    android:layout_width="80dp"
+    android:layout_height="80dp"
+    android:adjustViewBounds="true"
+    app:srcCompat="@drawable/ic_search"
+    app:tint="?android:attr/textColorPrimary"
+    />
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/spaceTiny"
+    android:text="@string/textSearchInitial1"
+    android:textColor="?android:attr/textColorPrimary"
+    android:textSize="16sp"
+    />
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/textSearchInitial2"
+    android:textColor="?android:attr/textColorSecondary"
+    android:textSize="12sp"
+    />
+
+</merge>

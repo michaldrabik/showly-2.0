@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/viewCreateListRoot"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:background="@drawable/bg_bottom_sheet"
+  android:clipToPadding="false"
+  android:focusableInTouchMode="true"
+  android:paddingStart="@dimen/spaceNormal"
+  android:paddingTop="@dimen/spaceMedium"
+  android:paddingEnd="@dimen/spaceNormal"
+  android:paddingBottom="@dimen/spaceNormal"
+  tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
+  >
+
+  <TextView
+    android:id="@+id/viewCreateListTitle"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:gravity="start"
+    android:text="@string/textCreateList"
+    android:textAlignment="viewStart"
+    android:textAllCaps="true"
+    android:textColor="?android:attr/textColorPrimary"
+    android:textSize="20sp"
+    android:textStyle="bold"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    />
+
+  <TextView
+    android:id="@+id/viewCreateListSubtitle"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:gravity="start"
+    android:text="@string/textCreateListDescription"
+    android:textAlignment="viewStart"
+    android:textColor="?android:attr/textColorSecondary"
+    android:textSize="12sp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/viewCreateListTitle"
+    />
+
+  <com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/viewCreateListNameInput"
+    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/spaceMedium"
+    app:boxStrokeColor="@color/selector_create_list_input"
+    app:hintTextColor="@color/selector_create_list_input"
+    app:layout_constraintBottom_toTopOf="@id/viewCreateListDescriptionInput"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/viewCreateListSubtitle"
+    >
+
+    <com.google.android.material.textfield.TextInputEditText
+      android:id="@+id/viewCreateListNameValue"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="start"
+      android:hint="@string/textName"
+      android:imeOptions="actionDone"
+      android:inputType="text"
+      android:lines="1"
+      android:textAlignment="viewStart"
+      android:textColorHint="@color/selector_create_list_input"
+      android:textCursorDrawable="@null"
+      android:textSize="14sp"
+      />
+
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/viewCreateListDescriptionInput"
+    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/spaceMedium"
+    app:boxStrokeColor="@color/selector_create_list_input"
+    app:hintTextColor="@color/selector_create_list_input"
+    app:layout_constraintBottom_toTopOf="@id/viewCreateListButton"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/viewCreateListNameInput"
+    >
+
+    <com.google.android.material.textfield.TextInputEditText
+      android:id="@+id/viewCreateListDescriptionValue"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="start"
+      android:hint="@string/textDescription"
+      android:inputType="textMultiLine"
+      android:maxLines="8"
+      android:minLines="4"
+      android:textAlignment="viewStart"
+      android:textColorHint="@color/selector_create_list_input"
+      android:textCursorDrawable="@null"
+      android:textSize="14sp"
+      />
+
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/viewCreateListButton"
+    style="@style/RoundMaterialButton"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/spaceMedium"
+    android:backgroundTint="@color/selector_create_list_button"
+    android:gravity="center"
+    android:text="@string/textCreateList"
+    android:textColor="?attr/textColorOnSurface"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/viewCreateListDescriptionInput"
+    app:rippleColor="?android:attr/textColorPrimary"
+    />
+
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/viewCreateListSnackHost"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintBottom_toTopOf="@id/viewCreateListButton"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

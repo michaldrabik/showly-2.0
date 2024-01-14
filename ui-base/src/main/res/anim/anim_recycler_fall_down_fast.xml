@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layoutAnimation
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:animation="@anim/anim_recycler_fall_down_item_fast"
+  android:animationOrder="normal"
+  android:delay="15%"
+  />

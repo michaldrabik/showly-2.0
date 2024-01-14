@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  tools:theme="@style/AppTheme"
+  >
+
+  <HorizontalScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:overScrollMode="never"
+    android:scrollbars="none"
+    >
+
+    <com.google.android.material.chip.ChipGroup
+      android:id="@+id/discoverChips"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingTop="@dimen/spaceSmall"
+      android:paddingBottom="@dimen/spaceSmall"
+      app:singleLine="true"
+      >
+
+      <com.google.android.material.chip.Chip
+        android:id="@+id/discoverFeedChip"
+        style="@style/ShowlyChip.Filter"
+        android:checkable="false"
+        android:text="@string/textHot"
+        />
+
+      <com.google.android.material.chip.Chip
+        android:id="@+id/discoverNetworksChip"
+        style="@style/ShowlyChip.Filter"
+        android:checkable="false"
+        android:text="@string/textNetworks"
+        />
+
+      <com.google.android.material.chip.Chip
+        android:id="@+id/discoverGenresChip"
+        style="@style/ShowlyChip.Filter"
+        android:checkable="false"
+        android:text="@string/textGenres"
+        />
+
+      <com.google.android.material.chip.Chip
+        android:id="@+id/discoverCollectionChip"
+        style="@style/ShowlyChip.Filter"
+        android:text="@string/textDiscoverFilterCollection"
+        />
+
+      <com.google.android.material.chip.Chip
+        android:id="@+id/discoverAnticipatedChip"
+        style="@style/ShowlyChip.Filter"
+        android:checked="true"
+        android:text="@string/textDiscoverFilterAnticipated"
+        />
+
+    </com.google.android.material.chip.ChipGroup>
+
+  </HorizontalScrollView>
+
+</merge>

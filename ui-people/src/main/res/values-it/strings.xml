@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textAge" comment="Person's age">Età:</string>
+  <string name="textBorn" comment="For example - Born: 12 January 1990">Nascita:</string>
+  <string name="textDied" comment="For example - Died: 12 January 2020">Morte:</string>
+  <string name="textCredits" comment="List of shows and movies the person appears on">Crediti</string>
+  <string name="textEpisodes">Episodi</string>
+  <string name="textGalleryEmpty">Nessuna immagine disponibile</string>
+</resources>

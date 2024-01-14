@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/rootLayout"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="?android:windowBackground"
+  android:clipChildren="false"
+  tools:context=".ui.main.MainActivity"
+  >
+
+  <androidx.fragment.app.FragmentContainerView
+    android:id="@+id/navigationHost"
+    android:name="androidx.navigation.fragment.NavHostFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    />
+
+  <LinearLayout
+    android:id="@+id/bottomNavigationWrapper"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:background="?attr/colorBottomMenuBackground"
+    android:elevation="@dimen/elevationNormal"
+    android:orientation="vertical"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_bias="1"
+    >
+
+    <TextView
+      android:id="@+id/statusView"
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/bottomNoInternetViewHeight"
+      android:background="?colorErrorSnackbar"
+      android:gravity="center"
+      android:text="@string/errorNoInternetConnection"
+      android:textColor="?textColorOnSurface"
+      android:textSize="12sp"
+      android:visibility="gone"
+      tools:visibility="visible"
+      />
+
+    <View
+      android:id="@+id/bottomNavigationSeparator"
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:background="?attr/colorBottomMenuSeparator"
+      />
+
+    <com.michaldrabik.showly2.ui.views.BottomMenuView
+      android:id="@+id/bottomMenuView"
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/bottomNavigationHeight"
+      />
+
+  </LinearLayout>
+
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/snackbarHost"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    app:layout_constraintBottom_toTopOf="@+id/bottomNavigationWrapper"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    />
+
+  <com.michaldrabik.ui_base.common.views.tips.TipView
+    android:id="@+id/tutorialTipModeMenu"
+    android:layout_width="@dimen/tutorialTipSize"
+    android:layout_height="@dimen/tutorialTipSize"
+    android:layout_marginBottom="54dp"
+    app:layout_constraintBottom_toBottomOf="@id/bottomNavigationWrapper"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="@dimen/tipModeMenuRatio"
+    app:layout_constraintStart_toStartOf="parent"
+    />
+
+  <com.michaldrabik.ui_base.common.views.tips.TipView
+    android:id="@+id/tutorialTipDiscover"
+    android:layout_width="@dimen/tutorialTipSize"
+    android:layout_height="@dimen/tutorialTipSize"
+    android:layout_marginBottom="54dp"
+    android:translationZ="10dp"
+    app:layout_constraintBottom_toBottomOf="@id/bottomNavigationWrapper"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="@dimen/tipDiscoverRatio"
+    app:layout_constraintStart_toStartOf="parent"
+    />
+
+  <com.michaldrabik.ui_base.common.views.tips.TipView
+    android:id="@+id/tutorialTipMyShows"
+    android:layout_width="@dimen/tutorialTipSize"
+    android:layout_height="@dimen/tutorialTipSize"
+    android:layout_marginBottom="54dp"
+    android:translationZ="10dp"
+    app:layout_constraintBottom_toBottomOf="@id/bottomNavigationWrapper"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="@dimen/tipMyShows"
+    app:layout_constraintStart_toStartOf="parent"
+    />
+
+  <com.michaldrabik.ui_base.common.views.tips.TipOverlayView
+    android:id="@+id/tutorialView"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    />
+
+  <View
+    android:id="@+id/viewMask"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:background="@color/colorBlackTranslucent"
+    android:translationZ="12dp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:visibility="visible"
+    />
+
+  <com.michaldrabik.showly2.ui.views.WelcomeNoteView
+    android:id="@+id/welcomeView"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/welcomeDialogSpace"
+    android:translationZ="13dp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:visibility="gone"
+    />
+
+  <com.michaldrabik.showly2.ui.views.WelcomeLanguageView
+    android:id="@+id/welcomeLanguageView"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/welcomeDialogSpace"
+    android:translationZ="15dp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:visibility="visible"
+    />
+
+  <ProgressBar
+    android:id="@+id/mainProgress"
+    style="@style/ProgressBar.Accent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:translationZ="20dp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

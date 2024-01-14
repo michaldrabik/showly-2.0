@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="menuMyShows">My Shows</string>
+  <string name="menuWatchlist">Watchlist</string>
+  <string name="menuHidden">Hidden</string>
+
+  <string name="textMyShowsEmpty">Your shows collection is currently empty.\n\nVisit <b>Discover</b> tab to add your first show.</string>
+  <string name="textWatchlistEmpty">Your <b>Watchlist</b> is currently empty.\n\nVisit <b>Discover</b> tab to add shows you might want to watch in the future.</string>
+  <string name="textHiddenEmpty">Your <b>Hidden</b> list is currently empty.\n\n<b>Hidden</b> is a list of items that you are not interested in.\n\nHidden items will no longer appear in <b>Progress</b>, <b>Discover</b> and other sections.</string>
+</resources>

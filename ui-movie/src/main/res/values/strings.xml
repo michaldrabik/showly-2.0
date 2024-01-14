@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textInMyMovies">Added to my movies</string>
+  <string name="textInMoviesWatchlist">Added to watchlist</string>
+  <string name="textInHidden">Hidden</string>
+
+  <string name="textMovieActorsEmpty">Actors are not available</string>
+  <string name="textMovieTrailer">Trailer</string>
+  <string name="textMovieRate">Rate</string>
+  <string name="textMovieComments2">Comments</string>
+  <string name="textMovieYouMayAlsoLike">You may also like</string>
+  <string name="textMovieCollections">Collections</string>
+
+  <string name="textMovieExtraInfo">%s %s | %s %s | %s</string>
+
+  <string name="textMovieManageLists">Manage Lists</string>
+  <string name="textMovieManageListsCount">Manage Lists (%d)</string>
+  <string name="textTraktSyncMovieRemovedFromTrakt">Trakt.tv synced successfully.</string>
+</resources>

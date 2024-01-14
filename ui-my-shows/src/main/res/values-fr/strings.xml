@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="menuMyShows">Mes séries</string>
+  <string name="menuWatchlist">Watchlist</string>
+  <string name="menuHidden">Masqué</string>
+  <string name="textMyShowsEmpty">Votre collection de séries est actuellement vide.\n\nVisitez l\'onglet <b>Découvrir</b> pour ajouter votre première série.</string>
+  <string name="textWatchlistEmpty">Votre liste <b>Watchlist</b> est présentement vide.\n\nVisitez l\'onglet <b>Découvrir</b> pour ajouter des émissions que vous souhaitez visionner plus tard.</string>
+  <string name="textHiddenEmpty">Votre liste <b>masqué</b> est actuellement vide.\n\n<b>Masqué</b> est une liste d\'éléments qui ne vous intéressent pas.\n\nLes éléments masqués n\'apparaîtront plus dans <b>Progression</b>, <b>Découvrir</b> et d\'autres sections.</string>
+</resources>

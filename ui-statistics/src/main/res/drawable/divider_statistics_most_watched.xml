@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inset
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:insetTop="@dimen/spaceSmall"
+  android:insetBottom="@dimen/spaceSmall"
+  >
+  <shape>
+    <size android:height="1dp" />
+    <solid android:color="?attr/colorSeparator" />
+  </shape>
+</inset>

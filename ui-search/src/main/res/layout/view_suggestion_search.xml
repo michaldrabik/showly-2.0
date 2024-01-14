@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  tools:theme="@style/AppTheme"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/suggestionRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:paddingStart="@dimen/spaceMedium"
+    android:paddingTop="@dimen/spaceSmall"
+    android:paddingEnd="@dimen/spaceMedium"
+    android:paddingBottom="@dimen/spaceSmall"
+    >
+
+    <ImageView
+      android:id="@+id/suggestionImage"
+      android:layout_width="@dimen/searchSuggestionViewImageWidth"
+      android:layout_height="@dimen/searchSuggestionViewImageHeight"
+      android:background="@drawable/bg_media_view_elevation"
+      android:elevation="@dimen/elevationTiny"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+    <ImageView
+      android:id="@+id/suggestionPlaceholder"
+      android:layout_width="@dimen/searchSuggestionViewImageWidth"
+      android:layout_height="@dimen/searchSuggestionViewImageHeight"
+      android:layout_gravity="center"
+      android:background="@drawable/bg_media_view_placeholder"
+      android:elevation="@dimen/elevationTiny"
+      android:padding="12dp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_television"
+      app:tint="?attr/colorPlaceholderIcon"
+      tools:visibility="visible"
+      />
+
+    <ImageView
+      android:id="@+id/suggestionBadge"
+      style="@style/Badge"
+      android:layout_width="14dp"
+      android:layout_height="14dp"
+      android:layout_marginTop="1dp"
+      android:layout_marginEnd="12dp"
+      app:layout_constraintEnd_toStartOf="@id/suggestionTitle"
+      app:layout_constraintTop_toTopOf="@id/suggestionRoot"
+      app:srcCompat="@drawable/ic_bookmark_full"
+      tools:visibility="visible"
+      />
+
+    <ImageView
+      android:id="@+id/suggestionWatchlistBadge"
+      style="@style/Badge.Watchlist"
+      android:layout_width="14dp"
+      android:layout_height="14dp"
+      android:layout_marginTop="1dp"
+      android:layout_marginEnd="12dp"
+      app:layout_constraintEnd_toStartOf="@id/suggestionTitle"
+      app:layout_constraintTop_toTopOf="@id/suggestionRoot"
+      app:srcCompat="@drawable/ic_bookmark_full"
+      tools:visibility="visible"
+      />
+
+    <TextView
+      android:id="@+id/suggestionTitle"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceMedium"
+      android:ellipsize="end"
+      android:gravity="start"
+      android:maxLines="1"
+      android:textAlignment="viewStart"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="14sp"
+      app:layout_constraintBottom_toTopOf="@id/suggestionDescription"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/suggestionImage"
+      app:layout_constraintTop_toBottomOf="@+id/suggestionNetwork"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:text="Game of Thrones"
+      />
+
+    <TextView
+      android:id="@+id/suggestionNetwork"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceMedium"
+      android:ellipsize="end"
+      android:gravity="start"
+      android:maxLines="1"
+      android:textAlignment="viewStart"
+      android:textColor="?attr/colorAccent"
+      android:textSize="10sp"
+      app:layout_constraintBottom_toTopOf="@+id/suggestionTitle"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/suggestionImage"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:ignore="SmallSp"
+      tools:text="Netflix"
+      />
+
+    <TextView
+      android:id="@+id/suggestionDescription"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceMedium"
+      android:ellipsize="end"
+      android:gravity="start"
+      android:maxLines="2"
+      android:textAlignment="viewStart"
+      android:textColor="?android:attr/textColorSecondary"
+      android:textSize="10sp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/suggestionImage"
+      app:layout_constraintTop_toBottomOf="@id/suggestionTitle"
+      tools:ignore="SmallSp"
+      tools:text="Lorem Ipsum"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- Show Details -->
+
+  <style name="ShowDetails" />
+
+  <style name="ShowDetails.ExtraButton" parent="ShowDetails">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:drawablePadding">@dimen/spaceTiny</item>
+    <item name="android:gravity">center</item>
+    <item name="android:textAllCaps">true</item>
+    <item name="android:maxLines">1</item>
+    <item name="drawableTint">?android:attr/textColorPrimary</item>
+    <item name="android:textColor">?android:attr/textColorPrimary</item>
+    <item name="android:textSize">@dimen/showDetailsExtraButtonTextSize</item>
+    <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
+    <item name="layout_constraintHorizontal_chainStyle">spread_inside</item>
+  </style>
+
+</resources>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/statisticsMoviesRoot"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:clipChildren="false"
+  android:clipToPadding="false"
+  android:fillViewport="true"
+  android:overScrollMode="never"
+  android:paddingBottom="@dimen/spaceSmall"
+  android:scrollbars="none"
+  tools:background="@color/colorBackground"
+  tools:theme="@style/AppTheme"
+  >
+
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/statisticsMoviesCoordinator"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <com.google.android.material.appbar.MaterialToolbar
+      android:id="@+id/statisticsMoviesToolbar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="?android:windowBackground"
+      android:elevation="@dimen/elevationNormal"
+      app:contentInsetStartWithNavigation="0dp"
+      app:layout_constraintBottom_toTopOf="@id/statisticsMoviesTotalTimeSpent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:navigationIcon="@drawable/ic_arrow_back"
+      app:title="@string/textStatisticsMovies"
+      />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:id="@+id/statisticsMoviesContent"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:clipChildren="false"
+      android:clipToPadding="false"
+      android:visibility="gone"
+      tools:visibility="visible"
+      >
+
+      <com.michaldrabik.ui_statistics_movies.views.StatisticsMoviesTotalTimeSpentView
+        android:id="@+id/statisticsMoviesTotalTimeSpent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spaceMedium"
+        android:layout_marginTop="@dimen/statisticsMoviesTopPadding"
+        android:layout_marginEnd="@dimen/spaceMedium"
+        app:layout_constraintBottom_toTopOf="@id/statisticsMoviesTotalMovies"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintVertical_chainStyle="packed"
+        />
+
+      <com.michaldrabik.ui_statistics_movies.views.StatisticsMoviesTotalMoviesView
+        android:id="@+id/statisticsMoviesTotalMovies"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spaceMedium"
+        android:layout_marginTop="@dimen/spaceNormal"
+        android:layout_marginEnd="@dimen/spaceMedium"
+        app:layout_constraintBottom_toTopOf="@id/statisticsMoviesTopGenres"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/statisticsMoviesTotalTimeSpent"
+        />
+
+      <com.michaldrabik.ui_statistics_movies.views.StatisticsMoviesTopGenresView
+        android:id="@+id/statisticsMoviesTopGenres"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spaceMedium"
+        android:layout_marginTop="@dimen/spaceNormal"
+        android:layout_marginEnd="@dimen/spaceMedium"
+        app:layout_constraintBottom_toTopOf="@+id/statisticsMoviesRatings"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/statisticsMoviesTotalMovies"
+        />
+
+      <com.michaldrabik.ui_statistics_movies.views.ratings.StatisticsMoviesRatingsView
+        android:id="@+id/statisticsMoviesRatings"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spaceMedium"
+        android:layout_marginTop="@dimen/spaceNormal"
+        android:layout_marginEnd="@dimen/spaceMedium"
+        android:layout_marginBottom="@dimen/spaceNormal"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/statisticsMoviesTopGenres"
+        tools:visibility="visible"
+        />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include
+      android:id="@+id/statisticsMoviesEmptyView"
+      layout="@layout/layout_statistics_movies_empty"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:layout_marginStart="@dimen/spaceBig"
+      android:layout_marginEnd="@dimen/spaceBig"
+      android:visibility="gone"
+      />
+
+  </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</androidx.core.widget.NestedScrollView>

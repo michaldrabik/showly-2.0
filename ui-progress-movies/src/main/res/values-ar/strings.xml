@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="tabMoviesCalendar">تقويم الأفلام</string>
+  <string name="tabMoviesProgress">مستوى التقدم</string>
+  <string name="textMoviesCalendarEmpty">لا توجد أي أفلام جديدة قريياً.</string>
+  <string name="textMoviesCalendarRecentsEmpty">لا يُوجد أي أفلام جديدة.</string>
+  <string name="textDiscoverMovies">إكتشف أفلام</string>
+  <string name="textMoviesTraktSynchronize">إستيراد البيانات من Trakt.tv</string>
+  <string name="textMoviesProgressEmpty">قائمة <b>مستوى التقدم</b> فارغة حالياً.\n\nإذهب إلى صفحة <b>إكتشف</b> لإضافة أفلام، أو اِستورد البيانات من Trakt.tv.</string>
+</resources>

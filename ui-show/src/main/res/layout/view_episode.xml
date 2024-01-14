@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/episodeRoot"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
+  >
+
+  <TextView
+    android:id="@+id/episodeTitle"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/showDetailsMarginHorizontal"
+    android:layout_marginTop="@dimen/spaceSmall"
+    android:layout_marginEnd="@dimen/spaceMedium"
+    android:ellipsize="end"
+    android:gravity="center_vertical|start"
+    android:maxLines="1"
+    android:textAlignment="viewStart"
+    android:textColor="?android:attr/textColorSecondary"
+    android:textSize="12sp"
+    app:layout_constraintEnd_toStartOf="@id/episodeMyStarIcon"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:text="Episode 1"
+    />
+
+  <TextView
+    android:id="@+id/episodeOverview"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/showDetailsMarginHorizontal"
+    android:layout_marginEnd="@dimen/spaceMedium"
+    android:layout_marginBottom="@dimen/spaceSmall"
+    android:ellipsize="end"
+    android:gravity="center_vertical|start"
+    android:maxLines="2"
+    android:textAlignment="viewStart"
+    android:textColor="?android:attr/textColorPrimary"
+    android:textSize="16sp"
+    android:textStyle="bold"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toStartOf="@id/episodeMyStarIcon"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/episodeTitle"
+    tools:text="@tools:sample/lorem/random"
+    />
+
+  <ImageView
+    android:id="@+id/episodeStarIcon"
+    android:layout_width="20dp"
+    android:layout_height="0dp"
+    app:layout_constraintBottom_toBottomOf="@id/episodeRating"
+    app:layout_constraintEnd_toStartOf="@id/episodeRating"
+    app:layout_constraintTop_toTopOf="@id/episodeRating"
+    app:srcCompat="@drawable/ic_star"
+    app:tint="?attr/colorAccent"
+    />
+
+  <TextView
+    android:id="@+id/episodeRating"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/spaceMedium"
+    android:gravity="end"
+    android:textColor="?android:attr/textColorSecondary"
+    android:textSize="12sp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toStartOf="@id/episodeCheckbox"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_chainStyle="packed"
+    tools:text="7.6"
+    />
+
+  <ImageView
+    android:id="@+id/episodeMyStarIcon"
+    android:layout_width="20dp"
+    android:layout_height="0dp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="@id/episodeMyRating"
+    app:layout_constraintEnd_toStartOf="@id/episodeMyRating"
+    app:layout_constraintTop_toTopOf="@id/episodeMyRating"
+    app:srcCompat="@drawable/ic_star"
+    app:tint="?android:attr/textColorPrimary"
+    tools:visibility="visible"
+    />
+
+  <TextView
+    android:id="@+id/episodeMyRating"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/spaceTiny"
+    android:gravity="end"
+    android:textColor="?android:attr/textColorSecondary"
+    android:textSize="12sp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toStartOf="@id/episodeStarIcon"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:text="7.6"
+    tools:visibility="visible"
+    />
+
+  <com.google.android.material.checkbox.MaterialCheckBox
+    android:id="@+id/episodeCheckbox"
+    style="@style/ShowlyCheckbox"
+    android:layout_width="32dp"
+    android:layout_height="@dimen/episodeViewHeight"
+    android:layout_marginEnd="@dimen/showDetailsMarginHorizontal"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    />
+
+</merge>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/viewLinkItemContent"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/linkItemTileHeight"
+    android:background="@drawable/bg_link_item_ripple"
+    android:elevation="@dimen/elevationTiny"
+    android:paddingStart="@dimen/spaceSmall"
+    android:paddingTop="@dimen/spaceSmall"
+    android:paddingEnd="@dimen/spaceMedium"
+    android:paddingBottom="@dimen/spaceSmall"
+    >
+
+    <ImageView
+      android:id="@+id/viewLinkItemImage"
+      android:layout_width="@dimen/linkItemImageWidth"
+      android:layout_height="@dimen/linkItemImageHeight"
+      android:adjustViewBounds="true"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:src="@drawable/ic_imdb"
+      />
+
+    <TextView
+      android:id="@+id/viewLinkItemName"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceMedium"
+      android:ellipsize="end"
+      android:gravity="start|center_vertical"
+      android:maxLines="1"
+      android:textAlignment="viewStart"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="16sp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintStart_toEndOf="@id/viewLinkItemImage"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:text="iMDB"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>

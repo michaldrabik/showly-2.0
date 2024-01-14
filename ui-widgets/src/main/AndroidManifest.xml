@@ -1,0 +1,114 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <application android:theme="@style/AppTheme">
+
+    <service
+      android:name="com.michaldrabik.ui_widgets.progress.ProgressWidgetService"
+      android:permission="android.permission.BIND_REMOTEVIEWS"
+      />
+
+    <service
+      android:name="com.michaldrabik.ui_widgets.progress.ProgressWidgetEpisodeCheckService"
+      android:exported="true"
+      android:permission="android.permission.BIND_JOB_SERVICE"
+      />
+
+    <service
+      android:name="com.michaldrabik.ui_widgets.progress_movies.ProgressMoviesWidgetService"
+      android:permission="android.permission.BIND_REMOTEVIEWS"
+      />
+
+    <service
+      android:name="com.michaldrabik.ui_widgets.progress_movies.ProgressMoviesWidgetCheckService"
+      android:exported="true"
+      android:permission="android.permission.BIND_JOB_SERVICE"
+      />
+
+    <service
+      android:name="com.michaldrabik.ui_widgets.calendar.CalendarWidgetService"
+      android:permission="android.permission.BIND_REMOTEVIEWS"
+      />
+
+    <service
+      android:name="com.michaldrabik.ui_widgets.calendar_movies.CalendarMoviesWidgetService"
+      android:permission="android.permission.BIND_REMOTEVIEWS"
+      />
+
+    <receiver
+      android:name="com.michaldrabik.ui_widgets.progress.ProgressWidgetProvider"
+      android:exported="true"
+      android:label="Shows Progress"
+      >
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+      </intent-filter>
+
+      <meta-data
+        android:name="android.appwidget.provider"
+        android:resource="@xml/progress_widgets_provider"
+        />
+    </receiver>
+
+    <receiver
+      android:name="com.michaldrabik.ui_widgets.progress_movies.ProgressMoviesWidgetProvider"
+      android:exported="true"
+      android:label="Movies Progress"
+      >
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+      </intent-filter>
+
+      <meta-data
+        android:name="android.appwidget.provider"
+        android:resource="@xml/progress_movies_widgets_provider"
+        />
+    </receiver>
+
+    <receiver
+      android:name="com.michaldrabik.ui_widgets.calendar.CalendarWidgetProvider"
+      android:exported="true"
+      android:label="Shows Calendar"
+      >
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+      </intent-filter>
+
+      <meta-data
+        android:name="android.appwidget.provider"
+        android:resource="@xml/calendar_widgets_provider"
+        />
+    </receiver>
+
+    <receiver
+      android:name="com.michaldrabik.ui_widgets.calendar_movies.CalendarMoviesWidgetProvider"
+      android:exported="true"
+      android:label="Movies Calendar"
+      >
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+      </intent-filter>
+
+      <meta-data
+        android:name="android.appwidget.provider"
+        android:resource="@xml/calendar_movies_widgets_provider"
+        />
+    </receiver>
+
+    <receiver
+      android:name="com.michaldrabik.ui_widgets.search.SearchWidgetProvider"
+      android:exported="true"
+      android:label="Search"
+      >
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+      </intent-filter>
+
+      <meta-data
+        android:name="android.appwidget.provider"
+        android:resource="@xml/search_widgets_provider"
+        />
+    </receiver>
+
+  </application>
+
+</manifest>

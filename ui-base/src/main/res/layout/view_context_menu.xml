@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/contextMenuItemRoot"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:background="@drawable/bg_bottom_sheet"
+  android:clipChildren="false"
+  android:clipToPadding="false"
+  android:focusableInTouchMode="true"
+  android:paddingStart="@dimen/spaceNormal"
+  android:paddingTop="@dimen/spaceNormal"
+  android:paddingEnd="@dimen/spaceNormal"
+  android:paddingBottom="@dimen/spaceMedium"
+  >
+
+  <androidx.constraintlayout.widget.Guideline
+    android:id="@+id/contextMenuItemGuide1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layout_constraintGuide_begin="@dimen/collectionItemImageWidth"
+    />
+
+  <androidx.constraintlayout.widget.Guideline
+    android:id="@+id/contextMenuItemGuide2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    app:layout_constraintGuide_begin="0dp"
+    />
+
+  <androidx.constraintlayout.widget.Barrier
+    android:id="@+id/contextMenuItemBarrier"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    app:barrierDirection="bottom"
+    app:constraint_referenced_ids="contextMenuItemDescription, contextMenuItemImage, contextMenuItemPlaceholder"
+    />
+
+  <ImageView
+    android:id="@+id/contextMenuItemImage"
+    android:layout_width="@dimen/collectionItemImageWidth"
+    android:layout_height="@dimen/collectionItemImageHeight"
+    android:background="@drawable/bg_item_menu_elevation"
+    android:elevation="@dimen/elevationSmall"
+    app:layout_constraintEnd_toStartOf="@id/contextMenuItemGuide1"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    />
+
+  <ImageView
+    android:id="@+id/contextMenuItemPlaceholder"
+    android:layout_width="@dimen/collectionItemImageWidth"
+    android:layout_height="@dimen/collectionItemImageHeight"
+    android:layout_gravity="center"
+    android:background="@drawable/bg_item_menu_placeholder"
+    android:elevation="@dimen/elevationSmall"
+    android:padding="@dimen/spaceBig"
+    android:visibility="gone"
+    app:layout_constraintEnd_toStartOf="@id/contextMenuItemGuide1"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:srcCompat="@drawable/ic_television"
+    app:tint="?attr/colorPlaceholderIcon"
+    tools:visibility="visible"
+    />
+
+  <ImageView
+    android:id="@+id/contextMenuItemBadge"
+    style="@style/Badge"
+    android:layout_width="24dp"
+    android:layout_height="24dp"
+    android:layout_marginEnd="@dimen/spaceMicro"
+    android:elevation="@dimen/elevationSmall"
+    android:translationY="-4dp"
+    app:layout_constraintEnd_toStartOf="@id/contextMenuItemGuide1"
+    app:layout_constraintTop_toBottomOf="@id/contextMenuItemGuide2"
+    app:srcCompat="@drawable/ic_bookmark_full"
+    tools:visibility="visible"
+    />
+
+  <TextView
+    android:id="@+id/contextMenuItemTitle"
+    style="@style/CollectionItem.Title"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceNormal"
+    app:layout_constraintBottom_toTopOf="@id/contextMenuItemDescription"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@id/contextMenuItemGuide1"
+    app:layout_constraintTop_toBottomOf="@+id/contextMenuItemNetwork"
+    app:layout_constraintVertical_chainStyle="packed"
+    tools:text="Game of Thrones"
+    />
+
+  <TextView
+    android:id="@+id/contextMenuItemNetwork"
+    style="@style/CollectionItem.Header"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceNormal"
+    app:layout_constraintBottom_toTopOf="@+id/contextMenuItemTitle"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@id/contextMenuItemGuide1"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_chainStyle="packed"
+    tools:ignore="SmallSp"
+    tools:text="Netflix"
+    />
+
+  <ImageView
+    android:id="@+id/contextMenuRatingStar"
+    android:layout_width="20dp"
+    android:layout_height="0dp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toTopOf="@+id/contextMenuItemTitle"
+    app:layout_constraintEnd_toStartOf="@id/contextMenuRating"
+    app:layout_constraintTop_toTopOf="@id/contextMenuItemNetwork"
+    app:srcCompat="@drawable/ic_star"
+    app:tint="?attr/colorAccent"
+    tools:visibility="visible"
+    />
+
+  <TextView
+    android:id="@+id/contextMenuRating"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="end"
+    android:textColor="?android:attr/textColorSecondary"
+    android:textSize="12sp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toTopOf="@+id/contextMenuItemTitle"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="@id/contextMenuItemNetwork"
+    tools:text="7.6"
+    tools:visibility="visible"
+    />
+
+  <ImageView
+    android:id="@+id/contextMenuUserRatingStar"
+    android:layout_width="20dp"
+    android:layout_height="0dp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toTopOf="@id/contextMenuItemTitle"
+    app:layout_constraintEnd_toStartOf="@id/contextMenuUserRating"
+    app:layout_constraintTop_toTopOf="@id/contextMenuItemNetwork"
+    app:srcCompat="@drawable/ic_star"
+    app:tint="?android:attr/textColorPrimary"
+    tools:visibility="visible"
+    />
+
+  <TextView
+    android:id="@+id/contextMenuUserRating"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/spaceTiny"
+    android:gravity="end"
+    android:textColor="?android:attr/textColorSecondary"
+    android:textSize="12sp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toTopOf="@id/contextMenuItemTitle"
+    app:layout_constraintEnd_toStartOf="@id/contextMenuRatingStar"
+    app:layout_constraintTop_toTopOf="@id/contextMenuItemNetwork"
+    tools:text="10"
+    tools:visibility="visible"
+    />
+
+  <com.michaldrabik.ui_base.common.views.FoldableTextView
+    android:id="@+id/contextMenuItemDescription"
+    style="@style/CollectionItem.Description"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceNormal"
+    app:layout_constraintBottom_toBottomOf="@id/contextMenuItemBarrier"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@id/contextMenuItemGuide1"
+    app:layout_constraintTop_toBottomOf="@id/contextMenuItemTitle"
+    tools:text="@tools:sample/lorem/random"
+    />
+
+  <!-- Pinning Buttons -->
+
+  <LinearLayout
+    android:id="@+id/contextMenuItemPinButtonsLayout"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:divider="@drawable/divider_item_menu"
+    android:orientation="vertical"
+    android:showDividers="middle"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="@id/contextMenuItemSeparator2"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/contextMenuItemBarrier"
+    tools:visibility="visible"
+    >
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/contextMenuItemPinButton"
+      style="@style/ContextMenuItemButton.Move"
+      android:text="@string/menuPin"
+      android:visibility="gone"
+      app:icon="@drawable/ic_pin"
+      tools:visibility="visible"
+      />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/contextMenuItemAddOnHoldButton"
+      style="@style/ContextMenuItemButton.Move"
+      android:text="@string/menuAddOnHold"
+      android:visibility="gone"
+      app:icon="@drawable/ic_pause"
+      tools:visibility="visible"
+      />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/contextMenuItemUnpinButton"
+      style="@style/ContextMenuItemButton.Remove"
+      android:text="@string/menuUnpin"
+      android:visibility="gone"
+      app:icon="@drawable/ic_pin"
+      tools:visibility="visible"
+      />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/contextMenuItemRemoveOnHoldButton"
+      style="@style/ContextMenuItemButton.Remove"
+      android:text="@string/menuRemoveOnHold"
+      android:visibility="gone"
+      app:icon="@drawable/ic_pause"
+      tools:visibility="visible"
+      />
+
+  </LinearLayout>
+
+  <View
+    android:id="@+id/contextMenuItemSeparator2"
+    android:layout_width="0dp"
+    android:layout_height="1dp"
+    android:layout_marginTop="11dp"
+    android:background="?attr/colorSeparator"
+    android:visibility="gone"
+    app:layout_constraintBottom_toTopOf="@id/contextMenuItemButtonsLayout"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/contextMenuItemPinButtonsLayout"
+    app:layout_goneMarginTop="8dp"
+    tools:visibility="visible"
+    />
+
+  <!-- Main Buttons -->
+
+  <LinearLayout
+    android:id="@+id/contextMenuItemButtonsLayout"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/spaceMedium"
+    android:divider="@drawable/divider_item_menu"
+    android:orientation="vertical"
+    android:showDividers="middle"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/contextMenuItemSeparator2"
+    >
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/contextMenuItemMoveToMyButton"
+      style="@style/ContextMenuItemButton.Move"
+      android:text="@string/textMoveToMyShows"
+      android:visibility="gone"
+      app:icon="@drawable/ic_bookmark_full"
+      tools:visibility="visible"
+      />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/contextMenuItemMoveToWatchlistButton"
+      style="@style/ContextMenuItemButton.Move"
+      android:text="@string/textMoveToWatchlist"
+      android:visibility="gone"
+      app:icon="@drawable/ic_bookmark"
+      tools:visibility="visible"
+      />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/contextMenuItemMoveToHiddenButton"
+      style="@style/ContextMenuItemButton.Move"
+      android:text="@string/textMoveToHidden"
+      android:visibility="gone"
+      app:icon="@drawable/ic_eye_no"
+      tools:visibility="visible"
+      />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/contextMenuItemRemoveFromMyButton"
+      style="@style/ContextMenuItemButton.Remove"
+      android:text="@string/textRemoveFromMyShows"
+      android:visibility="gone"
+      tools:visibility="visible"
+      />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/contextMenuItemRemoveFromWatchlistButton"
+      style="@style/ContextMenuItemButton.Remove"
+      android:text="@string/textRemoveFromWatchlist"
+      android:visibility="gone"
+      tools:visibility="visible"
+      />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/contextMenuItemRemoveFromHiddenButton"
+      style="@style/ContextMenuItemButton.Remove"
+      android:text="@string/textRemoveFromHidden"
+      android:visibility="gone"
+      tools:visibility="visible"
+      />
+
+  </LinearLayout>
+
+  <androidx.core.widget.ContentLoadingProgressBar
+    android:id="@+id/contextMenuItemProgress"
+    style="@style/ContentProgressBar.Accent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="@dimen/spaceNormal"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:visibility="visible"
+    />
+
+  <ProgressBar
+    android:id="@+id/contextMenuItemProgressSecondary"
+    style="@style/ContentProgressBar.Dark"
+    android:layout_width="36dp"
+    android:layout_height="36dp"
+    android:layout_gravity="center"
+    android:layout_margin="@dimen/spaceNormal"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/contextMenuItemBarrier"
+    tools:visibility="visible"
+    />
+
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/contextMenuItemSnackbarHost"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintBottom_toBottomOf="parent"
+    />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

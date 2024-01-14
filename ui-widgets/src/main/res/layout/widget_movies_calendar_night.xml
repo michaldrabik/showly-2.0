@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/calendarWidgetMoviesNightRoot"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@drawable/bg_widget"
+  android:theme="@style/AppTheme.Widget.Dark"
+  tools:ignore="HardcodedText,SmallSp"
+  >
+
+  <include
+    layout="@layout/layout_widget_movies_calendar"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    />
+
+</FrameLayout>

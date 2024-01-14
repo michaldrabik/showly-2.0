@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textStatistics">Statistiques</string>
+  <string name="textStatisticsEmpty">Au moins une série doit être présente dans <b>Mes Séries</b>\navant que les statistiques puissent être affichées.</string>
+  <string name="textStatisticsMostWatchedShows">Séries les plus vues</string>
+  <string name="textStatisticsTotalTimeSpent">Temps Total Passé à Visionner</string>
+  <string name="textStatisticsTotalTimeItIs">ce qui correspond à</string>
+  <string name="textStatisticsTotalTimeSpentHours">%s heures</string>
+  <string name="textStatisticsTotalTimeSpentMinutes">%s minutes</string>
+  <string name="textStatisticsTotalTimeSpentDays">ce qui équivaut à environ %s jours.</string>
+  <string name="textStatisticsTotalEpisodes">Nombre Total d\'Épisodes Vus</string>
+  <string name="textStatisticsTotalEpisodesCount">%s épisodes</string>
+  <string name="textStatisticsTotalEpisodesShowsCount">répartis sur %s séries.</string>
+  <string name="textStatisticsTopGenre">Genres Principaux</string>
+  <string name="textStatisticsTopGenreSubValue">semblent être votre tasse de thé. Appuyez pour en voir plus.</string>
+  <string name="textStatisticsTopGenreSubValue2">semblent être votre tasse de thé.</string>
+  <string name="textStatisticsShowMore">Afficher Plus</string>
+  <string name="textStatisticsRatings">Évaluations Récentes</string>
+  <string name="textStatisticsHours">Heures</string>
+  <string name="textStatisticsEpisodes">Épisodes</string>
+  <string name="textStatisticsSeasons">Saisons</string>
+</resources>

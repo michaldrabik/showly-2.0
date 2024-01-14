@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textSearchInitial1">What are you looking for?</string>
+  <string name="textSearchInitial2">Search powered by Trakt.tv</string>
+  <string name="textClear">Clear recent searches</string>
+</resources>

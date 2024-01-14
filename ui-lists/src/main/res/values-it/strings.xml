@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="menuLists">Liste</string>
+  <string name="menuList">Lista</string>
+  <string name="textFilters">Filtri:</string>
+  <string name="textListsEmpty">La tua raccolta di liste è attualmente vuota.</string>
+  <string name="textListEmpty">La tua lista è attualmente vuota.</string>
+  <string name="textCreateList">Crea lista</string>
+  <string name="textCreateListDescription">Crea una nuova lista personalizzata.</string>
+  <string name="textName">Nome</string>
+  <string name="textDescription">Descrizione (facoltativa)</string>
+  <string name="textDeleteList">Elimina lista</string>
+  <string name="textEditList">Modifica lista</string>
+  <string name="textEditListDescription">Aggiorna la tua lista personalizzata.</string>
+  <string name="textConfirmDeleteListTitle">Elimina lista</string>
+  <string name="textConfirmDeleteListSubtitle">Sei sicuro di voler eliminare questa lista?</string>
+  <string name="textChangeRanks">Cambia posizione</string>
+  <string name="textChangeRanksSubtitle">Trascina e rilascia l\'elemento per cambiare la sua posizione nella lista</string>
+  <string name="textManageLists">Gestisci liste</string>
+  <string name="textManageListsShows">Gestisci le tue liste per questo show.</string>
+  <string name="textManageListsMovies">Gestisci le tue liste per questo film.</string>
+  <string name="errorCouldNotCreateList">Al momento non è possibile creare una nuova lista nel tuo account Trakt.\nControlla la connessione a internet e riprova.</string>
+  <string name="errorCouldNotUpdateList">Al momento non è possibile aggiornare questa lista nel tuo account Trakt.\nControlla la connessione internet e riprova.</string>
+  <string name="errorCouldNotDeleteList">Al momento non è possibile eliminare questa lista dal tuo account Trakt.\nControlla la connessione a internet e riprova.</string>
+</resources>

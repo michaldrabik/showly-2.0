@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="tabCalendar">Календар</string>
+  <string name="tabProgress">Прогрес</string>
+  <string name="textCalendarEmpty">Немає нових серій.</string>
+  <string name="textRecentsEmpty">Немає нещодавно випущених серій.</string>
+  <string name="textOnHold" comment="This is a header for Progress subsection. It will contain pending shows marked by user.">Призупинено</string>
+  <string name="textDiscoverShows">Знайти серіали</string>
+  <string name="textEpisodeInfo">Подробиці</string>
+  <string name="textTraktSynchronize">Імпорт з Trakt.tv</string>
+  <string name="textProgressEmpty">Ваш <b>Прогрес</b> зараз порожній.\n\nВідвідайте вкладку <b>Огляд</b>, щоб додати серіали або імпортуйте колекцію з Trakt.tv.</string>
+  <string name="textNewSeason">Прем\'єра сезону</string>
+</resources>

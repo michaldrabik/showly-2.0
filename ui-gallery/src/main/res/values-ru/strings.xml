@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textPoster">Постер</string>
+  <string name="textFanart">Фан-арт</string>
+  <string name="textGalleryEmpty">Нет доступных изображений</string>
+  <string name="textUrlDialogTitle">Скачать изображение</string>
+  <string name="textUrlDialogHint">Ссылка на изображение</string>
+  <string name="textUrlDialogInvalidUrl">Неверный формат URL изображения.\nПример: https://test.com/image.jpg</string>
+  <string name="textUrlDialogInvalidImage">Извините, данное изображение не может быть загружено.</string>
+</resources>

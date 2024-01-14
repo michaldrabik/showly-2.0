@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textInMyMovies">Filmlerime eklendi</string>
+  <string name="textInMoviesWatchlist">İstek listesine eklendi</string>
+  <string name="textInHidden">Gizlenmiş</string>
+  <string name="textMovieActorsEmpty">Oyuncular mevcut değil</string>
+  <string name="textMovieTrailer">Fragman</string>
+  <string name="textMovieRate">Oy Ver</string>
+  <string name="textMovieComments2">Yorumlar</string>
+  <string name="textMovieYouMayAlsoLike">Bunlar da hoşunuza gidebilir</string>
+  <string name="textMovieCollections">Koleksiyonlar</string>
+  <string name="textMovieExtraInfo">%s %s | %s %s | %s</string>
+  <string name="textMovieManageLists">Listeleri Yönet</string>
+  <string name="textMovieManageListsCount">Listeleri Yönet (%d)</string>
+  <string name="textTraktSyncMovieRemovedFromTrakt">Trakt.tv eşitlemesi başarılı.</string>
+</resources>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/settingsRoot"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:clipToPadding="false"
+  android:fillViewport="true"
+  android:overScrollMode="never"
+  android:scrollbars="none"
+  tools:background="@color/colorBackground"
+  tools:layout_marginTop="-0dp"
+  tools:theme="@style/AppTheme"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/settingsContent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <com.google.android.material.appbar.MaterialToolbar
+      android:id="@+id/settingsToolbar"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:background="?android:windowBackground"
+      android:elevation="@dimen/elevationNormal"
+      app:contentInsetStartWithNavigation="0dp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:navigationIcon="@drawable/ic_arrow_back"
+      app:title="@string/textSettings"
+      />
+
+    <com.michaldrabik.ui_base.common.views.PremiumAdView
+      android:id="@+id/settingsPremium"
+      android:layout_width="match_parent"
+      android:layout_height="100dp"
+      android:layout_marginStart="@dimen/settingsPremiumAdMargin"
+      android:layout_marginTop="@dimen/spaceTiny"
+      android:layout_marginEnd="@dimen/settingsPremiumAdMargin"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsToolbar"
+      />
+
+    <androidx.fragment.app.FragmentContainerView
+      android:id="@+id/settingsCategoryTrakt"
+      android:name="com.michaldrabik.ui_settings.sections.trakt.SettingsTraktFragment"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/spaceSmall"
+      app:layout_constraintBottom_toTopOf="@id/settingsCategoryGeneral"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsPremium"
+      app:layout_goneMarginTop="0dp"
+      tools:layout="@layout/fragment_settings_trakt"
+      />
+
+    <androidx.fragment.app.FragmentContainerView
+      android:id="@+id/settingsCategoryGeneral"
+      android:name="com.michaldrabik.ui_settings.sections.general.SettingsGeneralFragment"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      app:layout_constraintBottom_toTopOf="@+id/settingsCategoryNotifications"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsCategoryTrakt"
+      tools:layout="@layout/fragment_settings_general"
+      />
+
+    <androidx.fragment.app.FragmentContainerView
+      android:id="@+id/settingsCategorySpoilers"
+      android:name="com.michaldrabik.ui_settings.sections.spoilers.SettingsSpoilersFragment"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      app:layout_constraintBottom_toTopOf="@id/settingsCategoryWidgets"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/settingsCategoryNotifications"
+      tools:layout="@layout/fragment_settings_spoilers"
+      />
+
+    <androidx.fragment.app.FragmentContainerView
+      android:id="@+id/settingsCategoryNotifications"
+      android:name="com.michaldrabik.ui_settings.sections.notifications.SettingsNotificationsFragment"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      app:layout_constraintBottom_toTopOf="@id/settingsCategorySpoilers"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsCategoryGeneral"
+      tools:layout="@layout/fragment_settings_notifications"
+      />
+
+    <androidx.fragment.app.FragmentContainerView
+      android:id="@+id/settingsCategoryWidgets"
+      android:name="com.michaldrabik.ui_settings.sections.widgets.SettingsWidgetsFragment"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      app:layout_constraintBottom_toTopOf="@id/settingsCategoryMisc"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsCategorySpoilers"
+      tools:layout="@layout/fragment_settings_widgets"
+      />
+
+    <androidx.fragment.app.FragmentContainerView
+      android:id="@+id/settingsCategoryMisc"
+      android:name="com.michaldrabik.ui_settings.sections.misc.SettingsMiscFragment"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsCategoryWidgets"
+      tools:layout="@layout/fragment_settings_misc"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

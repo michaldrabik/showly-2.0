@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="menuMyShows">Moje Seriale</string>
+  <string name="menuWatchlist">Na Później</string>
+  <string name="menuHidden">Ukryte</string>
+  <string name="textMyShowsEmpty">Kolekcja jest obecnie pusta.\n\nWybierz zakładkę <b>Odkrywaj</b> aby dodać swój pierwszy serial.</string>
+  <string name="textWatchlistEmpty">Kolekcja <b>Na Później</b> jest obecnie pusta.\n\nWybierz zakładkę <b>Odkrywaj</b> aby dodać seriale które chcesz sprawdzić w przyszłości.</string>
+  <string name="textHiddenEmpty">Twoja lista <b>Ukrytych</b> jest obecnie pusta.\n\n<b>Ukryte</b> to lista elementów, którymi nie jesteś zainteresowany.\n\nUkryte przedmioty nie pojawią się już w sekcjach <b>Postępu</b>, <b>Odkrywania</b> i innych.</string>
+</resources>

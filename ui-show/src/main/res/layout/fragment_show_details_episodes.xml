@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/episodesRoot"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  >
+
+  <TextView
+    android:id="@+id/episodesTitle"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/backArrowSize"
+    android:gravity="center_vertical"
+    android:textColor="?android:attr/textColorPrimary"
+    android:textSize="18sp"
+    android:textStyle="bold"
+    app:layout_constraintStart_toEndOf="@id/episodesBackArrow"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:text="Season 2"
+    />
+
+  <com.google.android.material.checkbox.MaterialCheckBox
+    android:id="@+id/episodesCheckbox"
+    style="@style/ShowlyCheckbox"
+    android:layout_width="32dp"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/showDetailsMarginHorizontal"
+    app:layout_constraintBottom_toTopOf="@id/episodesOverview"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    />
+
+  <ImageView
+    android:id="@+id/episodesUnlockButton"
+    android:layout_width="24dp"
+    android:layout_height="24dp"
+    android:layout_marginEnd="@dimen/spaceMedium"
+    app:layout_constraintBottom_toTopOf="@id/episodesOverview"
+    app:layout_constraintEnd_toStartOf="@id/episodesCheckbox"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_goneMarginEnd="@dimen/spaceNormal"
+    app:srcCompat="@drawable/ic_locked"
+    app:tint="?android:attr/textColorPrimary"
+    />
+
+  <ImageView
+    android:id="@+id/episodesStarIcon"
+    android:layout_width="20dp"
+    android:layout_height="0dp"
+    app:layout_constraintBottom_toBottomOf="@id/episodesSeasonRating"
+    app:layout_constraintEnd_toStartOf="@id/episodesSeasonRating"
+    app:layout_constraintTop_toTopOf="@id/episodesSeasonRating"
+    app:srcCompat="@drawable/ic_star"
+    app:tint="?attr/colorAccent"
+    />
+
+  <TextView
+    android:id="@+id/episodesSeasonRating"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/spaceNormal"
+    android:gravity="end"
+    android:textColor="?android:attr/textColorSecondary"
+    android:textSize="12sp"
+    app:layout_constraintBottom_toTopOf="@id/episodesOverview"
+    app:layout_constraintEnd_toStartOf="@id/episodesUnlockButton"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_goneMarginEnd="@dimen/spaceMedium"
+    tools:text="7.6"
+    />
+
+  <ImageView
+    android:id="@+id/episodesSeasonMyStarIcon"
+    android:layout_width="20dp"
+    android:layout_height="0dp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="@id/episodesSeasonMyRating"
+    app:layout_constraintEnd_toStartOf="@id/episodesSeasonMyRating"
+    app:layout_constraintTop_toTopOf="@id/episodesSeasonMyRating"
+    app:srcCompat="@drawable/ic_star"
+    app:tint="?android:attr/textColorPrimary"
+    tools:visibility="visible"
+    />
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/episodesSeasonRateButton"
+    style="@style/RoundTextButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/spaceTiny"
+    android:gravity="center"
+    android:minWidth="64dp"
+    android:text="@string/textRate"
+    android:textColor="?android:attr/textColorPrimary"
+    android:visibility="gone"
+    app:layout_constraintBottom_toTopOf="@id/episodesOverview"
+    app:layout_constraintEnd_toStartOf="@id/episodesSeasonMyStarIcon"
+    app:layout_constraintTop_toTopOf="parent"
+    app:rippleColor="?android:attr/textColorPrimary"
+    tools:visibility="visible"
+    />
+
+  <TextView
+    android:id="@+id/episodesSeasonMyRating"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/spaceTiny"
+    android:gravity="end"
+    android:textColor="?android:attr/textColorSecondary"
+    android:textSize="12sp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toTopOf="@id/episodesOverview"
+    app:layout_constraintEnd_toStartOf="@id/episodesStarIcon"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_goneMarginEnd="@dimen/spaceMedium"
+    tools:text="7.6"
+    tools:visibility="visible"
+    />
+
+  <com.michaldrabik.ui_base.common.views.FoldableTextView
+    android:id="@+id/episodesOverview"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/spaceSmall"
+    android:ellipsize="end"
+    android:gravity="center_vertical"
+    android:paddingLeft="@dimen/showDetailsMarginHorizontal"
+    android:paddingRight="@dimen/showDetailsMarginHorizontal"
+    android:textColor="?android:attr/textColorPrimary"
+    android:textSize="14sp"
+    app:layout_constraintBottom_toTopOf="@id/episodesSeparator"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/episodesTitle"
+    app:layout_goneMarginBottom="0dp"
+    tools:targetApi="o"
+    tools:text="@tools:sample/lorem/random"
+    />
+
+  <View
+    android:id="@+id/episodesSeparator"
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:layout_marginStart="@dimen/showDetailsMarginHorizontal"
+    android:layout_marginEnd="@dimen/showDetailsMarginHorizontal"
+    android:background="?attr/colorSeparator"
+    app:layout_constraintBottom_toTopOf="@id/episodesRecycler"
+    app:layout_constraintTop_toBottomOf="@id/episodesOverview"
+    />
+
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/episodesRecycler"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:layoutAnimation="@anim/anim_recycler_fall_down_fast"
+    android:nestedScrollingEnabled="false"
+    android:overScrollMode="never"
+    android:paddingTop="@dimen/spaceSmall"
+    android:paddingBottom="@dimen/spaceSmall"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/episodesSeparator"
+    />
+
+  <ImageView
+    android:id="@+id/episodesBackArrow"
+    android:layout_width="@dimen/backArrowSize"
+    android:layout_height="@dimen/backArrowSize"
+    android:layout_marginStart="@dimen/showDetailsBackArrowMargin"
+    android:background="?android:attr/selectableItemBackground"
+    android:padding="@dimen/backArrowPadding"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:srcCompat="@drawable/ic_arrow_back"
+    app:tint="?android:attr/textColorPrimary"
+    />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

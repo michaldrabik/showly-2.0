@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textNextEpisode">Seuraava jakso:</string>
+  <string name="textInMyShows">Lisätty omiin sarjoihin</string>
+  <string name="textInWatchlist">Lisätty katselulistalle</string>
+  <string name="textInHidden">Piilotetut</string>
+  <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
+  <string name="textShowQuickProgressTitle">Pikakatselutila</string>
+  <string name="textShowQuickProgressSubTitle">Valitse viimeksi katsottu jakso saattaaksesi katselutilasi nopeasti ajan tasalle.</string>
+  <string name="textShowQuickProgressDone">Katselutilasi päivitettiin.</string>
+  <string name="textEpisodeDate">Jakso %1$d | %2$s</string>
+  <string name="textEpisodeTitle">K.%02d J.%02d - \'%s\'</string>
+  <string name="textTraktSyncRemovedFromTrakt">Trakt.tv synkronoitiin.</string>
+  <string name="textActorsEmpty">Näyttelijät eivät ole saatavilla</string>
+  <string name="textSeasons">Kaudet:</string>
+  <string name="textSeasonsEmpty">Tuotantokausia ei ole.</string>
+  <string name="textTrailer">Traileri</string>
+  <string name="textYouMayAlsoLike">Saattaisit pitää myös näistä</string>
+  <string name="textRuntimeLeftHours">~%s h %s m jäljellä</string>
+  <string name="textRuntimeLeftMinutes">~%s m jäljellä</string>
+  <string name="textShowManageLists">Hallitse listoja</string>
+  <string name="textShowManageListsCount">Hallitse listoja (%d)</string>
+</resources>

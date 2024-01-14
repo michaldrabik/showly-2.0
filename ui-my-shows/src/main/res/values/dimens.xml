@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="myShowsTabsTranslation">-7dp</dimen>
+  <dimen name="myShowsSearchViewPadding">104dp</dimen>
+  <dimen name="myShowsTabsViewPadding">136dp</dimen>
+
+  <dimen name="myShowsSearchLocalViewPadding">150dp</dimen>
+  <dimen name="myShowsSearchLocalOffset">40dp</dimen>
+
+  <dimen name="myShowsBottomPadding">76dp</dimen>
+  <dimen name="myShowsFanartCorner">4dp</dimen>
+  <dimen name="myShowsFanartHeight">126dp</dimen>
+  <dimen name="myShowsPosterHeight">120dp</dimen>
+  <dimen name="myShowsPosterWidth">80dp</dimen>
+
+  <dimen name="myShowAllImageHeight">120dp</dimen>
+  <dimen name="myShowAllImageWidth">80dp</dimen>
+  <dimen name="myShowAllMarginHorizontal">12dp</dimen>
+
+  <dimen name="archiveTabsViewPadding">148dp</dimen>
+  <dimen name="archiveImageHeight">120dp</dimen>
+  <dimen name="archiveImageWidth">80dp</dimen>
+  <dimen name="archiveMarginHorizontal">12dp</dimen>
+
+  <dimen name="collectionTabsViewPadding">148dp</dimen>
+  <dimen name="collectionMarginHorizontal">12dp</dimen>
+  <dimen name="collectionImageHeight">120dp</dimen>
+  <dimen name="collectionImageWidth">80dp</dimen>
+  <dimen name="collectionImageMargin">23dp</dimen>
+  <dimen name="collectionImageTitleMargin">4dp</dimen>
+  <dimen name="collectionImageTitleSize">11sp</dimen>
+  <dimen name="collectionFiltersPaddingHorizontal">3dp</dimen>
+  <dimen name="collectionFiltersPaddingBottom">5dp</dimen>
+</resources>

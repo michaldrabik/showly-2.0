@@ -1,0 +1,47 @@
+<resources>
+
+  <style name="Premium" />
+
+  <style name="Premium.Title" parent="Premium">
+    <item name="android:layout_width">0dp</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_marginStart">@dimen/spaceNormal</item>
+    <item name="android:layout_marginEnd">@dimen/spaceNormal</item>
+    <item name="android:textColor">?android:attr/textColorPrimary</item>
+    <item name="android:textSize">18sp</item>
+    <item name="android:textAllCaps">true</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:textAlignment">viewStart</item>
+    <item name="android:drawablePadding">@dimen/spaceSmall</item>
+  </style>
+
+  <style name="Premium.Description" parent="Premium">
+    <item name="android:layout_width">0dp</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_marginStart">@dimen/spaceNormal</item>
+    <item name="android:layout_marginEnd">@dimen/spaceNormal</item>
+    <item name="android:layout_marginTop">@dimen/spaceMicro</item>
+    <item name="android:textColor">?android:attr/textColorSecondary</item>
+    <item name="android:textSize">13sp</item>
+    <item name="android:textAlignment">viewStart</item>
+  </style>
+
+  <style name="Premium.Image" parent="Premium">
+    <item name="android:layout_width">50dp</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_marginStart">@dimen/spaceNormal</item>
+    <item name="android:adjustViewBounds">true</item>
+    <item name="tint">?android:attr/textColorPrimary</item>
+  </style>
+
+  <style name="Premium.Separator" parent="Premium">
+    <item name="android:layout_width">0dp</item>
+    <item name="android:layout_height">1dp</item>
+    <item name="android:layout_marginStart">@dimen/spaceNormal</item>
+    <item name="android:layout_marginEnd">@dimen/spaceNormal</item>
+    <item name="android:layout_marginTop">20dp</item>
+    <item name="android:layout_marginBottom">20dp</item>
+    <item name="android:background">?attr/colorSeparator</item>
+  </style>
+
+</resources>

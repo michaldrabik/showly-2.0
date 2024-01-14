@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/progressRoot"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:clipChildren="false"
+  android:clipToPadding="false"
+  >
+
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/progressRecycler"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:overScrollMode="never"
+    android:paddingStart="@dimen/progressRecyclerHorizontalSpace"
+    android:paddingTop="@dimen/progressTabsViewPadding"
+    android:paddingEnd="@dimen/progressRecyclerHorizontalSpace"
+    android:paddingBottom="@dimen/bottomNavigationHeightPadded"
+    android:visibility="gone"
+    tools:visibility="visible"
+    />
+
+  <com.michaldrabik.ui_base.common.views.tips.TipView
+    android:id="@+id/progressTipItem"
+    android:layout_width="@dimen/tutorialTipSize"
+    android:layout_height="@dimen/tutorialTipSize"
+    android:layout_marginStart="110dp"
+    android:layout_marginTop="254dp"
+    android:visibility="gone"
+    />
+
+  <include
+    android:id="@+id/progressEmptyView"
+    layout="@layout/layout_progress_empty"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginStart="@dimen/spaceBig"
+    android:layout_marginTop="@dimen/spaceHuge"
+    android:layout_marginEnd="@dimen/spaceBig"
+    android:layout_marginBottom="@dimen/bottomNavigationHeight"
+    android:visibility="gone"
+    tools:visibility="visible"
+    />
+
+  <FrameLayout
+    android:id="@+id/progressOverscroll"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="@dimen/progressOverscrollPadding"
+    android:alpha="0"
+    android:scaleX="0"
+    android:scaleY="0"
+    tools:alpha="1"
+    tools:scaleX="1"
+    tools:scaleY="1"
+    >
+
+    <ImageView
+      android:id="@+id/progressOverscrollIcon"
+      android:layout_width="@dimen/progressOverscrollIcon"
+      android:layout_height="@dimen/progressOverscrollIcon"
+      android:layout_gravity="center"
+      app:srcCompat="@drawable/ic_trakt"
+      app:tint="?android:attr/textColorPrimary"
+      />
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+      android:id="@+id/progressOverscrollProgress"
+      android:layout_width="@dimen/progressOverscrollProgress"
+      android:layout_height="@dimen/progressOverscrollProgress"
+      android:layout_gravity="center"
+      android:indeterminate="false"
+      app:indicatorColor="?android:attr/textColorPrimary"
+      app:indicatorSize="@dimen/progressOverscrollProgress"
+      app:trackThickness="4dp"
+      tools:progress="75"
+      />
+
+  </FrameLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

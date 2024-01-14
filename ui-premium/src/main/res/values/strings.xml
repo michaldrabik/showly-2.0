@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textPremium">Showly Premium</string>
+  <string name="textPremiumAdFull">Become Showly supporter, help its development and get access to cool bonus features!</string>
+  <string name="textLightThemeTitle">Light theme</string>
+  <string name="textLightThemeDesc">Join the light side of the force with an additional light theme applicable for main app and the widgets.</string>
+  <string name="textCustomImagesTitle">Custom images</string>
+  <string name="textCustomImagesDesc">Set your own favorite posters and fanarts for shows and movies. Select an image from gallery or upload your own URL.</string>
+  <string name="textQuickRatingTitle">Quick ratings</string>
+  <string name="textQuickRatingDesc">Never forget to rate a movie or show\'s episode that you have just watched. With quick rating feature you will be able to automatically rate an item whenever you mark it as watched.</string>
+  <string name="textWidgetsTitle">Transparent Widgets</string>
+  <string name="textWidgetsDesc">Set widgets background transparency to better match your home screen.</string>
+  <string name="textRemoveAdsTitle">Remove Ads</string>
+  <string name="textRemoveAdsDesc">Remove all premium ads visible in the app.</string>
+  <string name="textNewsTitle">News Section</string>
+  <string name="textNewsDesc">Enable news section with the latest shows and movies articles, news and trailers. Powered by Reddit.</string>
+  <string name="textViewsTitle">Lists view types</string>
+  <string name="textViewsDesc">Enable additional collection view types like compact list or grid view.</string>
+
+  <string name="textPurchaseThanks">You are now Showly Supporter!\nThank you and enjoy the app!</string>
+  <string name="textPurchasePending" translatable="false">Your purchase is being processed by Google Play Store...</string>
+</resources>

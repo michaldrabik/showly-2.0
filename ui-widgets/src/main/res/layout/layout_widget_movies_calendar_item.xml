@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:ignore="SmallSp"
+  tools:parentTag="android.widget.LinearLayout"
+  >
+
+  <FrameLayout
+    android:layout_width="@dimen/widgetImageWidth"
+    android:layout_height="@dimen/widgetImageHeight"
+    android:layout_gravity="center_vertical"
+    android:layout_marginStart="@dimen/spaceMedium"
+    android:layout_marginTop="@dimen/spaceSmall"
+    android:layout_marginEnd="@dimen/spaceMedium"
+    android:layout_marginBottom="@dimen/spaceSmall"
+    android:background="@drawable/bg_widget_media_view_elevation"
+    android:elevation="@dimen/elevationSmall"
+    >
+
+    <ImageView
+      android:id="@+id/calendarMoviesWidgetItemImage"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:visibility="gone"
+      tools:visibility="visible"
+      />
+
+    <ImageView
+      android:id="@+id/calendarMoviesWidgetItemPlaceholder"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:padding="@dimen/spaceSmall"
+      android:src="@drawable/ic_film"
+      android:tint="?attr/colorPlaceholderIcon"
+      android:visibility="gone"
+      app:tint="?attr/colorPlaceholderIcon"
+      tools:ignore="UseAppTint"
+      tools:visibility="visible"
+      />
+
+  </FrameLayout>
+
+  <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginEnd="@dimen/spaceMedium"
+    android:gravity="center_vertical"
+    >
+
+    <TextView
+      android:id="@+id/calendarMoviesWidgetItemTitle"
+      style="@style/WidgetItem.Title"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/spaceTiny"
+      android:layout_toStartOf="@id/calendarMoviesWidgetItemDate"
+      android:layout_alignParentStart="true"
+      tools:ignore="RtlSymmetry"
+      tools:text="@tools:sample/lorem/random"
+      />
+
+    <TextView
+      android:id="@+id/calendarMoviesWidgetItemOverview"
+      style="@style/WidgetItem.Subtitle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/calendarMoviesWidgetItemTitle"
+      android:layout_marginTop="@dimen/spaceTiny"
+      tools:text="@tools:sample/lorem/random"
+      />
+
+    <TextView
+      android:id="@+id/calendarMoviesWidgetItemDate"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignTop="@id/calendarMoviesWidgetItemTitle"
+      android:layout_alignBottom="@id/calendarMoviesWidgetItemTitle"
+      android:layout_alignParentEnd="true"
+      android:background="@drawable/bg_badge"
+      android:elevation="@dimen/elevationTiny"
+      android:gravity="start|center_vertical"
+      android:paddingStart="6dp"
+      android:paddingTop="2dp"
+      android:paddingEnd="6dp"
+      android:paddingBottom="2dp"
+      android:textAlignment="viewStart"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="11sp"
+      tools:text="Wednesday, 27 June 2019"
+      />
+
+  </RelativeLayout>
+
+</merge>

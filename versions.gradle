@@ -1,0 +1,8 @@
+ext.versions = [
+    versionCode: 625,
+    versionName: '3.28.0',
+
+    minSdk     : 21,
+    compileSdk : 33,
+    targetSdk  : 33
+]

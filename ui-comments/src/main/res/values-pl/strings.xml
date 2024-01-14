@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textComment">Komentarz</string>
+  <string name="textComments">Opinie:</string>
+  <string name="textComments2">Opinie</string>
+  <string name="textNoComments">Brak opinii.</string>
+  <string name="textCommentDisclaimer">Tylko po angielsku, minimum 5 słów, szanuj innych i oznaczaj spoilery!</string>
+  <string name="textSpoilers">Spoilery</string>
+  <string name="textCommentPosted">Twój komentarz został zapisany.</string>
+  <string name="textCommentDeleted">Twój komentarz został usunięty.</string>
+  <string name="textCommentConfirmDeleteTitle">Usuń Komentarz</string>
+  <string name="textCommentConfirmDelete">Czy na pewno chcesz usunąć ten komentarz?</string>
+  <string name="textSignBeforeRate">Zaloguj się aby móc ocenić.</string>
+  <string name="textSignBeforeRateMovie">Zaloguj się aby móc ocenić.</string>
+  <string name="errorCommentFormat">Twój komentarz musi być w języku angielskim i mieć 5 lub więcej słów.</string>
+  <string name="errorCommentDelete">Ten komentarz nie może być już usunięty.</string>
+</resources>

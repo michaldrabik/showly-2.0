@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textOk">OK</string>
+  <string name="textYes">Sim</string>
+  <string name="textNo">Não</string>
+  <string name="textApply">Aplicar</string>
+  <string name="textCancel">Cancelar</string>
+  <string name="textClose">Fechar</string>
+  <string name="textNotNow">Agora não</string>
+  <string name="textNew">Novo</string>
+  <string name="textSelect">Selecionar</string>
+  <string name="textHot">Em alta</string>
+  <string name="textSubmit">Enviar</string>
+  <string name="textHide">Esconder</string>
+  <string name="textRemove">Remover</string>
+  <string name="textEmptyResults">Não há resultados…</string>
+  <string name="textSearchFor">Pesquisar</string>
+  <string name="textTip">Dica:</string>
+  <string name="textSeason">Temporada %1$d</string>
+  <string name="textSpecials">Especiais</string>
+  <string name="textEpisode">Episódio %1$d</string>
+  <string name="textSeasonEpisode">S.%02d E.%02d</string>
+  <string name="textSortBy">Ordenar por:</string>
+  <string name="textSpoilersWarning">Este comentário contém spoilers.\nToque para ler.</string>
+  <string name="textCommentedOn">Comentado por %s</string>
+  <string name="textNetwork">%1$s (%2$s)</string>
+  <string name="textNetworks" comment="TV network like HBO, AMC, Showtime, Disney etc.">Rede de televisão:</string>
+  <string name="textGenres">Gêneros:</string>
+  <string name="textShows">Séries</string>
+  <string name="textMovies">Filmes</string>
+  <string name="textLists">Listas</string>
+  <string name="textMinutesShort">min</string>
+  <string name="textNoDescription">Resumo não disponível.</string>
+  <string name="textPleaseWait">Por favor, aguarde…</string>
+  <string name="textRate">Avaliar</string>
+  <string name="textLink">Link</string>
+  <string name="textDisabled">Desativado</string>
+  <string name="textRateSaved">Sua avaliação foi salva.</string>
+  <string name="textRateRemoved">Sua avaliação foi removida.</string>
+  <string name="textDays">%1$d dias</string>
+  <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
+    <item quantity="one">%d restante</item>
+    <item quantity="other">%d restantes</item>
+  </plurals>
+  <string name="textPeople">Pessoas:</string>
+  <string name="textDirecting">Direcionando</string>
+  <string name="textDirector">Diretor</string>
+  <string name="textWriting">Escrita</string>
+  <string name="textScreenplay">Screenplay</string>
+  <string name="textSound">Som</string>
+  <string name="textMusic">Música</string>
+  <string name="textActing">Atuação</string>
+  <string name="textAiredAlready">Exibido</string>
+  <string name="textAirsNow">No ar agora</string>
+  <plurals name="textDaysToAir">
+    <item quantity="one">No ar amanhã</item>
+    <item quantity="other">No ar em %d dias</item>
+  </plurals>
+  <plurals name="textHoursToAir">
+    <item quantity="one">No ar em 1 hora</item>
+    <item quantity="other">No ar em %d horas</item>
+  </plurals>
+  <plurals name="textMinutesToAir">
+    <item quantity="one">No ar agora</item>
+    <item quantity="other">No ar em %d minutos</item>
+  </plurals>
+  <plurals name="textTraktQuickSyncComplete">
+    <item quantity="one">1 item sincronizado com sucesso.</item>
+    <item quantity="other">%d itens sincronizados com sucesso.</item>
+  </plurals>
+  <string name="textToday">Hoje</string>
+  <string name="textTomorrow">Amanhã</string>
+  <string name="textThisWeek">Esta semana</string>
+  <string name="textNextWeek">Próxima semana</string>
+  <string name="textThisMonth">Este mês</string>
+  <string name="textNextMonth">Próximo mês</string>
+  <string name="textThisYear">Este ano</string>
+  <string name="textNextYear">Próximo ano</string>
+  <string name="textLater">Mais tarde</string>
+  <string name="textYesterday">Ontem</string>
+  <string name="textLast7Days">Últimos 7 dias</string>
+  <string name="textLast30Days">Últimos 30 dias</string>
+  <string name="textLast90Days">Últimos 90 dias</string>
+  <string name="textNewEpisodeAvailable">Novo episódio está disponível agora!</string>
+  <string name="textNewEpisodeAvailableSoon">Novo episódio estará disponível em breve!</string>
+  <string name="textNewSeasonAvailable">Nova temporada está disponível agora!</string>
+  <string name="textNewSeasonAvailableSoon">Nova temporada estará disponível em breve!</string>
+  <string name="textNewMovieAvailable">O filme foi lançado!</string>
+  <string name="textTraktSync">Sincronizar Trakt.tv</string>
+  <string name="textTraktSyncComplete">Sincronização concluída com sucesso.</string>
+  <string name="textTraktSyncRunning">Em andamento…</string>
+  <string name="textTraktSyncError">A sincronização Trakt.tv falhou.</string>
+  <string name="textTraktSyncErrorFull">A sincronização do Trakt.tv falhou. Por favor, verifique sua conexão com a internet e tente novamente ou entre em contato conosco se isso continuar acontecendo.</string>
+  <string name="textTraktQuickSyncError">Sincronização instantânea falhou.</string>
+  <string name="textTraktQuickSyncErrorFull">A sincronização instantânea falhou. Tentaremos de novo na próxima vez que você abrir o aplicativo. Por favor, verifique sua conexão com a internet.</string>
+  <string name="textTraktNotificationsRationale">Por favor, conceda à aplicação permissão para exibir informações sobre o progresso e os resultados da sincronização.\n\nGostaria de fazê-lo agora?</string>
+  <string name="textRemoveFromTrakt">Remover do Trakt.tv?</string>
+  <string name="textRemoveFromTraktHidden">Você gostaria de remover este item da sua conta Trakt.tv \'Oculto\'?</string>
+  <string name="textRemoveFromTraktWatchlist">Você gostaria de remover este item da sua conta do Trakt.tv \"Watchlist\"?</string>
+  <string name="textRemoveFromTraktProgress">Você gostaria de remover este item da sua conta do Trakt.tv \"Progresso\"?</string>
+  <string name="textAddToMyShows">Adicionar às minhas séries</string>
+  <string name="textAddToMyMovies">Adicionar aos meus filmes</string>
+  <string name="textAddToWatchlist">Adicionar à Lista de Desejos</string>
+  <string name="textAddToHidden">Adicionar ao Oculto</string>
+  <string name="textMoveToMyShows">Mover para Minhas Séries</string>
+  <string name="textMoveToMyMovies">Mover para Meus filmes</string>
+  <string name="textMoveToWatchlist">Mover para a Lista de Desejos</string>
+  <string name="textMoveToHidden">Mover para Oculto</string>
+  <string name="textRemoveFromMyShows">Remover das Minhas Séries</string>
+  <string name="textRemoveFromMyMovies">Remover dos Meus Filmes</string>
+  <string name="textRemoveFromWatchlist">Remover da Lista de Desejos</string>
+  <string name="textRemoveFromHidden">Remover do Oculto</string>
+  <string name="textWatchlist">Interesses</string>
+  <string name="textWatchlistIncoming">Em breve</string>
+  <string name="textNewAlwaysAtTop">Novos episódios sempre primeiro</string>
+  <string name="textPremiumAd">Torne-se um apoiador e tenha acesso a recursos premium! Clique para ver mais.</string>
+  <string name="menuPin">Fixar no topo</string>
+  <string name="menuUnpin">Desafixar do topo</string>
+  <string name="menuAddOnHold" comment="This is a button for Progress subsection. It will contain pending shows marked by user.">Fixar em \'em espera\'</string>
+  <string name="menuRemoveOnHold" comment="This is a button for Progress subsection. It will contain pending shows marked by user.">Desafixar de \'em espera\'</string>
+  <string name="errorGeneral">Ops… Algo deu errado.\nEntre em contato conosco se isto continuar acontecendo.</string>
+  <string name="errorAuthorization">A autorização falhou. Entre em contato conosco se isso continuar acontecendo.</string>
+  <string name="errorTraktAuthorization">Falha na autorização da conta Trakt.\nPor favor, faça o login e tente novamente.</string>
+  <string name="errorSeasonsNotLoaded">Por favor, aguarde até que os dados da temporada sejam carregados.</string>
+  <string name="errorEpisodeNotAired">Este episódio ainda não foi exibido.</string>
+  <string name="errorCouldNotLoadDiscover">Não foi possível carregar a página descoberta no momento.\nEntre em contato conosco se isso continuar acontecendo.</string>
+  <string name="errorMalformedShow">Parece que esta série não existe mais no banco de dados do Trakt.tv ou é uma duplicação.\n\nToque em \'OK\' para removê-la do aplicativo.</string>
+  <string name="errorMalformedMovie">Parece que esse filme não existe mais no banco de dados do Trakt.tv ou é uma duplicação.\n\nToque em \'OK\' para removê-lo do aplicativo.</string>
+  <string name="errorCouldNotLoadShow">Não foi possível carregar os detalhes desta série no momento.\nPor favor, entre em contato conosco se isto continuar acontecendo.</string>
+  <string name="errorCouldNotLoadMovie">Não foi possível carregar os detalhes deste filme no momento.\nPor favor, entre em contato conosco se isto continuar acontecendo.</string>
+  <string name="errorCouldNotLoadSearchResults">Não foi possível carregar os resultados da pesquisa no momento.\nEntre em contato conosco se isso continuar acontecendo.</string>
+  <string name="errorNoInternetConnection">Sem conexão com a internet. Por favor, verifique sua conexão.</string>
+  <string name="errorTraktSyncGeneral">Erro de sincronização Trakt.tv.\nPor favor, verifique sua conexão com a internet e tente novamente.</string>
+  <string name="errorTraktLocked">Sua conta Trakt.tv está bloqueada no momento.\nPor favor, entre em contato com o suporte de Trakt.tv em https://support.trakt.tv/ para desbloquear sua conta.</string>
+  <string name="errorSubscriptionsNotAvailable">As assinaturas do Google Play não estão disponíveis neste dispositivo.</string>
+</resources>

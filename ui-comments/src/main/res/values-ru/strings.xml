@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textComment">Комментировать</string>
+  <string name="textComments">Мнения:</string>
+  <string name="textComments2">Мнения</string>
+  <string name="textNoComments">Нет комментариев.</string>
+  <string name="textCommentDisclaimer">Только английский, 5+ слов, будьте уважительны, помечайте спойлеры!</string>
+  <string name="textSpoilers">Спойлеры</string>
+  <string name="textCommentPosted">Ваш комментарий был отправлен.</string>
+  <string name="textCommentDeleted">Ваш комментарий был удалён.</string>
+  <string name="textCommentConfirmDeleteTitle">Удалить комментарий</string>
+  <string name="textCommentConfirmDelete">Вы уверены, что хотите удалить этот комментарий?</string>
+  <string name="textSignBeforeRate">Пожалуйста, войдите перед оценкой сериала.</string>
+  <string name="textSignBeforeRateMovie">Пожалуйста, войдите перед оценкой фильма.</string>
+  <string name="errorCommentFormat">Ваш комментарий должен быть на английском языке и иметь более 5 слов.</string>
+  <string name="errorCommentDelete">Этот комментарий больше не может быть удален.</string>
+</resources>

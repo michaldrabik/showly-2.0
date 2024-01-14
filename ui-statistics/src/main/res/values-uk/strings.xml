@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textStatistics">Статистика</string>
+  <string name="textStatisticsEmpty">Принаймні один серіал має бути присутній в <b>Мої Серіали</b>\nдля відображення статистики.</string>
+  <string name="textStatisticsMostWatchedShows">Найпопулярніші серіали</string>
+  <string name="textStatisticsTotalTimeSpent">Загальний час, витрачений на перегляд</string>
+  <string name="textStatisticsTotalTimeItIs">тобто</string>
+  <string name="textStatisticsTotalTimeSpentHours">%s годин</string>
+  <string name="textStatisticsTotalTimeSpentMinutes">%s хвилин</string>
+  <string name="textStatisticsTotalTimeSpentDays">це приблизно %s днів.</string>
+  <string name="textStatisticsTotalEpisodes">Загалом переглянуто серій</string>
+  <string name="textStatisticsTotalEpisodesCount">%s серій</string>
+  <string name="textStatisticsTotalEpisodesShowsCount">в %s серіалах.</string>
+  <string name="textStatisticsTopGenre">Топ жанрів</string>
+  <string name="textStatisticsTopGenreSubValue">здається це ваші фаворити. Торкніться, щоб переглянути більше.</string>
+  <string name="textStatisticsTopGenreSubValue2">здається це ваші фаворити.</string>
+  <string name="textStatisticsShowMore">Показати більше</string>
+  <string name="textStatisticsRatings">Нещодавно оцінені</string>
+  <string name="textStatisticsHours">Годин</string>
+  <string name="textStatisticsEpisodes">Серії</string>
+  <string name="textStatisticsSeasons">Сезони</string>
+</resources>

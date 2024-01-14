@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textSearchInitial1">Czego dzisiaj szukasz?</string>
+  <string name="textSearchInitial2">Wyszukiwarka wspierana przez Trakt.tv</string>
+  <string name="textClear">Wyczyść ostatnio wyszukiwane</string>
+</resources>

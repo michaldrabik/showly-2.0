@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/viewPersonDetailsRoot"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:background="@drawable/bg_bottom_sheet"
+  android:clipToPadding="false"
+  android:focusableInTouchMode="true"
+  >
+
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/personDetailsRecycler"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:minHeight="1000dp"
+    android:overScrollMode="never"
+    android:paddingTop="@dimen/spaceNormal"
+    android:paddingBottom="56dp"
+    />
+
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/personDetailsRecyclerFab"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|end"
+    android:layout_margin="@dimen/spaceNormal"
+    android:rotation="270"
+    android:visibility="gone"
+    app:backgroundTint="?attr/colorAccent"
+    app:fabSize="mini"
+    app:layout_behavior="com.google.android.material.floatingactionbutton.FloatingActionButton$Behavior"
+    app:maxImageSize="30dp"
+    app:srcCompat="@drawable/ic_arrow_right"
+    app:tint="?attr/textColorOnSurface"
+    tools:ignore="ContentDescription"
+    tools:visibility="visible"
+    />
+
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/personDetailsSnackHost"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="top"
+    android:layout_marginTop="@dimen/personImageTipMargin"
+    />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

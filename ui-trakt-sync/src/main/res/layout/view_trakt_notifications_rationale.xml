@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_dialog"
+    android:elevation="@dimen/elevationNormal"
+    android:paddingStart="@dimen/spaceNormal"
+    android:paddingTop="@dimen/spaceBig"
+    android:paddingEnd="@dimen/spaceNormal"
+    android:paddingBottom="@dimen/spaceSmall"
+    >
+
+    <ImageView
+      android:id="@+id/viewIcon"
+      android:layout_width="100dp"
+      android:layout_height="100dp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_notification_bell"
+      />
+
+    <TextView
+      android:id="@+id/viewTitle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/spaceMedium"
+      android:text="@string/textTraktSync"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="24sp"
+      android:textStyle="bold"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/viewIcon"
+      />
+
+    <TextView
+      android:id="@+id/viewMessage"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="32dp"
+      android:layout_marginBottom="@dimen/spaceNormal"
+      android:maxLines="10"
+      android:text="@string/textTraktNotificationsRationale"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="14sp"
+      app:layout_constraintBottom_toTopOf="@id/viewYesButton"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/viewTitle"
+      />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/viewYesButton"
+      style="@style/RoundTextButton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceSmall"
+      android:text="@string/textYes"
+      android:textColor="?android:attr/textColorPrimary"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/viewNoButton"
+      style="@style/RoundTextButton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceSmall"
+      android:layout_marginEnd="@dimen/spaceSmall"
+      android:text="@string/textNo"
+      android:textColor="?android:attr/textColorSecondary"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/viewYesButton"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:orientation="horizontal"
+  tools:parentTag="android.widget.LinearLayout"
+  >
+
+  <TextView
+    android:id="@+id/viewShows"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="6dp"
+    android:gravity="center"
+    android:text="@string/textShows"
+    android:textColor="?android:attr/textColorPrimary"
+    android:textSize="25sp"
+    android:textStyle="bold"
+    />
+
+  <TextView
+    android:id="@+id/viewMovies"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="6dp"
+    android:gravity="center"
+    android:text="@string/textMovies"
+    android:textColor="?android:attr/textColorSecondary"
+    android:textSize="25sp"
+    android:textStyle="bold"
+    />
+
+  <Space
+    android:id="@+id/viewSpacer"
+    android:layout_width="0dp"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    />
+
+  <TextView
+    android:id="@+id/viewLists"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="6dp"
+    android:layout_marginEnd="2dp"
+    android:gravity="end"
+    android:text="@string/textLists"
+    android:textColor="?android:attr/textColorSecondary"
+    android:textSize="25sp"
+    android:textStyle="bold"
+    android:visibility="gone"
+    tools:visibility="visible"
+    />
+
+</merge>

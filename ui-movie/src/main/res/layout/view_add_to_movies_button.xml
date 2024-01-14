@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="horizontal"
+    >
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/addToMyMoviesButton"
+      style="@style/RoundOutlinedButton"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/spaceTiny"
+      android:layout_weight="2"
+      android:gravity="center"
+      android:includeFontPadding="false"
+      android:text="@string/textAddToMyMovies"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="@dimen/addToButtonTextSize"
+      app:rippleColor="?android:attr/textColorPrimary"
+      app:strokeColor="?android:attr/textColorPrimary"
+      tools:visibility="gone"
+      />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/watchlistButton"
+      style="@style/RoundOutlinedButton"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceTiny"
+      android:layout_weight="1"
+      android:gravity="center"
+      android:maxLines="2"
+      android:padding="0dp"
+      android:text="@string/textWatchlist"
+      android:textColor="?android:attr/textColorSecondary"
+      android:textSize="@dimen/addToButtonTextSize"
+      app:rippleColor="?android:attr/textColorSecondary"
+      app:strokeWidth="0dp"
+      tools:visibility="gone"
+      />
+
+  </LinearLayout>
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="horizontal"
+    >
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/addedToButton"
+      style="@style/RoundOutlinedButton"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:gravity="center"
+      android:text="@string/textInMyMovies"
+      android:textColor="?attr/colorAccent"
+      android:textSize="@dimen/addToButtonTextSize"
+      android:visibility="gone"
+      app:icon="@drawable/ic_bookmark_full"
+      app:iconGravity="textStart"
+      app:iconPadding="@dimen/spaceTiny"
+      app:iconTint="?attr/colorAccent"
+      app:rippleColor="?attr/colorAccent"
+      app:strokeColor="?attr/colorAccent"
+      tools:visibility="visible"
+      />
+
+    <ImageButton
+      android:id="@+id/checkButton"
+      android:layout_width="48dp"
+      android:layout_height="48dp"
+      android:layout_marginStart="8dp"
+      android:background="@drawable/bg_check_ripple"
+      android:visibility="gone"
+      app:srcCompat="@drawable/ic_check"
+      app:tint="?android:textColorPrimary"
+      tools:visibility="visible"
+      />
+
+  </LinearLayout>
+
+</merge>

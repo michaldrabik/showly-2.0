@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/viewManageListsRoot"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:background="@drawable/bg_bottom_sheet"
+  android:clipToPadding="false"
+  android:focusableInTouchMode="true"
+  android:paddingStart="@dimen/spaceNormal"
+  android:paddingTop="@dimen/spaceMedium"
+  android:paddingEnd="@dimen/spaceNormal"
+  android:paddingBottom="@dimen/spaceNormal"
+  tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
+  >
+
+  <ImageView
+    android:id="@+id/viewManageListsCreateButton"
+    android:layout_width="26dp"
+    android:layout_height="26dp"
+    app:layout_constraintBottom_toBottomOf="@id/viewManageListsSubtitle"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="@id/viewManageListsTitle"
+    app:srcCompat="@drawable/ic_list_create"
+    app:tint="?android:attr/textColorPrimary"
+    />
+
+  <TextView
+    android:id="@+id/viewManageListsTitle"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:gravity="start"
+    android:text="@string/textManageLists"
+    android:textAlignment="viewStart"
+    android:textAllCaps="true"
+    android:textColor="?android:attr/textColorPrimary"
+    android:textSize="20sp"
+    android:textStyle="bold"
+    app:layout_constraintBottom_toTopOf="@id/viewManageListsSubtitle"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_chainStyle="packed"
+    />
+
+  <TextView
+    android:id="@+id/viewManageListsSubtitle"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:gravity="start"
+    android:text="@string/textManageListsShows"
+    android:textAlignment="viewStart"
+    android:textColor="?android:attr/textColorSecondary"
+    android:textSize="12sp"
+    app:layout_constraintBottom_toTopOf="@id/viewManageListsRecycler"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/viewManageListsTitle"
+    />
+
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/viewManageListsRecycler"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/spaceMedium"
+    android:minHeight="64dp"
+    android:overScrollMode="never"
+    android:translationX="-6dp"
+    app:layout_constrainedHeight="true"
+    app:layout_constraintBottom_toTopOf="@id/viewManageListsButton"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/viewManageListsSubtitle"
+    />
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/viewManageListsButton"
+    style="@style/RoundMaterialButton"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/spaceMedium"
+    android:backgroundTint="?attr/colorAccent"
+    android:gravity="center"
+    android:text="@string/textClose"
+    android:textColor="?attr/textColorOnSurface"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/viewManageListsRecycler"
+    app:rippleColor="?android:attr/textColorPrimary"
+    />
+
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/viewManageListsSnackHost"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintBottom_toTopOf="@id/viewManageListsButton"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    />
+
+  <include
+    android:id="@+id/viewManageListsEmptyView"
+    layout="@layout/layout_manage_lists_empty"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="@dimen/spaceBig"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="@id/viewManageListsRecycler"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="@id/viewManageListsRecycler"
+    tools:visibility="visible"
+    />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

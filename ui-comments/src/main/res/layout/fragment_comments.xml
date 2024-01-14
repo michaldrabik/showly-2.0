@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/commentsRoot"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="?android:windowBackground"
+  tools:theme="@style/AppTheme"
+  >
+
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/commentsRecycler"
+    style="@style/ScrollbarsStyle"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:overScrollMode="never"
+    android:paddingStart="@dimen/recyclerPaddingHorizontal"
+    android:paddingTop="@dimen/backArrowSize"
+    android:paddingEnd="@dimen/recyclerPaddingHorizontal"
+    android:paddingBottom="80dp"
+    android:scrollbars="vertical"
+    app:layout_anchor="@+id/commentsEmpty"
+    app:layout_anchorGravity="top|center"
+    />
+
+  <ProgressBar
+    android:id="@+id/commentsProgress"
+    style="@style/ProgressBar.Dark"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    />
+
+  <TextView
+    android:id="@+id/commentsEmpty"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="@dimen/spaceNormal"
+    android:gravity="center"
+    android:text="@string/textNoComments"
+    android:textColor="?android:attr/textColorPrimary"
+    android:visibility="gone"
+    tools:visibility="visible"
+    />
+
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/commentsPostButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|end"
+    android:layout_margin="@dimen/fabButtonPadding"
+    android:contentDescription="@string/textComment"
+    android:visibility="gone"
+    app:backgroundTint="?attr/colorAccent"
+    app:srcCompat="@drawable/ic_add_comment"
+    app:tint="?attr/textColorOnSurface"
+    tools:visibility="visible"
+    />
+
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/commentsUpButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|end"
+    android:layout_marginEnd="@dimen/fabButtonCommentsPadding"
+    android:layout_marginBottom="@dimen/fabButtonPadding"
+    android:rotation="270"
+    android:visibility="gone"
+    app:backgroundTint="?attr/colorAccent"
+    app:fabSize="mini"
+    app:layout_behavior="com.google.android.material.floatingactionbutton.FloatingActionButton$Behavior"
+    app:maxImageSize="30dp"
+    app:srcCompat="@drawable/ic_arrow_right"
+    app:tint="?attr/textColorOnSurface"
+    tools:ignore="ContentDescription"
+    tools:visibility="visible"
+    />
+
+  <TextView
+    android:id="@+id/commentsTitle"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/backArrowSize"
+    android:layout_marginStart="@dimen/backArrowSize"
+    android:gravity="center_vertical"
+    android:text="@string/textComments2"
+    android:textColor="?android:attr/textColorPrimary"
+    android:textSize="18sp"
+    android:textStyle="bold"
+    app:layout_behavior="com.michaldrabik.ui_base.common.behaviour.ScrollableViewBehaviour"
+    />
+
+  <ImageView
+    android:id="@+id/commentsBackArrow"
+    android:layout_width="@dimen/backArrowSize"
+    android:layout_height="@dimen/backArrowSize"
+    android:background="?android:attr/selectableItemBackground"
+    android:padding="@dimen/backArrowPadding"
+    app:layout_behavior="com.michaldrabik.ui_base.common.behaviour.ScrollableViewBehaviour"
+    app:srcCompat="@drawable/ic_arrow_back"
+    app:tint="?android:attr/textColorPrimary"
+    />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

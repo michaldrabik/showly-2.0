@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textComment">评论</string>
+  <string name="textComments">评论：</string>
+  <string name="textComments2">评论</string>
+  <string name="textNoComments">暂无评论。</string>
+  <string name="textCommentDisclaimer">只能使用英文，5个单词以上，尊重他人，标记剧透！</string>
+  <string name="textSpoilers">剧透</string>
+  <string name="textCommentPosted">您的评论已提交。</string>
+  <string name="textCommentDeleted">您的评论已删除。</string>
+  <string name="textCommentConfirmDeleteTitle">删除评论</string>
+  <string name="textCommentConfirmDelete">确实是否删除此评论？</string>
+  <string name="textSignBeforeRate">给剧集评分前请先登录。</string>
+  <string name="textSignBeforeRateMovie">给电影评分前请先登录。</string>
+  <string name="errorCommentFormat">您的评论必须是英文且至少 5 个单词。</string>
+  <string name="errorCommentDelete">此评论不能再被删除。</string>
+</resources>

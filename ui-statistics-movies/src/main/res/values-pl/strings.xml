@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textStatisticsMovies">Statystyki</string>
+  <string name="textStatisticsMoviesEmpty">Dodaj przynajmniej jeden film do <b>Kolekcji</b> aby zobaczyć statystyki.</string>
+  <string name="textStatisticsMoviesTotalTimeSpent">Całkowity Czas</string>
+  <string name="textStatisticsMoviesTotalTimeItIs">czyli</string>
+  <string name="textStatisticsMoviesTotalTimeSpentHours">%s godzin</string>
+  <string name="textStatisticsMoviesTotalTimeSpentMinutes">%s minut</string>
+  <string name="textStatisticsMoviesTotalTimeSpentDays">co daje około %s dni.</string>
+  <string name="textStatisticsMoviesTotalMovies">Całkowita Ilość Filmów</string>
+  <string name="textStatisticsMoviesTotalMoviesCount">%s Filmów</string>
+  <string name="textStatisticsMoviesTopGenre">Ulubione Gatunki</string>
+  <string name="textStatisticsMoviesTopGenreSubValue">zdają się być ulubionymi. Kliknij po więcej.</string>
+  <string name="textStatisticsMoviesTopGenreSubValue2">zdają się być ulubionymi.</string>
+  <string name="textStatisticsMoviesRatings">Niedawno Ocenione</string>
+</resources>

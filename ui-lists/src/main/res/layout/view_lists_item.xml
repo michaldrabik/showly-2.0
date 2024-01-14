@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/listsItemRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:paddingLeft="@dimen/listsMarginHorizontal"
+    android:paddingTop="@dimen/spaceSmall"
+    android:paddingRight="@dimen/listsMarginHorizontal"
+    android:paddingBottom="@dimen/spaceSmall"
+    >
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/listsItemGuideline"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:layout_constraintGuide_begin="@dimen/listsTripleImageWidth"
+      app:layout_constraintStart_toStartOf="parent"
+      />
+
+    <com.michaldrabik.ui_lists.lists.views.ListsTripleImageView
+      android:id="@+id/listsItemImages"
+      android:layout_width="0dp"
+      android:layout_height="@dimen/listsImageHeight"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/listsItemGuideline"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+    <TextView
+      android:id="@+id/listsItemTitle"
+      style="@style/CollectionItem.Title"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceMedium"
+      app:layout_constraintBottom_toTopOf="@id/listsItemDescription"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/listsItemGuideline"
+      app:layout_constraintTop_toBottomOf="@id/listsItemHeader"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:text="Game of Thrones"
+      />
+
+    <TextView
+      android:id="@+id/listsItemHeader"
+      style="@style/CollectionItem.Header"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceMedium"
+      app:layout_constraintBottom_toTopOf="@id/listsItemTitle"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/listsItemGuideline"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:ignore="SmallSp"
+      tools:text="Netflix"
+      />
+
+    <TextView
+      android:id="@+id/listsItemDescription"
+      style="@style/CollectionItem.Description"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceMedium"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/listsItemGuideline"
+      app:layout_constraintTop_toBottomOf="@id/listsItemTitle"
+      tools:text="Lorem Ipsum"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>

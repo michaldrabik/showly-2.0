@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  tools:theme="@style/AppTheme"
+  >
+
+  <HorizontalScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clipToPadding="false"
+    android:overScrollMode="never"
+    android:paddingStart="@dimen/spaceMedium"
+    android:paddingEnd="@dimen/spaceMedium"
+    android:scrollbars="none"
+    >
+
+    <com.google.android.material.chip.ChipGroup
+      android:id="@+id/progressFiltersChips"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingTop="@dimen/spaceSmall"
+      android:paddingBottom="@dimen/spaceSmall"
+      app:singleLine="true"
+      app:singleSelection="true"
+      >
+
+      <com.google.android.material.chip.Chip
+        android:id="@+id/progressFiltersSortingChip"
+        style="@style/ShowlyChip.Sort"
+        android:checkable="false"
+        android:text="@string/textSortName"
+        />
+
+      <com.google.android.material.chip.Chip
+        android:id="@+id/progressFiltersUpcomingChip"
+        style="@style/ShowlyChip.Filter"
+        android:checkable="false"
+        android:text="@string/textWatchlistIncoming"
+        />
+
+      <com.google.android.material.chip.Chip
+        android:id="@+id/progressFiltersOnHoldChip"
+        style="@style/ShowlyChip.Filter"
+        android:checkable="false"
+        android:text="@string/textOnHold"
+        />
+
+    </com.google.android.material.chip.ChipGroup>
+
+  </HorizontalScrollView>
+
+</merge>

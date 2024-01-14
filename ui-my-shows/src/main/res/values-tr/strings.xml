@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="menuMyShows">Dizilerim</string>
+  <string name="menuWatchlist">İstek Listesi</string>
+  <string name="menuHidden">Gizlenmiş</string>
+  <string name="textMyShowsEmpty">Dizi koleksiyonunuz şu anda boştur.\n\nİlk dizinizi eklemek için <b>Keşfet</b> sekmesini ziyaret edin.</string>
+  <string name="textWatchlistEmpty"><b>İstek Listeniz</b> şu anda boştur.\n\nGelecekte izlemek isteyebileceğiniz dizileri eklemek için <b>Keşfet</b> sekmesini ziyaret edin.</string>
+  <string name="textHiddenEmpty">&lt;b&gt;Gizli&lt;/b&gt; listeniz şu anda boş.\n\n&lt;b&gt;Gizli&lt;/b&gt;, ilgilenmediğiniz öğelerin listesidir.\n\nGizli öğeler artık &lt;b içinde görünmeyecek &gt;İlerleme&lt;/b&gt;, &lt;b&gt;Keşfet&lt;/b&gt; ve diğer bölümler.</string>
+</resources>

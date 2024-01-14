@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textNextEpisode">Próximo Episódio:</string>
+  <string name="textInMyShows">Adicionado às minhas séries</string>
+  <string name="textInWatchlist">Adicionar à Interesses</string>
+  <string name="textInHidden">Oculto</string>
+  <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
+  <string name="textShowQuickProgressTitle">Progresso rápido</string>
+  <string name="textShowQuickProgressSubTitle">Selecione o último episódio visto para atualizar rapidamente seu progresso.</string>
+  <string name="textShowQuickProgressDone">Seu progresso foi atualizado.</string>
+  <string name="textEpisodeDate">Episódio %1$d | %2$s</string>
+  <string name="textEpisodeTitle">S.%02d E.%02d - \'%s\'</string>
+  <string name="textTraktSyncRemovedFromTrakt">Trakt.tv sincronizado com sucesso.</string>
+  <string name="textActorsEmpty">Atores não estão disponíveis</string>
+  <string name="textSeasons">Temporadas:</string>
+  <string name="textSeasonsEmpty">Temporadas não disponíveis.</string>
+  <string name="textTrailer">Trailer</string>
+  <string name="textYouMayAlsoLike">Você também pode gostar</string>
+  <string name="textRuntimeLeftHours">~%sh %sm restantes</string>
+  <string name="textRuntimeLeftMinutes">%sm restando</string>
+  <string name="textShowManageLists">Gerenciar Listas</string>
+  <string name="textShowManageListsCount">Gerenciar Listas (%d)</string>
+</resources>

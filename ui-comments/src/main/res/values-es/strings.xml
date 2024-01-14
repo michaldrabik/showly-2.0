@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textComment">Comentar</string>
+  <string name="textComments">Comentarios:</string>
+  <string name="textComments2">Comentarios</string>
+  <string name="textNoComments">Sin comentarios.</string>
+  <string name="textCommentDisclaimer">¡Sólo en inglés, más de 5 palabras, sé respetuoso/a, marca spoilers!</string>
+  <string name="textSpoilers">Spoilers</string>
+  <string name="textCommentPosted">Tu comentario ha sido enviado.</string>
+  <string name="textCommentDeleted">Tu comentario ha sido borrado.</string>
+  <string name="textCommentConfirmDeleteTitle">Borrar Comentario</string>
+  <string name="textCommentConfirmDelete">¿Estás seguro de que quieres eliminar este comentario?</string>
+  <string name="textSignBeforeRate">Por favor inicia sesión antes de calificar una serie.</string>
+  <string name="textSignBeforeRateMovie">Por favor inicia sesión antes de calificar una película.</string>
+  <string name="errorCommentFormat">Tu comentario debe estar en inglés y tener 5 palabras o más.</string>
+  <string name="errorCommentDelete">Este comentario ya no puede ser eliminado.</string>
+</resources>

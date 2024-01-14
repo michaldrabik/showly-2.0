@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textSortOrder">Сортировать по:</string>
+  <string name="textDiscoverFilterAnticipated">Скрыть ожидаемые сериалы</string>
+  <string name="textDiscoverFilterCollection">Скрыть коллекцию</string>
+</resources>

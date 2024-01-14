@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <style name="MovieDetails" />
+
+  <style name="MovieDetails.ExtraButton" parent="MovieDetails">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:drawablePadding">@dimen/spaceTiny</item>
+    <item name="android:gravity">center</item>
+    <item name="android:textAllCaps">true</item>
+    <item name="android:maxLines">1</item>
+    <item name="android:textColor">?android:attr/textColorPrimary</item>
+    <item name="drawableTint">?android:attr/textColorPrimary</item>
+    <item name="android:textSize">@dimen/movieDetailsExtraButtonTextSize</item>
+    <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
+    <item name="layout_constraintHorizontal_chainStyle">spread_inside</item>
+  </style>
+
+  <style name="MovieLinksMenu" />
+
+  <style name="MovieLinksMenu.Item" parent="MovieLinksMenu">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:orientation">horizontal</item>
+    <item name="android:paddingStart">@dimen/spaceMedium</item>
+    <item name="android:paddingEnd">@dimen/spaceMedium</item>
+    <item name="android:paddingTop">10dp</item>
+    <item name="android:paddingBottom">10dp</item>
+    <item name="android:background">?android:attr/selectableItemBackground</item>
+  </style>
+
+  <style name="MovieLinksMenu.Icon" parent="MovieLinksMenu">
+    <item name="android:layout_width">42dp</item>
+    <item name="android:layout_height">20dp</item>
+    <item name="android:layout_marginEnd">@dimen/spaceMedium</item>
+  </style>
+
+  <style name="MovieLinksMenu.Title" parent="MovieLinksMenu">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">match_parent</item>
+    <item name="android:maxLines">1</item>
+    <item name="android:textAlignment">viewStart</item>
+    <item name="android:gravity">start</item>
+    <item name="android:textColor">?android:attr/textColorPrimary</item>
+    <item name="android:textSize">14sp</item>
+  </style>
+
+</resources>

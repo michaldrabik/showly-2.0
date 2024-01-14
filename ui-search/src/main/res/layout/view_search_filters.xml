@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/viewSearchFiltersRoot"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:theme="@style/AppTheme"
+  >
+
+  <com.google.android.material.chip.ChipGroup
+    android:id="@+id/viewSearchFiltersChipGroup"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:chipSpacingHorizontal="@dimen/spaceSmall"
+    app:layout_behavior="com.michaldrabik.ui_base.common.behaviour.ScrollableViewBehaviour"
+    >
+
+    <com.google.android.material.chip.Chip
+      android:id="@+id/viewSearchFiltersSortChip"
+      style="@style/ShowlyChip.Sort"
+      android:text="@string/textSortName"
+      />
+
+    <com.google.android.material.chip.Chip
+      android:id="@+id/viewSearchFiltersShowsChip"
+      style="@style/ShowlyChip.Filter"
+      android:text="@string/textShows"
+      app:chipBackgroundColor="@color/selector_chip_background"
+      app:chipStrokeColor="@color/selector_chip_stroke"
+      />
+
+    <com.google.android.material.chip.Chip
+      android:id="@+id/viewSearchFiltersMoviesChip"
+      style="@style/ShowlyChip.Filter"
+      android:text="@string/textMovies"
+      android:textColor="@color/selector_chip_text"
+      app:chipBackgroundColor="@color/selector_chip_background"
+      app:chipStrokeColor="@color/selector_chip_stroke"
+      />
+
+  </com.google.android.material.chip.ChipGroup>
+
+</FrameLayout>

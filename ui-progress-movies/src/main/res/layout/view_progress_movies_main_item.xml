@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clipChildren="false"
+    >
+
+    <ImageView
+      android:id="@+id/progressMovieItemImage"
+      android:layout_width="@dimen/progressMoviesImageWidth"
+      android:layout_height="@dimen/progressMoviesImageHeight"
+      android:layout_marginStart="@dimen/spaceMedium"
+      android:layout_marginTop="8dp"
+      android:layout_marginBottom="8dp"
+      android:background="@drawable/bg_media_view_elevation"
+      android:elevation="@dimen/elevationSmall"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+    <ImageView
+      android:id="@+id/progressMovieItemPlaceholder"
+      android:layout_width="@dimen/progressMoviesImageWidth"
+      android:layout_height="@dimen/progressMoviesImageHeight"
+      android:layout_marginStart="@dimen/spaceMedium"
+      android:background="@drawable/bg_media_view_placeholder"
+      android:elevation="@dimen/elevationSmall"
+      android:padding="@dimen/spaceBig"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_film"
+      app:tint="?attr/colorPlaceholderIcon"
+      tools:visibility="visible"
+      />
+
+    <ImageView
+      android:id="@+id/progressMovieItemPin"
+      android:layout_width="20dp"
+      android:layout_height="wrap_content"
+      android:rotation="45"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="@id/progressMovieItemButtons"
+      app:layout_constraintStart_toStartOf="@id/progressMovieItemTitle"
+      app:layout_constraintTop_toTopOf="@id/progressMovieItemButtons"
+      app:srcCompat="@drawable/ic_pin"
+      app:tint="?android:attr/textColorSecondary"
+      tools:visibility="visible"
+      />
+
+    <TextView
+      android:id="@+id/progressMovieItemTitle"
+      style="@style/CollectionItem.Title"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceNormal"
+      android:layout_marginEnd="@dimen/spaceMedium"
+      app:layout_constraintBottom_toTopOf="@id/progressMovieItemSubtitle"
+      app:layout_constraintEnd_toStartOf="@id/progressMovieItemRatingStar"
+      app:layout_constraintStart_toEndOf="@id/progressMovieItemImage"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      app:layout_goneMarginEnd="@dimen/spaceMedium"
+      tools:ignore="RtlSymmetry"
+      tools:text="Breaking Bad"
+      />
+
+    <ImageView
+      android:id="@+id/progressMovieItemRatingStar"
+      android:layout_width="20dp"
+      android:layout_height="0dp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="@+id/progressMovieItemRating"
+      app:layout_constraintEnd_toStartOf="@id/progressMovieItemRating"
+      app:layout_constraintTop_toTopOf="@id/progressMovieItemRating"
+      app:srcCompat="@drawable/ic_star"
+      app:tint="?attr/colorAccent"
+      tools:visibility="visible"
+      />
+
+    <TextView
+      android:id="@+id/progressMovieItemRating"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/spaceMedium"
+      android:gravity="end"
+      android:textColor="?android:attr/textColorSecondary"
+      android:textSize="12sp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="@+id/progressMovieItemTitle"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/progressMovieItemTitle"
+      tools:text="7.6"
+      tools:visibility="visible"
+      />
+
+    <TextView
+      android:id="@+id/progressMovieItemSubtitle"
+      style="@style/CollectionItem.Description"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceNormal"
+      android:layout_marginTop="@dimen/spaceMicro"
+      android:layout_marginEnd="@dimen/spaceMedium"
+      app:layout_constraintBottom_toTopOf="@id/progressMovieItemButtons"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintStart_toEndOf="@id/progressMovieItemImage"
+      app:layout_constraintTop_toBottomOf="@id/progressMovieItemTitle"
+      tools:text="@tools:sample/lorem/random"
+      />
+
+    <LinearLayout
+      android:id="@+id/progressMovieItemButtons"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceNormal"
+      android:layout_marginTop="@dimen/spaceSmall"
+      android:layout_marginEnd="@dimen/spaceMedium"
+      android:clipChildren="false"
+      android:gravity="end|center_vertical"
+      android:orientation="horizontal"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="1"
+      app:layout_constraintStart_toEndOf="@id/progressMovieItemImage"
+      app:layout_constraintTop_toBottomOf="@id/progressMovieItemSubtitle"
+      >
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/progressMovieItemCheckButton"
+        style="@style/RoundOutlinedButton"
+        android:layout_width="@dimen/progressMoviesItemCheckButtonWidth"
+        android:layout_height="@dimen/progressMoviesItemButtonHeight"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="12sp"
+        app:icon="@drawable/ic_check"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconSize="21dp"
+        app:iconTint="?android:attr/textColorPrimary"
+        app:rippleColor="?android:attr/textColorPrimary"
+        app:strokeColor="?android:attr/textColorPrimary"
+        />
+
+    </LinearLayout>
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>

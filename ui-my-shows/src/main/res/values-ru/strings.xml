@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="menuMyShows">Мои сериалы</string>
+  <string name="menuWatchlist">Буду смотреть</string>
+  <string name="menuHidden">Скрытое</string>
+  <string name="textMyShowsEmpty">В настоящее время коллекция сериалов пуста.\n\nПосетите вкладку <b>Открытия</b> и добавьте свой первый сериал.</string>
+  <string name="textWatchlistEmpty">Ваш список <b>Буду смотреть</b> в настоящее время пуст.\n\nПосетите вкладку <b>Открытия</b>, чтобы добавить фильмы, которые вы хотите посмотреть в будущем.</string>
+  <string name="textHiddenEmpty">Ваш список <b>Скрытое</b> в настоящее время пуст.\n\n<b>Скрытое</b> это список элементов, которые вас больше не интересуют.\n\nСкрытые элементы не появятся в <b>Прогресс</b>, <b>Открытия</b> и других разделах.</string>
+</resources>

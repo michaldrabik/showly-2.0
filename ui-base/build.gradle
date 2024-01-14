@@ -1,0 +1,71 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-parcelize'
+apply plugin: 'dagger.hilt.android.plugin'
+apply from: '../versions.gradle'
+
+android {
+  kotlinOptions { jvmTarget = "17" }
+
+  compileOptions {
+    coreLibraryDesugaringEnabled true
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
+  }
+
+  buildFeatures {
+    viewBinding true
+  }
+
+  compileSdkVersion versions.compileSdk
+
+  defaultConfig {
+    minSdkVersion versions.minSdk
+    targetSdkVersion versions.targetSdk
+    compileSdkVersion versions.compileSdk
+
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
+    }
+  }
+
+  namespace 'com.michaldrabik.ui_base'
+}
+
+dependencies {
+  implementation project(':common')
+  implementation project(':data-remote')
+  implementation project(':data-local')
+  implementation project(':ui-model')
+  implementation project(':ui-navigation')
+  implementation project(':repository')
+
+  api libs.android.appcompat
+  api libs.android.core
+  api libs.bundles.android.lifecycle
+  api libs.bundles.android.navigation
+  api libs.android.fragment
+  api libs.android.recycler
+  api libs.android.constraintlayout
+  api libs.android.swiperefresh
+  api libs.android.work
+  api libs.android.material
+  api libs.android.dynamicanimation
+  api libs.overscrollDecor
+  api libs.timber
+
+  api libs.glide
+  ksp libs.glide.compiler
+
+  implementation libs.hilt.android
+  ksp libs.hilt.compiler
+
+  implementation libs.hilt.work
+  ksp libs.hilt.work.compiler
+
+  coreLibraryDesugaring libs.android.desugar
+}

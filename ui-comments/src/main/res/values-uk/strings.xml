@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textComment">Коментувати</string>
+  <string name="textComments">Коментарі:</string>
+  <string name="textComments2">Коментарі</string>
+  <string name="textNoComments">Коментарі відсутні.</string>
+  <string name="textCommentDisclaimer">Тільки англійською, не менше 5 слів, поважайте інших та позначайте спойлери!</string>
+  <string name="textSpoilers">Спойлери</string>
+  <string name="textCommentPosted">Ваш коментар відправлено.</string>
+  <string name="textCommentDeleted">Ваш коментар видалено.</string>
+  <string name="textCommentConfirmDeleteTitle">Видалити коментар</string>
+  <string name="textCommentConfirmDelete">Ви дійсно бажаєте видалити цей коментар?</string>
+  <string name="textSignBeforeRate">Увійдіть, перш ніж оцінювати.</string>
+  <string name="textSignBeforeRateMovie">Увійдіть, перш ніж оцінювати.</string>
+  <string name="errorCommentFormat">Ваш коментар повинен бути англійською і містити 5 слів або більше.</string>
+  <string name="errorCommentDelete">Цей коментар більше не можна видалити.</string>
+</resources>

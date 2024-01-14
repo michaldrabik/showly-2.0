@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  >
+
+  <item
+    android:id="@+id/menuProgress"
+    android:enabled="true"
+    android:icon="@drawable/ic_check"
+    android:title="@string/menuProgress"
+    app:showAsAction="always"
+    tools:ignore="AlwaysShowAction"
+    />
+
+  <item
+    android:id="@+id/menuDiscover"
+    android:enabled="true"
+    android:icon="@drawable/ic_search"
+    android:title="@string/menuDiscover"
+    app:showAsAction="always"
+    />
+
+  <item
+    android:id="@+id/menuCollection"
+    android:enabled="true"
+    android:icon="@drawable/ic_bookmark"
+    android:title="@string/menuCollection"
+    app:showAsAction="always"
+    />
+
+</menu>

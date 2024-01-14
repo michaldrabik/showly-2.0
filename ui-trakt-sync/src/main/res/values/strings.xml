@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textTraktLoginSuccess">You\'ve been successfully authorized.</string>
+  <string name="textTraktSyncStarted">Sync started. It will continue to run in the background.</string>
+  <string name="textTraktSyncStart">Sync Now</string>
+  <string name="textTraktSyncSchedule">Schedule</string>
+  <string name="textTraktSyncFromTraktToShowly">Import from Trakt.tv to Showly</string>
+  <string name="textTraktSyncFromShowlyToTrakt">Export from Showly to Trakt.tv</string>
+  <string name="textTraktSyncDescription">Sync your Trakt.tv account progress and watchlist data with Showly.\n\nNone of the items from your current collection will be deleted. Sync will only handle missing items in your collections.</string>
+  <string name="textTraktSyncLastTimestamp">Last Sync: %s</string>
+
+  <string name="textSettingsTraktAuthorizeTitle">Trakt.tv Authorization</string>
+  <string name="textSettingsScheduleImportConfirmationTitle">Instant Sync Enabled</string>
+  <string name="textSettingsScheduleImportConfirmationMessage">\nIt seems like Instant Sync is already turned on.\n\nDo you still want to schedule automatic sync?\n</string>
+</resources>

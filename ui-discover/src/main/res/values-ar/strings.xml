@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textSortOrder">ترتيب حسب:</string>
+  <string name="textDiscoverFilterAnticipated">إخفاء المسلسلات المرتقبة</string>
+  <string name="textDiscoverFilterCollection">إخفاء المجموعة</string>
+</resources>

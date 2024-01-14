@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/discoverMoviesRoot"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:clipChildren="false"
+  android:clipToPadding="false"
+  >
+
+  <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    android:id="@+id/discoverMoviesSwipeRefresh"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/discoverMoviesRecycler"
+      style="@style/ScrollbarsStyle"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="@android:color/transparent"
+      android:clipChildren="false"
+      android:clipToPadding="false"
+      android:overScrollMode="never"
+      android:paddingLeft="@dimen/gridPadding"
+      android:paddingTop="@dimen/discoverRecyclerPadding"
+      android:paddingRight="@dimen/gridPadding"
+      android:paddingBottom="@dimen/bottomNavigationHeightPadded"
+      android:scrollbars="vertical"
+      android:visibility="gone"
+      tools:visibility="visible"
+      />
+
+  </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+  <com.michaldrabik.ui_base.common.views.ModeTabsView
+    android:id="@+id/discoverMoviesTabsView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/screenMarginHorizontal"
+    android:layout_marginTop="@dimen/collectionTabsMargin"
+    app:layout_behavior="com.michaldrabik.ui_base.common.behaviour.ScrollableViewBehaviour"
+    />
+
+  <com.michaldrabik.ui_discover_movies.filters.views.DiscoverMoviesFiltersView
+    android:id="@+id/discoverMoviesFiltersView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/collectionFiltersMargin"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:paddingStart="@dimen/screenMarginHorizontal"
+    android:paddingEnd="@dimen/screenMarginHorizontal"
+    android:visibility="gone"
+    app:layout_behavior="com.michaldrabik.ui_base.common.behaviour.ScrollableViewBehaviour"
+    />
+
+  <com.michaldrabik.ui_base.common.views.SearchView
+    android:id="@+id/discoverMoviesSearchView"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/searchViewHeight"
+    android:layout_marginLeft="@dimen/screenMarginHorizontal"
+    android:layout_marginTop="@dimen/spaceSmall"
+    android:layout_marginRight="@dimen/screenMarginHorizontal"
+    />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

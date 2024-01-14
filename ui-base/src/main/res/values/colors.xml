@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="colorBackground">#131313</color>
+
+  <color name="colorPrimary">#222327</color>
+  <color name="colorPrimaryDark">#121212</color>
+  <color name="colorAccent">#F44336</color>
+  <color name="colorError">#F44336</color>
+
+  <color name="colorTransparent">#00000000</color>
+  <color name="colorBlack">#000000</color>
+  <color name="colorBlackTranslucent">#B2000000</color>
+  <color name="colorBlackTranslucentLight">#40000000</color>
+  <color name="colorWhite">#FFFFFF</color>
+  <color name="colorGrayLight">#AAAAAA</color>
+  <color name="colorGray">#636363</color>
+  <color name="colorGrayDark">#303030</color>
+
+  <color name="colorBlue">#17283A</color>
+  <color name="colorBlueLight">#70767C</color>
+  <color name="colorBlueLight2x">#91989F</color>
+
+  <color name="colorNotificationDark">#F44336</color>
+  <color name="colorNotificationLight">#4B6383</color>
+
+  <color name="colorTwitterBlue">#1DA1F2</color>
+</resources>

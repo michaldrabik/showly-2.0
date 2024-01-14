@@ -1,0 +1,50 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'dagger.hilt.android.plugin'
+apply from: '../versions.gradle'
+
+android {
+  kotlinOptions { jvmTarget = "17" }
+  compileOptions {
+    coreLibraryDesugaringEnabled true
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
+  }
+
+  buildFeatures {
+    viewBinding true
+  }
+
+  compileSdkVersion versions.compileSdk
+
+  defaultConfig {
+    minSdkVersion versions.minSdk
+    targetSdkVersion versions.targetSdk
+    compileSdkVersion versions.compileSdk
+
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
+    }
+  }
+
+  namespace 'com.michaldrabik.ui_my_movies'
+}
+
+dependencies {
+  implementation project(':common')
+  implementation project(':ui-base')
+  implementation project(':repository')
+  implementation project(':ui-model')
+  implementation project(':ui-navigation')
+
+  implementation libs.hilt.android
+  ksp libs.hilt.compiler
+
+  implementation libs.android.gridlayout
+
+  coreLibraryDesugaring libs.android.desugar
+}

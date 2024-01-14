@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textTraktLoginSuccess">您已经授权成功。</string>
+  <string name="textTraktSyncStarted">同步已开始。将继续在后台运行。</string>
+  <string name="textTraktSyncStart">立即同步</string>
+  <string name="textTraktSyncSchedule">定时同步时间</string>
+  <string name="textTraktSyncFromTraktToShowly">从 Trakt.tv 导入到 Showly</string>
+  <string name="textTraktSyncFromShowlyToTrakt">从 Showly 导出到 Trakt.tv</string>
+  <string name="textTraktSyncDescription">与 Showly 同步您 Trakt.tv 账号的观看进度和待看列表数据。\n\n您当前列表中的任何项目都不会被删除。同步只处理您当前合集中缺失的项目。</string>
+  <string name="textTraktSyncLastTimestamp">上次同步：%s</string>
+  <string name="textSettingsTraktAuthorizeTitle">Trakt.tv 授权</string>
+  <string name="textSettingsScheduleImportConfirmationTitle">即时同步已启用</string>
+  <string name="textSettingsScheduleImportConfirmationMessage">\n似乎即时同步已开启。\n\n您是否仍然想要设置自动同步？\n</string>
+</resources>

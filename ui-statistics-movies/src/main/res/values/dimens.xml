@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="statisticsMoviesHeaderSize">22sp</dimen>
+
+  <dimen name="statisticsMoviesTopPadding">60dp</dimen>
+  <dimen name="statisticsMoviesRatingItemHeight">100dp</dimen>
+  <dimen name="statisticsMoviesRatingItemWidth">67dp</dimen>
+</resources>

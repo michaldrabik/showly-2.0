@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/collectionMovieRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    >
+
+    <ImageView
+      android:id="@+id/collectionMovieImage"
+      android:layout_width="@dimen/collectionImageWidth"
+      android:layout_height="@dimen/collectionImageHeight"
+      android:background="@drawable/bg_media_view_elevation"
+      android:elevation="@dimen/elevationSmall"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+    <ImageView
+      android:id="@+id/collectionMoviePlaceholder"
+      android:layout_width="@dimen/collectionImageWidth"
+      android:layout_height="@dimen/collectionImageHeight"
+      android:layout_gravity="center"
+      android:background="@drawable/bg_media_view_placeholder"
+      android:elevation="@dimen/elevationSmall"
+      android:padding="22dp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_film"
+      app:tint="?attr/colorPlaceholderIcon"
+      tools:visibility="visible"
+      />
+
+    <ProgressBar
+      android:id="@+id/collectionMovieProgress"
+      style="@style/ProgressBar.Dark"
+      android:layout_width="28dp"
+      android:layout_height="28dp"
+      android:layout_gravity="center"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="@id/collectionMovieImage"
+      app:layout_constraintStart_toStartOf="@id/collectionMovieImage"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:visibility="visible"
+      />
+
+    <TextView
+      android:id="@+id/collectionMovieTitle"
+      style="@style/CollectionItem.Title"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceMedium"
+      app:layout_constraintBottom_toTopOf="@id/collectionMovieDescription"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/collectionMovieImage"
+      app:layout_constraintTop_toBottomOf="@id/collectionMovieYear"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:text="Game of Thrones"
+      />
+
+    <TextView
+      android:id="@+id/collectionMovieYear"
+      style="@style/CollectionItem.Header"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceMedium"
+      app:layout_constraintBottom_toTopOf="@id/collectionMovieTitle"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/collectionMovieImage"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:text="24 Mar 2022"
+      />
+
+    <ImageView
+      android:id="@+id/collectionMovieStarIcon"
+      android:layout_width="20dp"
+      android:layout_height="0dp"
+      app:layout_constraintBottom_toTopOf="@id/collectionMovieTitle"
+      app:layout_constraintEnd_toStartOf="@id/collectionMovieRating"
+      app:layout_constraintTop_toTopOf="@id/collectionMovieYear"
+      app:srcCompat="@drawable/ic_star"
+      app:tint="?attr/colorAccent"
+      />
+
+    <TextView
+      android:id="@+id/collectionMovieRating"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="end"
+      android:textColor="?android:attr/textColorSecondary"
+      android:textSize="12sp"
+      app:layout_constraintBottom_toTopOf="@id/collectionMovieTitle"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/collectionMovieYear"
+      tools:text="7.6"
+      />
+
+    <ImageView
+      android:id="@+id/collectionMovieUserStarIcon"
+      android:layout_width="20dp"
+      android:layout_height="0dp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toTopOf="@id/collectionMovieTitle"
+      app:layout_constraintEnd_toStartOf="@id/collectionMovieUserRating"
+      app:layout_constraintTop_toTopOf="@id/collectionMovieYear"
+      app:srcCompat="@drawable/ic_star"
+      app:tint="?android:attr/textColorPrimary"
+      tools:visibility="visible"
+      />
+
+    <TextView
+      android:id="@+id/collectionMovieUserRating"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/spaceTiny"
+      android:gravity="end"
+      android:textColor="?android:attr/textColorSecondary"
+      android:textSize="12sp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toTopOf="@id/collectionMovieTitle"
+      app:layout_constraintEnd_toStartOf="@id/collectionMovieStarIcon"
+      app:layout_constraintTop_toTopOf="@id/collectionMovieYear"
+      tools:text="10"
+      tools:visibility="visible"
+      />
+
+    <TextView
+      android:id="@+id/collectionMovieDescription"
+      style="@style/CollectionItem.Description"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceMedium"
+      app:layout_constraintBottom_toTopOf="@id/collectionMovieReleaseDate"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/collectionMovieImage"
+      app:layout_constraintTop_toBottomOf="@id/collectionMovieTitle"
+      tools:text="Lorem Ipsum"
+      />
+
+    <TextView
+      android:id="@+id/collectionMovieReleaseDate"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceMedium"
+      android:layout_marginTop="@dimen/spaceSmall"
+      android:layout_marginBottom="@dimen/spaceTiny"
+      android:background="@drawable/bg_badge"
+      android:drawablePadding="@dimen/spaceTiny"
+      android:elevation="@dimen/elevationTiny"
+      android:gravity="start|center_vertical"
+      android:includeFontPadding="false"
+      android:paddingStart="4dp"
+      android:paddingTop="4dp"
+      android:paddingEnd="6dp"
+      android:paddingBottom="4dp"
+      android:textAlignment="gravity"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="13sp"
+      android:visibility="gone"
+      app:drawableStartCompat="@drawable/ic_clock_small"
+      app:drawableTint="?android:attr/textColorPrimary"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toEndOf="@id/collectionMovieImage"
+      app:layout_constraintTop_toBottomOf="@id/collectionMovieDescription"
+      tools:text="Wednesday, 27 June 2019"
+      tools:visibility="visible"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>

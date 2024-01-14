@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="statisticsHeaderSize">22sp</dimen>
+
+  <dimen name="statisticsTopPadding">60dp</dimen>
+  <dimen name="statisticsMostWatchedItemImageHeight">100dp</dimen>
+  <dimen name="statisticsMostWatchedItemImageWidth">67dp</dimen>
+  <dimen name="statisticsRatingItemHeight">100dp</dimen>
+  <dimen name="statisticsRatingItemWidth">67dp</dimen>
+</resources>

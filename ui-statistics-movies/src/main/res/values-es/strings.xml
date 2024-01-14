@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textStatisticsMovies">Estadísticas</string>
+  <string name="textStatisticsMoviesEmpty">Al menos una película debe estar presente en <b>Mis Películas</b>\nantes de que se pueda mostrar las estadísticas.</string>
+  <string name="textStatisticsMoviesTotalTimeSpent">Tiempo Total Utilizado Viendo</string>
+  <string name="textStatisticsMoviesTotalTimeItIs">y es</string>
+  <string name="textStatisticsMoviesTotalTimeSpentHours">%s horas</string>
+  <string name="textStatisticsMoviesTotalTimeSpentMinutes">%s minutos</string>
+  <string name="textStatisticsMoviesTotalTimeSpentDays">que es alrededor de %s días.</string>
+  <string name="textStatisticsMoviesTotalMovies">Películas Totales Vistas</string>
+  <string name="textStatisticsMoviesTotalMoviesCount">%s Películas</string>
+  <string name="textStatisticsMoviesTopGenre">Géneros Principales</string>
+  <string name="textStatisticsMoviesTopGenreSubValue">parece ser santo de tu devoción. Toca para ver más.</string>
+  <string name="textStatisticsMoviesTopGenreSubValue2">parece ser santo de tu devoción.</string>
+  <string name="textStatisticsMoviesRatings">Calificado Recientemente</string>
+</resources>

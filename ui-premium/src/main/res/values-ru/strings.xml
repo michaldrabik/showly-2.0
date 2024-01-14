@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textPremium">Showly Premium</string>
+  <string name="textPremiumAdFull">Станьте спонсором Showly, помогите его развитию и получите доступ к крутым бонусным функциям!</string>
+  <string name="textLightThemeTitle">Светлая тема</string>
+  <string name="textLightThemeDesc">Присоединитесь к светлой стороне силы с цветом темы, применимой к главному приложению и виджетам.</string>
+  <string name="textCustomImagesTitle">Пользовательские изображения</string>
+  <string name="textCustomImagesDesc">Установите свои любимые постеры и фан-арты для сериалов и фильмов. Выберите изображение из галереи или загрузите по URL.</string>
+  <string name="textQuickRatingTitle">Быстрый рейтинг</string>
+  <string name="textQuickRatingDesc">Никогда не забывайте оценить фильм или сериал, который вы только что посмотрели. С помощью функции быстрого рейтинга вы сможете автоматически оценивать эпизод всякий раз, когда вы отметите его как просмотренный.</string>
+  <string name="textWidgetsTitle">Прозрачный виджет</string>
+  <string name="textWidgetsDesc">Установите прозрачность фона виджетов, чтобы они лучше соответствовали вашему главному экрану.</string>
+  <string name="textRemoveAdsTitle">Убрать рекламу</string>
+  <string name="textRemoveAdsDesc">Убрать всю видимую рекламу премиума в приложении.</string>
+  <string name="textNewsTitle">Раздел новостей</string>
+  <string name="textNewsDesc">Включить раздел новостей с последними статьями сериалов и фильмов, новостями и трейлерами. Работает на Reddit.</string>
+  <string name="textViewsTitle">Типы списков</string>
+  <string name="textViewsDesc">Включайте дополнительные типы коллекций, такие как компактный список или представление сетки.</string>
+  <string name="textPurchaseThanks">Теперь вы спонсор Showly!\nБлагодарим вас, наслаждайтесь приложением!</string>
+</resources>

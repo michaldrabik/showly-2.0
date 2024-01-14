@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textSortOrder">Feed:</string>
+  <string name="textDiscoverFilterAnticipated">Hide Anticipated Shows</string>
+  <string name="textDiscoverFilterCollection">Hide Collection</string>
+
+  <string name="textTwitterTitle" translatable="false">Showly is on Twitter!</string>
+  <string name="textTwitterDescription" translatable="false">Follow <b>@AppShowly</b> and get the latest news and information about the app.</string>
+</resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textStatisticsMovies">Статистика</string>
+  <string name="textStatisticsMoviesEmpty">Принаймні один фільм має бути присутній в <b>Мої Фільми</b>\nдля відображення статистики.</string>
+  <string name="textStatisticsMoviesTotalTimeSpent">Загальний час, витрачений на перегляд</string>
+  <string name="textStatisticsMoviesTotalTimeItIs">тобто</string>
+  <string name="textStatisticsMoviesTotalTimeSpentHours">%s годин</string>
+  <string name="textStatisticsMoviesTotalTimeSpentMinutes">%s хвилин</string>
+  <string name="textStatisticsMoviesTotalTimeSpentDays">це приблизно %s днів.</string>
+  <string name="textStatisticsMoviesTotalMovies">Загалом переглянуто фільмів</string>
+  <string name="textStatisticsMoviesTotalMoviesCount">%s Фільмів</string>
+  <string name="textStatisticsMoviesTopGenre">Топ жанрів</string>
+  <string name="textStatisticsMoviesTopGenreSubValue">здається це ваші фаворити. Торкніться, щоб переглянути більше.</string>
+  <string name="textStatisticsMoviesTopGenreSubValue2">здається це ваші фаворити.</string>
+  <string name="textStatisticsMoviesRatings">Нещодавно оцінені</string>
+</resources>

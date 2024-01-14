@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/showSearchRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:clipToPadding="false"
+    android:paddingStart="@dimen/searchViewItemPaddingHorizontal"
+    android:paddingTop="@dimen/spaceSmall"
+    android:paddingEnd="@dimen/searchViewItemPaddingHorizontal"
+    android:paddingBottom="@dimen/spaceSmall"
+    >
+
+    <ImageView
+      android:id="@+id/showSearchImage"
+      android:layout_width="@dimen/searchViewImageWidth"
+      android:layout_height="@dimen/searchViewImageHeight"
+      android:background="@drawable/bg_media_view_elevation"
+      android:elevation="@dimen/elevationSmall"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+    <ImageView
+      android:id="@+id/showSearchPlaceholder"
+      android:layout_width="@dimen/searchViewImageWidth"
+      android:layout_height="@dimen/searchViewImageHeight"
+      android:layout_gravity="center"
+      android:background="@drawable/bg_media_view_placeholder"
+      android:elevation="@dimen/elevationSmall"
+      android:padding="20dp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_television"
+      app:tint="?attr/colorPlaceholderIcon"
+      tools:visibility="visible"
+      />
+
+    <ImageView
+      android:id="@+id/showSearchBadge"
+      style="@style/Badge"
+      android:layout_width="18dp"
+      android:layout_height="18dp"
+      android:layout_marginTop="2dp"
+      android:layout_marginEnd="12dp"
+      app:layout_constraintEnd_toStartOf="@id/showSearchTitle"
+      app:layout_constraintTop_toTopOf="@id/showSearchRoot"
+      app:srcCompat="@drawable/ic_bookmark_full"
+      tools:visibility="visible"
+      />
+
+    <ImageView
+      android:id="@+id/showSearchWatchlistBadge"
+      style="@style/Badge.Watchlist"
+      android:layout_width="18dp"
+      android:layout_height="18dp"
+      android:layout_marginTop="2dp"
+      android:layout_marginEnd="12dp"
+      app:layout_constraintEnd_toStartOf="@id/showSearchTitle"
+      app:layout_constraintTop_toTopOf="@id/showSearchRoot"
+      app:srcCompat="@drawable/ic_bookmark_full"
+      tools:visibility="visible"
+      />
+
+    <TextView
+      android:id="@+id/showSearchTitle"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceMedium"
+      android:ellipsize="end"
+      android:gravity="start"
+      android:maxLines="1"
+      android:textAlignment="viewStart"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="16sp"
+      app:layout_constraintBottom_toTopOf="@id/showSearchDescription"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/showSearchImage"
+      app:layout_constraintTop_toBottomOf="@+id/showSearchNetwork"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:text="Game of Thrones"
+      />
+
+    <ImageView
+      android:id="@+id/showSearchIcon"
+      android:layout_width="20dp"
+      android:layout_height="14dp"
+      android:layout_marginStart="10dp"
+      app:layout_constraintBottom_toBottomOf="@id/showSearchNetwork"
+      app:layout_constraintStart_toEndOf="@id/showSearchImage"
+      app:layout_constraintTop_toTopOf="@id/showSearchNetwork"
+      app:srcCompat="@drawable/ic_television"
+      app:tint="?attr/colorAccent"
+      />
+
+    <TextView
+      android:id="@+id/showSearchNetwork"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceMicro"
+      android:layout_marginBottom="@dimen/spaceMicro"
+      android:ellipsize="end"
+      android:gravity="start"
+      android:maxLines="1"
+      android:textAlignment="viewStart"
+      android:textColor="?attr/colorAccent"
+      android:textSize="10sp"
+      app:layout_constraintBottom_toTopOf="@+id/showSearchTitle"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/showSearchIcon"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:ignore="SmallSp"
+      tools:text="Netflix"
+      />
+
+    <TextView
+      android:id="@+id/showSearchDescription"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceMedium"
+      android:ellipsize="end"
+      android:gravity="start"
+      android:maxLines="2"
+      android:textAlignment="viewStart"
+      android:textColor="?android:attr/textColorSecondary"
+      android:textSize="12sp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/showSearchImage"
+      app:layout_constraintTop_toBottomOf="@id/showSearchTitle"
+      tools:text="Lorem Ipsum"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>

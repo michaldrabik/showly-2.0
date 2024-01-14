@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textComment">Kommentoi</string>
+  <string name="textComments">Kommentit:</string>
+  <string name="textComments2">Kommentit</string>
+  <string name="textNoComments">Ei kommentteja.</string>
+  <string name="textCommentDisclaimer">Vain englanniksi, 5+ sanaa, kunnioita muita, merkitse juonipaljastukset!</string>
+  <string name="textSpoilers">Juonipaljastukset</string>
+  <string name="textCommentPosted">Kommenttisi julkaistiin.</string>
+  <string name="textCommentDeleted">Kommenttisi poistettiin.</string>
+  <string name="textCommentConfirmDeleteTitle">Poista kommentti</string>
+  <string name="textCommentConfirmDelete">Haluatko varmasti poistaa kommentin?</string>
+  <string name="textSignBeforeRate">Kirjaudu sisään ennen sarjojen arviointia.</string>
+  <string name="textSignBeforeRateMovie">Kirjaudu sisään ennen elokuvien arviointia.</string>
+  <string name="errorCommentFormat">Kommenttisi on oltava englanninkielinen ja sisältää vähintään 5 sanaa.</string>
+  <string name="errorCommentDelete">Kommentin poisto ei ole enää mahdollista.</string>
+</resources>

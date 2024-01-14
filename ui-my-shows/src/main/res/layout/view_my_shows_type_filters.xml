@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/rootLayout"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:background="@drawable/bg_filters_sheet"
+  android:orientation="vertical"
+  tools:theme="@style/AppTheme"
+  >
+
+  <androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    >
+
+    <LinearLayout
+      android:id="@+id/rootItemsLayout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/spaceMedium"
+      android:orientation="vertical"
+      />
+
+  </androidx.core.widget.NestedScrollView>
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/applyButton"
+    style="@style/RoundMaterialButton"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceNormal"
+    android:layout_marginTop="@dimen/spaceMedium"
+    android:layout_marginEnd="@dimen/spaceNormal"
+    android:layout_marginBottom="@dimen/spaceNormal"
+    android:backgroundTint="?attr/colorAccent"
+    android:gravity="center"
+    android:text="@string/textApply"
+    android:textColor="?attr/textColorOnSurface"
+    app:rippleColor="?android:attr/textColorPrimary"
+    />
+
+</LinearLayout>

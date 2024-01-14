@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="suggestionsMaxHeight">280dp</dimen>
+
+  <dimen name="searchRecyclerTopPadding">119dp</dimen>
+  <dimen name="searchRecyclerHorizontalPadding">0dp</dimen>
+  <dimen name="searchChipsHorizontalPadding">14dp</dimen>
+</resources>

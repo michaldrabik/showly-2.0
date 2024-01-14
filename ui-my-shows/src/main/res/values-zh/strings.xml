@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="menuMyShows">我的剧集</string>
+  <string name="menuWatchlist">待看列表</string>
+  <string name="menuHidden">已隐藏</string>
+  <string name="textMyShowsEmpty">当前您的剧集合集为空。\n\n访问 <b>发现</b> 选项卡来添加您的第一个剧集。</string>
+  <string name="textWatchlistEmpty">您的 <b>待看列表</b> 目前为空。\n\n访问 <b>发现</b> 选项卡添加您想看的剧集。</string>
+  <string name="textHiddenEmpty">您的 <b>隐藏</b> 列表目前是空的。\n\n<b>隐藏</b> 列表包含您不感兴趣的项目。\n\n隐藏的项目将不再出现在 <b>进度</b>, <b>发现</b> 和其它模块中。</string>
+</resources>

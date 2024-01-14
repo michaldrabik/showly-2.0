@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textStatistics">Statistiche</string>
+  <string name="textStatisticsEmpty">Deve essere presente almeno uno show nella pagina <b>I miei show</b>\nper visualizzare le statistiche.</string>
+  <string name="textStatisticsMostWatchedShows">Show più visti</string>
+  <string name="textStatisticsTotalTimeSpent">Tempo Totale Serie TV</string>
+  <string name="textStatisticsTotalTimeItIs">ovvero</string>
+  <string name="textStatisticsTotalTimeSpentHours">%s ore</string>
+  <string name="textStatisticsTotalTimeSpentMinutes">%s minuti</string>
+  <string name="textStatisticsTotalTimeSpentDays">che sono approssimativamente %s giorni.</string>
+  <string name="textStatisticsTotalEpisodes">Episodi visti in totale</string>
+  <string name="textStatisticsTotalEpisodesCount">%s episodi</string>
+  <string name="textStatisticsTotalEpisodesShowsCount">suddivisi fra %s show.</string>
+  <string name="textStatisticsTopGenre">Generi di Punta</string>
+  <string name="textStatisticsTopGenreSubValue">sembrano fatti apposta per te. Tocca per vederne altri.</string>
+  <string name="textStatisticsTopGenreSubValue2">sembrano fatti apposta per te.</string>
+  <string name="textStatisticsShowMore">Mostra di più</string>
+  <string name="textStatisticsRatings">Valutati di Recente</string>
+  <string name="textStatisticsHours">Ore</string>
+  <string name="textStatisticsEpisodes">Episodi</string>
+  <string name="textStatisticsSeasons">Stagioni</string>
+</resources>

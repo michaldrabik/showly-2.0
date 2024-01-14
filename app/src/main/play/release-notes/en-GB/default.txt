@@ -1,0 +1,2 @@
+* Fix issue where actors list of shows and movies would not return to its scrolled position
+* Other bugfixes

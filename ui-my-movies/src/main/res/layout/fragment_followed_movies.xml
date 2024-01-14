@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/followedMoviesRoot"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:clipChildren="false"
+  android:clipToPadding="false"
+  >
+
+  <androidx.viewpager.widget.ViewPager
+    android:id="@+id/followedMoviesPager"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:overScrollMode="never"
+    />
+
+  <com.michaldrabik.ui_base.common.views.ModeTabsView
+    android:id="@+id/followedMoviesModeTabs"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/screenMarginHorizontal"
+    android:layout_marginTop="@dimen/collectionTabsMargin"
+    android:layout_marginEnd="@dimen/screenMarginHorizontal"
+    app:layout_behavior="com.michaldrabik.ui_base.common.behaviour.ScrollableViewBehaviour"
+    />
+
+  <com.michaldrabik.ui_base.common.views.ScrollableTabLayout
+    android:id="@+id/followedMoviesTabs"
+    style="@style/ScrollableTabsStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="36dp"
+    android:layout_marginStart="@dimen/screenMarginHorizontal"
+    android:layout_marginTop="@dimen/myMoviesSearchViewPadding"
+    android:translationX="@dimen/myMoviesTabsTranslation"
+    app:tabTextAppearance="@style/ScrollableTabTextStyle"
+    />
+
+  <FrameLayout
+    android:id="@+id/followedMoviesIcons"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="end"
+    android:layout_marginTop="@dimen/myMoviesSearchViewPadding"
+    android:layout_marginEnd="@dimen/screenMarginHorizontal"
+    app:layout_behavior="com.michaldrabik.ui_base.common.behaviour.ScrollableViewBehaviour"
+    >
+
+    <com.michaldrabik.ui_base.common.views.ScrollableImageView
+      android:id="@+id/followedMoviesSearchIcon"
+      android:layout_width="36dp"
+      android:layout_height="36dp"
+      android:layout_gravity="end"
+      android:paddingStart="14dp"
+      app:srcCompat="@drawable/ic_search"
+      app:tint="?android:attr/textColorPrimary"
+      />
+
+  </FrameLayout>
+
+  <com.michaldrabik.ui_base.common.views.SearchLocalView
+    android:id="@+id/followedMoviesSearchLocalView"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/searchLocalViewHeight"
+    android:layout_marginStart="@dimen/screenMarginHorizontal"
+    android:layout_marginTop="@dimen/myMoviesSearchLocalViewPadding"
+    android:layout_marginEnd="@dimen/screenMarginHorizontal"
+    android:visibility="gone"
+    tools:visibility="visible"
+    />
+
+  <com.michaldrabik.ui_base.common.views.SearchView
+    android:id="@+id/followedMoviesSearchView"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/searchViewHeight"
+    android:layout_marginStart="@dimen/screenMarginHorizontal"
+    android:layout_marginTop="@dimen/spaceSmall"
+    android:layout_marginEnd="@dimen/screenMarginHorizontal"
+    />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/settingsMiscContent"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:orientation="vertical"
+  tools:theme="@style/AppTheme"
+  >
+
+  <TextView
+    android:id="@+id/settingsCategoryMisc"
+    style="@style/Settings.Category"
+    android:text="@string/textSettingsMisc"
+    />
+
+  <LinearLayout
+    android:id="@+id/settingsRateApp"
+    style="@style/Settings.ItemLayout"
+    android:layout_width="match_parent"
+    >
+
+    <TextView
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsRateAppTitle"
+      android:textColor="?attr/colorAccent"
+      />
+
+    <TextView
+      style="@style/Settings.Summary"
+      android:text="@string/textSettingsRateAppSummary"
+      android:textColor="?attr/colorAccent"
+      />
+
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/settingsContactDevs"
+    style="@style/Settings.ItemLayout"
+    android:layout_width="match_parent"
+    >
+
+    <TextView
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsContactDevsTitle"
+      />
+
+    <TextView
+      style="@style/Settings.Summary"
+      android:text="@string/textSettingsContactDevsSummary"
+      />
+
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/settingsDeleteCache"
+    style="@style/Settings.ItemLayout"
+    android:layout_width="match_parent"
+    >
+
+    <TextView
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsDeleteCacheTitle"
+      />
+
+    <TextView
+      style="@style/Settings.Summary"
+      android:text="@string/textSettingsDeleteCacheSummary"
+      />
+
+  </LinearLayout>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/spaceNormal"
+    >
+
+    <ImageView
+      android:id="@+id/settingsTmdbIcon"
+      android:layout_width="wrap_content"
+      android:layout_height="30dp"
+      android:layout_marginStart="@dimen/spaceTiny"
+      android:layout_marginEnd="@dimen/spaceSmall"
+      android:adjustViewBounds="true"
+      app:layout_constraintBottom_toTopOf="@id/settingsJustWatchDisclaimer"
+      app:layout_constraintEnd_toStartOf="@id/settingsTwitterIcon"
+      app:layout_constraintStart_toEndOf="@id/settingsTraktIcon"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_tmdb"
+      />
+
+    <ImageView
+      android:id="@+id/settingsTraktIcon"
+      android:layout_width="60dp"
+      android:layout_height="40dp"
+      android:layout_marginTop="@dimen/spaceNormal"
+      android:layout_marginEnd="@dimen/spaceTiny"
+      android:adjustViewBounds="true"
+      app:layout_constraintBottom_toTopOf="@id/settingsJustWatchDisclaimer"
+      app:layout_constraintEnd_toStartOf="@id/settingsTmdbIcon"
+      app:layout_constraintHorizontal_chainStyle="packed"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_trakt"
+      />
+
+    <ImageView
+      android:id="@+id/settingsTwitterIcon"
+      android:layout_width="60dp"
+      android:layout_height="40dp"
+      android:layout_marginStart="@dimen/spaceTiny"
+      android:adjustViewBounds="true"
+      app:layout_constraintBottom_toTopOf="@id/settingsJustWatchDisclaimer"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/settingsTmdbIcon"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_twitter"
+      />
+
+    <TextView
+      android:id="@+id/settingsJustWatchDisclaimer"
+      style="@style/Settings.Summary"
+      android:layout_marginTop="@dimen/spaceNormal"
+      android:layout_marginBottom="@dimen/spaceNormal"
+      android:text="@string/textSettingsStreamingsDisclaimer"
+      android:textColor="?android:attr/textColorSecondary"
+      app:layout_constraintBottom_toTopOf="@id/settingsVersion"
+      app:layout_constraintEnd_toStartOf="@id/settingsJustWatchIcon"
+      app:layout_constraintHorizontal_chainStyle="packed"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsTraktIcon"
+      />
+
+    <ImageView
+      android:id="@+id/settingsJustWatchIcon"
+      android:layout_width="wrap_content"
+      android:layout_height="10dp"
+      android:layout_marginStart="@dimen/spaceSmall"
+      android:adjustViewBounds="true"
+      app:layout_constraintBottom_toBottomOf="@id/settingsJustWatchDisclaimer"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/settingsJustWatchDisclaimer"
+      app:layout_constraintTop_toTopOf="@id/settingsJustWatchDisclaimer"
+      app:srcCompat="@drawable/ic_justwatch"
+      />
+
+    <TextView
+      android:id="@+id/settingsVersion"
+      style="@style/Settings.Summary"
+      android:textColor="?android:attr/textColorPrimary"
+      app:layout_constraintBottom_toTopOf="@id/settingsUserId"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsJustWatchDisclaimer"
+      tools:text="Version: 1.1.3"
+      />
+
+    <TextView
+      android:id="@+id/settingsUserId"
+      style="@style/Settings.Summary"
+      android:layout_marginBottom="@dimen/spaceBig"
+      android:textColor="?android:attr/textColorSecondary"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsVersion"
+      tools:text="123456789"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

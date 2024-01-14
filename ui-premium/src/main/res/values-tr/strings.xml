@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textPremium">Showly Premium</string>
+  <string name="textPremiumAdFull">Showly destekçisi olun, gelişimine yardımcı olun ve harika bonus özelliklere erişin!</string>
+  <string name="textLightThemeTitle">Aydınlık tema</string>
+  <string name="textLightThemeDesc">Ana uygulama ve widget\'lar için geçerli olan aydınlık temasıyla gücün aydınlık tarafına katılın.</string>
+  <string name="textCustomImagesTitle">Özel fotoğraflar</string>
+  <string name="textCustomImagesDesc">Diziler ve filmler için kendi favori afişinizi ve hayranların çalışmalarını ayarlayın. Galeriden bir fotoğraf seçin veya kendi URL\'nizi yükleyin.</string>
+  <string name="textQuickRatingTitle">Hızlı değerlendirme</string>
+  <string name="textQuickRatingDesc">İzlediğiniz bir filme veya dizinin bölümüne oy vermeyi asla unutmayın. Hızlı değerlendirme özelliği ile, bir ögeyi izlendi olarak işaretlediğinizde otomatik olarak oy verebileceksiniz.</string>
+  <string name="textWidgetsTitle">Şeffaf Widget\'lar</string>
+  <string name="textWidgetsDesc">Widget\'ların arka plan şeffaflığını ana ekranınıza daha iyi uyacak şekilde ayarlayın.</string>
+  <string name="textRemoveAdsTitle">Reklamları Kaldır</string>
+  <string name="textRemoveAdsDesc">Uygulamada gösterilen tüm premium reklamları kaldırır.</string>
+  <string name="textNewsTitle">Haberler Bölümü</string>
+  <string name="textNewsDesc">En son diziler ve filmler makaleleri, haberler ve fragmanlarla haberler bölümünü etkinleştirin. Reddit tarafından desteklenmektedir.</string>
+  <string name="textViewsTitle">Liste görünüm türleri</string>
+  <string name="textViewsDesc">Sıkıştırılmış liste veya ızgara görünümü gibi ek koleksiyon görünüm türlerini etkinleştirir.</string>
+  <string name="textPurchaseThanks">Artık Showly destekçisisiniz!\nTeşekkürler ve uygulamanın keyfini çıkarın!</string>
+</resources>

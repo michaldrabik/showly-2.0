@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textTraktLoginSuccess">Sei stato autorizzato correttamente.</string>
+  <string name="textTraktSyncStarted">Sincronizzazione avviata. Continuerà l\'esecuzione in background.</string>
+  <string name="textTraktSyncStart">Sincronizza ora</string>
+  <string name="textTraktSyncSchedule">Pianifica</string>
+  <string name="textTraktSyncFromTraktToShowly">Importa da Trakt.tv in Showly</string>
+  <string name="textTraktSyncFromShowlyToTrakt">Esporta da Showly in Trakt.tv</string>
+  <string name="textTraktSyncDescription">Sincronizza i progressi e la lista da vedere del tuo account Trakt.tv con Showly.\n\nNessuno degli elementi della tua attuale raccolta verrà eliminato. La sincronizzazione si occuperà solo degli elementi non presenti nelle tue raccolte.</string>
+  <string name="textTraktSyncLastTimestamp">Ultima sincronizzazione: %s</string>
+  <string name="textSettingsTraktAuthorizeTitle">Autorizzazione Trakt.tv</string>
+  <string name="textSettingsScheduleImportConfirmationTitle">Sincronizzazione istantanea attiva</string>
+  <string name="textSettingsScheduleImportConfirmationMessage">\nSembra che la sincronizzazione istantanea sia attiva.\n\nVuoi comunque attivare la sincronizzazione automatica?\n</string>
+</resources>

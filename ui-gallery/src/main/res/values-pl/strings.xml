@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textPoster">Plakat</string>
+  <string name="textFanart">Fanart</string>
+  <string name="textGalleryEmpty">Brak dostępnych obrazów</string>
+  <string name="textUrlDialogTitle">Pobierz Grafikę</string>
+  <string name="textUrlDialogHint">URL Grafiki</string>
+  <string name="textUrlDialogInvalidUrl">Nieprawidłowy format URL grafiki.\nPrzykład: https://test.com/image.jpg</string>
+  <string name="textUrlDialogInvalidImage">Ten obrazek nie mógł zostać załadowany.</string>
+</resources>

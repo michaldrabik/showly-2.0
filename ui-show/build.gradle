@@ -1,0 +1,55 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-parcelize'
+apply plugin: 'dagger.hilt.android.plugin'
+apply from: '../versions.gradle'
+
+android {
+  kotlinOptions { jvmTarget = "17" }
+  compileOptions {
+    coreLibraryDesugaringEnabled true
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
+  }
+
+  buildFeatures {
+    viewBinding true
+  }
+
+  compileSdkVersion versions.compileSdk
+
+  defaultConfig {
+    minSdkVersion versions.minSdk
+    targetSdkVersion versions.targetSdk
+    compileSdkVersion versions.compileSdk
+
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
+    }
+  }
+
+  namespace 'com.michaldrabik.ui_show'
+}
+
+dependencies {
+  implementation project(':common')
+  implementation project(':data-local')
+  implementation project(':data-remote')
+  implementation project(':repository')
+  implementation project(':ui-base')
+  implementation project(':ui-model')
+  implementation project(':ui-navigation')
+  implementation project(':ui-episodes')
+  implementation project(':ui-comments')
+  implementation project(':ui-streamings')
+  implementation project(':ui-people')
+
+  implementation libs.hilt.android
+  ksp libs.hilt.compiler
+
+  coreLibraryDesugaring libs.android.desugar
+}

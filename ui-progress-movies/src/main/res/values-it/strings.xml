@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="tabMoviesCalendar">Calendario</string>
+  <string name="tabMoviesProgress">Progressi</string>
+  <string name="textMoviesCalendarEmpty">Non ci sono nuovi film in arrivo a breve.</string>
+  <string name="textMoviesCalendarRecentsEmpty">Non sono stati trasmessi film di recente.</string>
+  <string name="textDiscoverMovies">Scopri film</string>
+  <string name="textMoviesTraktSynchronize">Importa da Trakt.tv</string>
+  <string name="textMoviesProgressEmpty">La tua pagina <b>Progressi</b> è vuota.\n\nVisita la pagina <b>Scopri</b> per aggiungere film o importa la tua raccolta Trak.tv.</string>
+</resources>

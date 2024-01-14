@@ -1,0 +1,83 @@
+name: Master Flow
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  verify-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: 'temurin'
+
+      - name: Run ktlint
+        run: curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.43.2/ktlint && chmod a+x ktlint && ./ktlint
+
+  verify-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: 'temurin'
+
+      - name: Decrypt secrets
+        run: ./.github/scripts/decrypt_secrets.sh
+        env:
+          KEYSTORE_PASSPHRASE: ${{ secrets.KEYSTORE_PASSPHRASE }}
+
+      - name: Run Unit Tests (app)
+        run: ./gradlew :app:testDebugUnitTest
+      - name: Run Unit Tests (ui-repository)
+        run: ./gradlew :repository:testDebugUnitTest
+      - name: Run Unit Tests (ui-discover)
+        run: ./gradlew :ui-discover:testDebugUnitTest
+      - name: Run Unit Tests (ui-trakt-sync)
+        run: ./gradlew :ui-trakt-sync:testDebugUnitTest
+      - name: Run Unit Tests (ui-statistics)
+        run: ./gradlew :ui-statistics:testDebugUnitTest
+      - name: Run Unit Tests (ui-statistics-movies)
+        run: ./gradlew :ui-statistics-movies:testDebugUnitTest
+      - name: Run Unit Tests (ui-search)
+        run: ./gradlew :ui-search:testDebugUnitTest
+      - name: Run Unit Tests (ui-progress-movies)
+        run: ./gradlew :ui-progress-movies:testDebugUnitTest
+
+  distribute:
+    needs: [ verify-lint, verify-tests ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: 'temurin'
+
+      - name: Decrypt secrets
+        run: ./.github/scripts/decrypt_secrets.sh
+        env:
+          KEYSTORE_PASSPHRASE: ${{ secrets.KEYSTORE_PASSPHRASE }}
+
+      - name: Build APK
+        run: ./gradlew app:assembleRelease
+
+      - name: Distribute APK
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{secrets.FIREBASE_APP_ID}}
+          token: ${{secrets.FIREBASE_TOKEN}}
+          groups: owner
+          file: app/build/outputs/apk/release/app-release.apk
+          releaseNotes: ""

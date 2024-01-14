@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/fragmentListDetailsRoot"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:clipChildren="false"
+  android:clipToPadding="false"
+  >
+
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/fragmentListDetailsRecycler"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="?android:attr/actionBarSize"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:overScrollMode="never"
+    android:paddingStart="@dimen/screenMarginHorizontal"
+    android:paddingTop="@dimen/listDetailsRecyclerTopPadding"
+    android:paddingEnd="@dimen/screenMarginHorizontal"
+    android:paddingBottom="@dimen/spaceSmall"
+    />
+
+  <com.michaldrabik.ui_lists.details.views.ListDetailsFilterView
+    android:id="@+id/fragmentListDetailsFiltersView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/screenMarginHorizontal"
+    android:layout_marginTop="@dimen/listDetailsChipsTopPadding"
+    android:layout_marginEnd="@dimen/screenMarginHorizontal"
+    android:visibility="gone"
+    app:layout_behavior="com.michaldrabik.ui_base.common.behaviour.ScrollableViewBehaviour"
+    tools:visibility="visible"
+    />
+
+  <com.google.android.material.appbar.MaterialToolbar
+    android:id="@+id/fragmentListDetailsToolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:windowBackground"
+    android:elevation="@dimen/elevationNormal"
+    app:contentInsetStartWithNavigation="0dp"
+    app:navigationIcon="@drawable/ic_arrow_back"
+    app:subtitleTextAppearance="@style/ListDetailsToolbarSubtitleAppearance"
+    app:titleTextAppearance="@style/ListDetailsToolbarTitleAppearance"
+    >
+
+    <ImageView
+      android:id="@+id/fragmentListDetailsMoreButton"
+      android:layout_width="40dp"
+      android:layout_height="match_parent"
+      android:layout_gravity="end"
+      android:layout_marginEnd="@dimen/spaceTiny"
+      android:padding="8dp"
+      app:srcCompat="@drawable/ic_more"
+      app:tint="?android:attr/textColorPrimary"
+      />
+
+    <ImageView
+      android:id="@+id/fragmentListDetailsManageButton"
+      android:layout_width="40dp"
+      android:layout_height="match_parent"
+      android:layout_gravity="end"
+      android:layout_marginEnd="@dimen/spaceTiny"
+      android:padding="8dp"
+      android:visibility="gone"
+      app:srcCompat="@drawable/ic_reorder"
+      app:tint="?android:attr/textColorPrimary"
+      tools:visibility="visible"
+      />
+
+    <ImageView
+      android:id="@+id/fragmentListDetailsViewModeButton"
+      android:layout_width="40dp"
+      android:layout_height="match_parent"
+      android:layout_gravity="end"
+      android:layout_marginEnd="@dimen/spaceTiny"
+      android:padding="9dp"
+      android:visibility="gone"
+      app:srcCompat="@drawable/ic_view_list"
+      app:tint="?android:attr/textColorPrimary"
+      tools:visibility="visible"
+      />
+
+  </com.google.android.material.appbar.MaterialToolbar>
+
+  <include
+    android:id="@+id/fragmentListDetailsEmptyView"
+    layout="@layout/layout_list_details_empty"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginStart="@dimen/spaceBig"
+    android:layout_marginEnd="@dimen/spaceBig"
+    android:visibility="gone"
+    tools:visibility="visible"
+    />
+
+  <FrameLayout
+    android:id="@+id/fragmentListDetailsLoadingView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusable="true"
+    android:visibility="gone"
+    >
+
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="@color/colorBlackTranslucent"
+      />
+
+    <ProgressBar
+      style="@style/ProgressBar.Accent"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      />
+
+  </FrameLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

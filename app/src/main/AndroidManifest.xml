@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  >
+
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+  <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+  <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
+
+  <application
+    android:name=".App"
+    android:allowBackup="true"
+    android:icon="${appIcon}"
+    android:label="@string/app_name"
+    android:localeConfig="@xml/locales_config"
+    android:roundIcon="${appIconRound}"
+    android:supportsRtl="true"
+    android:theme="@style/AppTheme"
+    tools:ignore="GoogleAppIndexingWarning"
+    >
+
+    <!-- Activities -->
+
+    <activity
+      android:name=".ui.main.MainActivity"
+      android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
+      android:exported="true"
+      android:launchMode="singleInstance"
+      android:screenOrientation="portrait"
+      tools:ignore="LockedOrientationActivity"
+      >
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+
+        <category android:name="android.intent.category.LAUNCHER" />
+        <category android:name="android.intent.category.DEFAULT" />
+      </intent-filter>
+
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+
+        <data
+          android:host="trakt"
+          android:scheme="showly2"
+          />
+      </intent-filter>
+
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+
+        <data
+          android:pathPrefix="/title/tt"
+          android:scheme="https"
+          />
+
+        <data android:host="imdb.com" />
+        <data android:host="www.imdb.com" />
+        <data android:host="m.imdb.com" />
+      </intent-filter>
+
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+
+
+        <data android:scheme="https" />
+
+        <data android:pathPrefix="/tv/" />
+        <data android:pathPrefix="/movie/" />
+
+        <data android:host="themoviedb.org" />
+        <data android:host="www.themoviedb.org" />
+      </intent-filter>
+
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+
+        <data android:scheme="https" />
+
+        <data android:host="trakt.tv" />
+        <data android:host="www.trakt.tv" />
+
+        <data android:pathPrefix="/shows/" />
+        <data android:pathPrefix="/movies/" />
+      </intent-filter>
+
+      <meta-data
+        android:name="android.app.shortcuts"
+        android:resource="@xml/shortcuts"
+        />
+
+    </activity>
+
+    <!--  Work Manager  -->
+
+    <provider
+      android:name="androidx.startup.InitializationProvider"
+      android:authorities="${applicationId}.androidx-startup"
+      tools:node="remove"
+      />
+
+    <!-- Services -->
+
+    <service
+      android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
+      android:enabled="false"
+      android:exported="false"
+      >
+      <meta-data
+        android:name="autoStoreLocales"
+        android:value="true"
+        />
+    </service>
+
+  </application>
+</manifest>

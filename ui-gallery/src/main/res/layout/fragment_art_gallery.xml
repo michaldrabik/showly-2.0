@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/fanartGalleryRoot"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:clipChildren="false"
+  >
+
+  <androidx.viewpager2.widget.ViewPager2
+    android:id="@+id/artGalleryPager"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    />
+
+  <ImageView
+    android:id="@+id/artGalleryBackArrow"
+    android:layout_width="@dimen/backArrowSize"
+    android:layout_height="@dimen/backArrowSize"
+    android:layout_marginStart="@dimen/galleryBackArrowMargin"
+    android:background="?android:attr/selectableItemBackground"
+    android:padding="@dimen/backArrowPadding"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:srcCompat="@drawable/ic_arrow_back"
+    app:tint="?android:attr/textColorPrimary"
+    />
+
+  <ImageView
+    android:id="@+id/artGalleryBrowserIcon"
+    android:layout_width="@dimen/backArrowSize"
+    android:layout_height="@dimen/backArrowSize"
+    android:padding="16dp"
+    android:visibility="gone"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:srcCompat="@drawable/ic_open_browser"
+    app:tint="?android:attr/textColorPrimary"
+    tools:visibility="visible"
+    />
+
+  <me.relex.circleindicator.CircleIndicator3
+    android:id="@+id/artGalleryPagerIndicator"
+    android:layout_width="match_parent"
+    android:layout_height="12dp"
+    android:layout_gravity="center_horizontal|bottom"
+    android:layout_margin="@dimen/spaceNormal"
+    app:ci_drawable="@drawable/bg_indicator_circle"
+    app:ci_drawable_unselected="@drawable/bg_indicator_circle"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    />
+
+  <me.relex.circleindicator.CircleIndicator3
+    android:id="@+id/artGalleryPagerIndicatorWhite"
+    android:layout_width="match_parent"
+    android:layout_height="12dp"
+    android:layout_gravity="center_horizontal|bottom"
+    android:layout_margin="@dimen/spaceNormal"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    />
+
+  <TextView
+    android:id="@+id/artGalleryEmptyView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:text="@string/textGalleryEmpty"
+    android:textColor="?android:attr/textColorPrimary"
+    android:textSize="16sp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    />
+
+  <ProgressBar
+    android:id="@+id/artGalleryUrlProgress"
+    style="@style/ProgressBar.Accent"
+    android:layout_width="30dp"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="40dp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    tools:visibility="visible"
+    />
+
+  <ProgressBar
+    android:id="@+id/artGalleryImagesProgress"
+    style="@style/ProgressBar"
+    android:layout_width="20dp"
+    android:layout_height="20dp"
+    android:layout_margin="@dimen/spaceMedium"
+    android:indeterminateTint="?android:attr/textColorPrimary"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    tools:visibility="visible"
+    />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

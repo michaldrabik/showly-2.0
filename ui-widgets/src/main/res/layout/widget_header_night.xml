@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/calendarWidgetHeader"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:orientation="horizontal"
+  android:theme="@style/AppTheme.Widget.Dark"
+  >
+
+  <include
+    layout="@layout/layout_widget_header"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    />
+
+</LinearLayout>

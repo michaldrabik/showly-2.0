@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="tabCalendar">Takvim</string>
+  <string name="tabProgress">İlerleme</string>
+  <string name="textCalendarEmpty">Yaklaşan yeni hiçbir bölüm yok.</string>
+  <string name="textRecentsEmpty">Yakın zamanda yayınlanan bölüm yok.</string>
+  <string name="textOnHold" comment="This is a header for Progress subsection. It will contain pending shows marked by user.">Beklemede</string>
+  <string name="textDiscoverShows">Dizileri Keşfet</string>
+  <string name="textEpisodeInfo">Ayrıntılar</string>
+  <string name="textTraktSynchronize">Trakt.tv hizmetinden aktar</string>
+  <string name="textProgressEmpty"><b>İlerlemeniz</b> şu anda boş.\n\nDiziler eklemek için <b>Keşfet</b> sekmesini ziyaret edin veya Trakt.tv koleksiyonunuzdan aktarın.</string>
+  <string name="textNewSeason">Sezon Prömiyeri</string>
+</resources>

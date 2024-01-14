@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <string name="textStatistics">Statistics</string>
+  <string name="textStatisticsEmpty">At least one show must be present in <b>My Shows</b>\nbefore statistics can be displayed.</string>
+  <string name="textStatisticsMostWatchedShows">Most Viewed Shows</string>
+  <string name="textStatisticsTotalTimeSpent">Total Time Spent Watching</string>
+  <string name="textStatisticsTotalTimeItIs">and it is</string>
+  <string name="textStatisticsTotalTimeSpentHours">%s hours</string>
+  <string name="textStatisticsTotalTimeSpentMinutes">%s minutes</string>
+  <string name="textStatisticsTotalTimeSpentDays">which is about %s days.</string>
+  <string name="textStatisticsTotalEpisodes">Total Episodes Watched</string>
+  <string name="textStatisticsTotalEpisodesCount">%s episodes</string>
+  <string name="textStatisticsTotalEpisodesShowsCount">spread across %s shows.</string>
+  <string name="textStatisticsTopGenre">Top Genres</string>
+  <string name="textStatisticsTopGenreSubValue">seem to be your cup of tea. Tap to see more.</string>
+  <string name="textStatisticsTopGenreSubValue2">seem to be your cup of tea.</string>
+  <string name="textStatisticsShowMore">Show More</string>
+  <string name="textStatisticsRatings">Recently Rated</string>
+  <string name="textStatisticsHours">Hours</string>
+  <string name="textStatisticsEpisodes">Episodes</string>
+  <string name="textStatisticsSeasons">Seasons</string>
+
+</resources>

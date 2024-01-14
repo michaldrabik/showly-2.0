@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textStatisticsMovies">الإحصائيات</string>
+  <string name="textStatisticsMoviesEmpty">أضف فيلم واحد على الأقل في قائمة <b>أفلامي</b>\nلعرض قائمة الإحصائيات.</string>
+  <string name="textStatisticsMoviesTotalTimeSpent">إجمالي الوقت المنقضي في المشاهدة</string>
+  <string name="textStatisticsMoviesTotalTimeItIs">يساوي</string>
+  <string name="textStatisticsMoviesTotalTimeSpentHours">%s ساعات</string>
+  <string name="textStatisticsMoviesTotalTimeSpentMinutes">%s دقائق</string>
+  <string name="textStatisticsMoviesTotalTimeSpentDays">وهو حوالي %s أيام.</string>
+  <string name="textStatisticsMoviesTotalMovies">إجمالي الأفلام التي تمت مشاهدتها</string>
+  <string name="textStatisticsMoviesTotalMoviesCount">%s أفلام</string>
+  <string name="textStatisticsMoviesTopGenre">أعلى التصنيفات</string>
+  <string name="textStatisticsMoviesTopGenreSubValue">يبدو أنهم تصنيفاتك المفضلة. انقر للمزيد.</string>
+  <string name="textStatisticsMoviesTopGenreSubValue2">يبدو أنهم تصنيفاتك المفضلة.</string>
+  <string name="textStatisticsMoviesRatings">تم تقييمه مؤخراً</string>
+</resources>

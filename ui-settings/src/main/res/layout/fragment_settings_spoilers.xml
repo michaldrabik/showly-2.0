@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/settingsSpoilersContent"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:orientation="vertical"
+  tools:theme="@style/AppTheme"
+  >
+
+  <TextView
+    android:id="@+id/settingsCategorySpoilers"
+    style="@style/Settings.Category"
+    android:text="@string/textSettingsSpoilers"
+    />
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/settingsSpoilersShows"
+    style="@style/Settings.ItemLayout"
+    android:layout_width="match_parent"
+    >
+
+    <TextView
+      android:id="@+id/settingsSpoilersShowsTitle"
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsSpoilersShows"
+      app:layout_constraintBottom_toTopOf="@id/settingsSpoilersShowsSummary"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      />
+
+    <TextView
+      android:id="@+id/settingsSpoilersShowsSummary"
+      style="@style/Settings.Summary"
+      android:text="@string/textSettingsSpoilersShowsSummary"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsSpoilersShowsTitle"
+      />
+
+    <ImageView
+      android:id="@+id/settingsSpoilersShowsCheck"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_check"
+      app:tint="?attr/colorAccent"
+      tools:visibility="visible"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/settingsSpoilersMovies"
+    style="@style/Settings.ItemLayout"
+    android:layout_width="match_parent"
+    >
+
+    <TextView
+      android:id="@+id/settingsSpoilersMoviesTitle"
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsSpoilersMovies"
+      app:layout_constraintBottom_toTopOf="@id/settingsSpoilersMoviesSummary"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      />
+
+    <TextView
+      android:id="@+id/settingsSpoilersMoviesSummary"
+      style="@style/Settings.Summary"
+      android:text="@string/textSettingsSpoilersMoviesSummary"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsSpoilersMoviesTitle"
+      />
+
+    <ImageView
+      android:id="@+id/settingsSpoilersMoviesCheck"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_check"
+      app:tint="?attr/colorAccent"
+      tools:visibility="visible"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/settingsSpoilersEpisodes"
+    style="@style/Settings.ItemLayout"
+    android:layout_width="match_parent"
+    >
+
+    <TextView
+      android:id="@+id/settingsSpoilersEpisodesTitle"
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsSpoilersEpisodes"
+      app:layout_constraintBottom_toTopOf="@id/settingsSpoilersEpisodesSummary"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      />
+
+    <TextView
+      android:id="@+id/settingsSpoilersEpisodesSummary"
+      style="@style/Settings.Summary"
+      android:text="@string/textSettingsSpoilersEpisodesSummary"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsSpoilersEpisodesTitle"
+      />
+
+    <ImageView
+      android:id="@+id/settingsSpoilersEpisodesCheck"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_check"
+      app:tint="?attr/colorAccent"
+      tools:visibility="visible"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/settingsSpoilersTapToReveal"
+    style="@style/Settings.ItemLayout"
+    android:layout_width="match_parent"
+    >
+
+    <TextView
+      android:id="@+id/settingsSpoilersTapToRevealTitle"
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsSpoilersTapToRevealTitle"
+      app:layout_constraintBottom_toTopOf="@id/settingsSpoilersTapToDescription"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      />
+
+    <TextView
+      android:id="@+id/settingsSpoilersTapToDescription"
+      style="@style/Settings.Summary"
+      android:layout_marginEnd="@dimen/spaceSmall"
+      android:text="@string/textSettingsSpoilersTapToRevealDescription"
+      app:layout_constrainedWidth="true"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/settingsSpoilersTapToRevealSwitch"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsSpoilersTapToRevealTitle"
+      />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+      android:id="@+id/settingsSpoilersTapToRevealSwitch"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:background="@null"
+      android:checked="false"
+      android:clickable="false"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

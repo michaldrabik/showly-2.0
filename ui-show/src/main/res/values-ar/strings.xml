@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textNextEpisode">الحلقة التالية:</string>
+  <string name="textInMyShows">تمت الإضافة إلى مسلسلاتي</string>
+  <string name="textInWatchlist">تمت الإضافة إلى قائمة المشاهدة</string>
+  <string name="textInHidden">المخفية</string>
+  <string name="textShowExtraInfo">%3$s %2$s %1$s | %6$s | %4$s %5$s</string>
+  <string name="textShowQuickProgressTitle">مستوى التقدم السريع</string>
+  <string name="textShowQuickProgressSubTitle">إختر آخر حلقة قمت بمتابعتها لتحديث قائمة مستوى التقدم بسرعة.</string>
+  <string name="textShowQuickProgressDone">تم تحديث مستوى تقدمك.</string>
+  <string name="textEpisodeDate">الحلقة %1$d | %2$s</string>
+  <string name="textEpisodeTitle">الموسم %02d الحلقة %02d - %s</string>
+  <string name="textTraktSyncRemovedFromTrakt">إكتملت مزامنة Trakt.tv بنجاح.</string>
+  <string name="textActorsEmpty">قائمة الممثلين غير متاحة</string>
+  <string name="textSeasons">المواسم:</string>
+  <string name="textSeasonsEmpty">المواسم غير متوفرة.</string>
+  <string name="textTrailer">التريلر</string>
+  <string name="textYouMayAlsoLike">قد تعجبك أيضاً</string>
+  <string name="textRuntimeLeftHours">المتبقي ~%sh و %sm</string>
+  <string name="textRuntimeLeftMinutes">المتبقي ~%sm</string>
+  <string name="textShowManageLists">إدارة القوائم</string>
+  <string name="textShowManageListsCount">إدارة القوائم (%d)</string>
+</resources>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="progressTabsViewTranslation">-7dp</dimen>
+  <dimen name="progressHeaderTextSize">22sp</dimen>
+
+  <dimen name="progressRecyclerHorizontalSpace">0dp</dimen>
+
+  <dimen name="progressSearchViewPaddingNoModes">68dp</dimen>
+  <dimen name="progressSearchViewPadding">104dp</dimen>
+
+  <dimen name="progressSearchLocalViewPaddingNoModes">114dp</dimen>
+  <dimen name="progressSearchLocalViewPadding">150dp</dimen>
+  <dimen name="progressSearchLocalOffset">40dp</dimen>
+
+  <dimen name="progressTabsViewPaddingNoModes">112dp</dimen>
+  <dimen name="progressTabsViewPadding">148dp</dimen>
+
+  <dimen name="progressCalendarTabsViewPaddingNoModes">96dp</dimen>
+  <dimen name="progressCalendarTabsViewPadding">132dp</dimen>
+
+  <dimen name="progressOverscrollPadding">132dp</dimen>
+  <dimen name="progressOverscrollPaddingNoModes">96dp</dimen>
+  <dimen name="progressOverscrollIcon">36dp</dimen>
+  <dimen name="progressOverscrollProgress">48dp</dimen>
+
+  <dimen name="progressImageHeight">120dp</dimen>
+  <dimen name="progressImageWidth">80dp</dimen>
+
+  <dimen name="progressItemCheckButtonWidth">72dp</dimen>
+  <dimen name="progressItemButtonHeight">40dp</dimen>
+</resources>

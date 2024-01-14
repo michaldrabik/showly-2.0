@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:gravity="center"
+  android:orientation="vertical"
+  tools:background="@color/colorBackground"
+  tools:parentTag="android.widget.LinearLayout"
+  tools:theme="@style/AppTheme"
+  >
+
+  <ImageView
+    android:layout_width="130dp"
+    android:layout_height="130dp"
+    android:adjustViewBounds="true"
+    android:src="@drawable/vincent_vega"
+    app:tint="?android:attr/textColorPrimary"
+    />
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/textEmptyResults"
+    android:textColor="?android:attr/textColorPrimary"
+    />
+
+</merge>
