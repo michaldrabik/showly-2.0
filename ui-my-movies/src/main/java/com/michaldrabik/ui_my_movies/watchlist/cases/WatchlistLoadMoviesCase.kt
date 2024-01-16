@@ -68,7 +68,7 @@ class WatchlistLoadMoviesCase @Inject constructor(
         .awaitAll()
         .filter {
           filters.filterByQuery(it, searchQuery) &&
-            filters.filterUpcoming(it, filtersItem.isUpcoming) &&
+            filters.filterUpcoming(it, filtersItem.upcoming) &&
             filters.filterGenres(it, filtersGenres)
         }
         .sortedWith(sorter.sort(filtersItem.sortOrder, filtersItem.sortType))
@@ -85,7 +85,7 @@ class WatchlistLoadMoviesCase @Inject constructor(
       sortOrder = settingsRepository.sorting.watchlistMoviesSortOrder,
       sortType = settingsRepository.sorting.watchlistMoviesSortType,
       genres = settingsRepository.filters.watchlistMoviesGenres,
-      isUpcoming = settingsRepository.filters.watchlistMoviesUpcoming
+      upcoming = settingsRepository.filters.watchlistMoviesUpcoming
     )
   }
 

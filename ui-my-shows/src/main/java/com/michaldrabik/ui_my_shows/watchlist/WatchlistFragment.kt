@@ -91,7 +91,7 @@ class WatchlistFragment :
       itemClickListener = { openShowDetails(it.show) },
       itemLongClickListener = { item -> openShowMenu(item.show) },
       sortChipClickListener = ::openSortOrderDialog,
-      upcomingChipClickListener = viewModel::setFilters,
+      upcomingChipClickListener = viewModel::toggleUpcomingFilter,
       listViewChipClickListener = { (requireParentFragment() as? FollowedShowsFragment)?.openPremium() },
       networksChipClickListener = ::openNetworksDialog,
       genresChipClickListener = ::openGenresDialog,

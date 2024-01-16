@@ -91,7 +91,7 @@ class WatchlistFragment :
       itemLongClickListener = { openMovieMenu(it.movie) },
       sortChipClickListener = ::openSortOrderDialog,
       genreChipClickListener = ::openGenresDialog,
-      upcomingChipClickListener = viewModel::setFilters,
+      upcomingChipClickListener = viewModel::toggleUpcomingFilter,
       missingImageListener = viewModel::loadMissingImage,
       missingTranslationListener = viewModel::loadMissingTranslation,
       listViewChipClickListener = { (requireParentFragment() as? FollowedMoviesFragment)?.openPremium() },

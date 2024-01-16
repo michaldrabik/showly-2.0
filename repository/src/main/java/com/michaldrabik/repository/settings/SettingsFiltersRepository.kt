@@ -7,6 +7,7 @@ import com.michaldrabik.repository.utilities.EnumPreference
 import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.MyShowsSection
 import com.michaldrabik.ui_model.Network
+import com.michaldrabik.ui_model.UpcomingFilter
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
@@ -22,14 +23,14 @@ class SettingsFiltersRepository @Inject constructor(
     private const val MY_SHOWS_TYPE = "MY_SHOWS_TYPE"
     private const val MY_SHOWS_NETWORKS = "MY_SHOWS_NETWORKS"
     private const val MY_SHOWS_GENRES = "MY_SHOWS_GENRES"
-    private const val WATCHLIST_SHOWS_UPCOMING = "WATCHLIST_SHOWS_UPCOMING"
+    private const val WATCHLIST_SHOWS_UPCOMING = "WATCHLIST_SHOWS_UPCOMING_2"
     private const val WATCHLIST_SHOWS_NETWORKS = "WATCHLIST_SHOWS_NETWORKS"
     private const val WATCHLIST_SHOWS_GENRES = "WATCHLIST_SHOWS_GENRES"
     private const val HIDDEN_SHOWS_NETWORKS = "HIDDEN_SHOWS_NETWORKS"
     private const val HIDDEN_SHOWS_GENRES = "HIDDEN_SHOWS_GENRES"
 
     private const val MY_MOVIES_GENRES = "MY_MOVIES_GENRES"
-    private const val WATCHLIST_MOVIES_UPCOMING = "WATCHLIST_MOVIES_UPCOMING"
+    private const val WATCHLIST_MOVIES_UPCOMING = "WATCHLIST_MOVIES_UPCOMING_2"
     private const val WATCHLIST_MOVIES_GENRES = "WATCHLIST_MOVIES_GENRES"
     private const val HIDDEN_MOVIES_GENRES = "HIDDEN_MOVIES_GENRES"
   }
@@ -57,7 +58,7 @@ class SettingsFiltersRepository @Inject constructor(
       preferences.edit { putStringSet(MY_SHOWS_GENRES, value.map { it.name }.toSet()) }
     }
 
-  var watchlistShowsUpcoming by BooleanPreference(preferences, WATCHLIST_SHOWS_UPCOMING, false)
+  var watchlistShowsUpcoming by EnumPreference(preferences, WATCHLIST_SHOWS_UPCOMING, UpcomingFilter.OFF, UpcomingFilter::class.java)
   var watchlistShowsNetworks: List<Network>
     get() {
       val filters = preferences.getStringSet(WATCHLIST_SHOWS_NETWORKS, emptySet()) ?: emptySet()
@@ -103,7 +104,7 @@ class SettingsFiltersRepository @Inject constructor(
       preferences.edit { putStringSet(MY_MOVIES_GENRES, value.map { it.name }.toSet()) }
     }
 
-  var watchlistMoviesUpcoming by BooleanPreference(preferences, WATCHLIST_MOVIES_UPCOMING, false)
+  var watchlistMoviesUpcoming by EnumPreference(preferences, WATCHLIST_MOVIES_UPCOMING, UpcomingFilter.OFF, UpcomingFilter::class.java)
   var watchlistMoviesGenres: List<Genre>
     get() {
       val filters = preferences.getStringSet(WATCHLIST_MOVIES_GENRES, emptySet()) ?: emptySet()

@@ -83,9 +83,9 @@ class WatchlistViewModel @Inject constructor(
     }
   }
 
-  fun setFilters(isUpcoming: Boolean) {
+  fun toggleUpcomingFilter() {
     viewModelScope.launch {
-      filtersCase.setIsUpcoming(isUpcoming)
+      filtersCase.toggleUpcomingFilter()
       loadShows(resetScroll = true)
     }
   }

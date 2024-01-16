@@ -15,6 +15,7 @@ import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_model.UpcomingFilter
 import com.michaldrabik.ui_my_movies.common.helpers.CollectionItemSorter
 import com.michaldrabik.ui_my_movies.common.recycler.CollectionListItem
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -86,7 +87,7 @@ class HiddenLoadMoviesCase @Inject constructor(
       sortOrder = sortOrder,
       sortType = sortType,
       genres = genres,
-      isUpcoming = false
+      upcoming = UpcomingFilter.OFF
     )
   }
 

@@ -1,6 +1,10 @@
 package com.michaldrabik.ui_my_shows.watchlist.helpers
 
 import com.michaldrabik.common.extensions.nowUtc
+import com.michaldrabik.ui_model.UpcomingFilter
+import com.michaldrabik.ui_model.UpcomingFilter.OFF
+import com.michaldrabik.ui_model.UpcomingFilter.RELEASED
+import com.michaldrabik.ui_model.UpcomingFilter.UPCOMING
 import com.michaldrabik.ui_my_shows.common.recycler.CollectionListItem
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -10,13 +14,14 @@ class WatchlistItemFilter @Inject constructor() {
 
   fun filterUpcoming(
     item: CollectionListItem,
-    isUpcoming: Boolean,
+    upcomingFilter: UpcomingFilter,
   ): Boolean {
-    if (isUpcoming) {
-      val releasedAt = item.getReleaseDate()
-      return releasedAt != null && releasedAt.isAfter(nowUtc())
+    val releasedAt = item.getReleaseDate()
+    return when (upcomingFilter) {
+      OFF -> true
+      UPCOMING -> releasedAt != null && releasedAt.isAfter(nowUtc())
+      RELEASED -> releasedAt != null && releasedAt.isBefore(nowUtc())
     }
-    return true
   }
 
   fun filterNetworks(

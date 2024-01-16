@@ -66,7 +66,7 @@ class WatchlistLoadShowsCase @Inject constructor(
         .awaitAll()
         .filter { item ->
           filters.filterByQuery(item, searchQuery) &&
-            filters.filterUpcoming(item, filtersItem.isUpcoming) &&
+            filters.filterUpcoming(item, filtersItem.upcoming) &&
             filters.filterNetworks(item, filtersNetworks) &&
             filters.filterGenres(item, filtersGenres)
         }
@@ -85,7 +85,7 @@ class WatchlistLoadShowsCase @Inject constructor(
       sortType = settingsRepository.sorting.watchlistShowsSortType,
       networks = settingsRepository.filters.watchlistShowsNetworks,
       genres = settingsRepository.filters.watchlistShowsGenres,
-      isUpcoming = settingsRepository.filters.watchlistShowsUpcoming
+      upcoming = settingsRepository.filters.watchlistShowsUpcoming
     )
   }
 

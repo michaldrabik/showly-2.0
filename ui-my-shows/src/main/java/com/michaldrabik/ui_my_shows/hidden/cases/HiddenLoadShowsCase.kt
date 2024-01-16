@@ -14,6 +14,7 @@ import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_model.UpcomingFilter
 import com.michaldrabik.ui_my_shows.common.recycler.CollectionListItem
 import com.michaldrabik.ui_my_shows.hidden.helpers.HiddenItemSorter
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -99,7 +100,7 @@ class HiddenLoadShowsCase @Inject constructor(
       sortType = sortType,
       networks = settingsRepository.filters.hiddenShowsNetworks,
       genres = settingsRepository.filters.hiddenShowsGenres,
-      isUpcoming = false,
+      upcoming = UpcomingFilter.OFF,
     )
   }
 

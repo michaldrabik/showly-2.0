@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_my_movies.watchlist.cases
 
 import com.michaldrabik.repository.settings.SettingsRepository
+import com.michaldrabik.ui_model.UpcomingFilter
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
@@ -9,7 +10,12 @@ class WatchlistFiltersCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
 ) {
 
-  fun setIsUpcoming(isUpcoming: Boolean) {
-    settingsRepository.filters.watchlistMoviesUpcoming = isUpcoming
+  fun toggleUpcomingFilter() {
+    val current = settingsRepository.filters.watchlistMoviesUpcoming
+    settingsRepository.filters.watchlistMoviesUpcoming = when (current) {
+      UpcomingFilter.OFF -> UpcomingFilter.UPCOMING
+      UpcomingFilter.UPCOMING -> UpcomingFilter.RELEASED
+      UpcomingFilter.RELEASED -> UpcomingFilter.OFF
+    }
   }
 }

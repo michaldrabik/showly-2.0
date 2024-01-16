@@ -10,6 +10,7 @@ import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_model.UpcomingFilter
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
@@ -48,13 +49,13 @@ sealed class CollectionListItem(
     val sortType: SortType,
     val networks: List<Network>,
     val genres: List<Genre>,
-    val isUpcoming: Boolean,
+    val upcoming: UpcomingFilter,
   ) : CollectionListItem(
     show = Show.EMPTY,
     image = Image.createUnknown(ImageType.POSTER),
     isLoading = false
   ) {
 
-    fun hasActiveFilters() = isUpcoming || networks.isNotEmpty() || genres.isNotEmpty()
+    fun hasActiveFilters() = upcoming.isActive() || networks.isNotEmpty() || genres.isNotEmpty()
   }
 }

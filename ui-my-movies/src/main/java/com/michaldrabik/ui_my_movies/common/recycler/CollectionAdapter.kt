@@ -18,7 +18,7 @@ class CollectionAdapter(
   private val itemClickListener: (CollectionListItem) -> Unit,
   private val itemLongClickListener: (CollectionListItem) -> Unit,
   private val sortChipClickListener: (SortOrder, SortType) -> Unit,
-  private val upcomingChipClickListener: (Boolean) -> Unit,
+  private val upcomingChipClickListener: () -> Unit,
   private val genreChipClickListener: () -> Unit,
   private val listViewChipClickListener: () -> Unit,
   private val missingImageListener: (CollectionListItem, Boolean) -> Unit,

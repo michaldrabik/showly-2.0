@@ -15,6 +15,7 @@ import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.SortType.ASCENDING
 import com.michaldrabik.ui_model.SortType.DESCENDING
+import com.michaldrabik.ui_model.UpcomingFilter
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.common.recycler.CollectionListItem
 import com.michaldrabik.ui_my_shows.databinding.ViewShowsFiltersBinding
@@ -28,7 +29,7 @@ class CollectionShowFiltersView : FrameLayout {
   private val binding = ViewShowsFiltersBinding.inflate(LayoutInflater.from(context), this)
 
   var onSortChipClicked: ((SortOrder, SortType) -> Unit)? = null
-  var onFilterUpcomingClicked: ((Boolean) -> Unit)? = null
+  var onFilterUpcomingClicked: (() -> Unit)? = null
   var onListViewModeClicked: (() -> Unit)? = null
   var onNetworksChipClick: (() -> Unit)? = null
   var onGenresChipClick: (() -> Unit)? = null
@@ -72,7 +73,12 @@ class CollectionShowFiltersView : FrameLayout {
         else -> "${context.getString(item.genres[0].displayName)}, ${context.getString(item.genres[1].displayName)} + ${item.genres.size - 2}"
       }
 
-      followedShowsUpcomingChip.isChecked = item.isUpcoming
+      followedShowsUpcomingChip.isChecked = item.upcoming.isActive()
+      followedShowsUpcomingChip.text = when (item.upcoming) {
+        UpcomingFilter.OFF -> context.getString(R.string.textWatchlistIncoming)
+        UpcomingFilter.UPCOMING -> context.getString(R.string.textWatchlistIncoming)
+        UpcomingFilter.RELEASED -> context.getString(R.string.textMovieStatusReleased)
+      }
       followedShowsListViewChip.setChipIconResource(
         when (viewMode) {
           LIST_NORMAL -> R.drawable.ic_view_list
@@ -80,7 +86,7 @@ class CollectionShowFiltersView : FrameLayout {
       )
 
       followedShowsSortingChip.onClick { onSortChipClicked?.invoke(item.sortOrder, item.sortType) }
-      followedShowsUpcomingChip.onClick { onFilterUpcomingClicked?.invoke(followedShowsUpcomingChip.isChecked) }
+      followedShowsUpcomingChip.onClick { onFilterUpcomingClicked?.invoke() }
       followedShowsListViewChip.onClick { onListViewModeClicked?.invoke() }
       followedShowsNetworksChip.onClick { onNetworksChipClick?.invoke() }
       followedShowsGenresChip.onClick { onGenresChipClick?.invoke() }

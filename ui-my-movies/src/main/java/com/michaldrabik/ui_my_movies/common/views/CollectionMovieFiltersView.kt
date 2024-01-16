@@ -15,6 +15,7 @@ import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.SortType.ASCENDING
 import com.michaldrabik.ui_model.SortType.DESCENDING
+import com.michaldrabik.ui_model.UpcomingFilter
 import com.michaldrabik.ui_my_movies.R
 import com.michaldrabik.ui_my_movies.common.recycler.CollectionListItem
 import com.michaldrabik.ui_my_movies.databinding.ViewMoviesFiltersBinding
@@ -29,7 +30,7 @@ class CollectionMovieFiltersView : FrameLayout {
 
   var onSortChipClicked: ((SortOrder, SortType) -> Unit)? = null
   var onGenreChipClicked: (() -> Unit)? = null
-  var onFilterUpcomingClicked: ((Boolean) -> Unit)? = null
+  var onFilterUpcomingClicked: (() -> Unit)? = null
   var onListViewModeClicked: (() -> Unit)? = null
 
   init {
@@ -55,7 +56,12 @@ class CollectionMovieFiltersView : FrameLayout {
       }
       followedMoviesSortingChip.closeIcon = ContextCompat.getDrawable(context, sortIcon)
       followedMoviesSortingChip.text = context.getText(item.sortOrder.displayString)
-      followedMoviesUpcomingChip.isChecked = item.isUpcoming
+      followedMoviesUpcomingChip.isChecked = item.upcoming.isActive()
+      followedMoviesUpcomingChip.text = when (item.upcoming) {
+        UpcomingFilter.OFF -> context.getString(R.string.textWatchlistIncoming)
+        UpcomingFilter.UPCOMING -> context.getString(R.string.textWatchlistIncoming)
+        UpcomingFilter.RELEASED -> context.getString(R.string.textMovieStatusReleased)
+      }
       followedMoviesListViewChip.setChipIconResource(
         when (viewMode) {
           LIST_NORMAL -> R.drawable.ic_view_list
@@ -72,7 +78,7 @@ class CollectionMovieFiltersView : FrameLayout {
 
       followedMoviesGenresChip.onClick { onGenreChipClicked?.invoke() }
       followedMoviesSortingChip.onClick { onSortChipClicked?.invoke(item.sortOrder, item.sortType) }
-      followedMoviesUpcomingChip.onClick { onFilterUpcomingClicked?.invoke(followedMoviesUpcomingChip.isChecked) }
+      followedMoviesUpcomingChip.onClick { onFilterUpcomingClicked?.invoke() }
       followedMoviesListViewChip.onClick { onListViewModeClicked?.invoke() }
     }
   }

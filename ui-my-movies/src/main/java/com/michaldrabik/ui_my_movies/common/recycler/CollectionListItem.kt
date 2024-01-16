@@ -8,6 +8,7 @@ import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_model.UpcomingFilter
 import java.time.format.DateTimeFormatter
 
 sealed class CollectionListItem(
@@ -42,7 +43,7 @@ sealed class CollectionListItem(
   data class FiltersItem(
     val sortOrder: SortOrder,
     val sortType: SortType,
-    val isUpcoming: Boolean,
+    val upcoming: UpcomingFilter,
     val genres: List<Genre>
   ) : CollectionListItem(
     movie = Movie.EMPTY,
@@ -50,6 +51,6 @@ sealed class CollectionListItem(
     isLoading = false
   ) {
 
-    fun hasActiveFilters() = isUpcoming || genres.isNotEmpty()
+    fun hasActiveFilters() = upcoming.isActive() || genres.isNotEmpty()
   }
 }
