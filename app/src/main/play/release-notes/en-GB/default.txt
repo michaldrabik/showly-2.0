@@ -1,2 +1,2 @@
-* Fix issue where actors list of shows and movies would not return to its scrolled position
-* Other bugfixes
+* Watchlist upcoming filter can now also be toggled to released filter
+* Misc. bugfixes
