@@ -80,4 +80,4 @@ jobs:
           token: ${{secrets.FIREBASE_TOKEN}}
           groups: owner
           file: app/build/outputs/apk/release/app-release.apk
-          releaseNotes: ""
+          releaseNotes: "OSS"
