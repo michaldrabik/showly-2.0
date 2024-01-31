@@ -39,7 +39,7 @@ class ShowDetailsLoadSeasonsCase @Inject constructor(
   private val episodesManager: EpisodesManager,
   private val userManager: UserTraktManager,
   private val dateFormatProvider: DateFormatProvider,
-  private val networkStatusProvider: NetworkStatusProvider
+  private val networkStatusProvider: NetworkStatusProvider,
 ) {
 
   suspend fun loadSeasons(show: Show): SeasonsBundle =
@@ -113,7 +113,9 @@ class ShowDetailsLoadSeasonsCase @Inject constructor(
           episodes = episodes,
           isWatched = false,
           userRating = userRating,
-          updatedAt = nowUtcMillis()
+          updatedAt = nowUtcMillis(),
+          isRatingHidden = spoilers.isEpisodeRatingHidden,
+          isRatingTapToReveal = spoilers.isTapToReveal,
         )
       }
       .sortedByDescending { it.season.number }

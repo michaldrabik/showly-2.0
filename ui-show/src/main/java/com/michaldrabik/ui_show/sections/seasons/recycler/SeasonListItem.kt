@@ -10,6 +10,8 @@ data class SeasonListItem(
   val season: Season,
   val episodes: List<EpisodeListItem>,
   val isWatched: Boolean,
+  val isRatingHidden: Boolean,
+  val isRatingTapToReveal: Boolean,
   val userRating: RatingState,
   val updatedAt: Long,
 ) {
