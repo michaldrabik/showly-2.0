@@ -1,2 +1,1 @@
-* Watchlist upcoming filter can now also be toggled to released filter
-* Misc. bugfixes
+* Season rating will now also be hidden if episodes spoilers settings are active
