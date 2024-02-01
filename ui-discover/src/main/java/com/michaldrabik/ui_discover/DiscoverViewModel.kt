@@ -31,6 +31,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -115,10 +116,12 @@ internal class DiscoverViewModel @Inject constructor(
   fun loadMissingImage(item: DiscoverListItem, force: Boolean) {
 
     fun updateItem(newItem: DiscoverListItem) {
-      val currentItems = uiState.value.items?.toMutableList()
-      currentItems?.findReplace(newItem) { it.isSameAs(newItem) }
-      itemsState.value = currentItems
-      scrollState.value = Event(false)
+      itemsState.update { value ->
+        value?.toMutableList()?.apply {
+          findReplace(newItem) { it.isSameAs(newItem) }
+        }
+      }
+      scrollState.update { Event(false) }
     }
 
     viewModelScope.launch {
