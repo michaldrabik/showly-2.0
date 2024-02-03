@@ -45,6 +45,7 @@
   <string name="textGenreHorror"> رعب</string>
   <string name="textGenreScienceFiction">خيال علمي</string>
   <string name="textGenreThriller">إثارة</string>
+  <string name="textGenreRomance">رومانسي</string>
   <string name="textGenreWar">حرب</string>
   <string name="textGenreWestern">ويسترن</string>
   <string name="textTraktSyncSchedule">جدولة المزامنة</string>

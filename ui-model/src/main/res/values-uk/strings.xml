@@ -45,6 +45,7 @@
   <string name="textGenreHorror">Жахи</string>
   <string name="textGenreScienceFiction">Наукова фантастика</string>
   <string name="textGenreThriller">Трилер</string>
+  <string name="textGenreRomance">Романтика</string>
   <string name="textGenreWar">Військовий</string>
   <string name="textGenreWestern">Вестерн</string>
   <string name="textTraktSyncSchedule">Розклад</string>

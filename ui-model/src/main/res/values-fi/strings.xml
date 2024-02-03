@@ -45,6 +45,7 @@
   <string name="textGenreHorror">Kauhu</string>
   <string name="textGenreScienceFiction">Scifi</string>
   <string name="textGenreThriller">Trilleri</string>
+  <string name="textGenreRomance">Romantiikka</string>
   <string name="textGenreWar">Sota</string>
   <string name="textGenreWestern">Länkkäri</string>
   <string name="textTraktSyncSchedule">Ajoitus</string>

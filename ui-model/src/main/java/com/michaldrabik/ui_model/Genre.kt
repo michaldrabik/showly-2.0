@@ -18,11 +18,12 @@ enum class Genre(
   HISTORY("history", R.string.textGenreHistory),
   HORROR("horror", R.string.textGenreHorror),
   SF("science-fiction", R.string.textGenreScienceFiction),
+  ROMANCE("romance", R.string.textGenreRomance),
   THRILLER("thriller", R.string.textGenreThriller),
   WAR("war", R.string.textGenreWar),
   WESTERN("western", R.string.textGenreWestern);
 
   companion object {
-    fun fromSlug(slug: String) = values().find { it.slug.equals(slug, ignoreCase = true) }
+    fun fromSlug(slug: String) = entries.find { it.slug.equals(slug, ignoreCase = true) }
   }
 }

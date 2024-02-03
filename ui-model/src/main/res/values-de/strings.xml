@@ -45,6 +45,7 @@
   <string name="textGenreHorror">Horror</string>
   <string name="textGenreScienceFiction">Science-Fiction</string>
   <string name="textGenreThriller">Thriller</string>
+  <string name="textGenreRomance">Romanze</string>
   <string name="textGenreWar">Krieg</string>
   <string name="textGenreWestern">Western</string>
   <string name="textTraktSyncSchedule">Zeitplan</string>
