@@ -1,5 +1,4 @@
-* Watchlist upcoming filter can now also be toggled to released filter
-* Misc. bugfixes
+* Season rating will now also be hidden if episodes spoilers settings are active
 
 Do you enjoy Showly and want to support the one and only developer?
 Become a Premium user and gain access to cool bonus features! Check Settings to learn more!
