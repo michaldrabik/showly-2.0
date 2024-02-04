@@ -26,3 +26,5 @@ fun ZonedDateTime.isSameDayOrAfter(date: ZonedDateTime): Boolean =
   this.isEqual(date.truncatedTo(DAYS)) || this.isAfter(date.truncatedTo(DAYS))
 
 fun String?.toZonedDateTime(): ZonedDateTime? = if (this.isNullOrBlank()) null else ZonedDateTime.parse(this)
+
+fun String?.toUtcDateTime(): ZonedDateTime? = if (this.isNullOrBlank()) null else ZonedDateTime.parse(this).withZoneSameInstant(ZoneId.of("UTC"))

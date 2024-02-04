@@ -26,6 +26,7 @@ import com.michaldrabik.data_remote.trakt.model.OAuthResponse
 import com.michaldrabik.data_remote.trakt.model.PersonCredit
 import com.michaldrabik.data_remote.trakt.model.Season
 import com.michaldrabik.data_remote.trakt.model.Show
+import com.michaldrabik.data_remote.trakt.model.SyncActivity
 import com.michaldrabik.data_remote.trakt.model.SyncExportItem
 import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
 import com.michaldrabik.data_remote.trakt.model.SyncExportResult
@@ -207,6 +208,10 @@ internal class TraktApi(
 
   override suspend fun fetchHiddenMovies() =
     usersService.fetchHiddenMovies(pageLimit = 250)
+
+  override suspend fun fetchSyncActivity(): SyncActivity {
+    return syncService.fetchSyncActivity()
+  }
 
   override suspend fun fetchSyncWatchedShows(extended: String?) =
     syncService.fetchSyncWatched("shows", extended).filter { it.show != null }

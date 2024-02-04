@@ -4,6 +4,7 @@ import com.michaldrabik.data_remote.trakt.model.RatingResultEpisode
 import com.michaldrabik.data_remote.trakt.model.RatingResultMovie
 import com.michaldrabik.data_remote.trakt.model.RatingResultSeason
 import com.michaldrabik.data_remote.trakt.model.RatingResultShow
+import com.michaldrabik.data_remote.trakt.model.SyncActivity
 import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
 import com.michaldrabik.data_remote.trakt.model.SyncExportResult
 import com.michaldrabik.data_remote.trakt.model.SyncItem
@@ -15,6 +16,10 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface TraktSyncService {
+
+  @GET("sync/last_activities")
+  suspend fun fetchSyncActivity(): SyncActivity
+
   @GET("sync/watched/{type}")
   suspend fun fetchSyncWatched(
     @Path("type") type: String,

@@ -1,10 +1,12 @@
 package com.michaldrabik.ui_base.trakt.imports
 
+import com.michaldrabik.common.extensions.toUtcDateTime
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.WatchlistMovie
 import com.michaldrabik.data_local.database.model.WatchlistShow
 import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.data_remote.RemoteDataSource
+import com.michaldrabik.data_remote.trakt.model.SyncActivity
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.settings.SettingsRepository
@@ -30,50 +32,76 @@ class TraktImportWatchlistRunner @Inject constructor(
 
     var syncedCount = 0
     checkAuthorization()
+    val activity = runSyncActivity()
 
     resetRetries()
-    syncedCount += runShows()
+    syncedCount += runShows(activity)
 
     resetRetries()
-    syncedCount += runMovies()
+    syncedCount += runMovies(activity)
 
     Timber.d("Finished with success.")
     return syncedCount
   }
 
-  private suspend fun runShows(): Int = try {
-    importShowsWatchlist()
-  } catch (error: Throwable) {
-    if (retryCount.getAndIncrement() < MAX_IMPORT_RETRY_COUNT) {
-      Timber.w("runShows HTTP failed. Will retry in $RETRY_DELAY_MS ms... $error")
-      delay(RETRY_DELAY_MS)
-      runShows()
-    } else {
-      throw error
-    }
-  }
-
-  private suspend fun runMovies(): Int {
-    if (!settingsRepository.isMoviesEnabled) {
-      Timber.d("Movies are disabled. Exiting...")
-      return 0
-    }
-
+  private suspend fun runSyncActivity(): SyncActivity {
     return try {
-      importMoviesWatchlist()
+      remoteSource.trakt.fetchSyncActivity()
     } catch (error: Throwable) {
       if (retryCount.getAndIncrement() < MAX_IMPORT_RETRY_COUNT) {
-        Timber.w("runMovies HTTP failed. Will retry in $RETRY_DELAY_MS ms... $error")
+        Timber.w("checkSyncActivity HTTP failed. Will retry in $RETRY_DELAY_MS ms... $error")
         delay(RETRY_DELAY_MS)
-        runMovies()
+        runSyncActivity()
       } else {
         throw error
       }
     }
   }
 
-  private suspend fun importShowsWatchlist(): Int {
+  private suspend fun runShows(syncActivity: SyncActivity): Int =
+    try {
+      importShowsWatchlist(syncActivity)
+    } catch (error: Throwable) {
+      if (retryCount.getAndIncrement() < MAX_IMPORT_RETRY_COUNT) {
+        Timber.w("runShows HTTP failed. Will retry in $RETRY_DELAY_MS ms... $error")
+        delay(RETRY_DELAY_MS)
+        runShows(syncActivity)
+      } else {
+        throw error
+      }
+    }
+
+  private suspend fun runMovies(syncActivity: SyncActivity): Int {
+    if (!settingsRepository.isMoviesEnabled) {
+      Timber.d("Movies are disabled. Exiting...")
+      return 0
+    }
+
+    return try {
+      importMoviesWatchlist(syncActivity)
+    } catch (error: Throwable) {
+      if (retryCount.getAndIncrement() < MAX_IMPORT_RETRY_COUNT) {
+        Timber.w("runMovies HTTP failed. Will retry in $RETRY_DELAY_MS ms... $error")
+        delay(RETRY_DELAY_MS)
+        runMovies(syncActivity)
+      } else {
+        throw error
+      }
+    }
+  }
+
+  private suspend fun importShowsWatchlist(syncActivity: SyncActivity): Int {
     Timber.d("Importing shows watchlist...")
+
+    val showsWatchlistedAt = syncActivity.shows.watchlisted_at.toUtcDateTime()!!
+    val localShowsWatchlistedAt = settingsRepository.sync.activityShowsWatchlistedAt.toUtcDateTime()
+
+    val syncNeeded = localShowsWatchlistedAt == null || localShowsWatchlistedAt.isBefore(showsWatchlistedAt)
+    if (!syncNeeded) {
+      Timber.d("No changes in watchlist sync activity. Skipping...")
+      return 0
+    }
+
     val syncResults = remoteSource.trakt.fetchSyncShowsWatchlist()
       .filter { it.show != null }
       .distinctBy { it.show!!.ids?.trakt }
@@ -105,11 +133,23 @@ class TraktImportWatchlistRunner @Inject constructor(
         }
       }
 
+    settingsRepository.sync.activityShowsWatchlistedAt = syncActivity.shows.watchlisted_at
+
     return syncResults.size
   }
 
-  private suspend fun importMoviesWatchlist(): Int {
+  private suspend fun importMoviesWatchlist(syncActivity: SyncActivity): Int {
     Timber.d("Importing movies watchlist...")
+
+    val moviesWatchlistedAt = syncActivity.movies.watchlisted_at.toUtcDateTime()!!
+    val localShowsWatchlistedAt = settingsRepository.sync.activityMoviesWatchlistedAt.toUtcDateTime()
+
+    val syncNeeded = localShowsWatchlistedAt == null || localShowsWatchlistedAt.isBefore(moviesWatchlistedAt)
+    if (!syncNeeded) {
+      Timber.d("No changes in sync activity. Skipping...")
+      return 0
+    }
+
     val syncResults = remoteSource.trakt.fetchSyncMoviesWatchlist()
       .filter { it.movie != null }
       .distinctBy { it.movie!!.ids?.trakt }
@@ -140,6 +180,8 @@ class TraktImportWatchlistRunner @Inject constructor(
           Logger.record(error, "TraktImportWatchlistRunner::importMoviesWatchlist()")
         }
       }
+
+    settingsRepository.sync.activityMoviesWatchlistedAt = syncActivity.movies.watchlisted_at
 
     return syncResults.size
   }

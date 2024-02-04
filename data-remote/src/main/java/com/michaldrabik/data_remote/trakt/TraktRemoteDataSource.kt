@@ -18,6 +18,7 @@ import com.michaldrabik.data_remote.trakt.model.SearchResult
 import com.michaldrabik.data_remote.trakt.model.Season
 import com.michaldrabik.data_remote.trakt.model.SeasonTranslation
 import com.michaldrabik.data_remote.trakt.model.Show
+import com.michaldrabik.data_remote.trakt.model.SyncActivity
 import com.michaldrabik.data_remote.trakt.model.SyncExportItem
 import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
 import com.michaldrabik.data_remote.trakt.model.SyncExportResult
@@ -109,6 +110,8 @@ interface TraktRemoteDataSource {
   suspend fun postHiddenMovies(movies: List<SyncExportItem> = emptyList())
 
   suspend fun fetchHiddenMovies(): List<HiddenItem>
+
+  suspend fun fetchSyncActivity(): SyncActivity
 
   suspend fun fetchSyncWatchedShows(extended: String? = null): List<SyncItem>
 

@@ -2,10 +2,12 @@ package com.michaldrabik.ui_base.trakt.imports
 
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.extensions.nowUtcMillis
+import com.michaldrabik.common.extensions.toUtcDateTime
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.CustomListItem
 import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.data_remote.RemoteDataSource
+import com.michaldrabik.data_remote.trakt.model.SyncActivity
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.settings.SettingsRepository
@@ -30,30 +32,56 @@ class TraktImportListsRunner @Inject constructor(
 
     var syncedCount = 0
     checkAuthorization()
+    val activity = runSyncActivity()
 
     resetRetries()
-    syncedCount += runLists()
+    syncedCount += runLists(activity)
 
     Timber.d("Finished with success.")
     return syncedCount
   }
 
-  private suspend fun runLists(): Int {
+  private suspend fun runSyncActivity(): SyncActivity {
     return try {
-      importLists()
+      remoteSource.trakt.fetchSyncActivity()
     } catch (error: Throwable) {
       if (retryCount.getAndIncrement() < MAX_IMPORT_RETRY_COUNT) {
-        Timber.w("runLists HTTP failed. Will retry in $RETRY_DELAY_MS ms... $error")
+        Timber.w("checkSyncActivity HTTP failed. Will retry in $RETRY_DELAY_MS ms... $error")
         delay(RETRY_DELAY_MS)
-        runLists()
+        runSyncActivity()
       } else {
         throw error
       }
     }
   }
 
-  private suspend fun importLists(): Int {
+  private suspend fun runLists(syncActivity: SyncActivity): Int {
+    return try {
+      importLists(syncActivity)
+    } catch (error: Throwable) {
+      if (retryCount.getAndIncrement() < MAX_IMPORT_RETRY_COUNT) {
+        Timber.w("runLists HTTP failed. Will retry in $RETRY_DELAY_MS ms... $error")
+        delay(RETRY_DELAY_MS)
+        runLists(syncActivity)
+      } else {
+        throw error
+      }
+    }
+  }
+
+  private suspend fun importLists(syncActivity: SyncActivity): Int {
     Timber.d("Importing custom lists...")
+
+    val listsUpdatedAt = syncActivity.lists.updated_at.toUtcDateTime()!!
+    val localListsUpdatedAt = settingsRepository.sync.activityListsUpdatedAt.toUtcDateTime()
+
+    val syncNeeded = localListsUpdatedAt == null || localListsUpdatedAt.isBefore(listsUpdatedAt)
+
+    if (!syncNeeded) {
+      Timber.d("No changes in lists sync activity. Skipping...")
+      return 0
+    }
+
     val nowUtcMillis = nowUtcMillis()
     val moviesEnabled = settingsRepository.isMoviesEnabled
 
@@ -88,6 +116,8 @@ class TraktImportListsRunner @Inject constructor(
         }
       }
     }
+
+    settingsRepository.sync.activityListsUpdatedAt = syncActivity.lists.updated_at
 
     return remoteLists.size
   }
