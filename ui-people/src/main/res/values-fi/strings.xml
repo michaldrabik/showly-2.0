@@ -4,6 +4,6 @@
   <string name="textBorn" comment="For example - Born: 12 January 1990">Syntynyt:</string>
   <string name="textDied" comment="For example - Died: 12 January 2020">Kuollut:</string>
   <string name="textCredits" comment="List of shows and movies the person appears on">Työt</string>
-  <string name="textEpisodes">jaksoa</string>
+  <string name="textEpisodes">Jaksot</string>
   <string name="textGalleryEmpty">Kuvia ei ole saatavilla</string>
 </resources>

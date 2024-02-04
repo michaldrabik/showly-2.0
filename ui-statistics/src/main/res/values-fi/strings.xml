@@ -17,6 +17,6 @@
   <string name="textStatisticsShowMore">Näytä lisää</string>
   <string name="textStatisticsRatings">Viimeksi arvioidut</string>
   <string name="textStatisticsHours">tuntia</string>
-  <string name="textStatisticsEpisodes">jaksoa</string>
+  <string name="textStatisticsEpisodes">Jaksot</string>
   <string name="textStatisticsSeasons">kautta</string>
 </resources>

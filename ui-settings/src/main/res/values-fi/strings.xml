@@ -19,10 +19,10 @@
   <string name="textSettingsTraktQuickRateTitle">Trakt.tv-pika-arviointi</string>
   <string name="textSettingsTraktQuickRateSummary">Arvioi jaksot ja elokuvat aina kun merkitset ne katsotuiksi Katselutila-osiossa.</string>
   <string name="textSettingsGeneral">Yleiset ja käyttölittymä</string>
-  <string name="textSettingsRecentShowsTitle">Hiljattain lisättyjä</string>
+  <string name="textSettingsRecentShowsTitle">Hiljattain lisättyjen määrä</string>
   <string name="textSettingsRecentShowsSummary">Kokoelmassa näytettävien, hiljattain lisättyjen kohteiden määrä.</string>
-  <string name="textSettingsUpcomingSectionTitle">Tulevien osio</string>
-  <string name="textSettingsUpcomingSectionSummary">Ota Katselutilan Tulevat-osio käyttöön/poista se käytöstä.</string>
+  <string name="textSettingsUpcomingSectionTitle">Tulossa-osio</string>
+  <string name="textSettingsUpcomingSectionSummary">Ota Katselutilan Tulossa-osio käyttöön/poista se käytöstä.</string>
   <string name="textSettingsMyShowsSectionsTitle">Omien sarjojen osiot</string>
   <string name="textSettingsMyShowsSectionSummary">Ota omien sarjojen osioita käyttöön/poista niitä käytöstä.</string>
   <string name="textSettingsMyMoviesSectionsTitle">Omien elokuvien osiot</string>
@@ -37,7 +37,7 @@
   <string name="textSettingsMyShowsCountrySummary">Valitse suoratoistopalveluiden tiedoille käytettävä sijainti.</string>
   <string name="textSettingsMyShowsLanguageTitle">Kieli</string>
   <string name="textSettingsMyShowsLanguageSummary">Kuvaukset ja otsikot käännetään kun saatavilla. Sovellus käynnistyy uudelleen.</string>
-  <string name="textSettingsDateFormatTitle">Päivämäärän/ajan muoto</string>
+  <string name="textSettingsDateFormatTitle">Päiväysten ja kellonaikojen esitys</string>
   <string name="textSettingsIncludeSpecialsTitle">Erikoiskaudet</string>
   <string name="textSettingsIncludeSpecialsSummary">Näytä erikoistuotantokaudet sarjojen tiedoissa.</string>
   <string name="textSettingsNotifications">Ilmoitukset</string>
@@ -59,7 +59,7 @@
   <string name="textSettingsMoviesEnabledSummary">Ota elokuvat käyttöön/poista ne käytöstä. Sovellus käynnistyy uudelleen.</string>
   <string name="textSettingsWidgets">Widgetit</string>
   <string name="textSettingsWidgetsLabelsTitle">Nimet</string>
-  <string name="textSettingsWidgetsLabelsSummary">Näytä läpikuultavat widgettien nimet.</string>
+  <string name="textSettingsWidgetsLabelsSummary">Näytä läpikuultavat widgettien otsikot.</string>
   <string name="textSettingsStreamingsDisclaimer">Suoratoistopalveluiden tiedot tarjoaa</string>
   <string name="textSettingsStreamingServicesTitle">Suoratoistopalvelut</string>
   <string name="textSettingsStreamingServicesMessage">Näytä suoratoistopalveluiden tiedot.</string>
@@ -96,7 +96,7 @@
   <string name="textSettingsSpoilersMoviesOverviewsNotCollectedTitle">Kokoelman ulkopuoliset</string>
   <string name="textSettingsSpoilersMoviesOverviewsNotCollectedDescription">Piilota kokoelman ulkopuolisten elokuvien <b>kuvaukset</b>.</string>
   <string name="textSettingsSpoilersMoviesRatingsNotCollectedDescription">Piilota kokoelman ulkopuolisten elokuvien <b>arviot</b>.</string>
-  <string name="textSettingsSpoilersEpisodes">jaksoa</string>
+  <string name="textSettingsSpoilersEpisodes">Jaksot</string>
   <string name="textSettingsSpoilersEpisodesSummary">Hallitse jaksojen jounipaljastusasetuksia.</string>
   <string name="textSettingsSpoilersEpisodesImage">Piilota katsomattomien jaksojen <b>kuva</b>.</string>
   <string name="textSettingsSpoilersEpisodesTitle">Piilota katsomattomien jaksojen <b>nimi</b>.</string>
