@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textInMyMovies">Tilføjet til Mine Film</string>
+  <string name="textInMoviesWatchlist">Tilføjet til Se Senere</string>
+  <string name="textInHidden">Skjult</string>
+  <string name="textMovieActorsEmpty">Skuespillere er ikke tilgængelige</string>
+  <string name="textMovieTrailer">Trailer</string>
+  <string name="textMovieRate">Bedøm</string>
+  <string name="textMovieComments2">Kommentarer</string>
+  <string name="textMovieYouMayAlsoLike">Du kan måske også lide</string>
+  <string name="textMovieCollections">Samlinger</string>
+  <string name="textMovieExtraInfo">%s %s | %s %s | %s</string>
+  <string name="textMovieManageLists">Administrer Lister</string>
+  <string name="textMovieManageListsCount">Administrer Lister (%d)</string>
+  <string name="textTraktSyncMovieRemovedFromTrakt">Trakt.tv synkroniserede succesfuldt.</string>
+</resources>

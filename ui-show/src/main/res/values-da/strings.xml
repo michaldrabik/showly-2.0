@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textNextEpisode">Næste Afsnit:</string>
+  <string name="textInMyShows">Tilføjet til Mine Serier</string>
+  <string name="textInWatchlist">Tilføjet til Se Senere</string>
+  <string name="textInHidden">Skjult</string>
+  <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
+  <string name="textShowQuickProgressTitle">Hurtig Fremskridt</string>
+  <string name="textShowQuickProgressSubTitle">Vælg sidst sete afsnit for hurtigt at opdatere dine fremskridt.</string>
+  <string name="textShowQuickProgressDone">Dine fremskridt er blevet opdateret.</string>
+  <string name="textEpisodeDate">Afsnit %1$d | %2$s</string>
+  <string name="textEpisodeTitle">S.%02d A.%02d - \'%s\'</string>
+  <string name="textTraktSyncRemovedFromTrakt">Trakt.tv synkroniserede succesfuldt.</string>
+  <string name="textActorsEmpty">Skuespillere er ikke tilgængelige</string>
+  <string name="textSeasons">Sæsoner:</string>
+  <string name="textSeasonsEmpty">Sæsoner er ikke tilgængelige.</string>
+  <string name="textTrailer">Trailer</string>
+  <string name="textYouMayAlsoLike">Du kan måske også lide</string>
+  <string name="textRuntimeLeftHours">~%st %sm tilbage</string>
+  <string name="textRuntimeLeftMinutes">~%sm tilbage</string>
+  <string name="textShowManageLists">Administrer Lister</string>
+  <string name="textShowManageListsCount">Administrer Lister (%d)</string>
+</resources>

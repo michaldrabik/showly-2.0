@@ -42,11 +42,11 @@ class ShowsSyncRunner @Inject constructor(
     val showsToSync = (myShows + watchlistShows)
       .filter { it.status !in arrayOf(ENDED, CANCELED, UNKNOWN) }
 
+    Timber.i("Shows to sync: ${showsToSync.size}.")
     if (showsToSync.isEmpty()) {
-      Timber.i("Nothing to process. Exiting...")
+      Timber.i("Nothing to sync. Stopping...")
       return 0
     }
-    Timber.i("Shows to sync: ${showsToSync.size}.")
 
     var syncCount = 0
     val syncLog = localSource.episodesSyncLog.getAll()

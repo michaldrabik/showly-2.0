@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="tabCalendar">Kalender</string>
+  <string name="tabProgress">Fremskridt</string>
+  <string name="textCalendarEmpty">Der er ingen nye afsnit på vej.</string>
+  <string name="textRecentsEmpty">Der er ingen nyligt sendte afsnit.</string>
+  <string name="textOnHold" comment="This is a header for Progress subsection. It will contain pending shows marked by user.">På Pause</string>
+  <string name="textDiscoverShows">Opdag Serier</string>
+  <string name="textEpisodeInfo">Detaljer</string>
+  <string name="textTraktSynchronize">Importer fra Trakt.tv</string>
+  <string name="textProgressEmpty">Dit <b>Fremskridt</b> er tomt i øjeblikket.\n\nBesøg <b>Opdag</b>-fanen for at tilføje serier eller importer din Trakt.tv samling.</string>
+  <string name="textNewSeason">Sæson Præmiere</string>
+</resources>

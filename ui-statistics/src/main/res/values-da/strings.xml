@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textStatistics">Statistik</string>
+  <string name="textStatisticsEmpty">Der skal være mindst én serie i <b>Mine Serier</b>\nfør statistik kan vises.</string>
+  <string name="textStatisticsMostWatchedShows">Mest Sete Serier</string>
+  <string name="textStatisticsTotalTimeSpent">Samlet tid brugt på at se</string>
+  <string name="textStatisticsTotalTimeItIs">og det er</string>
+  <string name="textStatisticsTotalTimeSpentHours">%s timer</string>
+  <string name="textStatisticsTotalTimeSpentMinutes">%s minutter</string>
+  <string name="textStatisticsTotalTimeSpentDays">hvilket svarer til %s dage.</string>
+  <string name="textStatisticsTotalEpisodes">Afsnit Set i Alt</string>
+  <string name="textStatisticsTotalEpisodesCount">%s afsnit</string>
+  <string name="textStatisticsTotalEpisodesShowsCount">spredt over %s serier.</string>
+  <string name="textStatisticsTopGenre">Top Genrer</string>
+  <string name="textStatisticsTopGenreSubValue">lader til at være din kop te. Tryk for at se flere.</string>
+  <string name="textStatisticsTopGenreSubValue2">lader til at være din kop te.</string>
+  <string name="textStatisticsShowMore">Vis Flere</string>
+  <string name="textStatisticsRatings">Senest Bedømt</string>
+  <string name="textStatisticsHours">Timer</string>
+  <string name="textStatisticsEpisodes">Afsnit</string>
+  <string name="textStatisticsSeasons">Sæsoner</string>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="tabMoviesCalendar">Kalender</string>
+  <string name="tabMoviesProgress">Fremskridt</string>
+  <string name="textMoviesCalendarEmpty">Der er ingen nye film på vej.</string>
+  <string name="textMoviesCalendarRecentsEmpty">Der er ingen nyligt sendte film.</string>
+  <string name="textDiscoverMovies">Opdag Film</string>
+  <string name="textMoviesTraktSynchronize">Importer fra Trakt.tv</string>
+  <string name="textMoviesProgressEmpty">Dit <b>Fremskridt</b> er tomt i øjeblikket.\n\nBesøg <b>Opdag</b>-fanen for at tilføje film eller importer din Trakt.tv samling.</string>
+</resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textStatisticsMovies">Statistik</string>
+  <string name="textStatisticsMoviesEmpty">Der skal være mindst én film i <b>Mine Film</b>\nfør statistik kan vises.</string>
+  <string name="textStatisticsMoviesTotalTimeSpent">Samlet tid brugt på at se</string>
+  <string name="textStatisticsMoviesTotalTimeItIs">og det er</string>
+  <string name="textStatisticsMoviesTotalTimeSpentHours">%s timer</string>
+  <string name="textStatisticsMoviesTotalTimeSpentMinutes">%s minutter</string>
+  <string name="textStatisticsMoviesTotalTimeSpentDays">hvilket svarer til %s dage.</string>
+  <string name="textStatisticsMoviesTotalMovies">Film Set i Alt</string>
+  <string name="textStatisticsMoviesTotalMoviesCount">%s Film</string>
+  <string name="textStatisticsMoviesTopGenre">Top Genrer</string>
+  <string name="textStatisticsMoviesTopGenreSubValue">lader til at være din kop te. Tryk for at se flere.</string>
+  <string name="textStatisticsMoviesTopGenreSubValue2">lader til at være din kop te.</string>
+  <string name="textStatisticsMoviesRatings">Senest Bedømt</string>
+</resources>

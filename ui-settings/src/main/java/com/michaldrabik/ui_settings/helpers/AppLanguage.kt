@@ -11,6 +11,7 @@ enum class AppLanguage(
   ENGLISH("en", "English", R.string.textLanguageEnglish),
   GERMAN("de", "German", R.string.textLanguageGerman),
   FRENCH("fr", "French", R.string.textLanguageFrench),
+  DANISH("da", "Danish", R.string.textLanguageDanish),
   ITALIAN("it", "Italian", R.string.textLanguageItalian),
   SPANISH("es", "Spanish", R.string.textLanguageSpanish),
   PORTUGAL_BRASIL("pt", "Portuguese", R.string.textLanguagePortugalBrasil),

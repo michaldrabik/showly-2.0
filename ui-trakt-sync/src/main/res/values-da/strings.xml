@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textTraktLoginSuccess">Du er blevet autoriseret succesfuldt.</string>
+  <string name="textTraktSyncStarted">Synkronisering startet. Den vil fortsætte med at køre i baggrunden.</string>
+  <string name="textTraktSyncStart">Synkroniser Nu</string>
+  <string name="textTraktSyncSchedule">Tidsplan</string>
+  <string name="textTraktSyncFromTraktToShowly">Importer fra Trakt.tv til Showly</string>
+  <string name="textTraktSyncFromShowlyToTrakt">Eksporter fra Showly til Trakt.tv</string>
+  <string name="textTraktSyncDescription">Synkroniser dine Trakt.tv konto fremskridt og Se Senere data med Showly.\n\nIngen af dine elementer fra din nuværende samling vil blive slettet. Synkroniseringen vil kun håndtere manglende elementer i dine samlinger.</string>
+  <string name="textTraktSyncLastTimestamp">Sidst Synkroniseret: %s</string>
+  <string name="textSettingsTraktAuthorizeTitle">Trakt.tv Autorisering</string>
+  <string name="textSettingsScheduleImportConfirmationTitle">Øjeblikkelig Synkronisering Aktiveret</string>
+  <string name="textSettingsScheduleImportConfirmationMessage">\nDet ser ud som om Øjeblikkelig Synkronisering allerede er aktiveret.\n\nVil du stadig planlægge automatisk synkronisering?\n</string>
+</resources>

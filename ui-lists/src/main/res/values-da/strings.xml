@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="menuLists">Lister</string>
+  <string name="menuList">Liste</string>
+  <string name="textFilters">Filtre:</string>
+  <string name="textListsEmpty">Din listesamling er tom i øjeblikket.</string>
+  <string name="textListEmpty">Din liste er tom i øjeblikket.</string>
+  <string name="textCreateList">Opret liste</string>
+  <string name="textCreateListDescription">Opret en ny brugerdefineret liste.</string>
+  <string name="textName">Navn</string>
+  <string name="textDescription">Beskrivelse (valgfri)</string>
+  <string name="textDeleteList">Slet liste</string>
+  <string name="textEditList">Rediger liste</string>
+  <string name="textEditListDescription">Opdater din brugerdefinerede liste.</string>
+  <string name="textConfirmDeleteListTitle">Slet Liste</string>
+  <string name="textConfirmDeleteListSubtitle">Er du sikker på, at du vil slette denne liste?</string>
+  <string name="textChangeRanks">Ændre Rangering</string>
+  <string name="textChangeRanksSubtitle">Træk og slip liste element for at ændre dens rangering</string>
+  <string name="textManageLists">Administrer lister</string>
+  <string name="textManageListsShows">Administrer dine lister for denne serie.</string>
+  <string name="textManageListsMovies">Administrer dine lister for denne film.</string>
+  <string name="errorCouldNotCreateList">Vi kunne ikke oprette en ny liste på din Trakt konto i øjeblikket.\nKontroller venligst internetforbindelsen og prøv igen.</string>
+  <string name="errorCouldNotUpdateList">Vi kunne ikke opdatere denne liste på din Trakt konto i øjeblikket.\nKontroller venligst internetforbindelsen og prøv igen.</string>
+  <string name="errorCouldNotDeleteList">Vi kunne ikke slette denne liste på din Trakt konto i øjeblikket.\nKontroller venligst internetforbindelsen og prøv igen.</string>
+</resources>

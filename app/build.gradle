@@ -40,8 +40,8 @@ android {
     compileSdkVersion versions.compileSdk
     versionCode versions.versionCode
     versionName versions.versionName
-    resourceConfigurations += ['en', 'ar', 'de', 'es', 'fi', 'fr', 'it', 'pl', 'pt', 'ru', 'tr', 'zh', 'uk']
 
+    resourceConfigurations += ['en', 'ar', 'de', 'da', 'es', 'fi', 'fr', 'it', 'pl', 'pt', 'ru', 'tr', 'zh', 'uk']
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
   }
 

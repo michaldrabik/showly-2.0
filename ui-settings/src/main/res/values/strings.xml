@@ -121,6 +121,7 @@
   <string name="textLanguageSpanish" translatable="false">Español</string>
   <string name="textLanguageItalian" translatable="false">Italiano</string>
   <string name="textLanguageFrench" translatable="false">Français</string>
+  <string name="textLanguageDanish" translatable="false">Dansk</string>
   <string name="textLanguagePortugalBrasil" translatable="false">Português brasileiro</string>
   <string name="textLanguageTurkish" translatable="false">Türkçe</string>
   <string name="textLanguageUkrainian" translatable="false">Українська</string>

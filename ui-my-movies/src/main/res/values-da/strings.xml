@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="menuMyMovies">Mine Film</string>
+  <string name="menuWatchlistMovies">Se Senere</string>
+  <string name="menuHidden">Skjult</string>
+  <string name="textMyMoviesEmpty">Din filmsamling er tom i øjeblikket.\n\nBesøg <b>Opdag</b>-fanen for at tilføje din første film.</string>
+  <string name="textWatchlistMoviesEmpty">Din <b>Se Senere</b> liste er tom i øjeblikket.\n\nBesøg <b>Opdag</b>-fanen for at tilføje film, som du ønsker at se i fremtiden.</string>
+  <string name="textHiddenEmpty">Din <b>Skjult</b> liste er tom i øjeblikket.\n\n<b>Skjult</b> er en liste over elementer, som du ikke er interesseret i.\n\nSkjulte elementer vises ikke længere i <b>Fremskridt</b>, <b>Opdag</b> og andre sektioner.</string>
+</resources>

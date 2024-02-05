@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textPoster">Plakat</string>
+  <string name="textFanart">Fanart</string>
+  <string name="textGalleryEmpty">Ingen billeder tilgængelige</string>
+  <string name="textUrlDialogTitle">Download Billede</string>
+  <string name="textUrlDialogHint">Billedets URL</string>
+  <string name="textUrlDialogInvalidUrl">Ugyldig billede URL format.\nEksempel: https://test.com/image.png</string>
+  <string name="textUrlDialogInvalidImage">Beklager. Dette billede kunne ikke indlæses.</string>
+</resources>
