@@ -9,6 +9,7 @@ import com.michaldrabik.repository.settings.SettingsFiltersRepository
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.settings.SettingsSortRepository
 import com.michaldrabik.repository.settings.SettingsSpoilersRepository
+import com.michaldrabik.repository.settings.SettingsSyncRepository
 import com.michaldrabik.repository.settings.SettingsViewModeRepository
 import com.michaldrabik.repository.settings.SettingsWidgetsRepository
 import com.michaldrabik.ui_model.Settings
@@ -32,6 +33,7 @@ class SettingsRepositoryTest : BaseMockTest() {
   @MockK lateinit var settingsWidgetsRepository: SettingsWidgetsRepository
   @MockK lateinit var settingsViewModeRepository: SettingsViewModeRepository
   @MockK lateinit var settingsSpoilerRepositoryTest: SettingsSpoilersRepository
+  @MockK lateinit var settingsSyncRepository: SettingsSyncRepository
 
   private lateinit var SUT: SettingsRepository
 
@@ -45,6 +47,7 @@ class SettingsRepositoryTest : BaseMockTest() {
       widgets = settingsWidgetsRepository,
       viewMode = settingsViewModeRepository,
       spoilers = settingsSpoilerRepositoryTest,
+      sync = settingsSyncRepository,
       dispatchers = testDispatchers,
       localSource = database,
       transactions = transactions,
