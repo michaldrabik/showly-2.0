@@ -23,6 +23,7 @@ interface TraktUsersService {
 
   @GET("users/hidden/progress_watched?type=show&extended=full")
   suspend fun fetchHiddenShows(
+    @Query("page") page: Int,
     @Query("limit") pageLimit: Int
   ): List<HiddenItem>
 
@@ -38,6 +39,7 @@ interface TraktUsersService {
 
   @GET("users/hidden/calendar?type=movie&extended=full")
   suspend fun fetchHiddenMovies(
+    @Query("page") page: Int,
     @Query("limit") pageLimit: Int
   ): List<HiddenItem>
 

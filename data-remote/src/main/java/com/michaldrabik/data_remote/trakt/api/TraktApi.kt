@@ -5,7 +5,6 @@ import com.michaldrabik.data_remote.Config.TRAKT_ANTICIPATED_SHOWS_LIMIT
 import com.michaldrabik.data_remote.Config.TRAKT_CLIENT_ID
 import com.michaldrabik.data_remote.Config.TRAKT_CLIENT_SECRET
 import com.michaldrabik.data_remote.Config.TRAKT_REDIRECT_URL
-import com.michaldrabik.data_remote.Config.TRAKT_SYNC_PAGE_LIMIT
 import com.michaldrabik.data_remote.tmdb.model.TmdbPerson
 import com.michaldrabik.data_remote.trakt.TraktRemoteDataSource
 import com.michaldrabik.data_remote.trakt.api.service.TraktAuthService
@@ -19,6 +18,7 @@ import com.michaldrabik.data_remote.trakt.api.service.TraktUsersService
 import com.michaldrabik.data_remote.trakt.model.Comment
 import com.michaldrabik.data_remote.trakt.model.CustomList
 import com.michaldrabik.data_remote.trakt.model.Episode
+import com.michaldrabik.data_remote.trakt.model.HiddenItem
 import com.michaldrabik.data_remote.trakt.model.Ids
 import com.michaldrabik.data_remote.trakt.model.Movie
 import com.michaldrabik.data_remote.trakt.model.MovieCollection
@@ -39,6 +39,8 @@ import com.michaldrabik.data_remote.trakt.model.request.OAuthRevokeRequest
 import com.michaldrabik.data_remote.trakt.model.request.RatingRequest
 import com.michaldrabik.data_remote.trakt.model.request.RatingRequestValue
 import java.lang.System.currentTimeMillis
+
+private const val TRAKT_SYNC_PAGE_LIMIT = 200
 
 internal class TraktApi(
   private val showsService: TraktShowsService,
@@ -195,8 +197,18 @@ internal class TraktApi(
   override suspend fun fetchMyProfile() =
     usersService.fetchMyProfile()
 
-  override suspend fun fetchHiddenShows() =
-    usersService.fetchHiddenShows(pageLimit = 250)
+  override suspend fun fetchHiddenShows(): List<HiddenItem> {
+    var page = 1
+    val results = mutableListOf<HiddenItem>()
+
+    do {
+      val items = usersService.fetchHiddenShows(page, TRAKT_SYNC_PAGE_LIMIT)
+      results.addAll(items)
+      page += 1
+    } while (items.size >= TRAKT_SYNC_PAGE_LIMIT)
+
+    return results
+  }
 
   override suspend fun postHiddenShows(shows: List<SyncExportItem>) {
     usersService.postHiddenShows(SyncExportRequest(shows = shows))
@@ -206,8 +218,18 @@ internal class TraktApi(
     usersService.postHiddenMovies(SyncExportRequest(movies = movies))
   }
 
-  override suspend fun fetchHiddenMovies() =
-    usersService.fetchHiddenMovies(pageLimit = 250)
+  override suspend fun fetchHiddenMovies(): List<HiddenItem> {
+    var page = 1
+    val results = mutableListOf<HiddenItem>()
+
+    do {
+      val items = usersService.fetchHiddenMovies(page, TRAKT_SYNC_PAGE_LIMIT)
+      results.addAll(items)
+      page += 1
+    } while (items.size >= TRAKT_SYNC_PAGE_LIMIT)
+
+    return results
+  }
 
   override suspend fun fetchSyncActivity(): SyncActivity {
     return syncService.fetchSyncActivity()
