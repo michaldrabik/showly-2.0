@@ -1,1 +1,1 @@
-* Season rating will now also be hidden if episodes spoilers settings are active
+* Update hidden items trakt sync limits
