@@ -143,7 +143,7 @@
     app:layout_constraintBottom_toTopOf="@id/viewPersonDetailsDeathdayValue"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="0"
-    app:layout_constraintStart_toEndOf="@id/viewPersonDetailsBirthdayLabel"
+    app:layout_constraintStart_toEndOf="@id/barrier1"
     app:layout_goneMarginBottom="0dp"
     tools:text="@tools:sample/lorem/random"
     tools:visibility="visible"
@@ -185,7 +185,7 @@
     app:layout_constraintBottom_toBottomOf="@id/viewPersonDetailsDeathdayLabel"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="0"
-    app:layout_constraintStart_toEndOf="@id/viewPersonDetailsDeathdayLabel"
+    app:layout_constraintStart_toEndOf="@id/barrier1"
     app:layout_constraintTop_toTopOf="@id/viewPersonDetailsDeathdayLabel"
     tools:ignore="HardcodedText"
     tools:text="@tools:sample/lorem/random"
@@ -226,7 +226,7 @@
     app:layout_constraintBottom_toTopOf="@id/viewPersonDetailsBirthdayValue"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="0"
-    app:layout_constraintStart_toEndOf="@id/viewPersonDetailsBirthdayLabel"
+    app:layout_constraintStart_toEndOf="@id/barrier1"
     app:layout_goneMarginBottom="0dp"
     tools:text="@tools:sample/lorem"
     tools:visibility="visible"
@@ -257,6 +257,21 @@
     app:layout_constraintStart_toEndOf="@id/viewPersonDetailsImageGuide1"
     app:layout_constraintTop_toBottomOf="@id/viewPersonDetailsSubtitle"
     tools:visibility="visible"
+    />
+
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/snackbarLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    />
+
+  <androidx.constraintlayout.widget.Barrier
+    android:id="@+id/barrier1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:barrierDirection="end"
+    app:constraint_referenced_ids="viewPersonDetailsAgeLabel, viewPersonDetailsBirthdayLabel, viewPersonDetailsDeathdayLabel"
     />
 
 </merge>
