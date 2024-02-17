@@ -3,7 +3,7 @@
   <string name="textAge" comment="Person's age">Alder:</string>
   <string name="textBorn" comment="For example - Born: 12 January 1990">Født:</string>
   <string name="textDied" comment="For example - Died: 12 January 2020">Død:</string>
-  <string name="textCredits" comment="List of shows and movies the person appears on">Anerkendelser</string>
+  <string name="textCredits" comment="List of shows and movies the person appears on">Credits</string>
   <string name="textEpisodes">Afsnit</string>
   <string name="textGalleryEmpty">Ingen billeder tilgængelige</string>
 </resources>

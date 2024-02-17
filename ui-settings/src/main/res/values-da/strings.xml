@@ -109,7 +109,7 @@
   <string name="textSettingsSpoilersTapToRevealTitle">Tryk for at afsløre</string>
   <string name="textSettingsSpoilersTapToRevealDescription">Tryk på skjult indhold for at vise det midlertidigt.</string>
   <string name="textNextEpisodeLastWatched">Sidst sete afsnit</string>
-  <string name="textNextEpisodeOldest">Ældste ikke-sete afsnit</string>
+  <string name="textNextEpisodeOldest">Ældste usete afsnit</string>
   <string name="textThemeDark">Mørk</string>
   <string name="textThemeLight">Lys</string>
   <string name="textThemeSystem">System</string>

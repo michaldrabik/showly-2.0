@@ -19,7 +19,7 @@
   <string name="textManageLists">Administrer lister</string>
   <string name="textManageListsShows">Administrer dine lister for denne serie.</string>
   <string name="textManageListsMovies">Administrer dine lister for denne film.</string>
-  <string name="errorCouldNotCreateList">Vi kunne ikke oprette en ny liste på din Trakt konto i øjeblikket.\nKontroller venligst internetforbindelsen og prøv igen.</string>
-  <string name="errorCouldNotUpdateList">Vi kunne ikke opdatere denne liste på din Trakt konto i øjeblikket.\nKontroller venligst internetforbindelsen og prøv igen.</string>
-  <string name="errorCouldNotDeleteList">Vi kunne ikke slette denne liste på din Trakt konto i øjeblikket.\nKontroller venligst internetforbindelsen og prøv igen.</string>
+  <string name="errorCouldNotCreateList">Vi kunne ikke oprette en ny liste på din Trakt konto i øjeblikket.\nTjek venligst internetforbindelsen og prøv igen.</string>
+  <string name="errorCouldNotUpdateList">Vi kunne ikke opdatere denne liste på din Trakt konto i øjeblikket.\nTjek venligst internetforbindelsen og prøv igen.</string>
+  <string name="errorCouldNotDeleteList">Vi kunne ikke slette denne liste på din Trakt konto i øjeblikket.\nTjek venligst internetforbindelsen og prøv igen.</string>
 </resources>

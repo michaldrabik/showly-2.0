@@ -86,14 +86,14 @@
   <string name="textLast90Days">Sidste 90 Dage</string>
   <string name="textNewEpisodeAvailable">Nyt afsnit er tilgængeligt nu!</string>
   <string name="textNewEpisodeAvailableSoon">Nyt afsnit er snart tilgængeligt!</string>
-  <string name="textNewSeasonAvailable">Ny sæson er snart tilgængelig!</string>
+  <string name="textNewSeasonAvailable">Ny sæson er tilgængelig nu!</string>
   <string name="textNewSeasonAvailableSoon">Ny sæson er snart tilgængelig!</string>
   <string name="textNewMovieAvailable">Filmen er blevet udgivet!</string>
   <string name="textTraktSync">Trakt.tv Synkronisering</string>
   <string name="textTraktSyncComplete">Synkronisering fuldført.</string>
   <string name="textTraktSyncRunning">Kører…</string>
   <string name="textTraktSyncError">Trakt.tv synkronisering mislykkedes.</string>
-  <string name="textTraktSyncErrorFull">Trakt.tv synkronisering mislykkedes. Tjek venligst din internetforbindelse, og prøv igen, eller kontakt os, hvis dette bliver ved med at ske.</string>
+  <string name="textTraktSyncErrorFull">Trakt.tv synkronisering mislykkedes. Tjek venligst din internetforbindelse, og prøv igen, eller kontakt os, hvis dette fortsætter med at ske.</string>
   <string name="textTraktQuickSyncError">Øjeblikkelig Synkronisering mislykkedes.</string>
   <string name="textTraktQuickSyncErrorFull">Øjeblikkelig Synkronisering mislykkedes. Vi prøver igen, næste gang du åbner appen. Tjek venligst din internetforbindelse.</string>
   <string name="textTraktNotificationsRationale">Giv venligst applikationen tilladelse til at vise informationer omkring synkroniseringsstatus og resultater.\n\nVil du gøre det nu?</string>
@@ -122,18 +122,18 @@
   <string name="menuAddOnHold" comment="This is a button for Progress subsection. It will contain pending shows marked by user.">Fastgør til \'på pause\'</string>
   <string name="menuRemoveOnHold" comment="This is a button for Progress subsection. It will contain pending shows marked by user.">Frigør fra \'på pause\'</string>
   <string name="errorGeneral">Ups… Noget gik galt.\nKontakt os, hvis dette fortsætter med at ske.</string>
-  <string name="errorAuthorization">Autorisation mislykkedes. Kontakt os venligst, hvis dette bliver ved med at ske.</string>
+  <string name="errorAuthorization">Autorisation mislykkedes. Kontakt os venligst, hvis dette fortsætter med at ske.</string>
   <string name="errorTraktAuthorization">Trakt kontoautorisering mislykkedes.\nLog venligst ind og prøv igen.</string>
   <string name="errorSeasonsNotLoaded">Vent venligst til sæson data er indlæst.</string>
   <string name="errorEpisodeNotAired">Dette afsnit er ikke blevet sendt endnu.</string>
-  <string name="errorCouldNotLoadDiscover">Vi kunne ikke indlæse opdag siden i øjeblikket.\nKontakt os venligst hvis dette bliver ved med at ske.</string>
+  <string name="errorCouldNotLoadDiscover">Vi kunne ikke indlæse opdag siden i øjeblikket.\nKontakt os venligst hvis dette fortsætter med at ske.</string>
   <string name="errorMalformedShow">Det ser ud til, at denne serie ikke længere findes i Trakt.tv database eller er en dublet.\n\nTryk \'OK\' for at fjerne den fra appen.</string>
   <string name="errorMalformedMovie">Det ser ud til, at denne film ikke længere findes i Trakt.tv database eller er en dublet.\n\nTryk \'OK\' for at fjerne den fra appen.</string>
-  <string name="errorCouldNotLoadShow">Vi kunne ikke indlæse denne series detaljer i øjeblikket.\nKontakt os venligst hvis dette bliver ved med at ske.</string>
-  <string name="errorCouldNotLoadMovie">Vi kunne ikke indlæse denne films detaljer i øjeblikket.\nKontakt os venligst hvis dette bliver ved med at ske.</string>
-  <string name="errorCouldNotLoadSearchResults">Vi kunne ikke indlæse søgeresultaterne i øjeblikket.\nKontakt os venligst hvis dette bliver ved med at ske.</string>
-  <string name="errorNoInternetConnection">Ingen internetforbindelse. Kontroller venligst din forbindelse.</string>
-  <string name="errorTraktSyncGeneral">Trakt.tv synkroniseringsfejl.\nKontroller venligst din forbindelse og prøv igen.</string>
+  <string name="errorCouldNotLoadShow">Vi kunne ikke indlæse denne series detaljer i øjeblikket.\nKontakt os venligst hvis dette fortsætter med at ske.</string>
+  <string name="errorCouldNotLoadMovie">Vi kunne ikke indlæse denne films detaljer i øjeblikket.\nKontakt os venligst hvis dette fortsætter med at ske.</string>
+  <string name="errorCouldNotLoadSearchResults">Vi kunne ikke indlæse søgeresultaterne i øjeblikket.\nKontakt os venligst hvis dette fortsætter med at ske.</string>
+  <string name="errorNoInternetConnection">Ingen internetforbindelse. Tjek venligst din forbindelse.</string>
+  <string name="errorTraktSyncGeneral">Trakt.tv synkroniseringsfejl.\nTjek venligst din internetforbindelse og prøv igen.</string>
   <string name="errorTraktLocked">Din Trakt.tv konto er låst i øjeblikket.\nKontakt venligst Trakt.tv support på https://support.trakt.tv/ for at låse op for din konto.</string>
   <string name="errorSubscriptionsNotAvailable">Google Play Abonnementer er ikke tilgængelige på denne enhed.</string>
 </resources>
