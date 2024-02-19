@@ -11,8 +11,9 @@
   <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/seasonViewRoot"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/seasonViewHeight"
+    android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
+    android:minHeight="@dimen/seasonViewHeight"
     android:paddingStart="10dp"
     android:paddingTop="6dp"
     android:paddingEnd="10dp"

@@ -13,7 +13,7 @@
   <dimen name="relatedShowWidth">93dp</dimen>
   <dimen name="relatedShowTextSize">12sp</dimen>
 
-  <dimen name="seasonViewProgressMargin">8dp</dimen>
+  <dimen name="seasonViewProgressMargin">10dp</dimen>
   <dimen name="episodeNextViewHeight">88dp</dimen>
 
   <dimen name="showDetailsMarginHorizontal">24dp</dimen>
