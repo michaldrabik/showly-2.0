@@ -6,7 +6,7 @@ import com.michaldrabik.data_remote.trakt.model.RatingResultSeason
 import com.michaldrabik.data_remote.trakt.model.RatingResultShow
 import com.michaldrabik.data_remote.trakt.model.SyncActivity
 import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
-import com.michaldrabik.data_remote.trakt.model.SyncExportResult
+import com.michaldrabik.data_remote.trakt.model.SyncHistoryItem
 import com.michaldrabik.data_remote.trakt.model.SyncItem
 import com.michaldrabik.data_remote.trakt.model.request.RatingRequest
 import retrofit2.http.Body
@@ -19,6 +19,13 @@ interface TraktSyncService {
 
   @GET("sync/last_activities")
   suspend fun fetchSyncActivity(): SyncActivity
+
+  @GET("sync/history/shows/{showId}")
+  suspend fun fetchSyncShowHistory(
+    @Path("showId") showId: Long,
+    @Query("page") page: Int? = null,
+    @Query("limit") limit: Int? = null
+  ): List<SyncHistoryItem>
 
   @GET("sync/watched/{type}")
   suspend fun fetchSyncWatched(
@@ -34,16 +41,16 @@ interface TraktSyncService {
   ): List<SyncItem>
 
   @POST("sync/watchlist")
-  suspend fun postSyncWatchlist(@Body request: SyncExportRequest): SyncExportResult
+  suspend fun postSyncWatchlist(@Body request: SyncExportRequest)
 
   @POST("sync/history")
-  suspend fun postSyncWatched(@Body request: SyncExportRequest): SyncExportResult
+  suspend fun postSyncWatched(@Body request: SyncExportRequest)
 
   @POST("sync/watchlist/remove")
-  suspend fun deleteWatchlist(@Body request: SyncExportRequest): SyncExportResult
+  suspend fun deleteWatchlist(@Body request: SyncExportRequest)
 
   @POST("sync/history/remove")
-  suspend fun deleteHistory(@Body request: SyncExportRequest): SyncExportResult
+  suspend fun deleteHistory(@Body request: SyncExportRequest)
 
   @POST("sync/ratings")
   suspend fun postRating(@Body request: RatingRequest)

@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_base.trakt.quicksync.runners
 
 import com.michaldrabik.common.extensions.dateIsoStringFromMillis
+import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.TraktSyncQueue
 import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type.EPISODE
@@ -130,6 +131,10 @@ class QuickSyncRunner @Inject constructor(
 
     if (request.episodes.isNotEmpty() || request.movies.isNotEmpty()) {
       remoteSource.trakt.postSyncWatched(request)
+      localSource.episodes.updateIsExported(
+        episodesIds = request.episodes.map { it.ids.trakt },
+        exportedAt = nowUtcMillis()
+      )
     }
 
     val currentCount = count + exportEpisodes.count() + exportMovies.count()

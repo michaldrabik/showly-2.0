@@ -10,6 +10,7 @@ import com.michaldrabik.data_local.database.model.Show
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.data_remote.trakt.model.SyncExportItem
 import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
+import com.michaldrabik.data_remote.trakt.model.SyncHistoryItem
 import com.michaldrabik.data_remote.trakt.model.SyncItem
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.settings.SettingsRepository
@@ -60,27 +61,32 @@ class TraktExportWatchedRunner @Inject constructor(
   private suspend fun exportWatched() {
     Timber.d("Exporting watched...")
 
-    val remoteShows = remoteSource.trakt.fetchSyncWatchedShows()
-      .filter { it.show != null }
-
     val localMyShows = localSource.myShows.getAll()
-    val localEpisodes = batchEpisodes(localMyShows.map { it.idTrakt })
-      .filter { !hasEpisodeBeenWatched(remoteShows, it) }
+    var localEpisodes = emptyList<Episode>()
+    val localEpisodesNotExported = batchEpisodes(localMyShows.map { it.idTrakt })
+      .filter { it.lastExportedAt == null }
 
-    val movies = mutableListOf<SyncExportItem>()
-    if (settingsRepository.isMoviesEnabled) {
-      val remoteMovies = remoteSource.trakt.fetchSyncWatchedMovies()
-        .filter { it.movie != null }
-      val localMyMoviesIds = localSource.myMovies.getAllTraktIds()
-      val localMyMovies = batchMovies(localMyMoviesIds)
-        .filter { movie -> remoteMovies.none { it.movie?.ids?.trakt == movie.idTrakt } }
-
-      localMyMovies.mapTo(movies) {
-        SyncExportItem.create(it.idTrakt, dateIsoStringFromMillis(it.updatedAt))
+    if (localEpisodesNotExported.isNotEmpty()) {
+      val distinctShowIds = localEpisodesNotExported.map { it.idShowTrakt }.distinct()
+      val watchedEpisodes = if (distinctShowIds.size == 1) {
+        // Use history endpoint for single show instead of fetching all watched progress. The most usual case.
+        val remoteShows = remoteSource.trakt.fetchSyncShowHistory(distinctShowIds.first())
+        localEpisodesNotExported.filter { isHistoryEpisodeWatched(remoteShows, it) }
+      } else {
+        // Use watched progress endpoint for multiple shows.
+        val remoteShows = remoteSource.trakt.fetchSyncWatchedShows()
+        localEpisodesNotExported.filter { isEpisodeWatched(remoteShows, it) }
       }
+
+      val watchedEpisodesIds = watchedEpisodes.map { it.idTrakt }
+      localSource.episodes.updateIsExported(
+        exportedAt = nowUtcMillis(),
+        episodesIds = watchedEpisodes.map { it.idTrakt }
+      )
+      localEpisodes = localEpisodesNotExported.filter { it.idTrakt !in watchedEpisodesIds }
     }
 
-    val episodes = localEpisodes.map { ep ->
+    val exportEpisodes = localEpisodes.map { ep ->
       val episodeTimestamp = ep.lastWatchedAt?.toMillis() ?: 0
       val showTimestamp = localMyShows.find { it.idTrakt == ep.idShowTrakt }?.updatedAt ?: 0
       val timestamp = when {
@@ -91,9 +97,25 @@ class TraktExportWatchedRunner @Inject constructor(
       SyncExportItem.create(ep.idTrakt, dateIsoStringFromMillis(timestamp))
     }
 
-    Timber.d("Exporting ${episodes.size} episodes & ${movies.size} movies...")
-    if (episodes.isNotEmpty() || movies.isNotEmpty()) {
-      val request = SyncExportRequest(episodes = episodes, movies = movies)
+    val exportMovies = mutableListOf<SyncExportItem>()
+    if (settingsRepository.isMoviesEnabled) {
+      val localMyMoviesIds = localSource.myMovies.getAllTraktIds()
+      if (localMyMoviesIds.isEmpty()) {
+        Timber.d("No movies to export. Skipping...")
+        return
+      }
+      val remoteMovies = remoteSource.trakt.fetchSyncWatchedMovies()
+      val localMyMovies = batchMovies(localMyMoviesIds)
+        .filter { movie -> remoteMovies.none { it.getTraktId() == movie.idTrakt } }
+
+      localMyMovies.mapTo(exportMovies) {
+        SyncExportItem.create(it.idTrakt, dateIsoStringFromMillis(it.updatedAt))
+      }
+    }
+
+    Timber.d("Exporting ${exportEpisodes.size} episodes & ${exportMovies.size} movies...")
+    if (exportEpisodes.isNotEmpty() || exportMovies.isNotEmpty()) {
+      val request = SyncExportRequest(episodes = exportEpisodes, movies = exportMovies)
       postExportWatched(request)
     } else {
       Timber.d("Nothing to export. Skipping...")
@@ -103,9 +125,7 @@ class TraktExportWatchedRunner @Inject constructor(
     exportHidden()
   }
 
-  private suspend fun postExportWatched(
-    request: SyncExportRequest,
-  ) {
+  private suspend fun postExportWatched(request: SyncExportRequest) {
     val episodes = request.episodes.toList()
     val movies = request.movies.toList()
 
@@ -121,6 +141,10 @@ class TraktExportWatchedRunner @Inject constructor(
 
     Timber.d("Exporting batch ${batchRequest.episodes.size} episodes & ${batchRequest.movies.size} movies...")
     remoteSource.trakt.postSyncWatched(batchRequest)
+    localSource.episodes.updateIsExported(
+      episodesIds = batchRequest.episodes.map { it.ids.trakt },
+      exportedAt = nowUtcMillis()
+    )
 
     delay(TRAKT_LIMIT_DELAY_MS)
     postExportWatched(
@@ -215,11 +239,25 @@ class TraktExportWatchedRunner @Inject constructor(
     return batchMovies(moviesIds.filter { it !in batch }, result)
   }
 
-  private fun hasEpisodeBeenWatched(remoteWatched: List<SyncItem>, episodeDb: Episode): Boolean {
-    val find = remoteWatched
-      .find { it.show?.ids?.trakt == episodeDb.idShowTrakt }
-      ?.seasons?.find { it.number == episodeDb.seasonNumber }
-      ?.episodes?.find { it.number == episodeDb.episodeNumber }
-    return find != null
+  private fun isEpisodeWatched(remoteItems: List<SyncItem>, episode: Episode): Boolean {
+    val ep = remoteItems
+      .find { it.show?.ids?.trakt == episode.idShowTrakt }
+      ?.seasons?.find { it.number == episode.seasonNumber }
+      ?.episodes?.find { it.number == episode.episodeNumber }
+    return ep != null
+  }
+
+  private fun isHistoryEpisodeWatched(remoteItems: List<SyncHistoryItem>, episode: Episode): Boolean {
+    val shows = remoteItems.filter { it.show?.ids?.trakt == episode.idShowTrakt }
+    val seasons = shows.filter { it.episode?.season == episode.seasonNumber }
+
+    val episodeBySeasonEpisode = seasons.find { it.episode?.number == episode.episodeNumber }
+    if (episodeBySeasonEpisode == null) {
+      // Extra check by Trakt ID
+      val episodeById = shows.find { it.episode?.ids?.trakt == episode.idTrakt }
+      return episodeById != null
+    }
+
+    return true
   }
 }

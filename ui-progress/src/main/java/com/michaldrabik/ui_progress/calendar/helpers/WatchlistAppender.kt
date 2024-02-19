@@ -77,6 +77,7 @@ class WatchlistAppender @Inject constructor() {
     runtime = 0,
     votesCount = 0,
     isWatched = false,
-    lastWatchedAt = null
+    lastExportedAt = null,
+    lastWatchedAt = null,
   )
 }

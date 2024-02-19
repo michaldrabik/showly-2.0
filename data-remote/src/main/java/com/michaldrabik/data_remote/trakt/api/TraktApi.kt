@@ -29,7 +29,7 @@ import com.michaldrabik.data_remote.trakt.model.Show
 import com.michaldrabik.data_remote.trakt.model.SyncActivity
 import com.michaldrabik.data_remote.trakt.model.SyncExportItem
 import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
-import com.michaldrabik.data_remote.trakt.model.SyncExportResult
+import com.michaldrabik.data_remote.trakt.model.SyncHistoryItem
 import com.michaldrabik.data_remote.trakt.model.SyncItem
 import com.michaldrabik.data_remote.trakt.model.request.CommentRequest
 import com.michaldrabik.data_remote.trakt.model.request.CreateListRequest
@@ -235,6 +235,19 @@ internal class TraktApi(
     return syncService.fetchSyncActivity()
   }
 
+  override suspend fun fetchSyncShowHistory(showId: Long): List<SyncHistoryItem> {
+    var page = 1
+    val results = mutableListOf<SyncHistoryItem>()
+
+    do {
+      val items = syncService.fetchSyncShowHistory(showId, page, TRAKT_SYNC_PAGE_LIMIT)
+      results.addAll(items)
+      page += 1
+    } while (items.size >= TRAKT_SYNC_PAGE_LIMIT)
+
+    return results
+  }
+
   override suspend fun fetchSyncWatchedShows(extended: String?) =
     syncService.fetchSyncWatched("shows", extended).filter { it.show != null }
 
@@ -298,24 +311,24 @@ internal class TraktApi(
     listTraktId: Long,
     showsIds: List<Long>,
     moviesIds: List<Long>,
-  ): SyncExportResult {
+  ) {
     val body = SyncExportRequest(
       shows = showsIds.map { SyncExportItem.create(it, null) },
       movies = moviesIds.map { SyncExportItem.create(it, null) }
     )
-    return usersService.postAddListItems(listTraktId, body)
+    usersService.postAddListItems(listTraktId, body)
   }
 
   override suspend fun postRemoveListItems(
     listTraktId: Long,
     showsIds: List<Long>,
     moviesIds: List<Long>,
-  ): SyncExportResult {
+  ) {
     val body = SyncExportRequest(
       shows = showsIds.map { SyncExportItem.create(it, null) },
       movies = moviesIds.map { SyncExportItem.create(it, null) }
     )
-    return usersService.postRemoveListItems(listTraktId, body)
+    usersService.postRemoveListItems(listTraktId, body)
   }
 
   override suspend fun postSyncWatchlist(request: SyncExportRequest) =
@@ -327,8 +340,9 @@ internal class TraktApi(
   override suspend fun postDeleteProgress(request: SyncExportRequest) =
     syncService.deleteHistory(request)
 
-  override suspend fun postDeleteWatchlist(request: SyncExportRequest) =
+  override suspend fun postDeleteWatchlist(request: SyncExportRequest) {
     syncService.deleteWatchlist(request)
+  }
 
   override suspend fun deleteHiddenShow(request: SyncExportRequest) =
     usersService.deleteHidden("progress_watched", request)

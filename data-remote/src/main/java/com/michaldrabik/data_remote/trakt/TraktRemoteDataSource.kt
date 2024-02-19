@@ -21,7 +21,7 @@ import com.michaldrabik.data_remote.trakt.model.Show
 import com.michaldrabik.data_remote.trakt.model.SyncActivity
 import com.michaldrabik.data_remote.trakt.model.SyncExportItem
 import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
-import com.michaldrabik.data_remote.trakt.model.SyncExportResult
+import com.michaldrabik.data_remote.trakt.model.SyncHistoryItem
 import com.michaldrabik.data_remote.trakt.model.SyncItem
 import com.michaldrabik.data_remote.trakt.model.Translation
 import com.michaldrabik.data_remote.trakt.model.User
@@ -113,6 +113,8 @@ interface TraktRemoteDataSource {
 
   suspend fun fetchSyncActivity(): SyncActivity
 
+  suspend fun fetchSyncShowHistory(showId: Long): List<SyncHistoryItem>
+
   suspend fun fetchSyncWatchedShows(extended: String? = null): List<SyncItem>
 
   suspend fun fetchSyncWatchedMovies(extended: String? = null): List<SyncItem>
@@ -139,25 +141,25 @@ interface TraktRemoteDataSource {
     listTraktId: Long,
     showsIds: List<Long>,
     moviesIds: List<Long>,
-  ): SyncExportResult
+  )
 
   suspend fun postRemoveListItems(
     listTraktId: Long,
     showsIds: List<Long>,
     moviesIds: List<Long>,
-  ): SyncExportResult
+  )
 
-  suspend fun postSyncWatchlist(request: SyncExportRequest): SyncExportResult
+  suspend fun postSyncWatchlist(request: SyncExportRequest)
 
-  suspend fun postSyncWatched(request: SyncExportRequest): SyncExportResult
+  suspend fun postSyncWatched(request: SyncExportRequest)
 
-  suspend fun postDeleteProgress(request: SyncExportRequest): SyncExportResult
+  suspend fun postDeleteProgress(request: SyncExportRequest)
 
-  suspend fun postDeleteWatchlist(request: SyncExportRequest): SyncExportResult
+  suspend fun postDeleteWatchlist(request: SyncExportRequest)
 
-  suspend fun deleteHiddenShow(request: SyncExportRequest): SyncExportResult
+  suspend fun deleteHiddenShow(request: SyncExportRequest)
 
-  suspend fun deleteHiddenMovie(request: SyncExportRequest): SyncExportResult
+  suspend fun deleteHiddenMovie(request: SyncExportRequest)
 
   suspend fun deleteRating(show: Show)
 

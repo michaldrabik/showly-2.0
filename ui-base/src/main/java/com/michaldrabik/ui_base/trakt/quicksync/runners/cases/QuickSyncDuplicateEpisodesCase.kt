@@ -42,13 +42,13 @@ class QuickSyncDuplicateEpisodesCase @Inject constructor(
             duplicateEpisodesIds.add(item.idTrakt)
           } else {
             if (remoteShows
-              .filter { it.show?.ids?.trakt == showId }
-              .any { remoteShow ->
-                remoteShow.seasons
-                  ?.find { it.number == localEpisode.seasonNumber }
-                  ?.episodes
-                  ?.any { it.number == localEpisode.episodeNumber } == true
-              }
+                .filter { it.getTraktId() == showId }
+                .any { remoteShow ->
+                  remoteShow.seasons
+                    ?.find { it.number == localEpisode.seasonNumber }
+                    ?.episodes
+                    ?.any { it.number == localEpisode.episodeNumber } == true
+                }
             ) {
               duplicateEpisodesIds.add(item.idTrakt)
             }

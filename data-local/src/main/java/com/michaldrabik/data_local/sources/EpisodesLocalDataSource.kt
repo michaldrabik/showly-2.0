@@ -7,9 +7,9 @@ interface EpisodesLocalDataSource {
 
   suspend fun upsert(episodes: List<Episode>)
 
-  suspend fun delete(items: List<Episode>)
-
   suspend fun upsertChunked(items: List<Episode>)
+
+  suspend fun updateIsExported(episodesIds: List<Long>, exportedAt: Long?)
 
   suspend fun isEpisodeWatched(showTraktId: Long, episodeTraktId: Long): Boolean
 
@@ -58,4 +58,6 @@ interface EpisodesLocalDataSource {
   suspend fun deleteAllUnwatchedForShow(showTraktId: Long)
 
   suspend fun deleteAllForShow(showTraktId: Long)
+
+  suspend fun delete(items: List<Episode>)
 }

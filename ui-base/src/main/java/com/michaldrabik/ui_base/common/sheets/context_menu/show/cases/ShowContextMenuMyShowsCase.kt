@@ -69,7 +69,7 @@ class ShowContextMenuMyShowsCase @Inject constructor(
         episodes.forEach { episode ->
           if (localEpisodes.none { it.idTrakt == episode.ids.trakt.id }) {
             val season = seasons.find { it.number == episode.season }!!
-            episodesToAdd.add(mappers.episode.toDatabase(episode, season, traktId, false, null))
+            episodesToAdd.add(mappers.episode.toDatabase(episode, season, traktId, false, null, null))
           }
         }
 

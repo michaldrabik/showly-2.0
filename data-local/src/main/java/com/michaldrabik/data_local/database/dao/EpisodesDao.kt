@@ -22,6 +22,9 @@ interface EpisodesDao : EpisodesLocalDataSource {
     chunks.forEach { chunk -> upsert(chunk) }
   }
 
+  @Query("UPDATE episodes SET last_exported_at = :exportedAt WHERE id_trakt IN (:itemsIds)")
+  override suspend fun updateIsExported(itemsIds: List<Long>, exportedAt: Long?)
+
   @Query("SELECT EXISTS(SELECT 1 FROM episodes WHERE id_show_trakt = :showTraktId AND id_trakt = :episodeTraktId AND is_watched = 1)")
   override suspend fun isEpisodeWatched(showTraktId: Long, episodeTraktId: Long): Boolean
 

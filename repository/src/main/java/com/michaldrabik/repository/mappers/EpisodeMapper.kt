@@ -52,6 +52,7 @@ class EpisodeMapper @Inject constructor(
     season: Season,
     showId: IdTrakt,
     isWatched: Boolean,
+    lastExportedAt: ZonedDateTime?,
     lastWatchedAt: ZonedDateTime?
   ): EpisodeDb = EpisodeDb(
     idTrakt = episode.ids.trakt.id,
@@ -71,6 +72,7 @@ class EpisodeMapper @Inject constructor(
     runtime = episode.runtime,
     votesCount = episode.votes,
     isWatched = isWatched,
+    lastExportedAt = lastExportedAt,
     lastWatchedAt = lastWatchedAt
   )
 

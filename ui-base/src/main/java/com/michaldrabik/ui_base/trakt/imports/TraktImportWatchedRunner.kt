@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_base.trakt.imports
 
+import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toUtcDateTime
 import com.michaldrabik.common.extensions.toZonedDateTime
 import com.michaldrabik.data_local.LocalDataSource
@@ -121,7 +122,6 @@ class TraktImportWatchedRunner @Inject constructor(
     }
 
     val syncResults = remoteSource.trakt.fetchSyncWatchedShows("full")
-      .filter { it.show != null }
       .distinctBy { it.show?.ids?.trakt }
 
     Timber.d("Importing hidden shows...")
@@ -150,9 +150,9 @@ class TraktImportWatchedRunner @Inject constructor(
     syncResults
       .forEachIndexed { index, result ->
         val showUi = mappers.show.fromNetwork(result.show!!)
-        progressListener?.invoke(showUi.title, index, syncResults.size)
 
         Timber.d("Processing \'${showUi.title}\'...")
+        progressListener?.invoke(showUi.title, index, syncResults.size)
 
         val log = traktSyncLogs.firstOrNull { it.idTrakt == result.show?.ids?.trakt }
         if (result.lastUpdateMillis() == (log?.syncedAt ?: 0)) {
@@ -162,10 +162,14 @@ class TraktImportWatchedRunner @Inject constructor(
 
         try {
           val showId = result.show!!.ids!!.trakt!!
-          val (seasons, episodes) = loadSeasons(showId, result)
+          val (seasons, episodes) = loadSeasonsEpisodes(showId, result)
 
           transactions.withTransaction {
-            if (showId !in myShowsIds && showId !in hiddenShowsIds) {
+            val isMyShow = showId in myShowsIds
+            val isWatchlistShow = showId in watchlistShowsIds
+            val isHiddenShow = showId in hiddenShowsIds
+
+            if (!isMyShow && !isHiddenShow) {
               val show = mappers.show.fromNetwork(result.show!!)
               val showDb = mappers.show.toDatabase(show)
 
@@ -180,7 +184,7 @@ class TraktImportWatchedRunner @Inject constructor(
 
               loadImage(show)
 
-              if (showId in watchlistShowsIds) {
+              if (isWatchlistShow) {
                 localSource.watchlistShows.deleteById(showId)
               }
             }
@@ -202,7 +206,7 @@ class TraktImportWatchedRunner @Inject constructor(
     return syncResults.size
   }
 
-  private suspend fun loadSeasons(showId: Long, syncItem: SyncItem): Pair<List<Season>, List<Episode>> {
+  private suspend fun loadSeasonsEpisodes(showId: Long, syncItem: SyncItem): Pair<List<Season>, List<Episode>> {
     val remoteSeasons = remoteSource.trakt.fetchSeasons(showId)
     val localSeasonsIds = localSource.seasons.getAllWatchedIdsForShows(listOf(showId))
     val localEpisodesIds = localSource.episodes.getAllWatchedIdsForShows(listOf(showId))
@@ -225,12 +229,21 @@ class TraktImportWatchedRunner @Inject constructor(
             ?.find { it.number == season.number }?.episodes
             ?.find { it.number == episode.number }
 
-          val isWatched = syncEpisode != null
           val watchedAt = syncEpisode?.last_watched_at?.toZonedDateTime()
+          val exportedAt = syncEpisode?.let {
+            it.last_watched_at?.toZonedDateTime() ?: nowUtc()
+          }
 
           val seasonDb = mappers.season.fromNetwork(season)
           val episodeDb = mappers.episode.fromNetwork(episode)
-          mappers.episode.toDatabase(episodeDb, seasonDb, IdTrakt(showId), isWatched, watchedAt)
+          mappers.episode.toDatabase(
+            showId = IdTrakt(showId),
+            season = seasonDb,
+            episode = episodeDb,
+            isWatched = syncEpisode != null,
+            lastExportedAt = exportedAt,
+            lastWatchedAt = watchedAt
+          )
         } ?: emptyList()
     }
 

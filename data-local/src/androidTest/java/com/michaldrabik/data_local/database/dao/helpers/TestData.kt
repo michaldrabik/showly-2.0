@@ -81,7 +81,7 @@ object TestData {
     true
   )
 
-  fun createEpisode() = Episode(1, 1, 1, 1, "", 1, 1, 1, 1, "", "", null, 0, 0F, 60, 0, false)
+  fun createEpisode() = Episode(1, 1, 1, 1, "", 1, 1, 1, 1, "", "", null, 0, 0F, 60, 0, false, false, null)
 
   fun createSeason() = Season(1, 1, 1, "", "", null, 0, 0, 0f, false)
 }
