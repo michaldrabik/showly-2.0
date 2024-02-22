@@ -344,11 +344,13 @@ internal class TraktApi(
     syncService.deleteWatchlist(request)
   }
 
-  override suspend fun deleteHiddenShow(request: SyncExportRequest) =
+  override suspend fun deleteHiddenShow(request: SyncExportRequest) {
     usersService.deleteHidden("progress_watched", request)
+  }
 
-  override suspend fun deleteHiddenMovie(request: SyncExportRequest) =
+  override suspend fun deleteHiddenMovie(request: SyncExportRequest) {
     usersService.deleteHidden("calendar", request)
+  }
 
   override suspend fun deleteRating(show: Show) {
     val requestValue = RatingRequestValue(0, show.ids)
