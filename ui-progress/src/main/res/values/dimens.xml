@@ -15,8 +15,8 @@
   <dimen name="progressTabsViewPaddingNoModes">112dp</dimen>
   <dimen name="progressTabsViewPadding">148dp</dimen>
 
-  <dimen name="progressCalendarTabsViewPaddingNoModes">96dp</dimen>
-  <dimen name="progressCalendarTabsViewPadding">132dp</dimen>
+  <dimen name="progressCalendarTabsViewPaddingNoModes">88dp</dimen>
+  <dimen name="progressCalendarTabsViewPadding">124dp</dimen>
 
   <dimen name="progressOverscrollPadding">132dp</dimen>
   <dimen name="progressOverscrollPaddingNoModes">96dp</dimen>

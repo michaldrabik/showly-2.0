@@ -7,7 +7,7 @@
   <dimen name="progressMoviesHeaderTextSize">22sp</dimen>
   <dimen name="progressMoviesSearchViewPadding">104dp</dimen>
   <dimen name="progressMoviesTabsViewPadding">148dp</dimen>
-  <dimen name="progressMoviesCalendarTabsViewPadding">132dp</dimen>
+  <dimen name="progressMoviesCalendarTabsViewPadding">124dp</dimen>
 
   <dimen name="progressMoviesImageHeight">120dp</dimen>
   <dimen name="progressMoviesImageWidth">80dp</dimen>

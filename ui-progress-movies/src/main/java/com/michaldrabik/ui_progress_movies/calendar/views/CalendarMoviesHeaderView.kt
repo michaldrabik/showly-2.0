@@ -28,7 +28,7 @@ class CalendarMoviesHeaderView : LinearLayout {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     orientation = HORIZONTAL
     updatePadding(
-      top = context.dimenToPx(R.dimen.spaceNormal),
+      top = context.dimenToPx(R.dimen.spaceBig),
       bottom = context.dimenToPx(R.dimen.spaceTiny),
       left = context.dimenToPx(R.dimen.spaceMedium),
       right = context.dimenToPx(R.dimen.spaceMedium)

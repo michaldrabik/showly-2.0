@@ -6,10 +6,10 @@
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:orientation="horizontal"
-  android:paddingStart="@dimen/spaceMedium"
-  android:paddingTop="@dimen/spaceNormal"
-  android:paddingEnd="@dimen/spaceMedium"
-  android:paddingBottom="@dimen/spaceTiny"
+  tools:paddingBottom="@dimen/spaceTiny"
+  tools:paddingEnd="@dimen/spaceMedium"
+  tools:paddingStart="@dimen/spaceMedium"
+  tools:paddingTop="@dimen/spaceNormal"
   tools:parentTag="android.widget.LinearLayout"
   >
 

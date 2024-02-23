@@ -16,7 +16,7 @@
     android:layout_marginStart="@dimen/spaceMedium"
     android:layout_marginEnd="@dimen/spaceMedium"
     android:paddingTop="@dimen/spaceSmall"
-    android:paddingBottom="@dimen/spaceSmall"
+    android:paddingBottom="10dp"
     app:singleLine="true"
     >
 
