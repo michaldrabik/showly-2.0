@@ -50,7 +50,10 @@ class ProgressItemsCase @Inject constructor(
   private val sorter: ProgressItemsSorter,
 ) {
 
-  suspend fun loadItems(searchQuery: String): List<ProgressListItem> =
+  suspend fun loadItems(
+    searchQuery: String,
+    isWidget: Boolean = false
+  ): List<ProgressListItem> =
     withContext(dispatchers.IO) {
       val nowUtc = nowUtc()
 
@@ -144,8 +147,9 @@ class ProgressItemsCase @Inject constructor(
 
       val filteredItems = filterByQuery(searchQuery, filledItems)
       val groupedItems = groupItems(
-        filteredItems,
-        filtersItem
+        items = filteredItems,
+        filters = filtersItem,
+        isWidget = isWidget
       )
 
       if (groupedItems.isNotEmpty() || filtersItem.hasActiveFilters()) {
@@ -154,6 +158,8 @@ class ProgressItemsCase @Inject constructor(
         groupedItems
       }
     }
+
+  suspend fun loadWidgetItems(searchQuery: String = "") = loadItems(searchQuery, isWidget = true)
 
   private suspend fun findNextEpisode(
     showId: Long,
@@ -185,13 +191,14 @@ class ProgressItemsCase @Inject constructor(
     }
 
   private suspend fun groupItems(
-    input: List<ProgressListItem.Episode>,
-    filters: ProgressListItem.Filters
+    items: List<ProgressListItem.Episode>,
+    filters: ProgressListItem.Filters,
+    isWidget: Boolean
   ): List<ProgressListItem> = coroutineScope {
     val (newItems, pinnedItems, onHoldItems) = awaitAll(
       async {
         if (filters.newAtTop) {
-          input
+          items
             .filter { it.isNew() && !it.isOnHold && !it.isPinned }
             .sortedWith(sorter.sort(filters.sortOrder, filters.sortType))
         } else {
@@ -199,7 +206,7 @@ class ProgressItemsCase @Inject constructor(
         }
       },
       async {
-        input
+        items
           .filter { it.isPinned }
           .sortedWith(
             compareByDescending<ProgressListItem.Episode> { it.isNew() }
@@ -207,7 +214,7 @@ class ProgressItemsCase @Inject constructor(
           )
       },
       async {
-        input
+        items
           .filter { it.isOnHold }
           .sortedWith(
             compareByDescending<ProgressListItem.Episode> { it.isNew() }
@@ -216,7 +223,7 @@ class ProgressItemsCase @Inject constructor(
       }
     )
 
-    val groupedItems = (input - newItems.toSet() - pinnedItems.toSet() - onHoldItems.toSet())
+    val groupedItems = (items - newItems.toSet() - pinnedItems.toSet() - onHoldItems.toSet())
       .groupBy { !it.isUpcoming }
 
     val (airedItems, upcomingItems) = awaitAll(
@@ -230,23 +237,24 @@ class ProgressItemsCase @Inject constructor(
       }
     )
 
-    mutableListOf<ProgressListItem>().apply {
-      if (pinnedItems.isNotEmpty() && !filters.hasActiveFilters()) {
+    buildList {
+      val hasNoFiltersActive = !filters.hasActiveFilters()
+      if (pinnedItems.isNotEmpty() && (hasNoFiltersActive || isWidget)) {
         addAll(pinnedItems)
       }
-      if (newItems.isNotEmpty() && !filters.hasActiveFilters()) {
+      if (newItems.isNotEmpty() && (hasNoFiltersActive || isWidget)) {
         addAll(newItems)
       }
-      if (airedItems.isNotEmpty() && !filters.hasActiveFilters()) {
+      if (airedItems.isNotEmpty() && (hasNoFiltersActive || isWidget)) {
         addAll(airedItems)
       }
-      if (upcomingItems.isNotEmpty() && (filters.isUpcoming || !filters.hasActiveFilters())) {
+      if (upcomingItems.isNotEmpty() && (filters.isUpcoming || hasNoFiltersActive || isWidget)) {
         val isCollapsed = settingsRepository.isProgressUpcomingCollapsed
         val upcomingHeader = ProgressListItem.Header.create(Type.UPCOMING, R.string.textWatchlistIncoming, isCollapsed)
         addAll(listOf(upcomingHeader))
         if (!isCollapsed) addAll(upcomingItems)
       }
-      if (onHoldItems.isNotEmpty() && (filters.isOnHold || !filters.hasActiveFilters())) {
+      if (onHoldItems.isNotEmpty() && (filters.isOnHold || hasNoFiltersActive) || isWidget) {
         val isCollapsed = settingsRepository.isProgressOnHoldCollapsed
         val onHoldHeader = ProgressListItem.Header.create(Type.ON_HOLD, R.string.textOnHold, isCollapsed)
         addAll(listOf(onHoldHeader))

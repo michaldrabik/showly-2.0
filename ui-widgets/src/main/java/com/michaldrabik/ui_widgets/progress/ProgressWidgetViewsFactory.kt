@@ -43,7 +43,7 @@ class ProgressWidgetViewsFactory(
 
   override fun onDataSetChanged() {
     runBlocking {
-      val items = itemsCase.loadItems("")
+      val items = itemsCase.loadWidgetItems()
         .filterNot { it is ProgressListItem.Filters }
       adapterItems.replace(items)
     }
