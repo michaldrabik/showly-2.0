@@ -7,6 +7,7 @@ import com.michaldrabik.data_remote.aws.model.AwsImages
 import com.michaldrabik.data_remote.tmdb.model.TmdbImage
 import com.michaldrabik.data_remote.tmdb.model.TmdbImages
 import com.michaldrabik.repository.mappers.Mappers
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.IdTvdb
@@ -32,6 +33,7 @@ class ShowImagesProvider @Inject constructor(
   private val remoteSource: RemoteDataSource,
   private val localSource: LocalDataSource,
   private val mappers: Mappers,
+  private val settingsRepository: SettingsRepository
 ) {
 
   private val unavailableCache = mutableSetOf<IdTrakt>()
@@ -172,7 +174,11 @@ class ShowImagesProvider @Inject constructor(
 
   private fun findBestImage(images: List<TmdbImage>, type: ImageType) =
     images
-      .filter { if (type == POSTER) it.isEnglish() else it.isPlain() }
+      .filter { if (type == POSTER) it.isLocalRegion(settingsRepository.country) else it.isPlain() }
+      .sortedWith(compareBy({ it.vote_count }, { it.vote_average }))
+      .lastOrNull()
+      ?: images.firstOrNull { if (type == POSTER) it.isLocalRegion(settingsRepository.country) else it.isPlain() }
+      ?: images.filter { if (type == POSTER) it.isEnglish() else it.isPlain() }
       .sortedWith(compareBy({ it.vote_count }, { it.vote_average }))
       .lastOrNull()
       ?: images.firstOrNull { if (type == POSTER) it.isEnglish() else it.isPlain() }
