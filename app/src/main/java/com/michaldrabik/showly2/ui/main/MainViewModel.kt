@@ -11,7 +11,6 @@ import com.michaldrabik.showly2.ui.main.cases.MainAnnouncementsCase
 import com.michaldrabik.showly2.ui.main.cases.MainClearingCase
 import com.michaldrabik.showly2.ui.main.cases.MainInitialsCase
 import com.michaldrabik.showly2.ui.main.cases.MainModesCase
-import com.michaldrabik.showly2.ui.main.cases.MainSettingsCase
 import com.michaldrabik.showly2.ui.main.cases.MainTipsCase
 import com.michaldrabik.showly2.ui.main.cases.MainTraktCase
 import com.michaldrabik.showly2.ui.main.cases.deeplink.MainDeepLinksCase
@@ -40,7 +39,6 @@ class MainViewModel @Inject constructor(
   private val tipsCase: MainTipsCase,
   private val traktCase: MainTraktCase,
   private val clearingCase: MainClearingCase,
-  private val settingsCase: MainSettingsCase,
   private val announcementsCase: MainAnnouncementsCase,
   private val modesCase: MainModesCase,
   private val linksCase: MainDeepLinksCase,
@@ -120,7 +118,7 @@ class MainViewModel @Inject constructor(
   fun isTipShown(tip: Tip) = tipsCase.isTipShown(tip)
   fun setTipShown(tip: Tip) = tipsCase.setTipShown(tip)
 
-  fun hasMoviesEnabled(): Boolean = settingsCase.hasMoviesEnabled()
+  fun hasMoviesEnabled(): Boolean = settingsRepository.isMoviesEnabled
 
   fun clearMask() {
     maskState.value = false
