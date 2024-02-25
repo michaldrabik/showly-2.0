@@ -99,17 +99,16 @@ class TraktExportWatchedRunner @Inject constructor(
 
     val exportMovies = mutableListOf<SyncExportItem>()
     if (settingsRepository.isMoviesEnabled) {
-      val localMyMoviesIds = localSource.myMovies.getAllTraktIds()
-      if (localMyMoviesIds.isEmpty()) {
-        Timber.d("No movies to export. Skipping...")
-        return
-      }
-      val remoteMovies = remoteSource.trakt.fetchSyncWatchedMovies()
-      val localMyMovies = batchMovies(localMyMoviesIds)
-        .filter { movie -> remoteMovies.none { it.getTraktId() == movie.idTrakt } }
+      val localMoviesIds = localSource.myMovies.getAllTraktIds()
+      if (localMoviesIds.isNotEmpty()) {
+        val remoteMoviesIds = remoteSource.trakt.fetchSyncWatchedMovies()
+          .map { it.getTraktId() }
+        val localMyMovies = batchMovies(localMoviesIds)
+          .filter { movie -> remoteMoviesIds.none { it == movie.idTrakt } }
 
-      localMyMovies.mapTo(exportMovies) {
-        SyncExportItem.create(it.idTrakt, dateIsoStringFromMillis(it.updatedAt))
+        localMyMovies.mapTo(exportMovies) {
+          SyncExportItem.create(it.idTrakt, dateIsoStringFromMillis(it.updatedAt))
+        }
       }
     }
 
