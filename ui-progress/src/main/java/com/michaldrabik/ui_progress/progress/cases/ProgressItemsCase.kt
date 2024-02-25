@@ -254,7 +254,7 @@ class ProgressItemsCase @Inject constructor(
         addAll(listOf(upcomingHeader))
         if (!isCollapsed) addAll(upcomingItems)
       }
-      if (onHoldItems.isNotEmpty() && (filters.isOnHold || hasNoFiltersActive) || isWidget) {
+      if (onHoldItems.isNotEmpty() && (filters.isOnHold || hasNoFiltersActive || isWidget)) {
         val isCollapsed = settingsRepository.isProgressOnHoldCollapsed
         val onHoldHeader = ProgressListItem.Header.create(Type.ON_HOLD, R.string.textOnHold, isCollapsed)
         addAll(listOf(onHoldHeader))
