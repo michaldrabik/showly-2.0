@@ -1,5 +1,6 @@
 package com.michaldrabik.data_remote.tmdb.api
 
+import com.michaldrabik.data_remote.tmdb.model.Releases
 import com.michaldrabik.data_remote.tmdb.model.TmdbImages
 import com.michaldrabik.data_remote.tmdb.model.TmdbPeople
 import com.michaldrabik.data_remote.tmdb.model.TmdbPerson
@@ -43,4 +44,7 @@ interface TmdbService {
 
   @GET("tv/{tmdbId}/watch/providers")
   suspend fun fetchShowWatchProviders(@Path("tmdbId") tmdbId: Long): TmdbStreamings
+
+  @GET("movie/{tmdbId}/release_dates")
+  suspend fun fetchMovieRelease(@Path("tmdbId") tmdbId: Long): Releases
 }

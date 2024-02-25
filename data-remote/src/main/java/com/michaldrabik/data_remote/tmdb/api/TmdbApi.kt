@@ -94,4 +94,7 @@ internal class TmdbApi(private val service: TmdbService) : TmdbRemoteDataSource 
     } catch (error: Throwable) {
       TmdbImages.EMPTY
     }
+
+  override suspend fun fetchMovieRelease(imdbId: Long) =
+    service.fetchMovieRelease(imdbId)
 }

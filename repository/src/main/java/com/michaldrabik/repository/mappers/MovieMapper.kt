@@ -12,25 +12,31 @@ class MovieMapper @Inject constructor(
   private val idsMapper: IdsMapper
 ) {
 
-  fun fromNetwork(movie: MovieNetwork) = Movie(
-    idsMapper.fromNetwork(movie.ids),
-    movie.title ?: "",
-    movie.year ?: -1,
-    movie.overview ?: "",
-    movie.released?.let { if (it.isNotBlank()) LocalDate.parse(it) else null },
-    movie.runtime ?: -1,
-    movie.country ?: "",
-    movie.trailer ?: "",
-    movie.homepage ?: "",
-    movie.language ?: "",
-    MovieStatus.fromKey(movie.status),
-    movie.rating ?: -1F,
-    movie.votes ?: -1,
-    movie.comment_count ?: -1,
-    movie.genres ?: emptyList(),
-    nowUtcMillis(),
-    nowUtcMillis()
-  )
+  fun fromNetwork(movie: MovieNetwork): Movie {
+    val released: LocalDate? = movie.released?.let { if (it.isNotBlank()) LocalDate.parse(it) else null }
+
+    return Movie(
+      idsMapper.fromNetwork(movie.ids),
+      movie.title ?: "",
+      movie.year ?: -1,
+      movie.overview ?: "",
+      released,
+      released,
+      movie.runtime ?: -1,
+      movie.country ?: "",
+      movie.country,
+      movie.trailer ?: "",
+      movie.homepage ?: "",
+      movie.language ?: "",
+      MovieStatus.fromKey(movie.status),
+      movie.rating ?: -1F,
+      movie.votes ?: -1,
+      movie.comment_count ?: -1,
+      movie.genres ?: emptyList(),
+      nowUtcMillis(),
+      nowUtcMillis()
+    )
+  }
 
   fun toNetwork(movie: Movie) = MovieNetwork(
     idsMapper.toNetwork(movie.ids),
@@ -55,9 +61,11 @@ class MovieMapper @Inject constructor(
     movie.title,
     movie.year,
     movie.overview,
-    if (movie.released.isBlank()) null else LocalDate.parse(movie.released),
+    movie.released.let { if (it.isNotBlank()) LocalDate.parse(it) else null },
+    movie.originalRelease.let { if (it.isNotBlank()) LocalDate.parse(it) else null },
     movie.runtime,
     movie.country,
+    movie.currentCountry.let { it.ifBlank { null } },
     movie.trailer,
     movie.homepage,
     movie.language,
@@ -79,8 +87,10 @@ class MovieMapper @Inject constructor(
     movie.year,
     movie.overview,
     movie.released?.toString() ?: "",
+    movie.originalRelease?.toString() ?: "",
     movie.runtime,
     movie.country,
+    movie.currentCountry ?: "",
     movie.trailer,
     movie.language,
     movie.homepage,
