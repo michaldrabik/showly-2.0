@@ -1,1 +1,3 @@
-* Update hidden items trakt sync limits
+* Added Danish language
+* Trakt Export optimizations
+* Small season list items and person details UI bugfixes
