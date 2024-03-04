@@ -77,22 +77,22 @@ class SearchQueryCaseTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should run search query and return results sorted by score`() = runTest {
+  fun `Should run search query and return results sorted by order`() = runTest {
     val show = mockk<Show> {
       coEvery { votes } returnsMany listOf(10, 20, 30)
     }
-    val item1 = SearchResult(score = 1F, show = show, movie = null, person = null)
-    val item2 = SearchResult(score = 2F, show = show, movie = null, person = null)
-    val item3 = SearchResult(score = 3F, show = show, movie = null, person = null)
+    val item1 = SearchResult(order = 3, score = 1F, show = show, movie = null, person = null)
+    val item2 = SearchResult(order = 2, score = 2F, show = show, movie = null, person = null)
+    val item3 = SearchResult(order = 1, score = 3F, show = show, movie = null, person = null)
 
     coEvery { traktApi.fetchSearch(any(), any()) } returns listOf(item1, item2, item3)
 
     val result = SUT.searchByQuery("test")
 
     assertThat(result).hasSize(3)
-    assertThat(result[0].score).isEqualTo(3F)
-    assertThat(result[1].score).isEqualTo(2F)
-    assertThat(result[2].score).isEqualTo(1F)
+    assertThat(result[0].order).isEqualTo(1)
+    assertThat(result[1].order).isEqualTo(2)
+    assertThat(result[2].order).isEqualTo(3)
     coVerify(exactly = 1) { traktApi.fetchSearch("test", any()) }
     coVerify(exactly = 3) { showImagesProvider.findCachedImage(any(), any()) }
     coVerify(exactly = 0) { movieImagesProvider.findCachedImage(any(), any()) }

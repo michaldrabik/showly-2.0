@@ -16,7 +16,7 @@ object TestData {
     movie = Movie.EMPTY,
     image = Image.createUnknown(ImageType.POSTER),
     translation = null,
-    score = 0F,
+    order = 0,
     isFollowed = false,
     isLoading = false,
     isWatchlist = false,

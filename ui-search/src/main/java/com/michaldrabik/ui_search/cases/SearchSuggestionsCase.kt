@@ -68,8 +68,8 @@ class SearchSuggestionsCase @Inject constructor(
 
     val suggestions = (showsDef.await() + moviesDef.await()).map {
       when (it) {
-        is Show -> SearchResult(0F, it, Movie.EMPTY)
-        is Movie -> SearchResult(0F, Show.EMPTY, it)
+        is Show -> SearchResult(0, it, Movie.EMPTY)
+        is Movie -> SearchResult(0, Show.EMPTY, it)
         else -> throw IllegalStateException()
       }
     }
@@ -93,7 +93,7 @@ class SearchSuggestionsCase @Inject constructor(
           show = it.show,
           movie = it.movie,
           image = image,
-          score = it.score,
+          order = it.order,
           isFollowed = isFollowed,
           isWatchlist = isWatchlist,
           translation = loadTranslation(it),

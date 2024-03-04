@@ -19,7 +19,7 @@ class SearchSortingCase @Inject constructor() {
 
   private fun sortAscending(sortOrder: SortOrder) =
     when (sortOrder) {
-      SortOrder.RANK -> compareByDescending<SearchListItem> { it.score }.thenByDescending { it.votes }
+      SortOrder.RANK -> compareBy<SearchListItem> { it.order }
       SortOrder.NAME -> compareBy { getTitle(it) }
       SortOrder.NEWEST -> compareBy { it.year }
       else -> throw IllegalStateException("Invalid sort order")
@@ -27,7 +27,7 @@ class SearchSortingCase @Inject constructor() {
 
   private fun sortDescending(sortOrder: SortOrder) =
     when (sortOrder) {
-      SortOrder.RANK -> compareBy<SearchListItem> { it.score }.thenBy { it.votes }
+      SortOrder.RANK -> compareByDescending<SearchListItem> { it.order }
       SortOrder.NAME -> compareByDescending { getTitle(it) }
       SortOrder.NEWEST -> compareByDescending { it.year }
       else -> throw IllegalStateException("Invalid sort order")

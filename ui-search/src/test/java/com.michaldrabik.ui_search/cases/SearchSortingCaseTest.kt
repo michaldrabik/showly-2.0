@@ -36,12 +36,12 @@ class SearchSortingCaseTest : BaseMockTest() {
       movie = Movie.EMPTY,
       image = Image.createUnknown(ImageType.POSTER),
       spoilers = SpoilersSettings.INITIAL,
-      score = 1F,
+      order = 1,
     )
 
-    testList.add(element.copy(show = Show.EMPTY.copy(title = "Test2", year = 2000), score = 2F))
-    testList.add(element.copy(show = Show.EMPTY.copy(title = "Test1", year = 1000), score = 1F))
-    testList.add(element.copy(show = Show.EMPTY.copy(title = "Test3", year = 3000), score = 3F))
+    testList.add(element.copy(show = Show.EMPTY.copy(title = "Test2", year = 2000), order = 2))
+    testList.add(element.copy(show = Show.EMPTY.copy(title = "Test1", year = 1000), order = 1))
+    testList.add(element.copy(show = Show.EMPTY.copy(title = "Test3", year = 3000), order = 3))
   }
 
   @Test
@@ -72,9 +72,9 @@ class SearchSortingCaseTest : BaseMockTest() {
 
     val result = testList.sortedWith(SUT.sort(options))
 
-    assertThat(result[0].title).isEqualTo("Test3")
+    assertThat(result[0].title).isEqualTo("Test1")
     assertThat(result[1].title).isEqualTo("Test2")
-    assertThat(result[2].title).isEqualTo("Test1")
+    assertThat(result[2].title).isEqualTo("Test3")
   }
 
   @Test
@@ -83,9 +83,9 @@ class SearchSortingCaseTest : BaseMockTest() {
 
     val result = testList.sortedWith(SUT.sort(options))
 
-    assertThat(result[0].title).isEqualTo("Test1")
+    assertThat(result[0].title).isEqualTo("Test3")
     assertThat(result[1].title).isEqualTo("Test2")
-    assertThat(result[2].title).isEqualTo("Test3")
+    assertThat(result[2].title).isEqualTo("Test1")
   }
 
   @Test

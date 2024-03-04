@@ -22,7 +22,6 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
 import java.util.UUID
 import javax.inject.Inject
-import com.michaldrabik.data_remote.trakt.model.SearchResult as SearchResultNetwork
 
 @ViewModelScoped
 class SearchQueryCase @Inject constructor(
@@ -46,18 +45,14 @@ class SearchQueryCase @Inject constructor(
       val watchlistMoviesIds = moviesRepository.watchlistMovies.loadAllIds()
       val spoilers = settingsRepository.spoilers.getAll()
 
-      val results = remoteSource.trakt.fetchSearch(query, withMovies)
-      results
-        .sortedWith(
-          compareByDescending<SearchResultNetwork> { it.score }
-            .thenByDescending { it.getVotes() }
-        )
-        .map {
+      remoteSource.trakt.fetchSearch(query, withMovies)
+        .mapIndexed { index, item ->
+          val order = index + 1
           async {
             val result = SearchResult(
-              it.score ?: 0F,
-              it.show?.let { s -> mappers.show.fromNetwork(s) } ?: Show.EMPTY,
-              it.movie?.let { m -> mappers.movie.fromNetwork(m) } ?: Movie.EMPTY
+              order = order,
+              show = item.show?.let { s -> mappers.show.fromNetwork(s) } ?: Show.EMPTY,
+              movie = item.movie?.let { m -> mappers.movie.fromNetwork(m) } ?: Movie.EMPTY
             )
 
             val isFollowed =
@@ -76,7 +71,7 @@ class SearchQueryCase @Inject constructor(
               show = result.show,
               movie = result.movie,
               image = image,
-              score = result.score,
+              order = order,
               isFollowed = isFollowed,
               isWatchlist = isWatchlist,
               translation = translation,
