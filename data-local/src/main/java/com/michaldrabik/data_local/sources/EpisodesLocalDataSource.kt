@@ -9,7 +9,7 @@ interface EpisodesLocalDataSource {
 
   suspend fun upsertChunked(items: List<Episode>)
 
-  suspend fun updateIsExported(episodesIds: List<Long>, exportedAt: Long?)
+  suspend fun updateIsExported(episodesIds: List<Long>, exportedAt: Long)
 
   suspend fun isEpisodeWatched(showTraktId: Long, episodeTraktId: Long): Boolean
 

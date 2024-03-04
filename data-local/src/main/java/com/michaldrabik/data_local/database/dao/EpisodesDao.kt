@@ -22,9 +22,6 @@ interface EpisodesDao : EpisodesLocalDataSource {
     chunks.forEach { chunk -> upsert(chunk) }
   }
 
-  @Query("UPDATE episodes SET last_exported_at = :exportedAt WHERE id_trakt IN (:itemsIds)")
-  override suspend fun updateIsExported(itemsIds: List<Long>, exportedAt: Long?)
-
   @Query("SELECT EXISTS(SELECT 1 FROM episodes WHERE id_show_trakt = :showTraktId AND id_trakt = :episodeTraktId AND is_watched = 1)")
   override suspend fun isEpisodeWatched(showTraktId: Long, episodeTraktId: Long): Boolean
 
@@ -87,6 +84,16 @@ interface EpisodesDao : EpisodesLocalDataSource {
 
   @Query("SELECT id_trakt FROM episodes WHERE id_show_trakt IN(:showsIds) AND is_watched = 1")
   override suspend fun getAllWatchedIdsForShows(showsIds: List<Long>): List<Long>
+
+  @Transaction
+  override suspend fun updateIsExported(episodesIds: List<Long>, exportedAt: Long) {
+    episodesIds.forEach {
+      updateIsExported(it, exportedAt)
+    }
+  }
+
+  @Query("UPDATE episodes SET last_exported_at = :exportedAt WHERE id_trakt = :episodeId")
+  suspend fun updateIsExported(episodeId: Long, exportedAt: Long)
 
   @Query("DELETE FROM episodes WHERE id_show_trakt = :showTraktId AND is_watched = 0")
   override suspend fun deleteAllUnwatchedForShow(showTraktId: Long)
