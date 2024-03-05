@@ -29,7 +29,7 @@ class MyShowsDaoTest : BaseDaoTest() {
   @Test
   fun shouldInsertAndStoreEntities() {
     runBlocking {
-      val myShow = MyShow.fromTraktId(shows[0].idTrakt, 0, 0)
+      val myShow = MyShow.fromTraktId(shows[0].idTrakt, 0, 0, 0)
 
       database.myShowsDao().insert(listOf(myShow))
 
@@ -41,8 +41,8 @@ class MyShowsDaoTest : BaseDaoTest() {
   @Test
   fun shouldReturnIdsOnly() {
     runBlocking {
-      val myShow1 = MyShow.fromTraktId(shows[0].idTrakt, 0, 0)
-      val myShow2 = MyShow.fromTraktId(shows[1].idTrakt, 0, 0)
+      val myShow1 = MyShow.fromTraktId(shows[0].idTrakt, 0, 0, 0)
+      val myShow2 = MyShow.fromTraktId(shows[1].idTrakt, 0, 0, 0)
 
       database.myShowsDao().insert(listOf(myShow1))
       database.myShowsDao().insert(listOf(myShow2))
@@ -55,8 +55,8 @@ class MyShowsDaoTest : BaseDaoTest() {
   @Test
   fun shouldReturnMostRecentAddedShows() {
     runBlocking {
-      val myShow1 = MyShow.fromTraktId(shows[0].idTrakt, 0, 0)
-      val myShow2 = MyShow.fromTraktId(shows[1].idTrakt, 999, 999)
+      val myShow1 = MyShow.fromTraktId(shows[0].idTrakt, 0, 0, 0)
+      val myShow2 = MyShow.fromTraktId(shows[1].idTrakt, 999, 999, 999)
 
       database.myShowsDao().insert(listOf(myShow1))
       database.myShowsDao().insert(listOf(myShow2))
@@ -70,8 +70,8 @@ class MyShowsDaoTest : BaseDaoTest() {
   @Test
   fun shouldReturnById() {
     runBlocking {
-      val myShow1 = MyShow.fromTraktId(shows[0].idTrakt, 0, 0)
-      val myShow2 = MyShow.fromTraktId(shows[1].idTrakt, 0, 0)
+      val myShow1 = MyShow.fromTraktId(shows[0].idTrakt, 0, 0, 0)
+      val myShow2 = MyShow.fromTraktId(shows[1].idTrakt, 0, 0, 0)
 
       database.myShowsDao().insert(listOf(myShow1))
       database.myShowsDao().insert(listOf(myShow2))
@@ -84,7 +84,7 @@ class MyShowsDaoTest : BaseDaoTest() {
   @Test
   fun shouldDeleteByIdWithoutDeletingParent() {
     runBlocking {
-      val myShow1 = MyShow.fromTraktId(shows[1].idTrakt, 0, 0)
+      val myShow1 = MyShow.fromTraktId(shows[1].idTrakt, 0, 0, 0)
 
       val showsSize = shows.size
       database.myShowsDao().insert(listOf(myShow1))
