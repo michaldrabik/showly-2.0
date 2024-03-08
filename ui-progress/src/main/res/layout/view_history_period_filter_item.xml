@@ -3,7 +3,7 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
-  android:id="@+id/viewMyShowsTypeItemRoot"
+  android:id="@+id/root"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:clipToPadding="false"
@@ -12,18 +12,18 @@
   >
 
   <View
-    android:id="@+id/viewMyShowsTypeItemBadge"
+    android:id="@+id/badge"
     android:layout_width="3dp"
     android:layout_height="0dp"
     android:background="@drawable/bg_sort_item_badge"
     android:translationY="1dp"
-    app:layout_constraintBottom_toBottomOf="@id/viewMyShowsTypeItemTitle"
+    app:layout_constraintBottom_toBottomOf="@id/nameText"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="@id/viewMyShowsTypeItemTitle"
+    app:layout_constraintTop_toTopOf="@id/nameText"
     />
 
   <TextView
-    android:id="@+id/viewMyShowsTypeItemTitle"
+    android:id="@+id/nameText"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/spaceSmall"
@@ -32,15 +32,15 @@
     android:layout_marginBottom="@dimen/spaceMedium"
     android:gravity="start"
     android:maxLines="1"
-    android:text="@string/textHeaderAll"
     android:textAlignment="viewStart"
     android:textColor="?android:attr/textColorPrimary"
     android:textSize="16sp"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toEndOf="@id/viewMyShowsTypeItemBadge"
+    app:layout_constraintStart_toEndOf="@id/badge"
     app:layout_constraintTop_toTopOf="parent"
     app:layout_goneMarginStart="0dp"
+    tools:text="@string/textPeriodLast30Days"
     />
 
 </merge>
