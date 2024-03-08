@@ -61,11 +61,14 @@ class ShowDetailsPeopleFragment : BaseFragment<ShowDetailsPeopleViewModel>(R.lay
     actorsAdapter = ActorsAdapter().apply {
       itemClickListener = { viewModel.loadPersonDetails(it) }
     }
-    binding.showDetailsActorsRecycler.apply {
-      setHasFixedSize(true)
-      adapter = actorsAdapter
-      layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-      addDivider(R.drawable.divider_horizontal_list, LinearLayoutManager.HORIZONTAL)
+    with(binding) {
+      showDetailsActorsLabel.text = getString(R.string.textPeople).replace(":", "")
+      showDetailsActorsRecycler.apply {
+        setHasFixedSize(true)
+        adapter = actorsAdapter
+        layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        addDivider(R.drawable.divider_horizontal_list, LinearLayoutManager.HORIZONTAL)
+      }
     }
   }
 

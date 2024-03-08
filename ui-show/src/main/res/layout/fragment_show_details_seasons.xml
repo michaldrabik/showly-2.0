@@ -17,7 +17,7 @@
     android:layout_marginBottom="@dimen/spaceTiny"
     android:text="@string/textSeasons"
     android:textColor="?android:attr/textColorPrimary"
-    android:textSize="16sp"
+    android:textSize="18sp"
     android:textStyle="bold"
     app:layout_constraintBottom_toTopOf="@id/showDetailsSeasonsRecycler"
     app:layout_constraintStart_toStartOf="parent"
