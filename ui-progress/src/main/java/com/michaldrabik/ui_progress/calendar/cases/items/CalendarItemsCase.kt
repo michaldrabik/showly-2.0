@@ -13,6 +13,8 @@ import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.settings.SettingsSpoilersRepository
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
+import com.michaldrabik.ui_model.CalendarMode.PRESENT_FUTURE
+import com.michaldrabik.ui_model.CalendarMode.RECENTS
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_progress.calendar.helpers.WatchlistAppender
 import com.michaldrabik.ui_progress.calendar.helpers.filters.CalendarFilter
@@ -44,8 +46,11 @@ abstract class CalendarItemsCase constructor(
   abstract fun isWatched(episode: Episode): Boolean
   abstract fun isSpoilerHidden(episode: Episode): Boolean
 
-  suspend fun loadItems(searchQuery: String? = "") =
-    withContext(dispatchers.IO) {
+  suspend fun loadItems(
+    searchQuery: String? = "",
+    withFilters: Boolean = true
+  ): List<CalendarListItem> {
+    return withContext(dispatchers.IO) {
       val now = nowUtc().toLocalZone()
 
       val language = translationsRepository.getLanguage()
@@ -129,8 +134,20 @@ abstract class CalendarItemsCase constructor(
         .filterNotNull()
 
       val queryElements = filterByQuery(searchQuery ?: "", elements)
-      grouper.groupByTime(queryElements)
+      val groupedItems = grouper.groupByTime(queryElements)
+
+      if (withFilters) {
+        val filtersItem = when (this@CalendarItemsCase) {
+          is CalendarFutureCase -> CalendarListItem.Filters(PRESENT_FUTURE)
+          is CalendarRecentsCase -> CalendarListItem.Filters(RECENTS)
+          else -> throw IllegalStateException()
+        }
+        listOf(filtersItem) + groupedItems
+      } else {
+        groupedItems
+      }
     }
+  }
 
   private fun filterByQuery(query: String, items: List<CalendarListItem.Episode>) =
     items.filter {

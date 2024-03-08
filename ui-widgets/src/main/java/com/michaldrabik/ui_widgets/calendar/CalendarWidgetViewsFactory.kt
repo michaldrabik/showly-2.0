@@ -49,8 +49,8 @@ class CalendarWidgetViewsFactory(
     runBlocking {
       mode = settingsRepository.widgets.getWidgetCalendarMode(Mode.SHOWS, widgetId)
       val items = when (mode) {
-        PRESENT_FUTURE -> calendarFutureCase.loadItems()
-        RECENTS -> calendarRecentsCase.loadItems()
+        PRESENT_FUTURE -> calendarFutureCase.loadItems(withFilters = false)
+        RECENTS -> calendarRecentsCase.loadItems(withFilters = false)
       }
       adapterItems.replace(items)
     }
@@ -60,6 +60,7 @@ class CalendarWidgetViewsFactory(
     when (val item = adapterItems[position]) {
       is CalendarListItem.Episode -> createItemRemoteView(item)
       is CalendarListItem.Header -> createHeaderRemoteView(item, showIcon = position == 0)
+      is CalendarListItem.Filters -> throw IllegalStateException("Filters should not be in the widget")
     }
 
   private fun createHeaderRemoteView(item: CalendarListItem.Header, showIcon: Boolean) =

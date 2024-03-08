@@ -23,7 +23,6 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.disableUi
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.enableUi
-import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
@@ -38,7 +37,6 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_episodes.details.EpisodeDetailsBottomSheet
-import com.michaldrabik.ui_model.CalendarMode
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
@@ -132,10 +130,6 @@ class ProgressMainFragment :
 
   private fun setupView() {
     with(binding) {
-      with(progressMainCalendarIcon) {
-        visibleIf(currentPage == 1)
-        onClick { toggleCalendarMode() }
-      }
       with(progressMainSearchIcon) {
         onClick { if (!isSearching) enterSearch() else exitSearch() }
       }
@@ -350,11 +344,6 @@ class ProgressMainFragment :
     with(binding) {
       progressMainSearchView.setTraktProgress(uiState.isSyncing, withIcon = true)
       progressMainSearchView.isEnabled = !uiState.isSyncing
-      when (uiState.calendarMode) {
-        CalendarMode.PRESENT_FUTURE -> progressMainCalendarIcon.setImageResource(R.drawable.ic_history)
-        CalendarMode.RECENTS -> progressMainCalendarIcon.setImageResource(R.drawable.ic_calendar)
-        else -> Unit
-      }
     }
   }
 
@@ -378,7 +367,6 @@ class ProgressMainFragment :
     override fun onPageSelected(position: Int) {
       if (currentPage == position) return
 
-      binding.progressMainCalendarIcon.fadeIf(position == 1, duration = 150)
       if (binding.progressMainTabs.translationY != 0F) {
         resetTranslations()
         requireView().postDelayed({ onScrollReset() }, TRANSLATION_DURATION)

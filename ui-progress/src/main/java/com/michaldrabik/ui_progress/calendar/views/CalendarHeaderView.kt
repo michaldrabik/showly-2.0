@@ -8,8 +8,6 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.LinearLayout
 import androidx.core.view.updatePadding
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
-import com.michaldrabik.ui_base.utilities.extensions.visibleIf
-import com.michaldrabik.ui_model.CalendarMode
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarListItem
 import com.michaldrabik.ui_progress.databinding.ViewCalendarHeaderBinding
@@ -33,10 +31,12 @@ class CalendarHeaderView : LinearLayout {
     )
   }
 
-  fun bind(item: CalendarListItem.Header) {
+  fun bind(item: CalendarListItem.Header, position: Int) {
     with(binding) {
       calendarHeaderText.setText(item.textResId)
-      calendarHeaderIcon.visibleIf(item.calendarMode == CalendarMode.RECENTS)
     }
+    updatePadding(
+      top = context.dimenToPx(if (position == 1) R.dimen.spaceMedium else R.dimen.spaceBig)
+    )
   }
 }

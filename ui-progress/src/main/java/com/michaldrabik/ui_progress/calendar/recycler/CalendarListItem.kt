@@ -37,18 +37,17 @@ sealed class CalendarListItem(
   }
 
   data class Header(
-    override val show: Show,
-    override val image: Image,
-    override val isLoading: Boolean = false,
     @StringRes val textResId: Int,
     val calendarMode: CalendarMode,
-  ) : CalendarListItem(show, image, isLoading) {
+  ) : CalendarListItem(
+    show = Show.EMPTY,
+    image = Image.createUnknown(ImageType.POSTER),
+    isLoading = false
+  ) {
 
     companion object {
       fun create(@StringRes textResId: Int, mode: CalendarMode) =
         Header(
-          show = Show.EMPTY,
-          image = Image.createUnavailable(ImageType.POSTER),
           textResId = textResId,
           calendarMode = mode
         )
@@ -57,4 +56,12 @@ sealed class CalendarListItem(
     override fun isSameAs(other: ListItem) =
       textResId == (other as? Header)?.textResId
   }
+
+  data class Filters(
+    val mode: CalendarMode,
+  ) : CalendarListItem(
+    show = Show.EMPTY,
+    image = Image.createUnknown(ImageType.POSTER),
+    isLoading = false
+  )
 }
