@@ -22,7 +22,6 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.disableUi
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.enableUi
-import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
@@ -35,7 +34,6 @@ import com.michaldrabik.ui_base.utilities.extensions.showKeyboard
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.viewBinding
-import com.michaldrabik.ui_model.CalendarMode
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
@@ -111,11 +109,6 @@ class ProgressMoviesMainFragment :
 
   private fun setupView() {
     with(binding) {
-      with(progressMoviesCalendarIcon) {
-        visibleIf(currentPage == 1)
-        onClick { toggleCalendarMode() }
-      }
-
       with(progressMoviesSearchIcon) {
         onClick { if (!isSearching) enterSearch() else exitSearch() }
       }
@@ -212,13 +205,13 @@ class ProgressMoviesMainFragment :
   private fun openSettings() {
     hideNavigation()
     exitSearch()
-    navigateTo(R.id.actionProgressMoviesFragmentToSettingsFragment)
+    navigateToSafe(R.id.actionProgressMoviesFragmentToSettingsFragment)
   }
 
   fun openTraktSync() {
     hideNavigation()
     exitSearch()
-    navigateTo(R.id.actionProgressMoviesFragmentToTraktSyncFragment)
+    navigateToSafe(R.id.actionProgressMoviesFragmentToTraktSyncFragment)
   }
 
   private fun openMainSearch() {
@@ -299,11 +292,6 @@ class ProgressMoviesMainFragment :
     with(binding) {
       progressMoviesSearchView.setTraktProgress(uiState.isSyncing, withIcon = true)
       progressMoviesSearchView.isEnabled = !uiState.isSyncing
-      when (uiState.calendarMode) {
-        CalendarMode.PRESENT_FUTURE -> progressMoviesCalendarIcon.setImageResource(R.drawable.ic_history)
-        CalendarMode.RECENTS -> progressMoviesCalendarIcon.setImageResource(R.drawable.ic_calendar)
-        else -> Unit
-      }
     }
   }
 
@@ -311,7 +299,6 @@ class ProgressMoviesMainFragment :
     override fun onPageSelected(position: Int) {
       if (currentPage == position) return
 
-      binding.progressMoviesCalendarIcon.fadeIf(position == 1, duration = 150)
       if (binding.progressMoviesTabs.translationY != 0F) {
         resetTranslations()
         requireView().postDelayed({ onScrollReset() }, TRANSLATION_DURATION)

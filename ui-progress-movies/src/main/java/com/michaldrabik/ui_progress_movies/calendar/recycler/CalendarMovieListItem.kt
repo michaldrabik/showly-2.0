@@ -28,18 +28,17 @@ sealed class CalendarMovieListItem(
   ) : CalendarMovieListItem(movie, image, isLoading)
 
   data class Header(
-    override val movie: Movie,
-    override val image: Image,
-    override val isLoading: Boolean = false,
     @StringRes val textResId: Int,
     val calendarMode: CalendarMode,
-  ) : CalendarMovieListItem(movie, image, isLoading) {
+  ) : CalendarMovieListItem(
+    movie = Movie.EMPTY,
+    image = Image.createUnknown(ImageType.POSTER),
+    isLoading = false
+  ) {
 
     companion object {
       fun create(@StringRes textResId: Int, mode: CalendarMode) =
         Header(
-          movie = Movie.EMPTY,
-          image = Image.createUnavailable(ImageType.POSTER),
           textResId = textResId,
           calendarMode = mode
         )
@@ -48,4 +47,12 @@ sealed class CalendarMovieListItem(
     override fun isSameAs(other: MovieListItem) =
       textResId == (other as? Header)?.textResId
   }
+
+  data class Filters(
+    val mode: CalendarMode,
+  ) : CalendarMovieListItem(
+    movie = Movie.EMPTY,
+    image = Image.createUnknown(ImageType.POSTER),
+    isLoading = false
+  )
 }

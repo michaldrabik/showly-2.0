@@ -46,8 +46,8 @@ class CalendarMoviesWidgetViewsFactory(
     runBlocking {
       mode = settingsRepository.widgets.getWidgetCalendarMode(Mode.MOVIES, widgetId)
       val items = when (mode) {
-        CalendarMode.PRESENT_FUTURE -> futureItemsCase.loadItems()
-        CalendarMode.RECENTS -> recentItemsCase.loadItems()
+        CalendarMode.PRESENT_FUTURE -> futureItemsCase.loadItems(withFilters = false)
+        CalendarMode.RECENTS -> recentItemsCase.loadItems(withFilters = false)
       }
       adapterItems.replace(items)
     }
@@ -57,6 +57,7 @@ class CalendarMoviesWidgetViewsFactory(
     when (val item = adapterItems[position]) {
       is CalendarMovieListItem.MovieItem -> createItemRemoteView(item)
       is CalendarMovieListItem.Header -> createHeaderRemoteView(item, showIcon = position == 0)
+      is CalendarMovieListItem.Filters -> throw IllegalStateException("Filters should not be in the widget")
     }
 
   private fun createHeaderRemoteView(item: CalendarMovieListItem.Header, showIcon: Boolean) =

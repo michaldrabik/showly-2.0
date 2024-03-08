@@ -2,9 +2,7 @@ package com.michaldrabik.ui_progress_movies.calendar
 
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -30,17 +28,10 @@ import com.michaldrabik.ui_progress_movies.calendar.recycler.CalendarMovieListIt
 import com.michaldrabik.ui_progress_movies.calendar.recycler.CalendarMoviesAdapter
 import com.michaldrabik.ui_progress_movies.databinding.FragmentCalendarMoviesBinding
 import com.michaldrabik.ui_progress_movies.helpers.ProgressMoviesLayoutManagerProvider
-import com.michaldrabik.ui_progress_movies.helpers.TopOverscrollAdapter
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainFragment
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import me.everything.android.ui.overscroll.IOverScrollDecor
-import me.everything.android.ui.overscroll.IOverScrollState
-import me.everything.android.ui.overscroll.OverScrollBounceEffectDecoratorBase.DEFAULT_DECELERATE_FACTOR
-import me.everything.android.ui.overscroll.OverScrollBounceEffectDecoratorBase.DEFAULT_TOUCH_DRAG_MOVE_RATIO_BCK
-import me.everything.android.ui.overscroll.VerticalOverScrollBounceEffectDecorator
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -48,11 +39,6 @@ class CalendarMoviesFragment :
   BaseFragment<CalendarMoviesViewModel>(R.layout.fragment_calendar_movies),
   OnSearchClickListener,
   OnScrollResetListener {
-
-  private companion object {
-    const val OVERSCROLL_OFFSET = 100F
-    const val OVERSCROLL_OFFSET_TRANSLATION = 5F
-  }
 
   @Inject lateinit var settings: SettingsViewModeRepository
 
@@ -63,8 +49,6 @@ class CalendarMoviesFragment :
 
   private var adapter: CalendarMoviesAdapter? = null
   private var layoutManager: LayoutManager? = null
-  private var overscroll: IOverScrollDecor? = null
-  private var overscrollEnabled = true
   private var statusBarHeight = 0
   private var isSearching = false
 
@@ -101,60 +85,14 @@ class CalendarMoviesFragment :
       itemClickListener = { requireMainFragment().openMovieDetails(it.movie) },
       itemLongClickListener = { requireMainFragment().openMovieMenu(it.movie, showPinButtons = false) },
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) },
-      missingTranslationListener = { item -> viewModel.findMissingTranslation(item) }
+      missingTranslationListener = { item -> viewModel.findMissingTranslation(item) },
+      modeClickListener = { requireMainFragment().toggleCalendarMode() },
     )
     binding.progressMoviesCalendarRecycler.apply {
       adapter = this@CalendarMoviesFragment.adapter
       layoutManager = this@CalendarMoviesFragment.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
       setHasFixedSize(true)
-    }
-    setupOverscroll()
-  }
-
-  private fun setupOverscroll() {
-    if (overscroll != null || view == null) {
-      return
-    }
-    val adapt = TopOverscrollAdapter(binding.progressMoviesCalendarRecycler)
-    overscroll = VerticalOverScrollBounceEffectDecorator(
-      adapt,
-      1.75F,
-      DEFAULT_TOUCH_DRAG_MOVE_RATIO_BCK,
-      DEFAULT_DECELERATE_FACTOR
-    ).apply {
-      setOverScrollUpdateListener { _, state, offset ->
-        binding.progressMoviesCalendarOverscrollIcon?.run {
-          if (offset > 0) {
-            val value = (offset / OVERSCROLL_OFFSET).coerceAtMost(1F)
-            val valueTranslation = offset / OVERSCROLL_OFFSET_TRANSLATION
-            when (state) {
-              IOverScrollState.STATE_DRAG_START_SIDE -> {
-                alpha = value
-                scaleX = value
-                scaleY = value
-                translationY = valueTranslation
-                overscrollEnabled = true
-              }
-              IOverScrollState.STATE_BOUNCE_BACK -> {
-                alpha = value
-                scaleX = value
-                scaleY = value
-                translationY = valueTranslation
-                if (offset >= OVERSCROLL_OFFSET && overscrollEnabled) {
-                  overscrollEnabled = false
-                  requireMainFragment().toggleCalendarMode()
-                }
-              }
-            }
-          } else {
-            alpha = 0F
-            scaleX = 0F
-            scaleY = 0F
-            translationY = 0F
-          }
-        }
-      }
     }
   }
 
@@ -167,8 +105,6 @@ class CalendarMoviesFragment :
       val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
       statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top + tabletOffset
       view.updatePadding(top = statusBarHeight + dimenToPx(R.dimen.progressMoviesCalendarTabsViewPadding))
-      (binding.progressMoviesCalendarOverscrollIcon.layoutParams as ViewGroup.MarginLayoutParams)
-        .updateMargins(top = statusBarHeight + dimenToPx(R.dimen.progressMoviesOverscrollPadding))
     }
   }
 
@@ -179,9 +115,6 @@ class CalendarMoviesFragment :
 
     binding.progressMoviesCalendarRecycler.translationY = dimenToPx(R.dimen.progressMoviesSearchLocalOffset).toFloat()
     binding.progressMoviesCalendarRecycler.smoothScrollToPosition(0)
-
-    overscroll?.detach()
-    overscroll = null
   }
 
   override fun onExitSearch() {
@@ -189,8 +122,6 @@ class CalendarMoviesFragment :
 
     binding.progressMoviesCalendarRecycler.translationY = 0F
     binding.progressMoviesCalendarRecycler.smoothScrollToPosition(0)
-
-    setupOverscroll()
   }
 
   private fun render(uiState: CalendarMoviesUiState) {
@@ -202,15 +133,6 @@ class CalendarMoviesFragment :
           progressMoviesCalendarEmptyFutureView.rootLayout.visibleIf(items.isEmpty() && mode == PRESENT_FUTURE && !isSearching)
           progressMoviesCalendarEmptyRecentsView.rootLayout.visibleIf(items.isEmpty() && mode == RECENTS && !isSearching)
         }
-        mode.let {
-          viewLifecycleOwner.lifecycleScope.launch {
-            delay(300)
-            when (it) {
-              PRESENT_FUTURE -> progressMoviesCalendarOverscrollIcon.setImageResource(R.drawable.ic_history)
-              RECENTS -> progressMoviesCalendarOverscrollIcon.setImageResource(R.drawable.ic_calendar)
-            }
-          }
-        }
       }
     }
   }
@@ -220,7 +142,6 @@ class CalendarMoviesFragment :
   override fun setupBackPressed() = Unit
 
   override fun onDestroyView() {
-    overscroll = null
     adapter = null
     layoutManager = null
     super.onDestroyView()

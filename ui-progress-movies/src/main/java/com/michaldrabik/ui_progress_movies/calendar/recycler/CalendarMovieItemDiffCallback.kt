@@ -4,17 +4,26 @@ import androidx.recyclerview.widget.DiffUtil
 
 class CalendarMovieItemDiffCallback : DiffUtil.ItemCallback<CalendarMovieListItem>() {
 
-  override fun areItemsTheSame(oldItem: CalendarMovieListItem, newItem: CalendarMovieListItem): Boolean {
+  override fun areItemsTheSame(
+    oldItem: CalendarMovieListItem,
+    newItem: CalendarMovieListItem
+  ): Boolean {
     if (oldItem is CalendarMovieListItem.Header && newItem is CalendarMovieListItem.Header) {
       return oldItem.textResId == newItem.textResId
     }
     if (oldItem is CalendarMovieListItem.MovieItem && newItem is CalendarMovieListItem.MovieItem) {
       return oldItem.movie.traktId == newItem.movie.traktId
     }
+    if (oldItem is CalendarMovieListItem.Filters && newItem is CalendarMovieListItem.Filters) {
+      return true
+    }
     return false
   }
 
-  override fun areContentsTheSame(oldItem: CalendarMovieListItem, newItem: CalendarMovieListItem): Boolean {
+  override fun areContentsTheSame(
+    oldItem: CalendarMovieListItem,
+    newItem: CalendarMovieListItem
+  ): Boolean {
     if (oldItem is CalendarMovieListItem.Header && newItem is CalendarMovieListItem.Header) {
       return oldItem.textResId == newItem.textResId
     }
@@ -26,6 +35,9 @@ class CalendarMovieItemDiffCallback : DiffUtil.ItemCallback<CalendarMovieListIte
         oldItem.translation == newItem.translation &&
         oldItem.spoilers == newItem.spoilers &&
         oldItem.movie == newItem.movie
+    }
+    if (oldItem is CalendarMovieListItem.Filters && newItem is CalendarMovieListItem.Filters) {
+      return oldItem.mode == newItem.mode
     }
     return false
   }

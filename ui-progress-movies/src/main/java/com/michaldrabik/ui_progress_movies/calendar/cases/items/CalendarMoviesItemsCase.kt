@@ -9,6 +9,8 @@ import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.repository.settings.SettingsSpoilersRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
+import com.michaldrabik.ui_model.CalendarMode.PRESENT_FUTURE
+import com.michaldrabik.ui_model.CalendarMode.RECENTS
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_progress_movies.calendar.helpers.filters.CalendarFilter
@@ -32,8 +34,11 @@ abstract class CalendarMoviesItemsCase constructor(
   abstract val grouper: CalendarGrouper
   abstract val sorter: CalendarSorter
 
-  suspend fun loadItems(searchQuery: String? = ""): List<CalendarMovieListItem> =
-    withContext(dispatchers.IO) {
+  suspend fun loadItems(
+    searchQuery: String? = "",
+    withFilters: Boolean = true
+  ): List<CalendarMovieListItem> {
+    return withContext(dispatchers.IO) {
       val now = nowUtc().toLocalZone()
       val language = translationsRepository.getLanguage()
       val dateFormat = dateFormatProvider.loadFullDayFormat()
@@ -66,8 +71,20 @@ abstract class CalendarMoviesItemsCase constructor(
         }.awaitAll()
 
       val queryElements = filterByQuery(searchQuery ?: "", elements)
-      grouper.groupByTime(nowUtc(), queryElements)
+      val groupedItems = grouper.groupByTime(nowUtc(), queryElements)
+
+      if (withFilters) {
+        val filtersItem = when (this@CalendarMoviesItemsCase) {
+          is CalendarMoviesFutureCase -> CalendarMovieListItem.Filters(PRESENT_FUTURE)
+          is CalendarMoviesRecentsCase -> CalendarMovieListItem.Filters(RECENTS)
+          else -> throw IllegalStateException()
+        }
+        listOf(filtersItem) + groupedItems
+      } else {
+        groupedItems
+      }
     }
+  }
 
   private fun filterByQuery(query: String, items: List<CalendarMovieListItem.MovieItem>) =
     items.filter {
