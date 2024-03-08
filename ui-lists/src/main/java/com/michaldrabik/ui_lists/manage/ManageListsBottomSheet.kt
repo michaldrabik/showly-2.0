@@ -27,6 +27,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_lists.R
 import com.michaldrabik.ui_lists.databinding.ViewManageListsBinding
+import com.michaldrabik.ui_lists.manage.helpers.ManageListsDividerDecoration
 import com.michaldrabik.ui_lists.manage.recycler.ManageListsAdapter
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
@@ -84,6 +85,7 @@ class ManageListsBottomSheet : BaseBottomSheetFragment(R.layout.view_manage_list
       adapter = this@ManageListsBottomSheet.adapter
       layoutManager = this@ManageListsBottomSheet.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+      addItemDecoration(ManageListsDividerDecoration(requireContext()))
     }
   }
 

@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
+import com.michaldrabik.ui_base.utilities.extensions.addRipple
+import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_lists.databinding.ViewManageListsItemBinding
 import com.michaldrabik.ui_lists.manage.recycler.ManageListsItem
 
@@ -24,8 +26,12 @@ class ManageListsItemView : FrameLayout {
 
   init {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-    binding.manageListsItemCheckbox.setOnCheckedChangeListener { _, isChecked ->
-      if (isCheckEnabled) itemCheckListener?.invoke(item, isChecked)
+    with(binding) {
+      addRipple()
+      onClick(safe = false) {
+        val isChecked = !manageListsItemCheckbox.isChecked
+        itemCheckListener?.invoke(item, isChecked)
+      }
     }
   }
 
