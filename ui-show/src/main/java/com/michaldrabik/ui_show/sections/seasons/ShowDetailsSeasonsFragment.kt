@@ -80,6 +80,7 @@ class ShowDetailsSeasonsFragment : BaseFragment<ShowDetailsSeasonsViewModel>(R.l
         addItemDecoration(SeasonsGridItemDecoration(requireContext(), R.dimen.spaceBig))
       }
     }
+    binding.showDetailsSeasonsLabel.text = getString(R.string.textSeasons).replace(":", "")
   }
 
   private fun render(uiState: ShowDetailsSeasonsUiState) {
