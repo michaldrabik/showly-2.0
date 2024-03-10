@@ -89,6 +89,7 @@ abstract class CalendarMoviesItemsCase constructor(
   private fun filterByQuery(query: String, items: List<CalendarMovieListItem.MovieItem>) =
     items.filter {
       it.movie.title.contains(query, true) ||
-        it.translation?.title?.contains(query, true) == true
+        it.translation?.title?.contains(query, true) == true ||
+        it.movie.released?.format(it.dateFormat)?.contains(query, true) == true
     }
 }

@@ -154,6 +154,7 @@ abstract class CalendarItemsCase constructor(
       it.show.title.contains(query, true) ||
         it.episode.title.contains(query, true) ||
         it.translations?.show?.title?.contains(query, true) == true ||
-        it.translations?.episode?.title?.contains(query, true) == true
+        it.translations?.episode?.title?.contains(query, true) == true ||
+        it.episode.firstAired?.toLocalZone()?.format(it.dateFormat)?.contains(query, true) == true
     }
 }
