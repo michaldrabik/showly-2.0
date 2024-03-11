@@ -23,10 +23,6 @@
   <string name="textSettingsRecentShowsSummary">Kokoelmassa näytettävien, hiljattain lisättyjen kohteiden määrä.</string>
   <string name="textSettingsUpcomingSectionTitle">Tulossa-osio</string>
   <string name="textSettingsUpcomingSectionSummary">Ota Katselutilan Tulossa-osio käyttöön/poista se käytöstä.</string>
-  <string name="textSettingsMyShowsSectionsTitle">Omien sarjojen osiot</string>
-  <string name="textSettingsMyShowsSectionSummary">Ota omien sarjojen osioita käyttöön/poista niitä käytöstä.</string>
-  <string name="textSettingsMyMoviesSectionsTitle">Omien elokuvien osiot</string>
-  <string name="textSettingsMyMoviesSectionSummary">Ota omien elokuvien osioita käyttöön/poista niitä käytöstä.</string>
   <string name="textSettingsThemeTitle">Teema</string>
   <string name="textSettingsThemeSummary">Valitse pääteema.</string>
   <string name="textSettingsThemeWidgetsTitle">Teema</string>

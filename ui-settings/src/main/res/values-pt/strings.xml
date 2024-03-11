@@ -23,10 +23,6 @@
   <string name="textSettingsRecentShowsSummary">Número de itens recentes a serem exibidos em \'Coleção\'.</string>
   <string name="textSettingsUpcomingSectionTitle">Próximos</string>
   <string name="textSettingsUpcomingSectionSummary">Ativar/desativar a seção \'Em breve\' na aba \'Progresso\'.</string>
-  <string name="textSettingsMyShowsSectionsTitle">Minhas séries</string>
-  <string name="textSettingsMyShowsSectionSummary">Ativar/desativar seções na guia \'Minhas séries\'.</string>
-  <string name="textSettingsMyMoviesSectionsTitle">Meus filmes</string>
-  <string name="textSettingsMyMoviesSectionSummary">Ativar/desativar seções na guia \'Meus Filmes\'.</string>
   <string name="textSettingsThemeTitle">Tema</string>
   <string name="textSettingsThemeSummary">Selecione o tema principal.</string>
   <string name="textSettingsThemeWidgetsTitle">Tema</string>

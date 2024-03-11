@@ -23,10 +23,6 @@
   <string name="textSettingsRecentShowsSummary">\'Koleksiyon\'da görüntülenecek en son ögeler sayısı.</string>
   <string name="textSettingsUpcomingSectionTitle">Yaklaşan Bölümü</string>
   <string name="textSettingsUpcomingSectionSummary">\'İlerleme\' sekmesinde \'Yaklaşan\' bölümünü etkinleştir/devre dışı bırak.</string>
-  <string name="textSettingsMyShowsSectionsTitle">Dizilerim Bölümleri</string>
-  <string name="textSettingsMyShowsSectionSummary">\'Dizilerim\' sekmesindeki bölümleri etkinleştir/devre dışı bırak.</string>
-  <string name="textSettingsMyMoviesSectionsTitle">Filmlerim Bölümleri</string>
-  <string name="textSettingsMyMoviesSectionSummary">\'Filmlerim\' sekmesindeki bölümleri etkinleştir/devre dışı bırak.</string>
   <string name="textSettingsThemeTitle">Tema</string>
   <string name="textSettingsThemeSummary">Ana temayı seçin.</string>
   <string name="textSettingsThemeWidgetsTitle">Tema</string>

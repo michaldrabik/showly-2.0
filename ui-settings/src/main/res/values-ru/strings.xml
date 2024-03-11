@@ -23,10 +23,6 @@
   <string name="textSettingsRecentShowsSummary">Количество недавно добавленных для отображения в \'Коллекциях\'.</string>
   <string name="textSettingsUpcomingSectionTitle">Секция Предстоящие</string>
   <string name="textSettingsUpcomingSectionSummary">Включить/выключить раздел «Предстоящие» на вкладке «Прогресс».</string>
-  <string name="textSettingsMyShowsSectionsTitle">Вкладка Мои сериалы</string>
-  <string name="textSettingsMyShowsSectionSummary">Включить/отключить секции во вкладке «Мои сериалы».</string>
-  <string name="textSettingsMyMoviesSectionsTitle">Вкладка Мои фильмы</string>
-  <string name="textSettingsMyMoviesSectionSummary">Включить/отключить секции во вкладке «Мои фильмы».</string>
   <string name="textSettingsThemeTitle">Тема</string>
   <string name="textSettingsThemeSummary">Выберите главную тему.</string>
   <string name="textSettingsThemeWidgetsTitle">Тема</string>

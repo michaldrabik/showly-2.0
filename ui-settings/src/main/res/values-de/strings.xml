@@ -23,10 +23,6 @@
   <string name="textSettingsRecentShowsSummary">Anzahl an Einträgen, die unter \'Sammlung\' zu sehen sind.</string>
   <string name="textSettingsUpcomingSectionTitle">\'Demnächst\' Abschnitt</string>
   <string name="textSettingsUpcomingSectionSummary">Aktiviere/deaktiviere den Abschnitt \'Demnächst\' im \'Fortschritte\'.</string>
-  <string name="textSettingsMyShowsSectionsTitle">Meine Serien Abschnitt</string>
-  <string name="textSettingsMyShowsSectionSummary">Aktiviere/Deaktiviere die Abschnitte im \'Meine Serien\' Tab.</string>
-  <string name="textSettingsMyMoviesSectionsTitle">Meine Filme Abschnitt</string>
-  <string name="textSettingsMyMoviesSectionSummary">Aktiviere/Deaktiviere die Abschnitte im \'Meine Filme\' Tab.</string>
   <string name="textSettingsThemeTitle">Thema</string>
   <string name="textSettingsThemeSummary">Thema auswählen.</string>
   <string name="textSettingsThemeWidgetsTitle">Thema</string>

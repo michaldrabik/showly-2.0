@@ -23,10 +23,6 @@
   <string name="textSettingsRecentShowsSummary">Numero di elementi recenti da mostrare in \'Raccolta\'.</string>
   <string name="textSettingsUpcomingSectionTitle">Sezione \"In arrivo\"</string>
   <string name="textSettingsUpcomingSectionSummary">Attiva/disattiva la sezione \"In arrivo\" nella scheda \"Progressi\".</string>
-  <string name="textSettingsMyShowsSectionsTitle">Sezioni \"I miei show\"</string>
-  <string name="textSettingsMyShowsSectionSummary">Attiva/disattiva le sezioni nella pagina \"I miei show\".</string>
-  <string name="textSettingsMyMoviesSectionsTitle">Sezioni \"I miei film\"</string>
-  <string name="textSettingsMyMoviesSectionSummary">Attiva/disattiva le sezioni nella pagina \'I miei film\'.</string>
   <string name="textSettingsThemeTitle">Tema</string>
   <string name="textSettingsThemeSummary">Selezione il tema principale.</string>
   <string name="textSettingsThemeWidgetsTitle">Tema</string>

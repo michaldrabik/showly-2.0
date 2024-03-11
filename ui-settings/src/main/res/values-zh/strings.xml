@@ -23,10 +23,6 @@
   <string name="textSettingsRecentShowsSummary">「合集」中最近添加项目的展示数量。</string>
   <string name="textSettingsUpcomingSectionTitle">即将开播模块</string>
   <string name="textSettingsUpcomingSectionSummary">在「进度」选项卡中启用/禁用「即将开播」模块。</string>
-  <string name="textSettingsMyShowsSectionsTitle">我的剧集模块</string>
-  <string name="textSettingsMyShowsSectionSummary">在「我的剧集」选项卡中启用/禁用模块。</string>
-  <string name="textSettingsMyMoviesSectionsTitle">我的电影模块</string>
-  <string name="textSettingsMyMoviesSectionSummary">在「我的电影」选项卡中启用/禁用模块。</string>
   <string name="textSettingsThemeTitle">主题</string>
   <string name="textSettingsThemeSummary">选择首要主题。</string>
   <string name="textSettingsThemeWidgetsTitle">主题</string>

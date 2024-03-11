@@ -24,10 +24,6 @@
   <string name="textSettingsRecentShowsSummary">Number of recent items to display in \'Collection\'.</string>
   <string name="textSettingsUpcomingSectionTitle">Upcoming Section</string>
   <string name="textSettingsUpcomingSectionSummary">Enable/disable \'Upcoming\' section in \'Progress\' tab.</string>
-  <string name="textSettingsMyShowsSectionsTitle">My Shows Sections</string>
-  <string name="textSettingsMyShowsSectionSummary">Enable/disable sections in \'My Shows\' tab.</string>
-  <string name="textSettingsMyMoviesSectionsTitle">My Movies Sections</string>
-  <string name="textSettingsMyMoviesSectionSummary">Enable/disable sections in \'My Movies\' tab.</string>
   <string name="textSettingsThemeTitle">Theme</string>
   <string name="textSettingsThemeSummary">Select main theme.</string>
   <string name="textSettingsThemeWidgetsTitle">Theme</string>

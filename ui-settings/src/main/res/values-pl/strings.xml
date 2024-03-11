@@ -23,10 +23,6 @@
   <string name="textSettingsRecentShowsSummary">Liczba ostatnio dodanych elementów w zakładce \'Kolekcja\'.</string>
   <string name="textSettingsUpcomingSectionTitle">Sekcja \'Nadchodzące\'</string>
   <string name="textSettingsUpcomingSectionSummary">Włącz/wyłącz sekcję \"Nadchodzące\" w zakładce \"Postęp\".</string>
-  <string name="textSettingsMyShowsSectionsTitle">Moje Seriale - Sekcje</string>
-  <string name="textSettingsMyShowsSectionSummary">Włącz/wyłącz sekcje w zakładce \'Moje Seriale\'.</string>
-  <string name="textSettingsMyMoviesSectionsTitle">Moje Filmy - Sekcje</string>
-  <string name="textSettingsMyMoviesSectionSummary">Włącz/wyłącz sekcje w zakładce \'Moje Filmy\'.</string>
   <string name="textSettingsThemeTitle">Motyw</string>
   <string name="textSettingsThemeSummary">Wybierz główny motyw.</string>
   <string name="textSettingsThemeWidgetsTitle">Motyw</string>

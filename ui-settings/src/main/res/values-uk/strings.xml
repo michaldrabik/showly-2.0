@@ -23,10 +23,6 @@
   <string name="textSettingsRecentShowsSummary">Кількість нещодавно доданих елементів для показу в розділі \'Колекція\'.</string>
   <string name="textSettingsUpcomingSectionTitle">Розділ Незабаром</string>
   <string name="textSettingsUpcomingSectionSummary">Увімкнути/вимкнути розділ \'Незабаром\' у вкладці \'Прогрес\'.</string>
-  <string name="textSettingsMyShowsSectionsTitle">Мої Серіали - Розділи</string>
-  <string name="textSettingsMyShowsSectionSummary">Увімкнути/вимкнути розділи на вкладці \'Мої Серіали\'.</string>
-  <string name="textSettingsMyMoviesSectionsTitle">Мої Фільми - Розділи</string>
-  <string name="textSettingsMyMoviesSectionSummary">Увімкнути/вимкнути розділи на вкладці \'Мої Фільми\'.</string>
   <string name="textSettingsThemeTitle">Тема</string>
   <string name="textSettingsThemeSummary">Оберіть основну тему.</string>
   <string name="textSettingsThemeWidgetsTitle">Тема</string>

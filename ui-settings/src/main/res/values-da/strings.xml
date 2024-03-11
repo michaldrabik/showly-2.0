@@ -23,10 +23,6 @@
   <string name="textSettingsRecentShowsSummary">Antallet af senest tilføjede elementer der vises i \'Samling\'.</string>
   <string name="textSettingsUpcomingSectionTitle">Kommende Sektion</string>
   <string name="textSettingsUpcomingSectionSummary">Aktiver/deaktiver \'Kommende\' sektion i \'Fremskridt-fanen.</string>
-  <string name="textSettingsMyShowsSectionsTitle">Mine Serier Sektioner</string>
-  <string name="textSettingsMyShowsSectionSummary">Aktiver/deaktiver sektioner i \'Mine Serier\'-fanen.</string>
-  <string name="textSettingsMyMoviesSectionsTitle">Mine Film Sektioner</string>
-  <string name="textSettingsMyMoviesSectionSummary">Aktiver/deaktiver sektioner i \'Mine Film\'-fanen.</string>
   <string name="textSettingsThemeTitle">Tema</string>
   <string name="textSettingsThemeSummary">Vælg hovedtema.</string>
   <string name="textSettingsThemeWidgetsTitle">Tema</string>
