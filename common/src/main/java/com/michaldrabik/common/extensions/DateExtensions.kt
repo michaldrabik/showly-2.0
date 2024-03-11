@@ -22,6 +22,8 @@ fun ZonedDateTime.toMillis() = this.toInstant().toEpochMilli()
 
 fun ZonedDateTime.toLocalZone(): ZonedDateTime = this.withZoneSameInstant(ZoneId.systemDefault())
 
+fun ZonedDateTime.toUtcZone(): ZonedDateTime = this.withZoneSameInstant(ZoneId.of("UTC"))
+
 fun ZonedDateTime.isSameDayOrAfter(date: ZonedDateTime): Boolean =
   this.isEqual(date.truncatedTo(DAYS)) || this.isAfter(date.truncatedTo(DAYS))
 

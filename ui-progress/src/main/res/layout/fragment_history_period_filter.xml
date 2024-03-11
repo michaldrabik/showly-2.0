@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/root"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:background="@drawable/bg_filters_sheet"
+  android:clipToPadding="false"
+  android:focusableInTouchMode="true"
+  android:paddingTop="@dimen/spaceMedium"
+  android:paddingBottom="@dimen/spaceNormal"
+  tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
+  >
+
+  <LinearLayout
+    android:id="@+id/itemsLayout"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layout_constrainedHeight="true"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    />
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/applyButton"
+    style="@style/RoundMaterialButton"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceNormal"
+    android:layout_marginTop="@dimen/spaceNormal"
+    android:layout_marginEnd="@dimen/spaceNormal"
+    android:backgroundTint="@color/selector_main_button"
+    android:gravity="center"
+    android:text="@string/textApply"
+    android:textColor="?attr/textColorOnSurface"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/itemsLayout"
+    app:layout_goneMarginTop="@dimen/spaceNormal"
+    app:rippleColor="?android:attr/textColorPrimary"
+    />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

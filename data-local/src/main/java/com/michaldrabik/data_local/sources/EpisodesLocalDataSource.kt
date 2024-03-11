@@ -53,6 +53,8 @@ interface EpisodesLocalDataSource {
 
   suspend fun getAllWatchedForShows(showsIds: List<Long>): List<Episode>
 
+  suspend fun getAllWatchedForShows(showsIds: List<Long>, fromTime: Long, toTime: Long): List<Episode>
+
   suspend fun getAllWatchedIdsForShows(showsIds: List<Long>): List<Long>
 
   suspend fun deleteAllUnwatchedForShow(showTraktId: Long)

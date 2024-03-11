@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clipChildren="false"
+    >
+
+    <ImageView
+      android:id="@+id/itemImage"
+      android:layout_width="@dimen/progressImageWidth"
+      android:layout_height="@dimen/progressImageHeight"
+      android:layout_marginStart="@dimen/spaceMedium"
+      android:layout_marginTop="8dp"
+      android:layout_marginBottom="8dp"
+      android:background="@drawable/bg_media_view_elevation"
+      android:elevation="@dimen/elevationSmall"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+    <ImageView
+      android:id="@+id/placeholderImage"
+      android:layout_width="@dimen/progressImageWidth"
+      android:layout_height="@dimen/progressImageHeight"
+      android:layout_marginStart="@dimen/spaceMedium"
+      android:background="@drawable/bg_media_view_placeholder"
+      android:elevation="@dimen/elevationSmall"
+      android:padding="@dimen/spaceBig"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_television"
+      app:tint="?attr/colorPlaceholderIcon"
+      tools:visibility="visible"
+      />
+
+    <ImageView
+      android:id="@+id/badge"
+      style="@style/Badge.Watchlist"
+      android:layout_width="22dp"
+      android:layout_height="22dp"
+      android:layout_marginEnd="2dp"
+      android:translationY="-3dp"
+      app:layout_constraintEnd_toEndOf="@id/itemImage"
+      app:layout_constraintTop_toTopOf="@id/itemImage"
+      app:srcCompat="@drawable/ic_bookmark_full"
+      tools:visibility="visible"
+      />
+
+    <TextView
+      android:id="@+id/itemTitle"
+      style="@style/CollectionItem.Title"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceNormal"
+      android:layout_marginEnd="@dimen/spaceMedium"
+      app:layout_constraintBottom_toTopOf="@id/itemSubtitle"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/itemImage"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      app:layout_goneMarginEnd="@dimen/spaceMedium"
+      tools:ignore="RtlSymmetry"
+      tools:text="Breaking Bad"
+      />
+
+    <TextView
+      android:id="@+id/itemSubtitle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceNormal"
+      android:layout_marginTop="@dimen/spaceTiny"
+      android:layout_marginEnd="6dp"
+      android:layout_marginBottom="@dimen/spaceTiny"
+      android:background="@drawable/bg_badge"
+      android:elevation="@dimen/elevationTiny"
+      android:ellipsize="end"
+      android:includeFontPadding="false"
+      android:maxLines="1"
+      android:paddingStart="6dp"
+      android:paddingTop="2dp"
+      android:paddingEnd="6dp"
+      android:paddingBottom="2dp"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="14sp"
+      app:layout_constraintBottom_toTopOf="@id/itemDate"
+      app:layout_constraintEnd_toStartOf="@id/itemDescription"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintHorizontal_chainStyle="packed"
+      app:layout_constraintStart_toEndOf="@id/itemImage"
+      app:layout_constraintTop_toBottomOf="@id/itemTitle"
+      tools:text="S.01 E.01"
+      />
+
+    <TextView
+      android:id="@+id/itemDescription"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:layout_marginEnd="@dimen/spaceMedium"
+      android:ellipsize="end"
+      android:gravity="center_vertical|start"
+      android:includeFontPadding="false"
+      android:maxLines="1"
+      android:textAlignment="viewStart"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="14sp"
+      app:layout_constraintBottom_toTopOf="@id/itemDate"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintStart_toEndOf="@id/itemSubtitle"
+      app:layout_constraintTop_toBottomOf="@id/itemTitle"
+      tools:text="Some Title of an Episode"
+      />
+
+    <ImageView
+      android:id="@+id/checkImage"
+      android:layout_width="16dp"
+      android:layout_height="16dp"
+      android:layout_marginStart="@dimen/spaceNormal"
+      android:translationY="2dp"
+      app:layout_constraintBottom_toTopOf="@id/buttonsLayout"
+      app:layout_constraintStart_toEndOf="@id/itemImage"
+      app:layout_constraintTop_toBottomOf="@id/itemSubtitle"
+      app:srcCompat="@drawable/ic_check"
+      app:tint="?android:attr/textColorSecondary"
+      />
+
+    <TextView
+      android:id="@+id/itemDate"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceTiny"
+      android:layout_marginTop="1dp"
+      android:gravity="start|center_vertical"
+      android:textAlignment="viewStart"
+      android:textColor="?android:attr/textColorSecondary"
+      android:textSize="12sp"
+      app:layout_constraintBottom_toTopOf="@id/buttonsLayout"
+      app:layout_constraintStart_toEndOf="@id/checkImage"
+      app:layout_constraintTop_toBottomOf="@id/itemSubtitle"
+      tools:text="Wednesday, 27 June 2019"
+      />
+
+    <LinearLayout
+      android:id="@+id/buttonsLayout"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceNormal"
+      android:layout_marginTop="@dimen/spaceMicro"
+      android:layout_marginEnd="@dimen/spaceMedium"
+      android:clipChildren="false"
+      android:gravity="end|center_vertical"
+      android:orientation="horizontal"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="1"
+      app:layout_constraintTop_toBottomOf="@id/itemDate"
+      >
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/detailsButton"
+        style="@style/RoundOutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/progressItemButtonHeight"
+        android:gravity="center"
+        android:text="@string/textEpisodeInfo"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="12sp"
+        app:rippleColor="?android:attr/textColorSecondary"
+        app:strokeWidth="0dp"
+        />
+
+    </LinearLayout>
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>

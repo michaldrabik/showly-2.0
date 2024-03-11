@@ -215,6 +215,11 @@
       app:launchSingleTop="true"
       />
     <action
+      android:id="@+id/actionProgressFragmentToDatesFilter"
+      app:destination="@id/historyDatesDialog"
+      app:launchSingleTop="true"
+      />
+    <action
       android:id="@+id/actionProgressFragmentToSearch"
       app:destination="@id/searchFragment"
       app:launchSingleTop="true"
@@ -923,6 +928,12 @@
     android:id="@+id/sortOrderDialog"
     android:name="com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet"
     android:label="dialogSortOrder"
+    />
+
+  <dialog
+    android:id="@+id/historyDatesDialog"
+    android:name="com.michaldrabik.ui_progress.history.filters.HistoryPeriodFilterBottomSheet"
+    android:label="dialogHistoryDates"
     />
 
   <dialog

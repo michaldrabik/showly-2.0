@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/root"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:clipChildren="false"
+  android:clipToPadding="false"
+  >
+
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/recycler"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:overScrollMode="never"
+    android:paddingStart="@dimen/progressRecyclerHorizontalSpace"
+    android:paddingTop="@dimen/progressCalendarTabsViewPadding"
+    android:paddingEnd="@dimen/progressRecyclerHorizontalSpace"
+    android:paddingBottom="@dimen/bottomNavigationHeightPadded"
+    android:visibility="gone"
+    tools:visibility="visible"
+    />
+
+  <include
+    android:id="@+id/emptyView"
+    layout="@layout/layout_history_empty"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginStart="@dimen/spaceBig"
+    android:layout_marginEnd="@dimen/spaceBig"
+    android:visibility="gone"
+    tools:visibility="visible"
+    />
+
+  <ProgressBar
+    android:id="@+id/progressBar"
+    style="@style/ProgressBar.Dark"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:visibility="gone"
+    />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

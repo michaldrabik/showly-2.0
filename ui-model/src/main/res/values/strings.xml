@@ -10,6 +10,15 @@
   <string name="textSortRecentlyWatched">Recently Watched</string>
   <string name="textSortEpisodesLeft">Episodes Left</string>
 
+  <string name="textPeriodThisWeek">This week</string>
+  <string name="textPeriodLastWeek">Last week</string>
+  <string name="textPeriodThisMonth">This month</string>
+  <string name="textPeriodLastMonth">Last month</string>
+  <string name="textPeriodLast30Days">Last 30 days</string>
+  <string name="textPeriodLast90Days">Last 90 days</string>
+  <string name="textPeriodLast365Days">Last 365 days</string>
+  <string name="textPeriodAllTime">All time</string>
+
   <string name="textHeaderRecentlyAdded">Recently Added</string>
   <string name="textHeaderWatching">Watching</string>
   <string name="textHeaderFinished">Finished</string>

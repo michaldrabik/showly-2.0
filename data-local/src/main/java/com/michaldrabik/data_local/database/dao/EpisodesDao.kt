@@ -82,6 +82,9 @@ interface EpisodesDao : EpisodesLocalDataSource {
   @Query("SELECT * FROM episodes WHERE id_show_trakt IN(:showsIds) AND is_watched = 1")
   override suspend fun getAllWatchedForShows(showsIds: List<Long>): List<Episode>
 
+  @Query("SELECT * FROM episodes WHERE id_show_trakt IN(:showsIds) AND is_watched = 1 AND last_watched_at NOT NULL AND last_watched_at >= :fromTime AND last_watched_at <= :toTime")
+  override suspend fun getAllWatchedForShows(showsIds: List<Long>, fromTime: Long, toTime: Long): List<Episode>
+
   @Query("SELECT id_trakt FROM episodes WHERE id_show_trakt IN(:showsIds) AND is_watched = 1")
   override suspend fun getAllWatchedIdsForShows(showsIds: List<Long>): List<Long>
 
