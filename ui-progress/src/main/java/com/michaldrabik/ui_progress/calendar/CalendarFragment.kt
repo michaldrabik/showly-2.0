@@ -152,8 +152,9 @@ class CalendarFragment :
         items?.let {
           adapter?.setItems(it)
           progressCalendarRecycler.fadeIn(150, withHardware = true)
-          progressCalendarEmptyFutureView.root.visibleIf(items.isEmpty() && mode == PRESENT_FUTURE && !isSearching)
-          progressCalendarEmptyRecentsView.root.visibleIf(items.isEmpty() && mode == RECENTS && !isSearching)
+          val anyEpisode = items.any { item -> item is CalendarListItem.Episode }
+          progressCalendarEmptyFutureView.root.visibleIf(!anyEpisode && mode == PRESENT_FUTURE && !isSearching)
+          progressCalendarEmptyRecentsView.root.visibleIf(!anyEpisode && mode == RECENTS && !isSearching)
         }
       }
     }

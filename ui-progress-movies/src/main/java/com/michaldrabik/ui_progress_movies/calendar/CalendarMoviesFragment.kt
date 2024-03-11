@@ -130,8 +130,9 @@ class CalendarMoviesFragment :
         items?.let {
           adapter?.setItems(it)
           progressMoviesCalendarRecycler.fadeIn(150, withHardware = true)
-          progressMoviesCalendarEmptyFutureView.rootLayout.visibleIf(items.isEmpty() && mode == PRESENT_FUTURE && !isSearching)
-          progressMoviesCalendarEmptyRecentsView.rootLayout.visibleIf(items.isEmpty() && mode == RECENTS && !isSearching)
+          val anyMovie = items.any { item -> item is CalendarMovieListItem.MovieItem }
+          progressMoviesCalendarEmptyFutureView.rootLayout.visibleIf(!anyMovie && mode == PRESENT_FUTURE && !isSearching)
+          progressMoviesCalendarEmptyRecentsView.rootLayout.visibleIf(!anyMovie && mode == RECENTS && !isSearching)
         }
       }
     }
