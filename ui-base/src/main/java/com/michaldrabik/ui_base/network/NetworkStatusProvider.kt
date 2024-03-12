@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_base.network
 
+import android.annotation.SuppressLint
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET
@@ -31,6 +32,7 @@ class NetworkStatusProvider @Inject constructor(
 
   fun isOnline() = status.value
 
+  @SuppressLint("MissingPermission")
   override fun onStart(owner: LifecycleOwner) {
     super.onStart(owner)
     val networkRequest = NetworkRequest.Builder()

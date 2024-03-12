@@ -52,9 +52,12 @@ import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
 @AndroidEntryPoint
 class MainActivity :
@@ -141,15 +144,18 @@ class MainActivity :
     binding.viewMask.onClick { /* NOOP */ }
   }
 
+  @OptIn(FlowPreview::class)
   private fun setupNetworkObserver() {
     lifecycle.addObserver(networkStatusProvider)
     lifecycleScope.launch {
       repeatOnLifecycle(Lifecycle.State.STARTED) {
         launch {
-          networkStatusProvider.status.collect {
-            binding.statusView.visibleIf(!it)
-            binding.statusView.text = getString(R.string.errorNoInternetConnection)
-          }
+          networkStatusProvider.status
+            .debounce(3.seconds)
+            .collect {
+              binding.statusView.visibleIf(!it)
+              binding.statusView.text = getString(R.string.errorNoInternetConnection)
+            }
         }
       }
     }
