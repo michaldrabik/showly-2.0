@@ -46,6 +46,7 @@
     <item name="colorPlaceholderIcon">#6A6A6A</item>
 
     <item name="colorSeparator">@color/colorGrayDark</item>
+    <item name="colorChipButtonStroke">#66AAAAAA</item>
     <item name="colorCardBackground">#282828</item>
     <item name="colorBadgeBackground">@color/colorGrayDark</item>
     <item name="colorWidgetStatusBackground">@color/colorBlackTranslucent</item>
@@ -329,6 +330,20 @@
     <item name="chipBackgroundColor">@color/selector_chip_background</item>
     <item name="chipStrokeColor">@color/selector_chip_stroke</item>
     <item name="closeIconVisible">false</item>
+  </style>
+
+  <style name="ShowlyChip.Button" parent="Widget.Material3.Chip.Suggestion">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">38dp</item>
+    <item name="chipMinTouchTargetSize">0dp</item>
+    <item name="chipBackgroundColor">?android:windowBackground</item>
+    <item name="chipStrokeColor">?colorChipButtonStroke</item>
+    <item name="chipIconTint">?android:textColorPrimary</item>
+    <item name="chipCornerRadius">99dp</item>
+    <item name="chipIconVisible">true</item>
+    <item name="iconStartPadding">5dp</item>
+    <item name="android:checkable">false</item>
+    <item name="android:textColor">?android:textColorPrimary</item>
   </style>
 
   <style name="ShowlyCheckbox" parent="Widget.Material3.CompoundButton.CheckBox">

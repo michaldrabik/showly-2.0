@@ -7,7 +7,6 @@
   android:layout_height="wrap_content"
   android:clipChildren="false"
   android:clipToPadding="false"
-  tools:layout_marginTop="-0dp"
   >
 
   <TextView
@@ -31,7 +30,6 @@
     android:layout_width="0dp"
     android:layout_height="0dp"
     android:layout_marginTop="@dimen/spaceMedium"
-    android:layout_marginBottom="@dimen/spaceNormal"
     android:clipChildren="false"
     android:clipToPadding="false"
     android:overScrollMode="never"

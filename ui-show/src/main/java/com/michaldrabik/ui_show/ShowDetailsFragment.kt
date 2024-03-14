@@ -4,8 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
-import android.graphics.Typeface.BOLD
-import android.graphics.Typeface.NORMAL
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
@@ -185,42 +183,30 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     uiState.run {
       with(binding) {
         show?.let { show ->
-          renderTitleDescription(show, translation, followedState, spoilers)
           showDetailsStatus.text = getString(show.status.displayName)
-          val year = if (show.year > 0) String.format(ENGLISH, "%d", show.year) else ""
-          val country = if (show.country.isNotBlank()) String.format(ENGLISH, "(%s)", show.country) else ""
-          showDetailsExtraInfo.text = getString(
-            R.string.textShowExtraInfo,
-            show.network,
-            year,
-            country.uppercase(),
-            show.runtime.toString(),
-            getString(R.string.textMinutesShort),
-            renderGenres(show.genres)
-          )
-          showDetailsCommentsButton.visible()
+          renderTitleDescription(show, translation, followedState, spoilers)
+          renderExtraInfo(show)
           showDetailsShareButton.run {
             isEnabled = show.ids.imdb.id.isNotBlank()
             alpha = if (isEnabled) 1.0F else 0.35F
             onClick { openShareSheet(show) }
           }
-          showDetailsTrailerButton.run {
+          showDetailsActions.trailerChip.run {
             isEnabled = show.trailer.isNotBlank()
             alpha = if (isEnabled) 1.0F else 0.35F
             onClick {
               openWebUrl(show.trailer) ?: showSnack(MessageEvent.Info(R.string.errorCouldNotFindApp))
             }
           }
-          showDetailsLinksButton.onClick {
+          showDetailsActions.linksChip.onClick {
             val args = LinksBottomSheet.createBundle(show)
             navigateToSafe(R.id.actionShowDetailsFragmentToLinks, args)
           }
-          showDetailsCommentsButton.onClick {
+          showDetailsActions.commentsChip.onClick {
             val bundle = CommentsFragment.createBundle(show)
             navigateToSafe(R.id.actionShowDetailsFragmentToComments, bundle)
           }
           showDetailsAddButton.isEnabled = true
-          separator4.visible()
         }
         showLoading?.let {
           showDetailsMainLayout.fadeIf(!it, hardware = true)
@@ -294,25 +280,43 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
   }
 
-  private fun renderGenres(genres: List<String>) =
-    genres
-      .take(2)
+  private fun renderExtraInfo(show: Show) {
+    val year = if (show.year > 0) String.format(ENGLISH, "%d", show.year) else ""
+    val country = if (show.country.isNotBlank()) String.format(ENGLISH, "(%s)", show.country) else ""
+    val genres = show.genres
+      .take(5)
       .mapNotNull { Genre.fromSlug(it) }
       .joinToString(", ") { getString(it.displayName) }
 
+    var extraInfoText = getString(
+      R.string.textShowExtraInfo,
+      show.network,
+      year,
+      country.uppercase(),
+      "⏲ ${show.runtime}",
+      getString(R.string.textMinutesShort),
+      genres
+    )
+
+    if (genres.isEmpty()) {
+      extraInfoText = extraInfoText.trim().removeSuffix("|")
+    }
+
+    binding.showDetailsExtraInfo.text = extraInfoText
+  }
+
   private fun renderRating(rating: RatingState) {
-    with(binding) {
-      showDetailsRateButton.visibleIf(rating.rateLoading == false, gone = false)
-      showDetailsRateProgress.visibleIf(rating.rateLoading == true)
+    with(binding.showDetailsActions.rateChip) {
+      isEnabled = rating.rateLoading == false
+      alpha = if (isEnabled) 1.0F else 0.35F
 
-      showDetailsRateButton.text =
-        if (rating.hasRating()) "${rating.userRating?.rating}/10"
-        else getString(R.string.textRate)
+      text = if (rating.hasRating()) {
+        "${rating.userRating?.rating} / 10"
+      } else {
+        getString(R.string.textRate)
+      }
 
-      val typeFace = if (rating.hasRating()) BOLD else NORMAL
-      showDetailsRateButton.setTypeface(null, typeFace)
-
-      showDetailsRateButton.onClick {
+      onClick {
         if (rating.rateAllowed == true) {
           openRateDialog()
         } else {

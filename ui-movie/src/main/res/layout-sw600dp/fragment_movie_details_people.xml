@@ -29,7 +29,7 @@
     android:id="@+id/movieDetailsActorsRecycler"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/spaceMedium"
+    android:layout_marginTop="@dimen/spaceNormal"
     android:clipChildren="false"
     android:clipToPadding="false"
     android:minHeight="@dimen/actorMovieTileImageHeight"

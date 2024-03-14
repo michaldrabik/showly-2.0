@@ -216,58 +216,59 @@
         android:clipChildren="false"
         android:gravity="center_vertical|start"
         android:orientation="horizontal"
+        tools:visibility="visible"
         >
 
-        <TextView
-          android:id="@+id/episodeDetailsCommentsButton"
+        <FrameLayout
           android:layout_width="wrap_content"
-          android:layout_height="match_parent"
-          android:layout_marginEnd="18dp"
-          android:drawablePadding="6dp"
-          android:gravity="center_vertical"
-          android:text="@string/textLoadCommentsCount"
-          android:textAllCaps="true"
-          android:textColor="?android:textColorPrimary"
-          app:drawableStartCompat="@drawable/ic_comment"
-          app:drawableTint="?android:textColorPrimary"
-          />
+          android:layout_height="wrap_content"
+          >
 
-        <TextView
-          android:id="@+id/episodeDetailsRateButton"
+          <com.google.android.material.chip.Chip
+            android:id="@+id/episodeDetailsRateButton"
+            style="@style/ShowlyChip.Button"
+            android:text="@string/textRate"
+            app:chipIcon="@drawable/ic_star"
+            />
+
+          <ProgressBar
+            android:id="@+id/episodeDetailsRateProgress"
+            style="@style/ProgressBar.Accent"
+            android:layout_width="match_parent"
+            android:layout_height="28dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            tools:visibility="visible"
+            />
+
+        </FrameLayout>
+
+        <FrameLayout
           android:layout_width="wrap_content"
-          android:layout_height="match_parent"
-          android:drawablePadding="5dp"
-          android:gravity="center_vertical"
-          android:text="@string/textRate"
-          android:textAllCaps="true"
-          android:textColor="?android:textColorPrimary"
-          app:drawableStartCompat="@drawable/ic_star"
-          app:drawableTint="?android:textColorPrimary"
-          />
+          android:layout_height="wrap_content"
+          >
 
-        <ProgressBar
-          android:id="@+id/episodeDetailsRateProgress"
-          style="@style/ProgressBar.Dark"
-          android:layout_width="0dp"
-          android:layout_height="28dp"
-          android:layout_gravity="center"
-          android:layout_weight="1"
-          android:visibility="gone"
-          tools:visibility="visible"
-          />
+          <com.google.android.material.chip.Chip
+            android:id="@+id/episodeDetailsCommentsButton"
+            style="@style/ShowlyChip.Button"
+            android:layout_marginStart="@dimen/spaceSmall"
+            android:text="@string/textLoadCommentsCount"
+            app:chipIcon="@drawable/ic_comment"
+            />
+
+          <ProgressBar
+            android:id="@+id/episodeDetailsCommentsProgress"
+            style="@style/ProgressBar.Accent"
+            android:layout_width="match_parent"
+            android:layout_height="28dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            tools:visibility="visible"
+            />
+
+        </FrameLayout>
 
       </LinearLayout>
-
-      <ProgressBar
-        android:id="@+id/episodeDetailsCommentsProgress"
-        style="@style/ProgressBar.Accent"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="18dp"
-        android:visibility="gone"
-        tools:visibility="visible"
-        />
 
       <TextView
         android:id="@+id/episodeDetailsCommentsEmpty"
@@ -296,7 +297,7 @@
         android:paddingTop="@dimen/spaceBig"
         android:showDividers="middle|end"
         android:visibility="gone"
-        tools:visibility="gone"
+        tools:visibility="visible"
         />
 
     </LinearLayout>

@@ -4,8 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
-import android.graphics.Typeface.BOLD
-import android.graphics.Typeface.NORMAL
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -72,6 +70,7 @@ import com.michaldrabik.ui_movie.MovieDetailsEvent.Finish
 import com.michaldrabik.ui_movie.MovieDetailsEvent.RemoveFromTrakt
 import com.michaldrabik.ui_movie.MovieDetailsEvent.RequestWidgetsUpdate
 import com.michaldrabik.ui_movie.databinding.FragmentMovieDetailsBinding
+import com.michaldrabik.ui_movie.helpers.MovieDetailsMeta
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.ADD
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_HIDDEN
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_MY_MOVIES
@@ -179,45 +178,27 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       with(binding) {
         movie?.let { movie ->
           renderTitleDescription(movie, translation, followedState, spoilers)
+          renderExtraInfo(movie, meta)
           movieDetailsStatus.text = getString(movie.status.displayName)
-
-          val releaseDate =
-            when {
-              movie.released != null -> String.format(ENGLISH, "%s", meta?.dateFormat?.format(movie.released)?.capitalizeWords())
-              movie.year > 0 -> movie.year.toString()
-              else -> ""
-            }
-
-          val country = if (movie.country.isNotBlank()) String.format(ENGLISH, "(%s)", movie.country) else ""
-          movieDetailsExtraInfo.text = getString(
-            R.string.textMovieExtraInfo,
-            releaseDate,
-            country.uppercase(ROOT),
-            movie.runtime.toString(),
-            getString(R.string.textMinutesShort),
-            renderGenres(movie.genres)
-          )
-          movieDetailsCommentsButton.visible()
           movieDetailsShareButton.run {
             isEnabled = movie.ids.imdb.id.isNotBlank()
             alpha = if (isEnabled) 1.0F else 0.35F
             onClick { openShareSheet(movie) }
           }
-          movieDetailsTrailerButton.run {
+          movieDetailsActions.trailerChip.run {
             isEnabled = movie.trailer.isNotBlank()
             alpha = if (isEnabled) 1.0F else 0.35F
             onClick {
               openWebUrl(movie.trailer) ?: showSnack(MessageEvent.Info(R.string.errorCouldNotFindApp))
             }
           }
-          movieDetailsLinksButton.run {
+          movieDetailsActions.linksChip.run {
             onClick {
               val args = LinksBottomSheet.createBundle(movie)
               navigateTo(R.id.actionMovieDetailsFragmentToLinks, args)
             }
           }
-          separator5.visible()
-          movieDetailsCommentsButton.onClick {
+          movieDetailsActions.commentsChip.onClick {
             val bundle = CommentsFragment.createBundle(movie)
             navigateToSafe(R.id.actionMovieDetailsFragmentToComments, bundle)
           }
@@ -291,29 +272,50 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       }
 
       movieDetailsTitle.text = title
-      movieDetailsDescription.text = description
+      movieDetailsDescription.text = description.ifBlank { getString(R.string.textNoDescription) }
     }
   }
 
-  private fun renderGenres(genres: List<String>) =
-    genres
-      .take(3)
+  private fun renderExtraInfo(movie: Movie, meta: MovieDetailsMeta?) {
+    val country = if (movie.country.isNotBlank()) String.format(ENGLISH, "(%s)", movie.country) else ""
+    val releaseDate = when {
+      movie.released != null -> String.format(ENGLISH, "%s", meta?.dateFormat?.format(movie.released)?.capitalizeWords())
+      movie.year > 0 -> movie.year.toString()
+      else -> ""
+    }
+    val genres = movie.genres
+      .take(5)
       .mapNotNull { Genre.fromSlug(it) }
       .joinToString(", ") { getString(it.displayName) }
 
+    var extraInfoText = getString(
+      R.string.textMovieExtraInfo,
+      releaseDate,
+      country.uppercase(ROOT),
+      "⏲ ${movie.runtime}",
+      getString(R.string.textMinutesShort),
+      genres
+    )
+
+    if (genres.isEmpty()) {
+      extraInfoText = extraInfoText.trim().removeSuffix("|")
+    }
+
+    binding.movieDetailsExtraInfo.text = extraInfoText
+  }
+
   private fun renderRating(rating: RatingState) {
-    with(binding) {
-      movieDetailsRateButton.visibleIf(rating.rateLoading == false, gone = false)
-      movieDetailsRateProgress.visibleIf(rating.rateLoading == true)
+    with(binding.movieDetailsActions.rateChip) {
+      isEnabled = rating.rateLoading == false
+      alpha = if (isEnabled) 1.0F else 0.35F
 
-      movieDetailsRateButton.text =
-        if (rating.hasRating()) "${rating.userRating?.rating}/10"
-        else getString(R.string.textMovieRate)
+      text = if (rating.hasRating()) {
+        "${rating.userRating?.rating} / 10"
+      } else {
+        getString(R.string.textMovieRate)
+      }
 
-      val typeFace = if (rating.hasRating()) BOLD else NORMAL
-      movieDetailsRateButton.setTypeface(null, typeFace)
-
-      movieDetailsRateButton.onClick {
+      onClick {
         if (rating.rateAllowed == true) {
           openRateDialog()
         } else {

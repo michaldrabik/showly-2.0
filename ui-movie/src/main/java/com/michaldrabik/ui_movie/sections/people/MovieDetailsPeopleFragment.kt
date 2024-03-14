@@ -122,10 +122,11 @@ class MovieDetailsPeopleFragment : BaseFragment<MovieDetailsPeopleViewModel>(R.l
     ) {
       labelView.visibleIf(people.isNotEmpty())
       valueView.visibleIf(people.isNotEmpty())
+      val limit = 3
       valueView.text = people
-        .take(2)
+        .take(limit)
         .joinToString("\n") { it.name.trimWithSuffix(20, "…") }
-        .plus(if (people.size > 2) "\n…" else "")
+        .plus(if (people.size > limit) "\n…" else "")
       valueView.onClick { viewModel.loadPeopleList(people, department) }
     }
 

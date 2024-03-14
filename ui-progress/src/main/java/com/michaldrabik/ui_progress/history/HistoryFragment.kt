@@ -83,6 +83,7 @@ internal class HistoryFragment :
       withSpanSizeLookup { position ->
         when (adapter?.getItems()?.get(position)) {
           is HistoryListItem.Header -> gridSpanSize
+          is HistoryListItem.Filters -> gridSpanSize
           is HistoryListItem.Episode -> 1
           else -> throw IllegalStateException()
         }

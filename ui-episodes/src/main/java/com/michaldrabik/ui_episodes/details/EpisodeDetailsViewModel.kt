@@ -110,6 +110,9 @@ class EpisodeDetailsViewModel @Inject constructor(
   }
 
   fun loadComments(idTrakt: IdTrakt, season: Int, episode: Int) {
+    if (!commentsState.value.isNullOrEmpty()) {
+      return
+    }
     viewModelScope.launch {
       try {
         commentsLoadingState.value = true
@@ -129,9 +132,10 @@ class EpisodeDetailsViewModel @Inject constructor(
         commentsState.value = comments.first + comments.second
         commentsLoadingState.value = false
         commentsDateFormatState.value = dateFormatProvider.loadFullHourFormat()
-      } catch (t: Throwable) {
-        Timber.w("Failed to load comments. ${t.message}")
+      } catch (error: Throwable) {
+        Timber.w("Failed to load comments. ${error.message}")
         commentsLoadingState.value = false
+        rethrowCancellation(error)
       }
     }
   }

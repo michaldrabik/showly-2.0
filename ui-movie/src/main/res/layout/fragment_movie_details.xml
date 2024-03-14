@@ -125,7 +125,7 @@
         android:layout_marginEnd="@dimen/spaceNormal"
         android:ellipsize="end"
         android:gravity="start"
-        android:maxLines="1"
+        android:maxLines="2"
         android:textAlignment="viewStart"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="14sp"
@@ -142,7 +142,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginBottom="@dimen/spaceSmall"
+        android:layout_marginBottom="@dimen/spaceMedium"
         android:textColor="?android:attr/textColorSecondary"
         android:textSize="13sp"
         app:layout_constraintBottom_toTopOf="@id/movieDetailsAddButton"
@@ -168,7 +168,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="@dimen/spaceMedium"
+        android:layout_marginTop="@dimen/spaceNormal"
+        android:layout_marginBottom="@dimen/spaceMicro"
         android:drawablePadding="@dimen/spaceSmall"
         android:fontFamily="sans-serif-medium"
         android:gravity="start|center_vertical"
@@ -179,7 +180,7 @@
         android:textSize="13sp"
         app:drawableStartCompat="@drawable/ic_lists"
         app:drawableTint="?android:attr/textColorPrimary"
-        app:layout_constraintBottom_toTopOf="@id/separator4"
+        app:layout_constraintBottom_toTopOf="@id/separator2"
         app:layout_constraintEnd_toStartOf="@id/movieDetailsHideLabel"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintHorizontal_chainStyle="packed"
@@ -209,11 +210,11 @@
         />
 
       <View
-        android:id="@+id/separator4"
+        android:id="@+id/separator2"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="@dimen/spaceNormal"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:background="?attr/colorSeparator"
         app:layout_constraintBottom_toTopOf="@+id/movieDetailsRatingsFragment"
@@ -221,27 +222,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/movieDetailsManageListsLabel"
-        />
-
-      <com.michaldrabik.ui_base.common.views.FoldableTextView
-        android:id="@+id/movieDetailsDescription"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginEnd="@dimen/spaceNormal"
-        android:layout_marginBottom="@dimen/spaceTiny"
-        android:ellipsize="end"
-        android:gravity="start"
-        android:textAlignment="viewStart"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@id/movieDetailsActorsFragment"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/movieDetailsStreamingsFragment"
-        app:layout_goneMarginBottom="@dimen/spaceHuge"
-        tools:targetApi="o"
-        tools:text="Description"
         />
 
       <androidx.fragment.app.FragmentContainerView
@@ -256,25 +236,8 @@
         app:layout_constraintBottom_toTopOf="@id/movieDetailsStreamingsFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/separator4"
+        app:layout_constraintTop_toBottomOf="@+id/separator2"
         tools:layout="@layout/fragment_movie_details_ratings"
-        />
-
-      <View
-        android:id="@+id/separator2"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="14dp"
-        android:layout_marginEnd="@dimen/spaceNormal"
-        android:layout_marginBottom="@dimen/spaceNormal"
-        android:background="?attr/colorSeparator"
-        app:layout_constraintBottom_toTopOf="@id/movieDetailsCommentsButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/movieDetailsActorsFragment"
-        app:layout_goneMarginBottom="@dimen/spaceBig"
         />
 
       <androidx.fragment.app.FragmentContainerView
@@ -282,12 +245,48 @@
         android:name="com.michaldrabik.ui_movie.sections.streamings.MovieDetailsStreamingsFragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spaceMicro"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/movieDetailsDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/movieDetailsRatingsFragment"
-        tools:layout_height="40dp"
+        tools:layout="@layout/fragment_movie_details_streamings"
+        tools:visibility="visible"
+        />
+
+      <com.michaldrabik.ui_base.common.views.FoldableTextView
+        android:id="@+id/movieDetailsDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spaceNormal"
+        android:layout_marginEnd="@dimen/spaceNormal"
+        android:layout_marginBottom="@dimen/spaceMicro"
+        android:ellipsize="end"
+        android:gravity="start"
+        android:textAlignment="viewStart"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/movieDetailsActions"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/movieDetailsStreamingsFragment"
+        app:layout_goneMarginBottom="@dimen/spaceHuge"
+        tools:layout_marginTop="@dimen/spaceNormal"
+        tools:targetApi="o"
+        tools:text="@string/textNoDescription"
+        />
+
+      <include
+        android:id="@+id/movieDetailsActions"
+        layout="@layout/view_movie_action_chips"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spaceNormal"
+        app:layout_constraintBottom_toTopOf="@id/movieDetailsActorsFragment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/movieDetailsDescription"
         />
 
       <androidx.fragment.app.FragmentContainerView
@@ -295,70 +294,12 @@
         android:name="com.michaldrabik.ui_movie.sections.people.MovieDetailsPeopleFragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spaceMedium"
-        app:layout_constraintBottom_toTopOf="@id/separator2"
+        android:layout_marginTop="@dimen/spaceNormal"
+        app:layout_constraintBottom_toTopOf="@id/movieDetailsCollectionsFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/movieDetailsDescription"
+        app:layout_constraintTop_toBottomOf="@+id/movieDetailsActions"
         tools:layout="@layout/fragment_movie_details_people"
-        tools:layout_height="100dp"
-        />
-
-      <TextView
-        android:id="@+id/movieDetailsTrailerButton"
-        style="@style/MovieDetails.ExtraButton"
-        android:text="@string/textMovieTrailer"
-        app:drawableTopCompat="@drawable/ic_play"
-        app:layout_constraintBottom_toBottomOf="@id/movieDetailsCommentsButton"
-        app:layout_constraintEnd_toStartOf="@+id/movieDetailsRateButton"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/movieDetailsCommentsButton"
-        />
-
-      <TextView
-        android:id="@+id/movieDetailsLinksButton"
-        style="@style/MovieDetails.ExtraButton"
-        android:text="@string/textLink"
-        app:drawableTopCompat="@drawable/ic_link"
-        app:layout_constraintBottom_toBottomOf="@id/movieDetailsCommentsButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/movieDetailsCommentsButton"
-        app:layout_constraintTop_toTopOf="@id/movieDetailsCommentsButton"
-        />
-
-      <TextView
-        android:id="@+id/movieDetailsRateButton"
-        style="@style/MovieDetails.ExtraButton"
-        android:text="@string/textMovieRate"
-        app:drawableTopCompat="@drawable/ic_star"
-        app:layout_constraintBottom_toBottomOf="@id/movieDetailsCommentsButton"
-        app:layout_constraintEnd_toStartOf="@+id/movieDetailsCommentsButton"
-        app:layout_constraintStart_toEndOf="@id/movieDetailsTrailerButton"
-        app:layout_constraintTop_toTopOf="@id/movieDetailsCommentsButton"
-        />
-
-      <ProgressBar
-        android:id="@+id/movieDetailsRateProgress"
-        style="@style/ProgressBar.Dark"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/movieDetailsRateButton"
-        app:layout_constraintEnd_toEndOf="@id/movieDetailsRateButton"
-        app:layout_constraintStart_toStartOf="@id/movieDetailsRateButton"
-        app:layout_constraintTop_toTopOf="@id/movieDetailsRateButton"
-        />
-
-      <TextView
-        android:id="@+id/movieDetailsCommentsButton"
-        style="@style/MovieDetails.ExtraButton"
-        android:text="@string/textMovieComments2"
-        app:drawableTopCompat="@drawable/ic_comment"
-        app:layout_constraintBottom_toTopOf="@id/separator5"
-        app:layout_constraintEnd_toStartOf="@+id/movieDetailsLinksButton"
-        app:layout_constraintStart_toEndOf="@+id/movieDetailsRateButton"
-        app:layout_constraintTop_toBottomOf="@id/separator2"
         />
 
       <androidx.fragment.app.FragmentContainerView
@@ -366,14 +307,15 @@
         android:name="com.michaldrabik.ui_movie.sections.collections.list.MovieDetailsCollectionsFragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spaceNormal"
+        android:layout_marginTop="22dp"
+        android:clipChildren="false"
         android:visibility="gone"
         app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toTopOf="@id/movieDetailsRelatedFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/separator5"
+        app:layout_constraintTop_toBottomOf="@id/movieDetailsActorsFragment"
         tools:layout="@layout/fragment_movie_details_collection"
-        tools:layout_height="40dp"
         tools:visibility="visible"
         />
 
@@ -382,30 +324,13 @@
         android:name="com.michaldrabik.ui_movie.sections.related.MovieDetailsRelatedFragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spaceBig"
+        android:clipChildren="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/movieDetailsCollectionsFragment"
-        app:layout_goneMarginTop="@dimen/spaceNormal"
+        app:layout_goneMarginTop="22dp"
         tools:layout="@layout/fragment_movie_details_related"
-        />
-
-      <View
-        android:id="@+id/separator5"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="@dimen/spaceNormal"
-        android:layout_marginEnd="@dimen/spaceNormal"
-        android:background="?attr/colorSeparator"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/movieDetailsCollectionsFragment"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/movieDetailsCommentsButton"
-        app:layout_goneMarginBottom="@dimen/spaceBig"
-        app:layout_goneMarginTop="54dp"
-        tools:visibility="visible"
         />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

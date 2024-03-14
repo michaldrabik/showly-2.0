@@ -12,8 +12,6 @@
     android:id="@+id/movieDetailsStreamingsRecycler"
     android:layout_width="match_parent"
     android:layout_height="@dimen/streamingTileHeight"
-    android:layout_marginTop="@dimen/spaceMicro"
-    android:layout_marginBottom="@dimen/spaceNormal"
     android:clipChildren="false"
     android:clipToPadding="false"
     android:overScrollMode="never"

@@ -148,7 +148,7 @@
         android:layout_marginEnd="@dimen/spaceNormal"
         android:ellipsize="end"
         android:gravity="start"
-        android:maxLines="1"
+        android:maxLines="2"
         android:textAlignment="viewStart"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="15sp"
@@ -165,7 +165,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceBig"
-        android:layout_marginBottom="@dimen/spaceSmall"
+        android:layout_marginBottom="@dimen/spaceMedium"
         android:textColor="?android:attr/textColorSecondary"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@id/showDetailsAddButton"
@@ -191,8 +191,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceBig"
-        android:layout_marginTop="@dimen/spaceMedium"
-        android:layout_marginBottom="18dp"
+        android:layout_marginTop="@dimen/spaceNormal"
+        android:layout_marginBottom="@dimen/spaceMicro"
         android:drawablePadding="@dimen/spaceSmall"
         android:fontFamily="sans-serif-medium"
         android:gravity="start|center_vertical"
@@ -203,7 +203,7 @@
         android:textSize="14sp"
         app:drawableStartCompat="@drawable/ic_lists"
         app:drawableTint="?android:attr/textColorPrimary"
-        app:layout_constraintBottom_toTopOf="@+id/separator5"
+        app:layout_constraintBottom_toTopOf="@+id/separator2"
         app:layout_constraintEnd_toStartOf="@id/showDetailsHideLabel"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintHorizontal_chainStyle="packed"
@@ -233,10 +233,11 @@
         />
 
       <View
-        android:id="@+id/separator5"
+        android:id="@+id/separator2"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginStart="@dimen/spaceBig"
+        android:layout_marginTop="@dimen/spaceNormal"
         android:layout_marginEnd="@dimen/spaceBig"
         android:background="?attr/colorSeparator"
         app:layout_constraintBottom_toTopOf="@id/showDetailsStreamingsFragment"
@@ -251,7 +252,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/spaceNormal"
-        app:layout_constraintBottom_toTopOf="@id/separator5"
+        app:layout_constraintBottom_toTopOf="@id/separator2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/showDetailsGuidelineVertical"
         app:layout_constraintTop_toBottomOf="@id/separator1"
@@ -263,12 +264,12 @@
         android:name="com.michaldrabik.ui_show.sections.streamings.ShowDetailsStreamingsFragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spaceNormal"
+        android:layout_marginTop="22dp"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/showDetailsDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/separator5"
+        app:layout_constraintTop_toBottomOf="@id/separator2"
         tools:layout_height="40dp"
         tools:visibility="visible"
         />
@@ -285,30 +286,26 @@
         android:textAlignment="viewStart"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsActorsFragment"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsActions"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsStreamingsFragment"
         app:layout_goneMarginBottom="@dimen/spaceHuge"
-        app:layout_goneMarginTop="@dimen/spaceNormal"
+        app:layout_goneMarginTop="@dimen/spaceBig"
         tools:targetApi="o"
         tools:text="Description"
         />
 
-      <View
-        android:id="@+id/separator2"
+      <include
+        android:id="@+id/showDetailsActions"
+        layout="@layout/view_show_action_chips"
         android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginStart="@dimen/spaceBig"
-        android:layout_marginTop="14dp"
-        android:layout_marginEnd="@dimen/spaceBig"
-        android:layout_marginBottom="@dimen/spaceMedium"
-        android:background="?attr/colorSeparator"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsEpisodeFragment"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spaceBig"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsActorsFragment"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsActorsFragment"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsDescription"
         />
 
       <androidx.fragment.app.FragmentContainerView
@@ -316,12 +313,12 @@
         android:name="com.michaldrabik.ui_show.sections.people.ShowDetailsPeopleFragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spaceMedium"
-        app:layout_constraintBottom_toTopOf="@id/separator2"
+        android:layout_marginTop="@dimen/spaceBig"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsEpisodeFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsDescription"
-        tools:layout_height="100dp"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsActions"
+        tools:layout="@layout/fragment_show_details_people"
         />
 
       <androidx.fragment.app.FragmentContainerView
@@ -330,16 +327,16 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/episodeNextViewHeight"
         android:layout_marginLeft="@dimen/spaceBig"
-        android:layout_marginTop="@dimen/spaceTiny"
+        android:layout_marginTop="@dimen/spaceBig"
         android:layout_marginRight="@dimen/spaceBig"
-        android:layout_marginBottom="@dimen/spaceMedium"
         android:visibility="gone"
         app:layout_constrainedHeight="false"
         app:layout_constraintBottom_toTopOf="@id/showDetailsSeasonsFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/separator2"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsActorsFragment"
         tools:layout="@layout/fragment_show_details_next_episode"
+        tools:visibility="visible"
         />
 
       <androidx.fragment.app.FragmentContainerView
@@ -347,88 +344,14 @@
         android:name="com.michaldrabik.ui_show.sections.seasons.ShowDetailsSeasonsFragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spaceTiny"
+        android:layout_marginTop="@dimen/spaceBig"
         app:layout_constrainedHeight="false"
-        app:layout_constraintBottom_toBottomOf="@id/separator3"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsRelatedFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsEpisodeFragment"
-        app:layout_goneMarginTop="0dp"
+        app:layout_goneMarginTop="22dp"
         tools:layout="@layout/fragment_show_details_seasons"
-        />
-
-      <View
-        android:id="@+id/separator3"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginStart="@dimen/spaceBig"
-        android:layout_marginTop="@dimen/spaceSmall"
-        android:layout_marginEnd="@dimen/spaceBig"
-        android:layout_marginBottom="@dimen/spaceNormal"
-        android:background="?attr/colorSeparator"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsCommentsButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsSeasonsFragment"
-        app:layout_goneMarginBottom="@dimen/spaceMedium"
-        app:layout_goneMarginTop="@dimen/spaceBig"
-        />
-
-      <TextView
-        android:id="@+id/showDetailsTrailerButton"
-        style="@style/ShowDetails.ExtraButton"
-        android:text="@string/textTrailer"
-        app:drawableTopCompat="@drawable/ic_play"
-        app:layout_constraintBottom_toBottomOf="@id/showDetailsCommentsButton"
-        app:layout_constraintEnd_toStartOf="@+id/showDetailsRateButton"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/showDetailsCommentsButton"
-        />
-
-      <TextView
-        android:id="@+id/showDetailsLinksButton"
-        style="@style/ShowDetails.ExtraButton"
-        android:text="@string/textLink"
-        app:drawableTopCompat="@drawable/ic_link"
-        app:layout_constraintBottom_toBottomOf="@id/showDetailsCommentsButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/showDetailsCommentsButton"
-        app:layout_constraintTop_toTopOf="@id/showDetailsCommentsButton"
-        />
-
-      <TextView
-        android:id="@+id/showDetailsRateButton"
-        style="@style/ShowDetails.ExtraButton"
-        android:text="@string/textRate"
-        app:drawableTopCompat="@drawable/ic_star"
-        app:layout_constraintBottom_toBottomOf="@id/showDetailsCommentsButton"
-        app:layout_constraintEnd_toStartOf="@+id/showDetailsCommentsButton"
-        app:layout_constraintStart_toEndOf="@id/showDetailsTrailerButton"
-        app:layout_constraintTop_toTopOf="@id/showDetailsCommentsButton"
-        />
-
-      <ProgressBar
-        android:id="@+id/showDetailsRateProgress"
-        style="@style/ProgressBar.Dark"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/showDetailsRateButton"
-        app:layout_constraintEnd_toEndOf="@id/showDetailsRateButton"
-        app:layout_constraintStart_toStartOf="@id/showDetailsRateButton"
-        app:layout_constraintTop_toTopOf="@id/showDetailsRateButton"
-        />
-
-      <TextView
-        android:id="@+id/showDetailsCommentsButton"
-        style="@style/ShowDetails.ExtraButton"
-        android:text="@string/textComments2"
-        app:drawableTopCompat="@drawable/ic_comment"
-        app:layout_constraintBottom_toTopOf="@id/separator4"
-        app:layout_constraintEnd_toStartOf="@+id/showDetailsLinksButton"
-        app:layout_constraintStart_toEndOf="@+id/showDetailsRateButton"
-        app:layout_constraintTop_toBottomOf="@id/separator3"
         />
 
       <androidx.fragment.app.FragmentContainerView
@@ -436,30 +359,11 @@
         android:name="com.michaldrabik.ui_show.sections.related.ShowDetailsRelatedFragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spaceNormal"
+        android:layout_marginTop="@dimen/spaceBig"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/separator4"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsSeasonsFragment"
         tools:layout="@layout/fragment_show_details_related"
-        />
-
-      <View
-        android:id="@+id/separator4"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginStart="@dimen/spaceBig"
-        android:layout_marginTop="@dimen/spaceNormal"
-        android:layout_marginEnd="@dimen/spaceBig"
-        android:background="?attr/colorSeparator"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsRelatedFragment"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsCommentsButton"
-        app:layout_goneMarginBottom="@dimen/spaceBig"
-        app:layout_goneMarginTop="54dp"
-        tools:visibility="visible"
         />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

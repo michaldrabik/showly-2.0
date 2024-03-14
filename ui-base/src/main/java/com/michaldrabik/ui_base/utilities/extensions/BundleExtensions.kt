@@ -21,7 +21,6 @@ fun Fragment.requireLongArray(key: String?) =
 fun Fragment.requireBoolean(key: String?) =
   requireArguments().getBoolean(key)
 
-@Suppress("UNCHECKED_CAST")
 fun <T> Fragment.requireSerializable(key: String?) =
   requireArguments().getSerializable(key) as T
 
@@ -34,6 +33,11 @@ fun <T : Parcelable> Fragment.optionalParcelable(key: String?) =
 inline fun <reified T : Parcelable> Bundle.requireParcelable(key: String): T = when {
   Build.VERSION.SDK_INT >= 33 -> getParcelable(key, T::class.java)!!
   else -> @Suppress("DEPRECATION") (getParcelable(key) as? T)!!
+}
+
+inline fun <reified T : Parcelable> Bundle.optionalParcelable(key: String): T? = when {
+  Build.VERSION.SDK_INT >= 33 -> getParcelable(key, T::class.java)
+  else -> @Suppress("DEPRECATION") (getParcelable(key) as? T)
 }
 
 inline fun <reified T : Serializable> Bundle.requireSerializable(key: String): T = when {

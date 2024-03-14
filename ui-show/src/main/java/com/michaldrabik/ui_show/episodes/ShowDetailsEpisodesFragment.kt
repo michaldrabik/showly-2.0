@@ -22,6 +22,8 @@ import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.optionalParcelable
+import com.michaldrabik.ui_base.utilities.extensions.requireParcelable
 import com.michaldrabik.ui_base.utilities.extensions.setCheckedSilent
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
@@ -215,7 +217,7 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
           viewModel.setEpisodeWatched(episode, watched)
         }
         bundle.containsKey(NavigationArgs.ACTION_EPISODE_TAB_SELECTED) -> {
-          val selectedEpisode = bundle.getParcelable<Episode>(NavigationArgs.ACTION_EPISODE_TAB_SELECTED)!!
+          val selectedEpisode = bundle.requireParcelable<Episode>(NavigationArgs.ACTION_EPISODE_TAB_SELECTED)
           viewModel.openEpisodeDetails(selectedEpisode)
         }
         bundle.containsKey(NavigationArgs.ACTION_RATING_CHANGED) -> {
@@ -248,7 +250,7 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
 
   private fun openRateSeasonDialog(season: Season) {
     setFragmentResultListener(NavigationArgs.REQUEST_RATING) { _, bundle ->
-      when (bundle.getParcelable<Operation>(NavigationArgs.RESULT)) {
+      when (bundle.optionalParcelable<Operation>(NavigationArgs.RESULT)) {
         Operation.SAVE -> showSnack(MessageEvent.Info(R.string.textRateSaved))
         Operation.REMOVE -> showSnack(MessageEvent.Info(R.string.textRateRemoved))
         else -> Timber.w("Unknown result")

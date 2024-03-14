@@ -14,12 +14,10 @@
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/spaceNormal"
-    android:layout_marginBottom="@dimen/spaceTiny"
     android:text="@string/textSeasons"
     android:textColor="?android:attr/textColorPrimary"
     android:textSize="18sp"
     android:textStyle="bold"
-    app:layout_constraintBottom_toTopOf="@id/showDetailsSeasonsRecycler"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     app:layout_goneMarginTop="@dimen/spaceMicro"
@@ -47,8 +45,8 @@
 
   <ImageView
     android:id="@+id/showDetailsQuickProgress"
-    android:layout_width="25dp"
-    android:layout_height="25dp"
+    android:layout_width="26dp"
+    android:layout_height="26dp"
     android:layout_gravity="center_vertical|end"
     android:layout_marginEnd="@dimen/spaceMedium"
     android:background="?android:attr/selectableItemBackgroundBorderless"
@@ -68,6 +66,7 @@
     android:id="@+id/showDetailsSeasonsRecycler"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/spaceTiny"
     android:clipChildren="false"
     android:clipToPadding="false"
     android:nestedScrollingEnabled="false"
@@ -87,10 +86,12 @@
     style="@style/ProgressBar.Dark"
     android:layout_width="30dp"
     android:layout_height="30dp"
+    android:layout_margin="@dimen/spaceSmall"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
+    tools:visibility="visible"
     />
 
   <TextView

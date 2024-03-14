@@ -1,8 +1,6 @@
 package com.michaldrabik.ui_episodes.details
 
 import android.annotation.SuppressLint
-import android.graphics.Typeface.BOLD
-import android.graphics.Typeface.NORMAL
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
@@ -36,6 +34,7 @@ import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.invisible
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.optionalParcelable
 import com.michaldrabik.ui_base.utilities.extensions.requireParcelable
 import com.michaldrabik.ui_base.utilities.extensions.setTextFade
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
@@ -153,7 +152,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
 
   private fun openRateDialog() {
     setFragmentResultListener(NavigationArgs.REQUEST_RATING) { _, bundle ->
-      when (bundle.getParcelable<Operation>(NavigationArgs.RESULT)) {
+      when (bundle.optionalParcelable<Operation>(NavigationArgs.RESULT)) {
         Operation.SAVE -> renderSnackbar(MessageEvent.Info(R.string.textRateSaved))
         Operation.REMOVE -> renderSnackbar(MessageEvent.Info(R.string.textRateRemoved))
         else -> Timber.w("Unknown result.")
@@ -203,10 +202,6 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
         }
         isImageLoading.let { episodeDetailsProgress.visibleIf(it) }
         image?.let { renderImage(it, spoilers) }
-        isCommentsLoading.let {
-          episodeDetailsButtons.visibleIf(!it)
-          episodeDetailsCommentsProgress.visibleIf(it)
-        }
         episodes?.let { renderEpisodes(it) }
         comments?.let { comments ->
           episodeDetailsComments.removeAllViews()
@@ -233,7 +228,8 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
         }
         rating?.let { state ->
           episodeDetailsRateProgress.visibleIf(state.rateLoading == true)
-          episodeDetailsRateButton.visibleIf(state.rateLoading == false)
+          episodeDetailsRateButton.visibleIf(state.rateLoading == false, gone = false)
+          episodeDetailsRateButton.isEnabled = state.rateLoading == false
           episodeDetailsRateButton.onClick {
             if (state.rateAllowed == true) {
               openRateDialog()
@@ -242,14 +238,18 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
             }
           }
           if (state.hasRating()) {
-            episodeDetailsRateButton.setTypeface(null, BOLD)
-            episodeDetailsRateButton.text = "${state.userRating?.rating}/10"
+            episodeDetailsRateButton.text = "${state.userRating?.rating} / 10"
           } else {
-            episodeDetailsRateButton.setTypeface(null, NORMAL)
             episodeDetailsRateButton.setText(R.string.textRate)
           }
         }
         spoilers?.let { renderRating(it) }
+        isCommentsLoading.let {
+          episodeDetailsCommentsProgress.visibleIf(it)
+          episodeDetailsCommentsButton.visibleIf(!it, gone = false)
+          episodeDetailsCommentsButton.isEnabled = !it
+          episodeDetailsRateButton.isEnabled = !it
+        }
         renderTitle(translation, spoilers)
         renderDescription(translation, spoilers)
       }

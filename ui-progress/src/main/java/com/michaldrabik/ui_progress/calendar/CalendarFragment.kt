@@ -79,6 +79,7 @@ class CalendarFragment :
       withSpanSizeLookup { position ->
         when (adapter?.getItems()?.get(position)) {
           is CalendarListItem.Header -> gridSpanSize
+          is CalendarListItem.Filters -> gridSpanSize
           is CalendarListItem.Episode -> 1
           else -> throw IllegalStateException()
         }

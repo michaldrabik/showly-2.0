@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HorizontalScrollView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:clipToPadding="false"
+  android:overScrollMode="never"
+  android:paddingStart="@dimen/screenMarginHorizontal"
+  android:paddingEnd="@dimen/screenMarginHorizontal"
+  android:scrollbars="none"
+  >
+
+  <com.google.android.material.chip.ChipGroup
+    android:id="@+id/chipsLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:selectionRequired="false"
+    app:singleLine="true"
+    app:singleSelection="true"
+    >
+
+    <com.google.android.material.chip.Chip
+      android:id="@+id/rateChip"
+      style="@style/ShowlyChip.Button"
+      android:text="@string/textRate"
+      app:chipIcon="@drawable/ic_star"
+      />
+
+    <com.google.android.material.chip.Chip
+      android:id="@+id/commentsChip"
+      style="@style/ShowlyChip.Button"
+      android:text="@string/textComments2"
+      app:chipIcon="@drawable/ic_comment"
+      />
+
+    <com.google.android.material.chip.Chip
+      android:id="@+id/trailerChip"
+      style="@style/ShowlyChip.Button"
+      android:text="@string/textTrailer"
+      app:chipIcon="@drawable/ic_play"
+      />
+
+    <com.google.android.material.chip.Chip
+      android:id="@+id/linksChip"
+      style="@style/ShowlyChip.Button"
+      android:text="@string/textLink"
+      app:chipIcon="@drawable/ic_link"
+      />
+
+  </com.google.android.material.chip.ChipGroup>
+
+</HorizontalScrollView>
