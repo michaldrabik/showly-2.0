@@ -2,8 +2,10 @@
 <resources>
   <string name="tabCalendar">Календар</string>
   <string name="tabProgress">Прогрес</string>
+  <string name="tabHistory">Історія</string>
   <string name="textCalendarEmpty">Немає нових серій.</string>
   <string name="textRecentsEmpty">Немає нещодавно випущених серій.</string>
+  <string name="textHistoryEmpty">У вашій історії нічого немає.</string>
   <string name="textOnHold" comment="This is a header for Progress subsection. It will contain pending shows marked by user.">Призупинено</string>
   <string name="textDiscoverShows">Знайти серіали</string>
   <string name="textEpisodeInfo">Подробиці</string>

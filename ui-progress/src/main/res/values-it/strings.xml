@@ -2,8 +2,10 @@
 <resources>
   <string name="tabCalendar">Calendario</string>
   <string name="tabProgress">Progressi</string>
+  <string name="tabHistory">Storia</string>
   <string name="textCalendarEmpty">Non sono previsti nuovi episodi a breve.</string>
   <string name="textRecentsEmpty">Non sono stati trasmessi episodi di recente.</string>
+  <string name="textHistoryEmpty">Non c\'è nulla nella tua storia.</string>
   <string name="textOnHold" comment="This is a header for Progress subsection. It will contain pending shows marked by user.">In pausa</string>
   <string name="textDiscoverShows">Scopri show</string>
   <string name="textEpisodeInfo">Dettagli</string>

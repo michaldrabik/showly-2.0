@@ -9,6 +9,14 @@
   <string name="textSortDateUpdated">Aggiornati di recente</string>
   <string name="textSortRecentlyWatched">Visti di recente</string>
   <string name="textSortEpisodesLeft">Episodi rimasti</string>
+  <string name="textPeriodThisWeek">Questa settimana</string>
+  <string name="textPeriodLastWeek">Settimana scorsa</string>
+  <string name="textPeriodThisMonth">Questo mese</string>
+  <string name="textPeriodLastMonth">Il mese scorso</string>
+  <string name="textPeriodLast30Days">Ultimi 30 giorni</string>
+  <string name="textPeriodLast90Days">Ultimi 90 giorni</string>
+  <string name="textPeriodLast365Days">Ultimi 365 giorni</string>
+  <string name="textPeriodAllTime">Di sempre</string>
   <string name="textHeaderRecentlyAdded">Aggiunti di Recente</string>
   <string name="textHeaderWatching">Visione in corso</string>
   <string name="textHeaderFinished">Finiti</string>
@@ -64,7 +72,7 @@
   <string name="textTraktSyncOptionDailyButton">Programmata per ogni giorno</string>
   <string name="textTraktSyncOption3DayButton">Programmata per ogni 3 giorni</string>
   <string name="textTraktSyncOptionWeeklyButton">Programmata per ogni settimana</string>
-  <string name="textShowStatusReturning">Show rinnovato</string>
+  <string name="textShowStatusReturning">Serie Rinnovata</string>
   <string name="textShowStatusUpcoming">In arrivo</string>
   <string name="textShowStatusInProduction">In produzione</string>
   <string name="textShowStatusPlanned">Pianificata</string>

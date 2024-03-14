@@ -42,7 +42,7 @@
     <item quantity="one">%d jäljellä</item>
     <item quantity="other">%d jäljellä</item>
   </plurals>
-  <string name="textPeople">Henkilöt:</string>
+  <string name="textPeople">Näyttelijät ja henkilöstö</string>
   <string name="textDirecting">Ohjaus</string>
   <string name="textDirector">Ohjaaja</string>
   <string name="textWriting">Käsikirjoitus</string>

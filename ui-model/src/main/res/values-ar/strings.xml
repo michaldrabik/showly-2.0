@@ -9,6 +9,14 @@
   <string name="textSortDateUpdated">حُدث مؤخرًا</string>
   <string name="textSortRecentlyWatched">شوهد مؤخرًا</string>
   <string name="textSortEpisodesLeft">عدد الحلقات المتبقية</string>
+  <string name="textPeriodThisWeek">هذا الأسبوع</string>
+  <string name="textPeriodLastWeek">الأسبوع الماضي</string>
+  <string name="textPeriodThisMonth">هذا الشهر</string>
+  <string name="textPeriodLastMonth">الشهر الماضي</string>
+  <string name="textPeriodLast30Days">آخر 30 يومًا</string>
+  <string name="textPeriodLast90Days">آخر 90 يومًا</string>
+  <string name="textPeriodLast365Days">آخر 365 يومًا</string>
+  <string name="textPeriodAllTime">كل الأوقات</string>
   <string name="textHeaderRecentlyAdded">أضيف مؤخراً</string>
   <string name="textHeaderWatching">يُشاهد حاليًا</string>
   <string name="textHeaderFinished">تمت مشاهدته</string>

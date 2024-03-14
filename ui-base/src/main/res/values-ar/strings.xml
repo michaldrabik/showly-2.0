@@ -46,7 +46,7 @@
     <item quantity="many">بقي %d</item>
     <item quantity="other">بقي %d</item>
   </plurals>
-  <string name="textPeople">الأشخاص:</string>
+  <string name="textPeople">الممثلون وطاقم العمل</string>
   <string name="textDirecting">اخراج</string>
   <string name="textDirector">المخرج</string>
   <string name="textWriting">الكتابة</string>

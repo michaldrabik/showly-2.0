@@ -5,6 +5,7 @@
   <string name="textNo">Nie</string>
   <string name="textApply">Zastosuj</string>
   <string name="textCancel">Anuluj</string>
+  <string name="textContinue">Dalej</string>
   <string name="textClose">Zamknij</string>
   <string name="textNotNow">Nie Teraz</string>
   <string name="textNew">Nowy</string>
@@ -44,7 +45,7 @@
     <item quantity="many">%d do obejrzenia</item>
     <item quantity="other">%d do obejrzenia</item>
   </plurals>
-  <string name="textPeople">Osoby:</string>
+  <string name="textPeople">Obsada i twórcy</string>
   <string name="textDirecting">Reżyseria</string>
   <string name="textDirector">Reżyseria</string>
   <string name="textWriting">Scenariusz</string>

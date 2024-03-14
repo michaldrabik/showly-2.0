@@ -2,8 +2,10 @@
 <resources>
   <string name="tabCalendar">Kalender</string>
   <string name="tabProgress">Fremskridt</string>
+  <string name="tabHistory">Historie</string>
   <string name="textCalendarEmpty">Der er ingen nye afsnit på vej.</string>
   <string name="textRecentsEmpty">Der er ingen nyligt sendte afsnit.</string>
+  <string name="textHistoryEmpty">Der er intet i din historie.</string>
   <string name="textOnHold" comment="This is a header for Progress subsection. It will contain pending shows marked by user.">På Pause</string>
   <string name="textDiscoverShows">Opdag Serier</string>
   <string name="textEpisodeInfo">Detaljer</string>

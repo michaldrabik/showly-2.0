@@ -40,7 +40,7 @@
     <item quantity="one">%d übrig</item>
     <item quantity="other">%d übrig</item>
   </plurals>
-  <string name="textPeople">Personen:</string>
+  <string name="textPeople">Besetzung &amp; Crew</string>
   <string name="textDirecting">Regie</string>
   <string name="textDirector">Regisseur</string>
   <string name="textWriting">Drehbuchautor</string>

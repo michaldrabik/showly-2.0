@@ -42,7 +42,7 @@
     <item quantity="one">Ancora %d</item>
     <item quantity="other">Ancora %d</item>
   </plurals>
-  <string name="textPeople">Persone:</string>
+  <string name="textPeople">Attori &amp; troupe</string>
   <string name="textDirecting">Regia</string>
   <string name="textDirector">Regista</string>
   <string name="textWriting">Scrittura</string>

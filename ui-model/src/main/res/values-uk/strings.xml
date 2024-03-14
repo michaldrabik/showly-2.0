@@ -9,6 +9,14 @@
   <string name="textSortDateUpdated">За датою оновлення</string>
   <string name="textSortRecentlyWatched">За датою перегляду</string>
   <string name="textSortEpisodesLeft">За кількістю непереглянутих серій</string>
+  <string name="textPeriodThisWeek">Цього тижня</string>
+  <string name="textPeriodLastWeek">Минулого тижня</string>
+  <string name="textPeriodThisMonth">Цього місяця</string>
+  <string name="textPeriodLastMonth">Минулого місяця</string>
+  <string name="textPeriodLast30Days">Останні 30 днів</string>
+  <string name="textPeriodLast90Days">Останні 90 днів</string>
+  <string name="textPeriodLast365Days">Останні 365 днів</string>
+  <string name="textPeriodAllTime">За весь час</string>
   <string name="textHeaderRecentlyAdded">За датою додавання</string>
   <string name="textHeaderWatching">Дивлюся</string>
   <string name="textHeaderFinished">Завершено</string>

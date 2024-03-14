@@ -44,7 +44,7 @@
     <item quantity="many">%d залишилось</item>
     <item quantity="other">%d залишилось</item>
   </plurals>
-  <string name="textPeople">Люди:</string>
+  <string name="textPeople">Актори та знімальна група</string>
   <string name="textDirecting">Режисура</string>
   <string name="textDirector">Режисер</string>
   <string name="textWriting">Сценарій</string>
