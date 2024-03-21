@@ -53,8 +53,8 @@
   <dimen name="searchLocalViewCorner">16dp</dimen>
 
   <dimen name="discoverFilterChipStroke">1dp</dimen>
-  <dimen name="discoverRecyclerPadding">158dp</dimen>
-  <dimen name="discoverRecyclerPaddingNoTabs">116dp</dimen>
+  <dimen name="discoverRecyclerPadding">159dp</dimen>
+  <dimen name="discoverRecyclerPaddingNoTabs">117dp</dimen>
 
   <dimen name="linkItemTileHeight">42dp</dimen>
   <dimen name="linkItemImageWidth">50dp</dimen>
