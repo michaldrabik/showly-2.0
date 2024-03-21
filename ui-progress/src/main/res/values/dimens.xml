@@ -8,8 +8,8 @@
   <dimen name="progressSearchViewPaddingNoModes">68dp</dimen>
   <dimen name="progressSearchViewPadding">104dp</dimen>
 
-  <dimen name="progressSearchLocalViewPaddingNoModes">114dp</dimen>
-  <dimen name="progressSearchLocalViewPadding">150dp</dimen>
+  <dimen name="progressSearchLocalViewPaddingNoModes">116dp</dimen>
+  <dimen name="progressSearchLocalViewPadding">152dp</dimen>
   <dimen name="progressSearchLocalOffset">40dp</dimen>
 
   <dimen name="progressTabsViewPaddingNoModes">112dp</dimen>

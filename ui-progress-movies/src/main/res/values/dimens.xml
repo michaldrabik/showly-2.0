@@ -12,8 +12,8 @@
   <dimen name="progressMoviesImageHeight">120dp</dimen>
   <dimen name="progressMoviesImageWidth">80dp</dimen>
 
-  <dimen name="progressMoviesSearchLocalViewPaddingNoModes">114dp</dimen>
-  <dimen name="progressMoviesSearchLocalViewPadding">150dp</dimen>
+  <dimen name="progressMoviesSearchLocalViewPaddingNoModes">116dp</dimen>
+  <dimen name="progressMoviesSearchLocalViewPadding">152dp</dimen>
   <dimen name="progressMoviesSearchLocalOffset">40dp</dimen>
 
   <dimen name="progressMoviesOverscrollPadding">132dp</dimen>
