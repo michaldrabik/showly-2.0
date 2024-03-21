@@ -8,7 +8,7 @@
   <dimen name="spaceBig">24dp</dimen>
   <dimen name="spaceHuge">48dp</dimen>
 
-  <dimen name="screenMarginHorizontal">12dp</dimen>
+  <dimen name="screenMarginHorizontal">16dp</dimen>
 
   <dimen name="elevationTiny">0dp</dimen>
   <dimen name="elevationSmall">0dp</dimen>
@@ -24,7 +24,7 @@
 
   <dimen name="gridSpacing">4dp</dimen>
   <dimen name="gridListsSpacing">4dp</dimen>
-  <dimen name="gridPadding">8dp</dimen>
+  <dimen name="gridPadding">10dp</dimen>
   <dimen name="gridListsPadding">9dp</dimen>
   <dimen name="gridRecyclerPadding">9dp</dimen>
 

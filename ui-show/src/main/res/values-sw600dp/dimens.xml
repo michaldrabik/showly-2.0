@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <dimen name="screenMarginHorizontal">24dp</dimen>
   <dimen name="addToButtonTextSize">15sp</dimen>
   <dimen name="showDetailsExtraButtonTextSize">13sp</dimen>
   <dimen name="dividerHorizontalList">12dp</dimen>

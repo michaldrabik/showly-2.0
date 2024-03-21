@@ -26,8 +26,8 @@ class CalendarHeaderView : LinearLayout {
     updatePadding(
       top = context.dimenToPx(R.dimen.spaceBig),
       bottom = context.dimenToPx(R.dimen.spaceTiny),
-      left = context.dimenToPx(R.dimen.spaceMedium),
-      right = context.dimenToPx(R.dimen.spaceMedium)
+      left = context.dimenToPx(R.dimen.screenMarginHorizontal),
+      right = context.dimenToPx(R.dimen.screenMarginHorizontal)
     )
   }
 
