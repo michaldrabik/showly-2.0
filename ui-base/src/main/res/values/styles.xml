@@ -310,7 +310,7 @@
 
   <style name="ShowlyChip" parent="Widget.Material3.Chip.Suggestion">
     <item name="android:layout_width">wrap_content</item>
-    <item name="android:layout_height">30dp</item>
+    <item name="android:layout_height">32dp</item>
     <item name="chipMinTouchTargetSize">0dp</item>
   </style>
 
