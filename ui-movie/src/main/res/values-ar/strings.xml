@@ -9,7 +9,6 @@
   <string name="textMovieComments2">التعليقات</string>
   <string name="textMovieYouMayAlsoLike">قد تعجبك أيضاً</string>
   <string name="textMovieCollections">مجموعات</string>
-  <string name="textMovieExtraInfo">%s %s | %s %s | %s</string>
   <string name="textMovieManageLists">إدارة القوائم</string>
   <string name="textMovieManageListsCount">إدارة القوائم (%d)</string>
   <string name="textTraktSyncMovieRemovedFromTrakt">إكتملت مزامنة Trakt.tv بنجاح.</string>

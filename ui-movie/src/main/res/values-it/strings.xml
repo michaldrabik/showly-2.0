@@ -9,7 +9,6 @@
   <string name="textMovieComments2">Commenti</string>
   <string name="textMovieYouMayAlsoLike">Potrebbe piacerti anche</string>
   <string name="textMovieCollections">Raccolte</string>
-  <string name="textMovieExtraInfo">%s %s | %s %s | %s</string>
   <string name="textMovieManageLists">Gestisci liste</string>
   <string name="textMovieManageListsCount">Gestisci liste (%d)</string>
   <string name="textTraktSyncMovieRemovedFromTrakt">Trak.tv sincronizzato correttamente.</string>

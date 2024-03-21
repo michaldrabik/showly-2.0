@@ -9,7 +9,6 @@
   <string name="textMovieComments2">Opinie</string>
   <string name="textMovieYouMayAlsoLike">Zobacz również</string>
   <string name="textMovieCollections">Kolekcje</string>
-  <string name="textMovieExtraInfo">%s %s | %s %s | %s</string>
   <string name="textMovieManageLists">Zarządzaj listami</string>
   <string name="textMovieManageListsCount">Zarządzaj listami (%d)</string>
   <string name="textTraktSyncMovieRemovedFromTrakt">Trakt.tv zostało zaktualizowane.</string>

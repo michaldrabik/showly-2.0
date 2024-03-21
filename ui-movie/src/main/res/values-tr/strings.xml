@@ -9,7 +9,6 @@
   <string name="textMovieComments2">Yorumlar</string>
   <string name="textMovieYouMayAlsoLike">Bunlar da hoşunuza gidebilir</string>
   <string name="textMovieCollections">Koleksiyonlar</string>
-  <string name="textMovieExtraInfo">%s %s | %s %s | %s</string>
   <string name="textMovieManageLists">Listeleri Yönet</string>
   <string name="textMovieManageListsCount">Listeleri Yönet (%d)</string>
   <string name="textTraktSyncMovieRemovedFromTrakt">Trakt.tv eşitlemesi başarılı.</string>
