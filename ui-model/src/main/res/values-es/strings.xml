@@ -9,6 +9,14 @@
   <string name="textSortDateUpdated">Actualizado Recientemente</string>
   <string name="textSortRecentlyWatched">Visto Recientemente</string>
   <string name="textSortEpisodesLeft">Episodios Restantes</string>
+  <string name="textPeriodThisWeek">Esta semana</string>
+  <string name="textPeriodLastWeek">Semana pasada</string>
+  <string name="textPeriodThisMonth">Este mes</string>
+  <string name="textPeriodLastMonth">Mes pasado</string>
+  <string name="textPeriodLast30Days">Últimos 30 días</string>
+  <string name="textPeriodLast90Days">Últimos 90 días</string>
+  <string name="textPeriodLast365Days">Últimos 365 días</string>
+  <string name="textPeriodAllTime">Todo</string>
   <string name="textHeaderRecentlyAdded">Añadidos Recientemente</string>
   <string name="textHeaderWatching">Viendo</string>
   <string name="textHeaderFinished">Terminados</string>

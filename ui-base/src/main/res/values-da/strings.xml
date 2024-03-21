@@ -43,7 +43,7 @@
     <item quantity="one">%d tilbage</item>
     <item quantity="other">%d tilbage</item>
   </plurals>
-  <string name="textPeople">Personer:</string>
+  <string name="textPeople">Medvirkende &amp; Filmhold</string>
   <string name="textDirecting">Instruering</string>
   <string name="textDirector">Instruktør</string>
   <string name="textWriting">Forfatter</string>

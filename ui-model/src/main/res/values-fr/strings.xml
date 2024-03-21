@@ -9,6 +9,14 @@
   <string name="textSortDateUpdated">Récemment mis à jour</string>
   <string name="textSortRecentlyWatched">Vu récemment</string>
   <string name="textSortEpisodesLeft">Épisodes restants</string>
+  <string name="textPeriodThisWeek">Cette semaine</string>
+  <string name="textPeriodLastWeek">Semaine dernière</string>
+  <string name="textPeriodThisMonth">Ce mois</string>
+  <string name="textPeriodLastMonth">Mois dernier</string>
+  <string name="textPeriodLast30Days">30 derniers jours</string>
+  <string name="textPeriodLast90Days">90 derniers jours</string>
+  <string name="textPeriodLast365Days">365 derniers jours</string>
+  <string name="textPeriodAllTime">Depuis toujours</string>
   <string name="textHeaderRecentlyAdded">Ajoutés récemment</string>
   <string name="textHeaderWatching">En cours de lecture</string>
   <string name="textHeaderFinished">Terminé</string>
@@ -70,9 +78,9 @@
   <string name="textShowStatusPlanned">Programmé</string>
   <string name="textShowStatusCanceled">Annulé</string>
   <string name="textShowStatusEnded">Terminé</string>
-  <string name="textMovieStatusReleased">Fait par</string>
+  <string name="textMovieStatusReleased">Disponible</string>
   <string name="textMovieStatusInProduction">En Production</string>
-  <string name="textMovieStatusPostProduction">En Production</string>
+  <string name="textMovieStatusPostProduction">En Post-production</string>
   <string name="textMovieStatusPlanned">Programmé</string>
   <string name="textMovieStatusCanceled">Annulé</string>
   <string name="textMovieStatusRumored">Rumeur</string>

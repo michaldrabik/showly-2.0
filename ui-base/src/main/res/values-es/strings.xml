@@ -42,7 +42,7 @@
     <item quantity="one">%d restante</item>
     <item quantity="other">%d restantes</item>
   </plurals>
-  <string name="textPeople">Personas:</string>
+  <string name="textPeople">Reparto &amp; Equipo</string>
   <string name="textDirecting">Dirección</string>
   <string name="textDirector">Director</string>
   <string name="textWriting">Escritores</string>
