@@ -47,7 +47,7 @@
   <dimen name="searchViewImageHeight">100dp</dimen>
   <dimen name="searchSuggestionViewImageWidth">40dp</dimen>
   <dimen name="searchSuggestionViewImageHeight">60dp</dimen>
-  <dimen name="searchViewItemPaddingHorizontal">12dp</dimen>
+  <dimen name="searchViewItemPaddingHorizontal">16dp</dimen>
 
   <dimen name="searchLocalViewHeight">32dp</dimen>
   <dimen name="searchLocalViewCorner">16dp</dimen>
