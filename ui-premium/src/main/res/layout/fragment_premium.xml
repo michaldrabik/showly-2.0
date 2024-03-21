@@ -116,23 +116,6 @@
         />
     </LinearLayout>
 
-    <TextView
-      android:id="@+id/premiumStatus"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="@dimen/spaceNormal"
-      android:layout_marginEnd="@dimen/spaceNormal"
-      android:gravity="center"
-      android:text="@string/textPurchasePending"
-      android:textColor="?android:attr/textColorPrimary"
-      android:textSize="14sp"
-      android:visibility="gone"
-      app:layout_constraintBottom_toTopOf="@id/premiumLightThemeTitle"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/premiumTitle"
-      />
-
     <ImageView
       android:id="@+id/premiumLightThemeImage"
       style="@style/Premium.Image"
@@ -367,50 +350,10 @@
       style="@style/Premium.Description"
       android:tag="@string/tagWidgetTransparency"
       android:text="@string/textWidgetsDesc"
-      app:layout_constraintBottom_toTopOf="@id/premiumSeparator5"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="1.0"
       app:layout_constraintStart_toEndOf="@id/premiumWidgetsImage"
       app:layout_constraintTop_toBottomOf="@id/premiumWidgetsTitle"
-      />
-
-    <View
-      android:id="@+id/premiumSeparator5"
-      style="@style/Premium.Separator"
-      app:layout_constraintBottom_toTopOf="@id/premiumAdsTitle"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/premiumWidgetsDescription"
-      />
-
-    <ImageView
-      android:id="@+id/premiumAdsImage"
-      style="@style/Premium.Image"
-      app:layout_constraintBottom_toBottomOf="@id/premiumAdsDescription"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="@id/premiumAdsTitle"
-      app:srcCompat="@drawable/ic_genie"
-      />
-
-    <TextView
-      android:id="@+id/premiumAdsTitle"
-      style="@style/Premium.Title"
-      android:text="@string/textRemoveAdsTitle"
-      app:layout_constraintBottom_toTopOf="@id/premiumAdsDescription"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toEndOf="@id/premiumAdsImage"
-      app:layout_constraintTop_toBottomOf="@id/premiumSeparator5"
-      />
-
-    <TextView
-      android:id="@+id/premiumAdsDescription"
-      style="@style/Premium.Description"
-      android:text="@string/textRemoveAdsDesc"
-      app:layout_constraintBottom_toTopOf="@id/premiumSeparator5"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="1.0"
-      app:layout_constraintStart_toEndOf="@id/premiumAdsImage"
-      app:layout_constraintTop_toBottomOf="@id/premiumAdsTitle"
       />
 
   </androidx.constraintlayout.widget.ConstraintLayout>

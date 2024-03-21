@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="textPremium">Showly Premium</string>
-  <string name="textPremiumAdFull2">Lås op for alle funktioner og bliv en supporter!</string>
   <string name="textLightThemeTitle">Lyst tema</string>
   <string name="textLightThemeDesc">Slut dig til den lyse side af kraften med et ekstra lyst tema, der kan bruges i hovedappen og widgets.</string>
   <string name="textCustomImagesTitle">Brugerdefinerede billeder</string>
@@ -10,14 +9,8 @@
   <string name="textQuickRatingDesc">Glem aldrig at bedømme en film eller et afsnit som du lige har set. Med hurtig bedømmelse funktionen er det muligt at automatisk bedømme et element, når du markerer det som set.</string>
   <string name="textWidgetsTitle">Gennemsigtige Widgets</string>
   <string name="textWidgetsDesc">Indstil widgets baggrundsgennemsigtighed for bedre at matche din startskærm.</string>
-  <string name="textRemoveAdsTitle">Fjern Annoncer</string>
-  <string name="textRemoveAdsDesc">Fjern alle synlige annoncer i appen.</string>
   <string name="textNewsTitle">Nyhedssektion</string>
   <string name="textNewsDesc">Aktiver nyhedssektionen med de nyeste serier- og film artikler, nyheder og trailere. Drevet af Reddit.</string>
   <string name="textViewsTitle">Listevisninger</string>
   <string name="textViewsDesc">Aktiver ekstra listevisninger såsom kompakt liste eller gittervisning.</string>
-  <string name="textTryForFree">Prøv gratis</string>
-  <string name="textHappyUsers">50.000+ tilfredse brugere</string>
-  <string name="textPurchaseRestore">Gendan</string>
-  <string name="textPurchaseThanks">Du er nu Showly Supporter!\nMange tak og nyd appen!</string>
 </resources>

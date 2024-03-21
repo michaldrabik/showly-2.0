@@ -10,11 +10,8 @@
   <string name="textQuickRatingDesc">N\'oubliez jamais de noter un film ou un épisode que vous venez de regarder. Grâce à la fonctionnalité de notation rapide, vous pourrez automatiquement noter un élément chaque fois que vous le marquerez comme vu.</string>
   <string name="textWidgetsTitle">Widgets transparents</string>
   <string name="textWidgetsDesc">Définissez un niveau de transparence pour vos widgets afin qu\'ils s\'intègrent mieux à votre écran accueil.</string>
-  <string name="textRemoveAdsTitle">Supprimer les publicités</string>
-  <string name="textRemoveAdsDesc">Supprime toutes les publicités premium visibles dans l\'application.</string>
   <string name="textNewsTitle">Section Actualités</string>
   <string name="textNewsDesc">Activer la section Actualités pour être au fait des derniers films, séries, nouvelles et bande-annonces. Propulsée par Reddit.</string>
   <string name="textViewsTitle">Types d’affichage de listes</string>
   <string name="textViewsDesc">Activer les types d\'affichage de collection supplémentaires comme la liste compacte ou la grille.</string>
-  <string name="textPurchaseThanks">Vous êtes maintenant un supporteur de Showly !\nMerci et profitez de l\'application !</string>
 </resources>

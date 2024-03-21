@@ -10,11 +10,8 @@
   <string name="textQuickRatingDesc">Dzięki funkcji szybkich ocen będziesz mógł automatycznie oceniać filmy i odcinki seriali zawsze gdy oznaczasz je jako obejrzane.</string>
   <string name="textWidgetsTitle">Przezroczyste widgety</string>
   <string name="textWidgetsDesc">Ustaw przezroczystość widgetów, aby lepiej dopasować je do swojego ekranu głównego.</string>
-  <string name="textRemoveAdsTitle">Brak reklam</string>
-  <string name="textRemoveAdsDesc">Schowaj wszystkie reklamy premium widoczne w aplikacji.</string>
   <string name="textNewsTitle">Newsy</string>
   <string name="textNewsDesc">Odblokuj sekcję newsów z najnowszymi artykułami oraz wiadomościami ze świata seriali i filmów.</string>
   <string name="textViewsTitle">Widok list</string>
   <string name="textViewsDesc">Dodatkowe typy widoków kolekcji, takie jak kompaktowa lista oraz siatka.</string>
-  <string name="textPurchaseThanks">Od teraz jesteś subskrybentem i wspierasz Showly!\nDziękuję i miłego użytkowania!</string>
 </resources>

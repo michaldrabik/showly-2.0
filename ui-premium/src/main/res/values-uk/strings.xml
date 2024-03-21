@@ -10,11 +10,8 @@
   <string name="textQuickRatingDesc">Завдяки функції швидкого оцінювання ви зможете автоматично оцінювати фільми та серії серіалів щоразу, коли ви позначаєте їх як переглянуті.</string>
   <string name="textWidgetsTitle">Прозорі віджети</string>
   <string name="textWidgetsDesc">Встановіть прозорість фону віджетів, щоб краще відповідати вашому головному екрану.</string>
-  <string name="textRemoveAdsTitle">Прибрати рекламу</string>
-  <string name="textRemoveAdsDesc">Прибрати всю рекламу преміуму, що є в додатку.</string>
   <string name="textNewsTitle">Розділ новин</string>
   <string name="textNewsDesc">Увімкнути розділ новин з останніми статтями про серіали та фільми, новинами та трейлерами. Використовується Reddit.</string>
   <string name="textViewsTitle">Типи вигляду списків</string>
   <string name="textViewsDesc">Увімкнути додаткові типи перегляду колекцій, такі як компактний список або сітка.</string>
-  <string name="textPurchaseThanks">Тепер ви Підписник Showly!\nДякуємо вам та насолоджуйтесь додатком!</string>
 </resources>

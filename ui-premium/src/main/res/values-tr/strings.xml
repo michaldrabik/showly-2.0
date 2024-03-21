@@ -10,11 +10,8 @@
   <string name="textQuickRatingDesc">İzlediğiniz bir filme veya dizinin bölümüne oy vermeyi asla unutmayın. Hızlı değerlendirme özelliği ile, bir ögeyi izlendi olarak işaretlediğinizde otomatik olarak oy verebileceksiniz.</string>
   <string name="textWidgetsTitle">Şeffaf Widget\'lar</string>
   <string name="textWidgetsDesc">Widget\'ların arka plan şeffaflığını ana ekranınıza daha iyi uyacak şekilde ayarlayın.</string>
-  <string name="textRemoveAdsTitle">Reklamları Kaldır</string>
-  <string name="textRemoveAdsDesc">Uygulamada gösterilen tüm premium reklamları kaldırır.</string>
   <string name="textNewsTitle">Haberler Bölümü</string>
   <string name="textNewsDesc">En son diziler ve filmler makaleleri, haberler ve fragmanlarla haberler bölümünü etkinleştirin. Reddit tarafından desteklenmektedir.</string>
   <string name="textViewsTitle">Liste görünüm türleri</string>
   <string name="textViewsDesc">Sıkıştırılmış liste veya ızgara görünümü gibi ek koleksiyon görünüm türlerini etkinleştirir.</string>
-  <string name="textPurchaseThanks">Artık Showly destekçisisiniz!\nTeşekkürler ve uygulamanın keyfini çıkarın!</string>
 </resources>

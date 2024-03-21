@@ -10,11 +10,8 @@
   <string name="textQuickRatingDesc">مع ميزة التقييم السريع، لن تنسى أبداً تقييم فيلم أو حلقة شاهدتها للتو، ستكون قادراً على تقييم الفيلم او الحلقة تلقائياً عند تحديد أنك شاهدتها.</string>
   <string name="textWidgetsTitle">التطبيقات المصغّرة الشفافة</string>
   <string name="textWidgetsDesc">عَيْن شفافية التطبيقات المصغّرة لتظهر في شاشتك الرئيسية بشكل أفضل.</string>
-  <string name="textRemoveAdsTitle">حذف الإعلانات</string>
-  <string name="textRemoveAdsDesc">حذف جميع الإعلانات في التطبيق.</string>
   <string name="textNewsTitle">قِسم الأخبار</string>
   <string name="textNewsDesc">قِسم الأخبار يتضمن آخر أخبار الأفلام والمسلسلات، وعروضهم الدعائية الجديدة؛ المِيزة تعتمد على Reddit.</string>
   <string name="textViewsTitle">طريقة عرض القوائم</string>
   <string name="textViewsDesc">تمكين طرق إضافية لعرض القوائم في المجموعة مثل القائمة المدمجة أو العرض الشبكي.</string>
-  <string name="textPurchaseThanks">أنت الآن داعم لتطوير Showly!\nشكراً لك وإستمتع بالتطبيق!</string>
 </resources>
