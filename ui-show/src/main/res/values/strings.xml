@@ -4,7 +4,7 @@
   <string name="textInMyShows">Added to my shows</string>
   <string name="textInWatchlist">Added to watchlist</string>
   <string name="textInHidden">Hidden</string>
-  <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
+  <string name="textShowExtraInfo" translatable="false">%s %s %s | %s %s | %s</string>
 
   <string name="textShowQuickProgressTitle">Quick Progress</string>
   <string name="textShowQuickProgressSubTitle">Select last seen episode to quickly bring your progress up to date.</string>

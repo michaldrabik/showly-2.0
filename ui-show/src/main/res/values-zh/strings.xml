@@ -4,7 +4,6 @@
   <string name="textInMyShows">已加入我的剧集</string>
   <string name="textInWatchlist">已加入待看列表</string>
   <string name="textInHidden">已隐藏</string>
-  <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
   <string name="textShowQuickProgressTitle">快速设置进度</string>
   <string name="textShowQuickProgressSubTitle">选择最后观看的单集，来快速更新您的进度至此。</string>
   <string name="textShowQuickProgressDone">您的进度已经更新。</string>

@@ -4,7 +4,6 @@
   <string name="textInMyShows">Añadido a mis series</string>
   <string name="textInWatchlist">Añadido a pendientes</string>
   <string name="textInHidden">Ocultos</string>
-  <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
   <string name="textShowQuickProgressTitle">Progreso Rápido</string>
   <string name="textShowQuickProgressSubTitle">Selecciona el último episodio visto para actualizar rápidamente tu progreso.</string>
   <string name="textShowQuickProgressDone">Tu progreso se ha actualizado.</string>

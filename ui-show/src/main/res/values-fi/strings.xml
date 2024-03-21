@@ -4,7 +4,6 @@
   <string name="textInMyShows">Lisätty omiin sarjoihin</string>
   <string name="textInWatchlist">Lisätty katselulistalle</string>
   <string name="textInHidden">Piilotetut</string>
-  <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
   <string name="textShowQuickProgressTitle">Pikakatselutila</string>
   <string name="textShowQuickProgressSubTitle">Valitse viimeksi katsottu jakso saattaaksesi katselutilasi nopeasti ajan tasalle.</string>
   <string name="textShowQuickProgressDone">Katselutilasi päivitettiin.</string>

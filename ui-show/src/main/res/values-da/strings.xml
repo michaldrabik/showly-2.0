@@ -4,7 +4,6 @@
   <string name="textInMyShows">Tilføjet til Mine Serier</string>
   <string name="textInWatchlist">Tilføjet til Se Senere</string>
   <string name="textInHidden">Skjult</string>
-  <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
   <string name="textShowQuickProgressTitle">Hurtig Fremskridt</string>
   <string name="textShowQuickProgressSubTitle">Vælg sidst sete afsnit for hurtigt at opdatere dine fremskridt.</string>
   <string name="textShowQuickProgressDone">Dine fremskridt er blevet opdateret.</string>

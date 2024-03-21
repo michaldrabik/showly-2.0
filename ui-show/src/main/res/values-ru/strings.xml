@@ -4,7 +4,6 @@
   <string name="textInMyShows">Добавлено в мои сериалы</string>
   <string name="textInWatchlist">Добавлено в Буду смотреть</string>
   <string name="textInHidden">Скрытое</string>
-  <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
   <string name="textShowQuickProgressTitle">Быстрый прогресс</string>
   <string name="textShowQuickProgressSubTitle">Выберите последний просмотренный эпизод, чтобы быстро отметить эпизоды.</string>
   <string name="textShowQuickProgressDone">Ваш прогресс был обновлен.</string>

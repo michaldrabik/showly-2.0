@@ -4,7 +4,6 @@
   <string name="textInMyShows">Додано до моїх серіалів</string>
   <string name="textInWatchlist">Додано в \'На потім\'</string>
   <string name="textInHidden">Приховане</string>
-  <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
   <string name="textShowQuickProgressTitle">Швидкий прогрес</string>
   <string name="textShowQuickProgressSubTitle">Виберіть останню переглянуту серію, щоб швидко відмітити попередні.</string>
   <string name="textShowQuickProgressDone">Ваш прогрес було оновлено.</string>

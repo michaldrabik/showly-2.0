@@ -4,7 +4,6 @@
   <string name="textInMyShows">W moich serialach</string>
   <string name="textInWatchlist">Na później</string>
   <string name="textInHidden">Ukryte</string>
-  <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
   <string name="textShowQuickProgressTitle">Szybki Postęp</string>
   <string name="textShowQuickProgressSubTitle">Wybierz ostatni obejrzany odcinek aby zaktualizować swój postęp.</string>
   <string name="textShowQuickProgressDone">Postęp został zaktualizowany.</string>
