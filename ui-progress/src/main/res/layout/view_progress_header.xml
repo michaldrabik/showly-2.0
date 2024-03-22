@@ -13,7 +13,7 @@
     android:id="@+id/progressHeaderText"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/screenMarginHorizontal"
+    android:layout_marginStart="@dimen/itemMarginHorizontal"
     android:layout_marginTop="@dimen/spaceMedium"
     android:layout_marginBottom="@dimen/spaceNormal"
     android:textColor="?android:attr/textColorPrimary"

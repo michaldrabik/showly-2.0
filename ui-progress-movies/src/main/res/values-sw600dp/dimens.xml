@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <dimen name="progressMoviesRecyclerHorizontalSpace">12dp</dimen>
+  <dimen name="progressMoviesRecyclerHorizontalSpace">16dp</dimen>
 </resources>

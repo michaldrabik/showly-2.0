@@ -6,8 +6,8 @@
   android:layout_height="wrap_content"
   android:orientation="horizontal"
   tools:paddingBottom="@dimen/spaceTiny"
-  tools:paddingEnd="@dimen/screenMarginHorizontal"
-  tools:paddingStart="@dimen/screenMarginHorizontal"
+  tools:paddingEnd="@dimen/itemMarginHorizontal"
+  tools:paddingStart="@dimen/itemMarginHorizontal"
   tools:paddingTop="@dimen/spaceNormal"
   tools:parentTag="android.widget.LinearLayout"
   >

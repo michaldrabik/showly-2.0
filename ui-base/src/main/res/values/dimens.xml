@@ -9,6 +9,7 @@
   <dimen name="spaceHuge">48dp</dimen>
 
   <dimen name="screenMarginHorizontal">16dp</dimen>
+  <dimen name="itemMarginHorizontal">16dp</dimen>
 
   <dimen name="elevationTiny">0dp</dimen>
   <dimen name="elevationSmall">0dp</dimen>

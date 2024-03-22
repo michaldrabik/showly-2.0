@@ -14,9 +14,9 @@
     android:layout_height="wrap_content"
     android:clipToPadding="false"
     android:overScrollMode="never"
-    android:paddingStart="@dimen/screenMarginHorizontal"
+    android:paddingStart="@dimen/itemMarginHorizontal"
     android:paddingTop="@dimen/spaceSmall"
-    android:paddingEnd="@dimen/screenMarginHorizontal"
+    android:paddingEnd="@dimen/itemMarginHorizontal"
     android:scrollbars="none"
     >
 
