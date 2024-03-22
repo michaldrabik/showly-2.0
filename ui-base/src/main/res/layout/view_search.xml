@@ -105,18 +105,6 @@
         app:tint="?attr/colorSearchViewControl"
         />
 
-      <ImageView
-        android:id="@+id/searchDotBadge"
-        android:layout_width="6dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="end"
-        android:translationX="@dimen/searchViewDotTranslation"
-        android:translationY="6dp"
-        android:visibility="gone"
-        app:srcCompat="@drawable/ic_circle"
-        app:tint="?attr/colorAccent"
-        />
-
     </FrameLayout>
 
   </LinearLayout>
