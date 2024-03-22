@@ -40,14 +40,11 @@
   <dimen name="collectionTileShowPlaceholder">24dp</dimen>
 
   <dimen name="searchViewHeight">48dp</dimen>
-  <dimen name="searchViewHeightPadded">64dp</dimen>
   <dimen name="searchViewCorner">24dp</dimen>
-  <dimen name="searchViewDotTranslation">-10dp</dimen>
   <dimen name="searchViewImageWidth">67dp</dimen>
   <dimen name="searchViewImageHeight">100dp</dimen>
   <dimen name="searchSuggestionViewImageWidth">40dp</dimen>
   <dimen name="searchSuggestionViewImageHeight">60dp</dimen>
-  <dimen name="searchViewItemPaddingHorizontal">16dp</dimen>
 
   <dimen name="searchLocalViewHeight">32dp</dimen>
   <dimen name="searchLocalViewCorner">16dp</dimen>

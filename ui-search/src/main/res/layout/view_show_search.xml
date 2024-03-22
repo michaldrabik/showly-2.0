@@ -14,9 +14,9 @@
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
     android:clipToPadding="false"
-    android:paddingStart="@dimen/searchViewItemPaddingHorizontal"
+    android:paddingStart="@dimen/spaceNormal"
     android:paddingTop="@dimen/spaceSmall"
-    android:paddingEnd="@dimen/searchViewItemPaddingHorizontal"
+    android:paddingEnd="@dimen/spaceNormal"
     android:paddingBottom="@dimen/spaceSmall"
     >
 
