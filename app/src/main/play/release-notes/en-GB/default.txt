@@ -1,1 +1,5 @@
-* Updated search for latest Trakt changes
+* Introducing 1st iteration of History tab to keep track of your recently watched episodes
+* Added watched episode time to episode details sheet
+* Added watched movie time to My Movies list (sort by recently added)
+* UI tweaks and improvements
+* Other misc. bugfixes
