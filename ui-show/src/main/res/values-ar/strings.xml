@@ -5,6 +5,7 @@
   <string name="textInWatchlist">تمت الإضافة إلى قائمة المشاهدة</string>
   <string name="textInHidden">المخفية</string>
   <string name="textShowQuickProgressTitle">مستوى التقدم السريع</string>
+  <string name="textShowExtraInfo" translatable="false">%3$s %2$s %1$s | %6$s | %4$s %5$s</string>
   <string name="textShowQuickProgressSubTitle">إختر آخر حلقة قمت بمتابعتها لتحديث قائمة مستوى التقدم بسرعة.</string>
   <string name="textShowQuickProgressDone">تم تحديث مستوى تقدمك.</string>
   <string name="textEpisodeDate">الحلقة %1$d | %2$s</string>
