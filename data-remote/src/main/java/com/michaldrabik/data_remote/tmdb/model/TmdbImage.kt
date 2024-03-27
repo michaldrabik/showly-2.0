@@ -10,4 +10,6 @@ data class TmdbImage(
   fun isPlain() = iso_639_1 == null
 
   fun isEnglish() = iso_639_1 == "en"
+
+  fun isLocalRegion(code: String) = iso_639_1 == code
 }
