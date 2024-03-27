@@ -41,7 +41,8 @@ internal sealed class HistoryListItem(
     isLoading = false
   ) {
     override fun isSameAs(other: ListItem): Boolean {
-      return date.isEqual((other as? Header)?.date)
+      val otherHeader = (other as? Header) ?: return false
+      return date.isEqual(otherHeader.date)
     }
   }
 
