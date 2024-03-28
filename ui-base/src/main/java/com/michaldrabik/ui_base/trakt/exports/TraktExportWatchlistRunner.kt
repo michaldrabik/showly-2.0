@@ -9,6 +9,9 @@ import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.trakt.TraktSyncRunner
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import timber.log.Timber
 import javax.inject.Inject
@@ -41,18 +44,44 @@ class TraktExportWatchlistRunner @Inject constructor(
     }
   }
 
-  private suspend fun exportWatchlist() {
+  private suspend fun exportWatchlist() = coroutineScope {
     Timber.d("Exporting watchlist...")
+    val isMoviesEnables = settingsRepository.isMoviesEnabled
 
-    val shows = localSource.watchlistShows.getAll()
+    val localShows = localSource.watchlistShows.getAll()
       .map { SyncExportItem.create(it.idTrakt) }
-      .toMutableList()
-
-    val movies = mutableListOf<SyncExportItem>()
-    if (settingsRepository.isMoviesEnabled) {
-      localSource.watchlistMovies.getAll()
-        .mapTo(movies) { SyncExportItem.create(it.idTrakt) }
+    val localMovies = buildList {
+      if (isMoviesEnables) {
+        localSource.watchlistMovies.getAll()
+          .mapTo(this) { SyncExportItem.create(it.idTrakt) }
+      }
     }
+
+    if (localShows.isEmpty() && localMovies.isEmpty()) {
+      Timber.d("Nothing to export. Watchlist is empty.")
+      return@coroutineScope
+    }
+
+    val showsAsync = async {
+      Timber.d("Fetching remote shows watchlist...")
+      remoteSource.trakt.fetchSyncShowsWatchlist()
+    }
+    val moviesAsync = async {
+      if (isMoviesEnables) {
+        Timber.d("Fetching remote movies watchlist...")
+        remoteSource.trakt.fetchSyncMoviesWatchlist()
+      } else {
+        emptyList()
+      }
+    }
+    val (remoteShows, remoteMovies) = awaitAll(showsAsync, moviesAsync)
+
+    val shows = localShows
+      .filter { show -> remoteShows.none { it.getTraktId() == show.ids.trakt } }
+      .toMutableList()
+    val movies = localMovies
+      .filter { movie -> remoteMovies.none { it.getTraktId() == movie.ids.trakt } }
+      .toMutableList()
 
     Timber.d("Exporting ${shows.size} shows & ${movies.size} movies...")
 
