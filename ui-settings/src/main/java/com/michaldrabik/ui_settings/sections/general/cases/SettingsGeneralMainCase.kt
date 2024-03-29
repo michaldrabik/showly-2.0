@@ -110,6 +110,9 @@ class SettingsGeneralMainCase @Inject constructor(
 
   fun setProgressUpcomingDays(days: Long) {
     settingsRepository.progressUpcomingDays = days
+    if (days == 0L) {
+      settingsRepository.filters.progressShowsUpcoming = false
+    }
   }
 
   fun setDateFormat(format: AppDateFormat, context: Context) {
