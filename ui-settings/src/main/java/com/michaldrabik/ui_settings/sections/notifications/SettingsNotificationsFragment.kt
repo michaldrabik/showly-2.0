@@ -2,7 +2,10 @@ package com.michaldrabik.ui_settings.sections.notifications
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS
+import android.provider.Settings.EXTRA_APP_PACKAGE
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
 import androidx.core.content.ContextCompat
@@ -28,6 +31,8 @@ class SettingsNotificationsFragment :
 
   override val viewModel by viewModels<SettingsNotificationsViewModel>()
   private val binding by viewBinding(FragmentSettingsNotificationsBinding::bind)
+
+  private var notificationRationaleNotShown = false
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -84,6 +89,7 @@ class SettingsNotificationsFragment :
         if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
           showNotificationsRationaleDialog()
         } else {
+          notificationRationaleNotShown = true
           requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
       }
@@ -106,6 +112,12 @@ class SettingsNotificationsFragment :
   private val requestPermissionLauncher = registerForActivityResult(RequestPermission()) { isGranted ->
     if (isGranted) {
       viewModel.enableNotifications(true, requireAppContext())
+    } else if (notificationRationaleNotShown) {
+      val intent = Intent(ACTION_APP_NOTIFICATION_SETTINGS).apply {
+        putExtra(EXTRA_APP_PACKAGE, requireAppContext().packageName)
+      }
+      runCatching { startActivity(intent) }
+      notificationRationaleNotShown = false
     }
   }
 }
