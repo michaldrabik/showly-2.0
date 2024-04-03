@@ -30,17 +30,14 @@ abstract class TraktNotificationWorker(
   }
 
   protected fun createProgressNotification(
-    content: String?,
-    maxProgress: Int,
-    progress: Int,
-    isIntermediate: Boolean
+    content: String?
   ): Notification =
     createBaseNotification()
       .setContentText(content ?: context.getString(R.string.textTraktSyncRunning))
       .setCategory(NotificationCompat.CATEGORY_SERVICE)
       .setOngoing(true)
       .setAutoCancel(false)
-      .setProgress(maxProgress, progress, isIntermediate)
+      .setProgress(0, 0, true)
       .build()
 
   protected fun createSuccessNotification(): Notification =

@@ -5,17 +5,15 @@ import okhttp3.internal.closeQuietly
 import okio.Buffer
 import retrofit2.HttpException
 import java.io.IOException
+import java.net.UnknownHostException
 import kotlin.coroutines.cancellation.CancellationException
 
 object Logger {
 
   fun record(error: Throwable, source: String) {
-    if (error is CancellationException) {
-      return
-    }
-    if (error is IOException && error.message == "Canceled") {
-      return
-    }
+    if (error is CancellationException) return
+    if (error is IOException && error.message == "Canceled" || error.cause?.message == "Canceled") return
+    if (error is UnknownHostException) return
     if (error is HttpException) {
       recordHttpError(error, source)
       return

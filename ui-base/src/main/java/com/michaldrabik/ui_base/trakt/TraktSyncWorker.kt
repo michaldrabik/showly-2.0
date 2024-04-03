@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_base.trakt
 
+import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.app.PendingIntent.FLAG_UPDATE_CURRENT
@@ -47,6 +48,7 @@ import dagger.assisted.AssistedInject
 import timber.log.Timber
 import javax.inject.Named
 
+@SuppressLint("MissingPermission")
 @HiltWorker
 class TraktSyncWorker @AssistedInject constructor(
   @Assisted context: Context,
@@ -160,9 +162,9 @@ class TraktSyncWorker @AssistedInject constructor(
       eventsManager.sendEvent(TraktSyncStart)
 
       if (isImport) {
-        var resultCount = runImportWatched()
-        resultCount += runImportWatchlist(resultCount)
-        runImportLists(resultCount)
+        runImportWatched()
+        runImportWatchlist()
+        runImportLists()
       }
       if (isExport) {
         runExportWatched()
@@ -174,7 +176,10 @@ class TraktSyncWorker @AssistedInject constructor(
 
       eventsManager.sendEvent(TraktSyncSuccess)
       if (!isSilent) {
-        notificationManager().notify(SYNC_NOTIFICATION_COMPLETE_SUCCESS_ID, createSuccessNotification())
+        notificationManager().notify(
+          SYNC_NOTIFICATION_COMPLETE_SUCCESS_ID,
+          createSuccessNotification()
+        )
       }
       return Result.success()
     } catch (error: Throwable) {
@@ -187,32 +192,32 @@ class TraktSyncWorker @AssistedInject constructor(
   }
 
   override suspend fun getForegroundInfo(): ForegroundInfo {
-    val notification = createProgressNotification(null, 0, 0, true)
+    val notification = createProgressNotification(theme, null)
     return ForegroundInfo(SYNC_NOTIFICATION_COMPLETE_PROGRESS_ID, notification)
   }
 
-  private suspend fun runImportWatched(): Int {
-    importWatchedRunner.progressListener = { title: String, progress: Int, total: Int ->
-      val status = "Importing \'$title\'..."
-      setProgressNotification(status, total, progress, false)
+  private suspend fun runImportWatched() {
+    importWatchedRunner.progressListener = { title: String ->
+      val status = "Importing:\n\n\"$title\"..."
+      setProgressNotification(theme, status)
       eventsManager.sendEvent(TraktSyncProgress(status))
     }
-    return importWatchedRunner.run()
+    importWatchedRunner.run()
   }
 
-  private suspend fun runImportWatchlist(totalProgress: Int): Int {
-    importWatchlistRunner.progressListener = { title: String, progress: Int, total: Int ->
-      val status = "Importing \'$title\'..."
-      setProgressNotification(status, totalProgress + total, totalProgress + progress, false)
+  private suspend fun runImportWatchlist() {
+    importWatchlistRunner.progressListener = { title: String ->
+      val status = "Importing:\n\n\"$title\"..."
+      setProgressNotification(theme, status)
       eventsManager.sendEvent(TraktSyncProgress(status))
     }
-    return importWatchlistRunner.run()
+    importWatchlistRunner.run()
   }
 
-  private suspend fun runImportLists(totalProgress: Int) {
-    importListsRunner.progressListener = { title: String, progress: Int, total: Int ->
-      val status = "Importing \'$title\'..."
-      setProgressNotification(status, totalProgress + total, totalProgress + progress, false)
+  private suspend fun runImportLists() {
+    importListsRunner.progressListener = { title: String ->
+      val status = "Importing:\n\n\"$title\"..."
+      setProgressNotification(status)
       eventsManager.sendEvent(TraktSyncProgress(status))
     }
     importListsRunner.run()
@@ -220,14 +225,14 @@ class TraktSyncWorker @AssistedInject constructor(
 
   private suspend fun runExportWatched() {
     val status = "Exporting progress..."
-    setProgressNotification(status, 0, 0, true)
+    setProgressNotification(theme, status)
     eventsManager.sendEvent(TraktSyncProgress(status))
     exportWatchedRunner.run()
   }
 
   private suspend fun runExportWatchlist() {
     val status = "Exporting watchlist..."
-    setProgressNotification(status, 0, 0, true)
+    setProgressNotification(theme, status)
     eventsManager.sendEvent(TraktSyncProgress(status))
     try {
       exportWatchlistRunner.run()
@@ -238,7 +243,7 @@ class TraktSyncWorker @AssistedInject constructor(
 
   private suspend fun runExportLists() {
     val status = "Exporting custom lists..."
-    setProgressNotification(status, 0, 0, true)
+    setProgressNotification(theme, status)
     eventsManager.sendEvent(TraktSyncProgress(status))
     try {
       exportListsRunner.run()
@@ -249,13 +254,10 @@ class TraktSyncWorker @AssistedInject constructor(
 
   private fun setProgressNotification(
     content: String?,
-    maxProgress: Int,
-    progress: Int,
-    isIntermediate: Boolean,
   ) {
     notificationManager().notify(
       SYNC_NOTIFICATION_COMPLETE_PROGRESS_ID,
-      createProgressNotification(content, maxProgress, progress, isIntermediate)
+      createProgressNotification(theme, content)
     )
   }
 

@@ -30,15 +30,14 @@ class TraktImportListsRunner @Inject constructor(
   override suspend fun run(): Int {
     Timber.d("Initialized.")
 
-    var syncedCount = 0
     checkAuthorization()
     val activity = runSyncActivity()
 
     resetRetries()
-    syncedCount += runLists(activity)
+    runLists(activity)
 
     Timber.d("Finished with success.")
-    return syncedCount
+    return 0
   }
 
   private suspend fun runSyncActivity(): SyncActivity {
@@ -55,8 +54,8 @@ class TraktImportListsRunner @Inject constructor(
     }
   }
 
-  private suspend fun runLists(syncActivity: SyncActivity): Int {
-    return try {
+  private suspend fun runLists(syncActivity: SyncActivity) {
+    try {
       importLists(syncActivity)
     } catch (error: Throwable) {
       if (retryCount.getAndIncrement() < MAX_IMPORT_RETRY_COUNT) {
@@ -69,7 +68,7 @@ class TraktImportListsRunner @Inject constructor(
     }
   }
 
-  private suspend fun importLists(syncActivity: SyncActivity): Int {
+  private suspend fun importLists(syncActivity: SyncActivity) {
     Timber.d("Importing custom lists...")
 
     val listsUpdatedAt = syncActivity.lists.updated_at.toUtcDateTime()!!
@@ -79,7 +78,7 @@ class TraktImportListsRunner @Inject constructor(
 
     if (!syncNeeded) {
       Timber.d("No changes in lists sync activity. Skipping...")
-      return 0
+      return
     }
 
     val nowUtcMillis = nowUtcMillis()
@@ -118,8 +117,6 @@ class TraktImportListsRunner @Inject constructor(
     }
 
     settingsRepository.sync.activityListsUpdatedAt = syncActivity.lists.updated_at
-
-    return remoteLists.size
   }
 
   private suspend fun importListItems(

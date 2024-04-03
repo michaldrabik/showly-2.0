@@ -12,6 +12,10 @@ data class SyncItem(
   val listed_at: String?
 ) {
 
+  fun requireShow() = show!!
+
+  fun requireMovie() = movie!!
+
   fun getTraktId(): Long? {
     if (show != null) return show.ids?.trakt
     if (movie != null) return movie.ids?.trakt

@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_base.trakt.imports
 
+import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toUtcDateTime
 import com.michaldrabik.common.extensions.toZonedDateTime
@@ -21,14 +22,24 @@ import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.trakt.TraktSyncRunner
+import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Show
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 import timber.log.Timber
+import java.util.Collections
 import javax.inject.Inject
 import javax.inject.Singleton
+
+private const val CHANNEL_CAPACITY = 10
 
 @Singleton
 class TraktImportWatchedRunner @Inject constructor(
@@ -39,25 +50,24 @@ class TraktImportWatchedRunner @Inject constructor(
   private val showImagesProvider: ShowImagesProvider,
   private val movieImagesProvider: MovieImagesProvider,
   private val settingsRepository: SettingsRepository,
+  private val dispatchers: CoroutineDispatchers,
   userTraktManager: UserTraktManager,
 ) : TraktSyncRunner(userTraktManager) {
 
   override suspend fun run(): Int {
     Timber.d("Initialized.")
 
-    var syncedCount = 0
     checkAuthorization()
     val activity = runSyncActivity()
 
     resetRetries()
-    syncedCount += runShows(activity)
+    runShows(activity)
 
     resetRetries()
-    syncedCount += runMovies(activity)
+    runMovies(activity)
 
     Timber.d("Finished with success.")
-
-    return syncedCount
+    return 0
   }
 
   private suspend fun runSyncActivity(): SyncActivity {
@@ -74,8 +84,8 @@ class TraktImportWatchedRunner @Inject constructor(
     }
   }
 
-  private suspend fun runShows(activity: SyncActivity): Int =
-    try {
+  private suspend fun runShows(activity: SyncActivity) {
+    return try {
       importWatchedShows(activity)
     } catch (error: Throwable) {
       if (retryCount.getAndIncrement() < MAX_IMPORT_RETRY_COUNT) {
@@ -86,124 +96,128 @@ class TraktImportWatchedRunner @Inject constructor(
         throw error
       }
     }
-
-  private suspend fun runMovies(activity: SyncActivity): Int {
-    if (!settingsRepository.isMoviesEnabled) {
-      Timber.d("Movies are disabled. Exiting...")
-      return 0
-    }
-    return try {
-      importWatchedMovies(activity)
-    } catch (error: Throwable) {
-      if (retryCount.getAndIncrement() < MAX_IMPORT_RETRY_COUNT) {
-        Timber.w("runMovies HTTP failed. Will retry in $RETRY_DELAY_MS ms... $error")
-        delay(RETRY_DELAY_MS)
-        runMovies(activity)
-      } else {
-        throw error
-      }
-    }
   }
 
-  private suspend fun importWatchedShows(syncActivity: SyncActivity): Int {
-    Timber.d("Importing watched shows...")
+  private suspend fun importWatchedShows(syncActivity: SyncActivity) {
+    withContext(dispatchers.IO) {
+      Timber.d("Importing watched shows...")
 
-    val episodesWatchedAt = syncActivity.episodes.watched_at.toUtcDateTime()!!
-    val showsHiddenAt = syncActivity.shows.hidden_at.toUtcDateTime()!!
-    val localEpisodesWatchedAt = settingsRepository.sync.activityEpisodesWatchedAt.toUtcDateTime()
-    val localShowsHiddenAt = settingsRepository.sync.activityShowsHiddenAt.toUtcDateTime()
+      val episodesWatchedAt = syncActivity.episodes.watched_at.toUtcDateTime()!!
+      val showsHiddenAt = syncActivity.shows.hidden_at.toUtcDateTime()!!
+      val localEpisodesWatchedAt = settingsRepository.sync.activityEpisodesWatchedAt.toUtcDateTime()
+      val localShowsHiddenAt = settingsRepository.sync.activityShowsHiddenAt.toUtcDateTime()
 
-    val episodesNeeded = localEpisodesWatchedAt == null || localEpisodesWatchedAt.isBefore(episodesWatchedAt)
-    val showsNeeded = localShowsHiddenAt == null || localShowsHiddenAt.isBefore(showsHiddenAt)
+      val episodesNeeded = localEpisodesWatchedAt == null || localEpisodesWatchedAt.isBefore(episodesWatchedAt)
+      val showsNeeded = localShowsHiddenAt == null || localShowsHiddenAt.isBefore(showsHiddenAt)
 
-    if (!episodesNeeded && !showsNeeded) {
-      Timber.d("No changes in watched sync activity. Skipping...")
-      return 0
-    }
-
-    val syncResults = remoteSource.trakt.fetchSyncWatchedShows("full")
-      .distinctBy { it.show?.ids?.trakt }
-
-    Timber.d("Importing hidden shows...")
-    val hiddenShows = remoteSource.trakt.fetchHiddenShows()
-    hiddenShows.forEach { hiddenShow ->
-      hiddenShow.show?.let {
-        val show = mappers.show.fromNetwork(it)
-        val dbShow = mappers.show.toDatabase(show)
-        val archiveShow = ArchiveShow.fromTraktId(show.traktId, hiddenShow.hiddenAtMillis())
-        transactions.withTransaction {
-          with(localSource) {
-            shows.upsert(listOf(dbShow))
-            archiveShows.insert(archiveShow)
-            myShows.deleteById(show.traktId)
-            watchlistShows.deleteById(show.traktId)
-          }
-        }
+      if (!episodesNeeded && !showsNeeded) {
+        Timber.d("No changes in watched sync activity. Skipping...")
+        return@withContext 0
       }
-    }
 
-    val myShowsIds = localSource.myShows.getAllTraktIds()
-    val watchlistShowsIds = localSource.watchlistShows.getAllTraktIds()
-    val hiddenShowsIds = localSource.archiveShows.getAllTraktIds()
-    val traktSyncLogs = localSource.traktSyncLog.getAllShows()
+      val syncResults = remoteSource.trakt.fetchSyncWatchedShows("full")
+        .distinctBy { it.show?.ids?.trakt }
 
-    syncResults
-      .forEachIndexed { index, result ->
-        val showUi = mappers.show.fromNetwork(result.show!!)
-
-        Timber.d("Processing \'${showUi.title}\'...")
-        progressListener?.invoke(showUi.title, index, syncResults.size)
-
-        val log = traktSyncLogs.firstOrNull { it.idTrakt == result.show?.ids?.trakt }
-        if (result.lastUpdateMillis() == (log?.syncedAt ?: 0)) {
-          Timber.d("Nothing changed in \'${result.show!!.title}\'. Skipping...")
-          return@forEachIndexed
-        }
-
-        try {
-          val showId = result.show!!.ids!!.trakt!!
-          val (seasons, episodes) = loadSeasonsEpisodes(showId, result)
-
-          transactions.withTransaction {
-            val isMyShow = showId in myShowsIds
-            val isWatchlistShow = showId in watchlistShowsIds
-            val isHiddenShow = showId in hiddenShowsIds
-
-            if (!isMyShow && !isHiddenShow) {
-              val show = mappers.show.fromNetwork(result.show!!)
-              val showDb = mappers.show.toDatabase(show)
-
-              val myShow = MyShow.fromTraktId(
-                traktId = showDb.idTrakt,
-                createdAt = result.lastWatchedMillis(),
-                updatedAt = result.lastWatchedMillis(),
-                watchedAt = result.lastWatchedMillis()
-              )
-              localSource.shows.upsert(listOf(showDb))
-              localSource.myShows.insert(listOf(myShow))
-
-              loadImage(show)
-
-              if (isWatchlistShow) {
-                localSource.watchlistShows.deleteById(showId)
+      Timber.d("Importing hidden shows...")
+      remoteSource.trakt.fetchHiddenShows()
+        .forEach { item ->
+          item.show?.let {
+            val show = mappers.show.fromNetwork(it)
+            val dbShow = mappers.show.toDatabase(show)
+            val archiveShow = ArchiveShow.fromTraktId(
+              traktId = show.traktId,
+              createdAt = item.hiddenAtMillis()
+            )
+            transactions.withTransaction {
+              with(localSource) {
+                shows.upsert(listOf(dbShow))
+                archiveShows.insert(archiveShow)
+                myShows.deleteById(show.traktId)
+                watchlistShows.deleteById(show.traktId)
               }
             }
-            localSource.seasons.upsert(seasons)
-            localSource.episodes.upsert(episodes)
-
-            localSource.myShows.updateWatchedAt(showId, result.lastWatchedMillis())
-            localSource.traktSyncLog.upsertShow(showId, result.lastUpdateMillis())
           }
-        } catch (error: Throwable) {
-          Timber.w("Processing \'${result.show!!.title}\' failed. Skipping...")
-          Logger.record(error, "TraktImportWatchedRunner::importWatchedShows()")
         }
-      }
 
-    settingsRepository.sync.activityEpisodesWatchedAt = syncActivity.episodes.watched_at
-    settingsRepository.sync.activityShowsHiddenAt = syncActivity.shows.hidden_at
+      val myShowsIds = localSource.myShows.getAllTraktIds()
+      val watchlistShowsIds = localSource.watchlistShows.getAllTraktIds()
+      val hiddenShowsIds = localSource.archiveShows.getAllTraktIds()
+      val traktSyncLogs = localSource.traktSyncLog.getAllShows()
 
-    return syncResults.size
+      val channel = Channel<Unit>(CHANNEL_CAPACITY)
+      val results = mutableListOf<Deferred<Unit>>()
+      val progressTitles = Collections.synchronizedSet(mutableSetOf<String>())
+
+      syncResults
+        .forEachIndexed { _, syncItem ->
+          channel.send(Unit)
+          progressTitles.add(syncItem.requireShow().title)
+          val result = async {
+            val showUi = mappers.show.fromNetwork(syncItem.requireShow())
+            progressTitles.add(showUi.title)
+
+            Timber.d("Processing \'${showUi.title}\'...")
+            progressListener?.invoke(progressTitles.joinToString("\n"))
+
+            val log = traktSyncLogs.firstOrNull { it.idTrakt == syncItem.show?.ids?.trakt }
+            if (syncItem.lastUpdateMillis() == (log?.syncedAt ?: 0)) {
+              Timber.d("Nothing changed in \'${syncItem.requireShow().title}\'. Skipping...")
+              return@async
+            }
+
+            try {
+              val showId = syncItem.getTraktId()!!
+              val (seasons, episodes) = loadSeasonsEpisodes(showId, syncItem)
+
+              transactions.withTransaction {
+                val isMyShow = showId in myShowsIds
+                val isWatchlistShow = showId in watchlistShowsIds
+                val isHiddenShow = showId in hiddenShowsIds
+
+                if (!isMyShow && !isHiddenShow) {
+                  val show = mappers.show.fromNetwork(syncItem.requireShow())
+                  val showDb = mappers.show.toDatabase(show)
+
+                  val myShow = MyShow.fromTraktId(
+                    traktId = showDb.idTrakt,
+                    createdAt = syncItem.lastWatchedMillis(),
+                    updatedAt = syncItem.lastWatchedMillis(),
+                    watchedAt = syncItem.lastWatchedMillis()
+                  )
+                  localSource.shows.upsert(listOf(showDb))
+                  localSource.myShows.insert(listOf(myShow))
+
+                  loadImage(show)
+
+                  if (isWatchlistShow) {
+                    localSource.watchlistShows.deleteById(showId)
+                  }
+                }
+                localSource.seasons.upsert(seasons)
+                localSource.episodes.upsert(episodes)
+
+                localSource.myShows.updateWatchedAt(showId, syncItem.lastWatchedMillis())
+                localSource.traktSyncLog.upsertShow(showId, syncItem.lastUpdateMillis())
+              }
+            } catch (error: Throwable) {
+              if (error !is CancellationException) {
+                Timber.w("Processing \'${syncItem.show!!.title}\' failed. Skipping...")
+                Logger.record(error, "TraktImportWatchedRunner::importWatchedShows()")
+              }
+              rethrowCancellation(error)
+            } finally {
+              channel.receive()
+              progressTitles.remove(showUi.title)
+            }
+          }
+          results.add(result)
+        }
+
+      results.awaitAll()
+
+      settingsRepository.sync.activityEpisodesWatchedAt = syncActivity.episodes.watched_at
+      settingsRepository.sync.activityShowsHiddenAt = syncActivity.shows.hidden_at
+    }
   }
 
   private suspend fun loadSeasonsEpisodes(showId: Long, syncItem: SyncItem): Pair<List<Season>, List<Episode>> {
@@ -250,84 +264,119 @@ class TraktImportWatchedRunner @Inject constructor(
     return Pair(seasons, episodes)
   }
 
-  private suspend fun importWatchedMovies(syncActivity: SyncActivity): Int {
-    Timber.d("Importing watched movies...")
-
-    val moviesWatchedAt = syncActivity.movies.watched_at.toUtcDateTime()!!
-    val moviesHiddenAt = syncActivity.movies.hidden_at.toUtcDateTime()!!
-    val localMoviesWatchedAt = settingsRepository.sync.activityMoviesWatchedAt.toUtcDateTime()
-    val localMoviesHiddenAt = settingsRepository.sync.activityMoviesHiddenAt.toUtcDateTime()
-
-    val watchedAtNeeded = localMoviesWatchedAt == null || localMoviesWatchedAt.isBefore(moviesWatchedAt)
-    val hiddenAtNeeded = localMoviesHiddenAt == null || localMoviesHiddenAt.isBefore(moviesHiddenAt)
-
-    if (!watchedAtNeeded && !hiddenAtNeeded) {
-      Timber.d("No changes in sync activity. Skipping...")
-      return 0
+  private suspend fun runMovies(activity: SyncActivity) {
+    if (!settingsRepository.isMoviesEnabled) {
+      Timber.d("Movies are disabled. Exiting...")
+      return
     }
-
-    val syncResults = remoteSource.trakt.fetchSyncWatchedMovies("full")
-      .filter { it.movie != null }
-      .distinctBy { it.movie?.ids?.trakt }
-
-    Timber.d("Importing hidden movies...")
-
-    val hiddenMovies = remoteSource.trakt.fetchHiddenMovies()
-    hiddenMovies.forEach { hiddenMovie ->
-      hiddenMovie.movie?.let {
-        val movie = mappers.movie.fromNetwork(it)
-        val dbMovie = mappers.movie.toDatabase(movie)
-        val archiveMovie = ArchiveMovie.fromTraktId(movie.traktId, hiddenMovie.hiddenAtMillis())
-        transactions.withTransaction {
-          with(localSource) {
-            movies.upsert(listOf(dbMovie))
-            archiveMovies.insert(archiveMovie)
-            myMovies.deleteById(movie.traktId)
-            watchlistMovies.deleteById(movie.traktId)
-          }
-        }
+    try {
+      importWatchedMovies(activity)
+    } catch (error: Throwable) {
+      if (retryCount.getAndIncrement() < MAX_IMPORT_RETRY_COUNT) {
+        Timber.w("runMovies HTTP failed. Will retry in $RETRY_DELAY_MS ms... $error")
+        delay(RETRY_DELAY_MS)
+        runMovies(activity)
+      } else {
+        throw error
       }
     }
+  }
 
-    val myMoviesIds = localSource.myMovies.getAllTraktIds()
-    val watchlistMoviesIds = localSource.watchlistMovies.getAllTraktIds()
-    val hiddenMoviesIds = localSource.archiveMovies.getAllTraktIds()
+  private suspend fun importWatchedMovies(syncActivity: SyncActivity) {
+    withContext(dispatchers.IO) {
+      Timber.d("Importing watched movies...")
 
-    syncResults
-      .forEachIndexed { index, result ->
-        Timber.d("Processing \'${result.movie!!.title}\'...")
-        val movieUi = mappers.movie.fromNetwork(result.movie!!)
-        progressListener?.invoke(movieUi.title, index, syncResults.size)
+      val moviesWatchedAt = syncActivity.movies.watched_at.toUtcDateTime()!!
+      val moviesHiddenAt = syncActivity.movies.hidden_at.toUtcDateTime()!!
+      val localMoviesWatchedAt = settingsRepository.sync.activityMoviesWatchedAt.toUtcDateTime()
+      val localMoviesHiddenAt = settingsRepository.sync.activityMoviesHiddenAt.toUtcDateTime()
 
-        try {
-          val movieId = result.movie!!.ids!!.trakt!!
+      val watchedAtNeeded = localMoviesWatchedAt == null || localMoviesWatchedAt.isBefore(moviesWatchedAt)
+      val hiddenAtNeeded = localMoviesHiddenAt == null || localMoviesHiddenAt.isBefore(moviesHiddenAt)
 
+      if (!watchedAtNeeded && !hiddenAtNeeded) {
+        Timber.d("No changes in sync activity. Skipping...")
+        return@withContext
+      }
+
+      val syncItems = remoteSource.trakt.fetchSyncWatchedMovies("full")
+        .filter { it.movie != null }
+        .distinctBy { it.movie?.ids?.trakt }
+
+      Timber.d("Importing hidden movies...")
+
+      val hiddenMovies = remoteSource.trakt.fetchHiddenMovies()
+      hiddenMovies.forEach { hiddenMovie ->
+        hiddenMovie.movie?.let {
+          val movie = mappers.movie.fromNetwork(it)
+          val dbMovie = mappers.movie.toDatabase(movie)
+          val archiveMovie = ArchiveMovie.fromTraktId(movie.traktId, hiddenMovie.hiddenAtMillis())
           transactions.withTransaction {
-            if (movieId !in myMoviesIds && movieId !in hiddenMoviesIds) {
-              val movie = mappers.movie.fromNetwork(result.movie!!)
-              val movieDb = mappers.movie.toDatabase(movie)
-
-              val myMovie = MyMovie.fromTraktId(movieDb.idTrakt, result.lastWatchedMillis())
-              localSource.movies.upsert(listOf(movieDb))
-              localSource.myMovies.insert(listOf(myMovie))
-
-              loadImage(movie)
-
-              if (movieId in watchlistMoviesIds) {
-                localSource.watchlistMovies.deleteById(movieId)
-              }
+            with(localSource) {
+              movies.upsert(listOf(dbMovie))
+              archiveMovies.insert(archiveMovie)
+              myMovies.deleteById(movie.traktId)
+              watchlistMovies.deleteById(movie.traktId)
             }
           }
-        } catch (error: Throwable) {
-          Timber.w("Processing \'${result.movie!!.title}\' failed. Skipping...")
-          Logger.record(error, "TraktImportWatchedRunner::importWatchedMovies()")
         }
       }
 
-    settingsRepository.sync.activityMoviesWatchedAt = syncActivity.movies.watched_at
-    settingsRepository.sync.activityMoviesHiddenAt = syncActivity.movies.hidden_at
+      val myMoviesIds = localSource.myMovies.getAllTraktIds()
+      val watchlistMoviesIds = localSource.watchlistMovies.getAllTraktIds()
+      val hiddenMoviesIds = localSource.archiveMovies.getAllTraktIds()
 
-    return syncResults.size
+      val channel = Channel<Unit>(CHANNEL_CAPACITY)
+      val results = mutableListOf<Deferred<Unit>>()
+      val progressTitles = Collections.synchronizedSet(mutableSetOf<String>())
+
+      syncItems
+        .forEachIndexed { _, item ->
+          channel.send(Unit)
+          val result = async {
+            Timber.d("Processing \'${item.requireMovie().title}\'...")
+            val movieUi = mappers.movie.fromNetwork(item.requireMovie())
+
+            progressTitles.add(movieUi.title)
+            progressListener?.invoke(progressTitles.joinToString("\n"))
+
+            try {
+              transactions.withTransaction {
+                val movieId = item.getTraktId()!!
+                if (movieId !in myMoviesIds && movieId !in hiddenMoviesIds) {
+                  val movie = mappers.movie.fromNetwork(item.requireMovie())
+                  val movieDb = mappers.movie.toDatabase(movie)
+
+                  val myMovie = MyMovie.fromTraktId(movieDb.idTrakt, item.lastWatchedMillis())
+                  localSource.movies.upsert(listOf(movieDb))
+                  localSource.myMovies.insert(listOf(myMovie))
+
+                  loadImage(movie)
+
+                  if (movieId in watchlistMoviesIds) {
+                    localSource.watchlistMovies.deleteById(movieId)
+                  }
+                }
+              }
+            } catch (error: Throwable) {
+              if (error !is CancellationException) {
+                Timber.w("Processing \'${item.requireMovie().title}\' failed. Skipping...")
+                Logger.record(error, "TraktImportWatchedRunner::importWatchedMovies()")
+              }
+              rethrowCancellation(error)
+            } finally {
+              channel.receive()
+              progressTitles.remove(movieUi.title)
+            }
+          }
+          results.add(result)
+        }
+
+      results.awaitAll()
+
+      settingsRepository.sync.activityMoviesWatchedAt = syncActivity.movies.watched_at
+      settingsRepository.sync.activityMoviesHiddenAt = syncActivity.movies.hidden_at
+    }
   }
 
   private suspend fun loadImage(show: Show) {
@@ -335,6 +384,7 @@ class TraktImportWatchedRunner @Inject constructor(
       showImagesProvider.loadRemoteImage(show, FANART)
     } catch (error: Throwable) {
       Timber.w(error)
+      rethrowCancellation(error)
       // Ignore image for now. It will be fetched later if needed.
     }
   }
@@ -344,6 +394,7 @@ class TraktImportWatchedRunner @Inject constructor(
       movieImagesProvider.loadRemoteImage(movie, FANART)
     } catch (error: Throwable) {
       Timber.w(error)
+      rethrowCancellation(error)
       // Ignore image for now. It will be fetched later if needed.
     }
   }

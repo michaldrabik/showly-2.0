@@ -30,18 +30,17 @@ class TraktImportWatchlistRunner @Inject constructor(
   override suspend fun run(): Int {
     Timber.d("Initialized.")
 
-    var syncedCount = 0
     checkAuthorization()
     val activity = runSyncActivity()
 
     resetRetries()
-    syncedCount += runShows(activity)
+    runShows(activity)
 
     resetRetries()
-    syncedCount += runMovies(activity)
+    runMovies(activity)
 
     Timber.d("Finished with success.")
-    return syncedCount
+    return 0
   }
 
   private suspend fun runSyncActivity(): SyncActivity {
@@ -58,7 +57,7 @@ class TraktImportWatchlistRunner @Inject constructor(
     }
   }
 
-  private suspend fun runShows(syncActivity: SyncActivity): Int =
+  private suspend fun runShows(syncActivity: SyncActivity) {
     try {
       importShowsWatchlist(syncActivity)
     } catch (error: Throwable) {
@@ -70,11 +69,12 @@ class TraktImportWatchlistRunner @Inject constructor(
         throw error
       }
     }
+  }
 
-  private suspend fun runMovies(syncActivity: SyncActivity): Int {
+  private suspend fun runMovies(syncActivity: SyncActivity) {
     if (!settingsRepository.isMoviesEnabled) {
       Timber.d("Movies are disabled. Exiting...")
-      return 0
+      return
     }
 
     return try {
@@ -90,7 +90,7 @@ class TraktImportWatchlistRunner @Inject constructor(
     }
   }
 
-  private suspend fun importShowsWatchlist(syncActivity: SyncActivity): Int {
+  private suspend fun importShowsWatchlist(syncActivity: SyncActivity) {
     Timber.d("Importing shows watchlist...")
 
     val showsWatchlistedAt = syncActivity.shows.watchlisted_at.toUtcDateTime()!!
@@ -99,7 +99,7 @@ class TraktImportWatchlistRunner @Inject constructor(
     val syncNeeded = localShowsWatchlistedAt == null || localShowsWatchlistedAt.isBefore(showsWatchlistedAt)
     if (!syncNeeded) {
       Timber.d("No changes in watchlist sync activity. Skipping...")
-      return 0
+      return
     }
 
     val syncResults = remoteSource.trakt.fetchSyncShowsWatchlist()
@@ -113,10 +113,10 @@ class TraktImportWatchlistRunner @Inject constructor(
         .distinct()
 
     syncResults
-      .forEachIndexed { index, result ->
+      .forEachIndexed { _, result ->
         Timber.d("Processing \'${result.show!!.title}\'...")
         val showUi = mappers.show.fromNetwork(result.show!!)
-        progressListener?.invoke(showUi.title, index, syncResults.size)
+        progressListener?.invoke(showUi.title)
         try {
           val showId = result.show!!.ids?.trakt ?: -1
           transactions.withTransaction {
@@ -134,11 +134,9 @@ class TraktImportWatchlistRunner @Inject constructor(
       }
 
     settingsRepository.sync.activityShowsWatchlistedAt = syncActivity.shows.watchlisted_at
-
-    return syncResults.size
   }
 
-  private suspend fun importMoviesWatchlist(syncActivity: SyncActivity): Int {
+  private suspend fun importMoviesWatchlist(syncActivity: SyncActivity) {
     Timber.d("Importing movies watchlist...")
 
     val moviesWatchlistedAt = syncActivity.movies.watchlisted_at.toUtcDateTime()!!
@@ -147,7 +145,7 @@ class TraktImportWatchlistRunner @Inject constructor(
     val syncNeeded = localShowsWatchlistedAt == null || localShowsWatchlistedAt.isBefore(moviesWatchlistedAt)
     if (!syncNeeded) {
       Timber.d("No changes in sync activity. Skipping...")
-      return 0
+      return
     }
 
     val syncResults = remoteSource.trakt.fetchSyncMoviesWatchlist()
@@ -161,10 +159,10 @@ class TraktImportWatchlistRunner @Inject constructor(
         .distinct()
 
     syncResults
-      .forEachIndexed { index, result ->
+      .forEachIndexed { _, result ->
         Timber.d("Processing \'${result.movie!!.title}\'...")
         val movieUi = mappers.movie.fromNetwork(result.movie!!)
-        progressListener?.invoke(movieUi.title, index, syncResults.size)
+        progressListener?.invoke(movieUi.title)
         try {
           val movieId = result.movie!!.ids?.trakt ?: -1
           transactions.withTransaction {
@@ -182,7 +180,5 @@ class TraktImportWatchlistRunner @Inject constructor(
       }
 
     settingsRepository.sync.activityMoviesWatchlistedAt = syncActivity.movies.watchlisted_at
-
-    return syncResults.size
   }
 }

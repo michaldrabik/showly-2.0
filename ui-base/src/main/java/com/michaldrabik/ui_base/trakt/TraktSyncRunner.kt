@@ -17,7 +17,7 @@ abstract class TraktSyncRunner(
   }
 
   val retryCount = AtomicInteger(0)
-  var progressListener: (suspend (String, Int, Int) -> Unit)? = null
+  var progressListener: (suspend (String) -> Unit)? = null
 
   abstract suspend fun run(): Int
 

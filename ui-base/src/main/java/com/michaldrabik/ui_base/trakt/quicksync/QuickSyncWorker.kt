@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_base.trakt.quicksync
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.Constraints
@@ -27,6 +28,7 @@ import dagger.assisted.AssistedInject
 import timber.log.Timber
 import java.util.concurrent.TimeUnit.SECONDS
 
+@SuppressLint("MissingPermission")
 @HiltWorker
 class QuickSyncWorker @AssistedInject constructor(
   @Assisted context: Context,
@@ -63,7 +65,7 @@ class QuickSyncWorker @AssistedInject constructor(
     Timber.d("Initialized.")
     notificationManager().notify(
       SYNC_NOTIFICATION_PROGRESS_ID,
-      createProgressNotification(null, 0, 0, true)
+      createProgressNotification(theme, null)
     )
 
     try {
