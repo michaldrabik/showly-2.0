@@ -196,27 +196,24 @@ class TraktSyncWorker @AssistedInject constructor(
 
   private suspend fun runImportWatched() {
     importWatchedRunner.progressListener = { title: String ->
-      val status = "Importing:\n\n\"$title\"..."
-      setProgressNotification(status)
-      eventsManager.sendEvent(TraktSyncProgress(status))
+      setProgressNotification("Importing history...")
+      eventsManager.sendEvent(TraktSyncProgress("Importing:\n\n\"$title\"..."))
     }
     importWatchedRunner.run()
   }
 
   private suspend fun runImportWatchlist() {
     importWatchlistRunner.progressListener = { title: String ->
-      val status = "Importing:\n\n\"$title\"..."
-      setProgressNotification(status)
-      eventsManager.sendEvent(TraktSyncProgress(status))
+      setProgressNotification("Importing watchlist...")
+      eventsManager.sendEvent(TraktSyncProgress("Importing:\n\n\"$title\"..."))
     }
     importWatchlistRunner.run()
   }
 
   private suspend fun runImportLists() {
     importListsRunner.progressListener = { title: String ->
-      val status = "Importing:\n\n\"$title\"..."
-      setProgressNotification(status)
-      eventsManager.sendEvent(TraktSyncProgress(status))
+      setProgressNotification("Importing custom lists...")
+      eventsManager.sendEvent(TraktSyncProgress("Importing:\n\n\"$title\"..."))
     }
     importListsRunner.run()
   }

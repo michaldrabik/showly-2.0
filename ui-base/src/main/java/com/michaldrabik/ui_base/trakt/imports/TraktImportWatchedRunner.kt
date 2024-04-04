@@ -151,21 +151,19 @@ class TraktImportWatchedRunner @Inject constructor(
       syncResults
         .forEachIndexed { _, syncItem ->
           channel.send(Unit)
-          progressTitles.add(syncItem.requireShow().title)
           val result = async {
-            val showUi = mappers.show.fromNetwork(syncItem.requireShow())
-            progressTitles.add(showUi.title)
-
-            Timber.d("Processing \'${showUi.title}\'...")
-            progressListener?.invoke(progressTitles.joinToString("\n"))
-
-            val log = traktSyncLogs.firstOrNull { it.idTrakt == syncItem.show?.ids?.trakt }
-            if (syncItem.lastUpdateMillis() == (log?.syncedAt ?: 0)) {
-              Timber.d("Nothing changed in \'${syncItem.requireShow().title}\'. Skipping...")
-              return@async
-            }
-
+            val showTitle = syncItem.requireShow().title
             try {
+              Timber.d("Processing \'$showTitle\'...")
+              progressListener?.invoke(progressTitles.joinToString("\n"))
+              progressTitles.add(showTitle)
+
+              val log = traktSyncLogs.firstOrNull { it.idTrakt == syncItem.show?.ids?.trakt }
+              if (syncItem.lastUpdateMillis() == (log?.syncedAt ?: 0)) {
+                Timber.d("Nothing changed in \'$showTitle\'. Skipping...")
+                return@async
+              }
+
               val showId = syncItem.getTraktId()!!
               val (seasons, episodes) = loadSeasonsEpisodes(showId, syncItem)
 
@@ -207,7 +205,7 @@ class TraktImportWatchedRunner @Inject constructor(
               rethrowCancellation(error)
             } finally {
               channel.receive()
-              progressTitles.remove(showUi.title)
+              progressTitles.remove(showTitle)
             }
           }
           results.add(result)
@@ -334,13 +332,12 @@ class TraktImportWatchedRunner @Inject constructor(
         .forEachIndexed { _, item ->
           channel.send(Unit)
           val result = async {
-            Timber.d("Processing \'${item.requireMovie().title}\'...")
-            val movieUi = mappers.movie.fromNetwork(item.requireMovie())
-
-            progressTitles.add(movieUi.title)
-            progressListener?.invoke(progressTitles.joinToString("\n"))
-
+            val movieTitle = item.requireMovie().title
             try {
+              Timber.d("Processing \'$movieTitle\'...")
+              progressListener?.invoke(progressTitles.joinToString("\n"))
+              progressTitles.add(movieTitle)
+
               transactions.withTransaction {
                 val movieId = item.getTraktId()!!
                 if (movieId !in myMoviesIds && movieId !in hiddenMoviesIds) {
@@ -360,13 +357,13 @@ class TraktImportWatchedRunner @Inject constructor(
               }
             } catch (error: Throwable) {
               if (error !is CancellationException) {
-                Timber.w("Processing \'${item.requireMovie().title}\' failed. Skipping...")
+                Timber.w("Processing \'$movieTitle\' failed. Skipping...")
                 Logger.record(error, "TraktImportWatchedRunner::importWatchedMovies()")
               }
               rethrowCancellation(error)
             } finally {
               channel.receive()
-              progressTitles.remove(movieUi.title)
+              progressTitles.remove(movieTitle)
             }
           }
           results.add(result)
