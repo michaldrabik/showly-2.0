@@ -196,7 +196,7 @@ class TraktSyncWorker @AssistedInject constructor(
 
   private suspend fun runImportWatched() {
     importWatchedRunner.progressListener = { title: String ->
-      setProgressNotification("Importing history...")
+      setProgressNotification("Importing progress...")
       eventsManager.sendEvent(TraktSyncProgress("Importing:\n\n\"$title\"..."))
     }
     importWatchedRunner.run()

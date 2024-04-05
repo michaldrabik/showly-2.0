@@ -2,7 +2,7 @@ package com.michaldrabik.ui_base.trakt.quicksync.runners.cases
 
 import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.data_local.database.model.TraktSyncQueue
-import com.michaldrabik.data_remote.RemoteDataSource
+import com.michaldrabik.data_remote.trakt.AuthorizedTraktRemoteDataSource
 import com.michaldrabik.data_remote.trakt.model.SyncItem
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class QuickSyncDuplicateMoviesCase @Inject constructor(
   private val dispatchers: CoroutineDispatchers,
-  private val remoteSource: RemoteDataSource
+  private val remoteSource: AuthorizedTraktRemoteDataSource,
 ) {
 
   suspend fun checkDuplicateMovies(
@@ -24,7 +24,7 @@ class QuickSyncDuplicateMoviesCase @Inject constructor(
       val remoteMovies = if (fetchedSyncItems.isNotEmpty()) {
         fetchedSyncItems.toList()
       } else {
-        remoteSource.trakt.fetchSyncWatchedMovies()
+        remoteSource.fetchSyncWatchedMovies()
       }
       val duplicateMoviesIds = mutableListOf<Long>()
 

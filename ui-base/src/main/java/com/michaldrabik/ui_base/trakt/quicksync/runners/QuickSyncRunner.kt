@@ -11,7 +11,7 @@ import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type.MOVIE
 import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type.MOVIE_WATCHLIST
 import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type.SHOW_WATCHLIST
 import com.michaldrabik.data_local.utilities.TransactionsProvider
-import com.michaldrabik.data_remote.RemoteDataSource
+import com.michaldrabik.data_remote.trakt.AuthorizedTraktRemoteDataSource
 import com.michaldrabik.data_remote.trakt.model.SyncExportItem
 import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
 import com.michaldrabik.data_remote.trakt.model.SyncItem
@@ -27,7 +27,7 @@ import javax.inject.Singleton
 
 @Singleton
 class QuickSyncRunner @Inject constructor(
-  private val remoteSource: RemoteDataSource,
+  private val remoteSource: AuthorizedTraktRemoteDataSource,
   private val localSource: LocalDataSource,
   private val transactions: TransactionsProvider,
   private val settingsRepository: SettingsRepository,
@@ -101,7 +101,7 @@ class QuickSyncRunner @Inject constructor(
         .filterNot { clearedProgressIds.contains(it.ids.trakt) }
 
       if (requestItems.isNotEmpty()) {
-        remoteSource.trakt.postDeleteProgress(SyncExportRequest(shows = requestItems))
+        remoteSource.postDeleteProgress(SyncExportRequest(shows = requestItems))
         clearedProgressIds.addAll(requestItems.map { it.ids.trakt })
         delay(DELAY)
       }
@@ -181,7 +181,7 @@ class QuickSyncRunner @Inject constructor(
       localSource.traktSyncQueue.deleteAll(ids, MOVIE_WATCHLIST.slug)
       localSource.traktSyncQueue.deleteAll(ids, SHOW_WATCHLIST.slug)
     }
-    remoteSource.trakt.postSyncWatchlist(request)
+    remoteSource.postSyncWatchlist(request)
 
     val currentCount = count + exportShows.count() + exportMovies.count()
 
@@ -220,14 +220,14 @@ class QuickSyncRunner @Inject constructor(
     }
 
     if (exportShows.isNotEmpty()) {
-      remoteSource.trakt.postHiddenShows(
+      remoteSource.postHiddenShows(
         shows = exportShows.map { SyncExportItem.create(it.idTrakt, hiddenAt = dateIsoStringFromMillis(it.updatedAt)) }
       )
       delay(1500)
     }
 
     if (exportMovies.isNotEmpty()) {
-      remoteSource.trakt.postHiddenMovies(
+      remoteSource.postHiddenMovies(
         movies = exportMovies.map { SyncExportItem.create(it.idTrakt, hiddenAt = dateIsoStringFromMillis(it.updatedAt)) }
       )
     }

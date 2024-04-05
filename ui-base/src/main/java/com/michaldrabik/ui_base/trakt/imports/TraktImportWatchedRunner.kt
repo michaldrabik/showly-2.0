@@ -12,7 +12,8 @@ import com.michaldrabik.data_local.database.model.MyMovie
 import com.michaldrabik.data_local.database.model.MyShow
 import com.michaldrabik.data_local.database.model.Season
 import com.michaldrabik.data_local.utilities.TransactionsProvider
-import com.michaldrabik.data_remote.RemoteDataSource
+import com.michaldrabik.data_remote.trakt.AuthorizedTraktRemoteDataSource
+import com.michaldrabik.data_remote.trakt.TraktRemoteDataSource
 import com.michaldrabik.data_remote.trakt.model.SyncActivity
 import com.michaldrabik.data_remote.trakt.model.SyncItem
 import com.michaldrabik.repository.UserTraktManager
@@ -43,7 +44,8 @@ private const val CHANNEL_CAPACITY = 10
 
 @Singleton
 class TraktImportWatchedRunner @Inject constructor(
-  private val remoteSource: RemoteDataSource,
+  private val remoteAuthSource: AuthorizedTraktRemoteDataSource,
+  private val remoteSource: TraktRemoteDataSource,
   private val localSource: LocalDataSource,
   private val mappers: Mappers,
   private val transactions: TransactionsProvider,
@@ -72,7 +74,7 @@ class TraktImportWatchedRunner @Inject constructor(
 
   private suspend fun runSyncActivity(): SyncActivity {
     return try {
-      remoteSource.trakt.fetchSyncActivity()
+      remoteAuthSource.fetchSyncActivity()
     } catch (error: Throwable) {
       if (retryCount.getAndIncrement() < MAX_IMPORT_RETRY_COUNT) {
         Timber.w("checkSyncActivity HTTP failed. Will retry in $RETRY_DELAY_MS ms... $error")
@@ -115,11 +117,11 @@ class TraktImportWatchedRunner @Inject constructor(
         return@withContext 0
       }
 
-      val syncResults = remoteSource.trakt.fetchSyncWatchedShows("full")
+      val syncResults = remoteAuthSource.fetchSyncWatchedShows("full")
         .distinctBy { it.show?.ids?.trakt }
 
       Timber.d("Importing hidden shows...")
-      remoteSource.trakt.fetchHiddenShows()
+      remoteAuthSource.fetchHiddenShows()
         .forEach { item ->
           item.show?.let {
             val show = mappers.show.fromNetwork(it)
@@ -219,7 +221,7 @@ class TraktImportWatchedRunner @Inject constructor(
   }
 
   private suspend fun loadSeasonsEpisodes(showId: Long, syncItem: SyncItem): Pair<List<Season>, List<Episode>> {
-    val remoteSeasons = remoteSource.trakt.fetchSeasons(showId)
+    val remoteSeasons = remoteSource.fetchSeasons(showId)
     val localSeasonsIds = localSource.seasons.getAllWatchedIdsForShows(listOf(showId))
     val localEpisodesIds = localSource.episodes.getAllWatchedIdsForShows(listOf(showId))
 
@@ -297,13 +299,13 @@ class TraktImportWatchedRunner @Inject constructor(
         return@withContext
       }
 
-      val syncItems = remoteSource.trakt.fetchSyncWatchedMovies("full")
+      val syncItems = remoteAuthSource.fetchSyncWatchedMovies("full")
         .filter { it.movie != null }
         .distinctBy { it.movie?.ids?.trakt }
 
       Timber.d("Importing hidden movies...")
 
-      val hiddenMovies = remoteSource.trakt.fetchHiddenMovies()
+      val hiddenMovies = remoteAuthSource.fetchHiddenMovies()
       hiddenMovies.forEach { hiddenMovie ->
         hiddenMovie.movie?.let {
           val movie = mappers.movie.fromNetwork(it)

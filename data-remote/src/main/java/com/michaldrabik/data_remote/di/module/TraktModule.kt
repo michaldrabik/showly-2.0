@@ -3,7 +3,9 @@ package com.michaldrabik.data_remote.di.module
 import android.content.SharedPreferences
 import com.michaldrabik.data_remote.token.TokenProvider
 import com.michaldrabik.data_remote.token.TraktTokenProvider
+import com.michaldrabik.data_remote.trakt.AuthorizedTraktRemoteDataSource
 import com.michaldrabik.data_remote.trakt.TraktRemoteDataSource
+import com.michaldrabik.data_remote.trakt.api.AuthorizedTraktApi
 import com.michaldrabik.data_remote.trakt.api.TraktApi
 import com.michaldrabik.data_remote.trakt.api.service.TraktAuthService
 import com.michaldrabik.data_remote.trakt.api.service.TraktCommentsService
@@ -29,17 +31,26 @@ object TraktModule {
 
   @Provides
   @Singleton
-  fun providesTraktApi(@Named("retrofitTrakt") retrofit: Retrofit): TraktRemoteDataSource =
-    TraktApi(
+  fun providesTraktApi(@Named("retrofitTrakt") retrofit: Retrofit): TraktRemoteDataSource {
+    return TraktApi(
       showsService = retrofit.create(TraktShowsService::class.java),
       moviesService = retrofit.create(TraktMoviesService::class.java),
-      usersService = retrofit.create(TraktUsersService::class.java),
       authService = retrofit.create(TraktAuthService::class.java),
       commentsService = retrofit.create(TraktCommentsService::class.java),
       searchService = retrofit.create(TraktSearchService::class.java),
       peopleService = retrofit.create(TraktPeopleService::class.java),
-      syncService = retrofit.create(TraktSyncService::class.java)
     )
+  }
+
+  @Provides
+  @Singleton
+  fun providesAuthorizedTraktApi(@Named("retrofitAuthorizedTrakt") retrofit: Retrofit): AuthorizedTraktRemoteDataSource {
+    return AuthorizedTraktApi(
+      usersService = retrofit.create(TraktUsersService::class.java),
+      syncService = retrofit.create(TraktSyncService::class.java),
+      commentsService = retrofit.create(TraktCommentsService::class.java),
+    )
+  }
 
   @Provides
   @Singleton

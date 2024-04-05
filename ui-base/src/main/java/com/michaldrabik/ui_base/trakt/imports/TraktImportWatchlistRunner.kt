@@ -5,7 +5,7 @@ import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.WatchlistMovie
 import com.michaldrabik.data_local.database.model.WatchlistShow
 import com.michaldrabik.data_local.utilities.TransactionsProvider
-import com.michaldrabik.data_remote.RemoteDataSource
+import com.michaldrabik.data_remote.trakt.AuthorizedTraktRemoteDataSource
 import com.michaldrabik.data_remote.trakt.model.SyncActivity
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.mappers.Mappers
@@ -19,7 +19,7 @@ import javax.inject.Singleton
 
 @Singleton
 class TraktImportWatchlistRunner @Inject constructor(
-  private val remoteSource: RemoteDataSource,
+  private val remoteSource: AuthorizedTraktRemoteDataSource,
   private val localSource: LocalDataSource,
   private val transactions: TransactionsProvider,
   private val mappers: Mappers,
@@ -45,7 +45,7 @@ class TraktImportWatchlistRunner @Inject constructor(
 
   private suspend fun runSyncActivity(): SyncActivity {
     return try {
-      remoteSource.trakt.fetchSyncActivity()
+      remoteSource.fetchSyncActivity()
     } catch (error: Throwable) {
       if (retryCount.getAndIncrement() < MAX_IMPORT_RETRY_COUNT) {
         Timber.w("checkSyncActivity HTTP failed. Will retry in $RETRY_DELAY_MS ms... $error")
@@ -102,7 +102,7 @@ class TraktImportWatchlistRunner @Inject constructor(
       return
     }
 
-    val syncResults = remoteSource.trakt.fetchSyncShowsWatchlist()
+    val syncResults = remoteSource.fetchSyncShowsWatchlist()
       .filter { it.show != null }
       .distinctBy { it.show!!.ids?.trakt }
 
@@ -148,7 +148,7 @@ class TraktImportWatchlistRunner @Inject constructor(
       return
     }
 
-    val syncResults = remoteSource.trakt.fetchSyncMoviesWatchlist()
+    val syncResults = remoteSource.fetchSyncMoviesWatchlist()
       .filter { it.movie != null }
       .distinctBy { it.movie!!.ids?.trakt }
 

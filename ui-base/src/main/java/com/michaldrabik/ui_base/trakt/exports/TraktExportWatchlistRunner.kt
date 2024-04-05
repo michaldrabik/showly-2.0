@@ -3,7 +3,7 @@ package com.michaldrabik.ui_base.trakt.exports
 import com.michaldrabik.common.errors.ErrorHelper
 import com.michaldrabik.common.errors.ShowlyError
 import com.michaldrabik.data_local.LocalDataSource
-import com.michaldrabik.data_remote.RemoteDataSource
+import com.michaldrabik.data_remote.trakt.AuthorizedTraktRemoteDataSource
 import com.michaldrabik.data_remote.trakt.model.SyncExportItem
 import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
 import com.michaldrabik.repository.UserTraktManager
@@ -19,7 +19,7 @@ import javax.inject.Singleton
 
 @Singleton
 class TraktExportWatchlistRunner @Inject constructor(
-  private val remoteSource: RemoteDataSource,
+  private val remoteSource: AuthorizedTraktRemoteDataSource,
   private val localSource: LocalDataSource,
   private val settingsRepository: SettingsRepository,
   userTraktManager: UserTraktManager,
@@ -64,12 +64,12 @@ class TraktExportWatchlistRunner @Inject constructor(
 
     val showsAsync = async {
       Timber.d("Fetching remote shows watchlist...")
-      remoteSource.trakt.fetchSyncShowsWatchlist()
+      remoteSource.fetchSyncShowsWatchlist()
     }
     val moviesAsync = async {
       if (isMoviesEnables) {
         Timber.d("Fetching remote movies watchlist...")
-        remoteSource.trakt.fetchSyncMoviesWatchlist()
+        remoteSource.fetchSyncMoviesWatchlist()
       } else {
         emptyList()
       }
@@ -94,7 +94,7 @@ class TraktExportWatchlistRunner @Inject constructor(
       }
       Timber.d("Exporting chunk of ${showsChunk.size} shows & ${moviesChunk.size} movies...")
       val request = SyncExportRequest(shows = showsChunk, movies = moviesChunk)
-      remoteSource.trakt.postSyncWatchlist(request)
+      remoteSource.postSyncWatchlist(request)
 
       shows.removeAll(showsChunk)
       movies.removeAll(moviesChunk)

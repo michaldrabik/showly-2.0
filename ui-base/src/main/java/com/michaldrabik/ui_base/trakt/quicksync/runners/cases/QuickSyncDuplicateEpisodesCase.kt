@@ -3,7 +3,7 @@ package com.michaldrabik.ui_base.trakt.quicksync.runners.cases
 import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.TraktSyncQueue
-import com.michaldrabik.data_remote.RemoteDataSource
+import com.michaldrabik.data_remote.trakt.AuthorizedTraktRemoteDataSource
 import com.michaldrabik.data_remote.trakt.model.SyncItem
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 class QuickSyncDuplicateEpisodesCase @Inject constructor(
   private val dispatchers: CoroutineDispatchers,
-  private val remoteSource: RemoteDataSource,
+  private val remoteSource: AuthorizedTraktRemoteDataSource,
   private val localSource: LocalDataSource
 ) {
 
@@ -26,7 +26,7 @@ class QuickSyncDuplicateEpisodesCase @Inject constructor(
       val remoteShows = if (fetchedSyncItems.isNotEmpty()) {
         fetchedSyncItems.toList()
       } else {
-        remoteSource.trakt.fetchSyncWatchedShows()
+        remoteSource.fetchSyncWatchedShows()
       }
       val duplicateEpisodesIds = mutableListOf<Long>()
 
@@ -42,13 +42,13 @@ class QuickSyncDuplicateEpisodesCase @Inject constructor(
             duplicateEpisodesIds.add(item.idTrakt)
           } else {
             if (remoteShows
-              .filter { it.getTraktId() == showId }
-              .any { remoteShow ->
-                remoteShow.seasons
-                  ?.find { it.number == localEpisode.seasonNumber }
-                  ?.episodes
-                  ?.any { it.number == localEpisode.episodeNumber } == true
-              }
+                .filter { it.getTraktId() == showId }
+                .any { remoteShow ->
+                  remoteShow.seasons
+                    ?.find { it.number == localEpisode.seasonNumber }
+                    ?.episodes
+                    ?.any { it.number == localEpisode.episodeNumber } == true
+                }
             ) {
               duplicateEpisodesIds.add(item.idTrakt)
             }

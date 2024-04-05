@@ -5,6 +5,7 @@ import com.michaldrabik.data_local.database.model.User
 import com.michaldrabik.data_local.sources.UserLocalDataSource
 import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.data_remote.token.TokenProvider
+import com.michaldrabik.data_remote.trakt.AuthorizedTraktRemoteDataSource
 import com.michaldrabik.data_remote.trakt.TraktRemoteDataSource
 import timber.log.Timber
 import javax.inject.Inject
@@ -14,6 +15,7 @@ import com.michaldrabik.data_remote.trakt.model.User as UserModel
 @Singleton
 class UserTraktManager @Inject constructor(
   private val remoteSource: TraktRemoteDataSource,
+  private val authorizedRemoteSource: AuthorizedTraktRemoteDataSource,
   private val userLocalSource: UserLocalDataSource,
   private val transactions: TransactionsProvider,
   private val tokenProvider: TokenProvider
@@ -30,7 +32,7 @@ class UserTraktManager @Inject constructor(
   suspend fun authorize(authCode: String) {
     val tokens = remoteSource.fetchAuthTokens(authCode)
     tokenProvider.saveTokens(tokens.access_token, tokens.refresh_token)
-    val user = remoteSource.fetchMyProfile()
+    val user = authorizedRemoteSource.fetchMyProfile()
     saveUser(user)
   }
 

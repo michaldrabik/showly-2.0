@@ -1,6 +1,6 @@
 package com.michaldrabik.ui_base.common.sheets.remove_trakt.remove_trakt_progress.cases
 
-import com.michaldrabik.data_remote.RemoteDataSource
+import com.michaldrabik.data_remote.trakt.AuthorizedTraktRemoteDataSource
 import com.michaldrabik.data_remote.trakt.model.SyncExportItem
 import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
 import com.michaldrabik.repository.EpisodesManager
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class RemoveTraktProgressCase @Inject constructor(
-  private val remoteSource: RemoteDataSource,
+  private val remoteSource: AuthorizedTraktRemoteDataSource,
   private val userManager: UserTraktManager,
   private val episodesManager: EpisodesManager
 ) {
@@ -27,7 +27,7 @@ class RemoveTraktProgressCase @Inject constructor(
       Mode.EPISODE -> SyncExportRequest(episodes = items)
     }
 
-    remoteSource.trakt.postDeleteProgress(request)
+    remoteSource.postDeleteProgress(request)
     if (mode == Mode.SHOW && traktIds.isNotEmpty()) {
       episodesManager.setAllUnwatched(traktIds.first())
     }

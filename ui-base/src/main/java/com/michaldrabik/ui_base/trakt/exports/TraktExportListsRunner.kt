@@ -5,7 +5,7 @@ import com.michaldrabik.common.errors.ErrorHelper
 import com.michaldrabik.common.errors.ShowlyError
 import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.data_local.LocalDataSource
-import com.michaldrabik.data_remote.trakt.TraktRemoteDataSource
+import com.michaldrabik.data_remote.trakt.AuthorizedTraktRemoteDataSource
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.settings.SettingsRepository
@@ -18,7 +18,7 @@ import javax.inject.Singleton
 
 @Singleton
 class TraktExportListsRunner @Inject constructor(
-  private val remoteSource: TraktRemoteDataSource,
+  private val remoteSource: AuthorizedTraktRemoteDataSource,
   private val localSource: LocalDataSource,
   private val mappers: Mappers,
   private val settingsRepository: SettingsRepository,

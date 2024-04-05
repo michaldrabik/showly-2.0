@@ -7,7 +7,7 @@ import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.CustomListItem
 import com.michaldrabik.data_local.utilities.TransactionsProvider
-import com.michaldrabik.data_remote.RemoteDataSource
+import com.michaldrabik.data_remote.trakt.AuthorizedTraktRemoteDataSource
 import com.michaldrabik.repository.ListsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.settings.SettingsRepository
@@ -21,7 +21,7 @@ import javax.inject.Inject
 class ListDetailsMainCase @Inject constructor(
   private val dispatchers: CoroutineDispatchers,
   private val localSource: LocalDataSource,
-  private val remoteSource: RemoteDataSource,
+  private val remoteSource: AuthorizedTraktRemoteDataSource,
   private val transactions: TransactionsProvider,
   private val listsRepository: ListsRepository,
   private val settingsRepository: SettingsRepository,
@@ -61,7 +61,7 @@ class ListDetailsMainCase @Inject constructor(
       if (isQuickRemove && isAuthorized && removeFromTrakt && listIdTrakt != null) {
         userTraktManager.checkAuthorization()
         try {
-          remoteSource.trakt.deleteList(listIdTrakt)
+          remoteSource.deleteList(listIdTrakt)
         } catch (error: Throwable) {
           when (ErrorHelper.parse(error)) {
             is ShowlyError.ResourceNotFoundError -> Unit // NOOP List does not exist in Trakt.

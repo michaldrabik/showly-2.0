@@ -1,6 +1,6 @@
 package com.michaldrabik.ui_base.common.sheets.remove_trakt.remove_trakt_hidden.cases
 
-import com.michaldrabik.data_remote.RemoteDataSource
+import com.michaldrabik.data_remote.trakt.AuthorizedTraktRemoteDataSource
 import com.michaldrabik.data_remote.trakt.model.SyncExportItem
 import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
 import com.michaldrabik.repository.UserTraktManager
@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class RemoveTraktHiddenCase @Inject constructor(
-  private val remoteSource: RemoteDataSource,
+  private val remoteSource: AuthorizedTraktRemoteDataSource,
   private val userManager: UserTraktManager,
 ) {
 
@@ -22,11 +22,11 @@ class RemoveTraktHiddenCase @Inject constructor(
     when (mode) {
       Mode.SHOW -> {
         val request = SyncExportRequest(shows = items)
-        remoteSource.trakt.deleteHiddenShow(request)
+        remoteSource.deleteHiddenShow(request)
       }
       Mode.MOVIE -> {
         val request = SyncExportRequest(movies = items)
-        remoteSource.trakt.deleteHiddenMovie(request)
+        remoteSource.deleteHiddenMovie(request)
       }
       else -> throw IllegalStateException()
     }

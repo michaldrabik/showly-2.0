@@ -3,7 +3,7 @@ package com.michaldrabik.repository.movies.ratings
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.Rating
-import com.michaldrabik.data_remote.RemoteDataSource
+import com.michaldrabik.data_remote.trakt.AuthorizedTraktRemoteDataSource
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.TraktRating
@@ -13,7 +13,7 @@ import javax.inject.Singleton
 @Singleton
 class MoviesRatingsRepository @Inject constructor(
   val external: MoviesExternalRatingsRepository,
-  private val remoteSource: RemoteDataSource,
+  private val remoteSource: AuthorizedTraktRemoteDataSource,
   private val localSource: LocalDataSource,
   private val mappers: Mappers,
 ) {
@@ -23,7 +23,7 @@ class MoviesRatingsRepository @Inject constructor(
   }
 
   suspend fun preloadRatings() {
-    val ratings = remoteSource.trakt.fetchMoviesRatings()
+    val ratings = remoteSource.fetchMoviesRatings()
     val entities = ratings
       .filter { it.rated_at != null && it.movie.ids.trakt != null }
       .map { mappers.userRatings.toDatabaseMovie(it) }
@@ -49,7 +49,7 @@ class MoviesRatingsRepository @Inject constructor(
   }
 
   suspend fun addRating(movie: Movie, rating: Int) {
-    remoteSource.trakt.postRating(
+    remoteSource.postRating(
       mappers.movie.toNetwork(movie),
       rating
     )
@@ -58,7 +58,7 @@ class MoviesRatingsRepository @Inject constructor(
   }
 
   suspend fun deleteRating(movie: Movie) {
-    remoteSource.trakt.deleteRating(
+    remoteSource.deleteRating(
       mappers.movie.toNetwork(movie)
     )
     localSource.ratings.deleteByType(movie.traktId, TYPE_MOVIE)

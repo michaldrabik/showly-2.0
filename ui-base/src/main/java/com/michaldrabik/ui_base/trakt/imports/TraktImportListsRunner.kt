@@ -6,7 +6,7 @@ import com.michaldrabik.common.extensions.toUtcDateTime
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.CustomListItem
 import com.michaldrabik.data_local.utilities.TransactionsProvider
-import com.michaldrabik.data_remote.RemoteDataSource
+import com.michaldrabik.data_remote.trakt.AuthorizedTraktRemoteDataSource
 import com.michaldrabik.data_remote.trakt.model.SyncActivity
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.mappers.Mappers
@@ -19,7 +19,7 @@ import javax.inject.Singleton
 
 @Singleton
 class TraktImportListsRunner @Inject constructor(
-  private val remoteSource: RemoteDataSource,
+  private val remoteSource: AuthorizedTraktRemoteDataSource,
   private val localSource: LocalDataSource,
   private val transactions: TransactionsProvider,
   private val mappers: Mappers,
@@ -42,7 +42,7 @@ class TraktImportListsRunner @Inject constructor(
 
   private suspend fun runSyncActivity(): SyncActivity {
     return try {
-      remoteSource.trakt.fetchSyncActivity()
+      remoteSource.fetchSyncActivity()
     } catch (error: Throwable) {
       if (retryCount.getAndIncrement() < MAX_IMPORT_RETRY_COUNT) {
         Timber.w("checkSyncActivity HTTP failed. Will retry in $RETRY_DELAY_MS ms... $error")
@@ -86,7 +86,7 @@ class TraktImportListsRunner @Inject constructor(
 
     val localLists = localSource.customLists.getAll()
       .map { mappers.customList.fromDatabase(it) }
-    val remoteLists = remoteSource.trakt.fetchSyncLists()
+    val remoteLists = remoteSource.fetchSyncLists()
       .map { mappers.customList.fromNetwork(it) }
 
     remoteLists.forEach { remoteList ->
@@ -128,7 +128,7 @@ class TraktImportListsRunner @Inject constructor(
     Timber.d("Importing list items...")
 
     val localItems = localSource.customListsItems.getItemsById(listId)
-    val items = remoteSource.trakt.fetchSyncListItems(listIdTrakt, moviesEnabled)
+    val items = remoteSource.fetchSyncListItems(listIdTrakt, moviesEnabled)
       .filter { item ->
         localItems.none {
           it.idTrakt == item.getTraktId() && it.type == item.getType()

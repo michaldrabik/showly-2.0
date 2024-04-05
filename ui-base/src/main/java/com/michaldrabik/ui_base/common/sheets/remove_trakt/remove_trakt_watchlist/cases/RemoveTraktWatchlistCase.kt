@@ -1,6 +1,6 @@
 package com.michaldrabik.ui_base.common.sheets.remove_trakt.remove_trakt_watchlist.cases
 
-import com.michaldrabik.data_remote.RemoteDataSource
+import com.michaldrabik.data_remote.trakt.AuthorizedTraktRemoteDataSource
 import com.michaldrabik.data_remote.trakt.model.SyncExportItem
 import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
 import com.michaldrabik.repository.UserTraktManager
@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class RemoveTraktWatchlistCase @Inject constructor(
-  private val remoteSource: RemoteDataSource,
+  private val remoteSource: AuthorizedTraktRemoteDataSource,
   private val userManager: UserTraktManager,
 ) {
 
@@ -25,6 +25,6 @@ class RemoveTraktWatchlistCase @Inject constructor(
       else -> throw IllegalStateException()
     }
 
-    remoteSource.trakt.postDeleteWatchlist(request)
+    remoteSource.postDeleteWatchlist(request)
   }
 }

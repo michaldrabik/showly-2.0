@@ -7,7 +7,7 @@ import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.TraktSyncQueue
 import com.michaldrabik.data_local.database.model.TraktSyncQueue.Operation
 import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type
-import com.michaldrabik.data_remote.RemoteDataSource
+import com.michaldrabik.data_remote.trakt.AuthorizedTraktRemoteDataSource
 import com.michaldrabik.repository.ListsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.mappers.Mappers
@@ -20,7 +20,7 @@ import javax.inject.Singleton
 
 @Singleton
 class QuickSyncListsRunner @Inject constructor(
-  private val remoteSource: RemoteDataSource,
+  private val remoteSource: AuthorizedTraktRemoteDataSource,
   private val localSource: LocalDataSource,
   private val mappers: Mappers,
   private val listsRepository: ListsRepository,
@@ -122,7 +122,7 @@ class QuickSyncListsRunner @Inject constructor(
         .map { it.idTrakt }
 
       if (showIds.isNotEmpty() || movieIds.isNotEmpty()) {
-        remoteSource.trakt.postRemoveListItems(list.idTrakt!!, showIds, movieIds)
+        remoteSource.postRemoveListItems(list.idTrakt!!, showIds, movieIds)
         localSource.traktSyncQueue.delete(removeItems)
       }
     } catch (error: Throwable) {
@@ -150,7 +150,7 @@ class QuickSyncListsRunner @Inject constructor(
 
     try {
       if (showIds.isNotEmpty() || movieIds.isNotEmpty()) {
-        remoteSource.trakt.postAddListItems(localList.idTrakt!!, showIds, movieIds)
+        remoteSource.postAddListItems(localList.idTrakt!!, showIds, movieIds)
         localSource.traktSyncQueue.delete(addItems)
       }
     } catch (error: Throwable) {
@@ -176,7 +176,7 @@ class QuickSyncListsRunner @Inject constructor(
     addItems: List<TraktSyncQueue>
   ): CustomList {
     try {
-      val result = remoteSource.trakt.postCreateList(localList.name, localList.description)
+      val result = remoteSource.postCreateList(localList.name, localList.description)
         .run { mappers.customList.fromNetwork(this) }
 
       listsRepository.updateList(localList.id, result.idTrakt, result.idSlug, result.name, result.description)
@@ -186,7 +186,7 @@ class QuickSyncListsRunner @Inject constructor(
         val showsIds = localItems.filter { it.type == Mode.SHOWS.type }.map { it.idTrakt }
         val moviesIds = localItems.filter { it.type == Mode.MOVIES.type }.map { it.idTrakt }
         delay(TRAKT_DELAY)
-        remoteSource.trakt.postAddListItems(result.idTrakt!!, showsIds, moviesIds)
+        remoteSource.postAddListItems(result.idTrakt!!, showsIds, moviesIds)
       }
 
       return listsRepository.updateList(localList.id, result.idTrakt, result.idSlug, result.name, result.description)

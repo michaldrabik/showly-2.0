@@ -34,6 +34,19 @@ object RetrofitModule {
 
   @Provides
   @Singleton
+  @Named("retrofitAuthorizedTrakt")
+  fun providesAuthorizedTraktRetrofit(
+    @Named("okHttpAuthorizedTrakt") okHttpClient: OkHttpClient,
+    moshi: Moshi,
+  ): Retrofit =
+    Retrofit.Builder()
+      .client(okHttpClient)
+      .addConverterFactory(MoshiConverterFactory.create(moshi))
+      .baseUrl(TRAKT_BASE_URL)
+      .build()
+
+  @Provides
+  @Singleton
   @Named("retrofitTmdb")
   fun providesTmdbRetrofit(
     @Named("okHttpTmdb") okHttpClient: OkHttpClient,

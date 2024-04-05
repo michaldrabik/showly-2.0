@@ -36,6 +36,21 @@ object OkHttpModule {
   @Named("okHttpTrakt")
   fun providesTraktOkHttp(
     httpLoggingInterceptor: HttpLoggingInterceptor,
+    traktHeadersInterceptor: TraktHeadersInterceptor,
+    traktRetryInterceptor: TraktRetryInterceptor,
+  ): OkHttpClient {
+    return createBaseOkHttpClient()
+      .addInterceptor(traktHeadersInterceptor)
+      .addInterceptor(traktRetryInterceptor)
+      .addInterceptor(httpLoggingInterceptor)
+      .build()
+  }
+
+  @Provides
+  @Singleton
+  @Named("okHttpAuthorizedTrakt")
+  fun providesAuthorizedTraktOkHttp(
+    httpLoggingInterceptor: HttpLoggingInterceptor,
     traktAuthorizationInterceptor: TraktAuthorizationInterceptor,
     traktHeadersInterceptor: TraktHeadersInterceptor,
     traktRefreshTokenInterceptor: TraktRefreshTokenInterceptor,

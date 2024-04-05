@@ -7,7 +7,7 @@ import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.Episode
 import com.michaldrabik.data_local.database.model.Movie
 import com.michaldrabik.data_local.database.model.Show
-import com.michaldrabik.data_remote.RemoteDataSource
+import com.michaldrabik.data_remote.trakt.AuthorizedTraktRemoteDataSource
 import com.michaldrabik.data_remote.trakt.model.SyncExportItem
 import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
 import com.michaldrabik.data_remote.trakt.model.SyncHistoryItem
@@ -26,7 +26,7 @@ import javax.inject.Singleton
 
 @Singleton
 class TraktExportWatchedRunner @Inject constructor(
-  private val remoteSource: RemoteDataSource,
+  private val remoteSource: AuthorizedTraktRemoteDataSource,
   private val localSource: LocalDataSource,
   private val settingsRepository: SettingsRepository,
   userTraktManager: UserTraktManager,
@@ -70,11 +70,11 @@ class TraktExportWatchedRunner @Inject constructor(
       val distinctShowIds = localEpisodesNotExported.map { it.idShowTrakt }.distinct()
       val watchedEpisodes = if (distinctShowIds.size == 1) {
         // Use history endpoint for single show instead of fetching all watched progress. The most usual case.
-        val remoteShows = remoteSource.trakt.fetchSyncShowHistory(distinctShowIds.first())
+        val remoteShows = remoteSource.fetchSyncShowHistory(distinctShowIds.first())
         localEpisodesNotExported.filter { isHistoryEpisodeWatched(remoteShows, it) }
       } else {
         // Use watched progress endpoint for multiple shows.
-        val remoteShows = remoteSource.trakt.fetchSyncWatchedShows()
+        val remoteShows = remoteSource.fetchSyncWatchedShows()
         localEpisodesNotExported.filter { isEpisodeWatched(remoteShows, it) }
       }
 
@@ -101,7 +101,7 @@ class TraktExportWatchedRunner @Inject constructor(
     if (settingsRepository.isMoviesEnabled) {
       val localMoviesIds = localSource.myMovies.getAllTraktIds()
       if (localMoviesIds.isNotEmpty()) {
-        val remoteMoviesIds = remoteSource.trakt.fetchSyncWatchedMovies()
+        val remoteMoviesIds = remoteSource.fetchSyncWatchedMovies()
           .map { it.getTraktId() }
         val localMyMovies = batchMovies(localMoviesIds)
           .filter { movie -> remoteMoviesIds.none { it == movie.idTrakt } }
@@ -139,7 +139,7 @@ class TraktExportWatchedRunner @Inject constructor(
     )
 
     Timber.d("Exporting batch ${batchRequest.episodes.size} episodes & ${batchRequest.movies.size} movies...")
-    remoteSource.trakt.postSyncWatched(batchRequest)
+    remoteSource.postSyncWatched(batchRequest)
     localSource.episodes.updateIsExported(
       episodesIds = batchRequest.episodes.map { it.ids.trakt },
       exportedAt = nowUtcMillis()
@@ -157,8 +157,8 @@ class TraktExportWatchedRunner @Inject constructor(
   private suspend fun exportHidden() = coroutineScope {
     Timber.d("Exporting hidden items...")
 
-    val remoteShowsAsync = async { remoteSource.trakt.fetchHiddenShows() }
-    val remoteMoviesAsync = async { remoteSource.trakt.fetchHiddenMovies() }
+    val remoteShowsAsync = async { remoteSource.fetchHiddenShows() }
+    val remoteMoviesAsync = async { remoteSource.fetchHiddenMovies() }
     val (remoteShows, remoteMovies) = awaitAll(remoteShowsAsync, remoteMoviesAsync)
 
     val showsAsync = async { localSource.archiveShows.getAll() }
@@ -192,7 +192,7 @@ class TraktExportWatchedRunner @Inject constructor(
     Timber.d("Exporting ${showsItems.size} hidden shows...")
     if (showsItems.isNotEmpty()) {
       showsItems.chunked(500).forEach { chunk ->
-        remoteSource.trakt.postHiddenShows(shows = chunk)
+        remoteSource.postHiddenShows(shows = chunk)
         delay(TRAKT_LIMIT_DELAY_MS)
       }
       delay(TRAKT_LIMIT_DELAY_MS)
@@ -203,7 +203,7 @@ class TraktExportWatchedRunner @Inject constructor(
     Timber.d("Exporting ${moviesItems.size} hidden movies...")
     if (moviesItems.isNotEmpty()) {
       moviesItems.chunked(500).forEach { chunk ->
-        remoteSource.trakt.postHiddenMovies(movies = chunk)
+        remoteSource.postHiddenMovies(movies = chunk)
         delay(TRAKT_LIMIT_DELAY_MS)
       }
       delay(TRAKT_LIMIT_DELAY_MS)

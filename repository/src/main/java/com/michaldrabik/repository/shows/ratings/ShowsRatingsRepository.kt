@@ -4,7 +4,7 @@ import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.Rating
 import com.michaldrabik.data_local.utilities.TransactionsProvider
-import com.michaldrabik.data_remote.RemoteDataSource
+import com.michaldrabik.data_remote.trakt.AuthorizedTraktRemoteDataSource
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Season
@@ -20,7 +20,7 @@ import javax.inject.Singleton
 @Singleton
 class ShowsRatingsRepository @Inject constructor(
   val external: ShowsExternalRatingsRepository,
-  private val remoteSource: RemoteDataSource,
+  private val remoteSource: AuthorizedTraktRemoteDataSource,
   private val localSource: LocalDataSource,
   private val transactions: TransactionsProvider,
   private val mappers: Mappers
@@ -36,7 +36,7 @@ class ShowsRatingsRepository @Inject constructor(
   suspend fun preloadRatings() = supervisorScope {
 
     suspend fun preloadShowsRatings() {
-      val ratings = remoteSource.trakt.fetchShowsRatings()
+      val ratings = remoteSource.fetchShowsRatings()
       val entities = ratings
         .filter { it.rated_at != null && it.show.ids.trakt != null }
         .map { mappers.userRatings.toDatabaseShow(it) }
@@ -44,7 +44,7 @@ class ShowsRatingsRepository @Inject constructor(
     }
 
     suspend fun preloadEpisodesRatings() {
-      val ratings = remoteSource.trakt.fetchEpisodesRatings()
+      val ratings = remoteSource.fetchEpisodesRatings()
       val entities = ratings
         .filter { it.rated_at != null && it.episode.ids.trakt != null }
         .map { mappers.userRatings.toDatabaseEpisode(it) }
@@ -52,7 +52,7 @@ class ShowsRatingsRepository @Inject constructor(
     }
 
     suspend fun preloadSeasonsRatings() {
-      val ratings = remoteSource.trakt.fetchSeasonsRatings()
+      val ratings = remoteSource.fetchSeasonsRatings()
       val entities = ratings
         .filter { it.rated_at != null && it.season.ids.trakt != null }
         .map { mappers.userRatings.toDatabaseSeason(it) }
@@ -109,7 +109,7 @@ class ShowsRatingsRepository @Inject constructor(
   }
 
   suspend fun addRating(show: Show, rating: Int) {
-    remoteSource.trakt.postRating(
+    remoteSource.postRating(
       mappers.show.toNetwork(show),
       rating
     )
@@ -118,7 +118,7 @@ class ShowsRatingsRepository @Inject constructor(
   }
 
   suspend fun addRating(episode: Episode, rating: Int) {
-    remoteSource.trakt.postRating(
+    remoteSource.postRating(
       mappers.episode.toNetwork(episode),
       rating
     )
@@ -127,7 +127,7 @@ class ShowsRatingsRepository @Inject constructor(
   }
 
   suspend fun addRating(season: Season, rating: Int) {
-    remoteSource.trakt.postRating(
+    remoteSource.postRating(
       mappers.season.toNetwork(season),
       rating
     )
@@ -136,21 +136,21 @@ class ShowsRatingsRepository @Inject constructor(
   }
 
   suspend fun deleteRating(show: Show) {
-    remoteSource.trakt.deleteRating(
+    remoteSource.deleteRating(
       mappers.show.toNetwork(show)
     )
     localSource.ratings.deleteByType(show.traktId, TYPE_SHOW)
   }
 
   suspend fun deleteRating(episode: Episode) {
-    remoteSource.trakt.deleteRating(
+    remoteSource.deleteRating(
       mappers.episode.toNetwork(episode)
     )
     localSource.ratings.deleteByType(episode.ids.trakt.id, TYPE_EPISODE)
   }
 
   suspend fun deleteRating(season: Season) {
-    remoteSource.trakt.deleteRating(
+    remoteSource.deleteRating(
       mappers.season.toNetwork(season)
     )
     localSource.ratings.deleteByType(season.ids.trakt.id, TYPE_SEASON)
