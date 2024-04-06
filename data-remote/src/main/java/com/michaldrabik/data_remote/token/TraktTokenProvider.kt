@@ -36,7 +36,7 @@ internal class TraktTokenProvider(
     private const val KEY_REFRESH_TOKEN = "TRAKT_REFRESH_TOKEN"
     private const val KEY_TIMESTAMP = "TRAKT_ACCESS_TOKEN_TIMESTAMP"
 
-    private val TRAKT_TOKEN_REFRESH_COOLDOWN: Duration = Duration.ofDays(1)
+    private val TRAKT_TOKEN_REFRESH_COOLDOWN: Duration = Duration.ofHours(12)
   }
 
   private var token: String? = null
@@ -68,7 +68,7 @@ internal class TraktTokenProvider(
     token = null
   }
 
-  override suspend fun shouldRefresh(): Boolean {
+  override fun shouldRefresh(): Boolean {
     val now = System.currentTimeMillis()
     if (lastRefreshCheck > 0L && now - lastRefreshCheck < TRAKT_TOKEN_REFRESH_COOLDOWN.toMillis()) {
       return false
@@ -76,7 +76,7 @@ internal class TraktTokenProvider(
     lastRefreshCheck = now
     val timestamp = sharedPreferences.getLong(KEY_TIMESTAMP, 0L)
     if (timestamp == 0L) {
-      return true
+      return false
     }
     if (now - timestamp > Config.TRAKT_TOKEN_REFRESH_DURATION.toMillis()) {
       return true

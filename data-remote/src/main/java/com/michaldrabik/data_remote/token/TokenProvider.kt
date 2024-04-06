@@ -24,5 +24,5 @@ interface TokenProvider {
    */
   suspend fun refreshToken(): OAuthResponse
 
-  suspend fun shouldRefresh(): Boolean
+  fun shouldRefresh(): Boolean
 }

@@ -1,6 +1,7 @@
 package com.michaldrabik.data_remote.trakt.interceptors
 
 import com.michaldrabik.data_remote.token.TokenProvider
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
 import okhttp3.Request
@@ -9,47 +10,45 @@ import okhttp3.Route
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.coroutines.cancellation.CancellationException
 
 @Singleton
 class TraktAuthenticator @Inject constructor(
   private val tokenProvider: TokenProvider,
 ) : Authenticator {
 
-  override fun authenticate(route: Route?, response: Response): Request? =
-    runBlocking {
-      val accessToken = tokenProvider.getToken()
-      if (!isRequestAuthorized(response) || accessToken == null) {
-        return@runBlocking null
-      }
-
-      val newAccessToken = tokenProvider.getToken()
-      if (newAccessToken != accessToken) {
-        response.request.newBuilder()
-          .header("Authorization", "Bearer $newAccessToken")
-          .build()
-      }
-
+  @Synchronized
+  override fun authenticate(route: Route?, response: Response): Request? {
+    val token = tokenProvider.getToken()
+    if (isAlreadyRefreshed(response, token)) {
+      return response.request.newBuilder()
+        .header("Authorization", "Bearer $token")
+        .build()
+    }
+    return runBlocking(Dispatchers.IO) {
       try {
-        Timber.d("Refreshing access token...")
-        val refreshedTokens = tokenProvider.refreshToken()
-
+        Timber.d("Refreshing tokens...")
+        val newToken = tokenProvider.refreshToken()
         tokenProvider.saveTokens(
-          accessToken = refreshedTokens.access_token,
-          refreshToken = refreshedTokens.refresh_token
+          accessToken = newToken.access_token,
+          refreshToken = newToken.refresh_token
         )
-
-        response.request
-          .newBuilder()
-          .header("Authorization", "Bearer ${refreshedTokens.access_token}")
+        response.request.newBuilder()
+          .header("Authorization", "Bearer ${newToken.access_token}")
           .build()
       } catch (error: Throwable) {
-        Timber.e(error)
-        null
+        if (error !is CancellationException && error.message != "Canceled") {
+          tokenProvider.revokeToken()
+          null
+        } else {
+          null
+        }
       }
     }
+  }
 
-  private fun isRequestAuthorized(response: Response): Boolean {
-    val header = response.request.header("Authorization")
-    return header != null && header.startsWith("Bearer")
+  private fun isAlreadyRefreshed(response: Response, token: String?): Boolean {
+    val authHeader = response.request.header("Authorization")
+    return authHeader != null && !authHeader.contains(token.toString(), true)
   }
 }

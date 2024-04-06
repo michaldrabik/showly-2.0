@@ -13,12 +13,9 @@ class TraktAuthorizationInterceptor @Inject constructor(
 
   override fun intercept(chain: Interceptor.Chain): Response {
     val request = chain.request().newBuilder()
-      .also { request ->
-        tokenProvider.getToken()?.let {
-          request.header("Authorization", "Bearer $it")
-        }
-      }
-      .build()
-    return chain.proceed(request)
+    tokenProvider.getToken()?.let {
+      request.addHeader("Authorization", "Bearer $it")
+    }
+    return chain.proceed(request.build())
   }
 }
