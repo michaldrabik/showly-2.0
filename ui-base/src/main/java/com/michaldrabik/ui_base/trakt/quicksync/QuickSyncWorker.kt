@@ -13,7 +13,6 @@ import com.michaldrabik.common.errors.ErrorHelper
 import com.michaldrabik.common.errors.ShowlyError.AccountLimitsError
 import com.michaldrabik.common.errors.ShowlyError.UnauthorizedError
 import com.michaldrabik.repository.UserTraktManager
-import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.events.EventsManager
@@ -35,7 +34,6 @@ class QuickSyncWorker @AssistedInject constructor(
   @Assisted workerParams: WorkerParameters,
   private val quickSyncRunner: QuickSyncRunner,
   private val quickSyncListsRunner: QuickSyncListsRunner,
-  private val settingsRepository: SettingsRepository,
   private val userManager: UserTraktManager,
   private val eventsManager: EventsManager,
 ) : TraktNotificationWorker(context, workerParams) {
@@ -65,7 +63,7 @@ class QuickSyncWorker @AssistedInject constructor(
     Timber.d("Initialized.")
     notificationManager().notify(
       SYNC_NOTIFICATION_PROGRESS_ID,
-      createProgressNotification(theme, null)
+      createProgressNotification(null)
     )
 
     try {
