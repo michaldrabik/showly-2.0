@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -89,10 +90,14 @@ class CommentView : ConstraintLayout {
           text = context.getString(R.string.textSpoilersWarning)
           commentText.setTypeface(null, Typeface.BOLD_ITALIC)
           commentText.setTextColor(colorTextSecondary)
-          onClick {
-            text = comment.comment
-            commentText.setTypeface(null, Typeface.NORMAL)
-            commentText.setTextColor(colorTextPrimary)
+          setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_DOWN && !commentText.hasSelection()) {
+              text = comment.comment
+              commentText.setTypeface(null, Typeface.NORMAL)
+              commentText.setTextColor(colorTextPrimary)
+              this@CommentView.callOnClick()
+            }
+            false
           }
         }
       } else {
