@@ -1,2 +1,3 @@
-* Fix possible crash in History tab
-* Translations updates
+* Added Ukraine region for streaming services
+* Fix double-tap bug for comment spoiler text
+* Internal refactors
