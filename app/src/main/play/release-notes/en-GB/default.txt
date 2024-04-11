@@ -1,3 +1,1 @@
-* Added Ukraine region for streaming services
-* Fix double-tap bug for comment spoiler text
-* Internal refactors
+* Import bugfix

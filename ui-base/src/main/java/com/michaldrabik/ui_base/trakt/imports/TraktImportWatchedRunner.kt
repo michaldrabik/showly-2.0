@@ -34,9 +34,10 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import java.util.Collections
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -101,6 +102,8 @@ class TraktImportWatchedRunner @Inject constructor(
   }
 
   private suspend fun importWatchedShows(syncActivity: SyncActivity) {
+    val mutex = Mutex()
+    val channel = Channel<Unit>(CHANNEL_CAPACITY)
     withContext(dispatchers.IO) {
       Timber.d("Importing watched shows...")
 
@@ -146,9 +149,8 @@ class TraktImportWatchedRunner @Inject constructor(
       val hiddenShowsIds = localSource.archiveShows.getAllTraktIds()
       val traktSyncLogs = localSource.traktSyncLog.getAllShows()
 
-      val channel = Channel<Unit>(CHANNEL_CAPACITY)
       val results = mutableListOf<Deferred<Unit>>()
-      val progressTitles = Collections.synchronizedSet(mutableSetOf<String>())
+      val progressTitles = mutableSetOf<String?>()
 
       syncResults
         .forEachIndexed { _, syncItem ->
@@ -157,8 +159,10 @@ class TraktImportWatchedRunner @Inject constructor(
             val showTitle = syncItem.requireShow().title
             try {
               Timber.d("Processing \'$showTitle\'...")
-              progressListener?.invoke(progressTitles.joinToString("\n"))
-              progressTitles.add(showTitle)
+              mutex.withLock {
+                progressListener?.invoke(progressTitles.joinToString("\n"))
+                progressTitles.add(showTitle)
+              }
 
               val log = traktSyncLogs.firstOrNull { it.idTrakt == syncItem.show?.ids?.trakt }
               if (syncItem.lastUpdateMillis() == (log?.syncedAt ?: 0)) {
@@ -207,7 +211,9 @@ class TraktImportWatchedRunner @Inject constructor(
               rethrowCancellation(error)
             } finally {
               channel.receive()
-              progressTitles.remove(showTitle)
+              mutex.withLock {
+                progressTitles.remove(showTitle)
+              }
             }
           }
           results.add(result)
@@ -283,6 +289,8 @@ class TraktImportWatchedRunner @Inject constructor(
   }
 
   private suspend fun importWatchedMovies(syncActivity: SyncActivity) {
+    val mutex = Mutex()
+    val channel = Channel<Unit>(CHANNEL_CAPACITY)
     withContext(dispatchers.IO) {
       Timber.d("Importing watched movies...")
 
@@ -326,9 +334,8 @@ class TraktImportWatchedRunner @Inject constructor(
       val watchlistMoviesIds = localSource.watchlistMovies.getAllTraktIds()
       val hiddenMoviesIds = localSource.archiveMovies.getAllTraktIds()
 
-      val channel = Channel<Unit>(CHANNEL_CAPACITY)
       val results = mutableListOf<Deferred<Unit>>()
-      val progressTitles = Collections.synchronizedSet(mutableSetOf<String>())
+      val progressTitles = mutableSetOf<String?>()
 
       syncItems
         .forEachIndexed { _, item ->
@@ -337,8 +344,10 @@ class TraktImportWatchedRunner @Inject constructor(
             val movieTitle = item.requireMovie().title
             try {
               Timber.d("Processing \'$movieTitle\'...")
-              progressListener?.invoke(progressTitles.joinToString("\n"))
-              progressTitles.add(movieTitle)
+              mutex.withLock {
+                progressListener?.invoke(progressTitles.joinToString("\n"))
+                progressTitles.add(movieTitle)
+              }
 
               transactions.withTransaction {
                 val movieId = item.getTraktId()!!
@@ -365,7 +374,9 @@ class TraktImportWatchedRunner @Inject constructor(
               rethrowCancellation(error)
             } finally {
               channel.receive()
-              progressTitles.remove(movieTitle)
+              mutex.withLock {
+                progressTitles.remove(movieTitle)
+              }
             }
           }
           results.add(result)
