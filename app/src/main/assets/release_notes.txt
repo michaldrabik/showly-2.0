@@ -1,1 +1,2 @@
-* Import bugfix
+* French translation bugfix
+* Potential concurrency error while importing bugfix
