@@ -36,6 +36,11 @@ class App :
   @Inject lateinit var workerFactory: HiltWorkerFactory
   @Inject lateinit var settingsRepository: SettingsRepository
 
+  override val workManagerConfiguration: Configuration
+    get() = Configuration.Builder()
+      .setWorkerFactory(workerFactory)
+      .build()
+
   override fun onCreate() {
 
     fun setupSettings() = runBlocking {
@@ -110,9 +115,4 @@ class App :
       CalendarMoviesWidgetProvider.requestUpdate(applicationContext)
     }
   }
-
-  override fun getWorkManagerConfiguration() =
-    Configuration.Builder()
-      .setWorkerFactory(workerFactory)
-      .build()
 }
