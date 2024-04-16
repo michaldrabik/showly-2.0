@@ -26,7 +26,6 @@ class TraktRetryInterceptor @Inject constructor() : Interceptor {
         Timber.w("429 Too Many Requests. Retrying...")
 
         delay(3000)
-
         tryCount += 1
         response.close()
         response = chain.proceed(request)
