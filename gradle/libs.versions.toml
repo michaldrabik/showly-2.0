@@ -14,7 +14,7 @@ hiltWork = "1.2.0"
 
 [libraries]
 
-gradle = { group = "com.android.tools.build", name = "gradle", version = "8.2.2" }
+gradle = { group = "com.android.tools.build", name = "gradle", version = "8.3.2" }
 gradle-kotlin-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version = "1.9.0" }
 gradle-ktlint = { group = "org.jlleitschuh.gradle", name = "ktlint-gradle", version = "10.2.1" }
 

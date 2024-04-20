@@ -29,6 +29,7 @@
       android:name=".ui.main.MainActivity"
       android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
       android:exported="true"
+      android:hardwareAccelerated="true"
       android:launchMode="singleInstance"
       android:screenOrientation="portrait"
       tools:ignore="LockedOrientationActivity"
@@ -111,8 +112,16 @@
     <provider
       android:name="androidx.startup.InitializationProvider"
       android:authorities="${applicationId}.androidx-startup"
-      tools:node="remove"
-      />
+      android:exported="false"
+      tools:node="merge"
+      >
+      <!-- If you are using androidx.startup to initialize other components -->
+      <meta-data
+        android:name="androidx.work.WorkManagerInitializer"
+        android:value="androidx.startup"
+        tools:node="remove"
+        />
+    </provider>
 
     <!-- Services -->
 
