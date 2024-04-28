@@ -7,6 +7,7 @@ import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.sheets.context_menu.events.FinishUiEvent
 import com.michaldrabik.ui_base.common.sheets.context_menu.events.RemoveTraktUiEvent
+import com.michaldrabik.ui_base.common.sheets.context_menu.events.SelectDateUiEvent
 import com.michaldrabik.ui_base.common.sheets.context_menu.movie.cases.MovieContextMenuHiddenCase
 import com.michaldrabik.ui_base.common.sheets.context_menu.movie.cases.MovieContextMenuLoadItemCase
 import com.michaldrabik.ui_base.common.sheets.context_menu.movie.cases.MovieContextMenuMyMoviesCase
@@ -20,12 +21,14 @@ import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
 import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
 import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.ProgressDateSelectionType.ALWAYS_ASK
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.time.ZonedDateTime
 import javax.inject.Inject
 import kotlin.properties.Delegates.notNull
 
@@ -63,10 +66,19 @@ class MovieContextMenuViewModel @Inject constructor(
     }
   }
 
-  fun moveToMyMovies() {
+  fun moveToMyMovies(
+    isCustomDateSelected: Boolean = false,
+    customDate: ZonedDateTime? = null
+  ) {
     viewModelScope.launch {
       try {
-        val result = myMoviesCase.moveToMyMovies(movieId)
+        val movie = itemState.value?.movie
+        val isCustomDateAlwaysAsk = { settingsRepository.progressDateSelectionType == ALWAYS_ASK }
+        if (movie != null && !isCustomDateSelected && isCustomDateAlwaysAsk()) {
+          eventChannel.send(Event(SelectDateUiEvent(movie)))
+          return@launch
+        }
+        val result = myMoviesCase.moveToMyMovies(movieId, customDate)
         checkQuickRemove(result)
       } catch (error: Throwable) {
         onError(error)

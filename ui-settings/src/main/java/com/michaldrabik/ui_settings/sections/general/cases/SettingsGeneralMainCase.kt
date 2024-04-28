@@ -12,6 +12,7 @@ import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.dates.AppDateFormat
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
+import com.michaldrabik.ui_model.ProgressDateSelectionType
 import com.michaldrabik.ui_model.ProgressNextEpisodeType
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_settings.helpers.AppLanguage
@@ -104,6 +105,12 @@ class SettingsGeneralMainCase @Inject constructor(
 
   fun setProgressType(type: ProgressNextEpisodeType) {
     settingsRepository.progressNextEpisodeType = type
+  }
+
+  fun getDateSelectionType() = settingsRepository.progressDateSelectionType
+
+  fun setDateSelectionType(type: ProgressDateSelectionType) {
+    settingsRepository.progressDateSelectionType = type
   }
 
   fun getProgressUpcomingDays() = settingsRepository.progressUpcomingDays

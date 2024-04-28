@@ -13,6 +13,7 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
+import java.time.ZonedDateTime
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -24,7 +25,10 @@ class MovieContextMenuMyMoviesCase @Inject constructor(
   private val quickSyncManager: QuickSyncManager,
 ) {
 
-  suspend fun moveToMyMovies(traktId: IdTrakt) = withContext(dispatchers.IO) {
+  suspend fun moveToMyMovies(
+    traktId: IdTrakt,
+    customDate: ZonedDateTime? = null
+  ) = withContext(dispatchers.IO) {
     val movie = Movie.EMPTY.copy(ids = Ids.EMPTY.copy(traktId))
 
     val (isWatchlist, isHidden) = awaitAll(
@@ -32,7 +36,7 @@ class MovieContextMenuMyMoviesCase @Inject constructor(
       async { moviesRepository.hiddenMovies.exists(traktId) }
     )
 
-    moviesRepository.myMovies.insert(traktId)
+    moviesRepository.myMovies.insert(traktId, customDate)
     pinnedItemsRepository.removePinnedItem(movie)
     announcementManager.refreshMoviesAnnouncements()
     with(quickSyncManager) {

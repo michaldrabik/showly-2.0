@@ -17,6 +17,9 @@ import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.OnShowsMoviesSyncedListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
+import com.michaldrabik.ui_base.common.sheets.date_selection.DateSelectionBottomSheet.Companion.REQUEST_DATE_SELECTION
+import com.michaldrabik.ui_base.common.sheets.date_selection.DateSelectionBottomSheet.Companion.RESULT_DATE_SELECTION
+import com.michaldrabik.ui_base.common.sheets.date_selection.DateSelectionBottomSheet.Result
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -38,6 +41,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_episodes.details.EpisodeDetailsBottomSheet
 import com.michaldrabik.ui_model.Episode
+import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_TAB_SELECTED
@@ -48,6 +52,7 @@ import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.databinding.FragmentProgressMainBinding
 import com.michaldrabik.ui_progress.main.adapters.ProgressMainAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.ZonedDateTime
 
 @AndroidEntryPoint
 class ProgressMainFragment :
@@ -269,6 +274,21 @@ class ProgressMainFragment :
     viewModel.onEpisodeDetails(show, episode)
   }
 
+  fun openDateSelectionDialog(episodeBundle: EpisodeBundle) {
+
+    fun openRateDialogIfNeeded(customDate: ZonedDateTime? = null) {
+      viewModel.setWatchedEpisode(episodeBundle, customDate)
+    }
+
+    setFragmentResultListener(REQUEST_DATE_SELECTION) { _, bundle ->
+      when (val result = bundle.requireParcelable<Result>(RESULT_DATE_SELECTION)) {
+        is Result.Now -> openRateDialogIfNeeded()
+        is Result.CustomDate -> openRateDialogIfNeeded(result.date)
+      }
+    }
+    navigateTo(R.id.actionProgressFragmentToDateSelection)
+  }
+
   private fun openSettings() {
     hideNavigation()
     exitSearch()
@@ -355,7 +375,6 @@ class ProgressMainFragment :
           episode = event.episode,
           seasonEpisodesIds = null,
           isWatched = event.isWatched,
-          showButton = false,
           showTabs = true
         )
         navigateToSafe(R.id.actionProgressFragmentToEpisodeDetails, bundle)

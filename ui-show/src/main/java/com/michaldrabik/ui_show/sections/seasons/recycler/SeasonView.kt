@@ -11,6 +11,7 @@ import android.widget.FrameLayout
 import androidx.core.widget.ImageViewCompat
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.expandTouch
+import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_show.R
 import com.michaldrabik.ui_show.databinding.ViewSeasonBinding
 import java.util.Locale.ENGLISH
@@ -57,15 +58,18 @@ class SeasonView : FrameLayout {
 
       seasonViewCheckbox.isChecked = item.isWatched
       seasonViewCheckbox.isEnabled = item.episodes.all { it.episode.hasAired(item.season) } || item.isWatched
+      seasonViewCheckbox.onClick {
+        val isChecked = seasonViewCheckbox.isChecked
+        itemCheckedListener(item, isChecked)
+        if (isChecked) {
+          seasonViewCheckbox.isChecked = false
+        }
+      }
 
       val color = context.colorFromAttr(if (item.isWatched) android.R.attr.colorAccent else android.R.attr.textColorPrimary)
       seasonViewTitle.setTextColor(color)
       seasonViewProgressText.setTextColor(color)
       ImageViewCompat.setImageTintList(seasonViewArrow, ColorStateList.valueOf(color))
-
-      seasonViewCheckbox.setOnCheckedChangeListener { _, isChecked ->
-        itemCheckedListener(item, isChecked)
-      }
     }
   }
 

@@ -44,6 +44,7 @@
   <string name="textTipWatchlistPinItem">Tap and hold list item to pin it to the top.</string>
   <string name="textTipBottomModeMenu">Swipe bottom menu left or right to quickly change mode.</string>
   <string name="textTipListSwipeToDelete">Swipe list items to remove them from the list.</string>
+  <string name="textTipDefaultOption">Default option can be adjusted in Settings</string>
 
   <string name="textGenreAction">Action</string>
   <string name="textGenreAdventure">Adventure</string>

@@ -77,7 +77,13 @@ class EpisodeView : ConstraintLayout {
         episodeTitle.text = String.format(ENGLISH, context.getString(R.string.textEpisodeDate), item.episode.number, displayDate)
       }
 
-      episodeCheckbox.setOnCheckedChangeListener { _, isChecked -> itemCheckedListener(item.episode, isChecked) }
+      episodeCheckbox.setOnClickListener {
+        val isChecked = episodeCheckbox.isChecked
+        itemCheckedListener(item.episode, isChecked)
+        if (isChecked) {
+          episodeCheckbox.isChecked = false
+        }
+      }
       onClick { itemClickListener(item.episode, item.isWatched) }
     }
   }

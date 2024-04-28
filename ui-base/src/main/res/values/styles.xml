@@ -357,4 +357,47 @@
     <item name="android:textColor">?android:textColorSecondary</item>
   </style>
 
+  <style name="ShowlyDatePicker" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+    <item name="colorSurface">@color/colorBackground</item>
+    <item name="colorOnSurface">@color/colorWhite</item>
+    <item name="buttonBarPositiveButtonStyle">@style/ShowlyDatePicker.Button</item>
+    <item name="buttonBarNegativeButtonStyle">@style/ShowlyDatePicker.Button</item>
+  </style>
+
+  <style name="ShowlyDatePicker.Button" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+    <item name="android:textColor">?android:textColorPrimary</item>
+  </style>
+
+  <style name="ShowlyTimePicker" parent="ThemeOverlay.MaterialComponents.TimePicker">
+    <item name="colorSurface">@color/colorBackground</item>
+    <item name="colorOnSurface">@color/colorGrayLight</item>
+    <item name="colorPrimary">?attr/colorBottomMenuBackground</item>
+    <item name="colorOnPrimary">?android:textColorPrimary</item>
+    <item name="materialClockStyle">@style/ShowlyTimePicker.Clock</item>
+    <item name="materialButtonOutlinedStyle">@style/ShowlyTimePicker.Button</item>
+    <item name="borderlessButtonStyle">@style/ShowlyTimePicker.Button.Positive</item>
+    <item name="chipStyle">@style/ShowlyTimePicker.Chip</item>
+  </style>
+
+  <style name="ShowlyTimePicker.Clock" parent="Widget.MaterialComponents.TimePicker.Clock">
+    <item name="clockHandColor">?colorAccent</item>
+  </style>
+
+  <style name="ShowlyTimePicker.Chip" parent="Widget.MaterialComponents.TimePicker.Display">
+    <item name="chipBackgroundColor">@color/selector_timepicker_chip_background</item>
+    <item name="android:textColor">@color/selector_timepicker_chip_text</item>
+  </style>
+
+  <style name="ShowlyTimePicker.Button" parent="Widget.MaterialComponents.TimePicker.Button">
+    <item name="backgroundTint">@color/colorBackground</item>
+    <item name="android:textColor">@color/selector_timepicker_button_text</item>
+  </style>
+
+  <style name="ShowlyTimePicker.Button.Positive" parent="Widget.MaterialComponents.Button.TextButton">
+    <item name="android:textColor">?android:textColorPrimary</item>
+  </style>
+
+  <style name="ShowlyTimePicker.Button.Negative" parent="Widget.MaterialComponents.Button.TextButton">
+    <item name="android:textColor">?android:textColorSecondary</item>
+  </style>
 </resources>

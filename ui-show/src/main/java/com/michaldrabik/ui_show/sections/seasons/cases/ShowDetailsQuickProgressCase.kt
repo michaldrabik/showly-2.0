@@ -12,6 +12,7 @@ import com.michaldrabik.ui_show.sections.seasons.recycler.SeasonListItem
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import java.time.ZonedDateTime
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -24,7 +25,8 @@ class ShowDetailsQuickProgressCase @Inject constructor(
   suspend fun setQuickProgress(
     selectedItem: QuickSetupListItem,
     seasonsItems: List<SeasonListItem>,
-    show: Show
+    show: Show,
+    customDate: ZonedDateTime?
   ) = coroutineScope {
     val isMyShows = async { showsRepository.myShows.exists(show.ids.trakt) }
     val isWatchlist = async { showsRepository.watchlistShows.exists(show.ids.trakt) }
@@ -39,7 +41,7 @@ class ShowDetailsQuickProgressCase @Inject constructor(
       .filter { !it.isSpecial() && it.number < selectedItem.season.number }
       .forEach { season ->
         val bundle = SeasonBundle(season, show)
-        episodesManager.setSeasonWatched(bundle).apply {
+        episodesManager.setSeasonWatched(bundle, customDate).apply {
           episodesAdded.addAll(this)
         }
       }
@@ -49,7 +51,7 @@ class ShowDetailsQuickProgressCase @Inject constructor(
       ?.filter { it.number <= selectedItem.episode.number }
       ?.forEach { episode ->
         val bundle = EpisodeBundle(episode, season, show)
-        episodesManager.setEpisodeWatched(bundle)
+        episodesManager.setEpisodeWatched(bundle, customDate)
         episodesAdded.add(episode)
       }
 

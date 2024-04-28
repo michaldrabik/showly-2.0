@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.time.ZonedDateTime
 import javax.inject.Inject
 import com.michaldrabik.ui_base.events.Event as EventSync
 
@@ -85,13 +86,13 @@ class ProgressMainViewModel @Inject constructor(
     calendarModeState.value = calendarMode
   }
 
-  fun setWatchedEpisode(bundle: EpisodeBundle) {
+  fun setWatchedEpisode(bundle: EpisodeBundle, customDate: ZonedDateTime? = null) {
     viewModelScope.launch {
       if (!bundle.episode.hasAired(bundle.season)) {
         messageChannel.send(MessageEvent.Info(R.string.errorEpisodeNotAired))
         return@launch
       }
-      episodesCase.setEpisodeWatched(bundle)
+      episodesCase.setEpisodeWatched(bundle, customDate)
       timestampState.value = System.currentTimeMillis()
       scrollState.value = Event(false)
     }

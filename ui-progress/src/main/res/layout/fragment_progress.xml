@@ -49,6 +49,16 @@
     tools:visibility="visible"
     />
 
+  <com.michaldrabik.ui_base.common.views.EmptySearchView
+    android:id="@+id/progressEmptyFilterView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginBottom="@dimen/bottomNavigationHeight"
+    android:visibility="gone"
+    tools:visibility="visible"
+    />
+
   <FrameLayout
     android:id="@+id/progressOverscroll"
     android:layout_width="wrap_content"

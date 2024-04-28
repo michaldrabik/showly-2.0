@@ -22,6 +22,7 @@ import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
+import com.michaldrabik.ui_model.ProgressDateSelectionType.ALWAYS_ASK
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.TraktRating
@@ -46,6 +47,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.time.ZonedDateTime
 import javax.inject.Inject
 import kotlin.properties.Delegates.notNull
 
@@ -185,15 +187,22 @@ class MovieDetailsViewModel @Inject constructor(
     }
   }
 
-  fun addFollowedMovie() {
+  fun addToMyMovies(
+    isCustomDateSelected: Boolean = false,
+    customDate: ZonedDateTime? = null
+  ) {
     viewModelScope.launch {
-      myMoviesCase.addToMyMovies(movie)
+      if (!isCustomDateSelected && settingsRepository.progressDateSelectionType == ALWAYS_ASK) {
+        eventChannel.send(MovieDetailsEvent.OpenDateSelectionSheet(movie))
+        return@launch
+      }
+      myMoviesCase.addToMyMovies(movie, customDate)
       followedState.value = FollowedState.inMyMovies()
       eventChannel.send(RequestWidgetsUpdate)
     }
   }
 
-  fun addWatchlistMovie() {
+  fun addToWatchlist() {
     viewModelScope.launch {
       watchlistCase.addToWatchlist(movie)
       followedState.value = FollowedState.inWatchlist()
@@ -201,7 +210,7 @@ class MovieDetailsViewModel @Inject constructor(
     }
   }
 
-  fun addHiddenMovie() {
+  fun addToHidden() {
     viewModelScope.launch {
       hiddenCase.addToHidden(movie)
       followedState.value = FollowedState.inHidden()
@@ -209,7 +218,7 @@ class MovieDetailsViewModel @Inject constructor(
     }
   }
 
-  fun removeFromFollowed() {
+  fun removeFromMyMovies() {
     viewModelScope.launch {
       val isMyMovie = myMoviesCase.isMyMovie(movie)
       val isWatchlist = watchlistCase.isWatchlist(movie)

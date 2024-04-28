@@ -369,11 +369,60 @@
   <View
     android:id="@+id/settingsSeparator1"
     style="@style/Settings.Separator"
-    app:layout_constraintBottom_toTopOf="@id/settingsProgressNext"
+    app:layout_constraintBottom_toTopOf="@id/settingsDateSelection"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/settingsIncludeSpecials"
     />
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/settingsDateSelection"
+    style="@style/Settings.ItemLayout"
+    app:layout_constrainedWidth="true"
+    app:layout_constraintBottom_toTopOf="@+id/settingsProgressNext"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/settingsSeparator1"
+    >
+
+    <TextView
+      android:id="@+id/settingsDateSelectionTitle"
+      style="@style/Settings.Title"
+      android:text="@string/textDateSelectionTitle"
+      app:layout_constraintBottom_toTopOf="@id/settingsDateSelectionDescription"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      />
+
+    <TextView
+      android:id="@+id/settingsDateSelectionDescription"
+      style="@style/Settings.Summary"
+      android:layout_width="wrap_content"
+      android:layout_marginEnd="@dimen/spaceSmall"
+      android:text="@string/textSettingsDateSelectionMessage"
+      app:layout_constrainedWidth="true"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/settingsDateSelectionValue"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsDateSelectionTitle"
+      />
+
+    <TextView
+      android:id="@+id/settingsDateSelectionValue"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="end"
+      android:maxLines="2"
+      android:text="@string/textDateSelectionAsk"
+      android:textColor="?attr/colorAccent"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
 
   <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/settingsProgressNext"
@@ -382,7 +431,7 @@
     app:layout_constraintBottom_toTopOf="@+id/settingsUpcomingSection"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/settingsSeparator1"
+    app:layout_constraintTop_toBottomOf="@id/settingsDateSelection"
     >
 
     <TextView

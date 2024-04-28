@@ -1,11 +1,14 @@
 package com.michaldrabik.repository.movies
 
 import com.michaldrabik.common.extensions.nowUtcMillis
+import com.michaldrabik.common.extensions.toMillis
+import com.michaldrabik.common.extensions.toUtcZone
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.MyMovie
 import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.IdTrakt
+import java.time.ZonedDateTime
 import javax.inject.Inject
 
 class MyMoviesRepository @Inject constructor(
@@ -33,8 +36,11 @@ class MyMoviesRepository @Inject constructor(
 
   suspend fun loadAllIds() = localSource.myMovies.getAllTraktIds()
 
-  suspend fun insert(id: IdTrakt) {
-    val movie = MyMovie.fromTraktId(id.id, nowUtcMillis())
+  suspend fun insert(id: IdTrakt, customDate: ZonedDateTime?) {
+    val movie = MyMovie.fromTraktId(
+      traktId = id.id,
+      timestamp = customDate?.toUtcZone()?.toMillis() ?: nowUtcMillis()
+    )
     transactions.withTransaction {
       with(localSource) {
         myMovies.insert(listOf(movie))

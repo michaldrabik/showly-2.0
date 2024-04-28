@@ -6,6 +6,7 @@
   <string name="textApply">Apply</string>
   <string name="textCancel">Cancel</string>
   <string name="textClose">Close</string>
+  <string name="textNow">Now</string>
   <string name="textNotNow">Not Now</string>
   <string name="textNew">New</string>
   <string name="textSelect">Select</string>
@@ -41,6 +42,9 @@
   <string name="textRateRemoved">Your rating has been removed.</string>
   <string name="textCopiedToClipboard" translatable="false">Copied to clipboard</string>
   <string name="textDays">%1$d days</string>
+  <string name="textSelectDate">Select Date</string>
+  <string name="textDateSelectionTitle">Date Selection</string>
+  <string name="textDateSelectionDescription">When did you watch it?</string>
 
   <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
     <item quantity="one">%d left</item>

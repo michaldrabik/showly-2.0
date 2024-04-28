@@ -7,6 +7,7 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.images.ShowImagesProvider
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.trakt.TraktSyncWorker
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
@@ -31,6 +32,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -45,6 +47,7 @@ class ProgressViewModel @Inject constructor(
   private val userTraktManager: UserTraktManager,
   private val workManager: WorkManager,
   private val translationsRepository: TranslationsRepository,
+  private val settingsRepository: SettingsRepository,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private var loadItemsJob: Job? = null
@@ -97,7 +100,12 @@ class ProgressViewModel @Inject constructor(
   fun onEpisodeChecked(episode: ProgressListItem.Episode) {
     viewModelScope.launch {
       val bundle = EpisodeBundle(episode.requireEpisode(), episode.requireSeason(), episode.show)
-      eventChannel.send(EpisodeCheckActionUiEvent(bundle))
+      eventChannel.send(
+        EpisodeCheckActionUiEvent(
+          episode = bundle,
+          dateSelectionType = settingsRepository.progressDateSelectionType
+        )
+      )
     }
   }
 
@@ -159,11 +167,13 @@ class ProgressViewModel @Inject constructor(
     )
   }
 
-  private fun updateItem(new: ProgressListItem) {
-    val currentItems = itemsState.value?.toMutableList() ?: mutableListOf()
-    currentItems.findReplace(new) { it.isSameAs(new) }
-    itemsState.value = currentItems
-    scrollState.value = Event(false)
+  private fun updateItem(newItem: ProgressListItem) {
+    itemsState.update { value ->
+      value?.toMutableList()?.apply {
+        findReplace(newItem) { it.isSameAs(newItem) }
+      }
+    }
+    scrollState.update { Event(false) }
   }
 
   val uiState = combine(

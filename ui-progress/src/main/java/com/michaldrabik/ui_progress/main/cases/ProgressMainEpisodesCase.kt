@@ -10,6 +10,7 @@ import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_model.Show
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.withContext
+import java.time.ZonedDateTime
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -21,8 +22,8 @@ class ProgressMainEpisodesCase @Inject constructor(
   private val localDataSource: EpisodesLocalDataSource
 ) {
 
-  suspend fun setEpisodeWatched(bundle: EpisodeBundle) {
-    episodesManager.setEpisodeWatched(bundle)
+  suspend fun setEpisodeWatched(bundle: EpisodeBundle, customDate: ZonedDateTime?) {
+    episodesManager.setEpisodeWatched(bundle, customDate)
     quickSyncManager.scheduleEpisodes(
       showId = bundle.show.traktId,
       episodesIds = listOf(bundle.episode.ids.trakt.id)

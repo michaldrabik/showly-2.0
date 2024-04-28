@@ -4,7 +4,6 @@ import android.app.UiModeManager
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.michaldrabik.common.Mode
-import com.michaldrabik.repository.utilities.BooleanPreference
 import com.michaldrabik.ui_model.CalendarMode
 import javax.inject.Inject
 import javax.inject.Named
@@ -23,19 +22,15 @@ class SettingsWidgetsRepository @Inject constructor(
     private const val WIDGET_CALENDAR_MOVIES_MODE = "WIDGET_CALENDAR_MOVIES_MODE"
   }
 
-  val isPremium by BooleanPreference(preferences, SettingsRepository.PREMIUM)
-
   var widgetsTheme: Int
     get() {
-      if (!isPremium) return UiModeManager.MODE_NIGHT_YES
-      return preferences.getInt(THEME_WIDGET, UiModeManager.MODE_NIGHT_YES)
+      return UiModeManager.MODE_NIGHT_YES
     }
     set(value) = preferences.edit(true) { putInt(THEME_WIDGET, value) }
 
   var widgetsTransparency: Int
     get() {
-      if (!isPremium) return 100
-      return preferences.getInt(THEME_WIDGET_TRANSPARENT, 100)
+      return 100
     }
     set(value) = preferences.edit(true) { putInt(THEME_WIDGET_TRANSPARENT, value) }
 

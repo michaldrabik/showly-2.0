@@ -108,6 +108,7 @@
         android:layout_marginTop="@dimen/spaceSmall"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:layout_marginBottom="@dimen/spaceNormal"
+        android:clipChildren="false"
         >
 
         <LinearLayout
@@ -175,19 +176,30 @@
 
           </LinearLayout>
 
+          <TextView
+            android:id="@+id/episodeDetailsWatchedAt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spaceNormal"
+            android:layout_marginEnd="@dimen/spaceSmall"
+            android:background="@drawable/bg_badge"
+            android:drawablePadding="5dp"
+            android:elevation="@dimen/elevationTiny"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingStart="6dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="4dp"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:drawableStartCompat="@drawable/ic_check_small_2x"
+            app:drawableTint="?android:attr/textColorPrimary"
+            tools:text="Thursday, 23 Dec 2019, 15:00"
+            tools:visibility="visible"
+            />
         </LinearLayout>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-          android:id="@+id/episodeDetailsButton"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center_vertical|end"
-          app:backgroundTint="?attr/colorAccent"
-          app:fabCustomSize="42dp"
-          app:srcCompat="@drawable/ic_check"
-          app:tint="?attr/textColorOnSurface"
-          />
-
       </FrameLayout>
 
       <TextView

@@ -22,6 +22,7 @@ import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
 import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_episodes.R
 import com.michaldrabik.ui_episodes.details.cases.EpisodeDetailsSeasonCase
+import com.michaldrabik.ui_episodes.details.cases.EpisodeDetailsWatchedCase
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTmdb
@@ -35,8 +36,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
@@ -44,6 +47,7 @@ import javax.inject.Inject
 class EpisodeDetailsViewModel @Inject constructor(
   settingsSpoilersRepository: SettingsSpoilersRepository,
   private val seasonsCase: EpisodeDetailsSeasonCase,
+  private val watchedCase: EpisodeDetailsWatchedCase,
   private val imagesProvider: EpisodeImagesProvider,
   private val dateFormatProvider: DateFormatProvider,
   private val ratingsRepository: RatingsRepository,
@@ -63,10 +67,18 @@ class EpisodeDetailsViewModel @Inject constructor(
   private val dateFormatState = MutableStateFlow<DateTimeFormatter?>(null)
   private val commentsDateFormatState = MutableStateFlow<DateTimeFormatter?>(null)
   private val spoilersState = MutableStateFlow<SpoilersSettings?>(null)
+  private val lastWatchedAtState = MutableStateFlow<ZonedDateTime?>(null)
 
   init {
     dateFormatState.value = dateFormatProvider.loadFullHourFormat()
     spoilersState.value = settingsSpoilersRepository.getAll()
+  }
+
+  fun loadLastWatchedAt(showTraktId: IdTrakt, episode: Episode) {
+    viewModelScope.launch {
+      val lastWatchedAt = watchedCase.getLastWatchedAt(showTraktId, episode)
+      lastWatchedAtState.update { lastWatchedAt }
+    }
   }
 
   fun loadImage(showId: IdTmdb, episode: Episode) {
@@ -255,8 +267,9 @@ class EpisodeDetailsViewModel @Inject constructor(
     translationState,
     dateFormatState,
     commentsDateFormatState,
-    spoilersState
-  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ->
+    spoilersState,
+    lastWatchedAtState
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12 ->
     EpisodeDetailsUiState(
       image = s1,
       isImageLoading = s2,
@@ -268,7 +281,8 @@ class EpisodeDetailsViewModel @Inject constructor(
       translation = s8,
       dateFormat = s9,
       commentsDateFormat = s10,
-      spoilers = s11
+      spoilers = s11,
+      lastWatchedAt = s12
     )
   }.stateIn(
     scope = viewModelScope,

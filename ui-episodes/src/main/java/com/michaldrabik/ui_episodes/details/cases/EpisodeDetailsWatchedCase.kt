@@ -6,6 +6,7 @@ import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTrakt
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.withContext
+import java.time.ZonedDateTime
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -14,13 +15,9 @@ class EpisodeDetailsWatchedCase @Inject constructor(
   private val episodesDataSource: EpisodesLocalDataSource,
 ) {
 
-  suspend fun isWatched(showId: IdTrakt, episode: Episode): Boolean {
+  suspend fun getLastWatchedAt(showId: IdTrakt, episode: Episode): ZonedDateTime? {
     return withContext(dispatchers.IO) {
-      val episodes = episodesDataSource.getAllByShowId(showId.id, episode.season)
-      episodes.find {
-        it.idShowTrakt == showId.id &&
-          it.idTrakt == episode.ids.trakt.id
-      }?.isWatched == true
+      episodesDataSource.getById(showId.id, episode.ids.trakt.id)?.lastWatchedAt
     }
   }
 }

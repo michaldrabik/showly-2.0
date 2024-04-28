@@ -234,6 +234,11 @@
       app:destination="@id/ratingDialog"
       app:launchSingleTop="true"
       />
+    <action
+      android:id="@+id/actionProgressFragmentToDateSelection"
+      app:destination="@id/dateSelectionDialog"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment
@@ -289,6 +294,11 @@
       app:destination="@id/ratingDialog"
       app:launchSingleTop="true"
       />
+    <action
+      android:id="@+id/actionProgressMoviesFragmentToDateSelection"
+      app:destination="@id/dateSelectionDialog"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment
@@ -339,6 +349,11 @@
     <action
       android:id="@+id/actionShowDetailsFragmentToRemoveTraktProgress"
       app:destination="@id/removeTraktProgressDialog"
+      app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionShowDetailsFragmentToDateSelection"
+      app:destination="@id/dateSelectionDialog"
       app:launchSingleTop="true"
       />
     <action
@@ -404,6 +419,11 @@
     <action
       android:id="@+id/actionEpisodesFragmentToRating"
       app:destination="@id/ratingDialog"
+      app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionEpisodesFragmentToDateSelection"
+      app:destination="@id/dateSelectionDialog"
       app:launchSingleTop="true"
       />
   </fragment>
@@ -490,6 +510,11 @@
     <action
       android:id="@+id/actionMovieDetailsFragmentToContext"
       app:destination="@id/movieItemContextDialog"
+      app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionMovieDetailsFragmentToDateSelection"
+      app:destination="@id/dateSelectionDialog"
       app:launchSingleTop="true"
       />
   </fragment>
@@ -1000,6 +1025,11 @@
       app:destination="@id/movieDetailsFragment"
       app:launchSingleTop="true"
       />
+    <action
+      android:id="@+id/actionMovieItemContextDialogToDateSelection"
+      app:destination="@id/dateSelectionDialog"
+      app:launchSingleTop="true"
+      />
   </dialog>
 
   <dialog
@@ -1097,5 +1127,11 @@
       app:launchSingleTop="true"
       />
   </dialog>
+
+  <dialog
+    android:id="@+id/dateSelectionDialog"
+    android:name="com.michaldrabik.ui_base.common.sheets.date_selection.DateSelectionBottomSheet"
+    android:label="dialogDateSelection"
+    />
 
 </navigation>

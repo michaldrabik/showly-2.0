@@ -96,7 +96,6 @@ class ShowDetailsNextEpisodeFragment : BaseFragment<ShowDetailsNextEpisodeViewMo
       episode = episode,
       seasonEpisodesIds = null,
       isWatched = episodeBundle.isWatched,
-      showButton = false,
       showTabs = false
     )
     navigateToSafe(R.id.actionShowDetailsFragmentEpisodeDetails, bundle)

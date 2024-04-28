@@ -26,6 +26,7 @@ import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.bump
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
+import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
@@ -33,6 +34,8 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
 import com.michaldrabik.ui_base.utilities.viewBinding
+import com.michaldrabik.ui_model.ProgressDateSelectionType.ALWAYS_ASK
+import com.michaldrabik.ui_model.ProgressDateSelectionType.NOW
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.EPISODES_LEFT
 import com.michaldrabik.ui_model.SortOrder.NAME
@@ -307,7 +310,10 @@ class ProgressFragment :
   private fun handleEvent(event: Event<*>) {
     when (event) {
       is EpisodeCheckActionUiEvent -> {
-        parentViewModel.setWatchedEpisode(event.episode)
+        when (event.dateSelectionType) {
+          ALWAYS_ASK -> requireMainFragment().openDateSelectionDialog(event.episode)
+          NOW -> parentViewModel.setWatchedEpisode(event.episode)
+        }
       }
       is RequestWidgetsUpdate -> {
         (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
@@ -321,6 +327,7 @@ class ProgressFragment :
         items?.let {
           val resetScroll = scrollReset?.consume() == true
           adapter?.setItems(it, resetScroll)
+          renderFiltersEmpty(uiState)
           progressEmptyView.root.visibleIf(it.isEmpty() && !isLoading && !isSearching)
           progressTipItem.visibleIf(it.count() >= 3 && !isTipShown(Tip.WATCHLIST_ITEM_PIN))
           progressRecycler.fadeIn(
@@ -343,6 +350,21 @@ class ProgressFragment :
         }
       }
     }
+  }
+
+  private fun renderFiltersEmpty(uiState: ProgressUiState) {
+    val items = uiState.items ?: emptyList()
+    if (uiState.isLoading) {
+      binding.progressEmptyFilterView.gone()
+      return
+    }
+    if (isSearching) {
+      binding.progressEmptyFilterView.fadeIf(items.isEmpty(), duration = 200)
+      return
+    }
+    val hasActiveFilter = items.filterIsInstance<ProgressListItem.Filters>().firstOrNull()?.hasActiveFilters() == true
+    val isFilterEmpty = hasActiveFilter && items.filterIsInstance<ProgressListItem.Episode>().isEmpty()
+    binding.progressEmptyFilterView.fadeIf(isFilterEmpty, duration = 200)
   }
 
   override fun onScrollReset() {

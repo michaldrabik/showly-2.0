@@ -1,7 +1,5 @@
 [versions]
 
-androidxPlayReview = "2.0.1"
-androidxPlayUpdate = "2.1.0"
 androidNavigation = "2.7.7"
 androidRoom = "2.6.1"
 androidLifecycle = "2.7.0"
@@ -14,14 +12,13 @@ hiltWork = "1.2.0"
 
 [libraries]
 
-gradle = { group = "com.android.tools.build", name = "gradle", version = "8.3.2" }
+gradle = { group = "com.android.tools.build", name = "gradle", version = "8.2.2" }
 gradle-kotlin-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version = "1.9.0" }
 gradle-ktlint = { group = "org.jlleitschuh.gradle", name = "ktlint-gradle", version = "10.2.1" }
 
 android-core = { group = "androidx.core", name = "core-ktx", version = "1.12.0" }
 android-appcompat = { group = "androidx.appcompat", name = "appcompat", version = "1.6.1" }
 android-gridlayout = { group = "androidx.gridlayout", name = "gridlayout", version = "1.0.0" }
-android-browser = { group = "androidx.browser", name = "browser", version = "1.8.0" }
 android-desugar = { group = "com.android.tools", name = "desugar_jdk_libs", version = "2.0.4" }
 android-material = { group = "com.google.android.material", name = "material", version = "1.11.0" }
 android-dynamicanimation = { group = "androidx.dynamicanimation", name = "dynamicanimation", version = "1.0.0" }
@@ -47,7 +44,6 @@ glide-compiler = { group = "com.github.bumptech.glide", name = "compiler", versi
 
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit" }
-moshi = { group = "com.squareup.moshi", name = "moshi-kotlin", version = "1.14.0" }
 
 hilt-plugin = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hilt" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }

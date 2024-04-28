@@ -9,6 +9,7 @@ import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.SeasonBundle
 import com.michaldrabik.ui_model.Show
 import dagger.hilt.android.scopes.ViewModelScoped
+import java.time.ZonedDateTime
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -24,7 +25,8 @@ class ShowDetailsWatchedSeasonCase @Inject constructor(
     show: Show,
     season: Season,
     isChecked: Boolean,
-    isLocal: Boolean
+    isLocal: Boolean,
+    customDate: ZonedDateTime?
   ): Result {
     val bundle = SeasonBundle(season, show)
 
@@ -35,7 +37,7 @@ class ShowDetailsWatchedSeasonCase @Inject constructor(
 
     when {
       isChecked -> {
-        val episodesAdded = episodesManager.setSeasonWatched(bundle)
+        val episodesAdded = episodesManager.setSeasonWatched(bundle, customDate)
         if (isMyShows) {
           quickSyncManager.scheduleEpisodes(
             showId = show.traktId,

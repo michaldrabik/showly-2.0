@@ -3,6 +3,7 @@ package com.michaldrabik.repository
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.common.extensions.toMillis
+import com.michaldrabik.common.extensions.toUtcZone
 import com.michaldrabik.data_local.database.model.EpisodesSyncLog
 import com.michaldrabik.data_local.sources.EpisodesLocalDataSource
 import com.michaldrabik.data_local.sources.EpisodesSyncLogLocalDataSource
@@ -20,6 +21,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import timber.log.Timber
+import java.time.ZonedDateTime
 import javax.inject.Inject
 import javax.inject.Singleton
 import com.michaldrabik.data_local.database.model.Episode as EpisodeDb
@@ -41,8 +43,8 @@ class EpisodesManager @Inject constructor(
   suspend fun getWatchedEpisodesIds(show: Show) =
     episodesLocalSource.getAllWatchedIdsForShows(listOf(show.traktId))
 
-  suspend fun setSeasonWatched(seasonBundle: SeasonBundle): List<Episode> {
-    val nowUtc = nowUtc()
+  suspend fun setSeasonWatched(seasonBundle: SeasonBundle, customDate: ZonedDateTime?): List<Episode> {
+    val date = customDate?.toUtcZone() ?: nowUtc()
     val toAdd = mutableListOf<EpisodeDb>()
     transactions.withTransaction {
       val (season, show) = seasonBundle
@@ -54,17 +56,16 @@ class EpisodesManager @Inject constructor(
       }
 
       val watchedEpisodes = episodesLocalSource.getAllForSeason(season.ids.trakt.id).filter { it.isWatched }
-
       season.episodes.forEach { ep ->
         if (watchedEpisodes.none { it.idTrakt == ep.ids.trakt.id }) {
-          val dbEpisode = mappers.episode.toDatabase(ep, season, show.ids.trakt, true, null, nowUtc)
+          val dbEpisode = mappers.episode.toDatabase(ep, season, show.ids.trakt, true, null, date)
           toAdd.add(dbEpisode)
         }
       }
 
       episodesLocalSource.upsert(toAdd)
       seasonsLocalSource.update(listOf(dbSeason))
-      showsRepository.myShows.updateWatchedAt(show.traktId, nowUtc.toMillis())
+      showsRepository.myShows.updateWatchedAt(show.traktId, date.toMillis())
     }
     return toAdd.map { mappers.episode.fromDatabase(it) }
   }
@@ -97,20 +98,21 @@ class EpisodesManager @Inject constructor(
     val seasonDb = seasonsLocalSource.getById(seasonId)!!
     val show = showsRepository.myShows.load(showId)!!
     setEpisodeWatched(
-      EpisodeBundle(
-        mappers.episode.fromDatabase(episodeDb),
-        mappers.season.fromDatabase(seasonDb),
-        show
-      )
+      episodeBundle = EpisodeBundle(
+        episode = mappers.episode.fromDatabase(episodeDb),
+        season = mappers.season.fromDatabase(seasonDb),
+        show = show,
+      ),
+      customDate = null
     )
   }
 
-  suspend fun setEpisodeWatched(episodeBundle: EpisodeBundle) {
+  suspend fun setEpisodeWatched(episodeBundle: EpisodeBundle, customDate: ZonedDateTime?) {
     transactions.withTransaction {
       val (episode, season, show) = episodeBundle
-      val nowUtc = nowUtc()
+      val date = customDate?.toUtcZone() ?: nowUtc()
 
-      val dbEpisode = mappers.episode.toDatabase(episode, season, show.ids.trakt, true, null, nowUtc)
+      val dbEpisode = mappers.episode.toDatabase(episode, season, show.ids.trakt, true, null, date)
       val dbSeason = mappers.season.toDatabase(season, show.ids.trakt, false)
 
       val localSeason = seasonsLocalSource.getById(season.ids.trakt.id)
@@ -118,7 +120,7 @@ class EpisodesManager @Inject constructor(
         seasonsLocalSource.upsert(listOf(dbSeason))
       }
       episodesLocalSource.upsert(listOf(dbEpisode))
-      showsRepository.myShows.updateWatchedAt(show.traktId, nowUtc.toMillis())
+      showsRepository.myShows.updateWatchedAt(show.traktId, date.toMillis())
       onEpisodeSet(season, show)
     }
   }

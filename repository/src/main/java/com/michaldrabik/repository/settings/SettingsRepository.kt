@@ -14,6 +14,8 @@ import com.michaldrabik.repository.utilities.BooleanPreference
 import com.michaldrabik.repository.utilities.EnumPreference
 import com.michaldrabik.repository.utilities.LongPreference
 import com.michaldrabik.repository.utilities.StringPreference
+import com.michaldrabik.ui_model.ProgressDateSelectionType
+import com.michaldrabik.ui_model.ProgressDateSelectionType.ALWAYS_ASK
 import com.michaldrabik.ui_model.ProgressNextEpisodeType
 import com.michaldrabik.ui_model.ProgressNextEpisodeType.LAST_WATCHED
 import com.michaldrabik.ui_model.ProgressType
@@ -41,7 +43,6 @@ class SettingsRepository @Inject constructor(
 
   companion object Key {
     const val LANGUAGE = "KEY_LANGUAGE"
-    internal const val PREMIUM = "KEY_PREMIUM"
     private const val COUNTRY = "KEY_COUNTRY"
     private const val DATE_FORMAT = "KEY_DATE_FORMAT"
     private const val MODE = "KEY_MOVIES_MODE"
@@ -55,6 +56,7 @@ class SettingsRepository @Inject constructor(
     private const val PROGRESS_UPCOMING_DAYS = "PROGRESS_UPCOMING_DAYS"
     private const val PROGRESS_ON_HOLD_COLLAPSED = "PROGRESS_ON_HOLD_COLLAPSED"
     private const val PROGRESS_NEXT_EPISODE_TYPE = "PROGRESS_NEXT_EPISODE_TYPE"
+    private const val PROGRESS_DATE_SELECTION_TYPE = "PROGRESS_DATE_SELECTION_TYPE"
     private const val LOCALE_INITIALISED = "LOCALE_INITIALISED"
   }
 
@@ -91,6 +93,7 @@ class SettingsRepository @Inject constructor(
   var isProgressUpcomingCollapsed by BooleanPreference(preferences, PROGRESS_UPCOMING_COLLAPSED)
   var isProgressOnHoldCollapsed by BooleanPreference(preferences, PROGRESS_ON_HOLD_COLLAPSED)
   var progressNextEpisodeType by EnumPreference(preferences, PROGRESS_NEXT_EPISODE_TYPE, LAST_WATCHED, ProgressNextEpisodeType::class.java)
+  var progressDateSelectionType by EnumPreference(preferences, PROGRESS_DATE_SELECTION_TYPE, ALWAYS_ASK, ProgressDateSelectionType::class.java)
   var isLocaleInitialised by BooleanPreference(preferences, LOCALE_INITIALISED, false)
 
   var mode: Mode

@@ -84,23 +84,36 @@
     tools:visibility="visible"
     />
 
-  <com.google.android.material.button.MaterialButton
+  <com.google.android.material.chip.Chip
     android:id="@+id/episodesSeasonRateButton"
-    style="@style/RoundTextButton"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="@dimen/spaceTiny"
-    android:gravity="center"
-    android:minWidth="64dp"
+    style="@style/ShowlyChip.Button"
+    android:layout_height="32dp"
+    android:layout_marginEnd="@dimen/spaceMedium"
     android:text="@string/textRate"
-    android:textColor="?android:attr/textColorPrimary"
     android:visibility="gone"
     app:layout_constraintBottom_toTopOf="@id/episodesOverview"
     app:layout_constraintEnd_toStartOf="@id/episodesSeasonMyStarIcon"
     app:layout_constraintTop_toTopOf="parent"
-    app:rippleColor="?android:attr/textColorPrimary"
     tools:visibility="visible"
     />
+
+  <!--  <com.google.android.material.button.MaterialButton-->
+  <!--    android:id="@+id/episodesSeasonRateButton"-->
+  <!--    style="@style/RoundTextButton"-->
+  <!--    android:layout_width="wrap_content"-->
+  <!--    android:layout_height="wrap_content"-->
+  <!--    android:layout_marginEnd="@dimen/spaceTiny"-->
+  <!--    android:gravity="center"-->
+  <!--    android:minWidth="64dp"-->
+  <!--    android:text="@string/textRate"-->
+  <!--    android:textColor="?android:attr/textColorPrimary"-->
+  <!--    android:visibility="gone"-->
+  <!--    app:layout_constraintBottom_toTopOf="@id/episodesOverview"-->
+  <!--    app:layout_constraintEnd_toStartOf="@id/episodesSeasonMyStarIcon"-->
+  <!--    app:layout_constraintTop_toTopOf="parent"-->
+  <!--    app:rippleColor="?android:attr/textColorPrimary"-->
+  <!--    tools:visibility="visible"-->
+  <!--    />-->
 
   <TextView
     android:id="@+id/episodesSeasonMyRating"

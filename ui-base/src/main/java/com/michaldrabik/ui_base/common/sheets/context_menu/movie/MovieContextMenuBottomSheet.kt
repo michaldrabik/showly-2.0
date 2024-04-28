@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.widget.ImageViewCompat
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
 import com.michaldrabik.common.Config.SPOILERS_RATINGS_HIDE_SYMBOL
@@ -13,12 +14,16 @@ import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
 import com.michaldrabik.ui_base.common.sheets.context_menu.events.FinishUiEvent
 import com.michaldrabik.ui_base.common.sheets.context_menu.events.RemoveTraktUiEvent
+import com.michaldrabik.ui_base.common.sheets.context_menu.events.SelectDateUiEvent
 import com.michaldrabik.ui_base.common.sheets.context_menu.movie.helpers.MovieContextItem
+import com.michaldrabik.ui_base.common.sheets.date_selection.DateSelectionBottomSheet
+import com.michaldrabik.ui_base.common.sheets.date_selection.DateSelectionBottomSheet.Result
 import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet.Mode
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.requireParcelable
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
@@ -185,9 +190,20 @@ class MovieContextMenuBottomSheet : ContextMenuBottomSheet() {
         result.removeHidden -> openRemoveTraktSheet(R.id.actionMovieItemContextDialogToRemoveTraktHidden, Mode.MOVIE)
         else -> close()
       }
+      is SelectDateUiEvent -> openDateSelection()
       is FinishUiEvent -> if (result.isSuccess) close()
       else -> throw IllegalStateException()
     }
+  }
+
+  private fun openDateSelection() {
+    setFragmentResultListener(DateSelectionBottomSheet.REQUEST_DATE_SELECTION) { _, bundle ->
+      when (val result = bundle.requireParcelable<Result>(DateSelectionBottomSheet.RESULT_DATE_SELECTION)) {
+        is Result.Now -> viewModel.moveToMyMovies(isCustomDateSelected = true)
+        is Result.CustomDate -> viewModel.moveToMyMovies(isCustomDateSelected = true, customDate = result.date)
+      }
+    }
+    navigateTo(R.id.actionMovieItemContextDialogToDateSelection)
   }
 
   override fun openDetails() {

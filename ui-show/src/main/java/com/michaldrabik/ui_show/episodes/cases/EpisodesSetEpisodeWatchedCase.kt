@@ -8,6 +8,7 @@ import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_show.sections.seasons.helpers.SeasonsCache
 import dagger.hilt.android.scopes.ViewModelScoped
+import java.time.ZonedDateTime
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -22,7 +23,8 @@ class EpisodesSetEpisodeWatchedCase @Inject constructor(
 
   suspend fun setEpisodeWatched(
     episodeBundle: EpisodeBundle,
-    isChecked: Boolean
+    isChecked: Boolean,
+    customDate: ZonedDateTime?
   ): Result {
     val (episode, _, show) = episodeBundle
 
@@ -33,7 +35,7 @@ class EpisodesSetEpisodeWatchedCase @Inject constructor(
 
     when {
       isChecked -> {
-        episodesManager.setEpisodeWatched(episodeBundle)
+        episodesManager.setEpisodeWatched(episodeBundle, customDate)
         if (isMyShows) {
           quickSyncManager.scheduleEpisodes(
             episodesIds = listOf(episode.ids.trakt.id),

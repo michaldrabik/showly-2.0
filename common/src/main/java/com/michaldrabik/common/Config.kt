@@ -40,8 +40,8 @@ object Config {
   const val DEFAULT_LISTS_GRID_SPAN = 2
   const val HOST_ACTIVITY_NAME = "com.michaldrabik.showly2.ui.main.MainActivity"
 
+  const val SHOW_TIPS = false
   const val SHOW_WHATS_NEW = true
-  const val SHOW_TIPS_DEBUG = false
 
   val PROGRESS_UPCOMING_OPTIONS = arrayOf(0, 7, 14, 30, 45, 60, 90)
   val MY_SHOWS_RECENTS_OPTIONS = arrayOf(0, 2, 4, 6, 8)

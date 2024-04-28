@@ -19,6 +19,9 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.PremiumFeature
+import com.michaldrabik.ui_model.ProgressDateSelectionType
+import com.michaldrabik.ui_model.ProgressDateSelectionType.ALWAYS_ASK
+import com.michaldrabik.ui_model.ProgressDateSelectionType.NOW
 import com.michaldrabik.ui_model.ProgressNextEpisodeType
 import com.michaldrabik.ui_model.ProgressNextEpisodeType.LAST_WATCHED
 import com.michaldrabik.ui_model.ProgressNextEpisodeType.OLDEST
@@ -74,6 +77,7 @@ class SettingsGeneralFragment : BaseFragment<SettingsGeneralViewModel>(R.layout.
         renderTheme(theme)
         renderCountry(country)
         renderProgressType(progressNextType)
+        renderDateSelection(progressDateSelectionType)
         renderProgressUpcoming(progressUpcomingDays)
         renderDateFormat(dateFormat, language)
         renderTabletColumns(tabletColumns)
@@ -150,6 +154,17 @@ class SettingsGeneralFragment : BaseFragment<SettingsGeneralViewModel>(R.layout.
         OLDEST -> getString(R.string.textNextEpisodeOldest)
       }
       settingsProgressNext.onClick { showProgressTypeDialog(type) }
+    }
+  }
+
+  private fun renderDateSelection(type: ProgressDateSelectionType?) {
+    if (type == null) return
+    with(binding) {
+      settingsDateSelectionValue.text = when (type) {
+        ALWAYS_ASK -> getString(R.string.textDateSelectionAsk)
+        NOW -> getString(R.string.textDateSelectionNow)
+      }
+      settingsDateSelection.onClick { showDateSelectionTypeDialog(type) }
     }
   }
 
@@ -255,6 +270,28 @@ class SettingsGeneralFragment : BaseFragment<SettingsGeneralViewModel>(R.layout.
       .setSingleChoiceItems(displayOptions.toTypedArray(), selected) { dialog, index ->
         if (index != selected) {
           viewModel.setProgressType(options[index])
+        }
+        dialog.dismiss()
+      }
+      .show()
+  }
+
+  private fun showDateSelectionTypeDialog(type: ProgressDateSelectionType) {
+    val options = ProgressDateSelectionType.values()
+    val displayOptions = options.map {
+      val option = when (it) {
+        ALWAYS_ASK -> R.string.textDateSelectionAsk
+        NOW -> R.string.textDateSelectionNow
+      }
+      getString(option)
+    }
+    val selected = options.indexOf(type)
+
+    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
+      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
+      .setSingleChoiceItems(displayOptions.toTypedArray(), selected) { dialog, index ->
+        if (index != selected) {
+          viewModel.setDateSelectionType(options[index])
         }
         dialog.dismiss()
       }

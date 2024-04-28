@@ -98,14 +98,14 @@ class ProgressMoviesMainViewModelTest : BaseMockTest() {
   @Test
   fun `Should set watched movie properly and update timestamp`() = runTest {
     val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
-    coEvery { mainCase.addToMyMovies(any<Movie>()) } just Runs
+    coEvery { mainCase.addToMyMovies(any<Movie>(), null) } just Runs
 
-    SUT.setWatchedMovie(Movie.EMPTY)
+    SUT.setWatchedMovie(Movie.EMPTY, null)
 
     assertThat(stateResult[0].timestamp).isEqualTo(null)
     assertThat(stateResult[1].timestamp).isGreaterThan(0L)
 
-    coVerify(exactly = 1) { mainCase.addToMyMovies(any<Movie>()) }
+    coVerify(exactly = 1) { mainCase.addToMyMovies(any<Movie>(), null) }
 
     job.cancel()
   }

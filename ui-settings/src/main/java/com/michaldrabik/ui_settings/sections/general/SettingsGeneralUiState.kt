@@ -3,6 +3,7 @@ package com.michaldrabik.ui_settings.sections.general
 import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.dates.AppDateFormat
+import com.michaldrabik.ui_model.ProgressDateSelectionType
 import com.michaldrabik.ui_model.ProgressNextEpisodeType
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_settings.helpers.AppLanguage
@@ -20,6 +21,7 @@ data class SettingsGeneralUiState(
   val streamingsEnabled: Boolean = true,
   val restartApp: Boolean = false,
   val progressNextType: ProgressNextEpisodeType? = null,
+  val progressDateSelectionType: ProgressDateSelectionType? = null,
   val progressUpcomingDays: Long? = null,
   val tabletColumns: Int = Config.DEFAULT_LISTS_GRID_SPAN,
 )

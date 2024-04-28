@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.ShowImagesProvider
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
@@ -24,6 +25,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -34,6 +36,7 @@ class CalendarViewModel @Inject constructor(
   private val futureCase: CalendarFutureCase,
   private val imagesProvider: ShowImagesProvider,
   private val translationsRepository: TranslationsRepository,
+  private val settingsRepository: SettingsRepository,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private var loadItemsJob: Job? = null
@@ -78,7 +81,12 @@ class CalendarViewModel @Inject constructor(
   fun onEpisodeChecked(episode: CalendarListItem.Episode) {
     viewModelScope.launch {
       val bundle = EpisodeBundle(episode.episode, episode.season, episode.show)
-      eventChannel.send(EpisodeCheckActionUiEvent(bundle))
+      eventChannel.send(
+        EpisodeCheckActionUiEvent(
+          episode = bundle,
+          dateSelectionType = settingsRepository.progressDateSelectionType
+        )
+      )
     }
   }
 
@@ -117,11 +125,13 @@ class CalendarViewModel @Inject constructor(
     loadTranslationJobs.add(showId)
   }
 
-  private fun updateItem(new: CalendarListItem.Episode) {
-    val currentItems = itemsState.value?.toMutableList() ?: mutableListOf()
-    currentItems.findReplace(new) { it.isSameAs(new) }
-    itemsState.value = currentItems
-    modeState.value = mode
+  private fun updateItem(newItem: CalendarListItem.Episode) {
+    itemsState.update { value ->
+      value?.toMutableList()?.apply {
+        findReplace(newItem) { it.isSameAs(newItem) }
+      }
+    }
+    modeState.update { mode }
   }
 
   val uiState = combine(

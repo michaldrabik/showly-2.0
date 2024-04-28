@@ -2,11 +2,13 @@ package com.michaldrabik.ui_show.sections.seasons
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet.Mode
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
 import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
+import com.michaldrabik.ui_model.ProgressDateSelectionType.ALWAYS_ASK
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_show.R
@@ -26,6 +28,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.time.ZonedDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,6 +38,7 @@ class ShowDetailsSeasonsViewModel @Inject constructor(
   private val watchedSeasonCase: ShowDetailsWatchedSeasonCase,
   private val markWatchedCase: EpisodesMarkWatchedCase,
   private val seasonsCache: SeasonsCache,
+  private val settingsRepository: SettingsRepository,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private lateinit var show: Show
@@ -66,16 +70,36 @@ class ShowDetailsSeasonsViewModel @Inject constructor(
     }
   }
 
+  fun onSeasonChecked(
+    season: Season,
+    isChecked: Boolean,
+  ) {
+    if (!isChecked) {
+      setSeasonWatched(season, false)
+      return
+    }
+    if (settingsRepository.progressDateSelectionType == ALWAYS_ASK) {
+      viewModelScope.launch {
+        val event = ShowDetailsSeasonsEvent.OpenSeasonDateSelection(season)
+        eventChannel.send(event)
+      }
+    } else {
+      setSeasonWatched(season, true)
+    }
+  }
+
   fun setSeasonWatched(
     season: Season,
-    isChecked: Boolean
+    isChecked: Boolean,
+    customDate: ZonedDateTime? = null
   ) {
     viewModelScope.launch {
       val result = watchedSeasonCase.setSeasonWatched(
         show = show,
         season = season,
         isChecked = isChecked,
-        isLocal = areSeasonsLocal
+        isLocal = areSeasonsLocal,
+        customDate = customDate
       )
       if (result == Result.REMOVE_FROM_TRAKT) {
         val ids = season.episodes.map { it.ids.trakt }
@@ -86,14 +110,30 @@ class ShowDetailsSeasonsViewModel @Inject constructor(
     }
   }
 
-  fun setQuickProgress(item: QuickSetupListItem?) {
+  fun onQuickProgressSelected(quickSetupItem: QuickSetupListItem?) {
+    viewModelScope.launch {
+      if (quickSetupItem == null || !checkSeasonsLoaded()) {
+        return@launch
+      }
+      if (settingsRepository.progressDateSelectionType == ALWAYS_ASK) {
+        viewModelScope.launch {
+          val event = ShowDetailsSeasonsEvent.OpenQuickProgressDateSelection(quickSetupItem)
+          eventChannel.send(event)
+        }
+      } else {
+        setQuickProgress(quickSetupItem, null)
+      }
+    }
+  }
+
+  fun setQuickProgress(item: QuickSetupListItem?, customDate: ZonedDateTime?) {
     viewModelScope.launch {
       if (item == null || !checkSeasonsLoaded()) {
         return@launch
       }
 
       val seasonItems = seasonsState.value?.toList() ?: emptyList()
-      quickProgressCase.setQuickProgress(item, seasonItems, show)
+      quickProgressCase.setQuickProgress(item, seasonItems, show, customDate)
       refreshSeasons()
 
       messageChannel.send(MessageEvent.Info(R.string.textShowQuickProgressDone))

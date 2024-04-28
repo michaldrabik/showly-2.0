@@ -27,6 +27,10 @@ sealed class MovieDetailsEvent<T>(action: T) : Event<T>(action) {
     val collection: MovieCollection,
   ) : MovieDetailsEvent<Movie>(movie)
 
+  data class OpenDateSelectionSheet(
+    val movie: Movie,
+  ) : MovieDetailsEvent<Movie>(movie)
+
   data class RemoveFromTrakt(
     @IdRes val navigationId: Int,
   ) : MovieDetailsEvent<Int>(navigationId)

@@ -62,6 +62,8 @@
   <string name="textSettingsStreamingServicesMessage">Display streaming services data.</string>
   <string name="textSettingsProgressNextEpisodeTitle">Next Episode</string>
   <string name="textSettingsProgressNextEpisodeMessage">Calculate next episode using:</string>
+  <string name="textSettingsDateSelectionTitle">Date Selection</string>
+  <string name="textSettingsDateSelectionMessage">Select default date selection option.</string>
   <string name="textSettingsTabletColumnsTitle">Lists Columns Number</string>
   <string name="textSettingsTabletColumnsSummary">Select preferred columns number for lists.</string>
 
@@ -109,6 +111,9 @@
 
   <string name="textNextEpisodeLastWatched">Last watched episode</string>
   <string name="textNextEpisodeOldest">Oldest unwatched episode</string>
+
+  <string name="textDateSelectionAsk">Always ask</string>
+  <string name="textDateSelectionNow">Always \"Now\"</string>
 
   <string name="textLanguageEnglish" translatable="false">English</string>
   <string name="textLanguagePolish" translatable="false">Polski</string>

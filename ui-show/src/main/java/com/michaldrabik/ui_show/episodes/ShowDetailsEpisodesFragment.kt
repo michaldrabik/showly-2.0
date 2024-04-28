@@ -12,6 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.WidgetsProvider
+import com.michaldrabik.ui_base.common.sheets.date_selection.DateSelectionBottomSheet.Companion.REQUEST_DATE_SELECTION
+import com.michaldrabik.ui_base.common.sheets.date_selection.DateSelectionBottomSheet.Companion.RESULT_DATE_SELECTION
+import com.michaldrabik.ui_base.common.sheets.date_selection.DateSelectionBottomSheet.Result
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Operation
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Type
@@ -24,7 +27,6 @@ import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.optionalParcelable
 import com.michaldrabik.ui_base.utilities.extensions.requireParcelable
-import com.michaldrabik.ui_base.utilities.extensions.setCheckedSilent
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.viewBinding
@@ -37,8 +39,10 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_show.R
 import com.michaldrabik.ui_show.databinding.FragmentShowDetailsEpisodesBinding
 import com.michaldrabik.ui_show.episodes.ShowDetailsEpisodesEvent.Finish
+import com.michaldrabik.ui_show.episodes.ShowDetailsEpisodesEvent.OpenEpisodeDateSelection
 import com.michaldrabik.ui_show.episodes.ShowDetailsEpisodesEvent.OpenEpisodeDetails
 import com.michaldrabik.ui_show.episodes.ShowDetailsEpisodesEvent.OpenRateSeason
+import com.michaldrabik.ui_show.episodes.ShowDetailsEpisodesEvent.OpenSeasonDateSelection
 import com.michaldrabik.ui_show.episodes.ShowDetailsEpisodesEvent.RemoveFromTrakt
 import com.michaldrabik.ui_show.episodes.ShowDetailsEpisodesEvent.RequestWidgetsUpdate
 import com.michaldrabik.ui_show.episodes.recycler.EpisodesAdapter
@@ -111,7 +115,7 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
         viewModel.openEpisodeDetails(episode, isWatched)
       },
       itemCheckedListener = { episode: Episode, isChecked: Boolean ->
-        viewModel.setEpisodeWatched(episode, isChecked)
+        viewModel.onEpisodeCheck(episode, isChecked)
       }
     )
     binding.episodesRecycler.apply {
@@ -133,10 +137,13 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
           episodesOverview.visibleIf(it.season.overview.isNotBlank())
           episodesCheckbox.run {
             isEnabled = it.episodes.all { ep -> ep.episode.hasAired(it.season) } || !isLocked
-            setCheckedSilent(it.isWatched) { _, isChecked ->
-              viewModel.setSeasonWatched(season, isChecked)
+            isChecked = it.isWatched
+            setOnClickListener {
+              viewModel.onSeasonChecked(season, isChecked)
+              if (isChecked) {
+                isChecked = false
+              }
             }
-            jumpDrawablesToCurrentState()
           }
           episodesUnlockButton.visibleIf(!it.season.isSpecial() && it.episodes.any { ep -> !ep.episode.hasAired(it.season) })
 
@@ -190,6 +197,8 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
       is RemoveFromTrakt -> openRemoveTraktSheet(event)
       is OpenEpisodeDetails -> openEpisodeDetails(event.bundle, event.isWatched)
       is OpenRateSeason -> openRateSeasonDialog(event.season)
+      is OpenEpisodeDateSelection -> openDateSelectionDialog(event.episode)
+      is OpenSeasonDateSelection -> openDateSelectionDialog(event.season)
       is RequestWidgetsUpdate -> (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
       is Finish -> findNavControl()?.popBackStack()
     }
@@ -212,10 +221,6 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
     val (episode, season, show) = episodeBundle
     setFragmentResultListener(NavigationArgs.REQUEST_EPISODE_DETAILS) { _, bundle ->
       when {
-        bundle.containsKey(NavigationArgs.ACTION_EPISODE_WATCHED) -> {
-          val watched = bundle.getBoolean(NavigationArgs.ACTION_EPISODE_WATCHED)
-          viewModel.setEpisodeWatched(episode, watched)
-        }
         bundle.containsKey(NavigationArgs.ACTION_EPISODE_TAB_SELECTED) -> {
           val selectedEpisode = bundle.requireParcelable<Episode>(NavigationArgs.ACTION_EPISODE_TAB_SELECTED)
           viewModel.openEpisodeDetails(selectedEpisode)
@@ -231,7 +236,6 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
       episode = episode,
       seasonEpisodesIds = season.episodes.map { it.number },
       isWatched = isWatched,
-      showButton = episode.hasAired(season),
       showTabs = true
     )
     navigateToSafe(R.id.actionEpisodesFragmentToEpisodesDetails, bundle)
@@ -259,6 +263,26 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
     }
     val bundle = RatingsBottomSheet.createBundle(season.ids.trakt, Type.SEASON)
     navigateToSafe(R.id.actionEpisodesFragmentToRating, bundle)
+  }
+
+  private fun openDateSelectionDialog(episode: Episode) {
+    setFragmentResultListener(REQUEST_DATE_SELECTION) { _, bundle ->
+      when (val result = bundle.requireParcelable<Result>(RESULT_DATE_SELECTION)) {
+        is Result.Now -> viewModel.setEpisodeWatched(episode, true)
+        is Result.CustomDate -> viewModel.setEpisodeWatched(episode, true, result.date)
+      }
+    }
+    navigateToSafe(R.id.actionEpisodesFragmentToDateSelection)
+  }
+
+  private fun openDateSelectionDialog(season: SeasonListItem) {
+    setFragmentResultListener(REQUEST_DATE_SELECTION) { _, bundle ->
+      when (val result = bundle.requireParcelable<Result>(RESULT_DATE_SELECTION)) {
+        is Result.Now -> viewModel.setSeasonWatched(season, true)
+        is Result.CustomDate -> viewModel.setSeasonWatched(season, true, result.date)
+      }
+    }
+    navigateToSafe(R.id.actionEpisodesFragmentToDateSelection)
   }
 
   override fun onDestroyView() {

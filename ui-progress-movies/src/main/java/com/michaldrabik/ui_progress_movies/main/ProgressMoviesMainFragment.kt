@@ -17,6 +17,8 @@ import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.OnShowsMoviesSyncedListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
+import com.michaldrabik.ui_base.common.sheets.date_selection.DateSelectionBottomSheet
+import com.michaldrabik.ui_base.common.sheets.date_selection.DateSelectionBottomSheet.Companion.REQUEST_DATE_SELECTION
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.disableUi
@@ -30,6 +32,7 @@ import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.nextPage
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.requireParcelable
 import com.michaldrabik.ui_base.utilities.extensions.showKeyboard
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
@@ -40,6 +43,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_progress_movies.R
 import com.michaldrabik.ui_progress_movies.databinding.FragmentProgressMainMoviesBinding
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.ZonedDateTime
 
 @AndroidEntryPoint
 class ProgressMoviesMainFragment :
@@ -200,6 +204,21 @@ class ProgressMoviesMainFragment :
     }
     val bundle = ContextMenuBottomSheet.createBundle(movie.ids.trakt, showPinButtons)
     navigateToSafe(R.id.actionProgressMoviesFragmentToItemMenu, bundle)
+  }
+
+  fun openDateSelectionDialog(movie: Movie) {
+
+    fun openRateDialogIfNeeded(customDate: ZonedDateTime? = null) {
+      viewModel.setWatchedMovie(movie, customDate)
+    }
+
+    setFragmentResultListener(REQUEST_DATE_SELECTION) { _, bundle ->
+      when (val result = bundle.requireParcelable<DateSelectionBottomSheet.Result>(DateSelectionBottomSheet.RESULT_DATE_SELECTION)) {
+        is DateSelectionBottomSheet.Result.Now -> openRateDialogIfNeeded()
+        is DateSelectionBottomSheet.Result.CustomDate -> openRateDialogIfNeeded(result.date)
+      }
+    }
+    navigateTo(R.id.actionProgressMoviesFragmentToDateSelection)
   }
 
   private fun openSettings() {

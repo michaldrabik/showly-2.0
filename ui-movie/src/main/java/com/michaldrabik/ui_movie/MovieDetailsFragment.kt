@@ -28,6 +28,8 @@ import com.michaldrabik.common.Config.SPOILERS_REGEX
 import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.WidgetsProvider
+import com.michaldrabik.ui_base.common.sheets.date_selection.DateSelectionBottomSheet
+import com.michaldrabik.ui_base.common.sheets.date_selection.DateSelectionBottomSheet.Result
 import com.michaldrabik.ui_base.common.sheets.links.LinksBottomSheet
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet
 import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet.Options.Operation
@@ -47,6 +49,7 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.onLongClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.requireLong
+import com.michaldrabik.ui_base.utilities.extensions.requireParcelable
 import com.michaldrabik.ui_base.utilities.extensions.screenHeight
 import com.michaldrabik.ui_base.utilities.extensions.screenWidth
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
@@ -67,6 +70,7 @@ import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_movie.MovieDetailsEvent.Finish
+import com.michaldrabik.ui_movie.MovieDetailsEvent.OpenDateSelectionSheet
 import com.michaldrabik.ui_movie.MovieDetailsEvent.RemoveFromTrakt
 import com.michaldrabik.ui_movie.MovieDetailsEvent.RequestWidgetsUpdate
 import com.michaldrabik.ui_movie.databinding.FragmentMovieDetailsBinding
@@ -138,14 +142,12 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       }
       movieDetailsAddButton.run {
         isEnabled = false
-        onAddMyMoviesClickListener = {
-          viewModel.addFollowedMovie()
-        }
-        onAddWatchLaterClickListener = { viewModel.addWatchlistMovie() }
-        onRemoveClickListener = { viewModel.removeFromFollowed() }
+        onAddMyMoviesClickListener = { viewModel.addToMyMovies() }
+        onAddWatchLaterClickListener = { viewModel.addToWatchlist() }
+        onRemoveClickListener = { viewModel.removeFromMyMovies() }
       }
       movieDetailsManageListsLabel.onClick { openListsDialog() }
-      movieDetailsHideLabel.onClick { viewModel.addHiddenMovie() }
+      movieDetailsHideLabel.onClick { viewModel.addToHidden() }
       movieDetailsTitle.onClick {
         requireContext().copyToClipboard(movieDetailsTitle.text.toString())
         showSnack(MessageEvent.Info(R.string.textCopiedToClipboard))
@@ -369,6 +371,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   private fun handleEvent(event: Event<*>) {
     when (event) {
       is RemoveFromTrakt -> openRemoveTraktSheet(event.navigationId)
+      is OpenDateSelectionSheet -> openDateSelectionSheet()
       is RequestWidgetsUpdate -> (requireAppContext() as WidgetsProvider).requestMoviesWidgetsUpdate()
       is Finish -> requireActivity().onBackPressed()
     }
@@ -383,6 +386,16 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     }
     val args = RemoveTraktBottomSheet.createBundle(movieId, RemoveTraktBottomSheet.Mode.MOVIE)
     navigateTo(action, args)
+  }
+
+  private fun openDateSelectionSheet() {
+    setFragmentResultListener(DateSelectionBottomSheet.REQUEST_DATE_SELECTION) { _, bundle ->
+      when (val result = bundle.requireParcelable<Result>(DateSelectionBottomSheet.RESULT_DATE_SELECTION)) {
+        is Result.Now -> viewModel.addToMyMovies(isCustomDateSelected = true)
+        is Result.CustomDate -> viewModel.addToMyMovies(isCustomDateSelected = true, customDate = result.date)
+      }
+    }
+    navigateToSafe(R.id.actionMovieDetailsFragmentToDateSelection)
   }
 
   private fun openShareSheet(movie: Movie) {

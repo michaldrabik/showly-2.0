@@ -24,6 +24,8 @@ import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
 import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.CalendarMode.PRESENT_FUTURE
 import com.michaldrabik.ui_model.CalendarMode.RECENTS
+import com.michaldrabik.ui_model.ProgressDateSelectionType.ALWAYS_ASK
+import com.michaldrabik.ui_model.ProgressDateSelectionType.NOW
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarAdapter
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarListItem
@@ -142,7 +144,10 @@ class CalendarFragment :
   private fun handleEvent(event: Event<*>) {
     when (event) {
       is EpisodeCheckActionUiEvent -> {
-        parentViewModel.setWatchedEpisode(event.episode)
+        when (event.dateSelectionType) {
+          ALWAYS_ASK -> requireMainFragment().openDateSelectionDialog(event.episode)
+          NOW -> parentViewModel.setWatchedEpisode(event.episode)
+        }
       }
     }
   }

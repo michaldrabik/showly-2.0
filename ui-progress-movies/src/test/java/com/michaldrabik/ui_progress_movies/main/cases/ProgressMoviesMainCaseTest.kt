@@ -43,9 +43,9 @@ class ProgressMoviesMainCaseTest : BaseMockTest() {
   fun `Should add movie to My Movies properly`() = runBlockingTest {
     val movie = Movie.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(123)))
 
-    SUT.addToMyMovies(movie)
+    SUT.addToMyMovies(movie, null)
 
-    coVerify { moviesRepository.myMovies.insert(IdTrakt(123)) }
+    coVerify { moviesRepository.myMovies.insert(IdTrakt(123), null) }
     coVerify { pinnedItemsRepository.removePinnedItem(movie) }
     coVerify { quickSyncManager.scheduleMovies(listOf(123)) }
   }
@@ -54,7 +54,7 @@ class ProgressMoviesMainCaseTest : BaseMockTest() {
   fun `Should add movie to My Movies properly using only ID`() = runBlockingTest {
     SUT.addToMyMovies(IdTrakt(123))
 
-    coVerify { moviesRepository.myMovies.insert(IdTrakt(123)) }
+    coVerify { moviesRepository.myMovies.insert(IdTrakt(123), null) }
     coVerify { pinnedItemsRepository.removePinnedItem(any<Movie>()) }
     coVerify { quickSyncManager.scheduleMovies(listOf(123)) }
   }

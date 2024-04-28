@@ -10,6 +10,7 @@ import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.dates.AppDateFormat
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.combine
+import com.michaldrabik.ui_model.ProgressDateSelectionType
 import com.michaldrabik.ui_model.ProgressNextEpisodeType
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_settings.helpers.AppLanguage
@@ -38,6 +39,7 @@ class SettingsGeneralViewModel @Inject constructor(
   private val premiumState = MutableStateFlow(false)
   private val restartAppState = MutableStateFlow(false)
   private val progressTypeState = MutableStateFlow<ProgressNextEpisodeType?>(null)
+  private val progressDateSelectionState = MutableStateFlow<ProgressDateSelectionType?>(null)
   private val progressUpcomingDaysState = MutableStateFlow<Long?>(null)
   private val tabletsColumnsState = MutableStateFlow(Config.DEFAULT_LISTS_GRID_SPAN)
 
@@ -55,6 +57,7 @@ class SettingsGeneralViewModel @Inject constructor(
     moviesEnabledState.value = mainCase.isMoviesEnabled()
     streamingsEnabledState.value = mainCase.isStreamingsEnabled()
     progressTypeState.value = mainCase.getProgressType()
+    progressDateSelectionState.value = mainCase.getDateSelectionType()
     progressUpcomingDaysState.value = mainCase.getProgressUpcomingDays()
     tabletsColumnsState.value = mainCase.getTabletsColumns()
     restartAppState.value = restartApp
@@ -119,6 +122,13 @@ class SettingsGeneralViewModel @Inject constructor(
     }
   }
 
+  fun setDateSelectionType(type: ProgressDateSelectionType) {
+    viewModelScope.launch {
+      mainCase.setDateSelectionType(type)
+      refreshSettings()
+    }
+  }
+
   fun setProgressUpcomingDays(days: Long) {
     viewModelScope.launch {
       mainCase.setProgressUpcomingDays(days)
@@ -144,8 +154,9 @@ class SettingsGeneralViewModel @Inject constructor(
     progressTypeState,
     restartAppState,
     progressUpcomingDaysState,
-    tabletsColumnsState
-  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ->
+    tabletsColumnsState,
+    progressDateSelectionState
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12 ->
     SettingsGeneralUiState(
       settings = s1,
       isPremium = s2,
@@ -157,7 +168,8 @@ class SettingsGeneralViewModel @Inject constructor(
       progressNextType = s8,
       restartApp = s9,
       progressUpcomingDays = s10,
-      tabletColumns = s11
+      tabletColumns = s11,
+      progressDateSelectionType = s12
     )
   }.stateIn(
     scope = viewModelScope,

@@ -54,7 +54,6 @@ import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_TAB_SELECTED
-import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_WATCHED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_NEW_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT_ACTION
@@ -67,6 +66,8 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_EPISODE_DETAIL
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 import timber.log.Timber
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Locale.ENGLISH
 
 @AndroidEntryPoint
@@ -78,7 +79,6 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
       episode: Episode,
       seasonEpisodesIds: List<Int>?,
       isWatched: Boolean,
-      showButton: Boolean,
       showTabs: Boolean,
     ): Bundle {
       val options = Options(
@@ -86,7 +86,6 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
         episode = episode,
         seasonEpisodesIds = seasonEpisodesIds,
         isWatched = isWatched,
-        showButton = showButton,
         showTabs = showTabs
       )
       return bundleOf(ARG_OPTIONS to options)
@@ -115,9 +114,10 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
         { messageFlow.collect { renderSnackbar(it) } },
         doAfterLaunch = {
           val (ids, episode, seasonEpisodes) = options
+          loadLastWatchedAt(ids.trakt, episode)
           loadSeason(ids.trakt, episode, seasonEpisodes?.toIntArray())
-          loadTranslation(ids.trakt, episode)
           loadImage(ids.tmdb, episode)
+          loadTranslation(ids.trakt, episode)
           loadRatings(episode)
         }
       )
@@ -126,20 +126,14 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
 
   private fun setupView() {
     binding.run {
-      val (ids, episode, _, isWatched, showButton, showTabs) = options
+      val (ids, episode, _, isWatched, showTabs) = options
       episodeDetailsTitle.text = when (episode.title) {
         "Episode ${episode.number}" -> String.format(ENGLISH, requireContext().getString(R.string.textEpisode), episode.number)
         else -> episode.title
       }
       episodeDetailsOverview.text = episode.overview.ifBlank { getString(R.string.textNoDescription) }
-      episodeDetailsButton.run {
-        visibleIf(showButton && !isWatched)
-        onClick {
-          setFragmentResult(REQUEST_EPISODE_DETAILS, bundleOf(ACTION_EPISODE_WATCHED to !isWatched))
-          closeSheet()
-        }
-      }
       episodeDetailsRatingLayout.visibleIf(episode.votes > 0)
+      episodeDetailsWatchedAt.visibleIf(episode.lastWatchedAt != null || isWatched)
       if (!showTabs) episodeDetailsTabs.gone()
       episodeDetailsRating.text = String.format(ENGLISH, getString(R.string.textVotes), episode.rating, episode.votes)
       episodeDetailsCommentsButton.text = String.format(ENGLISH, getString(R.string.textLoadCommentsCount), episode.commentCount)
@@ -252,6 +246,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
         }
         renderTitle(translation, spoilers)
         renderDescription(translation, spoilers)
+        renderWatchedAt(lastWatchedAt, dateFormat)
       }
     }
   }
@@ -329,6 +324,15 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
             episodeDetailsOverview.setTextFade(it, duration = 0)
           }
         }
+      }
+    }
+  }
+
+  private fun renderWatchedAt(watchedAt: ZonedDateTime?, dateFormat: DateTimeFormatter?) {
+    with(binding) {
+      dateFormat?.let {
+        episodeDetailsWatchedAt.visibleIf(watchedAt != null)
+        episodeDetailsWatchedAt.text = watchedAt?.toLocalZone()?.format(it)
       }
     }
   }
@@ -445,7 +449,6 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
     val episode: Episode,
     val seasonEpisodesIds: List<Int>?,
     val isWatched: Boolean,
-    val showButton: Boolean,
     val showTabs: Boolean,
   ) : Parcelable
 }

@@ -7,6 +7,7 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.images.MovieImagesProvider
+import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.trakt.TraktSyncWorker
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
@@ -30,6 +31,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -42,6 +44,7 @@ class ProgressMoviesViewModel @Inject constructor(
   private val imagesProvider: MovieImagesProvider,
   private val userTraktManager: UserTraktManager,
   private val workManager: WorkManager,
+  private val settingsRepository: SettingsRepository,
   private val translationsRepository: TranslationsRepository,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
@@ -70,7 +73,12 @@ class ProgressMoviesViewModel @Inject constructor(
 
   fun onMovieChecked(movie: Movie) {
     viewModelScope.launch {
-      eventChannel.send(MovieCheckActionUiEvent(movie))
+      eventChannel.send(
+        MovieCheckActionUiEvent(
+          movie = movie,
+          dateSelectionType = settingsRepository.progressDateSelectionType
+        )
+      )
     }
   }
 
@@ -136,11 +144,13 @@ class ProgressMoviesViewModel @Inject constructor(
     )
   }
 
-  private fun updateItem(new: ProgressMovieListItem.MovieItem) {
-    val currentItems = itemsState.value?.toMutableList() ?: mutableListOf()
-    currentItems.findReplace(new) { it isSameAs new }
-    itemsState.value = currentItems
-    scrollState.value = Event(false)
+  private fun updateItem(newItem: ProgressMovieListItem.MovieItem) {
+    itemsState.update { value ->
+      value?.toMutableList()?.apply {
+        findReplace(newItem) { it.isSameAs(newItem) }
+      }
+    }
+    scrollState.update { Event(false) }
   }
 
   val uiState = combine(

@@ -6,6 +6,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.Translation
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
 data class EpisodeDetailsUiState(
@@ -15,6 +16,7 @@ data class EpisodeDetailsUiState(
   val comments: List<Comment>? = null,
   val isCommentsLoading: Boolean = false,
   val isSignedIn: Boolean = false,
+  val lastWatchedAt: ZonedDateTime? = null,
   val rating: RatingState? = null,
   val translation: Translation? = null,
   val dateFormat: DateTimeFormatter? = null,

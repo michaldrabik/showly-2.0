@@ -28,9 +28,12 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
+import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
 import com.michaldrabik.ui_base.utilities.viewBinding
+import com.michaldrabik.ui_model.ProgressDateSelectionType.ALWAYS_ASK
+import com.michaldrabik.ui_model.ProgressDateSelectionType.NOW
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
 import com.michaldrabik.ui_model.SortOrder.NAME
@@ -279,7 +282,10 @@ class ProgressMoviesFragment :
   private fun handleEvent(event: Event<*>) {
     when (event) {
       is MovieCheckActionUiEvent -> {
-        parentViewModel.setWatchedMovie(event.movie)
+        when (event.dateSelectionType) {
+          ALWAYS_ASK -> requireMainFragment().openDateSelectionDialog(event.movie)
+          NOW -> parentViewModel.setWatchedMovie(event.movie)
+        }
       }
       is RequestWidgetsUpdate -> {
         (requireAppContext() as WidgetsProvider).requestMoviesWidgetsUpdate()
@@ -292,6 +298,7 @@ class ProgressMoviesFragment :
       items?.let {
         val resetScroll = scrollReset?.consume() == true
         adapter?.setItems(it, resetScroll)
+        renderFiltersEmpty(uiState)
         binding.progressMoviesEmptyView.rootLayout.fadeIf(items.isEmpty() && !isSearching)
         binding.progressMoviesMainRecycler.fadeIn(
           duration = 200,
@@ -308,6 +315,15 @@ class ProgressMoviesFragment :
       }
       sortOrder?.let { event -> event.consume()?.let { openSortOrderDialog(it.first, it.second) } }
     }
+  }
+
+  private fun renderFiltersEmpty(uiState: ProgressMoviesUiState) {
+    val items = uiState.items ?: emptyList()
+    if (isSearching) {
+      binding.progressMoviesEmptyFilterView.fadeIf(items.isEmpty(), duration = 200)
+      return
+    }
+    binding.progressMoviesEmptyFilterView.gone()
   }
 
   private fun requireMainFragment() = (requireParentFragment() as ProgressMoviesMainFragment)

@@ -10,6 +10,7 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
+import java.time.ZonedDateTime
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -33,9 +34,9 @@ class MovieDetailsMyMoviesCase @Inject constructor(
     moviesRepository.myMovies.load(movie.ids.trakt) != null
   }
 
-  suspend fun addToMyMovies(movie: Movie) {
+  suspend fun addToMyMovies(movie: Movie, customDate: ZonedDateTime?) {
     withContext(dispatchers.IO) {
-      moviesRepository.myMovies.insert(movie.ids.trakt)
+      moviesRepository.myMovies.insert(movie.ids.trakt, customDate)
       quickSyncManager.scheduleMovies(listOf(movie.traktId))
       pinnedItemsRepository.removePinnedItem(movie)
       announcementManager.refreshMoviesAnnouncements()
