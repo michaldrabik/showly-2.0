@@ -109,7 +109,7 @@
     android:layout_marginBottom="@dimen/spaceBig"
     android:ellipsize="end"
     android:gravity="start"
-    android:maxLines="1"
+    android:maxLines="2"
     android:text="@string/textTipDefaultOption"
     android:textAlignment="viewStart"
     android:textColor="?android:attr/textColorSecondary"
