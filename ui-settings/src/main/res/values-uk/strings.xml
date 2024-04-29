@@ -61,6 +61,8 @@
   <string name="textSettingsStreamingServicesMessage">Показувати дані стрімінгових сервісів.</string>
   <string name="textSettingsProgressNextEpisodeTitle">Наступна серія</string>
   <string name="textSettingsProgressNextEpisodeMessage">Розрахувати наступну серію за допомогою:</string>
+  <string name="textSettingsDateSelectionTitle">Вибір дати</string>
+  <string name="textSettingsDateSelectionMessage">Оберіть варіант вибору дати за замовчуванням.</string>
   <string name="textSettingsTabletColumnsTitle">Кількість стовпців у списках</string>
   <string name="textSettingsTabletColumnsSummary">Виберіть бажану кількість стовпців для списків.</string>
   <string name="textSettingsSpoilers">Спойлери</string>
@@ -102,6 +104,8 @@
   <string name="textSettingsSpoilersTapToRevealDescription">Торкніться прихованого вмісту, щоб тимчасово показати його.</string>
   <string name="textNextEpisodeLastWatched">Остання переглянута серія</string>
   <string name="textNextEpisodeOldest">Найстаріша непереглянута серія</string>
+  <string name="textDateSelectionAsk">Завжди питати</string>
+  <string name="textDateSelectionNow">Завжди \"Щойно\"</string>
   <string name="textThemeDark">Темна</string>
   <string name="textThemeLight">Світла</string>
   <string name="textThemeSystem">Системна</string>

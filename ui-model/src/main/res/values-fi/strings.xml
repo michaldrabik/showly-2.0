@@ -40,6 +40,7 @@
   <string name="textTipWatchlistPinItem">Kiinnitä kohde listan ylälaitaan painamalla sitä pitkään.</string>
   <string name="textTipBottomModeMenu">Vaihda aluetta nopeasti pyyhkäisemällä alareunan valikkoa vasemmalle tai oikealle.</string>
   <string name="textTipListSwipeToDelete">Poista kohde listalta pyyhkäisemällä se sivuun.</string>
+  <string name="textTipDefaultOption">Voit muuttaa oletusvalinnan asetuksista</string>
   <string name="textGenreAction">Toiminta</string>
   <string name="textGenreAdventure">Seikkailu</string>
   <string name="textGenreAnimation">Animaatio</string>

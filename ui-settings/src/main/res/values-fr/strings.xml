@@ -53,6 +53,8 @@
   <string name="textSettingsLogoutMessage">\nVoulez-vous vraiment vous déconnecter ?\n</string>
   <string name="textSettingsMoviesEnabledTitle">Films</string>
   <string name="textSettingsMoviesEnabledSummary">Activer/désactiver la prise en compte des films. L\'application va redémarrer.</string>
+  <string name="textSettingsManagePaymentsTitle">Gérer les abonnements</string>
+  <string name="textSettingsManagePaymentsSummary">Gérer les abonnements dans le Google Play Store.</string>
   <string name="textSettingsWidgets">Widgets</string>
   <string name="textSettingsWidgetsLabelsTitle">Titres</string>
   <string name="textSettingsWidgetsLabelsSummary">Afficher les titres translucides des widgets.</string>
@@ -61,6 +63,8 @@
   <string name="textSettingsStreamingServicesMessage">Afficher les données des services de streaming.</string>
   <string name="textSettingsProgressNextEpisodeTitle">Prochain épisode</string>
   <string name="textSettingsProgressNextEpisodeMessage">Calculer le prochain épisode en utilisant :</string>
+  <string name="textSettingsDateSelectionTitle">Sélection de date</string>
+  <string name="textSettingsDateSelectionMessage">Sélectionnez l\'option de sélection de date par défaut.</string>
   <string name="textSettingsTabletColumnsTitle">Nombre de colonnes des listes</string>
   <string name="textSettingsTabletColumnsSummary">Sélectionnez le nombre de colonnes préféré pour les listes.</string>
   <string name="textSettingsSpoilers">Spoilers</string>
@@ -102,6 +106,8 @@
   <string name="textSettingsSpoilersTapToRevealDescription">Appuyer sur le contenu masqué pour le révéler temporairement.</string>
   <string name="textNextEpisodeLastWatched">Le dernier épisode vu</string>
   <string name="textNextEpisodeOldest">Le plus ancien épisode non vu</string>
+  <string name="textDateSelectionAsk">Toujours demander</string>
+  <string name="textDateSelectionNow">Toujours \"Maintenant\"</string>
   <string name="textThemeDark">Sombre</string>
   <string name="textThemeLight">Clair</string>
   <string name="textThemeSystem">Système</string>

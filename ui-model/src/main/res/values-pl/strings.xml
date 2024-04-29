@@ -40,6 +40,7 @@
   <string name="textTipWatchlistPinItem">Kliknij i przytrzymaj element aby przypiąć go u góry listy.</string>
   <string name="textTipBottomModeMenu">Kliknij i przesuń dolne menu w lewo lub prawo aby szybko przełączyć się między serialami i filmami.</string>
   <string name="textTipListSwipeToDelete">Przeciągnij elementy listy aby je usunąć.</string>
+  <string name="textTipDefaultOption">Domyślną opcję można wybrać w \"Ustawieniach\"</string>
   <string name="textGenreAction">Akcja</string>
   <string name="textGenreAdventure">Przygoda</string>
   <string name="textGenreAnimation">Animacja</string>

@@ -61,6 +61,8 @@
   <string name="textSettingsStreamingServicesMessage">Näytä suoratoistopalveluiden tiedot.</string>
   <string name="textSettingsProgressNextEpisodeTitle">Seuraava jakso</string>
   <string name="textSettingsProgressNextEpisodeMessage">Seuraavan jakson laskentaperuste:</string>
+  <string name="textSettingsDateSelectionTitle">Päiväyksen valinta</string>
+  <string name="textSettingsDateSelectionMessage">Valitse päiväyksen oletusvalinta.</string>
   <string name="textSettingsTabletColumnsTitle">Listausten sarakemäärä</string>
   <string name="textSettingsTabletColumnsSummary">Valitse listauksissa näytettävä sarakkeiden määrä.</string>
   <string name="textSettingsSpoilers">Juonipaljastukset</string>
@@ -102,6 +104,8 @@
   <string name="textSettingsSpoilersTapToRevealDescription">Paljasta piilotettu sisältö väliaikaisesti napauttamalla sitä.</string>
   <string name="textNextEpisodeLastWatched">Viimeksi katsottu jakso</string>
   <string name="textNextEpisodeOldest">Vanhin katsomaton jakso</string>
+  <string name="textDateSelectionAsk">Kysy aina</string>
+  <string name="textDateSelectionNow">Valitse \"Nyt\"</string>
   <string name="textThemeDark">Tumma</string>
   <string name="textThemeLight">Vaalea</string>
   <string name="textThemeSystem">Järjestelmä</string>

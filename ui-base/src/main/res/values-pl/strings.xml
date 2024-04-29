@@ -7,6 +7,7 @@
   <string name="textCancel">Anuluj</string>
   <string name="textContinue">Dalej</string>
   <string name="textClose">Zamknij</string>
+  <string name="textNow">Teraz</string>
   <string name="textNotNow">Nie Teraz</string>
   <string name="textNew">Nowy</string>
   <string name="textSelect">Wybierz</string>
@@ -39,6 +40,9 @@
   <string name="textRateSaved">Ocena została zapisana.</string>
   <string name="textRateRemoved">Ocena została usunięta.</string>
   <string name="textDays">%1$d dni</string>
+  <string name="textSelectDate">Wybierz datę</string>
+  <string name="textDateSelectionTitle">Wybór daty</string>
+  <string name="textDateSelectionDescription">Kiedy skończyłeś/łaś oglądać?</string>
   <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
     <item quantity="one">%d do obejrzenia</item>
     <item quantity="few">%d do obejrzenia</item>

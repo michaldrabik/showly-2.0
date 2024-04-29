@@ -40,6 +40,7 @@
   <string name="textTipWatchlistPinItem">Tocca e mantieni un elemento della lista per fissarlo in cima.</string>
   <string name="textTipBottomModeMenu">Scorri a sinistra o a destra il menu inferiore per cambiare modalità rapidamente.</string>
   <string name="textTipListSwipeToDelete">Scorri gli elementi della lista per rimuoverli.</string>
+  <string name="textTipDefaultOption">L\'opzione predefinita può essere cambiata in Impostazioni</string>
   <string name="textGenreAction">Azione</string>
   <string name="textGenreAdventure">Avventura</string>
   <string name="textGenreAnimation">Animazione</string>

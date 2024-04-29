@@ -40,6 +40,7 @@
   <string name="textTipWatchlistPinItem">Торкніться та утримуйте предмет списку для закріплення його вгорі.</string>
   <string name="textTipBottomModeMenu">Проведіть по нижньому меню ліворуч або праворуч, щоб швидко змінити режим.</string>
   <string name="textTipListSwipeToDelete">Проводьте по елементах, щоб видаляти їх зі списку.</string>
+  <string name="textTipDefaultOption">Можна змінити опцію за замовчуванням у Налаштуваннях</string>
   <string name="textGenreAction">Екшн</string>
   <string name="textGenreAdventure">Пригоди</string>
   <string name="textGenreAnimation">Анімація</string>

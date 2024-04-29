@@ -6,6 +6,7 @@
   <string name="textApply">Käytä</string>
   <string name="textCancel">Peruuta</string>
   <string name="textClose">Sulje</string>
+  <string name="textNow">Nyt</string>
   <string name="textNotNow">Ei nyt</string>
   <string name="textNew">Uusi</string>
   <string name="textSelect">Valitse</string>
@@ -38,6 +39,9 @@
   <string name="textRateSaved">Arviosi tallennettiin.</string>
   <string name="textRateRemoved">Arviosi poistettiin.</string>
   <string name="textDays">%1$d päivää</string>
+  <string name="textSelectDate">Valitse päivä</string>
+  <string name="textDateSelectionTitle">Päiväyksen valinta</string>
+  <string name="textDateSelectionDescription">Milloin katselit tämän?</string>
   <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
     <item quantity="one">%d jäljellä</item>
     <item quantity="other">%d jäljellä</item>
