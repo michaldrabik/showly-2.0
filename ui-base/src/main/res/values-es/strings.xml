@@ -6,6 +6,7 @@
   <string name="textApply">Aceptar</string>
   <string name="textCancel">Cancelar</string>
   <string name="textClose">Cerrar</string>
+  <string name="textNow">Ahora</string>
   <string name="textNotNow">Ahora no</string>
   <string name="textNew">Nuevo</string>
   <string name="textSelect">Seleccionar</string>
@@ -38,6 +39,9 @@
   <string name="textRateSaved">Tu calificación se ha guardado.</string>
   <string name="textRateRemoved">Tu calificación ha sido eliminada.</string>
   <string name="textDays">%1$d días</string>
+  <string name="textSelectDate">Seleccionar Fecha</string>
+  <string name="textDateSelectionTitle">Selección Fecha</string>
+  <string name="textDateSelectionDescription">¿Cuándo lo has visto?</string>
   <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
     <item quantity="one">%d restante</item>
     <item quantity="other">%d restantes</item>

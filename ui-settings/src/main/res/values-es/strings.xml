@@ -61,6 +61,8 @@
   <string name="textSettingsStreamingServicesMessage">Mostrar datos de servicios de streaming.</string>
   <string name="textSettingsProgressNextEpisodeTitle">Siguiente Episodio</string>
   <string name="textSettingsProgressNextEpisodeMessage">Calcular el siguiente episodio usando:</string>
+  <string name="textSettingsDateSelectionTitle">Selección Fecha</string>
+  <string name="textSettingsDateSelectionMessage">Selecciona la opción de selección de fecha predeterminada.</string>
   <string name="textSettingsTabletColumnsTitle">Número de Columnas de Listas</string>
   <string name="textSettingsTabletColumnsSummary">Selecciona el número de columnas preferido para las listas.</string>
   <string name="textSettingsSpoilers">Spoilers</string>
@@ -102,6 +104,8 @@
   <string name="textSettingsSpoilersTapToRevealDescription">Toca el contenido oculto para revelarlo temporalmente.</string>
   <string name="textNextEpisodeLastWatched">Último episodio visto</string>
   <string name="textNextEpisodeOldest">Episodio más antiguo no visto</string>
+  <string name="textDateSelectionAsk">Preguntar siempre</string>
+  <string name="textDateSelectionNow">Siempre \"Ahora\"</string>
   <string name="textThemeDark">Oscuro</string>
   <string name="textThemeLight">Claro</string>
   <string name="textThemeSystem">Sistema</string>

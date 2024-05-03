@@ -2,7 +2,7 @@
 <resources>
   <string name="tabCalendar">Calendario</string>
   <string name="tabProgress">Progreso</string>
-  <string name="tabHistory">Historia</string>
+  <string name="tabHistory">Historial</string>
   <string name="textCalendarEmpty">No hay nuevos episodios en camino.</string>
   <string name="textRecentsEmpty">No hay episodios emitidos recientemente.</string>
   <string name="textHistoryEmpty">No hay nada en tu historial.</string>
