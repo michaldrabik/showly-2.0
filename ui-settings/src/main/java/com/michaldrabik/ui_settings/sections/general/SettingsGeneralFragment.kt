@@ -127,7 +127,7 @@ class SettingsGeneralFragment : BaseFragment<SettingsGeneralViewModel>(R.layout.
   private fun renderCountry(country: AppCountry?) {
     if (country == null) return
     with(binding) {
-      settingsCountryValue.text = country.displayName
+      settingsCountryValue.setText(country.displayName)
       settingsCountry.onClick { showCountryDialog(country) }
     }
   }
@@ -245,7 +245,7 @@ class SettingsGeneralFragment : BaseFragment<SettingsGeneralViewModel>(R.layout.
 
     MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
       .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
-      .setSingleChoiceItems(options.map { it.displayName }.toTypedArray(), selected) { dialog, index ->
+      .setSingleChoiceItems(options.map { getString(it.displayName) }.toTypedArray(), selected) { dialog, index ->
         if (index != selected) {
           viewModel.setCountry(options[index])
         }

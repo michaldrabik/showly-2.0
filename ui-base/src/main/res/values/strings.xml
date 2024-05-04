@@ -160,4 +160,53 @@
   <string name="errorTraktSyncListsLimitsReached" translatable="false">You have reached your Trakt account limit for personal lists! Not all of your personal lists were synchronized.</string>
   <string name="errorTraktSyncWatchlistLimitsReached" translatable="false">You have reached your Trakt account limit for watchlist items! Please contact us if you need more assistance.</string>
 
+  <string name="textCountryArgentina">Argentina</string>
+  <string name="textCountryAustralia">Australia</string>
+  <string name="textCountryAustria">Austria</string>
+  <string name="textCountryBelgium">Belgium</string>
+  <string name="textCountryBrazil">Brazil</string>
+  <string name="textCountryBulgaria">Bulgaria</string>
+  <string name="textCountryCanada">Canada</string>
+  <string name="textCountryChile">Chile</string>
+  <string name="textCountryColombia">Colombia</string>
+  <string name="textCountryCzechRepublic">Czech Republic</string>
+  <string name="textCountryDenmark">Denmark</string>
+  <string name="textCountryEcuador">Ecuador</string>
+  <string name="textCountryEstonia">Estonia</string>
+  <string name="textCountryFinland">Finland</string>
+  <string name="textCountryFrance">France</string>
+  <string name="textCountryGermany">Germany</string>
+  <string name="textCountryGreece">Greece</string>
+  <string name="textCountryHungary">Hungary</string>
+  <string name="textCountryIndia">India</string>
+  <string name="textCountryIndonesia">Indonesia</string>
+  <string name="textCountryIreland">Ireland</string>
+  <string name="textCountryItaly">Italy</string>
+  <string name="textCountryJapan">Japan</string>
+  <string name="textCountryLatvia">Latvia</string>
+  <string name="textCountryLithuania">Lithuania</string>
+  <string name="textCountryMalaysia">Malaysia</string>
+  <string name="textCountryMexico">Mexico</string>
+  <string name="textCountryNetherlands">Netherlands</string>
+  <string name="textCountryNewZealand">NewZealand</string>
+  <string name="textCountryNorway">Norway</string>
+  <string name="textCountryPeru">Peru</string>
+  <string name="textCountryPhilippines">Philippines</string>
+  <string name="textCountryPoland">Poland</string>
+  <string name="textCountryPortugal">Portugal</string>
+  <string name="textCountryRomania">Romania</string>
+  <string name="textCountryRussia">Russia</string>
+  <string name="textCountrySingapore">Singapore</string>
+  <string name="textCountrySouthAfrica">South Africa</string>
+  <string name="textCountrySouthKorea">South Korea</string>
+  <string name="textCountrySpain">Spain</string>
+  <string name="textCountrySweden">Sweden</string>
+  <string name="textCountrySwitzerland">Switzerland</string>
+  <string name="textCountryThailand">Thailand</string>
+  <string name="textCountryTurkey">Turkey</string>
+  <string name="textCountryUkraine">Ukraine</string>
+  <string name="textCountryUnitedKingdom">United Kingdom</string>
+  <string name="textCountryUnitedStates">United States</string>
+  <string name="textCountryVenezuela">Venezuela</string>
+
 </resources>
