@@ -1,2 +1,2 @@
-* French translation bugfix
-* Potential concurrency error while importing bugfix
+* Added option to select date when marking an episode or a movie as watched. Defaults can be adjusted via app settings.
+* Fixed UI bug with person's details overlapping with each other.
