@@ -133,6 +133,8 @@ class SettingsRepository @Inject constructor(
         movieTranslations.deleteByLanguage(input)
         episodesTranslations.deleteByLanguage(input)
         people.deleteTranslations()
+        movieImages.deleteAll()
+        showImages.deleteAll()
       }
     }
   }
