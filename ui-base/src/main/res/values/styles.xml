@@ -1,7 +1,7 @@
 <resources>
 
   <!-- Base app theme -->
-  <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
+  <style name="AppTheme" parent="Theme.Material3.Dark.NoActionBar">
     <item name="android:windowBackground">@color/colorBackground</item>
     <item name="android:navigationBarColor">@color/colorPrimary</item>
     <item name="android:windowTranslucentStatus">true</item>
@@ -113,7 +113,7 @@
 
   <!-- Dialogs -->
 
-  <style name="AlertDialog" parent="@style/Theme.Material3.DayNight.Dialog">
+  <style name="AlertDialog" parent="@style/Theme.Material3.Dark.Dialog">
     <item name="colorAccent">@color/colorAccent</item>
     <item name="colorPrimary">@color/colorAccent</item>
     <item name="buttonBarNegativeButtonStyle">@style/AlertDialog.NegativeButton</item>
@@ -358,6 +358,7 @@
   </style>
 
   <style name="ShowlyDatePicker" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+    <item name="colorOnPrimary">@color/colorWhite</item>
     <item name="colorSurface">@color/colorBackground</item>
     <item name="colorOnSurface">@color/colorWhite</item>
     <item name="buttonBarPositiveButtonStyle">@style/ShowlyDatePicker.Button</item>
