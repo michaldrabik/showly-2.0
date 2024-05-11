@@ -5,6 +5,7 @@ import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.data_remote.tmdb.model.TmdbImage
 import com.michaldrabik.data_remote.tmdb.model.TmdbImages
+import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTrakt
@@ -29,7 +30,8 @@ class MovieImagesProvider @Inject constructor(
   private val dispatchers: CoroutineDispatchers,
   private val remoteSource: RemoteDataSource,
   private val localSource: LocalDataSource,
-  private val mappers: Mappers
+  private val mappers: Mappers,
+  private var translationsRepository: TranslationsRepository
 ) {
 
   private val unavailableCache = mutableSetOf<IdTrakt>()
@@ -118,13 +120,18 @@ class MovieImagesProvider @Inject constructor(
       }
     }
 
-  private fun findBestImage(images: List<TmdbImage>, type: ImageType) =
-    images
-      .filter { if (type == POSTER) it.isEnglish() else it.isPlain() }
-      .sortedWith(compareBy({ it.vote_count }, { it.vote_average }))
-      .lastOrNull()
-      ?: images.firstOrNull { if (type == POSTER) it.isEnglish() else it.isPlain() }
-      ?: images.firstOrNull()
+  private fun findBestImage(images: List<TmdbImage>, type: ImageType): TmdbImage? {
+    val language = translationsRepository.getLanguage()
+    val comparator = when (type) {
+      POSTER -> compareBy<TmdbImage> { it.isLanguage(language) }
+        .thenBy { it.isEnglish() }
+        .thenBy { it.isPlain() }
+      else -> compareBy<TmdbImage> { it.isPlain() }
+        .thenBy { it.isLanguage(language) }
+        .thenBy { it.isEnglish() }
+    }
+    return images.maxWithOrNull(comparator.thenBy { it.getVoteScore() })
+  }
 
   suspend fun deleteLocalCache() = withContext(dispatchers.IO) {
     localSource.movieImages.deleteAll()
