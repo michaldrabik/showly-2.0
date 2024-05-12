@@ -40,6 +40,7 @@
   <string name="textTipWatchlistPinItem">اضغط مطولًا على أي عنصر لتثبيته في الأعلى.</string>
   <string name="textTipBottomModeMenu">مرر أسفل القائمة لليسار أو لليمين للتنقل بين المسلسلات والأفلام.</string>
   <string name="textTipListSwipeToDelete">اسحب أي عنصر لحذفه من القائمة.</string>
+  <string name="textTipDefaultOption">يمكن تعديل الخِيار الافتراضي في الإعدادات</string>
   <string name="textGenreAction">أكشن</string>
   <string name="textGenreAdventure">مغامرات</string>
   <string name="textGenreAnimation">أنیميشن</string>

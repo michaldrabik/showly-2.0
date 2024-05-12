@@ -6,6 +6,7 @@
   <string name="textApply">تطبيق</string>
   <string name="textCancel">إلغاء</string>
   <string name="textClose">إغلاق</string>
+  <string name="textNow">الآن</string>
   <string name="textNotNow">ليس الآن</string>
   <string name="textNew">جديد</string>
   <string name="textSelect">اختر</string>
@@ -38,6 +39,9 @@
   <string name="textRateSaved">حُفظ تقييمك.</string>
   <string name="textRateRemoved">تم حذف تقييمك.</string>
   <string name="textDays">%1$d يوم</string>
+  <string name="textSelectDate">حدد تاريخ</string>
+  <string name="textDateSelectionTitle">تحديد التاريخ</string>
+  <string name="textDateSelectionDescription">متى شاهدته؟</string>
   <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
     <item quantity="zero">بقي %d</item>
     <item quantity="one">بقي %d</item>
