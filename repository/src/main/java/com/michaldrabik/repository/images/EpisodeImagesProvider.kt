@@ -23,12 +23,10 @@ class EpisodeImagesProvider @Inject constructor(
   private val dispatchers: CoroutineDispatchers,
   private val remoteSource: RemoteDataSource,
   private val localSource: LocalDataSource,
-  private val mappers: Mappers
+  private val mappers: Mappers,
 ) {
 
   suspend fun loadRemoteImage(showId: IdTmdb, episode: Episode): Image = withContext(dispatchers.IO) {
-    val tvdbId = episode.ids.tvdb
-    val tmdbId = episode.ids.tmdb
     val cachedImage = findCachedImage(episode, FANART)
     if (cachedImage.status == AVAILABLE) {
       return@withContext cachedImage
@@ -45,8 +43,8 @@ class EpisodeImagesProvider @Inject constructor(
         null -> Image.createUnavailable(FANART)
         else -> Image(
           id = -1,
-          idTvdb = tvdbId,
-          idTmdb = tmdbId,
+          idTvdb = episode.ids.tvdb,
+          idTmdb = episode.ids.tmdb,
           type = FANART,
           family = EPISODE,
           fileUrl = remoteImage.file_path,
@@ -60,7 +58,12 @@ class EpisodeImagesProvider @Inject constructor(
     }
 
     when (image.status) {
-      UNAVAILABLE -> localSource.showImages.deleteByEpisodeId(tmdbId.id, image.type.key)
+      UNAVAILABLE -> {
+        localSource.showImages.deleteByEpisodeId(
+          id = episode.ids.tmdb.id,
+          type = image.type.key
+        )
+      }
       else -> localSource.showImages.insertEpisodeImage(mappers.image.toDatabaseShow(image))
     }
 
@@ -68,10 +71,9 @@ class EpisodeImagesProvider @Inject constructor(
   }
 
   private suspend fun findCachedImage(episode: Episode, type: ImageType): Image {
-    val cachedImage = localSource.showImages.getByEpisodeId(episode.ids.tmdb.id, type.key)
-    return when (cachedImage) {
+    return when (val image = localSource.showImages.getByEpisodeId(episode.ids.tmdb.id, type.key)) {
       null -> Image.createUnknown(type, EPISODE)
-      else -> mappers.image.fromDatabase(cachedImage).copy(type = type)
+      else -> mappers.image.fromDatabase(image).copy(type = type)
     }
   }
 }

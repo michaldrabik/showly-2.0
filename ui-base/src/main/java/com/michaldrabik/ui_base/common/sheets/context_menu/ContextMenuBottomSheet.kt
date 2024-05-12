@@ -30,7 +30,6 @@ import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
 import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.IdTrakt
-import com.michaldrabik.ui_model.IdTvdb
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageStatus
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
@@ -48,7 +47,7 @@ abstract class ContextMenuBottomSheet : BaseBottomSheetFragment(R.layout.view_co
     fun createBundle(
       idTrakt: IdTrakt,
       showPinButtons: Boolean = false,
-      detailsEnabled: Boolean = true
+      detailsEnabled: Boolean = true,
     ) = bundleOf(
       ARG_ID to idTrakt,
       ARG_OPTIONS to bundleOf(
@@ -86,9 +85,8 @@ abstract class ContextMenuBottomSheet : BaseBottomSheetFragment(R.layout.view_co
     }
   }
 
-  protected fun renderImage(image: Image, tvdbId: IdTvdb) {
+  protected fun renderImage(image: Image) {
     Glide.with(this).clear(binding.contextMenuItemImage)
-    var imageUrl = image.fullFileUrl
 
     if (image.status == ImageStatus.UNAVAILABLE) {
       binding.contextMenuItemPlaceholder.visible()
@@ -96,12 +94,8 @@ abstract class ContextMenuBottomSheet : BaseBottomSheetFragment(R.layout.view_co
       return
     }
 
-    if (image.status == ImageStatus.UNKNOWN) {
-      imageUrl = "${Config.TVDB_IMAGE_BASE_POSTER_URL}${tvdbId.id}-1.jpg"
-    }
-
     Glide.with(this)
-      .load(imageUrl)
+      .load(image.fullFileUrl)
       .transform(centerCropTransformation, cornersTransformation)
       .transition(DrawableTransitionOptions.withCrossFade(Config.IMAGE_FADE_DURATION_MS))
       .withSuccessListener {

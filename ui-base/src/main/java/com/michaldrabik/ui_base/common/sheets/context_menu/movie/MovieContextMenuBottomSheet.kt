@@ -74,7 +74,7 @@ class MovieContextMenuBottomSheet : ContextMenuBottomSheet() {
       }
       item?.let {
         renderItem(it)
-        renderImage(it.image, it.movie.ids.tvdb)
+        renderImage(it.image)
       }
     }
   }

@@ -33,7 +33,7 @@ class ShowContextMenuLoadItemCase @Inject constructor(
     val language = translationsRepository.getLanguage()
     val spoilers = settingsRepository.spoilers.getAll()
 
-    val imageAsync = async { imagesProvider.findCachedImage(show, ImageType.POSTER) }
+    val imageAsync = async { imagesProvider.loadRemoteImage(show, ImageType.POSTER) }
     val translationAsync = async { translationsRepository.loadTranslation(show, language = language, onlyLocal = true) }
     val ratingAsync = async { ratingsRepository.shows.loadRatings(listOf(show)) }
 

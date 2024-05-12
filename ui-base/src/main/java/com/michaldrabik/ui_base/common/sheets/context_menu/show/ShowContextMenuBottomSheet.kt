@@ -79,7 +79,7 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet() {
       }
       item?.let {
         renderItem(it)
-        renderImage(it.image, it.show.ids.tvdb)
+        renderImage(it.image)
       }
     }
   }
