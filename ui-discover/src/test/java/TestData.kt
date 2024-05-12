@@ -56,7 +56,7 @@ object TestData {
       fileUrl = "",
       thumbnailUrl = "",
       status = ImageStatus.UNKNOWN,
-      source = ImageSource.TVDB
+      source = ImageSource.TMDB
     ),
     isLoading = false, isFollowed = false, isWatchlist = false
   )
