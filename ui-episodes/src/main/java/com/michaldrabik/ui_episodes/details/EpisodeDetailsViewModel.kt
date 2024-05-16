@@ -2,7 +2,6 @@ package com.michaldrabik.ui_episodes.details
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.common.Config
 import com.michaldrabik.common.errors.ErrorHelper
 import com.michaldrabik.common.errors.ShowlyError.CoroutineCancellation
 import com.michaldrabik.common.errors.ShowlyError.ResourceConflictError
@@ -31,6 +30,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_model.locale.AppLocale
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -107,11 +107,11 @@ class EpisodeDetailsViewModel @Inject constructor(
   fun loadTranslation(showTraktId: IdTrakt, episode: Episode) {
     viewModelScope.launch {
       try {
-        val language = translationsRepository.getLanguage()
-        if (language == Config.DEFAULT_LANGUAGE) {
+        val locale = translationsRepository.getLocale()
+        if (locale == AppLocale.default()) {
           return@launch
         }
-        val translation = translationsRepository.loadTranslation(episode, showTraktId, language)
+        val translation = translationsRepository.loadTranslation(episode, showTraktId, locale)
         translation?.let {
           translationState.value = it
         }

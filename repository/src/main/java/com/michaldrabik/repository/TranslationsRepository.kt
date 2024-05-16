@@ -1,7 +1,6 @@
 package com.michaldrabik.repository
 
 import android.content.SharedPreferences
-import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.common.ConfigVariant
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.LocalDataSource
@@ -11,8 +10,9 @@ import com.michaldrabik.data_local.database.model.ShowTranslation
 import com.michaldrabik.data_local.database.model.TranslationsMoviesSyncLog
 import com.michaldrabik.data_local.database.model.TranslationsSyncLog
 import com.michaldrabik.data_remote.RemoteDataSource
+import com.michaldrabik.data_remote.trakt.model.Translation as TraktTranslation
 import com.michaldrabik.repository.mappers.Mappers
-import com.michaldrabik.repository.settings.SettingsRepository.Key.LANGUAGE
+import com.michaldrabik.repository.settings.SettingsRepository.Key.LOCALE
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Movie
@@ -20,10 +20,10 @@ import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.SeasonTranslation
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_model.locale.AppLocale
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
-import com.michaldrabik.data_remote.trakt.model.Translation as TranslationRemote
 
 @Singleton
 class TranslationsRepository @Inject constructor(
@@ -33,17 +33,17 @@ class TranslationsRepository @Inject constructor(
   private val mappers: Mappers,
 ) {
 
-  fun getLanguage() = miscPreferences.getString(LANGUAGE, DEFAULT_LANGUAGE) ?: DEFAULT_LANGUAGE
+  fun getLocale() = miscPreferences.getString(LOCALE, null)?.let { AppLocale.fromCode(it) } ?: AppLocale.default()
 
-  suspend fun loadAllShowsLocal(language: String = DEFAULT_LANGUAGE): Map<Long, Translation> {
-    val local = localSource.showTranslations.getAll(language)
+  suspend fun loadAllShowsLocal(locale: AppLocale = AppLocale.default()): Map<Long, Translation> {
+    val local = localSource.showTranslations.getAll(locale.language.code, locale.country.code)
     return local.associate {
       Pair(it.idTrakt, mappers.translation.fromDatabase(it))
     }
   }
 
-  suspend fun loadAllMoviesLocal(language: String = DEFAULT_LANGUAGE): Map<Long, Translation> {
-    val local = localSource.movieTranslations.getAll(language)
+  suspend fun loadAllMoviesLocal(locale: AppLocale = AppLocale.default()): Map<Long, Translation> {
+    val local = localSource.movieTranslations.getAll(locale.language.code, locale.country.code)
     return local.associate {
       Pair(it.idTrakt, mappers.translation.fromDatabase(it))
     }
@@ -51,10 +51,13 @@ class TranslationsRepository @Inject constructor(
 
   suspend fun loadTranslation(
     show: Show,
-    language: String = DEFAULT_LANGUAGE,
+    locale: AppLocale = AppLocale.default(),
     onlyLocal: Boolean = false,
   ): Translation? {
-    val local = localSource.showTranslations.getById(show.traktId, language)
+    val language = locale.language.code
+    val country = locale.country.code
+
+    val local = localSource.showTranslations.getById(show.traktId, language, country)
     local?.let {
       return mappers.translation.fromDatabase(it)
     }
@@ -66,9 +69,8 @@ class TranslationsRepository @Inject constructor(
     }
 
     val remoteTranslation = try {
-      remoteSource.trakt.fetchShowTranslations(show.traktId, language)
-        .firstOrNull { chineseLanguagePredicate(it) && frenchLanguagePredicate(it) }
-    } catch (error: Throwable) {
+      findTranslation(remoteSource.trakt.fetchShowTranslations(show.traktId, language), language, country)
+    } catch (_: Throwable) {
       null
     }
 
@@ -77,6 +79,7 @@ class TranslationsRepository @Inject constructor(
       show.traktId,
       translation.title,
       language,
+      country,
       translation.overview,
       nowUtcMillis()
     )
@@ -91,10 +94,13 @@ class TranslationsRepository @Inject constructor(
 
   suspend fun loadTranslation(
     movie: Movie,
-    language: String = DEFAULT_LANGUAGE,
+    locale: AppLocale = AppLocale.default(),
     onlyLocal: Boolean = false,
   ): Translation? {
-    val local = localSource.movieTranslations.getById(movie.traktId, language)
+    val language = locale.language.code
+    val country = locale.country.code
+
+    val local = localSource.movieTranslations.getById(movie.traktId, language, country)
     local?.let {
       return mappers.translation.fromDatabase(it)
     }
@@ -106,8 +112,7 @@ class TranslationsRepository @Inject constructor(
     }
 
     val remoteTranslation = try {
-      remoteSource.trakt.fetchMovieTranslations(movie.traktId, language)
-        .firstOrNull { chineseLanguagePredicate(it) && frenchLanguagePredicate(it) }
+      findTranslation(remoteSource.trakt.fetchMovieTranslations(movie.traktId, language), language, country)
     } catch (error: Throwable) {
       null
     }
@@ -117,6 +122,7 @@ class TranslationsRepository @Inject constructor(
       movie.traktId,
       translation.title,
       language,
+      country,
       translation.overview,
       nowUtcMillis()
     )
@@ -132,11 +138,14 @@ class TranslationsRepository @Inject constructor(
   suspend fun loadTranslation(
     episode: Episode,
     showId: IdTrakt,
-    language: String = DEFAULT_LANGUAGE,
+    locale: AppLocale = AppLocale.default(),
     onlyLocal: Boolean = false,
   ): Translation? {
+    val language = locale.language.code
+    val country = locale.country.code
+
     val nowMillis = nowUtcMillis()
-    val local = localSource.episodesTranslations.getById(episode.ids.trakt.id, showId.id, language)
+    val local = localSource.episodesTranslations.getById(episode.ids.trakt.id, showId.id, language, country)
     local?.let {
       val isCacheValid = nowMillis - it.updatedAt < ConfigVariant.TRANSLATION_SYNC_EPISODE_COOLDOWN
       if (it.title.isNotBlank() && it.overview.isNotBlank()) {
@@ -160,15 +169,15 @@ class TranslationsRepository @Inject constructor(
           title = item.title,
           overview = item.overview,
           language = language,
+          country = country,
           createdAt = nowMillis
         )
         localSource.episodesTranslations.insertSingle(dbItem)
       }
 
-    remoteTranslations
-      .find { it.ids.trakt == episode.ids.trakt }
+    findTranslation(episode.ids.trakt.id, remoteTranslations, language, country)
       ?.let {
-        return Translation(it.title, it.overview, it.language)
+        return Translation(it.title, it.overview, it.language, it.country)
       }
 
     return null
@@ -177,16 +186,19 @@ class TranslationsRepository @Inject constructor(
   suspend fun loadTranslations(
     season: Season,
     showId: IdTrakt,
-    language: String = DEFAULT_LANGUAGE
+    locale: AppLocale = AppLocale.default(),
   ): List<SeasonTranslation> {
+    val language = locale.language.code
+    val country = locale.country.code
+
     val episodes = season.episodes.toList()
     val episodesIds = season.episodes.map { it.ids.trakt.id }
 
-    val local = localSource.episodesTranslations.getByIds(episodesIds, showId.id, language)
+    val local = localSource.episodesTranslations.getByIds(episodesIds, showId.id, language, country)
     val hasAllTranslated = local.isNotEmpty() && local.all { it.title.isNotBlank() && it.overview.isNotBlank() }
     val isCacheValid = local.isNotEmpty() && nowUtcMillis() - local.first().updatedAt < ConfigVariant.TRANSLATION_SYNC_EPISODE_COOLDOWN
 
-    if (hasAllTranslated || (!hasAllTranslated && isCacheValid)) {
+    if (hasAllTranslated || isCacheValid) {
       return episodes.map { episode ->
         val translation = local.find { it.idTrakt == episode.ids.trakt.id }
         SeasonTranslation(
@@ -196,6 +208,7 @@ class TranslationsRepository @Inject constructor(
           seasonNumber = season.number,
           episodeNumber = episode.number,
           language = language,
+          country = country,
           isLocal = true
         )
       }
@@ -211,6 +224,7 @@ class TranslationsRepository @Inject constructor(
           showId.id,
           item.title,
           language,
+          country,
           item.overview,
           nowUtcMillis()
         )
@@ -218,7 +232,7 @@ class TranslationsRepository @Inject constructor(
       }
 
     return episodes.map { episode ->
-      val translation = remoteTranslation.find { it.ids.trakt.id == episode.ids.trakt.id }
+      val translation = findTranslation(episode.ids.trakt.id, remoteTranslation, language, country)
       SeasonTranslation(
         ids = episode.ids.copy(),
         title = translation?.title ?: "",
@@ -226,22 +240,28 @@ class TranslationsRepository @Inject constructor(
         seasonNumber = season.number,
         episodeNumber = episode.number,
         language = language,
+        country = country,
         isLocal = true
       )
     }
   }
 
-  private fun chineseLanguagePredicate(translation: TranslationRemote) =
-    if (translation.language?.lowercase() != "zh") {
-      true
-    } else {
-      translation.country?.equals("cn", ignoreCase = true) == true
+  private fun findTranslation(translations: List<TraktTranslation>, language: String, country: String): TraktTranslation? {
+    var fallback: TraktTranslation? = null
+    for (t in translations) {
+      if (t.country.equals(country, true)) return t
+      if (fallback == null && t.language.equals(language, true)) fallback = t
     }
+    return fallback
+  }
 
-  private fun frenchLanguagePredicate(translation: TranslationRemote) =
-    if (translation.language?.lowercase() != "fr") {
-      true
-    } else {
-      translation.country?.equals("fr", ignoreCase = true) == true
+  private fun findTranslation(episodeId: Long, translations: List<SeasonTranslation>, language: String, country: String): SeasonTranslation? {
+    var fallback: SeasonTranslation? = null
+    for (t in translations) {
+      if (t.ids.trakt.id != episodeId) continue
+      if (t.country.equals(country, true)) return t
+      if (fallback == null && t.language.equals(language, true)) fallback = t
     }
+    return fallback
+  }
 }

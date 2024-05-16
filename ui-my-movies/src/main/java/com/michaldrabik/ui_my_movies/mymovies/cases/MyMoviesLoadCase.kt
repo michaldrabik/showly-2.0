@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_my_movies.mymovies.cases
 
-import com.michaldrabik.common.Config
 import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.MovieImagesProvider
@@ -12,6 +11,7 @@ import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_model.locale.AppLocale
 import com.michaldrabik.ui_my_movies.mymovies.helpers.MyMoviesSorter
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -65,11 +65,11 @@ class MyMoviesLoadCase @Inject constructor(
 
   suspend fun loadTranslation(movie: Movie, onlyLocal: Boolean): Translation? =
     withContext(dispatchers.IO) {
-      val language = translationsRepository.getLanguage()
-      if (language == Config.DEFAULT_LANGUAGE) {
+      val locale = translationsRepository.getLocale()
+      if (locale == AppLocale.default()) {
         return@withContext Translation.EMPTY
       }
-      translationsRepository.loadTranslation(movie, language, onlyLocal)
+      translationsRepository.loadTranslation(movie, locale, onlyLocal)
     }
 
   fun loadDateFormat() = dateFormatProvider.loadShortDayFormat()

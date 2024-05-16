@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_people.details.cases
 
-import com.michaldrabik.common.Config
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.repository.PeopleRepository
@@ -16,6 +15,7 @@ import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.PersonCredit
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SpoilersSettings
+import com.michaldrabik.ui_model.locale.AppLocale
 import com.michaldrabik.ui_people.details.recycler.PersonDetailsItem
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
@@ -96,9 +96,9 @@ class PersonDetailsCreditsCase @Inject constructor(
     val isMy = it.traktId in myShowsIds
     val isWatchlist = it.traktId in watchlistShowsId
     val image = showImagesProvider.findCachedImage(it, ImageType.POSTER)
-    val translation = when (val language = translationsRepository.getLanguage()) {
-      Config.DEFAULT_LANGUAGE -> null
-      else -> translationsRepository.loadTranslation(it, language, onlyLocal = true)
+    val translation = when (val locale = translationsRepository.getLocale()) {
+      AppLocale.default() -> null
+      else -> translationsRepository.loadTranslation(it, locale, onlyLocal = true)
     }
     PersonDetailsItem.CreditsShowItem(
       show = it,
@@ -119,9 +119,9 @@ class PersonDetailsCreditsCase @Inject constructor(
     val isMy = it.traktId in myMoviesIds
     val isWatchlist = it.traktId in watchlistMoviesId
     val image = movieImagesProvider.findCachedImage(it, ImageType.POSTER)
-    val translation = when (val language = translationsRepository.getLanguage()) {
-      Config.DEFAULT_LANGUAGE -> null
-      else -> translationsRepository.loadTranslation(it, language, onlyLocal = true)
+    val translation = when (val locale = translationsRepository.getLocale()) {
+      AppLocale.default() -> null
+      else -> translationsRepository.loadTranslation(it, locale, onlyLocal = true)
     }
     PersonDetailsItem.CreditsMovieItem(
       movie = it,

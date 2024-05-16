@@ -1,11 +1,11 @@
 package com.michaldrabik.ui_show.episodes.cases
 
-import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.SeasonTranslation
 import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_model.locale.AppLocale
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -22,11 +22,11 @@ class EpisodesTranslationCase @Inject constructor(
         return@withContext emptyList()
       }
 
-      val language = translationsRepository.getLanguage()
-      if (language == DEFAULT_LANGUAGE) {
+      val locale = translationsRepository.getLocale()
+      if (locale == AppLocale.default()) {
         return@withContext emptyList()
       }
 
-      translationsRepository.loadTranslations(season, show.ids.trakt, language)
+      translationsRepository.loadTranslations(season, show.ids.trakt, locale)
     }
 }

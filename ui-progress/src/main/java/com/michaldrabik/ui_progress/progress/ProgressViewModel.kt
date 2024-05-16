@@ -3,7 +3,6 @@ package com.michaldrabik.ui_progress.progress
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkManager
-import com.michaldrabik.common.Config
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.images.ShowImagesProvider
@@ -18,6 +17,7 @@ import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
+import com.michaldrabik.ui_model.locale.AppLocale
 import com.michaldrabik.ui_progress.main.EpisodeCheckActionUiEvent
 import com.michaldrabik.ui_progress.main.ProgressMainUiState
 import com.michaldrabik.ui_progress.main.RequestWidgetsUpdate
@@ -125,11 +125,11 @@ class ProgressViewModel @Inject constructor(
 
   fun findMissingTranslation(item: ProgressListItem) {
     check(item is ProgressListItem.Episode)
-    val language = translationsRepository.getLanguage()
-    if (item.translations?.show != null || language == Config.DEFAULT_LANGUAGE) return
+    val locale = translationsRepository.getLocale()
+    if (item.translations?.show != null || locale == AppLocale.default()) return
     viewModelScope.launch {
       try {
-        val translation = translationsRepository.loadTranslation(item.show, language)
+        val translation = translationsRepository.loadTranslation(item.show, locale)
         val translations = item.translations?.copy(show = translation)
         updateItem(item.copy(translations = translations))
       } catch (error: Throwable) {

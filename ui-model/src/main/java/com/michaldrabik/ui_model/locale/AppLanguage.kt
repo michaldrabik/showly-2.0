@@ -1,7 +1,8 @@
-package com.michaldrabik.ui_settings.helpers
+package com.michaldrabik.ui_model.locale
 
 import androidx.annotation.StringRes
-import com.michaldrabik.ui_settings.R
+import com.michaldrabik.common.Config
+import com.michaldrabik.ui_model.R
 
 enum class AppLanguage(
   val code: String,
@@ -24,6 +25,7 @@ enum class AppLanguage(
   CHINESE("zh", "Chinese Simplified", R.string.textLanguageChinese);
 
   companion object {
-    fun fromCode(code: String) = values().first { it.code == code }
+    fun default() = AppLanguage.fromCode(Config.DEFAULT_LANGUAGE)
+    fun fromCode(code: String) = entries.first { it.code.equals(code, ignoreCase = true)}
   }
 }

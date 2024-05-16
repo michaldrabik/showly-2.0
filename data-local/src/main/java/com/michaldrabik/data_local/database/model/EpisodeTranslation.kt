@@ -27,6 +27,7 @@ data class EpisodeTranslation(
   @ColumnInfo(name = "id_trakt_show") val idTraktShow: Long,
   @ColumnInfo(name = "title") val title: String,
   @ColumnInfo(name = "language") val language: String,
+  @ColumnInfo(name = "country") val country: String,
   @ColumnInfo(name = "overview") val overview: String,
   @ColumnInfo(name = "created_at") val createdAt: Long,
   @ColumnInfo(name = "updated_at") val updatedAt: Long
@@ -38,6 +39,7 @@ data class EpisodeTranslation(
       traktShowId: Long,
       title: String,
       language: String,
+      country: String,
       overview: String,
       createdAt: Long
     ) =
@@ -46,6 +48,7 @@ data class EpisodeTranslation(
         idTraktShow = traktShowId,
         title = title,
         language = language,
+        country = country,
         overview = overview,
         createdAt = createdAt,
         updatedAt = createdAt

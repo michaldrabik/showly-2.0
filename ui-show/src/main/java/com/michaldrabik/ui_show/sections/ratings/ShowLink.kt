@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_show.sections.ratings
 
 import android.net.Uri
-import com.michaldrabik.ui_base.common.AppCountry
+import com.michaldrabik.ui_model.locale.AppCountry
 
 enum class ShowLink {
   IMDB,

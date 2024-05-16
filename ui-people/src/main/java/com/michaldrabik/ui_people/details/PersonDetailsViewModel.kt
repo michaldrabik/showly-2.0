@@ -2,7 +2,6 @@ package com.michaldrabik.ui_people.details
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.common.Config
 import com.michaldrabik.common.Mode
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
@@ -14,6 +13,7 @@ import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
 import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
 import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.Person
+import com.michaldrabik.ui_model.locale.AppLocale
 import com.michaldrabik.ui_people.R
 import com.michaldrabik.ui_people.details.cases.PersonDetailsCreditsCase
 import com.michaldrabik.ui_people.details.cases.PersonDetailsImagesCase
@@ -147,18 +147,18 @@ class PersonDetailsViewModel @Inject constructor(
   }
 
   fun loadMissingTranslation(item: PersonDetailsItem) {
-    val language = settingsRepository.language
-    if (language == Config.DEFAULT_LANGUAGE || item.getId() in translationsJobs.keys) {
+    val locale = settingsRepository.locale
+    if (locale == AppLocale.default() || item.getId() in translationsJobs.keys) {
       return
     }
     translationsJobs[item.getId()] = true
     viewModelScope.launch {
       (item as? PersonDetailsItem.CreditsShowItem)?.let {
-        val updatedItem = loadTranslationsCase.loadMissingTranslation(it, language)
+        val updatedItem = loadTranslationsCase.loadMissingTranslation(it, locale)
         updateItem(updatedItem)
       }
       (item as? PersonDetailsItem.CreditsMovieItem)?.let {
-        val updatedItem = loadTranslationsCase.loadMissingTranslation(it, language)
+        val updatedItem = loadTranslationsCase.loadMissingTranslation(it, locale)
         updateItem(updatedItem)
       }
     }

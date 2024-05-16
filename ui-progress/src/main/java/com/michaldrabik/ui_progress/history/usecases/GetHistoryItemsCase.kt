@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_progress.history.usecases
 
-import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.common.extensions.dateFromMillis
 import com.michaldrabik.common.extensions.nowUtcMillis
@@ -27,6 +26,7 @@ import com.michaldrabik.ui_model.HistoryPeriod.THIS_MONTH
 import com.michaldrabik.ui_model.HistoryPeriod.THIS_WEEK
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_model.locale.AppLocale
 import com.michaldrabik.ui_progress.helpers.TranslationsBundle
 import com.michaldrabik.ui_progress.history.entities.HistoryListItem
 import com.michaldrabik.ui_progress.history.utilities.groupers.HistoryItemsGrouper
@@ -82,7 +82,7 @@ internal class GetHistoryItemsCase @Inject constructor(
     val localEpisodes = episodes as List<Episode>
     val localSeasons = seasons as List<Season>
 
-    val language = translationsRepository.getLanguage()
+    val locale = translationsRepository.getLocale()
     val dateFormat = dateFormatProvider.loadFullHourFormat()
 
     val items = localEpisodes
@@ -111,7 +111,7 @@ internal class GetHistoryItemsCase @Inject constructor(
             season = seasonUi,
             episode = episodeUi,
             image = imagesProvider.findCachedImage(show, ImageType.POSTER),
-            translations = getTranslation(language, show, episodeUi),
+            translations = getTranslation(locale, show, episodeUi),
             dateFormat = dateFormat,
           )
         }
@@ -123,7 +123,7 @@ internal class GetHistoryItemsCase @Inject constructor(
     val searchItems = filterByQuery(searchQuery, dateFormat, items)
     val groupedItems = grouper.groupByDay(
       items = searchItems,
-      language = language,
+      language = locale.language.code,
     )
     filtersItem + groupedItems
   }
@@ -146,22 +146,22 @@ internal class GetHistoryItemsCase @Inject constructor(
   }
 
   private suspend fun getTranslation(
-    language: String,
+    locale: AppLocale,
     show: Show,
     episode: EpisodeUi
   ): TranslationsBundle? {
-    if (language == DEFAULT_LANGUAGE) {
+    if (locale == AppLocale.default()) {
       return null
     }
     return TranslationsBundle(
       episode = translationsRepository.loadTranslation(
-        language = language,
+        locale = locale,
         showId = show.ids.trakt,
         episode = episode,
         onlyLocal = true
       ),
       show = translationsRepository.loadTranslation(
-        language = language,
+        locale = locale,
         show = show,
         onlyLocal = true
       )

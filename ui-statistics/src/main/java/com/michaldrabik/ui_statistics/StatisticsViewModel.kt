@@ -2,7 +2,6 @@ package com.michaldrabik.ui_statistics
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.common.Config
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.Episode
 import com.michaldrabik.data_local.database.model.Season
@@ -16,6 +15,7 @@ import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_model.locale.AppLocale
 import com.michaldrabik.ui_statistics.cases.StatisticsLoadRatingsCase
 import com.michaldrabik.ui_statistics.views.mostWatched.StatisticsMostWatchedItem
 import com.michaldrabik.ui_statistics.views.ratings.recycler.StatisticsRatingItem
@@ -51,7 +51,7 @@ class StatisticsViewModel @Inject constructor(
   fun loadData(limit: Int = 0, initialDelay: Long = 150L) {
     takeLimit += limit
     viewModelScope.launch {
-      val language = translationsRepository.getLanguage()
+      val locale = translationsRepository.getLocale()
 
       val myShows = showsRepository.myShows.loadAll()
       val watchlistShows = showsRepository.watchlistShows.loadAll() // Add shows from watchlist
@@ -66,7 +66,7 @@ class StatisticsViewModel @Inject constructor(
       val genres = extractTopGenres(shows)
       val mostWatchedShows = shows
         .map { show ->
-          val translation = loadTranslation(language, show)
+          val translation = loadTranslation(locale, show)
           StatisticsMostWatchedItem(
             show = shows.first { it.traktId == show.traktId },
             seasonsCount = seasons.filter { it.idShowTrakt == show.traktId }.count().toLong(),
@@ -146,9 +146,9 @@ class StatisticsViewModel @Inject constructor(
       .toList()
       .filterNotNull()
 
-  private suspend fun loadTranslation(language: String, show: Show) =
-    if (language == Config.DEFAULT_LANGUAGE) null
-    else translationsRepository.loadTranslation(show, language, true)
+  private suspend fun loadTranslation(locale: AppLocale, show: Show) =
+    if (locale == AppLocale.default()) null
+    else translationsRepository.loadTranslation(show, locale, true)
 
   val uiState = combine(
     mostWatchedShowsState,

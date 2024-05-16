@@ -23,7 +23,7 @@ import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
 import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
 import com.michaldrabik.ui_model.Tip
-import com.michaldrabik.ui_settings.helpers.AppLanguage
+import com.michaldrabik.ui_model.locale.AppLanguage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -92,7 +92,7 @@ class MainViewModel @Inject constructor(
   private fun checkApi13Locale(isInitialRun: Boolean) {
     if (!isInitialRun && !settingsRepository.isLocaleInitialised) {
       settingsRepository.isLocaleInitialised = true
-      val locale = LocaleListCompat.forLanguageTags(settingsRepository.language)
+      val locale = LocaleListCompat.forLanguageTags(settingsRepository.locale.language.code)
       AppCompatDelegate.setApplicationLocales(locale)
     }
   }
