@@ -90,7 +90,7 @@ class DateSelectionBottomSheet : BaseBottomSheetFragment(R.layout.view_date_sele
     dialog.addOnPositiveButtonClickListener { dateMillis ->
       openTimeSelectionDialog(now, dateMillis)
     }
-    dialog.show(parentFragmentManager, "DatePicker")
+    dialog.show(childFragmentManager, "DatePicker")
   }
 
   private fun openTimeSelectionDialog(now: ZonedDateTime, selectedDate: Long) {
@@ -109,7 +109,7 @@ class DateSelectionBottomSheet : BaseBottomSheetFragment(R.layout.view_date_sele
         selectedMinute = dialog.minute
       )
     }
-    dialog.show(parentFragmentManager, "TimePicker")
+    dialog.show(childFragmentManager, "TimePicker")
   }
 
   private fun onDateTimeSelected(
