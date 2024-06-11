@@ -32,6 +32,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -200,9 +201,11 @@ class ListDetailsViewModel @Inject constructor(
   }
 
   private fun updateItem(newItem: ListDetailsItem) {
-    val currentItems = uiState.value.listItems?.toMutableList() ?: mutableListOf()
-    currentItems.findReplace(newItem) { it.id == newItem.id }
-    listItemsState.value = currentItems
+    listItemsState.update { state ->
+      state?.toMutableList()?.apply {
+        findReplace(newItem) { it.id == newItem.id }
+      }
+    }
   }
 
   val uiState = combine(

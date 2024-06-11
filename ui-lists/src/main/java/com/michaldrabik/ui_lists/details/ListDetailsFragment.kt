@@ -328,7 +328,9 @@ class ListDetailsFragment :
           fragmentListDetailsViewModeButton.visibleIf(!isRealEmpty)
 
           val scrollTop = resetScroll?.consume() == true
-          adapter?.setItems(it, scrollTop)
+          view?.post {
+            adapter?.setItems(it, scrollTop)
+          }
           (layoutManager as? GridLayoutManager)?.withSpanSizeLookup { pos ->
             adapter?.items?.get(pos)?.image?.type?.getSpan(isTablet)!!
           }

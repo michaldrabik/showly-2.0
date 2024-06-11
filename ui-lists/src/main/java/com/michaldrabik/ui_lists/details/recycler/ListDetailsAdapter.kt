@@ -44,7 +44,9 @@ class ListDetailsAdapter(
     val diff = DiffUtil.calculateDiff(ListDetailsDiffCallback(items, newItems))
     diff.dispatchUpdatesTo(this)
     items = newItems
-    if (notifyItemsChange) itemsChangedListener.invoke()
+    if (notifyItemsChange) {
+      itemsChangedListener.invoke()
+    }
   }
 
   override fun getItemViewType(position: Int): Int {
