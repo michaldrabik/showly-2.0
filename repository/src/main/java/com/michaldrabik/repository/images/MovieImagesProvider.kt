@@ -121,7 +121,7 @@ class MovieImagesProvider @Inject constructor(
     }
 
   private fun findBestImage(images: List<TmdbImage>, type: ImageType): TmdbImage? {
-    val language = translationsRepository.getLanguage()
+    val language = translationsRepository.getLocale().language.code
     val comparator = when (type) {
       POSTER -> compareBy<TmdbImage> { it.isLanguage(language) }
         .thenBy { it.isEnglish() }

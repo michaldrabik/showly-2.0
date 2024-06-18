@@ -31,11 +31,11 @@ class MovieContextMenuLoadItemCase @Inject constructor(
   suspend fun loadItem(traktId: IdTrakt) = withContext(dispatchers.IO) {
     val movie = moviesRepository.movieDetails.load(traktId)
     val dateFormat = dateFormatProvider.loadShortDayFormat()
-    val language = translationsRepository.getLanguage()
+    val locale = translationsRepository.getLocale()
     val spoilers = settingsSpoilersRepository.getAll()
 
     val imageAsync = async { imagesProvider.loadRemoteImage(movie, ImageType.POSTER) }
-    val translationAsync = async { translationsRepository.loadTranslation(movie, language = language, onlyLocal = true) }
+    val translationAsync = async { translationsRepository.loadTranslation(movie, locale = locale, onlyLocal = true) }
     val ratingAsync = async { ratingsRepository.movies.loadRatings(listOf(movie)) }
 
     val isMyMovieAsync = async { moviesRepository.myMovies.exists(traktId) }

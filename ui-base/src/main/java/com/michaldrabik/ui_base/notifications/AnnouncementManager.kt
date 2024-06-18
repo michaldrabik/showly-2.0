@@ -63,7 +63,7 @@ class AnnouncementManager @Inject constructor(
       return
     }
 
-    val language = translationsRepository.getLanguage()
+    val locale = translationsRepository.getLocale()
     val delay = settings.episodesNotificationsDelay
     val onHoldIds = onHoldItemsRepository.getAll().map { it.id }
 
@@ -88,7 +88,7 @@ class AnnouncementManager @Inject constructor(
                   episodeSeasonNumber = episode.seasonNumber,
                   episodeDate = episode.firstAired!!,
                   delay = delay,
-                  language = language
+                  locale = locale
                 )
               } else {
                 Timber.d("Time with delay included has already passed.")
@@ -101,7 +101,7 @@ class AnnouncementManager @Inject constructor(
                 episodeSeasonNumber = episode.seasonNumber,
                 episodeDate = episode.firstAired!!,
                 delay = delay,
-                language = language
+                locale = locale
               )
             }
           }
@@ -126,7 +126,7 @@ class AnnouncementManager @Inject constructor(
             episodeSeasonNumber = 1,
             episodeDate = airDate,
             delay = delay,
-            language = language
+            locale = locale
           )
         } else {
           Timber.d("Time with delay included has already passed.")
@@ -138,7 +138,7 @@ class AnnouncementManager @Inject constructor(
           episodeSeasonNumber = 1,
           episodeDate = airDate,
           delay = delay,
-          language = language
+          locale = locale
         )
       }
     }
@@ -165,7 +165,7 @@ class AnnouncementManager @Inject constructor(
       return
     }
 
-    val language = translationsRepository.getLanguage()
+    val locale = translationsRepository.getLocale()
     movies
       .filter {
         Timber.d("Processing ${it.title} (${it.traktId})")
@@ -175,7 +175,7 @@ class AnnouncementManager @Inject constructor(
           ZonedDateTime.now().hour < MOVIE_THRESHOLD_HOUR // We want movies notifications to come out the release day at 12:00 local time
       }
       .forEach {
-        movieAnnouncementScheduler.scheduleAnnouncement(context, it, language)
+        movieAnnouncementScheduler.scheduleAnnouncement(context, it, locale)
       }
   }
 }

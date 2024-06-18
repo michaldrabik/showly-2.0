@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_my_shows.hidden.cases
 
-import com.michaldrabik.common.Config
 import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.ShowImagesProvider
@@ -15,6 +14,7 @@ import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_model.UpcomingFilter
+import com.michaldrabik.ui_model.locale.AppLocale
 import com.michaldrabik.ui_my_shows.common.recycler.CollectionListItem
 import com.michaldrabik.ui_my_shows.hidden.helpers.HiddenItemSorter
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -39,12 +39,12 @@ class HiddenLoadShowsCase @Inject constructor(
 
   suspend fun loadShows(searchQuery: String): List<CollectionListItem> =
     withContext(dispatchers.IO) {
-      val language = translationsRepository.getLanguage()
+      val locale = translationsRepository.getLocale()
       val ratings = ratingsCase.loadRatings()
       val dateFormat = dateFormatProvider.loadFullDayFormat()
       val translations =
-        if (language == Config.DEFAULT_LANGUAGE) emptyMap()
-        else translationsRepository.loadAllShowsLocal(language)
+        if (locale == AppLocale.default()) emptyMap()
+        else translationsRepository.loadAllShowsLocal(locale)
       val spoilers = settingsRepository.spoilers.getAll()
 
       val sortOrder = settingsRepository.sorting.hiddenShowsSortOrder

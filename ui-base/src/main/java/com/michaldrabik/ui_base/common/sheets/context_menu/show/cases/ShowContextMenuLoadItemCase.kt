@@ -30,11 +30,11 @@ class ShowContextMenuLoadItemCase @Inject constructor(
 
   suspend fun loadItem(traktId: IdTrakt) = withContext(dispatchers.IO) {
     val show = showsRepository.detailsShow.load(traktId)
-    val language = translationsRepository.getLanguage()
+    val locale = translationsRepository.getLocale()
     val spoilers = settingsRepository.spoilers.getAll()
 
     val imageAsync = async { imagesProvider.loadRemoteImage(show, ImageType.POSTER) }
-    val translationAsync = async { translationsRepository.loadTranslation(show, language = language, onlyLocal = true) }
+    val translationAsync = async { translationsRepository.loadTranslation(show, locale = locale, onlyLocal = true) }
     val ratingAsync = async { ratingsRepository.shows.loadRatings(listOf(show)) }
 
     val isMyShowAsync = async { showsRepository.myShows.exists(traktId) }

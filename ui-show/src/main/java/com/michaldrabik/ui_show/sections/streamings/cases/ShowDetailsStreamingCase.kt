@@ -5,7 +5,7 @@ import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.shows.ShowStreamingsRepository
-import com.michaldrabik.ui_base.common.AppCountry
+import com.michaldrabik.ui_model.locale.AppCountry
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.StreamingService
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -24,7 +24,7 @@ class ShowDetailsStreamingCase @Inject constructor(
       if (!settingsRepository.streamingsEnabled) {
         return@withContext emptyList()
       }
-      val country = AppCountry.fromCode(settingsRepository.country)
+      val country = AppCountry.fromCode(settingsRepository.locale.country.code)
       val localData = streamingsRepository.getLocalStreamings(show, country.code)
       return@withContext localData.first
     }
@@ -34,7 +34,7 @@ class ShowDetailsStreamingCase @Inject constructor(
       if (!settingsRepository.streamingsEnabled) {
         return@withContext emptyList()
       }
-      val country = AppCountry.fromCode(settingsRepository.country)
+      val country = AppCountry.fromCode(settingsRepository.locale.country.code)
       val (localItems, timestamp) = streamingsRepository.getLocalStreamings(show, country.code)
       if (timestamp != null && timestamp.plusSeconds(ConfigVariant.STREAMINGS_CACHE_DURATION / 1000).isAfter(nowUtc())) {
         return@withContext localItems

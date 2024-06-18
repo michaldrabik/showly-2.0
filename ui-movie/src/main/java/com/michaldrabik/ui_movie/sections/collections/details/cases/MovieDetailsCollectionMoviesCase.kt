@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_movie.sections.collections.details.cases
 
-import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.MovieImagesProvider
@@ -12,6 +11,7 @@ import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_model.locale.AppLocale
 import com.michaldrabik.ui_movie.sections.collections.details.recycler.MovieDetailsCollectionItem
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
@@ -32,7 +32,7 @@ class MovieDetailsCollectionMoviesCase @Inject constructor(
 
   suspend fun loadCollectionMovies(
     collectionId: IdTrakt,
-    language: String
+    locale: AppLocale
   ): List<MovieDetailsCollectionItem.MovieItem> = withContext(dispatchers.IO) {
     val movies = collectionsRepository.loadCollectionItems(collectionId)
     movies.mapIndexed { index, movie ->
@@ -43,7 +43,7 @@ class MovieDetailsCollectionMoviesCase @Inject constructor(
           image = imagesProvider.findCachedImage(movie, POSTER),
           isMyMovie = myMoviesRepository.exists(movie.ids.trakt),
           isWatchlist = watchlistMoviesRepository.exists(movie.ids.trakt),
-          translation = loadTranslation(movie, language),
+          translation = loadTranslation(movie, locale),
           spoilers = settingsSpoilersRepository.getAll(),
           isLoading = false
         )
@@ -51,11 +51,11 @@ class MovieDetailsCollectionMoviesCase @Inject constructor(
     }.awaitAll()
   }
 
-  private suspend fun loadTranslation(movie: Movie, language: String): Translation? {
-    if (language == DEFAULT_LANGUAGE) return null
+  private suspend fun loadTranslation(movie: Movie, locale: AppLocale): Translation? {
+    if (locale == AppLocale.default()) return null
     return translationsRepository.loadTranslation(
       movie = movie,
-      language = language,
+      locale = locale,
       onlyLocal = true
     )
   }

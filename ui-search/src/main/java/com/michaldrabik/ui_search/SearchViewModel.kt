@@ -2,7 +2,6 @@ package com.michaldrabik.ui_search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.SEARCH_RECENTS_AMOUNT
 import com.michaldrabik.common.Mode
 import com.michaldrabik.repository.images.MovieImagesProvider
@@ -18,6 +17,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.RecentSearch
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
+import com.michaldrabik.ui_model.locale.AppLocale
 import com.michaldrabik.ui_search.cases.SearchFiltersCase
 import com.michaldrabik.ui_search.cases.SearchInvalidateItemCase
 import com.michaldrabik.ui_search.cases.SearchQueryCase
@@ -226,7 +226,7 @@ class SearchViewModel @Inject constructor(
   }
 
   fun loadMissingSuggestionTranslation(item: SearchListItem) {
-    if (item.translation != null || searchTranslationsCase.getLanguage() == Config.DEFAULT_LANGUAGE) {
+    if (item.translation != null || searchTranslationsCase.getLocale() == AppLocale.default()) {
       return
     }
     viewModelScope.launch {

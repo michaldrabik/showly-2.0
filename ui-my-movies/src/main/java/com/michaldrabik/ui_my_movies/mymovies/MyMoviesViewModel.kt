@@ -2,7 +2,6 @@ package com.michaldrabik.ui_my_movies.mymovies
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.common.ListViewMode
 import com.michaldrabik.ui_base.events.EventsManager
@@ -25,6 +24,7 @@ import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.TraktRating
+import com.michaldrabik.ui_model.locale.AppLocale
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesUiState
 import com.michaldrabik.ui_my_movies.mymovies.cases.MyMoviesLoadCase
 import com.michaldrabik.ui_my_movies.mymovies.cases.MyMoviesRatingsCase
@@ -170,7 +170,7 @@ class MyMoviesViewModel @Inject constructor(
   }
 
   fun loadMissingTranslation(item: MyMoviesItem) {
-    if (item.translation != null || settingsRepository.language == DEFAULT_LANGUAGE) return
+    if (item.translation != null || settingsRepository.locale == AppLocale.default()) return
     viewModelScope.launch {
       try {
         val translation = loadMoviesCase.loadTranslation(item.movie, false)

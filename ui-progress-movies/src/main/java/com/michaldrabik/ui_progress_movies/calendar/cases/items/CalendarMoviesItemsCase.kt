@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_progress_movies.calendar.cases.items
 
-import com.michaldrabik.common.Config
 import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toLocalZone
@@ -13,6 +12,7 @@ import com.michaldrabik.ui_model.CalendarMode.PRESENT_FUTURE
 import com.michaldrabik.ui_model.CalendarMode.RECENTS
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_model.locale.AppLocale
 import com.michaldrabik.ui_progress_movies.calendar.helpers.filters.CalendarFilter
 import com.michaldrabik.ui_progress_movies.calendar.helpers.groupers.CalendarGrouper
 import com.michaldrabik.ui_progress_movies.calendar.helpers.sorter.CalendarSorter
@@ -40,7 +40,7 @@ abstract class CalendarMoviesItemsCase constructor(
   ): List<CalendarMovieListItem> {
     return withContext(dispatchers.IO) {
       val now = nowUtc().toLocalZone()
-      val language = translationsRepository.getLanguage()
+      val locale = translationsRepository.getLocale()
       val dateFormat = dateFormatProvider.loadFullDayFormat()
       val spoilers = settingsSpoilersRepository.getAll()
 
@@ -55,8 +55,8 @@ abstract class CalendarMoviesItemsCase constructor(
         .map { movie ->
           async {
             var translation: Translation? = null
-            if (language != Config.DEFAULT_LANGUAGE) {
-              translation = translationsRepository.loadTranslation(movie, language, onlyLocal = true)
+            if (locale != AppLocale.default()) {
+              translation = translationsRepository.loadTranslation(movie, locale, onlyLocal = true)
             }
             CalendarMovieListItem.MovieItem(
               movie = movie,

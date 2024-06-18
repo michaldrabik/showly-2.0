@@ -2,7 +2,6 @@ package com.michaldrabik.ui_movie.sections.collections.details
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.common.Config
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
@@ -10,6 +9,7 @@ import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
 import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
 import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.locale.AppLocale
 import com.michaldrabik.ui_movie.sections.collections.details.cases.MovieDetailsCollectionDetailsCase
 import com.michaldrabik.ui_movie.sections.collections.details.cases.MovieDetailsCollectionImagesCase
 import com.michaldrabik.ui_movie.sections.collections.details.cases.MovieDetailsCollectionMoviesCase
@@ -65,7 +65,7 @@ class MovieDetailsCollectionViewModel @Inject constructor(
       try {
         val moviesItems = collectionMoviesCase.loadCollectionMovies(
           collectionId = collectionId,
-          language = settingsRepository.language
+          locale = settingsRepository.locale
         )
         itemsState.update {
           it?.toMutableList()?.apply {
@@ -98,14 +98,14 @@ class MovieDetailsCollectionViewModel @Inject constructor(
   }
 
   fun loadMissingTranslation(item: MovieDetailsCollectionItem) {
-    val language = settingsRepository.language
-    if (item.id in translationsJobs.keys || language == Config.DEFAULT_LANGUAGE) {
+    val locale = settingsRepository.locale
+    if (item.id in translationsJobs.keys || locale == AppLocale.default()) {
       return
     }
     translationsJobs[item.id] = true
     viewModelScope.launch {
       (item as? MovieItem)?.let {
-        val updatedItem = collectionMoviesTranslationsCase.loadMissingTranslation(it, language)
+        val updatedItem = collectionMoviesTranslationsCase.loadMissingTranslation(it, locale)
         updateItem(updatedItem.copy(isLoading = false))
       }
       translationsJobs.remove(item.id)

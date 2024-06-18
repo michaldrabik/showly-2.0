@@ -5,6 +5,7 @@ import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_model.locale.AppLocale
 import com.michaldrabik.ui_search.BaseMockTest
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
@@ -38,52 +39,52 @@ class SearchTranslationsCaseTest : BaseMockTest() {
 
   @Test
   fun `Should return empty show translation if language is default`() = runTest {
-    coEvery { translationsRepository.getLanguage() } returns "en"
+    coEvery { translationsRepository.getLocale() } returns AppLocale.fromCode("en_us")
 
     val item = mockk<Show>()
     val result = SUT.loadTranslation(item)
 
     assertThat(result).isEqualTo(Translation.EMPTY)
-    coVerify(exactly = 1) { translationsRepository.getLanguage() }
+    coVerify(exactly = 1) { translationsRepository.getLocale() }
     confirmVerified(translationsRepository)
   }
 
   @Test
   fun `Should return empty movie translation if language is default`() = runTest {
-    coEvery { translationsRepository.getLanguage() } returns "en"
+    coEvery { translationsRepository.getLocale() } returns AppLocale.fromCode("en_us")
 
     val item = mockk<Movie>()
     val result = SUT.loadTranslation(item)
 
     assertThat(result).isEqualTo(Translation.EMPTY)
-    coVerify(exactly = 1) { translationsRepository.getLanguage() }
+    coVerify(exactly = 1) { translationsRepository.getLocale() }
     confirmVerified(translationsRepository)
   }
 
   @Test
   fun `Should return show translation if language is not default`() = runTest {
-    coEvery { translationsRepository.getLanguage() } returns "pl"
+    coEvery { translationsRepository.getLocale() } returns AppLocale.fromCode("pl_pl")
     coEvery { translationsRepository.loadTranslation(any<Show>(), any(), any()) } returns Translation.EMPTY
 
     val item = mockk<Show>()
     val result = SUT.loadTranslation(item)
 
     assertThat(result).isNotNull()
-    coVerify(exactly = 1) { translationsRepository.getLanguage() }
+    coVerify(exactly = 1) { translationsRepository.getLocale() }
     coVerify(exactly = 1) { translationsRepository.loadTranslation(any<Show>(), any(), any()) }
     confirmVerified(translationsRepository)
   }
 
   @Test
   fun `Should return movie translation if language is not default`() = runTest {
-    coEvery { translationsRepository.getLanguage() } returns "pl"
+    coEvery { translationsRepository.getLocale() } returns AppLocale.fromCode("pl_pl")
     coEvery { translationsRepository.loadTranslation(any<Movie>(), any(), any()) } returns Translation.EMPTY
 
     val item = mockk<Movie>()
     val result = SUT.loadTranslation(item)
 
     assertThat(result).isNotNull()
-    coVerify(exactly = 1) { translationsRepository.getLanguage() }
+    coVerify(exactly = 1) { translationsRepository.getLocale() }
     coVerify(exactly = 1) { translationsRepository.loadTranslation(any<Movie>(), any(), any()) }
     confirmVerified(translationsRepository)
   }

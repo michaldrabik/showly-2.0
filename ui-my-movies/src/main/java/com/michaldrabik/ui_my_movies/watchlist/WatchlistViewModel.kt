@@ -2,7 +2,6 @@ package com.michaldrabik.ui_my_movies.watchlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.common.ListViewMode
@@ -19,6 +18,7 @@ import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
+import com.michaldrabik.ui_model.locale.AppLocale
 import com.michaldrabik.ui_my_movies.common.recycler.CollectionListItem
 import com.michaldrabik.ui_my_movies.common.recycler.CollectionListItem.MovieItem
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesUiState
@@ -105,7 +105,7 @@ class WatchlistViewModel @Inject constructor(
 
   fun loadMissingTranslation(item: CollectionListItem) {
     check(item is MovieItem)
-    if (item.translation != null || settingsRepository.language == DEFAULT_LANGUAGE) return
+    if (item.translation != null || settingsRepository.locale == AppLocale.default()) return
     viewModelScope.launch {
       try {
         val translation = loadMoviesCase.loadTranslation(item.movie, false)

@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_my_movies.hidden.cases
 
-import com.michaldrabik.common.Config
 import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.MovieImagesProvider
@@ -16,6 +15,7 @@ import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_model.UpcomingFilter
+import com.michaldrabik.ui_model.locale.AppLocale
 import com.michaldrabik.ui_my_movies.common.helpers.CollectionItemSorter
 import com.michaldrabik.ui_my_movies.common.recycler.CollectionListItem
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -40,13 +40,13 @@ class HiddenLoadMoviesCase @Inject constructor(
 
   suspend fun loadMovies(searchQuery: String): List<CollectionListItem> =
     withContext(dispatchers.IO) {
-      val language = translationsRepository.getLanguage()
+      val locale = translationsRepository.getLocale()
       val ratings = ratingsCase.loadRatings()
       val dateFormat = dateFormatProvider.loadShortDayFormat()
       val fullDateFormat = dateFormatProvider.loadFullDayFormat()
       val translations =
-        if (language == Config.DEFAULT_LANGUAGE) emptyMap()
-        else translationsRepository.loadAllMoviesLocal(language)
+        if (locale == AppLocale.default()) emptyMap()
+        else translationsRepository.loadAllMoviesLocal(locale)
       val spoilersSettings = settingsRepository.spoilers.getAll()
 
       val sortOrder = settingsRepository.sorting.hiddenMoviesSortOrder
@@ -102,11 +102,11 @@ class HiddenLoadMoviesCase @Inject constructor(
 
   suspend fun loadTranslation(movie: Movie, onlyLocal: Boolean): Translation? =
     withContext(dispatchers.IO) {
-      val language = translationsRepository.getLanguage()
-      if (language == Config.DEFAULT_LANGUAGE) {
+      val locale = translationsRepository.getLocale()
+      if (locale == AppLocale.default()) {
         return@withContext Translation.EMPTY
       }
-      translationsRepository.loadTranslation(movie, language, onlyLocal)
+      translationsRepository.loadTranslation(movie, locale, onlyLocal)
     }
 
   private fun CoroutineScope.toListItemAsync(

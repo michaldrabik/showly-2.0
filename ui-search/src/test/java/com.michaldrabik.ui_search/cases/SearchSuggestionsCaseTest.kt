@@ -11,6 +11,9 @@ import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
+import com.michaldrabik.ui_model.locale.AppCountry
+import com.michaldrabik.ui_model.locale.AppLanguage
+import com.michaldrabik.ui_model.locale.AppLocale
 import com.michaldrabik.ui_search.BaseMockTest
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
@@ -24,6 +27,10 @@ import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class SearchSuggestionsCaseTest : BaseMockTest() {
+
+  companion object {
+    val TEST_LOCALE = AppLocale.fromCode("pt_br")
+  }
 
   @RelaxedMockK lateinit var database: LocalDataSource
   @RelaxedMockK lateinit var showsDao: ShowsDao
@@ -43,7 +50,7 @@ class SearchSuggestionsCaseTest : BaseMockTest() {
     super.setUp()
 
     coEvery { settingsRepository.isMoviesEnabled } returns true
-    coEvery { translationsRepository.getLanguage() } returns "en"
+    coEvery { translationsRepository.getLocale() } returns TEST_LOCALE
     coEvery { database.shows } returns showsDao
     coEvery { database.movies } returns moviesDao
 
@@ -102,7 +109,7 @@ class SearchSuggestionsCaseTest : BaseMockTest() {
   @Test
   fun `Should skip preload local movies translations cache if not default language but movies are disabled`() =
     runTest {
-      coEvery { translationsRepository.getLanguage() } returns "br"
+      coEvery { translationsRepository.getLocale() } returns TEST_LOCALE
       coEvery { settingsRepository.isMoviesEnabled } returns false
 
       SUT.preloadCache()
@@ -118,12 +125,12 @@ class SearchSuggestionsCaseTest : BaseMockTest() {
 
   @Test
   fun `Should preload local translations cache`() = runTest {
-    coEvery { translationsRepository.getLanguage() } returns "br"
+    coEvery { translationsRepository.getLocale() } returns TEST_LOCALE
 
     SUT.preloadCache()
 
-    coVerify(exactly = 1) { translationsRepository.loadAllShowsLocal("br") }
-    coVerify(exactly = 1) { translationsRepository.loadAllMoviesLocal("br") }
+    coVerify(exactly = 1) { translationsRepository.loadAllShowsLocal(TEST_LOCALE) }
+    coVerify(exactly = 1) { translationsRepository.loadAllMoviesLocal(TEST_LOCALE)}
   }
 
   @Test
@@ -137,7 +144,7 @@ class SearchSuggestionsCaseTest : BaseMockTest() {
 
   @Test
   fun `Should clear local caches properly`() = runTest {
-    coEvery { translationsRepository.getLanguage() } returns "br"
+    coEvery { translationsRepository.getLocale() } returns TEST_LOCALE
 
     SUT.preloadCache()
     SUT.clearCache()
@@ -145,7 +152,7 @@ class SearchSuggestionsCaseTest : BaseMockTest() {
 
     coVerify(exactly = 2) { showsDao.getAll() }
     coVerify(exactly = 2) { moviesDao.getAll() }
-    coVerify(exactly = 2) { translationsRepository.loadAllShowsLocal("br") }
-    coVerify(exactly = 2) { translationsRepository.loadAllMoviesLocal("br") }
+    coVerify(exactly = 2) { translationsRepository.loadAllShowsLocal(TEST_LOCALE) }
+    coVerify(exactly = 2) { translationsRepository.loadAllMoviesLocal(TEST_LOCALE) }
   }
 }

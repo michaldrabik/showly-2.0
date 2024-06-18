@@ -3,7 +3,6 @@ package com.michaldrabik.ui_progress_movies.progress
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkManager
-import com.michaldrabik.common.Config
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.images.MovieImagesProvider
@@ -18,6 +17,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
+import com.michaldrabik.ui_model.locale.AppLocale
 import com.michaldrabik.ui_progress_movies.main.MovieCheckActionUiEvent
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainUiState
 import com.michaldrabik.ui_progress_movies.main.RequestWidgetsUpdate
@@ -107,11 +107,11 @@ class ProgressMoviesViewModel @Inject constructor(
   }
 
   fun findMissingTranslation(item: ProgressMovieListItem.MovieItem) {
-    val language = translationsRepository.getLanguage()
-    if (item.translation != null || language == Config.DEFAULT_LANGUAGE) return
+    val locale = translationsRepository.getLocale()
+    if (item.translation != null || locale == AppLocale.default()) return
     viewModelScope.launch {
       try {
-        val translation = translationsRepository.loadTranslation(item.movie, language)
+        val translation = translationsRepository.loadTranslation(item.movie, locale)
         updateItem(item.copy(translation = translation))
       } catch (error: Throwable) {
         Timber.e(error)

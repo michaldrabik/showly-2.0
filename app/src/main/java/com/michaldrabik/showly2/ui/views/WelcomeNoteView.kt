@@ -10,7 +10,7 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.databinding.ViewWelcomeNoteBinding
 import com.michaldrabik.ui_base.utilities.extensions.getLocaleStringResource
 import com.michaldrabik.ui_base.utilities.extensions.onClick
-import com.michaldrabik.ui_settings.helpers.AppLanguage
+import com.michaldrabik.ui_model.locale.AppLanguage
 import java.util.Locale
 
 class WelcomeNoteView : FrameLayout {
