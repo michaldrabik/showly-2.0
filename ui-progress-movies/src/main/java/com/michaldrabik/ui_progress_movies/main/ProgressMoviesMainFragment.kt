@@ -218,7 +218,7 @@ class ProgressMoviesMainFragment :
         is DateSelectionBottomSheet.Result.CustomDate -> openRateDialogIfNeeded(result.date)
       }
     }
-    navigateTo(R.id.actionProgressMoviesFragmentToDateSelection)
+    navigateToSafe(R.id.actionProgressMoviesFragmentToDateSelection)
   }
 
   private fun openSettings() {

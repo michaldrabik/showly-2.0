@@ -286,7 +286,7 @@ class ProgressMainFragment :
         is Result.CustomDate -> openRateDialogIfNeeded(result.date)
       }
     }
-    navigateTo(R.id.actionProgressFragmentToDateSelection)
+    navigateToSafe(R.id.actionProgressFragmentToDateSelection)
   }
 
   private fun openSettings() {
