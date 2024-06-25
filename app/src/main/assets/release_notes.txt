@@ -1,2 +1,1 @@
-* Added option to select date when marking an episode or a movie as watched. Defaults can be adjusted via app settings.
-* Fixed UI bug with person's details overlapping with each other.
+* Fix bug with custom date selection incorrect date being used

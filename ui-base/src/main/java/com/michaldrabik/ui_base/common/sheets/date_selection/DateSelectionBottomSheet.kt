@@ -10,6 +10,7 @@ import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import com.michaldrabik.common.extensions.dateFromMillis
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.common.extensions.toMillis
@@ -24,8 +25,6 @@ import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.Tip.DATE_SELECTION_DEFAULTS
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
-import java.time.Instant
-import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.Calendar
 
@@ -77,24 +76,24 @@ class DateSelectionBottomSheet : BaseBottomSheetFragment(R.layout.view_date_sele
 
   private fun openDateSelectionDialog() {
     val now = nowUtc().toLocalZone()
-    val firstDayOfWeek = Calendar.getInstance().firstDayOfWeek
     val dialog = MaterialDatePicker.Builder.datePicker()
       .setCalendarConstraints(
         CalendarConstraints.Builder()
-          .setFirstDayOfWeek(firstDayOfWeek)
+          .setFirstDayOfWeek(Calendar.MONDAY)
           .build()
       )
       .setTheme(R.style.ShowlyDatePicker)
-      .setSelection(now.toMillis())
+      .setSelection(now.toMillis() + (now.offset.totalSeconds * 1000))
       .build()
-    dialog.addOnPositiveButtonClickListener { dateMillis ->
-      openTimeSelectionDialog(now, dateMillis)
+    dialog.addOnPositiveButtonClickListener {
+      openTimeSelectionDialog(now, dateFromMillis(it).withZoneSameLocal(now.zone))
     }
     dialog.show(childFragmentManager, "DatePicker")
   }
 
-  private fun openTimeSelectionDialog(now: ZonedDateTime, selectedDate: Long) {
+  private fun openTimeSelectionDialog(now: ZonedDateTime, selectedDate: ZonedDateTime) {
     val is24HourFormat = DateFormat.is24HourFormat(requireContext())
+
     val dialog = MaterialTimePicker.Builder()
       .setTheme(R.style.ShowlyTimePicker)
       .setTimeFormat(if (is24HourFormat) TimeFormat.CLOCK_24H else TimeFormat.CLOCK_12H)
@@ -102,6 +101,7 @@ class DateSelectionBottomSheet : BaseBottomSheetFragment(R.layout.view_date_sele
       .setHour(now.hour)
       .setMinute(now.minute)
       .build()
+
     dialog.addOnPositiveButtonClickListener {
       onDateTimeSelected(
         selectedDate = selectedDate,
@@ -109,22 +109,23 @@ class DateSelectionBottomSheet : BaseBottomSheetFragment(R.layout.view_date_sele
         selectedMinute = dialog.minute
       )
     }
+
     dialog.show(childFragmentManager, "TimePicker")
   }
 
   private fun onDateTimeSelected(
-    selectedDate: Long,
+    selectedDate: ZonedDateTime,
     selectedHour: Int,
     selectedMinute: Int
   ) {
-    val dateUtc = ZonedDateTime.ofInstant(Instant.ofEpochMilli(selectedDate), ZoneId.systemDefault())
+    val resultDate = selectedDate
       .withHour(selectedHour)
       .withMinute(selectedMinute)
       .toUtcZone()
 
     closeSheet()
 
-    val result = bundleOf(RESULT_DATE_SELECTION to Result.CustomDate(dateUtc))
+    val result = bundleOf(RESULT_DATE_SELECTION to Result.CustomDate(resultDate))
     setFragmentResult(REQUEST_DATE_SELECTION, result)
   }
 
