@@ -40,6 +40,7 @@ class EpisodesSetEpisodeWatchedCase @Inject constructor(
           quickSyncManager.scheduleEpisodes(
             episodesIds = listOf(episode.ids.trakt.id),
             showId = show.traktId,
+            customDate = customDate,
             clearProgress = false
           )
         }

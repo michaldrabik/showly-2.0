@@ -61,6 +61,7 @@ class ShowDetailsQuickProgressCase @Inject constructor(
       quickSyncManager.scheduleEpisodes(
         episodesIds = episodesIds,
         showId = show.traktId,
+        customDate = customDate,
         clearProgress = true
       )
     }

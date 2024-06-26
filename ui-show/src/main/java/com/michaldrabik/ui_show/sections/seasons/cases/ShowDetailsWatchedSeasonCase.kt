@@ -41,7 +41,8 @@ class ShowDetailsWatchedSeasonCase @Inject constructor(
         if (isMyShows) {
           quickSyncManager.scheduleEpisodes(
             showId = show.traktId,
-            episodesIds = episodesAdded.map { it.ids.trakt.id }
+            episodesIds = episodesAdded.map { it.ids.trakt.id },
+            customDate = customDate
           )
         }
         return Result.SUCCESS

@@ -37,7 +37,7 @@ class MovieDetailsMyMoviesCase @Inject constructor(
   suspend fun addToMyMovies(movie: Movie, customDate: ZonedDateTime?) {
     withContext(dispatchers.IO) {
       moviesRepository.myMovies.insert(movie.ids.trakt, customDate)
-      quickSyncManager.scheduleMovies(listOf(movie.traktId))
+      quickSyncManager.scheduleMovies(listOf(movie.traktId), customDate)
       pinnedItemsRepository.removePinnedItem(movie)
       announcementManager.refreshMoviesAnnouncements()
     }

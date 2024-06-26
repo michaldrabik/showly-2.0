@@ -3,6 +3,8 @@ package com.michaldrabik.ui_base.trakt.quicksync
 import androidx.work.WorkManager
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.extensions.nowUtcMillis
+import com.michaldrabik.common.extensions.toMillis
+import com.michaldrabik.common.extensions.toUtcZone
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.TraktSyncQueue
 import com.michaldrabik.data_local.database.model.TraktSyncQueue.Operation
@@ -11,6 +13,7 @@ import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.settings.SettingsRepository
 import timber.log.Timber
+import java.time.ZonedDateTime
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -26,25 +29,26 @@ class QuickSyncManager @Inject constructor(
   suspend fun scheduleEpisodes(
     episodesIds: List<Long>,
     showId: Long,
+    customDate: ZonedDateTime?,
     clearProgress: Boolean = false
   ) {
     if (!ensureQuickSync() && !(clearProgress && ensureQuickRemove())) {
       return
     }
 
-    val time = nowUtcMillis()
-    val items = episodesIds.map { TraktSyncQueue.createEpisode(it, showId, time, time, clearProgress) }
+    val timestamp = customDate?.toUtcZone()?.toMillis() ?: nowUtcMillis()
+    val items = episodesIds.map { TraktSyncQueue.createEpisode(it, showId, timestamp, timestamp, clearProgress) }
     localSource.traktSyncQueue.insert(items)
     Timber.d("Episodes added into sync queue. Count: ${items.size}")
 
     QuickSyncWorker.schedule(workManager)
   }
 
-  suspend fun scheduleMovies(moviesIds: List<Long>) {
+  suspend fun scheduleMovies(moviesIds: List<Long>, customDate: ZonedDateTime?) {
     if (!ensureQuickSync()) return
 
-    val time = nowUtcMillis()
-    val items = moviesIds.map { TraktSyncQueue.createMovie(it, time, time) }
+    val timestamp = customDate?.toUtcZone()?.toMillis() ?: nowUtcMillis()
+    val items = moviesIds.map { TraktSyncQueue.createMovie(it, timestamp, timestamp) }
     localSource.traktSyncQueue.insert(items)
     Timber.d("Movies added into sync queue. Count: ${items.size}")
 

@@ -47,7 +47,7 @@ class ProgressMoviesMainCaseTest : BaseMockTest() {
 
     coVerify { moviesRepository.myMovies.insert(IdTrakt(123), null) }
     coVerify { pinnedItemsRepository.removePinnedItem(movie) }
-    coVerify { quickSyncManager.scheduleMovies(listOf(123)) }
+    coVerify { quickSyncManager.scheduleMovies(listOf(123), null) }
   }
 
   @Test
@@ -56,6 +56,6 @@ class ProgressMoviesMainCaseTest : BaseMockTest() {
 
     coVerify { moviesRepository.myMovies.insert(IdTrakt(123), null) }
     coVerify { pinnedItemsRepository.removePinnedItem(any<Movie>()) }
-    coVerify { quickSyncManager.scheduleMovies(listOf(123)) }
+    coVerify { quickSyncManager.scheduleMovies(listOf(123), null) }
   }
 }

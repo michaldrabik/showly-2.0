@@ -26,7 +26,8 @@ class ProgressMainEpisodesCase @Inject constructor(
     episodesManager.setEpisodeWatched(bundle, customDate)
     quickSyncManager.scheduleEpisodes(
       showId = bundle.show.traktId,
-      episodesIds = listOf(bundle.episode.ids.trakt.id)
+      episodesIds = listOf(bundle.episode.ids.trakt.id),
+      customDate = customDate
     )
   }
 

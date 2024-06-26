@@ -20,7 +20,7 @@ class ProgressMoviesMainCase @Inject constructor(
   suspend fun addToMyMovies(movie: Movie, customDate: ZonedDateTime?) {
     moviesRepository.myMovies.insert(movie.ids.trakt, customDate)
     pinnedItemsRepository.removePinnedItem(movie)
-    quickSyncManager.scheduleMovies(listOf(movie.ids.trakt.id))
+    quickSyncManager.scheduleMovies(listOf(movie.traktId), customDate)
   }
 
   suspend fun addToMyMovies(movieId: IdTrakt) {

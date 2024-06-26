@@ -42,7 +42,7 @@ class MovieContextMenuMyMoviesCase @Inject constructor(
     with(quickSyncManager) {
       clearWatchlistMovies(listOf(traktId.id))
       clearHiddenMovies(listOf(traktId.id))
-      scheduleMovies(listOf(traktId.id))
+      scheduleMovies(listOf(traktId.id), customDate)
     }
 
     RemoveTraktUiEvent(removeWatchlist = isWatchlist, removeHidden = isHidden)
