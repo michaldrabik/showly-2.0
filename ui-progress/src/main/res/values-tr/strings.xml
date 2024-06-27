@@ -2,8 +2,10 @@
 <resources>
   <string name="tabCalendar">Takvim</string>
   <string name="tabProgress">İlerleme</string>
+  <string name="tabHistory">Geçmiş</string>
   <string name="textCalendarEmpty">Yaklaşan yeni hiçbir bölüm yok.</string>
   <string name="textRecentsEmpty">Yakın zamanda yayınlanan bölüm yok.</string>
+  <string name="textHistoryEmpty">Geçmişinizde hiç bir şey yok.</string>
   <string name="textOnHold" comment="This is a header for Progress subsection. It will contain pending shows marked by user.">Beklemede</string>
   <string name="textDiscoverShows">Dizileri Keşfet</string>
   <string name="textEpisodeInfo">Ayrıntılar</string>

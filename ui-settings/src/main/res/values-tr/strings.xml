@@ -61,6 +61,10 @@
   <string name="textSettingsStreamingServicesMessage">Yayın hizmetleri verilerini görüntüleyin.</string>
   <string name="textSettingsProgressNextEpisodeTitle">Sonraki Bölüm</string>
   <string name="textSettingsProgressNextEpisodeMessage">Sonraki bölümü hesaplamakta şunu kullan:</string>
+  <string name="textSettingsDateSelectionTitle">Tarih Seçimi</string>
+  <string name="textSettingsDateSelectionMessage">Varsayılan tarih seçme seçeneğini seçin.</string>
+  <string name="textSettingsTabletColumnsTitle">Sütun Sayısını Listeler</string>
+  <string name="textSettingsTabletColumnsSummary">Listeler için tercih edilen sütun sayısını seçin.</string>
   <string name="textSettingsSpoilers">Spoiler</string>
   <string name="textSettingsSpoilersShows">Diziler</string>
   <string name="textSettingsSpoilersShowsSummary">Diziler için spoiler ayarlarını yönet.</string>
@@ -100,6 +104,8 @@
   <string name="textSettingsSpoilersTapToRevealDescription">Geçici olarak göstermek için gizlenen içeriğe dokunun.</string>
   <string name="textNextEpisodeLastWatched">İzlenen son bölüm</string>
   <string name="textNextEpisodeOldest">İzlenmeyen en eski bölüm</string>
+  <string name="textDateSelectionAsk">Her zaman sor</string>
+  <string name="textDateSelectionNow">Her zaman \"Şimdi\"</string>
   <string name="textThemeDark">Karanlık</string>
   <string name="textThemeLight">Aydınlık</string>
   <string name="textThemeSystem">Sistem</string>

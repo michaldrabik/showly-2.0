@@ -7,6 +7,7 @@
   <string name="textCancel">İptal</string>
   <string name="textContinue">Sonraki</string>
   <string name="textClose">Kapat</string>
+  <string name="textNow">Şimdi</string>
   <string name="textNotNow">Şimdi değil</string>
   <string name="textNew">Yeni</string>
   <string name="textSelect">Seç</string>
@@ -39,11 +40,14 @@
   <string name="textRateSaved">Oyunuz kaydedildi.</string>
   <string name="textRateRemoved">Verdiğiniz oy kaldırıldı.</string>
   <string name="textDays">%1$d gün</string>
+  <string name="textSelectDate">Tarih Seçin</string>
+  <string name="textDateSelectionTitle">Tarih Seçimi</string>
+  <string name="textDateSelectionDescription">Bunu ne zaman izledin?</string>
   <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
     <item quantity="one">%d kaldı</item>
     <item quantity="other">%d kaldı</item>
   </plurals>
-  <string name="textPeople">Kişiler:</string>
+  <string name="textPeople">Oyuncu ve Yönetim Kadrosu</string>
   <string name="textDirecting">Reji</string>
   <string name="textDirector">Yönetmen</string>
   <string name="textWriting">Yazarlık</string>

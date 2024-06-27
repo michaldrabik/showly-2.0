@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textSortRank">Derece</string>
+  <string name="textSortRank">Sıralama</string>
   <string name="textSortName">Başlık</string>
   <string name="textSortNewest">En Yeni</string>
   <string name="textSortRated">En Yüksek Puan Alan</string>
@@ -9,6 +9,14 @@
   <string name="textSortDateUpdated">Son Güncellenen</string>
   <string name="textSortRecentlyWatched">Son İzlenen</string>
   <string name="textSortEpisodesLeft">Kalan Bölümler</string>
+  <string name="textPeriodThisWeek">Bu hafta</string>
+  <string name="textPeriodLastWeek">Geçen hafta</string>
+  <string name="textPeriodThisMonth">Bu ay</string>
+  <string name="textPeriodLastMonth">Geçen ay</string>
+  <string name="textPeriodLast30Days">Son 30 gün</string>
+  <string name="textPeriodLast90Days">Son 90 gün</string>
+  <string name="textPeriodLast365Days">Son 365 gün</string>
+  <string name="textPeriodAllTime">Her zaman</string>
   <string name="textHeaderRecentlyAdded">Son Eklenen</string>
   <string name="textHeaderWatching">İzlemeye Devam Edilen</string>
   <string name="textHeaderFinished">Tamamlanan</string>
@@ -32,6 +40,7 @@
   <string name="textTipWatchlistPinItem">En üste sabitlemek için liste ögesine dokunun ve basılı tutun.</string>
   <string name="textTipBottomModeMenu">Modu hızlı bir şekilde değiştirmek için alt menüyü sola veya sağa kaydırın.</string>
   <string name="textTipListSwipeToDelete">Listeden çıkarmak için liste ögelerini kaydırın.</string>
+  <string name="textTipDefaultOption">Varsayılan seçenek Ayarlar\'da ayarlanabilir</string>
   <string name="textGenreAction">Aksiyon</string>
   <string name="textGenreAdventure">Macera</string>
   <string name="textGenreAnimation">Animasyon</string>
