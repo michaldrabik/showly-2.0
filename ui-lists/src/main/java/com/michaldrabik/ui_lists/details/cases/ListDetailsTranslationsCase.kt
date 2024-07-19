@@ -1,10 +1,10 @@
 package com.michaldrabik.ui_lists.details.cases
 
-import com.michaldrabik.common.Config
 import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_model.locale.AppLocale
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -15,25 +15,25 @@ class ListDetailsTranslationsCase @Inject constructor(
   private val translationsRepository: TranslationsRepository,
 ) {
 
-  fun getLanguage() = translationsRepository.getLanguage()
+  fun getLocale() = translationsRepository.getLocale()
 
   suspend fun loadTranslation(item: ListDetailsItem, onlyLocal: Boolean): Translation? =
     withContext(dispatchers.IO) {
-      val language = getLanguage()
-      if (language == Config.DEFAULT_LANGUAGE) {
+      val locale = getLocale()
+      if (locale == AppLocale.default()) {
         return@withContext Translation.EMPTY
       }
       when {
         item.isShow() ->
           translationsRepository.loadTranslation(
             show = item.requireShow(),
-            language = language,
+            locale = locale,
             onlyLocal = onlyLocal
           )
         item.isMovie() ->
           translationsRepository.loadTranslation(
             movie = item.requireMovie(),
-            language = language,
+            locale = locale,
             onlyLocal = onlyLocal
           )
         else -> throw IllegalStateException()

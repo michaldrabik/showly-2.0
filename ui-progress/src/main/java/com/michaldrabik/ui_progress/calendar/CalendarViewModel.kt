@@ -2,7 +2,6 @@ package com.michaldrabik.ui_progress.calendar
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.common.Config
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.repository.settings.SettingsRepository
@@ -14,6 +13,7 @@ import com.michaldrabik.ui_model.CalendarMode
 import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.locale.AppLocale
 import com.michaldrabik.ui_progress.calendar.cases.items.CalendarFutureCase
 import com.michaldrabik.ui_progress.calendar.cases.items.CalendarRecentsCase
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarListItem
@@ -107,13 +107,13 @@ class CalendarViewModel @Inject constructor(
   fun findMissingTranslation(item: CalendarListItem) {
     check(item is CalendarListItem.Episode)
     val showId = item.show.ids.trakt
-    val language = translationsRepository.getLanguage()
-    if (item.translations?.show != null || language == Config.DEFAULT_LANGUAGE || loadTranslationJobs.contains(showId)) {
+    val locale = translationsRepository.getLocale()
+    if (item.translations?.show != null || locale == AppLocale.default() || loadTranslationJobs.contains(showId)) {
       return
     }
     viewModelScope.launch {
       try {
-        val translation = translationsRepository.loadTranslation(item.show, language)
+        val translation = translationsRepository.loadTranslation(item.show, locale)
         val translations = item.translations?.copy(show = translation)
         updateItem(item.copy(translations = translations))
       } catch (error: Throwable) {

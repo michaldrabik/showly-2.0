@@ -9,7 +9,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import com.michaldrabik.showly2.databinding.ViewWelcomeLanguageBinding
 import com.michaldrabik.ui_base.utilities.extensions.onClick
-import com.michaldrabik.ui_settings.helpers.AppLanguage
+import com.michaldrabik.ui_model.locale.AppLanguage
 
 class WelcomeLanguageView : FrameLayout {
 

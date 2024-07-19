@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_progress.progress.cases
 
-import com.michaldrabik.common.Config
 import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toMillis
@@ -21,6 +20,7 @@ import com.michaldrabik.ui_model.ProgressNextEpisodeType
 import com.michaldrabik.ui_model.ProgressNextEpisodeType.LAST_WATCHED
 import com.michaldrabik.ui_model.ProgressNextEpisodeType.OLDEST
 import com.michaldrabik.ui_model.ProgressType
+import com.michaldrabik.ui_model.locale.AppLocale
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.helpers.ProgressItemsSorter
 import com.michaldrabik.ui_progress.helpers.TranslationsBundle
@@ -58,7 +58,7 @@ class ProgressItemsCase @Inject constructor(
       val nowUtc = nowUtc()
 
       val dateFormat = dateFormatProvider.loadFullHourFormat()
-      val language = translationsRepository.getLanguage()
+      val locale = translationsRepository.getLocale()
       val nextEpisodeType = settingsRepository.progressNextEpisodeType
       val progressUpcomingDays = settingsRepository.progressUpcomingDays
       val isUpcomingEnabled = progressUpcomingDays > 0
@@ -110,10 +110,10 @@ class ProgressItemsCase @Inject constructor(
             val isOnHold = onHoldItemsRepository.isOnHold(it.show)
 
             var translations: TranslationsBundle? = null
-            if (language != Config.DEFAULT_LANGUAGE) {
+            if (locale != AppLocale.default()) {
               translations = TranslationsBundle(
-                show = translationsRepository.loadTranslation(it.show, language, onlyLocal = true),
-                episode = translationsRepository.loadTranslation(it.episode ?: EpisodeUi.EMPTY, it.show.ids.trakt, language, onlyLocal = true)
+                show = translationsRepository.loadTranslation(it.show, locale, onlyLocal = true),
+                episode = translationsRepository.loadTranslation(it.episode ?: EpisodeUi.EMPTY, it.show.ids.trakt, locale, onlyLocal = true)
               )
             }
 

@@ -2,9 +2,7 @@ package com.michaldrabik.repository.settings
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import com.michaldrabik.common.Config.DEFAULT_COUNTRY
 import com.michaldrabik.common.Config.DEFAULT_DATE_FORMAT
-import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.data_local.LocalDataSource
@@ -20,6 +18,7 @@ import com.michaldrabik.ui_model.ProgressNextEpisodeType
 import com.michaldrabik.ui_model.ProgressNextEpisodeType.LAST_WATCHED
 import com.michaldrabik.ui_model.ProgressType
 import com.michaldrabik.ui_model.Settings
+import com.michaldrabik.ui_model.locale.AppLocale
 import kotlinx.coroutines.withContext
 import java.util.UUID
 import javax.inject.Inject
@@ -42,8 +41,7 @@ class SettingsRepository @Inject constructor(
 ) {
 
   companion object Key {
-    const val LANGUAGE = "KEY_LANGUAGE"
-    private const val COUNTRY = "KEY_COUNTRY"
+    const val LOCALE = "KEY_LOCALE"
     private const val DATE_FORMAT = "KEY_DATE_FORMAT"
     private const val MODE = "KEY_MOVIES_MODE"
     private const val MOVIES_ENABLED = "KEY_MOVIES_ENABLED"
@@ -85,8 +83,6 @@ class SettingsRepository @Inject constructor(
   var streamingsEnabled by BooleanPreference(preferences, STREAMINGS_ENABLED, true)
   var isMoviesEnabled by BooleanPreference(preferences, MOVIES_ENABLED, true)
   var isTwitterAdEnabled by BooleanPreference(preferences, TWITTER_AD_ENABLED, true)
-  var language by StringPreference(preferences, LANGUAGE, DEFAULT_LANGUAGE)
-  var country by StringPreference(preferences, COUNTRY, DEFAULT_COUNTRY)
   var dateFormat by StringPreference(preferences, DATE_FORMAT, DEFAULT_DATE_FORMAT)
 
   var progressUpcomingDays by LongPreference(preferences, PROGRESS_UPCOMING_DAYS, 90)
@@ -120,6 +116,12 @@ class SettingsRepository @Inject constructor(
       else -> id
     }
 
+  var locale: AppLocale
+    get() = preferences.getString(LOCALE, null)?.let { AppLocale.fromCode(it) } ?: AppLocale.default()
+    set(value) = preferences.edit(true) {
+      putString(LOCALE, value.code())
+    }
+
   suspend fun clearLanguageLogs() {
     with(localSource) {
       transactions.withTransaction {
@@ -129,7 +131,7 @@ class SettingsRepository @Inject constructor(
     }
   }
 
-  suspend fun clearUnusedTranslations(input: List<String>) {
+  suspend fun clearUnusedTranslationsByLanguage(input: List<String>) {
     with(localSource) {
       transactions.withTransaction {
         showTranslations.deleteByLanguage(input)
@@ -138,6 +140,17 @@ class SettingsRepository @Inject constructor(
         people.deleteTranslations()
         movieImages.deleteAll()
         showImages.deleteAll()
+      }
+    }
+  }
+
+  suspend fun clearUnusedTranslationsByCountry(input: List<String>) {
+    with(localSource) {
+      transactions.withTransaction {
+        showTranslations.deleteByCountry(input)
+        movieTranslations.deleteByCountry(input)
+        episodesTranslations.deleteByCountry(input)
+        people.deleteTranslations()
       }
     }
   }

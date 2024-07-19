@@ -9,6 +9,7 @@ import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_model.Movie
+import com.michaldrabik.ui_model.locale.AppLocale
 import com.michaldrabik.ui_progress_movies.BaseMockTest
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainUiState
 import com.michaldrabik.ui_progress_movies.progress.cases.ProgressMoviesItemsCase
@@ -54,7 +55,7 @@ class ProgressMoviesViewModelTest : BaseMockTest() {
   override fun setUp() {
     super.setUp()
 
-    coEvery { translationsRepository.getLanguage() } returns "en"
+    coEvery { translationsRepository.getLocale() } returns AppLocale.default()
     coEvery { userTraktManager.isAuthorized() } returns false
 
     SUT = ProgressMoviesViewModel(

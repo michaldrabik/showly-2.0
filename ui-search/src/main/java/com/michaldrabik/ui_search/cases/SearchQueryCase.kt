@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_search.cases
 
-import com.michaldrabik.common.Config
 import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.TranslationsRepository
@@ -15,6 +14,7 @@ import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.SearchResult
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_model.locale.AppLocale
 import com.michaldrabik.ui_search.recycler.SearchListItem
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
@@ -87,11 +87,11 @@ class SearchQueryCase @Inject constructor(
   }
 
   private suspend fun loadTranslation(result: SearchResult): Translation? {
-    val language = translationsRepository.getLanguage()
-    if (language == Config.DEFAULT_LANGUAGE) return Translation.EMPTY
+    val locale = translationsRepository.getLocale()
+    if (locale == AppLocale.default()) return Translation.EMPTY
     return when {
-      result.isShow -> translationsRepository.loadTranslation(result.show, language, onlyLocal = true)
-      else -> translationsRepository.loadTranslation(result.movie, language, onlyLocal = true)
+      result.isShow -> translationsRepository.loadTranslation(result.show, locale, onlyLocal = true)
+      else -> translationsRepository.loadTranslation(result.movie, locale, onlyLocal = true)
     }
   }
 }

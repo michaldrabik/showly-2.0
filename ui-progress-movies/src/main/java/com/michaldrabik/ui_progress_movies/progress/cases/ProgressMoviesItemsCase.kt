@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_progress_movies.progress.cases
 
-import com.michaldrabik.common.Config
 import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.RatingsRepository
@@ -13,6 +12,7 @@ import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_model.locale.AppLocale
 import com.michaldrabik.ui_progress_movies.helpers.ProgressMoviesItemsSorter
 import com.michaldrabik.ui_progress_movies.progress.recycler.ProgressMovieListItem
 import kotlinx.coroutines.async
@@ -36,7 +36,7 @@ class ProgressMoviesItemsCase @Inject constructor(
 
   suspend fun loadItems(searchQuery: String) =
     withContext(dispatchers.IO) {
-      val language = translationsRepository.getLanguage()
+      val locale = translationsRepository.getLocale()
       val dateFormat = dateFormatProvider.loadFullDayFormat()
       val spoilers = settingsRepository.spoilers.getAll()
 
@@ -48,8 +48,8 @@ class ProgressMoviesItemsCase @Inject constructor(
         async {
           val rating = ratingsRepository.movies.loadRatings(listOf(movie))
           var translation: Translation? = null
-          if (language != Config.DEFAULT_LANGUAGE) {
-            translation = translationsRepository.loadTranslation(movie, language, onlyLocal = true)
+          if (locale != AppLocale.default()) {
+            translation = translationsRepository.loadTranslation(movie, locale, onlyLocal = true)
           }
 
           ProgressMovieListItem.MovieItem(

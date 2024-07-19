@@ -44,7 +44,7 @@ class PeopleRepository @Inject constructor(
       return mappers.person.fromDatabase(local, person.characters)
     }
 
-    val language = settingsRepository.language
+    val language = settingsRepository.locale.language.code
     val remotePerson = remoteSource.tmdb.fetchPersonDetails(person.ids.tmdb.id)
     var bioTranslation: String? = null
     if (language != Config.DEFAULT_LANGUAGE) {

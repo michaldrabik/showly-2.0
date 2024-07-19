@@ -11,7 +11,7 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_base.BaseFragment
-import com.michaldrabik.ui_base.common.AppCountry
+import com.michaldrabik.ui_model.locale.AppCountry
 import com.michaldrabik.ui_base.dates.AppDateFormat
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
@@ -29,7 +29,7 @@ import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ITEM
 import com.michaldrabik.ui_settings.R
 import com.michaldrabik.ui_settings.databinding.FragmentSettingsGeneralBinding
-import com.michaldrabik.ui_settings.helpers.AppLanguage
+import com.michaldrabik.ui_model.locale.AppLanguage
 import com.michaldrabik.ui_settings.helpers.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 

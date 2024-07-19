@@ -1,12 +1,12 @@
 package com.michaldrabik.ui_settings.sections.general
 
 import com.michaldrabik.common.Config
-import com.michaldrabik.ui_base.common.AppCountry
+import com.michaldrabik.ui_model.locale.AppCountry
 import com.michaldrabik.ui_base.dates.AppDateFormat
 import com.michaldrabik.ui_model.ProgressDateSelectionType
 import com.michaldrabik.ui_model.ProgressNextEpisodeType
 import com.michaldrabik.ui_model.Settings
-import com.michaldrabik.ui_settings.helpers.AppLanguage
+import com.michaldrabik.ui_model.locale.AppLanguage
 import com.michaldrabik.ui_settings.helpers.AppTheme
 
 data class SettingsGeneralUiState(

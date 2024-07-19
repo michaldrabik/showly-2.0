@@ -3,6 +3,7 @@ package com.michaldrabik.ui_movie.sections.collections.details.cases
 import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_model.locale.AppLocale
 import com.michaldrabik.ui_movie.sections.collections.details.recycler.MovieDetailsCollectionItem
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.withContext
@@ -17,10 +18,10 @@ class MovieDetailsCollectionTranslationsCase @Inject constructor(
 
   suspend fun loadMissingTranslation(
     item: MovieDetailsCollectionItem.MovieItem,
-    language: String
+    locale: AppLocale
   ) = withContext(dispatchers.IO) {
     try {
-      val translation = translationsRepository.loadTranslation(item.movie, language) ?: Translation.EMPTY
+      val translation = translationsRepository.loadTranslation(item.movie, locale) ?: Translation.EMPTY
       return@withContext item.copy(translation = translation)
     } catch (error: Throwable) {
       Timber.w(error)

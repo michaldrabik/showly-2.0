@@ -28,6 +28,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.Tip
+import com.michaldrabik.ui_model.locale.AppLocale
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -95,7 +96,7 @@ class ListDetailsViewModel @Inject constructor(
   }
 
   fun loadMissingTranslation(item: ListDetailsItem) {
-    if (item.translation != null || translationsCase.getLanguage() == Config.DEFAULT_LANGUAGE) return
+    if (item.translation != null || translationsCase.getLocale() == AppLocale.default()) return
     viewModelScope.launch {
       try {
         val translation = translationsCase.loadTranslation(item, false)

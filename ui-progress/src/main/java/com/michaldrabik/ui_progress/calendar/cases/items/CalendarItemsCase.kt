@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_progress.calendar.cases.items
 
-import com.michaldrabik.common.Config
 import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toLocalZone
@@ -16,6 +15,7 @@ import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_model.CalendarMode.PRESENT_FUTURE
 import com.michaldrabik.ui_model.CalendarMode.RECENTS
 import com.michaldrabik.ui_model.ImageType
+import com.michaldrabik.ui_model.locale.AppLocale
 import com.michaldrabik.ui_progress.calendar.helpers.WatchlistAppender
 import com.michaldrabik.ui_progress.calendar.helpers.filters.CalendarFilter
 import com.michaldrabik.ui_progress.calendar.helpers.groupers.CalendarGrouper
@@ -53,7 +53,7 @@ abstract class CalendarItemsCase constructor(
     return withContext(dispatchers.IO) {
       val now = nowUtc().toLocalZone()
 
-      val language = translationsRepository.getLanguage()
+      val locale = translationsRepository.getLocale()
       val dateFormat = dateFormatProvider.loadFullHourFormat()
       val spoilers = spoilersRepository.getAll()
 
@@ -110,10 +110,10 @@ abstract class CalendarItemsCase constructor(
             val seasonUi = mappers.season.fromDatabase(season, seasonEpisodes)
 
             var translations: TranslationsBundle? = null
-            if (language != Config.DEFAULT_LANGUAGE) {
+            if (locale != AppLocale.default()) {
               translations = TranslationsBundle(
-                episode = translationsRepository.loadTranslation(episodeUi, show.ids.trakt, language, onlyLocal = true),
-                show = translationsRepository.loadTranslation(show, language, onlyLocal = true)
+                episode = translationsRepository.loadTranslation(episodeUi, show.ids.trakt, locale, onlyLocal = true),
+                show = translationsRepository.loadTranslation(show, locale, onlyLocal = true)
               )
             }
             CalendarListItem.Episode(

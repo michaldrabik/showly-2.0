@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_search.cases
 
-import com.michaldrabik.common.Config
 import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.repository.TranslationsRepository
@@ -15,6 +14,7 @@ import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.SearchResult
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_model.locale.AppLocale
 import com.michaldrabik.ui_search.recycler.SearchListItem
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
@@ -44,18 +44,18 @@ class SearchSuggestionsCase @Inject constructor(
   private var movieTranslationsCache: Map<Long, Translation>? = null
 
   suspend fun preloadCache() = withContext(dispatchers.IO) {
-    val language = translationsRepository.getLanguage()
+    val locale = translationsRepository.getLocale()
     val moviesEnabled = settingsRepository.isMoviesEnabled
 
     if (showsCache == null) showsCache = localSource.shows.getAll()
     if (moviesEnabled && moviesCache == null) moviesCache = localSource.movies.getAll()
 
-    if (translationsRepository.getLanguage() != Config.DEFAULT_LANGUAGE) {
+    if (translationsRepository.getLocale() != AppLocale.default()) {
       if (showTranslationsCache == null) {
-        showTranslationsCache = translationsRepository.loadAllShowsLocal(language)
+        showTranslationsCache = translationsRepository.loadAllShowsLocal(locale)
       }
       if (moviesEnabled && movieTranslationsCache == null) {
-        movieTranslationsCache = translationsRepository.loadAllMoviesLocal(language)
+        movieTranslationsCache = translationsRepository.loadAllMoviesLocal(locale)
       }
     }
   }
@@ -132,11 +132,11 @@ class SearchSuggestionsCase @Inject constructor(
   }
 
   private suspend fun loadTranslation(result: SearchResult): Translation? {
-    val language = translationsRepository.getLanguage()
-    if (language == Config.DEFAULT_LANGUAGE) return Translation.EMPTY
+    val locale = translationsRepository.getLocale()
+    if (locale == AppLocale.default()) return Translation.EMPTY
     return when {
-      result.isShow -> translationsRepository.loadTranslation(result.show, language, onlyLocal = true)
-      else -> translationsRepository.loadTranslation(result.movie, language, onlyLocal = true)
+      result.isShow -> translationsRepository.loadTranslation(result.show, locale, onlyLocal = true)
+      else -> translationsRepository.loadTranslation(result.movie, locale, onlyLocal = true)
     }
   }
 

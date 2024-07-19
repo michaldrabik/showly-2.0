@@ -13,9 +13,10 @@ import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.showly2.BuildConfig
-import com.michaldrabik.ui_base.common.AppCountry
+import com.michaldrabik.ui_model.locale.AppCountry
 import com.michaldrabik.ui_base.utilities.extensions.withApiAtLeast
-import com.michaldrabik.ui_settings.helpers.AppLanguage
+import com.michaldrabik.ui_model.locale.AppLanguage
+import com.michaldrabik.ui_model.locale.AppLocale
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -60,7 +61,7 @@ class MainInitialsCase @Inject constructor(
     if (!country.isNullOrBlank()) {
       AppCountry.values().forEach { appCountry ->
         if (appCountry.code.equals(country, ignoreCase = true)) {
-          settingsRepository.country = appCountry.code
+          settingsRepository.locale = AppLocale(settingsRepository.locale.language, appCountry)
           return
         }
       }
@@ -77,7 +78,7 @@ class MainInitialsCase @Inject constructor(
   }
 
   fun setLanguage(appLanguage: AppLanguage) {
-    settingsRepository.language = appLanguage.code
+    settingsRepository.locale = AppLocale(appLanguage, settingsRepository.locale.country)
     val locales = LocaleListCompat.forLanguageTags(appLanguage.code)
     AppCompatDelegate.setApplicationLocales(locales)
   }

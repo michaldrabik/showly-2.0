@@ -2,7 +2,6 @@ package com.michaldrabik.ui_my_shows.watchlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.common.Config
 import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.ui_base.common.ListViewMode
 import com.michaldrabik.ui_base.events.EventsManager
@@ -18,6 +17,7 @@ import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
+import com.michaldrabik.ui_model.locale.AppLocale
 import com.michaldrabik.ui_my_shows.common.recycler.CollectionListItem
 import com.michaldrabik.ui_my_shows.common.recycler.CollectionListItem.ShowItem
 import com.michaldrabik.ui_my_shows.main.FollowedShowsUiState
@@ -105,7 +105,7 @@ class WatchlistViewModel @Inject constructor(
 
   fun loadMissingTranslation(item: CollectionListItem) {
     check(item is ShowItem)
-    if (item.translation != null || translationsCase.getLanguage() == Config.DEFAULT_LANGUAGE) return
+    if (item.translation != null || translationsCase.getLocale() == AppLocale.default()) return
     viewModelScope.launch {
       try {
         val translation = translationsCase.loadTranslation(item.show, false)
