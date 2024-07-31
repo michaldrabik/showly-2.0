@@ -9,6 +9,7 @@ import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
 import com.michaldrabik.data_remote.trakt.model.SyncHistoryItem
 import com.michaldrabik.data_remote.trakt.model.SyncItem
 import com.michaldrabik.data_remote.trakt.model.request.RatingRequest
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -25,7 +26,7 @@ interface TraktSyncService {
     @Path("showId") showId: Long,
     @Query("page") page: Int? = null,
     @Query("limit") limit: Int? = null
-  ): List<SyncHistoryItem>
+  ): Response<List<SyncHistoryItem>>
 
   @GET("sync/watched/{type}")
   suspend fun fetchSyncWatched(
@@ -38,7 +39,7 @@ interface TraktSyncService {
     @Path("type") type: String,
     @Query("page") page: Int? = null,
     @Query("limit") limit: Int? = null
-  ): List<SyncItem>
+  ): Response<List<SyncItem>>
 
   @POST("sync/watchlist")
   suspend fun postSyncWatchlist(@Body request: SyncExportRequest)

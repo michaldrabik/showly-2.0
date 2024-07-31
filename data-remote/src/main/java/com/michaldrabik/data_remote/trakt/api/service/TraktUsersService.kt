@@ -25,7 +25,7 @@ interface TraktUsersService {
   suspend fun fetchHiddenShows(
     @Query("page") page: Int,
     @Query("limit") pageLimit: Int
-  ): List<HiddenItem>
+  ): Response<List<HiddenItem>>
 
   @POST("users/hidden/progress_watched")
   suspend fun postHiddenShows(
@@ -41,7 +41,7 @@ interface TraktUsersService {
   suspend fun fetchHiddenMovies(
     @Query("page") page: Int,
     @Query("limit") pageLimit: Int
-  ): List<HiddenItem>
+  ): Response<List<HiddenItem>>
 
   @GET("users/me/lists")
   suspend fun fetchSyncLists(): List<CustomList>
@@ -57,7 +57,7 @@ interface TraktUsersService {
     @Path("types") types: String,
     @Query("page") page: Int? = null,
     @Query("limit") limit: Int? = null
-  ): List<SyncItem>
+  ): Response<List<SyncItem>>
 
   @POST("users/me/lists")
   suspend fun postCreateList(

@@ -19,8 +19,9 @@ import com.michaldrabik.data_remote.trakt.model.request.CommentRequest
 import com.michaldrabik.data_remote.trakt.model.request.CreateListRequest
 import com.michaldrabik.data_remote.trakt.model.request.RatingRequest
 import com.michaldrabik.data_remote.trakt.model.request.RatingRequestValue
+import okhttp3.Headers
 
-private const val TRAKT_SYNC_PAGE_LIMIT = 200
+private const val TRAKT_SYNC_PAGE_LIMIT = 250
 
 internal class AuthorizedTraktApi(
   private val usersService: TraktUsersService,
@@ -45,10 +46,10 @@ internal class AuthorizedTraktApi(
     val results = mutableListOf<HiddenItem>()
 
     do {
-      val items = usersService.fetchHiddenShows(page, TRAKT_SYNC_PAGE_LIMIT)
-      results.addAll(items)
+      val response = usersService.fetchHiddenShows(page, TRAKT_SYNC_PAGE_LIMIT)
+      results.addAll(response.body().orEmpty())
       page += 1
-    } while (items.size >= TRAKT_SYNC_PAGE_LIMIT)
+    } while (page <= response.headers().getPaginationPageCount())
 
     return results
   }
@@ -66,10 +67,10 @@ internal class AuthorizedTraktApi(
     val results = mutableListOf<HiddenItem>()
 
     do {
-      val items = usersService.fetchHiddenMovies(page, TRAKT_SYNC_PAGE_LIMIT)
-      results.addAll(items)
+      val response = usersService.fetchHiddenMovies(page, TRAKT_SYNC_PAGE_LIMIT)
+      results.addAll(response.body().orEmpty())
       page += 1
-    } while (items.size >= TRAKT_SYNC_PAGE_LIMIT)
+    } while (page <= response.headers().getPaginationPageCount())
 
     return results
   }
@@ -83,10 +84,10 @@ internal class AuthorizedTraktApi(
     val results = mutableListOf<SyncHistoryItem>()
 
     do {
-      val items = syncService.fetchSyncShowHistory(showId, page, TRAKT_SYNC_PAGE_LIMIT)
-      results.addAll(items)
+      val response = syncService.fetchSyncShowHistory(showId, page, TRAKT_SYNC_PAGE_LIMIT)
+      results.addAll(response.body().orEmpty())
       page += 1
-    } while (items.size >= TRAKT_SYNC_PAGE_LIMIT)
+    } while (page <= response.headers().getPaginationPageCount())
 
     return results
   }
@@ -106,10 +107,10 @@ internal class AuthorizedTraktApi(
     val results = mutableListOf<SyncItem>()
 
     do {
-      val items = syncService.fetchSyncWatchlist(type, page, TRAKT_SYNC_PAGE_LIMIT)
-      results.addAll(items)
+      val response = syncService.fetchSyncWatchlist(type, page, TRAKT_SYNC_PAGE_LIMIT)
+      results.addAll(response.body().orEmpty())
       page += 1
-    } while (items.size >= TRAKT_SYNC_PAGE_LIMIT)
+    } while (page <= response.headers().getPaginationPageCount())
 
     return results
   }
@@ -128,10 +129,10 @@ internal class AuthorizedTraktApi(
       .joinToString(",")
 
     do {
-      val items = usersService.fetchSyncListItems(listId, types, page, TRAKT_SYNC_PAGE_LIMIT)
-      results.addAll(items)
+      val response = usersService.fetchSyncListItems(listId, types, page, TRAKT_SYNC_PAGE_LIMIT)
+      results.addAll(response.body().orEmpty())
       page += 1
-    } while (items.size >= TRAKT_SYNC_PAGE_LIMIT)
+    } while (page <= response.headers().getPaginationPageCount())
 
     return results
   }
@@ -254,4 +255,8 @@ internal class AuthorizedTraktApi(
 
   override suspend fun fetchSeasonsRatings() =
     syncService.fetchSeasonsRatings()
+}
+
+private fun Headers.getPaginationPageCount(): Int {
+  return this["x-pagination-page-count"]?.toInt() ?: 0
 }
