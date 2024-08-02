@@ -58,6 +58,16 @@ We're always looking for help with translating app into more languages.<br>
 If you are interested in helping now or in the future, please visit our CrowdIn project and join:<br>
 https://crwd.in/showly-android-app
 
+## Dev Notes
+
+The codebase has been around for a few years now and it grew a bit rusty.
+Few things surely could be adressed:
+
+- Overall architecture should be simplified and refactored into more strict feature-based one
+- Retrofit could be replaced in favor of Ktor Client
+- Jetpack Compose migration (although there is no **_real_** benefit of it currently from end-user point of view)
+- Add more unit tests to complete suite and increase coverage
+
 ## FAQ
 
 **1. Can I watch/stream/download shows and movies with Showly app?**
