@@ -52,11 +52,13 @@ Features ideas should be posted as new GIthub [Discussion](https://github.com/mi
 
 Pull requests are welcome. Remember about leaving a comment in the relevant issue if you are working on something.
 
-### Language Translations
+## Translations
 
-We're always looking for help with translating app into more languages.<br>
-If you are interested in helping now or in the future, please visit our CrowdIn project and join:<br>
-https://crwd.in/showly-android-app
+Want to help translating Showly into your native language? Spotted a mistake?<br>
+Join the CrowdIn project which is used to manage translations:<br>
+https://crwd.in/showly-android-app <br>
+
+![Screenshot 2024-08-05 at 11-32-21 Showly Android App dashboard in Crowdin](https://github.com/user-attachments/assets/5b5b1796-2ad7-4519-be63-e0a05c275406)
 
 ## Dev Notes
 
