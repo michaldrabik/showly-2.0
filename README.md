@@ -58,6 +58,8 @@ Want to help translating Showly into your native language? Spotted a mistake?<br
 Join the CrowdIn project which is used to manage translations:<br>
 https://crwd.in/showly-android-app <br>
 
+Translations status for 5 Aug 2024:
+
 ![Screenshot 2024-08-05 at 11-32-21 Showly Android App dashboard in Crowdin](https://github.com/user-attachments/assets/5b5b1796-2ad7-4519-be63-e0a05c275406)
 
 ## Dev Notes
