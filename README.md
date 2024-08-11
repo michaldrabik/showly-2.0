@@ -19,10 +19,10 @@ The OSS version available in this repo is completely free of all Google services
 ## Screenshots
 
 <div>
-   <img src="assets/screenshots/github1a.jpg" width="150" alt="Screenshot 1">
-   <img src="assets/screenshots/github2a.jpg" width="150" alt="Screenshot 2">
-   <img src="assets/screenshots/github3a.jpg" width="150" alt="Screenshot 3">
-   <img src="assets/screenshots/github4a.jpg" width="150" alt="Screenshot 4">
+   <img src="assets/screenshots/github1a.png" width="150" alt="Screenshot 1">
+   <img src="assets/screenshots/github2a.png" width="150" alt="Screenshot 2">
+   <img src="assets/screenshots/github3a.png" width="150" alt="Screenshot 3">
+   <img src="assets/screenshots/github4a.png" width="150" alt="Screenshot 4">
 </div>
 
 ## Project Setup
