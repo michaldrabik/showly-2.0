@@ -19,10 +19,10 @@ The OSS version available in this repo is completely free of all Google services
 ## Screenshots
 
 <div>
-   <img src="assets/screenshots/github1a.jpg" width="150" alt="Screenshot 1">
-   <img src="assets/screenshots/github2a.jpg" width="150" alt="Screenshot 2">
-   <img src="assets/screenshots/github3a.jpg" width="150" alt="Screenshot 3">
-   <img src="assets/screenshots/github4a.jpg" width="150" alt="Screenshot 4">
+   <img src="assets/screenshots/github1a.png" width="150" alt="Screenshot 1">
+   <img src="assets/screenshots/github2a.png" width="150" alt="Screenshot 2">
+   <img src="assets/screenshots/github3a.png" width="150" alt="Screenshot 3">
+   <img src="assets/screenshots/github4a.png" width="150" alt="Screenshot 4">
 </div>
 
 ## Project Setup
@@ -68,6 +68,7 @@ The codebase has been around for a few years now and it grew a bit rusty.
 Few things surely could be adressed:
 
 - Overall architecture should be simplified and refactored into more strict feature-based one
+- Single responsibility principle is broken and should be refactored in a few places like some of the Use Cases
 - Retrofit could be replaced in favor of Ktor Client
 - Jetpack Compose migration (although there is no **_real_** benefit of it currently from end-user point of view)
 - Add more unit tests to complete suite and increase coverage
