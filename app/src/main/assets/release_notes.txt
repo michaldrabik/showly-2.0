@@ -1,1 +1,2 @@
-* Fix bug with custom date selection incorrect date being used
+* Fix bug with Trakt API pagination that could cause large sets of data no to be fetched entirely
+* Small translations updates
