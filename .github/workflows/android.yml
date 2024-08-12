@@ -30,7 +30,7 @@ jobs:
       - name: Setup JDK
         uses: actions/setup-java@v4
         with:
-          java-version: 21
+          java-version: 17
           distribution: temurin
 
       - name: Decrypt secrets
@@ -64,7 +64,7 @@ jobs:
       - name: Setup JDK
         uses: actions/setup-java@v4
         with:
-          java-version: 21
+          java-version: 17
           distribution: temurin
 
       - name: Decrypt secrets
