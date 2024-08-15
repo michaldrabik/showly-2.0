@@ -8,9 +8,9 @@ import com.michaldrabik.data_remote.trakt.TraktRemoteDataSource
 import com.michaldrabik.repository.common.BaseMockTest
 import com.michaldrabik.repository.shows.ShowDetailsRepository
 import com.michaldrabik.ui_model.IdTrakt
-import io.mockk.Called
 import io.mockk.Runs
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.coVerifySequence
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -50,10 +50,8 @@ class ShowDetailsRepositoryTest : BaseMockTest() {
       val show = SUT.load(IdTrakt(1), false)
 
       assertThat(show.ids.trakt).isEqualTo(IdTrakt(1))
-      coVerifySequence {
-        showsDao.getById(any<Long>())
-        traktApi.fetchShow(any<Long>()) wasNot Called
-      }
+      coVerify(exactly = 1) { showsDao.getById(any<Long>()) }
+      coVerify(exactly = 0) { traktApi.fetchShow(any<Long>()) }
     }
   }
 

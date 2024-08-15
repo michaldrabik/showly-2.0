@@ -9,29 +9,39 @@ import com.bumptech.glide.request.target.Target
 
 inline fun RequestBuilder<Drawable>.withFailListener(crossinline action: () -> Unit) =
   addListener(object : RequestListener<Drawable?> {
-    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable?>?, isFirstResource: Boolean): Boolean {
+    override fun onLoadFailed(
+      e: GlideException?,
+      model: Any?,
+      target: Target<Drawable?>,
+      isFirstResource: Boolean
+    ): Boolean {
       action()
       return false
     }
 
     override fun onResourceReady(
-      resource: Drawable?,
-      model: Any?,
+      resource: Drawable,
+      model: Any,
       target: Target<Drawable?>?,
-      dataSource: DataSource?,
+      dataSource: DataSource,
       isFirstResource: Boolean
-    ) = false
+    ): Boolean = false
   })
 
 inline fun RequestBuilder<Drawable>.withSuccessListener(crossinline action: () -> Unit) =
   addListener(object : RequestListener<Drawable?> {
-    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable?>?, isFirstResource: Boolean) = false
+    override fun onLoadFailed(
+      e: GlideException?,
+      model: Any?,
+      target: Target<Drawable?>,
+      isFirstResource: Boolean
+    ): Boolean = false
 
     override fun onResourceReady(
-      resource: Drawable?,
-      model: Any?,
+      resource: Drawable,
+      model: Any,
       target: Target<Drawable?>?,
-      dataSource: DataSource?,
+      dataSource: DataSource,
       isFirstResource: Boolean
     ): Boolean {
       action()
