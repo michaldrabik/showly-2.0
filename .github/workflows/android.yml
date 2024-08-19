@@ -1,6 +1,8 @@
 name: Master Flow
 
 on:
+  workflow_dispatch:
+  pull_request:
   push:
     branches:
       - master
@@ -19,7 +21,7 @@ jobs:
           distribution: temurin
 
       - name: Run ktlint
-        run: curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.43.2/ktlint && chmod a+x ktlint && ./ktlint
+        run: curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.45.2/ktlint && chmod a+x ktlint && ./ktlint
 
   verify-tests:
     runs-on: ubuntu-latest
@@ -83,3 +85,9 @@ jobs:
           groups: owner
           file: app/build/outputs/apk/release/app-release.apk
           releaseNotes: "OSS"
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Showly 2
+          path: app/build/outputs/apk/release/app-release.apk
