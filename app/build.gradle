@@ -1,5 +1,4 @@
 plugins {
-  id 'com.github.triplet.play'
   id 'com.android.application'
   id 'kotlin-android'
   id 'com.google.devtools.ksp'
@@ -7,11 +6,6 @@ plugins {
 }
 
 apply from: '../versions.gradle'
-
-play {
-  serviceAccountCredentials.set(file("gpp-service-key.json"))
-  track.set("internal")
-}
 
 android {
   kotlinOptions { jvmTarget = "17" }
