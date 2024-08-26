@@ -18,7 +18,7 @@ buildscript {
 
 plugins {
   id "com.github.triplet.play" version "3.10.1" apply false
-  id 'com.google.devtools.ksp' version '2.0.10-1.0.24' apply false
+  id 'com.google.devtools.ksp' version '2.0.20-1.0.24' apply false
 }
 
 allprojects {
