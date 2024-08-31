@@ -79,7 +79,15 @@ Few things surely could be adressed:
 
   No, that is not possible. Showly is a progress tracking type of app - not a streaming service.
 
-**2. Show/Episode/Movie I'm looking for seems to be missing. What can I do?**
+
+**2. I'm a user from India. I can't see any images and also encounter errors!**
+
+  There is a known issue with TMDB API being blocked by India gov.
+  For more details and a possible solution please see the thread here:
+  [https://www.themoviedb.org/talk/65d226e5c433ea0187b5b958#65d2dd5128d7fe017c34e9b5](https://www.themoviedb.org/talk/65d226e5c433ea0187b5b958#65d2dd5128d7fe017c34e9b5)
+
+
+**3. Show/Episode/Movie I'm looking for seems to be missing. What can I do?**
 
   Showly uses [Trakt.tv](https://trakt.tv) as its main data source.
   If something is missing please use "Import Show" / "Import Movie" option located at the bottom of Trakt.tv website.
