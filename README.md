@@ -2,6 +2,10 @@
 ![Build]( https://img.shields.io/github/actions/workflow/status/michaldrabik/showly-2.0/android.yml?branch=master)
 ![Twitter](https://img.shields.io/twitter/follow/AppShowly?style=social)
 
+<a href="https://www.buymeacoffee.com/showly" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-red.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+
+If you use and enjoy Showly OSS, consider buying me a coffee as a support for my work. Thanks!
+
 # Showly
 <img src="https://i.ibb.co/ChBN7Lg/ic-launcher.png" align="left" width="180" hspace="10" vspace="10" />
 
@@ -15,6 +19,8 @@ The OSS version available in this repo is completely free of all Google services
     height="80"
     src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"/>
 </a>
+
+## Buy a Coffee
 
 ## Screenshots
 
