@@ -20,8 +20,6 @@ The OSS version available in this repo is completely free of all Google services
     src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"/>
 </a>
 
-## Buy a Coffee
-
 ## Screenshots
 
 <div>
