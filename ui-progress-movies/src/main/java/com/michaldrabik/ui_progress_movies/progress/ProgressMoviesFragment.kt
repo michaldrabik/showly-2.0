@@ -39,6 +39,7 @@ import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
 import com.michaldrabik.ui_model.SortOrder.NAME
 import com.michaldrabik.ui_model.SortOrder.NEWEST
 import com.michaldrabik.ui_model.SortOrder.RATING
+import com.michaldrabik.ui_model.SortOrder.RUNTIME
 import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_ORDER
@@ -246,7 +247,7 @@ class ProgressMoviesFragment :
   }
 
   private fun openSortOrderDialog(order: SortOrder, type: SortType) {
-    val options = listOf(NAME, RATING, USER_RATING, NEWEST, DATE_ADDED)
+    val options = listOf(NAME, RATING, USER_RATING, RUNTIME, NEWEST, DATE_ADDED)
     val args = SortOrderBottomSheet.createBundle(options, order, type)
 
     requireParentFragment().setFragmentResultListener(REQUEST_SORT_ORDER) { _, bundle ->

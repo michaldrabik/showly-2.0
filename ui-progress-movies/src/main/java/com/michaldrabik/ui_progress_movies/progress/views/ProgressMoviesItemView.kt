@@ -22,6 +22,7 @@ import com.michaldrabik.ui_base.utilities.extensions.onLongClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.SortOrder.RATING
+import com.michaldrabik.ui_model.SortOrder.RUNTIME
 import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_progress_movies.R
 import com.michaldrabik.ui_progress_movies.databinding.ViewProgressMoviesMainItemBinding
@@ -65,6 +66,7 @@ class ProgressMoviesItemView : MovieView<ProgressMovieListItem.MovieItem> {
 
       bindDescription(item)
       bindRating(item)
+      bindRuntime(item)
 
       progressMovieItemPin.visibleIf(item.isPinned)
       progressMovieItemCheckButton.onClick {
@@ -134,6 +136,21 @@ class ProgressMoviesItemView : MovieView<ProgressMovieListItem.MovieItem> {
           progressMovieItemRatingStar.gone()
         }
       }
+    }
+  }
+
+  private fun bindRuntime(item: ProgressMovieListItem.MovieItem) {
+    with(binding) {
+      progressMovieItemRuntime.gone()
+      progressMovieItemRuntimeIcon.gone()
+
+      if (item.movie.runtime <= 0 || item.sortOrder != RUNTIME) {
+        return
+      }
+
+      progressMovieItemRuntimeIcon.visible()
+      progressMovieItemRuntime.visible()
+      progressMovieItemRuntime.text = "${item.movie.runtime} ${context.getString(R.string.textMinutesShort)}"
     }
   }
 

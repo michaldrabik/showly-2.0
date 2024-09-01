@@ -9,6 +9,7 @@
   <string name="textSortDateUpdated">Hiljattain päivitetyt</string>
   <string name="textSortRecentlyWatched">Katsottu hiljattain</string>
   <string name="textSortEpisodesLeft">Jaksoja jäljellä</string>
+  <string name="textSortRuntime">Kesto</string>
   <string name="textPeriodThisWeek">Tällä viikolla</string>
   <string name="textPeriodLastWeek">Viime viikolla</string>
   <string name="textPeriodThisMonth">Tässä kuussa</string>

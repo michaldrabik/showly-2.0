@@ -9,6 +9,7 @@
   <string name="textSortDateUpdated">Recently Updated</string>
   <string name="textSortRecentlyWatched">Recently Watched</string>
   <string name="textSortEpisodesLeft">Episodes Left</string>
+  <string name="textSortRuntime">Runtime</string>
 
   <string name="textPeriodThisWeek">This week</string>
   <string name="textPeriodLastWeek">Last week</string>

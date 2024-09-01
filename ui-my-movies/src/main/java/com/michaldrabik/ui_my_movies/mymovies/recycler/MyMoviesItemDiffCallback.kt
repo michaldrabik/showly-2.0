@@ -19,6 +19,8 @@ class MyMoviesItemDiffCallback : DiffUtil.ItemCallback<MyMoviesItem>() {
           oldItem.isLoading == newItem.isLoading &&
           oldItem.translation == newItem.translation &&
           oldItem.spoilers == newItem.spoilers &&
-          oldItem.userRating == newItem.userRating
+          oldItem.userRating == newItem.userRating &&
+          oldItem.sortOrder == newItem.sortOrder &&
+          oldItem.dateFormat.toString() == newItem.dateFormat.toString()
     }
 }

@@ -5,6 +5,7 @@ import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
 import com.michaldrabik.ui_model.SortOrder.NAME
 import com.michaldrabik.ui_model.SortOrder.NEWEST
 import com.michaldrabik.ui_model.SortOrder.RATING
+import com.michaldrabik.ui_model.SortOrder.RUNTIME
 import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.SortType.ASCENDING
@@ -29,6 +30,7 @@ class MyMoviesSorter @Inject constructor() {
         .thenBy { it.userRating }
         .thenBy { getTitle(it) }
     DATE_ADDED -> compareBy { it.movie.updatedAt }
+    RUNTIME -> compareBy { it.movie.runtime }
     NEWEST -> compareBy<MyMoviesItem> { it.movie.year }.thenBy { it.movie.released }
     else -> throw IllegalStateException("Invalid sort order")
   }
@@ -41,6 +43,7 @@ class MyMoviesSorter @Inject constructor() {
         .thenByDescending { it.userRating }
         .thenBy { getTitle(it) }
     DATE_ADDED -> compareByDescending { it.movie.updatedAt }
+    RUNTIME -> compareByDescending { it.movie.runtime }
     NEWEST -> compareByDescending<MyMoviesItem> { it.movie.year }.thenByDescending { it.movie.released }
     else -> throw IllegalStateException("Invalid sort order")
   }

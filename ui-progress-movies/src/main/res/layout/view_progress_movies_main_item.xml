@@ -14,6 +14,15 @@
     android:clipChildren="false"
     >
 
+    <androidx.constraintlayout.widget.Barrier
+      android:id="@+id/barrier"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      app:barrierDirection="start"
+      app:constraint_referenced_ids="progressMovieItemRuntimeIcon,progressMovieItemRatingStar"
+      />
+
     <ImageView
       android:id="@+id/progressMovieItemImage"
       android:layout_width="@dimen/progressMoviesImageWidth"
@@ -67,7 +76,7 @@
       android:layout_marginStart="@dimen/spaceMedium"
       android:layout_marginEnd="@dimen/spaceMedium"
       app:layout_constraintBottom_toTopOf="@id/progressMovieItemSubtitle"
-      app:layout_constraintEnd_toStartOf="@id/progressMovieItemRatingStar"
+      app:layout_constraintEnd_toStartOf="@id/barrier"
       app:layout_constraintStart_toEndOf="@id/progressMovieItemImage"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintVertical_chainStyle="packed"
@@ -102,6 +111,35 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="@id/progressMovieItemTitle"
       tools:text="7.6"
+      tools:visibility="visible"
+      />
+
+    <ImageView
+      android:id="@+id/progressMovieItemRuntimeIcon"
+      android:layout_width="20dp"
+      android:layout_height="0dp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="@+id/progressMovieItemRuntime"
+      app:layout_constraintEnd_toStartOf="@id/progressMovieItemRuntime"
+      app:layout_constraintTop_toTopOf="@id/progressMovieItemRuntime"
+      app:srcCompat="@drawable/ic_clock"
+      app:tint="?android:attr/textColorPrimary"
+      tools:visibility="visible"
+      />
+
+    <TextView
+      android:id="@+id/progressMovieItemRuntime"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/itemMarginHorizontal"
+      android:gravity="end"
+      android:textColor="?android:attr/textColorSecondary"
+      android:textSize="12sp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="@+id/progressMovieItemTitle"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/progressMovieItemTitle"
+      tools:text="123 min"
       tools:visibility="visible"
       />
 

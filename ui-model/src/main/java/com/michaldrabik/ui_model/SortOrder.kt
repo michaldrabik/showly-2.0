@@ -7,6 +7,7 @@ enum class SortOrder(
   RANK("rank", R.string.textSortRank),
   NAME("title", R.string.textSortName),
   NEWEST("released", R.string.textSortNewest),
+  RUNTIME("runtime", R.string.textSortRuntime),
   RATING("percentage", R.string.textSortRated),
   USER_RATING("user_rating", R.string.textSortRatedUser),
   DATE_ADDED("added", R.string.textSortDateAdded),

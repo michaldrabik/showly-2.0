@@ -9,6 +9,15 @@
   <string name="textSortDateUpdated">Недавно обновленные</string>
   <string name="textSortRecentlyWatched">Недавно просмотренные</string>
   <string name="textSortEpisodesLeft">Оставшиеся эпизоды</string>
+  <string name="textSortRuntime">Продолжительность</string>
+  <string name="textPeriodThisWeek">Эта неделя</string>
+  <string name="textPeriodLastWeek">Прошлая неделя</string>
+  <string name="textPeriodThisMonth">Этот месяц</string>
+  <string name="textPeriodLastMonth">Прошлый месяц</string>
+  <string name="textPeriodLast30Days">Последние 30 дней</string>
+  <string name="textPeriodLast90Days">Последние 90 дней</string>
+  <string name="textPeriodLast365Days">Последние 365 дней</string>
+  <string name="textPeriodAllTime">За все время</string>
   <string name="textHeaderRecentlyAdded">Недавно добавленные</string>
   <string name="textHeaderWatching">Смотрю</string>
   <string name="textHeaderFinished">Завершенные</string>
@@ -32,6 +41,7 @@
   <string name="textTipWatchlistPinItem">Нажмите и удерживайте элемент списка, чтобы закрепить его вверху.</string>
   <string name="textTipBottomModeMenu">Проведите по нижнему меню влево или вправо, чтобы быстро изменить режим.</string>
   <string name="textTipListSwipeToDelete">Смахните элементы списка, чтобы удалить их из списка.</string>
+  <string name="textTipDefaultOption">Параметр по умолчанию может быть настроен в настройках</string>
   <string name="textGenreAction">Экшн</string>
   <string name="textGenreAdventure">Приключения</string>
   <string name="textGenreAnimation">Анимация</string>

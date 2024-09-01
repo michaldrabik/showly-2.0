@@ -5,6 +5,7 @@ import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
 import com.michaldrabik.ui_model.SortOrder.NAME
 import com.michaldrabik.ui_model.SortOrder.NEWEST
 import com.michaldrabik.ui_model.SortOrder.RATING
+import com.michaldrabik.ui_model.SortOrder.RUNTIME
 import com.michaldrabik.ui_model.SortOrder.USER_RATING
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.SortType.ASCENDING
@@ -23,6 +24,7 @@ class ProgressMoviesItemsSorter @Inject constructor() {
 
   private fun sortAscending(sortOrder: SortOrder) = when (sortOrder) {
     NAME -> compareBy { getTitle(it) }
+    RUNTIME -> compareBy { it.movie.runtime }
     RATING -> compareBy { it.movie.rating }
     USER_RATING ->
       compareByDescending<ProgressMovieListItem.MovieItem> { it.userRating != null }
@@ -37,6 +39,7 @@ class ProgressMoviesItemsSorter @Inject constructor() {
 
   private fun sortDescending(sortOrder: SortOrder) = when (sortOrder) {
     NAME -> compareByDescending { getTitle(it) }
+    RUNTIME -> compareByDescending { it.movie.runtime }
     RATING -> compareByDescending { it.movie.rating }
     USER_RATING ->
       compareByDescending<ProgressMovieListItem.MovieItem> { it.userRating != null }

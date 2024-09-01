@@ -5,7 +5,9 @@
   <string name="textNo">Нет</string>
   <string name="textApply">Применить</string>
   <string name="textCancel">Отменить</string>
+  <string name="textContinue">Продолжить</string>
   <string name="textClose">Закрыть</string>
+  <string name="textNow">Сейчас</string>
   <string name="textNotNow">Позже</string>
   <string name="textNew">Новое</string>
   <string name="textSelect">Выбрать</string>
@@ -34,15 +36,20 @@
   <string name="textPleaseWait">Подождите…</string>
   <string name="textRate">Оценить</string>
   <string name="textLink">Ссылка</string>
+  <string name="textDisabled">Отключено</string>
   <string name="textRateSaved">Ваша оценка была сохранена.</string>
   <string name="textRateRemoved">Ваша оценка была удалена.</string>
+  <string name="textDays">%1$d дней</string>
+  <string name="textSelectDate">Выбрать дату</string>
+  <string name="textDateSelectionTitle">Выбор даты</string>
+  <string name="textDateSelectionDescription">Когда вы смотрели это?</string>
   <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
     <item quantity="one">%d осталось</item>
     <item quantity="few">%d осталось</item>
     <item quantity="many">%d осталось</item>
     <item quantity="other">%d осталось</item>
   </plurals>
-  <string name="textPeople">Люди:</string>
+  <string name="textPeople">Актерский состав &amp; Съемочная команда</string>
   <string name="textDirecting">Режиссура</string>
   <string name="textDirector">Режиссер</string>
   <string name="textWriting">Сценарий</string>

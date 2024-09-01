@@ -21,6 +21,7 @@ import com.michaldrabik.ui_base.utilities.extensions.onLongClick
 import com.michaldrabik.ui_base.utilities.extensions.setOutboundRipple
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_model.SortOrder.RUNTIME
 import com.michaldrabik.ui_my_movies.R
 import com.michaldrabik.ui_my_movies.common.recycler.CollectionListItem
 import com.michaldrabik.ui_my_movies.databinding.ViewCollectionMovieBinding
@@ -101,6 +102,12 @@ class CollectionMovieView : MovieView<CollectionListItem.MovieItem> {
         collectionMovieUserRating.visible()
         collectionMovieUserRating.text = String.format(ENGLISH, "%d", it)
       }
+
+      if (item.movie.runtime > 0 && item.sortOrder == RUNTIME) {
+        collectionMovieRuntimeIcon.visible()
+        collectionMovieRuntime.visible()
+        collectionMovieRuntime.text = "${item.movie.runtime} ${context.getString(R.string.textMinutesShort)}"
+      }
     }
 
     loadImage(item)
@@ -169,6 +176,8 @@ class CollectionMovieView : MovieView<CollectionListItem.MovieItem> {
       collectionMoviePlaceholder.gone()
       collectionMovieUserStarIcon.gone()
       collectionMovieUserRating.gone()
+      collectionMovieRuntimeIcon.gone()
+      collectionMovieRuntime.gone()
       collectionMovieReleaseDate.gone()
       Glide.with(this@CollectionMovieView).clear(collectionMovieImage)
     }
