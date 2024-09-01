@@ -8,14 +8,15 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.repository.settings.SettingsRepository
-import com.michaldrabik.ui_base.common.AppCountry
+import com.michaldrabik.ui_model.locale.AppCountry
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.dates.AppDateFormat
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_model.ProgressDateSelectionType
 import com.michaldrabik.ui_model.ProgressNextEpisodeType
 import com.michaldrabik.ui_model.Settings
-import com.michaldrabik.ui_settings.helpers.AppLanguage
+import com.michaldrabik.ui_model.locale.AppLanguage
+import com.michaldrabik.ui_model.locale.AppLocale
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -75,30 +76,39 @@ class SettingsGeneralMainCase @Inject constructor(
       if (!locales.isEmpty) {
         val locale = locales.get(0)!!.language
         val language = AppLanguage.fromCode(locale)
-        if (settingsRepository.language != locale) {
+        if (settingsRepository.locale.language.code != locale) {
           setLanguage(language)
         }
         return language
       }
     }
-    return AppLanguage.fromCode(settingsRepository.language)
+    return settingsRepository.locale.language
   }
 
   suspend fun setLanguage(language: AppLanguage) {
     settingsRepository.run {
-      this.language = language.code
-      val unused = AppLanguage.values()
+      this.locale = AppLocale(language, locale.country)
+      val unused = AppLanguage.entries
         .filter { it.code != Config.DEFAULT_LANGUAGE && it != language }
         .map { it.code }
-      clearUnusedTranslations(unused)
+      clearUnusedTranslationsByLanguage(unused)
       clearLanguageLogs()
     }
   }
 
-  fun getCountry() = AppCountry.fromCode(settingsRepository.country)
+  fun getCountry(): AppCountry {
+    return AppCountry.fromCode(settingsRepository.locale.country.code)
+  }
 
-  fun setCountry(country: AppCountry) {
-    settingsRepository.country = country.code
+  suspend fun setCountry(country: AppCountry) {
+    settingsRepository.run {
+      this.locale = AppLocale(locale.language, country)
+      val unused = AppCountry.entries
+        .filter { it.code != Config.DEFAULT_COUNTRY && it != country }
+        .map { it.code }
+      clearUnusedTranslationsByCountry(unused)
+      clearLanguageLogs()
+    }
   }
 
   fun getProgressType() = settingsRepository.progressNextEpisodeType

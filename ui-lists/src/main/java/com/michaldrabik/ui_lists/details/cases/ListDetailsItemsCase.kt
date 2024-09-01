@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_lists.details.cases
 
-import com.michaldrabik.common.Config
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.Mode.MOVIES
 import com.michaldrabik.common.Mode.SHOWS
@@ -29,6 +28,7 @@ import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_model.locale.AppLocale
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -59,7 +59,7 @@ class ListDetailsItemsCase @Inject constructor(
   suspend fun loadItems(list: CustomList): Pair<List<ListDetailsItem>, Int> =
     withContext(dispatchers.IO) {
       val moviesEnabled = settingsRepository.isMoviesEnabled
-      val language = translationsRepository.getLanguage()
+      val locale = translationsRepository.getLocale()
       val listItems = listsRepository.loadItemsById(list.id)
       val spoilers = settingsRepository.spoilers.getAll()
 
@@ -73,12 +73,12 @@ class ListDetailsItemsCase @Inject constructor(
       }
 
       val showsTranslationsAsync = async {
-        if (language == Config.DEFAULT_LANGUAGE) emptyMap()
-        else translationsRepository.loadAllShowsLocal(language)
+        if (locale == AppLocale.default()) emptyMap()
+        else translationsRepository.loadAllShowsLocal(locale)
       }
       val moviesTranslationsAsync = async {
-        if (language == Config.DEFAULT_LANGUAGE) emptyMap()
-        else translationsRepository.loadAllMoviesLocal(language)
+        if (locale == AppLocale.default()) emptyMap()
+        else translationsRepository.loadAllMoviesLocal(locale)
       }
 
       val showsRatingsAsync = async {

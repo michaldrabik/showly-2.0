@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_discover_movies.cases
 
-import com.michaldrabik.common.Config
 import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.MovieImagesProvider
@@ -15,6 +14,7 @@ import com.michaldrabik.ui_model.DiscoverSortOrder.RATING
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.Movie
+import com.michaldrabik.ui_model.locale.AppLocale
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -40,7 +40,7 @@ internal class DiscoverMoviesCase @Inject constructor(
     val watchlistIds = async { moviesRepository.watchlistMovies.loadAllIds() }
     val hiddenIds = async { moviesRepository.hiddenMovies.loadAllIds() }
     val cachedMovies = async { moviesRepository.discoverMovies.loadAllCached() }
-    val language = translationsRepository.getLanguage()
+    val locale = translationsRepository.getLocale()
 
     prepareItems(
       cachedMovies.await(),
@@ -48,7 +48,7 @@ internal class DiscoverMoviesCase @Inject constructor(
       watchlistIds.await(),
       hiddenIds.await(),
       filters,
-      language
+      locale
     )
   }
 
@@ -64,10 +64,10 @@ internal class DiscoverMoviesCase @Inject constructor(
     val collectionSize = myIds.size + watchlistIds.size + hiddenIds.size
 
     val remoteMovies = moviesRepository.discoverMovies.loadAllRemote(showAnticipated, showCollection, collectionSize, genres)
-    val language = translationsRepository.getLanguage()
+    val locale = translationsRepository.getLocale()
 
     moviesRepository.discoverMovies.cacheDiscoverMovies(remoteMovies)
-    prepareItems(remoteMovies, myIds, watchlistIds, hiddenIds, filters, language)
+    prepareItems(remoteMovies, myIds, watchlistIds, hiddenIds, filters, locale)
   }
 
   private suspend fun prepareItems(
@@ -76,7 +76,7 @@ internal class DiscoverMoviesCase @Inject constructor(
     watchlistMoviesIds: List<Long>,
     hiddenMoviesIds: List<Long>,
     filters: DiscoverFilters?,
-    language: String
+    locale: AppLocale
   ) = coroutineScope {
     val collectionIds = myMoviesIds + watchlistMoviesIds
     movies
@@ -90,7 +90,7 @@ internal class DiscoverMoviesCase @Inject constructor(
         async {
           val itemType = imageTypeProvider.getImageType(index)
           val image = imagesProvider.findCachedImage(movie, itemType)
-          val translation = loadTranslation(language, itemType, movie)
+          val translation = loadTranslation(locale, itemType, movie)
           DiscoverMovieListItem(
             movie,
             image,
@@ -104,9 +104,9 @@ internal class DiscoverMoviesCase @Inject constructor(
       .toList()
   }
 
-  private suspend fun loadTranslation(language: String, itemType: ImageType, movie: Movie) =
-    if (language == Config.DEFAULT_LANGUAGE || itemType == POSTER) null
-    else translationsRepository.loadTranslation(movie, language, true)
+  private suspend fun loadTranslation(locale: AppLocale, itemType: ImageType, movie: Movie) =
+    if (locale == AppLocale.default() || itemType == POSTER) null
+    else translationsRepository.loadTranslation(movie, locale, true)
 
   private fun List<Movie>.sortedBy(order: DiscoverSortOrder) = when (order) {
     HOT -> this

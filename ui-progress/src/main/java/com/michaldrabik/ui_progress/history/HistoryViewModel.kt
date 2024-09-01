@@ -2,7 +2,6 @@ package com.michaldrabik.ui_progress.history
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.common.Config
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.repository.settings.SettingsRepository
@@ -12,6 +11,7 @@ import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.HistoryPeriod
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.locale.AppLocale
 import com.michaldrabik.ui_progress.history.entities.HistoryListItem
 import com.michaldrabik.ui_progress.history.usecases.GetHistoryItemsCase
 import com.michaldrabik.ui_progress.main.ProgressMainUiState
@@ -100,16 +100,16 @@ internal class HistoryViewModel @Inject constructor(
   fun findMissingTranslation(item: HistoryListItem) {
     check(item is HistoryListItem.Episode)
     val showId = item.show.ids.trakt
-    val language = translationsRepository.getLanguage()
+    val locale = translationsRepository.getLocale()
     if (item.translations?.show != null ||
-      language == Config.DEFAULT_LANGUAGE ||
+      locale == AppLocale.default() ||
       translationJobs.contains(showId)
     ) {
       return
     }
     viewModelScope.launch {
       try {
-        val translation = translationsRepository.loadTranslation(item.show, language)
+        val translation = translationsRepository.loadTranslation(item.show, locale)
         val translations = item.translations?.copy(show = translation)
         updateItem(item.copy(translations = translations))
       } catch (error: Throwable) {

@@ -17,7 +17,8 @@ class TranslationMapper @Inject constructor(
     Translation(
       title = value?.title ?: "",
       overview = value?.overview ?: "",
-      language = value?.language ?: ""
+      language = value?.language ?: "",
+      country = value?.country ?: "",
     )
 
   fun fromNetwork(value: SeasonTranslationNetwork?) =
@@ -27,27 +28,31 @@ class TranslationMapper @Inject constructor(
       episodeNumber = value?.number ?: -1,
       title = value?.translations?.firstOrNull()?.title ?: "",
       overview = value?.translations?.firstOrNull()?.overview ?: "",
-      language = value?.translations?.firstOrNull()?.language ?: ""
+      language = value?.translations?.firstOrNull()?.language ?: "",
+      country = value?.translations?.firstOrNull()?.country ?: ""
     )
 
   fun fromDatabase(value: ShowTranslation?) =
     Translation(
       title = value?.title ?: "",
       overview = value?.overview ?: "",
-      language = value?.language ?: ""
+      language = value?.language ?: "",
+      country = value?.country ?: ""
     )
 
   fun fromDatabase(value: MovieTranslation?) =
     Translation(
       title = value?.title ?: "",
       overview = value?.overview ?: "",
-      language = value?.language ?: ""
+      language = value?.language ?: "",
+      country = value?.country ?: ""
     )
 
   fun fromDatabase(value: EpisodeTranslation?) =
     Translation(
       title = value?.title ?: "",
       overview = value?.overview ?: "",
-      language = value?.language ?: ""
+      language = value?.language ?: "",
+      country = value?.country ?: ""
     )
 }

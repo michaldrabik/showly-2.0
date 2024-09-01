@@ -5,7 +5,7 @@ import android.content.Context.MODE_PRIVATE
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-const val DATABASE_VERSION = 41
+const val DATABASE_VERSION = 42
 const val DATABASE_NAME = "SHOWLY2_DB_2"
 
 class Migrations(context: Context) {
@@ -770,6 +770,16 @@ class Migrations(context: Context) {
     }
   }
 
+  private val migration42 = object : Migration(41, 42) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+      with(database) {
+        execSQL("ALTER TABLE movies_translations ADD COLUMN country TEXT")
+        execSQL("ALTER TABLE shows_translations ADD COLUMN country TEXT")
+        execSQL("ALTER TABLE episodes_translations ADD COLUMN country TEXT")
+      }
+    }
+  }
+
   fun getAll() = listOf(
     migration2,
     migration3,
@@ -810,6 +820,7 @@ class Migrations(context: Context) {
     migration38,
     migration39,
     migration40,
-    migration41
+    migration41,
+    migration42
   )
 }

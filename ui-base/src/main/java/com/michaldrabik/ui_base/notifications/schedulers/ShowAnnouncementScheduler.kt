@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
-import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.dateFromMillis
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.common.extensions.toMillis
@@ -19,6 +18,7 @@ import com.michaldrabik.ui_model.ImageStatus
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.NotificationDelay
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_model.locale.AppLocale
 import dagger.hilt.android.qualifiers.ApplicationContext
 import timber.log.Timber
 import java.time.ZonedDateTime
@@ -46,13 +46,13 @@ class ShowAnnouncementScheduler @Inject constructor(
     episodeSeasonNumber: Int,
     episodeDate: ZonedDateTime,
     delay: NotificationDelay,
-    language: String,
+    locale: AppLocale
   ) {
     val show = mappers.show.fromDatabase(showDb)
 
     var translation: Translation? = null
-    if (language != Config.DEFAULT_LANGUAGE) {
-      translation = translationsRepository.loadTranslation(show, language, onlyLocal = true)
+    if (locale != AppLocale.default()) {
+      translation = translationsRepository.loadTranslation(show, locale, onlyLocal = true)
     }
 
     val data = Data.Builder().apply {

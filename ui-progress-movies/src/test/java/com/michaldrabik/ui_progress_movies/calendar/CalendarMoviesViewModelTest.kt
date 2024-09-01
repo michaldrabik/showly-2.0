@@ -6,6 +6,7 @@ import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_model.CalendarMode
+import com.michaldrabik.ui_model.locale.AppLocale
 import com.michaldrabik.ui_progress_movies.BaseMockTest
 import com.michaldrabik.ui_progress_movies.calendar.cases.items.CalendarMoviesFutureCase
 import com.michaldrabik.ui_progress_movies.calendar.cases.items.CalendarMoviesRecentsCase
@@ -44,7 +45,7 @@ class CalendarMoviesViewModelTest : BaseMockTest() {
   override fun setUp() {
     super.setUp()
 
-    coEvery { translationsRepository.getLanguage() } returns "en"
+    coEvery { translationsRepository.getLocale() } returns AppLocale.fromCode("en_us")
 
     SUT = CalendarMoviesViewModel(
       recentsCase,

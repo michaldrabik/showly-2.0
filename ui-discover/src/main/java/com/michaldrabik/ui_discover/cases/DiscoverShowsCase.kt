@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_discover.cases
 
-import com.michaldrabik.common.Config
 import com.michaldrabik.common.ConfigVariant
 import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.common.extensions.nowUtcMillis
@@ -18,6 +17,7 @@ import com.michaldrabik.ui_model.DiscoverSortOrder.RATING
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_model.locale.AppLocale
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -94,7 +94,7 @@ internal class DiscoverShowsCase @Inject constructor(
     hiddenShowsIds: List<Long>,
     filters: DiscoverFilters?,
   ) = coroutineScope {
-    val language = translationsRepository.getLanguage()
+    val locale = translationsRepository.getLocale()
     val collectionIds = myShowsIds + watchlistShowsIds + hiddenShowsIds
     shows
       .filter { it.traktId !in hiddenShowsIds }
@@ -107,7 +107,7 @@ internal class DiscoverShowsCase @Inject constructor(
         async {
           val itemType = imageTypeProvider.getImageType(index)
           val image = imagesProvider.findCachedImage(show, itemType)
-          val translation = loadTranslation(language, itemType, show)
+          val translation = loadTranslation(locale, itemType, show)
           DiscoverListItem(
             show = show,
             image = image,
@@ -135,9 +135,9 @@ internal class DiscoverShowsCase @Inject constructor(
     }
   }
 
-  private suspend fun loadTranslation(language: String, itemType: ImageType, show: Show) =
-    if (language == Config.DEFAULT_LANGUAGE || itemType == ImageType.POSTER) null
-    else translationsRepository.loadTranslation(show, language, true)
+  private suspend fun loadTranslation(locale: AppLocale, itemType: ImageType, show: Show) =
+    if (locale == AppLocale.default() || itemType == ImageType.POSTER) null
+    else translationsRepository.loadTranslation(show, locale, true)
 
   private fun List<Show>.sortedBy(order: DiscoverSortOrder) = when (order) {
     HOT -> this

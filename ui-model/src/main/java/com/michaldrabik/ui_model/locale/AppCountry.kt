@@ -1,4 +1,6 @@
-package com.michaldrabik.ui_base.common
+package com.michaldrabik.ui_model.locale
+
+import com.michaldrabik.common.Config
 
 enum class AppCountry(
   val code: String,
@@ -55,6 +57,7 @@ enum class AppCountry(
   VENEZUELA("ve", "Venezuela", "buscar");
 
   companion object {
-    fun fromCode(code: String) = values().first { it.code == code }
+    fun default() = AppCountry.fromCode(Config.DEFAULT_COUNTRY)
+    fun fromCode(code: String) = entries.first { it.code.equals(code, ignoreCase = true)}
   }
 }

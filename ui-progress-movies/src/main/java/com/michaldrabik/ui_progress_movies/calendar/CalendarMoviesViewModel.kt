@@ -2,13 +2,13 @@ package com.michaldrabik.ui_progress_movies.calendar
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.common.Config
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.CalendarMode
 import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.locale.AppLocale
 import com.michaldrabik.ui_progress_movies.calendar.cases.items.CalendarMoviesFutureCase
 import com.michaldrabik.ui_progress_movies.calendar.cases.items.CalendarMoviesRecentsCase
 import com.michaldrabik.ui_progress_movies.calendar.recycler.CalendarMovieListItem
@@ -85,11 +85,11 @@ class CalendarMoviesViewModel @Inject constructor(
 
   fun findMissingTranslation(item: CalendarMovieListItem) {
     check(item is CalendarMovieListItem.MovieItem)
-    val language = translationsRepository.getLanguage()
-    if (item.translation != null || language == Config.DEFAULT_LANGUAGE) return
+    val locale = translationsRepository.getLocale()
+    if (item.translation != null || locale == AppLocale.default()) return
     viewModelScope.launch {
       try {
-        val translation = translationsRepository.loadTranslation(item.movie, language)
+        val translation = translationsRepository.loadTranslation(item.movie, locale)
         updateItem(item.copy(translation = translation))
       } catch (error: Throwable) {
         Timber.e(error)

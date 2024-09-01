@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
-import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.dateFromMillis
 import com.michaldrabik.common.extensions.nowUtcDay
 import com.michaldrabik.common.extensions.nowUtcMillis
@@ -19,6 +18,7 @@ import com.michaldrabik.ui_model.ImageStatus
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_model.locale.AppLocale
 import dagger.hilt.android.qualifiers.ApplicationContext
 import timber.log.Timber
 import java.time.ZonedDateTime
@@ -43,11 +43,11 @@ class MovieAnnouncementScheduler @Inject constructor(
   suspend fun scheduleAnnouncement(
     context: Context,
     movie: Movie,
-    language: String,
+    locale: AppLocale
   ) {
     var translation: Translation? = null
-    if (language != Config.DEFAULT_LANGUAGE) {
-      translation = translationsRepository.loadTranslation(movie, language, onlyLocal = true)
+    if (locale != AppLocale.default()) {
+      translation = translationsRepository.loadTranslation(movie, locale, onlyLocal = true)
     }
 
     val data = Data.Builder().apply {
