@@ -14,7 +14,11 @@ fun nowUtcDay(): LocalDate = LocalDate.now()
 
 fun nowUtcMillis(): Long = nowUtc().toMillis()
 
-fun dateFromMillis(millis: Long): ZonedDateTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(millis), ZoneId.of("UTC"))
+fun dateFromMillis(millis: Long): ZonedDateTime =
+  ZonedDateTime.ofInstant(
+    Instant.ofEpochMilli(millis),
+    ZoneId.of("UTC"),
+  )
 
 fun dateIsoStringFromMillis(millis: Long): String = dateFromMillis(millis).format(DateTimeFormatter.ISO_INSTANT)
 
@@ -29,4 +33,11 @@ fun ZonedDateTime.isSameDayOrAfter(date: ZonedDateTime): Boolean =
 
 fun String?.toZonedDateTime(): ZonedDateTime? = if (this.isNullOrBlank()) null else ZonedDateTime.parse(this)
 
-fun String?.toUtcDateTime(): ZonedDateTime? = if (this.isNullOrBlank()) null else ZonedDateTime.parse(this).withZoneSameInstant(ZoneId.of("UTC"))
+fun String?.toUtcDateTime(): ZonedDateTime? =
+  if (this.isNullOrBlank()) {
+    null
+  } else {
+    ZonedDateTime.parse(
+      this,
+    ).withZoneSameInstant(ZoneId.of("UTC"))
+  }

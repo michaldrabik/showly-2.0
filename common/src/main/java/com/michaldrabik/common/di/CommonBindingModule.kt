@@ -12,7 +12,5 @@ import dagger.hilt.components.SingletonComponent
 internal abstract class CommonBindingModule {
 
   @Binds
-  abstract fun bindCoroutineDispatchers(
-    dispatchers: DefaultCoroutineDispatchers
-  ): CoroutineDispatchers
+  abstract fun bindCoroutineDispatchers(dispatchers: DefaultCoroutineDispatchers): CoroutineDispatchers
 }
