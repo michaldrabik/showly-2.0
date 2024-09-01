@@ -31,7 +31,9 @@ object TraktModule {
 
   @Provides
   @Singleton
-  fun providesTraktApi(@Named("retrofitTrakt") retrofit: Retrofit): TraktRemoteDataSource {
+  fun providesTraktApi(
+    @Named("retrofitTrakt") retrofit: Retrofit,
+  ): TraktRemoteDataSource {
     return TraktApi(
       showsService = retrofit.create(TraktShowsService::class.java),
       moviesService = retrofit.create(TraktMoviesService::class.java),
@@ -44,7 +46,9 @@ object TraktModule {
 
   @Provides
   @Singleton
-  fun providesAuthorizedTraktApi(@Named("retrofitAuthorizedTrakt") retrofit: Retrofit): AuthorizedTraktRemoteDataSource {
+  fun providesAuthorizedTraktApi(
+    @Named("retrofitAuthorizedTrakt") retrofit: Retrofit,
+  ): AuthorizedTraktRemoteDataSource {
     return AuthorizedTraktApi(
       usersService = retrofit.create(TraktUsersService::class.java),
       syncService = retrofit.create(TraktSyncService::class.java),
@@ -58,9 +62,10 @@ object TraktModule {
     @Named("networkPreferences") sharedPreferences: SharedPreferences,
     @Named("okHttpBase") okHttpClient: OkHttpClient,
     moshi: Moshi,
-  ): TokenProvider = TraktTokenProvider(
-    sharedPreferences = sharedPreferences,
-    moshi = moshi,
-    okHttpClient = okHttpClient
-  )
+  ): TokenProvider =
+    TraktTokenProvider(
+      sharedPreferences = sharedPreferences,
+      moshi = moshi,
+      okHttpClient = okHttpClient,
+    )
 }

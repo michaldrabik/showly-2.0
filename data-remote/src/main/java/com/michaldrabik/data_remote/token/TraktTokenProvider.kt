@@ -49,7 +49,10 @@ internal class TraktTokenProvider(
     return token
   }
 
-  override fun saveTokens(accessToken: String, refreshToken: String) {
+  override fun saveTokens(
+    accessToken: String,
+    refreshToken: String,
+  ) {
     sharedPreferences.edit()
       .putString(KEY_ACCESS_TOKEN, accessToken)
       .putString(KEY_REFRESH_TOKEN, refreshToken)
@@ -106,12 +109,18 @@ internal class TraktTokenProvider(
 
     return suspendCancellableCoroutine {
       val callback = object : Callback {
-        override fun onFailure(call: Call, e: IOException) {
+        override fun onFailure(
+          call: Call,
+          e: IOException,
+        ) {
           Timber.d("Refresh token call failed. $e")
           it.resumeWithException(Error("Refresh token call failed. $e"))
         }
 
-        override fun onResponse(call: Call, response: Response) {
+        override fun onResponse(
+          call: Call,
+          response: Response,
+        ) {
           if (response.isSuccessful) {
             Timber.d("Refresh token success!")
             val responseSource = response.body!!.source()

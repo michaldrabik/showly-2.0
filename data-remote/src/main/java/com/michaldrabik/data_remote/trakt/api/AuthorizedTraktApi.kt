@@ -29,17 +29,16 @@ internal class AuthorizedTraktApi(
   private val commentsService: TraktCommentsService,
 ) : AuthorizedTraktRemoteDataSource {
 
-  override suspend fun postComment(commentRequest: CommentRequest) =
-    commentsService.postComment(commentRequest)
+  override suspend fun postComment(commentRequest: CommentRequest) = commentsService.postComment(commentRequest)
 
-  override suspend fun postCommentReply(commentId: Long, commentRequest: CommentRequest) =
-    commentsService.postCommentReply(commentId, commentRequest)
+  override suspend fun postCommentReply(
+    commentId: Long,
+    commentRequest: CommentRequest,
+  ) = commentsService.postCommentReply(commentId, commentRequest)
 
-  override suspend fun deleteComment(commentId: Long) =
-    commentsService.deleteComment(commentId)
+  override suspend fun deleteComment(commentId: Long) = commentsService.deleteComment(commentId)
 
-  override suspend fun fetchMyProfile() =
-    usersService.fetchMyProfile()
+  override suspend fun fetchMyProfile() = usersService.fetchMyProfile()
 
   override suspend fun fetchHiddenShows(): List<HiddenItem> {
     var page = 1
@@ -115,13 +114,14 @@ internal class AuthorizedTraktApi(
     return results
   }
 
-  override suspend fun fetchSyncLists() =
-    usersService.fetchSyncLists()
+  override suspend fun fetchSyncLists() = usersService.fetchSyncLists()
 
-  override suspend fun fetchSyncList(listId: Long) =
-    usersService.fetchSyncList(listId)
+  override suspend fun fetchSyncList(listId: Long) = usersService.fetchSyncList(listId)
 
-  override suspend fun fetchSyncListItems(listId: Long, withMovies: Boolean): List<SyncItem> {
+  override suspend fun fetchSyncListItems(
+    listId: Long,
+    withMovies: Boolean,
+  ): List<SyncItem> {
     var page = 1
     val results = mutableListOf<SyncItem>()
     val types = arrayListOf("show")
@@ -137,7 +137,10 @@ internal class AuthorizedTraktApi(
     return results
   }
 
-  override suspend fun postCreateList(name: String, description: String?): CustomList {
+  override suspend fun postCreateList(
+    name: String,
+    description: String?,
+  ): CustomList {
     val body = CreateListRequest(name, description)
     return usersService.postCreateList(body)
   }
@@ -158,7 +161,7 @@ internal class AuthorizedTraktApi(
   ) {
     val body = SyncExportRequest(
       shows = showsIds.map { SyncExportItem.create(it, null) },
-      movies = moviesIds.map { SyncExportItem.create(it, null) }
+      movies = moviesIds.map { SyncExportItem.create(it, null) },
     )
     usersService.postAddListItems(listTraktId, body)
   }
@@ -170,19 +173,16 @@ internal class AuthorizedTraktApi(
   ) {
     val body = SyncExportRequest(
       shows = showsIds.map { SyncExportItem.create(it, null) },
-      movies = moviesIds.map { SyncExportItem.create(it, null) }
+      movies = moviesIds.map { SyncExportItem.create(it, null) },
     )
     usersService.postRemoveListItems(listTraktId, body)
   }
 
-  override suspend fun postSyncWatchlist(request: SyncExportRequest) =
-    syncService.postSyncWatchlist(request)
+  override suspend fun postSyncWatchlist(request: SyncExportRequest) = syncService.postSyncWatchlist(request)
 
-  override suspend fun postSyncWatched(request: SyncExportRequest) =
-    syncService.postSyncWatched(request)
+  override suspend fun postSyncWatched(request: SyncExportRequest) = syncService.postSyncWatched(request)
 
-  override suspend fun postDeleteProgress(request: SyncExportRequest) =
-    syncService.deleteHistory(request)
+  override suspend fun postDeleteProgress(request: SyncExportRequest) = syncService.deleteHistory(request)
 
   override suspend fun postDeleteWatchlist(request: SyncExportRequest) {
     syncService.deleteWatchlist(request)
@@ -220,41 +220,49 @@ internal class AuthorizedTraktApi(
     syncService.postRemoveRating(body)
   }
 
-  override suspend fun postRating(movie: Movie, rating: Int) {
+  override suspend fun postRating(
+    movie: Movie,
+    rating: Int,
+  ) {
     val requestValue = RatingRequestValue(rating, movie.ids)
     val body = RatingRequest(movies = listOf(requestValue))
     syncService.postRating(body)
   }
 
-  override suspend fun postRating(show: Show, rating: Int) {
+  override suspend fun postRating(
+    show: Show,
+    rating: Int,
+  ) {
     val requestValue = RatingRequestValue(rating, show.ids)
     val body = RatingRequest(shows = listOf(requestValue))
     syncService.postRating(body)
   }
 
-  override suspend fun postRating(episode: Episode, rating: Int) {
+  override suspend fun postRating(
+    episode: Episode,
+    rating: Int,
+  ) {
     val requestValue = RatingRequestValue(rating, episode.ids)
     val body = RatingRequest(episodes = listOf(requestValue))
     syncService.postRating(body)
   }
 
-  override suspend fun postRating(season: Season, rating: Int) {
+  override suspend fun postRating(
+    season: Season,
+    rating: Int,
+  ) {
     val requestValue = RatingRequestValue(rating, season.ids)
     val body = RatingRequest(seasons = listOf(requestValue))
     syncService.postRating(body)
   }
 
-  override suspend fun fetchShowsRatings() =
-    syncService.fetchShowsRatings()
+  override suspend fun fetchShowsRatings() = syncService.fetchShowsRatings()
 
-  override suspend fun fetchMoviesRatings() =
-    syncService.fetchMoviesRatings()
+  override suspend fun fetchMoviesRatings() = syncService.fetchMoviesRatings()
 
-  override suspend fun fetchEpisodesRatings() =
-    syncService.fetchEpisodesRatings()
+  override suspend fun fetchEpisodesRatings() = syncService.fetchEpisodesRatings()
 
-  override suspend fun fetchSeasonsRatings() =
-    syncService.fetchSeasonsRatings()
+  override suspend fun fetchSeasonsRatings() = syncService.fetchSeasonsRatings()
 }
 
 private fun Headers.getPaginationPageCount(): Int {

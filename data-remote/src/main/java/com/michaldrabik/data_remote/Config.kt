@@ -8,7 +8,8 @@ object Config {
   const val TRAKT_CLIENT_ID = BuildConfig.TRAKT_CLIENT_ID
   const val TRAKT_CLIENT_SECRET = BuildConfig.TRAKT_CLIENT_SECRET
   const val TRAKT_REDIRECT_URL = "showly2://trakt"
-  const val TRAKT_AUTHORIZE_URL = "https://trakt.tv/oauth/authorize?response_type=code&client_id=$TRAKT_CLIENT_ID&redirect_uri=$TRAKT_REDIRECT_URL"
+  const val TRAKT_AUTHORIZE_URL =
+    "https://trakt.tv/oauth/authorize?response_type=code&client_id=$TRAKT_CLIENT_ID&redirect_uri=$TRAKT_REDIRECT_URL"
   val TRAKT_TOKEN_REFRESH_DURATION: Duration = Duration.ofDays(30)
 
   const val TRAKT_POPULAR_SHOWS_LIMIT = 100

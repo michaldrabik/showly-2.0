@@ -11,5 +11,5 @@ data class Comment(
   val replies: Long?,
   val created_at: String?,
   val updated_at: String?,
-  val user: TraktUser?
+  val user: TraktUser?,
 )

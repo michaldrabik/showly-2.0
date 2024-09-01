@@ -9,5 +9,5 @@ data class CommentRequest(
   val movie: Movie? = null,
   val episode: Episode? = null,
   val comment: String,
-  val spoiler: Boolean
+  val spoiler: Boolean,
 )

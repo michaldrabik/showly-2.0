@@ -18,8 +18,9 @@ object TmdbModule {
 
   @Provides
   @Singleton
-  fun providesTmdbApi(@Named("retrofitTmdb") retrofit: Retrofit): TmdbRemoteDataSource =
-    TmdbApi(retrofit.create(TmdbService::class.java))
+  fun providesTmdbApi(
+    @Named("retrofitTmdb") retrofit: Retrofit,
+  ): TmdbRemoteDataSource = TmdbApi(retrofit.create(TmdbService::class.java))
 
   @Provides
   @Singleton

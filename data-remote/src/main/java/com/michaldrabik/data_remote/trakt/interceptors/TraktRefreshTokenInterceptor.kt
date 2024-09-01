@@ -25,7 +25,7 @@ class TraktRefreshTokenInterceptor @Inject constructor(
           val refreshedTokens = tokenProvider.refreshToken()
           tokenProvider.saveTokens(
             accessToken = refreshedTokens.access_token,
-            refreshToken = refreshedTokens.refresh_token
+            refreshToken = refreshedTokens.refresh_token,
           )
         } catch (error: Throwable) {
           if (error !is CancellationException && error.message != "Canceled") {

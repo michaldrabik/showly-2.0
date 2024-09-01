@@ -17,6 +17,7 @@ object AwsModule {
 
   @Provides
   @Singleton
-  fun providesAwsApi(@Named("retrofitAws") retrofit: Retrofit): AwsRemoteDataSource =
-    AwsApi(retrofit.create(AwsService::class.java))
+  fun providesAwsApi(
+    @Named("retrofitAws") retrofit: Retrofit,
+  ): AwsRemoteDataSource = AwsApi(retrofit.create(AwsService::class.java))
 }

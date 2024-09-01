@@ -92,11 +92,10 @@ object OkHttpModule {
   @Provides
   @Singleton
   @Named("okHttpAws")
-  fun providesAwsOkHttp(
-    httpLoggingInterceptor: HttpLoggingInterceptor,
-  ) = createBaseOkHttpClient()
-    .addInterceptor(httpLoggingInterceptor)
-    .build()
+  fun providesAwsOkHttp(httpLoggingInterceptor: HttpLoggingInterceptor) =
+    createBaseOkHttpClient()
+      .addInterceptor(httpLoggingInterceptor)
+      .build()
 
   @Provides
   @Singleton
@@ -108,8 +107,9 @@ object OkHttpModule {
       }
     }
 
-  private fun createBaseOkHttpClient() = OkHttpClient.Builder()
-    .writeTimeout(TIMEOUT_DURATION)
-    .readTimeout(TIMEOUT_DURATION)
-    .callTimeout(TIMEOUT_DURATION)
+  private fun createBaseOkHttpClient() =
+    OkHttpClient.Builder()
+      .writeTimeout(TIMEOUT_DURATION)
+      .readTimeout(TIMEOUT_DURATION)
+      .callTimeout(TIMEOUT_DURATION)
 }

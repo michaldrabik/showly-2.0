@@ -21,14 +21,14 @@ data class SyncActivity(
   )
 
   data class Episodes(
-    val watched_at: String
+    val watched_at: String,
   )
 
   data class Watchlist(
-    val updated_at: String
+    val updated_at: String,
   )
 
   data class Lists(
-    val updated_at: String
+    val updated_at: String,
   )
 }

@@ -16,19 +16,19 @@ data class TmdbPerson(
   val imdb_id: String?,
   val known_for_department: String?,
   val profile_path: String?,
-  val total_episode_count: Int?
+  val total_episode_count: Int?,
 ) {
 
   data class Role(
-    val character: String?
+    val character: String?,
   )
 
   data class Job(
-    val job: String?
+    val job: String?,
   )
 
   enum class Type {
     CAST,
-    CREW
+    CREW,
   }
 }

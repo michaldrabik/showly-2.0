@@ -12,5 +12,5 @@ data class Episode(
   val first_aired: String?,
   val runtime: Int?,
   val number_abs: Int?,
-  val last_watched_at: String?
+  val last_watched_at: String?,
 )

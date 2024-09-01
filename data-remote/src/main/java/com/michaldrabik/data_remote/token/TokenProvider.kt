@@ -12,7 +12,10 @@ interface TokenProvider {
   /**
    * Save access and refresh tokens.
    */
-  fun saveTokens(accessToken: String, refreshToken: String)
+  fun saveTokens(
+    accessToken: String,
+    refreshToken: String,
+  )
 
   /**
    * Revokes and deletes access and refresh tokens.

@@ -18,7 +18,10 @@ class TraktAuthenticator @Inject constructor(
 ) : Authenticator {
 
   @Synchronized
-  override fun authenticate(route: Route?, response: Response): Request? {
+  override fun authenticate(
+    route: Route?,
+    response: Response,
+  ): Request? {
     val token = tokenProvider.getToken()
     if (isAlreadyRefreshed(response, token)) {
       return response.request.newBuilder()
@@ -31,7 +34,7 @@ class TraktAuthenticator @Inject constructor(
         val newToken = tokenProvider.refreshToken()
         tokenProvider.saveTokens(
           accessToken = newToken.access_token,
-          refreshToken = newToken.refresh_token
+          refreshToken = newToken.refresh_token,
         )
         response.request.newBuilder()
           .header("Authorization", "Bearer ${newToken.access_token}")
@@ -47,7 +50,10 @@ class TraktAuthenticator @Inject constructor(
     }
   }
 
-  private fun isAlreadyRefreshed(response: Response, token: String?): Boolean {
+  private fun isAlreadyRefreshed(
+    response: Response,
+    token: String?,
+  ): Boolean {
     val authHeader = response.request.header("Authorization")
     return authHeader != null && !authHeader.contains(token.toString(), true)
   }

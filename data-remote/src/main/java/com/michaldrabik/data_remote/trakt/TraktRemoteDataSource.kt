@@ -33,21 +33,40 @@ interface TraktRemoteDataSource {
 
   suspend fun fetchShow(traktSlug: String): Show
 
-  suspend fun fetchPopularShows(genres: String, networks: String): List<Show>
+  suspend fun fetchPopularShows(
+    genres: String,
+    networks: String,
+  ): List<Show>
 
-  suspend fun fetchTrendingShows(genres: String, networks: String, limit: Int): List<Show>
+  suspend fun fetchTrendingShows(
+    genres: String,
+    networks: String,
+    limit: Int,
+  ): List<Show>
 
-  suspend fun fetchAnticipatedShows(genres: String, networks: String): List<Show>
+  suspend fun fetchAnticipatedShows(
+    genres: String,
+    networks: String,
+  ): List<Show>
 
-  suspend fun fetchRelatedShows(traktId: Long, addToLimit: Int): List<Show>
+  suspend fun fetchRelatedShows(
+    traktId: Long,
+    addToLimit: Int,
+  ): List<Show>
 
-  suspend fun fetchShowTranslations(traktId: Long, code: String): List<Translation>
+  suspend fun fetchShowTranslations(
+    traktId: Long,
+    code: String,
+  ): List<Translation>
 
   suspend fun fetchNextEpisode(traktId: Long): Episode?
 
   suspend fun fetchSeasons(traktId: Long): List<Season>
 
-  suspend fun fetchShowComments(traktId: Long, limit: Int): List<Comment>
+  suspend fun fetchShowComments(
+    traktId: Long,
+    limit: Int,
+  ): List<Comment>
 
   suspend fun fetchEpisodeComments(
     traktId: Long,
@@ -58,7 +77,7 @@ interface TraktRemoteDataSource {
   suspend fun fetchSeasonTranslations(
     showTraktId: Long,
     seasonNumber: Int,
-    code: String
+    code: String,
   ): List<SeasonTranslation>
 
   // Movies
@@ -69,15 +88,27 @@ interface TraktRemoteDataSource {
 
   suspend fun fetchPopularMovies(genres: String): List<Movie>
 
-  suspend fun fetchTrendingMovies(genres: String, limit: Int): List<Movie>
+  suspend fun fetchTrendingMovies(
+    genres: String,
+    limit: Int,
+  ): List<Movie>
 
   suspend fun fetchAnticipatedMovies(genres: String): List<Movie>
 
-  suspend fun fetchRelatedMovies(traktId: Long, addToLimit: Int): List<Movie>
+  suspend fun fetchRelatedMovies(
+    traktId: Long,
+    addToLimit: Int,
+  ): List<Movie>
 
-  suspend fun fetchMovieComments(traktId: Long, limit: Int): List<Comment>
+  suspend fun fetchMovieComments(
+    traktId: Long,
+    limit: Int,
+  ): List<Comment>
 
-  suspend fun fetchMovieTranslations(traktId: Long, code: String): List<Translation>
+  suspend fun fetchMovieTranslations(
+    traktId: Long,
+    code: String,
+  ): List<Translation>
 
   suspend fun fetchMovieCollections(traktId: Long): List<MovieCollection>
 
@@ -85,17 +116,32 @@ interface TraktRemoteDataSource {
 
   // People
 
-  suspend fun fetchPersonIds(idType: String, id: String): Ids?
+  suspend fun fetchPersonIds(
+    idType: String,
+    id: String,
+  ): Ids?
 
-  suspend fun fetchPersonShowsCredits(traktId: Long, type: TmdbPerson.Type): List<PersonCredit>
+  suspend fun fetchPersonShowsCredits(
+    traktId: Long,
+    type: TmdbPerson.Type,
+  ): List<PersonCredit>
 
-  suspend fun fetchPersonMoviesCredits(traktId: Long, type: TmdbPerson.Type): List<PersonCredit>
+  suspend fun fetchPersonMoviesCredits(
+    traktId: Long,
+    type: TmdbPerson.Type,
+  ): List<PersonCredit>
 
   // Search
 
-  suspend fun fetchSearch(query: String, withMovies: Boolean): List<SearchResult>
+  suspend fun fetchSearch(
+    query: String,
+    withMovies: Boolean,
+  ): List<SearchResult>
 
-  suspend fun fetchSearchId(idType: String, id: String): List<SearchResult>
+  suspend fun fetchSearchId(
+    idType: String,
+    id: String,
+  ): List<SearchResult>
 
   // Misc
 

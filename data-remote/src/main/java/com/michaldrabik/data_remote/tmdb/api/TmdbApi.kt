@@ -16,16 +16,19 @@ internal class TmdbApi(private val service: TmdbService) : TmdbRemoteDataSource 
       TmdbImages.EMPTY
     }
 
-  override suspend fun fetchEpisodeImage(showTmdbId: Long?, season: Int?, episode: Int?) =
-    try {
-      if (showTmdbId == null || showTmdbId <= 0) TmdbImages.EMPTY
-      if (season == null || season <= 0) TmdbImages.EMPTY
-      if (episode == null || episode <= 0) TmdbImages.EMPTY
-      val images = service.fetchEpisodeImages(showTmdbId, season, episode)
-      images.stills?.firstOrNull()
-    } catch (error: Throwable) {
-      null
-    }
+  override suspend fun fetchEpisodeImage(
+    showTmdbId: Long?,
+    season: Int?,
+    episode: Int?,
+  ) = try {
+    if (showTmdbId == null || showTmdbId <= 0) TmdbImages.EMPTY
+    if (season == null || season <= 0) TmdbImages.EMPTY
+    if (episode == null || episode <= 0) TmdbImages.EMPTY
+    val images = service.fetchEpisodeImages(showTmdbId, season, episode)
+    images.stills?.firstOrNull()
+  } catch (error: Throwable) {
+    null
+  }
 
   override suspend fun fetchMovieImages(tmdbId: Long) =
     try {
@@ -41,7 +44,7 @@ internal class TmdbApi(private val service: TmdbService) : TmdbRemoteDataSource 
     val crew = result.crew?.toList() ?: emptyList()
     return mapOf(
       TmdbPerson.Type.CAST to cast,
-      TmdbPerson.Type.CREW to crew
+      TmdbPerson.Type.CREW to crew,
     )
   }
 
@@ -51,11 +54,14 @@ internal class TmdbApi(private val service: TmdbService) : TmdbRemoteDataSource 
     val crew = result.crew?.toList() ?: emptyList()
     return mapOf(
       TmdbPerson.Type.CAST to cast,
-      TmdbPerson.Type.CREW to crew
+      TmdbPerson.Type.CREW to crew,
     )
   }
 
-  override suspend fun fetchShowWatchProviders(tmdbId: Long, countryCode: String): TmdbStreamingCountry? {
+  override suspend fun fetchShowWatchProviders(
+    tmdbId: Long,
+    countryCode: String,
+  ): TmdbStreamingCountry? {
     val result = service.fetchShowWatchProviders(tmdbId)
     val code = when (countryCode.uppercase()) {
       "UK" -> "GB"
@@ -64,7 +70,10 @@ internal class TmdbApi(private val service: TmdbService) : TmdbRemoteDataSource 
     return result.results[code]
   }
 
-  override suspend fun fetchMovieWatchProviders(tmdbId: Long, countryCode: String): TmdbStreamingCountry? {
+  override suspend fun fetchMovieWatchProviders(
+    tmdbId: Long,
+    countryCode: String,
+  ): TmdbStreamingCountry? {
     val result = service.fetchMovieWatchProviders(tmdbId)
     val code = when (countryCode.uppercase()) {
       "UK" -> "GB"
@@ -80,10 +89,12 @@ internal class TmdbApi(private val service: TmdbService) : TmdbRemoteDataSource 
   override suspend fun fetchPersonTranslations(id: Long): Map<String, TmdbTranslation.Data> {
     val result = service.fetchPersonTranslation(id).translations ?: emptyList()
     return result
-      .filter { if (it.iso_639_1.lowercase() != "zh") true else it.iso_3166_1.lowercase() == "cn" } // Chinese Simplified filter
+      .filter {
+        if (it.iso_639_1.lowercase() != "zh") true else it.iso_3166_1.lowercase() == "cn"
+      } // Chinese Simplified filter
       .associateBy(
         keySelector = { it.iso_639_1.lowercase() },
-        valueTransform = { it.data ?: TmdbTranslation.Data(null) }
+        valueTransform = { it.data ?: TmdbTranslation.Data(null) },
       )
   }
 

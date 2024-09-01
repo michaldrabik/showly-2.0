@@ -13,11 +13,11 @@ data class CustomList(
   val comment_count: Long,
   val likes: Long,
   val created_at: String,
-  val updated_at: String
+  val updated_at: String,
 ) {
 
   data class Ids(
     val trakt: Long,
-    val slug: String
+    val slug: String,
   )
 }

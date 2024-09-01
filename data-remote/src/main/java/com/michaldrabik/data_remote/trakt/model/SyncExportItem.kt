@@ -15,6 +15,6 @@ data class SyncExportItem(
   }
 
   data class Ids(
-    val trakt: Long
+    val trakt: Long,
   )
 }

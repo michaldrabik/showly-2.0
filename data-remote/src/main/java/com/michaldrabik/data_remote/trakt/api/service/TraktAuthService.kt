@@ -11,11 +11,17 @@ import retrofit2.http.POST
 interface TraktAuthService {
 
   @POST("oauth/token")
-  suspend fun fetchOAuthToken(@Body request: OAuthRequest): OAuthResponse
+  suspend fun fetchOAuthToken(
+    @Body request: OAuthRequest,
+  ): OAuthResponse
 
   @POST("oauth/token")
-  suspend fun refreshOAuthToken(@Body request: OAuthRefreshRequest): OAuthResponse
+  suspend fun refreshOAuthToken(
+    @Body request: OAuthRefreshRequest,
+  ): OAuthResponse
 
   @POST("oauth/revoke")
-  suspend fun revokeOAuthToken(@Body request: OAuthRevokeRequest): Response<Any>
+  suspend fun revokeOAuthToken(
+    @Body request: OAuthRevokeRequest,
+  ): Response<Any>
 }

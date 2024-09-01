@@ -24,23 +24,23 @@ interface TraktUsersService {
   @GET("users/hidden/progress_watched?type=show&extended=full")
   suspend fun fetchHiddenShows(
     @Query("page") page: Int,
-    @Query("limit") pageLimit: Int
+    @Query("limit") pageLimit: Int,
   ): Response<List<HiddenItem>>
 
   @POST("users/hidden/progress_watched")
   suspend fun postHiddenShows(
-    @Body request: SyncExportRequest
+    @Body request: SyncExportRequest,
   ): SyncExportResult
 
   @POST("users/hidden/calendar")
   suspend fun postHiddenMovies(
-    @Body request: SyncExportRequest
+    @Body request: SyncExportRequest,
   ): SyncExportResult
 
   @GET("users/hidden/calendar?type=movie&extended=full")
   suspend fun fetchHiddenMovies(
     @Query("page") page: Int,
-    @Query("limit") pageLimit: Int
+    @Query("limit") pageLimit: Int,
   ): Response<List<HiddenItem>>
 
   @GET("users/me/lists")
@@ -48,7 +48,7 @@ interface TraktUsersService {
 
   @GET("users/me/lists/{id}")
   suspend fun fetchSyncList(
-    @Path("id") listId: Long
+    @Path("id") listId: Long,
   ): CustomList
 
   @GET("users/me/lists/{id}/items/{types}?extended=full")
@@ -56,40 +56,40 @@ interface TraktUsersService {
     @Path("id") listId: Long,
     @Path("types") types: String,
     @Query("page") page: Int? = null,
-    @Query("limit") limit: Int? = null
+    @Query("limit") limit: Int? = null,
   ): Response<List<SyncItem>>
 
   @POST("users/me/lists")
   suspend fun postCreateList(
-    @Body request: CreateListRequest
+    @Body request: CreateListRequest,
   ): CustomList
 
   @PUT("users/me/lists/{id}")
   suspend fun postUpdateList(
     @Path("id") listId: Long,
-    @Body request: CreateListRequest
+    @Body request: CreateListRequest,
   ): CustomList
 
   @DELETE("users/me/lists/{id}")
   suspend fun deleteList(
-    @Path("id") listId: Long
+    @Path("id") listId: Long,
   ): Response<Any>
 
   @POST("users/me/lists/{id}/items")
   suspend fun postAddListItems(
     @Path("id") listId: Long,
-    @Body request: SyncExportRequest
+    @Body request: SyncExportRequest,
   ): SyncExportResult
 
   @POST("users/me/lists/{id}/items/remove")
   suspend fun postRemoveListItems(
     @Path("id") listId: Long,
-    @Body request: SyncExportRequest
+    @Body request: SyncExportRequest,
   ): SyncExportResult
 
   @POST("users/hidden/{section}/remove")
   suspend fun deleteHidden(
     @Path("section") section: String,
-    @Body request: SyncExportRequest
+    @Body request: SyncExportRequest,
   ): SyncExportResult
 }

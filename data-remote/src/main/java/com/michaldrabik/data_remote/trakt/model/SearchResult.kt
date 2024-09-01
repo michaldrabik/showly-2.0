@@ -5,5 +5,5 @@ data class SearchResult(
   val score: Float?,
   val show: Show?,
   val movie: Movie?,
-  val person: Person?
+  val person: Person?,
 )

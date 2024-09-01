@@ -18,8 +18,9 @@ object OmdbModule {
 
   @Provides
   @Singleton
-  fun providesOmdbApi(@Named("retrofitOmdb") retrofit: Retrofit): OmdbRemoteDataSource =
-    OmdbApi(retrofit.create(OmdbService::class.java))
+  fun providesOmdbApi(
+    @Named("retrofitOmdb") retrofit: Retrofit,
+  ): OmdbRemoteDataSource = OmdbApi(retrofit.create(OmdbService::class.java))
 
   @Provides
   @Singleton

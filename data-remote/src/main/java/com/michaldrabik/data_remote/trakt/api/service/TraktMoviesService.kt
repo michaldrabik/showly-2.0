@@ -14,10 +14,14 @@ import retrofit2.http.Query
 interface TraktMoviesService {
 
   @GET("movies/{traktId}?extended=full")
-  suspend fun fetchMovie(@Path("traktId") traktId: Long): Movie
+  suspend fun fetchMovie(
+    @Path("traktId") traktId: Long,
+  ): Movie
 
   @GET("movies/{traktSlug}?extended=full")
-  suspend fun fetchMovie(@Path("traktSlug") traktSlug: String): Movie
+  suspend fun fetchMovie(
+    @Path("traktSlug") traktSlug: String,
+  ): Movie
 
   @GET("movies/popular?extended=full&limit=${Config.TRAKT_POPULAR_MOVIES_LIMIT}")
   suspend fun fetchPopularMovies(
@@ -36,7 +40,10 @@ interface TraktMoviesService {
   ): List<MovieResult>
 
   @GET("movies/{traktId}/related?extended=full")
-  suspend fun fetchRelatedMovies(@Path("traktId") traktId: Long, @Query("limit") limit: Int): List<Movie>
+  suspend fun fetchRelatedMovies(
+    @Path("traktId") traktId: Long,
+    @Query("limit") limit: Int,
+  ): List<Movie>
 
   @GET("movies/{traktId}/comments/newest?extended=full")
   suspend fun fetchMovieComments(

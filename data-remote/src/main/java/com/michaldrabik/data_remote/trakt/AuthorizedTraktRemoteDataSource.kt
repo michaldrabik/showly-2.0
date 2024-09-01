@@ -27,7 +27,10 @@ interface AuthorizedTraktRemoteDataSource {
 
   suspend fun postComment(commentRequest: CommentRequest): Comment
 
-  suspend fun postCommentReply(commentId: Long, commentRequest: CommentRequest): Comment
+  suspend fun postCommentReply(
+    commentId: Long,
+    commentRequest: CommentRequest,
+  ): Comment
 
   suspend fun deleteComment(commentId: Long): Response<Any>
 
@@ -59,9 +62,15 @@ interface AuthorizedTraktRemoteDataSource {
 
   suspend fun fetchSyncList(listId: Long): CustomList
 
-  suspend fun fetchSyncListItems(listId: Long, withMovies: Boolean): List<SyncItem>
+  suspend fun fetchSyncListItems(
+    listId: Long,
+    withMovies: Boolean,
+  ): List<SyncItem>
 
-  suspend fun postCreateList(name: String, description: String?): CustomList
+  suspend fun postCreateList(
+    name: String,
+    description: String?,
+  ): CustomList
 
   suspend fun postUpdateList(customList: CustomList): CustomList
 
@@ -99,13 +108,25 @@ interface AuthorizedTraktRemoteDataSource {
 
   suspend fun deleteRating(season: Season)
 
-  suspend fun postRating(movie: Movie, rating: Int)
+  suspend fun postRating(
+    movie: Movie,
+    rating: Int,
+  )
 
-  suspend fun postRating(show: Show, rating: Int)
+  suspend fun postRating(
+    show: Show,
+    rating: Int,
+  )
 
-  suspend fun postRating(episode: Episode, rating: Int)
+  suspend fun postRating(
+    episode: Episode,
+    rating: Int,
+  )
 
-  suspend fun postRating(season: Season, rating: Int)
+  suspend fun postRating(
+    season: Season,
+    rating: Int,
+  )
 
   suspend fun fetchShowsRatings(): List<RatingResultShow>
 

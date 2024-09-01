@@ -17,9 +17,11 @@ object PreferencesModule {
   @Provides
   @Singleton
   @Named("networkPreferences")
-  fun providesNetworkPreferences(@ApplicationContext context: Context): SharedPreferences =
+  fun providesNetworkPreferences(
+    @ApplicationContext context: Context,
+  ): SharedPreferences =
     context.applicationContext.getSharedPreferences(
       "PREFERENCES_NETWORK",
-      Context.MODE_PRIVATE
+      Context.MODE_PRIVATE,
     )
 }

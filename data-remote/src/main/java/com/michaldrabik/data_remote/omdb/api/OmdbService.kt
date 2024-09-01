@@ -7,5 +7,7 @@ import retrofit2.http.Query
 interface OmdbService {
 
   @GET("/")
-  suspend fun fetchData(@Query("i") imdbId: String): OmdbResult
+  suspend fun fetchData(
+    @Query("i") imdbId: String,
+  ): OmdbResult
 }

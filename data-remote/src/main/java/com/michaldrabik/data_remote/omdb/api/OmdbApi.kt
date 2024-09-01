@@ -4,6 +4,5 @@ import com.michaldrabik.data_remote.omdb.OmdbRemoteDataSource
 
 internal class OmdbApi(private val service: OmdbService) : OmdbRemoteDataSource {
 
-  override suspend fun fetchOmdbData(imdbId: String) =
-    service.fetchData(imdbId)
+  override suspend fun fetchOmdbData(imdbId: String) = service.fetchData(imdbId)
 }

@@ -15,5 +15,5 @@ data class Movie(
   val votes: Long?,
   val comment_count: Long?,
   val genres: List<String>?,
-  val language: String?
+  val language: String?,
 )

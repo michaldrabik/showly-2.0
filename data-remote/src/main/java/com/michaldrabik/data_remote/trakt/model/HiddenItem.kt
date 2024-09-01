@@ -6,7 +6,7 @@ import java.time.ZonedDateTime
 data class HiddenItem(
   val show: Show?,
   val movie: Movie?,
-  val hidden_at: String?
+  val hidden_at: String?,
 ) {
 
   fun hiddenAtMillis() =

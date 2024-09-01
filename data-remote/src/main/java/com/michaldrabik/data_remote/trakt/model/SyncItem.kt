@@ -9,7 +9,7 @@ data class SyncItem(
   val seasons: List<Season>?,
   val last_watched_at: String?,
   val last_updated_at: String?,
-  val listed_at: String?
+  val listed_at: String?,
 ) {
 
   fun requireShow() = show!!
