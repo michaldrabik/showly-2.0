@@ -14,9 +14,9 @@ import androidx.room.PrimaryKey
       entity = Movie::class,
       parentColumns = arrayOf("id_trakt"),
       childColumns = arrayOf("id_trakt"),
-      onDelete = ForeignKey.CASCADE
-    )
-  ]
+      onDelete = ForeignKey.CASCADE,
+    ),
+  ],
 )
 data class MovieRatings(
   @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Long = 0,

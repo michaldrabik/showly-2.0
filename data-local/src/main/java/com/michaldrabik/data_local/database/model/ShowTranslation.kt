@@ -14,9 +14,9 @@ import androidx.room.PrimaryKey
       entity = Show::class,
       parentColumns = arrayOf("id_trakt"),
       childColumns = arrayOf("id_trakt"),
-      onDelete = ForeignKey.CASCADE
-    )
-  ]
+      onDelete = ForeignKey.CASCADE,
+    ),
+  ],
 )
 data class ShowTranslation(
   @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Long = 0,
@@ -25,7 +25,7 @@ data class ShowTranslation(
   @ColumnInfo(name = "language") val language: String,
   @ColumnInfo(name = "overview") val overview: String,
   @ColumnInfo(name = "created_at") val createdAt: Long,
-  @ColumnInfo(name = "updated_at") val updatedAt: Long
+  @ColumnInfo(name = "updated_at") val updatedAt: Long,
 ) {
 
   companion object {
@@ -34,15 +34,14 @@ data class ShowTranslation(
       title: String,
       language: String,
       overview: String,
-      createdAt: Long
-    ) =
-      ShowTranslation(
-        idTrakt = traktId,
-        title = title,
-        language = language,
-        overview = overview,
-        createdAt = createdAt,
-        updatedAt = createdAt
-      )
+      createdAt: Long,
+    ) = ShowTranslation(
+      idTrakt = traktId,
+      title = title,
+      language = language,
+      overview = overview,
+      createdAt = createdAt,
+      updatedAt = createdAt,
+    )
   }
 }

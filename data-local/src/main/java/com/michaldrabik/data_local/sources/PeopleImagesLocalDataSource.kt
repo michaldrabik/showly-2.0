@@ -10,5 +10,8 @@ interface PeopleImagesLocalDataSource {
 
   suspend fun deleteAllForPerson(personTmdbId: Long)
 
-  suspend fun insertSingle(personTmdbId: Long, images: List<PersonImage>)
+  suspend fun insertSingle(
+    personTmdbId: Long,
+    images: List<PersonImage>,
+  )
 }

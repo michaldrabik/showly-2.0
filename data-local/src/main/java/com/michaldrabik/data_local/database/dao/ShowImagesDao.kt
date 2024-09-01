@@ -12,10 +12,16 @@ import com.michaldrabik.data_local.sources.ShowImagesLocalDataSource
 interface ShowImagesDao : ShowImagesLocalDataSource {
 
   @Query("SELECT * FROM shows_images WHERE id_tmdb = :tmdbId AND type = :type AND family = 'show'")
-  override suspend fun getByShowId(tmdbId: Long, type: String): ShowImage?
+  override suspend fun getByShowId(
+    tmdbId: Long,
+    type: String,
+  ): ShowImage?
 
   @Query("SELECT * FROM shows_images WHERE id_tmdb = :tmdbId AND type = :type AND family = 'episode'")
-  override suspend fun getByEpisodeId(tmdbId: Long, type: String): ShowImage?
+  override suspend fun getByEpisodeId(
+    tmdbId: Long,
+    type: String,
+  ): ShowImage?
 
   @Transaction
   override suspend fun insertShowImage(image: ShowImage) {
@@ -43,10 +49,16 @@ interface ShowImagesDao : ShowImagesLocalDataSource {
   override suspend fun upsert(image: ShowImage)
 
   @Query("DELETE FROM shows_images WHERE id_tmdb = :id AND type = :type AND family = 'show'")
-  override suspend fun deleteByShowId(id: Long, type: String)
+  override suspend fun deleteByShowId(
+    id: Long,
+    type: String,
+  )
 
   @Query("DELETE FROM shows_images WHERE id_tmdb = :id AND type = :type AND family = 'episode'")
-  override suspend fun deleteByEpisodeId(id: Long, type: String)
+  override suspend fun deleteByEpisodeId(
+    id: Long,
+    type: String,
+  )
 
   @Query("DELETE FROM shows_images WHERE type = 'poster'")
   override suspend fun deleteAll()

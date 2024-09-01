@@ -131,7 +131,7 @@ import com.michaldrabik.data_local.database.model.WatchlistShow
     MovieCollection::class,
     MovieCollectionItem::class,
   ],
-  exportSchema = false
+  exportSchema = false,
 )
 abstract class AppDatabase : RoomDatabase() {
 

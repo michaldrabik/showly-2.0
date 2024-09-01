@@ -12,13 +12,30 @@ interface CustomListsLocalDataSource {
 
   suspend fun getById(id: Long): CustomList?
 
-  suspend fun updateTraktId(id: Long, idTrakt: Long, idSlug: String, timestamp: Long)
+  suspend fun updateTraktId(
+    id: Long,
+    idTrakt: Long,
+    idSlug: String,
+    timestamp: Long,
+  )
 
-  suspend fun updateTimestamp(id: Long, timestamp: Long)
+  suspend fun updateTimestamp(
+    id: Long,
+    timestamp: Long,
+  )
 
-  suspend fun updateSortByLocal(id: Long, sortBy: String, sortHow: String, timestamp: Long)
+  suspend fun updateSortByLocal(
+    id: Long,
+    sortBy: String,
+    sortHow: String,
+    timestamp: Long,
+  )
 
-  suspend fun updateFilterTypeLocal(id: Long, filterType: String, timestamp: Long)
+  suspend fun updateFilterTypeLocal(
+    id: Long,
+    filterType: String,
+    timestamp: Long,
+  )
 
   suspend fun deleteById(id: Long)
 

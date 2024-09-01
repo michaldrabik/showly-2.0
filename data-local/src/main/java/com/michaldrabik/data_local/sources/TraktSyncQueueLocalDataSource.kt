@@ -10,7 +10,10 @@ interface TraktSyncQueueLocalDataSource {
 
   suspend fun getAll(types: List<String>): List<TraktSyncQueue>
 
-  suspend fun deleteAll(idsTrakt: List<Long>, type: String): Int
+  suspend fun deleteAll(
+    idsTrakt: List<Long>,
+    type: String,
+  ): Int
 
   suspend fun deleteAll(type: String): Int
 
@@ -20,5 +23,10 @@ interface TraktSyncQueueLocalDataSource {
 
   suspend fun delete(items: List<TraktSyncQueue>)
 
-  suspend fun delete(idTrakt: Long, idList: Long, type: String, operation: String): Int
+  suspend fun delete(
+    idTrakt: Long,
+    idList: Long,
+    type: String,
+    operation: String,
+  ): Int
 }

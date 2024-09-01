@@ -10,7 +10,7 @@ import java.time.ZonedDateTime
 
 @Entity(
   tableName = "seasons",
-  indices = [Index("id_show_trakt")]
+  indices = [Index("id_show_trakt")],
 )
 @TypeConverters(DateConverter::class)
 data class Season(
@@ -23,5 +23,5 @@ data class Season(
   @ColumnInfo(name = "episodes_count") val episodesCount: Int,
   @ColumnInfo(name = "episodes_aired_count") val episodesAiredCount: Int,
   @ColumnInfo(name = "rating") val rating: Float?,
-  @ColumnInfo(name = "is_watched") val isWatched: Boolean
+  @ColumnInfo(name = "is_watched") val isWatched: Boolean,
 )

@@ -8,7 +8,10 @@ interface MovieCollectionsLocalDataSource {
 
   suspend fun getByMovieId(movieTraktId: Long): List<MovieCollection>
 
-  suspend fun replaceByMovieId(movieTraktId: Long, entities: List<MovieCollection>)
+  suspend fun replaceByMovieId(
+    movieTraktId: Long,
+    entities: List<MovieCollection>,
+  )
 
   suspend fun insertAll(items: List<MovieCollection>)
 }

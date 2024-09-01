@@ -8,13 +8,22 @@ interface RatingsLocalDataSource {
 
   suspend fun getAllByType(type: String): List<Rating>
 
-  suspend fun getAllByType(idsTrakt: List<Long>, type: String): List<Rating>
+  suspend fun getAllByType(
+    idsTrakt: List<Long>,
+    type: String,
+  ): List<Rating>
 
   suspend fun deleteAllByType(type: String)
 
-  suspend fun deleteByType(traktId: Long, type: String)
+  suspend fun deleteByType(
+    traktId: Long,
+    type: String,
+  )
 
-  suspend fun replaceAll(ratings: List<Rating>, type: String)
+  suspend fun replaceAll(
+    ratings: List<Rating>,
+    type: String,
+  )
 
   suspend fun replace(rating: Rating)
 }

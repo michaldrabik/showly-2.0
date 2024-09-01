@@ -1,6 +1,7 @@
+@file:Suppress("ktlint")
+
 package com.michaldrabik.data_local.database.dao
 
-/* ktlint-disable */
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
@@ -25,7 +26,9 @@ interface PeopleDao : BaseDao<Person>, PeopleLocalDataSource {
   @Query("SELECT * FROM people WHERE id_tmdb = :tmdbId")
   override suspend fun getById(tmdbId: Long): Person?
 
-  @Query("SELECT people.*, people_shows_movies.department AS department, people_shows_movies.character AS character, people_shows_movies.job AS job, people_shows_movies.episodes_count AS episodes_count FROM people INNER JOIN people_shows_movies ON people_shows_movies.id_tmdb_person = people.id_tmdb WHERE people_shows_movies.id_trakt_show = :showTraktId")
+  @Query(
+    "SELECT people.*, people_shows_movies.department AS department, people_shows_movies.character AS character, people_shows_movies.job AS job, people_shows_movies.episodes_count AS episodes_count FROM people INNER JOIN people_shows_movies ON people_shows_movies.id_tmdb_person = people.id_tmdb WHERE people_shows_movies.id_trakt_show = :showTraktId"
+  )
   override suspend fun getAllForShow(showTraktId: Long): List<Person>
 
   @Query("SELECT people.*, people_shows_movies.department AS department, people_shows_movies.character AS character, people_shows_movies.job AS job, people_shows_movies.episodes_count AS episodes_count FROM people INNER JOIN people_shows_movies ON people_shows_movies.id_tmdb_person = people.id_tmdb WHERE people_shows_movies.id_trakt_movie = :movieTraktId")

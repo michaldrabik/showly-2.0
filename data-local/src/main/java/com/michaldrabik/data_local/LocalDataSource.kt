@@ -42,10 +42,11 @@ import com.michaldrabik.data_local.sources.WatchlistShowsLocalDataSource
 import javax.inject.Inject
 import javax.inject.Singleton
 
+// TODO Refactor. Split or remove this wrapper at all. Clients do not need to be exposed to everything.
+
 /**
  * Provides local data sources access points.
  */
-// TODO Refactor. Split or remove this wrapper at all. Clients do not need to be exposed to everything.
 interface LocalDataSource {
   val archiveMovies: ArchiveMoviesLocalDataSource
   val archiveShows: ArchiveShowsLocalDataSource
@@ -128,5 +129,5 @@ internal class MainLocalDataSource @Inject constructor(
   override val translationsShowsSyncLog: TranslationsShowsSyncLogLocalDataSource,
   override val user: UserLocalDataSource,
   override val watchlistMovies: WatchlistMoviesLocalDataSource,
-  override val watchlistShows: WatchlistShowsLocalDataSource
+  override val watchlistShows: WatchlistShowsLocalDataSource,
 ) : LocalDataSource

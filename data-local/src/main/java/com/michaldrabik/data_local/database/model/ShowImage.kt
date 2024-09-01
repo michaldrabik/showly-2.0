@@ -8,10 +8,9 @@ import androidx.room.PrimaryKey
 @Entity(
   tableName = "shows_images",
   indices = [
-    Index(value = ["id_tmdb", "type", "family"])
-  ]
+    Index(value = ["id_tmdb", "type", "family"]),
+  ],
 )
-
 data class ShowImage(
   @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Long = 0,
   @ColumnInfo(name = "id_tvdb", defaultValue = "-1") val idTvdb: Long,
@@ -20,5 +19,5 @@ data class ShowImage(
   @ColumnInfo(name = "family", defaultValue = "") val family: String,
   @ColumnInfo(name = "file_url", defaultValue = "") val fileUrl: String,
   @ColumnInfo(name = "thumbnail_url", defaultValue = "") val thumbnailUrl: String,
-  @ColumnInfo(name = "source", defaultValue = "tvdb") val source: String
+  @ColumnInfo(name = "source", defaultValue = "tvdb") val source: String,
 )

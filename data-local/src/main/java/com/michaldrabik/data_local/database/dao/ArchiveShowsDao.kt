@@ -1,4 +1,6 @@
-// ktlint-disable max-line-length
+
+@file:Suppress("ktlint:standard:max-line-length")
+
 package com.michaldrabik.data_local.database.dao
 
 import androidx.room.Dao
@@ -12,10 +14,14 @@ import com.michaldrabik.data_local.sources.ArchiveShowsLocalDataSource
 @Dao
 interface ArchiveShowsDao : ArchiveShowsLocalDataSource {
 
-  @Query("SELECT shows.*, shows_archive.created_at AS created_at, shows_archive.updated_at AS updated_at FROM shows INNER JOIN shows_archive USING(id_trakt)")
+  @Query(
+    "SELECT shows.*, shows_archive.created_at AS created_at, shows_archive.updated_at AS updated_at FROM shows INNER JOIN shows_archive USING(id_trakt)",
+  )
   override suspend fun getAll(): List<Show>
 
-  @Query("SELECT shows.*, shows_archive.created_at AS created_at, shows_archive.updated_at AS updated_at FROM shows INNER JOIN shows_archive USING(id_trakt) WHERE id_trakt IN (:ids)")
+  @Query(
+    "SELECT shows.*, shows_archive.created_at AS created_at, shows_archive.updated_at AS updated_at FROM shows INNER JOIN shows_archive USING(id_trakt) WHERE id_trakt IN (:ids)",
+  )
   override suspend fun getAll(ids: List<Long>): List<Show>
 
   @Query("SELECT shows.id_trakt FROM shows INNER JOIN shows_archive USING(id_trakt)")

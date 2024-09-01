@@ -12,7 +12,7 @@ import java.time.ZonedDateTime
   primaryKeys = ["id_trakt", "type"],
   indices = [
     Index(value = ["id_trakt", "type"], unique = false),
-  ]
+  ],
 )
 @TypeConverters(DateConverter::class)
 data class Rating(
@@ -23,5 +23,5 @@ data class Rating(
   @ColumnInfo(name = "episode_number") val episodeNumber: Int?,
   @ColumnInfo(name = "rated_at") val ratedAt: ZonedDateTime,
   @ColumnInfo(name = "created_at") val createdAt: ZonedDateTime,
-  @ColumnInfo(name = "updated_at") val updatedAt: ZonedDateTime
+  @ColumnInfo(name = "updated_at") val updatedAt: ZonedDateTime,
 )

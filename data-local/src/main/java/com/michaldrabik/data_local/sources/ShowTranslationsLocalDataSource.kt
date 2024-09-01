@@ -4,7 +4,10 @@ import com.michaldrabik.data_local.database.model.ShowTranslation
 
 interface ShowTranslationsLocalDataSource {
 
-  suspend fun getById(traktId: Long, language: String): ShowTranslation?
+  suspend fun getById(
+    traktId: Long,
+    language: String,
+  ): ShowTranslation?
 
   suspend fun getAll(language: String): List<ShowTranslation>
 

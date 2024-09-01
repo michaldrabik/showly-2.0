@@ -14,5 +14,8 @@ interface PeopleCreditsLocalDataSource {
 
   suspend fun deleteAllForPerson(personTraktId: Long)
 
-  suspend fun insertSingle(personTraktId: Long, credits: List<PersonCredits>)
+  suspend fun insertSingle(
+    personTraktId: Long,
+    credits: List<PersonCredits>,
+  )
 }

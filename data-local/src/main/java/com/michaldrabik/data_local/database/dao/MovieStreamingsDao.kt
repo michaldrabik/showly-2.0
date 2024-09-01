@@ -10,7 +10,10 @@ import com.michaldrabik.data_local.sources.MovieStreamingsLocalDataSource
 interface MovieStreamingsDao : BaseDao<MovieStreaming>, MovieStreamingsLocalDataSource {
 
   @Transaction
-  override suspend fun replace(traktId: Long, entities: List<MovieStreaming>) {
+  override suspend fun replace(
+    traktId: Long,
+    entities: List<MovieStreaming>,
+  ) {
     deleteById(traktId)
     insert(entities)
   }

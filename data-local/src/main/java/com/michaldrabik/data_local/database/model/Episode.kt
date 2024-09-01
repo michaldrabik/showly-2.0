@@ -17,13 +17,13 @@ import java.time.ZonedDateTime
       entity = Season::class,
       parentColumns = arrayOf("id_trakt"),
       childColumns = arrayOf("id_season"),
-      onDelete = CASCADE
-    )
+      onDelete = CASCADE,
+    ),
   ],
   indices = [
     Index("id_season"),
-    Index("id_show_trakt")
-  ]
+    Index("id_show_trakt"),
+  ],
 )
 @TypeConverters(DateConverter::class)
 data class Episode(

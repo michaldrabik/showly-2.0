@@ -1,4 +1,6 @@
-// ktlint-disable max-line-length
+
+@file:Suppress("ktlint:standard:max-line-length")
+
 package com.michaldrabik.data_local.database.dao
 
 import androidx.room.Dao
@@ -12,13 +14,17 @@ import com.michaldrabik.data_local.sources.WatchlistShowsLocalDataSource
 @Dao
 interface WatchlistShowsDao : WatchlistShowsLocalDataSource {
 
-  @Query("SELECT shows.*, shows_see_later.created_at AS created_at, shows_see_later.updated_at AS updated_at FROM shows INNER JOIN shows_see_later USING(id_trakt)")
+  @Query(
+    "SELECT shows.*, shows_see_later.created_at AS created_at, shows_see_later.updated_at AS updated_at FROM shows INNER JOIN shows_see_later USING(id_trakt)",
+  )
   override suspend fun getAll(): List<Show>
 
   @Query("SELECT shows.id_trakt FROM shows INNER JOIN shows_see_later USING(id_trakt)")
   override suspend fun getAllTraktIds(): List<Long>
 
-  @Query("SELECT shows.* FROM shows INNER JOIN shows_see_later ON shows_see_later.id_trakt == shows.id_trakt WHERE shows.id_trakt == :traktId")
+  @Query(
+    "SELECT shows.* FROM shows INNER JOIN shows_see_later ON shows_see_later.id_trakt == shows.id_trakt WHERE shows.id_trakt == :traktId",
+  )
   override suspend fun getById(traktId: Long): Show?
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)

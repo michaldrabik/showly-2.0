@@ -16,16 +16,25 @@ interface RatingsDao : BaseDao<Rating>, RatingsLocalDataSource {
   override suspend fun getAllByType(type: String): List<Rating>
 
   @Query("SELECT * FROM ratings WHERE id_trakt IN (:idsTrakt) AND type == :type")
-  override suspend fun getAllByType(idsTrakt: List<Long>, type: String): List<Rating>
+  override suspend fun getAllByType(
+    idsTrakt: List<Long>,
+    type: String,
+  ): List<Rating>
 
   @Query("DELETE FROM ratings WHERE type == :type")
   override suspend fun deleteAllByType(type: String)
 
   @Query("DELETE FROM ratings WHERE id_trakt == :traktId AND type == :type")
-  override suspend fun deleteByType(traktId: Long, type: String)
+  override suspend fun deleteByType(
+    traktId: Long,
+    type: String,
+  )
 
   @Transaction
-  override suspend fun replaceAll(ratings: List<Rating>, type: String) {
+  override suspend fun replaceAll(
+    ratings: List<Rating>,
+    type: String,
+  ) {
     deleteAllByType(type)
     insert(ratings)
   }

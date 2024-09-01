@@ -11,8 +11,8 @@ import java.time.ZonedDateTime
 @Entity(
   tableName = "people_images",
   indices = [
-    Index(value = ["id_tmdb"])
-  ]
+    Index(value = ["id_tmdb"]),
+  ],
 )
 @TypeConverters(DateConverter::class)
 data class PersonImage(
@@ -20,5 +20,5 @@ data class PersonImage(
   @ColumnInfo(name = "id_tmdb") val idTmdb: Long,
   @ColumnInfo(name = "file_path") val filePath: String,
   @ColumnInfo(name = "created_at") val createdAt: ZonedDateTime,
-  @ColumnInfo(name = "updated_at") val updatedAt: ZonedDateTime
+  @ColumnInfo(name = "updated_at") val updatedAt: ZonedDateTime,
 )

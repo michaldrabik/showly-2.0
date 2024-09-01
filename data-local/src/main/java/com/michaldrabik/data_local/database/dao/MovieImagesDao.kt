@@ -12,7 +12,10 @@ import com.michaldrabik.data_local.sources.MovieImagesLocalDataSource
 interface MovieImagesDao : MovieImagesLocalDataSource {
 
   @Query("SELECT * FROM movies_images WHERE id_tmdb = :tmdbId AND type = :type")
-  override suspend fun getByMovieId(tmdbId: Long, type: String): MovieImage?
+  override suspend fun getByMovieId(
+    tmdbId: Long,
+    type: String,
+  ): MovieImage?
 
   @Transaction
   override suspend fun insertMovieImage(image: MovieImage) {
@@ -29,7 +32,10 @@ interface MovieImagesDao : MovieImagesLocalDataSource {
   override suspend fun upsert(image: MovieImage)
 
   @Query("DELETE FROM movies_images WHERE id_tmdb = :id AND type = :type")
-  override suspend fun deleteByMovieId(id: Long, type: String)
+  override suspend fun deleteByMovieId(
+    id: Long,
+    type: String,
+  )
 
   @Query("DELETE FROM movies_images WHERE type = 'poster'")
   override suspend fun deleteAll()

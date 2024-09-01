@@ -8,10 +8,8 @@ import java.time.ZonedDateTime
 class DateConverter {
 
   @TypeConverter
-  fun stringToDate(value: Long?) =
-    value?.let { ZonedDateTime.ofInstant(Instant.ofEpochMilli(it), ZoneId.of("UTC")) }
+  fun stringToDate(value: Long?) = value?.let { ZonedDateTime.ofInstant(Instant.ofEpochMilli(it), ZoneId.of("UTC")) }
 
   @TypeConverter
-  fun dateToString(date: ZonedDateTime?) =
-    date?.toInstant()?.toEpochMilli()
+  fun dateToString(date: ZonedDateTime?) = date?.toInstant()?.toEpochMilli()
 }

@@ -11,13 +11,19 @@ import com.michaldrabik.data_local.sources.WatchlistMoviesLocalDataSource
 @Dao
 interface WatchlistMoviesDao : WatchlistMoviesLocalDataSource {
 
-  @Query("SELECT movies.*, movies_see_later.created_at, movies_see_later.updated_at FROM movies INNER JOIN movies_see_later USING(id_trakt)")
+  @Query(
+    "SELECT movies.*, movies_see_later.created_at, movies_see_later.updated_at FROM movies " +
+      "INNER JOIN movies_see_later USING(id_trakt)",
+  )
   override suspend fun getAll(): List<Movie>
 
   @Query("SELECT movies.id_trakt FROM movies INNER JOIN movies_see_later USING(id_trakt)")
   override suspend fun getAllTraktIds(): List<Long>
 
-  @Query("SELECT movies.* FROM movies INNER JOIN movies_see_later ON movies_see_later.id_trakt == movies.id_trakt WHERE movies.id_trakt == :traktId")
+  @Query(
+    "SELECT movies.* FROM movies " +
+      "INNER JOIN movies_see_later ON movies_see_later.id_trakt == movies.id_trakt WHERE movies.id_trakt == :traktId",
+  )
   override suspend fun getById(traktId: Long): Movie?
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)

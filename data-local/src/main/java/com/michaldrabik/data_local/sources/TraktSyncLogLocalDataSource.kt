@@ -8,9 +8,16 @@ interface TraktSyncLogLocalDataSource {
 
   suspend fun insert(log: TraktSyncLog)
 
-  suspend fun update(idTrakt: Long, type: String, syncedAt: Long): Int
+  suspend fun update(
+    idTrakt: Long,
+    type: String,
+    syncedAt: Long,
+  ): Int
 
   suspend fun deleteAll()
 
-  suspend fun upsertShow(idTrakt: Long, syncedAt: Long)
+  suspend fun upsertShow(
+    idTrakt: Long,
+    syncedAt: Long,
+  )
 }

@@ -21,9 +21,9 @@ interface ShowRatingsDao : BaseDao<ShowRatings>, ShowRatingsLocalDataSource {
             metascore = entity.metascore,
             rottenTomatoes = entity.rottenTomatoes,
             rottenTomatoesUrl = entity.rottenTomatoesUrl,
-            updatedAt = entity.updatedAt
-          )
-        )
+            updatedAt = entity.updatedAt,
+          ),
+        ),
       )
       return
     }

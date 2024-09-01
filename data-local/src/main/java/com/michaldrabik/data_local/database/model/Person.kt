@@ -13,7 +13,7 @@ import java.time.ZonedDateTime
   indices = [
     Index(value = ["id_trakt"]),
     Index(value = ["id_tmdb"], unique = true),
-  ]
+  ],
 )
 @TypeConverters(DateConverter::class)
 data class Person(

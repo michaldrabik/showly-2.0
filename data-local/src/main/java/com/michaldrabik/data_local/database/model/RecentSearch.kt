@@ -9,5 +9,5 @@ data class RecentSearch(
   @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Long,
   @ColumnInfo(name = "text", defaultValue = "") val text: String,
   @ColumnInfo(name = "created_at", defaultValue = "-1") val createdAt: Long,
-  @ColumnInfo(name = "updated_at", defaultValue = "-1") val updatedAt: Long
+  @ColumnInfo(name = "updated_at", defaultValue = "-1") val updatedAt: Long,
 )

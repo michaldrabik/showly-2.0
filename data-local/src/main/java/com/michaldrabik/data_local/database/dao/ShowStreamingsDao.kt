@@ -10,7 +10,10 @@ import com.michaldrabik.data_local.sources.ShowStreamingsLocalDataSource
 interface ShowStreamingsDao : BaseDao<ShowStreaming>, ShowStreamingsLocalDataSource {
 
   @Transaction
-  override suspend fun replace(traktId: Long, entities: List<ShowStreaming>) {
+  override suspend fun replace(
+    traktId: Long,
+    entities: List<ShowStreaming>,
+  ) {
     deleteById(traktId)
     insert(entities)
   }

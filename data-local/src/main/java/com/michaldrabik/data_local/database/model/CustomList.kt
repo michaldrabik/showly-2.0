@@ -8,8 +8,8 @@ import androidx.room.PrimaryKey
 @Entity(
   tableName = "custom_lists",
   indices = [
-    Index(value = ["id_trakt"], unique = true)
-  ]
+    Index(value = ["id_trakt"], unique = true),
+  ],
 )
 data class CustomList(
   @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Long = 0,
@@ -29,5 +29,5 @@ data class CustomList(
   @ColumnInfo(name = "comment_count") val commentCount: Long,
   @ColumnInfo(name = "likes") val likes: Long,
   @ColumnInfo(name = "created_at") val createdAt: Long,
-  @ColumnInfo(name = "updated_at") val updatedAt: Long
+  @ColumnInfo(name = "updated_at") val updatedAt: Long,
 )

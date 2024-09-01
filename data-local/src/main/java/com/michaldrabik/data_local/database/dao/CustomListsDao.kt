@@ -24,16 +24,36 @@ interface CustomListsDao : CustomListsLocalDataSource {
   override suspend fun getById(id: Long): CustomList?
 
   @Query("UPDATE custom_lists SET id_trakt = :idTrakt, id_slug = :idSlug, updated_at = :timestamp WHERE id == :id")
-  override suspend fun updateTraktId(id: Long, idTrakt: Long, idSlug: String, timestamp: Long)
+  override suspend fun updateTraktId(
+    id: Long,
+    idTrakt: Long,
+    idSlug: String,
+    timestamp: Long,
+  )
 
   @Query("UPDATE custom_lists SET updated_at = :timestamp WHERE id == :id")
-  override suspend fun updateTimestamp(id: Long, timestamp: Long)
+  override suspend fun updateTimestamp(
+    id: Long,
+    timestamp: Long,
+  )
 
-  @Query("UPDATE custom_lists SET sort_by_local = :sortBy, sort_how_local = :sortHow, updated_at = :timestamp WHERE id == :id")
-  override suspend fun updateSortByLocal(id: Long, sortBy: String, sortHow: String, timestamp: Long)
+  @Query(
+    "UPDATE custom_lists SET sort_by_local = :sortBy, sort_how_local = :sortHow, updated_at = :timestamp " +
+      "WHERE id == :id",
+  )
+  override suspend fun updateSortByLocal(
+    id: Long,
+    sortBy: String,
+    sortHow: String,
+    timestamp: Long,
+  )
 
   @Query("UPDATE custom_lists SET filter_type_local = :filterType, updated_at = :timestamp WHERE id == :id")
-  override suspend fun updateFilterTypeLocal(id: Long, filterType: String, timestamp: Long)
+  override suspend fun updateFilterTypeLocal(
+    id: Long,
+    filterType: String,
+    timestamp: Long,
+  )
 
   @Query("DELETE FROM custom_lists WHERE id == :id")
   override suspend fun deleteById(id: Long)

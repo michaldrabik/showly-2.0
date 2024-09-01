@@ -12,7 +12,13 @@ interface PeopleShowsMoviesLocalDataSource {
 
   suspend fun deleteAllForMovie(movieTraktId: Long)
 
-  suspend fun insertForShow(people: List<PersonShowMovie>, showTraktId: Long)
+  suspend fun insertForShow(
+    people: List<PersonShowMovie>,
+    showTraktId: Long,
+  )
 
-  suspend fun insertForMovie(people: List<PersonShowMovie>, movieTraktId: Long)
+  suspend fun insertForMovie(
+    people: List<PersonShowMovie>,
+    movieTraktId: Long,
+  )
 }

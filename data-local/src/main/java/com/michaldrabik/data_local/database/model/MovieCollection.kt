@@ -20,9 +20,9 @@ import java.time.ZonedDateTime
       entity = Movie::class,
       parentColumns = arrayOf("id_trakt"),
       childColumns = arrayOf("id_trakt_movie"),
-      onDelete = ForeignKey.CASCADE
-    )
-  ]
+      onDelete = ForeignKey.CASCADE,
+    ),
+  ],
 )
 @TypeConverters(DateConverter::class)
 data class MovieCollection(

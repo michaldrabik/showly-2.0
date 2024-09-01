@@ -16,14 +16,15 @@ interface MoviesDao : BaseDao<Movie>, MoviesLocalDataSource {
   override suspend fun getAll(ids: List<Long>): List<Movie>
 
   @Transaction
-  override suspend fun getAllChunked(ids: List<Long>): List<Movie> = ids
-    .chunked(500)
-    .fold(
-      mutableListOf()
-    ) { acc, chunk ->
-      acc += getAll(chunk)
-      acc
-    }
+  override suspend fun getAllChunked(ids: List<Long>): List<Movie> =
+    ids
+      .chunked(500)
+      .fold(
+        mutableListOf(),
+      ) { acc, chunk ->
+        acc += getAll(chunk)
+        acc
+      }
 
   @Query("SELECT * FROM movies WHERE id_trakt == :traktId")
   override suspend fun getById(traktId: Long): Movie?

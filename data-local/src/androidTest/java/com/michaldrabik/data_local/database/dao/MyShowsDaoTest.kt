@@ -18,13 +18,14 @@ class MyShowsDaoTest : BaseDaoTest() {
   private val shows = mutableListOf<Show>()
 
   @Before
-  fun setUp() = runBlocking {
-    shows.add(TestData.createShow().copy(idTrakt = 1))
-    shows.add(TestData.createShow().copy(idTrakt = 2))
-    shows.add(TestData.createShow().copy(idTrakt = 3))
+  fun setUp() =
+    runBlocking {
+      shows.add(TestData.createShow().copy(idTrakt = 1))
+      shows.add(TestData.createShow().copy(idTrakt = 2))
+      shows.add(TestData.createShow().copy(idTrakt = 3))
 
-    database.showsDao().upsert(shows)
-  }
+      database.showsDao().upsert(shows)
+    }
 
   @Test
   fun shouldInsertAndStoreEntities() {

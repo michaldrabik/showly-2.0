@@ -25,5 +25,5 @@ data class Movie(
   @ColumnInfo(name = "comment_count", defaultValue = "-1") val commentCount: Long,
   @ColumnInfo(name = "genres", defaultValue = "") val genres: String,
   @ColumnInfo(name = "updated_at", defaultValue = "-1") val updatedAt: Long,
-  @ColumnInfo(name = "created_at", defaultValue = "-1") val createdAt: Long
+  @ColumnInfo(name = "created_at", defaultValue = "-1") val createdAt: Long,
 )

@@ -11,16 +11,22 @@ import com.michaldrabik.data_local.sources.MyMoviesLocalDataSource
 @Dao
 interface MyMoviesDao : MyMoviesLocalDataSource {
 
-  @Query("SELECT movies.*, movies_my_movies.updated_at AS updated_at FROM movies INNER JOIN movies_my_movies USING(id_trakt)")
+  @Query(
+    "SELECT movies.*, movies_my_movies.updated_at AS updated_at FROM movies " +
+      "INNER JOIN movies_my_movies USING(id_trakt)",
+  )
   override suspend fun getAll(): List<Movie>
 
   @Query(
     "SELECT movies.*, movies_my_movies.updated_at AS updated_at FROM movies " +
-      "INNER JOIN movies_my_movies USING(id_trakt) WHERE id_trakt IN (:ids)"
+      "INNER JOIN movies_my_movies USING(id_trakt) WHERE id_trakt IN (:ids)",
   )
   override suspend fun getAll(ids: List<Long>): List<Movie>
 
-  @Query("SELECT movies.* FROM movies INNER JOIN movies_my_movies USING(id_trakt) ORDER BY movies_my_movies.updated_at DESC LIMIT :limit")
+  @Query(
+    "SELECT movies.* FROM movies " +
+      "INNER JOIN movies_my_movies USING(id_trakt) ORDER BY movies_my_movies.updated_at DESC LIMIT :limit",
+  )
   override suspend fun getAllRecent(limit: Int): List<Movie>
 
   @Query("SELECT movies.id_trakt FROM movies INNER JOIN movies_my_movies USING(id_trakt)")

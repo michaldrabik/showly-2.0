@@ -22,13 +22,13 @@ class StorageModule {
   @Singleton
   internal fun providesDatabase(
     @ApplicationContext context: Context,
-    migrations: Migrations
+    migrations: Migrations,
   ): AppDatabase {
     Timber.d("Creating database...")
     return Room.databaseBuilder(
       context.applicationContext,
       AppDatabase::class.java,
-      DATABASE_NAME
+      DATABASE_NAME,
     ).apply {
       migrations.getAll().forEach { addMigrations(it) }
     }.build()
@@ -36,11 +36,11 @@ class StorageModule {
 
   @Provides
   @Singleton
-  internal fun providesMigrations(@ApplicationContext context: Context): Migrations =
-    Migrations(context)
+  internal fun providesMigrations(
+    @ApplicationContext context: Context,
+  ): Migrations = Migrations(context)
 
   @Provides
   @Singleton
-  internal fun providesTransactions(database: AppDatabase): TransactionsProvider =
-    TransactionsProvider(database)
+  internal fun providesTransactions(database: AppDatabase): TransactionsProvider = TransactionsProvider(database)
 }

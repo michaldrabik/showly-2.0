@@ -11,16 +11,16 @@ import androidx.room.PrimaryKey
   indices = [
     Index(value = ["id_list"], unique = false),
     Index(value = ["id_trakt", "type"], unique = false),
-    Index(value = ["id_list", "id_trakt", "type"], unique = true)
+    Index(value = ["id_list", "id_trakt", "type"], unique = true),
   ],
   foreignKeys = [
     ForeignKey(
       entity = CustomList::class,
       parentColumns = arrayOf("id"),
       childColumns = arrayOf("id_list"),
-      onDelete = ForeignKey.CASCADE
-    )
-  ]
+      onDelete = ForeignKey.CASCADE,
+    ),
+  ],
 )
 data class CustomListItem(
   @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Long = 0,
@@ -30,5 +30,5 @@ data class CustomListItem(
   @ColumnInfo(name = "rank") val rank: Long,
   @ColumnInfo(name = "listed_at") val listedAt: Long,
   @ColumnInfo(name = "created_at") val createdAt: Long,
-  @ColumnInfo(name = "updated_at") val updatedAt: Long
+  @ColumnInfo(name = "updated_at") val updatedAt: Long,
 )

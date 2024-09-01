@@ -56,7 +56,7 @@ class Migrations(context: Context) {
           "`id_trakt` INTEGER NOT NULL, " +
           "`type` TEXT NOT NULL, " +
           "`created_at` INTEGER NOT NULL, " +
-          "`updated_at` INTEGER NOT NULL)"
+          "`updated_at` INTEGER NOT NULL)",
       )
     }
   }
@@ -81,7 +81,7 @@ class Migrations(context: Context) {
           "`id_trakt` INTEGER NOT NULL, " +
           "`created_at` INTEGER NOT NULL, " +
           "`updated_at` INTEGER NOT NULL, " +
-          "FOREIGN KEY(`id_trakt`) REFERENCES `shows`(`id_trakt`) ON DELETE CASCADE)"
+          "FOREIGN KEY(`id_trakt`) REFERENCES `shows`(`id_trakt`) ON DELETE CASCADE)",
       )
       database.execSQL("CREATE UNIQUE INDEX index_shows_archive_id_trakt ON shows_archive(id_trakt)")
       database.execSQL("ALTER TABLE settings ADD COLUMN archive_shows_sort_by TEXT NOT NULL DEFAULT 'NAME'")
@@ -106,7 +106,7 @@ class Migrations(context: Context) {
         "CREATE TABLE IF NOT EXISTS `shows_translations` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
           "`id_trakt` INTEGER NOT NULL, `title` TEXT NOT NULL, `language` TEXT NOT NULL, `overview` TEXT NOT NULL, " +
           "`created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL, " +
-          "FOREIGN KEY(`id_trakt`) REFERENCES `shows`(`id_trakt`) ON DELETE CASCADE)"
+          "FOREIGN KEY(`id_trakt`) REFERENCES `shows`(`id_trakt`) ON DELETE CASCADE)",
       )
       database.execSQL("CREATE UNIQUE INDEX index_shows_translations_id_trakt ON shows_translations(id_trakt)")
 
@@ -115,7 +115,7 @@ class Migrations(context: Context) {
           "`id_trakt` INTEGER NOT NULL, `id_trakt_show` INTEGER NOT NULL, " +
           "`title` TEXT NOT NULL, `language` TEXT NOT NULL, `overview` TEXT NOT NULL, " +
           "`created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL, " +
-          "FOREIGN KEY(`id_trakt_show`) REFERENCES `shows`(`id_trakt`) ON DELETE CASCADE)"
+          "FOREIGN KEY(`id_trakt_show`) REFERENCES `shows`(`id_trakt`) ON DELETE CASCADE)",
       )
       database.execSQL("CREATE UNIQUE INDEX index_episodes_translations_id_trakt ON episodes_translations(id_trakt)")
       database.execSQL("CREATE INDEX index_episodes_translations_id_trakt_show ON episodes_translations(id_trakt_show)")
@@ -123,7 +123,7 @@ class Migrations(context: Context) {
       database.execSQL(
         "CREATE TABLE IF NOT EXISTS `sync_translations_log` (" +
           "`id_show_trakt` INTEGER PRIMARY KEY NOT NULL, " +
-          "`synced_at` INTEGER NOT NULL)"
+          "`synced_at` INTEGER NOT NULL)",
       )
     }
   }
@@ -163,7 +163,7 @@ class Migrations(context: Context) {
           "`votes` INTEGER NOT NULL DEFAULT -1, " +
           "`comment_count` INTEGER NOT NULL DEFAULT -1, " +
           "`genres` TEXT NOT NULL DEFAULT '', " +
-          "`updated_at` INTEGER NOT NULL DEFAULT -1)"
+          "`updated_at` INTEGER NOT NULL DEFAULT -1)",
       )
 
       database.execSQL(
@@ -172,7 +172,7 @@ class Migrations(context: Context) {
           "`id_trakt` INTEGER NOT NULL DEFAULT -1, " +
           "`created_at` INTEGER NOT NULL DEFAULT -1, " +
           "`updated_at` INTEGER NOT NULL DEFAULT -1, " +
-          "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)"
+          "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)",
       )
       database.execSQL("CREATE INDEX index_discover_movies_id_trakt ON movies_discover(id_trakt)")
 
@@ -182,7 +182,7 @@ class Migrations(context: Context) {
           "`id_tmdb` INTEGER NOT NULL DEFAULT -1, " +
           "`type` TEXT NOT NULL DEFAULT '', " +
           "`file_url` TEXT NOT NULL DEFAULT '', " +
-          "`source` TEXT NOT NULL DEFAULT 'tmdb')"
+          "`source` TEXT NOT NULL DEFAULT 'tmdb')",
       )
 
       database.execSQL(
@@ -193,14 +193,14 @@ class Migrations(context: Context) {
           "`overview` TEXT NOT NULL, " +
           "`created_at` INTEGER NOT NULL, " +
           "`updated_at` INTEGER NOT NULL, " +
-          "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)"
+          "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)",
       )
       database.execSQL("CREATE UNIQUE INDEX index_movies_translations_id_trakt ON movies_translations(id_trakt)")
 
       database.execSQL(
         "CREATE TABLE IF NOT EXISTS `sync_movies_translations_log` (" +
           "`id_movie_trakt` INTEGER PRIMARY KEY NOT NULL, " +
-          "`synced_at` INTEGER NOT NULL)"
+          "`synced_at` INTEGER NOT NULL)",
       )
 
       database.execSQL(
@@ -209,7 +209,7 @@ class Migrations(context: Context) {
           "`id_trakt` INTEGER NOT NULL  DEFAULT -1, " +
           "`id_trakt_related_movie` INTEGER NOT NULL DEFAULT -1, " +
           "`updated_at` INTEGER NOT NULL DEFAULT -1, " +
-          "FOREIGN KEY(`id_trakt_related_movie`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)"
+          "FOREIGN KEY(`id_trakt_related_movie`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)",
       )
       database.execSQL("CREATE INDEX index_movies_related_id_trakt ON movies_related(id_trakt_related_movie)")
 
@@ -222,7 +222,7 @@ class Migrations(context: Context) {
           "`id_trakt` INTEGER NOT NULL DEFAULT -1, " +
           "`created_at` INTEGER NOT NULL DEFAULT -1, " +
           "`updated_at` INTEGER NOT NULL DEFAULT -1, " +
-          "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)"
+          "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)",
       )
       database.execSQL("CREATE INDEX index_movies_my_movies_id_trakt ON movies_my_movies(id_trakt)")
 
@@ -232,14 +232,14 @@ class Migrations(context: Context) {
           "`id_trakt` INTEGER NOT NULL DEFAULT -1, " +
           "`created_at` INTEGER NOT NULL DEFAULT -1, " +
           "`updated_at` INTEGER NOT NULL DEFAULT -1, " +
-          "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)"
+          "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)",
       )
       database.execSQL("CREATE INDEX index_movies_see_later_id_trakt ON movies_see_later(id_trakt)")
 
       database.execSQL(
         "CREATE TABLE IF NOT EXISTS `sync_movies_log` (" +
           "`id_movie_trakt` INTEGER PRIMARY KEY NOT NULL DEFAULT -1, " +
-          "`synced_at` INTEGER NOT NULL DEFAULT 0)"
+          "`synced_at` INTEGER NOT NULL DEFAULT 0)",
       )
 
       database.execSQL(
@@ -247,7 +247,7 @@ class Migrations(context: Context) {
           "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
           "`id_trakt` INTEGER NOT NULL, " +
           "`type` TEXT NOT NULL, " +
-          "`synced_at` INTEGER NOT NULL)"
+          "`synced_at` INTEGER NOT NULL)",
       )
       database.execSQL("CREATE INDEX index_sync_trakt_log_id_trakt ON sync_trakt_log(id_trakt)")
       database.execSQL("CREATE INDEX index_sync_trakt_log_type ON sync_trakt_log(type)")
@@ -300,7 +300,7 @@ class Migrations(context: Context) {
             "`id_trakt` INTEGER NOT NULL, " +
             "`family` TEXT NOT NULL, " +
             "`type` TEXT NOT NULL, " +
-            "`file_url` TEXT NOT NULL)"
+            "`file_url` TEXT NOT NULL)",
         )
         execSQL("CREATE INDEX index_custom_images_trakt_id_family_type ON custom_images(id_trakt, family, type)")
       }
@@ -352,7 +352,7 @@ class Migrations(context: Context) {
             "`likes` INTEGER NOT NULL, " +
             "`created_at` INTEGER NOT NULL, " +
             "`updated_at` INTEGER NOT NULL" +
-            ")"
+            ")",
         )
         execSQL("CREATE UNIQUE INDEX index_custom_lists_id_trakt ON custom_lists(id_trakt)")
         execSQL("ALTER TABLE settings ADD COLUMN lists_sort_by TEXT NOT NULL DEFAULT 'DATE_UPDATED'")
@@ -374,11 +374,14 @@ class Migrations(context: Context) {
             "`created_at` INTEGER NOT NULL, " +
             "`updated_at` INTEGER NOT NULL, " +
             "FOREIGN KEY(`id_list`) REFERENCES `custom_lists`(`id`) ON DELETE CASCADE" +
-            ")"
+            ")",
         )
         execSQL("CREATE INDEX index_custom_list_item_id_list ON custom_list_item(id_list)")
         execSQL("CREATE INDEX index_custom_list_item_id_trakt_type ON custom_list_item(id_trakt, type)")
-        execSQL("CREATE UNIQUE INDEX index_custom_list_item_id_list_id_trakt_type ON custom_list_item(id_list, id_trakt, type)")
+        execSQL(
+          "CREATE UNIQUE INDEX " +
+            "index_custom_list_item_id_list_id_trakt_type ON custom_list_item(id_list, id_trakt, type)",
+        )
 
         execSQL("ALTER TABLE trakt_sync_queue ADD COLUMN id_list INTEGER")
         execSQL("ALTER TABLE trakt_sync_queue ADD COLUMN operation TEXT NOT NULL DEFAULT ''")
@@ -401,7 +404,7 @@ class Migrations(context: Context) {
             "`dated_at` INTEGER NOT NULL, " +
             "`created_at` INTEGER NOT NULL, " +
             "`updated_at` INTEGER NOT NULL " +
-            ")"
+            ")",
         )
 
         execSQL("ALTER TABLE user ADD COLUMN reddit_token TEXT NOT NULL DEFAULT ''")
@@ -432,7 +435,7 @@ class Migrations(context: Context) {
             "`rotten_tomatoes_url` TEXT, " +
             "`created_at` INTEGER NOT NULL, " +
             "`updated_at` INTEGER NOT NULL, " +
-            "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)"
+            "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)",
         )
         execSQL("CREATE UNIQUE INDEX index_movies_ratings_id_trakt ON movies_ratings(id_trakt)")
 
@@ -447,7 +450,7 @@ class Migrations(context: Context) {
             "`rotten_tomatoes_url` TEXT, " +
             "`created_at` INTEGER NOT NULL, " +
             "`updated_at` INTEGER NOT NULL, " +
-            "FOREIGN KEY(`id_trakt`) REFERENCES `shows`(`id_trakt`) ON DELETE CASCADE)"
+            "FOREIGN KEY(`id_trakt`) REFERENCES `shows`(`id_trakt`) ON DELETE CASCADE)",
         )
         execSQL("CREATE UNIQUE INDEX index_shows_ratings_id_trakt ON shows_ratings(id_trakt)")
       }
@@ -470,7 +473,7 @@ class Migrations(context: Context) {
             "`link` TEXT, " +
             "`created_at` INTEGER NOT NULL, " +
             "`updated_at` INTEGER NOT NULL, " +
-            "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)"
+            "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)",
         )
         execSQL("CREATE INDEX index_movies_streamings_id_trakt ON movies_streamings(id_trakt)")
         execSQL("CREATE INDEX index_movies_streamings_id_tmdb ON movies_streamings(id_tmdb)")
@@ -488,7 +491,7 @@ class Migrations(context: Context) {
             "`link` TEXT, " +
             "`created_at` INTEGER NOT NULL, " +
             "`updated_at` INTEGER NOT NULL, " +
-            "FOREIGN KEY(`id_trakt`) REFERENCES `shows`(`id_trakt`) ON DELETE CASCADE)"
+            "FOREIGN KEY(`id_trakt`) REFERENCES `shows`(`id_trakt`) ON DELETE CASCADE)",
         )
         execSQL("CREATE INDEX index_shows_streamings_id_trakt ON shows_streamings(id_trakt)")
         execSQL("CREATE INDEX index_shows_streamings_id_tmdb ON shows_streamings(id_tmdb)")
@@ -513,7 +516,7 @@ class Migrations(context: Context) {
             "`id_trakt` INTEGER NOT NULL, " +
             "`created_at` INTEGER NOT NULL, " +
             "`updated_at` INTEGER NOT NULL, " +
-            "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)"
+            "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)",
         )
         execSQL("CREATE UNIQUE INDEX index_movies_archive_id_trakt ON movies_archive(id_trakt)")
       }
@@ -543,7 +546,7 @@ class Migrations(context: Context) {
             "`homepage` TEXT, " +
             "`created_at` INTEGER NOT NULL, " +
             "`details_updated_at` INTEGER, " +
-            "`updated_at` INTEGER NOT NULL)"
+            "`updated_at` INTEGER NOT NULL)",
         )
         execSQL("CREATE INDEX index_people_id_trakt ON people(id_trakt)")
         execSQL("CREATE UNIQUE INDEX index_people_id_tmdb ON people(id_tmdb)")
@@ -561,7 +564,7 @@ class Migrations(context: Context) {
             "`id_trakt_movie` INTEGER, " +
             "`created_at` INTEGER NOT NULL, " +
             "`updated_at` INTEGER NOT NULL, " +
-            "FOREIGN KEY(`id_tmdb_person`) REFERENCES `people`(`id_tmdb`) ON DELETE CASCADE)"
+            "FOREIGN KEY(`id_tmdb_person`) REFERENCES `people`(`id_tmdb`) ON DELETE CASCADE)",
         )
         execSQL("CREATE INDEX index_people_shows_movies_id_show_mode ON people_shows_movies(id_trakt_show, mode)")
         execSQL("CREATE INDEX index_people_shows_movies_id_movie_mode ON people_shows_movies(id_trakt_movie, mode)")
@@ -576,7 +579,7 @@ class Migrations(context: Context) {
             "`created_at` INTEGER NOT NULL, " +
             "`updated_at` INTEGER NOT NULL, " +
             "FOREIGN KEY(`id_trakt_show`) REFERENCES `shows`(`id_trakt`) ON DELETE CASCADE, " +
-            "FOREIGN KEY(`id_trakt_movie`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)"
+            "FOREIGN KEY(`id_trakt_movie`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)",
         )
         execSQL("CREATE INDEX index_people_credits_id_person ON people_credits(id_trakt_person)")
 
@@ -586,7 +589,7 @@ class Migrations(context: Context) {
             "`id_tmdb` INTEGER NOT NULL, " +
             "`file_path` TEXT NOT NULL, " +
             "`created_at` INTEGER NOT NULL, " +
-            "`updated_at` INTEGER NOT NULL)"
+            "`updated_at` INTEGER NOT NULL)",
         )
         execSQL("CREATE INDEX index_people_images_id_person ON people_images(id_tmdb)")
       }
@@ -606,7 +609,7 @@ class Migrations(context: Context) {
             "`rated_at` INTEGER NOT NULL, " +
             "`created_at` INTEGER NOT NULL, " +
             "`updated_at` INTEGER NOT NULL, " +
-            "PRIMARY KEY (id_trakt, type))"
+            "PRIMARY KEY (id_trakt, type))",
         )
         execSQL("CREATE INDEX index_ratings_id_trakt_type ON ratings(id_trakt, type)")
 
@@ -652,7 +655,7 @@ class Migrations(context: Context) {
 
           val epCursor = database.query(
             "SELECT season_number, episode_number FROM episodes WHERE id_show_trakt == $idShow AND is_watched == 1 " +
-              "ORDER BY season_number DESC, episode_number DESC LIMIT 1"
+              "ORDER BY season_number DESC, episode_number DESC LIMIT 1",
           )
           while (epCursor.moveToNext()) {
             val episodeNumber = epCursor.getLong(epCursor.getColumnIndexOrThrow("episode_number"))
@@ -662,7 +665,7 @@ class Migrations(context: Context) {
                 "UPDATE episodes SET last_watched_at = $updatedAt " +
                   "WHERE id_show_trakt == $idShow " +
                   "AND is_watched == 1 " +
-                  "AND episode_number == $episodeNumber AND season_number == $seasonNumber"
+                  "AND episode_number == $episodeNumber AND season_number == $seasonNumber",
               )
               execSQL("UPDATE shows_my_shows SET last_watched_at = $updatedAt WHERE id_trakt == $idShow")
             }
@@ -691,7 +694,7 @@ class Migrations(context: Context) {
             "`item_count` INTEGER NOT NULL, " +
             "`created_at` INTEGER NOT NULL, " +
             "`updated_at` INTEGER NOT NULL, " +
-            "FOREIGN KEY(`id_trakt_movie`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)"
+            "FOREIGN KEY(`id_trakt_movie`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)",
         )
         execSQL("CREATE INDEX index_movies_collections_id_trakt ON movies_collections(id_trakt)")
         execSQL("CREATE INDEX index_movies_collections_id_trakt_movie ON movies_collections(id_trakt_movie)")
@@ -704,10 +707,13 @@ class Migrations(context: Context) {
             "`rank` INTEGER NOT NULL, " +
             "`created_at` INTEGER NOT NULL, " +
             "`updated_at` INTEGER NOT NULL, " +
-            "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)"
+            "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)",
         )
         execSQL("CREATE INDEX index_movies_collections_items_id_trakt ON movies_collections_items(id_trakt)")
-        execSQL("CREATE INDEX index_movies_collections_items_id_trakt_collection ON movies_collections_items(id_trakt_collection)")
+        execSQL(
+          "CREATE INDEX " +
+            "index_movies_collections_items_id_trakt_collection ON movies_collections_items(id_trakt_collection)",
+        )
       }
     }
   }
@@ -770,46 +776,47 @@ class Migrations(context: Context) {
     }
   }
 
-  fun getAll() = listOf(
-    migration2,
-    migration3,
-    migration4,
-    migration5,
-    migration6,
-    migration7,
-    migration8,
-    migration9,
-    migration10,
-    migration11,
-    migration12,
-    migration13,
-    migration14,
-    migration15,
-    migration16,
-    migration17,
-    migration18,
-    migration19,
-    migration20,
-    migration21,
-    migration22,
-    migration23,
-    migration24,
-    migration25,
-    migration26,
-    migration27,
-    migration28,
-    migration29,
-    migration30,
-    migration31,
-    migration32,
-    migration33,
-    migration34,
-    migration35,
-    migration36,
-    migration37,
-    migration38,
-    migration39,
-    migration40,
-    migration41
-  )
+  fun getAll() =
+    listOf(
+      migration2,
+      migration3,
+      migration4,
+      migration5,
+      migration6,
+      migration7,
+      migration8,
+      migration9,
+      migration10,
+      migration11,
+      migration12,
+      migration13,
+      migration14,
+      migration15,
+      migration16,
+      migration17,
+      migration18,
+      migration19,
+      migration20,
+      migration21,
+      migration22,
+      migration23,
+      migration24,
+      migration25,
+      migration26,
+      migration27,
+      migration28,
+      migration29,
+      migration30,
+      migration31,
+      migration32,
+      migration33,
+      migration34,
+      migration35,
+      migration36,
+      migration37,
+      migration38,
+      migration39,
+      migration40,
+      migration41,
+    )
 }

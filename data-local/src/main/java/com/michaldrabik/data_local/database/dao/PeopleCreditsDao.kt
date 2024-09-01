@@ -1,6 +1,7 @@
+@file:Suppress("ktlint")
+
 package com.michaldrabik.data_local.database.dao
 
-/* ktlint-disable */
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
@@ -31,7 +32,10 @@ interface PeopleCreditsDao : BaseDao<PersonCredits>, PeopleCreditsLocalDataSourc
   override suspend fun deleteAllForPerson(personTraktId: Long)
 
   @Transaction
-  override suspend fun insertSingle(personTraktId: Long, credits: List<PersonCredits>) {
+  override suspend fun insertSingle(
+    personTraktId: Long,
+    credits: List<PersonCredits>
+  ) {
     deleteAllForPerson(personTraktId)
     insert(credits)
   }

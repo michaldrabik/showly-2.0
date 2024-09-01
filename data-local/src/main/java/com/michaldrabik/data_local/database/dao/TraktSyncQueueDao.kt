@@ -24,7 +24,10 @@ interface TraktSyncQueueDao : TraktSyncQueueLocalDataSource {
   override suspend fun getAll(types: List<String>): List<TraktSyncQueue>
 
   @Query("DELETE FROM trakt_sync_queue WHERE id_trakt IN (:idsTrakt) AND type = :type")
-  override suspend fun deleteAll(idsTrakt: List<Long>, type: String): Int
+  override suspend fun deleteAll(
+    idsTrakt: List<Long>,
+    type: String,
+  ): Int
 
   @Query("DELETE FROM trakt_sync_queue WHERE type = :type")
   override suspend fun deleteAll(type: String): Int
@@ -35,11 +38,14 @@ interface TraktSyncQueueDao : TraktSyncQueueLocalDataSource {
   @Query("DELETE FROM trakt_sync_queue WHERE id_list = :idList")
   override suspend fun deleteAllForList(idList: Long): Int
 
-  @Query("DELETE FROM trakt_sync_queue WHERE id_trakt = :idTrakt AND id_list = :idList AND type = :type AND operation = :operation")
+  @Query(
+    "DELETE FROM trakt_sync_queue " +
+      "WHERE id_trakt = :idTrakt AND id_list = :idList AND type = :type AND operation = :operation",
+  )
   override suspend fun delete(
     idTrakt: Long,
     idList: Long,
     type: String,
-    operation: String
+    operation: String,
   ): Int
 }

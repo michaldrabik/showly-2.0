@@ -54,23 +54,19 @@ class SourcesModule {
 
   @Provides
   @Singleton
-  internal fun providesShows(database: AppDatabase): ShowsLocalDataSource =
-    database.showsDao()
+  internal fun providesShows(database: AppDatabase): ShowsLocalDataSource = database.showsDao()
 
   @Provides
   @Singleton
-  internal fun providesMovies(database: AppDatabase): MoviesLocalDataSource =
-    database.moviesDao()
+  internal fun providesMovies(database: AppDatabase): MoviesLocalDataSource = database.moviesDao()
 
   @Provides
   @Singleton
-  internal fun providesArchivesShows(database: AppDatabase): ArchiveShowsLocalDataSource =
-    database.archiveShowsDao()
+  internal fun providesArchivesShows(database: AppDatabase): ArchiveShowsLocalDataSource = database.archiveShowsDao()
 
   @Provides
   @Singleton
-  internal fun providesArchivesMovies(database: AppDatabase): ArchiveMoviesLocalDataSource =
-    database.archiveMoviesDao()
+  internal fun providesArchivesMovies(database: AppDatabase): ArchiveMoviesLocalDataSource = database.archiveMoviesDao()
 
   @Provides
   @Singleton
@@ -79,13 +75,11 @@ class SourcesModule {
 
   @Provides
   @Singleton
-  internal fun providesCustomLists(database: AppDatabase): CustomListsLocalDataSource =
-    database.customListsDao()
+  internal fun providesCustomLists(database: AppDatabase): CustomListsLocalDataSource = database.customListsDao()
 
   @Provides
   @Singleton
-  internal fun providesDiscoverShows(database: AppDatabase): DiscoverShowsLocalDataSource =
-    database.discoverShowsDao()
+  internal fun providesDiscoverShows(database: AppDatabase): DiscoverShowsLocalDataSource = database.discoverShowsDao()
 
   @Provides
   @Singleton
@@ -94,8 +88,7 @@ class SourcesModule {
 
   @Provides
   @Singleton
-  internal fun providesEpisodes(database: AppDatabase): EpisodesLocalDataSource =
-    database.episodesDao()
+  internal fun providesEpisodes(database: AppDatabase): EpisodesLocalDataSource = database.episodesDao()
 
   @Provides
   @Singleton
@@ -109,18 +102,15 @@ class SourcesModule {
 
   @Provides
   @Singleton
-  internal fun providesMovieImages(database: AppDatabase): MovieImagesLocalDataSource =
-    database.movieImagesDao()
+  internal fun providesMovieImages(database: AppDatabase): MovieImagesLocalDataSource = database.movieImagesDao()
 
   @Provides
   @Singleton
-  internal fun providesMovieRatings(database: AppDatabase): MovieRatingsLocalDataSource =
-    database.movieRatingsDao()
+  internal fun providesMovieRatings(database: AppDatabase): MovieRatingsLocalDataSource = database.movieRatingsDao()
 
   @Provides
   @Singleton
-  internal fun providesMovieSyncLog(database: AppDatabase): MoviesSyncLogLocalDataSource =
-    database.moviesSyncLogDao()
+  internal fun providesMovieSyncLog(database: AppDatabase): MoviesSyncLogLocalDataSource = database.moviesSyncLogDao()
 
   @Provides
   @Singleton
@@ -144,28 +134,23 @@ class SourcesModule {
 
   @Provides
   @Singleton
-  internal fun providesMyMovies(database: AppDatabase): MyMoviesLocalDataSource =
-    database.myMoviesDao()
+  internal fun providesMyMovies(database: AppDatabase): MyMoviesLocalDataSource = database.myMoviesDao()
 
   @Provides
   @Singleton
-  internal fun providesMyShows(database: AppDatabase): MyShowsLocalDataSource =
-    database.myShowsDao()
+  internal fun providesMyShows(database: AppDatabase): MyShowsLocalDataSource = database.myShowsDao()
 
   @Provides
   @Singleton
-  internal fun providesPeopleCredits(database: AppDatabase): PeopleCreditsLocalDataSource =
-    database.peopleCreditsDao()
+  internal fun providesPeopleCredits(database: AppDatabase): PeopleCreditsLocalDataSource = database.peopleCreditsDao()
 
   @Provides
   @Singleton
-  internal fun providesPeople(database: AppDatabase): PeopleLocalDataSource =
-    database.peopleDao()
+  internal fun providesPeople(database: AppDatabase): PeopleLocalDataSource = database.peopleDao()
 
   @Provides
   @Singleton
-  internal fun providesPeopleImages(database: AppDatabase): PeopleImagesLocalDataSource =
-    database.peopleImagesDao()
+  internal fun providesPeopleImages(database: AppDatabase): PeopleImagesLocalDataSource = database.peopleImagesDao()
 
   @Provides
   @Singleton
@@ -174,33 +159,27 @@ class SourcesModule {
 
   @Provides
   @Singleton
-  internal fun providesRatings(database: AppDatabase): RatingsLocalDataSource =
-    database.ratingsDao()
+  internal fun providesRatings(database: AppDatabase): RatingsLocalDataSource = database.ratingsDao()
 
   @Provides
   @Singleton
-  internal fun providesRecentSearch(database: AppDatabase): RecentSearchLocalDataSource =
-    database.recentSearchDao()
+  internal fun providesRecentSearch(database: AppDatabase): RecentSearchLocalDataSource = database.recentSearchDao()
 
   @Provides
   @Singleton
-  internal fun providesSeasons(database: AppDatabase): SeasonsLocalDataSource =
-    database.seasonsDao()
+  internal fun providesSeasons(database: AppDatabase): SeasonsLocalDataSource = database.seasonsDao()
 
   @Provides
   @Singleton
-  internal fun providesSettings(database: AppDatabase): SettingsLocalDataSource =
-    database.settingsDao()
+  internal fun providesSettings(database: AppDatabase): SettingsLocalDataSource = database.settingsDao()
 
   @Provides
   @Singleton
-  internal fun providesShowImages(database: AppDatabase): ShowImagesLocalDataSource =
-    database.showImagesDao()
+  internal fun providesShowImages(database: AppDatabase): ShowImagesLocalDataSource = database.showImagesDao()
 
   @Provides
   @Singleton
-  internal fun providesShowRatings(database: AppDatabase): ShowRatingsLocalDataSource =
-    database.showRatingsDao()
+  internal fun providesShowRatings(database: AppDatabase): ShowRatingsLocalDataSource = database.showRatingsDao()
 
   @Provides
   @Singleton
@@ -214,8 +193,7 @@ class SourcesModule {
 
   @Provides
   @Singleton
-  internal fun providesTraktSyncLog(database: AppDatabase): TraktSyncLogLocalDataSource =
-    database.traktSyncLogDao()
+  internal fun providesTraktSyncLog(database: AppDatabase): TraktSyncLogLocalDataSource = database.traktSyncLogDao()
 
   @Provides
   @Singleton
@@ -234,8 +212,7 @@ class SourcesModule {
 
   @Provides
   @Singleton
-  internal fun providesUser(database: AppDatabase): UserLocalDataSource =
-    database.userDao()
+  internal fun providesUser(database: AppDatabase): UserLocalDataSource = database.userDao()
 
   @Provides
   @Singleton
@@ -249,11 +226,9 @@ class SourcesModule {
 
   @Provides
   @Singleton
-  internal fun providesRelatedMovies(database: AppDatabase): RelatedMoviesLocalDataSource =
-    database.relatedMoviesDao()
+  internal fun providesRelatedMovies(database: AppDatabase): RelatedMoviesLocalDataSource = database.relatedMoviesDao()
 
   @Provides
   @Singleton
-  internal fun providesRelatedShows(database: AppDatabase): RelatedShowsLocalDataSource =
-    database.relatedShowsDao()
+  internal fun providesRelatedShows(database: AppDatabase): RelatedShowsLocalDataSource = database.relatedShowsDao()
 }

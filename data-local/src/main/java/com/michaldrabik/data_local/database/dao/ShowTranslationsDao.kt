@@ -11,7 +11,10 @@ import com.michaldrabik.data_local.sources.ShowTranslationsLocalDataSource
 interface ShowTranslationsDao : BaseDao<ShowTranslation>, ShowTranslationsLocalDataSource {
 
   @Query("SELECT * FROM shows_translations WHERE id_trakt == :traktId AND language == :language")
-  override suspend fun getById(traktId: Long, language: String): ShowTranslation?
+  override suspend fun getById(
+    traktId: Long,
+    language: String,
+  ): ShowTranslation?
 
   @Query("SELECT * FROM shows_translations WHERE language == :language")
   override suspend fun getAll(language: String): List<ShowTranslation>

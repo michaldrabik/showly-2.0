@@ -60,12 +60,12 @@ class EpisodesDaoTest : BaseDaoTest() {
       val episode1 = TestData.createEpisode().copy(
         idTrakt = 1,
         idShowTrakt = show1.idTrakt,
-        idSeason = season1.idTrakt
+        idSeason = season1.idTrakt,
       )
       val episode2 = TestData.createEpisode().copy(
         idTrakt = 2,
         idShowTrakt = show2.idTrakt,
-        idSeason = season2.idTrakt
+        idSeason = season2.idTrakt,
       )
 
       database.showsDao().upsert(listOf(show1, show2))
@@ -89,13 +89,13 @@ class EpisodesDaoTest : BaseDaoTest() {
         idTrakt = 1,
         idShowTrakt = show.idTrakt,
         idSeason = season1.idTrakt,
-        isWatched = true
+        isWatched = true,
       )
       val episode2 = TestData.createEpisode().copy(
         idTrakt = 2,
         idShowTrakt = show.idTrakt,
         idSeason = season2.idTrakt,
-        isWatched = false
+        isWatched = false,
       )
 
       database.showsDao().upsert(listOf(show))
@@ -119,13 +119,13 @@ class EpisodesDaoTest : BaseDaoTest() {
         idTrakt = 1,
         idShowTrakt = show.idTrakt,
         idSeason = season1.idTrakt,
-        isWatched = true
+        isWatched = true,
       )
       val episode2 = TestData.createEpisode().copy(
         idTrakt = 2,
         idShowTrakt = show.idTrakt,
         idSeason = season2.idTrakt,
-        isWatched = false
+        isWatched = false,
       )
 
       database.showsDao().upsert(listOf(show))

@@ -18,13 +18,20 @@ interface TraktSyncLogDao : TraktSyncLogLocalDataSource {
   override suspend fun insert(log: TraktSyncLog)
 
   @Query("UPDATE sync_trakt_log SET synced_at = :syncedAt WHERE id_trakt == :idTrakt AND type == :type")
-  override suspend fun update(idTrakt: Long, type: String, syncedAt: Long): Int
+  override suspend fun update(
+    idTrakt: Long,
+    type: String,
+    syncedAt: Long,
+  ): Int
 
   @Query("DELETE FROM sync_trakt_log")
   override suspend fun deleteAll()
 
   @Transaction
-  override suspend fun upsertShow(idTrakt: Long, syncedAt: Long) {
+  override suspend fun upsertShow(
+    idTrakt: Long,
+    syncedAt: Long,
+  ) {
     val result = update(idTrakt, "show", syncedAt)
     if (result <= 0) {
       insert(TraktSyncLog(0, idTrakt, "show", syncedAt))

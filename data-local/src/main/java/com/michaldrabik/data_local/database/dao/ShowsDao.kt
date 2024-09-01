@@ -16,12 +16,13 @@ interface ShowsDao : BaseDao<Show>, ShowsLocalDataSource {
   override suspend fun getAll(ids: List<Long>): List<Show>
 
   @Transaction
-  override suspend fun getAllChunked(ids: List<Long>): List<Show> = ids
-    .chunked(500)
-    .fold(mutableListOf()) { acc, chunk ->
-      acc += getAll(chunk)
-      acc
-    }
+  override suspend fun getAllChunked(ids: List<Long>): List<Show> =
+    ids
+      .chunked(500)
+      .fold(mutableListOf()) { acc, chunk ->
+        acc += getAll(chunk)
+        acc
+      }
 
   @Query("SELECT * FROM shows WHERE id_trakt == :traktId")
   override suspend fun getById(traktId: Long): Show?

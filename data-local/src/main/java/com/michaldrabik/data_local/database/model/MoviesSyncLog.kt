@@ -7,5 +7,5 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "sync_movies_log")
 data class MoviesSyncLog(
   @PrimaryKey @ColumnInfo(name = "id_movie_trakt", defaultValue = "-1") val idTrakt: Long,
-  @ColumnInfo(name = "synced_at", defaultValue = "0") val syncedAt: Long
+  @ColumnInfo(name = "synced_at", defaultValue = "0") val syncedAt: Long,
 )

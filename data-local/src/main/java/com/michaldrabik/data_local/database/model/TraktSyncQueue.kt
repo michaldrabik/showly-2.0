@@ -12,7 +12,7 @@ data class TraktSyncQueue(
   @ColumnInfo(name = "type") val type: String,
   @ColumnInfo(name = "operation") val operation: String,
   @ColumnInfo(name = "created_at") val createdAt: Long,
-  @ColumnInfo(name = "updated_at") val updatedAt: Long
+  @ColumnInfo(name = "updated_at") val updatedAt: Long,
 ) {
 
   companion object {
@@ -21,7 +21,7 @@ data class TraktSyncQueue(
       showTraktId: Long?,
       createdAt: Long,
       updatedAt: Long,
-      clearProgress: Boolean
+      clearProgress: Boolean,
     ): TraktSyncQueue {
       val operation = if (clearProgress) Operation.ADD_WITH_CLEAR else Operation.ADD
       return TraktSyncQueue(0, episodeTraktId, showTraktId, Type.EPISODE.slug, operation.slug, createdAt, updatedAt)
@@ -30,19 +30,19 @@ data class TraktSyncQueue(
     fun createShowWatchlist(
       idTrakt: Long,
       createdAt: Long,
-      updatedAt: Long
+      updatedAt: Long,
     ) = TraktSyncQueue(0, idTrakt, null, Type.SHOW_WATCHLIST.slug, Operation.ADD.slug, createdAt, updatedAt)
 
     fun createMovie(
       idTrakt: Long,
       createdAt: Long,
-      updatedAt: Long
+      updatedAt: Long,
     ) = TraktSyncQueue(0, idTrakt, null, Type.MOVIE.slug, Operation.ADD.slug, createdAt, updatedAt)
 
     fun createMovieWatchlist(
       idTrakt: Long,
       createdAt: Long,
-      updatedAt: Long
+      updatedAt: Long,
     ) = TraktSyncQueue(0, idTrakt, null, Type.MOVIE_WATCHLIST.slug, Operation.ADD.slug, createdAt, updatedAt)
 
     fun createListShow(
@@ -50,7 +50,7 @@ data class TraktSyncQueue(
       idList: Long,
       operation: Operation,
       createdAt: Long,
-      updatedAt: Long
+      updatedAt: Long,
     ) = TraktSyncQueue(0, idTrakt, idList, Type.LIST_ITEM_SHOW.slug, operation.slug, createdAt, updatedAt)
 
     fun createListMovie(
@@ -58,21 +58,21 @@ data class TraktSyncQueue(
       idList: Long,
       operation: Operation,
       createdAt: Long,
-      updatedAt: Long
+      updatedAt: Long,
     ) = TraktSyncQueue(0, idTrakt, idList, Type.LIST_ITEM_MOVIE.slug, operation.slug, createdAt, updatedAt)
 
     fun createHiddenShow(
       idTrakt: Long,
       operation: Operation,
       createdAt: Long,
-      updatedAt: Long
+      updatedAt: Long,
     ) = TraktSyncQueue(0, idTrakt, null, Type.HIDDEN_SHOW.slug, operation.slug, createdAt, updatedAt)
 
     fun createHiddenMovie(
       idTrakt: Long,
       operation: Operation,
       createdAt: Long,
-      updatedAt: Long
+      updatedAt: Long,
     ) = TraktSyncQueue(0, idTrakt, null, Type.HIDDEN_MOVIE.slug, operation.slug, createdAt, updatedAt)
   }
 
@@ -84,12 +84,12 @@ data class TraktSyncQueue(
     LIST_ITEM_SHOW("list_item_show"),
     LIST_ITEM_MOVIE("list_item_movie"),
     HIDDEN_SHOW("hidden_show"),
-    HIDDEN_MOVIE("hidden_movie")
+    HIDDEN_MOVIE("hidden_movie"),
   }
 
   enum class Operation(val slug: String) {
     ADD("add"),
     ADD_WITH_CLEAR("add_clear"),
-    REMOVE("remove")
+    REMOVE("remove"),
   }
 }

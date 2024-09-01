@@ -16,7 +16,7 @@ abstract class BaseDaoTest {
   fun initDb() {
     database = Room.inMemoryDatabaseBuilder(
       InstrumentationRegistry.getInstrumentation().targetContext.applicationContext,
-      AppDatabase::class.java
+      AppDatabase::class.java,
     ).build()
   }
 

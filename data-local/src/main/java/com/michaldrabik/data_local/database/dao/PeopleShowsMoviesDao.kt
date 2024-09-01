@@ -22,13 +22,19 @@ interface PeopleShowsMoviesDao : BaseDao<PersonShowMovie>, PeopleShowsMoviesLoca
   override suspend fun deleteAllForMovie(movieTraktId: Long)
 
   @Transaction
-  override suspend fun insertForShow(people: List<PersonShowMovie>, showTraktId: Long) {
+  override suspend fun insertForShow(
+    people: List<PersonShowMovie>,
+    showTraktId: Long,
+  ) {
     deleteAllForShow(showTraktId)
     insert(people)
   }
 
   @Transaction
-  override suspend fun insertForMovie(people: List<PersonShowMovie>, movieTraktId: Long) {
+  override suspend fun insertForMovie(
+    people: List<PersonShowMovie>,
+    movieTraktId: Long,
+  ) {
     deleteAllForMovie(movieTraktId)
     insert(people)
   }

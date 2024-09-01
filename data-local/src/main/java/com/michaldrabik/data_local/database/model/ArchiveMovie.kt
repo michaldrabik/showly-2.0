@@ -14,23 +14,25 @@ import androidx.room.PrimaryKey
       entity = Movie::class,
       parentColumns = arrayOf("id_trakt"),
       childColumns = arrayOf("id_trakt"),
-      onDelete = ForeignKey.CASCADE
-    )
-  ]
+      onDelete = ForeignKey.CASCADE,
+    ),
+  ],
 )
 data class ArchiveMovie(
   @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Long = 0,
   @ColumnInfo(name = "id_trakt") val idTrakt: Long,
   @ColumnInfo(name = "created_at") val createdAt: Long,
-  @ColumnInfo(name = "updated_at") val updatedAt: Long
+  @ColumnInfo(name = "updated_at") val updatedAt: Long,
 ) {
 
   companion object {
-    fun fromTraktId(traktId: Long, createdAt: Long) =
-      ArchiveMovie(
-        idTrakt = traktId,
-        createdAt = createdAt,
-        updatedAt = createdAt
-      )
+    fun fromTraktId(
+      traktId: Long,
+      createdAt: Long,
+    ) = ArchiveMovie(
+      idTrakt = traktId,
+      createdAt = createdAt,
+      updatedAt = createdAt,
+    )
   }
 }

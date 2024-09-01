@@ -32,5 +32,5 @@ data class Show(
   @ColumnInfo(name = "genres", defaultValue = "") val genres: String,
   @ColumnInfo(name = "aired_episodes", defaultValue = "-1") val airedEpisodes: Int,
   @ColumnInfo(name = "created_at", defaultValue = "-1") val createdAt: Long,
-  @ColumnInfo(name = "updated_at", defaultValue = "-1") val updatedAt: Long
+  @ColumnInfo(name = "updated_at", defaultValue = "-1") val updatedAt: Long,
 )
