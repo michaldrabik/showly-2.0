@@ -14,7 +14,6 @@ import com.michaldrabik.ui_model.ImageFamily
 import com.michaldrabik.ui_model.ImageSource
 import com.michaldrabik.ui_model.ImageType
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -25,57 +24,58 @@ class PeopleImagesProvider @Inject constructor(
   private val remoteSource: RemoteDataSource,
 ) {
 
-  suspend fun loadCachedImage(personTmdbId: IdTmdb): Image? = withContext(dispatchers.IO) {
-    val localPerson = localSource.people.getById(personTmdbId.id)
-    return@withContext localPerson?.image?.let {
-      Image.createAvailable(
-        ids = Ids.EMPTY,
-        type = ImageType.PROFILE,
-        family = ImageFamily.PROFILE,
-        path = it,
-        source = ImageSource.TMDB
-      )
-    }
-  }
-
-  suspend fun loadImages(personTmdbId: IdTmdb): List<Image> = withContext(dispatchers.IO) {
-    val localTimestamp = localSource.peopleImages.getTimestampForPerson(personTmdbId.id) ?: 0
-    if (localTimestamp + Config.PEOPLE_IMAGES_CACHE_DURATION > nowUtcMillis()) {
-      Timber.d("Returning cached result. Cache still valid for ${(localTimestamp + Config.PEOPLE_IMAGES_CACHE_DURATION) - nowUtcMillis()} ms")
-      val local = localSource.peopleImages.getAll(personTmdbId.id)
-      return@withContext local.map {
+  suspend fun loadCachedImage(personTmdbId: IdTmdb): Image? =
+    withContext(dispatchers.IO) {
+      val localPerson = localSource.people.getById(personTmdbId.id)
+      return@withContext localPerson?.image?.let {
         Image.createAvailable(
           ids = Ids.EMPTY,
           type = ImageType.PROFILE,
           family = ImageFamily.PROFILE,
-          path = it.filePath,
-          source = ImageSource.TMDB
+          path = it,
+          source = ImageSource.TMDB,
         )
       }
     }
 
-    val images = (remoteSource.tmdb.fetchPersonImages(personTmdbId.id).profiles ?: emptyList())
-      .filter { it.file_path.isNotBlank() }
-    val dbImages = images.map {
-      PersonImage(
-        id = 0,
-        idTmdb = personTmdbId.id,
-        filePath = it.file_path,
-        createdAt = nowUtc(),
-        updatedAt = nowUtc()
-      )
-    }
+  suspend fun loadImages(personTmdbId: IdTmdb): List<Image> =
+    withContext(dispatchers.IO) {
+      val localTimestamp = localSource.peopleImages.getTimestampForPerson(personTmdbId.id) ?: 0
+      if (localTimestamp + Config.PEOPLE_IMAGES_CACHE_DURATION > nowUtcMillis()) {
+        val local = localSource.peopleImages.getAll(personTmdbId.id)
+        return@withContext local.map {
+          Image.createAvailable(
+            ids = Ids.EMPTY,
+            type = ImageType.PROFILE,
+            family = ImageFamily.PROFILE,
+            path = it.filePath,
+            source = ImageSource.TMDB,
+          )
+        }
+      }
 
-    localSource.peopleImages.insertSingle(personTmdbId.id, dbImages)
+      val images = (remoteSource.tmdb.fetchPersonImages(personTmdbId.id).profiles ?: emptyList())
+        .filter { it.file_path.isNotBlank() }
+      val dbImages = images.map {
+        PersonImage(
+          id = 0,
+          idTmdb = personTmdbId.id,
+          filePath = it.file_path,
+          createdAt = nowUtc(),
+          updatedAt = nowUtc(),
+        )
+      }
 
-    return@withContext images.map {
-      Image.createAvailable(
-        ids = Ids.EMPTY,
-        type = ImageType.PROFILE,
-        family = ImageFamily.PROFILE,
-        path = it.file_path,
-        source = ImageSource.TMDB
-      )
+      localSource.peopleImages.insertSingle(personTmdbId.id, dbImages)
+
+      return@withContext images.map {
+        Image.createAvailable(
+          ids = Ids.EMPTY,
+          type = ImageType.PROFILE,
+          family = ImageFamily.PROFILE,
+          path = it.file_path,
+          source = ImageSource.TMDB,
+        )
+      }
     }
-  }
 }

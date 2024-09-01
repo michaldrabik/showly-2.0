@@ -54,7 +54,7 @@ abstract class BaseMockTest {
     CustomListMapper(),
     RatingsMapper(),
     UserRatingsMapper(),
-    StreamingsMapper()
+    StreamingsMapper(),
   )
 
   @Before

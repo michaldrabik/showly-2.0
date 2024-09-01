@@ -52,7 +52,7 @@ class SettingsRepositoryTest : BaseMockTest() {
       localSource = database,
       transactions = transactions,
       mappers = mappers,
-      preferences = sharedPreferences
+      preferences = sharedPreferences,
     )
   }
 

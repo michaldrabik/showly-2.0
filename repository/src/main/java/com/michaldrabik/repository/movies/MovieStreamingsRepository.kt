@@ -17,7 +17,10 @@ class MovieStreamingsRepository @Inject constructor(
   private val mappers: Mappers,
 ) : StreamingsRepository() {
 
-  suspend fun getLocalStreamings(movie: Movie, countryCode: String): Pair<List<StreamingService>, ZonedDateTime?> {
+  suspend fun getLocalStreamings(
+    movie: Movie,
+    countryCode: String,
+  ): Pair<List<StreamingService>, ZonedDateTime?> {
     val localItems = localSource.movieStreamings.getById(movie.traktId)
     val mappedItems = mappers.streamings.fromDatabaseMovie(localItems, movie.title, countryCode)
 
@@ -26,7 +29,10 @@ class MovieStreamingsRepository @Inject constructor(
     return Pair(processedItems, date)
   }
 
-  suspend fun loadRemoteStreamings(movie: Movie, countryCode: String): List<StreamingService> {
+  suspend fun loadRemoteStreamings(
+    movie: Movie,
+    countryCode: String,
+  ): List<StreamingService> {
     val remoteItems = remoteSource.tmdb.fetchMovieWatchProviders(movie.ids.tmdb.id, countryCode) ?: return emptyList()
 
     val entities = mappers.streamings.toDatabaseMovie(movie.ids, remoteItems)

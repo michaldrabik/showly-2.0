@@ -55,7 +55,11 @@ class SettingsSpoilersRepository @Inject constructor(
   var isHiddenMoviesHidden by BooleanPreference(preferences, MOVIES_HIDDEN_MOVIES_HIDDEN, false)
   var isHiddenMoviesRatingsHidden by BooleanPreference(preferences, MOVIES_HIDDEN_MOVIES_RATINGS_HIDDEN, false)
   var isUncollectedMoviesHidden by BooleanPreference(preferences, MOVIES_UNCOLLECTED_MOVIES_HIDDEN, false)
-  var isUncollectedMoviesRatingsHidden by BooleanPreference(preferences, MOVIES_UNCOLLECTED_MOVIES_RATINGS_HIDDEN, false)
+  var isUncollectedMoviesRatingsHidden by BooleanPreference(
+    preferences,
+    MOVIES_UNCOLLECTED_MOVIES_RATINGS_HIDDEN,
+    false,
+  )
 
   var isEpisodesTitleHidden by BooleanPreference(preferences, EPISODES_TITLE_HIDDEN, false)
   var isEpisodesDescriptionHidden by BooleanPreference(preferences, EPISODES_DESCRIPTION_HIDDEN, false)
@@ -64,27 +68,28 @@ class SettingsSpoilersRepository @Inject constructor(
 
   var isTapToReveal by BooleanPreference(preferences, TAP_TO_REVEAL, false)
 
-  fun getAll(): SpoilersSettings = SpoilersSettings(
-    isMyShowsHidden = isMyShowsHidden,
-    isMyShowsRatingsHidden = isMyShowsRatingsHidden,
-    isMyMoviesHidden = isMyMoviesHidden,
-    isMyMoviesRatingsHidden = isMyMoviesRatingsHidden,
-    isWatchlistShowsHidden = isWatchlistShowsHidden,
-    isWatchlistShowsRatingsHidden = isWatchlistShowsRatingsHidden,
-    isWatchlistMoviesHidden = isWatchlistMoviesHidden,
-    isWatchlistMoviesRatingsHidden = isWatchlistMoviesRatingsHidden,
-    isHiddenShowsHidden = isHiddenShowsHidden,
-    isHiddenShowsRatingsHidden = isHiddenShowsRatingsHidden,
-    isHiddenMoviesHidden = isHiddenMoviesHidden,
-    isHiddenMoviesRatingsHidden = isHiddenMoviesRatingsHidden,
-    isNotCollectedShowsHidden = isUncollectedShowsHidden,
-    isNotCollectedShowsRatingsHidden = isUncollectedShowsRatingsHidden,
-    isNotCollectedMoviesHidden = isUncollectedMoviesHidden,
-    isNotCollectedMoviesRatingsHidden = isUncollectedMoviesRatingsHidden,
-    isEpisodeTitleHidden = isEpisodesTitleHidden,
-    isEpisodeDescriptionHidden = isEpisodesDescriptionHidden,
-    isEpisodeRatingHidden = isEpisodesRatingHidden,
-    isEpisodeImageHidden = isEpisodesImageHidden,
-    isTapToReveal = isTapToReveal
-  )
+  fun getAll(): SpoilersSettings =
+    SpoilersSettings(
+      isMyShowsHidden = isMyShowsHidden,
+      isMyShowsRatingsHidden = isMyShowsRatingsHidden,
+      isMyMoviesHidden = isMyMoviesHidden,
+      isMyMoviesRatingsHidden = isMyMoviesRatingsHidden,
+      isWatchlistShowsHidden = isWatchlistShowsHidden,
+      isWatchlistShowsRatingsHidden = isWatchlistShowsRatingsHidden,
+      isWatchlistMoviesHidden = isWatchlistMoviesHidden,
+      isWatchlistMoviesRatingsHidden = isWatchlistMoviesRatingsHidden,
+      isHiddenShowsHidden = isHiddenShowsHidden,
+      isHiddenShowsRatingsHidden = isHiddenShowsRatingsHidden,
+      isHiddenMoviesHidden = isHiddenMoviesHidden,
+      isHiddenMoviesRatingsHidden = isHiddenMoviesRatingsHidden,
+      isNotCollectedShowsHidden = isUncollectedShowsHidden,
+      isNotCollectedShowsRatingsHidden = isUncollectedShowsRatingsHidden,
+      isNotCollectedMoviesHidden = isUncollectedMoviesHidden,
+      isNotCollectedMoviesRatingsHidden = isUncollectedMoviesRatingsHidden,
+      isEpisodeTitleHidden = isEpisodesTitleHidden,
+      isEpisodeDescriptionHidden = isEpisodesDescriptionHidden,
+      isEpisodeRatingHidden = isEpisodesRatingHidden,
+      isEpisodeImageHidden = isEpisodesImageHidden,
+      isTapToReveal = isTapToReveal,
+    )
 }

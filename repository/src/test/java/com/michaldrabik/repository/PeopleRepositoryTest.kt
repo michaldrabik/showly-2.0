@@ -67,185 +67,194 @@ class PeopleRepositoryTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should return local data for shows properly`() = runBlocking {
-    coEvery { peopleShowsMoviesDao.getTimestampForShow(any()) } returns nowUtc().minusHours(10).toMillis()
-    coEvery { peopleDao.getAllForShow(any()) } returns listOf(person)
+  fun `Should return local data for shows properly`() =
+    runBlocking {
+      coEvery { peopleShowsMoviesDao.getTimestampForShow(any()) } returns nowUtc().minusHours(10).toMillis()
+      coEvery { peopleDao.getAllForShow(any()) } returns listOf(person)
 
-    SUT.loadAllForShow(Ids.EMPTY.copy(trakt = IdTrakt(11)))
+      SUT.loadAllForShow(Ids.EMPTY.copy(trakt = IdTrakt(11)))
 
-    coVerifyOrder {
-      peopleShowsMoviesDao.getTimestampForShow(11)
-      peopleDao.getAllForShow(11)
+      coVerifyOrder {
+        peopleShowsMoviesDao.getTimestampForShow(11)
+        peopleDao.getAllForShow(11)
+      }
+      coVerify(exactly = 0) { tmdbApi.fetchShowPeople(any()) }
     }
-    coVerify(exactly = 0) { tmdbApi.fetchShowPeople(any()) }
-  }
 
   @Test
-  fun `Should return remote data for shows properly`() = runBlocking {
-    coEvery { peopleShowsMoviesDao.getTimestampForShow(any()) } returns nowUtc().minusDays(10).toMillis()
-    coEvery { peopleDao.getAllForShow(any()) } returns listOf(person)
+  fun `Should return remote data for shows properly`() =
+    runBlocking {
+      coEvery { peopleShowsMoviesDao.getTimestampForShow(any()) } returns nowUtc().minusDays(10).toMillis()
+      coEvery { peopleDao.getAllForShow(any()) } returns listOf(person)
 
-    SUT.loadAllForShow(Ids.EMPTY.copy(trakt = IdTrakt(11), tmdb = IdTmdb(12)))
+      SUT.loadAllForShow(Ids.EMPTY.copy(trakt = IdTrakt(11), tmdb = IdTmdb(12)))
 
-    coVerifyOrder {
-      peopleShowsMoviesDao.getTimestampForShow(11)
-      peopleDao.getAllForShow(11)
-      tmdbApi.fetchShowPeople(12)
-      peopleDao.upsert(any())
-      peopleShowsMoviesDao.insertForShow(any(), 11)
+      coVerifyOrder {
+        peopleShowsMoviesDao.getTimestampForShow(11)
+        peopleDao.getAllForShow(11)
+        tmdbApi.fetchShowPeople(12)
+        peopleDao.upsert(any())
+        peopleShowsMoviesDao.insertForShow(any(), 11)
+      }
     }
-  }
 
   @Test
-  fun `Should return local data for movies properly`() = runBlocking {
-    coEvery { peopleShowsMoviesDao.getTimestampForMovie(any()) } returns nowUtc().minusHours(10).toMillis()
-    coEvery { peopleDao.getAllForMovie(any()) } returns listOf(person)
+  fun `Should return local data for movies properly`() =
+    runBlocking {
+      coEvery { peopleShowsMoviesDao.getTimestampForMovie(any()) } returns nowUtc().minusHours(10).toMillis()
+      coEvery { peopleDao.getAllForMovie(any()) } returns listOf(person)
 
-    SUT.loadAllForMovie(Ids.EMPTY.copy(trakt = IdTrakt(11)))
+      SUT.loadAllForMovie(Ids.EMPTY.copy(trakt = IdTrakt(11)))
 
-    coVerifyOrder {
-      peopleShowsMoviesDao.getTimestampForMovie(11)
-      peopleDao.getAllForMovie(11)
+      coVerifyOrder {
+        peopleShowsMoviesDao.getTimestampForMovie(11)
+        peopleDao.getAllForMovie(11)
+      }
+      coVerify(exactly = 0) { tmdbApi.fetchMoviePeople(any()) }
     }
-    coVerify(exactly = 0) { tmdbApi.fetchMoviePeople(any()) }
-  }
 
   @Test
-  fun `Should return remote data for movies properly`() = runBlocking {
-    coEvery { peopleShowsMoviesDao.getTimestampForMovie(any()) } returns nowUtc().minusDays(10).toMillis()
-    coEvery { peopleDao.getAllForMovie(any()) } returns listOf(person)
+  fun `Should return remote data for movies properly`() =
+    runBlocking {
+      coEvery { peopleShowsMoviesDao.getTimestampForMovie(any()) } returns nowUtc().minusDays(10).toMillis()
+      coEvery { peopleDao.getAllForMovie(any()) } returns listOf(person)
 
-    SUT.loadAllForMovie(Ids.EMPTY.copy(trakt = IdTrakt(11), tmdb = IdTmdb(12)))
+      SUT.loadAllForMovie(Ids.EMPTY.copy(trakt = IdTrakt(11), tmdb = IdTmdb(12)))
 
-    coVerifyOrder {
-      peopleShowsMoviesDao.getTimestampForMovie(11)
-      peopleDao.getAllForMovie(11)
-      tmdbApi.fetchMoviePeople(12)
-      peopleDao.upsert(any())
-      peopleShowsMoviesDao.insertForMovie(any(), 11)
+      coVerifyOrder {
+        peopleShowsMoviesDao.getTimestampForMovie(11)
+        peopleDao.getAllForMovie(11)
+        tmdbApi.fetchMoviePeople(12)
+        peopleDao.upsert(any())
+        peopleShowsMoviesDao.insertForMovie(any(), 11)
+      }
     }
-  }
 
   @Test
-  fun `Should return shows items with image in the first place`() = runBlocking {
-    coEvery { peopleShowsMoviesDao.getTimestampForShow(any()) } returns nowUtc().minusHours(10).toMillis()
+  fun `Should return shows items with image in the first place`() =
+    runBlocking {
+      coEvery { peopleShowsMoviesDao.getTimestampForShow(any()) } returns nowUtc().minusHours(10).toMillis()
 
-    val person1 = mockk<PersonDb>(relaxed = true) {
-      coEvery { image } returns null
-      coEvery { department } returns "Acting"
-    }
-    val person2 = mockk<PersonDb>(relaxed = true) {
-      coEvery { image } returns "test"
-      coEvery { department } returns "Acting"
-    }
-    val person3 = mockk<PersonDb>(relaxed = true) {
-      coEvery { image } returns "test"
-      coEvery { department } returns "Acting"
-    }
-    coEvery { peopleDao.getAllForShow(any()) } returns listOf(person1, person2, person3)
+      val person1 = mockk<PersonDb>(relaxed = true) {
+        coEvery { image } returns null
+        coEvery { department } returns "Acting"
+      }
+      val person2 = mockk<PersonDb>(relaxed = true) {
+        coEvery { image } returns "test"
+        coEvery { department } returns "Acting"
+      }
+      val person3 = mockk<PersonDb>(relaxed = true) {
+        coEvery { image } returns "test"
+        coEvery { department } returns "Acting"
+      }
+      coEvery { peopleDao.getAllForShow(any()) } returns listOf(person1, person2, person3)
 
-    val result = SUT.loadAllForShow(Ids.EMPTY.copy(trakt = IdTrakt(11)))
-    assertThat(result[Department.ACTING]!!.first().imagePath).isNotNull()
+      val result = SUT.loadAllForShow(Ids.EMPTY.copy(trakt = IdTrakt(11)))
+      assertThat(result[Department.ACTING]!!.first().imagePath).isNotNull()
 
-    coVerify { peopleDao.getAllForShow(any()) }
-  }
+      coVerify { peopleDao.getAllForShow(any()) }
+    }
 
   @Test
-  fun `Should return movies items with image in the first place`() = runBlocking {
-    coEvery { peopleShowsMoviesDao.getTimestampForMovie(any()) } returns nowUtc().minusHours(10).toMillis()
+  fun `Should return movies items with image in the first place`() =
+    runBlocking {
+      coEvery { peopleShowsMoviesDao.getTimestampForMovie(any()) } returns nowUtc().minusHours(10).toMillis()
 
-    val person1 = mockk<PersonDb>(relaxed = true) {
-      coEvery { image } returns null
-      coEvery { department } returns "Acting"
-    }
-    val person2 = mockk<PersonDb>(relaxed = true) {
-      coEvery { image } returns "test"
-      coEvery { department } returns "Acting"
-    }
-    val person3 = mockk<PersonDb>(relaxed = true) {
-      coEvery { image } returns "test"
-      coEvery { department } returns "Acting"
-    }
-    coEvery { peopleDao.getAllForMovie(any()) } returns listOf(person1, person2, person3)
+      val person1 = mockk<PersonDb>(relaxed = true) {
+        coEvery { image } returns null
+        coEvery { department } returns "Acting"
+      }
+      val person2 = mockk<PersonDb>(relaxed = true) {
+        coEvery { image } returns "test"
+        coEvery { department } returns "Acting"
+      }
+      val person3 = mockk<PersonDb>(relaxed = true) {
+        coEvery { image } returns "test"
+        coEvery { department } returns "Acting"
+      }
+      coEvery { peopleDao.getAllForMovie(any()) } returns listOf(person1, person2, person3)
 
-    val result = SUT.loadAllForMovie(Ids.EMPTY.copy(trakt = IdTrakt(11)))
-    assertThat(result[Department.ACTING]!!.first().imagePath).isNotNull()
+      val result = SUT.loadAllForMovie(Ids.EMPTY.copy(trakt = IdTrakt(11)))
+      assertThat(result[Department.ACTING]!!.first().imagePath).isNotNull()
 
-    coVerify { peopleDao.getAllForMovie(any()) }
-  }
+      coVerify { peopleDao.getAllForMovie(any()) }
+    }
 
   @Test
-  fun `Should return empty credits if Trakt ID is not found for given TMDB ID`() = runBlocking {
-    val person = mockk<Person>(relaxed = true)
-    val personDb = mockk<PersonDb>(relaxed = true) {
-      coEvery { idTrakt } returns null
-    }
-    val ids = mockk<IdsRemote>(relaxed = true) {
-      coEvery { trakt } returns null
-    }
-    coEvery { peopleDao.getById(any()) } returns personDb
-    coEvery { traktApi.fetchPersonIds(any(), any()) } returns ids
+  fun `Should return empty credits if Trakt ID is not found for given TMDB ID`() =
+    runBlocking {
+      val person = mockk<Person>(relaxed = true)
+      val personDb = mockk<PersonDb>(relaxed = true) {
+        coEvery { idTrakt } returns null
+      }
+      val ids = mockk<IdsRemote>(relaxed = true) {
+        coEvery { trakt } returns null
+      }
+      coEvery { peopleDao.getById(any()) } returns personDb
+      coEvery { traktApi.fetchPersonIds(any(), any()) } returns ids
 
-    val result = SUT.loadCredits(person)
+      val result = SUT.loadCredits(person)
 
-    assertThat(result).isEmpty()
-    coVerify { peopleDao.getById(any()) }
-    coVerify(exactly = 0) { peopleDao.updateTraktId(any(), any()) }
-  }
+      assertThat(result).isEmpty()
+      coVerify { peopleDao.getById(any()) }
+      coVerify(exactly = 0) { peopleDao.updateTraktId(any(), any()) }
+    }
 
   @Test
-  fun `Should return locally cached credits if Trakt ID is found and cache is valid`() = runBlocking {
-    val person = mockk<Person>(relaxed = true)
-    val personDb = mockk<PersonDb>(relaxed = true) {
-      coEvery { idTrakt } returns 1
-    }
-    val ids = mockk<IdsRemote>(relaxed = true) {
-      coEvery { trakt } returns 1
-    }
-    val show = mockk<Show>(relaxed = true)
-    val movie = mockk<Movie>(relaxed = true)
-    coEvery { peopleDao.getById(any()) } returns personDb
-    coEvery { traktApi.fetchPersonIds(any(), any()) } returns ids
-    coEvery { peopleCreditsDao.getTimestampForPerson(any()) } returns nowUtcMillis() - 100
-    coEvery { peopleCreditsDao.getAllShowsForPerson(any()) } returns listOf(show)
-    coEvery { peopleCreditsDao.getAllMoviesForPerson(any()) } returns listOf(movie)
+  fun `Should return locally cached credits if Trakt ID is found and cache is valid`() =
+    runBlocking {
+      val person = mockk<Person>(relaxed = true)
+      val personDb = mockk<PersonDb>(relaxed = true) {
+        coEvery { idTrakt } returns 1
+      }
+      val ids = mockk<IdsRemote>(relaxed = true) {
+        coEvery { trakt } returns 1
+      }
+      val show = mockk<Show>(relaxed = true)
+      val movie = mockk<Movie>(relaxed = true)
+      coEvery { peopleDao.getById(any()) } returns personDb
+      coEvery { traktApi.fetchPersonIds(any(), any()) } returns ids
+      coEvery { peopleCreditsDao.getTimestampForPerson(any()) } returns nowUtcMillis() - 100
+      coEvery { peopleCreditsDao.getAllShowsForPerson(any()) } returns listOf(show)
+      coEvery { peopleCreditsDao.getAllMoviesForPerson(any()) } returns listOf(movie)
 
-    val result = SUT.loadCredits(person)
+      val result = SUT.loadCredits(person)
 
-    assertThat(result).hasSize(2)
-    assertThat(result[0].show).isNotNull()
-    assertThat(result[1].movie).isNotNull()
-    coVerify { peopleDao.getById(any()) }
-    coVerify(exactly = 0) { peopleDao.updateTraktId(any(), any()) }
-    coVerify(exactly = 0) { traktApi.fetchPersonShowsCredits(any(), any()) }
-    coVerify(exactly = 0) { traktApi.fetchPersonMoviesCredits(any(), any()) }
-  }
+      assertThat(result).hasSize(2)
+      assertThat(result[0].show).isNotNull()
+      assertThat(result[1].movie).isNotNull()
+      coVerify { peopleDao.getById(any()) }
+      coVerify(exactly = 0) { peopleDao.updateTraktId(any(), any()) }
+      coVerify(exactly = 0) { traktApi.fetchPersonShowsCredits(any(), any()) }
+      coVerify(exactly = 0) { traktApi.fetchPersonMoviesCredits(any(), any()) }
+    }
 
   @Test
-  fun `Should return remote credits if Trakt ID is found and cache is invalid`() = runBlocking {
-    val person = mockk<Person>(relaxed = true)
-    val personDb = mockk<PersonDb>(relaxed = true) {
-      coEvery { idTrakt } returns 1
-    }
-    val ids = mockk<IdsRemote>(relaxed = true) {
-      coEvery { trakt } returns 1
-    }
-    val creditsShows = mockk<PersonCredit>(relaxed = true)
-    val creditsMovies = mockk<PersonCredit>(relaxed = true)
-    coEvery { peopleDao.getById(any()) } returns personDb
-    coEvery { traktApi.fetchPersonIds(any(), any()) } returns ids
-    coEvery { traktApi.fetchPersonShowsCredits(any(), any()) } returns listOf(creditsShows)
-    coEvery { traktApi.fetchPersonMoviesCredits(any(), any()) } returns listOf(creditsMovies)
+  fun `Should return remote credits if Trakt ID is found and cache is invalid`() =
+    runBlocking {
+      val person = mockk<Person>(relaxed = true)
+      val personDb = mockk<PersonDb>(relaxed = true) {
+        coEvery { idTrakt } returns 1
+      }
+      val ids = mockk<IdsRemote>(relaxed = true) {
+        coEvery { trakt } returns 1
+      }
+      val creditsShows = mockk<PersonCredit>(relaxed = true)
+      val creditsMovies = mockk<PersonCredit>(relaxed = true)
+      coEvery { peopleDao.getById(any()) } returns personDb
+      coEvery { traktApi.fetchPersonIds(any(), any()) } returns ids
+      coEvery { traktApi.fetchPersonShowsCredits(any(), any()) } returns listOf(creditsShows)
+      coEvery { traktApi.fetchPersonMoviesCredits(any(), any()) } returns listOf(creditsMovies)
 
-    val result = SUT.loadCredits(person)
+      val result = SUT.loadCredits(person)
 
-    assertThat(result).hasSize(2)
-    assertThat(result[0].show).isNotNull()
-    assertThat(result[1].movie).isNotNull()
-    coVerify { peopleDao.getById(any()) }
-    coVerify(exactly = 1) { showsDao.upsert(any()) }
-    coVerify(exactly = 1) { moviesDao.upsert(any()) }
-    coVerify(exactly = 1) { peopleCreditsDao.insertSingle(any(), any()) }
-    coVerify(exactly = 0) { peopleDao.updateTraktId(any(), any()) }
-  }
+      assertThat(result).hasSize(2)
+      assertThat(result[0].show).isNotNull()
+      assertThat(result[1].movie).isNotNull()
+      coVerify { peopleDao.getById(any()) }
+      coVerify(exactly = 1) { showsDao.upsert(any()) }
+      coVerify(exactly = 1) { moviesDao.upsert(any()) }
+      coVerify(exactly = 1) { peopleCreditsDao.insertSingle(any(), any()) }
+      coVerify(exactly = 0) { peopleDao.updateTraktId(any(), any()) }
+    }
 }

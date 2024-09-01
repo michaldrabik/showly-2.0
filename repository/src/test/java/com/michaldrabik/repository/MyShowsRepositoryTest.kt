@@ -38,7 +38,7 @@ class MyShowsRepositoryTest : BaseMockTest() {
       watchlistShowsLocalSource,
       hiddenShowsLocalDataSource,
       transactions,
-      mappers
+      mappers,
     )
     coEvery { database.myShows } returns myShowsLocalSource
     coEvery { database.watchlistShows } returns watchlistShowsLocalSource

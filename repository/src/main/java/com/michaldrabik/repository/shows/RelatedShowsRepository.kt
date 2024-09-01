@@ -16,10 +16,13 @@ class RelatedShowsRepository @Inject constructor(
   private val remoteSource: RemoteDataSource,
   private val localSource: LocalDataSource,
   private val transactions: TransactionsProvider,
-  private val mappers: Mappers
+  private val mappers: Mappers,
 ) {
 
-  suspend fun loadAll(show: Show, hiddenCount: Int): List<Show> {
+  suspend fun loadAll(
+    show: Show,
+    hiddenCount: Int,
+  ): List<Show> {
     val relatedShows = localSource.relatedShows.getAllById(show.traktId)
     val latest = relatedShows.maxByOrNull { it.updatedAt }
 
@@ -37,7 +40,10 @@ class RelatedShowsRepository @Inject constructor(
     return remoteShows
   }
 
-  private suspend fun cacheRelatedShows(shows: List<Show>, showId: IdTrakt) {
+  private suspend fun cacheRelatedShows(
+    shows: List<Show>,
+    showId: IdTrakt,
+  ) {
     transactions.withTransaction {
       val timestamp = nowUtcMillis()
       localSource.shows.upsert(shows.map { mappers.show.toDatabase(it) })
@@ -45,7 +51,7 @@ class RelatedShowsRepository @Inject constructor(
       localSource.relatedShows.insert(
         shows.map {
           RelatedShow.fromTraktId(it.ids.trakt.id, showId.id, timestamp)
-        }
+        },
       )
     }
   }

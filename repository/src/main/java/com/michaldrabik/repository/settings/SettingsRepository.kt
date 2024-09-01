@@ -92,8 +92,18 @@ class SettingsRepository @Inject constructor(
   var progressUpcomingDays by LongPreference(preferences, PROGRESS_UPCOMING_DAYS, 90)
   var isProgressUpcomingCollapsed by BooleanPreference(preferences, PROGRESS_UPCOMING_COLLAPSED)
   var isProgressOnHoldCollapsed by BooleanPreference(preferences, PROGRESS_ON_HOLD_COLLAPSED)
-  var progressNextEpisodeType by EnumPreference(preferences, PROGRESS_NEXT_EPISODE_TYPE, LAST_WATCHED, ProgressNextEpisodeType::class.java)
-  var progressDateSelectionType by EnumPreference(preferences, PROGRESS_DATE_SELECTION_TYPE, ALWAYS_ASK, ProgressDateSelectionType::class.java)
+  var progressNextEpisodeType by EnumPreference(
+    preferences,
+    PROGRESS_NEXT_EPISODE_TYPE,
+    LAST_WATCHED,
+    ProgressNextEpisodeType::class.java,
+  )
+  var progressDateSelectionType by EnumPreference(
+    preferences,
+    PROGRESS_DATE_SELECTION_TYPE,
+    ALWAYS_ASK,
+    ProgressDateSelectionType::class.java,
+  )
   var isLocaleInitialised by BooleanPreference(preferences, LOCALE_INITIALISED, false)
 
   var mode: Mode

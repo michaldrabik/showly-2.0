@@ -78,7 +78,7 @@ class TranslationsRepository @Inject constructor(
       translation.title,
       language,
       translation.overview,
-      nowUtcMillis()
+      nowUtcMillis(),
     )
 
     if (translationDb.overview.isNotBlank() || translationDb.title.isNotBlank()) {
@@ -118,7 +118,7 @@ class TranslationsRepository @Inject constructor(
       translation.title,
       language,
       translation.overview,
-      nowUtcMillis()
+      nowUtcMillis(),
     )
 
     if (translationDb.overview.isNotBlank() || translationDb.title.isNotBlank()) {
@@ -160,7 +160,7 @@ class TranslationsRepository @Inject constructor(
           title = item.title,
           overview = item.overview,
           language = language,
-          createdAt = nowMillis
+          createdAt = nowMillis,
         )
         localSource.episodesTranslations.insertSingle(dbItem)
       }
@@ -177,14 +177,15 @@ class TranslationsRepository @Inject constructor(
   suspend fun loadTranslations(
     season: Season,
     showId: IdTrakt,
-    language: String = DEFAULT_LANGUAGE
+    language: String = DEFAULT_LANGUAGE,
   ): List<SeasonTranslation> {
     val episodes = season.episodes.toList()
     val episodesIds = season.episodes.map { it.ids.trakt.id }
 
     val local = localSource.episodesTranslations.getByIds(episodesIds, showId.id, language)
     val hasAllTranslated = local.isNotEmpty() && local.all { it.title.isNotBlank() && it.overview.isNotBlank() }
-    val isCacheValid = local.isNotEmpty() && nowUtcMillis() - local.first().updatedAt < ConfigVariant.TRANSLATION_SYNC_EPISODE_COOLDOWN
+    val isCacheValid =
+      local.isNotEmpty() && nowUtcMillis() - local.first().updatedAt < ConfigVariant.TRANSLATION_SYNC_EPISODE_COOLDOWN
 
     if (hasAllTranslated || (!hasAllTranslated && isCacheValid)) {
       return episodes.map { episode ->
@@ -196,7 +197,7 @@ class TranslationsRepository @Inject constructor(
           seasonNumber = season.number,
           episodeNumber = episode.number,
           language = language,
-          isLocal = true
+          isLocal = true,
         )
       }
     }
@@ -212,7 +213,7 @@ class TranslationsRepository @Inject constructor(
           item.title,
           language,
           item.overview,
-          nowUtcMillis()
+          nowUtcMillis(),
         )
         localSource.episodesTranslations.insertSingle(dbItem)
       }
@@ -226,7 +227,7 @@ class TranslationsRepository @Inject constructor(
         seasonNumber = season.number,
         episodeNumber = episode.number,
         language = language,
-        isLocal = true
+        isLocal = true,
       )
     }
   }

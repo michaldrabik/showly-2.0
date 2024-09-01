@@ -37,13 +37,14 @@ class EpisodesManager @Inject constructor(
   private val mappers: Mappers,
 ) {
 
-  suspend fun getWatchedSeasonsIds(show: Show) =
-    seasonsLocalSource.getAllWatchedIdsForShows(listOf(show.traktId))
+  suspend fun getWatchedSeasonsIds(show: Show) = seasonsLocalSource.getAllWatchedIdsForShows(listOf(show.traktId))
 
-  suspend fun getWatchedEpisodesIds(show: Show) =
-    episodesLocalSource.getAllWatchedIdsForShows(listOf(show.traktId))
+  suspend fun getWatchedEpisodesIds(show: Show) = episodesLocalSource.getAllWatchedIdsForShows(listOf(show.traktId))
 
-  suspend fun setSeasonWatched(seasonBundle: SeasonBundle, customDate: ZonedDateTime?): List<Episode> {
+  suspend fun setSeasonWatched(
+    seasonBundle: SeasonBundle,
+    customDate: ZonedDateTime?,
+  ): List<Episode> {
     val date = customDate?.toUtcZone() ?: nowUtc()
     val toAdd = mutableListOf<EpisodeDb>()
     transactions.withTransaction {
@@ -93,7 +94,11 @@ class EpisodesManager @Inject constructor(
     }
   }
 
-  suspend fun setEpisodeWatched(episodeId: Long, seasonId: Long, showId: IdTrakt) {
+  suspend fun setEpisodeWatched(
+    episodeId: Long,
+    seasonId: Long,
+    showId: IdTrakt,
+  ) {
     val episodeDb = episodesLocalSource.getAllForSeason(seasonId).find { it.idTrakt == episodeId }!!
     val seasonDb = seasonsLocalSource.getById(seasonId)!!
     val show = showsRepository.myShows.load(showId)!!
@@ -103,11 +108,14 @@ class EpisodesManager @Inject constructor(
         season = mappers.season.fromDatabase(seasonDb),
         show = show,
       ),
-      customDate = null
+      customDate = null,
     )
   }
 
-  suspend fun setEpisodeWatched(episodeBundle: EpisodeBundle, customDate: ZonedDateTime?) {
+  suspend fun setEpisodeWatched(
+    episodeBundle: EpisodeBundle,
+    customDate: ZonedDateTime?,
+  ) {
     transactions.withTransaction {
       val (episode, season, show) = episodeBundle
       val date = customDate?.toUtcZone() ?: nowUtc()
@@ -137,7 +145,7 @@ class EpisodesManager @Inject constructor(
           val ep = dbEpisode.copy(
             isWatched = false,
             lastExportedAt = null,
-            lastWatchedAt = null
+            lastWatchedAt = null,
           )
           episodesLocalSource.upsert(listOf(ep))
         }
@@ -148,7 +156,10 @@ class EpisodesManager @Inject constructor(
     }
   }
 
-  suspend fun setAllUnwatched(showId: IdTrakt, skipSpecials: Boolean = false) {
+  suspend fun setAllUnwatched(
+    showId: IdTrakt,
+    skipSpecials: Boolean = false,
+  ) {
     transactions.withTransaction {
       val watchedEpisodes = episodesLocalSource.getAllByShowId(showId.id)
       val watchedSeasons = seasonsLocalSource.getAllByShowId(showId.id)
@@ -166,14 +177,17 @@ class EpisodesManager @Inject constructor(
   }
 
   @Suppress("UNCHECKED_CAST")
-  suspend fun invalidateSeasons(show: Show, remoteSeasons: List<Season>) {
+  suspend fun invalidateSeasons(
+    show: Show,
+    remoteSeasons: List<Season>,
+  ) {
     if (remoteSeasons.isEmpty()) {
       return
     }
     coroutineScope {
       val (localSeasons, localEpisodes) = awaitAll(
         async { seasonsLocalSource.getAllByShowId(show.traktId) },
-        async { episodesLocalSource.getAllByShowId(show.traktId) }
+        async { episodesLocalSource.getAllByShowId(show.traktId) },
       )
       localSeasons as List<SeasonDb>
       localEpisodes as List<EpisodeDb>
@@ -207,7 +221,7 @@ class EpisodesManager @Inject constructor(
             showId = show.ids.trakt,
             isWatched = isWatched,
             lastExportedAt = localEpisode?.lastExportedAt,
-            lastWatchedAt = localEpisode?.lastWatchedAt
+            lastWatchedAt = localEpisode?.lastWatchedAt,
           )
           episodesToAdd.add(episodeDb)
         }
@@ -215,7 +229,7 @@ class EpisodesManager @Inject constructor(
         val seasonDb = mappers.season.toDatabase(
           season = remoteSeason,
           showId = show.ids.trakt,
-          isWatched = !isAnyEpisodeUnwatched
+          isWatched = !isAnyEpisodeUnwatched,
         )
         seasonsToAdd.add(seasonDb)
       }
@@ -234,7 +248,10 @@ class EpisodesManager @Inject constructor(
     }
   }
 
-  private suspend fun onEpisodeSet(season: Season, show: Show) {
+  private suspend fun onEpisodeSet(
+    season: Season,
+    show: Show,
+  ) {
     val localEpisodes = episodesLocalSource.getAllForSeason(season.ids.trakt.id)
     val isWatched = localEpisodes.count { it.isWatched } == season.episodeCount
     val dbSeason = mappers.season.toDatabase(season, show.ids.trakt, isWatched)

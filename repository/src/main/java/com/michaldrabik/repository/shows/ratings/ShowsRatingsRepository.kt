@@ -23,7 +23,7 @@ class ShowsRatingsRepository @Inject constructor(
   private val remoteSource: AuthorizedTraktRemoteDataSource,
   private val localSource: LocalDataSource,
   private val transactions: TransactionsProvider,
-  private val mappers: Mappers
+  private val mappers: Mappers,
 ) {
 
   companion object {
@@ -33,37 +33,37 @@ class ShowsRatingsRepository @Inject constructor(
     private const val CHUNK_SIZE = 250
   }
 
-  suspend fun preloadRatings() = supervisorScope {
+  suspend fun preloadRatings() =
+    supervisorScope {
+      suspend fun preloadShowsRatings() {
+        val ratings = remoteSource.fetchShowsRatings()
+        val entities = ratings
+          .filter { it.rated_at != null && it.show.ids.trakt != null }
+          .map { mappers.userRatings.toDatabaseShow(it) }
+        localSource.ratings.replaceAll(entities, TYPE_SHOW)
+      }
 
-    suspend fun preloadShowsRatings() {
-      val ratings = remoteSource.fetchShowsRatings()
-      val entities = ratings
-        .filter { it.rated_at != null && it.show.ids.trakt != null }
-        .map { mappers.userRatings.toDatabaseShow(it) }
-      localSource.ratings.replaceAll(entities, TYPE_SHOW)
+      suspend fun preloadEpisodesRatings() {
+        val ratings = remoteSource.fetchEpisodesRatings()
+        val entities = ratings
+          .filter { it.rated_at != null && it.episode.ids.trakt != null }
+          .map { mappers.userRatings.toDatabaseEpisode(it) }
+        localSource.ratings.replaceAll(entities, TYPE_EPISODE)
+      }
+
+      suspend fun preloadSeasonsRatings() {
+        val ratings = remoteSource.fetchSeasonsRatings()
+        val entities = ratings
+          .filter { it.rated_at != null && it.season.ids.trakt != null }
+          .map { mappers.userRatings.toDatabaseSeason(it) }
+        localSource.ratings.replaceAll(entities, TYPE_SEASON)
+      }
+
+      val errorHandler = CoroutineExceptionHandler { _, _ -> Timber.e("Failed to preload some of ratings.") }
+      launch(errorHandler) { preloadShowsRatings() }
+      launch(errorHandler) { preloadEpisodesRatings() }
+      launch(errorHandler) { preloadSeasonsRatings() }
     }
-
-    suspend fun preloadEpisodesRatings() {
-      val ratings = remoteSource.fetchEpisodesRatings()
-      val entities = ratings
-        .filter { it.rated_at != null && it.episode.ids.trakt != null }
-        .map { mappers.userRatings.toDatabaseEpisode(it) }
-      localSource.ratings.replaceAll(entities, TYPE_EPISODE)
-    }
-
-    suspend fun preloadSeasonsRatings() {
-      val ratings = remoteSource.fetchSeasonsRatings()
-      val entities = ratings
-        .filter { it.rated_at != null && it.season.ids.trakt != null }
-        .map { mappers.userRatings.toDatabaseSeason(it) }
-      localSource.ratings.replaceAll(entities, TYPE_SEASON)
-    }
-
-    val errorHandler = CoroutineExceptionHandler { _, _ -> Timber.e("Failed to preload some of ratings.") }
-    launch(errorHandler) { preloadShowsRatings() }
-    launch(errorHandler) { preloadEpisodesRatings() }
-    launch(errorHandler) { preloadSeasonsRatings() }
-  }
 
   suspend fun loadShowsRatings(): List<TraktRating> {
     val ratings = localSource.ratings.getAllByType(TYPE_SHOW)
@@ -108,28 +108,37 @@ class ShowsRatingsRepository @Inject constructor(
     }
   }
 
-  suspend fun addRating(show: Show, rating: Int) {
+  suspend fun addRating(
+    show: Show,
+    rating: Int,
+  ) {
     remoteSource.postRating(
       mappers.show.toNetwork(show),
-      rating
+      rating,
     )
     val entity = mappers.userRatings.toDatabaseShow(show, rating, nowUtc())
     localSource.ratings.replace(entity)
   }
 
-  suspend fun addRating(episode: Episode, rating: Int) {
+  suspend fun addRating(
+    episode: Episode,
+    rating: Int,
+  ) {
     remoteSource.postRating(
       mappers.episode.toNetwork(episode),
-      rating
+      rating,
     )
     val entity = mappers.userRatings.toDatabaseEpisode(episode, rating, nowUtc())
     localSource.ratings.replace(entity)
   }
 
-  suspend fun addRating(season: Season, rating: Int) {
+  suspend fun addRating(
+    season: Season,
+    rating: Int,
+  ) {
     remoteSource.postRating(
       mappers.season.toNetwork(season),
-      rating
+      rating,
     )
     val entity = mappers.userRatings.toDatabaseSeason(season, rating, nowUtc())
     localSource.ratings.replace(entity)
@@ -137,21 +146,21 @@ class ShowsRatingsRepository @Inject constructor(
 
   suspend fun deleteRating(show: Show) {
     remoteSource.deleteRating(
-      mappers.show.toNetwork(show)
+      mappers.show.toNetwork(show),
     )
     localSource.ratings.deleteByType(show.traktId, TYPE_SHOW)
   }
 
   suspend fun deleteRating(episode: Episode) {
     remoteSource.deleteRating(
-      mappers.episode.toNetwork(episode)
+      mappers.episode.toNetwork(episode),
     )
     localSource.ratings.deleteByType(episode.ids.trakt.id, TYPE_EPISODE)
   }
 
   suspend fun deleteRating(season: Season) {
     remoteSource.deleteRating(
-      mappers.season.toNetwork(season)
+      mappers.season.toNetwork(season),
     )
     localSource.ratings.deleteByType(season.ids.trakt.id, TYPE_SEASON)
   }

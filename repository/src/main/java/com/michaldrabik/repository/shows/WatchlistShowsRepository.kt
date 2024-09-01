@@ -36,9 +36,7 @@ class WatchlistShowsRepository @Inject constructor(
     }
   }
 
-  suspend fun delete(id: IdTrakt) =
-    localSource.watchlistShows.deleteById(id.id)
+  suspend fun delete(id: IdTrakt) = localSource.watchlistShows.deleteById(id.id)
 
-  suspend fun exists(id: IdTrakt) =
-    localSource.watchlistShows.checkExists(id.id)
+  suspend fun exists(id: IdTrakt) = localSource.watchlistShows.checkExists(id.id)
 }

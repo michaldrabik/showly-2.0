@@ -25,7 +25,7 @@ abstract class StreamingsRepository {
         options = entry.value.flatMap { it.options },
         link = entryValue.link,
         mediaName = entryValue.mediaName,
-        countryCode = countryCode
+        countryCode = countryCode,
       )
     }
 
@@ -35,11 +35,31 @@ abstract class StreamingsRepository {
     countryCode: String,
   ): List<StreamingService> {
     val items = mutableListOf<StreamingService>()
-    items.addAll(remoteItems.flatrate?.map { createStreamingService(mediaName, countryCode, remoteItems, it, FLATRATE) } ?: emptyList())
-    items.addAll(remoteItems.free?.map { createStreamingService(mediaName, countryCode, remoteItems, it, FREE) } ?: emptyList())
-    items.addAll(remoteItems.buy?.map { createStreamingService(mediaName, countryCode, remoteItems, it, BUY) } ?: emptyList())
-    items.addAll(remoteItems.rent?.map { createStreamingService(mediaName, countryCode, remoteItems, it, RENT) } ?: emptyList())
-    items.addAll(remoteItems.ads?.map { createStreamingService(mediaName, countryCode, remoteItems, it, ADS) } ?: emptyList())
+    items.addAll(
+      remoteItems.flatrate?.map {
+        createStreamingService(mediaName, countryCode, remoteItems, it, FLATRATE)
+      } ?: emptyList(),
+    )
+    items.addAll(
+      remoteItems.free?.map {
+        createStreamingService(mediaName, countryCode, remoteItems, it, FREE)
+      } ?: emptyList(),
+    )
+    items.addAll(
+      remoteItems.buy?.map {
+        createStreamingService(mediaName, countryCode, remoteItems, it, BUY)
+      } ?: emptyList(),
+    )
+    items.addAll(
+      remoteItems.rent?.map {
+        createStreamingService(mediaName, countryCode, remoteItems, it, RENT)
+      } ?: emptyList(),
+    )
+    items.addAll(
+      remoteItems.ads?.map {
+        createStreamingService(mediaName, countryCode, remoteItems, it, ADS)
+      } ?: emptyList(),
+    )
     return items
       .groupBy { it.name }
       .filter { it.value.isNotEmpty() }
@@ -51,7 +71,7 @@ abstract class StreamingsRepository {
           options = entry.value.flatMap { it.options },
           link = entryValue.link,
           mediaName = entryValue.mediaName,
-          countryCode = countryCode
+          countryCode = countryCode,
         )
       }
   }
@@ -68,6 +88,6 @@ abstract class StreamingsRepository {
     options = listOf(option),
     link = country.link,
     mediaName = mediaName,
-    countryCode = countryCode
+    countryCode = countryCode,
   )
 }

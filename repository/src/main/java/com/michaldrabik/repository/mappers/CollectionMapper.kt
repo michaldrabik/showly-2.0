@@ -15,7 +15,7 @@ class CollectionMapper @Inject constructor() {
       id = IdTrakt(input.ids.trakt!!),
       name = input.name,
       description = input.description,
-      itemCount = input.item_count
+      itemCount = input.item_count,
     )
   }
 
@@ -24,7 +24,7 @@ class CollectionMapper @Inject constructor() {
       id = IdTrakt(input.idTrakt),
       name = input.name,
       description = input.description,
-      itemCount = input.itemCount
+      itemCount = input.itemCount,
     )
   }
 
@@ -41,7 +41,7 @@ class CollectionMapper @Inject constructor() {
       description = input.description,
       itemCount = input.itemCount,
       updatedAt = updatedAt,
-      createdAt = createdAt
+      createdAt = createdAt,
     )
   }
 }

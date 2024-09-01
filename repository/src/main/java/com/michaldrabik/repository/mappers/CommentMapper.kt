@@ -22,11 +22,11 @@ class CommentMapper @Inject constructor() {
       updatedAt = if (comment?.updated_at.isNullOrBlank()) null else ZonedDateTime.parse(comment?.updated_at),
       user = User(
         username = comment?.user?.username ?: "",
-        avatarUrl = comment?.user?.images?.avatar?.full ?: ""
+        avatarUrl = comment?.user?.images?.avatar?.full ?: "",
       ),
       isMe = false,
       isSignedIn = false,
       isLoading = false,
-      hasRepliesLoaded = false
+      hasRepliesLoaded = false,
     )
 }

@@ -19,7 +19,10 @@ class MovieDetailsRepository @Inject constructor(
   private val mappers: Mappers,
 ) {
 
-  suspend fun load(idTrakt: IdTrakt, force: Boolean = false): Movie {
+  suspend fun load(
+    idTrakt: IdTrakt,
+    force: Boolean = false,
+  ): Movie {
     val local = localSource.movies.getById(idTrakt.id)
     if (force || local == null || nowUtcMillis() - local.updatedAt > Config.MOVIE_DETAILS_CACHE_DURATION) {
       val remote = remoteSource.trakt.fetchMovie(idTrakt.id)
@@ -55,6 +58,5 @@ class MovieDetailsRepository @Inject constructor(
     return null
   }
 
-  suspend fun delete(idTrakt: IdTrakt) =
-    localSource.movies.deleteById(idTrakt.id)
+  suspend fun delete(idTrakt: IdTrakt) = localSource.movies.deleteById(idTrakt.id)
 }

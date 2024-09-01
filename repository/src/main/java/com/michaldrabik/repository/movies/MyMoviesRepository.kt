@@ -36,10 +36,13 @@ class MyMoviesRepository @Inject constructor(
 
   suspend fun loadAllIds() = localSource.myMovies.getAllTraktIds()
 
-  suspend fun insert(id: IdTrakt, customDate: ZonedDateTime?) {
+  suspend fun insert(
+    id: IdTrakt,
+    customDate: ZonedDateTime?,
+  ) {
     val movie = MyMovie.fromTraktId(
       traktId = id.id,
-      timestamp = customDate?.toUtcZone()?.toMillis() ?: nowUtcMillis()
+      timestamp = customDate?.toUtcZone()?.toMillis() ?: nowUtcMillis(),
     )
     transactions.withTransaction {
       with(localSource) {
@@ -50,9 +53,7 @@ class MyMoviesRepository @Inject constructor(
     }
   }
 
-  suspend fun delete(id: IdTrakt) =
-    localSource.myMovies.deleteById(id.id)
+  suspend fun delete(id: IdTrakt) = localSource.myMovies.deleteById(id.id)
 
-  suspend fun exists(id: IdTrakt) =
-    localSource.myMovies.checkExists(id.id)
+  suspend fun exists(id: IdTrakt) = localSource.myMovies.checkExists(id.id)
 }

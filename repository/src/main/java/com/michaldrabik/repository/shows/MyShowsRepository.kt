@@ -37,13 +37,16 @@ class MyShowsRepository @Inject constructor(
 
   suspend fun loadAllIds() = myShowsLocalSource.getAllTraktIds()
 
-  suspend fun insert(id: IdTrakt, lastWatchedAt: Long) {
+  suspend fun insert(
+    id: IdTrakt,
+    lastWatchedAt: Long,
+  ) {
     val nowUtc = nowUtcMillis()
     val dbShow = MyShow.fromTraktId(
       traktId = id.id,
       createdAt = nowUtc,
       updatedAt = nowUtc,
-      watchedAt = lastWatchedAt
+      watchedAt = lastWatchedAt,
     )
     transactions.withTransaction {
       myShowsLocalSource.insert(listOf(dbShow))
@@ -56,10 +59,12 @@ class MyShowsRepository @Inject constructor(
     myShowsLocalSource.deleteById(id.id)
   }
 
-  suspend fun exists(id: IdTrakt) =
-    myShowsLocalSource.checkExists(id.id)
+  suspend fun exists(id: IdTrakt) = myShowsLocalSource.checkExists(id.id)
 
-  suspend fun updateWatchedAt(idTrakt: Long, watchedAt: Long) {
+  suspend fun updateWatchedAt(
+    idTrakt: Long,
+    watchedAt: Long,
+  ) {
     myShowsLocalSource.updateWatchedAt(idTrakt, watchedAt)
   }
 }

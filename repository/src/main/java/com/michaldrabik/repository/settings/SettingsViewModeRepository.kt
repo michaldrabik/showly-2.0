@@ -31,7 +31,11 @@ class SettingsViewModeRepository @Inject constructor(
   var hiddenShowsViewMode by StringPreference(preferences, HIDDEN_SHOWS_VIEW_MODE, Config.DEFAULT_LIST_VIEW_MODE)
 
   var myMoviesViewMode by StringPreference(preferences, MY_MOVIES_VIEW_MODE, Config.DEFAULT_LIST_VIEW_MODE)
-  var watchlistMoviesViewMode by StringPreference(preferences, WATCHLIST_MOVIES_VIEW_MODE, Config.DEFAULT_LIST_VIEW_MODE)
+  var watchlistMoviesViewMode by StringPreference(
+    preferences,
+    WATCHLIST_MOVIES_VIEW_MODE,
+    Config.DEFAULT_LIST_VIEW_MODE,
+  )
   var hiddenMoviesViewMode by StringPreference(preferences, HIDDEN_MOVIES_VIEW_MODE, Config.DEFAULT_LIST_VIEW_MODE)
 
   var customListsViewMode by StringPreference(preferences, CUSTOM_LIST_VIEW_MODE, Config.DEFAULT_LIST_VIEW_MODE)

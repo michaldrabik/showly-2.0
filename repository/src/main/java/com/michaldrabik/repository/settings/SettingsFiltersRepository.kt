@@ -42,7 +42,12 @@ class SettingsFiltersRepository @Inject constructor(
   var progressShowsUpcoming by BooleanPreference(preferences, PROGRESS_SHOWS_UPCOMING, false)
   var progressShowsOnHold by BooleanPreference(preferences, PROGRESS_SHOWS_ON_HOLD, false)
 
-  var historyShowsPeriod by EnumPreference(preferences, HISTORY_SHOWS_PERIOD, HistoryPeriod.LAST_30_DAYS, HistoryPeriod::class.java)
+  var historyShowsPeriod by EnumPreference(
+    preferences,
+    HISTORY_SHOWS_PERIOD,
+    HistoryPeriod.LAST_30_DAYS,
+    HistoryPeriod::class.java,
+  )
 
   var myShowsType by EnumPreference(preferences, MY_SHOWS_TYPE, MyShowsSection.ALL, MyShowsSection::class.java)
   var myShowsNetworks: List<Network>
@@ -62,7 +67,12 @@ class SettingsFiltersRepository @Inject constructor(
       preferences.edit { putStringSet(MY_SHOWS_GENRES, value.map { it.name }.toSet()) }
     }
 
-  var watchlistShowsUpcoming by EnumPreference(preferences, WATCHLIST_SHOWS_UPCOMING, UpcomingFilter.OFF, UpcomingFilter::class.java)
+  var watchlistShowsUpcoming by EnumPreference(
+    preferences,
+    WATCHLIST_SHOWS_UPCOMING,
+    UpcomingFilter.OFF,
+    UpcomingFilter::class.java,
+  )
   var watchlistShowsNetworks: List<Network>
     get() {
       val filters = preferences.getStringSet(WATCHLIST_SHOWS_NETWORKS, emptySet()) ?: emptySet()
@@ -108,7 +118,12 @@ class SettingsFiltersRepository @Inject constructor(
       preferences.edit { putStringSet(MY_MOVIES_GENRES, value.map { it.name }.toSet()) }
     }
 
-  var watchlistMoviesUpcoming by EnumPreference(preferences, WATCHLIST_MOVIES_UPCOMING, UpcomingFilter.OFF, UpcomingFilter::class.java)
+  var watchlistMoviesUpcoming by EnumPreference(
+    preferences,
+    WATCHLIST_MOVIES_UPCOMING,
+    UpcomingFilter.OFF,
+    UpcomingFilter::class.java,
+  )
   var watchlistMoviesGenres: List<Genre>
     get() {
       val filters = preferences.getStringSet(WATCHLIST_MOVIES_GENRES, emptySet()) ?: emptySet()

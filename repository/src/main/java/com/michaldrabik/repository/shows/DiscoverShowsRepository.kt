@@ -17,7 +17,7 @@ class DiscoverShowsRepository @Inject constructor(
   private val remoteSource: RemoteDataSource,
   private val localSource: LocalDataSource,
   private val transactions: TransactionsProvider,
-  private val mappers: Mappers
+  private val mappers: Mappers,
 ) {
 
   suspend fun isCacheValid(): Boolean {
@@ -40,7 +40,7 @@ class DiscoverShowsRepository @Inject constructor(
     showCollection: Boolean,
     collectionSize: Int,
     genres: List<Genre>,
-    networks: List<Network>
+    networks: List<Network>,
   ): List<Show> {
     val remoteShows = mutableListOf<Show>()
     val anticipatedShows = mutableListOf<Show>()
@@ -50,8 +50,11 @@ class DiscoverShowsRepository @Inject constructor(
     val networksQuery = networks.joinToString(",") { it.channels.joinToString(",") }
 
     val limit =
-      if (showCollection) TRAKT_TRENDING_SHOWS_LIMIT
-      else TRAKT_TRENDING_SHOWS_LIMIT + (collectionSize / 2)
+      if (showCollection) {
+        TRAKT_TRENDING_SHOWS_LIMIT
+      } else {
+        TRAKT_TRENDING_SHOWS_LIMIT + (collectionSize / 2)
+      }
     val trendingShows = remoteSource.trakt.fetchTrendingShows(genresQuery, networksQuery, limit)
       .map { mappers.show.fromNetwork(it) }
 
@@ -63,7 +66,9 @@ class DiscoverShowsRepository @Inject constructor(
     }
 
     if (showAnticipated) {
-      val shows = remoteSource.trakt.fetchAnticipatedShows(genresQuery, networksQuery).map { mappers.show.fromNetwork(it) }.toMutableList()
+      val shows = remoteSource.trakt.fetchAnticipatedShows(genresQuery, networksQuery).map {
+        mappers.show.fromNetwork(it)
+      }.toMutableList()
       anticipatedShows.addAll(shows)
     }
 
@@ -92,14 +97,17 @@ class DiscoverShowsRepository @Inject constructor(
           DiscoverShow(
             idTrakt = it.ids.trakt.id,
             createdAt = timestamp,
-            updatedAt = timestamp
+            updatedAt = timestamp,
           )
-        }
+        },
       )
     }
   }
 
-  private fun addIfMissing(shows: MutableList<Show>, show: Show) {
+  private fun addIfMissing(
+    shows: MutableList<Show>,
+    show: Show,
+  ) {
     if (shows.any { it.ids.trakt == show.ids.trakt }) return
     shows.add(show)
   }

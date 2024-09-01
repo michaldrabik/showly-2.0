@@ -31,12 +31,15 @@ class MovieImagesProvider @Inject constructor(
   private val remoteSource: RemoteDataSource,
   private val localSource: LocalDataSource,
   private val mappers: Mappers,
-  private var translationsRepository: TranslationsRepository
+  private var translationsRepository: TranslationsRepository,
 ) {
 
   private val unavailableCache = mutableSetOf<IdTrakt>()
 
-  suspend fun findCachedImage(movie: Movie, type: ImageType): Image =
+  suspend fun findCachedImage(
+    movie: Movie,
+    type: ImageType,
+  ): Image =
     withContext(dispatchers.IO) {
       val image = localSource.movieImages.getByMovieId(movie.ids.tmdb.id, type.key)
       when (image) {
@@ -50,7 +53,11 @@ class MovieImagesProvider @Inject constructor(
       }
     }
 
-  suspend fun loadRemoteImage(movie: Movie, type: ImageType, force: Boolean = false): Image =
+  suspend fun loadRemoteImage(
+    movie: Movie,
+    type: ImageType,
+    force: Boolean = false,
+  ): Image =
     withContext(dispatchers.IO) {
       val tmdbId = movie.ids.tmdb
       val tvdbId = movie.ids.tvdb
@@ -92,7 +99,7 @@ class MovieImagesProvider @Inject constructor(
     tmdbId: IdTmdb,
     tvdbId: IdTvdb,
     images: TmdbImages,
-    targetType: ImageType
+    targetType: ImageType,
   ) {
     val extraType = if (targetType == POSTER) FANART else POSTER
     val typeImages = when (extraType) {
@@ -106,7 +113,10 @@ class MovieImagesProvider @Inject constructor(
     }
   }
 
-  suspend fun loadRemoteImages(movie: Movie, type: ImageType): List<Image> =
+  suspend fun loadRemoteImages(
+    movie: Movie,
+    type: ImageType,
+  ): List<Image> =
     withContext(dispatchers.IO) {
       val tmdbId = movie.ids.tmdb
       val remoteImages = remoteSource.tmdb.fetchMovieImages(tmdbId.id)
@@ -120,7 +130,10 @@ class MovieImagesProvider @Inject constructor(
       }
     }
 
-  private fun findBestImage(images: List<TmdbImage>, type: ImageType): TmdbImage? {
+  private fun findBestImage(
+    images: List<TmdbImage>,
+    type: ImageType,
+  ): TmdbImage? {
     val language = translationsRepository.getLanguage()
     val comparator = when (type) {
       POSTER -> compareBy<TmdbImage> { it.isLanguage(language) }
@@ -133,9 +146,10 @@ class MovieImagesProvider @Inject constructor(
     return images.maxWithOrNull(comparator.thenBy { it.getVoteScore() })
   }
 
-  suspend fun deleteLocalCache() = withContext(dispatchers.IO) {
-    localSource.movieImages.deleteAll()
-  }
+  suspend fun deleteLocalCache() =
+    withContext(dispatchers.IO) {
+      localSource.movieImages.deleteAll()
+    }
 
   fun clear() = unavailableCache.clear()
 }

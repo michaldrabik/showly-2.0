@@ -33,13 +33,16 @@ class ShowImagesProvider @Inject constructor(
   private val remoteSource: RemoteDataSource,
   private val localSource: LocalDataSource,
   private val mappers: Mappers,
-  private var translationsRepository: TranslationsRepository
+  private var translationsRepository: TranslationsRepository,
 ) {
 
   private val unavailableCache = mutableSetOf<IdTrakt>()
   private var awsImagesCache: AwsImages? = null
 
-  suspend fun findCachedImage(show: Show, type: ImageType): Image =
+  suspend fun findCachedImage(
+    show: Show,
+    type: ImageType,
+  ): Image =
     withContext(dispatchers.IO) {
       val image = localSource.showImages.getByShowId(show.ids.tmdb.id, type.key)
       when (image) {
@@ -53,7 +56,11 @@ class ShowImagesProvider @Inject constructor(
       }
     }
 
-  suspend fun loadRemoteImage(show: Show, type: ImageType, force: Boolean = false): Image =
+  suspend fun loadRemoteImage(
+    show: Show,
+    type: ImageType,
+    force: Boolean = false,
+  ): Image =
     withContext(dispatchers.IO) {
       val tvdbId = show.ids.tvdb
       val tmdbId = show.ids.tmdb
@@ -150,7 +157,10 @@ class ShowImagesProvider @Inject constructor(
     }
   }
 
-  suspend fun loadRemoteImages(show: Show, type: ImageType): List<Image> =
+  suspend fun loadRemoteImages(
+    show: Show,
+    type: ImageType,
+  ): List<Image> =
     withContext(dispatchers.IO) {
       val tmdbId = show.ids.tmdb
       val remoteImages = remoteSource.tmdb.fetchShowImages(tmdbId.id)
@@ -172,7 +182,10 @@ class ShowImagesProvider @Inject constructor(
     }
   }
 
-  private fun findBestImage(images: List<TmdbImage>, type: ImageType): TmdbImage? {
+  private fun findBestImage(
+    images: List<TmdbImage>,
+    type: ImageType,
+  ): TmdbImage? {
     val language = translationsRepository.getLanguage()
     val comparator = when (type) {
       POSTER -> compareBy<TmdbImage> { it.isLanguage(language) }
@@ -185,9 +198,10 @@ class ShowImagesProvider @Inject constructor(
     return images.maxWithOrNull(comparator.thenBy { it.getVoteScore() })
   }
 
-  suspend fun deleteLocalCache() = withContext(dispatchers.IO) {
-    localSource.showImages.deleteAll()
-  }
+  suspend fun deleteLocalCache() =
+    withContext(dispatchers.IO) {
+      localSource.showImages.deleteAll()
+    }
 
   fun clear() = unavailableCache.clear()
 }

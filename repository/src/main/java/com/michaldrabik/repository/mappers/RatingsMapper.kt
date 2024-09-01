@@ -15,7 +15,7 @@ class RatingsMapper @Inject constructor() {
       imdb = if (omdbResult.imdbRating == "N/A") null else Ratings.Value(omdbResult.imdbRating, false),
       metascore = if (omdbResult.Metascore == "N/A") null else Ratings.Value(omdbResult.Metascore, false),
       rottenTomatoes = Ratings.Value(omdbResult.Ratings?.find { it.Source == "Rotten Tomatoes" }?.Value, false),
-      rottenTomatoesUrl = if (omdbResult.tomatoURL == "N/A") null else omdbResult.tomatoURL
+      rottenTomatoesUrl = if (omdbResult.tomatoURL == "N/A") null else omdbResult.tomatoURL,
     )
 
   fun fromDatabase(entity: MovieRatings) =
@@ -24,7 +24,7 @@ class RatingsMapper @Inject constructor() {
       imdb = Ratings.Value(entity.imdb, false),
       rottenTomatoes = Ratings.Value(entity.rottenTomatoes, false),
       rottenTomatoesUrl = entity.rottenTomatoesUrl,
-      metascore = Ratings.Value(entity.metascore, false)
+      metascore = Ratings.Value(entity.metascore, false),
     )
 
   fun fromDatabase(entity: ShowRatings) =
@@ -33,7 +33,7 @@ class RatingsMapper @Inject constructor() {
       imdb = Ratings.Value(entity.imdb, false),
       rottenTomatoes = Ratings.Value(entity.rottenTomatoes, false),
       rottenTomatoesUrl = entity.rottenTomatoesUrl,
-      metascore = Ratings.Value(entity.metascore, false)
+      metascore = Ratings.Value(entity.metascore, false),
     )
 
   fun toMovieDatabase(

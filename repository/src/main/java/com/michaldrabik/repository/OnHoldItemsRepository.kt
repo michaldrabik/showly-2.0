@@ -9,17 +9,14 @@ import javax.inject.Singleton
 
 @Singleton
 class OnHoldItemsRepository @Inject constructor(
-  @Named("progressOnHoldPreferences") private val sharedPreferences: SharedPreferences
+  @Named("progressOnHoldPreferences") private val sharedPreferences: SharedPreferences,
 ) {
 
   fun getAll(): List<IdTrakt> = sharedPreferences.all.keys.map { IdTrakt(it.toLong()) }
 
-  fun addItem(show: Show) =
-    sharedPreferences.edit().putLong(show.traktId.toString(), show.traktId).apply()
+  fun addItem(show: Show) = sharedPreferences.edit().putLong(show.traktId.toString(), show.traktId).apply()
 
-  fun removeItem(show: Show) =
-    sharedPreferences.edit().remove(show.traktId.toString()).apply()
+  fun removeItem(show: Show) = sharedPreferences.edit().remove(show.traktId.toString()).apply()
 
-  fun isOnHold(show: Show) =
-    sharedPreferences.contains(show.traktId.toString())
+  fun isOnHold(show: Show) = sharedPreferences.contains(show.traktId.toString())
 }

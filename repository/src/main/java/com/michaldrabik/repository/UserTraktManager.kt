@@ -18,7 +18,7 @@ class UserTraktManager @Inject constructor(
   private val authorizedRemoteSource: AuthorizedTraktRemoteDataSource,
   private val userLocalSource: UserLocalDataSource,
   private val transactions: TransactionsProvider,
-  private val tokenProvider: TokenProvider
+  private val tokenProvider: TokenProvider,
 ) {
 
   fun isAuthorized() = tokenProvider.getToken() != null
@@ -56,7 +56,7 @@ class UserTraktManager @Inject constructor(
       val user = userLocalSource.get()
       userLocalSource.upsert(
         user?.copy(
-          traktUsername = userModel.username
+          traktUsername = userModel.username,
         ) ?: User(
           traktToken = "",
           traktRefreshToken = "",
@@ -65,8 +65,8 @@ class UserTraktManager @Inject constructor(
           tvdbToken = "",
           tvdbTokenTimestamp = 0,
           redditToken = "",
-          redditTokenTimestamp = 0
-        )
+          redditTokenTimestamp = 0,
+        ),
       )
     }
   }

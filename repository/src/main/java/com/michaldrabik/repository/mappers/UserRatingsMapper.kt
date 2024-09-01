@@ -17,29 +17,29 @@ import javax.inject.Inject
 
 class UserRatingsMapper @Inject constructor() {
 
-  fun fromDatabase(entity: Rating) = TraktRating(
-    idTrakt = IdTrakt(entity.idTrakt),
-    rating = entity.rating,
-    ratedAt = entity.ratedAt
-  )
+  fun fromDatabase(entity: Rating) =
+    TraktRating(
+      idTrakt = IdTrakt(entity.idTrakt),
+      rating = entity.rating,
+      ratedAt = entity.ratedAt,
+    )
 
-  fun toDatabaseMovie(
-    rating: RatingResultMovie
-  ) = Rating(
-    idTrakt = rating.movie.ids.trakt!!,
-    type = "movie",
-    rating = rating.rating,
-    seasonNumber = null,
-    episodeNumber = null,
-    ratedAt = ZonedDateTime.parse(rating.rated_at),
-    createdAt = nowUtc(),
-    updatedAt = nowUtc()
-  )
+  fun toDatabaseMovie(rating: RatingResultMovie) =
+    Rating(
+      idTrakt = rating.movie.ids.trakt!!,
+      type = "movie",
+      rating = rating.rating,
+      seasonNumber = null,
+      episodeNumber = null,
+      ratedAt = ZonedDateTime.parse(rating.rated_at),
+      createdAt = nowUtc(),
+      updatedAt = nowUtc(),
+    )
 
   fun toDatabaseMovie(
     movie: Movie,
     rating: Int,
-    ratedAt: ZonedDateTime
+    ratedAt: ZonedDateTime,
   ) = Rating(
     idTrakt = movie.traktId,
     type = "movie",
@@ -48,26 +48,25 @@ class UserRatingsMapper @Inject constructor() {
     episodeNumber = null,
     ratedAt = ratedAt,
     createdAt = nowUtc(),
-    updatedAt = nowUtc()
+    updatedAt = nowUtc(),
   )
 
-  fun toDatabaseShow(
-    rating: RatingResultShow
-  ) = Rating(
-    idTrakt = rating.show.ids.trakt!!,
-    type = "show",
-    rating = rating.rating,
-    seasonNumber = null,
-    episodeNumber = null,
-    ratedAt = ZonedDateTime.parse(rating.rated_at),
-    createdAt = nowUtc(),
-    updatedAt = nowUtc()
-  )
+  fun toDatabaseShow(rating: RatingResultShow) =
+    Rating(
+      idTrakt = rating.show.ids.trakt!!,
+      type = "show",
+      rating = rating.rating,
+      seasonNumber = null,
+      episodeNumber = null,
+      ratedAt = ZonedDateTime.parse(rating.rated_at),
+      createdAt = nowUtc(),
+      updatedAt = nowUtc(),
+    )
 
   fun toDatabaseShow(
     show: Show,
     rating: Int,
-    ratedAt: ZonedDateTime
+    ratedAt: ZonedDateTime,
   ) = Rating(
     idTrakt = show.traktId,
     type = "show",
@@ -76,26 +75,25 @@ class UserRatingsMapper @Inject constructor() {
     episodeNumber = null,
     ratedAt = ratedAt,
     createdAt = nowUtc(),
-    updatedAt = nowUtc()
+    updatedAt = nowUtc(),
   )
 
-  fun toDatabaseEpisode(
-    rating: RatingResultEpisode
-  ) = Rating(
-    idTrakt = rating.episode.ids.trakt!!,
-    type = "episode",
-    rating = rating.rating,
-    seasonNumber = rating.episode.season,
-    episodeNumber = rating.episode.number,
-    ratedAt = ZonedDateTime.parse(rating.rated_at),
-    createdAt = nowUtc(),
-    updatedAt = nowUtc()
-  )
+  fun toDatabaseEpisode(rating: RatingResultEpisode) =
+    Rating(
+      idTrakt = rating.episode.ids.trakt!!,
+      type = "episode",
+      rating = rating.rating,
+      seasonNumber = rating.episode.season,
+      episodeNumber = rating.episode.number,
+      ratedAt = ZonedDateTime.parse(rating.rated_at),
+      createdAt = nowUtc(),
+      updatedAt = nowUtc(),
+    )
 
   fun toDatabaseEpisode(
     episode: Episode,
     rating: Int,
-    ratedAt: ZonedDateTime
+    ratedAt: ZonedDateTime,
   ) = Rating(
     idTrakt = episode.ids.trakt.id,
     type = "episode",
@@ -104,26 +102,25 @@ class UserRatingsMapper @Inject constructor() {
     episodeNumber = episode.number,
     ratedAt = ratedAt,
     createdAt = nowUtc(),
-    updatedAt = nowUtc()
+    updatedAt = nowUtc(),
   )
 
-  fun toDatabaseSeason(
-    rating: RatingResultSeason
-  ) = Rating(
-    idTrakt = rating.season.ids.trakt!!,
-    type = "season",
-    rating = rating.rating,
-    seasonNumber = rating.season.season,
-    episodeNumber = rating.season.number,
-    ratedAt = ZonedDateTime.parse(rating.rated_at),
-    createdAt = nowUtc(),
-    updatedAt = nowUtc()
-  )
+  fun toDatabaseSeason(rating: RatingResultSeason) =
+    Rating(
+      idTrakt = rating.season.ids.trakt!!,
+      type = "season",
+      rating = rating.rating,
+      seasonNumber = rating.season.season,
+      episodeNumber = rating.season.number,
+      ratedAt = ZonedDateTime.parse(rating.rated_at),
+      createdAt = nowUtc(),
+      updatedAt = nowUtc(),
+    )
 
   fun toDatabaseSeason(
     season: Season,
     rating: Int,
-    ratedAt: ZonedDateTime
+    ratedAt: ZonedDateTime,
   ) = Rating(
     idTrakt = season.ids.trakt.id,
     type = "season",
@@ -132,6 +129,6 @@ class UserRatingsMapper @Inject constructor() {
     episodeNumber = null,
     ratedAt = ratedAt,
     createdAt = nowUtc(),
-    updatedAt = nowUtc()
+    updatedAt = nowUtc(),
   )
 }

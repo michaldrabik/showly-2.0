@@ -23,7 +23,7 @@ class ImageMapper @Inject constructor() {
       imageDb.fileUrl,
       imageDb.thumbnailUrl,
       AVAILABLE,
-      ImageSource.fromKey(imageDb.source)
+      ImageSource.fromKey(imageDb.source),
     )
   }
 
@@ -37,7 +37,7 @@ class ImageMapper @Inject constructor() {
       imageDb.fileUrl,
       "",
       AVAILABLE,
-      ImageSource.fromKey(imageDb.source)
+      ImageSource.fromKey(imageDb.source),
     )
   }
 
@@ -49,7 +49,7 @@ class ImageMapper @Inject constructor() {
       family = image.family.key,
       fileUrl = image.fileUrl,
       thumbnailUrl = image.thumbnailUrl,
-      source = image.source.key
+      source = image.source.key,
     )
 
   fun toDatabaseMovie(image: Image): MovieImageDb =
@@ -57,6 +57,6 @@ class ImageMapper @Inject constructor() {
       idTmdb = image.idTmdb.id,
       type = image.type.key,
       fileUrl = image.fileUrl,
-      source = image.source.key
+      source = image.source.key,
     )
 }

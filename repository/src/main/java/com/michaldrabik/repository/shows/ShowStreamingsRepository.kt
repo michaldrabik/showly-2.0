@@ -17,7 +17,10 @@ class ShowStreamingsRepository @Inject constructor(
   private val mappers: Mappers,
 ) : StreamingsRepository() {
 
-  suspend fun getLocalStreamings(show: Show, countryCode: String): Pair<List<StreamingService>, ZonedDateTime?> {
+  suspend fun getLocalStreamings(
+    show: Show,
+    countryCode: String,
+  ): Pair<List<StreamingService>, ZonedDateTime?> {
     val localItems = localSource.showStreamings.getById(show.traktId)
     val mappedItems = mappers.streamings.fromDatabaseShow(localItems, show.title, countryCode)
 
@@ -26,7 +29,10 @@ class ShowStreamingsRepository @Inject constructor(
     return Pair(processedItems, date)
   }
 
-  suspend fun loadRemoteStreamings(show: Show, countryCode: String): List<StreamingService> {
+  suspend fun loadRemoteStreamings(
+    show: Show,
+    countryCode: String,
+  ): List<StreamingService> {
     val remoteItems = remoteSource.tmdb.fetchShowWatchProviders(show.ids.tmdb.id, countryCode) ?: return emptyList()
 
     val entities = mappers.streamings.toDatabaseShow(show.ids, remoteItems)

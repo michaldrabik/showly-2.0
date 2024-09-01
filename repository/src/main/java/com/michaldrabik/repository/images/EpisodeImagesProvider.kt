@@ -26,51 +26,58 @@ class EpisodeImagesProvider @Inject constructor(
   private val mappers: Mappers,
 ) {
 
-  suspend fun loadRemoteImage(showId: IdTmdb, episode: Episode): Image = withContext(dispatchers.IO) {
-    val cachedImage = findCachedImage(episode, FANART)
-    if (cachedImage.status == AVAILABLE) {
-      return@withContext cachedImage
+  suspend fun loadRemoteImage(
+    showId: IdTmdb,
+    episode: Episode,
+  ): Image =
+    withContext(dispatchers.IO) {
+      val cachedImage = findCachedImage(episode, FANART)
+      if (cachedImage.status == AVAILABLE) {
+        return@withContext cachedImage
+      }
+
+      var image = Image.createUnavailable(FANART)
+      try {
+        var remoteImage = remoteSource.tmdb.fetchEpisodeImage(showId.id, episode.season, episode.number)
+        if (remoteImage == null && (episode.numberAbs ?: 0) > 0) {
+          // Try absolute episode number if present (may happen with certain Anime series)
+          remoteImage = remoteSource.tmdb.fetchEpisodeImage(showId.id, episode.season, episode.numberAbs)
+        }
+        image = when (remoteImage) {
+          null -> Image.createUnavailable(FANART)
+          else -> Image(
+            id = -1,
+            idTvdb = episode.ids.tvdb,
+            idTmdb = episode.ids.tmdb,
+            type = FANART,
+            family = EPISODE,
+            fileUrl = remoteImage.file_path,
+            thumbnailUrl = "",
+            status = AVAILABLE,
+            source = ImageSource.TMDB,
+          )
+        }
+      } catch (error: Throwable) {
+        Timber.w(error)
+      }
+
+      when (image.status) {
+        UNAVAILABLE -> {
+          localSource.showImages.deleteByEpisodeId(
+            id = episode.ids.tmdb.id,
+            type = image.type.key,
+          )
+        }
+        else -> localSource.showImages.insertEpisodeImage(mappers.image.toDatabaseShow(image))
+      }
+
+      return@withContext image
     }
 
-    var image = Image.createUnavailable(FANART)
-    try {
-      var remoteImage = remoteSource.tmdb.fetchEpisodeImage(showId.id, episode.season, episode.number)
-      if (remoteImage == null && (episode.numberAbs ?: 0) > 0) {
-        // Try absolute episode number if present (may happen with certain Anime series)
-        remoteImage = remoteSource.tmdb.fetchEpisodeImage(showId.id, episode.season, episode.numberAbs)
-      }
-      image = when (remoteImage) {
-        null -> Image.createUnavailable(FANART)
-        else -> Image(
-          id = -1,
-          idTvdb = episode.ids.tvdb,
-          idTmdb = episode.ids.tmdb,
-          type = FANART,
-          family = EPISODE,
-          fileUrl = remoteImage.file_path,
-          thumbnailUrl = "",
-          status = AVAILABLE,
-          source = ImageSource.TMDB
-        )
-      }
-    } catch (error: Throwable) {
-      Timber.w(error)
-    }
-
-    when (image.status) {
-      UNAVAILABLE -> {
-        localSource.showImages.deleteByEpisodeId(
-          id = episode.ids.tmdb.id,
-          type = image.type.key
-        )
-      }
-      else -> localSource.showImages.insertEpisodeImage(mappers.image.toDatabaseShow(image))
-    }
-
-    return@withContext image
-  }
-
-  private suspend fun findCachedImage(episode: Episode, type: ImageType): Image {
+  private suspend fun findCachedImage(
+    episode: Episode,
+    type: ImageType,
+  ): Image {
     return when (val image = localSource.showImages.getByEpisodeId(episode.ids.tmdb.id, type.key)) {
       null -> Image.createUnknown(type, EPISODE)
       else -> mappers.image.fromDatabase(image).copy(type = type)

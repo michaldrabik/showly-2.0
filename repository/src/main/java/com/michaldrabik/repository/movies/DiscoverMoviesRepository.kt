@@ -16,7 +16,7 @@ class DiscoverMoviesRepository @Inject constructor(
   private val remoteSource: RemoteDataSource,
   private val localSource: LocalDataSource,
   private val transactions: TransactionsProvider,
-  private val mappers: Mappers
+  private val mappers: Mappers,
 ) {
 
   suspend fun isCacheValid(): Boolean {
@@ -38,7 +38,7 @@ class DiscoverMoviesRepository @Inject constructor(
     showAnticipated: Boolean,
     showCollection: Boolean,
     collectionSize: Int,
-    genres: List<Genre>
+    genres: List<Genre>,
   ): List<Movie> {
     val remoteMovies = mutableListOf<Movie>()
     val anticipatedMovies = mutableListOf<Movie>()
@@ -46,8 +46,11 @@ class DiscoverMoviesRepository @Inject constructor(
     val genresQuery = genres.joinToString(",") { it.slug }
 
     val limit =
-      if (showCollection) TRAKT_TRENDING_MOVIES_LIMIT
-      else TRAKT_TRENDING_MOVIES_LIMIT + (collectionSize / 2)
+      if (showCollection) {
+        TRAKT_TRENDING_MOVIES_LIMIT
+      } else {
+        TRAKT_TRENDING_MOVIES_LIMIT + (collectionSize / 2)
+      }
     val trendingMovies = remoteSource.trakt.fetchTrendingMovies(genresQuery, limit)
       .map { mappers.movie.fromNetwork(it) }
 
@@ -58,7 +61,9 @@ class DiscoverMoviesRepository @Inject constructor(
     }
 
     if (showAnticipated) {
-      val movies = remoteSource.trakt.fetchAnticipatedMovies(genresQuery).map { mappers.movie.fromNetwork(it) }.toMutableList()
+      val movies = remoteSource.trakt.fetchAnticipatedMovies(genresQuery).map {
+        mappers.movie.fromNetwork(it)
+      }.toMutableList()
       anticipatedMovies.addAll(movies)
     }
 
@@ -87,14 +92,17 @@ class DiscoverMoviesRepository @Inject constructor(
           DiscoverMovie(
             idTrakt = it.ids.trakt.id,
             createdAt = timestamp,
-            updatedAt = timestamp
+            updatedAt = timestamp,
           )
-        }
+        },
       )
     }
   }
 
-  private fun addIfMissing(movies: MutableList<Movie>, movie: Movie) {
+  private fun addIfMissing(
+    movies: MutableList<Movie>,
+    movie: Movie,
+  ) {
     if (movies.any { it.ids.trakt == movie.ids.trakt }) return
     movies.add(movie)
   }

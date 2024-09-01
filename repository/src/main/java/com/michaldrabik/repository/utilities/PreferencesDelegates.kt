@@ -10,10 +10,16 @@ class StringPreference(
   private val defaultValue: String,
 ) : ReadWriteProperty<Any, String> {
 
-  override fun getValue(thisRef: Any, property: KProperty<*>): String =
-    sharedPreferences.getString(key, defaultValue) ?: defaultValue
+  override fun getValue(
+    thisRef: Any,
+    property: KProperty<*>,
+  ): String = sharedPreferences.getString(key, defaultValue) ?: defaultValue
 
-  override fun setValue(thisRef: Any, property: KProperty<*>, value: String) {
+  override fun setValue(
+    thisRef: Any,
+    property: KProperty<*>,
+    value: String,
+  ) {
     sharedPreferences.edit()
       .putString(key, value)
       .apply()
@@ -26,13 +32,18 @@ class BooleanPreference(
   private val defaultValue: Boolean = false,
 ) : ReadWriteProperty<Any, Boolean> {
 
-  override fun getValue(thisRef: Any, property: KProperty<*>): Boolean =
-    sharedPreferences.getBoolean(key, defaultValue)
+  override fun getValue(
+    thisRef: Any,
+    property: KProperty<*>,
+  ): Boolean = sharedPreferences.getBoolean(key, defaultValue)
 
-  override fun setValue(thisRef: Any, property: KProperty<*>, value: Boolean) =
-    sharedPreferences.edit()
-      .putBoolean(key, value)
-      .apply()
+  override fun setValue(
+    thisRef: Any,
+    property: KProperty<*>,
+    value: Boolean,
+  ) = sharedPreferences.edit()
+    .putBoolean(key, value)
+    .apply()
 }
 
 class IntPreference(
@@ -41,13 +52,18 @@ class IntPreference(
   private val defaultValue: Int = 0,
 ) : ReadWriteProperty<Any, Int> {
 
-  override fun getValue(thisRef: Any, property: KProperty<*>): Int =
-    sharedPreferences.getInt(key, defaultValue)
+  override fun getValue(
+    thisRef: Any,
+    property: KProperty<*>,
+  ): Int = sharedPreferences.getInt(key, defaultValue)
 
-  override fun setValue(thisRef: Any, property: KProperty<*>, value: Int) =
-    sharedPreferences.edit()
-      .putInt(key, value)
-      .apply()
+  override fun setValue(
+    thisRef: Any,
+    property: KProperty<*>,
+    value: Int,
+  ) = sharedPreferences.edit()
+    .putInt(key, value)
+    .apply()
 }
 
 class LongPreference(
@@ -56,13 +72,18 @@ class LongPreference(
   private val defaultValue: Long = 0,
 ) : ReadWriteProperty<Any, Long> {
 
-  override fun getValue(thisRef: Any, property: KProperty<*>): Long =
-    sharedPreferences.getLong(key, defaultValue)
+  override fun getValue(
+    thisRef: Any,
+    property: KProperty<*>,
+  ): Long = sharedPreferences.getLong(key, defaultValue)
 
-  override fun setValue(thisRef: Any, property: KProperty<*>, value: Long) =
-    sharedPreferences.edit()
-      .putLong(key, value)
-      .apply()
+  override fun setValue(
+    thisRef: Any,
+    property: KProperty<*>,
+    value: Long,
+  ) = sharedPreferences.edit()
+    .putLong(key, value)
+    .apply()
 }
 
 class EnumPreference<T : Enum<T>>(
@@ -73,12 +94,19 @@ class EnumPreference<T : Enum<T>>(
 ) : ReadWriteProperty<Any, T> {
 
   @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-  override fun getValue(thisRef: Any, property: KProperty<*>): T {
+  override fun getValue(
+    thisRef: Any,
+    property: KProperty<*>,
+  ): T {
     val enumName = sharedPreferences.getString(key, "")
     return clazz.enumConstants.find { it.name == enumName } ?: defaultValue
   }
 
-  override fun setValue(thisRef: Any, property: KProperty<*>, value: T) {
+  override fun setValue(
+    thisRef: Any,
+    property: KProperty<*>,
+    value: T,
+  ) {
     sharedPreferences.edit()
       .putString(key, value.name)
       .apply()

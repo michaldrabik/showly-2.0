@@ -28,19 +28,21 @@ class StreamingsMapper @Inject constructor() {
         options = listOf(StreamingService.Option.valueOf(it.type!!)),
         mediaName = mediaName,
         countryCode = countryCode,
-        link = it.link ?: ""
+        link = it.link ?: "",
       )
     }
   }
 
-  fun toDatabaseShow(ids: Ids, input: TmdbStreamingCountry) =
-    mutableListOf<ShowStreaming>().apply {
-      addAll(input.flatrate?.map { createEntityShow(ids, FLATRATE, input, it) } ?: emptyList())
-      addAll(input.free?.map { createEntityShow(ids, FREE, input, it) } ?: emptyList())
-      addAll(input.buy?.map { createEntityShow(ids, BUY, input, it) } ?: emptyList())
-      addAll(input.rent?.map { createEntityShow(ids, RENT, input, it) } ?: emptyList())
-      addAll(input.ads?.map { createEntityShow(ids, ADS, input, it) } ?: emptyList())
-    }
+  fun toDatabaseShow(
+    ids: Ids,
+    input: TmdbStreamingCountry,
+  ) = mutableListOf<ShowStreaming>().apply {
+    addAll(input.flatrate?.map { createEntityShow(ids, FLATRATE, input, it) } ?: emptyList())
+    addAll(input.free?.map { createEntityShow(ids, FREE, input, it) } ?: emptyList())
+    addAll(input.buy?.map { createEntityShow(ids, BUY, input, it) } ?: emptyList())
+    addAll(input.rent?.map { createEntityShow(ids, RENT, input, it) } ?: emptyList())
+    addAll(input.ads?.map { createEntityShow(ids, ADS, input, it) } ?: emptyList())
+  }
 
   fun fromDatabaseMovie(
     input: List<MovieStreaming>,
@@ -54,19 +56,21 @@ class StreamingsMapper @Inject constructor() {
         options = listOf(StreamingService.Option.valueOf(it.type!!)),
         mediaName = mediaName,
         countryCode = countryCode,
-        link = it.link ?: ""
+        link = it.link ?: "",
       )
     }
   }
 
-  fun toDatabaseMovie(ids: Ids, input: TmdbStreamingCountry) =
-    mutableListOf<MovieStreaming>().apply {
-      addAll(input.flatrate?.map { createEntityMovie(ids, FLATRATE, input, it) } ?: emptyList())
-      addAll(input.free?.map { createEntityMovie(ids, FREE, input, it) } ?: emptyList())
-      addAll(input.buy?.map { createEntityMovie(ids, BUY, input, it) } ?: emptyList())
-      addAll(input.rent?.map { createEntityMovie(ids, RENT, input, it) } ?: emptyList())
-      addAll(input.ads?.map { createEntityMovie(ids, ADS, input, it) } ?: emptyList())
-    }
+  fun toDatabaseMovie(
+    ids: Ids,
+    input: TmdbStreamingCountry,
+  ) = mutableListOf<MovieStreaming>().apply {
+    addAll(input.flatrate?.map { createEntityMovie(ids, FLATRATE, input, it) } ?: emptyList())
+    addAll(input.free?.map { createEntityMovie(ids, FREE, input, it) } ?: emptyList())
+    addAll(input.buy?.map { createEntityMovie(ids, BUY, input, it) } ?: emptyList())
+    addAll(input.rent?.map { createEntityMovie(ids, RENT, input, it) } ?: emptyList())
+    addAll(input.ads?.map { createEntityMovie(ids, ADS, input, it) } ?: emptyList())
+  }
 
   private fun createEntityMovie(
     ids: Ids,
@@ -83,7 +87,7 @@ class StreamingsMapper @Inject constructor() {
     logoPath = input.logo_path,
     link = country.link,
     createdAt = nowUtc(),
-    updatedAt = nowUtc()
+    updatedAt = nowUtc(),
   )
 
   private fun createEntityShow(
@@ -101,6 +105,6 @@ class StreamingsMapper @Inject constructor() {
     logoPath = input.logo_path,
     link = country.link,
     createdAt = nowUtc(),
-    updatedAt = nowUtc()
+    updatedAt = nowUtc(),
   )
 }

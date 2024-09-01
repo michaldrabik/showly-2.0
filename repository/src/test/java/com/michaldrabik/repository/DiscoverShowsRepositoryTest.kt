@@ -74,7 +74,7 @@ class DiscoverShowsRepositoryTest : BaseMockTest() {
       val discoverShow = mockk<DiscoverShow> {
         every { idTrakt } returns 10
       }
-      val showDb = mockk<ShowDb>() {
+      val showDb = mockk<ShowDb> {
         every { idTrakt } returns 10
       }
 

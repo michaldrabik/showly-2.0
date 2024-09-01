@@ -21,7 +21,7 @@ class IdsMapper @Inject constructor() {
       IdTvdb(ids?.tvdb ?: -1),
       IdImdb(ids?.imdb ?: ""),
       IdTmdb(ids?.tmdb ?: -1),
-      IdTvRage(ids?.tvrage ?: -1)
+      IdTvRage(ids?.tvrage ?: -1),
     )
 
   fun toNetwork(ids: Ids?) =
@@ -31,24 +31,26 @@ class IdsMapper @Inject constructor() {
       tvdb = ids?.tvdb?.id,
       imdb = ids?.imdb?.id,
       tmdb = ids?.tmdb?.id,
-      tvrage = ids?.tvrage?.id
+      tvrage = ids?.tvrage?.id,
     )
 
-  fun fromDatabase(show: ShowDb?) = Ids(
-    IdTrakt(show?.idTrakt ?: -1),
-    IdSlug(show?.idSlug ?: ""),
-    IdTvdb(show?.idTvdb ?: -1),
-    IdImdb(show?.idImdb ?: ""),
-    IdTmdb(show?.idTmdb ?: -1),
-    IdTvRage(show?.idTvrage ?: -1)
-  )
+  fun fromDatabase(show: ShowDb?) =
+    Ids(
+      IdTrakt(show?.idTrakt ?: -1),
+      IdSlug(show?.idSlug ?: ""),
+      IdTvdb(show?.idTvdb ?: -1),
+      IdImdb(show?.idImdb ?: ""),
+      IdTmdb(show?.idTmdb ?: -1),
+      IdTvRage(show?.idTvrage ?: -1),
+    )
 
-  fun fromDatabase(movie: Movie?) = Ids(
-    IdTrakt(movie?.idTrakt ?: -1),
-    IdSlug(movie?.idSlug ?: ""),
-    IdTvdb(-1),
-    IdImdb(movie?.idImdb ?: ""),
-    IdTmdb(movie?.idTmdb ?: -1),
-    IdTvRage(-1)
-  )
+  fun fromDatabase(movie: Movie?) =
+    Ids(
+      IdTrakt(movie?.idTrakt ?: -1),
+      IdSlug(movie?.idSlug ?: ""),
+      IdTvdb(-1),
+      IdImdb(movie?.idImdb ?: ""),
+      IdTmdb(movie?.idTmdb ?: -1),
+      IdTvRage(-1),
+    )
 }

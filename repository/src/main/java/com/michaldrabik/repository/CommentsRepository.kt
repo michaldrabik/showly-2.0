@@ -17,10 +17,14 @@ import javax.inject.Singleton
 class CommentsRepository @Inject constructor(
   private val remoteSource: TraktRemoteDataSource,
   private val authorizedRemoteSource: AuthorizedTraktRemoteDataSource,
-  private val mappers: Mappers
+  private val mappers: Mappers,
 ) {
 
-  suspend fun loadComments(id: IdTrakt, mode: Mode, limit: Int = 100): List<Comment> {
+  suspend fun loadComments(
+    id: IdTrakt,
+    mode: Mode,
+    limit: Int = 100,
+  ): List<Comment> {
     val comments = when (mode) {
       Mode.SHOWS -> remoteSource.fetchShowComments(id.id, limit)
       Mode.MOVIES -> remoteSource.fetchMovieComments(id.id, limit)
@@ -30,17 +34,24 @@ class CommentsRepository @Inject constructor(
       .filter { it.parentId <= 0 }
   }
 
-  suspend fun loadEpisodeComments(idTrakt: IdTrakt, season: Int, episode: Int) =
-    remoteSource.fetchEpisodeComments(idTrakt.id, season, episode)
-      .map { mappers.comment.fromNetwork(it) }
-      .filter { it.parentId <= 0 }
+  suspend fun loadEpisodeComments(
+    idTrakt: IdTrakt,
+    season: Int,
+    episode: Int,
+  ) = remoteSource.fetchEpisodeComments(idTrakt.id, season, episode)
+    .map { mappers.comment.fromNetwork(it) }
+    .filter { it.parentId <= 0 }
 
   suspend fun loadReplies(commentId: Long) =
     remoteSource.fetchCommentReplies(commentId)
       .map { mappers.comment.fromNetwork(it).copy(replies = 0) }
       .sortedBy { it.createdAt?.toEpochSecond() }
 
-  suspend fun postComment(show: Show, commentText: String, isSpoiler: Boolean): Comment {
+  suspend fun postComment(
+    show: Show,
+    commentText: String,
+    isSpoiler: Boolean,
+  ): Comment {
     val showBody = mappers.show.toNetwork(Show.EMPTY.copy(ids = show.ids))
     val request = CommentRequest(show = showBody, comment = commentText, spoiler = isSpoiler)
 
@@ -48,7 +59,11 @@ class CommentsRepository @Inject constructor(
     return mappers.comment.fromNetwork(comment)
   }
 
-  suspend fun postComment(movie: Movie, commentText: String, isSpoiler: Boolean): Comment {
+  suspend fun postComment(
+    movie: Movie,
+    commentText: String,
+    isSpoiler: Boolean,
+  ): Comment {
     val movieBody = mappers.movie.toNetwork(Movie.EMPTY.copy(ids = movie.ids))
     val request = CommentRequest(movie = movieBody, comment = commentText, spoiler = isSpoiler)
 
@@ -56,7 +71,11 @@ class CommentsRepository @Inject constructor(
     return mappers.comment.fromNetwork(comment)
   }
 
-  suspend fun postComment(episode: Episode, commentText: String, isSpoiler: Boolean): Comment {
+  suspend fun postComment(
+    episode: Episode,
+    commentText: String,
+    isSpoiler: Boolean,
+  ): Comment {
     val episodeBody = mappers.episode.toNetwork(Episode.EMPTY.copy(ids = episode.ids))
     val request = CommentRequest(episode = episodeBody, comment = commentText, spoiler = isSpoiler)
 
@@ -64,7 +83,11 @@ class CommentsRepository @Inject constructor(
     return mappers.comment.fromNetwork(comment)
   }
 
-  suspend fun postReply(commentId: Long, commentText: String, isSpoiler: Boolean): Comment {
+  suspend fun postReply(
+    commentId: Long,
+    commentText: String,
+    isSpoiler: Boolean,
+  ): Comment {
     val request = CommentRequest(comment = commentText, spoiler = isSpoiler)
 
     val comment = authorizedRemoteSource.postCommentReply(commentId, request)

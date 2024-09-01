@@ -16,7 +16,7 @@ class RelatedMoviesRepository @Inject constructor(
   private val remoteSource: RemoteDataSource,
   private val localSource: LocalDataSource,
   private val transactions: TransactionsProvider,
-  private val mappers: Mappers
+  private val mappers: Mappers,
 ) {
 
   suspend fun loadAll(movie: Movie): List<Movie> {
@@ -37,7 +37,10 @@ class RelatedMoviesRepository @Inject constructor(
     return remote
   }
 
-  private suspend fun cacheRelated(movies: List<Movie>, movieId: IdTrakt) {
+  private suspend fun cacheRelated(
+    movies: List<Movie>,
+    movieId: IdTrakt,
+  ) {
     transactions.withTransaction {
       val timestamp = nowUtcMillis()
       localSource.movies.upsert(movies.map { mappers.movie.toDatabase(it) })
@@ -45,7 +48,7 @@ class RelatedMoviesRepository @Inject constructor(
       localSource.relatedMovies.insert(
         movies.map {
           RelatedMovie.fromTraktId(it.ids.trakt.id, movieId.id, timestamp)
-        }
+        },
       )
     }
   }

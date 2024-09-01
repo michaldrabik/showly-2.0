@@ -11,7 +11,7 @@ import javax.inject.Inject
 class HiddenMoviesRepository @Inject constructor(
   private val localSource: LocalDataSource,
   private val transactions: TransactionsProvider,
-  private val mappers: Mappers
+  private val mappers: Mappers,
 ) {
 
   suspend fun loadAll() =
@@ -40,9 +40,7 @@ class HiddenMoviesRepository @Inject constructor(
     }
   }
 
-  suspend fun delete(id: IdTrakt) =
-    localSource.archiveMovies.deleteById(id.id)
+  suspend fun delete(id: IdTrakt) = localSource.archiveMovies.deleteById(id.id)
 
-  suspend fun exists(id: IdTrakt) =
-    localSource.archiveMovies.getById(id.id) != null
+  suspend fun exists(id: IdTrakt) = localSource.archiveMovies.getById(id.id) != null
 }

@@ -20,7 +20,10 @@ class ShowDetailsRepository @Inject constructor(
   private val mappers: Mappers,
 ) {
 
-  suspend fun load(idTrakt: IdTrakt, force: Boolean = false): Show {
+  suspend fun load(
+    idTrakt: IdTrakt,
+    force: Boolean = false,
+  ): Show {
     val localShow = localSource.shows.getById(idTrakt.id)
     if (force || localShow == null || nowUtcMillis() - localShow.updatedAt > Config.SHOW_DETAILS_CACHE_DURATION) {
       val remoteShow = remoteSource.trakt.fetchShow(idTrakt.id)

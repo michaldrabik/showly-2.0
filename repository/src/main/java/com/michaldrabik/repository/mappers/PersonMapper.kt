@@ -19,7 +19,7 @@ class PersonMapper @Inject constructor() {
     Person(
       ids = Ids.EMPTY.copy(
         tmdb = IdTmdb(person.id),
-        imdb = IdImdb(person.imdb_id ?: "")
+        imdb = IdImdb(person.imdb_id ?: ""),
       ),
       name = person.name ?: "",
       department = typeToEnum(person.department ?: person.known_for_department),
@@ -32,31 +32,36 @@ class PersonMapper @Inject constructor() {
       jobs = extractJobs(person),
       episodesCount = person.total_episode_count ?: 0,
       birthday = person.birthday?.let { if (it.isNotBlank()) LocalDate.parse(it) else null },
-      deathday = person.deathday?.let { if (it.isNotBlank()) LocalDate.parse(it) else null }
+      deathday = person.deathday?.let { if (it.isNotBlank()) LocalDate.parse(it) else null },
     )
 
-  fun fromDatabase(personDb: PersonDb, characters: List<String> = emptyList()) =
-    Person(
-      ids = Ids.EMPTY.copy(
-        trakt = IdTrakt(personDb.idTrakt ?: -1),
-        tmdb = IdTmdb(personDb.idTmdb),
-        imdb = IdImdb(personDb.idImdb ?: "")
-      ),
-      name = personDb.name,
-      department = typeToEnum(personDb.department),
-      bio = personDb.biography,
-      bioTranslation = personDb.biographyTranslation,
-      characters = if (characters.isNotEmpty()) characters else personDb.character?.split(",") ?: emptyList(),
-      jobs = personDb.job?.split(",")?.map { Person.Job.fromSlug(it) } ?: emptyList(),
-      episodesCount = personDb.episodesCount ?: 0,
-      birthplace = personDb.birthplace,
-      imagePath = personDb.image,
-      homepage = personDb.homepage,
-      birthday = personDb.birthday?.let { if (it.isNotBlank()) LocalDate.parse(it) else null },
-      deathday = personDb.deathday?.let { if (it.isNotBlank()) LocalDate.parse(it) else null }
-    )
+  fun fromDatabase(
+    personDb: PersonDb,
+    characters: List<String> = emptyList(),
+  ) = Person(
+    ids = Ids.EMPTY.copy(
+      trakt = IdTrakt(personDb.idTrakt ?: -1),
+      tmdb = IdTmdb(personDb.idTmdb),
+      imdb = IdImdb(personDb.idImdb ?: ""),
+    ),
+    name = personDb.name,
+    department = typeToEnum(personDb.department),
+    bio = personDb.biography,
+    bioTranslation = personDb.biographyTranslation,
+    characters = if (characters.isNotEmpty()) characters else personDb.character?.split(",") ?: emptyList(),
+    jobs = personDb.job?.split(",")?.map { Person.Job.fromSlug(it) } ?: emptyList(),
+    episodesCount = personDb.episodesCount ?: 0,
+    birthplace = personDb.birthplace,
+    imagePath = personDb.image,
+    homepage = personDb.homepage,
+    birthday = personDb.birthday?.let { if (it.isNotBlank()) LocalDate.parse(it) else null },
+    deathday = personDb.deathday?.let { if (it.isNotBlank()) LocalDate.parse(it) else null },
+  )
 
-  fun toDatabase(person: Person, detailsTimestamp: ZonedDateTime?): PersonDb {
+  fun toDatabase(
+    person: Person,
+    detailsTimestamp: ZonedDateTime?,
+  ): PersonDb {
     val idTrakt = if (person.ids.trakt.id != -1L) person.ids.trakt.id else null
     val idImdb = if (person.ids.imdb.id.isNotBlank()) person.ids.imdb.id else null
     return PersonDb(
@@ -77,27 +82,30 @@ class PersonMapper @Inject constructor() {
       homepage = person.homepage,
       createdAt = nowUtc(),
       updatedAt = nowUtc(),
-      detailsUpdatedAt = detailsTimestamp
+      detailsUpdatedAt = detailsTimestamp,
     )
   }
 
-  private fun extractCharacters(person: TmdbPerson) = when {
-    person.roles != null -> person.roles?.mapNotNull { it.character } ?: emptyList()
-    !person.character.isNullOrBlank() -> listOf(person.character!!)
-    else -> emptyList()
-  }
+  private fun extractCharacters(person: TmdbPerson) =
+    when {
+      person.roles != null -> person.roles?.mapNotNull { it.character } ?: emptyList()
+      !person.character.isNullOrBlank() -> listOf(person.character!!)
+      else -> emptyList()
+    }
 
-  private fun extractJobs(person: TmdbPerson) = when {
-    person.jobs != null -> person.jobs?.map { Person.Job.fromSlug(it.job) } ?: emptyList()
-    !person.job.isNullOrBlank() -> listOf(Person.Job.fromSlug(person.job))
-    else -> emptyList()
-  }
+  private fun extractJobs(person: TmdbPerson) =
+    when {
+      person.jobs != null -> person.jobs?.map { Person.Job.fromSlug(it.job) } ?: emptyList()
+      !person.job.isNullOrBlank() -> listOf(Person.Job.fromSlug(person.job))
+      else -> emptyList()
+    }
 
-  private fun typeToEnum(type: String?) = when (type) {
-    "Acting", "Actors" -> Person.Department.ACTING
-    "Directing" -> Person.Department.DIRECTING
-    "Writing" -> Person.Department.WRITING
-    "Sound" -> Person.Department.SOUND
-    else -> Person.Department.UNKNOWN
-  }
+  private fun typeToEnum(type: String?) =
+    when (type) {
+      "Acting", "Actors" -> Person.Department.ACTING
+      "Directing" -> Person.Department.DIRECTING
+      "Writing" -> Person.Department.WRITING
+      "Sound" -> Person.Department.SOUND
+      else -> Person.Department.UNKNOWN
+    }
 }

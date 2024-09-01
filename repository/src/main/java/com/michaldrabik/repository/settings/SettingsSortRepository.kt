@@ -44,7 +44,12 @@ class SettingsSortRepository @Inject constructor(
   }
 
   var progressShowsNewAtTop by BooleanPreference(preferences, PROGRESS_SHOWS_NEW_AT_TOP, false)
-  var progressShowsSortOrder by EnumPreference(preferences, PROGRESS_SHOWS_SORT_ORDER, RECENTLY_WATCHED, SortOrder::class.java)
+  var progressShowsSortOrder by EnumPreference(
+    preferences,
+    PROGRESS_SHOWS_SORT_ORDER,
+    RECENTLY_WATCHED,
+    SortOrder::class.java,
+  )
   var progressShowsSortType by EnumPreference(preferences, PROGRESS_SHOWS_SORT_TYPE, DESCENDING, SortType::class.java)
   var watchlistShowsSortOrder by EnumPreference(preferences, WATCHLIST_SHOWS_SORT_ORDER, NAME, SortOrder::class.java)
   var watchlistShowsSortType by EnumPreference(preferences, WATCHLIST_SHOWS_SORT_TYPE, ASCENDING, SortType::class.java)
@@ -53,10 +58,20 @@ class SettingsSortRepository @Inject constructor(
   var myShowsAllSortOrder by EnumPreference(preferences, MY_SHOWS_ALL_SORT_ORDER, NAME, SortOrder::class.java)
   var myShowsAllSortType by EnumPreference(preferences, MY_SHOWS_ALL_SORT_TYPE, ASCENDING, SortType::class.java)
 
-  var progressMoviesSortOrder by EnumPreference(preferences, PROGRESS_MOVIES_SORT_ORDER, DATE_ADDED, SortOrder::class.java)
+  var progressMoviesSortOrder by EnumPreference(
+    preferences,
+    PROGRESS_MOVIES_SORT_ORDER,
+    DATE_ADDED,
+    SortOrder::class.java,
+  )
   var progressMoviesSortType by EnumPreference(preferences, PROGRESS_MOVIES_SORT_TYPE, DESCENDING, SortType::class.java)
   var watchlistMoviesSortOrder by EnumPreference(preferences, WATCHLIST_MOVIES_SORT_ORDER, NAME, SortOrder::class.java)
-  var watchlistMoviesSortType by EnumPreference(preferences, WATCHLIST_MOVIES_SORT_TYPE, ASCENDING, SortType::class.java)
+  var watchlistMoviesSortType by EnumPreference(
+    preferences,
+    WATCHLIST_MOVIES_SORT_TYPE,
+    ASCENDING,
+    SortType::class.java,
+  )
   var hiddenMoviesSortOrder by EnumPreference(preferences, HIDDEN_MOVIES_SORT_ORDER, NAME, SortOrder::class.java)
   var hiddenMoviesSortType by EnumPreference(preferences, HIDDEN_MOVIES_SORT_TYPE, ASCENDING, SortType::class.java)
   var myMoviesAllSortOrder by EnumPreference(preferences, MY_MOVIES_ALL_SORT_ORDER, NAME, SortOrder::class.java)

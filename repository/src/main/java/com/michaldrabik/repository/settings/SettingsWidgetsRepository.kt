@@ -11,7 +11,7 @@ import javax.inject.Singleton
 
 @Singleton
 class SettingsWidgetsRepository @Inject constructor(
-  @Named("miscPreferences") private var preferences: SharedPreferences
+  @Named("miscPreferences") private var preferences: SharedPreferences,
 ) {
 
   companion object Key {
@@ -34,7 +34,10 @@ class SettingsWidgetsRepository @Inject constructor(
     }
     set(value) = preferences.edit(true) { putInt(THEME_WIDGET_TRANSPARENT, value) }
 
-  fun getWidgetCalendarMode(mode: Mode, widgetId: Int): CalendarMode {
+  fun getWidgetCalendarMode(
+    mode: Mode,
+    widgetId: Int,
+  ): CalendarMode {
     val default = CalendarMode.PRESENT_FUTURE.name
     val key = when (mode) {
       Mode.SHOWS -> WIDGET_CALENDAR_MODE
@@ -44,7 +47,11 @@ class SettingsWidgetsRepository @Inject constructor(
     return CalendarMode.valueOf(value)
   }
 
-  fun setWidgetCalendarMode(mode: Mode, widgetId: Int, calendarMode: CalendarMode) {
+  fun setWidgetCalendarMode(
+    mode: Mode,
+    widgetId: Int,
+    calendarMode: CalendarMode,
+  ) {
     val key = when (mode) {
       Mode.SHOWS -> WIDGET_CALENDAR_MODE
       Mode.MOVIES -> WIDGET_CALENDAR_MOVIES_MODE

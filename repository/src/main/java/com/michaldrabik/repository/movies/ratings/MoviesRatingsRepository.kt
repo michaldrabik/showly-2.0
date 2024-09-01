@@ -48,10 +48,13 @@ class MoviesRatingsRepository @Inject constructor(
     }
   }
 
-  suspend fun addRating(movie: Movie, rating: Int) {
+  suspend fun addRating(
+    movie: Movie,
+    rating: Int,
+  ) {
     remoteSource.postRating(
       mappers.movie.toNetwork(movie),
-      rating
+      rating,
     )
     val entity = mappers.userRatings.toDatabaseMovie(movie, rating, nowUtc())
     localSource.ratings.replace(entity)
@@ -59,7 +62,7 @@ class MoviesRatingsRepository @Inject constructor(
 
   suspend fun deleteRating(movie: Movie) {
     remoteSource.deleteRating(
-      mappers.movie.toNetwork(movie)
+      mappers.movie.toNetwork(movie),
     )
     localSource.ratings.deleteByType(movie.traktId, TYPE_MOVIE)
   }

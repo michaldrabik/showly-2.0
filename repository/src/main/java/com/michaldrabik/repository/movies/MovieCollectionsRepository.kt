@@ -32,9 +32,10 @@ class MovieCollectionsRepository @Inject constructor(
   private val transactions: TransactionsProvider,
 ) {
 
-  suspend fun loadCollection(collectionId: IdTrakt) = withContext(dispatchers.IO) {
-    movieCollectionsLocalSource.getById(collectionId.id)
-  }
+  suspend fun loadCollection(collectionId: IdTrakt) =
+    withContext(dispatchers.IO) {
+      movieCollectionsLocalSource.getById(collectionId.id)
+    }
 
   suspend fun loadCollections(movieId: IdTrakt): Pair<List<MovieCollection>, Source> =
     withContext(dispatchers.IO) {
@@ -46,7 +47,7 @@ class MovieCollectionsRepository @Inject constructor(
         if (now.toMillis() - timestamp.toMillis() < COLLECTIONS_CACHE_DURATION) {
           return@withContext Pair(
             localCollections.map { collectionMapper.fromEntity(it) },
-            Source.LOCAL
+            Source.LOCAL,
           )
         }
       }
@@ -58,7 +59,7 @@ class MovieCollectionsRepository @Inject constructor(
 
       return@withContext Pair(
         collections,
-        Source.REMOTE
+        Source.REMOTE,
       )
     }
 
@@ -84,7 +85,7 @@ class MovieCollectionsRepository @Inject constructor(
             idTrakt = movie.traktId,
             idTraktCollection = collectionId.id,
             createdAt = now,
-            updatedAt = now
+            updatedAt = now,
           )
         }
         moviesLocalSource.upsert(items.map { movieMapper.toDatabase(it) })
@@ -113,15 +114,15 @@ class MovieCollectionsRepository @Inject constructor(
         movieId = movieId.id,
         input = it,
         updatedAt = now,
-        createdAt = now
+        createdAt = now,
       )
     }
     if (entities.isEmpty()) {
       entities = listOf(
         collectionMapper.toEntity(
           movieId.id,
-          MovieCollection.EMPTY
-        )
+          MovieCollection.EMPTY,
+        ),
       )
     }
     movieCollectionsLocalSource.replaceByMovieId(movieId.id, entities)
