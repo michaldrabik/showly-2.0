@@ -17,18 +17,23 @@ buildscript {
 }
 
 plugins {
-  id 'com.google.devtools.ksp' version '2.0.20-1.0.24' apply false
+  alias libs.plugins.devtools.ksp apply false
+  alias libs.plugins.ktlint.gradle
 }
 
 allprojects {
+  apply plugin: "com.google.devtools.ksp"
+  apply plugin: "org.jlleitschuh.gradle.ktlint"
+
   repositories {
     google()
     mavenCentral()
-    maven { url 'https://jitpack.io' }
   }
 
-  apply plugin: "org.jlleitschuh.gradle.ktlint"
-  apply plugin: "com.google.devtools.ksp"
+  ktlint {
+    android = true
+    verbose = true
+  }
 }
 
 task clean(type: Delete) {

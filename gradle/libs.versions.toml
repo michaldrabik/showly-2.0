@@ -2,7 +2,8 @@
 
 agp = "8.5.2"
 kotlin = "2.0.20"
-ktlint = "10.2.1"
+devtools = "2.0.20-1.0.24"
+ktlint = "12.1.1"
 core-ktx = "1.13.1"
 appcompat = "1.7.0"
 gridlayout = "1.0.0"
@@ -101,3 +102,8 @@ android-test-truth = { group = "androidx.test.ext", name = "truth", version.ref 
 android-navigation = ["android-navigation-fragment", "android-navigation-ui"]
 android-lifecycle = ["android-lifecycle-common", "android-lifecycle-runtime", "android-lifecycle-viewmodel"]
 testing = ["junit", "mockk", "truth", "coroutinesTest", "android-test-core"]
+
+[plugins]
+devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "devtools" }
+ktlint-gradle = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
+
