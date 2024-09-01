@@ -30,7 +30,10 @@ import kotlinx.parcelize.Parcelize
 class RatingsBottomSheet : BaseBottomSheetFragment(R.layout.view_rate_sheet) {
 
   companion object {
-    fun createBundle(id: IdTrakt, type: Options.Type): Bundle {
+    fun createBundle(
+      id: IdTrakt,
+      type: Options.Type,
+    ): Bundle {
       val options = Options(id, type)
       return bundleOf(NavigationArgs.ARG_OPTIONS to options)
     }
@@ -52,7 +55,10 @@ class RatingsBottomSheet : BaseBottomSheetFragment(R.layout.view_rate_sheet) {
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
 
@@ -60,7 +66,7 @@ class RatingsBottomSheet : BaseBottomSheetFragment(R.layout.view_rate_sheet) {
       { viewModel.uiState.collect { render(it) } },
       { viewModel.messageFlow.collect { renderSnackbar(it) } },
       { viewModel.eventFlow.collect { handleEvent(it) } },
-      doAfterLaunch = { viewModel.loadRating(id, type) }
+      doAfterLaunch = { viewModel.loadRating(id, type) },
     )
   }
 
@@ -94,7 +100,10 @@ class RatingsBottomSheet : BaseBottomSheetFragment(R.layout.view_rate_sheet) {
     }
   }
 
-  private fun renderRating(rate: Int, animate: Boolean = false) {
+  private fun renderRating(
+    rate: Int,
+    animate: Boolean = false,
+  ) {
     val currentRating = selectedRating
     selectedRating = rate.coerceIn(1..10)
     starsViews.forEach { it.setImageResource(R.drawable.ic_star_empty) }
@@ -138,13 +147,13 @@ class RatingsBottomSheet : BaseBottomSheetFragment(R.layout.view_rate_sheet) {
       SHOW,
       MOVIE,
       EPISODE,
-      SEASON
+      SEASON,
     }
 
     @Parcelize
     enum class Operation : Parcelable {
       SAVE,
-      REMOVE
+      REMOVE,
     }
   }
 }

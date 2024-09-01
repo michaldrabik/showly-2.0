@@ -14,10 +14,13 @@ import javax.inject.Inject
 class RemoveTraktProgressCase @Inject constructor(
   private val remoteSource: AuthorizedTraktRemoteDataSource,
   private val userManager: UserTraktManager,
-  private val episodesManager: EpisodesManager
+  private val episodesManager: EpisodesManager,
 ) {
 
-  suspend fun removeTraktProgress(traktIds: List<IdTrakt>, mode: Mode) {
+  suspend fun removeTraktProgress(
+    traktIds: List<IdTrakt>,
+    mode: Mode,
+  ) {
     userManager.checkAuthorization()
     val items = traktIds.map { SyncExportItem.create(it.id) }
 

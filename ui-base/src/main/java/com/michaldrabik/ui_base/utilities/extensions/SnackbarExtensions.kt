@@ -42,7 +42,7 @@ fun ViewGroup.showInfoSnackbar(
     textColor = context.colorFromAttr(R.attr.textColorInfoSnackbar),
     backgroundColor = context.colorFromAttr(R.attr.colorInfoSnackbar),
     length = length,
-    action = action
+    action = action,
   )
 }
 
@@ -57,6 +57,6 @@ fun ViewGroup.showErrorSnackbar(
     textColor = context.colorFromAttr(R.attr.textColorErrorSnackbar),
     backgroundColor = context.colorFromAttr(R.attr.colorErrorSnackbar),
     length = LENGTH_INDEFINITE,
-    action = action
+    action = action,
   )
 }

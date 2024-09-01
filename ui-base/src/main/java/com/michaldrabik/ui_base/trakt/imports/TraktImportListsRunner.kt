@@ -159,7 +159,7 @@ class TraktImportListsRunner @Inject constructor(
           rank = 0,
           listedAt = remoteItem.lastListedMillis(),
           createdAt = nowUtcMillis,
-          updatedAt = nowUtcMillis
+          updatedAt = nowUtcMillis,
         )
         localSource.customListsItems.insertItem(itemDb)
       }
@@ -174,7 +174,7 @@ class TraktImportListsRunner @Inject constructor(
           rank = 0,
           listedAt = remoteItem.lastListedMillis(),
           createdAt = nowUtcMillis,
-          updatedAt = nowUtcMillis
+          updatedAt = nowUtcMillis,
         )
         localSource.customListsItems.insertItem(itemDb)
       }

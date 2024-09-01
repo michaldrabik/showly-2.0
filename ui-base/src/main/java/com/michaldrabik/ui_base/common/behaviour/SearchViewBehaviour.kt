@@ -13,8 +13,11 @@ import androidx.recyclerview.widget.RecyclerView
  */
 class SearchViewBehaviour(private val padding: Int) : CoordinatorLayout.Behavior<ViewGroup>() {
 
-  override fun layoutDependsOn(parent: CoordinatorLayout, child: ViewGroup, dependency: View) =
-    dependency is RecyclerView
+  override fun layoutDependsOn(
+    parent: CoordinatorLayout,
+    child: ViewGroup,
+    dependency: View,
+  ) = dependency is RecyclerView
 
   override fun onNestedPreScroll(
     coordinatorLayout: CoordinatorLayout,
@@ -52,7 +55,17 @@ class SearchViewBehaviour(private val padding: Int) : CoordinatorLayout.Behavior
     type: Int,
     consumed: IntArray,
   ) {
-    super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type, consumed)
+    super.onNestedScroll(
+      coordinatorLayout,
+      child,
+      target,
+      dxConsumed,
+      dyConsumed,
+      dxUnconsumed,
+      dyUnconsumed,
+      type,
+      consumed,
+    )
     if (dyConsumed > 0) {
       val limit = -(child.height + 1.5F * padding)
       child.translationY = (child.translationY - dyConsumed.toFloat()).coerceAtLeast(limit)
@@ -63,7 +76,10 @@ class SearchViewBehaviour(private val padding: Int) : CoordinatorLayout.Behavior
     resetAtTop(target, child)
   }
 
-  private fun resetAtTop(target: View, child: View) {
+  private fun resetAtTop(
+    target: View,
+    child: View,
+  ) {
     val lm = (target as? RecyclerView)?.layoutManager as? LinearLayoutManager
     lm?.let {
       val isScrolled = lm.findFirstCompletelyVisibleItemPosition() != 0
@@ -73,7 +89,11 @@ class SearchViewBehaviour(private val padding: Int) : CoordinatorLayout.Behavior
     }
   }
 
-  private fun stopNestedScrollIfNeeded(dy: Int, target: View, type: Int) {
+  private fun stopNestedScrollIfNeeded(
+    dy: Int,
+    target: View,
+    type: Int,
+  ) {
     if (type == ViewCompat.TYPE_NON_TOUCH) {
       if (dy == 0) {
         ViewCompat.stopNestedScroll(target, ViewCompat.TYPE_NON_TOUCH)

@@ -22,9 +22,11 @@ import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_model.Tip
 
-abstract class BaseFragment<T : ViewModel>(@LayoutRes contentLayoutId: Int) :
+abstract class BaseFragment<T : ViewModel>(
+  @LayoutRes contentLayoutId: Int,
+) :
   Fragment(contentLayoutId),
-  TipsHost {
+    TipsHost {
 
   protected abstract val viewModel: T
   open val navigationId: Int = 0
@@ -49,14 +51,11 @@ abstract class BaseFragment<T : ViewModel>(@LayoutRes contentLayoutId: Int) :
     setupBackPressed()
   }
 
-  protected fun findNavControl() =
-    (requireActivity() as NavigationHost).findNavControl()
+  protected fun findNavControl() = (requireActivity() as NavigationHost).findNavControl()
 
-  protected fun hideNavigation(animate: Boolean = true) =
-    (requireActivity() as NavigationHost).hideNavigation(animate)
+  protected fun hideNavigation(animate: Boolean = true) = (requireActivity() as NavigationHost).hideNavigation(animate)
 
-  protected fun showNavigation(animate: Boolean = true) =
-    (requireActivity() as NavigationHost).showNavigation(animate)
+  protected fun showNavigation(animate: Boolean = true) = (requireActivity() as NavigationHost).showNavigation(animate)
 
   protected fun showSnack(message: MessageEvent) {
     val host = (requireActivity() as SnackbarHost).provideSnackbarLayout()
@@ -78,7 +77,10 @@ abstract class BaseFragment<T : ViewModel>(@LayoutRes contentLayoutId: Int) :
     }
   }
 
-  protected fun navigateTo(@IdRes destination: Int, bundle: Bundle? = null) {
+  protected fun navigateTo(
+    @IdRes destination: Int,
+    bundle: Bundle? = null,
+  ) {
     findNavControl()?.navigate(destination, bundle)
   }
 

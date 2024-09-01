@@ -40,7 +40,10 @@ class DateSelectionBottomSheet : BaseBottomSheetFragment(R.layout.view_date_sele
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
     setupTip()
@@ -52,7 +55,7 @@ class DateSelectionBottomSheet : BaseBottomSheetFragment(R.layout.view_date_sele
         closeSheet()
         setFragmentResult(
           requestKey = REQUEST_DATE_SELECTION,
-          result = bundleOf(RESULT_DATE_SELECTION to Result.Now)
+          result = bundleOf(RESULT_DATE_SELECTION to Result.Now),
         )
       }
       dateCustomButton.onClick { openDateSelectionDialog() }
@@ -80,7 +83,7 @@ class DateSelectionBottomSheet : BaseBottomSheetFragment(R.layout.view_date_sele
       .setCalendarConstraints(
         CalendarConstraints.Builder()
           .setFirstDayOfWeek(Calendar.MONDAY)
-          .build()
+          .build(),
       )
       .setTheme(R.style.ShowlyDatePicker)
       .setSelection(now.toMillis() + (now.offset.totalSeconds * 1000))
@@ -91,7 +94,10 @@ class DateSelectionBottomSheet : BaseBottomSheetFragment(R.layout.view_date_sele
     dialog.show(childFragmentManager, "DatePicker")
   }
 
-  private fun openTimeSelectionDialog(now: ZonedDateTime, selectedDate: ZonedDateTime) {
+  private fun openTimeSelectionDialog(
+    now: ZonedDateTime,
+    selectedDate: ZonedDateTime,
+  ) {
     val is24HourFormat = DateFormat.is24HourFormat(requireContext())
 
     val dialog = MaterialTimePicker.Builder()
@@ -106,7 +112,7 @@ class DateSelectionBottomSheet : BaseBottomSheetFragment(R.layout.view_date_sele
       onDateTimeSelected(
         selectedDate = selectedDate,
         selectedHour = dialog.hour,
-        selectedMinute = dialog.minute
+        selectedMinute = dialog.minute,
       )
     }
 
@@ -116,7 +122,7 @@ class DateSelectionBottomSheet : BaseBottomSheetFragment(R.layout.view_date_sele
   private fun onDateTimeSelected(
     selectedDate: ZonedDateTime,
     selectedHour: Int,
-    selectedMinute: Int
+    selectedMinute: Int,
   ) {
     val resultDate = selectedDate
       .withHour(selectedHour)

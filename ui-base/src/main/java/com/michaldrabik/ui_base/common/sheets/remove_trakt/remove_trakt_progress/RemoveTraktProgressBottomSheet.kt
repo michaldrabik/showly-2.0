@@ -21,18 +21,23 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.RESULT
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class RemoveTraktProgressBottomSheet : RemoveTraktBottomSheet<RemoveTraktProgressViewModel>(R.layout.view_remove_trakt_progress) {
+class RemoveTraktProgressBottomSheet : RemoveTraktBottomSheet<RemoveTraktProgressViewModel>(
+  R.layout.view_remove_trakt_progress,
+) {
 
   private val viewModel by viewModels<RemoveTraktProgressViewModel>()
   private val binding by viewBinding(ViewRemoveTraktProgressBinding::bind)
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
 
     launchAndRepeatStarted(
       { viewModel.messageFlow.collect { renderSnackbar(it) } },
-      { viewModel.uiState.collect { render(it) } }
+      { viewModel.uiState.collect { render(it) } },
     )
   }
 

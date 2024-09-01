@@ -46,7 +46,7 @@ class ShowContextMenuViewModel @Inject constructor(
   private val onHoldCase: ShowContextMenuOnHoldCase,
   private val imagesProvider: ShowImagesProvider,
   private val networkProvider: NetworkStatusProvider,
-  private val settingsRepository: SettingsRepository
+  private val settingsRepository: SettingsRepository,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private var showId by notNull<IdTrakt>()
@@ -99,7 +99,7 @@ class ShowContextMenuViewModel @Inject constructor(
       try {
         myShowsCase.removeFromMyShows(
           traktId = showId,
-          removeLocalData = networkProvider.isOnline()
+          removeLocalData = networkProvider.isOnline(),
         )
         checkQuickRemove(RemoveTraktUiEvent(removeProgress = true))
       } catch (error: Throwable) {
@@ -113,7 +113,7 @@ class ShowContextMenuViewModel @Inject constructor(
       try {
         val result = watchlistCase.moveToWatchlist(
           traktId = showId,
-          removeLocalData = networkProvider.isOnline()
+          removeLocalData = networkProvider.isOnline(),
         )
         checkQuickRemove(result)
       } catch (error: Throwable) {
@@ -138,7 +138,7 @@ class ShowContextMenuViewModel @Inject constructor(
       try {
         val result = hiddenCase.moveToHidden(
           traktId = showId,
-          removeLocalData = networkProvider.isOnline()
+          removeLocalData = networkProvider.isOnline(),
         )
         checkQuickRemove(result)
       } catch (error: Throwable) {
@@ -218,16 +218,16 @@ class ShowContextMenuViewModel @Inject constructor(
   val uiState = combine(
     loadingState,
     loadingSecondaryState,
-    itemState
+    itemState,
   ) { s1, s2, s3 ->
     ShowContextMenuUiState(
       isLoading = s1,
       isLoadingSecondary = s2,
-      item = s3
+      item = s3,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = ShowContextMenuUiState()
+    initialValue = ShowContextMenuUiState(),
   )
 }

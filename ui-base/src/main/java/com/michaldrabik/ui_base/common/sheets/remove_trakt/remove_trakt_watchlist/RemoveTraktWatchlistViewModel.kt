@@ -20,13 +20,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RemoveTraktWatchlistViewModel @Inject constructor(
-  private val removeTraktWatchlistCase: RemoveTraktWatchlistCase
+  private val removeTraktWatchlistCase: RemoveTraktWatchlistCase,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val loadingState = MutableStateFlow(false)
   private val finishedState = MutableStateFlow(false)
 
-  fun removeFromTrakt(traktIds: List<IdTrakt>, mode: Mode) {
+  fun removeFromTrakt(
+    traktIds: List<IdTrakt>,
+    mode: Mode,
+  ) {
     viewModelScope.launch {
       try {
         loadingState.value = true
@@ -41,15 +44,15 @@ class RemoveTraktWatchlistViewModel @Inject constructor(
 
   val uiState = combine(
     loadingState,
-    finishedState
+    finishedState,
   ) { s1, s2 ->
     RemoveTraktWatchlistUiState(
       isLoading = s1,
-      isFinished = s2
+      isFinished = s2,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = RemoveTraktWatchlistUiState()
+    initialValue = RemoveTraktWatchlistUiState(),
   )
 }

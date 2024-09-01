@@ -22,7 +22,7 @@ import javax.inject.Singleton
 
 @Singleton
 class NetworkStatusProvider @Inject constructor(
-  private val connectivityManager: ConnectivityManager
+  private val connectivityManager: ConnectivityManager,
 ) : DefaultLifecycleObserver {
 
   private val _status = MutableStateFlow(false)

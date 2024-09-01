@@ -57,7 +57,10 @@ class LinksBottomSheet : BaseBottomSheetFragment(R.layout.view_links) {
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
   }
@@ -66,7 +69,11 @@ class LinksBottomSheet : BaseBottomSheetFragment(R.layout.view_links) {
     with(binding) {
       viewLinksJustWatch.onClick {
         val country = viewModel.loadCountry()
-        openWebUrl("https://www.justwatch.com/${country.code}/${country.justWatchQuery}?content_type=${type.type}&q=${Uri.encode(title)}")
+        openWebUrl(
+          "https://www.justwatch.com/${country.code}/${country.justWatchQuery}?content_type=${type.type}&q=${Uri.encode(
+            title,
+          )}",
+        )
       }
       viewLinksYouTube.onClick {
         openWebUrl("https://www.youtube.com/results?search_query=${getQuery()}")
@@ -169,8 +176,9 @@ class LinksBottomSheet : BaseBottomSheetFragment(R.layout.view_links) {
     }
   }
 
-  private fun getQuery() = when (type) {
-    Mode.SHOWS -> "$title TV Series"
-    Mode.MOVIES -> "$title Movie"
-  }
+  private fun getQuery() =
+    when (type) {
+      Mode.SHOWS -> "$title TV Series"
+      Mode.MOVIES -> "$title Movie"
+    }
 }

@@ -15,7 +15,10 @@ class RemoveTraktHiddenCase @Inject constructor(
   private val userManager: UserTraktManager,
 ) {
 
-  suspend fun removeTraktHidden(traktIds: List<IdTrakt>, mode: Mode) {
+  suspend fun removeTraktHidden(
+    traktIds: List<IdTrakt>,
+    mode: Mode,
+  ) {
     userManager.checkAuthorization()
     val items = traktIds.map { SyncExportItem.create(it.id) }
 

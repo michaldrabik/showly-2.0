@@ -48,7 +48,7 @@ class QuickSyncWorker @AssistedInject constructor(
         .setConstraints(
           Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
-            .build()
+            .build(),
         )
         .setInitialDelay(3, SECONDS)
         .addTag(TAG)
@@ -63,7 +63,7 @@ class QuickSyncWorker @AssistedInject constructor(
     Timber.d("Initialized.")
     notificationManager().notify(
       SYNC_NOTIFICATION_PROGRESS_ID,
-      createProgressNotification(null)
+      createProgressNotification(null),
     )
 
     try {
@@ -96,7 +96,7 @@ class QuickSyncWorker @AssistedInject constructor(
     }
     applicationContext.notificationManager().notify(
       SYNC_NOTIFICATION_ERROR_ID,
-      createErrorNotification(R.string.textTraktQuickSyncError, notificationMessage)
+      createErrorNotification(R.string.textTraktQuickSyncError, notificationMessage),
     )
     Logger.record(error, "QuickSyncWorker::handleError()")
   }

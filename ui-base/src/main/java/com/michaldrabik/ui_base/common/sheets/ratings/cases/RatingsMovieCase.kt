@@ -36,29 +36,32 @@ class RatingsMovieCase @Inject constructor(
       }
     }
 
-  suspend fun saveRating(idTrakt: IdTrakt, rating: Int) =
-    withContext(dispatchers.IO) {
-      check(rating in RATING_VALID_RANGE)
-      userTraktManager.checkAuthorization()
-
-      val movie = Movie.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = idTrakt))
-      try {
-        ratingsRepository.movies.addRating(movie, rating)
-      } catch (error: Throwable) {
-        handleError(error)
-      }
-    }
-
-  suspend fun deleteRating(idTrakt: IdTrakt) = withContext(dispatchers.IO) {
+  suspend fun saveRating(
+    idTrakt: IdTrakt,
+    rating: Int,
+  ) = withContext(dispatchers.IO) {
+    check(rating in RATING_VALID_RANGE)
     userTraktManager.checkAuthorization()
 
     val movie = Movie.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = idTrakt))
     try {
-      ratingsRepository.movies.deleteRating(movie)
+      ratingsRepository.movies.addRating(movie, rating)
     } catch (error: Throwable) {
       handleError(error)
     }
   }
+
+  suspend fun deleteRating(idTrakt: IdTrakt) =
+    withContext(dispatchers.IO) {
+      userTraktManager.checkAuthorization()
+
+      val movie = Movie.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = idTrakt))
+      try {
+        ratingsRepository.movies.deleteRating(movie)
+      } catch (error: Throwable) {
+        handleError(error)
+      }
+    }
 
   private suspend fun handleError(error: Throwable) {
     val showlyError = ErrorHelper.parse(error)

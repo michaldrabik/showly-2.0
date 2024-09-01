@@ -23,14 +23,14 @@ class QuickSyncManager @Inject constructor(
   private val settingsRepository: SettingsRepository,
   private val localSource: LocalDataSource,
   private val transactions: TransactionsProvider,
-  private val workManager: WorkManager
+  private val workManager: WorkManager,
 ) {
 
   suspend fun scheduleEpisodes(
     episodesIds: List<Long>,
     showId: Long,
     customDate: ZonedDateTime?,
-    clearProgress: Boolean = false
+    clearProgress: Boolean = false,
   ) {
     if (!ensureQuickSync() && !(clearProgress && ensureQuickRemove())) {
       return
@@ -44,7 +44,10 @@ class QuickSyncManager @Inject constructor(
     QuickSyncWorker.schedule(workManager)
   }
 
-  suspend fun scheduleMovies(moviesIds: List<Long>, customDate: ZonedDateTime?) {
+  suspend fun scheduleMovies(
+    moviesIds: List<Long>,
+    customDate: ZonedDateTime?,
+  ) {
     if (!ensureQuickSync()) return
 
     val timestamp = customDate?.toUtcZone()?.toMillis() ?: nowUtcMillis()
@@ -77,7 +80,11 @@ class QuickSyncManager @Inject constructor(
     QuickSyncWorker.schedule(workManager)
   }
 
-  suspend fun scheduleAddToList(idTrakt: Long, idList: Long, type: Mode) {
+  suspend fun scheduleAddToList(
+    idTrakt: Long,
+    idList: Long,
+    type: Mode,
+  ) {
     if (!ensureQuickSync()) return
 
     val time = nowUtcMillis()
@@ -103,7 +110,11 @@ class QuickSyncManager @Inject constructor(
     QuickSyncWorker.schedule(workManager)
   }
 
-  suspend fun scheduleRemoveFromList(idTrakt: Long, idList: Long, type: Mode) {
+  suspend fun scheduleRemoveFromList(
+    idTrakt: Long,
+    idList: Long,
+    type: Mode,
+  ) {
     if (!ensureQuickRemove()) return
 
     val time = nowUtcMillis()
@@ -129,7 +140,11 @@ class QuickSyncManager @Inject constructor(
     QuickSyncWorker.schedule(workManager)
   }
 
-  suspend fun scheduleHidden(idTrakt: Long, type: Mode, operation: Operation) {
+  suspend fun scheduleHidden(
+    idTrakt: Long,
+    type: Mode,
+    operation: Operation,
+  ) {
     if (!ensureQuickSync()) return
 
     val time = nowUtcMillis()

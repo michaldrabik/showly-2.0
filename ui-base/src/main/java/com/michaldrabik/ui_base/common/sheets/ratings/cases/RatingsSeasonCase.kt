@@ -24,18 +24,22 @@ class RatingsSeasonCase @Inject constructor(
     private val RATING_VALID_RANGE = 1..10
   }
 
-  suspend fun loadRating(idTrakt: IdTrakt): TraktRating = withContext(dispatchers.IO) {
-    val season = Season.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = idTrakt))
-    try {
-      val rating = ratingsRepository.shows.loadRatingsSeasons(listOf(season))
-      rating.firstOrNull() ?: TraktRating.EMPTY
-    } catch (error: Throwable) {
-      handleError(error)
-      TraktRating.EMPTY
+  suspend fun loadRating(idTrakt: IdTrakt): TraktRating =
+    withContext(dispatchers.IO) {
+      val season = Season.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = idTrakt))
+      try {
+        val rating = ratingsRepository.shows.loadRatingsSeasons(listOf(season))
+        rating.firstOrNull() ?: TraktRating.EMPTY
+      } catch (error: Throwable) {
+        handleError(error)
+        TraktRating.EMPTY
+      }
     }
-  }
 
-  suspend fun saveRating(idTrakt: IdTrakt, rating: Int) = withContext(dispatchers.IO) {
+  suspend fun saveRating(
+    idTrakt: IdTrakt,
+    rating: Int,
+  ) = withContext(dispatchers.IO) {
     check(rating in RATING_VALID_RANGE)
     userTraktManager.checkAuthorization()
 
@@ -47,16 +51,17 @@ class RatingsSeasonCase @Inject constructor(
     }
   }
 
-  suspend fun deleteRating(idTrakt: IdTrakt) = withContext(dispatchers.IO) {
-    userTraktManager.checkAuthorization()
+  suspend fun deleteRating(idTrakt: IdTrakt) =
+    withContext(dispatchers.IO) {
+      userTraktManager.checkAuthorization()
 
-    val season = Season.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = idTrakt))
-    try {
-      ratingsRepository.shows.deleteRating(season)
-    } catch (error: Throwable) {
-      handleError(error)
+      val season = Season.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = idTrakt))
+      try {
+        ratingsRepository.shows.deleteRating(season)
+      } catch (error: Throwable) {
+        handleError(error)
+      }
     }
-  }
 
   private suspend fun handleError(error: Throwable) {
     val showlyError = ErrorHelper.parse(error)

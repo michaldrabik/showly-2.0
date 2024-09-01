@@ -43,7 +43,7 @@ class SortOrderBottomSheet : BaseBottomSheetFragment(R.layout.view_sort_order) {
       ARG_SELECTED_SORT_ORDER to selectedOrder,
       ARG_SELECTED_SORT_TYPE to selectedType,
       ARG_SELECTED_NEW_AT_TOP to newAtTop,
-      ARG_REQUEST_KEY to requestKey
+      ARG_REQUEST_KEY to requestKey,
     )
   }
 
@@ -60,7 +60,10 @@ class SortOrderBottomSheet : BaseBottomSheetFragment(R.layout.view_sort_order) {
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     selectedSortOrder = initialSortOrder
     selectedSortType = initialSortType

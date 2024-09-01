@@ -161,7 +161,10 @@ class TraktExportListsRunner @Inject constructor(
     updateListTimestamp(localList.id, listTraktId)
   }
 
-  private suspend fun updateListTimestamp(listId: Long, listTraktId: Long) {
+  private suspend fun updateListTimestamp(
+    listId: Long,
+    listTraktId: Long,
+  ) {
     try {
       Timber.d("Updating timestamp...")
       val list = remoteSource.fetchSyncList(listTraktId)

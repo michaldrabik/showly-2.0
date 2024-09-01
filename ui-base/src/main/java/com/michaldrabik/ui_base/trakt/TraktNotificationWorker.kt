@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit
 
 abstract class TraktNotificationWorker(
   val context: Context,
-  workerParams: WorkerParameters
+  workerParams: WorkerParameters,
 ) : CoroutineWorker(context, workerParams) {
 
   private fun createBaseNotification(): NotificationCompat.Builder {
@@ -29,9 +29,7 @@ abstract class TraktNotificationWorker(
       .setColor(ContextCompat.getColor(applicationContext, R.color.colorNotificationDark))
   }
 
-  protected fun createProgressNotification(
-    content: String?
-  ): Notification =
+  protected fun createProgressNotification(content: String?): Notification =
     createBaseNotification()
       .setContentText(content ?: context.getString(R.string.textTraktSyncRunning))
       .setCategory(NotificationCompat.CATEGORY_SERVICE)
@@ -50,7 +48,7 @@ abstract class TraktNotificationWorker(
   protected fun createErrorNotification(
     @StringRes titleTextRes: Int,
     @StringRes bigTextRes: Int,
-    action: NotificationCompat.Action? = null
+    action: NotificationCompat.Action? = null,
   ): Notification =
     createBaseNotification()
       .setContentTitle(context.getString(titleTextRes))

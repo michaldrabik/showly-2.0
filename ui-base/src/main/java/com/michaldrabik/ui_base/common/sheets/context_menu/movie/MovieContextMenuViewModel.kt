@@ -40,7 +40,7 @@ class MovieContextMenuViewModel @Inject constructor(
   private val watchlistCase: MovieContextMenuWatchlistCase,
   private val hiddenCase: MovieContextMenuHiddenCase,
   private val pinnedCase: MovieContextMenuPinnedCase,
-  private val settingsRepository: SettingsRepository
+  private val settingsRepository: SettingsRepository,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private var movieId by notNull<IdTrakt>()
@@ -68,7 +68,7 @@ class MovieContextMenuViewModel @Inject constructor(
 
   fun moveToMyMovies(
     isCustomDateSelected: Boolean = false,
-    customDate: ZonedDateTime? = null
+    customDate: ZonedDateTime? = null,
   ) {
     viewModelScope.launch {
       try {
@@ -172,15 +172,15 @@ class MovieContextMenuViewModel @Inject constructor(
 
   val uiState = combine(
     loadingState,
-    itemState
+    itemState,
   ) { s1, s2 ->
     MovieContextMenuUiState(
       isLoading = s1,
-      item = s2
+      item = s2,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = MovieContextMenuUiState()
+    initialValue = MovieContextMenuUiState(),
   )
 }

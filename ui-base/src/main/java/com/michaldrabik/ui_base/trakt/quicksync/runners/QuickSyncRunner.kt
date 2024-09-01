@@ -47,7 +47,7 @@ class QuickSyncRunner @Inject constructor(
     MOVIE_WATCHLIST,
     SHOW_WATCHLIST,
     HIDDEN_SHOW,
-    HIDDEN_MOVIE
+    HIDDEN_MOVIE,
   ).map { it.slug }
 
   override suspend fun run(): Int {
@@ -133,7 +133,7 @@ class QuickSyncRunner @Inject constructor(
       remoteSource.postSyncWatched(request)
       localSource.episodes.updateIsExported(
         episodesIds = request.episodes.map { it.ids.trakt },
-        exportedAt = nowUtcMillis()
+        exportedAt = nowUtcMillis(),
       )
     }
 
@@ -148,7 +148,7 @@ class QuickSyncRunner @Inject constructor(
         remoteFetchedShows = remoteShows,
         remoteFetchedMovies = remoteMovies,
         count = currentCount,
-        clearedProgressIds = clearedProgressIds.toMutableSet()
+        clearedProgressIds = clearedProgressIds.toMutableSet(),
       )
     }
 
@@ -173,7 +173,7 @@ class QuickSyncRunner @Inject constructor(
 
     val request = SyncExportRequest(
       shows = exportShows.map { SyncExportItem.create(it.idTrakt, dateIsoStringFromMillis(it.updatedAt)) },
-      movies = exportMovies.map { SyncExportItem.create(it.idTrakt, dateIsoStringFromMillis(it.updatedAt)) }
+      movies = exportMovies.map { SyncExportItem.create(it.idTrakt, dateIsoStringFromMillis(it.updatedAt)) },
     )
 
     transactions.withTransaction {
@@ -221,14 +221,19 @@ class QuickSyncRunner @Inject constructor(
 
     if (exportShows.isNotEmpty()) {
       remoteSource.postHiddenShows(
-        shows = exportShows.map { SyncExportItem.create(it.idTrakt, hiddenAt = dateIsoStringFromMillis(it.updatedAt)) }
+        shows = exportShows.map { SyncExportItem.create(it.idTrakt, hiddenAt = dateIsoStringFromMillis(it.updatedAt)) },
       )
       delay(1500)
     }
 
     if (exportMovies.isNotEmpty()) {
       remoteSource.postHiddenMovies(
-        movies = exportMovies.map { SyncExportItem.create(it.idTrakt, hiddenAt = dateIsoStringFromMillis(it.updatedAt)) }
+        movies = exportMovies.map {
+          SyncExportItem.create(
+            it.idTrakt,
+            hiddenAt = dateIsoStringFromMillis(it.updatedAt),
+          )
+        },
       )
     }
 

@@ -88,7 +88,7 @@ class AnnouncementManager @Inject constructor(
                   episodeSeasonNumber = episode.seasonNumber,
                   episodeDate = episode.firstAired!!,
                   delay = delay,
-                  language = language
+                  language = language,
                 )
               } else {
                 Timber.d("Time with delay included has already passed.")
@@ -101,7 +101,7 @@ class AnnouncementManager @Inject constructor(
                 episodeSeasonNumber = episode.seasonNumber,
                 episodeDate = episode.firstAired!!,
                 delay = delay,
-                language = language
+                language = language,
               )
             }
           }
@@ -126,7 +126,7 @@ class AnnouncementManager @Inject constructor(
             episodeSeasonNumber = 1,
             episodeDate = airDate,
             delay = delay,
-            language = language
+            language = language,
           )
         } else {
           Timber.d("Time with delay included has already passed.")
@@ -138,7 +138,7 @@ class AnnouncementManager @Inject constructor(
           episodeSeasonNumber = 1,
           episodeDate = airDate,
           delay = delay,
-          language = language
+          language = language,
         )
       }
     }

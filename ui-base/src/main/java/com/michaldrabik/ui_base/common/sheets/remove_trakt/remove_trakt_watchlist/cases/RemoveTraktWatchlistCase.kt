@@ -15,7 +15,10 @@ class RemoveTraktWatchlistCase @Inject constructor(
   private val userManager: UserTraktManager,
 ) {
 
-  suspend fun removeTraktWatchlist(traktIds: List<IdTrakt>, mode: Mode) {
+  suspend fun removeTraktWatchlist(
+    traktIds: List<IdTrakt>,
+    mode: Mode,
+  ) {
     userManager.checkAuthorization()
     val items = traktIds.map { SyncExportItem.create(it.id) }
 

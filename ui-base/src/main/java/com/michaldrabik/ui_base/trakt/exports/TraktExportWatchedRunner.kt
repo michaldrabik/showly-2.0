@@ -81,7 +81,7 @@ class TraktExportWatchedRunner @Inject constructor(
       val watchedEpisodesIds = watchedEpisodes.map { it.idTrakt }
       localSource.episodes.updateIsExported(
         exportedAt = nowUtcMillis(),
-        episodesIds = watchedEpisodes.map { it.idTrakt }
+        episodesIds = watchedEpisodes.map { it.idTrakt },
       )
       localEpisodes = localEpisodesNotExported.filter { it.idTrakt !in watchedEpisodesIds }
     }
@@ -135,82 +135,83 @@ class TraktExportWatchedRunner @Inject constructor(
 
     val batchRequest = request.copy(
       episodes = episodes.take(1000),
-      movies = movies.take(500)
+      movies = movies.take(500),
     )
 
     Timber.d("Exporting batch ${batchRequest.episodes.size} episodes & ${batchRequest.movies.size} movies...")
     remoteSource.postSyncWatched(batchRequest)
     localSource.episodes.updateIsExported(
       episodesIds = batchRequest.episodes.map { it.ids.trakt },
-      exportedAt = nowUtcMillis()
+      exportedAt = nowUtcMillis(),
     )
 
     delay(TRAKT_LIMIT_DELAY_MS)
     postExportWatched(
       request.copy(
         episodes = request.episodes.filter { it !in batchRequest.episodes },
-        movies = request.movies.filter { it !in batchRequest.movies }
-      )
+        movies = request.movies.filter { it !in batchRequest.movies },
+      ),
     )
   }
 
-  private suspend fun exportHidden() = coroutineScope {
-    Timber.d("Exporting hidden items...")
+  private suspend fun exportHidden() =
+    coroutineScope {
+      Timber.d("Exporting hidden items...")
 
-    val remoteShowsAsync = async { remoteSource.fetchHiddenShows() }
-    val remoteMoviesAsync = async { remoteSource.fetchHiddenMovies() }
-    val (remoteShows, remoteMovies) = awaitAll(remoteShowsAsync, remoteMoviesAsync)
+      val remoteShowsAsync = async { remoteSource.fetchHiddenShows() }
+      val remoteMoviesAsync = async { remoteSource.fetchHiddenMovies() }
+      val (remoteShows, remoteMovies) = awaitAll(remoteShowsAsync, remoteMoviesAsync)
 
-    val showsAsync = async { localSource.archiveShows.getAll() }
-    val moviesAsync = async { localSource.archiveMovies.getAll() }
-    val (localShows, localMovies) = awaitAll(showsAsync, moviesAsync)
+      val showsAsync = async { localSource.archiveShows.getAll() }
+      val moviesAsync = async { localSource.archiveMovies.getAll() }
+      val (localShows, localMovies) = awaitAll(showsAsync, moviesAsync)
 
-    val remoteShowsIds = remoteShows.mapNotNull { it.show?.ids?.trakt }
-    val remoteMoviesIds = remoteMovies.mapNotNull { it.movie?.ids?.trakt }
+      val remoteShowsIds = remoteShows.mapNotNull { it.show?.ids?.trakt }
+      val remoteMoviesIds = remoteMovies.mapNotNull { it.movie?.ids?.trakt }
 
-    val showsItems = localShows
-      .filter { (it as Show).idTrakt !in remoteShowsIds }
-      .map {
-        (it as Show).let { show ->
-          SyncExportItem.create(
-            traktId = show.idTrakt,
-            hiddenAt = dateIsoStringFromMillis(show.updatedAt)
-          )
+      val showsItems = localShows
+        .filter { (it as Show).idTrakt !in remoteShowsIds }
+        .map {
+          (it as Show).let { show ->
+            SyncExportItem.create(
+              traktId = show.idTrakt,
+              hiddenAt = dateIsoStringFromMillis(show.updatedAt),
+            )
+          }
         }
-      }
-    val moviesItems = localMovies
-      .filter { (it as Movie).idTrakt !in remoteMoviesIds }
-      .map {
-        (it as Movie).let { movie ->
-          SyncExportItem.create(
-            traktId = movie.idTrakt,
-            hiddenAt = dateIsoStringFromMillis(movie.updatedAt)
-          )
+      val moviesItems = localMovies
+        .filter { (it as Movie).idTrakt !in remoteMoviesIds }
+        .map {
+          (it as Movie).let { movie ->
+            SyncExportItem.create(
+              traktId = movie.idTrakt,
+              hiddenAt = dateIsoStringFromMillis(movie.updatedAt),
+            )
+          }
         }
+
+      Timber.d("Exporting ${showsItems.size} hidden shows...")
+      if (showsItems.isNotEmpty()) {
+        showsItems.chunked(500).forEach { chunk ->
+          remoteSource.postHiddenShows(shows = chunk)
+          delay(TRAKT_LIMIT_DELAY_MS)
+        }
+        delay(TRAKT_LIMIT_DELAY_MS)
+      } else {
+        Timber.d("Nothing to export. Skipping...")
       }
 
-    Timber.d("Exporting ${showsItems.size} hidden shows...")
-    if (showsItems.isNotEmpty()) {
-      showsItems.chunked(500).forEach { chunk ->
-        remoteSource.postHiddenShows(shows = chunk)
+      Timber.d("Exporting ${moviesItems.size} hidden movies...")
+      if (moviesItems.isNotEmpty()) {
+        moviesItems.chunked(500).forEach { chunk ->
+          remoteSource.postHiddenMovies(movies = chunk)
+          delay(TRAKT_LIMIT_DELAY_MS)
+        }
         delay(TRAKT_LIMIT_DELAY_MS)
+      } else {
+        Timber.d("Nothing to export. Skipping...")
       }
-      delay(TRAKT_LIMIT_DELAY_MS)
-    } else {
-      Timber.d("Nothing to export. Skipping...")
     }
-
-    Timber.d("Exporting ${moviesItems.size} hidden movies...")
-    if (moviesItems.isNotEmpty()) {
-      moviesItems.chunked(500).forEach { chunk ->
-        remoteSource.postHiddenMovies(movies = chunk)
-        delay(TRAKT_LIMIT_DELAY_MS)
-      }
-      delay(TRAKT_LIMIT_DELAY_MS)
-    } else {
-      Timber.d("Nothing to export. Skipping...")
-    }
-  }
 
   private suspend fun batchEpisodes(
     showsIds: List<Long>,
@@ -238,7 +239,10 @@ class TraktExportWatchedRunner @Inject constructor(
     return batchMovies(moviesIds.filter { it !in batch }, result)
   }
 
-  private fun isEpisodeWatched(remoteItems: List<SyncItem>, episode: Episode): Boolean {
+  private fun isEpisodeWatched(
+    remoteItems: List<SyncItem>,
+    episode: Episode,
+  ): Boolean {
     val ep = remoteItems
       .find { it.show?.ids?.trakt == episode.idShowTrakt }
       ?.seasons?.find { it.number == episode.seasonNumber }
@@ -246,7 +250,10 @@ class TraktExportWatchedRunner @Inject constructor(
     return ep != null
   }
 
-  private fun isHistoryEpisodeWatched(remoteItems: List<SyncHistoryItem>, episode: Episode): Boolean {
+  private fun isHistoryEpisodeWatched(
+    remoteItems: List<SyncHistoryItem>,
+    episode: Episode,
+  ): Boolean {
     val shows = remoteItems.filter { it.show?.ids?.trakt == episode.idShowTrakt }
     val seasons = shows.filter { it.episode?.season == episode.seasonNumber }
 

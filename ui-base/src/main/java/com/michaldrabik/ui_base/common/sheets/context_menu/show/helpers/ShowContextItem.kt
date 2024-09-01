@@ -15,7 +15,7 @@ data class ShowContextItem(
   val isHidden: Boolean,
   val isPinnedTop: Boolean,
   val isOnHold: Boolean,
-  val spoilers: SpoilersSettings
+  val spoilers: SpoilersSettings,
 ) {
 
   fun isInCollection() = isHidden || isWatchlist || isMyShow

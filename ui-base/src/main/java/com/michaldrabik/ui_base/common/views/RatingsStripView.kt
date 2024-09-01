@@ -51,7 +51,7 @@ class RatingsStripView : LinearLayout {
         linkView = viewRatingsStripTraktLinkIcon,
         isHidden = ratings.isHidden,
         isTapToReveal = ratings.isTapToReveal,
-        callback = onTraktClick
+        callback = onTraktClick,
       )
       bindValue(
         ratingsValue = ratings.imdb,
@@ -61,7 +61,7 @@ class RatingsStripView : LinearLayout {
         linkView = viewRatingsStripImdbLinkIcon,
         isHidden = ratings.isHidden,
         isTapToReveal = ratings.isTapToReveal,
-        callback = onImdbClick
+        callback = onImdbClick,
       )
       bindValue(
         ratingsValue = ratings.metascore,
@@ -71,7 +71,7 @@ class RatingsStripView : LinearLayout {
         linkView = viewRatingsStripMetaLinkIcon,
         isHidden = ratings.isHidden,
         isTapToReveal = ratings.isTapToReveal,
-        callback = onMetaClick
+        callback = onMetaClick,
       )
       bindValue(
         ratingsValue = ratings.rottenTomatoes,
@@ -81,7 +81,7 @@ class RatingsStripView : LinearLayout {
         linkView = viewRatingsStripRottenLinkIcon,
         isHidden = ratings.isHidden,
         isTapToReveal = ratings.isTapToReveal,
-        callback = onRottenClick
+        callback = onRottenClick,
       )
     }
   }

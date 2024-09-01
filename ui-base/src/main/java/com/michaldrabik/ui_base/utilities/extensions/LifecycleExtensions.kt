@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 fun Fragment.launchAndRepeatStarted(
   vararg launchBlock: suspend () -> Unit,
-  doAfterLaunch: (() -> Unit)? = null
+  doAfterLaunch: (() -> Unit)? = null,
 ) {
   viewLifecycleOwner.lifecycleScope.launch {
     viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -26,14 +26,14 @@ fun Fragment.launchAndRepeatStarted(
 
 fun BaseFragment<*>.navigateTo(
   @IdRes destination: Int,
-  bundle: Bundle? = null
+  bundle: Bundle? = null,
 ) {
   (requireActivity() as NavigationHost).findNavControl()?.navigate(destination, bundle)
 }
 
 fun BaseFragment<*>.navigateToSafe(
   @IdRes destination: Int,
-  bundle: Bundle? = null
+  bundle: Bundle? = null,
 ) {
   check(navigationId != 0) { "Navigation ID not provided!" }
   (requireActivity() as NavigationHost).findNavControl()?.let { navController ->

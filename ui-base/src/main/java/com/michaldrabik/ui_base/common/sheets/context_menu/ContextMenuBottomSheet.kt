@@ -52,8 +52,8 @@ abstract class ContextMenuBottomSheet : BaseBottomSheetFragment(R.layout.view_co
       ARG_ID to idTrakt,
       ARG_OPTIONS to bundleOf(
         ARG_SHOW_PIN_BUTTONS to showPinButtons,
-        ARG_DETAILS_ENABLED to detailsEnabled
-      )
+        ARG_DETAILS_ENABLED to detailsEnabled,
+      ),
     )
   }
 
@@ -66,7 +66,9 @@ abstract class ContextMenuBottomSheet : BaseBottomSheetFragment(R.layout.view_co
   private val cornerRadius by lazy { dimenToPx(R.dimen.mediaTileCorner).toFloat() }
   private val cornerBigRadius by lazy { dimenToPx(R.dimen.collectionItemCorner).toFloat() }
   private val centerCropTransformation by lazy { CenterCrop() }
-  private val cornersTransformation by lazy { GranularRoundedCorners(cornerBigRadius, cornerRadius, cornerRadius, cornerRadius) }
+  private val cornersTransformation by lazy {
+    GranularRoundedCorners(cornerBigRadius, cornerRadius, cornerRadius, cornerRadius)
+  }
 
   protected val colorAccent by lazy { ContextCompat.getColor(requireContext(), R.color.colorAccent) }
   protected val colorGray by lazy { ContextCompat.getColor(requireContext(), R.color.colorGrayLight) }
@@ -116,7 +118,10 @@ abstract class ContextMenuBottomSheet : BaseBottomSheetFragment(R.layout.view_co
     }
   }
 
-  protected fun openRemoveTraktSheet(@IdRes action: Int, mode: Mode) {
+  protected fun openRemoveTraktSheet(
+    @IdRes action: Int,
+    mode: Mode,
+  ) {
     setFragmentResultListener(REQUEST_REMOVE_TRAKT) { _, bundle ->
       if (bundle.getBoolean(RESULT, false)) {
         val text = resources.getQuantityString(R.plurals.textTraktQuickSyncComplete, 1)

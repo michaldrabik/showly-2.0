@@ -24,27 +24,29 @@ class MovieContextMenuHiddenCase @Inject constructor(
   private val quickSyncManager: QuickSyncManager,
 ) {
 
-  suspend fun moveToHidden(traktId: IdTrakt) = withContext(dispatchers.IO) {
-    val movie = Movie.EMPTY.copy(ids = Ids.EMPTY.copy(traktId))
+  suspend fun moveToHidden(traktId: IdTrakt) =
+    withContext(dispatchers.IO) {
+      val movie = Movie.EMPTY.copy(ids = Ids.EMPTY.copy(traktId))
 
-    val (isMyMovie, isWatchlist) = awaitAll(
-      async { moviesRepository.myMovies.exists(traktId) },
-      async { moviesRepository.watchlistMovies.exists(traktId) }
-    )
+      val (isMyMovie, isWatchlist) = awaitAll(
+        async { moviesRepository.myMovies.exists(traktId) },
+        async { moviesRepository.watchlistMovies.exists(traktId) },
+      )
 
-    moviesRepository.hiddenMovies.insert(movie.ids.trakt)
-    pinnedItemsRepository.removePinnedItem(movie)
-    with(quickSyncManager) {
-      clearMovies(listOf(traktId.id))
-      clearWatchlistMovies(listOf(traktId.id))
-      scheduleHidden(traktId.id, Mode.MOVIES, TraktSyncQueue.Operation.ADD)
+      moviesRepository.hiddenMovies.insert(movie.ids.trakt)
+      pinnedItemsRepository.removePinnedItem(movie)
+      with(quickSyncManager) {
+        clearMovies(listOf(traktId.id))
+        clearWatchlistMovies(listOf(traktId.id))
+        scheduleHidden(traktId.id, Mode.MOVIES, TraktSyncQueue.Operation.ADD)
+      }
+
+      RemoveTraktUiEvent(removeProgress = isMyMovie, removeWatchlist = isWatchlist)
     }
 
-    RemoveTraktUiEvent(removeProgress = isMyMovie, removeWatchlist = isWatchlist)
-  }
-
-  suspend fun removeFromHidden(traktId: IdTrakt) = withContext(dispatchers.IO) {
-    moviesRepository.hiddenMovies.delete(traktId)
-    quickSyncManager.clearHiddenMovies(listOf(traktId.id))
-  }
+  suspend fun removeFromHidden(traktId: IdTrakt) =
+    withContext(dispatchers.IO) {
+      moviesRepository.hiddenMovies.delete(traktId)
+      quickSyncManager.clearHiddenMovies(listOf(traktId.id))
+    }
 }

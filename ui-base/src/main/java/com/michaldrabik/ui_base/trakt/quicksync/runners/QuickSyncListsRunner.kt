@@ -24,7 +24,7 @@ class QuickSyncListsRunner @Inject constructor(
   private val localSource: LocalDataSource,
   private val mappers: Mappers,
   private val listsRepository: ListsRepository,
-  userTraktManager: UserTraktManager
+  userTraktManager: UserTraktManager,
 ) : TraktSyncRunner(userTraktManager) {
 
   companion object {
@@ -33,7 +33,7 @@ class QuickSyncListsRunner @Inject constructor(
 
   private val syncTypes = listOf(
     Type.LIST_ITEM_SHOW,
-    Type.LIST_ITEM_MOVIE
+    Type.LIST_ITEM_MOVIE,
   ).map { it.slug }
 
   override suspend fun run(): Int {
@@ -59,7 +59,7 @@ class QuickSyncListsRunner @Inject constructor(
 
   private suspend fun processItems(
     items: Map<Long?, List<TraktSyncQueue>>,
-    count: Int
+    count: Int,
   ): Int {
     var counted = count
 
@@ -110,7 +110,7 @@ class QuickSyncListsRunner @Inject constructor(
 
   private suspend fun handleRemoveItems(
     removeItems: List<TraktSyncQueue>,
-    list: CustomList
+    list: CustomList,
   ) {
     try {
       val showIds = removeItems
@@ -138,7 +138,7 @@ class QuickSyncListsRunner @Inject constructor(
 
   private suspend fun handleAddItems(
     addItems: List<TraktSyncQueue>,
-    localList: CustomList
+    localList: CustomList,
   ) {
     val showIds = addItems
       .filter { it.type == Type.LIST_ITEM_SHOW.slug }
@@ -173,7 +173,7 @@ class QuickSyncListsRunner @Inject constructor(
 
   private suspend fun createMissingList(
     localList: CustomList,
-    addItems: List<TraktSyncQueue>
+    addItems: List<TraktSyncQueue>,
   ): CustomList {
     try {
       val result = remoteSource.postCreateList(localList.name, localList.description)

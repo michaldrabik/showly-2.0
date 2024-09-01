@@ -28,7 +28,7 @@ class ShowsMoviesSyncWorker @AssistedInject constructor(
   private val showsSyncRunner: ShowsSyncRunner,
   private val moviesSyncRunner: MoviesSyncRunner,
   private val eventsManager: EventsManager,
-  private val dispatchers: CoroutineDispatchers
+  private val dispatchers: CoroutineDispatchers,
 ) : CoroutineWorker(context, workerParams) {
 
   companion object {
@@ -39,7 +39,7 @@ class ShowsMoviesSyncWorker @AssistedInject constructor(
         .setConstraints(
           Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
-            .build()
+            .build(),
         )
         .addTag(TAG)
         .build()
@@ -49,33 +49,34 @@ class ShowsMoviesSyncWorker @AssistedInject constructor(
     }
   }
 
-  override suspend fun doWork() = withContext(dispatchers.IO) {
-    Timber.d("Doing work...")
+  override suspend fun doWork() =
+    withContext(dispatchers.IO) {
+      Timber.d("Doing work...")
 
-    val showsAsync = async {
-      try {
-        Timber.d("Starting shows runner...")
-        showsSyncRunner.run()
-      } catch (error: Throwable) {
-        Timber.e(error)
-        0
+      val showsAsync = async {
+        try {
+          Timber.d("Starting shows runner...")
+          showsSyncRunner.run()
+        } catch (error: Throwable) {
+          Timber.e(error)
+          0
+        }
       }
-    }
 
-    val moviesAsync = async {
-      try {
-        Timber.d("Starting movies runner...")
-        moviesSyncRunner.run()
-      } catch (error: Throwable) {
-        Timber.e(error)
-        0
+      val moviesAsync = async {
+        try {
+          Timber.d("Starting movies runner...")
+          moviesSyncRunner.run()
+        } catch (error: Throwable) {
+          Timber.e(error)
+          0
+        }
       }
+
+      val (showsCount, moviesCount) = awaitAll(showsAsync, moviesAsync)
+      eventsManager.sendEvent(ShowsMoviesSyncComplete(showsCount + moviesCount))
+
+      Timber.d("Work finished. Shows: $showsCount Movies: $moviesCount")
+      Result.success()
     }
-
-    val (showsCount, moviesCount) = awaitAll(showsAsync, moviesAsync)
-    eventsManager.sendEvent(ShowsMoviesSyncComplete(showsCount + moviesCount))
-
-    Timber.d("Work finished. Shows: $showsCount Movies: $moviesCount")
-    Result.success()
-  }
 }

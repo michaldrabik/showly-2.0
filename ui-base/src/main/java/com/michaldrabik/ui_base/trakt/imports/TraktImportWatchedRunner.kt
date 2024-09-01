@@ -131,7 +131,7 @@ class TraktImportWatchedRunner @Inject constructor(
             val dbShow = mappers.show.toDatabase(show)
             val archiveShow = ArchiveShow.fromTraktId(
               traktId = show.traktId,
-              createdAt = item.hiddenAtMillis()
+              createdAt = item.hiddenAtMillis(),
             )
             transactions.withTransaction {
               with(localSource) {
@@ -186,7 +186,7 @@ class TraktImportWatchedRunner @Inject constructor(
                     traktId = showDb.idTrakt,
                     createdAt = syncItem.lastWatchedMillis(),
                     updatedAt = syncItem.lastWatchedMillis(),
-                    watchedAt = syncItem.lastWatchedMillis()
+                    watchedAt = syncItem.lastWatchedMillis(),
                   )
                   localSource.shows.upsert(listOf(showDb))
                   localSource.myShows.insert(listOf(myShow))
@@ -226,7 +226,10 @@ class TraktImportWatchedRunner @Inject constructor(
     }
   }
 
-  private suspend fun loadSeasonsEpisodes(showId: Long, syncItem: SyncItem): Pair<List<Season>, List<Episode>> {
+  private suspend fun loadSeasonsEpisodes(
+    showId: Long,
+    syncItem: SyncItem,
+  ): Pair<List<Season>, List<Episode>> {
     val remoteSeasons = remoteSource.fetchSeasons(showId)
     val localSeasonsIds = localSource.seasons.getAllWatchedIdsForShows(listOf(showId))
     val localEpisodesIds = localSource.episodes.getAllWatchedIdsForShows(listOf(showId))
@@ -262,7 +265,7 @@ class TraktImportWatchedRunner @Inject constructor(
             episode = episodeDb,
             isWatched = syncEpisode != null,
             lastExportedAt = exportedAt,
-            lastWatchedAt = watchedAt
+            lastWatchedAt = watchedAt,
           )
         } ?: emptyList()
     }

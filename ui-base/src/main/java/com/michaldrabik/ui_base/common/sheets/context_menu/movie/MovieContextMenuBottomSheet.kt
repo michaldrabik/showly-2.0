@@ -34,7 +34,10 @@ class MovieContextMenuBottomSheet : ContextMenuBottomSheet() {
 
   private val viewModel by viewModels<MovieContextMenuViewModel>()
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
 
@@ -42,7 +45,7 @@ class MovieContextMenuBottomSheet : ContextMenuBottomSheet() {
       { viewModel.messageFlow.collect { renderSnackbar(it) } },
       { viewModel.eventFlow.collect { handleEvent(it) } },
       { viewModel.uiState.collect { render(it) } },
-      doAfterLaunch = { viewModel.loadMovie(itemId) }
+      doAfterLaunch = { viewModel.loadMovie(itemId) },
     )
   }
 
@@ -82,8 +85,11 @@ class MovieContextMenuBottomSheet : ContextMenuBottomSheet() {
   private fun renderItem(item: MovieContextItem) {
     with(binding) {
       contextMenuItemTitle.text =
-        if (item.translation?.title.isNullOrBlank()) item.movie.title
-        else item.translation?.title
+        if (item.translation?.title.isNullOrBlank()) {
+          item.movie.title
+        } else {
+          item.translation?.title
+        }
 
       renderItemDescription(item)
       renderItemRating(item)
@@ -128,8 +134,11 @@ class MovieContextMenuBottomSheet : ContextMenuBottomSheet() {
   private fun renderItemDescription(item: MovieContextItem) {
     with(binding) {
       contextMenuItemDescription.text =
-        if (item.translation?.overview.isNullOrBlank()) item.movie.overview
-        else item.translation?.overview
+        if (item.translation?.overview.isNullOrBlank()) {
+          item.movie.overview
+        } else {
+          item.translation?.overview
+        }
 
       val isMyMovieHidden = item.spoilers.isMyMoviesHidden && item.isMyMovie
       val isWatchlistHidden = item.spoilers.isWatchlistMoviesHidden && item.isWatchlist
@@ -185,8 +194,14 @@ class MovieContextMenuBottomSheet : ContextMenuBottomSheet() {
   private fun handleEvent(event: Event<*>) {
     when (val result = event.peek()) {
       is RemoveTraktUiEvent -> when {
-        result.removeProgress -> openRemoveTraktSheet(R.id.actionMovieItemContextDialogToRemoveTraktProgress, Mode.MOVIE)
-        result.removeWatchlist -> openRemoveTraktSheet(R.id.actionMovieItemContextDialogToRemoveTraktWatchlist, Mode.MOVIE)
+        result.removeProgress -> openRemoveTraktSheet(
+          R.id.actionMovieItemContextDialogToRemoveTraktProgress,
+          Mode.MOVIE,
+        )
+        result.removeWatchlist -> openRemoveTraktSheet(
+          R.id.actionMovieItemContextDialogToRemoveTraktWatchlist,
+          Mode.MOVIE,
+        )
         result.removeHidden -> openRemoveTraktSheet(R.id.actionMovieItemContextDialogToRemoveTraktHidden, Mode.MOVIE)
         else -> close()
       }

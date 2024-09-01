@@ -6,14 +6,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.ui_base.common.MovieListItem
 
 abstract class BaseMovieAdapter<Item : MovieListItem>(
-  val listChangeListener: (() -> Unit)? = null
+  val listChangeListener: (() -> Unit)? = null,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), AsyncListDiffer.ListListener<Item> {
 
   abstract val asyncDiffer: AsyncListDiffer<Item>
 
   private var notifyChange = false
 
-  open fun setItems(newItems: List<Item>, notifyChange: Boolean = false) {
+  open fun setItems(
+    newItems: List<Item>,
+    notifyChange: Boolean = false,
+  ) {
     this.notifyChange = notifyChange
     asyncDiffer.removeListListener(this)
     asyncDiffer.addListListener(this)
@@ -28,7 +31,7 @@ abstract class BaseMovieAdapter<Item : MovieListItem>(
 
   override fun onCurrentListChanged(
     previousList: MutableList<Item>,
-    currentList: MutableList<Item>
+    currentList: MutableList<Item>,
   ) {
     if (notifyChange) {
       listChangeListener?.invoke()

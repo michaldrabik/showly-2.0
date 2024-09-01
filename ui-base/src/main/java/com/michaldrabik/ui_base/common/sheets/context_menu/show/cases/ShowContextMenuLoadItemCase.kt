@@ -28,33 +28,35 @@ class ShowContextMenuLoadItemCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
 ) {
 
-  suspend fun loadItem(traktId: IdTrakt) = withContext(dispatchers.IO) {
-    val show = showsRepository.detailsShow.load(traktId)
-    val language = translationsRepository.getLanguage()
-    val spoilers = settingsRepository.spoilers.getAll()
+  suspend fun loadItem(traktId: IdTrakt) =
+    withContext(dispatchers.IO) {
+      val show = showsRepository.detailsShow.load(traktId)
+      val language = translationsRepository.getLanguage()
+      val spoilers = settingsRepository.spoilers.getAll()
 
-    val imageAsync = async { imagesProvider.loadRemoteImage(show, ImageType.POSTER) }
-    val translationAsync = async { translationsRepository.loadTranslation(show, language = language, onlyLocal = true) }
-    val ratingAsync = async { ratingsRepository.shows.loadRatings(listOf(show)) }
+      val imageAsync = async { imagesProvider.loadRemoteImage(show, ImageType.POSTER) }
+      val translationAsync =
+        async { translationsRepository.loadTranslation(show, language = language, onlyLocal = true) }
+      val ratingAsync = async { ratingsRepository.shows.loadRatings(listOf(show)) }
 
-    val isMyShowAsync = async { showsRepository.myShows.exists(traktId) }
-    val isWatchlistAsync = async { showsRepository.watchlistShows.exists(traktId) }
-    val isHiddenAsync = async { showsRepository.hiddenShows.exists(traktId) }
+      val isMyShowAsync = async { showsRepository.myShows.exists(traktId) }
+      val isWatchlistAsync = async { showsRepository.watchlistShows.exists(traktId) }
+      val isHiddenAsync = async { showsRepository.hiddenShows.exists(traktId) }
 
-    val isPinnedAsync = async { pinnedItemsRepository.isItemPinned(show) }
-    val isOnHoldAsync = async { onHoldItemsRepository.isOnHold(show) }
+      val isPinnedAsync = async { pinnedItemsRepository.isItemPinned(show) }
+      val isOnHoldAsync = async { onHoldItemsRepository.isOnHold(show) }
 
-    ShowContextItem(
-      show = show,
-      image = imageAsync.await(),
-      translation = translationAsync.await(),
-      userRating = ratingAsync.await().firstOrNull()?.rating,
-      isMyShow = isMyShowAsync.await(),
-      isWatchlist = isWatchlistAsync.await(),
-      isHidden = isHiddenAsync.await(),
-      isPinnedTop = isPinnedAsync.await(),
-      isOnHold = isOnHoldAsync.await(),
-      spoilers = spoilers
-    )
-  }
+      ShowContextItem(
+        show = show,
+        image = imageAsync.await(),
+        translation = translationAsync.await(),
+        userRating = ratingAsync.await().firstOrNull()?.rating,
+        isMyShow = isMyShowAsync.await(),
+        isWatchlist = isWatchlistAsync.await(),
+        isHidden = isHiddenAsync.await(),
+        isPinnedTop = isPinnedAsync.await(),
+        isOnHold = isOnHoldAsync.await(),
+        spoilers = spoilers,
+      )
+    }
 }

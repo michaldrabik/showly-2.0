@@ -17,8 +17,11 @@ class ScrollableViewBehaviour : CoordinatorLayout.Behavior<View> {
   constructor() : super()
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
-  override fun layoutDependsOn(parent: CoordinatorLayout, child: View, dependency: View) =
-    dependency is RecyclerView
+  override fun layoutDependsOn(
+    parent: CoordinatorLayout,
+    child: View,
+    dependency: View,
+  ) = dependency is RecyclerView
 
   override fun onNestedPreScroll(
     coordinatorLayout: CoordinatorLayout,
@@ -56,13 +59,26 @@ class ScrollableViewBehaviour : CoordinatorLayout.Behavior<View> {
     type: Int,
     consumed: IntArray,
   ) {
-    super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type, consumed)
+    super.onNestedScroll(
+      coordinatorLayout,
+      child,
+      target,
+      dxConsumed,
+      dyConsumed,
+      dxUnconsumed,
+      dyUnconsumed,
+      type,
+      consumed,
+    )
     child.translationY = (child.translationY - dyConsumed.toFloat()).coerceAtMost(0F)
     stopNestedScrollIfNeeded(dyConsumed, target, type)
     resetAtTop(target, child)
   }
 
-  private fun resetAtTop(target: View, child: View) {
+  private fun resetAtTop(
+    target: View,
+    child: View,
+  ) {
     val lm = (target as? RecyclerView)?.layoutManager as? LinearLayoutManager
     lm?.let {
       val isScrolled = lm.findFirstCompletelyVisibleItemPosition() != 0
@@ -72,7 +88,11 @@ class ScrollableViewBehaviour : CoordinatorLayout.Behavior<View> {
     }
   }
 
-  private fun stopNestedScrollIfNeeded(dy: Int, target: View, type: Int) {
+  private fun stopNestedScrollIfNeeded(
+    dy: Int,
+    target: View,
+    type: Int,
+  ) {
     if (type == ViewCompat.TYPE_NON_TOUCH) {
       if (dy == 0) {
         ViewCompat.stopNestedScroll(target, ViewCompat.TYPE_NON_TOUCH)

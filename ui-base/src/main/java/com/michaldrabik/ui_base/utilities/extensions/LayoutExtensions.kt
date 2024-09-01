@@ -10,11 +10,14 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
 
-fun RecyclerView.addDivider(@DrawableRes dividerRes: Int, direction: Int = VERTICAL) {
+fun RecyclerView.addDivider(
+  @DrawableRes dividerRes: Int,
+  direction: Int = VERTICAL,
+) {
   addItemDecoration(
     DividerItemDecoration(context, direction).apply {
       setDrawable(ContextCompat.getDrawable(context, dividerRes)!!)
-    }
+    },
   )
 }
 
@@ -60,13 +63,20 @@ data class InitialSpacing(
   val bottom: Int,
 )
 
-private fun recordInitialPaddingForView(view: View) = InitialSpacing(
-  view.paddingLeft, view.paddingTop, view.paddingRight, view.paddingBottom
-)
+private fun recordInitialPaddingForView(view: View) =
+  InitialSpacing(
+    view.paddingLeft,
+    view.paddingTop,
+    view.paddingRight,
+    view.paddingBottom,
+  )
 
 private fun recordInitialMarginForView(view: View): InitialSpacing {
   val lp = view.layoutParams as? ViewGroup.MarginLayoutParams
   return InitialSpacing(
-    lp?.leftMargin ?: 0, lp?.topMargin ?: 0, lp?.rightMargin ?: 0, lp?.bottomMargin ?: 0
+    lp?.leftMargin ?: 0,
+    lp?.topMargin ?: 0,
+    lp?.rightMargin ?: 0,
+    lp?.bottomMargin ?: 0,
   )
 }

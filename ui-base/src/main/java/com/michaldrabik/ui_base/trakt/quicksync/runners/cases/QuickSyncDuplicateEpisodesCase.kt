@@ -12,12 +12,12 @@ import javax.inject.Inject
 class QuickSyncDuplicateEpisodesCase @Inject constructor(
   private val dispatchers: CoroutineDispatchers,
   private val remoteSource: AuthorizedTraktRemoteDataSource,
-  private val localSource: LocalDataSource
+  private val localSource: LocalDataSource,
 ) {
 
   suspend fun checkDuplicateEpisodes(
     episodes: List<TraktSyncQueue>,
-    fetchedSyncItems: List<SyncItem>
+    fetchedSyncItems: List<SyncItem>,
   ): Result {
     if (episodes.isEmpty()) {
       return Result(emptyList(), fetchedSyncItems)
@@ -31,7 +31,7 @@ class QuickSyncDuplicateEpisodesCase @Inject constructor(
       val duplicateEpisodesIds = mutableListOf<Long>()
 
       val localEpisodes = localSource.episodes.getAllByShowsIds(
-        episodes.filter { it.idList != null }.map { it.idList!! }
+        episodes.filter { it.idList != null }.map { it.idList!! },
       )
 
       episodes.forEach { item ->
@@ -42,13 +42,13 @@ class QuickSyncDuplicateEpisodesCase @Inject constructor(
             duplicateEpisodesIds.add(item.idTrakt)
           } else {
             if (remoteShows
-              .filter { it.getTraktId() == showId }
-              .any { remoteShow ->
-                remoteShow.seasons
-                  ?.find { it.number == localEpisode.seasonNumber }
-                  ?.episodes
-                  ?.any { it.number == localEpisode.episodeNumber } == true
-              }
+                .filter { it.getTraktId() == showId }
+                .any { remoteShow ->
+                  remoteShow.seasons
+                    ?.find { it.number == localEpisode.seasonNumber }
+                    ?.episodes
+                    ?.any { it.number == localEpisode.episodeNumber } == true
+                }
             ) {
               duplicateEpisodesIds.add(item.idTrakt)
             }
@@ -60,13 +60,13 @@ class QuickSyncDuplicateEpisodesCase @Inject constructor(
 
       Result(
         duplicateEpisodesIds = duplicateEpisodesIds,
-        remoteShows = remoteShows
+        remoteShows = remoteShows,
       )
     }
   }
 
   data class Result(
     val duplicateEpisodesIds: List<Long>,
-    val remoteShows: List<SyncItem>
+    val remoteShows: List<SyncItem>,
   )
 }

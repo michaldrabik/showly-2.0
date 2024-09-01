@@ -3,7 +3,7 @@ package com.michaldrabik.ui_base.common
 enum class AppCountry(
   val code: String,
   val displayName: String,
-  val justWatchQuery: String = "search"
+  val justWatchQuery: String = "search",
 ) {
   ARGENTINA("ar", "Argentina", "buscar"),
   AUSTRALIA("au", "Australia"),
@@ -52,7 +52,8 @@ enum class AppCountry(
   UKRAINE("ua", "Ukraine", "пошук"),
   UNITED_KINGDOM("uk", "United Kingdom"),
   UNITED_STATES("us", "United States"),
-  VENEZUELA("ve", "Venezuela", "buscar");
+  VENEZUELA("ve", "Venezuela", "buscar"),
+  ;
 
   companion object {
     fun fromCode(code: String) = values().first { it.code == code }

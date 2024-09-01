@@ -10,7 +10,10 @@ import kotlin.coroutines.cancellation.CancellationException
 
 object Logger {
 
-  fun record(error: Throwable, source: String) {
+  fun record(
+    error: Throwable,
+    source: String,
+  ) {
     if (error is CancellationException) return
     if (error is IOException && error.message == "Canceled" || error.cause?.message == "Canceled") return
     if (error is UnknownHostException) return
@@ -20,7 +23,10 @@ object Logger {
     }
   }
 
-  private fun recordHttpError(error: HttpException, source: String) {
+  private fun recordHttpError(
+    error: HttpException,
+    source: String,
+  ) {
     val params = mutableListOf("Source" to source)
 
     val responseString = error.response()?.raw()?.toString() ?: ""

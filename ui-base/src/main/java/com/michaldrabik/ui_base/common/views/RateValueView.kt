@@ -31,7 +31,10 @@ class RateValueView : FrameLayout {
     }
   }
 
-  fun setValueAnimated(value: String, direction: Direction = Direction.LEFT) {
+  fun setValueAnimated(
+    value: String,
+    direction: Direction = Direction.LEFT,
+  ) {
     val translation = when (direction) {
       Direction.LEFT -> -translation
       Direction.RIGHT -> translation
@@ -55,6 +58,6 @@ class RateValueView : FrameLayout {
 
   enum class Direction {
     LEFT,
-    RIGHT
+    RIGHT,
   }
 }

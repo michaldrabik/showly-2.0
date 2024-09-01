@@ -34,12 +34,14 @@ fun View.invisible() {
   if (visibility != View.INVISIBLE) visibility = View.INVISIBLE
 }
 
-fun View.visibleIf(condition: Boolean, gone: Boolean = true) =
-  if (condition) {
-    visible()
-  } else {
-    if (gone) gone() else invisible()
-  }
+fun View.visibleIf(
+  condition: Boolean,
+  gone: Boolean = true,
+) = if (condition) {
+  visible()
+} else {
+  if (gone) gone() else invisible()
+}
 
 fun View.fadeIf(
   condition: Boolean,
@@ -104,14 +106,15 @@ fun Animator?.add(animators: MutableList<Animator?>) {
   animators.add(this)
 }
 
-fun View.shake() = ObjectAnimator.ofFloat(this, "translationX", 0F, -15F, 15F, -10F, 10F, -5F, 5F, 0F)
-  .setDuration(500)
-  .start()
+fun View.shake() =
+  ObjectAnimator.ofFloat(this, "translationX", 0F, -15F, 15F, -10F, 10F, -5F, 5F, 0F)
+    .setDuration(500)
+    .start()
 
 fun View.bump(
   duration: Long = 250,
   startDelay: Long = 0,
-  action: () -> Unit = {}
+  action: () -> Unit = {},
 ) {
   val x = ObjectAnimator.ofFloat(this, "scaleX", 1F, 1.1F, 1F)
   val y = ObjectAnimator.ofFloat(this, "scaleY", 1F, 1.1F, 1F)
@@ -129,13 +132,16 @@ fun View.updateTopMargin(margin: Int) {
   (layoutParams as ViewGroup.MarginLayoutParams).updateMargins(top = margin)
 }
 
-fun TextView.setTextFade(text: String, duration: Long = 125) {
+fun TextView.setTextFade(
+  text: String,
+  duration: Long = 125,
+) {
   fadeOut(
     duration = duration,
     endAction = {
       setText(text)
       fadeIn(duration = duration)
-    }
+    },
   )
 }
 
@@ -156,13 +162,20 @@ fun Fragment.enableUi() {
   Timber.d("UI enabled.")
 }
 
-fun String.capitalizeWords() = this
-  .split(" ")
-  .joinToString(separator = " ") {
-    it.replaceFirstChar { string -> if (string.isLowerCase()) string.titlecase(Locale.getDefault()) else string.toString() }
-  }
+fun String.capitalizeWords() =
+  this
+    .split(" ")
+    .joinToString(separator = " ") {
+      it.replaceFirstChar {
+          string ->
+        if (string.isLowerCase()) string.titlecase(Locale.getDefault()) else string.toString()
+      }
+    }
 
-fun String.trimWithSuffix(length: Int, suffix: String): String {
+fun String.trimWithSuffix(
+  length: Int,
+  suffix: String,
+): String {
   if (this.length <= length) return this
   return this.take(length).plus(suffix)
 }
@@ -180,7 +193,7 @@ fun View.setOutboundRipple(
     background = object : RippleDrawable(
       ColorStateList.valueOf(color),
       null,
-      null
+      null,
     ) {
       override fun draw(canvas: Canvas) {
         canvas.clipPath(path)
@@ -192,7 +205,7 @@ fun View.setOutboundRipple(
         bounds.left,
         bounds.top,
         bounds.right,
-        bounds.bottom
+        bounds.bottom,
       )
     }
   }

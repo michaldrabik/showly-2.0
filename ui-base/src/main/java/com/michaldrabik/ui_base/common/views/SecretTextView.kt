@@ -28,7 +28,10 @@ class SecretTextView : AppCompatTextView {
     isRevealable = true
   }
 
-  fun setSecretText(text: String?, isSecret: Boolean = true) {
+  fun setSecretText(
+    text: String?,
+    isSecret: Boolean = true,
+  ) {
     this.isSecret = isSecret
     this.originalText = text
     if (isSecret) {

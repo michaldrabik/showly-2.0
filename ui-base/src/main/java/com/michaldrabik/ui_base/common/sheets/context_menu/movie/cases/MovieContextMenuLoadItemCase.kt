@@ -28,33 +28,35 @@ class MovieContextMenuLoadItemCase @Inject constructor(
   private val dateFormatProvider: DateFormatProvider,
 ) {
 
-  suspend fun loadItem(traktId: IdTrakt) = withContext(dispatchers.IO) {
-    val movie = moviesRepository.movieDetails.load(traktId)
-    val dateFormat = dateFormatProvider.loadShortDayFormat()
-    val language = translationsRepository.getLanguage()
-    val spoilers = settingsSpoilersRepository.getAll()
+  suspend fun loadItem(traktId: IdTrakt) =
+    withContext(dispatchers.IO) {
+      val movie = moviesRepository.movieDetails.load(traktId)
+      val dateFormat = dateFormatProvider.loadShortDayFormat()
+      val language = translationsRepository.getLanguage()
+      val spoilers = settingsSpoilersRepository.getAll()
 
-    val imageAsync = async { imagesProvider.loadRemoteImage(movie, ImageType.POSTER) }
-    val translationAsync = async { translationsRepository.loadTranslation(movie, language = language, onlyLocal = true) }
-    val ratingAsync = async { ratingsRepository.movies.loadRatings(listOf(movie)) }
+      val imageAsync = async { imagesProvider.loadRemoteImage(movie, ImageType.POSTER) }
+      val translationAsync =
+        async { translationsRepository.loadTranslation(movie, language = language, onlyLocal = true) }
+      val ratingAsync = async { ratingsRepository.movies.loadRatings(listOf(movie)) }
 
-    val isMyMovieAsync = async { moviesRepository.myMovies.exists(traktId) }
-    val isWatchlistAsync = async { moviesRepository.watchlistMovies.exists(traktId) }
-    val isHiddenAsync = async { moviesRepository.hiddenMovies.exists(traktId) }
+      val isMyMovieAsync = async { moviesRepository.myMovies.exists(traktId) }
+      val isWatchlistAsync = async { moviesRepository.watchlistMovies.exists(traktId) }
+      val isHiddenAsync = async { moviesRepository.hiddenMovies.exists(traktId) }
 
-    val isPinnedAsync = async { pinnedItemsRepository.isItemPinned(movie) }
+      val isPinnedAsync = async { pinnedItemsRepository.isItemPinned(movie) }
 
-    MovieContextItem(
-      movie = movie,
-      image = imageAsync.await(),
-      translation = translationAsync.await(),
-      userRating = ratingAsync.await().firstOrNull()?.rating,
-      isMyMovie = isMyMovieAsync.await(),
-      isWatchlist = isWatchlistAsync.await(),
-      isHidden = isHiddenAsync.await(),
-      isPinnedTop = isPinnedAsync.await(),
-      dateFormat = dateFormat,
-      spoilers = spoilers
-    )
-  }
+      MovieContextItem(
+        movie = movie,
+        image = imageAsync.await(),
+        translation = translationAsync.await(),
+        userRating = ratingAsync.await().firstOrNull()?.rating,
+        isMyMovie = isMyMovieAsync.await(),
+        isWatchlist = isWatchlistAsync.await(),
+        isHidden = isHiddenAsync.await(),
+        isPinnedTop = isPinnedAsync.await(),
+        dateFormat = dateFormat,
+        spoilers = spoilers,
+      )
+    }
 }

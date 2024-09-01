@@ -63,7 +63,10 @@ class ModeTabsView : LinearLayout {
 
   fun showMovies(show: Boolean) = binding.viewMovies.visibleIf(show)
 
-  fun showLists(show: Boolean, anchorEnd: Boolean = true) {
+  fun showLists(
+    show: Boolean,
+    anchorEnd: Boolean = true,
+  ) {
     with(binding) {
       viewLists.visibleIf(show)
       viewSpacer.visibleIf(anchorEnd)

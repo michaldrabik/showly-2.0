@@ -27,13 +27,13 @@ class MovieContextMenuMyMoviesCase @Inject constructor(
 
   suspend fun moveToMyMovies(
     traktId: IdTrakt,
-    customDate: ZonedDateTime? = null
+    customDate: ZonedDateTime? = null,
   ) = withContext(dispatchers.IO) {
     val movie = Movie.EMPTY.copy(ids = Ids.EMPTY.copy(traktId))
 
     val (isWatchlist, isHidden) = awaitAll(
       async { moviesRepository.watchlistMovies.exists(traktId) },
-      async { moviesRepository.hiddenMovies.exists(traktId) }
+      async { moviesRepository.hiddenMovies.exists(traktId) },
     )
 
     moviesRepository.myMovies.insert(traktId, customDate)
@@ -48,10 +48,11 @@ class MovieContextMenuMyMoviesCase @Inject constructor(
     RemoveTraktUiEvent(removeWatchlist = isWatchlist, removeHidden = isHidden)
   }
 
-  suspend fun removeFromMyMovies(traktId: IdTrakt) = withContext(dispatchers.IO) {
-    val movie = Movie.EMPTY.copy(ids = Ids.EMPTY.copy(traktId))
-    moviesRepository.myMovies.delete(traktId)
-    pinnedItemsRepository.removePinnedItem(movie)
-    quickSyncManager.clearMovies(listOf(traktId.id))
-  }
+  suspend fun removeFromMyMovies(traktId: IdTrakt) =
+    withContext(dispatchers.IO) {
+      val movie = Movie.EMPTY.copy(ids = Ids.EMPTY.copy(traktId))
+      moviesRepository.myMovies.delete(traktId)
+      pinnedItemsRepository.removePinnedItem(movie)
+      quickSyncManager.clearMovies(listOf(traktId.id))
+    }
 }

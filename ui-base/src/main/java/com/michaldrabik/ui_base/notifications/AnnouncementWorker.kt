@@ -78,7 +78,10 @@ class AnnouncementWorker(context: Context, workerParams: WorkerParameters) : Wor
       flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
     }
     return PendingIntent.getActivity(
-      applicationContext, requestCode.toInt(), notifyIntent, FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT
+      applicationContext,
+      requestCode.toInt(),
+      notifyIntent,
+      FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT,
     )
   }
 }

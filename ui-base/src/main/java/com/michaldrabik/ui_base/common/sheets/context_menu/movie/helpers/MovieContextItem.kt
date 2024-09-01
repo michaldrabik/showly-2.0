@@ -16,7 +16,7 @@ data class MovieContextItem(
   val isWatchlist: Boolean,
   val isHidden: Boolean,
   val isPinnedTop: Boolean,
-  val spoilers: SpoilersSettings
+  val spoilers: SpoilersSettings,
 ) {
 
   fun isInCollection() = isHidden || isWatchlist || isMyMovie

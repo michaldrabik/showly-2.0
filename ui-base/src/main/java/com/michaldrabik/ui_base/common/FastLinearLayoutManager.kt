@@ -13,10 +13,13 @@ class FastLinearLayoutManager(context: Context?, orientation: Int, reverseLayout
     const val SPEED_RATIO = 8F
   }
 
-  override fun smoothScrollToPosition(recyclerView: RecyclerView?, state: RecyclerView.State?, position: Int) {
+  override fun smoothScrollToPosition(
+    recyclerView: RecyclerView?,
+    state: RecyclerView.State?,
+    position: Int,
+  ) {
     val scroller = object : LinearSmoothScroller(recyclerView?.context) {
-      override fun calculateSpeedPerPixel(displayMetrics: DisplayMetrics) =
-        SPEED_RATIO / displayMetrics.densityDpi
+      override fun calculateSpeedPerPixel(displayMetrics: DisplayMetrics) = SPEED_RATIO / displayMetrics.densityDpi
     }
     scroller.targetPosition = position
     startSmoothScroll(scroller)

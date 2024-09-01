@@ -30,7 +30,10 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet() {
 
   private val viewModel by viewModels<ShowContextMenuViewModel>()
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
 
@@ -38,7 +41,7 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet() {
       { viewModel.messageFlow.collect { renderSnackbar(it) } },
       { viewModel.eventFlow.collect { handleEvent(it) } },
       { viewModel.uiState.collect { render(it) } },
-      doAfterLaunch = { viewModel.loadShow(itemId) }
+      doAfterLaunch = { viewModel.loadShow(itemId) },
     )
   }
 
@@ -87,15 +90,21 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet() {
   private fun renderItem(item: ShowContextItem) {
     with(binding) {
       contextMenuItemTitle.text =
-        if (item.translation?.title.isNullOrBlank()) item.show.title
-        else item.translation?.title
+        if (item.translation?.title.isNullOrBlank()) {
+          item.show.title
+        } else {
+          item.translation?.title
+        }
 
       renderItemDescription(item)
       renderItemRating(item)
 
       contextMenuItemNetwork.text =
-        if (item.show.year > 0) getString(R.string.textNetwork, item.show.network, item.show.year.toString())
-        else String.format("%s", item.show.network)
+        if (item.show.year > 0) {
+          getString(R.string.textNetwork, item.show.network, item.show.year.toString())
+        } else {
+          String.format("%s", item.show.network)
+        }
 
       contextMenuUserRating.text = String.format(Locale.ENGLISH, "%d", item.userRating)
       contextMenuUserRating.visibleIf(item.userRating != null)
@@ -132,8 +141,11 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet() {
   private fun renderItemDescription(item: ShowContextItem) {
     with(binding) {
       contextMenuItemDescription.text =
-        if (item.translation?.overview.isNullOrBlank()) item.show.overview
-        else item.translation?.overview
+        if (item.translation?.overview.isNullOrBlank()) {
+          item.show.overview
+        } else {
+          item.translation?.overview
+        }
 
       val isMyShowHidden = item.spoilers.isMyShowsHidden && item.isMyShow
       val isWatchlistHidden = item.spoilers.isWatchlistShowsHidden && item.isWatchlist
@@ -190,7 +202,10 @@ class ShowContextMenuBottomSheet : ContextMenuBottomSheet() {
     when (val result = event.peek()) {
       is RemoveTraktUiEvent -> when {
         result.removeProgress -> openRemoveTraktSheet(R.id.actionShowItemContextDialogToRemoveTraktProgress, Mode.SHOW)
-        result.removeWatchlist -> openRemoveTraktSheet(R.id.actionShowItemContextDialogToRemoveTraktWatchlist, Mode.SHOW)
+        result.removeWatchlist -> openRemoveTraktSheet(
+          R.id.actionShowItemContextDialogToRemoveTraktWatchlist,
+          Mode.SHOW,
+        )
         result.removeHidden -> openRemoveTraktSheet(R.id.actionShowItemContextDialogToRemoveTraktHidden, Mode.SHOW)
         else -> close()
       }

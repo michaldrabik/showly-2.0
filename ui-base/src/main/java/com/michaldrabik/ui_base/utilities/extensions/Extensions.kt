@@ -23,16 +23,25 @@ import kotlinx.coroutines.launch
 
 fun CoroutineWorker.notificationManager() = applicationContext.notificationManager()
 
-fun View.onClick(safe: Boolean = true, action: (View) -> Unit) = setOnClickListener(SafeOnClickListener(safe, action))
+fun View.onClick(
+  safe: Boolean = true,
+  action: (View) -> Unit,
+) = setOnClickListener(SafeOnClickListener(safe, action))
 
-fun View.onLongClick(action: (View) -> Unit) = setOnLongClickListener {
-  action(it)
-  true
-}
+fun View.onLongClick(action: (View) -> Unit) =
+  setOnLongClickListener {
+    action(it)
+    true
+  }
 
-fun List<View>.onClick(safe: Boolean = true, action: (View) -> Unit) = forEach { it.onClick(safe, action) }
+fun List<View>.onClick(
+  safe: Boolean = true,
+  action: (View) -> Unit,
+) = forEach { it.onClick(safe, action) }
 
-fun Fragment.dimenToPx(@DimenRes dimenResId: Int) = resources.getDimensionPixelSize(dimenResId)
+fun Fragment.dimenToPx(
+  @DimenRes dimenResId: Int,
+) = resources.getDimensionPixelSize(dimenResId)
 
 fun screenWidth() = Resources.getSystem().displayMetrics.widthPixels
 
@@ -56,10 +65,11 @@ fun View.hideKeyboard() {
   }
 }
 
-fun View.addRipple() = with(TypedValue()) {
-  context.theme.resolveAttribute(R.attr.selectableItemBackground, this, true)
-  setBackgroundResource(resourceId)
-}
+fun View.addRipple() =
+  with(TypedValue()) {
+    context.theme.resolveAttribute(R.attr.selectableItemBackground, this, true)
+    setBackgroundResource(resourceId)
+  }
 
 fun View.expandTouch(amount: Int = 50) {
   val rect = Rect()
@@ -71,7 +81,10 @@ fun View.expandTouch(amount: Int = 50) {
   (this.parent as View).touchDelegate = TouchDelegate(rect, this)
 }
 
-fun CompoundButton.setCheckedSilent(isChecked: Boolean, action: (View, Boolean) -> Unit = { _, _ -> }) {
+fun CompoundButton.setCheckedSilent(
+  isChecked: Boolean,
+  action: (View, Boolean) -> Unit = { _, _ -> },
+) {
   setOnCheckedChangeListener { _, _ -> }
   setChecked(isChecked)
   setOnCheckedChangeListener(action)
@@ -97,13 +110,19 @@ fun ViewPager2.nextPage() {
   }
 }
 
-fun <T> MutableList<T>.replaceItem(oldItem: T, newItem: T) {
+fun <T> MutableList<T>.replaceItem(
+  oldItem: T,
+  newItem: T,
+) {
   val index = indexOf(oldItem)
   removeAt(index)
   add(index, newItem)
 }
 
-inline fun <T> MutableList<T>.findReplace(newItem: T, predicate: (T) -> Boolean) {
+inline fun <T> MutableList<T>.findReplace(
+  newItem: T,
+  predicate: (T) -> Boolean,
+) {
   find(predicate)?.let { replaceItem(it, newItem) }
 }
 
@@ -112,7 +131,10 @@ fun <T> MutableList<T>.replace(newItems: Collection<T>) {
   addAll(newItems)
 }
 
-fun CoroutineScope.launchDelayed(delayMs: Long, action: suspend () -> Unit): Job {
+fun CoroutineScope.launchDelayed(
+  delayMs: Long,
+  action: suspend () -> Unit,
+): Job {
   return launch {
     delay(delayMs)
     action()

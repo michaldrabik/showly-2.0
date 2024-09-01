@@ -41,7 +41,7 @@ class ShowContextMenuMyShowsCase @Inject constructor(
 
       val (isWatchlist, isHidden) = awaitAll(
         async { showsRepository.watchlistShows.exists(traktId) },
-        async { showsRepository.hiddenShows.exists(traktId) }
+        async { showsRepository.hiddenShows.exists(traktId) },
       )
 
       val seasons = remoteSource.trakt.fetchSeasons(traktId.id)
@@ -83,31 +83,34 @@ class ShowContextMenuMyShowsCase @Inject constructor(
       RemoveTraktUiEvent(removeWatchlist = isWatchlist, removeHidden = isHidden)
     }
 
-  suspend fun removeFromMyShows(traktId: IdTrakt, removeLocalData: Boolean) =
-    withContext(dispatchers.IO) {
-      val show = Show.EMPTY.copy(ids = Ids.EMPTY.copy(traktId))
-      transactions.withTransaction {
-        showsRepository.myShows.delete(show.ids.trakt)
+  suspend fun removeFromMyShows(
+    traktId: IdTrakt,
+    removeLocalData: Boolean,
+  ) = withContext(dispatchers.IO) {
+    val show = Show.EMPTY.copy(ids = Ids.EMPTY.copy(traktId))
+    transactions.withTransaction {
+      showsRepository.myShows.delete(show.ids.trakt)
 
-        if (removeLocalData) {
-          localSource.episodes.deleteAllUnwatchedForShow(show.traktId)
-          val seasons = localSource.seasons.getAllByShowId(show.traktId)
-          val episodes = localSource.episodes.getAllByShowId(show.traktId)
-          val toDelete = mutableListOf<SeasonDb>()
-          seasons.forEach { season ->
-            if (episodes.none { it.idSeason == season.idTrakt }) {
-              toDelete.add(season)
-            }
+      if (removeLocalData) {
+        localSource.episodes.deleteAllUnwatchedForShow(show.traktId)
+        val seasons = localSource.seasons.getAllByShowId(show.traktId)
+        val episodes = localSource.episodes.getAllByShowId(show.traktId)
+        val toDelete = mutableListOf<SeasonDb>()
+        seasons.forEach { season ->
+          if (episodes.none { it.idSeason == season.idTrakt }) {
+            toDelete.add(season)
           }
-          localSource.seasons.delete(toDelete)
         }
-
-        pinnedItemsRepository.removePinnedItem(show)
-        announcementManager.refreshShowsAnnouncements()
+        localSource.seasons.delete(toDelete)
       }
-    }
 
-  private suspend fun showSpecials() = withContext(dispatchers.IO) {
-    settingsRepository.load().specialSeasonsEnabled
+      pinnedItemsRepository.removePinnedItem(show)
+      announcementManager.refreshShowsAnnouncements()
+    }
   }
+
+  private suspend fun showSpecials() =
+    withContext(dispatchers.IO) {
+      settingsRepository.load().specialSeasonsEnabled
+    }
 }

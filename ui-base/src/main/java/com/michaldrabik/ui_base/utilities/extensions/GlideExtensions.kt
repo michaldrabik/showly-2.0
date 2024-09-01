@@ -13,7 +13,7 @@ inline fun RequestBuilder<Drawable>.withFailListener(crossinline action: () -> U
       e: GlideException?,
       model: Any?,
       target: Target<Drawable?>,
-      isFirstResource: Boolean
+      isFirstResource: Boolean,
     ): Boolean {
       action()
       return false
@@ -24,7 +24,7 @@ inline fun RequestBuilder<Drawable>.withFailListener(crossinline action: () -> U
       model: Any,
       target: Target<Drawable?>?,
       dataSource: DataSource,
-      isFirstResource: Boolean
+      isFirstResource: Boolean,
     ): Boolean = false
   })
 
@@ -34,7 +34,7 @@ inline fun RequestBuilder<Drawable>.withSuccessListener(crossinline action: () -
       e: GlideException?,
       model: Any?,
       target: Target<Drawable?>,
-      isFirstResource: Boolean
+      isFirstResource: Boolean,
     ): Boolean = false
 
     override fun onResourceReady(
@@ -42,7 +42,7 @@ inline fun RequestBuilder<Drawable>.withSuccessListener(crossinline action: () -
       model: Any,
       target: Target<Drawable?>?,
       dataSource: DataSource,
-      isFirstResource: Boolean
+      isFirstResource: Boolean,
     ): Boolean {
       action()
       return false

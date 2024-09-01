@@ -36,7 +36,10 @@ class RatingsShowCase @Inject constructor(
       }
     }
 
-  suspend fun saveRating(idTrakt: IdTrakt, rating: Int) = withContext(dispatchers.IO) {
+  suspend fun saveRating(
+    idTrakt: IdTrakt,
+    rating: Int,
+  ) = withContext(dispatchers.IO) {
     check(rating in RATING_VALID_RANGE)
     userTraktManager.checkAuthorization()
 
@@ -48,16 +51,17 @@ class RatingsShowCase @Inject constructor(
     }
   }
 
-  suspend fun deleteRating(idTrakt: IdTrakt) = withContext(dispatchers.IO) {
-    userTraktManager.checkAuthorization()
+  suspend fun deleteRating(idTrakt: IdTrakt) =
+    withContext(dispatchers.IO) {
+      userTraktManager.checkAuthorization()
 
-    val show = Show.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = idTrakt))
-    try {
-      ratingsRepository.shows.deleteRating(show)
-    } catch (error: Throwable) {
-      handleError(error)
+      val show = Show.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = idTrakt))
+      try {
+        ratingsRepository.shows.deleteRating(show)
+      } catch (error: Throwable) {
+        handleError(error)
+      }
     }
-  }
 
   private suspend fun handleError(error: Throwable) {
     val showlyError = ErrorHelper.parse(error)

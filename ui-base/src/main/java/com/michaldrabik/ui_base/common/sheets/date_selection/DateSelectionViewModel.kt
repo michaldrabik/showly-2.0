@@ -18,12 +18,12 @@ class DateSelectionViewModel @Inject constructor() : ViewModel() {
   private val isLoadingState = MutableStateFlow(initialState.isLoading)
 
   val uiState = combine(
-    isLoadingState
+    isLoadingState,
   ) { s1 ->
     DateSelectionUiState(isLoading = s1[0])
   }.stateIn(
     scope = viewModelScope,
     initialValue = initialState,
-    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT)
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
   )
 }

@@ -43,7 +43,7 @@ class SortOrderItemView : ConstraintLayout {
     sortOrder: SortOrder,
     sortType: SortType,
     isChecked: Boolean,
-    animate: Boolean = false
+    animate: Boolean = false,
   ) {
     this.sortOrder = sortOrder
     this.sortType = sortType

@@ -37,7 +37,10 @@ class RatingsSheetViewModel @Inject constructor(
   private val loadingState = MutableStateFlow(false)
   private val ratingState = MutableStateFlow<TraktRating?>(null)
 
-  fun loadRating(idTrakt: IdTrakt, type: Type) {
+  fun loadRating(
+    idTrakt: IdTrakt,
+    type: Type,
+  ) {
     viewModelScope.launch {
       try {
         val rating = when (type) {
@@ -53,7 +56,11 @@ class RatingsSheetViewModel @Inject constructor(
     }
   }
 
-  fun saveRating(rating: Int, id: IdTrakt, type: Type) {
+  fun saveRating(
+    rating: Int,
+    id: IdTrakt,
+    type: Type,
+  ) {
     viewModelScope.launch {
       try {
         loadingState.value = true
@@ -71,7 +78,10 @@ class RatingsSheetViewModel @Inject constructor(
     }
   }
 
-  fun removeRating(id: IdTrakt, type: Type) {
+  fun removeRating(
+    id: IdTrakt,
+    type: Type,
+  ) {
     viewModelScope.launch {
       try {
         loadingState.value = true
@@ -99,15 +109,15 @@ class RatingsSheetViewModel @Inject constructor(
 
   val uiState = combine(
     loadingState,
-    ratingState
+    ratingState,
   ) { s1, s2 ->
     RatingsUiState(
       isLoading = s1,
-      rating = s2
+      rating = s2,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = RatingsUiState()
+    initialValue = RatingsUiState(),
   )
 }

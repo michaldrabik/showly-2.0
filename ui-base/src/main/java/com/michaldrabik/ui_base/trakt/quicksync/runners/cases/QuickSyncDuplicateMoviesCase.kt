@@ -15,7 +15,7 @@ class QuickSyncDuplicateMoviesCase @Inject constructor(
 
   suspend fun checkDuplicateMovies(
     exportMovies: List<TraktSyncQueue>,
-    fetchedSyncItems: List<SyncItem>
+    fetchedSyncItems: List<SyncItem>,
   ): Result {
     if (exportMovies.isEmpty()) {
       return Result(emptyList(), fetchedSyncItems)
@@ -40,13 +40,13 @@ class QuickSyncDuplicateMoviesCase @Inject constructor(
 
       Result(
         duplicateMoviesIds = duplicateMoviesIds,
-        remoteMovies = remoteMovies
+        remoteMovies = remoteMovies,
       )
     }
   }
 
   data class Result(
     val duplicateMoviesIds: List<Long>,
-    val remoteMovies: List<SyncItem>
+    val remoteMovies: List<SyncItem>,
   )
 }

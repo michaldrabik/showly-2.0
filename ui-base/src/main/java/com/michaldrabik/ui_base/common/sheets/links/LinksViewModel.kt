@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LinksViewModel @Inject constructor(
-  private val settingsRepository: SettingsRepository
+  private val settingsRepository: SettingsRepository,
 ) : ViewModel() {
 
   fun loadCountry() = AppCountry.fromCode(settingsRepository.country)

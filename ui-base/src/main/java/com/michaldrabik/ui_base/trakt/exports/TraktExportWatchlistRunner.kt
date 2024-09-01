@@ -44,64 +44,65 @@ class TraktExportWatchlistRunner @Inject constructor(
     }
   }
 
-  private suspend fun exportWatchlist() = coroutineScope {
-    Timber.d("Exporting watchlist...")
-    val isMoviesEnables = settingsRepository.isMoviesEnabled
+  private suspend fun exportWatchlist() =
+    coroutineScope {
+      Timber.d("Exporting watchlist...")
+      val isMoviesEnables = settingsRepository.isMoviesEnabled
 
-    val localShows = localSource.watchlistShows.getAll()
-      .map { SyncExportItem.create(it.idTrakt) }
-    val localMovies = buildList {
-      if (isMoviesEnables) {
-        localSource.watchlistMovies.getAll()
-          .mapTo(this) { SyncExportItem.create(it.idTrakt) }
+      val localShows = localSource.watchlistShows.getAll()
+        .map { SyncExportItem.create(it.idTrakt) }
+      val localMovies = buildList {
+        if (isMoviesEnables) {
+          localSource.watchlistMovies.getAll()
+            .mapTo(this) { SyncExportItem.create(it.idTrakt) }
+        }
+      }
+
+      if (localShows.isEmpty() && localMovies.isEmpty()) {
+        Timber.d("Nothing to export. Watchlist is empty.")
+        return@coroutineScope
+      }
+
+      val showsAsync = async {
+        Timber.d("Fetching remote shows watchlist...")
+        remoteSource.fetchSyncShowsWatchlist()
+      }
+      val moviesAsync = async {
+        if (isMoviesEnables) {
+          Timber.d("Fetching remote movies watchlist...")
+          remoteSource.fetchSyncMoviesWatchlist()
+        } else {
+          emptyList()
+        }
+      }
+      val (remoteShows, remoteMovies) = awaitAll(showsAsync, moviesAsync)
+
+      val shows = localShows
+        .filter { show -> remoteShows.none { it.getTraktId() == show.ids.trakt } }
+        .toMutableList()
+      val movies = localMovies
+        .filter { movie -> remoteMovies.none { it.getTraktId() == movie.ids.trakt } }
+        .toMutableList()
+
+      Timber.d("Exporting ${shows.size} shows & ${movies.size} movies...")
+
+      while (true) {
+        val showsChunk = shows.take(250)
+        val moviesChunk = movies.take(250)
+        if (showsChunk.isEmpty() && moviesChunk.isEmpty()) {
+          Timber.d("No more chunks. Breaking.")
+          break
+        }
+        Timber.d("Exporting chunk of ${showsChunk.size} shows & ${moviesChunk.size} movies...")
+        val request = SyncExportRequest(shows = showsChunk, movies = moviesChunk)
+        remoteSource.postSyncWatchlist(request)
+
+        shows.removeAll(showsChunk)
+        movies.removeAll(moviesChunk)
+
+        delay(TRAKT_LIMIT_DELAY_MS)
       }
     }
-
-    if (localShows.isEmpty() && localMovies.isEmpty()) {
-      Timber.d("Nothing to export. Watchlist is empty.")
-      return@coroutineScope
-    }
-
-    val showsAsync = async {
-      Timber.d("Fetching remote shows watchlist...")
-      remoteSource.fetchSyncShowsWatchlist()
-    }
-    val moviesAsync = async {
-      if (isMoviesEnables) {
-        Timber.d("Fetching remote movies watchlist...")
-        remoteSource.fetchSyncMoviesWatchlist()
-      } else {
-        emptyList()
-      }
-    }
-    val (remoteShows, remoteMovies) = awaitAll(showsAsync, moviesAsync)
-
-    val shows = localShows
-      .filter { show -> remoteShows.none { it.getTraktId() == show.ids.trakt } }
-      .toMutableList()
-    val movies = localMovies
-      .filter { movie -> remoteMovies.none { it.getTraktId() == movie.ids.trakt } }
-      .toMutableList()
-
-    Timber.d("Exporting ${shows.size} shows & ${movies.size} movies...")
-
-    while (true) {
-      val showsChunk = shows.take(250)
-      val moviesChunk = movies.take(250)
-      if (showsChunk.isEmpty() && moviesChunk.isEmpty()) {
-        Timber.d("No more chunks. Breaking.")
-        break
-      }
-      Timber.d("Exporting chunk of ${showsChunk.size} shows & ${moviesChunk.size} movies...")
-      val request = SyncExportRequest(shows = showsChunk, movies = moviesChunk)
-      remoteSource.postSyncWatchlist(request)
-
-      shows.removeAll(showsChunk)
-      movies.removeAll(moviesChunk)
-
-      delay(TRAKT_LIMIT_DELAY_MS)
-    }
-  }
 
   private suspend fun handleError(error: Throwable) {
     val showlyError = ErrorHelper.parse(error)

@@ -57,7 +57,7 @@ abstract class ShowView<Item : ListItem> : FrameLayout {
   open fun bind(item: Item) {
     layoutParams = LayoutParams(
       (width * item.image.type.getSpan(isTablet).toFloat()).toInt(),
-      height.toInt()
+      height.toInt(),
     )
   }
 

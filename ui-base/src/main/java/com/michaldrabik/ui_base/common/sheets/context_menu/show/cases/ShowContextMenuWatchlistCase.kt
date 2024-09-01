@@ -37,7 +37,7 @@ class ShowContextMenuWatchlistCase @Inject constructor(
 
     val (isMyShow, isHidden) = awaitAll(
       async { showsRepository.myShows.exists(traktId) },
-      async { showsRepository.hiddenShows.exists(traktId) }
+      async { showsRepository.hiddenShows.exists(traktId) },
     )
 
     transactions.withTransaction {
@@ -67,9 +67,10 @@ class ShowContextMenuWatchlistCase @Inject constructor(
     RemoveTraktUiEvent(removeProgress = isMyShow, removeHidden = isHidden)
   }
 
-  suspend fun removeFromWatchlist(traktId: IdTrakt) = withContext(dispatchers.IO) {
-    showsRepository.watchlistShows.delete(traktId)
-    announcementManager.refreshShowsAnnouncements()
-    quickSyncManager.clearWatchlistShows(listOf(traktId.id))
-  }
+  suspend fun removeFromWatchlist(traktId: IdTrakt) =
+    withContext(dispatchers.IO) {
+      showsRepository.watchlistShows.delete(traktId)
+      announcementManager.refreshShowsAnnouncements()
+      quickSyncManager.clearWatchlistShows(listOf(traktId.id))
+    }
 }

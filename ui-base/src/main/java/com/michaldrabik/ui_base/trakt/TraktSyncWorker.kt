@@ -78,7 +78,8 @@ class TraktSyncWorker @AssistedInject constructor(
     private const val ARG_IS_EXPORT = "ARG_IS_EXPORT"
     private const val ARG_IS_SILENT = "ARG_IS_SILENT"
 
-    private const val TRAKT_LISTS_INFO_URL = "https://twitter.com/trakt/status/1536751362943332352?s=20&t=bdlxpzlDIclkLqdihaAXqw"
+    private const val TRAKT_LISTS_INFO_URL =
+      "https://twitter.com/trakt/status/1536751362943332352?s=20&t=bdlxpzlDIclkLqdihaAXqw"
 
     fun scheduleOneOff(
       workManager: WorkManager,
@@ -89,7 +90,7 @@ class TraktSyncWorker @AssistedInject constructor(
       val inputData = workDataOf(
         ARG_IS_IMPORT to isImport,
         ARG_IS_EXPORT to isExport,
-        ARG_IS_SILENT to isSilent
+        ARG_IS_SILENT to isSilent,
       )
 
       val request = OneTimeWorkRequestBuilder<TraktSyncWorker>()
@@ -98,7 +99,7 @@ class TraktSyncWorker @AssistedInject constructor(
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .setRequiresBatteryNotLow(false)
             .setRequiresStorageNotLow(false)
-            .build()
+            .build(),
         )
         .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
         .setInputData(inputData)
@@ -127,14 +128,14 @@ class TraktSyncWorker @AssistedInject constructor(
       val inputData = workDataOf(
         ARG_IS_IMPORT to true,
         ARG_IS_EXPORT to true,
-        ARG_IS_SILENT to true
+        ARG_IS_SILENT to true,
       )
 
       val request = PeriodicWorkRequestBuilder<TraktSyncWorker>(schedule.duration, schedule.durationUnit)
         .setConstraints(
           Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
-            .build()
+            .build(),
         )
         .setInputData(inputData)
         .setInitialDelay(schedule.duration, schedule.durationUnit)
@@ -176,7 +177,7 @@ class TraktSyncWorker @AssistedInject constructor(
       if (!isSilent) {
         notificationManager().notify(
           SYNC_NOTIFICATION_COMPLETE_SUCCESS_ID,
-          createSuccessNotification()
+          createSuccessNotification(),
         )
       }
       return Result.success()
@@ -247,16 +248,17 @@ class TraktSyncWorker @AssistedInject constructor(
     }
   }
 
-  private fun setProgressNotification(
-    content: String?,
-  ) {
+  private fun setProgressNotification(content: String?) {
     notificationManager().notify(
       SYNC_NOTIFICATION_COMPLETE_PROGRESS_ID,
-      createProgressNotification(content)
+      createProgressNotification(content),
     )
   }
 
-  private suspend fun handleError(error: Throwable, isSilent: Boolean) {
+  private suspend fun handleError(
+    error: Throwable,
+    isSilent: Boolean,
+  ) {
     val showlyError = ErrorHelper.parse(error)
     if (showlyError is ShowlyError.UnauthorizedError) {
       eventsManager.sendEvent(TraktSyncAuthError)
@@ -266,12 +268,15 @@ class TraktSyncWorker @AssistedInject constructor(
     }
     if (!isSilent) {
       val message =
-        if (showlyError is ShowlyError.UnauthorizedError) R.string.errorTraktAuthorization
-        else R.string.textTraktSyncErrorFull
+        if (showlyError is ShowlyError.UnauthorizedError) {
+          R.string.errorTraktAuthorization
+        } else {
+          R.string.textTraktSyncErrorFull
+        }
 
       notificationManager().notify(
         SYNC_NOTIFICATION_COMPLETE_ERROR_ID,
-        createErrorNotification(R.string.textTraktSyncError, message)
+        createErrorNotification(R.string.textTraktSyncError, message),
       )
     }
     Logger.record(error, "TraktSyncWorker::handleError()")
@@ -289,7 +294,7 @@ class TraktSyncWorker @AssistedInject constructor(
 
         notificationManager().notify(
           SYNC_NOTIFICATION_COMPLETE_ERROR_LISTS_ID,
-          createErrorNotification(R.string.textTraktSync, notificationMessageResId, action)
+          createErrorNotification(R.string.textTraktSync, notificationMessageResId, action),
         )
       }
 

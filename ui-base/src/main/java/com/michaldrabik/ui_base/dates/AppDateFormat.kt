@@ -6,5 +6,5 @@ enum class AppDateFormat {
   TRAKT_24,
   TRAKT_12,
   MISC_24,
-  MISC_12
+  MISC_12,
 }

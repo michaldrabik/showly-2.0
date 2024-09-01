@@ -24,29 +24,31 @@ class MovieContextMenuWatchlistCase @Inject constructor(
   private val quickSyncManager: QuickSyncManager,
 ) {
 
-  suspend fun moveToWatchlist(traktId: IdTrakt) = withContext(dispatchers.IO) {
-    val movie = Movie.EMPTY.copy(ids = Ids.EMPTY.copy(traktId))
+  suspend fun moveToWatchlist(traktId: IdTrakt) =
+    withContext(dispatchers.IO) {
+      val movie = Movie.EMPTY.copy(ids = Ids.EMPTY.copy(traktId))
 
-    val (isMyMovie, isHidden) = awaitAll(
-      async { moviesRepository.myMovies.exists(traktId) },
-      async { moviesRepository.hiddenMovies.exists(traktId) }
-    )
+      val (isMyMovie, isHidden) = awaitAll(
+        async { moviesRepository.myMovies.exists(traktId) },
+        async { moviesRepository.hiddenMovies.exists(traktId) },
+      )
 
-    moviesRepository.watchlistMovies.insert(movie.ids.trakt)
-    pinnedItemsRepository.removePinnedItem(movie)
-    announcementManager.refreshMoviesAnnouncements()
+      moviesRepository.watchlistMovies.insert(movie.ids.trakt)
+      pinnedItemsRepository.removePinnedItem(movie)
+      announcementManager.refreshMoviesAnnouncements()
 
-    with(quickSyncManager) {
-      clearMovies(listOf(traktId.id))
-      clearHiddenMovies(listOf(traktId.id))
-      scheduleMoviesWatchlist(listOf(traktId.id))
+      with(quickSyncManager) {
+        clearMovies(listOf(traktId.id))
+        clearHiddenMovies(listOf(traktId.id))
+        scheduleMoviesWatchlist(listOf(traktId.id))
+      }
+
+      RemoveTraktUiEvent(removeProgress = isMyMovie, removeHidden = isHidden)
     }
 
-    RemoveTraktUiEvent(removeProgress = isMyMovie, removeHidden = isHidden)
-  }
-
-  suspend fun removeFromWatchlist(traktId: IdTrakt) = withContext(dispatchers.IO) {
-    moviesRepository.watchlistMovies.delete(traktId)
-    quickSyncManager.clearWatchlistMovies(listOf(traktId.id))
-  }
+  suspend fun removeFromWatchlist(traktId: IdTrakt) =
+    withContext(dispatchers.IO) {
+      moviesRepository.watchlistMovies.delete(traktId)
+      quickSyncManager.clearWatchlistMovies(listOf(traktId.id))
+    }
 }

@@ -7,7 +7,7 @@ private const val SAFE_INTERVAL = 650
 
 class SafeOnClickListener(
   private val isSafe: Boolean,
-  private val action: (view: View) -> Unit
+  private val action: (view: View) -> Unit,
 ) : View.OnClickListener {
   private var lastClickTimestamp = 0L
 

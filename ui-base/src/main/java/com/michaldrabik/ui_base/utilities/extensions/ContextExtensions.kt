@@ -18,7 +18,9 @@ fun Context.isTablet() = resources.getBoolean(R.bool.isTablet)
 
 fun Context.notificationManager() = NotificationManagerCompat.from(this)
 
-fun Context.dimenToPx(@DimenRes dimenResId: Int) = resources.getDimensionPixelSize(dimenResId)
+fun Context.dimenToPx(
+  @DimenRes dimenResId: Int,
+) = resources.getDimensionPixelSize(dimenResId)
 
 @ColorInt
 fun Context.colorFromAttr(
@@ -34,10 +36,12 @@ fun Context.colorStateListFromAttr(
   @AttrRes attrColor: Int,
   typedValue: TypedValue = TypedValue(),
   resolveRefs: Boolean = true,
-): ColorStateList =
-  ColorStateList.valueOf(colorFromAttr(attrColor, typedValue, resolveRefs))
+): ColorStateList = ColorStateList.valueOf(colorFromAttr(attrColor, typedValue, resolveRefs))
 
-fun Context.getLocaleStringResource(requestedLocale: Locale?, resourceId: Int): String {
+fun Context.getLocaleStringResource(
+  requestedLocale: Locale?,
+  resourceId: Int,
+): String {
   val result: String
   val config = Configuration(resources.configuration)
   config.setLocale(requestedLocale)
