@@ -39,12 +39,15 @@ class SettingsGeneralFragment : BaseFragment<SettingsGeneralViewModel>(R.layout.
   override val viewModel by viewModels<SettingsGeneralViewModel>()
   private val binding by viewBinding(FragmentSettingsGeneralBinding::bind)
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
-      doAfterLaunch = { viewModel.loadSettings() }
+      doAfterLaunch = { viewModel.loadSettings() },
     )
   }
 
@@ -214,8 +217,16 @@ class SettingsGeneralFragment : BaseFragment<SettingsGeneralViewModel>(R.layout.
     MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
       .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
       .setSingleChoiceItems(
-        options.map { if (it == 0) getString(R.string.textDisabled) else getString(R.string.textDays, it) }.toTypedArray(),
-        selected
+        options.map {
+          if (it == 0) {
+            getString(
+              R.string.textDisabled,
+            )
+          } else {
+            getString(R.string.textDays, it)
+          }
+        }.toTypedArray(),
+        selected,
       ) { dialog, index ->
         if (index != selected) {
           viewModel.setProgressUpcomingDays(options[index].toLong())
@@ -311,7 +322,7 @@ class SettingsGeneralFragment : BaseFragment<SettingsGeneralViewModel>(R.layout.
         options.map {
           DateFormatProvider.loadSettingsFormat(it, language.code).format(nowUtc().toLocalZone())
         }.toTypedArray(),
-        selected
+        selected,
       ) { dialog, index ->
         if (index != selected) {
           viewModel.setDateFormat(options[index], requireAppContext())

@@ -136,7 +136,10 @@ class SettingsGeneralViewModel @Inject constructor(
     }
   }
 
-  fun setDateFormat(format: AppDateFormat, context: Context) {
+  fun setDateFormat(
+    format: AppDateFormat,
+    context: Context,
+  ) {
     viewModelScope.launch {
       mainCase.setDateFormat(format, context)
       refreshSettings()
@@ -155,7 +158,7 @@ class SettingsGeneralViewModel @Inject constructor(
     restartAppState,
     progressUpcomingDaysState,
     tabletsColumnsState,
-    progressDateSelectionState
+    progressDateSelectionState,
   ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12 ->
     SettingsGeneralUiState(
       settings = s1,
@@ -169,11 +172,11 @@ class SettingsGeneralViewModel @Inject constructor(
       restartApp = s9,
       progressUpcomingDays = s10,
       tabletColumns = s11,
-      progressDateSelectionType = s12
+      progressDateSelectionType = s12,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = SettingsGeneralUiState()
+    initialValue = SettingsGeneralUiState(),
   )
 }

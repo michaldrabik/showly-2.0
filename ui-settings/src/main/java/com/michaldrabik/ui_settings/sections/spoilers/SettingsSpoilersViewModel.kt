@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsSpoilersViewModel @Inject constructor(
   private val settingsRepository: SettingsSpoilersRepository,
-  private val spoilersHelper: SettingsSpoilersHelper
+  private val spoilersHelper: SettingsSpoilersHelper,
 ) : ViewModel() {
 
   private val hasShowsSettingsActive = MutableStateFlow(false)
@@ -61,6 +61,6 @@ class SettingsSpoilersViewModel @Inject constructor(
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = SettingsSpoilersUiState()
+    initialValue = SettingsSpoilersUiState(),
   )
 }

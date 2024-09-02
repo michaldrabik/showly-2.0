@@ -34,13 +34,16 @@ class SettingsNotificationsFragment :
 
   private var notificationRationaleNotShown = false
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
       { viewModel.eventFlow.collect { handleEvent(it) } },
-      doAfterLaunch = { viewModel.loadSettings(requireAppContext()) }
+      doAfterLaunch = { viewModel.loadSettings(requireAppContext()) },
     )
   }
 

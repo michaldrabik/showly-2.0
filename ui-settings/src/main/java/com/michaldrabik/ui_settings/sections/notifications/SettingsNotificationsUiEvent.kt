@@ -1,4 +1,6 @@
-// ktlint-disable filename
+
+@file:Suppress("ktlint:standard:filename")
+
 package com.michaldrabik.ui_settings.sections.notifications
 
 import com.michaldrabik.ui_base.utilities.events.Event

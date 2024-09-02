@@ -41,7 +41,10 @@ class SettingsTraktFragment :
   override val viewModel by viewModels<SettingsTraktViewModel>()
   private val binding by viewBinding(FragmentSettingsTraktBinding::bind)
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
     setupWorkManager()
@@ -49,7 +52,7 @@ class SettingsTraktFragment :
       { viewModel.uiState.collect { render(it) } },
       { viewModel.eventFlow.collect { handleEvent(it) } },
       { viewModel.messageFlow.collect { showSnack(it) } },
-      doAfterLaunch = { viewModel.loadSettings() }
+      doAfterLaunch = { viewModel.loadSettings() },
     )
   }
 
@@ -116,7 +119,10 @@ class SettingsTraktFragment :
 
         settingsTraktAuthorizeSummary.text = when {
           isSignedInTrakt -> when {
-            traktUsername.isNotEmpty() -> getString(R.string.textSettingsTraktAuthorizeSummarySignOutUser, traktUsername)
+            traktUsername.isNotEmpty() -> getString(
+              R.string.textSettingsTraktAuthorizeSummarySignOutUser,
+              traktUsername,
+            )
             else -> getString(R.string.textSettingsTraktAuthorizeSummarySignOut)
           }
           else -> getString(R.string.textSettingsTraktAuthorizeSummarySignIn)

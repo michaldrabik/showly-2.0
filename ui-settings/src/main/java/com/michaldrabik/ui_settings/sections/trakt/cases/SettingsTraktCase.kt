@@ -21,7 +21,7 @@ class SettingsTraktCase @Inject constructor(
   private val ratingsRepository: RatingsRepository,
   private val syncLogLocalSource: TraktSyncLogLocalDataSource,
   private val userManager: UserTraktManager,
-  private val workManager: WorkManager
+  private val workManager: WorkManager,
 ) {
 
   suspend fun enableTraktQuickSync(enable: Boolean) {
@@ -60,7 +60,6 @@ class SettingsTraktCase @Inject constructor(
   }
 
   suspend fun logoutTrakt() {
-
     suspend fun disableTraktFeatures() {
       val settings = settingsRepository.load()
       settings.let {
@@ -68,7 +67,7 @@ class SettingsTraktCase @Inject constructor(
         val new = it.copy(
           traktQuickSyncEnabled = defaults.traktQuickSyncEnabled,
           traktQuickRemoveEnabled = defaults.traktQuickRemoveEnabled,
-          traktQuickRateEnabled = defaults.traktQuickRateEnabled
+          traktQuickRateEnabled = defaults.traktQuickRateEnabled,
         )
         settingsRepository.update(new)
       }

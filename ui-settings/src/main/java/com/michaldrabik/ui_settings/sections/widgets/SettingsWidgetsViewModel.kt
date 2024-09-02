@@ -33,7 +33,10 @@ class SettingsWidgetsViewModel @Inject constructor(
     }
   }
 
-  fun enableWidgetsTitles(enable: Boolean, context: Context) {
+  fun enableWidgetsTitles(
+    enable: Boolean,
+    context: Context,
+  ) {
     viewModelScope.launch {
       mainCase.enableWidgetsTitles(enable, context)
       refreshSettings()
@@ -48,17 +51,17 @@ class SettingsWidgetsViewModel @Inject constructor(
     settingsState,
     premiumState,
     widgetThemeState,
-    widgetTransparencyState
+    widgetTransparencyState,
   ) { s1, s2, s3, s4 ->
     SettingsWidgetsUiState(
       settings = s1,
       isPremium = s2,
       themeWidgets = s3,
-      widgetsTransparency = s4
+      widgetsTransparency = s4,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = SettingsWidgetsUiState()
+    initialValue = SettingsWidgetsUiState(),
   )
 }

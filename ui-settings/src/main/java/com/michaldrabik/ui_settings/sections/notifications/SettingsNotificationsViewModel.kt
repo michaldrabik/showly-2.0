@@ -34,7 +34,10 @@ class SettingsNotificationsViewModel @Inject constructor(
     }
   }
 
-  fun enableNotifications(enable: Boolean, context: Context) {
+  fun enableNotifications(
+    enable: Boolean,
+    context: Context,
+  ) {
     viewModelScope.launch {
       if (enable && !ensureNotificationsPermission(context)) {
         eventChannel.send(RequestNotificationsPermission)
@@ -70,7 +73,7 @@ class SettingsNotificationsViewModel @Inject constructor(
 
   val uiState = combine(
     settingsState,
-    loadingState
+    loadingState,
   ) { s1, _ ->
     SettingsNotificationsUiState(
       settings = s1,
@@ -78,6 +81,6 @@ class SettingsNotificationsViewModel @Inject constructor(
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = SettingsNotificationsUiState()
+    initialValue = SettingsNotificationsUiState(),
   )
 }

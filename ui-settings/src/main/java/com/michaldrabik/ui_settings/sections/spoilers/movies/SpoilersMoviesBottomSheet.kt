@@ -24,13 +24,16 @@ class SpoilersMoviesBottomSheet : BaseBottomSheetFragment(R.layout.sheet_spoiler
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
-      doAfterLaunch = { viewModel.refreshSettings() }
+      doAfterLaunch = { viewModel.refreshSettings() },
     )
   }
 
@@ -69,7 +72,10 @@ class SpoilersMoviesBottomSheet : BaseBottomSheetFragment(R.layout.sheet_spoiler
     uiState.settings.run {
       with(binding) {
         notCollectedMoviesSwitch.setCheckedSilent(isNotCollectedMoviesHidden, notCollectedMoviesListener)
-        notCollectedMoviesRatingsSwitch.setCheckedSilent(isNotCollectedMoviesRatingsHidden, notCollectedMoviesRatingsListener)
+        notCollectedMoviesRatingsSwitch.setCheckedSilent(
+          isNotCollectedMoviesRatingsHidden,
+          notCollectedMoviesRatingsListener,
+        )
         myMoviesSwitch.setCheckedSilent(isMyMoviesHidden, myMoviesListener)
         myMoviesRatingsSwitch.setCheckedSilent(isMyMoviesRatingsHidden, myMoviesRatingsListener)
         watchlistMoviesSwitch.setCheckedSilent(isWatchlistMoviesHidden, watchlistMoviesListener)

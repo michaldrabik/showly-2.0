@@ -144,18 +144,18 @@ class SettingsTraktViewModel @Inject constructor(
     signingInState,
     signedInTraktState,
     traktNameState,
-    premiumState
+    premiumState,
   ) { s1, s2, s3, s4, s5 ->
     SettingsTraktUiState(
       settings = s1,
       isSigningIn = s2,
       isSignedInTrakt = s3,
       traktUsername = s4,
-      isPremium = s5
+      isPremium = s5,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = SettingsTraktUiState()
+    initialValue = SettingsTraktUiState(),
   )
 }

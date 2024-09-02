@@ -27,9 +27,10 @@ class SettingsGeneralMainCase @Inject constructor(
   private val announcementManager: AnnouncementManager,
 ) {
 
-  suspend fun getSettings(): Settings = withContext(dispatchers.IO) {
-    settingsRepository.load()
-  }
+  suspend fun getSettings(): Settings =
+    withContext(dispatchers.IO) {
+      settingsRepository.load()
+    }
 
   suspend fun setRecentShowsAmount(amount: Int) {
     check(amount in Config.MY_SHOWS_RECENTS_OPTIONS)
@@ -122,7 +123,10 @@ class SettingsGeneralMainCase @Inject constructor(
     }
   }
 
-  fun setDateFormat(format: AppDateFormat, context: Context) {
+  fun setDateFormat(
+    format: AppDateFormat,
+    context: Context,
+  ) {
     settingsRepository.dateFormat = format.name
     (context.applicationContext as WidgetsProvider).run {
       requestShowsWidgetsUpdate()

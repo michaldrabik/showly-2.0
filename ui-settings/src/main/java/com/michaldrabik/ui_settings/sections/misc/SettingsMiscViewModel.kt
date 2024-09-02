@@ -47,7 +47,7 @@ class SettingsMiscViewModel @Inject constructor(
 
   val uiState = combine(
     userIdState,
-    loadingState
+    loadingState,
   ) { s1, _ ->
     SettingsMiscUiState(
       userId = s1,
@@ -55,6 +55,6 @@ class SettingsMiscViewModel @Inject constructor(
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = SettingsMiscUiState()
+    initialValue = SettingsMiscUiState(),
   )
 }

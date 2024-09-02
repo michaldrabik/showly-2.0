@@ -36,12 +36,15 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     }
   }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
 
     launchAndRepeatStarted(
-      { viewModel.messageFlow.collect { showSnack(it) } }
+      { viewModel.messageFlow.collect { showSnack(it) } },
     )
   }
 

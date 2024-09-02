@@ -16,9 +16,10 @@ class SettingsNotificationsMainCase @Inject constructor(
   private val announcementManager: AnnouncementManager,
 ) {
 
-  suspend fun getSettings(): Settings = withContext(dispatchers.IO) {
-    settingsRepository.load()
-  }
+  suspend fun getSettings(): Settings =
+    withContext(dispatchers.IO) {
+      settingsRepository.load()
+    }
 
   suspend fun enableNotifications(enable: Boolean) {
     val settings = settingsRepository.load()

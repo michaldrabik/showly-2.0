@@ -26,13 +26,16 @@ class SettingsMiscFragment :
   override val viewModel by viewModels<SettingsMiscViewModel>()
   private val binding by viewBinding(FragmentSettingsMiscBinding::bind)
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
       { viewModel.messageFlow.collect { showSnack(it) } },
-      doAfterLaunch = { viewModel.loadSettings() }
+      doAfterLaunch = { viewModel.loadSettings() },
     )
   }
 

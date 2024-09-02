@@ -14,8 +14,9 @@ class SettingsGeneralStreamingsCase @Inject constructor(
   private val movieStreamingsRepository: MovieStreamingsRepository,
 ) {
 
-  suspend fun deleteCache() = withContext(dispatchers.IO) {
-    showStreamingsRepository.deleteCache()
-    movieStreamingsRepository.deleteCache()
-  }
+  suspend fun deleteCache() =
+    withContext(dispatchers.IO) {
+      showStreamingsRepository.deleteCache()
+      movieStreamingsRepository.deleteCache()
+    }
 }

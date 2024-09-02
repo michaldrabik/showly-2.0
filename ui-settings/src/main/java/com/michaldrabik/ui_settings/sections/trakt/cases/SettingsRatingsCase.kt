@@ -16,15 +16,16 @@ class SettingsRatingsCase @Inject constructor(
   private val ratingsRepository: RatingsRepository,
 ) {
 
-  suspend fun preloadRatings() = withContext(dispatchers.IO) {
-    if (userTraktManager.isAuthorized()) {
-      userTraktManager.checkAuthorization()
-      with(ratingsRepository) {
-        shows.preloadRatings()
-        if (settingsRepository.isMoviesEnabled) {
-          movies.preloadRatings()
+  suspend fun preloadRatings() =
+    withContext(dispatchers.IO) {
+      if (userTraktManager.isAuthorized()) {
+        userTraktManager.checkAuthorization()
+        with(ratingsRepository) {
+          shows.preloadRatings()
+          if (settingsRepository.isMoviesEnabled) {
+            movies.preloadRatings()
+          }
         }
       }
     }
-  }
 }

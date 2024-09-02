@@ -23,13 +23,16 @@ class SpoilersEpisodesBottomSheet : BaseBottomSheetFragment(R.layout.sheet_spoil
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
-      doAfterLaunch = { viewModel.refreshSettings() }
+      doAfterLaunch = { viewModel.refreshSettings() },
     )
   }
 

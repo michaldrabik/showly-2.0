@@ -22,13 +22,16 @@ class SettingsSpoilersFragment :
   override val viewModel by viewModels<SettingsSpoilersViewModel>()
   private val binding by viewBinding(FragmentSettingsSpoilersBinding::bind)
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
-      doAfterLaunch = { viewModel.loadSettings() }
+      doAfterLaunch = { viewModel.loadSettings() },
     )
   }
 

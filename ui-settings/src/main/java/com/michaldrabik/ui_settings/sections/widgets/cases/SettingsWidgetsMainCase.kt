@@ -15,11 +15,15 @@ class SettingsWidgetsMainCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
 ) {
 
-  suspend fun getSettings(): Settings = withContext(dispatchers.IO) {
-    settingsRepository.load()
-  }
+  suspend fun getSettings(): Settings =
+    withContext(dispatchers.IO) {
+      settingsRepository.load()
+    }
 
-  suspend fun enableWidgetsTitles(enable: Boolean, context: Context) {
+  suspend fun enableWidgetsTitles(
+    enable: Boolean,
+    context: Context,
+  ) {
     val settings = settingsRepository.load()
     settings.let {
       val new = it.copy(widgetsShowLabel = enable)

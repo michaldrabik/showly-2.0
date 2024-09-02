@@ -13,7 +13,8 @@ class SettingsTraktMainCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
 ) {
 
-  suspend fun getSettings(): Settings = withContext(dispatchers.IO) {
-    settingsRepository.load()
-  }
+  suspend fun getSettings(): Settings =
+    withContext(dispatchers.IO) {
+      settingsRepository.load()
+    }
 }

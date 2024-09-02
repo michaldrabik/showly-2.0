@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SpoilersShowsViewModel @Inject constructor(
-  private val settingsRepository: SettingsSpoilersRepository
+  private val settingsRepository: SettingsSpoilersRepository,
 ) : ViewModel() {
 
   private val initialState = SpoilersShowsUiState()
@@ -69,6 +69,6 @@ class SpoilersShowsViewModel @Inject constructor(
     .stateIn(
       scope = viewModelScope,
       started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-      initialValue = SpoilersShowsUiState()
+      initialValue = SpoilersShowsUiState(),
     )
 }
