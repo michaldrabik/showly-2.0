@@ -61,7 +61,8 @@ abstract class ListDetailsItemView : FrameLayout {
       return
     }
 
-    Glide.with(this)
+    Glide
+      .with(this)
       .load(item.image.fullFileUrl)
       .transform(centerCropTransformation, cornersTransformation)
       .transition(withCrossFade(IMAGE_FADE_DURATION_MS))

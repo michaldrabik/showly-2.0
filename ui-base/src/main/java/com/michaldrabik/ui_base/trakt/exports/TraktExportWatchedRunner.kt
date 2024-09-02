@@ -101,7 +101,8 @@ class TraktExportWatchedRunner @Inject constructor(
     if (settingsRepository.isMoviesEnabled) {
       val localMoviesIds = localSource.myMovies.getAllTraktIds()
       if (localMoviesIds.isNotEmpty()) {
-        val remoteMoviesIds = remoteSource.fetchSyncWatchedMovies()
+        val remoteMoviesIds = remoteSource
+          .fetchSyncWatchedMovies()
           .map { it.getTraktId() }
         val localMyMovies = batchMovies(localMoviesIds)
           .filter { movie -> remoteMoviesIds.none { it == movie.idTrakt } }
@@ -245,8 +246,10 @@ class TraktExportWatchedRunner @Inject constructor(
   ): Boolean {
     val ep = remoteItems
       .find { it.show?.ids?.trakt == episode.idShowTrakt }
-      ?.seasons?.find { it.number == episode.seasonNumber }
-      ?.episodes?.find { it.number == episode.episodeNumber }
+      ?.seasons
+      ?.find { it.number == episode.seasonNumber }
+      ?.episodes
+      ?.find { it.number == episode.episodeNumber }
     return ep != null
   }
 

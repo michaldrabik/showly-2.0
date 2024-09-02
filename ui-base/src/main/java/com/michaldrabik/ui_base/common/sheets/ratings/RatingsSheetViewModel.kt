@@ -32,7 +32,8 @@ class RatingsSheetViewModel @Inject constructor(
   private val movieRatingsCase: RatingsMovieCase,
   private val episodeRatingsCase: RatingsEpisodeCase,
   private val seasonRatingsCase: RatingsSeasonCase,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val loadingState = MutableStateFlow(false)
   private val ratingState = MutableStateFlow<TraktRating?>(null)

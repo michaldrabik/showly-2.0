@@ -76,43 +76,43 @@ class SearchSuggestionsCase @Inject constructor(
         }
       }
 
-      suggestions.map {
-        async {
-          val isFollowed =
-            if (it.isShow) {
-              showsRepository.myShows.exists(it.show.ids.trakt)
-            } else {
-              moviesRepository.myMovies.exists(it.movie.ids.trakt)
-            }
+      suggestions
+        .map {
+          async {
+            val isFollowed =
+              if (it.isShow) {
+                showsRepository.myShows.exists(it.show.ids.trakt)
+              } else {
+                moviesRepository.myMovies.exists(it.movie.ids.trakt)
+              }
 
-          val isWatchlist =
-            if (it.isShow) {
-              showsRepository.watchlistShows.exists(it.show.ids.trakt)
-            } else {
-              moviesRepository.watchlistMovies.exists(it.movie.ids.trakt)
-            }
+            val isWatchlist =
+              if (it.isShow) {
+                showsRepository.watchlistShows.exists(it.show.ids.trakt)
+              } else {
+                moviesRepository.watchlistMovies.exists(it.movie.ids.trakt)
+              }
 
-          val image =
-            if (it.isShow) {
-              showsImagesProvider.findCachedImage(it.show, ImageType.POSTER)
-            } else {
-              moviesImagesProvider.findCachedImage(it.movie, ImageType.POSTER)
-            }
+            val image =
+              if (it.isShow) {
+                showsImagesProvider.findCachedImage(it.show, ImageType.POSTER)
+              } else {
+                moviesImagesProvider.findCachedImage(it.movie, ImageType.POSTER)
+              }
 
-          SearchListItem(
-            id = UUID.randomUUID(),
-            show = it.show,
-            movie = it.movie,
-            image = image,
-            order = it.order,
-            isFollowed = isFollowed,
-            isWatchlist = isWatchlist,
-            translation = loadTranslation(it),
-            spoilers = spoilers,
-          )
-        }
-      }
-        .awaitAll()
+            SearchListItem(
+              id = UUID.randomUUID(),
+              show = it.show,
+              movie = it.movie,
+              image = image,
+              order = it.order,
+              isFollowed = isFollowed,
+              isWatchlist = isWatchlist,
+              translation = loadTranslation(it),
+              spoilers = spoilers,
+            )
+          }
+        }.awaitAll()
         .sortedByDescending { it.votes }
     }
 
@@ -126,8 +126,7 @@ class SearchSuggestionsCase @Inject constructor(
       ?.filter {
         it.title.contains(query, true) ||
           showTranslationsCache?.get(it.idTrakt)?.title?.contains(query, true) == true
-      }
-      ?.take(limit)
+      }?.take(limit)
       ?.map { mappers.show.fromDatabase(it) }
       ?: emptyList()
   }
@@ -142,8 +141,7 @@ class SearchSuggestionsCase @Inject constructor(
       ?.filter {
         it.title.contains(query, true) ||
           movieTranslationsCache?.get(it.idTrakt)?.title?.contains(query, true) == true
-      }
-      ?.take(limit)
+      }?.take(limit)
       ?.map { mappers.movie.fromDatabase(it) }
       ?: emptyList()
   }

@@ -24,7 +24,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MovieDetailsCollectionsViewModel @Inject constructor(
   private val collectionsCase: MovieDetailsCollectionsCase,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private lateinit var movie: Movie
   private var lastOpenedCollection: IdTrakt? = null

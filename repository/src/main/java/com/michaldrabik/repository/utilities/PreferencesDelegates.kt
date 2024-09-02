@@ -20,7 +20,8 @@ class StringPreference(
     property: KProperty<*>,
     value: String,
   ) {
-    sharedPreferences.edit()
+    sharedPreferences
+      .edit()
       .putString(key, value)
       .apply()
   }
@@ -41,7 +42,8 @@ class BooleanPreference(
     thisRef: Any,
     property: KProperty<*>,
     value: Boolean,
-  ) = sharedPreferences.edit()
+  ) = sharedPreferences
+    .edit()
     .putBoolean(key, value)
     .apply()
 }
@@ -61,7 +63,8 @@ class IntPreference(
     thisRef: Any,
     property: KProperty<*>,
     value: Int,
-  ) = sharedPreferences.edit()
+  ) = sharedPreferences
+    .edit()
     .putInt(key, value)
     .apply()
 }
@@ -81,7 +84,8 @@ class LongPreference(
     thisRef: Any,
     property: KProperty<*>,
     value: Long,
-  ) = sharedPreferences.edit()
+  ) = sharedPreferences
+    .edit()
     .putLong(key, value)
     .apply()
 }
@@ -107,7 +111,8 @@ class EnumPreference<T : Enum<T>>(
     property: KProperty<*>,
     value: T,
   ) {
-    sharedPreferences.edit()
+    sharedPreferences
+      .edit()
       .putString(key, value.name)
       .apply()
   }

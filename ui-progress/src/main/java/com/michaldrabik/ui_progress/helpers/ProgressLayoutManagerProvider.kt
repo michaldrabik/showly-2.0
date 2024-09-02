@@ -12,11 +12,10 @@ internal object ProgressLayoutManagerProvider {
   fun provideLayoutManger(
     context: Context,
     gridSpanSize: Int,
-  ): LayoutManager {
-    return if (context.isTablet()) {
+  ): LayoutManager =
+    if (context.isTablet()) {
       GridLayoutManager(context, gridSpanSize)
     } else {
       LinearLayoutManager(context, VERTICAL, false)
     }
-  }
 }

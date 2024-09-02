@@ -59,7 +59,8 @@ class ShowDetailsEpisodesViewModel @Inject constructor(
   private val markWatchedCase: EpisodesMarkWatchedCase,
   private val seasonsCache: SeasonsCache,
   private val settingsRepository: SettingsRepository,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val seasonState = MutableStateFlow<SeasonListItem?>(null)
   private val episodesState = MutableStateFlow<List<EpisodeListItem>?>(null)
@@ -105,12 +106,13 @@ class ShowDetailsEpisodesViewModel @Inject constructor(
       val episodeItems = episodesState.value ?: emptyList()
 
       seasonItem?.let {
-        val updatedEpisodesItems = episodeItems.map { episodeItem ->
-          async {
-            val ratingEpisode = ratingsCase.loadRating(episodeItem.episode)
-            episodeItem.copy(myRating = ratingEpisode)
-          }
-        }.awaitAll()
+        val updatedEpisodesItems = episodeItems
+          .map { episodeItem ->
+            async {
+              val ratingEpisode = ratingsCase.loadRating(episodeItem.episode)
+              episodeItem.copy(myRating = ratingEpisode)
+            }
+          }.awaitAll()
         val updatedSeasonItem = seasonItem.copy(
           episodes = updatedEpisodesItems,
         )

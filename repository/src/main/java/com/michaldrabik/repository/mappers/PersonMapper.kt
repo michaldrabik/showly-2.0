@@ -63,7 +63,13 @@ class PersonMapper @Inject constructor() {
     detailsTimestamp: ZonedDateTime?,
   ): PersonDb {
     val idTrakt = if (person.ids.trakt.id != -1L) person.ids.trakt.id else null
-    val idImdb = if (person.ids.imdb.id.isNotBlank()) person.ids.imdb.id else null
+    val idImdb = if (person.ids.imdb.id
+        .isNotBlank()
+    ) {
+      person.ids.imdb.id
+    } else {
+      null
+    }
     return PersonDb(
       idTmdb = person.ids.tmdb.id,
       idTrakt = idTrakt,

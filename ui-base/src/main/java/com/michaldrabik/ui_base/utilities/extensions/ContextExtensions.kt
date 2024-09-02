@@ -51,7 +51,8 @@ fun Context.getLocaleStringResource(
 
 fun Context.copyToClipboard(text: String) {
   val clip = ClipData.newPlainText("label", text)
-  ContextCompat.getSystemService(this, ClipboardManager::class.java)
+  ContextCompat
+    .getSystemService(this, ClipboardManager::class.java)
     .apply {
       this?.setPrimaryClip(clip)
     }

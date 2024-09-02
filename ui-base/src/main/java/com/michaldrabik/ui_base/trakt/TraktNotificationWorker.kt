@@ -20,14 +20,14 @@ abstract class TraktNotificationWorker(
   workerParams: WorkerParameters,
 ) : CoroutineWorker(context, workerParams) {
 
-  private fun createBaseNotification(): NotificationCompat.Builder {
-    return NotificationCompat.Builder(applicationContext, createNotificationChannel())
+  private fun createBaseNotification(): NotificationCompat.Builder =
+    NotificationCompat
+      .Builder(applicationContext, createNotificationChannel())
       .setForegroundServiceBehavior(FOREGROUND_SERVICE_IMMEDIATE)
       .setContentTitle(context.getString(R.string.textTraktSync))
       .setSmallIcon(R.drawable.ic_notification)
       .setAutoCancel(true)
       .setColor(ContextCompat.getColor(applicationContext, R.color.colorNotificationDark))
-  }
 
   protected fun createProgressNotification(content: String?): Notification =
     createBaseNotification()

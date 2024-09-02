@@ -79,8 +79,7 @@ class StatisticsViewModel @Inject constructor(
             image = Image.createUnknown(POSTER),
             translation = translation,
           )
-        }
-        .sortedByDescending { item -> item.episodes.sumOf { it.runtime } }
+        }.sortedByDescending { item -> item.episodes.sumOf { it.runtime } }
         .take(takeLimit)
         .map {
           it.copy(image = imagesProvider.findCachedImage(it.show, POSTER))

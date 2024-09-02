@@ -13,13 +13,16 @@ class PersonDetailsItemDiffCallback : DiffUtil.ItemCallback<PersonDetailsItem>()
     oldItem is PersonDetailsItem.CreditsLoadingItem && newItem is PersonDetailsItem.CreditsLoadingItem -> true
     oldItem is PersonDetailsItem.CreditsFiltersItem && newItem is PersonDetailsItem.CreditsFiltersItem -> true
     oldItem is PersonDetailsItem.CreditsHeader &&
-      newItem is PersonDetailsItem.CreditsHeader && oldItem.getId() == newItem.getId() -> true
+      newItem is PersonDetailsItem.CreditsHeader &&
+      oldItem.getId() == newItem.getId() -> true
 
     oldItem is PersonDetailsItem.CreditsShowItem &&
-      newItem is PersonDetailsItem.CreditsShowItem && oldItem.getId() == newItem.getId() -> true
+      newItem is PersonDetailsItem.CreditsShowItem &&
+      oldItem.getId() == newItem.getId() -> true
 
     oldItem is PersonDetailsItem.CreditsMovieItem &&
-      newItem is PersonDetailsItem.CreditsMovieItem && oldItem.getId() == newItem.getId() -> true
+      newItem is PersonDetailsItem.CreditsMovieItem &&
+      oldItem.getId() == newItem.getId() -> true
     else -> false
   }
 

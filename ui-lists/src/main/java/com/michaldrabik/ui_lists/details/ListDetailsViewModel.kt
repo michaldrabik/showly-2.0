@@ -46,7 +46,8 @@ class ListDetailsViewModel @Inject constructor(
   private val tipsCase: ListDetailsTipsCase,
   private val showImagesProvider: ShowImagesProvider,
   private val movieImagesProvider: MovieImagesProvider,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val listDetailsState = MutableStateFlow<CustomList?>(null)
   private val listItemsState = MutableStateFlow<List<ListDetailsItem>?>(null)

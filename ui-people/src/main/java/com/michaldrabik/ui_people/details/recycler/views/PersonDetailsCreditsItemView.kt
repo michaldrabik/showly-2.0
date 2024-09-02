@@ -179,15 +179,15 @@ class PersonDetailsCreditsItemView : FrameLayout {
         return
       }
 
-      Glide.with(this@PersonDetailsCreditsItemView)
+      Glide
+        .with(this@PersonDetailsCreditsItemView)
         .load(image.fullFileUrl)
         .transform(centerCropTransformation, cornersTransformation)
         .transition(DrawableTransitionOptions.withCrossFade(Config.IMAGE_FADE_DURATION_MS))
         .withSuccessListener {
           viewPersonCreditsItemPlaceholder.gone()
           loadTranslation(item)
-        }
-        .withFailListener {
+        }.withFailListener {
           if (image.status == ImageStatus.AVAILABLE) {
             viewPersonCreditsItemImage.gone()
             viewPersonCreditsItemPlaceholder.fadeIn(Config.IMAGE_FADE_DURATION_MS.toLong())
@@ -195,8 +195,7 @@ class PersonDetailsCreditsItemView : FrameLayout {
             return@withFailListener
           }
           onImageMissingListener?.invoke(item, false)
-        }
-        .into(viewPersonCreditsItemImage)
+        }.into(viewPersonCreditsItemImage)
     }
   }
 
@@ -217,7 +216,8 @@ class PersonDetailsCreditsItemView : FrameLayout {
       viewPersonCreditsItemRoot.isEnabled = true
       viewPersonCreditsItemPlaceholder.gone()
       viewPersonCreditsItemImage.visible()
-      Glide.with(this@PersonDetailsCreditsItemView)
+      Glide
+        .with(this@PersonDetailsCreditsItemView)
         .clear(viewPersonCreditsItemImage)
     }
   }

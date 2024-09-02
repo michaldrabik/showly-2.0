@@ -48,7 +48,11 @@ data class ListDetailsItem(
       return if (requireShow().firstAired.isBlank()) 0 else ZonedDateTime.parse(requireShow().firstAired).toMillis()
     }
     if (isMovie()) {
-      return requireMovie().released?.atStartOfDay()?.toInstant(ZoneOffset.UTC)?.toEpochMilli() ?: 0
+      return requireMovie()
+        .released
+        ?.atStartOfDay()
+        ?.toInstant(ZoneOffset.UTC)
+        ?.toEpochMilli() ?: 0
     }
     throw IllegalStateException()
   }

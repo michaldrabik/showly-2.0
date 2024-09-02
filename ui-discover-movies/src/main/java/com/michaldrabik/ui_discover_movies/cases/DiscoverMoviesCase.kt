@@ -95,8 +95,7 @@ internal class DiscoverMoviesCase @Inject constructor(
         } else {
           !collectionIds.contains(it.traktId)
         }
-      }
-      .sortedBy(filters?.feedOrder ?: HOT)
+      }.sortedBy(filters?.feedOrder ?: HOT)
       .mapIndexed { index, movie ->
         async {
           val itemType = imageTypeProvider.getImageType(index)
@@ -110,8 +109,7 @@ internal class DiscoverMoviesCase @Inject constructor(
             translation = translation,
           )
         }
-      }
-      .awaitAll()
+      }.awaitAll()
       .toList()
   }
 

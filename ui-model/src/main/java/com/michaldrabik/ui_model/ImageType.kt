@@ -11,13 +11,12 @@ enum class ImageType(
   PROFILE(6, "profile"),
   ;
 
-  fun getSpan(isTablet: Boolean): Int {
-    return when (this) {
+  fun getSpan(isTablet: Boolean): Int =
+    when (this) {
       POSTER -> 1
       FANART -> 2
       FANART_WIDE -> if (isTablet) 3 else 3
       TWITTER -> if (isTablet) 6 else 3
       PROFILE -> 1
     }
-  }
 }

@@ -14,8 +14,7 @@ import com.michaldrabik.ui_settings.databinding.FragmentSettingsSpoilersBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SettingsSpoilersFragment :
-  BaseFragment<SettingsSpoilersViewModel>(R.layout.fragment_settings_spoilers) {
+class SettingsSpoilersFragment : BaseFragment<SettingsSpoilersViewModel>(R.layout.fragment_settings_spoilers) {
 
   override val navigationId = R.id.settingsFragment
 

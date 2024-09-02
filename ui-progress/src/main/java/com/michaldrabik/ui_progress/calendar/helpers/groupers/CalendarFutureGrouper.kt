@@ -31,7 +31,9 @@ class CalendarFutureGrouper @Inject constructor() : CalendarGrouper {
       }
 
     items.forEach { item ->
-      val itemDays = item.episode.firstAired?.toLocalZone()?.truncatedTo(DAYS)
+      val itemDays = item.episode.firstAired
+        ?.toLocalZone()
+        ?.truncatedTo(DAYS)
       when {
         itemDays?.isEqual(nowDays) == true -> {
           itemsMap[R.string.textToday]?.add(item)

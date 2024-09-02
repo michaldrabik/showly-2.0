@@ -17,9 +17,10 @@ import com.michaldrabik.ui_streamings.recycler.StreamingAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MovieDetailsStreamingsFragment : BaseFragment<MovieDetailsStreamingsViewModel>(
-  R.layout.fragment_movie_details_streamings,
-) {
+class MovieDetailsStreamingsFragment :
+  BaseFragment<MovieDetailsStreamingsViewModel>(
+    R.layout.fragment_movie_details_streamings,
+  ) {
 
   private val parentViewModel by viewModels<MovieDetailsViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<MovieDetailsStreamingsViewModel>()

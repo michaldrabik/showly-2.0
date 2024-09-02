@@ -73,8 +73,8 @@ class TraktImportWatchedRunner @Inject constructor(
     return 0
   }
 
-  private suspend fun runSyncActivity(): SyncActivity {
-    return try {
+  private suspend fun runSyncActivity(): SyncActivity =
+    try {
       remoteAuthSource.fetchSyncActivity()
     } catch (error: Throwable) {
       if (retryCount.getAndIncrement() < MAX_IMPORT_RETRY_COUNT) {
@@ -85,10 +85,9 @@ class TraktImportWatchedRunner @Inject constructor(
         throw error
       }
     }
-  }
 
-  private suspend fun runShows(activity: SyncActivity) {
-    return try {
+  private suspend fun runShows(activity: SyncActivity) =
+    try {
       importWatchedShows(activity)
     } catch (error: Throwable) {
       if (retryCount.getAndIncrement() < MAX_IMPORT_RETRY_COUNT) {
@@ -99,7 +98,6 @@ class TraktImportWatchedRunner @Inject constructor(
         throw error
       }
     }
-  }
 
   private suspend fun importWatchedShows(syncActivity: SyncActivity) {
     val mutex = Mutex()
@@ -120,11 +118,13 @@ class TraktImportWatchedRunner @Inject constructor(
         return@withContext 0
       }
 
-      val syncResults = remoteAuthSource.fetchSyncWatchedShows("full")
+      val syncResults = remoteAuthSource
+        .fetchSyncWatchedShows("full")
         .distinctBy { it.show?.ids?.trakt }
 
       Timber.d("Importing hidden shows...")
-      remoteAuthSource.fetchHiddenShows()
+      remoteAuthSource
+        .fetchHiddenShows()
         .forEach { item ->
           item.show?.let {
             val show = mappers.show.fromNetwork(it)
@@ -249,7 +249,8 @@ class TraktImportWatchedRunner @Inject constructor(
         ?.filterNot { localEpisodesIds.contains(it.ids?.trakt) }
         ?.map { episode ->
           val syncEpisode = syncItem.seasons
-            ?.find { it.number == season.number }?.episodes
+            ?.find { it.number == season.number }
+            ?.episodes
             ?.find { it.number == episode.number }
 
           val watchedAt = syncEpisode?.last_watched_at?.toZonedDateTime()
@@ -310,7 +311,8 @@ class TraktImportWatchedRunner @Inject constructor(
         return@withContext
       }
 
-      val syncItems = remoteAuthSource.fetchSyncWatchedMovies("full")
+      val syncItems = remoteAuthSource
+        .fetchSyncWatchedMovies("full")
         .filter { it.movie != null }
         .distinctBy { it.movie?.ids?.trakt }
 

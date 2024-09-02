@@ -88,7 +88,8 @@ class SettingsGeneralMainCase @Inject constructor(
   suspend fun setLanguage(language: AppLanguage) {
     settingsRepository.run {
       this.language = language.code
-      val unused = AppLanguage.values()
+      val unused = AppLanguage
+        .values()
         .filter { it.code != Config.DEFAULT_LANGUAGE && it != language }
         .map { it.code }
       clearUnusedTranslations(unused)
@@ -140,7 +141,5 @@ class SettingsGeneralMainCase @Inject constructor(
     settingsRepository.viewMode.tabletGridSpanSize = columns
   }
 
-  fun getTabletsColumns(): Int {
-    return settingsRepository.viewMode.tabletGridSpanSize
-  }
+  fun getTabletsColumns(): Int = settingsRepository.viewMode.tabletGridSpanSize
 }

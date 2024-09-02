@@ -24,9 +24,8 @@ import com.michaldrabik.ui_model.Tip
 
 abstract class BaseFragment<T : ViewModel>(
   @LayoutRes contentLayoutId: Int,
-) :
-  Fragment(contentLayoutId),
-    TipsHost {
+) : Fragment(contentLayoutId),
+  TipsHost {
 
   protected abstract val viewModel: T
   open val navigationId: Int = 0

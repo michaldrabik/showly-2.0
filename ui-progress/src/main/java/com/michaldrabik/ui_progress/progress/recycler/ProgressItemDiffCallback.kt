@@ -72,12 +72,11 @@ class ProgressItemDiffCallback : DiffUtil.ItemCallback<ProgressListItem>() {
   private fun areContentsTheSame(
     oldItem: ProgressListItem.Filters,
     newItem: ProgressListItem.Filters,
-  ): Boolean {
-    return oldItem.sortOrder == newItem.sortOrder &&
+  ): Boolean =
+    oldItem.sortOrder == newItem.sortOrder &&
       oldItem.sortType == newItem.sortType &&
       oldItem.newAtTop == newItem.newAtTop &&
       oldItem.isUpcoming == newItem.isUpcoming &&
       oldItem.isUpcomingEnabled == newItem.isUpcomingEnabled &&
       oldItem.isOnHold == newItem.isOnHold
-  }
 }

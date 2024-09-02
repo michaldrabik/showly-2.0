@@ -59,7 +59,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), TextWatcherAdapter {
+class SearchFragment :
+  BaseFragment<SearchViewModel>(R.layout.fragment_search),
+  TextWatcherAdapter {
 
   companion object {
     private const val ARG_HEADER_TRANSLATION = "ARG_HEADER_TRANSLATION"
@@ -281,9 +283,10 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
 
   private fun openShowDetails(item: SearchListItem) {
     disableUi()
-    binding.searchRoot.fadeOut(150) {
-      openDetails(item)
-    }.add(animations)
+    binding.searchRoot
+      .fadeOut(150) {
+        openDetails(item)
+      }.add(animations)
   }
 
   private fun openDetails(item: SearchListItem) {

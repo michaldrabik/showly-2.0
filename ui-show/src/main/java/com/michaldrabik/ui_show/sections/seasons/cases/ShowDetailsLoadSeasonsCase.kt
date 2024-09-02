@@ -50,7 +50,8 @@ class ShowDetailsLoadSeasonsCase @Inject constructor(
           loadLocalSeasons(show, showSpecialSeasons)
         }
 
-        val remoteSeasons = remoteSource.trakt.fetchSeasons(show.traktId)
+        val remoteSeasons = remoteSource.trakt
+          .fetchSeasons(show.traktId)
           .map { mappers.season.fromNetwork(it) }
           .filter { it.episodes.isNotEmpty() }
           .filter { if (!showSpecialSeasons) !it.isSpecial() else true }
@@ -72,11 +73,12 @@ class ShowDetailsLoadSeasonsCase @Inject constructor(
     showSpecials: Boolean,
   ): SeasonsBundle {
     val localEpisodes = localSource.episodes.getAllByShowId(show.traktId)
-    val localSeasons = localSource.seasons.getAllByShowId(show.traktId).map { season ->
-      val seasonEpisodes = localEpisodes.filter { ep -> ep.idSeason == season.idTrakt }
-      mappers.season.fromDatabase(season, seasonEpisodes)
-    }
-      .filter { it.episodes.isNotEmpty() }
+    val localSeasons = localSource.seasons
+      .getAllByShowId(show.traktId)
+      .map { season ->
+        val seasonEpisodes = localEpisodes.filter { ep -> ep.idSeason == season.idTrakt }
+        mappers.season.fromDatabase(season, seasonEpisodes)
+      }.filter { it.episodes.isNotEmpty() }
       .filter { if (!showSpecials) !it.isSpecial() else true }
 
     val seasonsItems = mapToSeasonItems(localSeasons, show)
@@ -97,22 +99,23 @@ class ShowDetailsLoadSeasonsCase @Inject constructor(
           userRating = seasonsRatings.find { rating -> rating.idTrakt == it.ids.trakt },
           rateAllowed = isSignedIn,
         )
-        val episodes = it.episodes.map { episode ->
-          async {
-            val rating = ratingsRepository.shows.loadRating(episode)
-            val translation = translationsRepository.loadTranslation(episode, show.ids.trakt, onlyLocal = true)
-            EpisodeListItem(
-              episode = episode,
-              season = it,
-              isWatched = false,
-              translation = translation,
-              myRating = rating,
-              dateFormat = format,
-              isAnime = show.isAnime,
-              spoilers = spoilers,
-            )
-          }
-        }.awaitAll()
+        val episodes = it.episodes
+          .map { episode ->
+            async {
+              val rating = ratingsRepository.shows.loadRating(episode)
+              val translation = translationsRepository.loadTranslation(episode, show.ids.trakt, onlyLocal = true)
+              EpisodeListItem(
+                episode = episode,
+                season = it,
+                isWatched = false,
+                translation = translation,
+                myRating = rating,
+                dateFormat = format,
+                isAnime = show.isAnime,
+                spoilers = spoilers,
+              )
+            }
+          }.awaitAll()
         SeasonListItem(
           show = show,
           season = it,
@@ -123,7 +126,6 @@ class ShowDetailsLoadSeasonsCase @Inject constructor(
           isRatingHidden = spoilers.isEpisodeRatingHidden,
           isRatingTapToReveal = spoilers.isTapToReveal,
         )
-      }
-      .sortedByDescending { it.season.number }
+      }.sortedByDescending { it.season.number }
   }
 }

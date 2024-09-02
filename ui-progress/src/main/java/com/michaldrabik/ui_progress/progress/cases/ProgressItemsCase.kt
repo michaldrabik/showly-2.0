@@ -66,7 +66,8 @@ class ProgressItemsCase @Inject constructor(
       val filtersItem = loadFiltersItem(isUpcomingEnabled)
       val spoilers = settingsRepository.spoilers.getAll()
 
-      val items = showsRepository.myShows.loadAll()
+      val items = showsRepository.myShows
+        .loadAll()
         .map { show ->
           async {
             val nextEpisode = findNextEpisode(show.traktId, nextEpisodeType, upcomingLimit)
@@ -194,8 +195,14 @@ class ProgressItemsCase @Inject constructor(
   ) = items.filter {
     it.show.title.contains(query, true) ||
       it.episode?.title?.contains(query, true) == true ||
-      it.translations?.show?.title?.contains(query, true) == true ||
-      it.translations?.episode?.title?.contains(query, true) == true
+      it.translations
+        ?.show
+        ?.title
+        ?.contains(query, true) == true ||
+      it.translations
+        ?.episode
+        ?.title
+        ?.contains(query, true) == true
   }
 
   private suspend fun groupItems(
@@ -276,8 +283,8 @@ class ProgressItemsCase @Inject constructor(
       }
     }
 
-  private fun loadFiltersItem(isUpcomingEnabled: Boolean): ProgressListItem.Filters {
-    return ProgressListItem.Filters(
+  private fun loadFiltersItem(isUpcomingEnabled: Boolean): ProgressListItem.Filters =
+    ProgressListItem.Filters(
       newAtTop = settingsRepository.sorting.progressShowsNewAtTop,
       sortOrder = settingsRepository.sorting.progressShowsSortOrder,
       sortType = settingsRepository.sorting.progressShowsSortType,
@@ -285,5 +292,4 @@ class ProgressItemsCase @Inject constructor(
       isUpcomingEnabled = isUpcomingEnabled,
       isOnHold = settingsRepository.filters.progressShowsOnHold,
     )
-  }
 }

@@ -54,7 +54,8 @@ class EpisodeDetailsViewModel @Inject constructor(
   private val translationsRepository: TranslationsRepository,
   private val commentsRepository: CommentsRepository,
   private val userTraktManager: UserTraktManager,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val imageState = MutableStateFlow<Image?>(null)
   private val imageLoadingState = MutableStateFlow(false)
@@ -148,14 +149,14 @@ class EpisodeDetailsViewModel @Inject constructor(
 
         val isSignedIn = userTraktManager.isAuthorized()
         val username = userTraktManager.getUsername()
-        val comments = commentsRepository.loadEpisodeComments(idTrakt, season, episode)
+        val comments = commentsRepository
+          .loadEpisodeComments(idTrakt, season, episode)
           .map {
             it.copy(
               isMe = it.user.username == username,
               isSignedIn = isSignedIn,
             )
-          }
-          .partition { it.isMe }
+          }.partition { it.isMe }
 
         signedInState.value = isSignedIn
         commentsState.value = comments.first + comments.second
@@ -184,7 +185,8 @@ class EpisodeDetailsViewModel @Inject constructor(
 
         val isSignedIn = userTraktManager.isAuthorized()
         val username = userTraktManager.getUsername()
-        val replies = commentsRepository.loadReplies(comment.id)
+        val replies = commentsRepository
+          .loadReplies(comment.id)
           .map {
             it.copy(
               isSignedIn = isSignedIn,

@@ -63,15 +63,15 @@ class MyMovieFanartView : FrameLayout {
         myMovieFanartRoot.setBackgroundResource(R.drawable.bg_media_view_placeholder)
         return
       }
-      Glide.with(this@MyMovieFanartView)
+      Glide
+        .with(this@MyMovieFanartView)
         .load(image.fullFileUrl)
         .transform(CenterCrop(), RoundedCorners(cornerRadius))
         .transition(DrawableTransitionOptions.withCrossFade(IMAGE_FADE_DURATION_MS))
         .withFailListener {
           myMovieFanartPlaceholder.visible()
           myMovieFanartImage.gone()
-        }
-        .into(myMovieFanartImage)
+        }.into(myMovieFanartImage)
     }
   }
 

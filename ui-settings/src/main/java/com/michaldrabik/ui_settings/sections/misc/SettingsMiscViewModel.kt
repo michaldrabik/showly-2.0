@@ -25,7 +25,8 @@ import javax.inject.Inject
 class SettingsMiscViewModel @Inject constructor(
   private val userCase: SettingsMiscUserCase,
   private val cacheCase: SettingsMiscCacheCase,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val userIdState = MutableStateFlow("")
   private val loadingState = MutableStateFlow(false)

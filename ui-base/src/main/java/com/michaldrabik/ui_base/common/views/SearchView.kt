@@ -17,7 +17,9 @@ import com.michaldrabik.ui_base.utilities.extensions.expandTouch
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 
-class SearchView : FrameLayout, CoordinatorLayout.AttachedBehavior {
+class SearchView :
+  FrameLayout,
+  CoordinatorLayout.AttachedBehavior {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)

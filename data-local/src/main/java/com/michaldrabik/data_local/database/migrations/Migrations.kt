@@ -8,7 +8,9 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 const val DATABASE_VERSION = 41
 const val DATABASE_NAME = "SHOWLY2_DB_2"
 
-class Migrations(context: Context) {
+class Migrations(
+  context: Context,
+) {
 
   private val migration2 = object : Migration(1, 2) {
     override fun migrate(database: SupportSQLiteDatabase) {

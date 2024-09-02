@@ -205,5 +205,8 @@ class CommentsFragment : BaseFragment<CommentsViewModel>(R.layout.fragment_comme
   }
 
   @Parcelize
-  data class Options(val id: IdTrakt, val mode: Mode) : Parcelable
+  data class Options(
+    val id: IdTrakt,
+    val mode: Mode,
+  ) : Parcelable
 }

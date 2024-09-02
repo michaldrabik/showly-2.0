@@ -90,5 +90,7 @@ class PersonDetailsAdapter(
 
   override fun getItemCount() = asyncDiffer.currentList.size
 
-  class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+  class BaseViewHolder(
+    itemView: View,
+  ) : RecyclerView.ViewHolder(itemView)
 }

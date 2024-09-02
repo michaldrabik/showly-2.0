@@ -38,5 +38,7 @@ class MovieCollectionAdapter(
 
   override fun getItemCount() = asyncDiffer.currentList.size
 
-  class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+  class ViewHolder(
+    itemView: View,
+  ) : RecyclerView.ViewHolder(itemView)
 }

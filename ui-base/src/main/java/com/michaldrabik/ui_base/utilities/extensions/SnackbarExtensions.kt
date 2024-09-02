@@ -14,8 +14,8 @@ fun ViewGroup.showSnackbar(
   @ColorInt backgroundColor: Int,
   length: Int,
   action: (() -> Unit)? = null,
-): Snackbar {
-  return Snackbar.make(this, message, length).apply {
+): Snackbar =
+  Snackbar.make(this, message, length).apply {
     setTextMaxLines(5)
     setTextColor(textColor)
     setBackgroundTint(backgroundColor)
@@ -28,15 +28,14 @@ fun ViewGroup.showSnackbar(
     }
     show()
   }
-}
 
 fun ViewGroup.showInfoSnackbar(
   message: String,
   actionText: Int = R.string.textOk,
   length: Int = LENGTH_SHORT,
   action: (() -> Unit)? = null,
-): Snackbar {
-  return showSnackbar(
+): Snackbar =
+  showSnackbar(
     message = message,
     actionText = actionText,
     textColor = context.colorFromAttr(R.attr.textColorInfoSnackbar),
@@ -44,14 +43,13 @@ fun ViewGroup.showInfoSnackbar(
     length = length,
     action = action,
   )
-}
 
 fun ViewGroup.showErrorSnackbar(
   message: String,
   actionText: Int = R.string.textOk,
   action: () -> Unit = {},
-): Snackbar {
-  return showSnackbar(
+): Snackbar =
+  showSnackbar(
     message = message,
     actionText = actionText,
     textColor = context.colorFromAttr(R.attr.textColorErrorSnackbar),
@@ -59,4 +57,3 @@ fun ViewGroup.showErrorSnackbar(
     length = LENGTH_INDEFINITE,
     action = action,
   )
-}

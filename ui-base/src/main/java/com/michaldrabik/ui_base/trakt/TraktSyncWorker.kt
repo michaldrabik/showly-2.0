@@ -95,13 +95,13 @@ class TraktSyncWorker @AssistedInject constructor(
 
       val request = OneTimeWorkRequestBuilder<TraktSyncWorker>()
         .setConstraints(
-          Constraints.Builder()
+          Constraints
+            .Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .setRequiresBatteryNotLow(false)
             .setRequiresStorageNotLow(false)
             .build(),
-        )
-        .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+        ).setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
         .setInputData(inputData)
         .addTag(TAG_ID)
         .addTag(TAG_ONE_OFF)
@@ -133,11 +133,11 @@ class TraktSyncWorker @AssistedInject constructor(
 
       val request = PeriodicWorkRequestBuilder<TraktSyncWorker>(schedule.duration, schedule.durationUnit)
         .setConstraints(
-          Constraints.Builder()
+          Constraints
+            .Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build(),
-        )
-        .setInputData(inputData)
+        ).setInputData(inputData)
         .setInitialDelay(schedule.duration, schedule.durationUnit)
         .addTag(TAG_ID)
         .addTag(TAG)

@@ -38,7 +38,8 @@ class CreateListCase @Inject constructor(
       val list = remoteSource.postCreateList(name, description).run {
         mappers.customList.fromNetwork(this)
       }
-      return listsRepository.createList(name, description, list.idTrakt, list.idSlug)
+      return listsRepository
+        .createList(name, description, list.idTrakt, list.idSlug)
         .also { eventsManager.sendEvent(TraktListQuickSyncSuccess) }
     }
     return listsRepository.createList(name, description, null, null)
@@ -55,13 +56,15 @@ class CreateListCase @Inject constructor(
         val result = remoteSource.postUpdateList(updateList).run {
           mappers.customList.fromNetwork(this)
         }
-        listsRepository.updateList(list.id, result.idTrakt, result.idSlug, result.name, result.description)
+        listsRepository
+          .updateList(list.id, result.idTrakt, result.idSlug, result.name, result.description)
           .also { eventsManager.sendEvent(TraktQuickSyncSuccess(1)) }
       } catch (error: Throwable) {
         if (ErrorHelper.parse(error) is ResourceNotFoundError) {
           // If list does not exist in Trakt account we need to create it and upload items as well.
           delay(1000)
-          val result = remoteSource.postCreateList(updateList.name, updateList.description)
+          val result = remoteSource
+            .postCreateList(updateList.name, updateList.description)
             .run { mappers.customList.fromNetwork(this) }
           listsRepository.updateList(list.id, result.idTrakt, result.idSlug, result.name, result.description)
 
@@ -73,7 +76,8 @@ class CreateListCase @Inject constructor(
             remoteSource.postAddListItems(result.idTrakt!!, showsIds, moviesIds)
           }
 
-          listsRepository.updateList(list.id, result.idTrakt, result.idSlug, result.name, result.description)
+          listsRepository
+            .updateList(list.id, result.idTrakt, result.idSlug, result.name, result.description)
             .also { eventsManager.sendEvent(TraktQuickSyncSuccess(1)) }
         } else {
           Logger.record(error, "CreateListCase::updateList()")

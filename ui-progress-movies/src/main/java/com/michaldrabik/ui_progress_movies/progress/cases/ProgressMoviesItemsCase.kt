@@ -44,27 +44,28 @@ class ProgressMoviesItemsCase @Inject constructor(
       val sortType = settingsRepository.sorting.progressMoviesSortType
 
       val watchlistMovies = moviesRepository.watchlistMovies.loadAll()
-      val items = watchlistMovies.map { movie ->
-        async {
-          val rating = ratingsRepository.movies.loadRatings(listOf(movie))
-          var translation: Translation? = null
-          if (language != Config.DEFAULT_LANGUAGE) {
-            translation = translationsRepository.loadTranslation(movie, language, onlyLocal = true)
-          }
+      val items = watchlistMovies
+        .map { movie ->
+          async {
+            val rating = ratingsRepository.movies.loadRatings(listOf(movie))
+            var translation: Translation? = null
+            if (language != Config.DEFAULT_LANGUAGE) {
+              translation = translationsRepository.loadTranslation(movie, language, onlyLocal = true)
+            }
 
-          ProgressMovieListItem.MovieItem(
-            movie = movie,
-            image = imagesProvider.findCachedImage(movie, ImageType.POSTER),
-            isLoading = false,
-            isPinned = pinnedItemsRepository.isItemPinned(movie),
-            translation = translation,
-            dateFormat = dateFormat,
-            sortOrder = sortOrder,
-            userRating = rating.firstOrNull()?.rating,
-            spoilers = spoilers,
-          )
-        }
-      }.awaitAll()
+            ProgressMovieListItem.MovieItem(
+              movie = movie,
+              image = imagesProvider.findCachedImage(movie, ImageType.POSTER),
+              isLoading = false,
+              isPinned = pinnedItemsRepository.isItemPinned(movie),
+              translation = translation,
+              dateFormat = dateFormat,
+              sortOrder = sortOrder,
+              userRating = rating.firstOrNull()?.rating,
+              spoilers = spoilers,
+            )
+          }
+        }.awaitAll()
 
       val filtered = filterItems(searchQuery, items)
       val sorted = filtered.sortedWith(sorter.sort(sortOrder, sortType))
@@ -81,12 +82,11 @@ class ProgressMoviesItemsCase @Inject constructor(
   private fun loadFiltersItem(
     sortOrder: SortOrder,
     sortType: SortType,
-  ): ProgressMovieListItem.FiltersItem {
-    return ProgressMovieListItem.FiltersItem(
+  ): ProgressMovieListItem.FiltersItem =
+    ProgressMovieListItem.FiltersItem(
       sortOrder = sortOrder,
       sortType = sortType,
     )
-  }
 
   private fun filterItems(
     query: String,

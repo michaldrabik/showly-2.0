@@ -18,11 +18,10 @@ class DiscoverMoviesModule {
   @Provides
   internal fun providesItemTypeProvider(
     @ApplicationContext context: Context,
-  ): ImageTypeProvider {
-    return if (context.isTablet()) {
+  ): ImageTypeProvider =
+    if (context.isTablet()) {
       TabletImageTypeProvider()
     } else {
       PhoneImageTypeProvider()
     }
-  }
 }

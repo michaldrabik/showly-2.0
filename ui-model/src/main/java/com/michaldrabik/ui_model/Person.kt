@@ -30,7 +30,9 @@ data class Person(
       else -> null
     }
 
-  enum class Department(val slug: String) {
+  enum class Department(
+    val slug: String,
+  ) {
     ACTING("Acting"),
     DIRECTING("Directing"),
     WRITING("Writing"),
@@ -38,7 +40,9 @@ data class Person(
     UNKNOWN("-"),
   }
 
-  enum class Job(val slug: String) {
+  enum class Job(
+    val slug: String,
+  ) {
     DIRECTOR("Director"),
     WRITER("Writer"),
     STORY("Story"),

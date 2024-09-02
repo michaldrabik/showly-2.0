@@ -209,20 +209,22 @@ class FollowedMoviesFragment :
       followedMoviesModeTabs.fadeOut(duration = 200).add(animations)
       followedMoviesTabs.fadeOut(duration = 200).add(animations)
       followedMoviesIcons.fadeOut(duration = 200).add(animations)
-      followedMoviesPager.fadeOut(duration = 200) {
-        super.navigateTo(R.id.actionFollowedMoviesFragmentToSearch, null)
-      }.add(animations)
+      followedMoviesPager
+        .fadeOut(duration = 200) {
+          super.navigateTo(R.id.actionFollowedMoviesFragmentToSearch, null)
+        }.add(animations)
     }
   }
 
   fun openMovieDetails(movie: Movie) {
     disableUi()
     hideNavigation()
-    binding.followedMoviesRoot.fadeOut(150) {
-      val bundle = Bundle().apply { putLong(ARG_MOVIE_ID, movie.traktId) }
-      navigateToSafe(R.id.actionFollowedMoviesFragmentToMovieDetailsFragment, bundle)
-      exitSearch()
-    }.add(animations)
+    binding.followedMoviesRoot
+      .fadeOut(150) {
+        val bundle = Bundle().apply { putLong(ARG_MOVIE_ID, movie.traktId) }
+        navigateToSafe(R.id.actionFollowedMoviesFragmentToMovieDetailsFragment, bundle)
+        exitSearch()
+      }.add(animations)
   }
 
   fun openMovieMenu(movie: Movie) {
@@ -274,7 +276,12 @@ class FollowedMoviesFragment :
         followedMoviesIcons,
         followedMoviesSearchLocalView,
       ).forEach {
-        it.animate().translationY(0F).setDuration(duration).add(animations)?.start()
+        it
+          .animate()
+          .translationY(0F)
+          .setDuration(duration)
+          .add(animations)
+          ?.start()
       }
     }
   }

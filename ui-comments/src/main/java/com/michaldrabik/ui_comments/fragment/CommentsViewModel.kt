@@ -41,7 +41,8 @@ class CommentsViewModel @Inject constructor(
   private val deleteCase: DeleteCommentCase,
   private val userManager: UserTraktManager,
   private val dateFormatProvider: DateFormatProvider,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val commentsState = MutableStateFlow<List<Comment>?>(null)
   private val loadingState = MutableStateFlow(false)

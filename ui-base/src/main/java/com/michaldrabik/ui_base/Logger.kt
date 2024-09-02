@@ -30,8 +30,17 @@ object Logger {
     val params = mutableListOf("Source" to source)
 
     val responseString = error.response()?.raw()?.toString() ?: ""
-    val requestString = error.response()?.raw()?.request?.toString() ?: ""
-    val requestBody = error.response()?.raw()?.request?.body?.asString()
+    val requestString = error
+      .response()
+      ?.raw()
+      ?.request
+      ?.toString() ?: ""
+    val requestBody = error
+      .response()
+      ?.raw()
+      ?.request
+      ?.body
+      ?.asString()
     val token = requestString.substringAfter("Bearer").trim().substringBefore("]")
 
     params.add("Response" to responseString)

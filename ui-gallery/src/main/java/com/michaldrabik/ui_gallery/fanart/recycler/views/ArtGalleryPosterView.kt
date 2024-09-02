@@ -44,7 +44,8 @@ class ArtGalleryPosterView : FrameLayout {
 
   private fun loadImage(image: Image) {
     with(binding) {
-      Glide.with(this@ArtGalleryPosterView)
+      Glide
+        .with(this@ArtGalleryPosterView)
         .load(image.fullFileUrl)
         .transform(CenterCrop(), RoundedCorners(cornerRadius))
         .withFailListener { viewGalleryPosterImageProgress.gone() }

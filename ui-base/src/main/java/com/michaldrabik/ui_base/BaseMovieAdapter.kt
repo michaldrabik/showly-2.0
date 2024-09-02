@@ -7,7 +7,8 @@ import com.michaldrabik.ui_base.common.MovieListItem
 
 abstract class BaseMovieAdapter<Item : MovieListItem>(
   val listChangeListener: (() -> Unit)? = null,
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), AsyncListDiffer.ListListener<Item> {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
+  AsyncListDiffer.ListListener<Item> {
 
   abstract val asyncDiffer: AsyncListDiffer<Item>
 
@@ -38,5 +39,7 @@ abstract class BaseMovieAdapter<Item : MovieListItem>(
     }
   }
 
-  class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+  class BaseViewHolder(
+    itemView: View,
+  ) : RecyclerView.ViewHolder(itemView)
 }

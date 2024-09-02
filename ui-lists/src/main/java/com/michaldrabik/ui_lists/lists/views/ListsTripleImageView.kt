@@ -76,15 +76,15 @@ class ListsTripleImageView : FrameLayout {
       return
     }
 
-    Glide.with(this)
+    Glide
+      .with(this)
       .load(itemImage.image.fullFileUrl)
       .transform(CenterCrop(), RoundedCorners(cornerRadius))
       .transition(DrawableTransitionOptions.withCrossFade(Config.IMAGE_FADE_DURATION_MS))
       .withSuccessListener {
         imageView.visible()
         placeholderView.invisible()
-      }
-      .withFailListener {
+      }.withFailListener {
         if (itemImage.image.status == ImageStatus.AVAILABLE) {
           imageView.invisible()
           placeholderView.visible()
@@ -92,8 +92,7 @@ class ListsTripleImageView : FrameLayout {
         }
         val force = (itemImage.image.status == ImageStatus.UNKNOWN)
         missingImageListener?.invoke(itemImage, force)
-      }
-      .into(imageView)
+      }.into(imageView)
   }
 
   private fun clear() {

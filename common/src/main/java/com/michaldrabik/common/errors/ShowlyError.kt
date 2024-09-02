@@ -1,6 +1,8 @@
 package com.michaldrabik.common.errors
 
-sealed class ShowlyError(errorMessage: String?) : Throwable(errorMessage) {
+sealed class ShowlyError(
+  errorMessage: String?,
+) : Throwable(errorMessage) {
 
   object ValidationError : ShowlyError("ValidationError")
 
@@ -12,7 +14,9 @@ sealed class ShowlyError(errorMessage: String?) : Throwable(errorMessage) {
 
   object AccountLimitsError : ShowlyError("AccountLimitsError")
 
-  data class UnauthorizedError(val errorMessage: String?) : ShowlyError(errorMessage)
+  data class UnauthorizedError(
+    val errorMessage: String?,
+  ) : ShowlyError(errorMessage)
 
   data class UnknownHttpError(
     val errorMessage: String?,

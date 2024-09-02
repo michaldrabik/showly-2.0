@@ -37,7 +37,8 @@ fun String?.toUtcDateTime(): ZonedDateTime? =
   if (this.isNullOrBlank()) {
     null
   } else {
-    ZonedDateTime.parse(
-      this,
-    ).withZoneSameInstant(ZoneId.of("UTC"))
+    ZonedDateTime
+      .parse(
+        this,
+      ).withZoneSameInstant(ZoneId.of("UTC"))
   }

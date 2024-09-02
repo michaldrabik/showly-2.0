@@ -18,7 +18,9 @@ import com.michaldrabik.ui_settings.sections.spoilers.SettingsSpoilersFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_settings), OnTraktAuthorizeListener {
+class SettingsFragment :
+  BaseFragment<SettingsViewModel>(R.layout.fragment_settings),
+  OnTraktAuthorizeListener {
 
   companion object {
     const val REQUEST_SETTINGS = "REQUEST_SETTINGS"

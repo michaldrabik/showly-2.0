@@ -22,7 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsNotificationsViewModel @Inject constructor(
   private val mainCase: SettingsNotificationsMainCase,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val settingsState = MutableStateFlow<Settings?>(null)
   private val loadingState = MutableStateFlow(false)

@@ -6,7 +6,9 @@ import com.michaldrabik.data_remote.tmdb.model.TmdbPerson
 import com.michaldrabik.data_remote.tmdb.model.TmdbStreamingCountry
 import com.michaldrabik.data_remote.tmdb.model.TmdbTranslation
 
-internal class TmdbApi(private val service: TmdbService) : TmdbRemoteDataSource {
+internal class TmdbApi(
+  private val service: TmdbService,
+) : TmdbRemoteDataSource {
 
   override suspend fun fetchShowImages(tmdbId: Long) =
     try {
@@ -82,9 +84,7 @@ internal class TmdbApi(private val service: TmdbService) : TmdbRemoteDataSource 
     return result.results[code]
   }
 
-  override suspend fun fetchPersonDetails(id: Long): TmdbPerson {
-    return service.fetchPersonDetails(id)
-  }
+  override suspend fun fetchPersonDetails(id: Long): TmdbPerson = service.fetchPersonDetails(id)
 
   override suspend fun fetchPersonTranslations(id: Long): Map<String, TmdbTranslation.Data> {
     val result = service.fetchPersonTranslation(id).translations ?: emptyList()

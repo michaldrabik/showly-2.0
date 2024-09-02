@@ -26,7 +26,8 @@ class MoviesExternalRatingsRepository @Inject constructor(
       }
     }
 
-    val remoteRatings = remoteSource.omdb.fetchOmdbData(movie.ids.imdb.id)
+    val remoteRatings = remoteSource.omdb
+      .fetchOmdbData(movie.ids.imdb.id)
       .let { mappers.ratings.fromNetwork(it) }
       .copy(trakt = Ratings.Value(String.format(Locale.ENGLISH, "%.1f", movie.rating), false))
 

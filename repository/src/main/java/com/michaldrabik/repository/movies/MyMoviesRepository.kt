@@ -23,15 +23,18 @@ class MyMoviesRepository @Inject constructor(
     }
 
   suspend fun loadAll() =
-    localSource.myMovies.getAll()
+    localSource.myMovies
+      .getAll()
       .map { mappers.movie.fromDatabase(it) }
 
   suspend fun loadAll(ids: List<IdTrakt>) =
-    localSource.myMovies.getAll(ids.map { it.id })
+    localSource.myMovies
+      .getAll(ids.map { it.id })
       .map { mappers.movie.fromDatabase(it) }
 
   suspend fun loadAllRecent(amount: Int) =
-    localSource.myMovies.getAllRecent(amount)
+    localSource.myMovies
+      .getAllRecent(amount)
       .map { mappers.movie.fromDatabase(it) }
 
   suspend fun loadAllIds() = localSource.myMovies.getAllTraktIds()

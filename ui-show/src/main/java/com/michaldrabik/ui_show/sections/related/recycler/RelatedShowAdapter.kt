@@ -33,5 +33,7 @@ class RelatedShowAdapter(
     (holder.itemView as RelatedShowView).bind(item)
   }
 
-  class ViewHolderShow(itemView: View) : RecyclerView.ViewHolder(itemView)
+  class ViewHolderShow(
+    itemView: View,
+  ) : RecyclerView.ViewHolder(itemView)
 }

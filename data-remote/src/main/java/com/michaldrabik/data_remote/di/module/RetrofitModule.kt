@@ -26,7 +26,8 @@ object RetrofitModule {
     @Named("okHttpTrakt") okHttpClient: OkHttpClient,
     moshi: Moshi,
   ): Retrofit =
-    Retrofit.Builder()
+    Retrofit
+      .Builder()
       .client(okHttpClient)
       .addConverterFactory(MoshiConverterFactory.create(moshi))
       .baseUrl(TRAKT_BASE_URL)
@@ -39,7 +40,8 @@ object RetrofitModule {
     @Named("okHttpAuthorizedTrakt") okHttpClient: OkHttpClient,
     moshi: Moshi,
   ): Retrofit =
-    Retrofit.Builder()
+    Retrofit
+      .Builder()
       .client(okHttpClient)
       .addConverterFactory(MoshiConverterFactory.create(moshi))
       .baseUrl(TRAKT_BASE_URL)
@@ -52,7 +54,8 @@ object RetrofitModule {
     @Named("okHttpTmdb") okHttpClient: OkHttpClient,
     moshi: Moshi,
   ): Retrofit =
-    Retrofit.Builder()
+    Retrofit
+      .Builder()
       .client(okHttpClient)
       .addConverterFactory(MoshiConverterFactory.create(moshi))
       .baseUrl(TMDB_BASE_URL)
@@ -65,7 +68,8 @@ object RetrofitModule {
     @Named("okHttpOmdb") okHttpClient: OkHttpClient,
     moshi: Moshi,
   ): Retrofit =
-    Retrofit.Builder()
+    Retrofit
+      .Builder()
       .client(okHttpClient)
       .addConverterFactory(MoshiConverterFactory.create(moshi))
       .baseUrl(OMDB_BASE_URL)
@@ -78,7 +82,8 @@ object RetrofitModule {
     @Named("okHttpAws") okHttpClient: OkHttpClient,
     moshi: Moshi,
   ): Retrofit =
-    Retrofit.Builder()
+    Retrofit
+      .Builder()
       .client(okHttpClient)
       .addConverterFactory(MoshiConverterFactory.create(moshi))
       .baseUrl(AWS_BASE_URL)

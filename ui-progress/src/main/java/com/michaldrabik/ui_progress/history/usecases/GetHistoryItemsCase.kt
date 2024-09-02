@@ -116,8 +116,7 @@ internal class GetHistoryItemsCase @Inject constructor(
               dateFormat = dateFormat,
             )
           }
-        }
-        .awaitAll()
+        }.awaitAll()
         .filterNotNull()
 
       val filtersItem = listOf(HistoryListItem.Filters(periodFilter))
@@ -140,9 +139,18 @@ internal class GetHistoryItemsCase @Inject constructor(
     return items.filter {
       it.show.title.contains(query, true) ||
         it.episode.title.contains(query, true) ||
-        it.translations?.show?.title?.contains(query, true) == true ||
-        it.translations?.episode?.title?.contains(query, true) == true ||
-        it.episode.lastWatchedAt?.toLocalZone()?.format(dateFormat)?.contains(query, true) == true
+        it.translations
+          ?.show
+          ?.title
+          ?.contains(query, true) == true ||
+        it.translations
+          ?.episode
+          ?.title
+          ?.contains(query, true) == true ||
+        it.episode.lastWatchedAt
+          ?.toLocalZone()
+          ?.format(dateFormat)
+          ?.contains(query, true) == true
     }
   }
 
@@ -188,7 +196,8 @@ internal class GetHistoryItemsCase @Inject constructor(
       LAST_WEEK -> {
         val now = dateFromMillis(nowUtcMillis).toLocalZone()
 
-        val weekStartLocal = now.minusDays(now.dayOfWeek.ordinal.toLong())
+        val weekStartLocal = now
+          .minusDays(now.dayOfWeek.ordinal.toLong())
           .minusWeeks(1)
           .with(LocalTime.MIN)
         val weekStartUtc = weekStartLocal.toUtcZone().toMillis()

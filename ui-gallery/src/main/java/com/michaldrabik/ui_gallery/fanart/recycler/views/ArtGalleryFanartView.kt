@@ -39,7 +39,8 @@ class ArtGalleryFanartView : FrameLayout {
 
   private fun loadImage(image: Image) {
     with(binding) {
-      Glide.with(this@ArtGalleryFanartView)
+      Glide
+        .with(this@ArtGalleryFanartView)
         .load(image.fullFileUrl)
         .withFailListener { viewGalleryFanarImageProgress.gone() }
         .withSuccessListener { viewGalleryFanarImageProgress.gone() }

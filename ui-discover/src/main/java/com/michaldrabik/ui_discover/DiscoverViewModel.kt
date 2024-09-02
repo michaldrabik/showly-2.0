@@ -43,7 +43,8 @@ internal class DiscoverViewModel @Inject constructor(
   private val twitterCase: DiscoverTwitterCase,
   private val imagesProvider: ShowImagesProvider,
   workManager: WorkManager,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val itemsState = MutableStateFlow<List<DiscoverListItem>?>(null)
   private val loadingState = MutableStateFlow(false)

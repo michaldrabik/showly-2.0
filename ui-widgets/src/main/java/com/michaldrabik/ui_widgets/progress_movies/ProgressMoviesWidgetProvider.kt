@@ -31,7 +31,8 @@ class ProgressMoviesWidgetProvider : BaseWidgetProvider() {
     fun requestUpdate(context: Context) {
       val applicationContext = context.applicationContext
       val intent = Intent(applicationContext, ProgressMoviesWidgetProvider::class.java).apply {
-        val ids: IntArray = AppWidgetManager.getInstance(applicationContext)
+        val ids: IntArray = AppWidgetManager
+          .getInstance(applicationContext)
           .getAppWidgetIds(ComponentName(applicationContext, ProgressMoviesWidgetProvider::class.java))
         action = ACTION_APPWIDGET_UPDATE
         putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)

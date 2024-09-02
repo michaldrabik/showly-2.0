@@ -28,7 +28,8 @@ class MovieDetailsRelatedViewModel @Inject constructor(
   private val relatedCase: MovieDetailsRelatedCase,
   private val myMoviesCase: MovieDetailsMyMoviesCase,
   private val imagesProvider: MovieImagesProvider,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private lateinit var movie: Movie
 

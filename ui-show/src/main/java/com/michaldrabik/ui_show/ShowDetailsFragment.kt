@@ -193,7 +193,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           renderTitleDescription(show, translation, followedState, spoilers)
           renderExtraInfo(show)
           showDetailsShareButton.run {
-            isEnabled = show.ids.imdb.id.isNotBlank()
+            isEnabled = show.ids.imdb.id
+              .isNotBlank()
             alpha = if (isEnabled) 1.0F else 0.35F
             onClick { openShareSheet(show) }
           }
@@ -344,7 +345,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         showDetailsImage.isEnabled = false
         return
       }
-      Glide.with(this@ShowDetailsFragment)
+      Glide
+        .with(this@ShowDetailsFragment)
         .load(image.fullFileUrl)
         .transform(CenterCrop())
         .transition(withCrossFade(IMAGE_FADE_DURATION_MS))
@@ -353,13 +355,11 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           showDetailsPlaceholder.visible()
           showDetailsImage.isClickable = true
           showDetailsImage.isEnabled = true
-        }
-        .withSuccessListener {
+        }.withSuccessListener {
           showDetailsImageProgress.gone()
           showDetailsPlaceholder.gone()
           showDetailsTipGallery.fadeIf(!isTipShown(SHOW_DETAILS_GALLERY))
-        }
-        .into(showDetailsImage)
+        }.into(showDetailsImage)
     }
   }
 

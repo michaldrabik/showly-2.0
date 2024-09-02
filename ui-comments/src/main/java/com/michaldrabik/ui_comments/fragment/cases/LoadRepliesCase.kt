@@ -20,7 +20,8 @@ class LoadRepliesCase @Inject constructor(
       val isSignedIn = userManager.isAuthorized()
       val username = userManager.getUsername()
 
-      commentsRepository.loadReplies(comment.id)
+      commentsRepository
+        .loadReplies(comment.id)
         .map {
           it.copy(
             isSignedIn = isSignedIn,

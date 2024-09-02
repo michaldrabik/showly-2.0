@@ -139,15 +139,15 @@ class MovieDetailsCollectionItemView : FrameLayout {
       return
     }
 
-    Glide.with(this)
+    Glide
+      .with(this)
       .load(image.fullFileUrl)
       .transform(centerCropTransformation, cornersTransformation)
       .transition(DrawableTransitionOptions.withCrossFade(IMAGE_FADE_DURATION_MS))
       .withSuccessListener {
         binding.placeholderImage.invisible()
         loadTranslation(item)
-      }
-      .withFailListener {
+      }.withFailListener {
         if (image.status == ImageStatus.AVAILABLE) {
           binding.movieImage.invisible()
           binding.placeholderImage.fadeIn(IMAGE_FADE_DURATION_MS.toLong())
@@ -155,8 +155,7 @@ class MovieDetailsCollectionItemView : FrameLayout {
           return@withFailListener
         }
         onMissingImageListener?.invoke(item, false)
-      }
-      .into(binding.movieImage)
+      }.into(binding.movieImage)
   }
 
   private fun loadTranslation(item: MovieDetailsCollectionItem) {

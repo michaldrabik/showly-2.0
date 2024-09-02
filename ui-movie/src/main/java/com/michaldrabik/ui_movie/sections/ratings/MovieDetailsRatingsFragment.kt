@@ -18,9 +18,10 @@ import com.michaldrabik.ui_movie.helpers.MovieLink
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MovieDetailsRatingsFragment : BaseFragment<MovieDetailsRatingsViewModel>(
-  R.layout.fragment_movie_details_ratings,
-) {
+class MovieDetailsRatingsFragment :
+  BaseFragment<MovieDetailsRatingsViewModel>(
+    R.layout.fragment_movie_details_ratings,
+  ) {
 
   private val parentViewModel by viewModels<MovieDetailsViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<MovieDetailsRatingsViewModel>()

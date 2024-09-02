@@ -7,7 +7,9 @@ import com.michaldrabik.data_local.database.model.ShowStreaming
 import com.michaldrabik.data_local.sources.ShowStreamingsLocalDataSource
 
 @Dao
-interface ShowStreamingsDao : BaseDao<ShowStreaming>, ShowStreamingsLocalDataSource {
+interface ShowStreamingsDao :
+  BaseDao<ShowStreaming>,
+  ShowStreamingsLocalDataSource {
 
   @Transaction
   override suspend fun replace(

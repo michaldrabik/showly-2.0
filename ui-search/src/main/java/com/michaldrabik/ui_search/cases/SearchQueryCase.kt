@@ -45,7 +45,8 @@ class SearchQueryCase @Inject constructor(
       val watchlistMoviesIds = moviesRepository.watchlistMovies.loadAllIds()
       val spoilers = settingsRepository.spoilers.getAll()
 
-      remoteSource.trakt.fetchSearch(query, withMovies)
+      remoteSource.trakt
+        .fetchSearch(query, withMovies)
         .mapIndexed { index, item ->
           val order = index + 1
           async {

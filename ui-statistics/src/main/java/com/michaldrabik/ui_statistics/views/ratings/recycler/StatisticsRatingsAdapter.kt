@@ -30,5 +30,7 @@ class StatisticsRatingsAdapter(
     (holder.itemView as StatisticsRateItemView).bind(item)
   }
 
-  class ViewHolderShow(itemView: View) : RecyclerView.ViewHolder(itemView)
+  class ViewHolderShow(
+    itemView: View,
+  ) : RecyclerView.ViewHolder(itemView)
 }

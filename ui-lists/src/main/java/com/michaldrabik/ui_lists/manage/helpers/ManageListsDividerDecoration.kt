@@ -8,7 +8,9 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.ui_lists.R
 
-class ManageListsDividerDecoration(context: Context) : RecyclerView.ItemDecoration() {
+class ManageListsDividerDecoration(
+  context: Context,
+) : RecyclerView.ItemDecoration() {
 
   private var dividerDrawable: Drawable =
     ContextCompat.getDrawable(context, R.drawable.divider_manage_lists)!!

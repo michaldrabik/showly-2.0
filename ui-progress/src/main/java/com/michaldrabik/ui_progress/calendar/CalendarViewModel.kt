@@ -37,7 +37,8 @@ class CalendarViewModel @Inject constructor(
   private val imagesProvider: ShowImagesProvider,
   private val translationsRepository: TranslationsRepository,
   private val settingsRepository: SettingsRepository,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private var loadItemsJob: Job? = null
   private var loadTranslationJobs: MutableSet<IdTrakt> = mutableSetOf()

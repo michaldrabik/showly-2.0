@@ -21,9 +21,10 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.RESULT
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class RemoveTraktHiddenBottomSheet : RemoveTraktBottomSheet<RemoveTraktHiddenViewModel>(
-  R.layout.view_remove_trakt_hidden,
-) {
+class RemoveTraktHiddenBottomSheet :
+  RemoveTraktBottomSheet<RemoveTraktHiddenViewModel>(
+    R.layout.view_remove_trakt_hidden,
+  ) {
 
   private val viewModel by viewModels<RemoveTraktHiddenViewModel>()
   private val binding by viewBinding(ViewRemoveTraktHiddenBinding::bind)

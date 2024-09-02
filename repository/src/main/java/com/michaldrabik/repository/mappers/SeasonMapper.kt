@@ -59,8 +59,8 @@ class SeasonMapper @Inject constructor(
     season: Season,
     showId: IdTrakt,
     isWatched: Boolean,
-  ): SeasonDb {
-    return SeasonDb(
+  ): SeasonDb =
+    SeasonDb(
       season.ids.trakt.id,
       showId.id,
       season.number,
@@ -72,5 +72,4 @@ class SeasonMapper @Inject constructor(
       season.rating,
       isWatched,
     )
-  }
 }

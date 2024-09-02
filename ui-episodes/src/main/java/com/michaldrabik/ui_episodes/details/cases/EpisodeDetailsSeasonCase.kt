@@ -27,7 +27,8 @@ class EpisodeDetailsSeasonCase @Inject constructor(
       } ?: emptyList()
     }
 
-    val episodes = episodesDataSource.getAllByShowId(showId.id, episode.season)
+    val episodes = episodesDataSource
+      .getAllByShowId(showId.id, episode.season)
       .map { mappers.episode.fromDatabase(it) }
       .sortedBy { it.number }
 

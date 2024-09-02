@@ -13,8 +13,8 @@ import com.michaldrabik.data_local.database.model.ShowImage as ShowImageDb
 
 class ImageMapper @Inject constructor() {
 
-  fun fromDatabase(imageDb: ShowImageDb): Image {
-    return Image(
+  fun fromDatabase(imageDb: ShowImageDb): Image =
+    Image(
       imageDb.id,
       IdTvdb(imageDb.idTvdb),
       IdTmdb(imageDb.idTmdb),
@@ -25,10 +25,9 @@ class ImageMapper @Inject constructor() {
       AVAILABLE,
       ImageSource.fromKey(imageDb.source),
     )
-  }
 
-  fun fromDatabase(imageDb: MovieImageDb): Image {
-    return Image(
+  fun fromDatabase(imageDb: MovieImageDb): Image =
+    Image(
       imageDb.id,
       IdTvdb(),
       IdTmdb(imageDb.idTmdb),
@@ -39,7 +38,6 @@ class ImageMapper @Inject constructor() {
       AVAILABLE,
       ImageSource.fromKey(imageDb.source),
     )
-  }
 
   fun toDatabaseShow(image: Image): ShowImageDb =
     ShowImageDb(

@@ -47,7 +47,8 @@ class SearchViewModel @Inject constructor(
   private val suggestionsCase: SearchSuggestionsCase,
   private val showsImagesProvider: ShowImagesProvider,
   private val moviesImagesProvider: MovieImagesProvider,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val searchItemsState = MutableStateFlow<List<SearchListItem>?>(null)
   private val searchItemsAnimateEvent = MutableStateFlow<Event<Boolean>?>(null)

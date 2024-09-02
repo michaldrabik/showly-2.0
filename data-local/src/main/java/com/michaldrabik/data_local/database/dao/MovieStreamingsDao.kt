@@ -7,7 +7,9 @@ import com.michaldrabik.data_local.database.model.MovieStreaming
 import com.michaldrabik.data_local.sources.MovieStreamingsLocalDataSource
 
 @Dao
-interface MovieStreamingsDao : BaseDao<MovieStreaming>, MovieStreamingsLocalDataSource {
+interface MovieStreamingsDao :
+  BaseDao<MovieStreaming>,
+  MovieStreamingsLocalDataSource {
 
   @Transaction
   override suspend fun replace(

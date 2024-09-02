@@ -21,7 +21,8 @@ import javax.inject.Inject
 @HiltViewModel
 class RemoveTraktWatchlistViewModel @Inject constructor(
   private val removeTraktWatchlistCase: RemoveTraktWatchlistCase,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val loadingState = MutableStateFlow(false)
   private val finishedState = MutableStateFlow(false)

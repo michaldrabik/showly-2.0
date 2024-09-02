@@ -7,7 +7,9 @@ import com.michaldrabik.data_local.database.model.Movie
 import com.michaldrabik.data_local.sources.MoviesLocalDataSource
 
 @Dao
-interface MoviesDao : BaseDao<Movie>, MoviesLocalDataSource {
+interface MoviesDao :
+  BaseDao<Movie>,
+  MoviesLocalDataSource {
 
   @Query("SELECT * FROM movies")
   override suspend fun getAll(): List<Movie>

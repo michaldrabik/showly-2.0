@@ -15,11 +15,13 @@ class HiddenShowsRepository @Inject constructor(
 ) {
 
   suspend fun loadAll() =
-    localSource.archiveShows.getAll()
+    localSource.archiveShows
+      .getAll()
       .map { mappers.show.fromDatabase(it) }
 
   suspend fun loadAll(ids: List<IdTrakt>) =
-    localSource.archiveShows.getAll(ids.map { it.id })
+    localSource.archiveShows
+      .getAll(ids.map { it.id })
       .map { mappers.show.fromDatabase(it) }
 
   suspend fun load(id: IdTrakt) =

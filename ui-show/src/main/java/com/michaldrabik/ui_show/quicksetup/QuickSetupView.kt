@@ -63,7 +63,8 @@ class QuickSetupView : FrameLayout {
     episode: Episode,
     isChecked: Boolean,
   ) {
-    val items = quickSetupAdapter.getItems()
+    val items = quickSetupAdapter
+      .getItems()
       .map { it.copy(isChecked = false) }
       .toMutableList()
 

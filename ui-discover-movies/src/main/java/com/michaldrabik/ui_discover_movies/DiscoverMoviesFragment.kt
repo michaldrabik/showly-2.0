@@ -207,9 +207,10 @@ internal class DiscoverMoviesFragment :
     with(binding) {
       discoverMoviesTabsView.fadeOut(duration = 200).add(animations)
       discoverMoviesFiltersView.fadeOut(duration = 200).add(animations)
-      discoverMoviesRecycler.fadeOut(duration = 200) {
-        navigateToSafe(R.id.actionDiscoverMoviesFragmentToSearchFragment)
-      }.add(animations)
+      discoverMoviesRecycler
+        .fadeOut(duration = 200) {
+          navigateToSafe(R.id.actionDiscoverMoviesFragmentToSearchFragment)
+        }.add(animations)
     }
   }
 
@@ -251,15 +252,17 @@ internal class DiscoverMoviesFragment :
       }
 
       val clickedView = discoverMoviesRecycler.findViewHolderForAdapterPosition(clickedIndex)
-      clickedView?.itemView?.fadeOut(
-        duration = 150,
-        startDelay = 350,
-        endAction = {
-          if (!isResumed) return@fadeOut
-          val bundle = Bundle().apply { putLong(NavigationArgs.ARG_MOVIE_ID, item.movie.traktId) }
-          navigateToSafe(R.id.actionDiscoverMoviesFragmentToMovieDetailsFragment, bundle)
-        },
-      ).add(animations)
+      clickedView
+        ?.itemView
+        ?.fadeOut(
+          duration = 150,
+          startDelay = 350,
+          endAction = {
+            if (!isResumed) return@fadeOut
+            val bundle = Bundle().apply { putLong(NavigationArgs.ARG_MOVIE_ID, item.movie.traktId) }
+            navigateToSafe(R.id.actionDiscoverMoviesFragmentToMovieDetailsFragment, bundle)
+          },
+        ).add(animations)
     }
   }
 
@@ -270,7 +273,12 @@ internal class DiscoverMoviesFragment :
           val resetScroll = resetScroll?.consume() == true
           adapter?.setItems(it, resetScroll)
           layoutManager?.withSpanSizeLookup { pos ->
-            adapter?.getItems()?.get(pos)?.image?.type?.getSpan(isTablet)!!
+            adapter
+              ?.getItems()
+              ?.get(pos)
+              ?.image
+              ?.type
+              ?.getSpan(isTablet)!!
           }
           discoverMoviesRecycler.fadeIn(200, withHardware = true)
         }

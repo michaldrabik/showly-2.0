@@ -218,20 +218,22 @@ class FollowedShowsFragment :
       followedShowsModeTabs.fadeOut(duration = 200).add(animations)
       followedShowsTabs.fadeOut(duration = 200).add(animations)
       followedShowsIcons.fadeOut(duration = 200).add(animations)
-      followedShowsPager.fadeOut(duration = 200) {
-        super.navigateTo(R.id.actionFollowedShowsFragmentToSearch, null)
-      }.add(animations)
+      followedShowsPager
+        .fadeOut(duration = 200) {
+          super.navigateTo(R.id.actionFollowedShowsFragmentToSearch, null)
+        }.add(animations)
     }
   }
 
   fun openShowDetails(show: Show) {
     disableUi()
     hideNavigation()
-    binding.followedShowsRoot.fadeOut(150) {
-      val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.traktId) }
-      navigateToSafe(R.id.actionFollowedShowsFragmentToShowDetailsFragment, bundle)
-      exitSearch()
-    }.add(animations)
+    binding.followedShowsRoot
+      .fadeOut(150) {
+        val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.traktId) }
+        navigateToSafe(R.id.actionFollowedShowsFragmentToShowDetailsFragment, bundle)
+        exitSearch()
+      }.add(animations)
   }
 
   fun openShowMenu(show: Show) {
@@ -283,7 +285,12 @@ class FollowedShowsFragment :
         followedShowsIcons,
         followedShowsSearchLocalView,
       ).forEach {
-        it.animate().translationY(0F).setDuration(duration).add(animations)?.start()
+        it
+          .animate()
+          .translationY(0F)
+          .setDuration(duration)
+          .add(animations)
+          ?.start()
       }
     }
   }

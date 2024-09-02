@@ -29,12 +29,11 @@ data class RelatedShow(
       traktId: Long,
       relatedShowTraktId: Long,
       nowUtcMillis: Long,
-    ): RelatedShow {
-      return RelatedShow(
+    ): RelatedShow =
+      RelatedShow(
         idTrakt = traktId,
         idTraktRelatedShow = relatedShowTraktId,
         updatedAt = nowUtcMillis,
       )
-    }
   }
 }

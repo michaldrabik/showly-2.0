@@ -7,7 +7,9 @@ import com.michaldrabik.data_local.database.model.MovieCollection
 import com.michaldrabik.data_local.sources.MovieCollectionsLocalDataSource
 
 @Dao
-interface MovieCollectionsDao : BaseDao<MovieCollection>, MovieCollectionsLocalDataSource {
+interface MovieCollectionsDao :
+  BaseDao<MovieCollection>,
+  MovieCollectionsLocalDataSource {
 
   @Query("SELECT * FROM movies_collections WHERE id_trakt == :traktId")
   override suspend fun getById(traktId: Long): MovieCollection?

@@ -54,7 +54,8 @@ class ActorView : FrameLayout {
         return
       }
 
-      Glide.with(this@ActorView)
+      Glide
+        .with(this@ActorView)
         .load("$TMDB_IMAGE_BASE_ACTOR_URL${person.imagePath}")
         .diskCacheStrategy(DATA)
         .transform(CenterCrop(), RoundedCorners(cornerRadius))
@@ -62,8 +63,7 @@ class ActorView : FrameLayout {
         .withFailListener {
           actorPlaceholder.visible()
           actorImage.gone()
-        }
-        .into(actorImage)
+        }.into(actorImage)
     }
   }
 

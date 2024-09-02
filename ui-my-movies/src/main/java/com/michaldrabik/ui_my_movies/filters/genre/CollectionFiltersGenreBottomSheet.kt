@@ -34,9 +34,7 @@ internal class CollectionFiltersGenreBottomSheet : BaseBottomSheetFragment(R.lay
     private const val ARG_ORIGIN = "ARG_ORIGIN"
     const val REQUEST_COLLECTION_FILTERS_GENRE = "REQUEST_COLLECTION_FILTERS_GENRE"
 
-    fun createBundle(origin: CollectionFiltersOrigin): Bundle {
-      return bundleOf(ARG_ORIGIN to origin)
-    }
+    fun createBundle(origin: CollectionFiltersOrigin): Bundle = bundleOf(ARG_ORIGIN to origin)
   }
 
   private val viewModel by viewModels<CollectionFiltersGenreViewModel>()
@@ -97,7 +95,8 @@ internal class CollectionFiltersGenreBottomSheet : BaseBottomSheetFragment(R.lay
     binding.clearButton.visibleIf(genres.isNotEmpty())
 
     val genresNames = genres.map { it.name }
-    Genre.values()
+    Genre
+      .values()
       .sortedBy { requireContext().getString(it.displayName) }
       .forEach { genre ->
         val chip = Chip(requireContext()).apply {
@@ -106,7 +105,8 @@ internal class CollectionFiltersGenreBottomSheet : BaseBottomSheetFragment(R.lay
           isCheckable = true
           isCheckedIconVisible = false
           setEnsureMinTouchTargetSize(false)
-          shapeAppearanceModel = shapeAppearanceModel.toBuilder()
+          shapeAppearanceModel = shapeAppearanceModel
+            .toBuilder()
             .setAllCornerSizes(100f)
             .build()
           chipBackgroundColor = ContextCompat.getColorStateList(context, R.color.selector_discover_chip_background)

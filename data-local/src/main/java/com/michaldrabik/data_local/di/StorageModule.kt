@@ -25,13 +25,14 @@ class StorageModule {
     migrations: Migrations,
   ): AppDatabase {
     Timber.d("Creating database...")
-    return Room.databaseBuilder(
-      context.applicationContext,
-      AppDatabase::class.java,
-      DATABASE_NAME,
-    ).apply {
-      migrations.getAll().forEach { addMigrations(it) }
-    }.build()
+    return Room
+      .databaseBuilder(
+        context.applicationContext,
+        AppDatabase::class.java,
+        DATABASE_NAME,
+      ).apply {
+        migrations.getAll().forEach { addMigrations(it) }
+      }.build()
   }
 
   @Provides

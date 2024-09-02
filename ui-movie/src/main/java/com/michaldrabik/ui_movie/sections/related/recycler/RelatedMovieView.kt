@@ -76,7 +76,8 @@ class RelatedMovieView : MovieView<RelatedListItem> {
     with(binding) {
       relatedMoviePlaceholder.gone()
       relatedMovieTitle.gone()
-      Glide.with(this@RelatedMovieView)
+      Glide
+        .with(this@RelatedMovieView)
         .clear(relatedMovieImage)
     }
   }

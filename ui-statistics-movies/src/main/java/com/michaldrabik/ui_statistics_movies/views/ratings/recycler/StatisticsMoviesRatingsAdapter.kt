@@ -30,5 +30,7 @@ class StatisticsMoviesRatingsAdapter(
     (holder.itemView as StatisticsMoviesRateItemView).bind(item)
   }
 
-  class ViewHolderShow(itemView: View) : RecyclerView.ViewHolder(itemView)
+  class ViewHolderShow(
+    itemView: View,
+  ) : RecyclerView.ViewHolder(itemView)
 }

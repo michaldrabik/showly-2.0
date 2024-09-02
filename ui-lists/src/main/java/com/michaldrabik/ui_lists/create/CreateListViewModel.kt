@@ -25,7 +25,8 @@ import javax.inject.Inject
 class CreateListViewModel @Inject constructor(
   private val createListCase: CreateListCase,
   private val listDetailsCase: ListDetailsCase,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val detailsState = MutableStateFlow<CustomList?>(null)
   private val loadingState = MutableStateFlow(false)

@@ -55,20 +55,24 @@ class DiscoverShowsRepository @Inject constructor(
       } else {
         TRAKT_TRENDING_SHOWS_LIMIT + (collectionSize / 2)
       }
-    val trendingShows = remoteSource.trakt.fetchTrendingShows(genresQuery, networksQuery, limit)
+    val trendingShows = remoteSource.trakt
+      .fetchTrendingShows(genresQuery, networksQuery, limit)
       .map { mappers.show.fromNetwork(it) }
 
     if (genres.isNotEmpty() || networks.isNotEmpty()) {
       // Wa are adding popular results for genres/networks filtered content to add more results.
-      val popular = remoteSource.trakt.fetchPopularShows(genresQuery, networksQuery)
+      val popular = remoteSource.trakt
+        .fetchPopularShows(genresQuery, networksQuery)
         .map { mappers.show.fromNetwork(it) }
       popularShows.addAll(popular)
     }
 
     if (showAnticipated) {
-      val shows = remoteSource.trakt.fetchAnticipatedShows(genresQuery, networksQuery).map {
-        mappers.show.fromNetwork(it)
-      }.toMutableList()
+      val shows = remoteSource.trakt
+        .fetchAnticipatedShows(genresQuery, networksQuery)
+        .map {
+          mappers.show.fromNetwork(it)
+        }.toMutableList()
       anticipatedShows.addAll(shows)
     }
 

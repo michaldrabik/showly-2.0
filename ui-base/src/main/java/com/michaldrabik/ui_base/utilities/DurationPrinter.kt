@@ -6,7 +6,9 @@ import com.michaldrabik.ui_base.R
 import java.time.Duration
 import java.time.ZonedDateTime
 
-class DurationPrinter(private val context: Context) {
+class DurationPrinter(
+  private val context: Context,
+) {
 
   fun print(date: ZonedDateTime?): String {
     if (date == null) return context.getString(R.string.textTba)

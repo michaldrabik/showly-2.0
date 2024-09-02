@@ -64,7 +64,8 @@ class ShowDetailsViewModel @Inject constructor(
   private val userManager: UserTraktManager,
   private val seasonsCache: SeasonsCache,
   private val imagesProvider: ShowImagesProvider,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private lateinit var show: Show
 

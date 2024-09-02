@@ -56,7 +56,8 @@ class MyShowsViewModel @Inject constructor(
   private val settingsRepository: SettingsRepository,
   private val imagesProvider: ShowImagesProvider,
   private val eventsManager: EventsManager,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private var loadItemsJob: Job? = null
 
@@ -96,7 +97,8 @@ class MyShowsViewModel @Inject constructor(
       val genres = settingsRepository.filters.myShowsGenres
       val spoilers = settingsRepository.spoilers.getAll()
 
-      val shows = loadShowsCase.loadAllShows()
+      val shows = loadShowsCase
+        .loadAllShows()
         .map {
           toListItemAsync(
             itemType = Type.ALL_SHOWS_ITEM,
@@ -106,8 +108,7 @@ class MyShowsViewModel @Inject constructor(
             sortOrder = sortOrder,
             spoilers = spoilers,
           )
-        }
-        .awaitAll()
+        }.awaitAll()
 
       val seasons = loadShowsCase.loadSeasonsForShows(shows.map { it.show.traktId })
       val allShows = loadShowsCase.filterSectionShows(
@@ -119,9 +120,11 @@ class MyShowsViewModel @Inject constructor(
       )
 
       val recentShows = if (settings.myRecentsAmount > 0) {
-        loadShowsCase.loadRecentShows().map {
-          toListItemAsync(Type.RECENT_SHOWS, it, ImageType.FANART, ratings[it.ids.trakt], null, spoilers)
-        }.awaitAll()
+        loadShowsCase
+          .loadRecentShows()
+          .map {
+            toListItemAsync(Type.RECENT_SHOWS, it, ImageType.FANART, ratings[it.ids.trakt], null, spoilers)
+          }.awaitAll()
       } else {
         emptyList()
       }

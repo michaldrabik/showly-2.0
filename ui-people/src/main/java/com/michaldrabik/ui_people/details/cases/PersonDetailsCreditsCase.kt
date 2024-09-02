@@ -61,12 +61,10 @@ class PersonDetailsCreditsCase @Inject constructor(
           filters.contains(Mode.MOVIES) -> it.movie != null
           else -> true
         }
-      }
-      .filter { it.releaseDate != null || (it.releaseDate == null && it.isUpcoming) }
+      }.filter { it.releaseDate != null || (it.releaseDate == null && it.isUpcoming) }
       .sortedWith(
         compareByDescending<PersonCredit> { it.releaseDate == null }.thenByDescending { it.releaseDate?.toEpochDay() },
-      )
-      .map {
+      ).map {
         async {
           when {
             it.show != null -> createShowItem(
@@ -84,8 +82,7 @@ class PersonDetailsCreditsCase @Inject constructor(
             else -> throw IllegalStateException()
           }
         }
-      }
-      .awaitAll()
+      }.awaitAll()
       .groupBy { it.getReleaseDate()?.year }
   }
 

@@ -25,9 +25,10 @@ import com.michaldrabik.ui_model.DiscoverSortOrder.RATING
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-internal class DiscoverMoviesFiltersFeedBottomSheet : BaseBottomSheetFragment(
-  R.layout.view_discover_movies_filters_feed,
-) {
+internal class DiscoverMoviesFiltersFeedBottomSheet :
+  BaseBottomSheetFragment(
+    R.layout.view_discover_movies_filters_feed,
+  ) {
 
   private val viewModel by viewModels<DiscoverMoviesFiltersFeedViewModel>()
   private val binding by viewBinding(ViewDiscoverMoviesFiltersFeedBinding::bind)

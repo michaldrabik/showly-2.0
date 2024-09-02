@@ -54,7 +54,11 @@ abstract class MovieView<Item : MovieListItem> : FrameLayout {
 
   open fun bind(item: Item) {
     layoutParams = LayoutParams(
-      (width * item.image.type.getSpan(isTablet).toFloat()).toInt(),
+      (
+        width * item.image.type
+          .getSpan(isTablet)
+          .toFloat()
+      ).toInt(),
       height.toInt(),
     )
   }
@@ -72,7 +76,8 @@ abstract class MovieView<Item : MovieListItem> : FrameLayout {
       return
     }
 
-    Glide.with(this)
+    Glide
+      .with(this)
       .load(item.image.fullFileUrl)
       .transform(centerCropTransformation, cornersTransformation)
       .transition(withCrossFade(IMAGE_FADE_DURATION_MS))

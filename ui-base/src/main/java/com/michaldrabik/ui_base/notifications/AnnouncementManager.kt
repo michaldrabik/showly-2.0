@@ -157,7 +157,8 @@ class AnnouncementManager @Inject constructor(
       return
     }
 
-    val movies = localSource.watchlistMovies.getAll()
+    val movies = localSource.watchlistMovies
+      .getAll()
       .map { mappers.movie.fromDatabase(it) }
 
     if (movies.isEmpty()) {
@@ -172,9 +173,9 @@ class AnnouncementManager @Inject constructor(
         it.released != null &&
           (!it.hasAired() || it.isToday()) &&
           it.released!!.toEpochDay() - nowUtcDay().toEpochDay() < MOVIE_MIN_THRESHOLD_DAYS &&
-          ZonedDateTime.now().hour < MOVIE_THRESHOLD_HOUR // We want movies notifications to come out the release day at 12:00 local time
-      }
-      .forEach {
+          // We want movies notifications to come out the release day at 12:00 local time
+          ZonedDateTime.now().hour < MOVIE_THRESHOLD_HOUR
+      }.forEach {
         movieAnnouncementScheduler.scheduleAnnouncement(context, it, language)
       }
   }

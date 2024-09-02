@@ -35,7 +35,8 @@ class ProgressMoviesWidgetViewsFactory(
 
   override fun onDataSetChanged() {
     runBlocking {
-      val items = loadItemsCase.loadItems("")
+      val items = loadItemsCase
+        .loadItems("")
         .filterIsInstance<ProgressMovieListItem.MovieItem>()
       adapterItems.replace(items)
     }
@@ -88,7 +89,8 @@ class ProgressMoviesWidgetViewsFactory(
       remoteView.setViewVisibility(R.id.progressMoviesWidgetItemImage, GONE)
       remoteView.setViewVisibility(R.id.progressMoviesWidgetItemPlaceholder, GONE)
 
-      val bitmap = Glide.with(context)
+      val bitmap = Glide
+        .with(context)
         .asBitmap()
         .load(item.image.fullFileUrl)
         .transform(CenterCrop(), RoundedCorners(imageCorner))

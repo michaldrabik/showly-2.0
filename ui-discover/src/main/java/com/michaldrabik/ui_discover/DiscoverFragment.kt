@@ -243,9 +243,10 @@ internal class DiscoverFragment :
     with(binding) {
       discoverModeTabsView.fadeOut(duration = 200).add(animations)
       discoverFiltersView.fadeOut(duration = 200).add(animations)
-      discoverRecycler.fadeOut(duration = 200) {
-        navigateToSafe(R.id.actionDiscoverFragmentToSearchFragment)
-      }.add(animations)
+      discoverRecycler
+        .fadeOut(duration = 200) {
+          navigateToSafe(R.id.actionDiscoverFragmentToSearchFragment)
+        }.add(animations)
     }
   }
 
@@ -287,15 +288,17 @@ internal class DiscoverFragment :
       }
 
       val clickedView = discoverRecycler.findViewHolderForAdapterPosition(clickedIndex)
-      clickedView?.itemView?.fadeOut(
-        duration = 150,
-        startDelay = 350,
-        endAction = {
-          if (!isResumed) return@fadeOut
-          val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.traktId) }
-          navigateToSafe(R.id.actionDiscoverFragmentToShowDetailsFragment, bundle)
-        },
-      ).add(animations)
+      clickedView
+        ?.itemView
+        ?.fadeOut(
+          duration = 150,
+          startDelay = 350,
+          endAction = {
+            if (!isResumed) return@fadeOut
+            val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.traktId) }
+            navigateToSafe(R.id.actionDiscoverFragmentToShowDetailsFragment, bundle)
+          },
+        ).add(animations)
     }
   }
 
@@ -306,7 +309,12 @@ internal class DiscoverFragment :
           val resetScroll = resetScroll?.consume() == true
           adapter?.setItems(it, resetScroll)
           layoutManager?.withSpanSizeLookup { pos ->
-            adapter?.getItems()?.get(pos)?.image?.type?.getSpan(isTablet)!!
+            adapter
+              ?.getItems()
+              ?.get(pos)
+              ?.image
+              ?.type
+              ?.getSpan(isTablet)!!
           }
           discoverRecycler.fadeIn(200, withHardware = true)
         }

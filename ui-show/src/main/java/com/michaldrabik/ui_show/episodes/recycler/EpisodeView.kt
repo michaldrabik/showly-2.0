@@ -92,7 +92,8 @@ class EpisodeView : ConstraintLayout {
 
   private fun bindTitle(item: EpisodeListItem) {
     with(binding) {
-      val titleText = String.format(ENGLISH, context.getString(R.string.textEpisode), item.episode.number)
+      val titleText = String
+        .format(ENGLISH, context.getString(R.string.textEpisode), item.episode.number)
         .plus(item.episode.numberAbs?.let { if (it > 0 && item.isAnime) " ($it)" else "" } ?: "")
 
       var overviewText = when {

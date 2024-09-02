@@ -44,7 +44,8 @@ class WatchlistViewModel @Inject constructor(
   private val translationsCase: WatchlistTranslationsCase,
   private val imagesProvider: ShowImagesProvider,
   private val eventsManager: EventsManager,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private var loadItemsJob: Job? = null
 

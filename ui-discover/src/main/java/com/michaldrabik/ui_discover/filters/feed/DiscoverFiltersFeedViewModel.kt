@@ -20,7 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 internal class DiscoverFiltersFeedViewModel @Inject constructor(
   private val settingsRepository: SettingsRepository,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val feedOrderState = MutableStateFlow<DiscoverSortOrder?>(null)
   private val loadingState = MutableStateFlow(false)

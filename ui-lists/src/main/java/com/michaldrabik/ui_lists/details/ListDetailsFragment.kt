@@ -252,8 +252,7 @@ class ListDetailsFragment :
       .setPositiveButton(R.string.textYes) { _, _ ->
         val removeFromTrakt = view.binding.viewListDeleteConfirmCheckbox?.isChecked
         viewModel.deleteList(list.id, removeFromTrakt == true)
-      }
-      .setNegativeButton(R.string.textNo) { _, _ -> }
+      }.setNegativeButton(R.string.textNo) { _, _ -> }
       .show()
   }
 
@@ -267,19 +266,20 @@ class ListDetailsFragment :
 
   private fun openItemDetails(listItem: ListDetailsItem) {
     disableUi()
-    binding.fragmentListDetailsRoot.fadeOut(150) {
-      val bundle = bundleOf(
-        ARG_SHOW_ID to listItem.show?.traktId,
-        ARG_MOVIE_ID to listItem.movie?.traktId,
-      )
-      val destination =
-        when {
-          listItem.isShow() -> R.id.actionListDetailsFragmentToShowDetailsFragment
-          listItem.isMovie() -> R.id.actionListDetailsFragmentToMovieDetailsFragment
-          else -> throw IllegalStateException()
-        }
-      navigateTo(destination, bundle)
-    }.add(animations)
+    binding.fragmentListDetailsRoot
+      .fadeOut(150) {
+        val bundle = bundleOf(
+          ARG_SHOW_ID to listItem.show?.traktId,
+          ARG_MOVIE_ID to listItem.movie?.traktId,
+        )
+        val destination =
+          when {
+            listItem.isShow() -> R.id.actionListDetailsFragmentToShowDetailsFragment
+            listItem.isMovie() -> R.id.actionListDetailsFragmentToMovieDetailsFragment
+            else -> throw IllegalStateException()
+          }
+        navigateTo(destination, bundle)
+      }.add(animations)
   }
 
   private fun openPopupMenu(quickRemoveEnabled: Boolean) {
@@ -349,7 +349,12 @@ class ListDetailsFragment :
             adapter?.setItems(it, scrollTop)
           }
           (layoutManager as? GridLayoutManager)?.withSpanSizeLookup { pos ->
-            adapter?.items?.get(pos)?.image?.type?.getSpan(isTablet)!!
+            adapter
+              ?.items
+              ?.get(pos)
+              ?.image
+              ?.type
+              ?.getSpan(isTablet)!!
           }
         }
         isManageMode.let { isManageMode ->

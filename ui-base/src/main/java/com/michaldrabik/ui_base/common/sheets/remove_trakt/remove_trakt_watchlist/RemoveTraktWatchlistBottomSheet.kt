@@ -20,9 +20,10 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.RESULT
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class RemoveTraktWatchlistBottomSheet : RemoveTraktBottomSheet<RemoveTraktWatchlistViewModel>(
-  R.layout.view_remove_trakt_watchlist,
-) {
+class RemoveTraktWatchlistBottomSheet :
+  RemoveTraktBottomSheet<RemoveTraktWatchlistViewModel>(
+    R.layout.view_remove_trakt_watchlist,
+  ) {
 
   private val viewModel by viewModels<RemoveTraktWatchlistViewModel>()
   private val binding by viewBinding(ViewRemoveTraktWatchlistBinding::bind)

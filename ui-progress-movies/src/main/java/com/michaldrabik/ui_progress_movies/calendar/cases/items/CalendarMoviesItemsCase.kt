@@ -37,8 +37,8 @@ abstract class CalendarMoviesItemsCase constructor(
   suspend fun loadItems(
     searchQuery: String? = "",
     withFilters: Boolean = true,
-  ): List<CalendarMovieListItem> {
-    return withContext(dispatchers.IO) {
+  ): List<CalendarMovieListItem> =
+    withContext(dispatchers.IO) {
       val now = nowUtc().toLocalZone()
       val language = translationsRepository.getLanguage()
       val dateFormat = dateFormatProvider.loadFullDayFormat()
@@ -84,7 +84,6 @@ abstract class CalendarMoviesItemsCase constructor(
         groupedItems
       }
     }
-  }
 
   private fun filterByQuery(
     query: String,
@@ -92,6 +91,8 @@ abstract class CalendarMoviesItemsCase constructor(
   ) = items.filter {
     it.movie.title.contains(query, true) ||
       it.translation?.title?.contains(query, true) == true ||
-      it.movie.released?.format(it.dateFormat)?.contains(query, true) == true
+      it.movie.released
+        ?.format(it.dateFormat)
+        ?.contains(query, true) == true
   }
 }

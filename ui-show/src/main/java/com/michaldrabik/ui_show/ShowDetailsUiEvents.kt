@@ -11,7 +11,9 @@ import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_people.details.PersonDetailsArgs
 
-sealed class ShowDetailsEvent<T>(action: T) : Event<T>(action) {
+sealed class ShowDetailsEvent<T>(
+  action: T,
+) : Event<T>(action) {
 
   data class OpenPersonSheet(
     val show: Show,

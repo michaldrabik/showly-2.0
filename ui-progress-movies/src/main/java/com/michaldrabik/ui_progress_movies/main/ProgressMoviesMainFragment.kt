@@ -191,11 +191,12 @@ class ProgressMoviesMainFragment :
 
   fun openMovieDetails(movie: Movie) {
     hideNavigation()
-    binding.progressMoviesRoot.fadeOut(150) {
-      val bundle = Bundle().apply { putLong(ARG_MOVIE_ID, movie.ids.trakt.id) }
-      navigateTo(R.id.actionProgressMoviesFragmentToMovieDetailsFragment, bundle)
-      exitSearch()
-    }.add(animations)
+    binding.progressMoviesRoot
+      .fadeOut(150) {
+        val bundle = Bundle().apply { putLong(ARG_MOVIE_ID, movie.ids.trakt.id) }
+        navigateTo(R.id.actionProgressMoviesFragmentToMovieDetailsFragment, bundle)
+        exitSearch()
+      }.add(animations)
   }
 
   fun openMovieMenu(
@@ -249,9 +250,10 @@ class ProgressMoviesMainFragment :
       progressMoviesModeTabs.fadeOut(duration = 200).add(animations)
       progressMoviesTabs.fadeOut(duration = 200).add(animations)
       progressMoviesSideIcons.fadeOut(duration = 200).add(animations)
-      progressMoviesPager.fadeOut(duration = 200) {
-        navigateToSafe(R.id.actionProgressMoviesFragmentToSearch)
-      }.add(animations)
+      progressMoviesPager
+        .fadeOut(duration = 200) {
+          navigateToSafe(R.id.actionProgressMoviesFragmentToSearch)
+        }.add(animations)
     }
   }
 
@@ -308,7 +310,12 @@ class ProgressMoviesMainFragment :
         progressMoviesSideIcons,
         progressMoviesSearchLocalView,
       ).forEach {
-        it.animate().translationY(0F).setDuration(duration).add(animations)?.start()
+        it
+          .animate()
+          .translationY(0F)
+          .setDuration(duration)
+          .add(animations)
+          ?.start()
       }
     }
   }

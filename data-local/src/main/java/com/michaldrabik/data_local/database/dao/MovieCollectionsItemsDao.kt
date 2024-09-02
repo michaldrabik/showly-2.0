@@ -11,7 +11,9 @@ import com.michaldrabik.data_local.database.model.MovieCollectionItem
 import com.michaldrabik.data_local.sources.MovieCollectionsItemsLocalDataSource
 
 @Dao
-interface MovieCollectionsItemsDao : BaseDao<MovieCollectionItem>, MovieCollectionsItemsLocalDataSource {
+interface MovieCollectionsItemsDao :
+  BaseDao<MovieCollectionItem>,
+  MovieCollectionsItemsLocalDataSource {
 
   @Query(
     "SELECT movies.*, movies_collections_items.created_at, movies_collections_items.updated_at FROM movies INNER JOIN movies_collections_items USING(id_trakt) WHERE id_trakt_collection == :collectionId ORDER BY rank ASC",

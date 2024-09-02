@@ -64,8 +64,7 @@ class SettingsNotificationsFragment :
       .setSingleChoiceItems(options.map { getString(it.stringRes) }.toTypedArray(), default) { dialog, index ->
         viewModel.setWhenToNotify(options[index])
         dialog.dismiss()
-      }
-      .show()
+      }.show()
   }
 
   private fun render(uiState: SettingsNotificationsUiState) {
@@ -107,8 +106,7 @@ class SettingsNotificationsFragment :
       .setView(view)
       .setPositiveButton(R.string.textYes) { _, _ ->
         requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-      }
-      .setNegativeButton(R.string.textCancel) { _, _ -> }
+      }.setNegativeButton(R.string.textCancel) { _, _ -> }
       .show()
   }
 

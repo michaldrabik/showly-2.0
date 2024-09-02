@@ -47,7 +47,8 @@ class ShowContextMenuViewModel @Inject constructor(
   private val imagesProvider: ShowImagesProvider,
   private val networkProvider: NetworkStatusProvider,
   private val settingsRepository: SettingsRepository,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private var showId by notNull<IdTrakt>()
   private var isQuickRemoveEnabled by notNull<Boolean>()

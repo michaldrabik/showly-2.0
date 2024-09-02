@@ -14,8 +14,11 @@ internal class HistoryItemsGrouper @Inject constructor() {
     language: String,
   ): List<HistoryListItem> {
     val itemsMap = items
-      .groupBy { it.episode.lastWatchedAt!!.toLocalZone().truncatedTo(DAYS) }
-      .toSortedMap(compareByDescending { it.toMillis() })
+      .groupBy {
+        it.episode.lastWatchedAt!!
+          .toLocalZone()
+          .truncatedTo(DAYS)
+      }.toSortedMap(compareByDescending { it.toMillis() })
 
     return itemsMap.entries.fold(mutableListOf()) { acc, entry ->
       acc.apply {

@@ -6,7 +6,9 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.google.android.material.tabs.TabLayout
 import com.michaldrabik.ui_base.common.behaviour.ScrollableViewBehaviour
 
-class ScrollableTabLayout : TabLayout, CoordinatorLayout.AttachedBehavior {
+class ScrollableTabLayout :
+  TabLayout,
+  CoordinatorLayout.AttachedBehavior {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)

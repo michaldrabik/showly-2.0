@@ -5,8 +5,8 @@ import javax.inject.Inject
 
 class SettingsSpoilersHelper @Inject constructor() {
 
-  fun hasActiveShowsSettings(settings: SpoilersSettings): Boolean {
-    return settings.isMyShowsHidden ||
+  fun hasActiveShowsSettings(settings: SpoilersSettings): Boolean =
+    settings.isMyShowsHidden ||
       settings.isWatchlistShowsHidden ||
       settings.isHiddenShowsHidden ||
       settings.isNotCollectedShowsHidden ||
@@ -14,10 +14,9 @@ class SettingsSpoilersHelper @Inject constructor() {
       settings.isWatchlistShowsRatingsHidden ||
       settings.isHiddenShowsRatingsHidden ||
       settings.isNotCollectedShowsRatingsHidden
-  }
 
-  fun hasActiveMoviesSettings(settings: SpoilersSettings): Boolean {
-    return settings.isMyMoviesHidden ||
+  fun hasActiveMoviesSettings(settings: SpoilersSettings): Boolean =
+    settings.isMyMoviesHidden ||
       settings.isWatchlistMoviesHidden ||
       settings.isHiddenMoviesHidden ||
       settings.isNotCollectedMoviesHidden ||
@@ -25,12 +24,10 @@ class SettingsSpoilersHelper @Inject constructor() {
       settings.isWatchlistMoviesRatingsHidden ||
       settings.isHiddenMoviesRatingsHidden ||
       settings.isNotCollectedMoviesRatingsHidden
-  }
 
-  fun hasActiveEpisodesSettings(settings: SpoilersSettings): Boolean {
-    return settings.isEpisodeDescriptionHidden ||
+  fun hasActiveEpisodesSettings(settings: SpoilersSettings): Boolean =
+    settings.isEpisodeDescriptionHidden ||
       settings.isEpisodeImageHidden ||
       settings.isEpisodeRatingHidden ||
       settings.isEpisodeTitleHidden
-  }
 }

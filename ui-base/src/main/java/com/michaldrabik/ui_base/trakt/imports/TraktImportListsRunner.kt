@@ -40,8 +40,8 @@ class TraktImportListsRunner @Inject constructor(
     return 0
   }
 
-  private suspend fun runSyncActivity(): SyncActivity {
-    return try {
+  private suspend fun runSyncActivity(): SyncActivity =
+    try {
       remoteSource.fetchSyncActivity()
     } catch (error: Throwable) {
       if (retryCount.getAndIncrement() < MAX_IMPORT_RETRY_COUNT) {
@@ -52,7 +52,6 @@ class TraktImportListsRunner @Inject constructor(
         throw error
       }
     }
-  }
 
   private suspend fun runLists(syncActivity: SyncActivity) {
     try {
@@ -84,9 +83,11 @@ class TraktImportListsRunner @Inject constructor(
     val nowUtcMillis = nowUtcMillis()
     val moviesEnabled = settingsRepository.isMoviesEnabled
 
-    val localLists = localSource.customLists.getAll()
+    val localLists = localSource.customLists
+      .getAll()
       .map { mappers.customList.fromDatabase(it) }
-    val remoteLists = remoteSource.fetchSyncLists()
+    val remoteLists = remoteSource
+      .fetchSyncLists()
       .map { mappers.customList.fromNetwork(it) }
 
     remoteLists.forEach { remoteList ->
@@ -103,7 +104,8 @@ class TraktImportListsRunner @Inject constructor(
           remoteList.updatedAt.isEqual(local.updatedAt).not() -> {
             Timber.d("Local list found and timestamp is different. Updating...")
             if (remoteList.updatedAt.isAfter(local.updatedAt)) {
-              val listDb = mappers.customList.toDatabase(remoteList)
+              val listDb = mappers.customList
+                .toDatabase(remoteList)
                 .copy(id = local.id)
               localSource.customLists.update(listOf(listDb))
             }
@@ -128,13 +130,13 @@ class TraktImportListsRunner @Inject constructor(
     Timber.d("Importing list items...")
 
     val localItems = localSource.customListsItems.getItemsById(listId)
-    val items = remoteSource.fetchSyncListItems(listIdTrakt, moviesEnabled)
+    val items = remoteSource
+      .fetchSyncListItems(listIdTrakt, moviesEnabled)
       .filter { item ->
         localItems.none {
           it.idTrakt == item.getTraktId() && it.type == item.getType()
         }
-      }
-      .filter { it.movie != null || it.show != null }
+      }.filter { it.movie != null || it.show != null }
 
     val shows = items
       .filter { it.show != null }

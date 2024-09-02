@@ -14,10 +14,11 @@ abstract class BaseDaoTest {
 
   @Before
   fun initDb() {
-    database = Room.inMemoryDatabaseBuilder(
-      InstrumentationRegistry.getInstrumentation().targetContext.applicationContext,
-      AppDatabase::class.java,
-    ).build()
+    database = Room
+      .inMemoryDatabaseBuilder(
+        InstrumentationRegistry.getInstrumentation().targetContext.applicationContext,
+        AppDatabase::class.java,
+      ).build()
   }
 
   @After

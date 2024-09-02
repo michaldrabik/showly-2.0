@@ -16,19 +16,27 @@ class CalendarRecentsGrouper @Inject constructor() : CalendarGrouper {
     val now = nowUtc().toLocalZone().truncatedTo(DAYS)
 
     val yesterdayItems = items.filter {
-      val dateDays = it.episode.firstAired?.toLocalZone()?.truncatedTo(DAYS)
+      val dateDays = it.episode.firstAired
+        ?.toLocalZone()
+        ?.truncatedTo(DAYS)
       dateDays?.isEqual(now.minusDays(1)) == true
     }
     val last7DaysItems = (items - yesterdayItems).filter {
-      val dateDays = it.episode.firstAired?.toLocalZone()?.truncatedTo(DAYS)
+      val dateDays = it.episode.firstAired
+        ?.toLocalZone()
+        ?.truncatedTo(DAYS)
       dateDays?.isAfter(now.minusDays(8)) == true
     }
     val last30DaysItems = (items - yesterdayItems - last7DaysItems).filter {
-      val dateDays = it.episode.firstAired?.toLocalZone()?.truncatedTo(DAYS)
+      val dateDays = it.episode.firstAired
+        ?.toLocalZone()
+        ?.truncatedTo(DAYS)
       dateDays?.isAfter(now.minusDays(31)) == true
     }
     val last90Days = (items - yesterdayItems - last7DaysItems - last30DaysItems).filter {
-      val dateDays = it.episode.firstAired?.toLocalZone()?.truncatedTo(DAYS)
+      val dateDays = it.episode.firstAired
+        ?.toLocalZone()
+        ?.truncatedTo(DAYS)
       dateDays?.isAfter(now.minusDays(91)) == true
     }
 

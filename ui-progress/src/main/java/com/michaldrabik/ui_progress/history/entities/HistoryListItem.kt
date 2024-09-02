@@ -27,9 +27,7 @@ internal sealed class HistoryListItem(
     val dateFormat: DateTimeFormatter? = null,
   ) : HistoryListItem(show, image, isLoading) {
 
-    override fun isSameAs(other: ListItem): Boolean {
-      return episode.ids.trakt == (other as? Episode)?.episode?.ids?.trakt
-    }
+    override fun isSameAs(other: ListItem): Boolean = episode.ids.trakt == (other as? Episode)?.episode?.ids?.trakt
   }
 
   data class Header(
@@ -53,8 +51,6 @@ internal sealed class HistoryListItem(
       image = Image.createUnknown(ImageType.POSTER),
       isLoading = false,
     ) {
-    override fun isSameAs(other: ListItem): Boolean {
-      return period == (other as? Filters)?.period
-    }
+    override fun isSameAs(other: ListItem): Boolean = period == (other as? Filters)?.period
   }
 }

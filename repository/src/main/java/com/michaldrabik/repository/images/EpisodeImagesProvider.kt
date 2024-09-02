@@ -77,10 +77,9 @@ class EpisodeImagesProvider @Inject constructor(
   private suspend fun findCachedImage(
     episode: Episode,
     type: ImageType,
-  ): Image {
-    return when (val image = localSource.showImages.getByEpisodeId(episode.ids.tmdb.id, type.key)) {
+  ): Image =
+    when (val image = localSource.showImages.getByEpisodeId(episode.ids.tmdb.id, type.key)) {
       null -> Image.createUnknown(type, EPISODE)
       else -> mappers.image.fromDatabase(image).copy(type = type)
     }
-  }
 }

@@ -21,9 +21,10 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.RESULT
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class RemoveTraktProgressBottomSheet : RemoveTraktBottomSheet<RemoveTraktProgressViewModel>(
-  R.layout.view_remove_trakt_progress,
-) {
+class RemoveTraktProgressBottomSheet :
+  RemoveTraktBottomSheet<RemoveTraktProgressViewModel>(
+    R.layout.view_remove_trakt_progress,
+  ) {
 
   private val viewModel by viewModels<RemoveTraktProgressViewModel>()
   private val binding by viewBinding(ViewRemoveTraktProgressBinding::bind)

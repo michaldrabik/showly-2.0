@@ -65,7 +65,8 @@ class StreamingView : FrameLayout {
       viewStreamingOptions.text = streaming.options.joinToString(", ") { context.getString(it.resId) }
 
       val corners = if (streaming.name == "Apple iTunes") cornersAppleTransformation else cornersTransformation
-      Glide.with(this@StreamingView)
+      Glide
+        .with(this@StreamingView)
         .load("${Config.TMDB_IMAGE_BASE_LOGO_URL}${streaming.imagePath}")
         .transform(centerCropTransformation, corners)
         .into(viewStreamingImage)

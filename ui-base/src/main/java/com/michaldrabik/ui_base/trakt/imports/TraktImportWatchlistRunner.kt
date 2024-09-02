@@ -43,8 +43,8 @@ class TraktImportWatchlistRunner @Inject constructor(
     return 0
   }
 
-  private suspend fun runSyncActivity(): SyncActivity {
-    return try {
+  private suspend fun runSyncActivity(): SyncActivity =
+    try {
       remoteSource.fetchSyncActivity()
     } catch (error: Throwable) {
       if (retryCount.getAndIncrement() < MAX_IMPORT_RETRY_COUNT) {
@@ -55,7 +55,6 @@ class TraktImportWatchlistRunner @Inject constructor(
         throw error
       }
     }
-  }
 
   private suspend fun runShows(syncActivity: SyncActivity) {
     try {
@@ -102,12 +101,14 @@ class TraktImportWatchlistRunner @Inject constructor(
       return
     }
 
-    val syncResults = remoteSource.fetchSyncShowsWatchlist()
+    val syncResults = remoteSource
+      .fetchSyncShowsWatchlist()
       .filter { it.show != null }
       .distinctBy { it.show!!.ids?.trakt }
 
     val localShowsIds =
-      localSource.watchlistShows.getAllTraktIds()
+      localSource.watchlistShows
+        .getAllTraktIds()
         .plus(localSource.myShows.getAllTraktIds())
         .plus(localSource.archiveShows.getAllTraktIds())
         .distinct()
@@ -148,12 +149,14 @@ class TraktImportWatchlistRunner @Inject constructor(
       return
     }
 
-    val syncResults = remoteSource.fetchSyncMoviesWatchlist()
+    val syncResults = remoteSource
+      .fetchSyncMoviesWatchlist()
       .filter { it.movie != null }
       .distinctBy { it.movie!!.ids?.trakt }
 
     val localMoviesIds =
-      localSource.watchlistMovies.getAllTraktIds()
+      localSource.watchlistMovies
+        .getAllTraktIds()
         .plus(localSource.myMovies.getAllTraktIds())
         .plus(localSource.archiveMovies.getAllTraktIds())
         .distinct()

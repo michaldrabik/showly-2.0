@@ -34,7 +34,8 @@ import javax.inject.Inject
 class PostCommentViewModel @Inject constructor(
   private val commentsRepository: CommentsRepository,
   private val userTraktManager: UserTraktManager,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val loadingState = MutableStateFlow(false)
   private val successState = MutableStateFlow<Event<Pair<String, Comment>>?>(null)
@@ -120,7 +121,8 @@ class PostCommentViewModel @Inject constructor(
 
   private fun isValid(commentText: String) =
     commentText
-      .trim().split(" ")
+      .trim()
+      .split(" ")
       .filter { !it.startsWith("@") }
       .count { it.length > 1 } >= 5
 

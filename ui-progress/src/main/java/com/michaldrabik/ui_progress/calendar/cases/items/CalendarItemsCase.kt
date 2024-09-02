@@ -136,8 +136,7 @@ abstract class CalendarItemsCase constructor(
               spoilers = spoilers,
             )
           }
-        }
-        .awaitAll()
+        }.awaitAll()
         .filterNotNull()
 
       val queryElements = filterByQuery(searchQuery ?: "", elements)
@@ -162,8 +161,17 @@ abstract class CalendarItemsCase constructor(
   ) = items.filter {
     it.show.title.contains(query, true) ||
       it.episode.title.contains(query, true) ||
-      it.translations?.show?.title?.contains(query, true) == true ||
-      it.translations?.episode?.title?.contains(query, true) == true ||
-      it.episode.firstAired?.toLocalZone()?.format(it.dateFormat)?.contains(query, true) == true
+      it.translations
+        ?.show
+        ?.title
+        ?.contains(query, true) == true ||
+      it.translations
+        ?.episode
+        ?.title
+        ?.contains(query, true) == true ||
+      it.episode.firstAired
+        ?.toLocalZone()
+        ?.format(it.dateFormat)
+        ?.contains(query, true) == true
   }
 }

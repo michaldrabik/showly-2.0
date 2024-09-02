@@ -7,7 +7,9 @@ import com.michaldrabik.data_local.database.model.Show
 import com.michaldrabik.data_local.sources.ShowsLocalDataSource
 
 @Dao
-interface ShowsDao : BaseDao<Show>, ShowsLocalDataSource {
+interface ShowsDao :
+  BaseDao<Show>,
+  ShowsLocalDataSource {
 
   @Query("SELECT * FROM shows")
   override suspend fun getAll(): List<Show>

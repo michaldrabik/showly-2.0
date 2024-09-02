@@ -17,7 +17,8 @@ class PersonDetailsLoadCase @Inject constructor(
 
   suspend fun loadDetails(person: Person) =
     withContext(dispatchers.IO) {
-      peopleRepository.loadDetails(person)
+      peopleRepository
+        .loadDetails(person)
         .copy(characters = person.characters)
     }
 

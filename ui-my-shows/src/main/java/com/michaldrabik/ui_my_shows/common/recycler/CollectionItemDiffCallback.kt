@@ -24,41 +24,36 @@ class CollectionItemDiffCallback : DiffUtil.ItemCallback<CollectionListItem>() {
   override fun areContentsTheSame(
     oldItem: CollectionListItem,
     newItem: CollectionListItem,
-  ): Boolean {
-    return when (oldItem) {
+  ): Boolean =
+    when (oldItem) {
       is CollectionListItem.ShowItem -> areContentsTheSame(oldItem, (newItem as CollectionListItem.ShowItem))
       is CollectionListItem.FiltersItem -> areContentsTheSame(oldItem, (newItem as CollectionListItem.FiltersItem))
     }
-  }
 
   private fun areItemsTheSame(
     oldItem: CollectionListItem.ShowItem,
     newItem: CollectionListItem.ShowItem,
-  ): Boolean {
-    return oldItem.show.traktId == newItem.show.traktId
-  }
+  ): Boolean = oldItem.show.traktId == newItem.show.traktId
 
   private fun areContentsTheSame(
     oldItem: CollectionListItem.ShowItem,
     newItem: CollectionListItem.ShowItem,
-  ): Boolean {
-    return oldItem.show.firstAired == newItem.show.firstAired &&
+  ): Boolean =
+    oldItem.show.firstAired == newItem.show.firstAired &&
       oldItem.image == newItem.image &&
       oldItem.isLoading == newItem.isLoading &&
       oldItem.translation == newItem.translation &&
       oldItem.sortOrder == newItem.sortOrder &&
       oldItem.spoilers == newItem.spoilers &&
       oldItem.userRating == newItem.userRating
-  }
 
   private fun areContentsTheSame(
     oldItem: CollectionListItem.FiltersItem,
     newItem: CollectionListItem.FiltersItem,
-  ): Boolean {
-    return oldItem.upcoming == newItem.upcoming &&
+  ): Boolean =
+    oldItem.upcoming == newItem.upcoming &&
       oldItem.networks == newItem.networks &&
       oldItem.genres == newItem.genres &&
       oldItem.sortOrder == newItem.sortOrder &&
       oldItem.sortType == newItem.sortType
-  }
 }

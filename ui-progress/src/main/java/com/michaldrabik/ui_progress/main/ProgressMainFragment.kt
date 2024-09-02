@@ -227,9 +227,10 @@ class ProgressMainFragment :
       progressMainPagerModeTabs.fadeOut(duration = 200).add(animations)
       progressMainTabs.fadeOut(duration = 200).add(animations)
       progressMainSideIcons.fadeOut(duration = 200).add(animations)
-      progressMainPager.fadeOut(duration = 200) {
-        navigateToSafe(R.id.actionProgressFragmentToSearch)
-      }.add(animations)
+      progressMainPager
+        .fadeOut(duration = 200) {
+          navigateToSafe(R.id.actionProgressFragmentToSearch)
+        }.add(animations)
     }
   }
 
@@ -242,16 +243,17 @@ class ProgressMainFragment :
   fun openShowDetails(show: Show) {
     with(binding) {
       hideNavigation()
-      progressMainRoot.fadeOut(150) {
-        if (findNavControl()?.currentDestination?.id == R.id.progressMainFragment) {
-          val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.traktId) }
-          navigateToSafe(R.id.actionProgressFragmentToShowDetailsFragment, bundle)
-          exitSearch()
-        } else {
-          showNavigation()
-          progressMainRoot.fadeIn(50).add(animations)
-        }
-      }.add(animations)
+      progressMainRoot
+        .fadeOut(150) {
+          if (findNavControl()?.currentDestination?.id == R.id.progressMainFragment) {
+            val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.traktId) }
+            navigateToSafe(R.id.actionProgressFragmentToShowDetailsFragment, bundle)
+            exitSearch()
+          } else {
+            showNavigation()
+            progressMainRoot.fadeIn(50).add(animations)
+          }
+        }.add(animations)
     }
   }
 
@@ -359,7 +361,12 @@ class ProgressMainFragment :
         progressMainSideIcons,
         progressMainSearchLocalView,
       ).forEach {
-        it.animate().translationY(0F).setDuration(duration).add(animations)?.start()
+        it
+          .animate()
+          .translationY(0F)
+          .setDuration(duration)
+          .add(animations)
+          ?.start()
       }
     }
   }

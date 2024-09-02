@@ -68,7 +68,8 @@ class SettingsTraktFragment :
   }
 
   private fun setupWorkManager() {
-    WorkManager.getInstance(requireAppContext())
+    WorkManager
+      .getInstance(requireAppContext())
       .getWorkInfosByTagLiveData(TraktSyncWorker.TAG_ID)
       .observe(viewLifecycleOwner) {
         binding.settingsTraktSyncProgress.visibleIf(it.any { work -> work.state == State.RUNNING })
@@ -156,8 +157,7 @@ class SettingsTraktFragment :
       .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
       .setPositiveButton(R.string.textTurnOff) { _, _ ->
         viewModel.setTraktSyncSchedule(OFF)
-      }
-      .setNegativeButton(R.string.textNotNow) { _, _ -> }
+      }.setNegativeButton(R.string.textNotNow) { _, _ -> }
       .show()
   }
 
@@ -168,8 +168,7 @@ class SettingsTraktFragment :
       .setMessage(R.string.textSettingsLogoutMessage)
       .setPositiveButton(R.string.textYes) { _, _ ->
         viewModel.logoutTrakt()
-      }
-      .setNegativeButton(R.string.textCancel) { _, _ -> }
+      }.setNegativeButton(R.string.textCancel) { _, _ -> }
       .show()
   }
 
@@ -182,8 +181,7 @@ class SettingsTraktFragment :
       .setView(view)
       .setPositiveButton(R.string.textYes) { _, _ ->
         requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-      }
-      .setNegativeButton(R.string.textNo) { _, _ -> openTraktAuthWebsite() }
+      }.setNegativeButton(R.string.textNo) { _, _ -> openTraktAuthWebsite() }
       .show()
   }
 

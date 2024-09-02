@@ -24,8 +24,8 @@ class ProgressMovieItemDiffCallback : DiffUtil.ItemCallback<ProgressMovieListIte
   override fun areContentsTheSame(
     oldItem: ProgressMovieListItem,
     newItem: ProgressMovieListItem,
-  ): Boolean {
-    return when (oldItem) {
+  ): Boolean =
+    when (oldItem) {
       is ProgressMovieListItem.MovieItem -> areContentsTheSame(oldItem, (newItem as ProgressMovieListItem.MovieItem))
       is ProgressMovieListItem.FiltersItem -> areContentsTheSame(
         oldItem,
@@ -33,33 +33,28 @@ class ProgressMovieItemDiffCallback : DiffUtil.ItemCallback<ProgressMovieListIte
       )
       is ProgressMovieListItem.HeaderItem -> true
     }
-  }
 
   private fun areItemsTheSame(
     oldItem: ProgressMovieListItem.MovieItem,
     newItem: ProgressMovieListItem.MovieItem,
-  ): Boolean {
-    return oldItem.movie.ids.trakt == newItem.movie.ids.trakt
-  }
+  ): Boolean = oldItem.movie.ids.trakt == newItem.movie.ids.trakt
 
   private fun areContentsTheSame(
     oldItem: ProgressMovieListItem.MovieItem,
     newItem: ProgressMovieListItem.MovieItem,
-  ): Boolean {
-    return oldItem.isPinned == newItem.isPinned &&
+  ): Boolean =
+    oldItem.isPinned == newItem.isPinned &&
       oldItem.image == newItem.image &&
       oldItem.movie == newItem.movie &&
       oldItem.sortOrder == newItem.sortOrder &&
       oldItem.userRating == newItem.userRating &&
       oldItem.spoilers == newItem.spoilers &&
       oldItem.translation == newItem.translation
-  }
 
   private fun areContentsTheSame(
     oldItem: ProgressMovieListItem.FiltersItem,
     newItem: ProgressMovieListItem.FiltersItem,
-  ): Boolean {
-    return oldItem.sortOrder == newItem.sortOrder &&
+  ): Boolean =
+    oldItem.sortOrder == newItem.sortOrder &&
       oldItem.sortType == newItem.sortType
-  }
 }

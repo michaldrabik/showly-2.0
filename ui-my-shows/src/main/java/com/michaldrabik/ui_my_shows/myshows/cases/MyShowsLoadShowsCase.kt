@@ -47,7 +47,8 @@ class MyShowsLoadShowsCase @Inject constructor(
         return@withContext buffer
       }
 
-      val seasons = localSource.seasons.getAllByShowsIds(batch)
+      val seasons = localSource.seasons
+        .getAllByShowsIds(batch)
         .filter { it.seasonNumber != 0 }
       buffer.addAll(seasons)
 

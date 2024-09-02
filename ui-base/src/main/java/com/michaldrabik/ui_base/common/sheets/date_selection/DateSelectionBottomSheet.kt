@@ -79,13 +79,14 @@ class DateSelectionBottomSheet : BaseBottomSheetFragment(R.layout.view_date_sele
 
   private fun openDateSelectionDialog() {
     val now = nowUtc().toLocalZone()
-    val dialog = MaterialDatePicker.Builder.datePicker()
+    val dialog = MaterialDatePicker.Builder
+      .datePicker()
       .setCalendarConstraints(
-        CalendarConstraints.Builder()
+        CalendarConstraints
+          .Builder()
           .setFirstDayOfWeek(Calendar.MONDAY)
           .build(),
-      )
-      .setTheme(R.style.ShowlyDatePicker)
+      ).setTheme(R.style.ShowlyDatePicker)
       .setSelection(now.toMillis() + (now.offset.totalSeconds * 1000))
       .build()
     dialog.addOnPositiveButtonClickListener {
@@ -100,7 +101,8 @@ class DateSelectionBottomSheet : BaseBottomSheetFragment(R.layout.view_date_sele
   ) {
     val is24HourFormat = DateFormat.is24HourFormat(requireContext())
 
-    val dialog = MaterialTimePicker.Builder()
+    val dialog = MaterialTimePicker
+      .Builder()
       .setTheme(R.style.ShowlyTimePicker)
       .setTimeFormat(if (is24HourFormat) TimeFormat.CLOCK_24H else TimeFormat.CLOCK_12H)
       .setInputMode(MaterialTimePicker.INPUT_MODE_CLOCK)
@@ -141,6 +143,8 @@ class DateSelectionBottomSheet : BaseBottomSheetFragment(R.layout.view_date_sele
     data object Now : Result
 
     @Parcelize
-    data class CustomDate(val date: ZonedDateTime) : Result
+    data class CustomDate(
+      val date: ZonedDateTime,
+    ) : Result
   }
 }

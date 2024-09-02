@@ -7,7 +7,9 @@ import com.michaldrabik.data_local.database.model.MovieRatings
 import com.michaldrabik.data_local.sources.MovieRatingsLocalDataSource
 
 @Dao
-interface MovieRatingsDao : BaseDao<MovieRatings>, MovieRatingsLocalDataSource {
+interface MovieRatingsDao :
+  BaseDao<MovieRatings>,
+  MovieRatingsLocalDataSource {
 
   @Transaction
   override suspend fun upsert(entity: MovieRatings) {

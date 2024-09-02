@@ -8,7 +8,9 @@ import com.michaldrabik.data_local.database.model.EpisodeTranslation
 import com.michaldrabik.data_local.sources.EpisodeTranslationsLocalDataSource
 
 @Dao
-interface EpisodeTranslationsDao : BaseDao<EpisodeTranslation>, EpisodeTranslationsLocalDataSource {
+interface EpisodeTranslationsDao :
+  BaseDao<EpisodeTranslation>,
+  EpisodeTranslationsLocalDataSource {
 
   @Query(
     "SELECT * FROM episodes_translations " +

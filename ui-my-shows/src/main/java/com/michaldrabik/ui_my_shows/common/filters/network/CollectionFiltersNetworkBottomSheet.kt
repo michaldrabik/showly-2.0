@@ -36,9 +36,7 @@ internal class CollectionFiltersNetworkBottomSheet : BaseBottomSheetFragment(R.l
     private const val ARG_ORIGIN = "ARG_ORIGIN"
     const val REQUEST_COLLECTION_FILTERS_NETWORK = "REQUEST_COLLECTION_FILTERS_NETWORK"
 
-    fun createBundle(origin: CollectionFiltersOrigin): Bundle {
-      return bundleOf(ARG_ORIGIN to origin)
-    }
+    fun createBundle(origin: CollectionFiltersOrigin): Bundle = bundleOf(ARG_ORIGIN to origin)
   }
 
   private val viewModel by viewModels<CollectionFiltersNetworkViewModel>()
@@ -102,7 +100,8 @@ internal class CollectionFiltersNetworkBottomSheet : BaseBottomSheetFragment(R.l
     binding.clearButton.visibleIf(networks.isNotEmpty())
 
     val networksNames = networks.map { it.name }
-    Network.values()
+    Network
+      .values()
       .sortedBy { it.name }
       .forEach { network ->
         val icon = networkIconProvider.getIcon(network)
@@ -111,7 +110,8 @@ internal class CollectionFiltersNetworkBottomSheet : BaseBottomSheetFragment(R.l
           text = network.channels.first()
           isCheckable = true
           isCheckedIconVisible = false
-          shapeAppearanceModel = shapeAppearanceModel.toBuilder()
+          shapeAppearanceModel = shapeAppearanceModel
+            .toBuilder()
             .setAllCornerSizes(100f)
             .build()
           setEnsureMinTouchTargetSize(false)

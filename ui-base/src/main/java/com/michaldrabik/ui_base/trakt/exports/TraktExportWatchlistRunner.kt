@@ -49,11 +49,13 @@ class TraktExportWatchlistRunner @Inject constructor(
       Timber.d("Exporting watchlist...")
       val isMoviesEnables = settingsRepository.isMoviesEnabled
 
-      val localShows = localSource.watchlistShows.getAll()
+      val localShows = localSource.watchlistShows
+        .getAll()
         .map { SyncExportItem.create(it.idTrakt) }
       val localMovies = buildList {
         if (isMoviesEnables) {
-          localSource.watchlistMovies.getAll()
+          localSource.watchlistMovies
+            .getAll()
             .mapTo(this) { SyncExportItem.create(it.idTrakt) }
         }
       }

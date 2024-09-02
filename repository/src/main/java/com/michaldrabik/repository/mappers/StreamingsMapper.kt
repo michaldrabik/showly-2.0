@@ -20,8 +20,8 @@ class StreamingsMapper @Inject constructor() {
     input: List<ShowStreaming>,
     mediaName: String,
     countryCode: String,
-  ): List<StreamingService> {
-    return input.map {
+  ): List<StreamingService> =
+    input.map {
       StreamingService(
         imagePath = it.logoPath ?: "",
         name = it.providerName ?: "",
@@ -31,7 +31,6 @@ class StreamingsMapper @Inject constructor() {
         link = it.link ?: "",
       )
     }
-  }
 
   fun toDatabaseShow(
     ids: Ids,
@@ -48,8 +47,8 @@ class StreamingsMapper @Inject constructor() {
     input: List<MovieStreaming>,
     mediaName: String,
     countryCode: String,
-  ): List<StreamingService> {
-    return input.map {
+  ): List<StreamingService> =
+    input.map {
       StreamingService(
         imagePath = it.logoPath ?: "",
         name = it.providerName ?: "",
@@ -59,7 +58,6 @@ class StreamingsMapper @Inject constructor() {
         link = it.link ?: "",
       )
     }
-  }
 
   fun toDatabaseMovie(
     ids: Ids,

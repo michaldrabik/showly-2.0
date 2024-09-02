@@ -66,5 +66,7 @@ class DiscoverAdapter(
     }
   }
 
-  override fun getItemViewType(position: Int) = asyncDiffer.currentList[position].image.type.id
+  override fun getItemViewType(position: Int) =
+    asyncDiffer.currentList[position]
+      .image.type.id
 }

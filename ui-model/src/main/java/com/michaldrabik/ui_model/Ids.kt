@@ -29,24 +29,36 @@ sealed interface Id : Parcelable
 
 @JvmInline
 @Parcelize
-value class IdTrakt(val id: Long = -1) : Id
+value class IdTrakt(
+  val id: Long = -1,
+) : Id
 
 @JvmInline
 @Parcelize
-value class IdTvdb(val id: Long = -1) : Id
+value class IdTvdb(
+  val id: Long = -1,
+) : Id
 
 @JvmInline
 @Parcelize
-value class IdImdb(val id: String = "") : Id
+value class IdImdb(
+  val id: String = "",
+) : Id
 
 @JvmInline
 @Parcelize
-value class IdTmdb(val id: Long = -1) : Id
+value class IdTmdb(
+  val id: Long = -1,
+) : Id
 
 @JvmInline
 @Parcelize
-value class IdTvRage(val id: Long = -1) : Id
+value class IdTvRage(
+  val id: Long = -1,
+) : Id
 
 @JvmInline
 @Parcelize
-value class IdSlug(val id: String = "") : Id
+value class IdSlug(
+  val id: String = "",
+) : Id

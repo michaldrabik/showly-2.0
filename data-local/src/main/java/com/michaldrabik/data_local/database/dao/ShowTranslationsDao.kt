@@ -8,7 +8,9 @@ import com.michaldrabik.data_local.database.model.ShowTranslation
 import com.michaldrabik.data_local.sources.ShowTranslationsLocalDataSource
 
 @Dao
-interface ShowTranslationsDao : BaseDao<ShowTranslation>, ShowTranslationsLocalDataSource {
+interface ShowTranslationsDao :
+  BaseDao<ShowTranslation>,
+  ShowTranslationsLocalDataSource {
 
   @Query("SELECT * FROM shows_translations WHERE id_trakt == :traktId AND language == :language")
   override suspend fun getById(

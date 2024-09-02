@@ -59,9 +59,11 @@ class TraktExportListsRunner @Inject constructor(
   private suspend fun exportLists() {
     Timber.d("Exporting lists...")
 
-    val localLists = localSource.customLists.getAll()
+    val localLists = localSource.customLists
+      .getAll()
       .map { mappers.customList.fromDatabase(it) }
-    val remoteLists = remoteSource.fetchSyncLists()
+    val remoteLists = remoteSource
+      .fetchSyncLists()
       .map { mappers.customList.fromNetwork(it) }
 
     localLists
@@ -138,9 +140,11 @@ class TraktExportListsRunner @Inject constructor(
 
     Timber.d("Processing list items...")
     val listTraktId = localList.idTrakt!!
-    val remoteItems = remoteSource.fetchSyncListItems(listTraktId, moviesEnabled)
+    val remoteItems = remoteSource
+      .fetchSyncListItems(listTraktId, moviesEnabled)
       .filter { it.movie != null || it.show != null }
-    val localItems = localSource.customListsItems.getItemsById(localList.id)
+    val localItems = localSource.customListsItems
+      .getItemsById(localList.id)
       .filter { localItem ->
         remoteItems.none {
           it.getTraktId() == localItem.idTrakt && it.getType() == localItem.type
@@ -167,7 +171,8 @@ class TraktExportListsRunner @Inject constructor(
   ) {
     try {
       Timber.d("Updating timestamp...")
-      val list = remoteSource.fetchSyncList(listTraktId)
+      val list = remoteSource
+        .fetchSyncList(listTraktId)
         .run { mappers.customList.fromNetwork(this) }
       localSource.customLists.updateTimestamp(listId, list.updatedAt.toMillis())
       Timber.d("Local list timestamp updated.")

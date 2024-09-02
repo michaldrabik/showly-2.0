@@ -76,7 +76,9 @@ data class TraktSyncQueue(
     ) = TraktSyncQueue(0, idTrakt, null, Type.HIDDEN_MOVIE.slug, operation.slug, createdAt, updatedAt)
   }
 
-  enum class Type(val slug: String) {
+  enum class Type(
+    val slug: String,
+  ) {
     EPISODE("episode"),
     SHOW_WATCHLIST("show_watchlist"),
     MOVIE("movie"),
@@ -87,7 +89,9 @@ data class TraktSyncQueue(
     HIDDEN_MOVIE("hidden_movie"),
   }
 
-  enum class Operation(val slug: String) {
+  enum class Operation(
+    val slug: String,
+  ) {
     ADD("add"),
     ADD_WITH_CLEAR("add_clear"),
     REMOVE("remove"),

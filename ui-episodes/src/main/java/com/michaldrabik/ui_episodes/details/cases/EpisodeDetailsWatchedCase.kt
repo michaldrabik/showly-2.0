@@ -18,9 +18,8 @@ class EpisodeDetailsWatchedCase @Inject constructor(
   suspend fun getLastWatchedAt(
     showId: IdTrakt,
     episode: Episode,
-  ): ZonedDateTime? {
-    return withContext(dispatchers.IO) {
+  ): ZonedDateTime? =
+    withContext(dispatchers.IO) {
       episodesDataSource.getById(showId.id, episode.ids.trakt.id)?.lastWatchedAt
     }
-  }
 }

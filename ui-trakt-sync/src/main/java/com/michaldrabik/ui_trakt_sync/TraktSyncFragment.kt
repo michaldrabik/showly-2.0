@@ -109,8 +109,7 @@ class TraktSyncFragment :
         viewModel.saveTraktSyncSchedule(schedule)
         showSnack(MessageEvent.Info(schedule.confirmationStringRes))
         dialog.dismiss()
-      }
-      .show()
+      }.show()
   }
 
   override fun onAuthorizationResult(authData: Uri?) {
@@ -127,8 +126,7 @@ class TraktSyncFragment :
       .setView(view)
       .setPositiveButton(R.string.textYes) { _, _ ->
         requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-      }
-      .setNegativeButton(R.string.textNo) { _, _ -> openTraktAuthWebsite() }
+      }.setNegativeButton(R.string.textNo) { _, _ -> openTraktAuthWebsite() }
       .show()
   }
 

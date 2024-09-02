@@ -78,14 +78,15 @@ class ProgressItemView : ShowView<ProgressListItem.Episode> {
           translationTitle
         }
 
-      progressItemSubtitle.text = String.format(
-        ENGLISH,
-        context.getString(R.string.textSeasonEpisode),
-        item.episode?.season,
-        item.episode?.number,
-      ).plus(
-        item.episode?.numberAbs?.let { if (it > 0 && item.show.isAnime) " ($it)" else "" } ?: "",
-      )
+      progressItemSubtitle.text = String
+        .format(
+          ENGLISH,
+          context.getString(R.string.textSeasonEpisode),
+          item.episode?.season,
+          item.episode?.number,
+        ).plus(
+          item.episode?.numberAbs?.let { if (it > 0 && item.show.isAnime) " ($it)" else "" } ?: "",
+        )
 
       bindEpisodeTitle(item)
       progressItemNewBadge.visibleIf(item.isNew())
@@ -105,7 +106,10 @@ class ProgressItemView : ShowView<ProgressListItem.Episode> {
       item.episode?.title?.isBlank() == true -> {
         context.getString(R.string.textTba)
       }
-      item.translations?.episode?.title?.isBlank() == false -> {
+      item.translations
+        ?.episode
+        ?.title
+        ?.isBlank() == false -> {
         item.translations.episode.title
       }
       item.episode?.title == "Episode ${item.episode?.number}" -> {

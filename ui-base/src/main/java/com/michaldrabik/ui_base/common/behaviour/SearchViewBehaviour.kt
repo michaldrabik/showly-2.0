@@ -11,7 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
  * Note: some extra work is added because of an issue:
  * https://gist.github.com/erikhuizinga/edf408167b46eb5b1568424563ca4e59?ts=2
  */
-class SearchViewBehaviour(private val padding: Int) : CoordinatorLayout.Behavior<ViewGroup>() {
+class SearchViewBehaviour(
+  private val padding: Int,
+) : CoordinatorLayout.Behavior<ViewGroup>() {
 
   override fun layoutDependsOn(
     parent: CoordinatorLayout,
@@ -84,7 +86,11 @@ class SearchViewBehaviour(private val padding: Int) : CoordinatorLayout.Behavior
     lm?.let {
       val isScrolled = lm.findFirstCompletelyVisibleItemPosition() != 0
       if (!isScrolled) {
-        child.animate().translationY(0F).setDuration(50).start()
+        child
+          .animate()
+          .translationY(0F)
+          .setDuration(50)
+          .start()
       }
     }
   }

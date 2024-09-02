@@ -326,20 +326,22 @@ class ListsFragment :
     with(binding) {
       fragmentListsModeTabs.fadeOut(duration = 200).add(animations)
       fragmentListsIcons.fadeOut(duration = 200).add(animations)
-      fragmentListsRecycler.fadeOut(duration = 200) {
-        super.navigateTo(R.id.actionListsFragmentToSearch, null)
-      }.add(animations)
+      fragmentListsRecycler
+        .fadeOut(duration = 200) {
+          super.navigateTo(R.id.actionListsFragmentToSearch, null)
+        }.add(animations)
     }
   }
 
   private fun openListDetails(listItem: ListsItem) {
     disableUi()
     hideNavigation()
-    binding.fragmentListsRoot.fadeOut(150) {
-      val bundle = bundleOf(ARG_LIST to listItem.list)
-      navigateTo(R.id.actionListsFragmentToDetailsFragment, bundle)
-      exitSearch()
-    }.add(animations)
+    binding.fragmentListsRoot
+      .fadeOut(150) {
+        val bundle = bundleOf(ARG_LIST to listItem.list)
+        navigateTo(R.id.actionListsFragmentToDetailsFragment, bundle)
+        exitSearch()
+      }.add(animations)
   }
 
   private fun openSettings() {
@@ -362,7 +364,12 @@ class ListsFragment :
         fragmentListsIcons,
         fragmentListsSearchLocalView,
       ).forEach {
-        it.animate().translationY(0F).setDuration(duration).add(animations)?.start()
+        it
+          .animate()
+          .translationY(0F)
+          .setDuration(duration)
+          .add(animations)
+          ?.start()
       }
     }
   }

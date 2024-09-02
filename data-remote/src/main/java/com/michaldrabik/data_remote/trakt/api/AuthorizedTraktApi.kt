@@ -74,9 +74,7 @@ internal class AuthorizedTraktApi(
     return results
   }
 
-  override suspend fun fetchSyncActivity(): SyncActivity {
-    return syncService.fetchSyncActivity()
-  }
+  override suspend fun fetchSyncActivity(): SyncActivity = syncService.fetchSyncActivity()
 
   override suspend fun fetchSyncShowHistory(showId: Long): List<SyncHistoryItem> {
     var page = 1
@@ -265,6 +263,4 @@ internal class AuthorizedTraktApi(
   override suspend fun fetchSeasonsRatings() = syncService.fetchSeasonsRatings()
 }
 
-private fun Headers.getPaginationPageCount(): Int {
-  return this["x-pagination-page-count"]?.toInt() ?: 0
-}
+private fun Headers.getPaginationPageCount(): Int = this["x-pagination-page-count"]?.toInt() ?: 0

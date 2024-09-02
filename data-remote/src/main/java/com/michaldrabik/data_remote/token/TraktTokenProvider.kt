@@ -53,7 +53,8 @@ internal class TraktTokenProvider(
     accessToken: String,
     refreshToken: String,
   ) {
-    sharedPreferences.edit()
+    sharedPreferences
+      .edit()
       .putString(KEY_ACCESS_TOKEN, accessToken)
       .putString(KEY_REFRESH_TOKEN, refreshToken)
       .putLong(KEY_TIMESTAMP, System.currentTimeMillis())
@@ -62,7 +63,8 @@ internal class TraktTokenProvider(
   }
 
   override fun revokeToken() {
-    sharedPreferences.edit()
+    sharedPreferences
+      .edit()
       .clear()
       .remove(KEY_ACCESS_TOKEN)
       .remove(KEY_REFRESH_TOKEN)
@@ -99,7 +101,8 @@ internal class TraktTokenProvider(
       .put("grant_type", "refresh_token")
       .toString()
 
-    val request = Request.Builder()
+    val request = Request
+      .Builder()
       .url("${Config.TRAKT_BASE_URL}oauth/token")
       .addHeader("Content-Type", "application/json")
       .post(body.toRequestBody("application/json".toMediaType()))

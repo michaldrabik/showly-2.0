@@ -39,7 +39,8 @@ class ShowDetailsSeasonsViewModel @Inject constructor(
   private val markWatchedCase: EpisodesMarkWatchedCase,
   private val seasonsCache: SeasonsCache,
   private val settingsRepository: SettingsRepository,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private lateinit var show: Show
 

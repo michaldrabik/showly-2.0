@@ -25,7 +25,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MovieDetailsPeopleViewModel @Inject constructor(
   private val actorsCase: MovieDetailsPeopleCase,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private lateinit var movie: Movie
 

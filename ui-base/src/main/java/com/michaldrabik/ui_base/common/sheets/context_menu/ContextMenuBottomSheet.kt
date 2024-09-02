@@ -96,19 +96,18 @@ abstract class ContextMenuBottomSheet : BaseBottomSheetFragment(R.layout.view_co
       return
     }
 
-    Glide.with(this)
+    Glide
+      .with(this)
       .load(image.fullFileUrl)
       .transform(centerCropTransformation, cornersTransformation)
       .transition(DrawableTransitionOptions.withCrossFade(Config.IMAGE_FADE_DURATION_MS))
       .withSuccessListener {
         binding.contextMenuItemPlaceholder.gone()
         binding.contextMenuItemImage.visible()
-      }
-      .withFailListener {
+      }.withFailListener {
         binding.contextMenuItemPlaceholder.visible()
         binding.contextMenuItemImage.gone()
-      }
-      .into(binding.contextMenuItemImage)
+      }.into(binding.contextMenuItemImage)
   }
 
   protected fun renderSnackbar(message: MessageEvent) {

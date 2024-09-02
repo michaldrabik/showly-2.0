@@ -189,7 +189,8 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
           renderExtraInfo(movie, meta)
           movieDetailsStatus.text = getString(movie.status.displayName)
           movieDetailsShareButton.run {
-            isEnabled = movie.ids.imdb.id.isNotBlank()
+            isEnabled = movie.ids.imdb.id
+              .isNotBlank()
             alpha = if (isEnabled) 1.0F else 0.35F
             onClick { openShareSheet(movie) }
           }
@@ -352,7 +353,8 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         movieDetailsImage.isEnabled = false
         return
       }
-      Glide.with(this@MovieDetailsFragment)
+      Glide
+        .with(this@MovieDetailsFragment)
         .load(image.fullFileUrl)
         .transform(CenterCrop())
         .transition(withCrossFade(IMAGE_FADE_DURATION_MS))
@@ -361,12 +363,10 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
           movieDetailsPlaceholder.visible()
           movieDetailsImage.isClickable = true
           movieDetailsImage.isEnabled = true
-        }
-        .withSuccessListener {
+        }.withSuccessListener {
           movieDetailsImageProgress.gone()
           movieDetailsPlaceholder.gone()
-        }
-        .into(movieDetailsImage)
+        }.into(movieDetailsImage)
     }
   }
 

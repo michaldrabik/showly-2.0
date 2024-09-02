@@ -41,7 +41,8 @@ class MovieContextMenuViewModel @Inject constructor(
   private val hiddenCase: MovieContextMenuHiddenCase,
   private val pinnedCase: MovieContextMenuPinnedCase,
   private val settingsRepository: SettingsRepository,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private var movieId by notNull<IdTrakt>()
   private var isQuickRemoveEnabled by notNull<Boolean>()

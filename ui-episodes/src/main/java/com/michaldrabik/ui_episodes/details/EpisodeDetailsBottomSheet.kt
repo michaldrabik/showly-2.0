@@ -400,7 +400,8 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
       }
       episodeDetailsImage.visible()
       episodeDetailsImagePlaceholder.invisible()
-      Glide.with(this@EpisodeDetailsBottomSheet)
+      Glide
+        .with(this@EpisodeDetailsBottomSheet)
         .load("${Config.TMDB_IMAGE_BASE_STILL_URL}${image.fileUrl}")
         .transform(CenterCrop(), GranularRoundedCorners(cornerRadius, cornerRadius, 0F, 0F))
         .transition(DrawableTransitionOptions.withCrossFade(IMAGE_FADE_DURATION_MS))
@@ -408,8 +409,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
           episodeDetailsImagePlaceholder.visible()
           episodeDetailsImagePlaceholder.setImageResource(R.drawable.ic_television)
           episodeDetailsImagePlaceholder.setOnClickListener(null)
-        }
-        .into(episodeDetailsImage)
+        }.into(episodeDetailsImage)
     }
   }
 

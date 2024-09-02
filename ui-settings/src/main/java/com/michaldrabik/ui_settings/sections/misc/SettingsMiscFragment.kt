@@ -20,8 +20,7 @@ import com.michaldrabik.ui_settings.helpers.PlayStoreHelper
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SettingsMiscFragment :
-  BaseFragment<SettingsMiscViewModel>(R.layout.fragment_settings_misc) {
+class SettingsMiscFragment : BaseFragment<SettingsMiscViewModel>(R.layout.fragment_settings_misc) {
 
   override val viewModel by viewModels<SettingsMiscViewModel>()
   private val binding by viewBinding(FragmentSettingsMiscBinding::bind)

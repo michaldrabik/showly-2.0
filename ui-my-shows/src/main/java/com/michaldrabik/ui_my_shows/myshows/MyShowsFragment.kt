@@ -189,7 +189,8 @@ class MyShowsFragment :
     requireParentFragment().setFragmentResultListener(key) { requestKey, bundle ->
       val sortOrder = bundle.getSerializable(NavigationArgs.ARG_SELECTED_SORT_ORDER) as SortOrder
       val sortType = bundle.getSerializable(NavigationArgs.ARG_SELECTED_SORT_TYPE) as SortType
-      MyShowsSection.values()
+      MyShowsSection
+        .values()
         .find { NavigationArgs.requestSortOrderSection(it.name) == requestKey }
         ?.let { viewModel.setSortOrder(sortOrder, sortType) }
     }

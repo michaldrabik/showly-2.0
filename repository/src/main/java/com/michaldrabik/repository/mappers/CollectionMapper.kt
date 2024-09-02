@@ -10,31 +10,29 @@ import com.michaldrabik.data_remote.trakt.model.MovieCollection as MovieCollecti
 
 class CollectionMapper @Inject constructor() {
 
-  fun fromNetwork(input: MovieCollectionNetwork): MovieCollection {
-    return MovieCollection(
+  fun fromNetwork(input: MovieCollectionNetwork): MovieCollection =
+    MovieCollection(
       id = IdTrakt(input.ids.trakt!!),
       name = input.name,
       description = input.description,
       itemCount = input.item_count,
     )
-  }
 
-  fun fromEntity(input: MovieCollectionEntity): MovieCollection {
-    return MovieCollection(
+  fun fromEntity(input: MovieCollectionEntity): MovieCollection =
+    MovieCollection(
       id = IdTrakt(input.idTrakt),
       name = input.name,
       description = input.description,
       itemCount = input.itemCount,
     )
-  }
 
   fun toEntity(
     movieId: Long,
     input: MovieCollection,
     updatedAt: ZonedDateTime = nowUtc(),
     createdAt: ZonedDateTime = nowUtc(),
-  ): MovieCollectionEntity {
-    return MovieCollectionEntity(
+  ): MovieCollectionEntity =
+    MovieCollectionEntity(
       idTrakt = input.id.id,
       idTraktMovie = movieId,
       name = input.name,
@@ -43,5 +41,4 @@ class CollectionMapper @Inject constructor() {
       updatedAt = updatedAt,
       createdAt = createdAt,
     )
-  }
 }

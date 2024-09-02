@@ -28,9 +28,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class PersonGalleryFragment : BaseFragment<PersonGalleryViewModel>(R.layout.fragment_person_gallery) {
 
   companion object {
-    fun createBundle(person: Person): Bundle {
-      return bundleOf(ARG_ID to person.ids.tmdb)
-    }
+    fun createBundle(person: Person): Bundle = bundleOf(ARG_ID to person.ids.tmdb)
   }
 
   override val viewModel by viewModels<PersonGalleryViewModel>()

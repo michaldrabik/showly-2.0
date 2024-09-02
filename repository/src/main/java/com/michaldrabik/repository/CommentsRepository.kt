@@ -38,12 +38,14 @@ class CommentsRepository @Inject constructor(
     idTrakt: IdTrakt,
     season: Int,
     episode: Int,
-  ) = remoteSource.fetchEpisodeComments(idTrakt.id, season, episode)
+  ) = remoteSource
+    .fetchEpisodeComments(idTrakt.id, season, episode)
     .map { mappers.comment.fromNetwork(it) }
     .filter { it.parentId <= 0 }
 
   suspend fun loadReplies(commentId: Long) =
-    remoteSource.fetchCommentReplies(commentId)
+    remoteSource
+      .fetchCommentReplies(commentId)
       .map { mappers.comment.fromNetwork(it).copy(replies = 0) }
       .sortedBy { it.createdAt?.toEpochSecond() }
 

@@ -27,9 +27,7 @@ object OkHttpModule {
   @Provides
   @Singleton
   @Named("okHttpBase")
-  fun providesBaseOkHttp(): OkHttpClient {
-    return createBaseOkHttpClient().build()
-  }
+  fun providesBaseOkHttp(): OkHttpClient = createBaseOkHttpClient().build()
 
   @Provides
   @Singleton
@@ -38,13 +36,12 @@ object OkHttpModule {
     httpLoggingInterceptor: HttpLoggingInterceptor,
     traktHeadersInterceptor: TraktHeadersInterceptor,
     traktRetryInterceptor: TraktRetryInterceptor,
-  ): OkHttpClient {
-    return createBaseOkHttpClient()
+  ): OkHttpClient =
+    createBaseOkHttpClient()
       .addInterceptor(traktHeadersInterceptor)
       .addInterceptor(traktRetryInterceptor)
       .addInterceptor(httpLoggingInterceptor)
       .build()
-  }
 
   @Provides
   @Singleton
@@ -56,8 +53,8 @@ object OkHttpModule {
     traktRefreshTokenInterceptor: TraktRefreshTokenInterceptor,
     traktRetryInterceptor: TraktRetryInterceptor,
     traktAuthenticator: TraktAuthenticator,
-  ): OkHttpClient {
-    return createBaseOkHttpClient()
+  ): OkHttpClient =
+    createBaseOkHttpClient()
       .addInterceptor(traktHeadersInterceptor)
       .addInterceptor(traktRefreshTokenInterceptor)
       .addInterceptor(traktAuthorizationInterceptor)
@@ -65,7 +62,6 @@ object OkHttpModule {
       .addInterceptor(httpLoggingInterceptor)
       .authenticator(traktAuthenticator)
       .build()
-  }
 
   @Provides
   @Singleton
@@ -108,7 +104,8 @@ object OkHttpModule {
     }
 
   private fun createBaseOkHttpClient() =
-    OkHttpClient.Builder()
+    OkHttpClient
+      .Builder()
       .writeTimeout(TIMEOUT_DURATION)
       .readTimeout(TIMEOUT_DURATION)
       .callTimeout(TIMEOUT_DURATION)

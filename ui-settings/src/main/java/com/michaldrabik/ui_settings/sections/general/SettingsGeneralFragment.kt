@@ -206,8 +206,7 @@ class SettingsGeneralFragment : BaseFragment<SettingsGeneralViewModel>(R.layout.
           viewModel.setLanguage(options[index])
         }
         dialog.dismiss()
-      }
-      .show()
+      }.show()
   }
 
   private fun showProgressUpcomingDialog(days: Long) {
@@ -217,23 +216,23 @@ class SettingsGeneralFragment : BaseFragment<SettingsGeneralViewModel>(R.layout.
     MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
       .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
       .setSingleChoiceItems(
-        options.map {
-          if (it == 0) {
-            getString(
-              R.string.textDisabled,
-            )
-          } else {
-            getString(R.string.textDays, it)
-          }
-        }.toTypedArray(),
+        options
+          .map {
+            if (it == 0) {
+              getString(
+                R.string.textDisabled,
+              )
+            } else {
+              getString(R.string.textDays, it)
+            }
+          }.toTypedArray(),
         selected,
       ) { dialog, index ->
         if (index != selected) {
           viewModel.setProgressUpcomingDays(options[index].toLong())
         }
         dialog.dismiss()
-      }
-      .show()
+      }.show()
   }
 
   private fun showTabletColumnsDialog(columns: Int) {
@@ -246,8 +245,7 @@ class SettingsGeneralFragment : BaseFragment<SettingsGeneralViewModel>(R.layout.
           viewModel.setTabletColumns(options[index])
         }
         dialog.dismiss()
-      }
-      .show()
+      }.show()
   }
 
   private fun showCountryDialog(country: AppCountry) {
@@ -261,8 +259,7 @@ class SettingsGeneralFragment : BaseFragment<SettingsGeneralViewModel>(R.layout.
           viewModel.setCountry(options[index])
         }
         dialog.dismiss()
-      }
-      .show()
+      }.show()
   }
 
   private fun showProgressTypeDialog(type: ProgressNextEpisodeType) {
@@ -283,8 +280,7 @@ class SettingsGeneralFragment : BaseFragment<SettingsGeneralViewModel>(R.layout.
           viewModel.setProgressType(options[index])
         }
         dialog.dismiss()
-      }
-      .show()
+      }.show()
   }
 
   private fun showDateSelectionTypeDialog(type: ProgressDateSelectionType) {
@@ -305,8 +301,7 @@ class SettingsGeneralFragment : BaseFragment<SettingsGeneralViewModel>(R.layout.
           viewModel.setDateSelectionType(options[index])
         }
         dialog.dismiss()
-      }
-      .show()
+      }.show()
   }
 
   private fun showDateFormatDialog(
@@ -319,17 +314,17 @@ class SettingsGeneralFragment : BaseFragment<SettingsGeneralViewModel>(R.layout.
     MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog_SmallText)
       .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
       .setSingleChoiceItems(
-        options.map {
-          DateFormatProvider.loadSettingsFormat(it, language.code).format(nowUtc().toLocalZone())
-        }.toTypedArray(),
+        options
+          .map {
+            DateFormatProvider.loadSettingsFormat(it, language.code).format(nowUtc().toLocalZone())
+          }.toTypedArray(),
         selected,
       ) { dialog, index ->
         if (index != selected) {
           viewModel.setDateFormat(options[index], requireAppContext())
         }
         dialog.dismiss()
-      }
-      .show()
+      }.show()
   }
 
   private fun showRecentShowsDialog(settings: Settings?) {
@@ -343,8 +338,7 @@ class SettingsGeneralFragment : BaseFragment<SettingsGeneralViewModel>(R.layout.
       .setSingleChoiceItems(options, default) { dialog, index ->
         viewModel.setRecentShowsAmount(options[index].toInt())
         dialog.dismiss()
-      }
-      .show()
+      }.show()
   }
 
   private fun restartApp() {

@@ -7,7 +7,9 @@ import com.michaldrabik.data_local.database.model.Rating
 import com.michaldrabik.data_local.sources.RatingsLocalDataSource
 
 @Dao
-interface RatingsDao : BaseDao<Rating>, RatingsLocalDataSource {
+interface RatingsDao :
+  BaseDao<Rating>,
+  RatingsLocalDataSource {
 
   @Query("SELECT * FROM ratings")
   override suspend fun getAll(): List<Rating>

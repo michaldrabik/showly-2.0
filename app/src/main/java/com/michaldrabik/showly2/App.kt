@@ -37,7 +37,8 @@ class App :
   @Inject lateinit var settingsRepository: SettingsRepository
 
   override val workManagerConfiguration: Configuration
-    get() = Configuration.Builder()
+    get() = Configuration
+      .Builder()
       .setWorkerFactory(workerFactory)
       .build()
 
@@ -53,14 +54,16 @@ class App :
       if (BuildConfig.DEBUG) {
         StrictMode
           .setThreadPolicy(
-            StrictMode.ThreadPolicy.Builder()
+            StrictMode.ThreadPolicy
+              .Builder()
               .detectAll()
               .penaltyLog()
               .build(),
           )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
           StrictMode.setVmPolicy(
-            StrictMode.VmPolicy.Builder()
+            StrictMode.VmPolicy
+              .Builder()
               .detectUnsafeIntentLaunch()
               .penaltyDeath()
               .build(),

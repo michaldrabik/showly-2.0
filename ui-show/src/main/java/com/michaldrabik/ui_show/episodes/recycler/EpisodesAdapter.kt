@@ -50,5 +50,7 @@ class EpisodesAdapter(
 
   override fun getItemCount() = items.size
 
-  class ViewHolderShow(itemView: View) : RecyclerView.ViewHolder(itemView)
+  class ViewHolderShow(
+    itemView: View,
+  ) : RecyclerView.ViewHolder(itemView)
 }

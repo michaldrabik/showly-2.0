@@ -22,7 +22,8 @@ class WhatsNewView : ScrollView {
   init {
     layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
 
-    val whatsNew = context.assets.open("release_notes.txt")
+    val whatsNew = context.assets
+      .open("release_notes.txt")
       .bufferedReader()
       .use { it.readText() }
 

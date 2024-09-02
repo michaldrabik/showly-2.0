@@ -47,8 +47,7 @@ class WatchlistItemFilter @Inject constructor() {
   fun filterByQuery(
     item: CollectionListItem.ShowItem,
     query: String,
-  ): Boolean {
-    return item.show.title.contains(query, true) ||
+  ): Boolean =
+    item.show.title.contains(query, true) ||
       item.translation?.title?.contains(query, true) == true
-  }
 }

@@ -230,9 +230,12 @@ class MainActivity :
         isClickable = false
       }
       snackbarHost.translationY = navigationHeight.toFloat()
-      bottomNavigationWrapper.animate().translationYBy(navigationHeightPad.toFloat())
+      bottomNavigationWrapper
+        .animate()
+        .translationYBy(navigationHeightPad.toFloat())
         .setDuration(if (animate) NAVIGATION_TRANSITION_DURATION_MS else 0)
-        .setInterpolator(decelerateInterpolator).start()
+        .setInterpolator(decelerateInterpolator)
+        .start()
     }
   }
 
@@ -247,7 +250,8 @@ class MainActivity :
       .animate()
       .translationY(0F)
       .setDuration(if (animate) NAVIGATION_TRANSITION_DURATION_MS else 0)
-      .setInterpolator(decelerateInterpolator).start()
+      .setInterpolator(decelerateInterpolator)
+      .start()
   }
 
   override fun navigateToDiscover() {
@@ -441,8 +445,11 @@ class MainActivity :
       this,
       R.style.AlertDialog,
     ).setBackground(ContextCompat.getDrawable(this, R.drawable.bg_dialog))
-      .setView(WhatsNewView(this)).setCancelable(false).setPositiveButton(R.string.textClose) { _, _ -> }
-      .setNeutralButton("Twitter") { _, _ -> openWebUrl(Config.TWITTER_URL) }.show()
+      .setView(WhatsNewView(this))
+      .setCancelable(false)
+      .setPositiveButton(R.string.textClose) { _, _ -> }
+      .setNeutralButton("Twitter") { _, _ -> openWebUrl(Config.TWITTER_URL) }
+      .show()
   }
 
   private fun getMenuDiscoverAction() =

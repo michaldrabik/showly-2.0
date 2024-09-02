@@ -26,12 +26,16 @@ class SettingsMapper @Inject constructor() {
       archiveShowsSortBy = enumValueOf(settings.archiveShowsSortBy),
       showAnticipatedShows = settings.showAnticipatedShows,
       discoverFilterFeed = enumValueOf(settings.discoverFilterFeed),
-      discoverFilterGenres = settings.discoverFilterGenres.split(
-        ",",
-      ).filter { it.isNotBlank() }.map { Genre.valueOf(it) },
-      discoverFilterNetworks = settings.discoverFilterNetworks.split(",").filter {
-        it.isNotBlank()
-      }.map { Network.valueOf(it) },
+      discoverFilterGenres = settings.discoverFilterGenres
+        .split(
+          ",",
+        ).filter { it.isNotBlank() }
+        .map { Genre.valueOf(it) },
+      discoverFilterNetworks = settings.discoverFilterNetworks
+        .split(",")
+        .filter {
+          it.isNotBlank()
+        }.map { Network.valueOf(it) },
       traktSyncSchedule = enumValueOf(settings.traktSyncSchedule),
       traktQuickSyncEnabled = settings.traktQuickSyncEnabled,
       traktQuickRemoveEnabled = settings.traktQuickRemoveEnabled,
@@ -39,9 +43,11 @@ class SettingsMapper @Inject constructor() {
       archiveIncludeStatistics = settings.archiveShowsIncludeStatistics,
       specialSeasonsEnabled = settings.specialSeasonsEnabled,
       showAnticipatedMovies = settings.showAnticipatedMovies,
-      discoverMoviesFilterGenres = settings.discoverMoviesFilterGenres.split(",").filter {
-        it.isNotBlank()
-      }.map { Genre.valueOf(it) },
+      discoverMoviesFilterGenres = settings.discoverMoviesFilterGenres
+        .split(",")
+        .filter {
+          it.isNotBlank()
+        }.map { Genre.valueOf(it) },
       discoverMoviesFilterFeed = enumValueOf(settings.discoverMoviesFilterFeed),
       myMoviesAllSortBy = enumValueOf(settings.myMoviesAllSortBy),
       watchlistMoviesSortBy = enumValueOf(settings.seeLaterMoviesSortBy),

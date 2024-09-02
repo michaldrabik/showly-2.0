@@ -97,7 +97,9 @@ class ShowDetailsPeopleFragment : BaseFragment<ShowDetailsPeopleViewModel>(R.lay
 
     handleSheetResult()
 
-    val title = (requireParentFragment() as ShowDetailsFragment).binding.showDetailsTitle.text.toString()
+    val title = (requireParentFragment() as ShowDetailsFragment)
+      .binding.showDetailsTitle.text
+      .toString()
     val bundle = PeopleListBottomSheet.createBundle(show.ids.trakt, title, Mode.SHOWS, department)
     navigateToSafe(R.id.actionShowDetailsFragmentToPeopleList, bundle)
   }

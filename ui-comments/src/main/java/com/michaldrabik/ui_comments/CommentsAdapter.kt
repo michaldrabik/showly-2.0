@@ -45,5 +45,7 @@ class CommentsAdapter(
 
   override fun getItemCount() = asyncDiffer.currentList.size
 
-  class ViewHolderShow(itemView: View) : RecyclerView.ViewHolder(itemView)
+  class ViewHolderShow(
+    itemView: View,
+  ) : RecyclerView.ViewHolder(itemView)
 }

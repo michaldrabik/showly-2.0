@@ -42,7 +42,8 @@ internal class DiscoverMoviesViewModel @Inject constructor(
   private val filtersCase: DiscoverFiltersCase,
   private val imagesProvider: MovieImagesProvider,
   workManager: WorkManager,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val itemsState = MutableStateFlow<List<DiscoverMovieListItem>?>(null)
   private val loadingState = MutableStateFlow(false)

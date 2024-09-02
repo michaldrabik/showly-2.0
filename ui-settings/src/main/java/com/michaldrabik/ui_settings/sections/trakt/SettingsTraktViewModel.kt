@@ -36,7 +36,8 @@ class SettingsTraktViewModel @Inject constructor(
   private val mainCase: SettingsTraktMainCase,
   private val traktCase: SettingsTraktCase,
   private val ratingsCase: SettingsRatingsCase,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val settingsState = MutableStateFlow<Settings?>(null)
 

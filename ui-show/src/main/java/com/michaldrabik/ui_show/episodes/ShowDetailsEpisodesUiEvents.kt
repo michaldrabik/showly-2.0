@@ -12,7 +12,9 @@ import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_show.sections.seasons.recycler.SeasonListItem
 
-sealed class ShowDetailsEpisodesEvent<T>(action: T) : Event<T>(action) {
+sealed class ShowDetailsEpisodesEvent<T>(
+  action: T,
+) : Event<T>(action) {
 
   data class OpenEpisodeDetails(
     val bundle: EpisodeBundle,

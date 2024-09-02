@@ -20,7 +20,9 @@ interface TipsDelegate : TipsHost {
   fun hideAllTips()
 }
 
-class MainTipsDelegate : TipsDelegate, DefaultLifecycleObserver {
+class MainTipsDelegate :
+  TipsDelegate,
+  DefaultLifecycleObserver {
 
   private lateinit var viewModel: MainViewModel
   private lateinit var binding: ActivityMainBinding

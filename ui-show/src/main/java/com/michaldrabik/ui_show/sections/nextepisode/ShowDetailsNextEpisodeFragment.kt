@@ -24,9 +24,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
 @AndroidEntryPoint
-class ShowDetailsNextEpisodeFragment : BaseFragment<ShowDetailsNextEpisodeViewModel>(
-  R.layout.fragment_show_details_next_episode,
-) {
+class ShowDetailsNextEpisodeFragment :
+  BaseFragment<ShowDetailsNextEpisodeViewModel>(
+    R.layout.fragment_show_details_next_episode,
+  ) {
 
   override val navigationId = R.id.showDetailsFragment
   private val binding by viewBinding(FragmentShowDetailsNextEpisodeBinding::bind)
@@ -88,7 +89,8 @@ class ShowDetailsNextEpisodeFragment : BaseFragment<ShowDetailsNextEpisodeViewMo
 
           showDetailsEpisodeRoot.onClick { openDetails(episodeBundle) }
           (requireParentFragment() as ShowDetailsFragment)
-            .binding.showDetailsEpisodeFragment.fadeIn(withHardware = true)
+            .binding.showDetailsEpisodeFragment
+            .fadeIn(withHardware = true)
         }
       }
     }

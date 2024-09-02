@@ -6,7 +6,9 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.michaldrabik.ui_base.common.behaviour.ScrollableViewBehaviour
 
-class ScrollableImageView : AppCompatImageView, CoordinatorLayout.AttachedBehavior {
+class ScrollableImageView :
+  AppCompatImageView,
+  CoordinatorLayout.AttachedBehavior {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)

@@ -64,15 +64,15 @@ class MyShowFanartView : FrameLayout {
         myShowFanartRoot.setBackgroundResource(R.drawable.bg_media_view_placeholder)
         return
       }
-      Glide.with(this@MyShowFanartView)
+      Glide
+        .with(this@MyShowFanartView)
         .load(image.fullFileUrl)
         .transform(CenterCrop(), RoundedCorners(cornerRadius))
         .transition(DrawableTransitionOptions.withCrossFade(IMAGE_FADE_DURATION_MS))
         .withFailListener {
           myShowFanartPlaceholder.visible()
           myShowFanartImage.gone()
-        }
-        .into(myShowFanartImage)
+        }.into(myShowFanartImage)
     }
   }
 

@@ -35,7 +35,8 @@ class NetworkStatusProvider @Inject constructor(
   @SuppressLint("MissingPermission")
   override fun onStart(owner: LifecycleOwner) {
     super.onStart(owner)
-    val networkRequest = NetworkRequest.Builder()
+    val networkRequest = NetworkRequest
+      .Builder()
       .addTransportType(TRANSPORT_WIFI)
       .addTransportType(TRANSPORT_CELLULAR)
       .addTransportType(TRANSPORT_ETHERNET)

@@ -16,7 +16,10 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.R
 import kotlin.random.Random
 
-class AnnouncementWorker(context: Context, workerParams: WorkerParameters) : Worker(context, workerParams) {
+class AnnouncementWorker(
+  context: Context,
+  workerParams: WorkerParameters,
+) : Worker(context, workerParams) {
 
   companion object {
     const val DATA_SHOW_ID = "DATA_SHOW_ID"
@@ -31,7 +34,8 @@ class AnnouncementWorker(context: Context, workerParams: WorkerParameters) : Wor
   override fun doWork(): Result {
     val color = R.color.colorNotificationDark
 
-    val notification = NotificationCompat.Builder(applicationContext, inputData.getString(DATA_CHANNEL)!!)
+    val notification = NotificationCompat
+      .Builder(applicationContext, inputData.getString(DATA_CHANNEL)!!)
       .setContentIntent(createIntent())
       .setSmallIcon(R.drawable.ic_notification)
       .setContentTitle(inputData.getString(DATA_TITLE))
@@ -42,7 +46,11 @@ class AnnouncementWorker(context: Context, workerParams: WorkerParameters) : Wor
 
     val imageUrl = inputData.getString(DATA_IMAGE_URL)
     if ((imageUrl ?: "").isNotBlank()) {
-      val target = Glide.with(applicationContext).asBitmap().load(imageUrl).submit()
+      val target = Glide
+        .with(applicationContext)
+        .asBitmap()
+        .load(imageUrl)
+        .submit()
       try {
         val bitmap = target.get()
         notification.setLargeIcon(bitmap)
@@ -53,7 +61,8 @@ class AnnouncementWorker(context: Context, workerParams: WorkerParameters) : Wor
       }
     }
 
-    NotificationManagerCompat.from(applicationContext)
+    NotificationManagerCompat
+      .from(applicationContext)
       .notify(Random.nextInt(), notification.build())
 
     return Result.success()

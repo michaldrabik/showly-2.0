@@ -309,10 +309,11 @@ class ProgressMoviesFragment :
         adapter?.setItems(it, resetScroll)
         renderFiltersEmpty(uiState)
         binding.progressMoviesEmptyView.rootLayout.fadeIf(items.isEmpty() && !isSearching)
-        binding.progressMoviesMainRecycler.fadeIn(
-          duration = 200,
-          withHardware = true,
-        ).add(animations)
+        binding.progressMoviesMainRecycler
+          .fadeIn(
+            duration = 200,
+            withHardware = true,
+          ).add(animations)
       }
       isOverScrollEnabled.let {
         if (it) {

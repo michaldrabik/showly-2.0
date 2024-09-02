@@ -128,7 +128,8 @@ class CalendarMoviesWidgetViewsFactory(
       remoteView.setViewVisibility(R.id.calendarMoviesWidgetItemImage, GONE)
       remoteView.setViewVisibility(R.id.calendarMoviesWidgetItemPlaceholder, GONE)
 
-      val bitmap = Glide.with(context)
+      val bitmap = Glide
+        .with(context)
         .asBitmap()
         .load(item.image.fullFileUrl)
         .transform(CenterCrop(), RoundedCorners(imageCorner))

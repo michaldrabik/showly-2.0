@@ -53,7 +53,8 @@ class WatchlistLoadMoviesCase @Inject constructor(
       val filtersItem = loadFiltersItem()
       val filtersGenres = filtersItem.genres.map { it.slug.lowercase() }
 
-      val moviesItems = moviesRepository.watchlistMovies.loadAll()
+      val moviesItems = moviesRepository.watchlistMovies
+        .loadAll()
         .map {
           toListItemAsync(
             movie = it,
@@ -64,14 +65,12 @@ class WatchlistLoadMoviesCase @Inject constructor(
             sortOrder = filtersItem.sortOrder,
             spoilers = spoilers,
           )
-        }
-        .awaitAll()
+        }.awaitAll()
         .filter {
           filters.filterByQuery(it, searchQuery) &&
             filters.filterUpcoming(it, filtersItem.upcoming) &&
             filters.filterGenres(it, filtersGenres)
-        }
-        .sortedWith(sorter.sort(filtersItem.sortOrder, filtersItem.sortType))
+        }.sortedWith(sorter.sort(filtersItem.sortOrder, filtersItem.sortType))
 
       if (moviesItems.isNotEmpty() || filtersItem.hasActiveFilters()) {
         listOf(filtersItem) + moviesItems
@@ -80,14 +79,13 @@ class WatchlistLoadMoviesCase @Inject constructor(
       }
     }
 
-  private fun loadFiltersItem(): CollectionListItem.FiltersItem {
-    return CollectionListItem.FiltersItem(
+  private fun loadFiltersItem(): CollectionListItem.FiltersItem =
+    CollectionListItem.FiltersItem(
       sortOrder = settingsRepository.sorting.watchlistMoviesSortOrder,
       sortType = settingsRepository.sorting.watchlistMoviesSortType,
       genres = settingsRepository.filters.watchlistMoviesGenres,
       upcoming = settingsRepository.filters.watchlistMoviesUpcoming,
     )
-  }
 
   suspend fun loadTranslation(
     movie: Movie,

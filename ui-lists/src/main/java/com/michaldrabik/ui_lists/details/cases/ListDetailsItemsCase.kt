@@ -103,55 +103,56 @@ class ListDetailsItemsCase @Inject constructor(
 
       val isRankSort = list.sortByLocal == SortOrder.RANK
       val itemsToDelete = Collections.synchronizedList(mutableListOf<CustomListItem>())
-      val items = listItems.map { listItem ->
-        async {
-          val listedAt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(listItem.listedAt), ZoneId.of("UTC"))
-          when (listItem.type) {
-            SHOWS.type -> {
-              val listShow = shows.firstOrNull { it.idTrakt == listItem.idTrakt }
-              if (listShow == null) {
-                itemsToDelete.add(listItem)
-                return@async null
+      val items = listItems
+        .map { listItem ->
+          async {
+            val listedAt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(listItem.listedAt), ZoneId.of("UTC"))
+            when (listItem.type) {
+              SHOWS.type -> {
+                val listShow = shows.firstOrNull { it.idTrakt == listItem.idTrakt }
+                if (listShow == null) {
+                  itemsToDelete.add(listItem)
+                  return@async null
+                }
+                val show = mappers.show.fromDatabase(listShow)
+                val translation = showsTranslations[show.traktId]
+                val rating = showsRatings.find { it.idTrakt == show.ids.trakt }
+                createListDetailsItem(
+                  show = show,
+                  listItem = listItem,
+                  translation = translation,
+                  userRating = rating,
+                  isRankSort = isRankSort,
+                  listedAt = listedAt,
+                  sortOrder = list.sortByLocal,
+                  spoilers = spoilers,
+                )
               }
-              val show = mappers.show.fromDatabase(listShow)
-              val translation = showsTranslations[show.traktId]
-              val rating = showsRatings.find { it.idTrakt == show.ids.trakt }
-              createListDetailsItem(
-                show = show,
-                listItem = listItem,
-                translation = translation,
-                userRating = rating,
-                isRankSort = isRankSort,
-                listedAt = listedAt,
-                sortOrder = list.sortByLocal,
-                spoilers = spoilers,
-              )
-            }
-            MOVIES.type -> {
-              val listMovie = movies.firstOrNull { it.idTrakt == listItem.idTrakt }
-              if (listMovie == null) {
-                itemsToDelete.add(listItem)
-                return@async null
+              MOVIES.type -> {
+                val listMovie = movies.firstOrNull { it.idTrakt == listItem.idTrakt }
+                if (listMovie == null) {
+                  itemsToDelete.add(listItem)
+                  return@async null
+                }
+                val movie = mappers.movie.fromDatabase(listMovie)
+                val translation = moviesTranslations[movie.traktId]
+                val rating = moviesRatings.find { it.idTrakt == movie.ids.trakt }
+                createListDetailsItem(
+                  movie = movie,
+                  listItem = listItem,
+                  translation = translation,
+                  userRating = rating,
+                  isRankSort = isRankSort,
+                  listedAt = listedAt,
+                  moviesEnabled = moviesEnabled,
+                  sortOrder = list.sortByLocal,
+                  spoilers = spoilers,
+                )
               }
-              val movie = mappers.movie.fromDatabase(listMovie)
-              val translation = moviesTranslations[movie.traktId]
-              val rating = moviesRatings.find { it.idTrakt == movie.ids.trakt }
-              createListDetailsItem(
-                movie = movie,
-                listItem = listItem,
-                translation = translation,
-                userRating = rating,
-                isRankSort = isRankSort,
-                listedAt = listedAt,
-                moviesEnabled = moviesEnabled,
-                sortOrder = list.sortByLocal,
-                spoilers = spoilers,
-              )
+              else -> throw IllegalStateException("Unsupported list item type.")
             }
-            else -> throw IllegalStateException("Unsupported list item type.")
           }
-        }
-      }.awaitAll()
+        }.awaitAll()
 
       itemsToDelete.forEach {
         listsRepository.removeFromList(list.id, IdTrakt(it.idTrakt), it.type)
@@ -246,8 +247,7 @@ class ListDetailsItemsCase @Inject constructor(
         it.isMovie() -> typeFilters.contains(MOVIES)
         else -> throw IllegalStateException()
       }
-    }
-    .sortedWith(sorter.sort(sort, sortHow))
+    }.sortedWith(sorter.sort(sort, sortHow))
     .mapIndexed { index, item ->
       val rankDisplay = if (sortHow == SortType.ASCENDING) index + 1 else items.size - index
       item.copy(

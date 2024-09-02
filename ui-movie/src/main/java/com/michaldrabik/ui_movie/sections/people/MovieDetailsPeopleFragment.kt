@@ -97,7 +97,9 @@ class MovieDetailsPeopleFragment : BaseFragment<MovieDetailsPeopleViewModel>(R.l
 
     handleSheetResult()
 
-    val title = (requireParentFragment() as MovieDetailsFragment).binding.movieDetailsTitle.text.toString()
+    val title = (requireParentFragment() as MovieDetailsFragment)
+      .binding.movieDetailsTitle.text
+      .toString()
     val bundle = PeopleListBottomSheet.createBundle(movie.ids.trakt, title, Mode.MOVIES, department)
     navigateToSafe(R.id.actionMovieDetailsFragmentToPeopleList, bundle)
   }

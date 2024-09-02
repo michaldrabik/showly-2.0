@@ -41,7 +41,8 @@ class HiddenViewModel @Inject constructor(
   private val settingsRepository: SettingsRepository,
   private val imagesProvider: MovieImagesProvider,
   private val eventsManager: EventsManager,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private var loadItemsJob: Job? = null
 

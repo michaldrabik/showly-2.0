@@ -17,9 +17,10 @@ import com.michaldrabik.ui_streamings.recycler.StreamingAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ShowDetailsStreamingsFragment : BaseFragment<ShowDetailsStreamingsViewModel>(
-  R.layout.fragment_show_details_streamings,
-) {
+class ShowDetailsStreamingsFragment :
+  BaseFragment<ShowDetailsStreamingsViewModel>(
+    R.layout.fragment_show_details_streamings,
+  ) {
 
   override val navigationId = R.id.showDetailsFragment
   private val binding by viewBinding(FragmentShowDetailsStreamingsBinding::bind)

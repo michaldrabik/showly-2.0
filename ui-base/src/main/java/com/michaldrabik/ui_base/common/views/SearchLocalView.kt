@@ -9,7 +9,9 @@ import com.michaldrabik.ui_base.common.behaviour.ScrollableViewBehaviour
 import com.michaldrabik.ui_base.databinding.ViewSearchLocalBinding
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 
-class SearchLocalView : FrameLayout, CoordinatorLayout.AttachedBehavior {
+class SearchLocalView :
+  FrameLayout,
+  CoordinatorLayout.AttachedBehavior {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)

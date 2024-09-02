@@ -82,7 +82,8 @@ internal class DiscoverFiltersGenresBottomSheet : BaseBottomSheetFragment(R.layo
     binding.clearButton.visibleIf(genres.isNotEmpty())
 
     val genresNames = genres.map { it.name }
-    Genre.values()
+    Genre
+      .values()
       .sortedBy { requireContext().getString(it.displayName) }
       .forEach { genre ->
         val chip = Chip(requireContext()).apply {
@@ -91,7 +92,8 @@ internal class DiscoverFiltersGenresBottomSheet : BaseBottomSheetFragment(R.layo
           isCheckable = true
           isCheckedIconVisible = false
           setEnsureMinTouchTargetSize(false)
-          shapeAppearanceModel = shapeAppearanceModel.toBuilder()
+          shapeAppearanceModel = shapeAppearanceModel
+            .toBuilder()
             .setAllCornerSizes(100f)
             .build()
           chipBackgroundColor = ContextCompat.getColorStateList(context, R.color.selector_discover_chip_background)

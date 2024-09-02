@@ -6,8 +6,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 
-class FastLinearLayoutManager(context: Context?, orientation: Int, reverseLayout: Boolean) :
-  LinearLayoutManager(context, orientation, reverseLayout) {
+class FastLinearLayoutManager(
+  context: Context?,
+  orientation: Int,
+  reverseLayout: Boolean,
+) : LinearLayoutManager(context, orientation, reverseLayout) {
 
   companion object {
     const val SPEED_RATIO = 8F

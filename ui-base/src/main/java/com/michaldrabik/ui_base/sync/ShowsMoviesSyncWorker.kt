@@ -37,11 +37,11 @@ class ShowsMoviesSyncWorker @AssistedInject constructor(
     fun schedule(workManager: WorkManager) {
       val request = OneTimeWorkRequestBuilder<ShowsMoviesSyncWorker>()
         .setConstraints(
-          Constraints.Builder()
+          Constraints
+            .Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build(),
-        )
-        .addTag(TAG)
+        ).addTag(TAG)
         .build()
 
       workManager.enqueueUniqueWork(TAG, KEEP, request)

@@ -29,9 +29,10 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COLLECTION_ID
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MovieDetailsCollectionsFragment : BaseFragment<MovieDetailsCollectionsViewModel>(
-  R.layout.fragment_movie_details_collection,
-) {
+class MovieDetailsCollectionsFragment :
+  BaseFragment<MovieDetailsCollectionsViewModel>(
+    R.layout.fragment_movie_details_collection,
+  ) {
 
   override val navigationId = R.id.movieDetailsFragment
 

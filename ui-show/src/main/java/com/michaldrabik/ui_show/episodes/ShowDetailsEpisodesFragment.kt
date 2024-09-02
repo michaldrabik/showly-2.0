@@ -53,9 +53,10 @@ import timber.log.Timber
 import java.util.Locale
 
 @AndroidEntryPoint
-class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(
-  R.layout.fragment_show_details_episodes,
-) {
+class ShowDetailsEpisodesFragment :
+  BaseFragment<ShowDetailsEpisodesViewModel>(
+    R.layout.fragment_show_details_episodes,
+  ) {
 
   companion object {
     fun createBundle(
@@ -155,10 +156,10 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(
             }
           }
           episodesUnlockButton.visibleIf(
-            !it.season.isSpecial() && it.episodes.any {
-                ep ->
-              !ep.episode.hasAired(it.season)
-            },
+            !it.season.isSpecial() &&
+              it.episodes.any { ep ->
+                !ep.episode.hasAired(it.season)
+              },
           )
 
           renderSeasonRating(season)

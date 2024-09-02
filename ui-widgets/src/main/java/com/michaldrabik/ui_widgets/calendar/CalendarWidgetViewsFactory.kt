@@ -97,7 +97,9 @@ class CalendarWidgetViewsFactory(
         }
       setTextViewText(R.id.calendarWidgetItemTitle, title)
 
-      val date = item.episode.firstAired?.toLocalZone()?.let { item.dateFormat?.format(it)?.capitalizeWords() }
+      val date = item.episode.firstAired
+        ?.toLocalZone()
+        ?.let { item.dateFormat?.format(it)?.capitalizeWords() }
       setTextViewText(R.id.calendarWidgetItemDate, date)
 
       val isNewSeason = item.episode.number == 1
@@ -110,7 +112,10 @@ class CalendarWidgetViewsFactory(
       } else {
         val episodeTitle = when {
           item.episode.title.isBlank() -> context.getString(R.string.textTba)
-          item.translations?.episode?.title?.isBlank() == false -> item.translations?.episode?.title
+          item.translations
+            ?.episode
+            ?.title
+            ?.isBlank() == false -> item.translations?.episode?.title
           item.episode.title == "Episode ${item.episode.number}" -> String.format(
             Locale.ENGLISH,
             context.getString(R.string.textEpisode),
@@ -118,14 +123,15 @@ class CalendarWidgetViewsFactory(
           )
           else -> item.episode.title
         }
-        val badgeTitle = String.format(
-          Locale.ENGLISH,
-          context.getString(com.michaldrabik.ui_progress.R.string.textSeasonEpisode),
-          item.episode.season,
-          item.episode.number,
-        ).plus(
-          item.episode.numberAbs?.let { if (it > 0 && item.show.isAnime) " ($it)" else "" } ?: "",
-        )
+        val badgeTitle = String
+          .format(
+            Locale.ENGLISH,
+            context.getString(com.michaldrabik.ui_progress.R.string.textSeasonEpisode),
+            item.episode.season,
+            item.episode.number,
+          ).plus(
+            item.episode.numberAbs?.let { if (it > 0 && item.show.isAnime) " ($it)" else "" } ?: "",
+          )
 
         setTextViewText(R.id.calendarWidgetItemOverview, episodeTitle)
         setTextViewText(R.id.calendarWidgetItemBadge, badgeTitle)
@@ -149,7 +155,8 @@ class CalendarWidgetViewsFactory(
       remoteView.setViewVisibility(R.id.calendarWidgetItemImage, GONE)
       remoteView.setViewVisibility(R.id.calendarWidgetItemPlaceholder, GONE)
 
-      val bitmap = Glide.with(context)
+      val bitmap = Glide
+        .with(context)
         .asBitmap()
         .load(item.image.fullFileUrl)
         .transform(CenterCrop(), RoundedCorners(imageCorner))

@@ -24,15 +24,18 @@ class MyShowsRepository @Inject constructor(
     }
 
   suspend fun loadAll() =
-    myShowsLocalSource.getAll()
+    myShowsLocalSource
+      .getAll()
       .map { mappers.show.fromDatabase(it) }
 
   suspend fun loadAll(ids: List<IdTrakt>) =
-    myShowsLocalSource.getAll(ids.map { it.id })
+    myShowsLocalSource
+      .getAll(ids.map { it.id })
       .map { mappers.show.fromDatabase(it) }
 
   suspend fun loadAllRecent(amount: Int) =
-    myShowsLocalSource.getAllRecent(amount)
+    myShowsLocalSource
+      .getAllRecent(amount)
       .map { mappers.show.fromDatabase(it) }
 
   suspend fun loadAllIds() = myShowsLocalSource.getAllTraktIds()

@@ -58,7 +58,8 @@ class HiddenLoadShowsCase @Inject constructor(
         .flatMap { network -> network.channels.map { it } }
       val filtersGenres = filtersItem.genres.map { it.slug.lowercase() }
 
-      val hiddenItems = showsRepository.hiddenShows.loadAll()
+      val hiddenItems = showsRepository.hiddenShows
+        .loadAll()
         .map {
           toListItemAsync(
             show = it,
@@ -68,8 +69,7 @@ class HiddenLoadShowsCase @Inject constructor(
             sortOrder = sortOrder,
             spoilers = spoilers,
           )
-        }
-        .awaitAll()
+        }.awaitAll()
         .filterByQuery(searchQuery)
         .filterByNetwork(filtersNetworks)
         .filterByGenre(filtersGenres)
@@ -97,15 +97,14 @@ class HiddenLoadShowsCase @Inject constructor(
   private fun loadFiltersItem(
     sortOrder: SortOrder,
     sortType: SortType,
-  ): CollectionListItem.FiltersItem {
-    return CollectionListItem.FiltersItem(
+  ): CollectionListItem.FiltersItem =
+    CollectionListItem.FiltersItem(
       sortOrder = sortOrder,
       sortType = sortType,
       networks = settingsRepository.filters.hiddenShowsNetworks,
       genres = settingsRepository.filters.hiddenShowsGenres,
       upcoming = UpcomingFilter.OFF,
     )
-  }
 
   private fun CoroutineScope.toListItemAsync(
     show: Show,

@@ -31,8 +31,8 @@ class ProgressMoviesAdapter(
   override fun onCreateViewHolder(
     parent: ViewGroup,
     viewType: Int,
-  ): BaseViewHolder {
-    return when (viewType) {
+  ): BaseViewHolder =
+    when (viewType) {
       VIEW_TYPE_MOVIE -> BaseViewHolder(
         ProgressMoviesItemView(parent.context).apply {
           itemClickListener = this@ProgressMoviesAdapter.itemClickListener
@@ -49,7 +49,6 @@ class ProgressMoviesAdapter(
       )
       else -> throw IllegalStateException()
     }
-  }
 
   override fun onBindViewHolder(
     holder: RecyclerView.ViewHolder,
@@ -64,11 +63,10 @@ class ProgressMoviesAdapter(
     }
   }
 
-  override fun getItemViewType(position: Int): Int {
-    return when (asyncDiffer.currentList[position]) {
+  override fun getItemViewType(position: Int): Int =
+    when (asyncDiffer.currentList[position]) {
       is ProgressMovieListItem.MovieItem -> VIEW_TYPE_MOVIE
       is ProgressMovieListItem.FiltersItem -> VIEW_TYPE_FILTERS
       else -> throw IllegalStateException()
     }
-  }
 }

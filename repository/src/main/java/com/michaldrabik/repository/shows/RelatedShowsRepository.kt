@@ -28,11 +28,13 @@ class RelatedShowsRepository @Inject constructor(
 
     if (latest != null && nowUtcMillis() - latest.updatedAt < Config.RELATED_CACHE_DURATION) {
       val relatedShowsIds = relatedShows.map { it.idTrakt }
-      return localSource.shows.getAll(relatedShowsIds)
+      return localSource.shows
+        .getAll(relatedShowsIds)
         .map { mappers.show.fromDatabase(it) }
     }
 
-    val remoteShows = remoteSource.trakt.fetchRelatedShows(show.traktId, min(hiddenCount, 10))
+    val remoteShows = remoteSource.trakt
+      .fetchRelatedShows(show.traktId, min(hiddenCount, 10))
       .map { mappers.show.fromNetwork(it) }
 
     cacheRelatedShows(remoteShows, show.ids.trakt)

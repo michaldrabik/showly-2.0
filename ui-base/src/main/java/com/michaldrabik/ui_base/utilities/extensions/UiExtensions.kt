@@ -107,7 +107,8 @@ fun Animator?.add(animators: MutableList<Animator?>) {
 }
 
 fun View.shake() =
-  ObjectAnimator.ofFloat(this, "translationX", 0F, -15F, 15F, -10F, 10F, -5F, 5F, 0F)
+  ObjectAnimator
+    .ofFloat(this, "translationX", 0F, -15F, 15F, -10F, 10F, -5F, 5F, 0F)
     .setDuration(500)
     .start()
 
@@ -145,12 +146,12 @@ fun TextView.setTextFade(
   )
 }
 
-fun TextView.isSpoilerHidden(): Boolean {
-  return text.toString()
+fun TextView.isSpoilerHidden(): Boolean =
+  text
+    .toString()
     .trim()
     .replace(" ", "")
     .none { it.isLetterOrDigit() }
-}
 
 fun Fragment.disableUi() {
   activity?.window?.setFlags(FLAG_NOT_TOUCHABLE, FLAG_NOT_TOUCHABLE)
@@ -166,8 +167,7 @@ fun String.capitalizeWords() =
   this
     .split(" ")
     .joinToString(separator = " ") {
-      it.replaceFirstChar {
-          string ->
+      it.replaceFirstChar { string ->
         if (string.isLowerCase()) string.titlecase(Locale.getDefault()) else string.toString()
       }
     }

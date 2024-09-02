@@ -146,8 +146,14 @@ class MainInitialsCase @Inject constructor(
       val major = name.split(".").getOrNull(0)?.toIntOrNull()
       val minor = name.split(".").getOrNull(1)?.toIntOrNull()
 
-      val currentMajor = BuildConfig.VERSION_NAME.split(".").getOrNull(0)?.toIntOrNull()
-      val currentMinor = BuildConfig.VERSION_NAME.split(".").getOrNull(1)?.toIntOrNull()
+      val currentMajor = BuildConfig.VERSION_NAME
+        .split(".")
+        .getOrNull(0)
+        ?.toIntOrNull()
+      val currentMinor = BuildConfig.VERSION_NAME
+        .split(".")
+        .getOrNull(1)
+        ?.toIntOrNull()
 
       return (major == currentMajor) && (minor == currentMinor)
     }

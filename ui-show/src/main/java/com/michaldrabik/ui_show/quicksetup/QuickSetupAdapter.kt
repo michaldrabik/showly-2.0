@@ -50,5 +50,7 @@ class QuickSetupAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   fun getItems() = asyncDiffer.currentList
 
-  class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+  class ViewHolder(
+    itemView: View,
+  ) : RecyclerView.ViewHolder(itemView)
 }

@@ -60,18 +60,27 @@ class CalendarItemView : ShowView<CalendarListItem.Episode> {
 
     with(binding) {
       calendarItemTitle.text =
-        if (item.translations?.show?.title.isNullOrBlank()) {
+        if (item.translations
+            ?.show
+            ?.title
+            .isNullOrBlank()
+        ) {
           item.show.title
         } else {
           item.translations?.show?.title
         }
 
       calendarItemDateText.text =
-        item.episode.firstAired?.toLocalZone()?.let { item.dateFormat?.format(it)?.capitalizeWords() }
+        item.episode.firstAired
+          ?.toLocalZone()
+          ?.let { item.dateFormat?.format(it)?.capitalizeWords() }
 
       val episodeTitle = when {
         item.episode.title.isBlank() -> context.getString(R.string.textTba)
-        item.translations?.episode?.title?.isBlank() == false -> item.translations.episode.title
+        item.translations
+          ?.episode
+          ?.title
+          ?.isBlank() == false -> item.translations.episode.title
         item.episode.title == "Episode ${item.episode.number}" -> String.format(
           ENGLISH,
           context.getString(R.string.textEpisode),
@@ -92,14 +101,15 @@ class CalendarItemView : ShowView<CalendarListItem.Episode> {
             title
           }
       } else {
-        calendarItemSubtitle.text = String.format(
-          ENGLISH,
-          context.getString(R.string.textSeasonEpisode),
-          item.episode.season,
-          item.episode.number,
-        ).plus(
-          item.episode.numberAbs?.let { if (it > 0 && item.show.isAnime) " ($it)" else "" } ?: "",
-        )
+        calendarItemSubtitle.text = String
+          .format(
+            ENGLISH,
+            context.getString(R.string.textSeasonEpisode),
+            item.episode.season,
+            item.episode.number,
+          ).plus(
+            item.episode.numberAbs?.let { if (it > 0 && item.show.isAnime) " ($it)" else "" } ?: "",
+          )
         calendarItemSubtitle2.text =
           if (item.isSpoilerHidden && item.spoilers?.isEpisodeTitleHidden == true) {
             calendarItemSubtitle2.tag = episodeTitle

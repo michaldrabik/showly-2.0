@@ -15,8 +15,7 @@ import com.michaldrabik.ui_settings.databinding.FragmentSettingsWidgetsBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SettingsWidgetsFragment :
-  BaseFragment<SettingsWidgetsViewModel>(R.layout.fragment_settings_widgets) {
+class SettingsWidgetsFragment : BaseFragment<SettingsWidgetsViewModel>(R.layout.fragment_settings_widgets) {
 
   override val viewModel by viewModels<SettingsWidgetsViewModel>()
   private val binding by viewBinding(FragmentSettingsWidgetsBinding::bind)

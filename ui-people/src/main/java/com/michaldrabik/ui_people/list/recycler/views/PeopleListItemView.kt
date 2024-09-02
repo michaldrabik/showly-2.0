@@ -83,18 +83,17 @@ class PeopleListItemView : FrameLayout {
         viewPersonItemPlaceholder.visible()
         return
       }
-      Glide.with(this@PeopleListItemView)
+      Glide
+        .with(this@PeopleListItemView)
         .load("${Config.TMDB_IMAGE_BASE_PROFILE_THUMB_URL}$imagePath")
         .transform(centerCropTransformation, cornersTransformation)
         .transition(DrawableTransitionOptions.withCrossFade(Config.IMAGE_FADE_DURATION_MS))
         .withSuccessListener {
           viewPersonItemPlaceholder.gone()
-        }
-        .withFailListener {
+        }.withFailListener {
           viewPersonItemImage.gone()
           viewPersonItemPlaceholder.fadeIn(Config.IMAGE_FADE_DURATION_MS.toLong())
-        }
-        .into(viewPersonItemImage)
+        }.into(viewPersonItemImage)
     }
   }
 

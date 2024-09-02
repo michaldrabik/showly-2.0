@@ -51,11 +51,10 @@ class ListDetailsSorter @Inject constructor() {
       else -> throw IllegalStateException("Invalid sort order")
     }
 
-  private fun getTitle(item: ListDetailsItem): String {
-    return if (item.translation?.hasTitle == true) {
+  private fun getTitle(item: ListDetailsItem): String =
+    if (item.translation?.hasTitle == true) {
       item.translation.title
     } else {
       item.getTitleNoThe().uppercase()
     }
-  }
 }

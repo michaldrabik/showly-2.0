@@ -21,7 +21,8 @@ import javax.inject.Inject
 @HiltViewModel
 class RemoveTraktHiddenViewModel @Inject constructor(
   private val removeTraktHiddenCase: RemoveTraktHiddenCase,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val loadingState = MutableStateFlow(false)
   private val finishedState = MutableStateFlow(false)

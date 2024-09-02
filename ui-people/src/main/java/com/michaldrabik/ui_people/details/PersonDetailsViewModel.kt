@@ -38,7 +38,8 @@ class PersonDetailsViewModel @Inject constructor(
   private val loadImagesCase: PersonDetailsImagesCase,
   private val loadTranslationsCase: PersonDetailsTranslationsCase,
   private val settingsRepository: SettingsRepository,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val personDetailsItemsState = MutableStateFlow<List<PersonDetailsItem>?>(null)
 

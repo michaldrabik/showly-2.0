@@ -34,7 +34,8 @@ class MovieDetailsCollectionViewModel @Inject constructor(
   private val collectionMoviesImagesCase: MovieDetailsCollectionImagesCase,
   private val collectionMoviesTranslationsCase: MovieDetailsCollectionTranslationsCase,
   private val settingsRepository: SettingsRepository,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val itemsState = MutableStateFlow<MutableList<MovieDetailsCollectionItem>?>(null)
 

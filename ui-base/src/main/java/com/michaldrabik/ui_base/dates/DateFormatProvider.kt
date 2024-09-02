@@ -96,6 +96,4 @@ class DateFormatProvider @Inject constructor(
 }
 
 // Adding special symbol in case of Chinese language as it is missing from DateTimeFormatter implementation.
-private fun String.appendChineseDay(): String {
-  return this.replace("dd", "dd\'日\'")
-}
+private fun String.appendChineseDay(): String = this.replace("dd", "dd\'日\'")

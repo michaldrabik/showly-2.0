@@ -25,9 +25,10 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_ITEM_MENU
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MovieDetailsRelatedFragment : BaseFragment<MovieDetailsRelatedViewModel>(
-  R.layout.fragment_movie_details_related,
-) {
+class MovieDetailsRelatedFragment :
+  BaseFragment<MovieDetailsRelatedViewModel>(
+    R.layout.fragment_movie_details_related,
+  ) {
 
   private val parentViewModel by viewModels<MovieDetailsViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<MovieDetailsRelatedViewModel>()

@@ -51,7 +51,8 @@ class DiscoverMoviesRepository @Inject constructor(
       } else {
         TRAKT_TRENDING_MOVIES_LIMIT + (collectionSize / 2)
       }
-    val trendingMovies = remoteSource.trakt.fetchTrendingMovies(genresQuery, limit)
+    val trendingMovies = remoteSource.trakt
+      .fetchTrendingMovies(genresQuery, limit)
       .map { mappers.movie.fromNetwork(it) }
 
     if (genres.isNotEmpty()) {
@@ -61,9 +62,11 @@ class DiscoverMoviesRepository @Inject constructor(
     }
 
     if (showAnticipated) {
-      val movies = remoteSource.trakt.fetchAnticipatedMovies(genresQuery).map {
-        mappers.movie.fromNetwork(it)
-      }.toMutableList()
+      val movies = remoteSource.trakt
+        .fetchAnticipatedMovies(genresQuery)
+        .map {
+          mappers.movie.fromNetwork(it)
+        }.toMutableList()
       anticipatedMovies.addAll(movies)
     }
 

@@ -28,33 +28,28 @@ class CalendarItemDiffCallback : DiffUtil.ItemCallback<CalendarListItem>() {
   private fun areItemsTheSame(
     oldItem: CalendarListItem.Episode,
     newItem: CalendarListItem.Episode,
-  ): Boolean {
-    return oldItem.episode.ids.trakt == newItem.episode.ids.trakt
-  }
+  ): Boolean = oldItem.episode.ids.trakt == newItem.episode.ids.trakt
 
   private fun areItemsTheSame(
     oldItem: CalendarListItem.Header,
     newItem: CalendarListItem.Header,
-  ): Boolean {
-    return oldItem.textResId == newItem.textResId
-  }
+  ): Boolean = oldItem.textResId == newItem.textResId
 
   override fun areContentsTheSame(
     oldItem: CalendarListItem,
     newItem: CalendarListItem,
-  ): Boolean {
-    return when (oldItem) {
+  ): Boolean =
+    when (oldItem) {
       is CalendarListItem.Episode -> areContentsTheSame(oldItem, (newItem as CalendarListItem.Episode))
       is CalendarListItem.Header -> areContentsTheSame(oldItem, (newItem as CalendarListItem.Header))
       is CalendarListItem.Filters -> areContentsTheSame(oldItem, (newItem as CalendarListItem.Filters))
     }
-  }
 
   private fun areContentsTheSame(
     oldItem: CalendarListItem.Episode,
     newItem: CalendarListItem.Episode,
-  ): Boolean {
-    return oldItem.episode == newItem.episode &&
+  ): Boolean =
+    oldItem.episode == newItem.episode &&
       oldItem.season == newItem.season &&
       oldItem.show == newItem.show &&
       oldItem.image == newItem.image &&
@@ -64,19 +59,14 @@ class CalendarItemDiffCallback : DiffUtil.ItemCallback<CalendarListItem>() {
       oldItem.translations == newItem.translations &&
       oldItem.spoilers == newItem.spoilers &&
       oldItem.isWatched == newItem.isWatched
-  }
 
   private fun areContentsTheSame(
     oldItem: CalendarListItem.Header,
     newItem: CalendarListItem.Header,
-  ): Boolean {
-    return oldItem == newItem
-  }
+  ): Boolean = oldItem == newItem
 
   private fun areContentsTheSame(
     oldItem: CalendarListItem.Filters,
     newItem: CalendarListItem.Filters,
-  ): Boolean {
-    return oldItem == newItem
-  }
+  ): Boolean = oldItem == newItem
 }

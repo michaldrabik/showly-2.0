@@ -43,16 +43,24 @@ class RateValueView : FrameLayout {
       viewRateValueText2.alpha = 0F
       viewRateValueText2.text = value
       viewRateValueText2.translationX = -translation
-      viewRateValueText2.animate().translationX(0F).alpha(1F).setDuration(175L).start()
+      viewRateValueText2
+        .animate()
+        .translationX(0F)
+        .alpha(1F)
+        .setDuration(175L)
+        .start()
 
-      viewRateValueText1.animate().translationX(translation).setDuration(175L).alpha(0F)
+      viewRateValueText1
+        .animate()
+        .translationX(translation)
+        .setDuration(175L)
+        .alpha(0F)
         .withEndAction {
           viewRateValueText2.alpha = 0F
           viewRateValueText1.translationX = 0F
           viewRateValueText1.alpha = 1F
           viewRateValueText1.text = value
-        }
-        .start()
+        }.start()
     }
   }
 

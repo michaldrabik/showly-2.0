@@ -24,7 +24,8 @@ class TraktAuthenticator @Inject constructor(
   ): Request? {
     val token = tokenProvider.getToken()
     if (isAlreadyRefreshed(response, token)) {
-      return response.request.newBuilder()
+      return response.request
+        .newBuilder()
         .header("Authorization", "Bearer $token")
         .build()
     }
@@ -36,7 +37,8 @@ class TraktAuthenticator @Inject constructor(
           accessToken = newToken.access_token,
           refreshToken = newToken.refresh_token,
         )
-        response.request.newBuilder()
+        response.request
+          .newBuilder()
           .header("Authorization", "Bearer ${newToken.access_token}")
           .build()
       } catch (error: Throwable) {

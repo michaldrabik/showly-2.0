@@ -55,7 +55,8 @@ class WatchlistLoadShowsCase @Inject constructor(
         .flatMap { network -> network.channels.map { it } }
       val filtersGenres = filtersItem.genres.map { it.slug.lowercase() }
 
-      val showsItems = showsRepository.watchlistShows.loadAll()
+      val showsItems = showsRepository.watchlistShows
+        .loadAll()
         .map {
           toListItemAsync(
             show = it,
@@ -65,15 +66,13 @@ class WatchlistLoadShowsCase @Inject constructor(
             sortOrder = filtersItem.sortOrder,
             spoilers = spoilers,
           )
-        }
-        .awaitAll()
+        }.awaitAll()
         .filter { item ->
           filters.filterByQuery(item, searchQuery) &&
             filters.filterUpcoming(item, filtersItem.upcoming) &&
             filters.filterNetworks(item, filtersNetworks) &&
             filters.filterGenres(item, filtersGenres)
-        }
-        .sortedWith(sorter.sort(filtersItem.sortOrder, filtersItem.sortType))
+        }.sortedWith(sorter.sort(filtersItem.sortOrder, filtersItem.sortType))
 
       if (showsItems.isNotEmpty() || filtersItem.hasActiveFilters()) {
         listOf(filtersItem) + showsItems
@@ -82,15 +81,14 @@ class WatchlistLoadShowsCase @Inject constructor(
       }
     }
 
-  private fun loadFiltersItem(): CollectionListItem.FiltersItem {
-    return CollectionListItem.FiltersItem(
+  private fun loadFiltersItem(): CollectionListItem.FiltersItem =
+    CollectionListItem.FiltersItem(
       sortOrder = settingsRepository.sorting.watchlistShowsSortOrder,
       sortType = settingsRepository.sorting.watchlistShowsSortType,
       networks = settingsRepository.filters.watchlistShowsNetworks,
       genres = settingsRepository.filters.watchlistShowsGenres,
       upcoming = settingsRepository.filters.watchlistShowsUpcoming,
     )
-  }
 
   private fun CoroutineScope.toListItemAsync(
     show: Show,

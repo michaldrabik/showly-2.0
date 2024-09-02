@@ -33,8 +33,8 @@ object TraktModule {
   @Singleton
   fun providesTraktApi(
     @Named("retrofitTrakt") retrofit: Retrofit,
-  ): TraktRemoteDataSource {
-    return TraktApi(
+  ): TraktRemoteDataSource =
+    TraktApi(
       showsService = retrofit.create(TraktShowsService::class.java),
       moviesService = retrofit.create(TraktMoviesService::class.java),
       authService = retrofit.create(TraktAuthService::class.java),
@@ -42,19 +42,17 @@ object TraktModule {
       searchService = retrofit.create(TraktSearchService::class.java),
       peopleService = retrofit.create(TraktPeopleService::class.java),
     )
-  }
 
   @Provides
   @Singleton
   fun providesAuthorizedTraktApi(
     @Named("retrofitAuthorizedTrakt") retrofit: Retrofit,
-  ): AuthorizedTraktRemoteDataSource {
-    return AuthorizedTraktApi(
+  ): AuthorizedTraktRemoteDataSource =
+    AuthorizedTraktApi(
       usersService = retrofit.create(TraktUsersService::class.java),
       syncService = retrofit.create(TraktSyncService::class.java),
       commentsService = retrofit.create(TraktCommentsService::class.java),
     )
-  }
 
   @Provides
   @Singleton

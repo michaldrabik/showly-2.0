@@ -111,7 +111,10 @@ internal class TraktApi(
   ): List<PersonCredit> {
     val result = peopleService.fetchPersonCredits(traktId = traktId, "shows")
     val cast = result.cast ?: emptyList()
-    val crew = result.crew?.values?.flatten()?.distinctBy { it.show?.ids?.trakt } ?: emptyList()
+    val crew = result.crew
+      ?.values
+      ?.flatten()
+      ?.distinctBy { it.show?.ids?.trakt } ?: emptyList()
     return if (type == TmdbPerson.Type.CAST) cast else crew
   }
 
@@ -121,7 +124,10 @@ internal class TraktApi(
   ): List<PersonCredit> {
     val result = peopleService.fetchPersonCredits(traktId = traktId, "movies")
     val cast = result.cast ?: emptyList()
-    val crew = result.crew?.values?.flatten()?.distinctBy { it.movie?.ids?.trakt } ?: emptyList()
+    val crew = result.crew
+      ?.values
+      ?.flatten()
+      ?.distinctBy { it.movie?.ids?.trakt } ?: emptyList()
     return if (type == TmdbPerson.Type.CAST) cast else crew
   }
 
@@ -131,7 +137,8 @@ internal class TraktApi(
   ) = searchService.fetchSearchId(idType, id)
 
   override suspend fun fetchSeasons(traktId: Long) =
-    showsService.fetchSeasons(traktId)
+    showsService
+      .fetchSeasons(traktId)
       .sortedByDescending { it.number }
 
   override suspend fun fetchShowComments(
@@ -208,9 +215,9 @@ internal class TraktApi(
     return lists.filter { it.privacy == "public" }
   }
 
-  override suspend fun fetchMovieCollectionItems(collectionId: Long): List<Movie> {
-    return moviesService.fetchMovieCollectionItems(collectionId)
+  override suspend fun fetchMovieCollectionItems(collectionId: Long): List<Movie> =
+    moviesService
+      .fetchMovieCollectionItems(collectionId)
       .sortedBy { it.rank }
       .map { it.movie }
-  }
 }

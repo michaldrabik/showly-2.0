@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.ui_lists.lists.helpers.ListsItemImage
 import com.michaldrabik.ui_lists.lists.views.ListsItemView
 
-class ListsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), AsyncListDiffer.ListListener<ListsItem> {
+class ListsAdapter :
+  RecyclerView.Adapter<RecyclerView.ViewHolder>(),
+  AsyncListDiffer.ListListener<ListsItem> {
 
   private val asyncDiffer = AsyncListDiffer(this, ListsItemDiffCallback())
 
@@ -62,5 +64,7 @@ class ListsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), AsyncListD
     if (notifyItemsChange) itemsChangedListener?.invoke()
   }
 
-  class ListsItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+  class ListsItemViewHolder(
+    itemView: View,
+  ) : RecyclerView.ViewHolder(itemView)
 }

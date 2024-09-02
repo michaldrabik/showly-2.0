@@ -7,7 +7,9 @@ import com.michaldrabik.data_local.database.model.PersonShowMovie
 import com.michaldrabik.data_local.sources.PeopleShowsMoviesLocalDataSource
 
 @Dao
-interface PeopleShowsMoviesDao : BaseDao<PersonShowMovie>, PeopleShowsMoviesLocalDataSource {
+interface PeopleShowsMoviesDao :
+  BaseDao<PersonShowMovie>,
+  PeopleShowsMoviesLocalDataSource {
 
   @Query("SELECT updated_at FROM people_shows_movies WHERE id_trakt_show == :showTraktId LIMIT 1")
   override suspend fun getTimestampForShow(showTraktId: Long): Long?

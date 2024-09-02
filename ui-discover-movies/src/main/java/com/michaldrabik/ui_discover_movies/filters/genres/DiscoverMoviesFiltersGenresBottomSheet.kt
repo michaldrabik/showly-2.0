@@ -26,9 +26,10 @@ import com.michaldrabik.ui_model.Genre
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-internal class DiscoverMoviesFiltersGenresBottomSheet : BaseBottomSheetFragment(
-  R.layout.view_discover_movies_filters_genres,
-) {
+internal class DiscoverMoviesFiltersGenresBottomSheet :
+  BaseBottomSheetFragment(
+    R.layout.view_discover_movies_filters_genres,
+  ) {
 
   private val viewModel by viewModels<DiscoverMoviesFiltersGenresViewModel>()
   private val binding by viewBinding(ViewDiscoverMoviesFiltersGenresBinding::bind)
@@ -84,7 +85,8 @@ internal class DiscoverMoviesFiltersGenresBottomSheet : BaseBottomSheetFragment(
     binding.clearButton.visibleIf(genres.isNotEmpty())
 
     val genresNames = genres.map { it.name }
-    Genre.values()
+    Genre
+      .values()
       .sortedBy { requireContext().getString(it.displayName) }
       .forEach { genre ->
         val chip = Chip(requireContext()).apply {
@@ -93,7 +95,8 @@ internal class DiscoverMoviesFiltersGenresBottomSheet : BaseBottomSheetFragment(
           isCheckable = true
           isCheckedIconVisible = false
           setEnsureMinTouchTargetSize(false)
-          shapeAppearanceModel = shapeAppearanceModel.toBuilder()
+          shapeAppearanceModel = shapeAppearanceModel
+            .toBuilder()
             .setAllCornerSizes(100f)
             .build()
           chipBackgroundColor = ContextCompat.getColorStateList(context, R.color.selector_discover_chip_background)

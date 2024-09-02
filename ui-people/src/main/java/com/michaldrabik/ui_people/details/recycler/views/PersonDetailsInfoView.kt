@@ -58,7 +58,8 @@ class PersonDetailsInfoView : ConstraintLayout {
         viewPersonDetailsBirthdayValue.visible()
         viewPersonDetailsAgeLabel.visible()
         viewPersonDetailsAgeValue.visible()
-        val birthdayText = item.dateFormat?.format(date)
+        val birthdayText = item.dateFormat
+          ?.format(date)
           ?.capitalizeWords()
           ?.plus(if (!item.person.birthplace.isNullOrBlank()) "\n${item.person.birthplace}" else "")
         viewPersonDetailsBirthdayValue.text = birthdayText
@@ -87,15 +88,15 @@ class PersonDetailsInfoView : ConstraintLayout {
       viewPersonDetailsImage.visible()
       viewPersonDetailsPlaceholder.gone()
 
-      Glide.with(this@PersonDetailsInfoView)
+      Glide
+        .with(this@PersonDetailsInfoView)
         .load("${Config.TMDB_IMAGE_BASE_ACTOR_URL}${person.imagePath}")
         .transform(CenterCrop(), GranularRoundedCorners(topLeftCornerRadius, cornerRadius, cornerRadius, cornerRadius))
         .transition(DrawableTransitionOptions.withCrossFade(Config.IMAGE_FADE_DURATION_MS))
         .withFailListener {
           viewPersonDetailsImage.gone()
           viewPersonDetailsPlaceholder.visible()
-        }
-        .into(viewPersonDetailsImage)
+        }.into(viewPersonDetailsImage)
     }
   }
 }

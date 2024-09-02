@@ -10,7 +10,9 @@ import javax.inject.Singleton
 class TraktHeadersInterceptor @Inject constructor() : Interceptor {
 
   override fun intercept(chain: Interceptor.Chain): Response {
-    val request = chain.request().newBuilder()
+    val request = chain
+      .request()
+      .newBuilder()
       .header("Content-Type", "application/json")
       .header("trakt-api-key", Config.TRAKT_CLIENT_ID)
       .header("trakt-api-version", Config.TRAKT_VERSION)

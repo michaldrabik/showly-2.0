@@ -28,7 +28,8 @@ class ShowDetailsRelatedViewModel @Inject constructor(
   private val relatedCase: ShowDetailsRelatedCase,
   private val myShowsCase: ShowDetailsMyShowsCase,
   private val imagesProvider: ShowImagesProvider,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private lateinit var show: Show
 

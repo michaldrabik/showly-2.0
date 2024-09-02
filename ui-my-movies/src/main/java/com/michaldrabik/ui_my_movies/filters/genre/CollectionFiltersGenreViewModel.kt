@@ -24,7 +24,8 @@ import javax.inject.Inject
 @HiltViewModel
 internal class CollectionFiltersGenreViewModel @Inject constructor(
   private val settingsRepository: SettingsRepository,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val genresState = MutableStateFlow<List<Genre>?>(null)
   private val loadingState = MutableStateFlow(false)

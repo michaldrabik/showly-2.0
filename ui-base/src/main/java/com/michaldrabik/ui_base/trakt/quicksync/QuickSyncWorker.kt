@@ -46,11 +46,11 @@ class QuickSyncWorker @AssistedInject constructor(
     fun schedule(workManager: WorkManager) {
       val request = OneTimeWorkRequestBuilder<QuickSyncWorker>()
         .setConstraints(
-          Constraints.Builder()
+          Constraints
+            .Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build(),
-        )
-        .setInitialDelay(3, SECONDS)
+        ).setInitialDelay(3, SECONDS)
         .addTag(TAG)
         .build()
 

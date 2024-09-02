@@ -16,7 +16,8 @@ class MovieDetailsRelatedCase @Inject constructor(
   // TODO Add Hidden items
   suspend fun loadRelatedMovies(movie: Movie): List<Movie> =
     withContext(dispatchers.IO) {
-      moviesRepository.relatedMovies.loadAll(movie)
+      moviesRepository.relatedMovies
+        .loadAll(movie)
         .sortedWith(compareBy({ it.votes }, { it.rating }))
         .reversed()
     }

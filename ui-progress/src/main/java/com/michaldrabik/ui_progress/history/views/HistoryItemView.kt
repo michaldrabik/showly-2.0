@@ -54,18 +54,27 @@ internal class HistoryItemView : ShowView<HistoryListItem.Episode> {
 
     with(binding) {
       itemTitle.text =
-        if (item.translations?.show?.title.isNullOrBlank()) {
+        if (item.translations
+            ?.show
+            ?.title
+            .isNullOrBlank()
+        ) {
           item.show.title
         } else {
           item.translations?.show?.title
         }
 
       itemDate.text =
-        item.episode.lastWatchedAt?.toLocalZone()?.let { item.dateFormat?.format(it)?.capitalizeWords() }
+        item.episode.lastWatchedAt
+          ?.toLocalZone()
+          ?.let { item.dateFormat?.format(it)?.capitalizeWords() }
 
       val episodeTitle = when {
         item.episode.title.isBlank() -> context.getString(R.string.textTba)
-        item.translations?.episode?.title?.isBlank() == false -> item.translations.episode.title
+        item.translations
+          ?.episode
+          ?.title
+          ?.isBlank() == false -> item.translations.episode.title
         item.episode.title == "Episode ${item.episode.number}" -> String.format(
           ENGLISH,
           context.getString(R.string.textEpisode),
@@ -79,14 +88,15 @@ internal class HistoryItemView : ShowView<HistoryListItem.Episode> {
         itemSubtitle.text = context.getString(R.string.textNewSeason)
         itemDescription.text = String.format(ENGLISH, context.getString(R.string.textSeason), item.episode.season)
       } else {
-        itemSubtitle.text = String.format(
-          ENGLISH,
-          context.getString(R.string.textSeasonEpisode),
-          item.episode.season,
-          item.episode.number,
-        ).plus(
-          item.episode.numberAbs?.let { if (it > 0 && item.show.isAnime) " ($it)" else "" } ?: "",
-        )
+        itemSubtitle.text = String
+          .format(
+            ENGLISH,
+            context.getString(R.string.textSeasonEpisode),
+            item.episode.season,
+            item.episode.number,
+          ).plus(
+            item.episode.numberAbs?.let { if (it > 0 && item.show.isAnime) " ($it)" else "" } ?: "",
+          )
         itemDescription.text = episodeTitle
       }
     }

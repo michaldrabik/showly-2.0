@@ -36,7 +36,8 @@ class PersonGalleryImageView : ConstraintLayout {
   }
 
   private fun loadImage(image: Image) {
-    Glide.with(this)
+    Glide
+      .with(this)
       .load(image.fullFileUrl)
       .transform(CenterCrop(), RoundedCorners(cornerRadius))
       .into(binding.viewPersonGalleryImage)

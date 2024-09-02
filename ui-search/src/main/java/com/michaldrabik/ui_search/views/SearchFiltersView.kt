@@ -16,7 +16,9 @@ import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_search.R
 import com.michaldrabik.ui_search.databinding.ViewSearchFiltersBinding
 
-class SearchFiltersView : FrameLayout, CoordinatorLayout.AttachedBehavior {
+class SearchFiltersView :
+  FrameLayout,
+  CoordinatorLayout.AttachedBehavior {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)

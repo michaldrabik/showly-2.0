@@ -23,9 +23,7 @@ class HistoryPeriodFilterBottomSheet : BaseBottomSheetFragment(R.layout.fragment
     const val REQUEST_KEY = "REQUEST_KEY_HISTORY_DATES_FILTER"
     const val ARG_SELECTED_FILTER = "ARG_SELECTED_ITEM"
 
-    fun createBundle(selectedItem: HistoryPeriod): Bundle {
-      return bundleOf(ARG_SELECTED_FILTER to selectedItem)
-    }
+    fun createBundle(selectedItem: HistoryPeriod): Bundle = bundleOf(ARG_SELECTED_FILTER to selectedItem)
   }
 
   private val binding by viewBinding(FragmentHistoryPeriodFilterBinding::bind)

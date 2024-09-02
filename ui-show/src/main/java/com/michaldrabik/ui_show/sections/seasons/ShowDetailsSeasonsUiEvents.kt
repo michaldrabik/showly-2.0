@@ -10,7 +10,9 @@ import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_show.quicksetup.QuickSetupListItem
 
-sealed class ShowDetailsSeasonsEvent<T>(action: T) : Event<T>(action) {
+sealed class ShowDetailsSeasonsEvent<T>(
+  action: T,
+) : Event<T>(action) {
 
   data class OpenSeasonEpisodes(
     val showId: IdTrakt,

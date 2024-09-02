@@ -68,7 +68,9 @@ class ArtGalleryAdapter(
     }
   }
 
-  class ViewHolderShow(itemView: View) : RecyclerView.ViewHolder(itemView)
+  class ViewHolderShow(
+    itemView: View,
+  ) : RecyclerView.ViewHolder(itemView)
 
   override fun getItemCount() = asyncDiffer.currentList.size
 }

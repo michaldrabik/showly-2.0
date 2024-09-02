@@ -42,7 +42,8 @@ class HiddenViewModel @Inject constructor(
   private val translationsCase: HiddenTranslationsCase,
   private val imagesProvider: ShowImagesProvider,
   private val eventsManager: EventsManager,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private var loadItemsJob: Job? = null
 

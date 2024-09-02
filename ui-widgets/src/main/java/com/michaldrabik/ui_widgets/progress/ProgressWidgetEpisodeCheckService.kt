@@ -17,7 +17,9 @@ import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ProgressWidgetEpisodeCheckService : JobIntentService(), CoroutineScope {
+class ProgressWidgetEpisodeCheckService :
+  JobIntentService(),
+  CoroutineScope {
 
   companion object {
     private const val JOB_ID = 1001

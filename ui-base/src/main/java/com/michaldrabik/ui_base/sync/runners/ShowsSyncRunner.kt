@@ -74,7 +74,8 @@ class ShowsSyncRunner @Inject constructor(
         try {
           Timber.i("Syncing ${show.title}(${show.ids.trakt}) episodes...")
 
-          val remoteSeasons = remoteSource.trakt.fetchSeasons(show.traktId)
+          val remoteSeasons = remoteSource.trakt
+            .fetchSeasons(show.traktId)
             .map { mappers.season.fromNetwork(it) }
           episodesManager.invalidateSeasons(show, remoteSeasons)
           syncCount++

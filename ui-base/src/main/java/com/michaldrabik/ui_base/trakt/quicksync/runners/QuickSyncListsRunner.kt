@@ -42,7 +42,8 @@ class QuickSyncListsRunner @Inject constructor(
     var count = 0
     checkAuthorization()
 
-    val items = localSource.traktSyncQueue.getAll(syncTypes)
+    val items = localSource.traktSyncQueue
+      .getAll(syncTypes)
       .groupBy { it.idList }
       .filter { it.key != null }
 
@@ -97,7 +98,8 @@ class QuickSyncListsRunner @Inject constructor(
     }
 
     // Check in case more items appeared in the meantime.
-    val itemsCheck = localSource.traktSyncQueue.getAll(syncTypes)
+    val itemsCheck = localSource.traktSyncQueue
+      .getAll(syncTypes)
       .groupBy { it.idList }
       .filter { it.key != null }
 
@@ -176,7 +178,8 @@ class QuickSyncListsRunner @Inject constructor(
     addItems: List<TraktSyncQueue>,
   ): CustomList {
     try {
-      val result = remoteSource.postCreateList(localList.name, localList.description)
+      val result = remoteSource
+        .postCreateList(localList.name, localList.description)
         .run { mappers.customList.fromNetwork(this) }
 
       listsRepository.updateList(localList.id, result.idTrakt, result.idSlug, result.name, result.description)

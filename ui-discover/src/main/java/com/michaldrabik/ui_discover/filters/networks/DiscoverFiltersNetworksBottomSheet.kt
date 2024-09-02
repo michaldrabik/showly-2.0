@@ -87,7 +87,8 @@ internal class DiscoverFiltersNetworksBottomSheet : BaseBottomSheetFragment(R.la
     binding.clearButton.visibleIf(networks.isNotEmpty())
 
     val networksNames = networks.map { it.name }
-    Network.values()
+    Network
+      .values()
       .sortedBy { it.name }
       .forEach { network ->
         val icon = networkIconProvider.getIcon(network)
@@ -96,7 +97,8 @@ internal class DiscoverFiltersNetworksBottomSheet : BaseBottomSheetFragment(R.la
           text = network.channels.first()
           isCheckable = true
           isCheckedIconVisible = false
-          shapeAppearanceModel = shapeAppearanceModel.toBuilder()
+          shapeAppearanceModel = shapeAppearanceModel
+            .toBuilder()
             .setAllCornerSizes(100f)
             .build()
           setEnsureMinTouchTargetSize(false)

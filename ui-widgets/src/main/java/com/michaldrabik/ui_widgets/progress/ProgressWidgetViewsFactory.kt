@@ -43,7 +43,8 @@ class ProgressWidgetViewsFactory(
 
   override fun onDataSetChanged() {
     runBlocking {
-      val items = itemsCase.loadWidgetItems()
+      val items = itemsCase
+        .loadWidgetItems()
         .filterNot { it is ProgressListItem.Filters }
       adapterItems.replace(items)
     }
@@ -58,13 +59,18 @@ class ProgressWidgetViewsFactory(
 
   private fun createItemRemoteView(item: ProgressListItem.Episode): RemoteViews {
     val title =
-      if (item.translations?.show?.title?.isBlank() == false) {
+      if (item.translations
+          ?.show
+          ?.title
+          ?.isBlank() == false
+      ) {
         item.translations?.show?.title
       } else {
         item.show.title
       }
 
-    val subtitle = String.format(ENGLISH, "S.%02d E.%02d", item.episode?.season, item.episode?.number)
+    val subtitle = String
+      .format(ENGLISH, "S.%02d E.%02d", item.episode?.season, item.episode?.number)
       .plus(item.episode?.numberAbs?.let { if (it > 0 && item.show.isAnime) " ($it)" else "" } ?: "")
 
     var percent = 0
@@ -77,7 +83,10 @@ class ProgressWidgetViewsFactory(
     val hasAired = item.episode?.hasAired(item.season ?: Season.EMPTY) == true
     val subtitle2 = when {
       item.episode?.title?.isBlank() == true -> context.getString(R.string.textTba)
-      item.translations?.episode?.title?.isBlank() == false ->
+      item.translations
+        ?.episode
+        ?.title
+        ?.isBlank() == false ->
         item.translations?.episode?.title ?: context.getString(R.string.textTba)
       item.episode?.title == "Episode ${item.episode?.number}" ->
         String.format(ENGLISH, context.getString(R.string.textEpisode), item.episode?.number)
@@ -114,8 +123,20 @@ class ProgressWidgetViewsFactory(
       val checkFillIntent = Intent().apply {
         putExtras(
           Bundle().apply {
-            putExtra(EXTRA_EPISODE_ID, item.episode?.ids?.trakt?.id)
-            putExtra(EXTRA_SEASON_ID, item.season?.ids?.trakt?.id)
+            putExtra(
+              EXTRA_EPISODE_ID,
+              item.episode
+                ?.ids
+                ?.trakt
+                ?.id,
+            )
+            putExtra(
+              EXTRA_SEASON_ID,
+              item.season
+                ?.ids
+                ?.trakt
+                ?.id,
+            )
             putExtra(EXTRA_SHOW_ID, item.show.traktId)
           },
         )
@@ -133,7 +154,8 @@ class ProgressWidgetViewsFactory(
       remoteView.setViewVisibility(R.id.progressWidgetItemImage, GONE)
       remoteView.setViewVisibility(R.id.progressWidgetItemPlaceholder, GONE)
 
-      val bitmap = Glide.with(context)
+      val bitmap = Glide
+        .with(context)
         .asBitmap()
         .load(imageUrl)
         .transform(CenterCrop(), RoundedCorners(imageCorner))

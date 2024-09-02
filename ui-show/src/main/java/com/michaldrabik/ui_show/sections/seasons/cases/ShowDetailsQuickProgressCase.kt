@@ -47,7 +47,8 @@ class ShowDetailsQuickProgressCase @Inject constructor(
       }
 
     val season = seasons.find { it.number == selectedItem.season.number }
-    season?.episodes
+    season
+      ?.episodes
       ?.filter { it.number <= selectedItem.episode.number }
       ?.forEach { episode ->
         val bundle = EpisodeBundle(episode, season, show)

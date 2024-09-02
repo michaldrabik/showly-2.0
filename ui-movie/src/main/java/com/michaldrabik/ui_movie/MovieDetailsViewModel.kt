@@ -65,7 +65,8 @@ class MovieDetailsViewModel @Inject constructor(
   private val imagesProvider: MovieImagesProvider,
   private val dateFormatProvider: DateFormatProvider,
   private val announcementManager: AnnouncementManager,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private var movie by notNull<Movie>()
 

@@ -46,7 +46,8 @@ class ProgressMoviesViewModel @Inject constructor(
   private val workManager: WorkManager,
   private val settingsRepository: SettingsRepository,
   private val translationsRepository: TranslationsRepository,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private var loadItemsJob: Job? = null
 

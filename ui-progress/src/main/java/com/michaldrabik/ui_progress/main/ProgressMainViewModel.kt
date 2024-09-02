@@ -35,7 +35,8 @@ class ProgressMainViewModel @Inject constructor(
   private val episodesCase: ProgressMainEpisodesCase,
   private val eventsManager: EventsManager,
   workManager: WorkManager,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val timestampState = MutableStateFlow<Long?>(null)
   private val searchQueryState = MutableStateFlow<String?>(null)

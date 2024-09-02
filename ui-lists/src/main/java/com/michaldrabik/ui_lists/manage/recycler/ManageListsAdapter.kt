@@ -37,5 +37,7 @@ class ManageListsAdapter(
 
   override fun getItemCount() = asyncDiffer.currentList.size
 
-  class ManageListsItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+  class ManageListsItemViewHolder(
+    itemView: View,
+  ) : RecyclerView.ViewHolder(itemView)
 }

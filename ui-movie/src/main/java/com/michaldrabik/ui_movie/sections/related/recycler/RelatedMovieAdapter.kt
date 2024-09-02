@@ -33,5 +33,7 @@ class RelatedMovieAdapter(
     (holder.itemView as RelatedMovieView).bind(item)
   }
 
-  class ViewHolderShow(itemView: View) : RecyclerView.ViewHolder(itemView)
+  class ViewHolderShow(
+    itemView: View,
+  ) : RecyclerView.ViewHolder(itemView)
 }

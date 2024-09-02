@@ -83,7 +83,11 @@ class ScrollableViewBehaviour : CoordinatorLayout.Behavior<View> {
     lm?.let {
       val isScrolled = lm.findFirstCompletelyVisibleItemPosition() != 0
       if (!isScrolled) {
-        child.animate().translationY(0F).setDuration(50).start()
+        child
+          .animate()
+          .translationY(0F)
+          .setDuration(50)
+          .start()
       }
     }
   }

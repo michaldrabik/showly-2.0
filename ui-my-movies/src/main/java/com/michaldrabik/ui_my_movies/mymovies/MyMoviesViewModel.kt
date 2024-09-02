@@ -55,7 +55,8 @@ class MyMoviesViewModel @Inject constructor(
   private val sortingCase: MyMoviesSortingCase,
   private val settingsRepository: SettingsRepository,
   private val eventsManager: EventsManager,
-) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
+) : ViewModel(),
+  ChannelsDelegate by DefaultChannelsDelegate() {
 
   private var loadItemsJob: Job? = null
 
@@ -89,17 +90,19 @@ class MyMoviesViewModel @Inject constructor(
       val genresFilter = settingsRepository.filters.myMoviesGenres
       val spoilers = settingsRepository.spoilers.getAll()
 
-      val movies = loadMoviesCase.loadAll().map {
-        toListItemAsync(
-          itemType = ALL_MOVIES_ITEM,
-          movie = it,
-          dateFormat = dateFormat,
-          type = POSTER,
-          userRating = ratings[it.ids.trakt],
-          sortOrder = sortOrder.first,
-          spoilers = spoilers,
-        )
-      }.awaitAll()
+      val movies = loadMoviesCase
+        .loadAll()
+        .map {
+          toListItemAsync(
+            itemType = ALL_MOVIES_ITEM,
+            movie = it,
+            dateFormat = dateFormat,
+            type = POSTER,
+            userRating = ratings[it.ids.trakt],
+            sortOrder = sortOrder.first,
+            spoilers = spoilers,
+          )
+        }.awaitAll()
 
       val allMovies = loadMoviesCase.filterSectionMovies(
         allMovies = movies,
@@ -108,17 +111,19 @@ class MyMoviesViewModel @Inject constructor(
         searchQuery = searchQuery,
       )
       val recentMovies = if (settings.myRecentsAmount > 0) {
-        loadMoviesCase.loadRecentMovies().map {
-          toListItemAsync(
-            itemType = RECENT_MOVIES,
-            movie = it,
-            dateFormat = dateFormat,
-            type = ImageType.FANART,
-            userRating = ratings[it.ids.trakt],
-            sortOrder = sortOrder.first,
-            spoilers = spoilers,
-          )
-        }.awaitAll()
+        loadMoviesCase
+          .loadRecentMovies()
+          .map {
+            toListItemAsync(
+              itemType = RECENT_MOVIES,
+              movie = it,
+              dateFormat = dateFormat,
+              type = ImageType.FANART,
+              userRating = ratings[it.ids.trakt],
+              sortOrder = sortOrder.first,
+              spoilers = spoilers,
+            )
+          }.awaitAll()
       } else {
         emptyList()
       }

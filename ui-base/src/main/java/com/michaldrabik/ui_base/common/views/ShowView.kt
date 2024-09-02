@@ -56,7 +56,11 @@ abstract class ShowView<Item : ListItem> : FrameLayout {
 
   open fun bind(item: Item) {
     layoutParams = LayoutParams(
-      (width * item.image.type.getSpan(isTablet).toFloat()).toInt(),
+      (
+        width * item.image.type
+          .getSpan(isTablet)
+          .toFloat()
+      ).toInt(),
       height.toInt(),
     )
   }
@@ -74,7 +78,8 @@ abstract class ShowView<Item : ListItem> : FrameLayout {
       return
     }
 
-    Glide.with(this)
+    Glide
+      .with(this)
       .load(item.image.fullFileUrl)
       .transform(centerCropTransformation, cornersTransformation)
       .transition(withCrossFade(IMAGE_FADE_DURATION_MS))

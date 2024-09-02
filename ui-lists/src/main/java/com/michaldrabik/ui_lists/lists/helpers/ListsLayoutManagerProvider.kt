@@ -13,11 +13,10 @@ internal object ListsLayoutManagerProvider {
   fun provideLayoutManger(
     context: Context,
     settings: SettingsViewModeRepository,
-  ): RecyclerView.LayoutManager {
-    return if (context.isTablet()) {
+  ): RecyclerView.LayoutManager =
+    if (context.isTablet()) {
       GridLayoutManager(context, settings.tabletGridSpanSize)
     } else {
       LinearLayoutManager(context, VERTICAL, false)
     }
-  }
 }

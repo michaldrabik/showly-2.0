@@ -55,13 +55,12 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_person_de
       person: Person,
       sourceId: IdTrakt,
       personArgs: PersonDetailsArgs?,
-    ): Bundle {
-      return bundleOf(
+    ): Bundle =
+      bundleOf(
         ARG_PERSON to person,
         ARG_PERSON_ARGS to (personArgs ?: PersonDetailsArgs()),
         ARG_ID to sourceId,
       )
-    }
   }
 
   private val viewModel by viewModels<PersonDetailsViewModel>()

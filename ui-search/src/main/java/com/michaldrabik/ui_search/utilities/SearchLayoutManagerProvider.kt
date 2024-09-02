@@ -12,11 +12,10 @@ internal object SearchLayoutManagerProvider {
   fun provideLayoutManger(
     context: Context,
     gridSpanSize: Int,
-  ): RecyclerView.LayoutManager {
-    return if (context.isTablet()) {
+  ): RecyclerView.LayoutManager =
+    if (context.isTablet()) {
       GridLayoutManager(context, gridSpanSize)
     } else {
       LinearLayoutManager(context, VERTICAL, false)
     }
-  }
 }

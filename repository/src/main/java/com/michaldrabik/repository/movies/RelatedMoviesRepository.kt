@@ -25,11 +25,13 @@ class RelatedMoviesRepository @Inject constructor(
 
     if (latest != null && nowUtcMillis() - latest.updatedAt < Config.RELATED_CACHE_DURATION) {
       val relatedIds = related.map { it.idTrakt }
-      return localSource.movies.getAll(relatedIds)
+      return localSource.movies
+        .getAll(relatedIds)
         .map { mappers.movie.fromDatabase(it) }
     }
 
-    val remote = remoteSource.trakt.fetchRelatedMovies(movie.ids.trakt.id, min(0, 15))
+    val remote = remoteSource.trakt
+      .fetchRelatedMovies(movie.ids.trakt.id, min(0, 15))
       .map { mappers.movie.fromNetwork(it) }
 
     cacheRelated(remote, movie.ids.trakt)

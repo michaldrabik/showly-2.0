@@ -11,28 +11,20 @@ buildscript {
   dependencies {
     classpath libs.gradle
     classpath libs.gradle.kotlin.plugin
-    classpath libs.gradle.ktlint
     classpath libs.hilt.plugin
   }
 }
 
 plugins {
   alias libs.plugins.devtools.ksp apply false
-  alias libs.plugins.ktlint.gradle
 }
 
 allprojects {
   apply plugin: "com.google.devtools.ksp"
-  apply plugin: "org.jlleitschuh.gradle.ktlint"
 
   repositories {
     google()
     mavenCentral()
-  }
-
-  ktlint {
-    android = true
-    verbose = true
   }
 }
 

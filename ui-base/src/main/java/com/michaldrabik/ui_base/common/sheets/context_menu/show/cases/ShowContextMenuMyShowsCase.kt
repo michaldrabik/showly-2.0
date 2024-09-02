@@ -44,7 +44,8 @@ class ShowContextMenuMyShowsCase @Inject constructor(
         async { showsRepository.hiddenShows.exists(traktId) },
       )
 
-      val seasons = remoteSource.trakt.fetchSeasons(traktId.id)
+      val seasons = remoteSource.trakt
+        .fetchSeasons(traktId.id)
         .map { mappers.season.fromNetwork(it) }
         .filter { it.episodes.isNotEmpty() }
         .filter { if (!showSpecials()) !it.isSpecial() else true }

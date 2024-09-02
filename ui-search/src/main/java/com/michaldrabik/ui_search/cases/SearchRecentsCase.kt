@@ -17,7 +17,8 @@ class SearchRecentsCase @Inject constructor(
 
   suspend fun getRecentSearches(limit: Int): List<RecentSearch> =
     withContext(dispatchers.IO) {
-      localSource.recentSearch.getAll(limit)
+      localSource.recentSearch
+        .getAll(limit)
         .map { RecentSearch(it.text) }
     }
 

@@ -15,11 +15,13 @@ class HiddenMoviesRepository @Inject constructor(
 ) {
 
   suspend fun loadAll() =
-    localSource.archiveMovies.getAll()
+    localSource.archiveMovies
+      .getAll()
       .map { mappers.movie.fromDatabase(it) }
 
   suspend fun loadAll(ids: List<IdTrakt>) =
-    localSource.archiveMovies.getAll(ids.map { it.id })
+    localSource.archiveMovies
+      .getAll(ids.map { it.id })
       .map { mappers.movie.fromDatabase(it) }
 
   suspend fun load(id: IdTrakt) =

@@ -24,14 +24,14 @@ class LoadCommentsCase @Inject constructor(
     withContext(dispatchers.IO) {
       val isSignedIn = userManager.isAuthorized()
       val username = userManager.getUsername()
-      val comments = commentsRepository.loadComments(id, mode)
+      val comments = commentsRepository
+        .loadComments(id, mode)
         .map {
           it.copy(
             isSignedIn = isSignedIn,
             isMe = it.user.username == username,
           )
-        }
-        .partition { it.isMe }
+        }.partition { it.isMe }
 
       comments.first + comments.second
     }

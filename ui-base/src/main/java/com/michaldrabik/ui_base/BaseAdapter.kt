@@ -7,7 +7,8 @@ import com.michaldrabik.ui_base.common.ListItem
 
 abstract class BaseAdapter<Item : ListItem>(
   val listChangeListener: (() -> Unit)? = null,
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), AsyncListDiffer.ListListener<Item> {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
+  AsyncListDiffer.ListListener<Item> {
 
   abstract val asyncDiffer: AsyncListDiffer<Item>
 
@@ -40,5 +41,7 @@ abstract class BaseAdapter<Item : ListItem>(
     }
   }
 
-  class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+  class BaseViewHolder(
+    itemView: View,
+  ) : RecyclerView.ViewHolder(itemView)
 }

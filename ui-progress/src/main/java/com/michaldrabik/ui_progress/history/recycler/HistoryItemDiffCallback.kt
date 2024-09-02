@@ -29,51 +29,41 @@ internal class HistoryItemDiffCallback : DiffUtil.ItemCallback<HistoryListItem>(
   private fun areItemsTheSame(
     oldItem: HistoryListItem.Episode,
     newItem: HistoryListItem.Episode,
-  ): Boolean {
-    return oldItem.episode.ids.trakt == newItem.episode.ids.trakt
-  }
+  ): Boolean = oldItem.episode.ids.trakt == newItem.episode.ids.trakt
 
   private fun areItemsTheSame(
     oldItem: HistoryListItem.Header,
     newItem: HistoryListItem.Header,
-  ): Boolean {
-    return oldItem.date == newItem.date
-  }
+  ): Boolean = oldItem.date == newItem.date
 
   override fun areContentsTheSame(
     oldItem: HistoryListItem,
     newItem: HistoryListItem,
-  ): Boolean {
-    return when (oldItem) {
+  ): Boolean =
+    when (oldItem) {
       is HistoryListItem.Episode -> areContentsTheSame(oldItem, (newItem as HistoryListItem.Episode))
       is HistoryListItem.Header -> areContentsTheSame(oldItem, (newItem as HistoryListItem.Header))
       is HistoryListItem.Filters -> areContentsTheSame(oldItem, (newItem as HistoryListItem.Filters))
     }
-  }
 
   private fun areContentsTheSame(
     oldItem: HistoryListItem.Episode,
     newItem: HistoryListItem.Episode,
-  ): Boolean {
-    return oldItem.episode == newItem.episode &&
+  ): Boolean =
+    oldItem.episode == newItem.episode &&
       oldItem.season == newItem.season &&
       oldItem.show == newItem.show &&
       oldItem.image == newItem.image &&
       oldItem.isLoading == newItem.isLoading &&
       oldItem.translations == newItem.translations
-  }
 
   private fun areContentsTheSame(
     oldItem: HistoryListItem.Header,
     newItem: HistoryListItem.Header,
-  ): Boolean {
-    return oldItem == newItem
-  }
+  ): Boolean = oldItem == newItem
 
   private fun areContentsTheSame(
     oldItem: HistoryListItem.Filters,
     newItem: HistoryListItem.Filters,
-  ): Boolean {
-    return oldItem.period == newItem.period
-  }
+  ): Boolean = oldItem.period == newItem.period
 }

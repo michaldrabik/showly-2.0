@@ -34,10 +34,9 @@ class CollectionItemFilter @Inject constructor() {
   fun filterByQuery(
     item: CollectionListItem.MovieItem,
     query: String,
-  ): Boolean {
-    return item.movie.title.contains(query, true) ||
+  ): Boolean =
+    item.movie.title.contains(query, true) ||
       item.translation?.title?.contains(query, true) == true
-  }
 
   fun filterGenres(
     item: CollectionListItem,

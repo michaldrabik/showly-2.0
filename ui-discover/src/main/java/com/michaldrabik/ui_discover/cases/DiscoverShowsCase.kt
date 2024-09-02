@@ -105,8 +105,7 @@ internal class DiscoverShowsCase @Inject constructor(
         } else {
           it.traktId !in collectionIds
         }
-      }
-      .sortedBy(filters?.feedOrder ?: HOT)
+      }.sortedBy(filters?.feedOrder ?: HOT)
       .mapIndexed { index, show ->
         async {
           val itemType = imageTypeProvider.getImageType(index)
