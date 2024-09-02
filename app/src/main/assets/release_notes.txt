@@ -1,2 +1,2 @@
-* Fix bug with Trakt API pagination that could cause large sets of data no to be fetched entirely
-* Small translations updates
+* Added option to sort by runtime for movies in your collection
+* Internal dev. tools updates.
