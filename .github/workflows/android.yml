@@ -19,7 +19,7 @@ jobs:
           distribution: temurin
 
       - name: Run ktlint
-        run: curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.43.2/ktlint && chmod a+x ktlint && ./ktlint
+        run: curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.45.2/ktlint && chmod a+x ktlint && ./ktlint
 
   verify-tests:
     runs-on: ubuntu-latest
