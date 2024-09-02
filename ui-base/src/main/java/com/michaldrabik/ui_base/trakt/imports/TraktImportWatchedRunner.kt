@@ -86,7 +86,7 @@ class TraktImportWatchedRunner @Inject constructor(
       }
     }
 
-  private suspend fun runShows(activity: SyncActivity) =
+  private suspend fun runShows(activity: SyncActivity) {
     try {
       importWatchedShows(activity)
     } catch (error: Throwable) {
@@ -98,6 +98,7 @@ class TraktImportWatchedRunner @Inject constructor(
         throw error
       }
     }
+  }
 
   private suspend fun importWatchedShows(syncActivity: SyncActivity) {
     val mutex = Mutex()
