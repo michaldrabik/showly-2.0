@@ -37,9 +37,12 @@ class StatisticsTotalTimeSpentView : MaterialCardView {
     val days = TimeUnit.HOURS.toDays(hours)
 
     with(binding) {
-      viewTotalTimeSpentHoursValue.text = context.getString(R.string.textStatisticsTotalTimeSpentHours, formatter.format(hours))
-      viewTotalTimeSpentMinutesValue.text = context.getString(R.string.textStatisticsTotalTimeSpentMinutes, formatter.format(timeMinutes))
-      viewTotalTimeSpentSubValue.text = context.getString(R.string.textStatisticsTotalTimeSpentDays, formatter.format(days))
+      viewTotalTimeSpentHoursValue.text =
+        context.getString(R.string.textStatisticsTotalTimeSpentHours, formatter.format(hours))
+      viewTotalTimeSpentMinutesValue.text =
+        context.getString(R.string.textStatisticsTotalTimeSpentMinutes, formatter.format(timeMinutes))
+      viewTotalTimeSpentSubValue.text =
+        context.getString(R.string.textStatisticsTotalTimeSpentDays, formatter.format(days))
     }
   }
 }

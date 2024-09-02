@@ -1,6 +1,6 @@
 package com.michaldrabik.ui_movie.sections.streamings.cases
 
-import com.michaldrabik.common.ConfigVariant
+import com.michaldrabik.common.ConfigVariant.STREAMINGS_CACHE_DURATION
 import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.repository.movies.MovieStreamingsRepository
@@ -36,7 +36,7 @@ class MovieDetailsStreamingCase @Inject constructor(
       }
       val country = AppCountry.fromCode(settingsRepository.country)
       val (localItems, timestamp) = streamingsRepository.getLocalStreamings(movie, country.code)
-      if (timestamp != null && timestamp.plusSeconds(ConfigVariant.STREAMINGS_CACHE_DURATION / 1000).isAfter(nowUtc())) {
+      if (timestamp != null && timestamp.plusSeconds(STREAMINGS_CACHE_DURATION / 1000).isAfter(nowUtc())) {
         return@withContext localItems
       }
       streamingsRepository.loadRemoteStreamings(movie, country.code)
