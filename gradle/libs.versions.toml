@@ -1,6 +1,6 @@
 [versions]
 
-agp = "8.5.2"
+agp = "8.6.0"
 kotlin = "2.0.20"
 ktlint = "10.2.1"
 core-ktx = "1.13.1"
