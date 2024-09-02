@@ -78,6 +78,14 @@ android {
     checkReleaseBuilds false
   }
 
+  // https://github.com/michaldrabik/showly-2.0/issues/46#issuecomment-2324619155
+  dependenciesInfo {
+    // Disables dependency metadata when building APKs.
+    includeInApk = false
+    // Disables dependency metadata when building Android App Bundles.
+    includeInBundle = false
+  }
+
   namespace 'com.michaldrabik.showly2'
 }
 
