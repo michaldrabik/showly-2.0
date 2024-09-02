@@ -33,7 +33,7 @@ class MovieDetailsCollectionViewModel @Inject constructor(
   private val collectionMoviesCase: MovieDetailsCollectionMoviesCase,
   private val collectionMoviesImagesCase: MovieDetailsCollectionImagesCase,
   private val collectionMoviesTranslationsCase: MovieDetailsCollectionTranslationsCase,
-  private val settingsRepository: SettingsRepository
+  private val settingsRepository: SettingsRepository,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val itemsState = MutableStateFlow<MutableList<MovieDetailsCollectionItem>?>(null)
@@ -65,7 +65,7 @@ class MovieDetailsCollectionViewModel @Inject constructor(
       try {
         val moviesItems = collectionMoviesCase.loadCollectionMovies(
           collectionId = collectionId,
-          language = settingsRepository.language
+          language = settingsRepository.language,
         )
         itemsState.update {
           it?.toMutableList()?.apply {
@@ -82,7 +82,10 @@ class MovieDetailsCollectionViewModel @Inject constructor(
     }
   }
 
-  fun loadMissingImage(item: MovieDetailsCollectionItem, force: Boolean) {
+  fun loadMissingImage(
+    item: MovieDetailsCollectionItem,
+    force: Boolean,
+  ) {
     if (item.id in imagesJobs.keys) {
       return
     }
@@ -119,14 +122,14 @@ class MovieDetailsCollectionViewModel @Inject constructor(
   }
 
   val uiState = combine(
-    itemsState
+    itemsState,
   ) { s1 ->
     MovieDetailsCollectionUiState(
-      items = s1[0]
+      items = s1[0],
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = MovieDetailsCollectionUiState()
+    initialValue = MovieDetailsCollectionUiState(),
   )
 }

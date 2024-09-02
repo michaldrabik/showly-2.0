@@ -29,7 +29,11 @@ class ArtGalleryViewModel @Inject constructor(
   private val pickedImageState = MutableStateFlow<Event<Image>?>(null)
   private val loadingState = MutableStateFlow(false)
 
-  fun loadImages(id: IdTrakt, family: ImageFamily, type: ImageType) {
+  fun loadImages(
+    id: IdTrakt,
+    family: ImageFamily,
+    type: ImageType,
+  ) {
     viewModelScope.launch {
       try {
         loadingState.value = true
@@ -43,7 +47,11 @@ class ArtGalleryViewModel @Inject constructor(
     }
   }
 
-  fun addImageFromUrl(imageUrl: String, family: ImageFamily, type: ImageType) {
+  fun addImageFromUrl(
+    imageUrl: String,
+    family: ImageFamily,
+    type: ImageType,
+  ) {
     if (imageUrl.isBlank()) return
 
     val currentImages = uiState.value.images?.toMutableList() ?: mutableListOf()
@@ -57,17 +65,17 @@ class ArtGalleryViewModel @Inject constructor(
     imagesState,
     typeState,
     pickedImageState,
-    loadingState
+    loadingState,
   ) { s1, s2, s3, s4 ->
     ArtGalleryUiState(
       images = s1,
       type = s2,
       pickedImage = s3,
-      isLoading = s4
+      isLoading = s4,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = ArtGalleryUiState()
+    initialValue = ArtGalleryUiState(),
   )
 }

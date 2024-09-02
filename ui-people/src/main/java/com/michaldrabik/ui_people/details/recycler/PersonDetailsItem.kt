@@ -47,6 +47,7 @@ sealed class PersonDetailsItem {
     val isLoading: Boolean = false,
   ) : PersonDetailsItem() {
     override fun getId() = "${show.traktId}show"
+
     override fun getReleaseDate() =
       if (show.firstAired.isNotBlank()) {
         ZonedDateTime.parse(show.firstAired).toLocalDate()
@@ -66,6 +67,7 @@ sealed class PersonDetailsItem {
     val isLoading: Boolean = false,
   ) : PersonDetailsItem() {
     override fun getId() = "${movie.traktId}movie"
+
     override fun getReleaseDate() = movie.released
   }
 

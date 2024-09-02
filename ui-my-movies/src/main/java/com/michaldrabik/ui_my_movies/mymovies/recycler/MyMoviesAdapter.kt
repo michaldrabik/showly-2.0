@@ -24,8 +24,8 @@ class MyMoviesAdapter(
   private val onListViewModeClickListener: () -> Unit,
   listChangeListener: (() -> Unit),
 ) : BaseMovieAdapter<MyMoviesItem>(
-  listChangeListener = listChangeListener
-) {
+    listChangeListener = listChangeListener,
+  ) {
 
   companion object {
     private const val VIEW_TYPE_HEADER = 1
@@ -45,24 +45,29 @@ class MyMoviesAdapter(
       notifyItemRangeChanged(0, asyncDiffer.currentList.size)
     }
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    when (viewType) {
-      VIEW_TYPE_HEADER -> BaseViewHolder(MyMovieHeaderView(parent.context))
-      VIEW_TYPE_RECENTS_SECTION -> BaseViewHolder(MyMoviesRecentsView(parent.context))
-      VIEW_TYPE_MOVIE_ITEM -> BaseAdapter.BaseViewHolder(
-        when (listViewMode) {
-          LIST_NORMAL -> MyMovieAllView(parent.context)
-        }.apply {
-          itemClickListener = this@MyMoviesAdapter.itemClickListener
-          itemLongClickListener = this@MyMoviesAdapter.itemLongClickListener
-          missingImageListener = this@MyMoviesAdapter.missingImageListener
-          missingTranslationListener = this@MyMoviesAdapter.missingTranslationListener
-        }
-      )
-      else -> throw IllegalStateException()
-    }
+  override fun onCreateViewHolder(
+    parent: ViewGroup,
+    viewType: Int,
+  ) = when (viewType) {
+    VIEW_TYPE_HEADER -> BaseViewHolder(MyMovieHeaderView(parent.context))
+    VIEW_TYPE_RECENTS_SECTION -> BaseViewHolder(MyMoviesRecentsView(parent.context))
+    VIEW_TYPE_MOVIE_ITEM -> BaseAdapter.BaseViewHolder(
+      when (listViewMode) {
+        LIST_NORMAL -> MyMovieAllView(parent.context)
+      }.apply {
+        itemClickListener = this@MyMoviesAdapter.itemClickListener
+        itemLongClickListener = this@MyMoviesAdapter.itemLongClickListener
+        missingImageListener = this@MyMoviesAdapter.missingImageListener
+        missingTranslationListener = this@MyMoviesAdapter.missingTranslationListener
+      },
+    )
+    else -> throw IllegalStateException()
+  }
 
-  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+  override fun onBindViewHolder(
+    holder: RecyclerView.ViewHolder,
+    position: Int,
+  ) {
     val item = asyncDiffer.currentList[position]
     when (holder.itemViewType) {
       VIEW_TYPE_HEADER -> (holder.itemView as MyMovieHeaderView).bind(
@@ -70,12 +75,12 @@ class MyMoviesAdapter(
         listViewMode,
         onSortOrderClickListener,
         onGenresClickListener,
-        onListViewModeClickListener
+        onListViewModeClickListener,
       )
       VIEW_TYPE_RECENTS_SECTION -> (holder.itemView as MyMoviesRecentsView).bind(
         item.recentsSection!!,
         itemClickListener,
-        itemLongClickListener
+        itemLongClickListener,
       )
       VIEW_TYPE_MOVIE_ITEM -> when (listViewMode) {
         LIST_NORMAL -> (holder.itemView as MyMovieAllView).bind(item)

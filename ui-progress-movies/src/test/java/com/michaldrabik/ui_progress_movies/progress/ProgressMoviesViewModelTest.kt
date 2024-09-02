@@ -65,7 +65,7 @@ class ProgressMoviesViewModelTest : BaseMockTest() {
       userTraktManager,
       workManager,
       settingsRepository,
-      translationsRepository
+      translationsRepository,
     )
   }
 
@@ -77,95 +77,101 @@ class ProgressMoviesViewModelTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should load items if parent timestamp changed`() = runTest {
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
-    val item = mockk<ProgressMovieListItem.MovieItem>()
-    coEvery { itemsCase.loadItems(any()) } returns listOf(item)
+  fun `Should load items if parent timestamp changed`() =
+    runTest {
+      val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+      val item = mockk<ProgressMovieListItem.MovieItem>()
+      coEvery { itemsCase.loadItems(any()) } returns listOf(item)
 
-    SUT.onParentState(parentState.copy(timestamp = 123))
+      SUT.onParentState(parentState.copy(timestamp = 123))
 
-    assertThat(stateResult.last().items).containsExactly(item)
-    coVerify(exactly = 1) { itemsCase.loadItems(any()) }
-    job.cancel()
-  }
-
-  @Test
-  fun `Should not reload items if parent timestamp is the same`() = runTest {
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
-    val item = mockk<ProgressMovieListItem.MovieItem>()
-    coEvery { itemsCase.loadItems(any()) } returns listOf(item)
-
-    SUT.onParentState(parentState.copy(timestamp = 0))
-
-    assertThat(stateResult.lastOrNull()?.items).isNull()
-    coVerify { itemsCase wasNot Called }
-    job.cancel()
-  }
-
-  @Test
-  fun `Should load items if search query changed`() = runTest {
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
-    val item = mockk<ProgressMovieListItem.MovieItem>()
-    coEvery { itemsCase.loadItems(any()) } returns listOf(item)
-
-    SUT.onParentState(parentState.copy(timestamp = 0, searchQuery = "test"))
-
-    assertThat(stateResult.last().items).containsExactly(item)
-    coVerify(exactly = 1) { itemsCase.loadItems(any()) }
-    job.cancel()
-  }
-
-  @Test
-  fun `Should not reload items if parent search query is the same`() = runTest {
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
-    val item = mockk<ProgressMovieListItem.MovieItem>()
-    coEvery { itemsCase.loadItems(any()) } returns listOf(item)
-
-    SUT.onParentState(parentState.copy(timestamp = 0, searchQuery = "test"))
-    SUT.onParentState(parentState.copy(timestamp = 0, searchQuery = "test"))
-
-    assertThat(stateResult.last().items).containsExactly(item)
-    coVerify(exactly = 1) { itemsCase.loadItems(any()) }
-    job.cancel()
-  }
-
-  @Test
-  fun `Should toggle pinned item if pinned`() = runTest {
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
-    coEvery { pinnedCase.addPinnedItem(any()) } just Runs
-    coEvery { pinnedCase.removePinnedItem(any()) } just Runs
-    coEvery { itemsCase.loadItems(any()) } returns listOf(mockk())
-
-    val item = mockk<ProgressMovieListItem.MovieItem> {
-      coEvery { isPinned } returns true
-      coEvery { movie } returns Movie.EMPTY
+      assertThat(stateResult.last().items).containsExactly(item)
+      coVerify(exactly = 1) { itemsCase.loadItems(any()) }
+      job.cancel()
     }
 
-    SUT.togglePinItem(item)
-
-    coVerify(exactly = 1) { pinnedCase.removePinnedItem(any()) }
-    coVerify(exactly = 0) { pinnedCase.addPinnedItem(any()) }
-    coVerify(exactly = 1) { itemsCase.loadItems(any()) }
-    job.cancel()
-  }
-
   @Test
-  fun `Should toggle pinned item if not pinned`() = runTest {
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
-    coEvery { pinnedCase.addPinnedItem(any()) } just Runs
-    coEvery { pinnedCase.removePinnedItem(any()) } just Runs
-    coEvery { itemsCase.loadItems(any()) } returns listOf(mockk())
+  fun `Should not reload items if parent timestamp is the same`() =
+    runTest {
+      val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+      val item = mockk<ProgressMovieListItem.MovieItem>()
+      coEvery { itemsCase.loadItems(any()) } returns listOf(item)
 
-    val item = mockk<ProgressMovieListItem.MovieItem> {
-      coEvery { isPinned } returns false
-      coEvery { movie } returns Movie.EMPTY
+      SUT.onParentState(parentState.copy(timestamp = 0))
+
+      assertThat(stateResult.lastOrNull()?.items).isNull()
+      coVerify { itemsCase wasNot Called }
+      job.cancel()
     }
 
-    SUT.togglePinItem(item)
+  @Test
+  fun `Should load items if search query changed`() =
+    runTest {
+      val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+      val item = mockk<ProgressMovieListItem.MovieItem>()
+      coEvery { itemsCase.loadItems(any()) } returns listOf(item)
 
-    coVerify(exactly = 0) { pinnedCase.removePinnedItem(any()) }
-    coVerify(exactly = 1) { pinnedCase.addPinnedItem(any()) }
-    coVerify(exactly = 1) { itemsCase.loadItems(any()) }
-    job.cancel()
-  }
+      SUT.onParentState(parentState.copy(timestamp = 0, searchQuery = "test"))
+
+      assertThat(stateResult.last().items).containsExactly(item)
+      coVerify(exactly = 1) { itemsCase.loadItems(any()) }
+      job.cancel()
+    }
+
+  @Test
+  fun `Should not reload items if parent search query is the same`() =
+    runTest {
+      val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+      val item = mockk<ProgressMovieListItem.MovieItem>()
+      coEvery { itemsCase.loadItems(any()) } returns listOf(item)
+
+      SUT.onParentState(parentState.copy(timestamp = 0, searchQuery = "test"))
+      SUT.onParentState(parentState.copy(timestamp = 0, searchQuery = "test"))
+
+      assertThat(stateResult.last().items).containsExactly(item)
+      coVerify(exactly = 1) { itemsCase.loadItems(any()) }
+      job.cancel()
+    }
+
+  @Test
+  fun `Should toggle pinned item if pinned`() =
+    runTest {
+      val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+      coEvery { pinnedCase.addPinnedItem(any()) } just Runs
+      coEvery { pinnedCase.removePinnedItem(any()) } just Runs
+      coEvery { itemsCase.loadItems(any()) } returns listOf(mockk())
+
+      val item = mockk<ProgressMovieListItem.MovieItem> {
+        coEvery { isPinned } returns true
+        coEvery { movie } returns Movie.EMPTY
+      }
+
+      SUT.togglePinItem(item)
+
+      coVerify(exactly = 1) { pinnedCase.removePinnedItem(any()) }
+      coVerify(exactly = 0) { pinnedCase.addPinnedItem(any()) }
+      coVerify(exactly = 1) { itemsCase.loadItems(any()) }
+      job.cancel()
+    }
+
+  @Test
+  fun `Should toggle pinned item if not pinned`() =
+    runTest {
+      val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+      coEvery { pinnedCase.addPinnedItem(any()) } just Runs
+      coEvery { pinnedCase.removePinnedItem(any()) } just Runs
+      coEvery { itemsCase.loadItems(any()) } returns listOf(mockk())
+
+      val item = mockk<ProgressMovieListItem.MovieItem> {
+        coEvery { isPinned } returns false
+        coEvery { movie } returns Movie.EMPTY
+      }
+
+      SUT.togglePinItem(item)
+
+      coVerify(exactly = 0) { pinnedCase.removePinnedItem(any()) }
+      coVerify(exactly = 1) { pinnedCase.addPinnedItem(any()) }
+      coVerify(exactly = 1) { itemsCase.loadItems(any()) }
+      job.cancel()
+    }
 }

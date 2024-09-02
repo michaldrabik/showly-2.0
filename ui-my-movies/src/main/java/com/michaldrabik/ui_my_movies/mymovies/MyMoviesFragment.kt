@@ -70,7 +70,10 @@ class MyMoviesFragment :
   private var isSearching = false
   private val gridSpanSize by lazy { settings.tabletGridSpanSize }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupStatusBar()
     setupRecycler()
@@ -78,7 +81,7 @@ class MyMoviesFragment :
     launchAndRepeatStarted(
       { parentViewModel.uiState.collect { viewModel.onParentState(it) } },
       { viewModel.uiState.collect { render(it) } },
-      doAfterLaunch = { viewModel.loadMovies() }
+      doAfterLaunch = { viewModel.loadMovies() },
     )
   }
 
@@ -86,7 +89,7 @@ class MyMoviesFragment :
     layoutManager = MyMoviesLayoutManagerProvider.provideLayoutManger(
       context = requireContext(),
       viewMode = LIST_NORMAL,
-      gridSpanSize = gridSpanSize
+      gridSpanSize = gridSpanSize,
     )
     adapter = MyMoviesAdapter(
       itemClickListener = { openMovieDetails(it.movie) },
@@ -99,7 +102,7 @@ class MyMoviesFragment :
       listChangeListener = {
         layoutManager?.scrollToPosition(0)
         (requireParentFragment() as FollowedMoviesFragment).resetTranslations()
-      }
+      },
     )
     binding.myMoviesRecycler.apply {
       adapter = this@MyMoviesFragment.adapter
@@ -170,7 +173,10 @@ class MyMoviesFragment :
     (requireParentFragment() as? FollowedMoviesFragment)?.openMovieMenu(movie)
   }
 
-  private fun openSortOrderDialog(order: SortOrder, type: SortType) {
+  private fun openSortOrderDialog(
+    order: SortOrder,
+    type: SortType,
+  ) {
     val options = listOf(NAME, RATING, USER_RATING, RUNTIME, NEWEST, DATE_ADDED)
     val args = SortOrderBottomSheet.createBundle(options, order, type)
 

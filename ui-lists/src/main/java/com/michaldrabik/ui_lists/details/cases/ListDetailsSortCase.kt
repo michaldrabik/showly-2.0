@@ -16,28 +16,36 @@ import javax.inject.Inject
 class ListDetailsSortCase @Inject constructor(
   private val dispatchers: CoroutineDispatchers,
   private val localSource: LocalDataSource,
-  private val mappers: Mappers
+  private val mappers: Mappers,
 ) {
 
-  suspend fun setSortOrder(listId: Long, sortOrder: SortOrder, sortType: SortType): CustomList =
+  suspend fun setSortOrder(
+    listId: Long,
+    sortOrder: SortOrder,
+    sortType: SortType,
+  ): CustomList =
     withContext(dispatchers.IO) {
       localSource.customLists.updateSortByLocal(
         listId,
         sortOrder.slug,
         sortType.slug,
-        nowUtcMillis()
+        nowUtcMillis(),
       )
       val list = localSource.customLists.getById(listId)!!
       mappers.customList.fromDatabase(list)
     }
 
-  suspend fun setFilterTypes(listId: Long, types: List<Mode>): CustomList = withContext(dispatchers.IO) {
-    localSource.customLists.updateFilterTypeLocal(
-      listId,
-      types.joinToString(",") { it.type },
-      nowUtcMillis()
-    )
-    val list = localSource.customLists.getById(listId)!!
-    mappers.customList.fromDatabase(list)
-  }
+  suspend fun setFilterTypes(
+    listId: Long,
+    types: List<Mode>,
+  ): CustomList =
+    withContext(dispatchers.IO) {
+      localSource.customLists.updateFilterTypeLocal(
+        listId,
+        types.joinToString(",") { it.type },
+        nowUtcMillis(),
+      )
+      val list = localSource.customLists.getById(listId)!!
+      mappers.customList.fromDatabase(list)
+    }
 }

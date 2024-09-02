@@ -31,10 +31,11 @@ class ProgressMoviesSortCaseTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should set sorting order properly`() = runBlockingTest {
-    SUT.setSortOrder(SortOrder.RANK, SortType.DESCENDING)
+  fun `Should set sorting order properly`() =
+    runBlockingTest {
+      SUT.setSortOrder(SortOrder.RANK, SortType.DESCENDING)
 
-    coVerify { settingsRepository.sorting setProperty "progressMoviesSortOrder" value SortOrder.RANK }
-    coVerify { settingsRepository.sorting setProperty "progressMoviesSortType" value SortType.DESCENDING }
-  }
+      coVerify { settingsRepository.sorting setProperty "progressMoviesSortOrder" value SortOrder.RANK }
+      coVerify { settingsRepository.sorting setProperty "progressMoviesSortType" value SortType.DESCENDING }
+    }
 }

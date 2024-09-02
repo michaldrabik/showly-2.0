@@ -16,12 +16,13 @@ class MovieDetailsWatchlistCase @Inject constructor(
   private val moviesRepository: MoviesRepository,
   private val pinnedItemsRepository: PinnedItemsRepository,
   private val quickSyncManager: QuickSyncManager,
-  private val announcementManager: AnnouncementManager
+  private val announcementManager: AnnouncementManager,
 ) {
 
-  suspend fun isWatchlist(movie: Movie) = withContext(dispatchers.IO) {
-    moviesRepository.watchlistMovies.load(movie.ids.trakt) != null
-  }
+  suspend fun isWatchlist(movie: Movie) =
+    withContext(dispatchers.IO) {
+      moviesRepository.watchlistMovies.load(movie.ids.trakt) != null
+    }
 
   suspend fun addToWatchlist(movie: Movie) {
     withContext(dispatchers.IO) {

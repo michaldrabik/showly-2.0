@@ -55,83 +55,84 @@ internal class GetHistoryItemsCase @Inject constructor(
   private val grouper: HistoryItemsGrouper,
 ) {
 
-  suspend fun loadItems(searchQuery: String? = "") = withContext(dispatchers.IO) {
-    val shows = coroutineScope {
-      val async1 = async { showsRepository.myShows.loadAll() }
-      val async2 = async { showsRepository.watchlistShows.loadAll() }
-      awaitAll(async1, async2).flatten()
-    }
-    val showsIds = shows.map { it.traktId }.chunked(250)
-
-    val periodFilter = settingsRepository.filters.historyShowsPeriod
-    val periodRange = getPeriodRange(periodFilter)
-
-    val (episodes, seasons) = awaitAll(
-      async {
-        showsIds.fold(listOf<Episode>()) { acc, ids ->
-          acc.plus(localSource.episodes.getAllWatchedForShows(ids, periodRange.first, periodRange.last))
-        }
-      },
-      async {
-        showsIds.fold(listOf<Season>()) { acc, ids ->
-          acc.plus(localSource.seasons.getAllByShowsIds(ids))
-        }
+  suspend fun loadItems(searchQuery: String? = "") =
+    withContext(dispatchers.IO) {
+      val shows = coroutineScope {
+        val async1 = async { showsRepository.myShows.loadAll() }
+        val async2 = async { showsRepository.watchlistShows.loadAll() }
+        awaitAll(async1, async2).flatten()
       }
-    )
+      val showsIds = shows.map { it.traktId }.chunked(250)
 
-    val localEpisodes = episodes as List<Episode>
-    val localSeasons = seasons as List<Season>
+      val periodFilter = settingsRepository.filters.historyShowsPeriod
+      val periodRange = getPeriodRange(periodFilter)
 
-    val language = translationsRepository.getLanguage()
-    val dateFormat = dateFormatProvider.loadFullHourFormat()
-
-    val items = localEpisodes
-      .map { episode ->
+      val (episodes, seasons) = awaitAll(
         async {
-          val show = shows.firstOrNull { it.traktId == episode.idShowTrakt }
-          val season = localSeasons.firstOrNull {
-            it.idShowTrakt == episode.idShowTrakt &&
-              it.seasonNumber == episode.seasonNumber
+          showsIds.fold(listOf<Episode>()) { acc, ids ->
+            acc.plus(localSource.episodes.getAllWatchedForShows(ids, periodRange.first, periodRange.last))
           }
-
-          if (show == null || season == null) {
-            return@async null
+        },
+        async {
+          showsIds.fold(listOf<Season>()) { acc, ids ->
+            acc.plus(localSource.seasons.getAllByShowsIds(ids))
           }
+        },
+      )
 
-          val seasonEpisodes = episodes.filter {
-            it.idShowTrakt == season.idShowTrakt &&
-              it.seasonNumber == season.seasonNumber
+      val localEpisodes = episodes as List<Episode>
+      val localSeasons = seasons as List<Season>
+
+      val language = translationsRepository.getLanguage()
+      val dateFormat = dateFormatProvider.loadFullHourFormat()
+
+      val items = localEpisodes
+        .map { episode ->
+          async {
+            val show = shows.firstOrNull { it.traktId == episode.idShowTrakt }
+            val season = localSeasons.firstOrNull {
+              it.idShowTrakt == episode.idShowTrakt &&
+                it.seasonNumber == episode.seasonNumber
+            }
+
+            if (show == null || season == null) {
+              return@async null
+            }
+
+            val seasonEpisodes = episodes.filter {
+              it.idShowTrakt == season.idShowTrakt &&
+                it.seasonNumber == season.seasonNumber
+            }
+
+            val episodeUi = mappers.episode.fromDatabase(episode)
+            val seasonUi = mappers.season.fromDatabase(season, seasonEpisodes)
+
+            HistoryListItem.Episode(
+              show = show,
+              season = seasonUi,
+              episode = episodeUi,
+              image = imagesProvider.findCachedImage(show, ImageType.POSTER),
+              translations = getTranslation(language, show, episodeUi),
+              dateFormat = dateFormat,
+            )
           }
-
-          val episodeUi = mappers.episode.fromDatabase(episode)
-          val seasonUi = mappers.season.fromDatabase(season, seasonEpisodes)
-
-          HistoryListItem.Episode(
-            show = show,
-            season = seasonUi,
-            episode = episodeUi,
-            image = imagesProvider.findCachedImage(show, ImageType.POSTER),
-            translations = getTranslation(language, show, episodeUi),
-            dateFormat = dateFormat,
-          )
         }
-      }
-      .awaitAll()
-      .filterNotNull()
+        .awaitAll()
+        .filterNotNull()
 
-    val filtersItem = listOf(HistoryListItem.Filters(periodFilter))
-    val searchItems = filterByQuery(searchQuery, dateFormat, items)
-    val groupedItems = grouper.groupByDay(
-      items = searchItems,
-      language = language,
-    )
-    filtersItem + groupedItems
-  }
+      val filtersItem = listOf(HistoryListItem.Filters(periodFilter))
+      val searchItems = filterByQuery(searchQuery, dateFormat, items)
+      val groupedItems = grouper.groupByDay(
+        items = searchItems,
+        language = language,
+      )
+      filtersItem + groupedItems
+    }
 
   private fun filterByQuery(
     query: String?,
     dateFormat: DateTimeFormatter,
-    items: List<HistoryListItem.Episode>
+    items: List<HistoryListItem.Episode>,
   ): List<HistoryListItem.Episode> {
     if (query.isNullOrBlank()) {
       return items
@@ -148,7 +149,7 @@ internal class GetHistoryItemsCase @Inject constructor(
   private suspend fun getTranslation(
     language: String,
     show: Show,
-    episode: EpisodeUi
+    episode: EpisodeUi,
   ): TranslationsBundle? {
     if (language == DEFAULT_LANGUAGE) {
       return null
@@ -158,13 +159,13 @@ internal class GetHistoryItemsCase @Inject constructor(
         language = language,
         showId = show.ids.trakt,
         episode = episode,
-        onlyLocal = true
+        onlyLocal = true,
       ),
       show = translationsRepository.loadTranslation(
         language = language,
         show = show,
-        onlyLocal = true
-      )
+        onlyLocal = true,
+      ),
     )
   }
 

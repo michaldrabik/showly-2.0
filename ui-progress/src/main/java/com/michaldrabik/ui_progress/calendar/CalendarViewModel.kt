@@ -84,13 +84,16 @@ class CalendarViewModel @Inject constructor(
       eventChannel.send(
         EpisodeCheckActionUiEvent(
           episode = bundle,
-          dateSelectionType = settingsRepository.progressDateSelectionType
-        )
+          dateSelectionType = settingsRepository.progressDateSelectionType,
+        ),
       )
     }
   }
 
-  fun findMissingImage(item: CalendarListItem, force: Boolean) {
+  fun findMissingImage(
+    item: CalendarListItem,
+    force: Boolean,
+  ) {
     check(item is CalendarListItem.Episode)
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
@@ -108,7 +111,10 @@ class CalendarViewModel @Inject constructor(
     check(item is CalendarListItem.Episode)
     val showId = item.show.ids.trakt
     val language = translationsRepository.getLanguage()
-    if (item.translations?.show != null || language == Config.DEFAULT_LANGUAGE || loadTranslationJobs.contains(showId)) {
+    if (item.translations?.show != null ||
+      language == Config.DEFAULT_LANGUAGE ||
+      loadTranslationJobs.contains(showId)
+    ) {
       return
     }
     viewModelScope.launch {
@@ -136,15 +142,15 @@ class CalendarViewModel @Inject constructor(
 
   val uiState = combine(
     itemsState,
-    modeState
+    modeState,
   ) { s1, s2 ->
     CalendarUiState(
       items = s1,
-      mode = s2
+      mode = s2,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = CalendarUiState()
+    initialValue = CalendarUiState(),
   )
 }

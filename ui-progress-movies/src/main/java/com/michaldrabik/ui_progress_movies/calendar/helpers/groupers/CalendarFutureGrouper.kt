@@ -16,7 +16,7 @@ class CalendarFutureGrouper @Inject constructor() : CalendarGrouper {
 
   override fun groupByTime(
     nowUtc: ZonedDateTime,
-    items: List<CalendarMovieListItem.MovieItem>
+    items: List<CalendarMovieListItem.MovieItem>,
   ): List<CalendarMovieListItem> {
     val nowDays = nowUtc.toLocalZone().toLocalDate()
 

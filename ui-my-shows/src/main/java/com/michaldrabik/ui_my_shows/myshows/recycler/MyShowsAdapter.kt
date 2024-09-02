@@ -27,8 +27,8 @@ class MyShowsAdapter(
   private val missingTranslationListener: (ListItem) -> Unit,
   listChangeListener: () -> Unit,
 ) : BaseAdapter<MyShowsItem>(
-  listChangeListener = listChangeListener
-) {
+    listChangeListener = listChangeListener,
+  ) {
 
   companion object {
     private const val VIEW_TYPE_HEADER = 1
@@ -44,29 +44,37 @@ class MyShowsAdapter(
       notifyItemRangeChanged(0, asyncDiffer.currentList.size)
     }
 
-  fun setItems(newItems: List<MyShowsItem>, notifyChangeList: List<Type>?) {
+  fun setItems(
+    newItems: List<MyShowsItem>,
+    notifyChangeList: List<Type>?,
+  ) {
     val notifyChange = notifyChangeList?.contains(Type.ALL_SHOWS_ITEM) == true
     super.setItems(newItems, notifyChange)
   }
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    when (viewType) {
-      VIEW_TYPE_HEADER -> BaseViewHolder(MyShowHeaderView(parent.context))
-      VIEW_TYPE_RECENTS_SECTION -> BaseViewHolder(MyShowsRecentsView(parent.context))
-      VIEW_TYPE_SHOW_ITEM -> BaseViewHolder(
-        when (listViewMode) {
-          LIST_NORMAL -> MyShowAllView(parent.context)
-        }.apply {
-          itemClickListener = this@MyShowsAdapter.itemClickListener
-          itemLongClickListener = this@MyShowsAdapter.itemLongClickListener
-          missingImageListener = this@MyShowsAdapter.missingImageListener
-          missingTranslationListener = this@MyShowsAdapter.missingTranslationListener
-        }
-      )
-      else -> throw IllegalStateException()
-    }
+  override fun onCreateViewHolder(
+    parent: ViewGroup,
+    viewType: Int,
+  ) = when (viewType) {
+    VIEW_TYPE_HEADER -> BaseViewHolder(MyShowHeaderView(parent.context))
+    VIEW_TYPE_RECENTS_SECTION -> BaseViewHolder(MyShowsRecentsView(parent.context))
+    VIEW_TYPE_SHOW_ITEM -> BaseViewHolder(
+      when (listViewMode) {
+        LIST_NORMAL -> MyShowAllView(parent.context)
+      }.apply {
+        itemClickListener = this@MyShowsAdapter.itemClickListener
+        itemLongClickListener = this@MyShowsAdapter.itemLongClickListener
+        missingImageListener = this@MyShowsAdapter.missingImageListener
+        missingTranslationListener = this@MyShowsAdapter.missingTranslationListener
+      },
+    )
+    else -> throw IllegalStateException()
+  }
 
-  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+  override fun onBindViewHolder(
+    holder: RecyclerView.ViewHolder,
+    position: Int,
+  ) {
     val item = asyncDiffer.currentList[position]
     when (holder.itemViewType) {
       VIEW_TYPE_HEADER -> (holder.itemView as MyShowHeaderView).bind(
@@ -76,12 +84,12 @@ class MyShowsAdapter(
         sortClickListener = onSortOrderClickListener,
         networksClickListener = onNetworksClickListener,
         genresClickListener = onGenresClickListener,
-        listModeClickListener = onListViewModeClickListener
+        listModeClickListener = onListViewModeClickListener,
       )
       VIEW_TYPE_RECENTS_SECTION -> (holder.itemView as MyShowsRecentsView).bind(
         item.recentsSection!!,
         itemClickListener,
-        itemLongClickListener
+        itemLongClickListener,
       )
       VIEW_TYPE_SHOW_ITEM -> {
         when (listViewMode) {

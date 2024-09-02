@@ -40,7 +40,10 @@ class AddToMoviesButton : FrameLayout {
     }
   }
 
-  fun setState(state: State, animate: Boolean = false) {
+  fun setState(
+    state: State,
+    animate: Boolean = false,
+  ) {
     if (state == this.state) return
     this.state = state
 
@@ -133,6 +136,6 @@ class AddToMoviesButton : FrameLayout {
     ADD,
     IN_MY_MOVIES,
     IN_WATCHLIST,
-    IN_HIDDEN
+    IN_HIDDEN,
   }
 }

@@ -39,13 +39,15 @@ sealed class ProgressListItem(
     val dateFormat: DateTimeFormatter? = null,
     val sortOrder: SortOrder? = null,
     val userRating: Int? = null,
-    val spoilers: SpoilersSettings? = null
+    val spoilers: SpoilersSettings? = null,
   ) : ProgressListItem(show, image, isLoading) {
 
-    fun isNew() = episode?.firstAired?.isBefore(nowUtc()) ?: false &&
-      nowUtcMillis() - (episode?.firstAired?.toMillis() ?: 0) < Config.NEW_BADGE_DURATION
+    fun isNew() =
+      episode?.firstAired?.isBefore(nowUtc()) ?: false &&
+        nowUtcMillis() - (episode?.firstAired?.toMillis() ?: 0) < Config.NEW_BADGE_DURATION
 
     fun requireEpisode() = episode!!
+
     fun requireSeason() = season!!
   }
 
@@ -68,16 +70,15 @@ sealed class ProgressListItem(
         show = Show.EMPTY,
         image = Image.createUnavailable(ImageType.POSTER),
         textResId = textResId,
-        isCollapsed = isCollapsed
+        isCollapsed = isCollapsed,
       )
     }
 
-    override fun isSameAs(other: ListItem) =
-      textResId == (other as? Header)?.textResId
+    override fun isSameAs(other: ListItem) = textResId == (other as? Header)?.textResId
 
     enum class Type {
       UPCOMING,
-      ON_HOLD
+      ON_HOLD,
     }
   }
 
@@ -87,12 +88,12 @@ sealed class ProgressListItem(
     val isUpcoming: Boolean,
     val isUpcomingEnabled: Boolean,
     val isOnHold: Boolean,
-    val newAtTop: Boolean
+    val newAtTop: Boolean,
   ) : ProgressListItem(
-    show = Show.EMPTY,
-    image = Image.createUnknown(ImageType.POSTER),
-    isLoading = false
-  ) {
+      show = Show.EMPTY,
+      image = Image.createUnknown(ImageType.POSTER),
+      isLoading = false,
+    ) {
 
     fun hasActiveFilters() = isUpcoming || isOnHold
   }

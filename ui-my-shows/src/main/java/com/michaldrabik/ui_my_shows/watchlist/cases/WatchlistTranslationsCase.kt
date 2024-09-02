@@ -17,7 +17,10 @@ class WatchlistTranslationsCase @Inject constructor(
 
   fun getLanguage() = translationsRepository.getLanguage()
 
-  suspend fun loadTranslation(show: Show, onlyLocal: Boolean): Translation? =
+  suspend fun loadTranslation(
+    show: Show,
+    onlyLocal: Boolean,
+  ): Translation? =
     withContext(dispatchers.IO) {
       val language = getLanguage()
       if (language == Config.DEFAULT_LANGUAGE) {

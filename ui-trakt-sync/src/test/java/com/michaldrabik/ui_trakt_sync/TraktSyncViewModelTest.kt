@@ -72,7 +72,7 @@ class TraktSyncViewModelTest : BaseMockTest() {
       ratingsCase,
       settingsRepository,
       dateFormatProvider,
-      eventsManager
+      eventsManager,
     )
   }
 
@@ -84,156 +84,165 @@ class TraktSyncViewModelTest : BaseMockTest() {
   }
 
   @Test
-  internal fun `Should invalidate properly`() = runTest {
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
-    val job2 = launch(UnconfinedTestDispatcher()) { SUT.messageFlow.toList(messagesResult) }
+  internal fun `Should invalidate properly`() =
+    runTest {
+      val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+      val job2 = launch(UnconfinedTestDispatcher()) { SUT.messageFlow.toList(messagesResult) }
 
-    coEvery { settingsRepository.load() } returns Settings.createInitial()
-    coEvery { userTraktManager.isAuthorized() } returns true
-    coEvery { dateFormatProvider.loadFullHourFormat() } returns DateTimeFormatter.ISO_DATE
-    coEvery { miscPreferences.getLong(any(), 0) } returns 0
+      coEvery { settingsRepository.load() } returns Settings.createInitial()
+      coEvery { userTraktManager.isAuthorized() } returns true
+      coEvery { dateFormatProvider.loadFullHourFormat() } returns DateTimeFormatter.ISO_DATE
+      coEvery { miscPreferences.getLong(any(), 0) } returns 0
 
-    SUT.invalidate()
+      SUT.invalidate()
 
-    assertThat(stateResult.last().isAuthorized).isTrue()
-    assertThat(stateResult.last().traktSyncSchedule).isEqualTo(TraktSyncSchedule.OFF)
-    assertThat(stateResult.last().quickSyncEnabled).isEqualTo(false)
-    assertThat(stateResult.last().dateFormat).isEqualTo(DateTimeFormatter.ISO_DATE)
-    assertThat(stateResult.last().lastTraktSyncTimestamp).isEqualTo(0L)
-    coVerify(exactly = 1) { settingsRepository.load() }
+      assertThat(stateResult.last().isAuthorized).isTrue()
+      assertThat(stateResult.last().traktSyncSchedule).isEqualTo(TraktSyncSchedule.OFF)
+      assertThat(stateResult.last().quickSyncEnabled).isEqualTo(false)
+      assertThat(stateResult.last().dateFormat).isEqualTo(DateTimeFormatter.ISO_DATE)
+      assertThat(stateResult.last().lastTraktSyncTimestamp).isEqualTo(0L)
+      coVerify(exactly = 1) { settingsRepository.load() }
 
-    job.cancel()
-    job2.cancel()
-  }
-
-  @Test
-  internal fun `Should not authorize trakt if URI is null`() = runTest {
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
-    val job2 = launch(UnconfinedTestDispatcher()) { SUT.messageFlow.toList(messagesResult) }
-
-    SUT.authorizeTrakt(null)
-    coVerify(exactly = 0) { userTraktManager.authorize(any()) }
-    assertThat(messagesResult.last().consume()).isEqualTo(string.errorAuthorization)
-
-    job.cancel()
-    job2.cancel()
-  }
+      job.cancel()
+      job2.cancel()
+    }
 
   @Test
-  internal fun `Should authorize trakt properly`() = runTest {
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
-    val job2 = launch(UnconfinedTestDispatcher()) { SUT.messageFlow.toList(messagesResult) }
+  internal fun `Should not authorize trakt if URI is null`() =
+    runTest {
+      val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+      val job2 = launch(UnconfinedTestDispatcher()) { SUT.messageFlow.toList(messagesResult) }
 
-    coEvery { settingsRepository.load() } returns Settings.createInitial()
-    coEvery { settingsRepository.update(any()) } just Runs
-    coEvery { userTraktManager.isAuthorized() } returns true
-    coEvery { userTraktManager.authorize(any()) } just Runs
-    coEvery { dateFormatProvider.loadFullHourFormat() } returns DateTimeFormatter.ISO_DATE
-    coEvery { miscPreferences.getLong(any(), 0) } returns 0
+      SUT.authorizeTrakt(null)
+      coVerify(exactly = 0) { userTraktManager.authorize(any()) }
+      assertThat(messagesResult.last().consume()).isEqualTo(string.errorAuthorization)
 
-    SUT.authorizeTrakt("testCode")
-
-    assertThat(messagesResult.last().consume()).isEqualTo(R.string.textTraktLoginSuccess)
-
-    job.cancel()
-    job2.cancel()
-  }
+      job.cancel()
+      job2.cancel()
+    }
 
   @Test
-  internal fun `Should save Trakt Sync Schedule`() = runTest {
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
-    val job2 = launch(UnconfinedTestDispatcher()) { SUT.messageFlow.toList(messagesResult) }
+  internal fun `Should authorize trakt properly`() =
+    runTest {
+      val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+      val job2 = launch(UnconfinedTestDispatcher()) { SUT.messageFlow.toList(messagesResult) }
 
-    coEvery { settingsRepository.load() } returns Settings.createInitial()
-    coEvery { settingsRepository.update(any()) } just Runs
+      coEvery { settingsRepository.load() } returns Settings.createInitial()
+      coEvery { settingsRepository.update(any()) } just Runs
+      coEvery { userTraktManager.isAuthorized() } returns true
+      coEvery { userTraktManager.authorize(any()) } just Runs
+      coEvery { dateFormatProvider.loadFullHourFormat() } returns DateTimeFormatter.ISO_DATE
+      coEvery { miscPreferences.getLong(any(), 0) } returns 0
 
-    val schedule = TraktSyncSchedule.EVERY_6_HOURS
-    SUT.saveTraktSyncSchedule(schedule)
+      SUT.authorizeTrakt("testCode")
 
-    assertThat(stateResult.last().traktSyncSchedule).isEqualTo(schedule)
-    assertThat(messagesResult).isEmpty()
-    coVerify(exactly = 1) { settingsRepository.load() }
-    coVerify(exactly = 1) { settingsRepository.update(any()) }
-    coVerify(exactly = 1) { workManager.cancelUniqueWork(any()) }
-    coVerify(exactly = 1) { workManager.enqueueUniquePeriodicWork(any(), any(), any()) }
+      assertThat(messagesResult.last().consume()).isEqualTo(R.string.textTraktLoginSuccess)
 
-    job.cancel()
-    job2.cancel()
-  }
-
-  @Test
-  internal fun `Should handle TraktSyncStart event`() = runTest {
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
-    val job2 = launch(UnconfinedTestDispatcher()) { SUT.messageFlow.toList(messagesResult) }
-
-    SUT.handleEvent(TraktSyncStart)
-
-    assertThat(stateResult.last().isProgress).isTrue()
-    assertThat(stateResult.last().progressStatus).isEqualTo("")
-    assertThat(messagesResult.last().consume()).isEqualTo(R.string.textTraktSyncStarted)
-
-    job.cancel()
-    job2.cancel()
-  }
+      job.cancel()
+      job2.cancel()
+    }
 
   @Test
-  internal fun `Should handle TraktSyncProgress event`() = runTest {
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
-    val job2 = launch(UnconfinedTestDispatcher()) { SUT.messageFlow.toList(messagesResult) }
+  internal fun `Should save Trakt Sync Schedule`() =
+    runTest {
+      val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+      val job2 = launch(UnconfinedTestDispatcher()) { SUT.messageFlow.toList(messagesResult) }
 
-    SUT.handleEvent(TraktSyncProgress("test"))
+      coEvery { settingsRepository.load() } returns Settings.createInitial()
+      coEvery { settingsRepository.update(any()) } just Runs
 
-    assertThat(stateResult.last().isProgress).isTrue()
-    assertThat(stateResult.last().progressStatus).isEqualTo("test")
-    assertThat(messagesResult).isEmpty()
+      val schedule = TraktSyncSchedule.EVERY_6_HOURS
+      SUT.saveTraktSyncSchedule(schedule)
 
-    job.cancel()
-    job2.cancel()
-  }
+      assertThat(stateResult.last().traktSyncSchedule).isEqualTo(schedule)
+      assertThat(messagesResult).isEmpty()
+      coVerify(exactly = 1) { settingsRepository.load() }
+      coVerify(exactly = 1) { settingsRepository.update(any()) }
+      coVerify(exactly = 1) { workManager.cancelUniqueWork(any()) }
+      coVerify(exactly = 1) { workManager.enqueueUniquePeriodicWork(any(), any(), any()) }
 
-  @Test
-  internal fun `Should handle TraktSyncSuccess event`() = runTest {
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
-    val job2 = launch(UnconfinedTestDispatcher()) { SUT.messageFlow.toList(messagesResult) }
-    coEvery { miscPreferences.getLong(any(), 0) } returns 0
-
-    SUT.handleEvent(TraktSyncSuccess)
-
-    assertThat(stateResult.last().isProgress).isFalse()
-    assertThat(stateResult.last().progressStatus).isEqualTo("")
-    assertThat(messagesResult.last().consume()).isEqualTo(string.textTraktSyncComplete)
-
-    job.cancel()
-    job2.cancel()
-  }
+      job.cancel()
+      job2.cancel()
+    }
 
   @Test
-  internal fun `Should handle TraktSyncError event`() = runTest {
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
-    val job2 = launch(UnconfinedTestDispatcher()) { SUT.messageFlow.toList(messagesResult) }
+  internal fun `Should handle TraktSyncStart event`() =
+    runTest {
+      val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+      val job2 = launch(UnconfinedTestDispatcher()) { SUT.messageFlow.toList(messagesResult) }
 
-    SUT.handleEvent(TraktSyncError)
+      SUT.handleEvent(TraktSyncStart)
 
-    assertThat(stateResult.last().isProgress).isFalse()
-    assertThat(stateResult.last().progressStatus).isEqualTo("")
-    assertThat(messagesResult.last().consume()).isEqualTo(string.textTraktSyncError)
+      assertThat(stateResult.last().isProgress).isTrue()
+      assertThat(stateResult.last().progressStatus).isEqualTo("")
+      assertThat(messagesResult.last().consume()).isEqualTo(R.string.textTraktSyncStarted)
 
-    job.cancel()
-    job2.cancel()
-  }
+      job.cancel()
+      job2.cancel()
+    }
 
   @Test
-  internal fun `Should handle TraktSyncAuthError event`() = runTest {
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
-    val job2 = launch(UnconfinedTestDispatcher()) { SUT.messageFlow.toList(messagesResult) }
+  internal fun `Should handle TraktSyncProgress event`() =
+    runTest {
+      val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+      val job2 = launch(UnconfinedTestDispatcher()) { SUT.messageFlow.toList(messagesResult) }
 
-    SUT.handleEvent(TraktSyncAuthError)
+      SUT.handleEvent(TraktSyncProgress("test"))
 
-    assertThat(stateResult.last().isProgress).isFalse()
-    assertThat(stateResult.last().progressStatus).isEqualTo("")
-    assertThat(messagesResult.last().consume()).isEqualTo(string.errorTraktAuthorization)
+      assertThat(stateResult.last().isProgress).isTrue()
+      assertThat(stateResult.last().progressStatus).isEqualTo("test")
+      assertThat(messagesResult).isEmpty()
 
-    job.cancel()
-    job2.cancel()
-  }
+      job.cancel()
+      job2.cancel()
+    }
+
+  @Test
+  internal fun `Should handle TraktSyncSuccess event`() =
+    runTest {
+      val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+      val job2 = launch(UnconfinedTestDispatcher()) { SUT.messageFlow.toList(messagesResult) }
+      coEvery { miscPreferences.getLong(any(), 0) } returns 0
+
+      SUT.handleEvent(TraktSyncSuccess)
+
+      assertThat(stateResult.last().isProgress).isFalse()
+      assertThat(stateResult.last().progressStatus).isEqualTo("")
+      assertThat(messagesResult.last().consume()).isEqualTo(string.textTraktSyncComplete)
+
+      job.cancel()
+      job2.cancel()
+    }
+
+  @Test
+  internal fun `Should handle TraktSyncError event`() =
+    runTest {
+      val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+      val job2 = launch(UnconfinedTestDispatcher()) { SUT.messageFlow.toList(messagesResult) }
+
+      SUT.handleEvent(TraktSyncError)
+
+      assertThat(stateResult.last().isProgress).isFalse()
+      assertThat(stateResult.last().progressStatus).isEqualTo("")
+      assertThat(messagesResult.last().consume()).isEqualTo(string.textTraktSyncError)
+
+      job.cancel()
+      job2.cancel()
+    }
+
+  @Test
+  internal fun `Should handle TraktSyncAuthError event`() =
+    runTest {
+      val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+      val job2 = launch(UnconfinedTestDispatcher()) { SUT.messageFlow.toList(messagesResult) }
+
+      SUT.handleEvent(TraktSyncAuthError)
+
+      assertThat(stateResult.last().isProgress).isFalse()
+      assertThat(stateResult.last().progressStatus).isEqualTo("")
+      assertThat(messagesResult.last().consume()).isEqualTo(string.errorTraktAuthorization)
+
+      job.cancel()
+      job2.cancel()
+    }
 }

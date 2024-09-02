@@ -4,7 +4,7 @@ import androidx.annotation.StringRes
 
 enum class MovieStatus(
   val key: String,
-  @StringRes val displayName: Int
+  @StringRes val displayName: Int,
 ) {
   RELEASED("released", R.string.textMovieStatusReleased),
   IN_PRODUCTION("in production", R.string.textMovieStatusInProduction),
@@ -12,12 +12,12 @@ enum class MovieStatus(
   PLANNED("planned", R.string.textMovieStatusPlanned),
   RUMORED("rumored", R.string.textMovieStatusRumored),
   CANCELED("canceled", R.string.textMovieStatusCanceled),
-  UNKNOWN("unknown", R.string.textMovieStatusUnknown);
+  UNKNOWN("unknown", R.string.textMovieStatusUnknown),
+  ;
 
   fun isAnticipated() = this in arrayOf(IN_PRODUCTION, POST_PRODUCTION, PLANNED, RUMORED)
 
   companion object {
-    fun fromKey(key: String?) =
-      enumValues<MovieStatus>().firstOrNull { it.key == key } ?: UNKNOWN
+    fun fromKey(key: String?) = enumValues<MovieStatus>().firstOrNull { it.key == key } ?: UNKNOWN
   }
 }

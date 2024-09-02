@@ -46,7 +46,10 @@ class PersonLinksBottomSheet : BaseBottomSheetFragment(R.layout.view_person_link
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
   }

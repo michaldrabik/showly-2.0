@@ -74,14 +74,20 @@ class EpisodeDetailsViewModel @Inject constructor(
     spoilersState.value = settingsSpoilersRepository.getAll()
   }
 
-  fun loadLastWatchedAt(showTraktId: IdTrakt, episode: Episode) {
+  fun loadLastWatchedAt(
+    showTraktId: IdTrakt,
+    episode: Episode,
+  ) {
     viewModelScope.launch {
       val lastWatchedAt = watchedCase.getLastWatchedAt(showTraktId, episode)
       lastWatchedAtState.update { lastWatchedAt }
     }
   }
 
-  fun loadImage(showId: IdTmdb, episode: Episode) {
+  fun loadImage(
+    showId: IdTmdb,
+    episode: Episode,
+  ) {
     viewModelScope.launch {
       try {
         imageLoadingState.value = true
@@ -94,7 +100,11 @@ class EpisodeDetailsViewModel @Inject constructor(
     }
   }
 
-  fun loadSeason(showTraktId: IdTrakt, episode: Episode, seasonEpisodes: IntArray?) {
+  fun loadSeason(
+    showTraktId: IdTrakt,
+    episode: Episode,
+    seasonEpisodes: IntArray?,
+  ) {
     viewModelScope.launch {
       val episodes = seasonsCase.loadSeason(showTraktId, episode, seasonEpisodes)
       if (episodes.isNotEmpty()) {
@@ -104,7 +114,10 @@ class EpisodeDetailsViewModel @Inject constructor(
     }
   }
 
-  fun loadTranslation(showTraktId: IdTrakt, episode: Episode) {
+  fun loadTranslation(
+    showTraktId: IdTrakt,
+    episode: Episode,
+  ) {
     viewModelScope.launch {
       try {
         val language = translationsRepository.getLanguage()
@@ -121,7 +134,11 @@ class EpisodeDetailsViewModel @Inject constructor(
     }
   }
 
-  fun loadComments(idTrakt: IdTrakt, season: Int, episode: Int) {
+  fun loadComments(
+    idTrakt: IdTrakt,
+    season: Int,
+    episode: Int,
+  ) {
     if (!commentsState.value.isNullOrEmpty()) {
       return
     }
@@ -135,7 +152,7 @@ class EpisodeDetailsViewModel @Inject constructor(
           .map {
             it.copy(
               isMe = it.user.username == username,
-              isSignedIn = isSignedIn
+              isSignedIn = isSignedIn,
             )
           }
           .partition { it.isMe }
@@ -171,7 +188,7 @@ class EpisodeDetailsViewModel @Inject constructor(
           .map {
             it.copy(
               isSignedIn = isSignedIn,
-              isMe = it.user.username == username
+              isMe = it.user.username == username,
             )
           }
 
@@ -268,7 +285,7 @@ class EpisodeDetailsViewModel @Inject constructor(
     dateFormatState,
     commentsDateFormatState,
     spoilersState,
-    lastWatchedAtState
+    lastWatchedAtState,
   ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12 ->
     EpisodeDetailsUiState(
       image = s1,
@@ -282,11 +299,11 @@ class EpisodeDetailsViewModel @Inject constructor(
       dateFormat = s9,
       commentsDateFormat = s10,
       spoilers = s11,
-      lastWatchedAt = s12
+      lastWatchedAt = s12,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = EpisodeDetailsUiState()
+    initialValue = EpisodeDetailsUiState(),
   )
 }

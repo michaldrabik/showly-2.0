@@ -14,11 +14,13 @@ class EpisodesRatingCase @Inject constructor(
   private val ratingsRepository: RatingsRepository,
 ) {
 
-  suspend fun loadRating(episode: Episode) = withContext(dispatchers.IO) {
-    ratingsRepository.shows.loadRating(episode)
-  }
+  suspend fun loadRating(episode: Episode) =
+    withContext(dispatchers.IO) {
+      ratingsRepository.shows.loadRating(episode)
+    }
 
-  suspend fun loadRating(season: Season) = withContext(dispatchers.IO) {
-    ratingsRepository.shows.loadRating(season)
-  }
+  suspend fun loadRating(season: Season) =
+    withContext(dispatchers.IO) {
+      ratingsRepository.shows.loadRating(season)
+    }
 }

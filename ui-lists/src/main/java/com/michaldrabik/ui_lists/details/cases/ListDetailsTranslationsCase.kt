@@ -17,7 +17,10 @@ class ListDetailsTranslationsCase @Inject constructor(
 
   fun getLanguage() = translationsRepository.getLanguage()
 
-  suspend fun loadTranslation(item: ListDetailsItem, onlyLocal: Boolean): Translation? =
+  suspend fun loadTranslation(
+    item: ListDetailsItem,
+    onlyLocal: Boolean,
+  ): Translation? =
     withContext(dispatchers.IO) {
       val language = getLanguage()
       if (language == Config.DEFAULT_LANGUAGE) {
@@ -28,13 +31,13 @@ class ListDetailsTranslationsCase @Inject constructor(
           translationsRepository.loadTranslation(
             show = item.requireShow(),
             language = language,
-            onlyLocal = onlyLocal
+            onlyLocal = onlyLocal,
           )
         item.isMovie() ->
           translationsRepository.loadTranslation(
             movie = item.requireMovie(),
             language = language,
-            onlyLocal = onlyLocal
+            onlyLocal = onlyLocal,
           )
         else -> throw IllegalStateException()
       }

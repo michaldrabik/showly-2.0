@@ -58,8 +58,11 @@ class ProgressWidgetViewsFactory(
 
   private fun createItemRemoteView(item: ProgressListItem.Episode): RemoteViews {
     val title =
-      if (item.translations?.show?.title?.isBlank() == false) item.translations?.show?.title
-      else item.show.title
+      if (item.translations?.show?.title?.isBlank() == false) {
+        item.translations?.show?.title
+      } else {
+        item.show.title
+      }
 
     val subtitle = String.format(ENGLISH, "S.%02d E.%02d", item.episode?.season, item.episode?.number)
       .plus(item.episode?.numberAbs?.let { if (it > 0 && item.show.isAnime) " ($it)" else "" } ?: "")
@@ -103,7 +106,7 @@ class ProgressWidgetViewsFactory(
         putExtras(
           Bundle().apply {
             putExtra(EXTRA_SHOW_ID, item.show.traktId)
-          }
+          },
         )
       }
       setOnClickFillInIntent(R.id.progressWidgetItem, fillIntent)
@@ -114,7 +117,7 @@ class ProgressWidgetViewsFactory(
             putExtra(EXTRA_EPISODE_ID, item.episode?.ids?.trakt?.id)
             putExtra(EXTRA_SEASON_ID, item.season?.ids?.trakt?.id)
             putExtra(EXTRA_SHOW_ID, item.show.traktId)
-          }
+          },
         )
       }
       setOnClickFillInIntent(R.id.progressWidgetItemCheckButton, checkFillIntent)

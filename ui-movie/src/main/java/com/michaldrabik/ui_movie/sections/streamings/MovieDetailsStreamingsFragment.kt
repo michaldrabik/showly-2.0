@@ -17,7 +17,9 @@ import com.michaldrabik.ui_streamings.recycler.StreamingAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MovieDetailsStreamingsFragment : BaseFragment<MovieDetailsStreamingsViewModel>(R.layout.fragment_movie_details_streamings) {
+class MovieDetailsStreamingsFragment : BaseFragment<MovieDetailsStreamingsViewModel>(
+  R.layout.fragment_movie_details_streamings,
+) {
 
   private val parentViewModel by viewModels<MovieDetailsViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<MovieDetailsStreamingsViewModel>()
@@ -25,12 +27,15 @@ class MovieDetailsStreamingsFragment : BaseFragment<MovieDetailsStreamingsViewMo
 
   private var streamingAdapter: StreamingAdapter? = null
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
     launchAndRepeatStarted(
       { parentViewModel.parentMovieState.collect { it?.let { viewModel.loadStreamings(it) } } },
-      { viewModel.uiState.collect { render(it) } }
+      { viewModel.uiState.collect { render(it) } },
     )
   }
 

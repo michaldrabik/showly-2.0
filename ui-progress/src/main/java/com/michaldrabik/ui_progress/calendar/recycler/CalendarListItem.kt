@@ -32,36 +32,36 @@ sealed class CalendarListItem(
     val spoilers: SpoilersSettings? = null,
   ) : CalendarListItem(show, image, isLoading) {
 
-    override fun isSameAs(other: ListItem) =
-      episode.ids.trakt == (other as? Episode)?.episode?.ids?.trakt
+    override fun isSameAs(other: ListItem) = episode.ids.trakt == (other as? Episode)?.episode?.ids?.trakt
   }
 
   data class Header(
     @StringRes val textResId: Int,
     val calendarMode: CalendarMode,
   ) : CalendarListItem(
-    show = Show.EMPTY,
-    image = Image.createUnknown(ImageType.POSTER),
-    isLoading = false
-  ) {
+      show = Show.EMPTY,
+      image = Image.createUnknown(ImageType.POSTER),
+      isLoading = false,
+    ) {
 
     companion object {
-      fun create(@StringRes textResId: Int, mode: CalendarMode) =
-        Header(
-          textResId = textResId,
-          calendarMode = mode
-        )
+      fun create(
+        @StringRes textResId: Int,
+        mode: CalendarMode,
+      ) = Header(
+        textResId = textResId,
+        calendarMode = mode,
+      )
     }
 
-    override fun isSameAs(other: ListItem) =
-      textResId == (other as? Header)?.textResId
+    override fun isSameAs(other: ListItem) = textResId == (other as? Header)?.textResId
   }
 
   data class Filters(
     val mode: CalendarMode,
   ) : CalendarListItem(
-    show = Show.EMPTY,
-    image = Image.createUnknown(ImageType.POSTER),
-    isLoading = false
-  )
+      show = Show.EMPTY,
+      image = Image.createUnknown(ImageType.POSTER),
+      isLoading = false,
+    )
 }

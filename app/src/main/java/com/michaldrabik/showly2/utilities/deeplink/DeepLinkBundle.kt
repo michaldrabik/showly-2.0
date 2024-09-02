@@ -5,7 +5,7 @@ import com.michaldrabik.ui_model.Show
 
 data class DeepLinkBundle(
   val show: Show? = null,
-  val movie: Movie? = null
+  val movie: Movie? = null,
 ) {
 
   companion object {

@@ -47,14 +47,14 @@ class ShowDetailsStreamingsViewModel @Inject constructor(
 
   val uiState = combine(
     streamingsState,
-    loadingState
+    loadingState,
   ) { s1, _ ->
     ShowDetailsStreamingsUiState(
-      streamings = s1
+      streamings = s1,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = ShowDetailsStreamingsUiState()
+    initialValue = ShowDetailsStreamingsUiState(),
   )
 }

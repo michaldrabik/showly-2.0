@@ -29,16 +29,19 @@ class CalendarMoviesHeaderView : LinearLayout {
       top = context.dimenToPx(R.dimen.spaceBig),
       bottom = context.dimenToPx(R.dimen.spaceTiny),
       left = context.dimenToPx(R.dimen.itemMarginHorizontal),
-      right = context.dimenToPx(R.dimen.itemMarginHorizontal)
+      right = context.dimenToPx(R.dimen.itemMarginHorizontal),
     )
   }
 
-  fun bind(item: CalendarMovieListItem.Header, position: Int) {
+  fun bind(
+    item: CalendarMovieListItem.Header,
+    position: Int,
+  ) {
     with(binding) {
       calendarMoviesHeaderText.setText(item.textResId)
     }
     updatePadding(
-      top = context.dimenToPx(if (position == 1) R.dimen.spaceMedium else R.dimen.spaceBig)
+      top = context.dimenToPx(if (position == 1) R.dimen.spaceMedium else R.dimen.spaceBig),
     )
   }
 }

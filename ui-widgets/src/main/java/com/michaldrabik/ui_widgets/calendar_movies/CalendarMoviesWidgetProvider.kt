@@ -58,7 +58,11 @@ class CalendarMoviesWidgetProvider : BaseWidgetProvider() {
     appWidgetIds?.forEach { updateWidget(context, appWidgetManager, it) }
   }
 
-  private fun updateWidget(context: Context, appWidgetManager: AppWidgetManager, widgetId: Int) {
+  private fun updateWidget(
+    context: Context,
+    appWidgetManager: AppWidgetManager,
+    widgetId: Int,
+  ) {
     val spaceTiny = context.dimenToPx(R.dimen.spaceTiny)
 
     val intent = Intent(context, CalendarMoviesWidgetService::class.java).apply {
@@ -82,11 +86,17 @@ class CalendarMoviesWidgetProvider : BaseWidgetProvider() {
       when (settingsRepository.widgets.getWidgetCalendarMode(Mode.MOVIES, widgetId)) {
         CalendarMode.PRESENT_FUTURE -> {
           setImageViewResource(R.id.calendarWidgetMoviesEmptyViewIcon, R.drawable.ic_history)
-          setTextViewText(R.id.calendarWidgetMoviesEmptyViewSubtitle, context.getString(R.string.textMoviesCalendarEmpty))
+          setTextViewText(
+            R.id.calendarWidgetMoviesEmptyViewSubtitle,
+            context.getString(R.string.textMoviesCalendarEmpty),
+          )
         }
         CalendarMode.RECENTS -> {
           setImageViewResource(R.id.calendarWidgetMoviesEmptyViewIcon, R.drawable.ic_calendar)
-          setTextViewText(R.id.calendarWidgetMoviesEmptyViewSubtitle, context.getString(R.string.textMoviesCalendarRecentsEmpty))
+          setTextViewText(
+            R.id.calendarWidgetMoviesEmptyViewSubtitle,
+            context.getString(R.string.textMoviesCalendarRecentsEmpty),
+          )
         }
       }
     }
@@ -100,7 +110,7 @@ class CalendarMoviesWidgetProvider : BaseWidgetProvider() {
       context,
       0,
       Intent().apply { setClassName(context, Config.HOST_ACTIVITY_NAME) },
-      FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT
+      FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT,
     )
     remoteViews.setOnClickPendingIntent(R.id.calendarWidgetMoviesLabelImage, mainIntent)
     remoteViews.setOnClickPendingIntent(R.id.calendarWidgetMoviesLabelText, mainIntent)
@@ -113,7 +123,7 @@ class CalendarMoviesWidgetProvider : BaseWidgetProvider() {
         putExtra(EXTRA_MODE_CLICK, true)
         putExtra(EXTRA_APPWIDGET_ID, widgetId)
       },
-      FLAG_MUTABLE or FLAG_UPDATE_CURRENT
+      FLAG_MUTABLE or FLAG_UPDATE_CURRENT,
     )
     remoteViews.setOnClickPendingIntent(R.id.calendarWidgetMoviesEmptyViewIcon, modeClickIntent)
 
@@ -133,8 +143,10 @@ class CalendarMoviesWidgetProvider : BaseWidgetProvider() {
     }
   }
 
-  override fun onReceive(context: Context, intent: Intent) {
-
+  override fun onReceive(
+    context: Context,
+    intent: Intent,
+  ) {
     fun onListItemClick() {
       val movieId = intent.getLongExtra(EXTRA_MOVIE_ID, -1L)
       context.startActivity(
@@ -142,7 +154,7 @@ class CalendarMoviesWidgetProvider : BaseWidgetProvider() {
           setClassName(context, Config.HOST_ACTIVITY_NAME)
           putExtra(EXTRA_MOVIE_ID, movieId.toString())
           flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        }
+        },
       )
     }
 

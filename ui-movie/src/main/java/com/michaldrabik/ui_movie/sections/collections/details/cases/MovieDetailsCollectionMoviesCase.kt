@@ -32,31 +32,35 @@ class MovieDetailsCollectionMoviesCase @Inject constructor(
 
   suspend fun loadCollectionMovies(
     collectionId: IdTrakt,
-    language: String
-  ): List<MovieDetailsCollectionItem.MovieItem> = withContext(dispatchers.IO) {
-    val movies = collectionsRepository.loadCollectionItems(collectionId)
-    movies.mapIndexed { index, movie ->
-      async {
-        MovieDetailsCollectionItem.MovieItem(
-          rank = index + 1,
-          movie = movie,
-          image = imagesProvider.findCachedImage(movie, POSTER),
-          isMyMovie = myMoviesRepository.exists(movie.ids.trakt),
-          isWatchlist = watchlistMoviesRepository.exists(movie.ids.trakt),
-          translation = loadTranslation(movie, language),
-          spoilers = settingsSpoilersRepository.getAll(),
-          isLoading = false
-        )
-      }
-    }.awaitAll()
-  }
+    language: String,
+  ): List<MovieDetailsCollectionItem.MovieItem> =
+    withContext(dispatchers.IO) {
+      val movies = collectionsRepository.loadCollectionItems(collectionId)
+      movies.mapIndexed { index, movie ->
+        async {
+          MovieDetailsCollectionItem.MovieItem(
+            rank = index + 1,
+            movie = movie,
+            image = imagesProvider.findCachedImage(movie, POSTER),
+            isMyMovie = myMoviesRepository.exists(movie.ids.trakt),
+            isWatchlist = watchlistMoviesRepository.exists(movie.ids.trakt),
+            translation = loadTranslation(movie, language),
+            spoilers = settingsSpoilersRepository.getAll(),
+            isLoading = false,
+          )
+        }
+      }.awaitAll()
+    }
 
-  private suspend fun loadTranslation(movie: Movie, language: String): Translation? {
+  private suspend fun loadTranslation(
+    movie: Movie,
+    language: String,
+  ): Translation? {
     if (language == DEFAULT_LANGUAGE) return null
     return translationsRepository.loadTranslation(
       movie = movie,
       language = language,
-      onlyLocal = true
+      onlyLocal = true,
     )
   }
 }

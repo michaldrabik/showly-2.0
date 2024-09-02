@@ -16,10 +16,11 @@ class HiddenRatingsCase @Inject constructor(
   private val userTraktManager: UserTraktManager,
 ) {
 
-  suspend fun loadRatings(): Map<IdTrakt, TraktRating?> = withContext(dispatchers.IO) {
-    if (!userTraktManager.isAuthorized()) {
-      return@withContext emptyMap()
+  suspend fun loadRatings(): Map<IdTrakt, TraktRating?> =
+    withContext(dispatchers.IO) {
+      if (!userTraktManager.isAuthorized()) {
+        return@withContext emptyMap()
+      }
+      ratingsRepository.movies.loadMoviesRatings().associateBy { it.idTrakt }
     }
-    ratingsRepository.movies.loadMoviesRatings().associateBy { it.idTrakt }
-  }
 }

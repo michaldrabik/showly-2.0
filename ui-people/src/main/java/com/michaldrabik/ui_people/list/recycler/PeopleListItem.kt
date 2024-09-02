@@ -10,6 +10,6 @@ sealed class PeopleListItem {
 
   data class HeaderItem(
     val department: Person.Department,
-    val mediaTitle: String
+    val mediaTitle: String,
   ) : PeopleListItem()
 }

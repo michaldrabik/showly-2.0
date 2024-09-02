@@ -15,12 +15,13 @@ import javax.inject.Inject
 @ViewModelScoped
 class ShowDetailsPeopleCase @Inject constructor(
   private val dispatchers: CoroutineDispatchers,
-  private val peopleRepository: PeopleRepository
+  private val peopleRepository: PeopleRepository,
 ) {
 
-  suspend fun loadPeople(show: Show) = withContext(dispatchers.IO) {
-    peopleRepository.loadAllForShow(show.ids)
-  }
+  suspend fun loadPeople(show: Show) =
+    withContext(dispatchers.IO) {
+      peopleRepository.loadAllForShow(show.ids)
+    }
 
   suspend fun preloadDetails(people: List<Person>) =
     supervisorScope {

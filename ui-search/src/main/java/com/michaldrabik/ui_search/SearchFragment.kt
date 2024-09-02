@@ -82,14 +82,21 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
 
   private var headerTranslation = 0F
 
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?,
+  ): View? {
     savedInstanceState?.let {
       headerTranslation = it.getFloat(ARG_HEADER_TRANSLATION)
     }
     return super.onCreateView(inflater, container, savedInstanceState)
   }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     enableUi()
     setupView()
@@ -103,7 +110,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
-      { viewModel.messageFlow.collect { showSnack(it) } }
+      { viewModel.messageFlow.collect { showSnack(it) } },
     )
   }
 
@@ -181,7 +188,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
         itemClickListener = { openShowDetails(it) },
         itemLongClickListener = { openContextMenu(it) },
         missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) },
-        listChangeListener = { searchRecycler.scrollToPosition(0) }
+        listChangeListener = { searchRecycler.scrollToPosition(0) },
       )
       searchRecycler.apply {
         setHasFixedSize(true)
@@ -190,7 +197,11 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
         itemAnimator = null
         clearOnScrollListeners()
         addOnScrollListener(object : RecyclerView.OnScrollListener() {
-          override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+          override fun onScrolled(
+            recyclerView: RecyclerView,
+            dx: Int,
+            dy: Int,
+          ) {
             val value = searchFiltersView.translationY - dy
             searchFiltersView.translationY = value.coerceAtMost(0F)
           }
@@ -208,17 +219,21 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
   }
 
   private fun setupSuggestionsRecycler() {
-    suggestionsLayoutManager = SearchLayoutManagerProvider.provideLayoutManger(requireContext(), settings.tabletGridSpanSize)
+    suggestionsLayoutManager = SearchLayoutManagerProvider
+      .provideLayoutManger(requireContext(), settings.tabletGridSpanSize)
     suggestionsAdapter = SuggestionAdapter(
       itemClickListener = {
         val query =
-          if (it.translation?.title?.isNotBlank() == true) it.translation.title
-          else it.title
+          if (it.translation?.title?.isNotBlank() == true) {
+            it.translation.title
+          } else {
+            it.title
+          }
         viewModel.saveRecentSearch(query)
         openDetails(it)
       },
       missingImageListener = { ids, force -> viewModel.loadMissingSuggestionImage(ids, force) },
-      missingTranslationListener = { viewModel.loadMissingSuggestionTranslation(it) }
+      missingTranslationListener = { viewModel.loadMissingSuggestionTranslation(it) },
     )
     binding.suggestionsRecycler.apply {
       adapter = this@SearchFragment.suggestionsAdapter
@@ -248,7 +263,10 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
     }
   }
 
-  private fun openSortingDialog(order: SortOrder, type: SortType) {
+  private fun openSortingDialog(
+    order: SortOrder,
+    type: SortType,
+  ) {
     val options = listOf(SortOrder.RANK, SortOrder.NAME, SortOrder.NEWEST)
     val args = SortOrderBottomSheet.createBundle(options, order, type)
 

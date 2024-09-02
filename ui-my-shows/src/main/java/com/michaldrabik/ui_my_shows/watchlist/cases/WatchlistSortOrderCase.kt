@@ -11,7 +11,10 @@ class WatchlistSortOrderCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
 ) {
 
-  fun setSortOrder(sortOrder: SortOrder, sortType: SortType) {
+  fun setSortOrder(
+    sortOrder: SortOrder,
+    sortType: SortType,
+  ) {
     settingsRepository.sorting.watchlistShowsSortOrder = sortOrder
     settingsRepository.sorting.watchlistShowsSortType = sortType
   }

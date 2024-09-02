@@ -43,8 +43,11 @@ class HiddenLoadShowsCase @Inject constructor(
       val ratings = ratingsCase.loadRatings()
       val dateFormat = dateFormatProvider.loadFullDayFormat()
       val translations =
-        if (language == Config.DEFAULT_LANGUAGE) emptyMap()
-        else translationsRepository.loadAllShowsLocal(language)
+        if (language == Config.DEFAULT_LANGUAGE) {
+          emptyMap()
+        } else {
+          translationsRepository.loadAllShowsLocal(language)
+        }
       val spoilers = settingsRepository.spoilers.getAll()
 
       val sortOrder = settingsRepository.sorting.hiddenShowsSortOrder
@@ -63,7 +66,7 @@ class HiddenLoadShowsCase @Inject constructor(
             userRating = ratings[it.ids.trakt],
             dateFormat = dateFormat,
             sortOrder = sortOrder,
-            spoilers = spoilers
+            spoilers = spoilers,
           )
         }
         .awaitAll()
@@ -124,8 +127,8 @@ class HiddenLoadShowsCase @Inject constructor(
       spoilers = CollectionListItem.ShowItem.Spoilers(
         isSpoilerHidden = spoilers.isHiddenShowsHidden,
         isSpoilerRatingsHidden = spoilers.isHiddenShowsRatingsHidden,
-        isSpoilerTapToReveal = spoilers.isTapToReveal
-      )
+        isSpoilerTapToReveal = spoilers.isTapToReveal,
+      ),
     )
   }
 }

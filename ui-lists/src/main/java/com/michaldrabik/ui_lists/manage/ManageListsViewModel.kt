@@ -24,7 +24,10 @@ class ManageListsViewModel @Inject constructor(
   private val loadingState = MutableStateFlow(false)
   private val itemsState = MutableStateFlow<List<ManageListsItem>?>(null)
 
-  fun loadLists(itemId: IdTrakt, itemType: String) {
+  fun loadLists(
+    itemId: IdTrakt,
+    itemType: String,
+  ) {
     viewModelScope.launch {
       val loadingJob = launch {
         delay(500)
@@ -64,14 +67,14 @@ class ManageListsViewModel @Inject constructor(
 
   val uiState = combine(
     loadingState,
-    itemsState
+    itemsState,
   ) { _, itemsState ->
     ManageListsUiState(
-      items = itemsState
+      items = itemsState,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = ManageListsUiState()
+    initialValue = ManageListsUiState(),
   )
 }

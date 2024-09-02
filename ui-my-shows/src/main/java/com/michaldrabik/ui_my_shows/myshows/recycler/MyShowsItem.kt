@@ -54,7 +54,7 @@ data class MyShowsItem(
       itemCount: Int,
       sortOrder: Pair<SortOrder, SortType>?,
       networks: List<Network>?,
-      genres: List<Genre>?
+      genres: List<Genre>?,
     ) = MyShowsItem(
       type = Type.ALL_SHOWS_HEADER,
       header = Header(section, itemCount, sortOrder, networks, genres),
@@ -65,24 +65,23 @@ data class MyShowsItem(
       spoilers = Spoilers(
         isSpoilerHidden = false,
         isSpoilerRatingsHidden = false,
-        isSpoilerTapToReveal = false
-      )
+        isSpoilerTapToReveal = false,
+      ),
     )
 
-    fun createRecentsSection(
-      shows: List<MyShowsItem>,
-    ) = MyShowsItem(
-      type = Type.RECENT_SHOWS,
-      header = null,
-      recentsSection = RecentsSection(shows),
-      show = Show.EMPTY,
-      image = Image.createUnavailable(POSTER),
-      isLoading = false,
-      spoilers = Spoilers(
-        isSpoilerHidden = false,
-        isSpoilerRatingsHidden = false,
-        isSpoilerTapToReveal = false
+    fun createRecentsSection(shows: List<MyShowsItem>) =
+      MyShowsItem(
+        type = Type.RECENT_SHOWS,
+        header = null,
+        recentsSection = RecentsSection(shows),
+        show = Show.EMPTY,
+        image = Image.createUnavailable(POSTER),
+        isLoading = false,
+        spoilers = Spoilers(
+          isSpoilerHidden = false,
+          isSpoilerRatingsHidden = false,
+          isSpoilerTapToReveal = false,
+        ),
       )
-    )
   }
 }

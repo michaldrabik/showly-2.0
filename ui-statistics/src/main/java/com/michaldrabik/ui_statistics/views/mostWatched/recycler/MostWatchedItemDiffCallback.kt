@@ -5,13 +5,17 @@ import com.michaldrabik.ui_statistics.views.mostWatched.StatisticsMostWatchedIte
 
 class MostWatchedItemDiffCallback : DiffUtil.ItemCallback<StatisticsMostWatchedItem>() {
 
-  override fun areItemsTheSame(oldItem: StatisticsMostWatchedItem, newItem: StatisticsMostWatchedItem) =
-    oldItem.show.ids.trakt == newItem.show.ids.trakt
+  override fun areItemsTheSame(
+    oldItem: StatisticsMostWatchedItem,
+    newItem: StatisticsMostWatchedItem,
+  ) = oldItem.show.ids.trakt == newItem.show.ids.trakt
 
-  override fun areContentsTheSame(oldItem: StatisticsMostWatchedItem, newItem: StatisticsMostWatchedItem) =
-    oldItem.image == newItem.image &&
-      oldItem.isLoading == newItem.isLoading &&
-      oldItem.seasonsCount == newItem.seasonsCount &&
-      oldItem.episodes.size == newItem.episodes.size &&
-      oldItem.translation == newItem.translation
+  override fun areContentsTheSame(
+    oldItem: StatisticsMostWatchedItem,
+    newItem: StatisticsMostWatchedItem,
+  ) = oldItem.image == newItem.image &&
+    oldItem.isLoading == newItem.isLoading &&
+    oldItem.seasonsCount == newItem.seasonsCount &&
+    oldItem.episodes.size == newItem.episodes.size &&
+    oldItem.translation == newItem.translation
 }

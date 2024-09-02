@@ -62,7 +62,10 @@ class CollectionShowListItemDecoration : ItemDecoration {
     outRect.right = (spacing * 2) * ((totalSpan - 1) - column) / totalSpan
   }
 
-  private fun getItemOffsetsPhone(outRect: Rect, view: View) {
+  private fun getItemOffsetsPhone(
+    outRect: Rect,
+    view: View,
+  ) {
     if (view is CollectionShowView) {
       outRect.top = spacing
       outRect.bottom = spacing
@@ -73,7 +76,7 @@ class CollectionShowListItemDecoration : ItemDecoration {
 
   private fun getPosition(
     parent: RecyclerView,
-    view: View
+    view: View,
   ): Int {
     // Position omitting without filters view
     return parent.getChildAdapterPosition(view) - 1

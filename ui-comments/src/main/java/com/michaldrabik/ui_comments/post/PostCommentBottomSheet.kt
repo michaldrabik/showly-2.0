@@ -44,7 +44,10 @@ class PostCommentBottomSheet : BaseBottomSheetFragment(R.layout.view_post_commen
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
 
@@ -100,8 +103,8 @@ class PostCommentBottomSheet : BaseBottomSheetFragment(R.layout.view_post_commen
             REQUEST_COMMENT,
             bundleOf(
               ARG_COMMENT_ACTION to commentBundle.first,
-              ARG_COMMENT to commentBundle.second
-            )
+              ARG_COMMENT to commentBundle.second,
+            ),
           )
           closeSheet()
         }

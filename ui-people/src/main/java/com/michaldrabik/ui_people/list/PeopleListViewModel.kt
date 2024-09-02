@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PeopleListViewModel @Inject constructor(
-  private val itemsCase: PeopleListItemsCase
+  private val itemsCase: PeopleListItemsCase,
 ) : ViewModel() {
 
   private val peopleListState = MutableStateFlow<List<PeopleListItem>?>(null)
@@ -27,7 +27,7 @@ class PeopleListViewModel @Inject constructor(
     idTrakt: IdTrakt,
     title: String,
     mode: Mode,
-    department: Person.Department
+    department: Person.Department,
   ) {
     viewModelScope.launch {
       val header = PeopleListItem.HeaderItem(department, title)
@@ -37,14 +37,14 @@ class PeopleListViewModel @Inject constructor(
   }
 
   val uiState = combine(
-    peopleListState
+    peopleListState,
   ) { s1 ->
     PeopleListUiState(
-      peopleItems = s1[0]
+      peopleItems = s1[0],
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = PeopleListUiState()
+    initialValue = PeopleListUiState(),
   )
 }

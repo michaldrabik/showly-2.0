@@ -23,7 +23,7 @@ class CalendarMoviesWidgetService : RemoteViewsService() {
       applicationContext,
       calendarFutureCase,
       calendarRecentsCase,
-      settingsRepository
+      settingsRepository,
     )
   }
 }

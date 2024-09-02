@@ -13,7 +13,8 @@ class EpisodesLoadShowCase @Inject constructor(
   private val showsRepository: ShowsRepository,
 ) {
 
-  suspend fun loadDetails(idTrakt: IdTrakt) = withContext(dispatchers.IO) {
-    showsRepository.detailsShow.load(idTrakt)
-  }
+  suspend fun loadDetails(idTrakt: IdTrakt) =
+    withContext(dispatchers.IO) {
+      showsRepository.detailsShow.load(idTrakt)
+    }
 }

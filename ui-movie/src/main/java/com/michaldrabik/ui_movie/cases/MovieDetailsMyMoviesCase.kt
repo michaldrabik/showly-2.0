@@ -19,22 +19,27 @@ class MovieDetailsMyMoviesCase @Inject constructor(
   private val moviesRepository: MoviesRepository,
   private val pinnedItemsRepository: PinnedItemsRepository,
   private val quickSyncManager: QuickSyncManager,
-  private val announcementManager: AnnouncementManager
+  private val announcementManager: AnnouncementManager,
 ) {
 
-  suspend fun getAllIds() = withContext(dispatchers.IO) {
-    val (myMovies, watchlistMovies) = awaitAll(
-      async { moviesRepository.myMovies.loadAllIds() },
-      async { moviesRepository.watchlistMovies.loadAllIds() }
-    )
-    Pair(myMovies, watchlistMovies)
-  }
+  suspend fun getAllIds() =
+    withContext(dispatchers.IO) {
+      val (myMovies, watchlistMovies) = awaitAll(
+        async { moviesRepository.myMovies.loadAllIds() },
+        async { moviesRepository.watchlistMovies.loadAllIds() },
+      )
+      Pair(myMovies, watchlistMovies)
+    }
 
-  suspend fun isMyMovie(movie: Movie) = withContext(dispatchers.IO) {
-    moviesRepository.myMovies.load(movie.ids.trakt) != null
-  }
+  suspend fun isMyMovie(movie: Movie) =
+    withContext(dispatchers.IO) {
+      moviesRepository.myMovies.load(movie.ids.trakt) != null
+    }
 
-  suspend fun addToMyMovies(movie: Movie, customDate: ZonedDateTime?) {
+  suspend fun addToMyMovies(
+    movie: Movie,
+    customDate: ZonedDateTime?,
+  ) {
     withContext(dispatchers.IO) {
       moviesRepository.myMovies.insert(movie.ids.trakt, customDate)
       quickSyncManager.scheduleMovies(listOf(movie.traktId), customDate)

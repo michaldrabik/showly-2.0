@@ -44,7 +44,7 @@ class MyShowAllView : ShowView<MyShowsItem> {
       collectionShowRoot.onLongClick { itemLongClickListener?.invoke(item) }
       collectionShowRoot.setOutboundRipple(
         size = (context.dimenToPx(R.dimen.collectionItemRippleSpace)).toFloat(),
-        corner = context.dimenToPx(R.dimen.mediaTileCorner).toFloat()
+        corner = context.dimenToPx(R.dimen.mediaTileCorner).toFloat(),
       )
     }
 
@@ -63,15 +63,21 @@ class MyShowAllView : ShowView<MyShowsItem> {
     with(binding) {
       collectionShowProgress.visibleIf(item.isLoading)
       collectionShowTitle.text =
-        if (item.translation?.title.isNullOrBlank()) item.show.title
-        else item.translation?.title
+        if (item.translation?.title.isNullOrBlank()) {
+          item.show.title
+        } else {
+          item.translation?.title
+        }
 
       bindDescription(item)
       bindRating(item)
 
       collectionShowNetwork.text =
-        if (item.show.year > 0) context.getString(R.string.textNetwork, item.show.network, item.show.year.toString())
-        else String.format("%s", item.show.network)
+        if (item.show.year > 0) {
+          context.getString(R.string.textNetwork, item.show.network, item.show.year.toString())
+        } else {
+          String.format("%s", item.show.network)
+        }
 
       collectionShowNetwork.visibleIf(item.show.network.isNotBlank())
 
@@ -87,8 +93,11 @@ class MyShowAllView : ShowView<MyShowsItem> {
   private fun bindDescription(item: MyShowsItem) {
     with(binding) {
       var description =
-        if (item.translation?.overview.isNullOrBlank()) item.show.overview
-        else item.translation?.overview
+        if (item.translation?.overview.isNullOrBlank()) {
+          item.show.overview
+        } else {
+          item.translation?.overview
+        }
 
       if (item.spoilers.isSpoilerHidden) {
         collectionShowDescription.tag = description.toString()

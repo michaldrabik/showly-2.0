@@ -21,11 +21,12 @@ class ProgressMoviesMainAdapter(
 
   override fun getCount() = PAGES_COUNT
 
-  override fun getItem(position: Int): Fragment = when (position) {
-    0 -> ProgressMoviesFragment()
-    1 -> CalendarMoviesFragment()
-    else -> throw IllegalStateException("Unknown position")
-  }
+  override fun getItem(position: Int): Fragment =
+    when (position) {
+      0 -> ProgressMoviesFragment()
+      1 -> CalendarMoviesFragment()
+      else -> throw IllegalStateException("Unknown position")
+    }
 
   override fun getPageTitle(position: Int) =
     when (position) {

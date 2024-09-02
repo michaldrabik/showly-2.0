@@ -40,7 +40,7 @@ class CommentsViewModel @Inject constructor(
   private val repliesCase: LoadRepliesCase,
   private val deleteCase: DeleteCommentCase,
   private val userManager: UserTraktManager,
-  private val dateFormatProvider: DateFormatProvider
+  private val dateFormatProvider: DateFormatProvider,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val commentsState = MutableStateFlow<List<Comment>?>(null)
@@ -62,7 +62,10 @@ class CommentsViewModel @Inject constructor(
     }
   }
 
-  private fun loadComments(id: IdTrakt, mode: Mode) {
+  private fun loadComments(
+    id: IdTrakt,
+    mode: Mode,
+  ) {
     viewModelScope.launch {
       try {
         val comments = commentsCase.loadComments(id, mode)
@@ -162,17 +165,17 @@ class CommentsViewModel @Inject constructor(
     commentsState,
     loadingState,
     signedInState,
-    dateFormatState
+    dateFormatState,
   ) { s1, s2, s3, s4 ->
     CommentsUiState(
       comments = s1,
       isLoading = s2,
       isSignedIn = s3,
-      dateFormat = s4
+      dateFormat = s4,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = CommentsUiState()
+    initialValue = CommentsUiState(),
   )
 }

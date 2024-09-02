@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class PersonGalleryImagesCase @Inject constructor(
-  private val imagesProvider: PeopleImagesProvider
+  private val imagesProvider: PeopleImagesProvider,
 ) {
 
   suspend fun loadImages(id: IdTmdb): List<Image> {

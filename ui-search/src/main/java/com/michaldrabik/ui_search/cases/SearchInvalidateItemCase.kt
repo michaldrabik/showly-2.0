@@ -17,23 +17,24 @@ class SearchInvalidateItemCase @Inject constructor(
   private val moviesRepository: MoviesRepository,
 ) {
 
-  suspend fun checkFollowedState(item: SearchListItem) = withContext(dispatchers.IO) {
-    when {
-      item.isShow -> {
-        val (isMy, isWatchlist) = awaitAll(
-          async { showsRepository.myShows.exists(item.show.ids.trakt) },
-          async { showsRepository.watchlistShows.exists(item.show.ids.trakt) },
-        )
-        Pair(isMy, isWatchlist)
+  suspend fun checkFollowedState(item: SearchListItem) =
+    withContext(dispatchers.IO) {
+      when {
+        item.isShow -> {
+          val (isMy, isWatchlist) = awaitAll(
+            async { showsRepository.myShows.exists(item.show.ids.trakt) },
+            async { showsRepository.watchlistShows.exists(item.show.ids.trakt) },
+          )
+          Pair(isMy, isWatchlist)
+        }
+        item.isMovie -> {
+          val (isMy, isWatchlist) = awaitAll(
+            async { moviesRepository.myMovies.exists(item.movie.ids.trakt) },
+            async { moviesRepository.watchlistMovies.exists(item.movie.ids.trakt) },
+          )
+          Pair(isMy, isWatchlist)
+        }
+        else -> throw IllegalStateException()
       }
-      item.isMovie -> {
-        val (isMy, isWatchlist) = awaitAll(
-          async { moviesRepository.myMovies.exists(item.movie.ids.trakt) },
-          async { moviesRepository.watchlistMovies.exists(item.movie.ids.trakt) },
-        )
-        Pair(isMy, isWatchlist)
-      }
-      else -> throw IllegalStateException()
     }
-  }
 }

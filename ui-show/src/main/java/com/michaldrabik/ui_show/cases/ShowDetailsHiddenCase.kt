@@ -26,11 +26,15 @@ class ShowDetailsHiddenCase @Inject constructor(
   private val announcementManager: AnnouncementManager,
 ) {
 
-  suspend fun isHidden(show: Show) = withContext(dispatchers.IO) {
-    showsRepository.hiddenShows.exists(show.ids.trakt)
-  }
+  suspend fun isHidden(show: Show) =
+    withContext(dispatchers.IO) {
+      showsRepository.hiddenShows.exists(show.ids.trakt)
+    }
 
-  suspend fun addToHidden(show: Show, removeLocalData: Boolean) = withContext(dispatchers.IO) {
+  suspend fun addToHidden(
+    show: Show,
+    removeLocalData: Boolean,
+  ) = withContext(dispatchers.IO) {
     transactions.withTransaction {
       showsRepository.hiddenShows.insert(show.ids.trakt)
 
@@ -52,10 +56,11 @@ class ShowDetailsHiddenCase @Inject constructor(
     quickSyncManager.scheduleHidden(show.traktId, Mode.SHOWS, TraktSyncQueue.Operation.ADD)
   }
 
-  suspend fun removeFromHidden(show: Show) = withContext(dispatchers.IO) {
-    showsRepository.hiddenShows.delete(show.ids.trakt)
-    pinnedItemsRepository.removePinnedItem(show)
-    announcementManager.refreshShowsAnnouncements()
-    quickSyncManager.clearHiddenShows(listOf(show.traktId))
-  }
+  suspend fun removeFromHidden(show: Show) =
+    withContext(dispatchers.IO) {
+      showsRepository.hiddenShows.delete(show.ids.trakt)
+      pinnedItemsRepository.removePinnedItem(show)
+      announcementManager.refreshShowsAnnouncements()
+      quickSyncManager.clearHiddenShows(listOf(show.traktId))
+    }
 }

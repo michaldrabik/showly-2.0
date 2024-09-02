@@ -26,7 +26,7 @@ class ShowDetailsQuickProgressCase @Inject constructor(
     selectedItem: QuickSetupListItem,
     seasonsItems: List<SeasonListItem>,
     show: Show,
-    customDate: ZonedDateTime?
+    customDate: ZonedDateTime?,
   ) = coroutineScope {
     val isMyShows = async { showsRepository.myShows.exists(show.ids.trakt) }
     val isWatchlist = async { showsRepository.watchlistShows.exists(show.ids.trakt) }
@@ -62,7 +62,7 @@ class ShowDetailsQuickProgressCase @Inject constructor(
         episodesIds = episodesIds,
         showId = show.traktId,
         customDate = customDate,
-        clearProgress = true
+        clearProgress = true,
       )
     }
   }

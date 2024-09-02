@@ -54,8 +54,11 @@ internal class HistoryItemView : ShowView<HistoryListItem.Episode> {
 
     with(binding) {
       itemTitle.text =
-        if (item.translations?.show?.title.isNullOrBlank()) item.show.title
-        else item.translations?.show?.title
+        if (item.translations?.show?.title.isNullOrBlank()) {
+          item.show.title
+        } else {
+          item.translations?.show?.title
+        }
 
       itemDate.text =
         item.episode.lastWatchedAt?.toLocalZone()?.let { item.dateFormat?.format(it)?.capitalizeWords() }
@@ -63,7 +66,11 @@ internal class HistoryItemView : ShowView<HistoryListItem.Episode> {
       val episodeTitle = when {
         item.episode.title.isBlank() -> context.getString(R.string.textTba)
         item.translations?.episode?.title?.isBlank() == false -> item.translations.episode.title
-        item.episode.title == "Episode ${item.episode.number}" -> String.format(ENGLISH, context.getString(R.string.textEpisode), item.episode.number)
+        item.episode.title == "Episode ${item.episode.number}" -> String.format(
+          ENGLISH,
+          context.getString(R.string.textEpisode),
+          item.episode.number,
+        )
         else -> item.episode.title
       }
 
@@ -76,9 +83,9 @@ internal class HistoryItemView : ShowView<HistoryListItem.Episode> {
           ENGLISH,
           context.getString(R.string.textSeasonEpisode),
           item.episode.season,
-          item.episode.number
+          item.episode.number,
         ).plus(
-          item.episode.numberAbs?.let { if (it > 0 && item.show.isAnime) " ($it)" else "" } ?: ""
+          item.episode.numberAbs?.let { if (it > 0 && item.show.isAnime) " ($it)" else "" } ?: "",
         )
         itemDescription.text = episodeTitle
       }

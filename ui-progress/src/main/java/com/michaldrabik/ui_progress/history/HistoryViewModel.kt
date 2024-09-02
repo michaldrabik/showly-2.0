@@ -32,7 +32,7 @@ internal class HistoryViewModel @Inject constructor(
   private val getHistoryItemsCase: GetHistoryItemsCase,
   private val settingsRepository: SettingsRepository,
   private val translationsRepository: TranslationsRepository,
-  private val imagesProvider: ShowImagesProvider
+  private val imagesProvider: ShowImagesProvider,
 ) : ViewModel() {
 
   private val initialState = HistoryUiState()
@@ -83,7 +83,10 @@ internal class HistoryViewModel @Inject constructor(
     loadItems(resetScroll = true)
   }
 
-  fun findMissingImage(item: HistoryListItem, force: Boolean) {
+  fun findMissingImage(
+    item: HistoryListItem,
+    force: Boolean,
+  ) {
     check(item is HistoryListItem.Episode)
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
@@ -132,16 +135,16 @@ internal class HistoryViewModel @Inject constructor(
   val uiState = combine(
     itemsState,
     loadingState,
-    resetScrollEvent
+    resetScrollEvent,
   ) { s1, s2, s3 ->
     HistoryUiState(
       items = s1,
       isLoading = s2,
-      resetScrollEvent = s3
+      resetScrollEvent = s3,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = HistoryUiState()
+    initialValue = HistoryUiState(),
   )
 }

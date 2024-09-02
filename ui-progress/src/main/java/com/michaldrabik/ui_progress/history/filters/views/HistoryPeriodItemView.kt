@@ -38,7 +38,7 @@ class HistoryPeriodItemView : ConstraintLayout {
 
   fun bind(
     item: HistoryPeriod,
-    isChecked: Boolean
+    isChecked: Boolean,
   ) {
     this.item = item
     with(binding) {

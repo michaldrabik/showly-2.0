@@ -12,10 +12,11 @@ import javax.inject.Inject
 @ViewModelScoped
 class ShowDetailsListsCase @Inject constructor(
   private val dispatchers: CoroutineDispatchers,
-  private val listsRepository: ListsRepository
+  private val listsRepository: ListsRepository,
 ) {
 
-  suspend fun getListsCount(show: Show) = withContext(dispatchers.IO) {
-    listsRepository.loadListIdsForItem(IdTrakt(show.traktId), Mode.SHOWS.type).size
-  }
+  suspend fun getListsCount(show: Show) =
+    withContext(dispatchers.IO) {
+      listsRepository.loadListIdsForItem(IdTrakt(show.traktId), Mode.SHOWS.type).size
+    }
 }

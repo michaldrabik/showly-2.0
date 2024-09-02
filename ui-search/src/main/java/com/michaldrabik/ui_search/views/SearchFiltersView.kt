@@ -55,7 +55,10 @@ class SearchFiltersView : FrameLayout, CoordinatorLayout.AttachedBehavior {
     }
   }
 
-  fun setSorting(sortOrder: SortOrder, sortType: SortType) {
+  fun setSorting(
+    sortOrder: SortOrder,
+    sortType: SortType,
+  ) {
     with(binding) {
       viewSearchFiltersSortChip.text = context.getString(sortOrder.displayString)
       viewSearchFiltersSortChip.onClick {

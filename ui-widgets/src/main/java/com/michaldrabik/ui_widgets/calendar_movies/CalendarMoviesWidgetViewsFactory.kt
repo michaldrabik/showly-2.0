@@ -60,37 +60,45 @@ class CalendarMoviesWidgetViewsFactory(
       is CalendarMovieListItem.Filters -> throw IllegalStateException("Filters should not be in the widget")
     }
 
-  private fun createHeaderRemoteView(item: CalendarMovieListItem.Header, showIcon: Boolean) =
-    RemoteViews(context.packageName, getHeaderLayout()).apply {
-      setTextViewText(R.id.progressWidgetHeaderTitle, context.getString(item.textResId))
-      setViewVisibility(R.id.progressWidgetHeaderTitleIcon, if (mode == CalendarMode.RECENTS) VISIBLE else GONE)
+  private fun createHeaderRemoteView(
+    item: CalendarMovieListItem.Header,
+    showIcon: Boolean,
+  ) = RemoteViews(context.packageName, getHeaderLayout()).apply {
+    setTextViewText(R.id.progressWidgetHeaderTitle, context.getString(item.textResId))
+    setViewVisibility(R.id.progressWidgetHeaderTitleIcon, if (mode == CalendarMode.RECENTS) VISIBLE else GONE)
 
-      if (showIcon) {
-        when (mode) {
-          CalendarMode.PRESENT_FUTURE -> setImageViewResource(R.id.progressWidgetHeaderIcon, R.drawable.ic_history)
-          CalendarMode.RECENTS -> setImageViewResource(R.id.progressWidgetHeaderIcon, R.drawable.ic_calendar)
-        }
-        setViewVisibility(R.id.progressWidgetHeaderIcon, VISIBLE)
-        val fillIntent = Intent().apply {
-          putExtras(bundleOf(BaseWidgetProvider.EXTRA_MODE_CLICK to true))
-          putExtras(bundleOf(AppWidgetManager.EXTRA_APPWIDGET_ID to widgetId))
-        }
-        setOnClickFillInIntent(R.id.progressWidgetHeaderIcon, fillIntent)
-      } else {
-        setViewVisibility(R.id.progressWidgetHeaderIcon, GONE)
+    if (showIcon) {
+      when (mode) {
+        CalendarMode.PRESENT_FUTURE -> setImageViewResource(R.id.progressWidgetHeaderIcon, R.drawable.ic_history)
+        CalendarMode.RECENTS -> setImageViewResource(R.id.progressWidgetHeaderIcon, R.drawable.ic_calendar)
       }
+      setViewVisibility(R.id.progressWidgetHeaderIcon, VISIBLE)
+      val fillIntent = Intent().apply {
+        putExtras(bundleOf(BaseWidgetProvider.EXTRA_MODE_CLICK to true))
+        putExtras(bundleOf(AppWidgetManager.EXTRA_APPWIDGET_ID to widgetId))
+      }
+      setOnClickFillInIntent(R.id.progressWidgetHeaderIcon, fillIntent)
+    } else {
+      setViewVisibility(R.id.progressWidgetHeaderIcon, GONE)
     }
+  }
 
   private fun createItemRemoteView(item: CalendarMovieListItem.MovieItem): RemoteViews {
     val translatedTitle = item.translation?.title
     val title =
-      if (translatedTitle?.isBlank() == false) translatedTitle
-      else item.movie.title
+      if (translatedTitle?.isBlank() == false) {
+        translatedTitle
+      } else {
+        item.movie.title
+      }
 
     val translatedDescription = item.translation?.overview
     val overview =
-      if (translatedDescription?.isBlank() == false) translatedDescription
-      else item.movie.overview
+      if (translatedDescription?.isBlank() == false) {
+        translatedDescription
+      } else {
+        item.movie.overview
+      }
 
     val date = if (item.movie.released != null) {
       item.dateFormat?.format(item.movie.released)?.capitalizeWords()
@@ -155,8 +163,7 @@ class CalendarMoviesWidgetViewsFactory(
 
   override fun getItemId(position: Int) = adapterItems[position].movie.traktId
 
-  override fun getLoadingView() =
-    RemoteViews(context.packageName, R.layout.widget_loading_item)
+  override fun getLoadingView() = RemoteViews(context.packageName, R.layout.widget_loading_item)
 
   override fun getCount() = adapterItems.size
 

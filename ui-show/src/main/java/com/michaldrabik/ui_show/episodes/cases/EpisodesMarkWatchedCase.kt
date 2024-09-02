@@ -18,32 +18,33 @@ class EpisodesMarkWatchedCase @Inject constructor(
 
   suspend fun markWatchedEpisodes(
     show: Show,
-    season: SeasonListItem
-  ): SeasonListItem = withContext(dispatchers.IO) {
-    val (watchedSeasonsIds, watchedEpisodesIds) = awaitAll(
-      async { episodesManager.getWatchedSeasonsIds(show) },
-      async { episodesManager.getWatchedEpisodesIds(show) }
-    )
+    season: SeasonListItem,
+  ): SeasonListItem =
+    withContext(dispatchers.IO) {
+      val (watchedSeasonsIds, watchedEpisodesIds) = awaitAll(
+        async { episodesManager.getWatchedSeasonsIds(show) },
+        async { episodesManager.getWatchedEpisodesIds(show) },
+      )
 
-    val isSeasonWatched = watchedSeasonsIds.any { id -> id == season.id }
-    val episodes = season.episodes.map { episodeItem ->
-      val isEpisodeWatched = watchedEpisodesIds.any { id -> id == episodeItem.id }
-      episodeItem.copy(season = season.season, isWatched = isEpisodeWatched)
+      val isSeasonWatched = watchedSeasonsIds.any { id -> id == season.id }
+      val episodes = season.episodes.map { episodeItem ->
+        val isEpisodeWatched = watchedEpisodesIds.any { id -> id == episodeItem.id }
+        episodeItem.copy(season = season.season, isWatched = isEpisodeWatched)
+      }
+
+      season.copy(episodes = episodes, isWatched = isSeasonWatched)
     }
-
-    season.copy(episodes = episodes, isWatched = isSeasonWatched)
-  }
 
   suspend fun markWatchedEpisodes(
     show: Show,
-    seasonsList: List<SeasonListItem>?
+    seasonsList: List<SeasonListItem>?,
   ): List<SeasonListItem> =
     withContext(dispatchers.IO) {
       val items = mutableListOf<SeasonListItem>()
 
       val (watchedSeasonsIds, watchedEpisodesIds) = awaitAll(
         async { episodesManager.getWatchedSeasonsIds(show) },
-        async { episodesManager.getWatchedEpisodesIds(show) }
+        async { episodesManager.getWatchedEpisodesIds(show) },
       )
 
       seasonsList?.forEach { item ->

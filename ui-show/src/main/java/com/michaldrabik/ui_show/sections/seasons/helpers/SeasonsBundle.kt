@@ -4,5 +4,5 @@ import com.michaldrabik.ui_show.sections.seasons.recycler.SeasonListItem
 
 data class SeasonsBundle(
   val seasons: List<SeasonListItem>?,
-  val isLocal: Boolean
+  val isLocal: Boolean,
 )

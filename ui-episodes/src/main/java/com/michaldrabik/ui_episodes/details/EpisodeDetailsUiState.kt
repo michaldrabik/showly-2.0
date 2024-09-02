@@ -21,5 +21,5 @@ data class EpisodeDetailsUiState(
   val translation: Translation? = null,
   val dateFormat: DateTimeFormatter? = null,
   val commentsDateFormat: DateTimeFormatter? = null,
-  val spoilers: SpoilersSettings? = null
+  val spoilers: SpoilersSettings? = null,
 )

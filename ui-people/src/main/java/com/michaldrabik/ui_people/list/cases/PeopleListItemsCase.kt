@@ -20,15 +20,16 @@ class PeopleListItemsCase @Inject constructor(
   suspend fun loadPeople(
     idTrakt: IdTrakt,
     mode: Mode,
-    department: Person.Department
-  ): List<PeopleListItem.PersonItem> = withContext(dispatchers.IO) {
-    val ids = Ids.EMPTY.copy(trakt = idTrakt)
-    val people: Map<Person.Department, List<Person>> = when (mode) {
-      Mode.SHOWS -> peopleRepository.loadAllForShow(ids)
-      Mode.MOVIES -> peopleRepository.loadAllForMovie(ids)
+    department: Person.Department,
+  ): List<PeopleListItem.PersonItem> =
+    withContext(dispatchers.IO) {
+      val ids = Ids.EMPTY.copy(trakt = idTrakt)
+      val people: Map<Person.Department, List<Person>> = when (mode) {
+        Mode.SHOWS -> peopleRepository.loadAllForShow(ids)
+        Mode.MOVIES -> peopleRepository.loadAllForMovie(ids)
+      }
+      people.getOrDefault(department, emptyList()).map {
+        PeopleListItem.PersonItem(it)
+      }
     }
-    people.getOrDefault(department, emptyList()).map {
-      PeopleListItem.PersonItem(it)
-    }
-  }
 }

@@ -36,27 +36,31 @@ class MovieDetailsCollectionAdapter(
       else -> throw IllegalStateException()
     }
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    when (viewType) {
-      VIEW_TYPE_ITEM -> BaseViewHolder(
-        MovieDetailsCollectionItemView(parent.context).apply {
-          onItemClickListener = this@MovieDetailsCollectionAdapter.onItemClickListener
-          onItemLongClickListener = this@MovieDetailsCollectionAdapter.onItemLongClickListener
-          onMissingImageListener = this@MovieDetailsCollectionAdapter.onMissingImageListener
-          onMissingTranslationListener = this@MovieDetailsCollectionAdapter.onMissingTranslationListener
-        }
-      )
-      VIEW_TYPE_HEADER -> BaseViewHolder(MovieDetailsCollectionHeaderView(parent.context))
-      VIEW_TYPE_LOADING -> BaseViewHolder(MovieDetailsCollectionLoadingView(parent.context))
-      else -> throw IllegalStateException()
-    }
+  override fun onCreateViewHolder(
+    parent: ViewGroup,
+    viewType: Int,
+  ) = when (viewType) {
+    VIEW_TYPE_ITEM -> BaseViewHolder(
+      MovieDetailsCollectionItemView(parent.context).apply {
+        onItemClickListener = this@MovieDetailsCollectionAdapter.onItemClickListener
+        onItemLongClickListener = this@MovieDetailsCollectionAdapter.onItemLongClickListener
+        onMissingImageListener = this@MovieDetailsCollectionAdapter.onMissingImageListener
+        onMissingTranslationListener = this@MovieDetailsCollectionAdapter.onMissingTranslationListener
+      },
+    )
+    VIEW_TYPE_HEADER -> BaseViewHolder(MovieDetailsCollectionHeaderView(parent.context))
+    VIEW_TYPE_LOADING -> BaseViewHolder(MovieDetailsCollectionLoadingView(parent.context))
+    else -> throw IllegalStateException()
+  }
 
-  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
-    when (val item = asyncDiffer.currentList[position]) {
-      is HeaderItem -> (holder.itemView as MovieDetailsCollectionHeaderView).bind(item)
-      is MovieItem -> (holder.itemView as MovieDetailsCollectionItemView).bind(item)
-      is LoadingItem -> Unit
-    }
+  override fun onBindViewHolder(
+    holder: RecyclerView.ViewHolder,
+    position: Int,
+  ) = when (val item = asyncDiffer.currentList[position]) {
+    is HeaderItem -> (holder.itemView as MovieDetailsCollectionHeaderView).bind(item)
+    is MovieItem -> (holder.itemView as MovieDetailsCollectionItemView).bind(item)
+    is LoadingItem -> Unit
+  }
 
   override fun getItemCount() = asyncDiffer.currentList.size
 

@@ -39,7 +39,10 @@ class CreateListViewModel @Inject constructor(
     }
   }
 
-  fun createList(name: String, description: String?) {
+  fun createList(
+    name: String,
+    description: String?,
+  ) {
     if (name.trim().isBlank()) return
     viewModelScope.launch {
       try {
@@ -69,7 +72,10 @@ class CreateListViewModel @Inject constructor(
     }
   }
 
-  private suspend fun handleError(error: Throwable, defaultErrorMessage: Int) {
+  private suspend fun handleError(
+    error: Throwable,
+    defaultErrorMessage: Int,
+  ) {
     when (ErrorHelper.parse(error)) {
       AccountLimitsError ->
         messageChannel.send(MessageEvent.Error(R.string.errorAccountListsLimitsReached))
@@ -81,16 +87,16 @@ class CreateListViewModel @Inject constructor(
   val uiState = combine(
     detailsState,
     loadingState,
-    listUpdateState
+    listUpdateState,
   ) { s1, s2, s3 ->
     CreateListUiState(
       listDetails = s1,
       isLoading = s2,
-      onListUpdated = s3
+      onListUpdated = s3,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = CreateListUiState()
+    initialValue = CreateListUiState(),
   )
 }

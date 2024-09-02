@@ -60,7 +60,7 @@ class StatisticsViewModelTest : BaseMockTest() {
       ImageType.POSTER,
       ImageFamily.SHOW,
       "",
-      ImageSource.TMDB
+      ImageSource.TMDB,
     )
 
     SUT = StatisticsViewModel(
@@ -69,7 +69,7 @@ class StatisticsViewModelTest : BaseMockTest() {
       translationsRepository,
       imagesProvider,
       database,
-      mappers
+      mappers,
     )
   }
 
@@ -81,77 +81,80 @@ class StatisticsViewModelTest : BaseMockTest() {
   }
 
   @Test
-  internal fun `Should load ratings`() = runTest {
-    val movieItem = StatisticsRatingItem(Show.EMPTY, Image.createUnknown(ImageType.POSTER), false, TraktRating.EMPTY)
-    coEvery { ratingsCase.loadRatings() } returns listOf(movieItem)
+  internal fun `Should load ratings`() =
+    runTest {
+      val movieItem = StatisticsRatingItem(Show.EMPTY, Image.createUnknown(ImageType.POSTER), false, TraktRating.EMPTY)
+      coEvery { ratingsCase.loadRatings() } returns listOf(movieItem)
 
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+      val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
 
-    SUT.loadRatings()
+      SUT.loadRatings()
 
-    assertThat(stateResult.last().ratings?.size).isEqualTo(1)
-    assertThat(stateResult.last().ratings).contains(movieItem)
+      assertThat(stateResult.last().ratings?.size).isEqualTo(1)
+      assertThat(stateResult.last().ratings).contains(movieItem)
 
-    job.cancel()
-  }
-
-  @Test
-  internal fun `Should load empty ratings in case of error`() = runTest {
-    coEvery { ratingsCase.loadRatings() } throws Throwable("Test error")
-
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
-
-    SUT.loadRatings()
-
-    assertThat(stateResult.last().ratings).isEmpty()
-
-    job.cancel()
-  }
+      job.cancel()
+    }
 
   @Test
-  internal fun `Should load statistics properly`() = runTest {
-    val shows = listOf(
-      Show.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(1)), runtime = 1, genres = listOf("war", "drama")),
-      Show.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(2)), runtime = 2, genres = listOf("war", "animation")),
-      Show.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(3)), runtime = 3, genres = listOf("war", "animation")),
-    )
+  internal fun `Should load empty ratings in case of error`() =
+    runTest {
+      coEvery { ratingsCase.loadRatings() } throws Throwable("Test error")
 
-    val shows2 = listOf(
-      Show.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(4)), runtime = 1, genres = listOf("war", "drama")),
-      Show.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(5)), runtime = 2, genres = listOf("war", "animation")),
-      Show.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(6)), runtime = 3, genres = listOf("war", "animation")),
-    )
+      val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
 
-    val shows3 = listOf(
-      Show.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(7)), runtime = 1, genres = listOf("war", "drama")),
-      Show.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(8)), runtime = 2, genres = listOf("war", "animation")),
-      Show.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(9)), runtime = 3, genres = listOf("war", "animation")),
-    )
+      SUT.loadRatings()
 
-    coEvery { showsRepository.myShows.loadAll() } returns shows
-    coEvery { showsRepository.watchlistShows.loadAll() } returns shows2
-    coEvery { showsRepository.hiddenShows.loadAll() } returns shows3
+      assertThat(stateResult.last().ratings).isEmpty()
 
-    coEvery { database.episodes.getAllWatchedForShows(any()) } returns listOf(
-      TestData.createEpisode().copy(idShowTrakt = 1, runtime = 5),
-      TestData.createEpisode().copy(idShowTrakt = 2, runtime = 6),
-      TestData.createEpisode().copy(idShowTrakt = 3, runtime = 7),
-      TestData.createEpisode().copy(idShowTrakt = 3, runtime = 7),
-    )
+      job.cancel()
+    }
 
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+  @Test
+  internal fun `Should load statistics properly`() =
+    runTest {
+      val shows = listOf(
+        Show.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(1)), runtime = 1, genres = listOf("war", "drama")),
+        Show.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(2)), runtime = 2, genres = listOf("war", "animation")),
+        Show.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(3)), runtime = 3, genres = listOf("war", "animation")),
+      )
 
-    SUT.loadData(limit = 0, initialDelay = 0)
+      val shows2 = listOf(
+        Show.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(4)), runtime = 1, genres = listOf("war", "drama")),
+        Show.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(5)), runtime = 2, genres = listOf("war", "animation")),
+        Show.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(6)), runtime = 3, genres = listOf("war", "animation")),
+      )
 
-    val result = stateResult.last()
-    assertThat(result.mostWatchedShows).hasSize(5)
-    assertThat(result.mostWatchedTotalCount).isEqualTo(9)
-    assertThat(result.totalTimeSpentMinutes).isEqualTo(25)
-    assertThat(result.totalWatchedEpisodes).isEqualTo(4)
-    assertThat(result.totalWatchedEpisodesShows).isEqualTo(3)
-    assertThat(result.topGenres?.size).isEqualTo(3)
-    assertThat(result.topGenres).containsExactly(Genre.WAR, Genre.ANIMATION, Genre.DRAMA)
+      val shows3 = listOf(
+        Show.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(7)), runtime = 1, genres = listOf("war", "drama")),
+        Show.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(8)), runtime = 2, genres = listOf("war", "animation")),
+        Show.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(9)), runtime = 3, genres = listOf("war", "animation")),
+      )
 
-    job.cancel()
-  }
+      coEvery { showsRepository.myShows.loadAll() } returns shows
+      coEvery { showsRepository.watchlistShows.loadAll() } returns shows2
+      coEvery { showsRepository.hiddenShows.loadAll() } returns shows3
+
+      coEvery { database.episodes.getAllWatchedForShows(any()) } returns listOf(
+        TestData.createEpisode().copy(idShowTrakt = 1, runtime = 5),
+        TestData.createEpisode().copy(idShowTrakt = 2, runtime = 6),
+        TestData.createEpisode().copy(idShowTrakt = 3, runtime = 7),
+        TestData.createEpisode().copy(idShowTrakt = 3, runtime = 7),
+      )
+
+      val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+
+      SUT.loadData(limit = 0, initialDelay = 0)
+
+      val result = stateResult.last()
+      assertThat(result.mostWatchedShows).hasSize(5)
+      assertThat(result.mostWatchedTotalCount).isEqualTo(9)
+      assertThat(result.totalTimeSpentMinutes).isEqualTo(25)
+      assertThat(result.totalWatchedEpisodes).isEqualTo(4)
+      assertThat(result.totalWatchedEpisodesShows).isEqualTo(3)
+      assertThat(result.topGenres?.size).isEqualTo(3)
+      assertThat(result.topGenres).containsExactly(Genre.WAR, Genre.ANIMATION, Genre.DRAMA)
+
+      job.cancel()
+    }
 }

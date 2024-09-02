@@ -22,13 +22,18 @@ class ProgressMoviesWidgetCheckService : JobIntentService(), CoroutineScope {
     private const val JOB_ID = 1010
     private const val EXTRA_MOVIE_ID = "EXTRA_MOVIE_ID"
 
-    fun initialize(context: Context, movieId: IdTrakt) {
+    fun initialize(
+      context: Context,
+      movieId: IdTrakt,
+    ) {
       val intent = Intent().apply {
         putExtra(EXTRA_MOVIE_ID, movieId.id)
       }
       enqueueWork(
-        context, ProgressMoviesWidgetCheckService::class.java,
-        JOB_ID, intent
+        context,
+        ProgressMoviesWidgetCheckService::class.java,
+        JOB_ID,
+        intent,
       )
     }
   }

@@ -14,7 +14,7 @@ class StatisticsMoviesLoadRatingsCase @Inject constructor(
   private val userTraktManager: UserTraktManager,
   private val moviesRepository: MoviesRepository,
   private val ratingsRepository: RatingsRepository,
-  private val imagesProvider: MovieImagesProvider
+  private val imagesProvider: MovieImagesProvider,
 ) {
 
   companion object {
@@ -39,7 +39,7 @@ class StatisticsMoviesLoadRatingsCase @Inject constructor(
           isLoading = false,
           movie = movie,
           image = imagesProvider.findCachedImage(movie, ImageType.POSTER),
-          rating = rating
+          rating = rating,
         )
       }.sortedByDescending { it.rating.ratedAt }
   }

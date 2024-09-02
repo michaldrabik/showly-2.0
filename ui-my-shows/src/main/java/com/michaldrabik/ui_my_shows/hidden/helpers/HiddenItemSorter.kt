@@ -17,7 +17,10 @@ import javax.inject.Singleton
 @Singleton
 class HiddenItemSorter @Inject constructor() {
 
-  fun sort(sortOrder: SortOrder, sortType: SortType) = when (sortType) {
+  fun sort(
+    sortOrder: SortOrder,
+    sortType: SortType,
+  ) = when (sortType) {
     ASCENDING -> sortAscending(sortOrder)
     DESCENDING -> sortDescending(sortOrder)
   }
@@ -46,14 +49,18 @@ class HiddenItemSorter @Inject constructor() {
           .thenBy { getTitle(it) }
       DATE_ADDED -> compareByDescending { it.show.createdAt }
       RECENTLY_WATCHED -> compareByDescending { it.show.updatedAt }
-      NEWEST -> compareByDescending<CollectionListItem.ShowItem> { it.show.year }.thenByDescending { it.show.firstAired }
+      NEWEST -> compareByDescending<CollectionListItem.ShowItem> { it.show.year }
+        .thenByDescending { it.show.firstAired }
       else -> throw IllegalStateException("Invalid sort order")
     }
 
   private fun getTitle(item: CollectionListItem.ShowItem): String {
     val translatedTitle =
-      if (item.translation?.hasTitle == true) item.translation.title
-      else item.show.titleNoThe
+      if (item.translation?.hasTitle == true) {
+        item.translation.title
+      } else {
+        item.show.titleNoThe
+      }
     return translatedTitle.uppercase()
   }
 }

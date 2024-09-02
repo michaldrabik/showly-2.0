@@ -84,7 +84,10 @@ internal class DiscoverFragment :
     outState.putFloat("ARG_FILTERS_POS", filtersViewPosition)
   }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
     setupRecycler()
@@ -94,7 +97,7 @@ internal class DiscoverFragment :
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
       { viewModel.messageFlow.collect { showSnack(it) } },
-      doAfterLaunch = { viewModel.loadShows() }
+      doAfterLaunch = { viewModel.loadShows() },
     )
 
     setFragmentResultListener(REQUEST_DISCOVER_FILTERS) { _, _ ->
@@ -164,7 +167,7 @@ internal class DiscoverFragment :
       itemLongClickListener = { item -> openShowMenu(item.show) },
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) },
       listChangeListener = { binding.discoverRecycler.scrollToPosition(0) },
-      twitterCancelClickListener = { viewModel.cancelTwitterAd() }
+      twitterCancelClickListener = { viewModel.cancelTwitterAd() },
     ).apply {
       stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
     }
@@ -196,12 +199,18 @@ internal class DiscoverFragment :
         val statusBarSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top + tabletOffset
 
         val recyclerPadding =
-          if (moviesEnabled) R.dimen.discoverRecyclerPadding
-          else R.dimen.discoverRecyclerPaddingNoTabs
+          if (moviesEnabled) {
+            R.dimen.discoverRecyclerPadding
+          } else {
+            R.dimen.discoverRecyclerPaddingNoTabs
+          }
 
         val filtersPadding =
-          if (moviesEnabled) R.dimen.collectionFiltersMargin
-          else R.dimen.collectionFiltersMarginNoTabs
+          if (moviesEnabled) {
+            R.dimen.collectionFiltersMargin
+          } else {
+            R.dimen.collectionFiltersMarginNoTabs
+          }
 
         discoverRecycler
           .updatePadding(top = statusBarSize + dimenToPx(recyclerPadding))
@@ -214,7 +223,7 @@ internal class DiscoverFragment :
         discoverSwipeRefresh.setProgressViewOffset(
           true,
           swipeRefreshStartOffset + statusBarSize,
-          swipeRefreshEndOffset
+          swipeRefreshEndOffset,
         )
       }
     }
@@ -279,12 +288,13 @@ internal class DiscoverFragment :
 
       val clickedView = discoverRecycler.findViewHolderForAdapterPosition(clickedIndex)
       clickedView?.itemView?.fadeOut(
-        duration = 150, startDelay = 350,
+        duration = 150,
+        startDelay = 350,
         endAction = {
           if (!isResumed) return@fadeOut
           val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.traktId) }
           navigateToSafe(R.id.actionDiscoverFragmentToShowDetailsFragment, bundle)
-        }
+        },
       ).add(animations)
     }
   }

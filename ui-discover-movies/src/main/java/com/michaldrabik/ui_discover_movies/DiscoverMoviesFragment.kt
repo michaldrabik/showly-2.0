@@ -94,7 +94,10 @@ internal class DiscoverMoviesFragment :
     super.onPause()
   }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
     setupStatusBar()
@@ -104,7 +107,7 @@ internal class DiscoverMoviesFragment :
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
       { viewModel.messageFlow.collect { showSnack(it) } },
-      doAfterLaunch = { viewModel.loadMovies() }
+      doAfterLaunch = { viewModel.loadMovies() },
     )
 
     setFragmentResultListener(REQUEST_DISCOVER_FILTERS) { _, _ ->
@@ -155,7 +158,7 @@ internal class DiscoverMoviesFragment :
         discoverMoviesSwipeRefresh.setProgressViewOffset(
           true,
           swipeRefreshStartOffset + statusBarSize,
-          swipeRefreshEndOffset
+          swipeRefreshEndOffset,
         )
       }
     }
@@ -167,7 +170,7 @@ internal class DiscoverMoviesFragment :
       itemClickListener = { openDetails(it) },
       itemLongClickListener = { openMovieMenu(it.movie) },
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) },
-      listChangeListener = { binding.discoverMoviesRecycler.scrollToPosition(0) }
+      listChangeListener = { binding.discoverMoviesRecycler.scrollToPosition(0) },
     )
     binding.discoverMoviesRecycler.apply {
       adapter = this@DiscoverMoviesFragment.adapter
@@ -249,12 +252,13 @@ internal class DiscoverMoviesFragment :
 
       val clickedView = discoverMoviesRecycler.findViewHolderForAdapterPosition(clickedIndex)
       clickedView?.itemView?.fadeOut(
-        duration = 150, startDelay = 350,
+        duration = 150,
+        startDelay = 350,
         endAction = {
           if (!isResumed) return@fadeOut
           val bundle = Bundle().apply { putLong(NavigationArgs.ARG_MOVIE_ID, item.movie.traktId) }
           navigateToSafe(R.id.actionDiscoverMoviesFragmentToMovieDetailsFragment, bundle)
-        }
+        },
       ).add(animations)
     }
   }

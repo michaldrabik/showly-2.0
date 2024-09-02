@@ -27,7 +27,7 @@ class EpisodesSetSeasonWatchedCase @Inject constructor(
     show: Show,
     season: Season,
     isChecked: Boolean,
-    customDate: ZonedDateTime?
+    customDate: ZonedDateTime?,
   ): Result {
     val bundle = SeasonBundle(season, show)
 
@@ -43,7 +43,7 @@ class EpisodesSetSeasonWatchedCase @Inject constructor(
           quickSyncManager.scheduleEpisodes(
             showId = show.traktId,
             episodesIds = episodesAdded.map { it.ids.trakt.id },
-            customDate = customDate
+            customDate = customDate,
           )
         }
         return Result.SUCCESS
@@ -66,6 +66,6 @@ class EpisodesSetSeasonWatchedCase @Inject constructor(
 
   enum class Result {
     SUCCESS,
-    REMOVE_FROM_TRAKT
+    REMOVE_FROM_TRAKT,
   }
 }

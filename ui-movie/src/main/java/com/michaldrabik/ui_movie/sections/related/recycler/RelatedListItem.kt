@@ -9,5 +9,5 @@ data class RelatedListItem(
   override val image: Image,
   override var isLoading: Boolean = false,
   val isFollowed: Boolean = false,
-  val isWatchlist: Boolean = false
+  val isWatchlist: Boolean = false,
 ) : MovieListItem

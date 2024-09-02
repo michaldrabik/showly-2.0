@@ -27,25 +27,27 @@ class ShowDetailsMyShowsCase @Inject constructor(
   private val transactions: TransactionsProvider,
   private val showsRepository: ShowsRepository,
   private val pinnedItemsRepository: PinnedItemsRepository,
-  private val announcementManager: AnnouncementManager
+  private val announcementManager: AnnouncementManager,
 ) {
 
-  suspend fun getAllIds() = withContext(dispatchers.IO) {
-    val (myShows, watchlistShows) = awaitAll(
-      async { showsRepository.myShows.loadAllIds() },
-      async { showsRepository.watchlistShows.loadAllIds() }
-    )
-    Pair(myShows, watchlistShows)
-  }
+  suspend fun getAllIds() =
+    withContext(dispatchers.IO) {
+      val (myShows, watchlistShows) = awaitAll(
+        async { showsRepository.myShows.loadAllIds() },
+        async { showsRepository.watchlistShows.loadAllIds() },
+      )
+      Pair(myShows, watchlistShows)
+    }
 
-  suspend fun isMyShows(show: Show) = withContext(dispatchers.IO) {
-    showsRepository.myShows.exists(show.ids.trakt)
-  }
+  suspend fun isMyShows(show: Show) =
+    withContext(dispatchers.IO) {
+      showsRepository.myShows.exists(show.ids.trakt)
+    }
 
   suspend fun addToMyShows(
     show: Show,
     seasons: List<Season>,
-    episodes: List<Episode>
+    episodes: List<Episode>,
   ) = withContext(dispatchers.IO) {
     transactions.withTransaction {
       val localSeasons = localSource.seasons.getAllByShowId(show.traktId)
@@ -77,7 +79,10 @@ class ShowDetailsMyShowsCase @Inject constructor(
     announcementManager.refreshShowsAnnouncements()
   }
 
-  suspend fun removeFromMyShows(show: Show, removeLocalData: Boolean) = withContext(dispatchers.IO) {
+  suspend fun removeFromMyShows(
+    show: Show,
+    removeLocalData: Boolean,
+  ) = withContext(dispatchers.IO) {
     transactions.withTransaction {
       showsRepository.myShows.delete(show.ids.trakt)
 

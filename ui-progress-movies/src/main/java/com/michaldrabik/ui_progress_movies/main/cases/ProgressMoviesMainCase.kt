@@ -14,10 +14,13 @@ import javax.inject.Singleton
 class ProgressMoviesMainCase @Inject constructor(
   private val moviesRepository: MoviesRepository,
   private val pinnedItemsRepository: PinnedItemsRepository,
-  private val quickSyncManager: QuickSyncManager
+  private val quickSyncManager: QuickSyncManager,
 ) {
 
-  suspend fun addToMyMovies(movie: Movie, customDate: ZonedDateTime?) {
+  suspend fun addToMyMovies(
+    movie: Movie,
+    customDate: ZonedDateTime?,
+  ) {
     moviesRepository.myMovies.insert(movie.ids.trakt, customDate)
     pinnedItemsRepository.removePinnedItem(movie)
     quickSyncManager.scheduleMovies(listOf(movie.traktId), customDate)
@@ -26,7 +29,7 @@ class ProgressMoviesMainCase @Inject constructor(
   suspend fun addToMyMovies(movieId: IdTrakt) {
     addToMyMovies(
       movie = Movie.EMPTY.copy(Ids.EMPTY.copy(trakt = movieId)),
-      customDate = null
+      customDate = null,
     )
   }
 }

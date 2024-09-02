@@ -8,7 +8,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_people.gallery.recycler.views.PersonGalleryImageView
 
 class PersonGalleryAdapter(
-  val onItemClickListener: () -> Unit
+  val onItemClickListener: () -> Unit,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   private val asyncDiffer = AsyncListDiffer(this, ImageItemDiffCallback())
@@ -17,15 +17,19 @@ class PersonGalleryAdapter(
     asyncDiffer.submitList(items)
   }
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    ViewHolder(
-      PersonGalleryImageView(parent.context).apply {
-        onItemClickListener = this@PersonGalleryAdapter.onItemClickListener
-      }
-    )
+  override fun onCreateViewHolder(
+    parent: ViewGroup,
+    viewType: Int,
+  ) = ViewHolder(
+    PersonGalleryImageView(parent.context).apply {
+      onItemClickListener = this@PersonGalleryAdapter.onItemClickListener
+    },
+  )
 
-  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
-    (holder.itemView as PersonGalleryImageView).bind(asyncDiffer.currentList[position])
+  override fun onBindViewHolder(
+    holder: RecyclerView.ViewHolder,
+    position: Int,
+  ) = (holder.itemView as PersonGalleryImageView).bind(asyncDiffer.currentList[position])
 
   fun getItem(index: Int) = asyncDiffer.currentList.getOrNull(index)
 

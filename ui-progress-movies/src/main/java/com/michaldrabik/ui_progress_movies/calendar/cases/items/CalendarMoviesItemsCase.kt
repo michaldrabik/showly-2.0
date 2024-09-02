@@ -36,7 +36,7 @@ abstract class CalendarMoviesItemsCase constructor(
 
   suspend fun loadItems(
     searchQuery: String? = "",
-    withFilters: Boolean = true
+    withFilters: Boolean = true,
   ): List<CalendarMovieListItem> {
     return withContext(dispatchers.IO) {
       val now = nowUtc().toLocalZone()
@@ -46,7 +46,7 @@ abstract class CalendarMoviesItemsCase constructor(
 
       val (myMovies, watchlistMovies) = awaitAll(
         async { moviesRepository.myMovies.loadAll() },
-        async { moviesRepository.watchlistMovies.loadAll() }
+        async { moviesRepository.watchlistMovies.loadAll() },
       )
 
       val elements = (myMovies + watchlistMovies)
@@ -65,7 +65,7 @@ abstract class CalendarMoviesItemsCase constructor(
               isWatchlist = watchlistMovies.any { it.traktId == movie.traktId },
               dateFormat = dateFormat,
               translation = translation,
-              spoilers = spoilers
+              spoilers = spoilers,
             )
           }
         }.awaitAll()
@@ -86,10 +86,12 @@ abstract class CalendarMoviesItemsCase constructor(
     }
   }
 
-  private fun filterByQuery(query: String, items: List<CalendarMovieListItem.MovieItem>) =
-    items.filter {
-      it.movie.title.contains(query, true) ||
-        it.translation?.title?.contains(query, true) == true ||
-        it.movie.released?.format(it.dateFormat)?.contains(query, true) == true
-    }
+  private fun filterByQuery(
+    query: String,
+    items: List<CalendarMovieListItem.MovieItem>,
+  ) = items.filter {
+    it.movie.title.contains(query, true) ||
+      it.translation?.title?.contains(query, true) == true ||
+      it.movie.released?.format(it.dateFormat)?.contains(query, true) == true
+  }
 }

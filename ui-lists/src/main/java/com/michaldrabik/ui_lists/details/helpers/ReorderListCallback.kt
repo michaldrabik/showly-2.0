@@ -8,23 +8,29 @@ import androidx.recyclerview.widget.ItemTouchHelper.UP
 import androidx.recyclerview.widget.RecyclerView
 
 class ReorderListCallback(
-  private val adapter: ReorderListCallbackAdapter
+  private val adapter: ReorderListCallbackAdapter,
 ) : ItemTouchHelper.SimpleCallback(UP or DOWN or START or END, START) {
 
   override fun onMove(
     recyclerView: RecyclerView,
     viewHolder: RecyclerView.ViewHolder,
-    target: RecyclerView.ViewHolder
+    target: RecyclerView.ViewHolder,
   ): Boolean {
     adapter.onItemMove(viewHolder.bindingAdapterPosition, target.bindingAdapterPosition)
     return true
   }
 
-  override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+  override fun onSwiped(
+    viewHolder: RecyclerView.ViewHolder,
+    direction: Int,
+  ) {
     adapter.onItemSwiped(viewHolder)
   }
 
-  override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+  override fun clearView(
+    recyclerView: RecyclerView,
+    viewHolder: RecyclerView.ViewHolder,
+  ) {
     super.clearView(recyclerView, viewHolder)
     adapter.onItemCleared()
   }

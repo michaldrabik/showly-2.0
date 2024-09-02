@@ -64,7 +64,10 @@ class MyShowsListItemDecoration : ItemDecoration {
     outRect.right = (spacing * 2) * ((totalSpan - 1) - column) / totalSpan
   }
 
-  private fun getItemOffsetsPhone(outRect: Rect, view: View) {
+  private fun getItemOffsetsPhone(
+    outRect: Rect,
+    view: View,
+  ) {
     if (view is MyShowAllView) {
       outRect.top = spacing
       outRect.bottom = spacing
@@ -75,7 +78,7 @@ class MyShowsListItemDecoration : ItemDecoration {
 
   private fun getPosition(
     parent: RecyclerView,
-    view: View
+    view: View,
   ): Int {
     val nonMyShowItemCount = (parent.adapter as MyShowsAdapter)
       .getItems()

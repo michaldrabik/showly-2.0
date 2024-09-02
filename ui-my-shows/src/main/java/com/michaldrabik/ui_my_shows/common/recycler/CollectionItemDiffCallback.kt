@@ -4,21 +4,27 @@ import androidx.recyclerview.widget.DiffUtil
 
 class CollectionItemDiffCallback : DiffUtil.ItemCallback<CollectionListItem>() {
 
-  override fun areItemsTheSame(oldItem: CollectionListItem, newItem: CollectionListItem): Boolean {
+  override fun areItemsTheSame(
+    oldItem: CollectionListItem,
+    newItem: CollectionListItem,
+  ): Boolean {
     val areMovies = oldItem is CollectionListItem.ShowItem && newItem is CollectionListItem.ShowItem
     val areFilters = oldItem is CollectionListItem.FiltersItem && newItem is CollectionListItem.FiltersItem
 
     return when {
       areMovies -> areItemsTheSame(
         (oldItem as CollectionListItem.ShowItem),
-        (newItem as CollectionListItem.ShowItem)
+        (newItem as CollectionListItem.ShowItem),
       )
       areFilters -> true
       else -> false
     }
   }
 
-  override fun areContentsTheSame(oldItem: CollectionListItem, newItem: CollectionListItem): Boolean {
+  override fun areContentsTheSame(
+    oldItem: CollectionListItem,
+    newItem: CollectionListItem,
+  ): Boolean {
     return when (oldItem) {
       is CollectionListItem.ShowItem -> areContentsTheSame(oldItem, (newItem as CollectionListItem.ShowItem))
       is CollectionListItem.FiltersItem -> areContentsTheSame(oldItem, (newItem as CollectionListItem.FiltersItem))

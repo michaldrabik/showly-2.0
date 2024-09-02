@@ -28,22 +28,26 @@ class PeopleListAdapter(
       else -> throw IllegalStateException()
     }
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    when (viewType) {
-      VIEW_TYPE_HEADER -> BaseViewHolder(PeopleListHeaderView(parent.context))
-      VIEW_TYPE_ITEM -> BaseViewHolder(
-        PeopleListItemView(parent.context).apply {
-          onItemClickListener = this@PeopleListAdapter.onItemClickListener
-        }
-      )
-      else -> throw IllegalStateException()
-    }
+  override fun onCreateViewHolder(
+    parent: ViewGroup,
+    viewType: Int,
+  ) = when (viewType) {
+    VIEW_TYPE_HEADER -> BaseViewHolder(PeopleListHeaderView(parent.context))
+    VIEW_TYPE_ITEM -> BaseViewHolder(
+      PeopleListItemView(parent.context).apply {
+        onItemClickListener = this@PeopleListAdapter.onItemClickListener
+      },
+    )
+    else -> throw IllegalStateException()
+  }
 
-  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
-    when (val item = asyncDiffer.currentList[position]) {
-      is PeopleListItem.HeaderItem -> (holder.itemView as PeopleListHeaderView).bind(item)
-      is PeopleListItem.PersonItem -> (holder.itemView as PeopleListItemView).bind(item)
-    }
+  override fun onBindViewHolder(
+    holder: RecyclerView.ViewHolder,
+    position: Int,
+  ) = when (val item = asyncDiffer.currentList[position]) {
+    is PeopleListItem.HeaderItem -> (holder.itemView as PeopleListHeaderView).bind(item)
+    is PeopleListItem.PersonItem -> (holder.itemView as PeopleListItemView).bind(item)
+  }
 
   override fun getItemCount() = asyncDiffer.currentList.size
 

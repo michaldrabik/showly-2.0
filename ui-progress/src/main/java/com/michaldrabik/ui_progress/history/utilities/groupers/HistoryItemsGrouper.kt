@@ -11,7 +11,7 @@ internal class HistoryItemsGrouper @Inject constructor() {
 
   fun groupByDay(
     items: List<Episode>,
-    language: String
+    language: String,
   ): List<HistoryListItem> {
     val itemsMap = items
       .groupBy { it.episode.lastWatchedAt!!.toLocalZone().truncatedTo(DAYS) }
@@ -23,15 +23,15 @@ internal class HistoryItemsGrouper @Inject constructor() {
           add(
             HistoryListItem.Header(
               date = entry.key.toLocalDateTime(),
-              language = language
-            )
+              language = language,
+            ),
           )
           addAll(
             entry.value.sortedWith(
               compareByDescending<Episode> { it.episode.lastWatchedAt?.toMillis() }
                 .thenByDescending { it.episode.season }
-                .thenByDescending { it.episode.number }
-            )
+                .thenByDescending { it.episode.number },
+            ),
           )
         }
       }

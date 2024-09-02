@@ -6,7 +6,7 @@ class CalendarItemDiffCallback : DiffUtil.ItemCallback<CalendarListItem>() {
 
   override fun areItemsTheSame(
     oldItem: CalendarListItem,
-    newItem: CalendarListItem
+    newItem: CalendarListItem,
   ): Boolean {
     val areEpisodes = oldItem is CalendarListItem.Episode && newItem is CalendarListItem.Episode
     val areHeaders = oldItem is CalendarListItem.Header && newItem is CalendarListItem.Header
@@ -14,11 +14,11 @@ class CalendarItemDiffCallback : DiffUtil.ItemCallback<CalendarListItem>() {
     return when {
       areEpisodes -> areItemsTheSame(
         (oldItem as CalendarListItem.Episode),
-        (newItem as CalendarListItem.Episode)
+        (newItem as CalendarListItem.Episode),
       )
       areHeaders -> areItemsTheSame(
         (oldItem as CalendarListItem.Header),
-        (newItem as CalendarListItem.Header)
+        (newItem as CalendarListItem.Header),
       )
       areFilters -> true
       else -> false
@@ -27,21 +27,21 @@ class CalendarItemDiffCallback : DiffUtil.ItemCallback<CalendarListItem>() {
 
   private fun areItemsTheSame(
     oldItem: CalendarListItem.Episode,
-    newItem: CalendarListItem.Episode
+    newItem: CalendarListItem.Episode,
   ): Boolean {
     return oldItem.episode.ids.trakt == newItem.episode.ids.trakt
   }
 
   private fun areItemsTheSame(
     oldItem: CalendarListItem.Header,
-    newItem: CalendarListItem.Header
+    newItem: CalendarListItem.Header,
   ): Boolean {
     return oldItem.textResId == newItem.textResId
   }
 
   override fun areContentsTheSame(
     oldItem: CalendarListItem,
-    newItem: CalendarListItem
+    newItem: CalendarListItem,
   ): Boolean {
     return when (oldItem) {
       is CalendarListItem.Episode -> areContentsTheSame(oldItem, (newItem as CalendarListItem.Episode))
@@ -52,7 +52,7 @@ class CalendarItemDiffCallback : DiffUtil.ItemCallback<CalendarListItem>() {
 
   private fun areContentsTheSame(
     oldItem: CalendarListItem.Episode,
-    newItem: CalendarListItem.Episode
+    newItem: CalendarListItem.Episode,
   ): Boolean {
     return oldItem.episode == newItem.episode &&
       oldItem.season == newItem.season &&
@@ -68,14 +68,14 @@ class CalendarItemDiffCallback : DiffUtil.ItemCallback<CalendarListItem>() {
 
   private fun areContentsTheSame(
     oldItem: CalendarListItem.Header,
-    newItem: CalendarListItem.Header
+    newItem: CalendarListItem.Header,
   ): Boolean {
     return oldItem == newItem
   }
 
   private fun areContentsTheSame(
     oldItem: CalendarListItem.Filters,
-    newItem: CalendarListItem.Filters
+    newItem: CalendarListItem.Filters,
   ): Boolean {
     return oldItem == newItem
   }

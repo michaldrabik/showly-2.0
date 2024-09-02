@@ -7,5 +7,5 @@ data class CommentsUiState(
   val comments: List<Comment>? = null,
   val dateFormat: DateTimeFormatter? = null,
   val isLoading: Boolean = false,
-  val isSignedIn: Boolean = false
+  val isSignedIn: Boolean = false,
 )

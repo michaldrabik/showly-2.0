@@ -6,7 +6,7 @@ class CalendarMovieItemDiffCallback : DiffUtil.ItemCallback<CalendarMovieListIte
 
   override fun areItemsTheSame(
     oldItem: CalendarMovieListItem,
-    newItem: CalendarMovieListItem
+    newItem: CalendarMovieListItem,
   ): Boolean {
     if (oldItem is CalendarMovieListItem.Header && newItem is CalendarMovieListItem.Header) {
       return oldItem.textResId == newItem.textResId
@@ -22,7 +22,7 @@ class CalendarMovieItemDiffCallback : DiffUtil.ItemCallback<CalendarMovieListIte
 
   override fun areContentsTheSame(
     oldItem: CalendarMovieListItem,
-    newItem: CalendarMovieListItem
+    newItem: CalendarMovieListItem,
   ): Boolean {
     if (oldItem is CalendarMovieListItem.Header && newItem is CalendarMovieListItem.Header) {
       return oldItem.textResId == newItem.textResId

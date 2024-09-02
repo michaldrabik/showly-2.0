@@ -73,7 +73,10 @@ class WatchlistFragment :
   private var isSearching = false
   private val tabletGridSpanSize by lazy { settings.tabletGridSpanSize }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupStatusBar()
     setupRecycler()
@@ -81,12 +84,13 @@ class WatchlistFragment :
     launchAndRepeatStarted(
       { parentViewModel.uiState.collect { viewModel.onParentState(it) } },
       { viewModel.uiState.collect { render(it) } },
-      doAfterLaunch = { viewModel.loadShows() }
+      doAfterLaunch = { viewModel.loadShows() },
     )
   }
 
   private fun setupRecycler() {
-    layoutManager = CollectionShowLayoutManagerProvider.provideLayoutManger(requireContext(), LIST_NORMAL, tabletGridSpanSize)
+    layoutManager = CollectionShowLayoutManagerProvider
+      .provideLayoutManger(requireContext(), LIST_NORMAL, tabletGridSpanSize)
     adapter = CollectionAdapter(
       itemClickListener = { openShowDetails(it.show) },
       itemLongClickListener = { item -> openShowMenu(item.show) },
@@ -100,7 +104,7 @@ class WatchlistFragment :
       listChangeListener = {
         binding.watchlistRecycler.scrollToPosition(0)
         (requireParentFragment() as FollowedShowsFragment).resetTranslations()
-      }
+      },
     ).apply {
       stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
     }
@@ -133,7 +137,8 @@ class WatchlistFragment :
     uiState.run {
       viewMode.let {
         if (adapter?.listViewMode != it) {
-          layoutManager = CollectionShowLayoutManagerProvider.provideLayoutManger(requireContext(), it, tabletGridSpanSize)
+          layoutManager = CollectionShowLayoutManagerProvider
+            .provideLayoutManger(requireContext(), it, tabletGridSpanSize)
           adapter?.listViewMode = it
           binding.watchlistRecycler.let { recycler ->
             recycler.layoutManager = layoutManager
@@ -171,7 +176,10 @@ class WatchlistFragment :
     (requireParentFragment() as? FollowedShowsFragment)?.openShowMenu(show)
   }
 
-  private fun openSortOrderDialog(order: SortOrder, type: SortType) {
+  private fun openSortOrderDialog(
+    order: SortOrder,
+    type: SortType,
+  ) {
     val options = listOf(NAME, RATING, USER_RATING, NEWEST, DATE_ADDED)
     val args = SortOrderBottomSheet.createBundle(options, order, type)
 

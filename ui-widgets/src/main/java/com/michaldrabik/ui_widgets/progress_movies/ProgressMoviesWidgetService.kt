@@ -17,6 +17,6 @@ class ProgressMoviesWidgetService : RemoteViewsService() {
     ProgressMoviesWidgetViewsFactory(
       applicationContext,
       progressLoadItemsCase,
-      settingsRepository
+      settingsRepository,
     )
 }

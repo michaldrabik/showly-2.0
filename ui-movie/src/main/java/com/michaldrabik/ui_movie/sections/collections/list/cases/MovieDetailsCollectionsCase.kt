@@ -21,12 +21,12 @@ class MovieDetailsCollectionsCase @Inject constructor(
         val (collections, source) = repository.loadCollections(movie.ids.trakt)
         return@withContext Pair(
           collections.filter { it.itemCount != -1 },
-          source
+          source,
         )
       } catch (error: Throwable) {
         return@withContext Pair(
           emptyList(),
-          Source.LOCAL
+          Source.LOCAL,
         )
       }
     }

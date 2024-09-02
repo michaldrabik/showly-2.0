@@ -101,14 +101,21 @@ class ListDetailsFragment :
   private var headerTranslation = 0F
   private var isReorderMode = false
 
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?,
+  ): View? {
     savedInstanceState?.let {
       headerTranslation = it.getFloat(ARG_HEADER_TRANSLATION)
     }
     return super.onCreateView(inflater, container, savedInstanceState)
   }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
     setupRecycler()
@@ -116,7 +123,7 @@ class ListDetailsFragment :
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
       { viewModel.messageFlow.collect { showSnack(it) } },
-      doAfterLaunch = { viewModel.loadDetails(list.id) }
+      doAfterLaunch = { viewModel.loadDetails(list.id) },
     )
   }
 
@@ -146,8 +153,11 @@ class ListDetailsFragment :
         title = list.name
         subtitle = list.description
         setNavigationOnClickListener {
-          if (isReorderMode) toggleReorderMode()
-          else activity?.onBackPressed()
+          if (isReorderMode) {
+            toggleReorderMode()
+          } else {
+            activity?.onBackPressed()
+          }
         }
       }
       with(fragmentListDetailsFiltersView) {
@@ -164,7 +174,8 @@ class ListDetailsFragment :
   }
 
   private fun setupRecycler() {
-    layoutManager = ListDetailsLayoutManagerProvider.provideLayoutManger(requireContext(), LIST_NORMAL, tabletGridSpanSize)
+    layoutManager = ListDetailsLayoutManagerProvider
+      .provideLayoutManger(requireContext(), LIST_NORMAL, tabletGridSpanSize)
     adapter = ListDetailsAdapter(
       itemClickListener = { openItemDetails(it) },
       missingImageListener = { item: ListDetailsItem, force: Boolean ->
@@ -186,7 +197,7 @@ class ListDetailsFragment :
         viewModel.deleteListItem(list.id, it)
       },
       itemDragStartListener = this,
-      itemSwipeStartListener = this
+      itemSwipeStartListener = this,
     ).apply {
       stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
     }
@@ -215,7 +226,10 @@ class ListDetailsFragment :
     }
   }
 
-  private fun openSortOrderDialog(order: SortOrder, type: SortType) {
+  private fun openSortOrderDialog(
+    order: SortOrder,
+    type: SortType,
+  ) {
     val options = listOf(RANK, NAME, RATING, USER_RATING, NEWEST, DATE_ADDED)
     val args = SortOrderBottomSheet.createBundle(options, order, type)
 
@@ -256,7 +270,7 @@ class ListDetailsFragment :
     binding.fragmentListDetailsRoot.fadeOut(150) {
       val bundle = bundleOf(
         ARG_SHOW_ID to listItem.show?.traktId,
-        ARG_MOVIE_ID to listItem.movie?.traktId
+        ARG_MOVIE_ID to listItem.movie?.traktId,
       )
       val destination =
         when {
@@ -288,8 +302,10 @@ class ListDetailsFragment :
   }
 
   private fun render(uiState: ListDetailsUiState) {
-
-    fun renderTitle(name: String?, itemsCount: Int? = null) {
+    fun renderTitle(
+      name: String?,
+      itemsCount: Int? = null,
+    ) {
       if (name.isNullOrBlank()) return
       binding.fragmentListDetailsToolbar.title = when {
         itemsCount != null && itemsCount > 0 -> "$name ($itemsCount)"
@@ -302,7 +318,8 @@ class ListDetailsFragment :
       with(binding) {
         viewMode.let {
           if (adapter?.listViewMode != it) {
-            layoutManager = ListDetailsLayoutManagerProvider.provideLayoutManger(requireContext(), it, tabletGridSpanSize)
+            layoutManager = ListDetailsLayoutManagerProvider
+              .provideLayoutManger(requireContext(), it, tabletGridSpanSize)
             adapter?.listViewMode = it
             fragmentListDetailsRecycler?.let { recycler ->
               recycler.layoutManager = layoutManager
@@ -311,7 +328,7 @@ class ListDetailsFragment :
             fragmentListDetailsViewModeButton.setImageResource(
               when (it) {
                 LIST_NORMAL -> R.drawable.ic_view_list
-              }
+              },
             )
           }
         }
@@ -349,14 +366,14 @@ class ListDetailsFragment :
             fragmentListDetailsToolbar.subtitle = getString(R.string.textChangeRanksSubtitle)
             fragmentListDetailsRecycler.updatePadding(
               top = if (layoutManager is GridLayoutManager) dimenToPx(R.dimen.spaceTiny) else 0,
-              bottom = recyclerPaddingBottom
+              bottom = recyclerPaddingBottom,
             )
           } else {
             renderTitle(listDetails?.name ?: list.name, listItems?.size)
             fragmentListDetailsToolbar.subtitle = listDetails?.description
             fragmentListDetailsRecycler.updatePadding(
               top = if (layoutManager is GridLayoutManager) recyclerPaddingGridTop else recyclerPaddingTop,
-              bottom = recyclerPaddingBottom
+              bottom = recyclerPaddingBottom,
             )
           }
 

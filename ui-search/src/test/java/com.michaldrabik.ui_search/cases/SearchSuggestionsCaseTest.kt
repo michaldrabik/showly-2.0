@@ -56,7 +56,7 @@ class SearchSuggestionsCaseTest : BaseMockTest() {
       translationsRepository = translationsRepository,
       settingsRepository = settingsRepository,
       showsImagesProvider = showImagesProvider,
-      moviesImagesProvider = movieImagesProvider
+      moviesImagesProvider = movieImagesProvider,
     )
   }
 
@@ -66,38 +66,43 @@ class SearchSuggestionsCaseTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should skip preload local shows cache if already loaded`() = runTest {
-    SUT.preloadCache() // Initial preload. Db data should be loaded
-    SUT.preloadCache() // Further preload. Db data should not be loaded
-    coVerify(exactly = 1) { showsDao.getAll() }
-  }
+  fun `Should skip preload local shows cache if already loaded`() =
+    runTest {
+      SUT.preloadCache() // Initial preload. Db data should be loaded
+      SUT.preloadCache() // Further preload. Db data should not be loaded
+      coVerify(exactly = 1) { showsDao.getAll() }
+    }
 
   @Test
-  fun `Should skip preload local movies cache if already loaded`() = runTest {
-    SUT.preloadCache() // Initial preload. Db data should be loaded
-    SUT.preloadCache() // Further preload. Db data should not be loaded
-    coVerify(exactly = 1) { moviesDao.getAll() }
-  }
+  fun `Should skip preload local movies cache if already loaded`() =
+    runTest {
+      SUT.preloadCache() // Initial preload. Db data should be loaded
+      SUT.preloadCache() // Further preload. Db data should not be loaded
+      coVerify(exactly = 1) { moviesDao.getAll() }
+    }
 
   @Test
-  fun `Should skip preload local movies cache if movies disabled`() = runTest {
-    coEvery { settingsRepository.isMoviesEnabled } returns false
+  fun `Should skip preload local movies cache if movies disabled`() =
+    runTest {
+      coEvery { settingsRepository.isMoviesEnabled } returns false
 
-    SUT.preloadCache()
-    coVerify(exactly = 0) { moviesDao.getAll() }
-  }
-
-  @Test
-  fun `Should skip preload local shows translations cache if default language`() = runTest {
-    SUT.preloadCache()
-    coVerify(exactly = 0) { translationsRepository.loadAllShowsLocal(any()) }
-  }
+      SUT.preloadCache()
+      coVerify(exactly = 0) { moviesDao.getAll() }
+    }
 
   @Test
-  fun `Should skip preload local movies translations cache if default language`() = runTest {
-    SUT.preloadCache()
-    coVerify(exactly = 0) { translationsRepository.loadAllMoviesLocal(any()) }
-  }
+  fun `Should skip preload local shows translations cache if default language`() =
+    runTest {
+      SUT.preloadCache()
+      coVerify(exactly = 0) { translationsRepository.loadAllShowsLocal(any()) }
+    }
+
+  @Test
+  fun `Should skip preload local movies translations cache if default language`() =
+    runTest {
+      SUT.preloadCache()
+      coVerify(exactly = 0) { translationsRepository.loadAllMoviesLocal(any()) }
+    }
 
   @Test
   fun `Should skip preload local movies translations cache if not default language but movies are disabled`() =
@@ -110,42 +115,46 @@ class SearchSuggestionsCaseTest : BaseMockTest() {
     }
 
   @Test
-  fun `Should preload local cache`() = runTest {
-    SUT.preloadCache()
-    coVerify(exactly = 1) { showsDao.getAll() }
-    coVerify(exactly = 1) { moviesDao.getAll() }
-  }
+  fun `Should preload local cache`() =
+    runTest {
+      SUT.preloadCache()
+      coVerify(exactly = 1) { showsDao.getAll() }
+      coVerify(exactly = 1) { moviesDao.getAll() }
+    }
 
   @Test
-  fun `Should preload local translations cache`() = runTest {
-    coEvery { translationsRepository.getLanguage() } returns "br"
+  fun `Should preload local translations cache`() =
+    runTest {
+      coEvery { translationsRepository.getLanguage() } returns "br"
 
-    SUT.preloadCache()
+      SUT.preloadCache()
 
-    coVerify(exactly = 1) { translationsRepository.loadAllShowsLocal("br") }
-    coVerify(exactly = 1) { translationsRepository.loadAllMoviesLocal("br") }
-  }
-
-  @Test
-  fun `Should return empty list if query is blank`() = runTest {
-    val result = SUT.loadSuggestions("   ")
-
-    assertThat(result).isEmpty()
-    coVerify(exactly = 0) { showsDao.getAll() }
-    coVerify(exactly = 0) { moviesDao.getAll() }
-  }
+      coVerify(exactly = 1) { translationsRepository.loadAllShowsLocal("br") }
+      coVerify(exactly = 1) { translationsRepository.loadAllMoviesLocal("br") }
+    }
 
   @Test
-  fun `Should clear local caches properly`() = runTest {
-    coEvery { translationsRepository.getLanguage() } returns "br"
+  fun `Should return empty list if query is blank`() =
+    runTest {
+      val result = SUT.loadSuggestions("   ")
 
-    SUT.preloadCache()
-    SUT.clearCache()
-    SUT.preloadCache()
+      assertThat(result).isEmpty()
+      coVerify(exactly = 0) { showsDao.getAll() }
+      coVerify(exactly = 0) { moviesDao.getAll() }
+    }
 
-    coVerify(exactly = 2) { showsDao.getAll() }
-    coVerify(exactly = 2) { moviesDao.getAll() }
-    coVerify(exactly = 2) { translationsRepository.loadAllShowsLocal("br") }
-    coVerify(exactly = 2) { translationsRepository.loadAllMoviesLocal("br") }
-  }
+  @Test
+  fun `Should clear local caches properly`() =
+    runTest {
+      coEvery { translationsRepository.getLanguage() } returns "br"
+
+      SUT.preloadCache()
+      SUT.clearCache()
+      SUT.preloadCache()
+
+      coVerify(exactly = 2) { showsDao.getAll() }
+      coVerify(exactly = 2) { moviesDao.getAll() }
+      coVerify(exactly = 2) { translationsRepository.loadAllShowsLocal("br") }
+      coVerify(exactly = 2) { translationsRepository.loadAllMoviesLocal("br") }
+    }
 }

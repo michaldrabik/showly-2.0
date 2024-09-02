@@ -26,7 +26,7 @@ sealed class ProgressMovieListItem(
     val dateFormat: DateTimeFormatter? = null,
     val sortOrder: SortOrder? = null,
     val userRating: Int? = null,
-    val spoilers: SpoilersSettings
+    val spoilers: SpoilersSettings,
   ) : ProgressMovieListItem(movie, image, isLoading)
 
   data class HeaderItem(
@@ -37,24 +37,24 @@ sealed class ProgressMovieListItem(
   ) : ProgressMovieListItem(movie, image, isLoading) {
 
     companion object {
-      fun create(@StringRes textResId: Int) =
-        HeaderItem(
-          movie = Movie.EMPTY,
-          image = Image.createUnavailable(ImageType.POSTER),
-          textResId = textResId
-        )
+      fun create(
+        @StringRes textResId: Int,
+      ) = HeaderItem(
+        movie = Movie.EMPTY,
+        image = Image.createUnavailable(ImageType.POSTER),
+        textResId = textResId,
+      )
     }
 
-    override fun isSameAs(other: MovieListItem) =
-      textResId == (other as? HeaderItem)?.textResId
+    override fun isSameAs(other: MovieListItem) = textResId == (other as? HeaderItem)?.textResId
   }
 
   data class FiltersItem(
     val sortOrder: SortOrder,
     val sortType: SortType,
   ) : ProgressMovieListItem(
-    movie = Movie.EMPTY,
-    image = Image.createUnknown(ImageType.POSTER),
-    isLoading = false
-  )
+      movie = Movie.EMPTY,
+      image = Image.createUnknown(ImageType.POSTER),
+      isLoading = false,
+    )
 }

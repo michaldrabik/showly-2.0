@@ -15,10 +15,11 @@ class EpisodesAnnouncementsCase @Inject constructor(
   private val announcementManager: AnnouncementManager,
 ) {
 
-  suspend fun refreshAnnouncements(idTrakt: IdTrakt) = withContext(dispatchers.IO) {
-    val isMyShow = showsRepository.myShows.exists(idTrakt)
-    if (isMyShow) {
-      announcementManager.refreshShowsAnnouncements()
+  suspend fun refreshAnnouncements(idTrakt: IdTrakt) =
+    withContext(dispatchers.IO) {
+      val isMyShow = showsRepository.myShows.exists(idTrakt)
+      if (isMyShow) {
+        announcementManager.refreshShowsAnnouncements()
+      }
     }
-  }
 }

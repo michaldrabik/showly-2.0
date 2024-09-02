@@ -18,14 +18,20 @@ class MovieCollectionAdapter(
     }
   }
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+  override fun onCreateViewHolder(
+    parent: ViewGroup,
+    viewType: Int,
+  ): ViewHolder {
     val view = MovieCollectionItemView(parent.context).apply {
       itemClickListener = this@MovieCollectionAdapter.itemClickListener
     }
     return ViewHolder(view)
   }
 
-  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+  override fun onBindViewHolder(
+    holder: RecyclerView.ViewHolder,
+    position: Int,
+  ) {
     val item = asyncDiffer.currentList[position]
     (holder.itemView as MovieCollectionItemView).bind(item)
   }

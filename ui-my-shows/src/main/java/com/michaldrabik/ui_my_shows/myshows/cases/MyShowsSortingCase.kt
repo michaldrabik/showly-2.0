@@ -13,13 +13,14 @@ class MyShowsSortingCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
 ) {
 
-  fun loadSectionSortOrder(section: MyShowsSection) = when (section) {
-    ALL -> Pair(
-      settingsRepository.sorting.myShowsAllSortOrder,
-      settingsRepository.sorting.myShowsAllSortType
-    )
-    else -> error("Should not be used here.")
-  }
+  fun loadSectionSortOrder(section: MyShowsSection) =
+    when (section) {
+      ALL -> Pair(
+        settingsRepository.sorting.myShowsAllSortOrder,
+        settingsRepository.sorting.myShowsAllSortType,
+      )
+      else -> error("Should not be used here.")
+    }
 
   fun setSectionSortOrder(
     section: MyShowsSection,

@@ -17,10 +17,11 @@ class ShowDetailsWatchedCase @Inject constructor(
   suspend fun isWatched(
     show: Show,
     episode: Episode,
-  ): Boolean = withContext(dispatchers.IO) {
-    return@withContext episodesLocalDataSource.isEpisodeWatched(
-      showTraktId = show.traktId,
-      episodeTraktId = episode.ids.trakt.id
-    )
-  }
+  ): Boolean =
+    withContext(dispatchers.IO) {
+      return@withContext episodesLocalDataSource.isEpisodeWatched(
+        showTraktId = show.traktId,
+        episodeTraktId = episode.ids.trakt.id,
+      )
+    }
 }

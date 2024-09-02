@@ -5,7 +5,8 @@ enum class ImageSource(
 ) {
   TMDB("tmdb"),
   CUSTOM("custom"),
-  AWS("aws");
+  AWS("aws"),
+  ;
 
   companion object {
     fun fromKey(key: String) = entries.first { it.key == key }

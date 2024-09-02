@@ -42,8 +42,11 @@ class SeasonView : FrameLayout {
     setOnClickListener { clickListener(item) }
     with(binding) {
       seasonViewTitle.text =
-        if (item.season.isSpecial()) context.getString(R.string.textSpecials)
-        else String.format(ENGLISH, context.getString(R.string.textSeason), item.season.number)
+        if (item.season.isSpecial()) {
+          context.getString(R.string.textSpecials)
+        } else {
+          String.format(ENGLISH, context.getString(R.string.textSeason), item.season.number)
+        }
 
       val progressCount = item.episodes.count { it.isWatched }
       val episodesCount = item.episodes.size
@@ -66,7 +69,9 @@ class SeasonView : FrameLayout {
         }
       }
 
-      val color = context.colorFromAttr(if (item.isWatched) android.R.attr.colorAccent else android.R.attr.textColorPrimary)
+      val color = context.colorFromAttr(
+        if (item.isWatched) android.R.attr.colorAccent else android.R.attr.textColorPrimary,
+      )
       seasonViewTitle.setTextColor(color)
       seasonViewProgressText.setTextColor(color)
       ImageViewCompat.setImageTintList(seasonViewArrow, ColorStateList.valueOf(color))

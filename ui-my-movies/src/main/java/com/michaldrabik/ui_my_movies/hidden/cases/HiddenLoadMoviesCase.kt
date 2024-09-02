@@ -45,8 +45,11 @@ class HiddenLoadMoviesCase @Inject constructor(
       val dateFormat = dateFormatProvider.loadShortDayFormat()
       val fullDateFormat = dateFormatProvider.loadFullDayFormat()
       val translations =
-        if (language == Config.DEFAULT_LANGUAGE) emptyMap()
-        else translationsRepository.loadAllMoviesLocal(language)
+        if (language == Config.DEFAULT_LANGUAGE) {
+          emptyMap()
+        } else {
+          translationsRepository.loadAllMoviesLocal(language)
+        }
       val spoilersSettings = settingsRepository.spoilers.getAll()
 
       val sortOrder = settingsRepository.sorting.hiddenMoviesSortOrder
@@ -63,7 +66,7 @@ class HiddenLoadMoviesCase @Inject constructor(
             dateFormat = dateFormat,
             fullDateFormat = fullDateFormat,
             sortOrder = sortOrder,
-            spoilers = spoilersSettings
+            spoilers = spoilersSettings,
           )
         }
         .awaitAll()
@@ -87,7 +90,7 @@ class HiddenLoadMoviesCase @Inject constructor(
       sortOrder = sortOrder,
       sortType = sortType,
       genres = genres,
-      upcoming = UpcomingFilter.OFF
+      upcoming = UpcomingFilter.OFF,
     )
   }
 
@@ -100,7 +103,10 @@ class HiddenLoadMoviesCase @Inject constructor(
   private fun List<CollectionListItem.MovieItem>.filterByGenre(genres: List<String>) =
     filter { genres.isEmpty() || it.movie.genres.any { genre -> genre.lowercase() in genres } }
 
-  suspend fun loadTranslation(movie: Movie, onlyLocal: Boolean): Translation? =
+  suspend fun loadTranslation(
+    movie: Movie,
+    onlyLocal: Boolean,
+  ): Translation? =
     withContext(dispatchers.IO) {
       val language = translationsRepository.getLanguage()
       if (language == Config.DEFAULT_LANGUAGE) {
@@ -131,8 +137,8 @@ class HiddenLoadMoviesCase @Inject constructor(
       spoilers = CollectionListItem.MovieItem.Spoilers(
         isSpoilerHidden = spoilers.isHiddenMoviesHidden,
         isSpoilerRatingsHidden = spoilers.isHiddenMoviesRatingsHidden,
-        isSpoilerTapToReveal = spoilers.isTapToReveal
-      )
+        isSpoilerTapToReveal = spoilers.isTapToReveal,
+      ),
     )
   }
 }

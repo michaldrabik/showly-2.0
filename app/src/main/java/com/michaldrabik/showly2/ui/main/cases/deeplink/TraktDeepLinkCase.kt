@@ -18,10 +18,13 @@ class TraktDeepLinkCase @Inject constructor(
   private val moviesLocalSource: MoviesLocalDataSource,
   private val showDetailsRepository: ShowDetailsRepository,
   private val movieDetailsRepository: MovieDetailsRepository,
-  private val mappers: Mappers
+  private val mappers: Mappers,
 ) {
 
-  suspend fun findById(traktSlug: IdSlug, type: String) = when (type) {
+  suspend fun findById(
+    traktSlug: IdSlug,
+    type: String,
+  ) = when (type) {
     TRAKT_TYPE_TV -> {
       val localShow = showDetailsRepository.find(traktSlug)
       if (localShow != null) {

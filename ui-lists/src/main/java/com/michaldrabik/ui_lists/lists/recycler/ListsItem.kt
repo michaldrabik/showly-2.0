@@ -10,5 +10,5 @@ data class ListsItem(
   val list: CustomList,
   val images: List<ListsItemImage>,
   val sortOrder: Pair<SortOrder, SortType>,
-  val dateFormat: DateTimeFormatter? = null
+  val dateFormat: DateTimeFormatter? = null,
 )

@@ -65,15 +65,18 @@ class ProgressMainViewModel @Inject constructor(
     searchQueryState.value = searchQuery ?: ""
   }
 
-  fun onEpisodeDetails(show: Show, episode: Episode) {
+  fun onEpisodeDetails(
+    show: Show,
+    episode: Episode,
+  ) {
     viewModelScope.launch {
       val isWatched = episodesCase.isWatched(show, episode)
       eventChannel.send(
         OpenEpisodeDetails(
           show = show,
           episode = episode,
-          isWatched = isWatched
-        )
+          isWatched = isWatched,
+        ),
       )
     }
   }
@@ -86,7 +89,10 @@ class ProgressMainViewModel @Inject constructor(
     calendarModeState.value = calendarMode
   }
 
-  fun setWatchedEpisode(bundle: EpisodeBundle, customDate: ZonedDateTime? = null) {
+  fun setWatchedEpisode(
+    bundle: EpisodeBundle,
+    customDate: ZonedDateTime? = null,
+  ) {
     viewModelScope.launch {
       if (!bundle.episode.hasAired(bundle.season)) {
         messageChannel.send(MessageEvent.Info(R.string.errorEpisodeNotAired))
@@ -109,18 +115,18 @@ class ProgressMainViewModel @Inject constructor(
     searchQueryState,
     calendarModeState,
     scrollState,
-    syncingState
+    syncingState,
   ) { s1, s2, s3, s4, s5 ->
     ProgressMainUiState(
       timestamp = s1,
       searchQuery = s2,
       calendarMode = s3,
       resetScroll = s4,
-      isSyncing = s5
+      isSyncing = s5,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = ProgressMainUiState()
+    initialValue = ProgressMainUiState(),
   )
 }

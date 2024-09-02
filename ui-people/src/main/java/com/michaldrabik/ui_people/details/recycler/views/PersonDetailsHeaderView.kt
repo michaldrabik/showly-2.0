@@ -24,7 +24,10 @@ class PersonDetailsHeaderView : FrameLayout {
 
   fun bind(item: PersonDetailsItem.CreditsHeader) {
     binding.viewPersonDetailsHeader.text =
-      if (item.year != null) item.year.toString()
-      else context.getString(R.string.textMovieStatusInProduction)
+      if (item.year != null) {
+        item.year.toString()
+      } else {
+        context.getString(R.string.textMovieStatusInProduction)
+      }
   }
 }

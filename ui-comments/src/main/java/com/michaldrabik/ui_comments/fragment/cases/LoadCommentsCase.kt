@@ -14,10 +14,13 @@ import javax.inject.Inject
 class LoadCommentsCase @Inject constructor(
   private val dispatchers: CoroutineDispatchers,
   private val commentsRepository: CommentsRepository,
-  private val userManager: UserTraktManager
+  private val userManager: UserTraktManager,
 ) {
 
-  suspend fun loadComments(id: IdTrakt, mode: Mode): List<Comment> =
+  suspend fun loadComments(
+    id: IdTrakt,
+    mode: Mode,
+  ): List<Comment> =
     withContext(dispatchers.IO) {
       val isSignedIn = userManager.isAuthorized()
       val username = userManager.getUsername()
@@ -25,7 +28,7 @@ class LoadCommentsCase @Inject constructor(
         .map {
           it.copy(
             isSignedIn = isSignedIn,
-            isMe = it.user.username == username
+            isMe = it.user.username == username,
           )
         }
         .partition { it.isMe }

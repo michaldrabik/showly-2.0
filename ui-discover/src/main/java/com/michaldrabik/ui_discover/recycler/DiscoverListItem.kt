@@ -11,5 +11,5 @@ data class DiscoverListItem(
   override var isLoading: Boolean = false,
   val isFollowed: Boolean = false,
   val isWatchlist: Boolean = false,
-  val translation: Translation? = null
+  val translation: Translation? = null,
 ) : ListItem

@@ -35,12 +35,15 @@ class ShowDetailsRelatedFragment : BaseFragment<ShowDetailsRelatedViewModel>(R.l
 
   private var relatedAdapter: RelatedShowAdapter? = null
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
     launchAndRepeatStarted(
       { parentViewModel.parentShowState.collect { it?.let { viewModel.initRelatedShows(it) } } },
-      { viewModel.uiState.collect { render(it) } }
+      { viewModel.uiState.collect { render(it) } },
     )
   }
 
@@ -48,7 +51,7 @@ class ShowDetailsRelatedFragment : BaseFragment<ShowDetailsRelatedViewModel>(R.l
     relatedAdapter = RelatedShowAdapter(
       itemClickListener = ::openDetails,
       itemLongClickListener = ::openContextMenu,
-      missingImageListener = viewModel::loadMissingImage
+      missingImageListener = viewModel::loadMissingImage,
     )
     binding.showDetailsRelatedRecycler.apply {
       setHasFixedSize(true)

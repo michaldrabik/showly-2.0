@@ -61,7 +61,10 @@ class CommentView : ConstraintLayout {
   private lateinit var comment: Comment
 
   @SuppressLint("SetTextI18n", "DefaultLocale")
-  fun bind(comment: Comment, dateFormat: DateTimeFormatter?) {
+  fun bind(
+    comment: Comment,
+    dateFormat: DateTimeFormatter?,
+  ) {
     clear()
     this.comment = comment
 

@@ -16,7 +16,7 @@ data class ShowDetailsUiState(
   val ratingState: RatingState? = null,
   val translation: Translation? = null,
   val meta: ShowDetailsMeta? = null,
-  val spoilers: SpoilersSettings? = null
+  val spoilers: SpoilersSettings? = null,
 ) {
 
   data class FollowedState(
@@ -30,8 +30,11 @@ data class ShowDetailsUiState(
 
     companion object {
       fun idle() = FollowedState(isMyShows = false, isWatchlist = false, isHidden = false, withAnimation = true)
+
       fun inMyShows() = FollowedState(isMyShows = true, isWatchlist = false, isHidden = false, withAnimation = true)
+
       fun inWatchlist() = FollowedState(isMyShows = false, isWatchlist = true, isHidden = false, withAnimation = true)
+
       fun inHidden() = FollowedState(isMyShows = false, isWatchlist = false, isHidden = true, withAnimation = true)
     }
   }

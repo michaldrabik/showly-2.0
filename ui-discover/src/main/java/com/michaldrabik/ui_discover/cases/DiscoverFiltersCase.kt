@@ -27,7 +27,7 @@ class DiscoverFiltersCase @Inject constructor(
         hideAnticipated = !settings.showAnticipatedShows,
         hideCollection = !settings.showCollectionShows,
         genres = settings.discoverFilterGenres.toList(),
-        networks = settings.discoverFilterNetworks.toList()
+        networks = settings.discoverFilterNetworks.toList(),
       )
     }
 
@@ -46,8 +46,8 @@ class DiscoverFiltersCase @Inject constructor(
                 discoverFilterGenres = initial.genres,
                 discoverFilterNetworks = initial.networks,
                 showAnticipatedShows = !initial.hideAnticipated,
-                showCollectionShows = !initial.hideCollection
-              )
+                showCollectionShows = !initial.hideCollection,
+              ),
             )
           }
         }
@@ -61,7 +61,7 @@ class DiscoverFiltersCase @Inject constructor(
     withContext(dispatchers.IO) {
       val settings = settingsRepository.load()
       settingsRepository.update(
-        settings.copy(showAnticipatedShows = !settings.showAnticipatedShows)
+        settings.copy(showAnticipatedShows = !settings.showAnticipatedShows),
       )
     }
   }
@@ -70,7 +70,7 @@ class DiscoverFiltersCase @Inject constructor(
     withContext(dispatchers.IO) {
       val settings = settingsRepository.load()
       settingsRepository.update(
-        settings.copy(showCollectionShows = !settings.showCollectionShows)
+        settings.copy(showCollectionShows = !settings.showCollectionShows),
       )
     }
   }

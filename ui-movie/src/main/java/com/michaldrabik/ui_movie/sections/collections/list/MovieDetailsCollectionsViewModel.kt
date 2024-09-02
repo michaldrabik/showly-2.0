@@ -73,15 +73,15 @@ class MovieDetailsCollectionsViewModel @Inject constructor(
 
   val uiState = combine(
     loadingState,
-    movieCollectionState
+    movieCollectionState,
   ) { s1, s2 ->
     MovieDetailsCollectionsUiState(
       isLoading = s1,
-      collections = s2
+      collections = s2,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = MovieDetailsCollectionsUiState()
+    initialValue = MovieDetailsCollectionsUiState(),
   )
 }

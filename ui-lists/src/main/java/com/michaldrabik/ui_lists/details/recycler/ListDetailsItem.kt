@@ -28,7 +28,7 @@ data class ListDetailsItem(
   val isWatchlist: Boolean,
   val listedAt: ZonedDateTime,
   val sortOrder: SortOrder,
-  val spoilers: SpoilersSettings
+  val spoilers: SpoilersSettings,
 ) {
 
   fun getTitleNoThe(): String {

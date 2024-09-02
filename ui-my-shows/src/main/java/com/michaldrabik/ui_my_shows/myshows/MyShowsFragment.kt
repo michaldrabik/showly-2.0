@@ -75,7 +75,10 @@ class MyShowsFragment :
   private var isSearching = false
   private val tabletGridSpanSize by lazy { settings.tabletGridSpanSize }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupStatusBar()
     setupRecycler()
@@ -83,7 +86,7 @@ class MyShowsFragment :
     launchAndRepeatStarted(
       { parentViewModel.uiState.collect { viewModel.onParentState(it) } },
       { viewModel.uiState.collect { render(it) } },
-      doAfterLaunch = { viewModel.loadShows() }
+      doAfterLaunch = { viewModel.loadShows() },
     )
   }
 
@@ -102,7 +105,7 @@ class MyShowsFragment :
       listChangeListener = {
         layoutManager?.scrollToPosition(0)
         (requireParentFragment() as FollowedShowsFragment).resetTranslations()
-      }
+      },
     ).apply {
       stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
     }

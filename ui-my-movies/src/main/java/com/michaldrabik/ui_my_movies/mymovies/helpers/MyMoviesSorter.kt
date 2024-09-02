@@ -17,41 +17,49 @@ import javax.inject.Singleton
 @Singleton
 class MyMoviesSorter @Inject constructor() {
 
-  fun sort(sortOrder: SortOrder, sortType: SortType) = when (sortType) {
+  fun sort(
+    sortOrder: SortOrder,
+    sortType: SortType,
+  ) = when (sortType) {
     ASCENDING -> sortAscending(sortOrder)
     DESCENDING -> sortDescending(sortOrder)
   }
 
-  private fun sortAscending(sortOrder: SortOrder) = when (sortOrder) {
-    NAME -> compareBy { getTitle(it) }
-    RATING -> compareBy { it.movie.rating }
-    USER_RATING ->
-      compareByDescending<MyMoviesItem> { it.userRating != null }
-        .thenBy { it.userRating }
-        .thenBy { getTitle(it) }
-    DATE_ADDED -> compareBy { it.movie.updatedAt }
-    RUNTIME -> compareBy { it.movie.runtime }
-    NEWEST -> compareBy<MyMoviesItem> { it.movie.year }.thenBy { it.movie.released }
-    else -> throw IllegalStateException("Invalid sort order")
-  }
+  private fun sortAscending(sortOrder: SortOrder) =
+    when (sortOrder) {
+      NAME -> compareBy { getTitle(it) }
+      RATING -> compareBy { it.movie.rating }
+      USER_RATING ->
+        compareByDescending<MyMoviesItem> { it.userRating != null }
+          .thenBy { it.userRating }
+          .thenBy { getTitle(it) }
+      DATE_ADDED -> compareBy { it.movie.updatedAt }
+      RUNTIME -> compareBy { it.movie.runtime }
+      NEWEST -> compareBy<MyMoviesItem> { it.movie.year }.thenBy { it.movie.released }
+      else -> throw IllegalStateException("Invalid sort order")
+    }
 
-  private fun sortDescending(sortOrder: SortOrder) = when (sortOrder) {
-    NAME -> compareByDescending { getTitle(it) }
-    RATING -> compareByDescending { it.movie.rating }
-    USER_RATING ->
-      compareByDescending<MyMoviesItem> { it.userRating != null }
-        .thenByDescending { it.userRating }
-        .thenBy { getTitle(it) }
-    DATE_ADDED -> compareByDescending { it.movie.updatedAt }
-    RUNTIME -> compareByDescending { it.movie.runtime }
-    NEWEST -> compareByDescending<MyMoviesItem> { it.movie.year }.thenByDescending { it.movie.released }
-    else -> throw IllegalStateException("Invalid sort order")
-  }
+  private fun sortDescending(sortOrder: SortOrder) =
+    when (sortOrder) {
+      NAME -> compareByDescending { getTitle(it) }
+      RATING -> compareByDescending { it.movie.rating }
+      USER_RATING ->
+        compareByDescending<MyMoviesItem> { it.userRating != null }
+          .thenByDescending { it.userRating }
+          .thenBy { getTitle(it) }
+      DATE_ADDED -> compareByDescending { it.movie.updatedAt }
+      RUNTIME -> compareByDescending { it.movie.runtime }
+      NEWEST -> compareByDescending<MyMoviesItem> { it.movie.year }.thenByDescending { it.movie.released }
+      else -> throw IllegalStateException("Invalid sort order")
+    }
 
   private fun getTitle(item: MyMoviesItem): String {
     val translatedTitle =
-      if (item.translation?.hasTitle == true) item.translation.title
-      else item.movie.titleNoThe
+      if (item.translation?.hasTitle == true) {
+        item.translation.title
+      } else {
+        item.movie.titleNoThe
+      }
     return translatedTitle.uppercase()
   }
 }

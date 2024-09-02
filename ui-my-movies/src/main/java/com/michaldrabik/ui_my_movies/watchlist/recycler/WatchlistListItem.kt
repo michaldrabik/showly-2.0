@@ -20,10 +20,10 @@ sealed class WatchlistListItem(
     val sortType: SortType,
     val isUpcoming: Boolean,
   ) : WatchlistListItem(
-    movie = Movie.EMPTY,
-    image = Image.createUnknown(POSTER),
-    isLoading = false
-  )
+      movie = Movie.EMPTY,
+      image = Image.createUnknown(POSTER),
+      isLoading = false,
+    )
 
   data class MovieItem(
     override val movie: Movie,
@@ -34,8 +34,8 @@ sealed class WatchlistListItem(
     val dateFormat: DateTimeFormatter? = null,
     val fullDateFormat: DateTimeFormatter? = null,
   ) : WatchlistListItem(
-    movie = movie,
-    image = image,
-    isLoading = isLoading
-  )
+      movie = movie,
+      image = image,
+      isLoading = isLoading,
+    )
 }

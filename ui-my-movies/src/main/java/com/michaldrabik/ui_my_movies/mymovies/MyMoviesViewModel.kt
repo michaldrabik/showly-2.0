@@ -97,7 +97,7 @@ class MyMoviesViewModel @Inject constructor(
           type = POSTER,
           userRating = ratings[it.ids.trakt],
           sortOrder = sortOrder.first,
-          spoilers = spoilers
+          spoilers = spoilers,
         )
       }.awaitAll()
 
@@ -105,7 +105,7 @@ class MyMoviesViewModel @Inject constructor(
         allMovies = movies,
         sortOrder = sortOrder,
         genres = genresFilter.map { it.slug },
-        searchQuery = searchQuery
+        searchQuery = searchQuery,
       )
       val recentMovies = if (settings.myRecentsAmount > 0) {
         loadMoviesCase.loadRecentMovies().map {
@@ -116,7 +116,7 @@ class MyMoviesViewModel @Inject constructor(
             type = ImageType.FANART,
             userRating = ratings[it.ids.trakt],
             sortOrder = sortOrder.first,
-            spoilers = spoilers
+            spoilers = spoilers,
           )
         }.awaitAll()
       } else {
@@ -137,8 +137,8 @@ class MyMoviesViewModel @Inject constructor(
               section = ALL,
               itemCount = allMovies.count(),
               sortOrder = sortOrder,
-              genres = genresFilter
-            )
+              genres = genresFilter,
+            ),
           )
           addAll(allMovies)
         }
@@ -150,14 +150,20 @@ class MyMoviesViewModel @Inject constructor(
     }
   }
 
-  fun setSortOrder(order: SortOrder, type: SortType) {
+  fun setSortOrder(
+    order: SortOrder,
+    type: SortType,
+  ) {
     viewModelScope.launch {
       sortingCase.setSortOrder(order, type)
       loadMovies(notifyListsUpdate = true)
     }
   }
 
-  fun loadMissingImage(item: MyMoviesItem, force: Boolean) {
+  fun loadMissingImage(
+    item: MyMoviesItem,
+    force: Boolean,
+  ) {
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
       try {
@@ -212,8 +218,8 @@ class MyMoviesViewModel @Inject constructor(
       spoilers = MyMoviesItem.Spoilers(
         isSpoilerHidden = spoilers.isMyMoviesHidden,
         isSpoilerRatingsHidden = spoilers.isMyMoviesRatingsHidden,
-        isSpoilerTapToReveal = spoilers.isTapToReveal
-      )
+        isSpoilerTapToReveal = spoilers.isTapToReveal,
+      ),
     )
   }
 
@@ -230,17 +236,17 @@ class MyMoviesViewModel @Inject constructor(
     itemsState,
     itemsUpdateState,
     viewModeState,
-    showEmptyViewState
+    showEmptyViewState,
   ) { s1, s2, s3, s4 ->
     MyMoviesUiState(
       items = s1,
       resetScroll = s2,
       viewMode = s3,
-      showEmptyView = s4
+      showEmptyView = s4,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = MyMoviesUiState()
+    initialValue = MyMoviesUiState(),
   )
 }

@@ -71,14 +71,17 @@ class FollowedShowsFragment :
     }
   }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
     setupPager()
     setupStatusBar()
 
     launchAndRepeatStarted(
-      { viewModel.uiState.collect { render(it) } }
+      { viewModel.uiState.collect { render(it) } },
     )
 
     setFragmentResultListener(REQUEST_MY_SHOWS_FILTERS) { _, _ ->
@@ -278,7 +281,7 @@ class FollowedShowsFragment :
         followedShowsTabs,
         followedShowsModeTabs,
         followedShowsIcons,
-        followedShowsSearchLocalView
+        followedShowsSearchLocalView,
       ).forEach {
         it.animate().translationY(0F).setDuration(duration).add(animations)?.start()
       }
@@ -303,14 +306,19 @@ class FollowedShowsFragment :
           {
             childFragmentManager.fragments.forEach { (it as? OnScrollResetListener)?.onScrollReset() }
           },
-          225L
+          225L,
         )
       }
 
       currentPage = position
     }
 
-    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) = Unit
+    override fun onPageScrolled(
+      position: Int,
+      positionOffset: Float,
+      positionOffsetPixels: Int,
+    ) = Unit
+
     override fun onPageScrollStateChanged(state: Int) = Unit
   }
 }

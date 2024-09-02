@@ -33,7 +33,8 @@ class WelcomeLanguageView : FrameLayout {
   @SuppressLint("SetTextI18n")
   fun setLanguage(appLanguage: AppLanguage) {
     // This text will always be English.
-    binding.viewWelcomeLanguageMessage.text = "It seems like your device\'s language is ${appLanguage.displayNameRaw}.\n" +
+    binding.viewWelcomeLanguageMessage.text =
+      "It seems like your device\'s language is ${appLanguage.displayNameRaw}.\n" +
       "Would you like to use it in Showly app?"
   }
 }

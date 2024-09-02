@@ -26,37 +26,40 @@ class MyShowsLoadShowsCase @Inject constructor(
   private val localSource: LocalDataSource,
 ) {
 
-  suspend fun loadAllShows() = withContext(dispatchers.IO) {
-    showsRepository.myShows.loadAll()
-  }
+  suspend fun loadAllShows() =
+    withContext(dispatchers.IO) {
+      showsRepository.myShows.loadAll()
+    }
 
-  suspend fun loadRecentShows(): List<Show> = withContext(dispatchers.IO) {
-    val amount = settingsRepository.load().myRecentsAmount
-    showsRepository.myShows.loadAllRecent(amount)
-  }
+  suspend fun loadRecentShows(): List<Show> =
+    withContext(dispatchers.IO) {
+      val amount = settingsRepository.load().myRecentsAmount
+      showsRepository.myShows.loadAllRecent(amount)
+    }
 
   suspend fun loadSeasonsForShows(
     traktIds: List<Long>,
-    buffer: MutableList<Season> = mutableListOf()
-  ): List<Season> = withContext(dispatchers.IO) {
-    val batch = traktIds.take(500)
-    if (batch.isEmpty()) {
-      return@withContext buffer
+    buffer: MutableList<Season> = mutableListOf(),
+  ): List<Season> =
+    withContext(dispatchers.IO) {
+      val batch = traktIds.take(500)
+      if (batch.isEmpty()) {
+        return@withContext buffer
+      }
+
+      val seasons = localSource.seasons.getAllByShowsIds(batch)
+        .filter { it.seasonNumber != 0 }
+      buffer.addAll(seasons)
+
+      loadSeasonsForShows(traktIds.filter { it !in batch }, buffer)
     }
-
-    val seasons = localSource.seasons.getAllByShowsIds(batch)
-      .filter { it.seasonNumber != 0 }
-    buffer.addAll(seasons)
-
-    loadSeasonsForShows(traktIds.filter { it !in batch }, buffer)
-  }
 
   fun filterSectionShows(
     allShows: List<MyShowsItem>,
     allSeasons: List<Season>,
     searchQuery: String? = null,
     networks: List<String>,
-    genres: List<String>
+    genres: List<String>,
   ): List<MyShowsItem> {
     val shows = allShows
       .filter { showItem ->
@@ -85,18 +88,19 @@ class MyShowsLoadShowsCase @Inject constructor(
       .sortedWith(
         sorter.sort(
           sortOrder = settingsRepository.sorting.myShowsAllSortOrder,
-          sortType = settingsRepository.sorting.myShowsAllSortType
-        )
+          sortType = settingsRepository.sorting.myShowsAllSortType,
+        ),
       )
   }
 
-  private fun List<MyShowsItem>.filterByQuery(query: String?) = when {
-    query.isNullOrBlank() -> this
-    else -> this.filter {
-      it.show.title.contains(query, true) ||
-        it.translation?.title?.contains(query, true) == true
+  private fun List<MyShowsItem>.filterByQuery(query: String?) =
+    when {
+      query.isNullOrBlank() -> this
+      else -> this.filter {
+        it.show.title.contains(query, true) ||
+          it.translation?.title?.contains(query, true) == true
+      }
     }
-  }
 
   private fun List<MyShowsItem>.filterByNetwork(networks: List<String>) =
     filter { networks.isEmpty() || it.show.network in networks }

@@ -24,7 +24,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
 @AndroidEntryPoint
-class ShowDetailsNextEpisodeFragment : BaseFragment<ShowDetailsNextEpisodeViewModel>(R.layout.fragment_show_details_next_episode) {
+class ShowDetailsNextEpisodeFragment : BaseFragment<ShowDetailsNextEpisodeViewModel>(
+  R.layout.fragment_show_details_next_episode,
+) {
 
   override val navigationId = R.id.showDetailsFragment
   private val binding by viewBinding(FragmentShowDetailsNextEpisodeBinding::bind)
@@ -32,11 +34,14 @@ class ShowDetailsNextEpisodeFragment : BaseFragment<ShowDetailsNextEpisodeViewMo
   private val parentViewModel by viewModels<ShowDetailsViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<ShowDetailsNextEpisodeViewModel>()
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     launchAndRepeatStarted(
       { parentViewModel.parentShowState.collect { it?.let { viewModel.loadNextEpisode(it) } } },
-      { viewModel.uiState.collect { render(it) } }
+      { viewModel.uiState.collect { render(it) } },
     )
   }
 
@@ -59,7 +64,7 @@ class ShowDetailsNextEpisodeFragment : BaseFragment<ShowDetailsNextEpisodeViewMo
                     getString(R.string.textEpisodeTitle),
                     episode.season,
                     episode.number,
-                    it.toString()
+                    it.toString(),
                   )
                 }
                 view.isClickable = false
@@ -72,7 +77,7 @@ class ShowDetailsNextEpisodeFragment : BaseFragment<ShowDetailsNextEpisodeViewMo
             getString(R.string.textEpisodeTitle),
             episode.season,
             episode.number,
-            episodeTitle
+            episodeTitle,
           )
 
           episode.firstAired?.let { date ->
@@ -96,7 +101,7 @@ class ShowDetailsNextEpisodeFragment : BaseFragment<ShowDetailsNextEpisodeViewMo
       episode = episode,
       seasonEpisodesIds = null,
       isWatched = episodeBundle.isWatched,
-      showTabs = false
+      showTabs = false,
     )
     navigateToSafe(R.id.actionShowDetailsFragmentEpisodeDetails, bundle)
   }

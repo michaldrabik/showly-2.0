@@ -79,7 +79,7 @@ class ListDetailsShowItemView : ListDetailsItemView {
       }
       listDetailsShowRoot.setOutboundRipple(
         size = (context.dimenToPx(R.dimen.collectionItemRippleSpace)).toFloat(),
-        corner = context.dimenToPx(R.dimen.mediaTileCorner).toFloat()
+        corner = context.dimenToPx(R.dimen.mediaTileCorner).toFloat(),
       )
     }
   }
@@ -98,15 +98,21 @@ class ListDetailsShowItemView : ListDetailsItemView {
       listDetailsShowProgress.visibleIf(item.isLoading)
 
       listDetailsShowTitle.text =
-        if (item.translation?.title.isNullOrBlank()) show.title
-        else item.translation?.title
+        if (item.translation?.title.isNullOrBlank()) {
+          show.title
+        } else {
+          item.translation?.title
+        }
 
       bindDescription(item, show)
       bindRating(item, show)
 
       listDetailsShowHeader.text =
-        if (show.year > 0) context.getString(R.string.textNetwork, show.year.toString(), show.network)
-        else String.format("%s", show.network)
+        if (show.year > 0) {
+          context.getString(R.string.textNetwork, show.year.toString(), show.network)
+        } else {
+          String.format("%s", show.network)
+        }
 
       listDetailsShowUserRating.text = String.format(ENGLISH, "%d", item.userRating)
 

@@ -55,7 +55,10 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
 
   private var galleryAdapter: ArtGalleryAdapter? = null
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     if (type != POSTER) {
       requireActivity().requestedOrientation = SCREEN_ORIENTATION_FULL_USER
@@ -114,7 +117,7 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
         image?.fullFileUrl?.let { openWebUrl(it) }
       }
       galleryAdapter = ArtGalleryAdapter(
-        onItemClickListener = { artGalleryPager.nextPage() }
+        onItemClickListener = { artGalleryPager.nextPage() },
       )
       artGalleryPager.run {
         adapter = galleryAdapter

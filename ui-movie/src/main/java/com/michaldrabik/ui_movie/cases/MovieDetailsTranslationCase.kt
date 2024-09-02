@@ -12,14 +12,15 @@ import javax.inject.Inject
 @ViewModelScoped
 class MovieDetailsTranslationCase @Inject constructor(
   private val dispatchers: CoroutineDispatchers,
-  private val translationsRepository: TranslationsRepository
+  private val translationsRepository: TranslationsRepository,
 ) {
 
-  suspend fun loadTranslation(movie: Movie): Translation? = withContext(dispatchers.IO) {
-    val language = translationsRepository.getLanguage()
-    if (language == DEFAULT_LANGUAGE) {
-      return@withContext null
+  suspend fun loadTranslation(movie: Movie): Translation? =
+    withContext(dispatchers.IO) {
+      val language = translationsRepository.getLanguage()
+      if (language == DEFAULT_LANGUAGE) {
+        return@withContext null
+      }
+      translationsRepository.loadTranslation(movie, language)
     }
-    translationsRepository.loadTranslation(movie, language)
-  }
 }

@@ -7,5 +7,5 @@ data class QuickSetupListItem(
   val episode: Episode,
   val season: Season,
   val isHeader: Boolean = false,
-  val isChecked: Boolean = false
+  val isChecked: Boolean = false,
 )

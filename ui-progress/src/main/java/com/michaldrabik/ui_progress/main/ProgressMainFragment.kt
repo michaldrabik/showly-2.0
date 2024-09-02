@@ -87,7 +87,10 @@ class ProgressMainFragment :
     }
   }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
     setupPager()
@@ -97,7 +100,7 @@ class ProgressMainFragment :
       { viewModel.uiState.collect { render(it) } },
       { viewModel.messageFlow.collect { showSnack(it) } },
       { viewModel.eventFlow.collect { handleEvent(it) } },
-      doAfterLaunch = { viewModel.loadProgress() }
+      doAfterLaunch = { viewModel.loadProgress() },
     )
   }
 
@@ -183,7 +186,12 @@ class ProgressMainFragment :
       progressMainRoot.doOnApplyWindowInsets { _, insets, _, _ ->
         val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
         val statusBarSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top + tabletOffset
-        val progressTabsMargin = if (moviesEnabled) R.dimen.progressSearchViewPadding else R.dimen.progressSearchViewPaddingNoModes
+        val progressTabsMargin = if (moviesEnabled) {
+          R.dimen.progressSearchViewPadding
+        } else {
+          R.dimen.progressSearchViewPaddingNoModes
+        }
+
         val progressMainSearchLocalMargin =
           if (moviesEnabled) R.dimen.progressSearchLocalViewPadding else R.dimen.progressSearchLocalViewPaddingNoModes
         (progressMainSearchView.layoutParams as ViewGroup.MarginLayoutParams)
@@ -275,7 +283,6 @@ class ProgressMainFragment :
   }
 
   fun openDateSelectionDialog(episodeBundle: EpisodeBundle) {
-
     fun openRateDialogIfNeeded(customDate: ZonedDateTime? = null) {
       viewModel.setWatchedEpisode(episodeBundle, customDate)
     }
@@ -350,7 +357,7 @@ class ProgressMainFragment :
         progressMainTabs,
         progressMainPagerModeTabs,
         progressMainSideIcons,
-        progressMainSearchLocalView
+        progressMainSearchLocalView,
       ).forEach {
         it.animate().translationY(0F).setDuration(duration).add(animations)?.start()
       }
@@ -375,7 +382,7 @@ class ProgressMainFragment :
           episode = event.episode,
           seasonEpisodesIds = null,
           isWatched = event.isWatched,
-          showTabs = true
+          showTabs = true,
         )
         navigateToSafe(R.id.actionProgressFragmentToEpisodeDetails, bundle)
       }
@@ -394,7 +401,12 @@ class ProgressMainFragment :
       currentPage = position
     }
 
-    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) = Unit
+    override fun onPageScrolled(
+      position: Int,
+      positionOffset: Float,
+      positionOffsetPixels: Int,
+    ) = Unit
+
     override fun onPageScrollStateChanged(state: Int) = Unit
   }
 }

@@ -25,28 +25,29 @@ class ShowDetailsRatingSpoilersCase @Inject constructor(
   suspend fun hideSpoilerRatings(
     show: Show,
     ratings: Ratings,
-  ): Ratings = withContext(dispatchers.IO) {
-    val spoilers = settingsSpoilersRepository.getAll()
+  ): Ratings =
+    withContext(dispatchers.IO) {
+      val spoilers = settingsSpoilersRepository.getAll()
 
-    val isMy = async { myShowsCase.isMyShows(show) }
-    val isWatchlist = async { watchlistCase.isWatchlist(show) }
-    val isHidden = async { hiddenCase.isHidden(show) }
+      val isMy = async { myShowsCase.isMyShows(show) }
+      val isWatchlist = async { watchlistCase.isWatchlist(show) }
+      val isHidden = async { hiddenCase.isHidden(show) }
 
-    val state = FollowedState(
-      isMyShows = isMy.await(),
-      isWatchlist = isWatchlist.await(),
-      isHidden = isHidden.await(),
-      withAnimation = false
-    )
+      val state = FollowedState(
+        isMyShows = isMy.await(),
+        isWatchlist = isWatchlist.await(),
+        isHidden = isHidden.await(),
+        withAnimation = false,
+      )
 
-    val isMyHidden = spoilers.isMyShowsRatingsHidden && state.isMyShows
-    val isWatchlistHidden = spoilers.isWatchlistShowsRatingsHidden && state.isWatchlist
-    val isHiddenHidden = spoilers.isHiddenShowsRatingsHidden && state.isHidden
-    val isNotCollectedHidden = spoilers.isNotCollectedShowsRatingsHidden && !state.isInCollection()
+      val isMyHidden = spoilers.isMyShowsRatingsHidden && state.isMyShows
+      val isWatchlistHidden = spoilers.isWatchlistShowsRatingsHidden && state.isWatchlist
+      val isHiddenHidden = spoilers.isHiddenShowsRatingsHidden && state.isHidden
+      val isNotCollectedHidden = spoilers.isNotCollectedShowsRatingsHidden && !state.isInCollection()
 
-    return@withContext ratings.copy(
-      isHidden = isMyHidden || isWatchlistHidden || isHiddenHidden || isNotCollectedHidden,
-      isTapToReveal = settingsSpoilersRepository.isTapToReveal
-    )
-  }
+      return@withContext ratings.copy(
+        isHidden = isMyHidden || isWatchlistHidden || isHiddenHidden || isNotCollectedHidden,
+        isTapToReveal = settingsSpoilersRepository.isTapToReveal,
+      )
+    }
 }

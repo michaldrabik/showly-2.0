@@ -11,10 +11,11 @@ data class PersonCredit(
   val show: Show?,
   val movie: Movie?,
   val image: Image,
-  val translation: Translation?
+  val translation: Translation?,
 ) {
 
   fun requireShow() = show!!
+
   fun requireMovie() = movie!!
 
   val releaseDate: LocalDate?

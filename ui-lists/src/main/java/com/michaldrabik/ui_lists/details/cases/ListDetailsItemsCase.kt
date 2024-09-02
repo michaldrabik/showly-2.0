@@ -73,12 +73,18 @@ class ListDetailsItemsCase @Inject constructor(
       }
 
       val showsTranslationsAsync = async {
-        if (language == Config.DEFAULT_LANGUAGE) emptyMap()
-        else translationsRepository.loadAllShowsLocal(language)
+        if (language == Config.DEFAULT_LANGUAGE) {
+          emptyMap()
+        } else {
+          translationsRepository.loadAllShowsLocal(language)
+        }
       }
       val moviesTranslationsAsync = async {
-        if (language == Config.DEFAULT_LANGUAGE) emptyMap()
-        else translationsRepository.loadAllMoviesLocal(language)
+        if (language == Config.DEFAULT_LANGUAGE) {
+          emptyMap()
+        } else {
+          translationsRepository.loadAllMoviesLocal(language)
+        }
       }
 
       val showsRatingsAsync = async {
@@ -89,7 +95,10 @@ class ListDetailsItemsCase @Inject constructor(
       }
 
       val (shows, movies) = Pair(showsAsync.await(), moviesAsync.await())
-      val (showsTranslations, moviesTranslations) = Pair(showsTranslationsAsync.await(), moviesTranslationsAsync.await())
+      val (showsTranslations, moviesTranslations) = Pair(
+        showsTranslationsAsync.await(),
+        moviesTranslationsAsync.await(),
+      )
       val (showsRatings, moviesRatings) = Pair(showsRatingsAsync.await(), moviesRatingsAsync.await())
 
       val isRankSort = list.sortByLocal == SortOrder.RANK
@@ -115,7 +124,7 @@ class ListDetailsItemsCase @Inject constructor(
                 isRankSort = isRankSort,
                 listedAt = listedAt,
                 sortOrder = list.sortByLocal,
-                spoilers = spoilers
+                spoilers = spoilers,
               )
             }
             MOVIES.type -> {
@@ -136,7 +145,7 @@ class ListDetailsItemsCase @Inject constructor(
                 listedAt = listedAt,
                 moviesEnabled = moviesEnabled,
                 sortOrder = list.sortByLocal,
-                spoilers = spoilers
+                spoilers = spoilers,
               )
             }
             else -> throw IllegalStateException("Unsupported list item type.")
@@ -152,7 +161,7 @@ class ListDetailsItemsCase @Inject constructor(
         items = items.filterNotNull(),
         sort = list.sortByLocal,
         sortHow = list.sortHowLocal,
-        typeFilters = list.filterTypeLocal
+        typeFilters = list.filterTypeLocal,
       )
       Pair(sortedItems, listItems.count())
     }
@@ -166,7 +175,7 @@ class ListDetailsItemsCase @Inject constructor(
     listedAt: ZonedDateTime,
     moviesEnabled: Boolean,
     sortOrder: SortOrder,
-    spoilers: SpoilersSettings
+    spoilers: SpoilersSettings,
   ): ListDetailsItem {
     val image = movieImagesProvider.findCachedImage(movie, ImageType.POSTER)
     return ListDetailsItem(
@@ -186,7 +195,7 @@ class ListDetailsItemsCase @Inject constructor(
       isWatchlist = moviesRepository.watchlistMovies.exists(movie.ids.trakt),
       listedAt = listedAt,
       sortOrder = sortOrder,
-      spoilers = spoilers
+      spoilers = spoilers,
     )
   }
 
@@ -198,7 +207,7 @@ class ListDetailsItemsCase @Inject constructor(
     isRankSort: Boolean,
     listedAt: ZonedDateTime,
     sortOrder: SortOrder,
-    spoilers: SpoilersSettings
+    spoilers: SpoilersSettings,
   ): ListDetailsItem {
     val image = showImagesProvider.findCachedImage(show, ImageType.POSTER)
     return ListDetailsItem(
@@ -218,7 +227,7 @@ class ListDetailsItemsCase @Inject constructor(
       isWatchlist = showsRepository.watchlistShows.exists(show.ids.trakt),
       listedAt = listedAt,
       sortOrder = sortOrder,
-      spoilers = spoilers
+      spoilers = spoilers,
     )
   }
 
@@ -244,7 +253,7 @@ class ListDetailsItemsCase @Inject constructor(
       item.copy(
         isRankDisplayed = sort == SortOrder.RANK,
         rankDisplay = rankDisplay,
-        sortOrder = sort
+        sortOrder = sort,
       )
     }
 

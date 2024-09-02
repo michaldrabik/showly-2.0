@@ -11,7 +11,7 @@ data class Season(
   val firstAired: ZonedDateTime?,
   val overview: String,
   val rating: Float,
-  val episodes: List<Episode>
+  val episodes: List<Episode>,
 ) {
 
   companion object {
@@ -24,7 +24,7 @@ data class Season(
       firstAired = null,
       overview = "",
       rating = 0F,
-      episodes = listOf()
+      episodes = listOf(),
     )
   }
 

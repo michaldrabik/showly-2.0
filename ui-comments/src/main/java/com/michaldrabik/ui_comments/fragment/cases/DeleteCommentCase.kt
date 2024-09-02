@@ -16,7 +16,7 @@ import javax.inject.Inject
 @ViewModelScoped
 class DeleteCommentCase @Inject constructor(
   private val dispatchers: CoroutineDispatchers,
-  private val commentsRepository: CommentsRepository
+  private val commentsRepository: CommentsRepository,
 ) {
 
   suspend fun delete(comment: Comment) {

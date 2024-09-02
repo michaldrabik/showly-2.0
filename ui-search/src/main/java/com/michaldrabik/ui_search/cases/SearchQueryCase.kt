@@ -52,16 +52,22 @@ class SearchQueryCase @Inject constructor(
             val result = SearchResult(
               order = order,
               show = item.show?.let { s -> mappers.show.fromNetwork(s) } ?: Show.EMPTY,
-              movie = item.movie?.let { m -> mappers.movie.fromNetwork(m) } ?: Movie.EMPTY
+              movie = item.movie?.let { m -> mappers.movie.fromNetwork(m) } ?: Movie.EMPTY,
             )
 
             val isFollowed =
-              if (result.isShow) result.traktId in myShowsIds
-              else result.traktId in myMoviesIds
+              if (result.isShow) {
+                result.traktId in myShowsIds
+              } else {
+                result.traktId in myMoviesIds
+              }
 
             val isWatchlist =
-              if (result.isShow) result.traktId in watchlistShowsIds
-              else result.traktId in watchlistMoviesIds
+              if (result.isShow) {
+                result.traktId in watchlistShowsIds
+              } else {
+                result.traktId in watchlistMoviesIds
+              }
 
             val image = loadImage(result)
             val translation = loadTranslation(result)
@@ -75,16 +81,17 @@ class SearchQueryCase @Inject constructor(
               isFollowed = isFollowed,
               isWatchlist = isWatchlist,
               translation = translation,
-              spoilers = spoilers
+              spoilers = spoilers,
             )
           }
         }.awaitAll()
     }
 
-  private suspend fun loadImage(result: SearchResult) = when {
-    result.isShow -> showsImagesProvider.findCachedImage(result.show, ImageType.POSTER)
-    else -> moviesImagesProvider.findCachedImage(result.movie, ImageType.POSTER)
-  }
+  private suspend fun loadImage(result: SearchResult) =
+    when {
+      result.isShow -> showsImagesProvider.findCachedImage(result.show, ImageType.POSTER)
+      else -> moviesImagesProvider.findCachedImage(result.movie, ImageType.POSTER)
+    }
 
   private suspend fun loadTranslation(result: SearchResult): Translation? {
     val language = translationsRepository.getLanguage()

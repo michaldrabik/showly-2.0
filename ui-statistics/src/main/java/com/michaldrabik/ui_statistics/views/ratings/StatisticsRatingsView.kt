@@ -44,7 +44,7 @@ class StatisticsRatingsView : MaterialCardView {
 
   private fun setupRecycler() {
     adapter = StatisticsRatingsAdapter(
-      itemClickListener = { onShowClickListener?.invoke(it) }
+      itemClickListener = { onShowClickListener?.invoke(it) },
     )
     binding.viewRatingsRecycler.apply {
       setHasFixedSize(true)

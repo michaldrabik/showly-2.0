@@ -13,7 +13,11 @@ class ManageListsDividerDecoration(context: Context) : RecyclerView.ItemDecorati
   private var dividerDrawable: Drawable =
     ContextCompat.getDrawable(context, R.drawable.divider_manage_lists)!!
 
-  override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
+  override fun onDraw(
+    c: Canvas,
+    parent: RecyclerView,
+    state: RecyclerView.State,
+  ) {
     super.onDraw(c, parent, state)
     for (i in 0 until parent.childCount) {
       if (i != parent.childCount - 1) {

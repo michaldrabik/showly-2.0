@@ -18,19 +18,21 @@ class SearchTranslationsCase @Inject constructor(
 
   fun getLanguage() = translationsRepository.getLanguage()
 
-  suspend fun loadTranslation(show: Show): Translation? = withContext(dispatchers.IO) {
-    val language = getLanguage()
-    if (language == Config.DEFAULT_LANGUAGE) {
-      return@withContext Translation.EMPTY
+  suspend fun loadTranslation(show: Show): Translation? =
+    withContext(dispatchers.IO) {
+      val language = getLanguage()
+      if (language == Config.DEFAULT_LANGUAGE) {
+        return@withContext Translation.EMPTY
+      }
+      translationsRepository.loadTranslation(show, language)
     }
-    translationsRepository.loadTranslation(show, language)
-  }
 
-  suspend fun loadTranslation(movie: Movie): Translation? = withContext(dispatchers.IO) {
-    val language = getLanguage()
-    if (language == Config.DEFAULT_LANGUAGE) {
-      return@withContext Translation.EMPTY
+  suspend fun loadTranslation(movie: Movie): Translation? =
+    withContext(dispatchers.IO) {
+      val language = getLanguage()
+      if (language == Config.DEFAULT_LANGUAGE) {
+        return@withContext Translation.EMPTY
+      }
+      translationsRepository.loadTranslation(movie, language)
     }
-    translationsRepository.loadTranslation(movie, language)
-  }
 }

@@ -24,10 +24,10 @@ class CalendarMoviesFutureCase @Inject constructor(
   override val grouper: CalendarFutureGrouper,
   override val sorter: CalendarFutureSorter,
 ) : CalendarMoviesItemsCase(
-  dispatchers,
-  moviesRepository,
-  translationsRepository,
-  settingsSpoilersRepository,
-  imagesProvider,
-  dateFormatProvider
-)
+    dispatchers,
+    moviesRepository,
+    translationsRepository,
+    settingsSpoilersRepository,
+    imagesProvider,
+    dateFormatProvider,
+  )

@@ -69,7 +69,10 @@ class CalendarMoviesViewModel @Inject constructor(
     }
   }
 
-  fun findMissingImage(item: CalendarMovieListItem, force: Boolean) {
+  fun findMissingImage(
+    item: CalendarMovieListItem,
+    force: Boolean,
+  ) {
     check(item is CalendarMovieListItem.MovieItem)
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
@@ -106,15 +109,15 @@ class CalendarMoviesViewModel @Inject constructor(
 
   val uiState = combine(
     itemsState,
-    modeState
+    modeState,
   ) { s1, s2 ->
     CalendarMoviesUiState(
       items = s1,
-      mode = s2
+      mode = s2,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = CalendarMoviesUiState()
+    initialValue = CalendarMoviesUiState(),
   )
 }

@@ -46,35 +46,38 @@ class SearchRecentsCaseTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should return recent searches with a limit properly`() = runTest {
-    val limit = 3
-    coEvery { recentSearchDao.getAll(any()) } returns listOf(recentSearch, recentSearch, recentSearch)
+  fun `Should return recent searches with a limit properly`() =
+    runTest {
+      val limit = 3
+      coEvery { recentSearchDao.getAll(any()) } returns listOf(recentSearch, recentSearch, recentSearch)
 
-    val result = SUT.getRecentSearches(limit)
-    assertThat(result).hasSize(limit)
+      val result = SUT.getRecentSearches(limit)
+      assertThat(result).hasSize(limit)
 
-    assertThat(result[0].text).isEqualTo("1")
-    assertThat(result[1].text).isEqualTo("2")
-    assertThat(result[2].text).isEqualTo("3")
+      assertThat(result[0].text).isEqualTo("1")
+      assertThat(result[1].text).isEqualTo("2")
+      assertThat(result[2].text).isEqualTo("3")
 
-    coVerify(exactly = 1) { recentSearchDao.getAll(any()) }
-  }
-
-  @Test
-  fun `Should clear recent searches properly`() = runBlockingTest {
-    SUT.clearRecentSearches()
-    coVerify(exactly = 1) { recentSearchDao.deleteAll() }
-  }
+      coVerify(exactly = 1) { recentSearchDao.getAll(any()) }
+    }
 
   @Test
-  fun `Should save recent searches properly`() = runBlockingTest {
-    val slot = slot<List<RecentSearch>>()
-    coEvery { recentSearchDao.upsert(capture(slot)) } just Runs
+  fun `Should clear recent searches properly`() =
+    runBlockingTest {
+      SUT.clearRecentSearches()
+      coVerify(exactly = 1) { recentSearchDao.deleteAll() }
+    }
 
-    SUT.saveRecentSearch("test")
+  @Test
+  fun `Should save recent searches properly`() =
+    runBlockingTest {
+      val slot = slot<List<RecentSearch>>()
+      coEvery { recentSearchDao.upsert(capture(slot)) } just Runs
 
-    coVerify(exactly = 1) { recentSearchDao.upsert(any()) }
-    assertThat(slot.captured).hasSize(1)
-    assertThat(slot.captured.first().text).contains("test")
-  }
+      SUT.saveRecentSearch("test")
+
+      coVerify(exactly = 1) { recentSearchDao.upsert(any()) }
+      assertThat(slot.captured).hasSize(1)
+      assertThat(slot.captured.first().text).contains("test")
+    }
 }

@@ -76,8 +76,11 @@ class MyShowsViewModel @Inject constructor(
       this.searchQuery != state.searchQuery -> {
         this.searchQuery = state.searchQuery
         val resetScrolls =
-          if (state.searchQuery.isNullOrBlank()) listOf(Type.ALL_SHOWS_ITEM)
-          else emptyList()
+          if (state.searchQuery.isNullOrBlank()) {
+            listOf(Type.ALL_SHOWS_ITEM)
+          } else {
+            emptyList()
+          }
         loadShows(resetScroll = resetScrolls)
       }
     }
@@ -101,7 +104,7 @@ class MyShowsViewModel @Inject constructor(
             type = POSTER,
             userRating = ratings[it.ids.trakt],
             sortOrder = sortOrder,
-            spoilers = spoilers
+            spoilers = spoilers,
           )
         }
         .awaitAll()
@@ -112,7 +115,7 @@ class MyShowsViewModel @Inject constructor(
         allSeasons = seasons,
         searchQuery = searchQuery,
         networks = networks.flatMap { network -> network.channels.map { it } },
-        genres = genres.map { it.slug }
+        genres = genres.map { it.slug },
       )
 
       val recentShows = if (settings.myRecentsAmount > 0) {
@@ -137,8 +140,8 @@ class MyShowsViewModel @Inject constructor(
               itemCount = allShows.count(),
               sortOrder = sortingCase.loadSectionSortOrder(ALL),
               networks = settingsRepository.filters.myShowsNetworks,
-              genres = settingsRepository.filters.myShowsGenres
-            )
+              genres = settingsRepository.filters.myShowsGenres,
+            ),
           )
           addAll(allShows)
         }
@@ -150,14 +153,20 @@ class MyShowsViewModel @Inject constructor(
     }
   }
 
-  fun setSortOrder(sortOrder: SortOrder, sortType: SortType) {
+  fun setSortOrder(
+    sortOrder: SortOrder,
+    sortType: SortType,
+  ) {
     viewModelScope.launch {
       sortingCase.setSectionSortOrder(ALL, sortOrder, sortType)
       loadShows()
     }
   }
 
-  fun loadMissingImage(item: MyShowsItem, force: Boolean) {
+  fun loadMissingImage(
+    item: MyShowsItem,
+    force: Boolean,
+  ) {
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
       try {
@@ -210,8 +219,8 @@ class MyShowsViewModel @Inject constructor(
       spoilers = MyShowsItem.Spoilers(
         isSpoilerHidden = spoilers.isMyShowsHidden,
         isSpoilerRatingsHidden = spoilers.isMyShowsRatingsHidden,
-        isSpoilerTapToReveal = spoilers.isTapToReveal
-      )
+        isSpoilerTapToReveal = spoilers.isTapToReveal,
+      ),
     )
   }
 
@@ -228,17 +237,17 @@ class MyShowsViewModel @Inject constructor(
     itemsState,
     itemsUpdateState,
     viewModeState,
-    showEmptyViewState
+    showEmptyViewState,
   ) { s1, s2, s3, s4 ->
     MyShowsUiState(
       items = s1,
       resetScrollMap = s2,
       viewMode = s3,
-      showEmptyView = s4
+      showEmptyView = s4,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = MyShowsUiState()
+    initialValue = MyShowsUiState(),
   )
 }

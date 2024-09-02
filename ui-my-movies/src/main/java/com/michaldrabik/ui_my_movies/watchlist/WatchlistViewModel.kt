@@ -76,7 +76,10 @@ class WatchlistViewModel @Inject constructor(
     }
   }
 
-  fun setSortOrder(sortOrder: SortOrder, sortType: SortType) {
+  fun setSortOrder(
+    sortOrder: SortOrder,
+    sortType: SortType,
+  ) {
     viewModelScope.launch {
       sortOrderCase.setSortOrder(sortOrder, sortType)
       loadMovies(resetScroll = true)
@@ -90,7 +93,10 @@ class WatchlistViewModel @Inject constructor(
     }
   }
 
-  fun loadMissingImage(item: CollectionListItem, force: Boolean) {
+  fun loadMissingImage(
+    item: CollectionListItem,
+    force: Boolean,
+  ) {
     check(item is MovieItem)
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
@@ -135,17 +141,17 @@ class WatchlistViewModel @Inject constructor(
     itemsState,
     sortOrderState,
     scrollState,
-    viewModeState
+    viewModeState,
   ) { s1, s2, s3, s4 ->
     WatchlistUiState(
       items = s1,
       sortOrder = s2,
       resetScroll = s3,
-      viewMode = s4
+      viewMode = s4,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = WatchlistUiState()
+    initialValue = WatchlistUiState(),
   )
 }

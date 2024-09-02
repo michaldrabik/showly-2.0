@@ -12,19 +12,20 @@ import javax.inject.Inject
 @ViewModelScoped
 class MovieDetailsCollectionImagesCase @Inject constructor(
   private val dispatchers: CoroutineDispatchers,
-  private val movieImagesProvider: MovieImagesProvider
+  private val movieImagesProvider: MovieImagesProvider,
 ) {
 
   suspend fun loadMissingImage(
     item: MovieItem,
-    force: Boolean
-  ): MovieItem = withContext(dispatchers.IO) {
-    try {
-      val image = movieImagesProvider.loadRemoteImage(item.movie, item.image.type, force)
-      return@withContext item.copy(image = image)
-    } catch (error: Throwable) {
-      Timber.w(error)
-      return@withContext item.copy(image = Image.createUnavailable(item.image.type))
+    force: Boolean,
+  ): MovieItem =
+    withContext(dispatchers.IO) {
+      try {
+        val image = movieImagesProvider.loadRemoteImage(item.movie, item.image.type, force)
+        return@withContext item.copy(image = image)
+      } catch (error: Throwable) {
+        Timber.w(error)
+        return@withContext item.copy(image = Image.createUnavailable(item.image.type))
+      }
     }
-  }
 }

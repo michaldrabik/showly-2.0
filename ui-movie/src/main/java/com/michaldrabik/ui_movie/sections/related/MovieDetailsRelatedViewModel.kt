@@ -52,7 +52,7 @@ class MovieDetailsRelatedViewModel @Inject constructor(
             movie = it,
             image = image,
             isFollowed = it.traktId in myMovies,
-            isWatchlist = it.traktId in watchlistMovies
+            isWatchlist = it.traktId in watchlistMovies,
           )
         }
         relatedItemsState.value = related
@@ -67,8 +67,10 @@ class MovieDetailsRelatedViewModel @Inject constructor(
     Timber.d("Loading related movies...")
   }
 
-  fun loadMissingImage(item: RelatedListItem, force: Boolean) {
-
+  fun loadMissingImage(
+    item: RelatedListItem,
+    force: Boolean,
+  ) {
     fun updateItem(new: RelatedListItem) {
       val currentItems = uiState.value.relatedMovies?.toMutableList()
       currentItems?.findReplace(new) { it isSameAs new }
@@ -88,15 +90,15 @@ class MovieDetailsRelatedViewModel @Inject constructor(
 
   val uiState = combine(
     loadingState,
-    relatedItemsState
+    relatedItemsState,
   ) { s1, s2 ->
     MovieDetailsRelatedUiState(
       isLoading = s1,
-      relatedMovies = s2
+      relatedMovies = s2,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = MovieDetailsRelatedUiState()
+    initialValue = MovieDetailsRelatedUiState(),
   )
 }

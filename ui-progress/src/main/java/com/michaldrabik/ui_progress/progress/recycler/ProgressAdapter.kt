@@ -21,8 +21,8 @@ class ProgressAdapter(
   private val missingTranslationListener: (ProgressListItem) -> Unit,
   listChangeListener: () -> Unit,
 ) : BaseAdapter<ProgressListItem>(
-  listChangeListener = listChangeListener
-) {
+    listChangeListener = listChangeListener,
+  ) {
 
   companion object {
     private const val VIEW_TYPE_ITEM = 1
@@ -32,34 +32,39 @@ class ProgressAdapter(
 
   override val asyncDiffer = AsyncListDiffer(this, ProgressItemDiffCallback())
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    when (viewType) {
-      VIEW_TYPE_ITEM -> BaseViewHolder(
-        ProgressItemView(parent.context).apply {
-          itemClickListener = this@ProgressAdapter.itemClickListener
-          itemLongClickListener = this@ProgressAdapter.itemLongClickListener
-          missingImageListener = this@ProgressAdapter.missingImageListener
-          missingTranslationListener = this@ProgressAdapter.missingTranslationListener
-          checkClickListener = this@ProgressAdapter.checkClickListener
-          detailsClickListener = this@ProgressAdapter.detailsClickListener
-        }
-      )
-      VIEW_TYPE_HEADER -> BaseViewHolder(
-        ProgressHeaderView(parent.context).apply {
-          headerClickListener = this@ProgressAdapter.headerClickListener
-        }
-      )
-      VIEW_TYPE_FILTERS -> BaseViewHolder(
-        ProgressFiltersView(parent.context).apply {
-          onSortChipClicked = this@ProgressAdapter.sortChipClickListener
-          upcomingChipClicked = this@ProgressAdapter.upcomingChipClickListener
-          onHoldChipClicked = this@ProgressAdapter.onHoldChipClickListener
-        }
-      )
-      else -> throw IllegalStateException()
-    }
+  override fun onCreateViewHolder(
+    parent: ViewGroup,
+    viewType: Int,
+  ) = when (viewType) {
+    VIEW_TYPE_ITEM -> BaseViewHolder(
+      ProgressItemView(parent.context).apply {
+        itemClickListener = this@ProgressAdapter.itemClickListener
+        itemLongClickListener = this@ProgressAdapter.itemLongClickListener
+        missingImageListener = this@ProgressAdapter.missingImageListener
+        missingTranslationListener = this@ProgressAdapter.missingTranslationListener
+        checkClickListener = this@ProgressAdapter.checkClickListener
+        detailsClickListener = this@ProgressAdapter.detailsClickListener
+      },
+    )
+    VIEW_TYPE_HEADER -> BaseViewHolder(
+      ProgressHeaderView(parent.context).apply {
+        headerClickListener = this@ProgressAdapter.headerClickListener
+      },
+    )
+    VIEW_TYPE_FILTERS -> BaseViewHolder(
+      ProgressFiltersView(parent.context).apply {
+        onSortChipClicked = this@ProgressAdapter.sortChipClickListener
+        upcomingChipClicked = this@ProgressAdapter.upcomingChipClickListener
+        onHoldChipClicked = this@ProgressAdapter.onHoldChipClickListener
+      },
+    )
+    else -> throw IllegalStateException()
+  }
 
-  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+  override fun onBindViewHolder(
+    holder: RecyclerView.ViewHolder,
+    position: Int,
+  ) {
     when (val item = asyncDiffer.currentList[position]) {
       is ProgressListItem.Episode -> (holder.itemView as ProgressItemView).bind(item)
       is ProgressListItem.Header -> (holder.itemView as ProgressHeaderView).bind(item)

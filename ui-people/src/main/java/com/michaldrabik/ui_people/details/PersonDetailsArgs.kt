@@ -7,5 +7,5 @@ import kotlinx.parcelize.Parcelize
 data class PersonDetailsArgs(
   val isExpanded: Boolean = false,
   val firstVisibleItemPosition: Int = 0,
-  val isUpButtonVisible: Boolean = false
+  val isUpButtonVisible: Boolean = false,
 ) : Parcelable

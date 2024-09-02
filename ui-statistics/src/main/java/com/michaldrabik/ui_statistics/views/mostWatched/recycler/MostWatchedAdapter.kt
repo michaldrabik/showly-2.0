@@ -13,14 +13,19 @@ class MostWatchedAdapter(
 
   override val asyncDiffer = AsyncListDiffer(this, MostWatchedItemDiffCallback())
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    BaseViewHolder(
-      StatisticsMostWatchedItemView(parent.context).apply {
-        itemClickListener = this@MostWatchedAdapter.itemClickListener
-      }
-    )
+  override fun onCreateViewHolder(
+    parent: ViewGroup,
+    viewType: Int,
+  ) = BaseViewHolder(
+    StatisticsMostWatchedItemView(parent.context).apply {
+      itemClickListener = this@MostWatchedAdapter.itemClickListener
+    },
+  )
 
-  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+  override fun onBindViewHolder(
+    holder: RecyclerView.ViewHolder,
+    position: Int,
+  ) {
     val item = asyncDiffer.currentList[position]
     (holder.itemView as StatisticsMostWatchedItemView).bind(item)
   }

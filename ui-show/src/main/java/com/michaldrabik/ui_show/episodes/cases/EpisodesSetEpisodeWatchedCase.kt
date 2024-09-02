@@ -24,7 +24,7 @@ class EpisodesSetEpisodeWatchedCase @Inject constructor(
   suspend fun setEpisodeWatched(
     episodeBundle: EpisodeBundle,
     isChecked: Boolean,
-    customDate: ZonedDateTime?
+    customDate: ZonedDateTime?,
   ): Result {
     val (episode, _, show) = episodeBundle
 
@@ -41,7 +41,7 @@ class EpisodesSetEpisodeWatchedCase @Inject constructor(
             episodesIds = listOf(episode.ids.trakt.id),
             showId = show.traktId,
             customDate = customDate,
-            clearProgress = false
+            clearProgress = false,
           )
         }
         return Result.SUCCESS
@@ -53,7 +53,11 @@ class EpisodesSetEpisodeWatchedCase @Inject constructor(
         val traktQuickRemoveEnabled = settingsRepository.load().traktQuickRemoveEnabled
         val isSeasonLocal = seasonsCache.areSeasonsLocal(show.ids.trakt)
 
-        val showRemoveTrakt = userTraktManager.isAuthorized() && traktQuickRemoveEnabled && !isSeasonLocal && isCollection
+        val showRemoveTrakt = userTraktManager.isAuthorized() &&
+          traktQuickRemoveEnabled &&
+          !isSeasonLocal &&
+          isCollection
+
         if (showRemoveTrakt) {
           return Result.REMOVE_FROM_TRAKT
         }
@@ -65,6 +69,6 @@ class EpisodesSetEpisodeWatchedCase @Inject constructor(
 
   enum class Result {
     SUCCESS,
-    REMOVE_FROM_TRAKT
+    REMOVE_FROM_TRAKT,
   }
 }

@@ -208,7 +208,7 @@ class MainActivity :
             R.id.discoverMoviesFragment,
             R.id.followedShowsFragment,
             R.id.followedMoviesFragment,
-            R.id.listsFragment
+            R.id.listsFragment,
             -> {
               bottomMenuView.binding.bottomNavigationView.selectedItemId = R.id.menuProgress
             }
@@ -254,7 +254,10 @@ class MainActivity :
     binding.bottomMenuView.binding.bottomNavigationView.selectedItemId = R.id.menuDiscover
   }
 
-  override fun setMode(mode: Mode, force: Boolean) {
+  override fun setMode(
+    mode: Mode,
+    force: Boolean,
+  ) {
     if (force || viewModel.getMode() != mode) {
       viewModel.setMode(mode)
       val target = when (binding.bottomMenuView.binding.bottomNavigationView.selectedItemId) {
@@ -434,28 +437,34 @@ class MainActivity :
   }
 
   private fun showWhatsNewDialog() {
-    MaterialAlertDialogBuilder(this, R.style.AlertDialog).setBackground(ContextCompat.getDrawable(this, R.drawable.bg_dialog))
+    MaterialAlertDialogBuilder(
+      this,
+      R.style.AlertDialog,
+    ).setBackground(ContextCompat.getDrawable(this, R.drawable.bg_dialog))
       .setView(WhatsNewView(this)).setCancelable(false).setPositiveButton(R.string.textClose) { _, _ -> }
       .setNeutralButton("Twitter") { _, _ -> openWebUrl(Config.TWITTER_URL) }.show()
   }
 
-  private fun getMenuDiscoverAction() = when (viewModel.getMode()) {
-    SHOWS -> R.id.actionNavigateDiscoverFragment
-    MOVIES -> R.id.actionNavigateDiscoverMoviesFragment
-    else -> throw IllegalStateException()
-  }
+  private fun getMenuDiscoverAction() =
+    when (viewModel.getMode()) {
+      SHOWS -> R.id.actionNavigateDiscoverFragment
+      MOVIES -> R.id.actionNavigateDiscoverMoviesFragment
+      else -> throw IllegalStateException()
+    }
 
-  private fun getMenuCollectionAction() = when (viewModel.getMode()) {
-    SHOWS -> R.id.actionNavigateFollowedShowsFragment
-    MOVIES -> R.id.actionNavigateFollowedMoviesFragment
-    else -> throw IllegalStateException()
-  }
+  private fun getMenuCollectionAction() =
+    when (viewModel.getMode()) {
+      SHOWS -> R.id.actionNavigateFollowedShowsFragment
+      MOVIES -> R.id.actionNavigateFollowedMoviesFragment
+      else -> throw IllegalStateException()
+    }
 
-  private fun getMenuProgressAction() = when (viewModel.getMode()) {
-    SHOWS -> R.id.actionNavigateProgressFragment
-    MOVIES -> R.id.actionNavigateProgressMoviesFragment
-    else -> throw IllegalStateException()
-  }
+  private fun getMenuProgressAction() =
+    when (viewModel.getMode()) {
+      SHOWS -> R.id.actionNavigateProgressFragment
+      MOVIES -> R.id.actionNavigateProgressMoviesFragment
+      else -> throw IllegalStateException()
+    }
 
   private fun handleDeepLink(intent: Intent?) {
     deepLinkResolver.findSource(intent)?.let {

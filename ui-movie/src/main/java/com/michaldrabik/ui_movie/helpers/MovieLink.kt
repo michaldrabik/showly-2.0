@@ -9,7 +9,8 @@ enum class MovieLink {
   TMDB,
   METACRITIC,
   ROTTEN,
-  JUST_WATCH;
+  JUST_WATCH,
+  ;
 
   fun getUri(
     id: String,
@@ -20,6 +21,8 @@ enum class MovieLink {
     TMDB -> "https://www.themoviedb.org/movie/$id"
     METACRITIC -> "https://www.metacritic.com/search/$id?category=2"
     ROTTEN -> "https://www.rottentomatoes.com/search?search=$id"
-    JUST_WATCH -> "https://www.justwatch.com/${country.code}/${country.justWatchQuery}?content_type=movie&q=${Uri.encode(id)}"
+    JUST_WATCH ->
+      "https://www.justwatch.com/${country.code}/${country.justWatchQuery}" +
+        "?content_type=movie&q=${Uri.encode(id)}"
   }
 }

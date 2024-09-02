@@ -30,7 +30,7 @@ class ProgressMoviesMainCaseTest : BaseMockTest() {
     SUT = ProgressMoviesMainCase(
       moviesRepository,
       pinnedItemsRepository,
-      quickSyncManager
+      quickSyncManager,
     )
   }
 
@@ -40,22 +40,24 @@ class ProgressMoviesMainCaseTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should add movie to My Movies properly`() = runBlockingTest {
-    val movie = Movie.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(123)))
+  fun `Should add movie to My Movies properly`() =
+    runBlockingTest {
+      val movie = Movie.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(123)))
 
-    SUT.addToMyMovies(movie, null)
+      SUT.addToMyMovies(movie, null)
 
-    coVerify { moviesRepository.myMovies.insert(IdTrakt(123), null) }
-    coVerify { pinnedItemsRepository.removePinnedItem(movie) }
-    coVerify { quickSyncManager.scheduleMovies(listOf(123), null) }
-  }
+      coVerify { moviesRepository.myMovies.insert(IdTrakt(123), null) }
+      coVerify { pinnedItemsRepository.removePinnedItem(movie) }
+      coVerify { quickSyncManager.scheduleMovies(listOf(123), null) }
+    }
 
   @Test
-  fun `Should add movie to My Movies properly using only ID`() = runBlockingTest {
-    SUT.addToMyMovies(IdTrakt(123))
+  fun `Should add movie to My Movies properly using only ID`() =
+    runBlockingTest {
+      SUT.addToMyMovies(IdTrakt(123))
 
-    coVerify { moviesRepository.myMovies.insert(IdTrakt(123), null) }
-    coVerify { pinnedItemsRepository.removePinnedItem(any<Movie>()) }
-    coVerify { quickSyncManager.scheduleMovies(listOf(123), null) }
-  }
+      coVerify { moviesRepository.myMovies.insert(IdTrakt(123), null) }
+      coVerify { pinnedItemsRepository.removePinnedItem(any<Movie>()) }
+      coVerify { quickSyncManager.scheduleMovies(listOf(123), null) }
+    }
 }

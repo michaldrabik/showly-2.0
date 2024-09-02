@@ -25,13 +25,13 @@ class WatchlistAppender @Inject constructor() {
       .forEachIndexed { index, show ->
         val season = createWatchlistSeason(
           show = show,
-          seasonId = seasonId + index + 1
+          seasonId = seasonId + index + 1,
         )
 
         val episode = createWatchlistEpisode(
           show = show,
           season = season,
-          episodeId = episodeId + index + 1
+          episodeId = episodeId + index + 1,
         )
 
         seasons.add(season)
@@ -52,7 +52,7 @@ class WatchlistAppender @Inject constructor() {
     episodesCount = 1,
     episodesAiredCount = 0,
     rating = null,
-    isWatched = false
+    isWatched = false,
   )
 
   private fun createWatchlistEpisode(

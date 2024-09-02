@@ -91,7 +91,7 @@ class ShowDetailsSeasonsViewModel @Inject constructor(
   fun setSeasonWatched(
     season: Season,
     isChecked: Boolean,
-    customDate: ZonedDateTime? = null
+    customDate: ZonedDateTime? = null,
   ) {
     viewModelScope.launch {
       val result = watchedSeasonCase.setSeasonWatched(
@@ -99,11 +99,15 @@ class ShowDetailsSeasonsViewModel @Inject constructor(
         season = season,
         isChecked = isChecked,
         isLocal = areSeasonsLocal,
-        customDate = customDate
+        customDate = customDate,
       )
       if (result == Result.REMOVE_FROM_TRAKT) {
         val ids = season.episodes.map { it.ids.trakt }
-        val event = ShowDetailsSeasonsEvent.RemoveFromTrakt(R.id.actionShowDetailsFragmentToRemoveTraktProgress, Mode.EPISODE, ids)
+        val event = ShowDetailsSeasonsEvent.RemoveFromTrakt(
+          R.id.actionShowDetailsFragmentToRemoveTraktProgress,
+          Mode.EPISODE,
+          ids,
+        )
         eventChannel.send(event)
       }
       refreshSeasons()
@@ -126,7 +130,10 @@ class ShowDetailsSeasonsViewModel @Inject constructor(
     }
   }
 
-  fun setQuickProgress(item: QuickSetupListItem?, customDate: ZonedDateTime?) {
+  fun setQuickProgress(
+    item: QuickSetupListItem?,
+    customDate: ZonedDateTime?,
+  ) {
     viewModelScope.launch {
       if (item == null || !checkSeasonsLoaded()) {
         return@launch
@@ -175,15 +182,15 @@ class ShowDetailsSeasonsViewModel @Inject constructor(
 
   val uiState = combine(
     loadingState,
-    seasonsState
+    seasonsState,
   ) { s1, s2 ->
     ShowDetailsSeasonsUiState(
       isLoading = s1,
-      seasons = s2
+      seasons = s2,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = ShowDetailsSeasonsUiState()
+    initialValue = ShowDetailsSeasonsUiState(),
   )
 }

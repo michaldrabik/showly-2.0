@@ -33,7 +33,7 @@ class StatisticsMoviesTotalMoviesView : MaterialCardView {
     val formatter = NumberFormat.getNumberInstance(Locale.ENGLISH)
     binding.viewMoviesTotalEpisodesValue.text = context.getString(
       R.string.textStatisticsMoviesTotalMoviesCount,
-      formatter.format(moviesCount)
+      formatter.format(moviesCount),
     )
   }
 }

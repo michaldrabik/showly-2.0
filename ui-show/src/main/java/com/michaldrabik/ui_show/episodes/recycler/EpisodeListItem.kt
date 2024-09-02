@@ -16,7 +16,7 @@ data class EpisodeListItem(
   val dateFormat: DateTimeFormatter? = null,
   val isLocked: Boolean = true,
   val isAnime: Boolean = false,
-  val spoilers: SpoilersSettings
+  val spoilers: SpoilersSettings,
 ) {
 
   val id = episode.ids.trakt.id

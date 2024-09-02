@@ -37,54 +37,58 @@ class SearchTranslationsCaseTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should return empty show translation if language is default`() = runTest {
-    coEvery { translationsRepository.getLanguage() } returns "en"
+  fun `Should return empty show translation if language is default`() =
+    runTest {
+      coEvery { translationsRepository.getLanguage() } returns "en"
 
-    val item = mockk<Show>()
-    val result = SUT.loadTranslation(item)
+      val item = mockk<Show>()
+      val result = SUT.loadTranslation(item)
 
-    assertThat(result).isEqualTo(Translation.EMPTY)
-    coVerify(exactly = 1) { translationsRepository.getLanguage() }
-    confirmVerified(translationsRepository)
-  }
-
-  @Test
-  fun `Should return empty movie translation if language is default`() = runTest {
-    coEvery { translationsRepository.getLanguage() } returns "en"
-
-    val item = mockk<Movie>()
-    val result = SUT.loadTranslation(item)
-
-    assertThat(result).isEqualTo(Translation.EMPTY)
-    coVerify(exactly = 1) { translationsRepository.getLanguage() }
-    confirmVerified(translationsRepository)
-  }
+      assertThat(result).isEqualTo(Translation.EMPTY)
+      coVerify(exactly = 1) { translationsRepository.getLanguage() }
+      confirmVerified(translationsRepository)
+    }
 
   @Test
-  fun `Should return show translation if language is not default`() = runTest {
-    coEvery { translationsRepository.getLanguage() } returns "pl"
-    coEvery { translationsRepository.loadTranslation(any<Show>(), any(), any()) } returns Translation.EMPTY
+  fun `Should return empty movie translation if language is default`() =
+    runTest {
+      coEvery { translationsRepository.getLanguage() } returns "en"
 
-    val item = mockk<Show>()
-    val result = SUT.loadTranslation(item)
+      val item = mockk<Movie>()
+      val result = SUT.loadTranslation(item)
 
-    assertThat(result).isNotNull()
-    coVerify(exactly = 1) { translationsRepository.getLanguage() }
-    coVerify(exactly = 1) { translationsRepository.loadTranslation(any<Show>(), any(), any()) }
-    confirmVerified(translationsRepository)
-  }
+      assertThat(result).isEqualTo(Translation.EMPTY)
+      coVerify(exactly = 1) { translationsRepository.getLanguage() }
+      confirmVerified(translationsRepository)
+    }
 
   @Test
-  fun `Should return movie translation if language is not default`() = runTest {
-    coEvery { translationsRepository.getLanguage() } returns "pl"
-    coEvery { translationsRepository.loadTranslation(any<Movie>(), any(), any()) } returns Translation.EMPTY
+  fun `Should return show translation if language is not default`() =
+    runTest {
+      coEvery { translationsRepository.getLanguage() } returns "pl"
+      coEvery { translationsRepository.loadTranslation(any<Show>(), any(), any()) } returns Translation.EMPTY
 
-    val item = mockk<Movie>()
-    val result = SUT.loadTranslation(item)
+      val item = mockk<Show>()
+      val result = SUT.loadTranslation(item)
 
-    assertThat(result).isNotNull()
-    coVerify(exactly = 1) { translationsRepository.getLanguage() }
-    coVerify(exactly = 1) { translationsRepository.loadTranslation(any<Movie>(), any(), any()) }
-    confirmVerified(translationsRepository)
-  }
+      assertThat(result).isNotNull()
+      coVerify(exactly = 1) { translationsRepository.getLanguage() }
+      coVerify(exactly = 1) { translationsRepository.loadTranslation(any<Show>(), any(), any()) }
+      confirmVerified(translationsRepository)
+    }
+
+  @Test
+  fun `Should return movie translation if language is not default`() =
+    runTest {
+      coEvery { translationsRepository.getLanguage() } returns "pl"
+      coEvery { translationsRepository.loadTranslation(any<Movie>(), any(), any()) } returns Translation.EMPTY
+
+      val item = mockk<Movie>()
+      val result = SUT.loadTranslation(item)
+
+      assertThat(result).isNotNull()
+      coVerify(exactly = 1) { translationsRepository.getLanguage() }
+      coVerify(exactly = 1) { translationsRepository.loadTranslation(any<Movie>(), any(), any()) }
+      confirmVerified(translationsRepository)
+    }
 }

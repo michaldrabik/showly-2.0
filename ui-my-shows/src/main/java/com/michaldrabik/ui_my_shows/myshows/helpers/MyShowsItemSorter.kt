@@ -17,7 +17,10 @@ import javax.inject.Singleton
 @Singleton
 class MyShowsItemSorter @Inject constructor() {
 
-  fun sort(sortOrder: SortOrder, sortType: SortType) = when (sortType) {
+  fun sort(
+    sortOrder: SortOrder,
+    sortType: SortType,
+  ) = when (sortType) {
     ASCENDING -> sortAscending(sortOrder)
     DESCENDING -> sortDescending(sortOrder)
   }
@@ -52,8 +55,11 @@ class MyShowsItemSorter @Inject constructor() {
 
   private fun getTitle(item: MyShowsItem): String {
     val translatedTitle =
-      if (item.translation?.hasTitle == true) item.translation.title
-      else item.show.titleNoThe
+      if (item.translation?.hasTitle == true) {
+        item.translation.title
+      } else {
+        item.show.titleNoThe
+      }
     return translatedTitle.uppercase()
   }
 }

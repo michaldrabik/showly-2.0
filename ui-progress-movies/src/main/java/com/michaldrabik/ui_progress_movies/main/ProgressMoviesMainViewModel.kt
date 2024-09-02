@@ -65,7 +65,10 @@ class ProgressMoviesMainViewModel @Inject constructor(
     calendarModeState.value = calendarMode
   }
 
-  fun setWatchedMovie(movie: Movie, customDate: ZonedDateTime? = null) {
+  fun setWatchedMovie(
+    movie: Movie,
+    customDate: ZonedDateTime? = null,
+  ) {
     viewModelScope.launch {
       moviesCase.addToMyMovies(movie, customDate)
       timestampState.value = System.currentTimeMillis()
@@ -82,17 +85,17 @@ class ProgressMoviesMainViewModel @Inject constructor(
     timestampState,
     searchQueryState,
     calendarModeState,
-    syncingState
+    syncingState,
   ) { s1, s2, s3, s4 ->
     ProgressMoviesMainUiState(
       timestamp = s1,
       searchQuery = s2,
       calendarMode = s3,
-      isSyncing = s4
+      isSyncing = s4,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = ProgressMoviesMainUiState()
+    initialValue = ProgressMoviesMainUiState(),
   )
 }

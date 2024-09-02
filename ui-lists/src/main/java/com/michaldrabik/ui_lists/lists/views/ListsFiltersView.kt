@@ -28,7 +28,10 @@ class ListsFiltersView : FrameLayout {
     }
   }
 
-  fun setSorting(sortOrder: SortOrder, sortType: SortType) {
+  fun setSorting(
+    sortOrder: SortOrder,
+    sortType: SortType,
+  ) {
     with(binding) {
       viewListsFilterSortChip.text = context.getString(sortOrder.displayString)
       viewListsFilterSortChip.onClick {

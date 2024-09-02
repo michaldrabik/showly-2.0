@@ -19,36 +19,42 @@ class DiscoverAdapter(
   private val twitterCancelClickListener: (() -> Unit)?,
   listChangeListener: () -> Unit,
 ) : BaseAdapter<DiscoverListItem>(
-  listChangeListener = listChangeListener
-) {
+    listChangeListener = listChangeListener,
+  ) {
 
   override val asyncDiffer = AsyncListDiffer(this, DiscoverItemDiffCallback())
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
+  override fun onCreateViewHolder(
+    parent: ViewGroup,
+    viewType: Int,
+  ) = when (viewType) {
     POSTER.id -> BaseViewHolder(
       ShowPosterView(parent.context).apply {
         itemClickListener = this@DiscoverAdapter.itemClickListener
         itemLongClickListener = this@DiscoverAdapter.itemLongClickListener
         missingImageListener = this@DiscoverAdapter.missingImageListener
-      }
+      },
     )
     FANART.id, FANART_WIDE.id -> BaseViewHolder(
       ShowFanartView(parent.context).apply {
         itemClickListener = this@DiscoverAdapter.itemClickListener
         itemLongClickListener = this@DiscoverAdapter.itemLongClickListener
         missingImageListener = this@DiscoverAdapter.missingImageListener
-      }
+      },
     )
     TWITTER.id -> BaseViewHolder(
       ShowTwitterView(parent.context).apply {
         itemClickListener = this@DiscoverAdapter.itemClickListener
         twitterCancelClickListener = this@DiscoverAdapter.twitterCancelClickListener
-      }
+      },
     )
     else -> throw IllegalStateException("Unknown view type.")
   }
 
-  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+  override fun onBindViewHolder(
+    holder: RecyclerView.ViewHolder,
+    position: Int,
+  ) {
     val item = asyncDiffer.currentList[position]
     when (holder.itemViewType) {
       POSTER.id ->

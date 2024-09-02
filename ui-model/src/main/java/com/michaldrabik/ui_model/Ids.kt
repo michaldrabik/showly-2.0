@@ -20,7 +20,7 @@ data class Ids(
       IdTvdb(),
       IdImdb(),
       IdTmdb(),
-      IdTvRage()
+      IdTvRage(),
     )
   }
 }

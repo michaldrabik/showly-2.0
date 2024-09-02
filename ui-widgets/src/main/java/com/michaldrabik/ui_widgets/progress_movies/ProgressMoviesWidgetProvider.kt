@@ -58,7 +58,11 @@ class ProgressMoviesWidgetProvider : BaseWidgetProvider() {
     appWidgetIds?.forEach { updateWidget(context, appWidgetManager, it) }
   }
 
-  private fun updateWidget(context: Context, appWidgetManager: AppWidgetManager, widgetId: Int) {
+  private fun updateWidget(
+    context: Context,
+    appWidgetManager: AppWidgetManager,
+    widgetId: Int,
+  ) {
     val intent = Intent(context, ProgressMoviesWidgetService::class.java).apply {
       putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
       data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
@@ -82,7 +86,7 @@ class ProgressMoviesWidgetProvider : BaseWidgetProvider() {
       context,
       0,
       Intent().apply { setClassName(context, Config.HOST_ACTIVITY_NAME) },
-      FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT
+      FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT,
     )
     remoteViews.setOnClickPendingIntent(R.id.progressWidgetMoviesLabel, mainIntent)
 
@@ -98,7 +102,10 @@ class ProgressMoviesWidgetProvider : BaseWidgetProvider() {
     appWidgetManager.notifyAppWidgetViewDataChanged(widgetId, R.id.progressWidgetMoviesList)
   }
 
-  override fun onReceive(context: Context, intent: Intent) {
+  override fun onReceive(
+    context: Context,
+    intent: Intent,
+  ) {
     super.onReceive(context, intent)
     if (intent.action == ACTION_CLICK) {
       when {
@@ -109,14 +116,14 @@ class ProgressMoviesWidgetProvider : BaseWidgetProvider() {
               setClassName(context, Config.HOST_ACTIVITY_NAME)
               putExtra(EXTRA_MOVIE_ID, movieId.toString())
               flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            }
+            },
           )
         }
         intent.extras?.containsKey(EXTRA_CHECK_MOVIE_ID) == true -> {
           val movieId = intent.getLongExtra(EXTRA_CHECK_MOVIE_ID, -1L)
           ProgressMoviesWidgetCheckService.initialize(
             context.applicationContext,
-            IdTrakt(movieId)
+            IdTrakt(movieId),
           )
         }
       }

@@ -20,12 +20,13 @@ class ProgressMainAdapter(
     const val PAGES_COUNT = 3
   }
 
-  override fun getItem(position: Int): Fragment = when (position) {
-    0 -> ProgressFragment()
-    1 -> CalendarFragment()
-    2 -> HistoryFragment()
-    else -> throw IllegalStateException("Unknown position")
-  }
+  override fun getItem(position: Int): Fragment =
+    when (position) {
+      0 -> ProgressFragment()
+      1 -> CalendarFragment()
+      2 -> HistoryFragment()
+      else -> throw IllegalStateException("Unknown position")
+    }
 
   override fun getCount() = PAGES_COUNT
 

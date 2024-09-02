@@ -29,16 +29,16 @@ class CalendarFutureCase @Inject constructor(
   override val filter: CalendarFutureFilter,
   override val grouper: CalendarFutureGrouper,
 ) : CalendarItemsCase(
-  dispatchers,
-  localSource,
-  mappers,
-  showsRepository,
-  translationsRepository,
-  spoilersRepository,
-  imagesProvider,
-  dateFormatProvider,
-  watchlistAppender
-) {
+    dispatchers,
+    localSource,
+    mappers,
+    showsRepository,
+    translationsRepository,
+    spoilersRepository,
+    imagesProvider,
+    dateFormatProvider,
+    watchlistAppender,
+  ) {
 
   override fun sortEpisodes() =
     compareBy<Episode> { it.firstAired }

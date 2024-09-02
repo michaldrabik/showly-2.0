@@ -93,13 +93,19 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private val showId by lazy { IdTrakt(requireLong(ARG_SHOW_ID)) }
 
   private val imageHeight by lazy {
-    if (resources.configuration.orientation == ORIENTATION_PORTRAIT) screenHeight()
-    else screenWidth()
+    if (resources.configuration.orientation == ORIENTATION_PORTRAIT) {
+      screenHeight()
+    } else {
+      screenWidth()
+    }
   }
   private val imageRatio by lazy { resources.getString(R.string.detailsImageRatio).toFloat() }
   private val imagePadded by lazy { resources.getBoolean(R.bool.detailsImagePadded) }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     requireActivity().requestedOrientation = SCREEN_ORIENTATION_PORTRAIT
     setupView()
@@ -114,7 +120,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           viewModel.loadDetails(showId)
           isInitialized = true
         }
-      }
+      },
     )
   }
 
@@ -127,7 +133,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         val bundle = bundleOf(
           ARG_SHOW_ID to showId.id,
           ARG_FAMILY to SHOW,
-          ARG_TYPE to FANART
+          ARG_TYPE to FANART,
         )
         navigateToSafe(R.id.actionShowDetailsFragmentToArtGallery, bundle)
       }
@@ -223,8 +229,11 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         }
         listsCount?.let {
           val text =
-            if (it > 0) getString(R.string.textShowManageListsCount, it)
-            else getString(R.string.textShowManageLists)
+            if (it > 0) {
+              getString(R.string.textShowManageListsCount, it)
+            } else {
+              getString(R.string.textShowManageLists)
+            }
           showDetailsManageListsLabel.text = text
         }
         image?.let { renderImage(it) }
@@ -237,7 +246,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     show: Show,
     translation: Translation?,
     followedState: ShowDetailsUiState.FollowedState?,
-    spoilersSettings: SpoilersSettings?
+    spoilersSettings: SpoilersSettings?,
   ) {
     with(binding) {
       var title = show.title
@@ -295,7 +304,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       country.uppercase(),
       "⏲ ${show.runtime}",
       getString(R.string.textMinutesShort),
-      genres
+      genres,
     )
 
     if (genres.isEmpty()) {
@@ -383,7 +392,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private fun openShareSheet(show: Show) {
     val intent = Intent().apply {
-      val text = "Hey! Check out ${show.title}:\nhttps://trakt.tv/shows/${show.ids.slug.id}\nhttps://www.imdb.com/title/${show.ids.imdb.id}"
+      val text = "Hey! Check out ${show.title}:\n" +
+        "https://trakt.tv/shows/${show.ids.slug.id}\n" +
+        "https://www.imdb.com/title/${show.ids.imdb.id}"
       action = Intent.ACTION_SEND
       putExtra(Intent.EXTRA_TEXT, text)
       type = "text/plain"
@@ -413,7 +424,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     setFragmentResultListener(REQUEST_MANAGE_LISTS) { _, _ -> viewModel.loadListsCount() }
     val bundle = bundleOf(
       ARG_ID to showId.id,
-      ARG_TYPE to Mode.SHOWS.type
+      ARG_TYPE to Mode.SHOWS.type,
     )
     navigateToSafe(R.id.actionShowDetailsFragmentToManageLists, bundle)
   }

@@ -14,9 +14,10 @@ class MovieDetailsMainCase @Inject constructor(
   private val moviesRepository: MoviesRepository,
 ) {
 
-  suspend fun loadDetails(idTrakt: IdTrakt) = withContext(dispatchers.IO) {
-    moviesRepository.movieDetails.load(idTrakt)
-  }
+  suspend fun loadDetails(idTrakt: IdTrakt) =
+    withContext(dispatchers.IO) {
+      moviesRepository.movieDetails.load(idTrakt)
+    }
 
   suspend fun removeMalformedMovie(idTrakt: IdTrakt) {
     withContext(dispatchers.IO) {

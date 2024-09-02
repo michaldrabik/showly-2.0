@@ -20,11 +20,12 @@ class ShowDetailsTranslationCase @Inject constructor(
     episode: Episode,
     show: Show,
     onlyLocal: Boolean = false,
-  ): Translation? = withContext(dispatchers.IO) {
-    val language = translationsRepository.getLanguage()
-    if (language == DEFAULT_LANGUAGE) {
-      return@withContext null
+  ): Translation? =
+    withContext(dispatchers.IO) {
+      val language = translationsRepository.getLanguage()
+      if (language == DEFAULT_LANGUAGE) {
+        return@withContext null
+      }
+      translationsRepository.loadTranslation(episode, show.ids.trakt, language, onlyLocal)
     }
-    translationsRepository.loadTranslation(episode, show.ids.trakt, language, onlyLocal)
-  }
 }

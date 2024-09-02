@@ -69,7 +69,10 @@ class HiddenFragment :
   private var isSearching = false
   private val tabletGridSpanSize by lazy { settings.tabletGridSpanSize }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupStatusBar()
     setupRecycler()
@@ -77,12 +80,13 @@ class HiddenFragment :
     launchAndRepeatStarted(
       { parentViewModel.uiState.collect { viewModel.onParentState(it) } },
       { viewModel.uiState.collect { render(it) } },
-      doAfterLaunch = { viewModel.loadMovies() }
+      doAfterLaunch = { viewModel.loadMovies() },
     )
   }
 
   private fun setupRecycler() {
-    layoutManager = CollectionMovieLayoutManagerProvider.provideLayoutManger(requireContext(), LIST_NORMAL, tabletGridSpanSize)
+    layoutManager = CollectionMovieLayoutManagerProvider
+      .provideLayoutManger(requireContext(), LIST_NORMAL, tabletGridSpanSize)
     adapter = CollectionAdapter(
       itemClickListener = { openMovieDetails(it.movie) },
       itemLongClickListener = { openMovieMenu(it.movie) },
@@ -130,7 +134,7 @@ class HiddenFragment :
           layoutManager = CollectionMovieLayoutManagerProvider.provideLayoutManger(
             context = requireContext(),
             viewMode = it,
-            gridSpanSize = tabletGridSpanSize
+            gridSpanSize = tabletGridSpanSize,
           )
           adapter?.listViewMode = it
           binding.hiddenMoviesRecycler?.let { recycler ->
@@ -162,7 +166,10 @@ class HiddenFragment :
     }
   }
 
-  private fun openSortOrderDialog(order: SortOrder, type: SortType) {
+  private fun openSortOrderDialog(
+    order: SortOrder,
+    type: SortType,
+  ) {
     val options = listOf(NAME, RATING, USER_RATING, RUNTIME, NEWEST, DATE_ADDED)
     val args = SortOrderBottomSheet.createBundle(options, order, type)
 

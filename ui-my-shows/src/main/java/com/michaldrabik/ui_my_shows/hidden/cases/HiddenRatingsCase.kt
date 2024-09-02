@@ -13,7 +13,7 @@ import javax.inject.Inject
 class HiddenRatingsCase @Inject constructor(
   private val dispatchers: CoroutineDispatchers,
   private val ratingsRepository: RatingsRepository,
-  private val userTraktManager: UserTraktManager
+  private val userTraktManager: UserTraktManager,
 ) {
 
   suspend fun loadRatings(): Map<IdTrakt, TraktRating?> =

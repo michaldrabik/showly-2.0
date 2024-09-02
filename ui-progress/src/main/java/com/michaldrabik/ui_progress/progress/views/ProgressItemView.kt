@@ -72,16 +72,19 @@ class ProgressItemView : ShowView<ProgressListItem.Episode> {
     with(binding) {
       val translationTitle = item.translations?.show?.title
       progressItemTitle.text =
-        if (translationTitle.isNullOrBlank()) item.show.title
-        else translationTitle
+        if (translationTitle.isNullOrBlank()) {
+          item.show.title
+        } else {
+          translationTitle
+        }
 
       progressItemSubtitle.text = String.format(
         ENGLISH,
         context.getString(R.string.textSeasonEpisode),
         item.episode?.season,
-        item.episode?.number
+        item.episode?.number,
       ).plus(
-        item.episode?.numberAbs?.let { if (it > 0 && item.show.isAnime) " ($it)" else "" } ?: ""
+        item.episode?.numberAbs?.let { if (it > 0 && item.show.isAnime) " ($it)" else "" } ?: "",
       )
 
       bindEpisodeTitle(item)
@@ -219,7 +222,8 @@ class ProgressItemView : ShowView<ProgressListItem.Episode> {
         progressItemProgressText.text = String.format(ENGLISH, "%d/%d", item.watchedCount, item.totalCount)
       } else {
         val episodesLeftString = resources.getQuantityString(R.plurals.textEpisodesLeft, episodesLeft, episodesLeft)
-        progressItemProgressText.text = String.format(ENGLISH, "%d/%d ($episodesLeftString)", item.watchedCount, item.totalCount)
+        progressItemProgressText.text =
+          String.format(ENGLISH, "%d/%d ($episodesLeftString)", item.watchedCount, item.totalCount)
       }
     }
   }

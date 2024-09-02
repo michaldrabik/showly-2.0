@@ -11,7 +11,10 @@ class HiddenSortOrderCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
 ) {
 
-  fun setSortOrder(sortOrder: SortOrder, sortType: SortType) {
+  fun setSortOrder(
+    sortOrder: SortOrder,
+    sortType: SortType,
+  ) {
     settingsRepository.sorting.hiddenMoviesSortOrder = sortOrder
     settingsRepository.sorting.hiddenMoviesSortType = sortType
   }

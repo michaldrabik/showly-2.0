@@ -4,14 +4,20 @@ import androidx.recyclerview.widget.DiffUtil
 
 class SeasonListItemDiffCallback(
   private val oldList: List<SeasonListItem>,
-  private val newList: List<SeasonListItem>
+  private val newList: List<SeasonListItem>,
 ) : DiffUtil.Callback() {
 
-  override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+  override fun areItemsTheSame(
+    oldItemPosition: Int,
+    newItemPosition: Int,
+  ): Boolean {
     return oldList[oldItemPosition].id == newList[newItemPosition].id
   }
 
-  override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+  override fun areContentsTheSame(
+    oldItemPosition: Int,
+    newItemPosition: Int,
+  ): Boolean {
     val (_, _, episodes, isWatched) = oldList[oldItemPosition]
     val (_, _, episodes2, isWatched2) = newList[newItemPosition]
 

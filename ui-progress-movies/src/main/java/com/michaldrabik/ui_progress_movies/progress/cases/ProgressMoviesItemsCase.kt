@@ -61,7 +61,7 @@ class ProgressMoviesItemsCase @Inject constructor(
             dateFormat = dateFormat,
             sortOrder = sortOrder,
             userRating = rating.firstOrNull()?.rating,
-            spoilers = spoilers
+            spoilers = spoilers,
           )
         }
       }.awaitAll()
@@ -84,15 +84,17 @@ class ProgressMoviesItemsCase @Inject constructor(
   ): ProgressMovieListItem.FiltersItem {
     return ProgressMovieListItem.FiltersItem(
       sortOrder = sortOrder,
-      sortType = sortType
+      sortType = sortType,
     )
   }
 
-  private fun filterItems(query: String, items: List<ProgressMovieListItem.MovieItem>) =
-    items.filter {
-      it.movie.title.contains(query, true) ||
-        it.translation?.title?.contains(query, true) == true
-    }
+  private fun filterItems(
+    query: String,
+    items: List<ProgressMovieListItem.MovieItem>,
+  ) = items.filter {
+    it.movie.title.contains(query, true) ||
+      it.translation?.title?.contains(query, true) == true
+  }
 
   private fun prepareItems(items: List<ProgressMovieListItem.MovieItem>) =
     items

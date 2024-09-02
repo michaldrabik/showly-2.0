@@ -9,5 +9,5 @@ data class ProgressMoviesUiState(
   val items: List<ProgressMovieListItem>? = null,
   val scrollReset: Event<Boolean>? = null,
   val sortOrder: Event<Pair<SortOrder, SortType>>? = null,
-  val isOverScrollEnabled: Boolean = false
+  val isOverScrollEnabled: Boolean = false,
 )

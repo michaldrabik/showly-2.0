@@ -63,7 +63,10 @@ class PeopleListBottomSheet : BaseBottomSheetFragment(R.layout.view_people_list)
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     setupView()
     setupRecycler()
 
@@ -74,9 +77,9 @@ class PeopleListBottomSheet : BaseBottomSheetFragment(R.layout.view_people_list)
           mediaIdTrakt,
           mediaTitle,
           mode,
-          department
+          department,
         )
-      }
+      },
     )
   }
 

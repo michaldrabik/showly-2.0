@@ -10,27 +10,35 @@ import java.time.format.DateTimeFormatter
 class CommentsAdapter(
   val onDeleteClickListener: ((Comment) -> Unit)? = null,
   val onReplyClickListener: ((Comment) -> Unit)? = null,
-  val onRepliesClickListener: ((Comment) -> Unit)? = null
+  val onRepliesClickListener: ((Comment) -> Unit)? = null,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   private val asyncDiffer = AsyncListDiffer(this, CommentItemDiffCallback())
   private var dateFormat: DateTimeFormatter? = null
 
-  fun setItems(newItems: List<Comment>, dateFormat: DateTimeFormatter?) {
+  fun setItems(
+    newItems: List<Comment>,
+    dateFormat: DateTimeFormatter?,
+  ) {
     this.dateFormat = dateFormat
     asyncDiffer.submitList(newItems)
   }
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    ViewHolderShow(
-      CommentView(parent.context).apply {
-        onRepliesClickListener = this@CommentsAdapter.onRepliesClickListener
-        onReplyClickListener = this@CommentsAdapter.onReplyClickListener
-        onDeleteClickListener = this@CommentsAdapter.onDeleteClickListener
-      }
-    )
+  override fun onCreateViewHolder(
+    parent: ViewGroup,
+    viewType: Int,
+  ) = ViewHolderShow(
+    CommentView(parent.context).apply {
+      onRepliesClickListener = this@CommentsAdapter.onRepliesClickListener
+      onReplyClickListener = this@CommentsAdapter.onReplyClickListener
+      onDeleteClickListener = this@CommentsAdapter.onDeleteClickListener
+    },
+  )
 
-  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+  override fun onBindViewHolder(
+    holder: RecyclerView.ViewHolder,
+    position: Int,
+  ) {
     val item = asyncDiffer.currentList[position]
     (holder.itemView as CommentView).bind(item, dateFormat)
   }

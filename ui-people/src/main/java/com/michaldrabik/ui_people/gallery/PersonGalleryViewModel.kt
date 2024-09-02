@@ -37,15 +37,15 @@ class PersonGalleryViewModel @Inject constructor(
 
   val uiState = combine(
     imagesState,
-    loadingState
+    loadingState,
   ) { s1, s2 ->
     PersonGalleryUiState(
       images = s1,
-      isLoading = s2
+      isLoading = s2,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = PersonGalleryUiState()
+    initialValue = PersonGalleryUiState(),
   )
 }

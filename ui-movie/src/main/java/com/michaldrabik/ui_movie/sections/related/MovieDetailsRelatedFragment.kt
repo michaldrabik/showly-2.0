@@ -25,7 +25,9 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_ITEM_MENU
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MovieDetailsRelatedFragment : BaseFragment<MovieDetailsRelatedViewModel>(R.layout.fragment_movie_details_related) {
+class MovieDetailsRelatedFragment : BaseFragment<MovieDetailsRelatedViewModel>(
+  R.layout.fragment_movie_details_related,
+) {
 
   private val parentViewModel by viewModels<MovieDetailsViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<MovieDetailsRelatedViewModel>()
@@ -33,12 +35,15 @@ class MovieDetailsRelatedFragment : BaseFragment<MovieDetailsRelatedViewModel>(R
 
   private var relatedAdapter: RelatedMovieAdapter? = null
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
     launchAndRepeatStarted(
       { parentViewModel.parentMovieState.collect { it?.let { viewModel.initRelatedMovies(it) } } },
-      { viewModel.uiState.collect { render(it) } }
+      { viewModel.uiState.collect { render(it) } },
     )
   }
 
@@ -46,7 +51,7 @@ class MovieDetailsRelatedFragment : BaseFragment<MovieDetailsRelatedViewModel>(R
     relatedAdapter = RelatedMovieAdapter(
       itemClickListener = ::openDetails,
       itemLongClickListener = ::openContextMenu,
-      missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
+      missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) },
     )
     binding.movieDetailsRelatedRecycler.apply {
       setHasFixedSize(true)

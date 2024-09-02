@@ -59,7 +59,10 @@ internal class HistoryFragment :
   private var statusBarHeight = 0
   private var isSearching = false
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupRecycler()
     setupStatusBar()
@@ -95,7 +98,7 @@ internal class HistoryFragment :
         requireMainFragment().openEpisodeDetails(
           show = it.show,
           episode = it.episode,
-          season = it.season
+          season = it.season,
         )
       },
       onDatesFilterClick = { openPeriodFilterDialog(it) },
@@ -104,7 +107,7 @@ internal class HistoryFragment :
       listChangeListener = {
         requireMainFragment().resetTranslations()
         layoutManager?.scrollToPosition(0)
-      }
+      },
     )
     binding.recycler.apply {
       adapter = this@HistoryFragment.adapter
@@ -155,7 +158,7 @@ internal class HistoryFragment :
       with(binding) {
         adapter?.setItems(
           newItems = items,
-          notifyChange = resetScrollEvent?.consume() == true
+          notifyChange = resetScrollEvent?.consume() == true,
         )
         if (isLoading) {
           recycler.gone()

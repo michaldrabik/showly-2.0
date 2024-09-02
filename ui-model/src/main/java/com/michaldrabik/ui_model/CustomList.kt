@@ -25,29 +25,30 @@ data class CustomList(
   val commentCount: Long,
   val likes: Long,
   val createdAt: ZonedDateTime,
-  val updatedAt: ZonedDateTime
+  val updatedAt: ZonedDateTime,
 ) : Parcelable {
 
   companion object {
-    fun create() = CustomList(
-      id = 0,
-      idTrakt = null,
-      idSlug = "",
-      name = "",
-      description = null,
-      privacy = "private",
-      displayNumbers = false,
-      allowComments = true,
-      sortBy = SortOrder.RANK,
-      sortHow = SortType.ASCENDING,
-      sortByLocal = SortOrder.RANK,
-      sortHowLocal = SortType.ASCENDING,
-      filterTypeLocal = Mode.getAll(),
-      itemCount = 0,
-      commentCount = 0,
-      likes = 0,
-      createdAt = nowUtc(),
-      updatedAt = nowUtc()
-    )
+    fun create() =
+      CustomList(
+        id = 0,
+        idTrakt = null,
+        idSlug = "",
+        name = "",
+        description = null,
+        privacy = "private",
+        displayNumbers = false,
+        allowComments = true,
+        sortBy = SortOrder.RANK,
+        sortHow = SortType.ASCENDING,
+        sortByLocal = SortOrder.RANK,
+        sortHowLocal = SortType.ASCENDING,
+        filterTypeLocal = Mode.getAll(),
+        itemCount = 0,
+        commentCount = 0,
+        likes = 0,
+        createdAt = nowUtc(),
+        updatedAt = nowUtc(),
+      )
   }
 }

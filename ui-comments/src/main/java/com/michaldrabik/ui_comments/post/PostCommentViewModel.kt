@@ -39,7 +39,11 @@ class PostCommentViewModel @Inject constructor(
   private val loadingState = MutableStateFlow(false)
   private val successState = MutableStateFlow<Event<Pair<String, Comment>>?>(null)
 
-  fun postShowComment(showId: IdTrakt, commentText: String, isSpoiler: Boolean) {
+  fun postShowComment(
+    showId: IdTrakt,
+    commentText: String,
+    isSpoiler: Boolean,
+  ) {
     if (!isValid(commentText)) return
     viewModelScope.launch {
       try {
@@ -55,7 +59,11 @@ class PostCommentViewModel @Inject constructor(
     }
   }
 
-  fun postMovieComment(movieId: IdTrakt, commentText: String, isSpoiler: Boolean) {
+  fun postMovieComment(
+    movieId: IdTrakt,
+    commentText: String,
+    isSpoiler: Boolean,
+  ) {
     if (!isValid(commentText)) return
     viewModelScope.launch {
       try {
@@ -71,7 +79,11 @@ class PostCommentViewModel @Inject constructor(
     }
   }
 
-  fun postEpisodeComment(episodeId: IdTrakt, commentText: String, isSpoiler: Boolean) {
+  fun postEpisodeComment(
+    episodeId: IdTrakt,
+    commentText: String,
+    isSpoiler: Boolean,
+  ) {
     if (!isValid(commentText)) return
     viewModelScope.launch {
       try {
@@ -87,7 +99,11 @@ class PostCommentViewModel @Inject constructor(
     }
   }
 
-  fun postReply(commentId: IdTrakt, commentText: String, isSpoiler: Boolean) {
+  fun postReply(
+    commentId: IdTrakt,
+    commentText: String,
+    isSpoiler: Boolean,
+  ) {
     if (!isValid(commentText)) return
     viewModelScope.launch {
       try {
@@ -102,10 +118,11 @@ class PostCommentViewModel @Inject constructor(
     }
   }
 
-  private fun isValid(commentText: String) = commentText
-    .trim().split(" ")
-    .filter { !it.startsWith("@") }
-    .count { it.length > 1 } >= 5
+  private fun isValid(commentText: String) =
+    commentText
+      .trim().split(" ")
+      .filter { !it.startsWith("@") }
+      .count { it.length > 1 } >= 5
 
   private suspend fun handleError(error: Throwable) {
     loadingState.value = false
@@ -122,15 +139,15 @@ class PostCommentViewModel @Inject constructor(
 
   val uiState = combine(
     loadingState,
-    successState
+    successState,
   ) { loadingState, successState ->
     PostCommentUiState(
       isLoading = loadingState,
-      isSuccess = successState
+      isSuccess = successState,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = PostCommentUiState()
+    initialValue = PostCommentUiState(),
   )
 }

@@ -10,7 +10,10 @@ import com.michaldrabik.data_local.database.model.Episode as EpisodeDb
 @Singleton
 class CalendarRecentsFilter @Inject constructor() : CalendarFilter {
 
-  override fun filter(now: ZonedDateTime, episode: EpisodeDb): Boolean {
+  override fun filter(
+    now: ZonedDateTime,
+    episode: EpisodeDb,
+  ): Boolean {
     val dateDays = episode.firstAired?.toLocalZone()?.truncatedTo(DAYS)
     val isHistory = dateDays?.isBefore(now.truncatedTo(DAYS)) == true
     val isLast3Months = dateDays?.isAfter(now.truncatedTo(DAYS).minusMonths(3)) == true

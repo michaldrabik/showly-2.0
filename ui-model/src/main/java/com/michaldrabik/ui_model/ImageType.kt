@@ -2,13 +2,14 @@ package com.michaldrabik.ui_model
 
 enum class ImageType(
   val id: Int,
-  val key: String
+  val key: String,
 ) {
   POSTER(1, "poster"),
   FANART(2, "fanart"),
   FANART_WIDE(3, "fanart"),
   TWITTER(4, "twitterAd"),
-  PROFILE(6, "profile");
+  PROFILE(6, "profile"),
+  ;
 
   fun getSpan(isTablet: Boolean): Int {
     return when (this) {

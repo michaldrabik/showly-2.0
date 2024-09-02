@@ -46,7 +46,7 @@ internal class DiscoverMoviesFiltersGenresViewModel @Inject constructor(
       settingsRepository.update(
         settings.copy(
           discoverMoviesFilterGenres = genres.toList(),
-        )
+        ),
       )
       eventChannel.send(ApplyFilters)
     }
@@ -63,6 +63,6 @@ internal class DiscoverMoviesFiltersGenresViewModel @Inject constructor(
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = DiscoverMoviesFiltersGenresUiState()
+    initialValue = DiscoverMoviesFiltersGenresUiState(),
   )
 }

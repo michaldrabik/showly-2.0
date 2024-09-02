@@ -25,7 +25,10 @@ class StatisticsMoviesFragment : BaseFragment<StatisticsMoviesViewModel>(R.layou
   override val viewModel by viewModels<StatisticsMoviesViewModel>()
   private val binding by viewBinding(FragmentStatisticsMoviesBinding::bind)
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
     setupStatusBar()

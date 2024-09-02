@@ -12,5 +12,5 @@ enum class Tip(
   PERSON_DETAILS_GALLERY(R.string.textTipShowDetailsGallery),
   WATCHLIST_ITEM_PIN(R.string.textTipWatchlistPinItem),
   LIST_ITEM_SWIPE_DELETE(R.string.textTipListSwipeToDelete),
-  DATE_SELECTION_DEFAULTS(R.string.textTipDefaultOption)
+  DATE_SELECTION_DEFAULTS(R.string.textTipDefaultOption),
 }

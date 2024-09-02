@@ -52,7 +52,7 @@ class MovieDetailsCollectionBottomSheet : BaseBottomSheetFragment(R.layout.view_
       sourceMovieId: IdTrakt,
     ) = bundleOf(
       ARG_ID to collectionId,
-      ARG_MOVIE_ID to sourceMovieId
+      ARG_MOVIE_ID to sourceMovieId,
     )
   }
 
@@ -67,7 +67,10 @@ class MovieDetailsCollectionBottomSheet : BaseBottomSheetFragment(R.layout.view_
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     setupView()
     setupRecycler()
 
@@ -76,7 +79,7 @@ class MovieDetailsCollectionBottomSheet : BaseBottomSheetFragment(R.layout.view_
       { viewModel.messageFlow.collect { renderSnackbar(it) } },
       doAfterLaunch = {
         viewModel.loadCollection(collectionId)
-      }
+      },
     )
   }
 
@@ -141,7 +144,7 @@ class MovieDetailsCollectionBottomSheet : BaseBottomSheetFragment(R.layout.view_
 
     val bundle = ContextMenuBottomSheet.createBundle(
       idTrakt = item.movie.ids.trakt,
-      detailsEnabled = false
+      detailsEnabled = false,
     )
     navigateTo(R.id.actionMovieCollectionDialogToContextDialog, bundle)
   }
@@ -167,7 +170,10 @@ class MovieDetailsCollectionBottomSheet : BaseBottomSheetFragment(R.layout.view_
   }
 
   private val recyclerScrollListener = object : RecyclerView.OnScrollListener() {
-    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+    override fun onScrollStateChanged(
+      recyclerView: RecyclerView,
+      newState: Int,
+    ) {
       if (newState != SCROLL_STATE_IDLE) {
         return
       }

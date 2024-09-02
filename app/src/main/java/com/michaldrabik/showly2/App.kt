@@ -42,12 +42,12 @@ class App :
       .build()
 
   override fun onCreate() {
-
-    fun setupSettings() = runBlocking {
-      if (!settingsRepository.isInitialized()) {
-        settingsRepository.update(Settings.createInitial())
+    fun setupSettings() =
+      runBlocking {
+        if (!settingsRepository.isInitialized()) {
+          settingsRepository.update(Settings.createInitial())
+        }
       }
-    }
 
     fun setupStrictMode() {
       if (BuildConfig.DEBUG) {
@@ -56,14 +56,14 @@ class App :
             StrictMode.ThreadPolicy.Builder()
               .detectAll()
               .penaltyLog()
-              .build()
+              .build(),
           )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
           StrictMode.setVmPolicy(
             StrictMode.VmPolicy.Builder()
               .detectUnsafeIntentLaunch()
               .penaltyDeath()
-              .build()
+              .build(),
           )
         }
       }
@@ -74,9 +74,12 @@ class App :
 
       fun createChannel(channel: AppNotificationChannel) =
         NotificationChannel(
-          /* id = */ channel.name,
-          /* name = */ channel.displayName,
-          /* importance = */ channel.importance
+          // id =
+          channel.name,
+          // name =
+          channel.displayName,
+          // importance =
+          channel.importance,
         ).apply {
           description = channel.description
         }

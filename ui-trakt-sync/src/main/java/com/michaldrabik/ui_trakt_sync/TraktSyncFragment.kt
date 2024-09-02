@@ -47,7 +47,10 @@ class TraktSyncFragment :
     hideNavigation()
   }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
     setupStatusBar()
@@ -56,7 +59,7 @@ class TraktSyncFragment :
       { viewModel.uiState.collect { render(it) } },
       { viewModel.eventFlow.collect { handleEvent(it) } },
       { viewModel.messageFlow.collect { showSnack(it) } },
-      doAfterLaunch = { viewModel.invalidate() }
+      doAfterLaunch = { viewModel.invalidate() },
     )
   }
 
@@ -79,7 +82,10 @@ class TraktSyncFragment :
     }
   }
 
-  private fun checkScheduleImport(currentSchedule: TraktSyncSchedule?, quickSyncEnabled: Boolean?) {
+  private fun checkScheduleImport(
+    currentSchedule: TraktSyncSchedule?,
+    quickSyncEnabled: Boolean?,
+  ) {
     if (quickSyncEnabled == true && currentSchedule == TraktSyncSchedule.OFF) {
       MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
         .setTitle(R.string.textSettingsScheduleImportConfirmationTitle)
@@ -154,7 +160,7 @@ class TraktSyncFragment :
           traktSyncButton.onClick {
             viewModel.startImport(
               isImport = traktSyncImportCheckbox.isChecked,
-              isExport = traktSyncExportCheckbox.isChecked
+              isExport = traktSyncExportCheckbox.isChecked,
             )
           }
           traktSyncScheduleButton.onClick { checkScheduleImport(traktSyncSchedule, quickSyncEnabled) }

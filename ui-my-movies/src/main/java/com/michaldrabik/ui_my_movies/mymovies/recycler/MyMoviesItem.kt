@@ -22,13 +22,13 @@ data class MyMoviesItem(
   val translation: Translation? = null,
   val userRating: Int? = null,
   val dateFormat: DateTimeFormatter? = null,
-  val sortOrder: SortOrder? = null
+  val sortOrder: SortOrder? = null,
 ) : MovieListItem {
 
   enum class Type {
     HEADER,
     RECENT_MOVIES,
-    ALL_MOVIES_ITEM
+    ALL_MOVIES_ITEM,
   }
 
   data class Header(
@@ -65,24 +65,23 @@ data class MyMoviesItem(
       spoilers = Spoilers(
         isSpoilerHidden = false,
         isSpoilerRatingsHidden = false,
-        isSpoilerTapToReveal = false
-      )
+        isSpoilerTapToReveal = false,
+      ),
     )
 
-    fun createRecentsSection(
-      movies: List<MyMoviesItem>,
-    ) = MyMoviesItem(
-      type = Type.RECENT_MOVIES,
-      header = null,
-      recentsSection = RecentsSection(movies),
-      movie = Movie.EMPTY,
-      image = Image.createUnavailable(POSTER),
-      isLoading = false,
-      spoilers = Spoilers(
-        isSpoilerHidden = false,
-        isSpoilerRatingsHidden = false,
-        isSpoilerTapToReveal = false
+    fun createRecentsSection(movies: List<MyMoviesItem>) =
+      MyMoviesItem(
+        type = Type.RECENT_MOVIES,
+        header = null,
+        recentsSection = RecentsSection(movies),
+        movie = Movie.EMPTY,
+        image = Image.createUnavailable(POSTER),
+        isLoading = false,
+        spoilers = Spoilers(
+          isSpoilerHidden = false,
+          isSpoilerRatingsHidden = false,
+          isSpoilerTapToReveal = false,
+        ),
       )
-    )
   }
 }

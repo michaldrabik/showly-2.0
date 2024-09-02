@@ -60,7 +60,10 @@ class ShowDetailsSeasonsFragment : BaseFragment<ShowDetailsSeasonsViewModel>(R.l
 
   private var seasonsAdapter: SeasonsAdapter? = null
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
 
@@ -68,7 +71,7 @@ class ShowDetailsSeasonsFragment : BaseFragment<ShowDetailsSeasonsViewModel>(R.l
       { parentViewModel.parentEvents.collect { viewModel.handleEvent(it) } },
       { parentViewModel.parentShowState.collect { it?.let { viewModel.loadSeasons(it) } } },
       { viewModel.uiState.collect { render(it) } },
-      { viewModel.eventFlow.collect { handleEvent(it as ShowDetailsSeasonsEvent<*>) } }
+      { viewModel.eventFlow.collect { handleEvent(it as ShowDetailsSeasonsEvent<*>) } },
     )
   }
 
@@ -82,7 +85,7 @@ class ShowDetailsSeasonsFragment : BaseFragment<ShowDetailsSeasonsViewModel>(R.l
       itemClickListener = { viewModel.openSeasonEpisodes(it) },
       itemCheckedListener = { item: SeasonListItem, isChecked: Boolean ->
         viewModel.onSeasonChecked(item.season, isChecked)
-      }
+      },
     )
     binding.showDetailsSeasonsRecycler.apply {
       adapter = seasonsAdapter

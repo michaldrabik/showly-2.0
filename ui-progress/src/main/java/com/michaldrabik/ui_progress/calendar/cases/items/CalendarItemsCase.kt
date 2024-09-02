@@ -43,12 +43,14 @@ abstract class CalendarItemsCase constructor(
   abstract val grouper: CalendarGrouper
 
   abstract fun sortEpisodes(): Comparator<Episode>
+
   abstract fun isWatched(episode: Episode): Boolean
+
   abstract fun isSpoilerHidden(episode: Episode): Boolean
 
   suspend fun loadItems(
     searchQuery: String? = "",
-    withFilters: Boolean = true
+    withFilters: Boolean = true,
   ): List<CalendarListItem> {
     return withContext(dispatchers.IO) {
       val now = nowUtc().toLocalZone()
@@ -80,7 +82,7 @@ abstract class CalendarItemsCase constructor(
             acc += localSource.seasons.getAllByShowsIds(list)
             acc
           }
-        }
+        },
       )
 
       val filteredSeasons = (seasons as List<Season>).filter { it.seasonNumber != 0 }.toMutableList()
@@ -89,7 +91,7 @@ abstract class CalendarItemsCase constructor(
       watchlistAppender.appendWatchlistShows(
         watchlistShows,
         filteredSeasons,
-        filteredEpisodes
+        filteredEpisodes,
       )
 
       val elements = filteredEpisodes
@@ -98,13 +100,18 @@ abstract class CalendarItemsCase constructor(
         .map { episode ->
           async {
             val show = shows.firstOrNull { it.traktId == episode.idShowTrakt }
-            val season = filteredSeasons.firstOrNull { it.idShowTrakt == episode.idShowTrakt && it.seasonNumber == episode.seasonNumber }
+            val season = filteredSeasons.firstOrNull {
+              it.idShowTrakt == episode.idShowTrakt && it.seasonNumber == episode.seasonNumber
+            }
 
             if (show == null || season == null) {
               return@async null
             }
 
-            val seasonEpisodes = episodes.filter { it.idShowTrakt == season.idShowTrakt && it.seasonNumber == season.seasonNumber }
+            val seasonEpisodes = episodes.filter {
+              it.idShowTrakt == season.idShowTrakt &&
+                it.seasonNumber == season.seasonNumber
+            }
 
             val episodeUi = mappers.episode.fromDatabase(episode)
             val seasonUi = mappers.season.fromDatabase(season, seasonEpisodes)
@@ -113,7 +120,7 @@ abstract class CalendarItemsCase constructor(
             if (language != Config.DEFAULT_LANGUAGE) {
               translations = TranslationsBundle(
                 episode = translationsRepository.loadTranslation(episodeUi, show.ids.trakt, language, onlyLocal = true),
-                show = translationsRepository.loadTranslation(show, language, onlyLocal = true)
+                show = translationsRepository.loadTranslation(show, language, onlyLocal = true),
               )
             }
             CalendarListItem.Episode(
@@ -126,7 +133,7 @@ abstract class CalendarItemsCase constructor(
               isSpoilerHidden = isSpoilerHidden(episode),
               dateFormat = dateFormat,
               translations = translations,
-              spoilers = spoilers
+              spoilers = spoilers,
             )
           }
         }
@@ -149,12 +156,14 @@ abstract class CalendarItemsCase constructor(
     }
   }
 
-  private fun filterByQuery(query: String, items: List<CalendarListItem.Episode>) =
-    items.filter {
-      it.show.title.contains(query, true) ||
-        it.episode.title.contains(query, true) ||
-        it.translations?.show?.title?.contains(query, true) == true ||
-        it.translations?.episode?.title?.contains(query, true) == true ||
-        it.episode.firstAired?.toLocalZone()?.format(it.dateFormat)?.contains(query, true) == true
-    }
+  private fun filterByQuery(
+    query: String,
+    items: List<CalendarListItem.Episode>,
+  ) = items.filter {
+    it.show.title.contains(query, true) ||
+      it.episode.title.contains(query, true) ||
+      it.translations?.show?.title?.contains(query, true) == true ||
+      it.translations?.episode?.title?.contains(query, true) == true ||
+      it.episode.firstAired?.toLocalZone()?.format(it.dateFormat)?.contains(query, true) == true
+  }
 }

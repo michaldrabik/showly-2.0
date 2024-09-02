@@ -30,16 +30,18 @@ class ProgressMoviesPinnedCaseTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should set pinned item properly`() = runBlockingTest {
-    SUT.addPinnedItem(Movie.EMPTY)
+  fun `Should set pinned item properly`() =
+    runBlockingTest {
+      SUT.addPinnedItem(Movie.EMPTY)
 
-    coVerify(exactly = 1) { pinnedItemsRepository.addPinnedItem(Movie.EMPTY) }
-  }
+      coVerify(exactly = 1) { pinnedItemsRepository.addPinnedItem(Movie.EMPTY) }
+    }
 
   @Test
-  fun `Should remove pinned item properly`() = runBlockingTest {
-    SUT.removePinnedItem(Movie.EMPTY)
+  fun `Should remove pinned item properly`() =
+    runBlockingTest {
+      SUT.removePinnedItem(Movie.EMPTY)
 
-    coVerify(exactly = 1) { pinnedItemsRepository.removePinnedItem(Movie.EMPTY) }
-  }
+      coVerify(exactly = 1) { pinnedItemsRepository.removePinnedItem(Movie.EMPTY) }
+    }
 }

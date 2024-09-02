@@ -1,4 +1,6 @@
-// ktlint-disable filename
+
+@file:Suppress("ktlint:standard:filename")
+
 package com.michaldrabik.ui_show.episodes
 
 import androidx.annotation.IdRes
@@ -14,7 +16,7 @@ sealed class ShowDetailsEpisodesEvent<T>(action: T) : Event<T>(action) {
 
   data class OpenEpisodeDetails(
     val bundle: EpisodeBundle,
-    val isWatched: Boolean
+    val isWatched: Boolean,
   ) : ShowDetailsEpisodesEvent<EpisodeBundle>(bundle)
 
   data class OpenRateSeason(
@@ -32,7 +34,7 @@ sealed class ShowDetailsEpisodesEvent<T>(action: T) : Event<T>(action) {
   data class RemoveFromTrakt(
     @IdRes val actionId: Int,
     val mode: RemoveTraktBottomSheet.Mode,
-    val traktIds: List<IdTrakt>
+    val traktIds: List<IdTrakt>,
   ) : ShowDetailsEpisodesEvent<Int>(actionId)
 
   object RequestWidgetsUpdate : ShowDetailsEpisodesEvent<Unit>(Unit)

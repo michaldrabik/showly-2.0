@@ -14,17 +14,19 @@ class ShowDetailsMainCase @Inject constructor(
   private val showsRepository: ShowsRepository,
 ) {
 
-  suspend fun loadDetails(idTrakt: IdTrakt) = withContext(dispatchers.IO) {
-    showsRepository.detailsShow.load(idTrakt)
-  }
-
-  suspend fun removeMalformedShow(idTrakt: IdTrakt) = withContext(dispatchers.IO) {
-    with(showsRepository) {
-      myShows.delete(idTrakt)
-      watchlistShows.delete(idTrakt)
-      hiddenShows.delete(idTrakt)
-      detailsShow.delete(idTrakt)
+  suspend fun loadDetails(idTrakt: IdTrakt) =
+    withContext(dispatchers.IO) {
+      showsRepository.detailsShow.load(idTrakt)
     }
-    Timber.d("Removing malformed show...")
-  }
+
+  suspend fun removeMalformedShow(idTrakt: IdTrakt) =
+    withContext(dispatchers.IO) {
+      with(showsRepository) {
+        myShows.delete(idTrakt)
+        watchlistShows.delete(idTrakt)
+        hiddenShows.delete(idTrakt)
+        detailsShow.delete(idTrakt)
+      }
+      Timber.d("Removing malformed show...")
+    }
 }

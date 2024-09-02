@@ -29,7 +29,7 @@ class DeepLinkResolver @Inject constructor() {
   private val sourceResolvers = setOf(
     TraktSourceResolver(),
     ImdbSourceResolver(),
-    TmdbSourceResolver()
+    TmdbSourceResolver(),
   )
 
   private val progressDestinations = arrayOf(
@@ -91,7 +91,10 @@ class DeepLinkResolver @Inject constructor() {
     }
   }
 
-  private fun resetNavigation(navController: NavController, navigationView: BottomNavigationView) {
+  private fun resetNavigation(
+    navController: NavController,
+    navigationView: BottomNavigationView,
+  ) {
     while (navController.currentDestination?.id !in mainDestinations) {
       navController.popBackStack()
     }

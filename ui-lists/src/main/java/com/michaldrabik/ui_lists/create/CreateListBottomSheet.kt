@@ -35,7 +35,10 @@ class CreateListBottomSheet : BaseBottomSheetFragment(R.layout.view_create_list)
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
 
@@ -95,7 +98,7 @@ class CreateListBottomSheet : BaseBottomSheetFragment(R.layout.view_create_list)
               it -> R.string.textPleaseWait
               !it && isEditMode() -> R.string.textEditList
               else -> R.string.textCreateList
-            }
+            },
           )
         }
       }

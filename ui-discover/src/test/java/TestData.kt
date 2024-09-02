@@ -25,7 +25,7 @@ object TestData {
         tvdb = IdTvdb(id = 0),
         imdb = IdImdb(id = ""),
         tmdb = IdTmdb(id = 0),
-        tvrage = IdTvRage(id = 0)
+        tvrage = IdTvRage(id = 0),
       ),
       title = "DISCOVER_LIST_ITEM",
       year = 0,
@@ -45,7 +45,7 @@ object TestData {
       genres = listOf(),
       airedEpisodes = 0,
       createdAt = 0,
-      updatedAt = 0
+      updatedAt = 0,
     ),
     image = Image(
       id = 0,
@@ -56,8 +56,10 @@ object TestData {
       fileUrl = "",
       thumbnailUrl = "",
       status = ImageStatus.UNKNOWN,
-      source = ImageSource.TMDB
+      source = ImageSource.TMDB,
     ),
-    isLoading = false, isFollowed = false, isWatchlist = false
+    isLoading = false,
+    isFollowed = false,
+    isWatchlist = false,
   )
 }

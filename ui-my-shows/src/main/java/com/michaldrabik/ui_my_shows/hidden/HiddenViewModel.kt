@@ -41,7 +41,7 @@ class HiddenViewModel @Inject constructor(
   private val loadShowsCase: HiddenLoadShowsCase,
   private val translationsCase: HiddenTranslationsCase,
   private val imagesProvider: ShowImagesProvider,
-  private val eventsManager: EventsManager
+  private val eventsManager: EventsManager,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private var loadItemsJob: Job? = null
@@ -74,14 +74,20 @@ class HiddenViewModel @Inject constructor(
     }
   }
 
-  fun setSortOrder(sortOrder: SortOrder, sortType: SortType) {
+  fun setSortOrder(
+    sortOrder: SortOrder,
+    sortType: SortType,
+  ) {
     viewModelScope.launch {
       sortOrderCase.setSortOrder(sortOrder, sortType)
       loadShows(resetScroll = true)
     }
   }
 
-  fun loadMissingImage(item: CollectionListItem, force: Boolean) {
+  fun loadMissingImage(
+    item: CollectionListItem,
+    force: Boolean,
+  ) {
     check(item is ShowItem)
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
@@ -126,17 +132,17 @@ class HiddenViewModel @Inject constructor(
     itemsState,
     sortOrderState,
     scrollState,
-    viewModeState
+    viewModeState,
   ) { s1, s2, s3, s4 ->
     HiddenUiState(
       items = s1,
       sortOrder = s2,
       resetScroll = s3,
-      viewMode = s4
+      viewMode = s4,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = HiddenUiState()
+    initialValue = HiddenUiState(),
   )
 }

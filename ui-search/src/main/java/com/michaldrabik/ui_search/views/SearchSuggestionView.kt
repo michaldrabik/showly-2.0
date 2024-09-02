@@ -46,15 +46,21 @@ class SearchSuggestionView : ShowView<SearchListItem> {
 
       val translationTitle = item.translation?.title
       suggestionTitle.text =
-        if (translationTitle.isNullOrBlank()) item.title
-        else translationTitle
+        if (translationTitle.isNullOrBlank()) {
+          item.title
+        } else {
+          translationTitle
+        }
 
       bindDescription(item)
 
       suggestionNetwork.text =
         if (item.isShow) {
-          if (item.year > 0) context.getString(R.string.textNetwork, item.network, item.year.toString())
-          else String.format("%s", item.network)
+          if (item.year > 0) {
+            context.getString(R.string.textNetwork, item.network, item.year.toString())
+          } else {
+            String.format("%s", item.network)
+          }
         } else {
           String.format("%s", item.year)
         }

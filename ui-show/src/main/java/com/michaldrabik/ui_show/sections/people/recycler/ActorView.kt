@@ -35,7 +35,10 @@ class ActorView : FrameLayout {
     clipChildren = false
   }
 
-  fun bind(item: Person, clickListener: (Person) -> Unit) {
+  fun bind(
+    item: Person,
+    clickListener: (Person) -> Unit,
+  ) {
     clear()
     tag = item.ids.tmdb.id
     onClick { clickListener(item) }

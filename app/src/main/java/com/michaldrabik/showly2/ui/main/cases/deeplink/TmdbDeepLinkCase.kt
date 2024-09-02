@@ -18,14 +18,17 @@ class TmdbDeepLinkCase @Inject constructor(
   private val moviesLocalSource: MoviesLocalDataSource,
   private val showDetailsRepository: ShowDetailsRepository,
   private val movieDetailsRepository: MovieDetailsRepository,
-  private val mappers: Mappers
+  private val mappers: Mappers,
 ) {
 
   companion object {
     private const val SEARCH_ID_TYPE = "tmdb"
   }
 
-  suspend fun findById(tmdbId: IdTmdb, type: String): DeepLinkBundle {
+  suspend fun findById(
+    tmdbId: IdTmdb,
+    type: String,
+  ): DeepLinkBundle {
     val localShow = showDetailsRepository.find(tmdbId)
     if (localShow != null && type == TMDB_TYPE_TV) {
       return DeepLinkBundle(show = localShow)

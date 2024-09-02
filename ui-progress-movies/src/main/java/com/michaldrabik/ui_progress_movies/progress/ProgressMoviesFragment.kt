@@ -94,7 +94,10 @@ class ProgressMoviesFragment :
   private var overscrollEnabled = true
   private var isSearching = false
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
     setupRecycler()
@@ -146,7 +149,7 @@ class ProgressMoviesFragment :
       listChangeListener = {
         requireMainFragment().resetTranslations()
         layoutManager?.scrollToPosition(0)
-      }
+      },
     )
     binding.progressMoviesMainRecycler.apply {
       adapter = this@ProgressMoviesFragment.adapter
@@ -164,7 +167,7 @@ class ProgressMoviesFragment :
       TopOverscrollAdapter(binding.progressMoviesMainRecycler),
       1F,
       OverScrollBounceEffectDecoratorBase.DEFAULT_TOUCH_DRAG_MOVE_RATIO_BCK,
-      OverScrollBounceEffectDecoratorBase.DEFAULT_DECELERATE_FACTOR
+      OverScrollBounceEffectDecoratorBase.DEFAULT_DECELERATE_FACTOR,
     ).apply {
       setOverScrollUpdateListener { _, state, offset ->
         binding.progressMoviesOverscroll?.run {
@@ -232,7 +235,9 @@ class ProgressMoviesFragment :
 
   private fun setupStatusBar() {
     if (statusBarHeight != 0) {
-      binding.progressMoviesMainRecycler.updatePadding(top = statusBarHeight + dimenToPx(R.dimen.progressMoviesTabsViewPadding))
+      binding.progressMoviesMainRecycler.updatePadding(
+        top = statusBarHeight + dimenToPx(R.dimen.progressMoviesTabsViewPadding),
+      )
       return
     }
     binding.progressMoviesMainRecycler.doOnApplyWindowInsets { view, insets, _, _ ->
@@ -246,7 +251,10 @@ class ProgressMoviesFragment :
     }
   }
 
-  private fun openSortOrderDialog(order: SortOrder, type: SortType) {
+  private fun openSortOrderDialog(
+    order: SortOrder,
+    type: SortType,
+  ) {
     val options = listOf(NAME, RATING, USER_RATING, RUNTIME, NEWEST, DATE_ADDED)
     val args = SortOrderBottomSheet.createBundle(options, order, type)
 
@@ -303,7 +311,7 @@ class ProgressMoviesFragment :
         binding.progressMoviesEmptyView.rootLayout.fadeIf(items.isEmpty() && !isSearching)
         binding.progressMoviesMainRecycler.fadeIn(
           duration = 200,
-          withHardware = true
+          withHardware = true,
         ).add(animations)
       }
       isOverScrollEnabled.let {

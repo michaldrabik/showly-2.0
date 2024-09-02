@@ -65,7 +65,10 @@ class ListDetailsListItemDecoration : ItemDecoration {
     outRect.right = (spacing * 2) * ((totalSpan - 1) - column) / totalSpan
   }
 
-  private fun getItemOffsetsPhone(outRect: Rect, view: View) {
+  private fun getItemOffsetsPhone(
+    outRect: Rect,
+    view: View,
+  ) {
     if (view is ListDetailsShowItemView || view is ListDetailsMovieItemView) {
       outRect.top = spacing
       outRect.bottom = spacing
@@ -74,6 +77,8 @@ class ListDetailsListItemDecoration : ItemDecoration {
     outRect.right = 0
   }
 
-  private fun getPosition(parent: RecyclerView, view: View): Int =
-    parent.getChildAdapterPosition(view)
+  private fun getPosition(
+    parent: RecyclerView,
+    view: View,
+  ): Int = parent.getChildAdapterPosition(view)
 }

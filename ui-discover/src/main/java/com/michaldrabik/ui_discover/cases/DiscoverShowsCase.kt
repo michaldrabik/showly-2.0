@@ -52,40 +52,41 @@ internal class DiscoverShowsCase @Inject constructor(
         myShowsIds = myShowsIds.await(),
         watchlistShowsIds = watchlistShowsIds.await(),
         hiddenShowsIds = archiveShowsIds.await(),
-        filters = filters
+        filters = filters,
       )
     }
 
-  suspend fun loadRemoteShows(filters: DiscoverFilters) = withContext(dispatchers.IO) {
-    val showAnticipated = !filters.hideAnticipated
-    val showCollection = !filters.hideCollection
-    val genres = filters.genres.toList()
-    val networks = filters.networks.toList()
+  suspend fun loadRemoteShows(filters: DiscoverFilters) =
+    withContext(dispatchers.IO) {
+      val showAnticipated = !filters.hideAnticipated
+      val showCollection = !filters.hideCollection
+      val genres = filters.genres.toList()
+      val networks = filters.networks.toList()
 
-    val myAsync = async { showsRepository.myShows.loadAllIds() }
-    val watchlistSync = async { showsRepository.watchlistShows.loadAllIds() }
-    val archiveAsync = async { showsRepository.hiddenShows.loadAllIds() }
-    val (myIds, watchlistIds, hiddenIds) = awaitAll(myAsync, watchlistSync, archiveAsync)
-    val collectionSize = myIds.size + watchlistIds.size + hiddenIds.size
+      val myAsync = async { showsRepository.myShows.loadAllIds() }
+      val watchlistSync = async { showsRepository.watchlistShows.loadAllIds() }
+      val archiveAsync = async { showsRepository.hiddenShows.loadAllIds() }
+      val (myIds, watchlistIds, hiddenIds) = awaitAll(myAsync, watchlistSync, archiveAsync)
+      val collectionSize = myIds.size + watchlistIds.size + hiddenIds.size
 
-    val remoteShows = showsRepository.discoverShows.loadAllRemote(
-      showAnticipated,
-      showCollection,
-      collectionSize,
-      genres,
-      networks
-    )
+      val remoteShows = showsRepository.discoverShows.loadAllRemote(
+        showAnticipated,
+        showCollection,
+        collectionSize,
+        genres,
+        networks,
+      )
 
-    showsRepository.discoverShows.cacheDiscoverShows(remoteShows)
+      showsRepository.discoverShows.cacheDiscoverShows(remoteShows)
 
-    prepareItems(
-      shows = remoteShows,
-      myShowsIds = myIds,
-      watchlistShowsIds = watchlistIds,
-      hiddenShowsIds = hiddenIds,
-      filters = filters
-    )
-  }
+      prepareItems(
+        shows = remoteShows,
+        myShowsIds = myIds,
+        watchlistShowsIds = watchlistIds,
+        hiddenShowsIds = hiddenIds,
+        filters = filters,
+      )
+    }
 
   private suspend fun prepareItems(
     shows: List<Show>,
@@ -99,8 +100,11 @@ internal class DiscoverShowsCase @Inject constructor(
     shows
       .filter { it.traktId !in hiddenShowsIds }
       .filter {
-        if (filters?.hideCollection == false) true
-        else it.traktId !in collectionIds
+        if (filters?.hideCollection == false) {
+          true
+        } else {
+          it.traktId !in collectionIds
+        }
       }
       .sortedBy(filters?.feedOrder ?: HOT)
       .mapIndexed { index, show ->
@@ -113,7 +117,7 @@ internal class DiscoverShowsCase @Inject constructor(
             image = image,
             isFollowed = show.traktId in myShowsIds,
             isWatchlist = show.traktId in watchlistShowsIds,
-            translation = translation
+            translation = translation,
           )
         }
       }.awaitAll()
@@ -135,13 +139,20 @@ internal class DiscoverShowsCase @Inject constructor(
     }
   }
 
-  private suspend fun loadTranslation(language: String, itemType: ImageType, show: Show) =
-    if (language == Config.DEFAULT_LANGUAGE || itemType == ImageType.POSTER) null
-    else translationsRepository.loadTranslation(show, language, true)
-
-  private fun List<Show>.sortedBy(order: DiscoverSortOrder) = when (order) {
-    HOT -> this
-    RATING -> this.sortedWith(compareByDescending<Show> { it.votes }.thenBy { it.rating })
-    NEWEST -> this.sortedByDescending { it.year }
+  private suspend fun loadTranslation(
+    language: String,
+    itemType: ImageType,
+    show: Show,
+  ) = if (language == Config.DEFAULT_LANGUAGE || itemType == ImageType.POSTER) {
+    null
+  } else {
+    translationsRepository.loadTranslation(show, language, true)
   }
+
+  private fun List<Show>.sortedBy(order: DiscoverSortOrder) =
+    when (order) {
+      HOT -> this
+      RATING -> this.sortedWith(compareByDescending<Show> { it.votes }.thenBy { it.rating })
+      NEWEST -> this.sortedByDescending { it.year }
+    }
 }

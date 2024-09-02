@@ -15,7 +15,7 @@ import javax.inject.Inject
 @ViewModelScoped
 class MovieDetailsPeopleCase @Inject constructor(
   private val dispatchers: CoroutineDispatchers,
-  private val peopleRepository: PeopleRepository
+  private val peopleRepository: PeopleRepository,
 ) {
 
   suspend fun loadPeople(movie: Movie) =

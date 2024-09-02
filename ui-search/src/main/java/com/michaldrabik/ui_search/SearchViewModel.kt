@@ -88,7 +88,6 @@ class SearchViewModel @Inject constructor(
   }
 
   fun search(query: String) {
-
     fun setInitialState() {
       searchItemsState.value = emptyList()
       searchItemsAnimateEvent.value = Event(false)
@@ -102,7 +101,10 @@ class SearchViewModel @Inject constructor(
       currentSearch = null
     }
 
-    fun setResultsState(items: List<SearchListItem>, isMoviesEnabled: Boolean) {
+    fun setResultsState(
+      items: List<SearchListItem>,
+      isMoviesEnabled: Boolean,
+    ) {
       searchItemsState.value = items
       searchItemsAnimateEvent.value = Event(true)
       searchingState.value = false
@@ -155,7 +157,10 @@ class SearchViewModel @Inject constructor(
     resetScrollEvent.value = Event(true)
   }
 
-  fun setSortOrder(sortOrder: SortOrder, sortType: SortType) {
+  fun setSortOrder(
+    sortOrder: SortOrder,
+    sortType: SortType,
+  ) {
     val currentOptions = searchOptionsState.value
     if (currentOptions.sortOrder == sortOrder && currentOptions.sortType == sortType) {
       return
@@ -197,13 +202,19 @@ class SearchViewModel @Inject constructor(
     }
   }
 
-  fun loadMissingImage(item: SearchListItem, force: Boolean) {
+  fun loadMissingImage(
+    item: SearchListItem,
+    force: Boolean,
+  ) {
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
       try {
         val image =
-          if (item.isShow) showsImagesProvider.loadRemoteImage(item.show, item.image.type, force)
-          else moviesImagesProvider.loadRemoteImage(item.movie, item.image.type, force)
+          if (item.isShow) {
+            showsImagesProvider.loadRemoteImage(item.show, item.image.type, force)
+          } else {
+            moviesImagesProvider.loadRemoteImage(item.movie, item.image.type, force)
+          }
         updateItem(item.copy(isLoading = false, image = image))
       } catch (t: Throwable) {
         updateItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
@@ -211,13 +222,19 @@ class SearchViewModel @Inject constructor(
     }
   }
 
-  fun loadMissingSuggestionImage(item: SearchListItem, force: Boolean) {
+  fun loadMissingSuggestionImage(
+    item: SearchListItem,
+    force: Boolean,
+  ) {
     viewModelScope.launch {
       updateSuggestionsItem(item.copy(isLoading = true))
       try {
         val image =
-          if (item.isShow) showsImagesProvider.loadRemoteImage(item.show, item.image.type, force)
-          else moviesImagesProvider.loadRemoteImage(item.movie, item.image.type, force)
+          if (item.isShow) {
+            showsImagesProvider.loadRemoteImage(item.show, item.image.type, force)
+          } else {
+            moviesImagesProvider.loadRemoteImage(item.movie, item.image.type, force)
+          }
         updateSuggestionsItem(item.copy(isLoading = false, image = image))
       } catch (t: Throwable) {
         updateSuggestionsItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
@@ -232,8 +249,11 @@ class SearchViewModel @Inject constructor(
     viewModelScope.launch {
       try {
         val translation =
-          if (item.isShow) searchTranslationsCase.loadTranslation(item.show)
-          else searchTranslationsCase.loadTranslation(item.movie)
+          if (item.isShow) {
+            searchTranslationsCase.loadTranslation(item.show)
+          } else {
+            searchTranslationsCase.loadTranslation(item.movie)
+          }
         updateSuggestionsItem(item.copy(translation = translation))
       } catch (error: Throwable) {
         Timber.e(error)
@@ -277,7 +297,7 @@ class SearchViewModel @Inject constructor(
     moviesEnabledState,
     resetScrollEvent,
     searchOptionsState,
-    filtersVisibleState
+    filtersVisibleState,
   ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ->
     SearchUiState(
       searchItems = s1,
@@ -290,11 +310,11 @@ class SearchViewModel @Inject constructor(
       isMoviesEnabled = s8,
       resetScroll = s9,
       searchOptions = s10,
-      isFiltersVisible = s11
+      isFiltersVisible = s11,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = SearchUiState()
+    initialValue = SearchUiState(),
   )
 }

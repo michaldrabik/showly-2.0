@@ -46,7 +46,7 @@ class MyMovieAllView : MovieView<MyMoviesItem> {
       collectionMovieRoot.onLongClick { itemLongClickListener?.invoke(item) }
       collectionMovieRoot.setOutboundRipple(
         size = (context.dimenToPx(R.dimen.collectionItemRippleSpace)).toFloat(),
-        corner = context.dimenToPx(R.dimen.mediaTileCorner).toFloat()
+        corner = context.dimenToPx(R.dimen.mediaTileCorner).toFloat(),
       )
     }
 
@@ -65,8 +65,11 @@ class MyMovieAllView : MovieView<MyMoviesItem> {
     with(binding) {
       collectionMovieProgress.visibleIf(item.isLoading)
       collectionMovieTitle.text =
-        if (item.translation?.title.isNullOrBlank()) item.movie.title
-        else item.translation?.title
+        if (item.translation?.title.isNullOrBlank()) {
+          item.movie.title
+        } else {
+          item.translation?.title
+        }
 
       bindDescription(item)
       bindRating(item)
@@ -94,8 +97,11 @@ class MyMovieAllView : MovieView<MyMoviesItem> {
 
   private fun bindDescription(item: MyMoviesItem) {
     var description =
-      if (item.translation?.overview.isNullOrBlank()) item.movie.overview
-      else item.translation?.overview
+      if (item.translation?.overview.isNullOrBlank()) {
+        item.movie.overview
+      } else {
+        item.translation?.overview
+      }
 
     with(binding) {
       if (item.spoilers.isSpoilerHidden) {

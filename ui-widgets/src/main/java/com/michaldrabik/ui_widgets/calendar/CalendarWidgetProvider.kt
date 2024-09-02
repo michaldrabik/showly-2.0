@@ -32,7 +32,9 @@ class CalendarWidgetProvider : BaseWidgetProvider() {
       val applicationContext = context.applicationContext
       val appWidgetManager = AppWidgetManager.getInstance(applicationContext)
       val intent = Intent(applicationContext, CalendarWidgetProvider::class.java).apply {
-        val ids = appWidgetManager.getAppWidgetIds(ComponentName(applicationContext, CalendarWidgetProvider::class.java))
+        val ids = appWidgetManager.getAppWidgetIds(
+          ComponentName(applicationContext, CalendarWidgetProvider::class.java),
+        )
         action = ACTION_APPWIDGET_UPDATE
         putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
       }
@@ -58,7 +60,11 @@ class CalendarWidgetProvider : BaseWidgetProvider() {
     appWidgetIds?.forEach { updateWidget(context, appWidgetManager, it) }
   }
 
-  private fun updateWidget(context: Context, appWidgetManager: AppWidgetManager, widgetId: Int) {
+  private fun updateWidget(
+    context: Context,
+    appWidgetManager: AppWidgetManager,
+    widgetId: Int,
+  ) {
     val intent = Intent(context, CalendarWidgetService::class.java).apply {
       putExtra(EXTRA_APPWIDGET_ID, widgetId)
       data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
@@ -94,7 +100,7 @@ class CalendarWidgetProvider : BaseWidgetProvider() {
       context,
       0,
       Intent().apply { setClassName(context, Config.HOST_ACTIVITY_NAME) },
-      FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT
+      FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT,
     )
     remoteViews.setOnClickPendingIntent(R.id.calendarWidgetLabelImage, mainIntent)
     remoteViews.setOnClickPendingIntent(R.id.calendarWidgetLabelText, mainIntent)
@@ -107,7 +113,7 @@ class CalendarWidgetProvider : BaseWidgetProvider() {
         putExtra(EXTRA_MODE_CLICK, true)
         putExtra(EXTRA_APPWIDGET_ID, widgetId)
       },
-      FLAG_MUTABLE or FLAG_UPDATE_CURRENT
+      FLAG_MUTABLE or FLAG_UPDATE_CURRENT,
     )
     remoteViews.setOnClickPendingIntent(R.id.calendarWidgetEmptyViewIcon, modeClickIntent)
 
@@ -132,8 +138,10 @@ class CalendarWidgetProvider : BaseWidgetProvider() {
     }
   }
 
-  override fun onReceive(context: Context, intent: Intent) {
-
+  override fun onReceive(
+    context: Context,
+    intent: Intent,
+  ) {
     fun onListItemClick() {
       val showId = intent.getLongExtra(EXTRA_SHOW_ID, -1L)
       context.startActivity(
@@ -141,7 +149,7 @@ class CalendarWidgetProvider : BaseWidgetProvider() {
           setClassName(context, Config.HOST_ACTIVITY_NAME)
           putExtra(EXTRA_SHOW_ID, showId.toString())
           flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        }
+        },
       )
     }
 

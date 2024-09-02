@@ -17,7 +17,9 @@ import com.michaldrabik.ui_streamings.recycler.StreamingAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ShowDetailsStreamingsFragment : BaseFragment<ShowDetailsStreamingsViewModel>(R.layout.fragment_show_details_streamings) {
+class ShowDetailsStreamingsFragment : BaseFragment<ShowDetailsStreamingsViewModel>(
+  R.layout.fragment_show_details_streamings,
+) {
 
   override val navigationId = R.id.showDetailsFragment
   private val binding by viewBinding(FragmentShowDetailsStreamingsBinding::bind)
@@ -27,12 +29,15 @@ class ShowDetailsStreamingsFragment : BaseFragment<ShowDetailsStreamingsViewMode
 
   private var streamingAdapter: StreamingAdapter? = null
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
     launchAndRepeatStarted(
       { parentViewModel.parentShowState.collect { it?.let { viewModel.loadStreamings(it) } } },
-      { viewModel.uiState.collect { render(it) } }
+      { viewModel.uiState.collect { render(it) } },
     )
   }
 

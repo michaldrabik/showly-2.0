@@ -12,7 +12,7 @@ import com.michaldrabik.data_local.database.model.RecentSearch as RecentSearchDb
 @ViewModelScoped
 class SearchRecentsCase @Inject constructor(
   private val dispatchers: CoroutineDispatchers,
-  private val localSource: LocalDataSource
+  private val localSource: LocalDataSource,
 ) {
 
   suspend fun getRecentSearches(limit: Int): List<RecentSearch> =
@@ -21,12 +21,14 @@ class SearchRecentsCase @Inject constructor(
         .map { RecentSearch(it.text) }
     }
 
-  suspend fun clearRecentSearches() = withContext(dispatchers.IO) {
-    localSource.recentSearch.deleteAll()
-  }
+  suspend fun clearRecentSearches() =
+    withContext(dispatchers.IO) {
+      localSource.recentSearch.deleteAll()
+    }
 
-  suspend fun saveRecentSearch(query: String) = withContext(dispatchers.IO) {
-    val now = nowUtcMillis()
-    localSource.recentSearch.upsert(listOf(RecentSearchDb(0, query, now, now)))
-  }
+  suspend fun saveRecentSearch(query: String) =
+    withContext(dispatchers.IO) {
+      val now = nowUtcMillis()
+      localSource.recentSearch.upsert(listOf(RecentSearchDb(0, query, now, now)))
+    }
 }

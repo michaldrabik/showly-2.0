@@ -35,8 +35,11 @@ class SearchSortingCase @Inject constructor() {
 
   private fun getTitle(item: SearchListItem): String {
     val translatedTitle =
-      if (item.translation?.hasTitle == true) item.translation.title
-      else item.title
+      if (item.translation?.hasTitle == true) {
+        item.translation.title
+      } else {
+        item.title
+      }
     return translatedTitle.uppercase(Locale.ROOT)
   }
 }

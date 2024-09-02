@@ -43,8 +43,11 @@ class WatchlistLoadShowsCase @Inject constructor(
       val ratings = ratingsCase.loadRatings()
       val dateFormat = dateFormatProvider.loadFullDayFormat()
       val translations =
-        if (language == Config.DEFAULT_LANGUAGE) emptyMap()
-        else translationsRepository.loadAllShowsLocal(language)
+        if (language == Config.DEFAULT_LANGUAGE) {
+          emptyMap()
+        } else {
+          translationsRepository.loadAllShowsLocal(language)
+        }
       val spoilers = settingsRepository.spoilers.getAll()
 
       val filtersItem = loadFiltersItem()
@@ -60,7 +63,7 @@ class WatchlistLoadShowsCase @Inject constructor(
             userRating = ratings[it.ids.trakt],
             dateFormat = dateFormat,
             sortOrder = filtersItem.sortOrder,
-            spoilers = spoilers
+            spoilers = spoilers,
           )
         }
         .awaitAll()
@@ -85,7 +88,7 @@ class WatchlistLoadShowsCase @Inject constructor(
       sortType = settingsRepository.sorting.watchlistShowsSortType,
       networks = settingsRepository.filters.watchlistShowsNetworks,
       genres = settingsRepository.filters.watchlistShowsGenres,
-      upcoming = settingsRepository.filters.watchlistShowsUpcoming
+      upcoming = settingsRepository.filters.watchlistShowsUpcoming,
     )
   }
 
@@ -95,7 +98,7 @@ class WatchlistLoadShowsCase @Inject constructor(
     userRating: TraktRating?,
     dateFormat: DateTimeFormatter,
     sortOrder: SortOrder,
-    spoilers: SpoilersSettings
+    spoilers: SpoilersSettings,
   ) = async {
     val image = imagesProvider.findCachedImage(show, ImageType.POSTER)
     CollectionListItem.ShowItem(
@@ -109,8 +112,8 @@ class WatchlistLoadShowsCase @Inject constructor(
       spoilers = CollectionListItem.ShowItem.Spoilers(
         isSpoilerHidden = spoilers.isWatchlistShowsHidden,
         isSpoilerRatingsHidden = spoilers.isWatchlistShowsRatingsHidden,
-        isSpoilerTapToReveal = spoilers.isTapToReveal
-      )
+        isSpoilerTapToReveal = spoilers.isTapToReveal,
+      ),
     )
   }
 }

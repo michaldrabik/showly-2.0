@@ -1,4 +1,6 @@
-// ktlint-disable filename
+
+@file:Suppress("ktlint:standard:filename")
+
 package com.michaldrabik.ui_progress_movies.main
 
 import com.michaldrabik.ui_base.utilities.events.Event

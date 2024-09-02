@@ -46,7 +46,7 @@ internal class DiscoverFiltersNetworksViewModel @Inject constructor(
       settingsRepository.update(
         settings.copy(
           discoverFilterNetworks = networks.toList(),
-        )
+        ),
       )
       eventChannel.send(ApplyFilters)
     }
@@ -63,6 +63,6 @@ internal class DiscoverFiltersNetworksViewModel @Inject constructor(
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = DiscoverFiltersNetworksUiState()
+    initialValue = DiscoverFiltersNetworksUiState(),
   )
 }

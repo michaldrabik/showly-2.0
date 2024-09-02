@@ -4,24 +4,33 @@ import androidx.recyclerview.widget.DiffUtil
 
 class ProgressMovieItemDiffCallback : DiffUtil.ItemCallback<ProgressMovieListItem>() {
 
-  override fun areItemsTheSame(oldItem: ProgressMovieListItem, newItem: ProgressMovieListItem): Boolean {
+  override fun areItemsTheSame(
+    oldItem: ProgressMovieListItem,
+    newItem: ProgressMovieListItem,
+  ): Boolean {
     val areMovies = oldItem is ProgressMovieListItem.MovieItem && newItem is ProgressMovieListItem.MovieItem
     val areFilters = oldItem is ProgressMovieListItem.FiltersItem && newItem is ProgressMovieListItem.FiltersItem
 
     return when {
       areMovies -> areItemsTheSame(
         (oldItem as ProgressMovieListItem.MovieItem),
-        (newItem as ProgressMovieListItem.MovieItem)
+        (newItem as ProgressMovieListItem.MovieItem),
       )
       areFilters -> true
       else -> false
     }
   }
 
-  override fun areContentsTheSame(oldItem: ProgressMovieListItem, newItem: ProgressMovieListItem): Boolean {
+  override fun areContentsTheSame(
+    oldItem: ProgressMovieListItem,
+    newItem: ProgressMovieListItem,
+  ): Boolean {
     return when (oldItem) {
       is ProgressMovieListItem.MovieItem -> areContentsTheSame(oldItem, (newItem as ProgressMovieListItem.MovieItem))
-      is ProgressMovieListItem.FiltersItem -> areContentsTheSame(oldItem, (newItem as ProgressMovieListItem.FiltersItem))
+      is ProgressMovieListItem.FiltersItem -> areContentsTheSame(
+        oldItem,
+        (newItem as ProgressMovieListItem.FiltersItem),
+      )
       is ProgressMovieListItem.HeaderItem -> true
     }
   }

@@ -8,7 +8,7 @@ import com.michaldrabik.ui_model.Show
 data class ListsItemImage(
   val image: Image,
   val show: Show? = null,
-  val movie: Movie? = null
+  val movie: Movie? = null,
 ) {
 
   fun getIds(): Ids? {

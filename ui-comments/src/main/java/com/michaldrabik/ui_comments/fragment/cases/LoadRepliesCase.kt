@@ -12,19 +12,20 @@ import javax.inject.Inject
 class LoadRepliesCase @Inject constructor(
   private val dispatchers: CoroutineDispatchers,
   private val commentsRepository: CommentsRepository,
-  private val userManager: UserTraktManager
+  private val userManager: UserTraktManager,
 ) {
 
-  suspend fun loadReplies(comment: Comment): List<Comment> = withContext(dispatchers.IO) {
-    val isSignedIn = userManager.isAuthorized()
-    val username = userManager.getUsername()
+  suspend fun loadReplies(comment: Comment): List<Comment> =
+    withContext(dispatchers.IO) {
+      val isSignedIn = userManager.isAuthorized()
+      val username = userManager.getUsername()
 
-    commentsRepository.loadReplies(comment.id)
-      .map {
-        it.copy(
-          isSignedIn = isSignedIn,
-          isMe = it.user.username == username
-        )
-      }
-  }
+      commentsRepository.loadReplies(comment.id)
+        .map {
+          it.copy(
+            isSignedIn = isSignedIn,
+            isMe = it.user.username == username,
+          )
+        }
+    }
 }

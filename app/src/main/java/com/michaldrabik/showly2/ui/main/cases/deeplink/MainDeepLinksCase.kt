@@ -13,12 +13,15 @@ class MainDeepLinksCase @Inject constructor(
   private val traktDeepLinkCase: TraktDeepLinkCase,
 ) {
 
-  suspend fun findById(imdbId: IdImdb) =
-    imdbDeepLinkCase.findById(imdbId)
+  suspend fun findById(imdbId: IdImdb) = imdbDeepLinkCase.findById(imdbId)
 
-  suspend fun findById(tmdbId: IdTmdb, type: String) =
-    tmdbDeepLinkCase.findById(tmdbId, type)
+  suspend fun findById(
+    tmdbId: IdTmdb,
+    type: String,
+  ) = tmdbDeepLinkCase.findById(tmdbId, type)
 
-  suspend fun findById(traktSlug: IdSlug, type: String) =
-    traktDeepLinkCase.findById(traktSlug, type)
+  suspend fun findById(
+    traktSlug: IdSlug,
+    type: String,
+  ) = traktDeepLinkCase.findById(traktSlug, type)
 }

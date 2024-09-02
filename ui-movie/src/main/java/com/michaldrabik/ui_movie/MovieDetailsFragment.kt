@@ -102,13 +102,19 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   private val movieId by lazy { IdTrakt(requireLong(ARG_MOVIE_ID)) }
 
   private val imageHeight by lazy {
-    if (resources.configuration.orientation == ORIENTATION_PORTRAIT) screenHeight()
-    else screenWidth()
+    if (resources.configuration.orientation == ORIENTATION_PORTRAIT) {
+      screenHeight()
+    } else {
+      screenWidth()
+    }
   }
   private val imageRatio by lazy { resources.getString(R.string.detailsImageRatio).toFloat() }
   private val imagePadded by lazy { resources.getBoolean(R.bool.detailsImagePadded) }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     requireActivity().requestedOrientation = SCREEN_ORIENTATION_PORTRAIT
     setupView()
@@ -123,7 +129,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
           viewModel.loadDetails(movieId)
           isInitialized = true
         }
-      }
+      },
     )
   }
 
@@ -136,7 +142,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         val bundle = bundleOf(
           ARG_MOVIE_ID to movieId.id,
           ARG_FAMILY to MOVIE,
-          ARG_TYPE to FANART
+          ARG_TYPE to FANART,
         )
         navigateToSafe(R.id.actionMovieDetailsFragmentToArtGallery, bundle)
       }
@@ -222,8 +228,11 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         image?.let { renderImage(it) }
         listsCount?.let {
           val text =
-            if (it > 0) getString(R.string.textMovieManageListsCount, it)
-            else getString(R.string.textMovieManageLists)
+            if (it > 0) {
+              getString(R.string.textMovieManageListsCount, it)
+            } else {
+              getString(R.string.textMovieManageLists)
+            }
           movieDetailsManageListsLabel.text = text
         }
         ratingState?.let { renderRating(it) }
@@ -278,10 +287,17 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     }
   }
 
-  private fun renderExtraInfo(movie: Movie, meta: MovieDetailsMeta?) {
+  private fun renderExtraInfo(
+    movie: Movie,
+    meta: MovieDetailsMeta?,
+  ) {
     val country = if (movie.country.isNotBlank()) String.format(ENGLISH, "(%s)", movie.country) else ""
     val releaseDate = when {
-      movie.released != null -> String.format(ENGLISH, "%s", meta?.dateFormat?.format(movie.released)?.capitalizeWords())
+      movie.released != null -> String.format(
+        ENGLISH,
+        "%s",
+        meta?.dateFormat?.format(movie.released)?.capitalizeWords(),
+      )
       movie.year > 0 -> movie.year.toString()
       else -> ""
     }
@@ -296,7 +312,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       country.uppercase(ROOT),
       "⏲ ${movie.runtime}",
       getString(R.string.textMinutesShort),
-      genres
+      genres,
     )
 
     if (genres.isEmpty()) {
@@ -377,7 +393,9 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     }
   }
 
-  private fun openRemoveTraktSheet(@IdRes action: Int) {
+  private fun openRemoveTraktSheet(
+    @IdRes action: Int,
+  ) {
     setFragmentResultListener(NavigationArgs.REQUEST_REMOVE_TRAKT) { _, bundle ->
       if (bundle.getBoolean(NavigationArgs.RESULT, false)) {
         val text = resources.getString(R.string.textTraktSyncMovieRemovedFromTrakt)
@@ -400,7 +418,9 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 
   private fun openShareSheet(movie: Movie) {
     val intent = Intent().apply {
-      val text = "Hey! Check out ${movie.title}:\nhttps://trakt.tv/movies/${movie.ids.slug.id}\nhttps://www.imdb.com/title/${movie.ids.imdb.id}"
+      val text = "Hey! Check out ${movie.title}:\n" +
+        "https://trakt.tv/movies/${movie.ids.slug.id}\n" +
+        "https://www.imdb.com/title/${movie.ids.imdb.id}"
       action = Intent.ACTION_SEND
       putExtra(Intent.EXTRA_TEXT, text)
       type = "text/plain"
@@ -427,7 +447,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     setFragmentResultListener(REQUEST_MANAGE_LISTS) { _, _ -> viewModel.loadListsCount() }
     val bundle = bundleOf(
       ARG_ID to movieId.id,
-      ARG_TYPE to Mode.MOVIES.type
+      ARG_TYPE to Mode.MOVIES.type,
     )
     navigateToSafe(R.id.actionMovieDetailsFragmentToManageLists, bundle)
   }

@@ -28,10 +28,10 @@ sealed class CollectionListItem(
     val sortOrder: SortOrder? = null,
     val spoilers: Spoilers,
   ) : CollectionListItem(
-    movie = movie,
-    image = image,
-    isLoading = isLoading
-  ) {
+      movie = movie,
+      image = image,
+      isLoading = isLoading,
+    ) {
 
     data class Spoilers(
       val isSpoilerHidden: Boolean,
@@ -44,12 +44,12 @@ sealed class CollectionListItem(
     val sortOrder: SortOrder,
     val sortType: SortType,
     val upcoming: UpcomingFilter,
-    val genres: List<Genre>
+    val genres: List<Genre>,
   ) : CollectionListItem(
-    movie = Movie.EMPTY,
-    image = Image.createUnknown(ImageType.POSTER),
-    isLoading = false
-  ) {
+      movie = Movie.EMPTY,
+      image = Image.createUnknown(ImageType.POSTER),
+      isLoading = false,
+    ) {
 
     fun hasActiveFilters() = upcoming.isActive() || genres.isNotEmpty()
   }

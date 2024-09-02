@@ -112,8 +112,10 @@ internal class DiscoverMoviesViewModel @Inject constructor(
     }
   }
 
-  fun loadMissingImage(item: DiscoverMovieListItem, force: Boolean) {
-
+  fun loadMissingImage(
+    item: DiscoverMovieListItem,
+    force: Boolean,
+  ) {
     fun updateItem(newItem: DiscoverMovieListItem) {
       itemsState.update { value ->
         value?.toMutableList()?.apply {
@@ -165,7 +167,7 @@ internal class DiscoverMoviesViewModel @Inject constructor(
   override fun onCleared() {
     filtersCase.revertFilters(
       initialFilters = initialFilters,
-      currentFilters = filtersState.value
+      currentFilters = filtersState.value,
     )
     super.onCleared()
   }
@@ -175,18 +177,18 @@ internal class DiscoverMoviesViewModel @Inject constructor(
     loadingState,
     syncingState,
     filtersState,
-    scrollState
+    scrollState,
   ) { s1, s2, s3, s4, s5 ->
     DiscoverMoviesUiState(
       items = s1,
       isLoading = s2,
       isSyncing = s3,
       filters = s4,
-      resetScroll = s5
+      resetScroll = s5,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = DiscoverMoviesUiState()
+    initialValue = DiscoverMoviesUiState(),
   )
 }

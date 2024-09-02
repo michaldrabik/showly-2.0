@@ -25,12 +25,15 @@ class ShowDetailsRatingsFragment : BaseFragment<ShowDetailsRatingsViewModel>(R.l
   private val parentViewModel by viewModels<ShowDetailsViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<ShowDetailsRatingsViewModel>()
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     launchAndRepeatStarted(
       { parentViewModel.parentShowState.collect { it?.let { viewModel.loadRatings(it) } } },
       { parentViewModel.parentFollowedState.collect { it?.let { viewModel.refreshRatings() } } },
-      { viewModel.uiState.collect { render(it) } }
+      { viewModel.uiState.collect { render(it) } },
     )
   }
 

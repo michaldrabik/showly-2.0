@@ -109,12 +109,15 @@ class MovieDetailsCollectionItemView : FrameLayout {
     }
   }
 
-  private fun bindBadge(isMyMovie: Boolean, isWatchlist: Boolean) {
+  private fun bindBadge(
+    isMyMovie: Boolean,
+    isWatchlist: Boolean,
+  ) {
     with(binding) {
       badgeImage.visibleIf(isMyMovie || isWatchlist)
       ImageViewCompat.setImageTintList(
         badgeImage,
-        ColorStateList.valueOf(if (isMyMovie) colorAccent else colorGray)
+        ColorStateList.valueOf(if (isMyMovie) colorAccent else colorGray),
       )
     }
   }

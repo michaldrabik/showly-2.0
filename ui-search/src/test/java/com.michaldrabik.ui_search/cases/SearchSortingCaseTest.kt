@@ -45,76 +45,83 @@ class SearchSortingCaseTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should properly sort ascending by name`() = runTest {
-    val options = SearchOptions(sortOrder = SortOrder.NAME, sortType = SortType.ASCENDING)
+  fun `Should properly sort ascending by name`() =
+    runTest {
+      val options = SearchOptions(sortOrder = SortOrder.NAME, sortType = SortType.ASCENDING)
 
-    val result = testList.sortedWith(SUT.sort(options))
+      val result = testList.sortedWith(SUT.sort(options))
 
-    assertThat(result[0].title).isEqualTo("Test1")
-    assertThat(result[1].title).isEqualTo("Test2")
-    assertThat(result[2].title).isEqualTo("Test3")
-  }
-
-  @Test
-  fun `Should properly sort descending by name`() = runTest {
-    val options = SearchOptions(sortOrder = SortOrder.NAME, sortType = SortType.DESCENDING)
-
-    val result = testList.sortedWith(SUT.sort(options))
-
-    assertThat(result[0].title).isEqualTo("Test3")
-    assertThat(result[1].title).isEqualTo("Test2")
-    assertThat(result[2].title).isEqualTo("Test1")
-  }
-
-  @Test
-  fun `Should properly sort ascending by rank`() = runTest {
-    val options = SearchOptions(sortOrder = SortOrder.RANK, sortType = SortType.ASCENDING)
-
-    val result = testList.sortedWith(SUT.sort(options))
-
-    assertThat(result[0].title).isEqualTo("Test1")
-    assertThat(result[1].title).isEqualTo("Test2")
-    assertThat(result[2].title).isEqualTo("Test3")
-  }
-
-  @Test
-  fun `Should properly sort descending by rank`() = runTest {
-    val options = SearchOptions(sortOrder = SortOrder.RANK, sortType = SortType.DESCENDING)
-
-    val result = testList.sortedWith(SUT.sort(options))
-
-    assertThat(result[0].title).isEqualTo("Test3")
-    assertThat(result[1].title).isEqualTo("Test2")
-    assertThat(result[2].title).isEqualTo("Test1")
-  }
-
-  @Test
-  fun `Should properly sort ascending by release date`() = runTest {
-    val options = SearchOptions(sortOrder = SortOrder.NEWEST, sortType = SortType.ASCENDING)
-
-    val result = testList.sortedWith(SUT.sort(options))
-
-    assertThat(result[0].title).isEqualTo("Test1")
-    assertThat(result[1].title).isEqualTo("Test2")
-    assertThat(result[2].title).isEqualTo("Test3")
-  }
-
-  @Test
-  fun `Should properly sort descending by release date`() = runTest {
-    val options = SearchOptions(sortOrder = SortOrder.NEWEST, sortType = SortType.DESCENDING)
-
-    val result = testList.sortedWith(SUT.sort(options))
-
-    assertThat(result[0].title).isEqualTo("Test3")
-    assertThat(result[1].title).isEqualTo("Test2")
-    assertThat(result[2].title).isEqualTo("Test1")
-  }
-
-  @Test
-  fun `Should fail if unsupported sort order`() = runTest {
-    val options = SearchOptions(sortOrder = SortOrder.RECENTLY_WATCHED)
-    assertThrows(IllegalStateException::class.java) {
-      testList.sortedWith(SUT.sort(options))
+      assertThat(result[0].title).isEqualTo("Test1")
+      assertThat(result[1].title).isEqualTo("Test2")
+      assertThat(result[2].title).isEqualTo("Test3")
     }
-  }
+
+  @Test
+  fun `Should properly sort descending by name`() =
+    runTest {
+      val options = SearchOptions(sortOrder = SortOrder.NAME, sortType = SortType.DESCENDING)
+
+      val result = testList.sortedWith(SUT.sort(options))
+
+      assertThat(result[0].title).isEqualTo("Test3")
+      assertThat(result[1].title).isEqualTo("Test2")
+      assertThat(result[2].title).isEqualTo("Test1")
+    }
+
+  @Test
+  fun `Should properly sort ascending by rank`() =
+    runTest {
+      val options = SearchOptions(sortOrder = SortOrder.RANK, sortType = SortType.ASCENDING)
+
+      val result = testList.sortedWith(SUT.sort(options))
+
+      assertThat(result[0].title).isEqualTo("Test1")
+      assertThat(result[1].title).isEqualTo("Test2")
+      assertThat(result[2].title).isEqualTo("Test3")
+    }
+
+  @Test
+  fun `Should properly sort descending by rank`() =
+    runTest {
+      val options = SearchOptions(sortOrder = SortOrder.RANK, sortType = SortType.DESCENDING)
+
+      val result = testList.sortedWith(SUT.sort(options))
+
+      assertThat(result[0].title).isEqualTo("Test3")
+      assertThat(result[1].title).isEqualTo("Test2")
+      assertThat(result[2].title).isEqualTo("Test1")
+    }
+
+  @Test
+  fun `Should properly sort ascending by release date`() =
+    runTest {
+      val options = SearchOptions(sortOrder = SortOrder.NEWEST, sortType = SortType.ASCENDING)
+
+      val result = testList.sortedWith(SUT.sort(options))
+
+      assertThat(result[0].title).isEqualTo("Test1")
+      assertThat(result[1].title).isEqualTo("Test2")
+      assertThat(result[2].title).isEqualTo("Test3")
+    }
+
+  @Test
+  fun `Should properly sort descending by release date`() =
+    runTest {
+      val options = SearchOptions(sortOrder = SortOrder.NEWEST, sortType = SortType.DESCENDING)
+
+      val result = testList.sortedWith(SUT.sort(options))
+
+      assertThat(result[0].title).isEqualTo("Test3")
+      assertThat(result[1].title).isEqualTo("Test2")
+      assertThat(result[2].title).isEqualTo("Test1")
+    }
+
+  @Test
+  fun `Should fail if unsupported sort order`() =
+    runTest {
+      val options = SearchOptions(sortOrder = SortOrder.RECENTLY_WATCHED)
+      assertThrows(IllegalStateException::class.java) {
+        testList.sortedWith(SUT.sort(options))
+      }
+    }
 }

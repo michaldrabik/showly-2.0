@@ -4,5 +4,8 @@ import com.michaldrabik.ui_model.Movie
 import java.time.ZonedDateTime
 
 interface CalendarFilter {
-  fun filter(now: ZonedDateTime, movie: Movie): Boolean
+  fun filter(
+    now: ZonedDateTime,
+    movie: Movie,
+  ): Boolean
 }

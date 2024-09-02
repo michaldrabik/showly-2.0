@@ -19,7 +19,7 @@ class PersonDetailsAdapter(
   val onTranslationMissingListener: (PersonDetailsItem) -> Unit,
   val onLinksClickListener: (Person) -> Unit,
   val onImageClickListener: () -> Unit,
-  var onFiltersChangeListener: ((List<Mode>) -> Unit)
+  var onFiltersChangeListener: ((List<Mode>) -> Unit),
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   companion object {
@@ -47,42 +47,46 @@ class PersonDetailsAdapter(
       else -> throw IllegalStateException()
     }
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    when (viewType) {
-      VIEW_TYPE_INFO -> BaseViewHolder(
-        PersonDetailsInfoView(parent.context).apply {
-          onLinksClickListener = this@PersonDetailsAdapter.onLinksClickListener
-          onImageClickListener = this@PersonDetailsAdapter.onImageClickListener
-        }
-      )
-      VIEW_TYPE_BIO -> BaseViewHolder(PersonDetailsBioView(parent.context))
-      VIEW_TYPE_CREDIT_ITEM -> BaseViewHolder(
-        PersonDetailsCreditsItemView(parent.context).apply {
-          onItemClickListener = this@PersonDetailsAdapter.onItemClickListener
-          onImageMissingListener = this@PersonDetailsAdapter.onImageMissingListener
-          onTranslationMissingListener = this@PersonDetailsAdapter.onTranslationMissingListener
-        }
-      )
-      VIEW_TYPE_CREDIT_HEADER -> BaseViewHolder(PersonDetailsHeaderView(parent.context))
-      VIEW_TYPE_CREDIT_LOADING -> BaseViewHolder(PersonDetailsLoadingView(parent.context))
-      VIEW_TYPE_CREDIT_FILTERS -> BaseViewHolder(
-        PersonDetailsFiltersView(parent.context).apply {
-          onChipsChangeListener = this@PersonDetailsAdapter.onFiltersChangeListener
-        }
-      )
-      else -> throw IllegalStateException()
-    }
+  override fun onCreateViewHolder(
+    parent: ViewGroup,
+    viewType: Int,
+  ) = when (viewType) {
+    VIEW_TYPE_INFO -> BaseViewHolder(
+      PersonDetailsInfoView(parent.context).apply {
+        onLinksClickListener = this@PersonDetailsAdapter.onLinksClickListener
+        onImageClickListener = this@PersonDetailsAdapter.onImageClickListener
+      },
+    )
+    VIEW_TYPE_BIO -> BaseViewHolder(PersonDetailsBioView(parent.context))
+    VIEW_TYPE_CREDIT_ITEM -> BaseViewHolder(
+      PersonDetailsCreditsItemView(parent.context).apply {
+        onItemClickListener = this@PersonDetailsAdapter.onItemClickListener
+        onImageMissingListener = this@PersonDetailsAdapter.onImageMissingListener
+        onTranslationMissingListener = this@PersonDetailsAdapter.onTranslationMissingListener
+      },
+    )
+    VIEW_TYPE_CREDIT_HEADER -> BaseViewHolder(PersonDetailsHeaderView(parent.context))
+    VIEW_TYPE_CREDIT_LOADING -> BaseViewHolder(PersonDetailsLoadingView(parent.context))
+    VIEW_TYPE_CREDIT_FILTERS -> BaseViewHolder(
+      PersonDetailsFiltersView(parent.context).apply {
+        onChipsChangeListener = this@PersonDetailsAdapter.onFiltersChangeListener
+      },
+    )
+    else -> throw IllegalStateException()
+  }
 
-  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
-    when (val item = asyncDiffer.currentList[position]) {
-      is PersonDetailsItem.MainInfo -> (holder.itemView as PersonDetailsInfoView).bind(item)
-      is PersonDetailsItem.MainBio -> (holder.itemView as PersonDetailsBioView).bind(item)
-      is PersonDetailsItem.CreditsHeader -> (holder.itemView as PersonDetailsHeaderView).bind(item)
-      is PersonDetailsItem.CreditsShowItem -> (holder.itemView as PersonDetailsCreditsItemView).bind(item)
-      is PersonDetailsItem.CreditsMovieItem -> (holder.itemView as PersonDetailsCreditsItemView).bind(item)
-      is PersonDetailsItem.CreditsFiltersItem -> (holder.itemView as PersonDetailsFiltersView).bind(item.filters)
-      is PersonDetailsItem.CreditsLoadingItem -> Unit
-    }
+  override fun onBindViewHolder(
+    holder: RecyclerView.ViewHolder,
+    position: Int,
+  ) = when (val item = asyncDiffer.currentList[position]) {
+    is PersonDetailsItem.MainInfo -> (holder.itemView as PersonDetailsInfoView).bind(item)
+    is PersonDetailsItem.MainBio -> (holder.itemView as PersonDetailsBioView).bind(item)
+    is PersonDetailsItem.CreditsHeader -> (holder.itemView as PersonDetailsHeaderView).bind(item)
+    is PersonDetailsItem.CreditsShowItem -> (holder.itemView as PersonDetailsCreditsItemView).bind(item)
+    is PersonDetailsItem.CreditsMovieItem -> (holder.itemView as PersonDetailsCreditsItemView).bind(item)
+    is PersonDetailsItem.CreditsFiltersItem -> (holder.itemView as PersonDetailsFiltersView).bind(item.filters)
+    is PersonDetailsItem.CreditsLoadingItem -> Unit
+  }
 
   override fun getItemCount() = asyncDiffer.currentList.size
 

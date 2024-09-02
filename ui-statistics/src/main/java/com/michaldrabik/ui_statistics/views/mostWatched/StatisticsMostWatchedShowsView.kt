@@ -40,7 +40,7 @@ class StatisticsMostWatchedShowsView : ConstraintLayout {
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     adapter = MostWatchedAdapter(
-      itemClickListener = { onShowClickListener?.invoke(it.show) }
+      itemClickListener = { onShowClickListener?.invoke(it.show) },
     )
     binding.viewMostWatchedShowsRecycler.apply {
       adapter = this@StatisticsMostWatchedShowsView.adapter
@@ -52,7 +52,7 @@ class StatisticsMostWatchedShowsView : ConstraintLayout {
 
   fun bind(
     items: List<StatisticsMostWatchedItem>,
-    totalCount: Int
+    totalCount: Int,
   ) {
     adapter?.setItems(items)
     binding.viewMostWatchedShowsMoreButton.run {

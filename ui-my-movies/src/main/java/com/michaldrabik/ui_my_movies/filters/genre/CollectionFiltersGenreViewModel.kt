@@ -66,6 +66,6 @@ internal class CollectionFiltersGenreViewModel @Inject constructor(
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = CollectionFiltersGenreUiState()
+    initialValue = CollectionFiltersGenreUiState(),
   )
 }

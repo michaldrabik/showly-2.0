@@ -1,4 +1,6 @@
-// ktlint-disable filename
+
+@file:Suppress("ktlint:standard:filename")
+
 package com.michaldrabik.ui_show
 
 import androidx.annotation.IdRes

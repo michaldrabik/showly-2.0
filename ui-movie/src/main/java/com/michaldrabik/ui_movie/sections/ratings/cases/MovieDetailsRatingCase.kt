@@ -13,11 +13,13 @@ class MovieDetailsRatingCase @Inject constructor(
   private val ratingsRepository: RatingsRepository,
 ) {
 
-  suspend fun loadRating(movie: Movie) = withContext(dispatchers.IO) {
-    ratingsRepository.movies.loadRatings(listOf(movie)).firstOrNull()
-  }
+  suspend fun loadRating(movie: Movie) =
+    withContext(dispatchers.IO) {
+      ratingsRepository.movies.loadRatings(listOf(movie)).firstOrNull()
+    }
 
-  suspend fun loadExternalRatings(movie: Movie) = withContext(dispatchers.IO) {
-    ratingsRepository.movies.external.loadRatings(movie)
-  }
+  suspend fun loadExternalRatings(movie: Movie) =
+    withContext(dispatchers.IO) {
+      ratingsRepository.movies.external.loadRatings(movie)
+    }
 }

@@ -20,7 +20,7 @@ data class Show(
   val genres: List<String>,
   val airedEpisodes: Int,
   val createdAt: Long,
-  val updatedAt: Long
+  val updatedAt: Long,
 ) {
 
   val traktId = ids.trakt.id
@@ -37,7 +37,7 @@ data class Show(
         tvdb = IdTvdb(id = 0),
         imdb = IdImdb(id = ""),
         tmdb = IdTmdb(id = 0),
-        tvrage = IdTvRage(id = 0)
+        tvrage = IdTvRage(id = 0),
       ),
       title = "",
       year = 0,
@@ -57,7 +57,7 @@ data class Show(
       genres = listOf(),
       airedEpisodes = 0,
       createdAt = 0,
-      updatedAt = 0
+      updatedAt = 0,
     )
   }
 }

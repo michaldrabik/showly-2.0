@@ -18,16 +18,21 @@ class QuickSetupAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   var onItemClickListener: ((Episode, Boolean) -> Unit)? = null
   private val asyncDiffer = AsyncListDiffer(this, QuickSetupItemDiffCallback())
 
-  fun setItems(newItems: List<QuickSetupListItem>) =
-    asyncDiffer.submitList(newItems)
+  fun setItems(newItems: List<QuickSetupListItem>) = asyncDiffer.submitList(newItems)
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
+  override fun onCreateViewHolder(
+    parent: ViewGroup,
+    viewType: Int,
+  ) = when (viewType) {
     TYPE_HEADER -> ViewHolder(QuickSetupHeaderView(parent.context))
     TYPE_ITEM -> ViewHolder(QuickSetupItemView(parent.context))
     else -> error("Unsupported view type")
   }
 
-  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+  override fun onBindViewHolder(
+    holder: RecyclerView.ViewHolder,
+    position: Int,
+  ) {
     val item = asyncDiffer.currentList[position]
     when (holder.itemViewType) {
       TYPE_HEADER -> (holder.itemView as QuickSetupHeaderView).bind(item.season)
@@ -35,10 +40,11 @@ class QuickSetupAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
   }
 
-  override fun getItemViewType(position: Int) = when {
-    asyncDiffer.currentList[position].isHeader -> TYPE_HEADER
-    else -> TYPE_ITEM
-  }
+  override fun getItemViewType(position: Int) =
+    when {
+      asyncDiffer.currentList[position].isHeader -> TYPE_HEADER
+      else -> TYPE_ITEM
+    }
 
   override fun getItemCount() = asyncDiffer.currentList.size
 

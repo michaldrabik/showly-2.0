@@ -39,7 +39,10 @@ class ListDetailsAdapter(
       notifyItemRangeChanged(0, items.size)
     }
 
-  fun setItems(newItems: List<ListDetailsItem>, notifyItemsChange: Boolean) {
+  fun setItems(
+    newItems: List<ListDetailsItem>,
+    notifyItemsChange: Boolean,
+  ) {
     // Using old DiffUtil method here because of drag and drop issues with asyncDiff.
     val diff = DiffUtil.calculateDiff(ListDetailsDiffCallback(items, newItems))
     diff.dispatchUpdatesTo(this)
@@ -58,7 +61,10 @@ class ListDetailsAdapter(
     }
   }
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
+  override fun onCreateViewHolder(
+    parent: ViewGroup,
+    viewType: Int,
+  ) = when (viewType) {
     VIEW_TYPE_SHOW -> {
       val view = when (listViewMode) {
         LIST_NORMAL -> ListDetailsShowItemView(parent.context)
@@ -70,7 +76,7 @@ class ListDetailsAdapter(
       ListDetailsItemViewHolder(
         view,
         itemDragStartListener,
-        itemSwipeStartListener
+        itemSwipeStartListener,
       )
     }
     VIEW_TYPE_MOVIE -> {
@@ -84,13 +90,16 @@ class ListDetailsAdapter(
       ListDetailsItemViewHolder(
         view,
         itemDragStartListener,
-        itemSwipeStartListener
+        itemSwipeStartListener,
       )
     }
     else -> throw IllegalStateException()
   }
 
-  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+  override fun onBindViewHolder(
+    holder: RecyclerView.ViewHolder,
+    position: Int,
+  ) {
     val item = items[position]
     when (holder.itemViewType) {
       VIEW_TYPE_SHOW -> when (listViewMode) {
@@ -105,7 +114,10 @@ class ListDetailsAdapter(
 
   override fun getItemCount() = items.size
 
-  override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
+  override fun onItemMove(
+    fromPosition: Int,
+    toPosition: Int,
+  ): Boolean {
     if (fromPosition < toPosition) {
       for (i in fromPosition until toPosition) {
         Collections.swap(items, i, i + 1)
@@ -130,7 +142,7 @@ class ListDetailsAdapter(
   class ListDetailsItemViewHolder(
     itemView: ListDetailsItemView,
     dragStartListener: ListItemDragListener,
-    swipeStartListener: ListItemSwipeListener
+    swipeStartListener: ListItemSwipeListener,
   ) : RecyclerView.ViewHolder(itemView) {
     init {
       itemView.itemDragStartListener = {

@@ -16,12 +16,13 @@ class MovieDetailsHiddenCase @Inject constructor(
   private val dispatchers: CoroutineDispatchers,
   private val moviesRepository: MoviesRepository,
   private val pinnedItemsRepository: PinnedItemsRepository,
-  private val quickSyncManager: QuickSyncManager
+  private val quickSyncManager: QuickSyncManager,
 ) {
 
-  suspend fun isHidden(movie: Movie) = withContext(dispatchers.IO) {
-    moviesRepository.hiddenMovies.exists(movie.ids.trakt)
-  }
+  suspend fun isHidden(movie: Movie) =
+    withContext(dispatchers.IO) {
+      moviesRepository.hiddenMovies.exists(movie.ids.trakt)
+    }
 
   suspend fun addToHidden(movie: Movie) {
     withContext(dispatchers.IO) {

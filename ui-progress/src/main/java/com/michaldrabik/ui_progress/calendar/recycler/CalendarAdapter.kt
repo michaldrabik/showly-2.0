@@ -15,7 +15,7 @@ class CalendarAdapter(
   private val missingTranslationListener: (CalendarListItem) -> Unit,
   var detailsClickListener: ((CalendarListItem.Episode) -> Unit),
   var checkClickListener: ((CalendarListItem.Episode) -> Unit),
-  var modeClickListener: ((CalendarMode) -> Unit)
+  var modeClickListener: ((CalendarMode) -> Unit),
 ) : BaseAdapter<CalendarListItem>() {
 
   companion object {
@@ -26,27 +26,32 @@ class CalendarAdapter(
 
   override val asyncDiffer = AsyncListDiffer(this, CalendarItemDiffCallback())
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    when (viewType) {
-      VIEW_TYPE_ITEM -> BaseViewHolder(
-        CalendarItemView(parent.context).apply {
-          itemClickListener = this@CalendarAdapter.itemClickListener
-          missingImageListener = this@CalendarAdapter.missingImageListener
-          missingTranslationListener = this@CalendarAdapter.missingTranslationListener
-          detailsClickListener = this@CalendarAdapter.detailsClickListener
-          checkClickListener = this@CalendarAdapter.checkClickListener
-        }
-      )
-      VIEW_TYPE_HEADER -> BaseViewHolder(CalendarHeaderView(parent.context))
-      VIEW_TYPE_FILTERS -> BaseViewHolder(
-        CalendarFiltersView(parent.context).apply {
-          onModeChipClick = this@CalendarAdapter.modeClickListener
-        }
-      )
-      else -> throw IllegalStateException()
-    }
+  override fun onCreateViewHolder(
+    parent: ViewGroup,
+    viewType: Int,
+  ) = when (viewType) {
+    VIEW_TYPE_ITEM -> BaseViewHolder(
+      CalendarItemView(parent.context).apply {
+        itemClickListener = this@CalendarAdapter.itemClickListener
+        missingImageListener = this@CalendarAdapter.missingImageListener
+        missingTranslationListener = this@CalendarAdapter.missingTranslationListener
+        detailsClickListener = this@CalendarAdapter.detailsClickListener
+        checkClickListener = this@CalendarAdapter.checkClickListener
+      },
+    )
+    VIEW_TYPE_HEADER -> BaseViewHolder(CalendarHeaderView(parent.context))
+    VIEW_TYPE_FILTERS -> BaseViewHolder(
+      CalendarFiltersView(parent.context).apply {
+        onModeChipClick = this@CalendarAdapter.modeClickListener
+      },
+    )
+    else -> throw IllegalStateException()
+  }
 
-  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+  override fun onBindViewHolder(
+    holder: RecyclerView.ViewHolder,
+    position: Int,
+  ) {
     when (val item = asyncDiffer.currentList[position]) {
       is CalendarListItem.Episode -> (holder.itemView as CalendarItemView).bind(item)
       is CalendarListItem.Header -> (holder.itemView as CalendarHeaderView).bind(item, position)

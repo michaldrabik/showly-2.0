@@ -24,6 +24,6 @@ class PremiumViewModel @Inject constructor() : ViewModel() {
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = PremiumUiState()
+    initialValue = PremiumUiState(),
   )
 }

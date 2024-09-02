@@ -63,34 +63,38 @@ class CalendarWidgetViewsFactory(
       is CalendarListItem.Filters -> throw IllegalStateException("Filters should not be in the widget")
     }
 
-  private fun createHeaderRemoteView(item: CalendarListItem.Header, showIcon: Boolean) =
-    RemoteViews(context.packageName, getHeaderLayout()).apply {
-      setTextViewText(R.id.progressWidgetHeaderTitle, context.getString(item.textResId))
-      setViewVisibility(R.id.progressWidgetHeaderTitleIcon, if (mode == RECENTS) VISIBLE else GONE)
+  private fun createHeaderRemoteView(
+    item: CalendarListItem.Header,
+    showIcon: Boolean,
+  ) = RemoteViews(context.packageName, getHeaderLayout()).apply {
+    setTextViewText(R.id.progressWidgetHeaderTitle, context.getString(item.textResId))
+    setViewVisibility(R.id.progressWidgetHeaderTitleIcon, if (mode == RECENTS) VISIBLE else GONE)
 
-      if (showIcon) {
-        when (mode) {
-          PRESENT_FUTURE -> setImageViewResource(R.id.progressWidgetHeaderIcon, R.drawable.ic_history)
-          RECENTS -> setImageViewResource(R.id.progressWidgetHeaderIcon, R.drawable.ic_calendar)
-        }
-        setViewVisibility(R.id.progressWidgetHeaderIcon, VISIBLE)
-        val fillIntent = Intent().apply {
-          putExtras(bundleOf(EXTRA_MODE_CLICK to true))
-          putExtras(bundleOf(EXTRA_APPWIDGET_ID to widgetId))
-        }
-        setOnClickFillInIntent(R.id.progressWidgetHeaderIcon, fillIntent)
-      } else {
-        setViewVisibility(R.id.progressWidgetHeaderIcon, GONE)
+    if (showIcon) {
+      when (mode) {
+        PRESENT_FUTURE -> setImageViewResource(R.id.progressWidgetHeaderIcon, R.drawable.ic_history)
+        RECENTS -> setImageViewResource(R.id.progressWidgetHeaderIcon, R.drawable.ic_calendar)
       }
+      setViewVisibility(R.id.progressWidgetHeaderIcon, VISIBLE)
+      val fillIntent = Intent().apply {
+        putExtras(bundleOf(EXTRA_MODE_CLICK to true))
+        putExtras(bundleOf(EXTRA_APPWIDGET_ID to widgetId))
+      }
+      setOnClickFillInIntent(R.id.progressWidgetHeaderIcon, fillIntent)
+    } else {
+      setViewVisibility(R.id.progressWidgetHeaderIcon, GONE)
     }
+  }
 
   private fun createItemRemoteView(item: CalendarListItem.Episode): RemoteViews {
-
     val remoteView = RemoteViews(context.packageName, getItemLayout()).apply {
       val translatedTitle = item.translations?.show?.title
       val title =
-        if (translatedTitle?.isBlank() == false) translatedTitle
-        else item.show.title
+        if (translatedTitle?.isBlank() == false) {
+          translatedTitle
+        } else {
+          item.show.title
+        }
       setTextViewText(R.id.calendarWidgetItemTitle, title)
 
       val date = item.episode.firstAired?.toLocalZone()?.let { item.dateFormat?.format(it)?.capitalizeWords() }
@@ -98,7 +102,10 @@ class CalendarWidgetViewsFactory(
 
       val isNewSeason = item.episode.number == 1
       if (isNewSeason) {
-        setTextViewText(R.id.calendarWidgetItemOverview, String.format(Locale.ENGLISH, context.getString(R.string.textSeason), item.episode.season))
+        setTextViewText(
+          R.id.calendarWidgetItemOverview,
+          String.format(Locale.ENGLISH, context.getString(R.string.textSeason), item.episode.season),
+        )
         setTextViewText(R.id.calendarWidgetItemBadge, context.getString(R.string.textNewSeason))
       } else {
         val episodeTitle = when {
@@ -107,7 +114,7 @@ class CalendarWidgetViewsFactory(
           item.episode.title == "Episode ${item.episode.number}" -> String.format(
             Locale.ENGLISH,
             context.getString(R.string.textEpisode),
-            item.episode.number
+            item.episode.number,
           )
           else -> item.episode.title
         }
@@ -115,9 +122,9 @@ class CalendarWidgetViewsFactory(
           Locale.ENGLISH,
           context.getString(com.michaldrabik.ui_progress.R.string.textSeasonEpisode),
           item.episode.season,
-          item.episode.number
+          item.episode.number,
         ).plus(
-          item.episode.numberAbs?.let { if (it > 0 && item.show.isAnime) " ($it)" else "" } ?: ""
+          item.episode.numberAbs?.let { if (it > 0 && item.show.isAnime) " ($it)" else "" } ?: "",
         )
 
         setTextViewText(R.id.calendarWidgetItemOverview, episodeTitle)

@@ -103,13 +103,16 @@ class ProgressViewModel @Inject constructor(
       eventChannel.send(
         EpisodeCheckActionUiEvent(
           episode = bundle,
-          dateSelectionType = settingsRepository.progressDateSelectionType
-        )
+          dateSelectionType = settingsRepository.progressDateSelectionType,
+        ),
       )
     }
   }
 
-  fun findMissingImage(item: ProgressListItem, force: Boolean) {
+  fun findMissingImage(
+    item: ProgressListItem,
+    force: Boolean,
+  ) {
     check(item is ProgressListItem.Episode)
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
@@ -138,7 +141,11 @@ class ProgressViewModel @Inject constructor(
     }
   }
 
-  fun setSortOrder(sortOrder: SortOrder, sortType: SortType, newAtTop: Boolean) {
+  fun setSortOrder(
+    sortOrder: SortOrder,
+    sortType: SortType,
+    newAtTop: Boolean,
+  ) {
     sortOrderCase.setSortOrder(sortOrder, sortType, newAtTop)
     loadItems(resetScroll = true)
   }
@@ -163,7 +170,7 @@ class ProgressViewModel @Inject constructor(
       workManager,
       isImport = true,
       isExport = true,
-      isSilent = false
+      isSilent = false,
     )
   }
 
@@ -181,18 +188,18 @@ class ProgressViewModel @Inject constructor(
     scrollState,
     sortOrderState,
     loadingState,
-    overscrollState
+    overscrollState,
   ) { s1, s2, s3, s4, s5 ->
     ProgressUiState(
       items = s1,
       scrollReset = s2,
       sortOrder = s3,
       isLoading = s4,
-      isOverScrollEnabled = s5
+      isOverScrollEnabled = s5,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = ProgressUiState()
+    initialValue = ProgressUiState(),
   )
 }

@@ -11,11 +11,13 @@ data class StreamingService(
   val link: String,
 ) {
 
-  enum class Option(@StringRes val resId: Int) {
+  enum class Option(
+    @StringRes val resId: Int,
+  ) {
     FLATRATE(R.string.textStreamingStream),
     BUY(R.string.textStreamingBuy),
     RENT(R.string.textStreamingRent),
     ADS(R.string.textStreamingAds),
-    FREE(R.string.textStreamingFree)
+    FREE(R.string.textStreamingFree),
   }
 }

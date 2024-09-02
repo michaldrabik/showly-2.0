@@ -13,10 +13,13 @@ import javax.inject.Inject
 @ViewModelScoped
 class EpisodesTranslationCase @Inject constructor(
   private val dispatchers: CoroutineDispatchers,
-  private val translationsRepository: TranslationsRepository
+  private val translationsRepository: TranslationsRepository,
 ) {
 
-  suspend fun loadTranslations(season: Season?, show: Show): List<SeasonTranslation> =
+  suspend fun loadTranslations(
+    season: Season?,
+    show: Show,
+  ): List<SeasonTranslation> =
     withContext(dispatchers.IO) {
       if (season == null) {
         return@withContext emptyList()

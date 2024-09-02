@@ -63,7 +63,11 @@ class ProgressWidgetProvider : BaseWidgetProvider() {
     appWidgetIds?.forEach { updateWidget(context, appWidgetManager, it) }
   }
 
-  private fun updateWidget(context: Context, appWidgetManager: AppWidgetManager, widgetId: Int) {
+  private fun updateWidget(
+    context: Context,
+    appWidgetManager: AppWidgetManager,
+    widgetId: Int,
+  ) {
     val intent = Intent(context, ProgressWidgetService::class.java).apply {
       putExtra(EXTRA_APPWIDGET_ID, widgetId)
       data = Uri.parse(toUri(URI_INTENT_SCHEME))
@@ -87,7 +91,7 @@ class ProgressWidgetProvider : BaseWidgetProvider() {
       context,
       0,
       Intent().apply { setClassName(context, HOST_ACTIVITY_NAME) },
-      FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT
+      FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT,
     )
     remoteViews.setOnClickPendingIntent(R.id.progressWidgetLabel, mainIntent)
 
@@ -95,14 +99,22 @@ class ProgressWidgetProvider : BaseWidgetProvider() {
       action = ACTION_CLICK
       data = Uri.parse(intent.toUri(URI_INTENT_SCHEME))
     }
-    val showDetailsPendingIntent = PendingIntent.getBroadcast(context, 0, listClickIntent, FLAG_MUTABLE or FLAG_UPDATE_CURRENT)
+    val showDetailsPendingIntent = PendingIntent.getBroadcast(
+      context,
+      0,
+      listClickIntent,
+      FLAG_MUTABLE or FLAG_UPDATE_CURRENT,
+    )
     remoteViews.setPendingIntentTemplate(R.id.progressWidgetList, showDetailsPendingIntent)
 
     appWidgetManager.updateAppWidget(widgetId, remoteViews)
     appWidgetManager.notifyAppWidgetViewDataChanged(widgetId, R.id.progressWidgetList)
   }
 
-  override fun onReceive(context: Context, intent: Intent) {
+  override fun onReceive(
+    context: Context,
+    intent: Intent,
+  ) {
     super.onReceive(context, intent)
     if (intent.action.equals(ACTION_CLICK)) {
       when {
@@ -114,7 +126,7 @@ class ProgressWidgetProvider : BaseWidgetProvider() {
             context.applicationContext,
             episodeId,
             seasonId,
-            IdTrakt(showId)
+            IdTrakt(showId),
           )
         }
         intent.extras?.containsKey(EXTRA_SHOW_ID) == true -> {
@@ -124,7 +136,7 @@ class ProgressWidgetProvider : BaseWidgetProvider() {
               setClassName(context, HOST_ACTIVITY_NAME)
               putExtra(EXTRA_SHOW_ID, showId.toString())
               flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            }
+            },
           )
         }
       }

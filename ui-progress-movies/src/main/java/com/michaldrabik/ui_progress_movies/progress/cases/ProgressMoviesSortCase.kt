@@ -11,7 +11,10 @@ class ProgressMoviesSortCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
 ) {
 
-  fun setSortOrder(sortOrder: SortOrder, sortType: SortType) {
+  fun setSortOrder(
+    sortOrder: SortOrder,
+    sortType: SortType,
+  ) {
     settingsRepository.sorting.progressMoviesSortOrder = sortOrder
     settingsRepository.sorting.progressMoviesSortType = sortType
   }

@@ -52,7 +52,10 @@ class CalendarMoviesFragment :
   private var statusBarHeight = 0
   private var isSearching = false
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupRecycler()
     setupStatusBar()
@@ -99,7 +102,9 @@ class CalendarMoviesFragment :
 
   private fun setupStatusBar() {
     if (statusBarHeight != 0) {
-      binding.progressMoviesCalendarRecycler.updatePadding(top = statusBarHeight + dimenToPx(R.dimen.progressMoviesCalendarTabsViewPadding))
+      binding.progressMoviesCalendarRecycler.updatePadding(
+        top = statusBarHeight + dimenToPx(R.dimen.progressMoviesCalendarTabsViewPadding),
+      )
       return
     }
     binding.progressMoviesCalendarRecycler.doOnApplyWindowInsets { view, insets, _, _ ->
@@ -132,7 +137,9 @@ class CalendarMoviesFragment :
           adapter?.setItems(it)
           progressMoviesCalendarRecycler.fadeIn(150, withHardware = true)
           val anyMovie = items.any { item -> item is CalendarMovieListItem.MovieItem }
-          progressMoviesCalendarEmptyFutureView.rootLayout.visibleIf(!anyMovie && mode == PRESENT_FUTURE && !isSearching)
+          progressMoviesCalendarEmptyFutureView.rootLayout.visibleIf(
+            !anyMovie && mode == PRESENT_FUTURE && !isSearching,
+          )
           progressMoviesCalendarEmptyRecentsView.rootLayout.visibleIf(!anyMovie && mode == RECENTS && !isSearching)
         }
       }

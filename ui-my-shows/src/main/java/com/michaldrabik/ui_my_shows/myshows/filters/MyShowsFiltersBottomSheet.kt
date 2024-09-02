@@ -35,13 +35,16 @@ internal class MyShowsFiltersBottomSheet : BaseBottomSheetFragment(R.layout.view
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
-      { viewModel.eventFlow.collect { handleEvent(it) } }
+      { viewModel.eventFlow.collect { handleEvent(it) } },
     )
   }
 
@@ -71,7 +74,7 @@ internal class MyShowsFiltersBottomSheet : BaseBottomSheetFragment(R.layout.view
       rootItemsLayout.forEach {
         (it as MyShowsFilterItemView).bind(
           sectionType = it.sectionType,
-          isChecked = it.sectionType == section
+          isChecked = it.sectionType == section,
         )
       }
     }
@@ -93,7 +96,7 @@ internal class MyShowsFiltersBottomSheet : BaseBottomSheetFragment(R.layout.view
         binding.rootItemsLayout.forEach {
           (it as MyShowsFilterItemView).bind(
             sectionType = it.sectionType,
-            isChecked = it.sectionType == sectionType
+            isChecked = it.sectionType == sectionType,
           )
         }
       }

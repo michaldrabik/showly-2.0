@@ -63,7 +63,7 @@ class ProgressMoviesItemsCaseTest : BaseMockTest() {
       pinnedItemsRepository,
       imagesProvider,
       dateFormatProvider,
-      sorter
+      sorter,
     )
   }
 
@@ -73,31 +73,32 @@ class ProgressMoviesItemsCaseTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should load items properly`() = runBlocking {
-    val movie = Movie.EMPTY.copy(
-      title = "test1",
-      released = LocalDate.now().minusYears(5)
-    )
+  fun `Should load items properly`() =
+    runBlocking {
+      val movie = Movie.EMPTY.copy(
+        title = "test1",
+        released = LocalDate.now().minusYears(5),
+      )
 
-    coEvery { moviesRepository.watchlistMovies.loadAll() } returns listOf(movie)
+      coEvery { moviesRepository.watchlistMovies.loadAll() } returns listOf(movie)
 
-    val result = SUT.loadItems(searchQuery = "")
+      val result = SUT.loadItems(searchQuery = "")
 
-    assertThat(result).isNotEmpty()
-    assertThat(result).hasSize(2)
-  }
+      assertThat(result).isNotEmpty()
+      assertThat(result).hasSize(2)
+    }
 
   @Test
   fun `Should filter items by query if present`() {
     runBlocking {
       val movie1 = Movie.EMPTY.copy(
         title = "test1",
-        released = LocalDate.now().minusYears(5)
+        released = LocalDate.now().minusYears(5),
       )
 
       val movie2 = Movie.EMPTY.copy(
         title = "xxx",
-        released = LocalDate.now().minusYears(5)
+        released = LocalDate.now().minusYears(5),
       )
 
       coEvery { moviesRepository.watchlistMovies.loadAll() } returns listOf(movie1, movie2)
@@ -114,17 +115,17 @@ class ProgressMoviesItemsCaseTest : BaseMockTest() {
     runBlocking {
       val movie1 = Movie.EMPTY.copy(
         title = "test1",
-        released = LocalDate.now().minusDays(10)
+        released = LocalDate.now().minusDays(10),
       )
 
       val movie2 = Movie.EMPTY.copy(
         title = "xxx",
-        released = LocalDate.now().minusDays(10)
+        released = LocalDate.now().minusDays(10),
       )
 
       val movie3 = Movie.EMPTY.copy(
         title = "xxx2",
-        released = LocalDate.now().minusDays(10)
+        released = LocalDate.now().minusDays(10),
       )
 
       coEvery { pinnedItemsRepository.isItemPinned(movie2) } returns true
@@ -146,19 +147,19 @@ class ProgressMoviesItemsCaseTest : BaseMockTest() {
       val movie1 = Movie.EMPTY.copy(
         title = "test1",
         rating = 4F,
-        released = LocalDate.now().minusDays(10)
+        released = LocalDate.now().minusDays(10),
       )
 
       val movie2 = Movie.EMPTY.copy(
         title = "xxx",
         rating = 1F,
-        released = LocalDate.now().minusDays(10)
+        released = LocalDate.now().minusDays(10),
       )
 
       val movie3 = Movie.EMPTY.copy(
         title = "xxx2",
         rating = 11F,
-        released = LocalDate.now().minusDays(10)
+        released = LocalDate.now().minusDays(10),
       )
 
       coEvery { moviesRepository.watchlistMovies.loadAll() } returns listOf(movie1, movie2, movie3)
@@ -183,12 +184,12 @@ class ProgressMoviesItemsCaseTest : BaseMockTest() {
     runBlocking {
       val movie1 = Movie.EMPTY.copy(
         title = "test1",
-        released = LocalDate.now().plusDays(10)
+        released = LocalDate.now().plusDays(10),
       )
 
       val movie2 = Movie.EMPTY.copy(
         title = "xxx",
-        released = null
+        released = null,
       )
 
       coEvery { moviesRepository.watchlistMovies.loadAll() } returns listOf(movie1, movie2)
@@ -204,7 +205,7 @@ class ProgressMoviesItemsCaseTest : BaseMockTest() {
     runBlocking {
       val movie1 = Movie.EMPTY.copy(
         title = "test1",
-        released = LocalDate.now().minusYears(5)
+        released = LocalDate.now().minusYears(5),
       )
 
       coEvery { moviesRepository.watchlistMovies.loadAll() } returns listOf(movie1)
@@ -222,7 +223,7 @@ class ProgressMoviesItemsCaseTest : BaseMockTest() {
     runBlocking {
       val movie1 = Movie.EMPTY.copy(
         title = "test1",
-        released = LocalDate.now().minusYears(5)
+        released = LocalDate.now().minusYears(5),
       )
 
       coEvery { translationsRepository.getLanguage() } returns "pl"

@@ -21,27 +21,44 @@ class ListsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), AsyncListD
     asyncDiffer.addListListener(this)
   }
 
-  fun setItems(newItems: List<ListsItem>, notifyItemsChange: Boolean = false) {
+  fun setItems(
+    newItems: List<ListsItem>,
+    notifyItemsChange: Boolean = false,
+  ) {
     this.notifyItemsChange = notifyItemsChange
     asyncDiffer.submitList(newItems)
   }
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    ListsItemViewHolder(
-      ListsItemView(parent.context).apply {
-        itemClickListener = { this@ListsAdapter.itemClickListener?.invoke(it) }
-        missingImageListener = { item, itemImage, force -> this@ListsAdapter.missingImageListener?.invoke(item, itemImage, force) }
+  override fun onCreateViewHolder(
+    parent: ViewGroup,
+    viewType: Int,
+  ) = ListsItemViewHolder(
+    ListsItemView(parent.context).apply {
+      itemClickListener = { this@ListsAdapter.itemClickListener?.invoke(it) }
+      missingImageListener = {
+          item,
+          itemImage,
+          force,
+        ->
+        this@ListsAdapter.missingImageListener?.invoke(item, itemImage, force)
       }
-    )
+    },
+  )
 
-  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+  override fun onBindViewHolder(
+    holder: RecyclerView.ViewHolder,
+    position: Int,
+  ) {
     val item = asyncDiffer.currentList[position]
     (holder.itemView as ListsItemView).bind(item)
   }
 
   override fun getItemCount() = asyncDiffer.currentList.size
 
-  override fun onCurrentListChanged(oldList: MutableList<ListsItem>, newList: MutableList<ListsItem>) {
+  override fun onCurrentListChanged(
+    oldList: MutableList<ListsItem>,
+    newList: MutableList<ListsItem>,
+  ) {
     if (notifyItemsChange) itemsChangedListener?.invoke()
   }
 

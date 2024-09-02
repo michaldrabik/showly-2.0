@@ -58,8 +58,11 @@ class PersonDetailsCreditsItemView : FrameLayout {
     with(binding) {
       val year = if (item.show.year > 0) item.show.year.toString() else "TBA"
       viewPersonCreditsItemNetwork.text =
-        if (item.show.network.isNotBlank()) context.getString(R.string.textNetwork, year, item.show.network)
-        else String.format("%s", year)
+        if (item.show.network.isNotBlank()) {
+          context.getString(R.string.textNetwork, year, item.show.network)
+        } else {
+          String.format("%s", year)
+        }
 
       viewPersonCreditsItemPlaceholder.setImageResource(R.drawable.ic_television)
       viewPersonCreditsItemIcon.setImageResource(R.drawable.ic_television)

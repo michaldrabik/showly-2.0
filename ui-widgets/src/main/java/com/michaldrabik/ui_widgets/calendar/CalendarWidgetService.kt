@@ -23,7 +23,7 @@ class CalendarWidgetService : RemoteViewsService() {
       applicationContext,
       calendarFutureCase,
       calendarRecentsCase,
-      settingsRepository
+      settingsRepository,
     )
   }
 }

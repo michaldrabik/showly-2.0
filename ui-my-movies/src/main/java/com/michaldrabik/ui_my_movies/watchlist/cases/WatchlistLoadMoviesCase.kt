@@ -62,7 +62,7 @@ class WatchlistLoadMoviesCase @Inject constructor(
             dateFormat = dateFormat,
             fullDateFormat = fullDateFormat,
             sortOrder = filtersItem.sortOrder,
-            spoilers = spoilers
+            spoilers = spoilers,
           )
         }
         .awaitAll()
@@ -85,11 +85,14 @@ class WatchlistLoadMoviesCase @Inject constructor(
       sortOrder = settingsRepository.sorting.watchlistMoviesSortOrder,
       sortType = settingsRepository.sorting.watchlistMoviesSortType,
       genres = settingsRepository.filters.watchlistMoviesGenres,
-      upcoming = settingsRepository.filters.watchlistMoviesUpcoming
+      upcoming = settingsRepository.filters.watchlistMoviesUpcoming,
     )
   }
 
-  suspend fun loadTranslation(movie: Movie, onlyLocal: Boolean): Translation? =
+  suspend fun loadTranslation(
+    movie: Movie,
+    onlyLocal: Boolean,
+  ): Translation? =
     withContext(dispatchers.IO) {
       val language = translationsRepository.getLanguage()
       if (language == Config.DEFAULT_LANGUAGE) {
@@ -105,7 +108,7 @@ class WatchlistLoadMoviesCase @Inject constructor(
     dateFormat: DateTimeFormatter,
     fullDateFormat: DateTimeFormatter,
     sortOrder: SortOrder,
-    spoilers: SpoilersSettings
+    spoilers: SpoilersSettings,
   ) = async {
     CollectionListItem.MovieItem(
       isLoading = false,
@@ -119,8 +122,8 @@ class WatchlistLoadMoviesCase @Inject constructor(
       spoilers = CollectionListItem.MovieItem.Spoilers(
         isSpoilerHidden = spoilers.isWatchlistMoviesHidden,
         isSpoilerRatingsHidden = spoilers.isWatchlistMoviesRatingsHidden,
-        isSpoilerTapToReveal = spoilers.isTapToReveal
-      )
+        isSpoilerTapToReveal = spoilers.isTapToReveal,
+      ),
     )
   }
 }

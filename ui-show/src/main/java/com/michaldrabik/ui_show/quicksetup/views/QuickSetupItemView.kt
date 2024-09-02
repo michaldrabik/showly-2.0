@@ -28,7 +28,7 @@ class QuickSetupItemView : FrameLayout {
   fun bind(
     item: Episode,
     isChecked: Boolean,
-    onItemClickListener: ((Episode, Boolean) -> Unit)?
+    onItemClickListener: ((Episode, Boolean) -> Unit)?,
   ) {
     val titleColor = if (isChecked) R.attr.colorAccent else android.R.attr.textColorSecondary
     val subTitleColor = if (isChecked) R.attr.colorAccent else android.R.attr.textColorPrimary

@@ -17,19 +17,16 @@ class SeasonsCache @Inject constructor() {
   fun setSeasons(
     showId: IdTrakt,
     seasons: List<SeasonListItem>,
-    areSeasonsLocal: Boolean
+    areSeasonsLocal: Boolean,
   ) {
     seasonsCache[showId] = SeasonsBundle(seasons.toList(), areSeasonsLocal)
   }
 
-  fun loadSeasons(showId: IdTrakt): List<SeasonListItem>? =
-    seasonsCache[showId]?.seasons
+  fun loadSeasons(showId: IdTrakt): List<SeasonListItem>? = seasonsCache[showId]?.seasons
 
-  fun hasSeasons(showId: IdTrakt): Boolean =
-    seasonsCache[showId]?.seasons != null
+  fun hasSeasons(showId: IdTrakt): Boolean = seasonsCache[showId]?.seasons != null
 
-  fun areSeasonsLocal(showId: IdTrakt): Boolean =
-    seasonsCache[showId]?.isLocal ?: false
+  fun areSeasonsLocal(showId: IdTrakt): Boolean = seasonsCache[showId]?.isLocal ?: false
 
   fun clear(showId: IdTrakt) {
     seasonsCache.remove(showId)

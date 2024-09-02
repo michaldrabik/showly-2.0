@@ -29,7 +29,9 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COLLECTION_ID
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MovieDetailsCollectionsFragment : BaseFragment<MovieDetailsCollectionsViewModel>(R.layout.fragment_movie_details_collection) {
+class MovieDetailsCollectionsFragment : BaseFragment<MovieDetailsCollectionsViewModel>(
+  R.layout.fragment_movie_details_collection,
+) {
 
   override val navigationId = R.id.movieDetailsFragment
 
@@ -40,20 +42,23 @@ class MovieDetailsCollectionsFragment : BaseFragment<MovieDetailsCollectionsView
 
   private var collectionsAdapter: MovieCollectionAdapter? = null
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
     launchAndRepeatStarted(
       { parentViewModel.parentMovieState.collect { it?.let { viewModel.loadCollections(it) } } },
       { viewModel.uiState.collect { render(it) } },
       { viewModel.eventFlow.collect { handleEvent(it) } },
-      doAfterLaunch = { viewModel.loadLastOpenedCollection() }
+      doAfterLaunch = { viewModel.loadLastOpenedCollection() },
     )
   }
 
   private fun setupView() {
     collectionsAdapter = MovieCollectionAdapter(
-      itemClickListener = { viewModel.loadCollection(it) }
+      itemClickListener = { viewModel.loadCollection(it) },
     )
     binding.movieDetailsCollectionRecycler.apply {
       setHasFixedSize(true)
@@ -96,7 +101,7 @@ class MovieDetailsCollectionsFragment : BaseFragment<MovieDetailsCollectionsView
       }
     val bundle = MovieDetailsCollectionBottomSheet.createBundle(
       collectionId = collection.id,
-      sourceMovieId = movie.ids.trakt
+      sourceMovieId = movie.ids.trakt,
     )
     navigateToSafe(R.id.actionMovieDetailsFragmentToCollection, bundle)
   }

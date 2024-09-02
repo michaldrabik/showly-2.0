@@ -11,5 +11,5 @@ data class DiscoverMovieListItem(
   override var isLoading: Boolean = false,
   val isCollected: Boolean = false,
   val isWatchlist: Boolean = false,
-  val translation: Translation? = null
+  val translation: Translation? = null,
 ) : MovieListItem

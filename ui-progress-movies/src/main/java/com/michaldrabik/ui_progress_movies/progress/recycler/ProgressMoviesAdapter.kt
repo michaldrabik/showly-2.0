@@ -18,8 +18,8 @@ class ProgressMoviesAdapter(
   private val checkClickListener: (ProgressMovieListItem.MovieItem) -> Unit,
   listChangeListener: () -> Unit,
 ) : BaseMovieAdapter<ProgressMovieListItem>(
-  listChangeListener = listChangeListener
-) {
+    listChangeListener = listChangeListener,
+  ) {
 
   companion object {
     private const val VIEW_TYPE_MOVIE = 1
@@ -28,7 +28,10 @@ class ProgressMoviesAdapter(
 
   override val asyncDiffer = AsyncListDiffer(this, ProgressMovieItemDiffCallback())
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+  override fun onCreateViewHolder(
+    parent: ViewGroup,
+    viewType: Int,
+  ): BaseViewHolder {
     return when (viewType) {
       VIEW_TYPE_MOVIE -> BaseViewHolder(
         ProgressMoviesItemView(parent.context).apply {
@@ -37,18 +40,21 @@ class ProgressMoviesAdapter(
           checkClickListener = this@ProgressMoviesAdapter.checkClickListener
           missingImageListener = this@ProgressMoviesAdapter.missingImageListener
           missingTranslationListener = this@ProgressMoviesAdapter.missingTranslationListener
-        }
+        },
       )
       VIEW_TYPE_FILTERS -> BaseViewHolder(
         ProgressMoviesFiltersView(parent.context).apply {
           onSortChipClicked = this@ProgressMoviesAdapter.sortChipClickListener
-        }
+        },
       )
       else -> throw IllegalStateException()
     }
   }
 
-  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+  override fun onBindViewHolder(
+    holder: RecyclerView.ViewHolder,
+    position: Int,
+  ) {
     when (val item = asyncDiffer.currentList[position]) {
       is ProgressMovieListItem.FiltersItem ->
         (holder.itemView as ProgressMoviesFiltersView).bind(item.sortOrder, item.sortType)

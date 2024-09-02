@@ -36,10 +36,15 @@ class EpisodesAdapter(
     setItems(items.toList())
   }
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    ViewHolderShow(EpisodeView(parent.context))
+  override fun onCreateViewHolder(
+    parent: ViewGroup,
+    viewType: Int,
+  ) = ViewHolderShow(EpisodeView(parent.context))
 
-  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+  override fun onBindViewHolder(
+    holder: RecyclerView.ViewHolder,
+    position: Int,
+  ) {
     (holder.itemView as EpisodeView).bind(items[position], itemClickListener, itemCheckedListener, isLocked)
   }
 

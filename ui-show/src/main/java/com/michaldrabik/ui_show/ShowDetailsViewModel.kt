@@ -100,7 +100,7 @@ class ShowDetailsViewModel @Inject constructor(
           isMyShows = isMyShow.await(),
           isWatchlist = isWatchLater.await(),
           isHidden = isArchived.await(),
-          withAnimation = false
+          withAnimation = false,
         )
 
         progressJob.cancel()
@@ -175,7 +175,11 @@ class ShowDetailsViewModel @Inject constructor(
       try {
         ratingState.value = RatingState(rateLoading = true, rateAllowed = true)
         val rating = ratingsCase.loadRating(show)
-        ratingState.value = RatingState(rateLoading = false, rateAllowed = true, userRating = rating ?: TraktRating.EMPTY)
+        ratingState.value = RatingState(
+          rateLoading = false,
+          rateAllowed = true,
+          userRating = rating ?: TraktRating.EMPTY,
+        )
       } catch (error: Throwable) {
         ratingState.value = RatingState(rateLoading = false, rateAllowed = true)
         rethrowCancellation(error)
@@ -303,7 +307,7 @@ class ShowDetailsViewModel @Inject constructor(
     translationState,
     listsCountState,
     metaState,
-    spoilersState
+    spoilersState,
   ) { s1, s2, s3, s4, s5, s6, s7, s8, s9 ->
     ShowDetailsUiState(
       show = s1,
@@ -314,11 +318,11 @@ class ShowDetailsViewModel @Inject constructor(
       translation = s6,
       listsCount = s7,
       meta = s8,
-      spoilers = s9
+      spoilers = s9,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = ShowDetailsUiState()
+    initialValue = ShowDetailsUiState(),
   )
 }

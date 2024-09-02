@@ -29,16 +29,19 @@ class StatisticsTotalEpisodesView : MaterialCardView {
     strokeWidth = 0
   }
 
-  fun bind(episodesCount: Int, episodesShowsCount: Int) {
+  fun bind(
+    episodesCount: Int,
+    episodesShowsCount: Int,
+  ) {
     val formatter = NumberFormat.getNumberInstance(Locale.ENGLISH)
     with(binding) {
       viewTotalEpisodesValue.text = context.getString(
         R.string.textStatisticsTotalEpisodesCount,
-        formatter.format(episodesCount)
+        formatter.format(episodesCount),
       )
       viewTotalEpisodesSubValue.text = context.getString(
         R.string.textStatisticsTotalEpisodesShowsCount,
-        formatter.format(episodesShowsCount)
+        formatter.format(episodesShowsCount),
       )
     }
   }

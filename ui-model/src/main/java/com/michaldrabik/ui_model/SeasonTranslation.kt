@@ -7,5 +7,5 @@ data class SeasonTranslation(
   val episodeNumber: Int,
   val overview: String,
   val language: String,
-  val isLocal: Boolean = false
+  val isLocal: Boolean = false,
 )

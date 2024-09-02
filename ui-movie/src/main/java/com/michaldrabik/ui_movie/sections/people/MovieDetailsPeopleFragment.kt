@@ -46,14 +46,17 @@ class MovieDetailsPeopleFragment : BaseFragment<MovieDetailsPeopleViewModel>(R.l
 
   private var actorsAdapter: ActorsAdapter? = null
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
     launchAndRepeatStarted(
       { parentViewModel.parentMovieState.collect { it?.let { viewModel.loadPeople(it) } } },
       { viewModel.uiState.collect { render(it) } },
       { viewModel.eventFlow.collect { handleEvent(it) } },
-      doAfterLaunch = { viewModel.loadLastPerson() }
+      doAfterLaunch = { viewModel.loadLastPerson() },
     )
   }
 
@@ -72,7 +75,11 @@ class MovieDetailsPeopleFragment : BaseFragment<MovieDetailsPeopleViewModel>(R.l
     }
   }
 
-  private fun openPersonSheet(movie: Movie, person: Person, personArgs: PersonDetailsArgs?) {
+  private fun openPersonSheet(
+    movie: Movie,
+    person: Person,
+    personArgs: PersonDetailsArgs?,
+  ) {
     handleSheetResult()
     val bundle = PersonDetailsBottomSheet.createBundle(person, movie.ids.trakt, personArgs)
     (requireParentFragment() as BaseFragment<*>)
@@ -113,7 +120,6 @@ class MovieDetailsPeopleFragment : BaseFragment<MovieDetailsPeopleViewModel>(R.l
   }
 
   private fun renderCrew(crew: Map<Department, List<Person>>) {
-
     fun renderPeople(
       labelView: View,
       valueView: TextView,

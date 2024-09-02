@@ -18,18 +18,23 @@ import com.michaldrabik.ui_movie.helpers.MovieLink
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MovieDetailsRatingsFragment : BaseFragment<MovieDetailsRatingsViewModel>(R.layout.fragment_movie_details_ratings) {
+class MovieDetailsRatingsFragment : BaseFragment<MovieDetailsRatingsViewModel>(
+  R.layout.fragment_movie_details_ratings,
+) {
 
   private val parentViewModel by viewModels<MovieDetailsViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<MovieDetailsRatingsViewModel>()
   private val binding by viewBinding(FragmentMovieDetailsRatingsBinding::bind)
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     launchAndRepeatStarted(
       { parentViewModel.parentMovieState.collect { it?.let { viewModel.loadRatings(it) } } },
       { parentViewModel.parentFollowedState.collect { it?.let { viewModel.refreshRatings() } } },
-      { viewModel.uiState.collect { render(it) } }
+      { viewModel.uiState.collect { render(it) } },
     )
   }
 

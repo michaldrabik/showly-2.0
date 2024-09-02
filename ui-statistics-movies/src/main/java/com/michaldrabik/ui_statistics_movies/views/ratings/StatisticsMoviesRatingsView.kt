@@ -29,7 +29,7 @@ class StatisticsMoviesRatingsView : MaterialCardView {
 
   private val adapter by lazy {
     StatisticsMoviesRatingsAdapter(
-      itemClickListener = { onMovieClickListener?.invoke(it) }
+      itemClickListener = { onMovieClickListener?.invoke(it) },
     )
   }
   private val layoutManager by lazy { LinearLayoutManager(context, HORIZONTAL, false) }

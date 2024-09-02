@@ -97,7 +97,10 @@ class ProgressFragment :
   private var overscrollEnabled = true
   private var isSearching = false
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
     setupRecycler()
@@ -151,7 +154,7 @@ class ProgressFragment :
         requireMainFragment().openEpisodeDetails(
           show = it.show,
           episode = it.requireEpisode(),
-          season = it.requireSeason()
+          season = it.requireSeason(),
         )
       },
       checkClickListener = viewModel::onEpisodeChecked,
@@ -163,7 +166,7 @@ class ProgressFragment :
       listChangeListener = {
         requireMainFragment().resetTranslations()
         layoutManager?.scrollToPosition(0)
-      }
+      },
     )
     binding.progressRecycler.apply {
       adapter = this@ProgressFragment.adapter
@@ -175,8 +178,16 @@ class ProgressFragment :
 
   private fun setupStatusBar() {
     with(binding) {
-      val recyclerPadding = if (moviesEnabled) R.dimen.progressTabsViewPadding else R.dimen.progressTabsViewPaddingNoModes
-      val overscrollPadding = if (moviesEnabled) R.dimen.progressOverscrollPadding else R.dimen.progressOverscrollPaddingNoModes
+      val recyclerPadding = if (moviesEnabled) {
+        R.dimen.progressTabsViewPadding
+      } else {
+        R.dimen.progressTabsViewPaddingNoModes
+      }
+      val overscrollPadding = if (moviesEnabled) {
+        R.dimen.progressOverscrollPadding
+      } else {
+        R.dimen.progressOverscrollPaddingNoModes
+      }
       if (statusBarHeight != 0) {
         progressRecycler.updatePadding(top = statusBarHeight + dimenToPx(recyclerPadding))
         (progressOverscroll.layoutParams as ViewGroup.MarginLayoutParams)
@@ -204,7 +215,7 @@ class ProgressFragment :
       adapt,
       1F,
       OverScrollBounceEffectDecoratorBase.DEFAULT_TOUCH_DRAG_MOVE_RATIO_BCK,
-      OverScrollBounceEffectDecoratorBase.DEFAULT_DECELERATE_FACTOR
+      OverScrollBounceEffectDecoratorBase.DEFAULT_DECELERATE_FACTOR,
     ).apply {
       setOverScrollUpdateListener { _, state, offset ->
         binding.progressOverscroll.run {
@@ -270,7 +281,11 @@ class ProgressFragment :
     binding.progressOverscrollProgress.progress = 0
   }
 
-  private fun openSortOrderDialog(order: SortOrder, type: SortType, newAtTop: Boolean) {
+  private fun openSortOrderDialog(
+    order: SortOrder,
+    type: SortType,
+    newAtTop: Boolean,
+  ) {
     val options = listOf(NAME, RATING, USER_RATING, NEWEST, RECENTLY_WATCHED, EPISODES_LEFT)
     val args = SortOrderBottomSheet.createBundle(options, order, type, newAtTop = Pair(true, newAtTop))
 
@@ -332,7 +347,7 @@ class ProgressFragment :
           progressTipItem.visibleIf(it.count() >= 3 && !isTipShown(Tip.WATCHLIST_ITEM_PIN))
           progressRecycler.fadeIn(
             duration = 200,
-            withHardware = true
+            withHardware = true,
           ).add(animations)
         }
       }

@@ -33,13 +33,16 @@ internal class DiscoverFiltersGenresBottomSheet : BaseBottomSheetFragment(R.layo
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
-      { viewModel.eventFlow.collect { handleEvent(it) } }
+      { viewModel.eventFlow.collect { handleEvent(it) } },
     )
   }
 

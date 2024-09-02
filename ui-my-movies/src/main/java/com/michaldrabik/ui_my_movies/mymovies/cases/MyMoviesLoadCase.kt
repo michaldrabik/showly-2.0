@@ -29,13 +29,15 @@ class MyMoviesLoadCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
 ) {
 
-  suspend fun loadSettings() = withContext(dispatchers.IO) {
-    settingsRepository.load()
-  }
+  suspend fun loadSettings() =
+    withContext(dispatchers.IO) {
+      settingsRepository.load()
+    }
 
-  suspend fun loadAll() = withContext(dispatchers.IO) {
-    moviesRepository.myMovies.loadAll()
-  }
+  suspend fun loadAll() =
+    withContext(dispatchers.IO) {
+      moviesRepository.myMovies.loadAll()
+    }
 
   fun filterSectionMovies(
     allMovies: List<MyMoviesItem>,
@@ -47,23 +49,28 @@ class MyMoviesLoadCase @Inject constructor(
     .filterByGenre(genres)
     .sortedWith(sorter.sort(sortOrder.first, sortOrder.second))
 
-  private fun List<MyMoviesItem>.filterByQuery(query: String?) = when {
-    query.isNullOrBlank() -> this
-    else -> this.filter {
-      it.movie.title.contains(query, true) ||
-        it.translation?.title?.contains(query, true) == true
+  private fun List<MyMoviesItem>.filterByQuery(query: String?) =
+    when {
+      query.isNullOrBlank() -> this
+      else -> this.filter {
+        it.movie.title.contains(query, true) ||
+          it.translation?.title?.contains(query, true) == true
+      }
     }
-  }
 
   private fun List<MyMoviesItem>.filterByGenre(genres: List<String>) =
     filter { genres.isEmpty() || it.movie.genres.any { genre -> genre.lowercase() in genres } }
 
-  suspend fun loadRecentMovies(): List<Movie> = withContext(dispatchers.IO) {
-    val amount = loadSettings().myRecentsAmount
-    moviesRepository.myMovies.loadAllRecent(amount)
-  }
+  suspend fun loadRecentMovies(): List<Movie> =
+    withContext(dispatchers.IO) {
+      val amount = loadSettings().myRecentsAmount
+      moviesRepository.myMovies.loadAllRecent(amount)
+    }
 
-  suspend fun loadTranslation(movie: Movie, onlyLocal: Boolean): Translation? =
+  suspend fun loadTranslation(
+    movie: Movie,
+    onlyLocal: Boolean,
+  ): Translation? =
     withContext(dispatchers.IO) {
       val language = translationsRepository.getLanguage()
       if (language == Config.DEFAULT_LANGUAGE) {
@@ -74,9 +81,14 @@ class MyMoviesLoadCase @Inject constructor(
 
   fun loadDateFormat() = dateFormatProvider.loadShortDayFormat()
 
-  suspend fun findCachedImage(movie: Movie, type: ImageType) =
-    imagesProvider.findCachedImage(movie, type)
+  suspend fun findCachedImage(
+    movie: Movie,
+    type: ImageType,
+  ) = imagesProvider.findCachedImage(movie, type)
 
-  suspend fun loadMissingImage(movie: Movie, type: ImageType, force: Boolean) =
-    imagesProvider.loadRemoteImage(movie, type, force)
+  suspend fun loadMissingImage(
+    movie: Movie,
+    type: ImageType,
+    force: Boolean,
+  ) = imagesProvider.loadRemoteImage(movie, type, force)
 }

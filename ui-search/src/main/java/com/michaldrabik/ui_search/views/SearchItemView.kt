@@ -49,15 +49,21 @@ class SearchItemView : ShowView<SearchListItem> {
     this.item = item
     with(view) {
       showSearchTitle.text =
-        if (item.translation?.title.isNullOrBlank()) item.title
-        else item.translation?.title
+        if (item.translation?.title.isNullOrBlank()) {
+          item.title
+        } else {
+          item.translation?.title
+        }
 
       bindDescription(item)
 
       val year = if (item.year > 0) item.year.toString() else ""
       showSearchNetwork.text =
-        if (item.network.isNotBlank()) context.getString(R.string.textNetwork, year, item.network)
-        else String.format("%s", year)
+        if (item.network.isNotBlank()) {
+          context.getString(R.string.textNetwork, year, item.network)
+        } else {
+          String.format("%s", year)
+        }
 
       showSearchBadge.visibleIf(item.isFollowed)
       showSearchWatchlistBadge.visibleIf(item.isWatchlist)

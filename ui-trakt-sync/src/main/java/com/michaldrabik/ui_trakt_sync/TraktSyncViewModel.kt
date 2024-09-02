@@ -191,7 +191,10 @@ class TraktSyncViewModel @Inject constructor(
     }
   }
 
-  fun startImport(isImport: Boolean, isExport: Boolean) {
+  fun startImport(
+    isImport: Boolean,
+    isExport: Boolean,
+  ) {
     TraktSyncWorker.scheduleOneOff(workManager, isImport, isExport, false)
   }
 
@@ -207,7 +210,7 @@ class TraktSyncViewModel @Inject constructor(
     traktSyncScheduleState,
     quickSyncEnabledState,
     dateFormatState,
-    traktSyncTimestampState
+    traktSyncTimestampState,
   ) { s1, s2, s3, s4, s5, s6, s7 ->
     TraktSyncUiState(
       isProgress = s1,
@@ -216,11 +219,11 @@ class TraktSyncViewModel @Inject constructor(
       traktSyncSchedule = s4,
       quickSyncEnabled = s5,
       dateFormat = s6,
-      lastTraktSyncTimestamp = s7
+      lastTraktSyncTimestamp = s7,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = TraktSyncUiState()
+    initialValue = TraktSyncUiState(),
   )
 }

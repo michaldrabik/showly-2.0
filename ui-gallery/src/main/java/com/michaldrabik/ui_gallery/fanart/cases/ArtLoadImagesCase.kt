@@ -26,7 +26,7 @@ class ArtLoadImagesCase @Inject constructor(
   suspend fun loadImages(
     id: IdTrakt,
     family: ImageFamily,
-    type: ImageType
+    type: ImageType,
   ): List<Image> {
     val images = mutableListOf<Image>()
     val initialImage = loadInitialImage(id, family, type)
@@ -46,16 +46,19 @@ class ArtLoadImagesCase @Inject constructor(
     return images.take(FANART_GALLERY_IMAGES_LIMIT)
   }
 
-  private suspend fun loadInitialImage(id: IdTrakt, family: ImageFamily, type: ImageType) =
-    when (family) {
-      SHOW -> {
-        val show = showsRepository.detailsShow.load(id)
-        showImagesProvider.findCachedImage(show, type)
-      }
-      MOVIE -> {
-        val movie = moviesRepository.movieDetails.load(id)
-        movieImagesProvider.findCachedImage(movie, type)
-      }
-      else -> throw IllegalStateException()
+  private suspend fun loadInitialImage(
+    id: IdTrakt,
+    family: ImageFamily,
+    type: ImageType,
+  ) = when (family) {
+    SHOW -> {
+      val show = showsRepository.detailsShow.load(id)
+      showImagesProvider.findCachedImage(show, type)
     }
+    MOVIE -> {
+      val movie = moviesRepository.movieDetails.load(id)
+      movieImagesProvider.findCachedImage(movie, type)
+    }
+    else -> throw IllegalStateException()
+  }
 }

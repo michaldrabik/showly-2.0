@@ -20,6 +20,6 @@ object TestData {
     isFollowed = false,
     isLoading = false,
     isWatchlist = false,
-    spoilers = SpoilersSettings.INITIAL
+    spoilers = SpoilersSettings.INITIAL,
   )
 }

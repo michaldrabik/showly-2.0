@@ -15,7 +15,10 @@ import javax.inject.Inject
 
 class ListDetailsSorter @Inject constructor() {
 
-  fun sort(sortOrder: SortOrder, sortType: SortType) = when (sortType) {
+  fun sort(
+    sortOrder: SortOrder,
+    sortType: SortType,
+  ) = when (sortType) {
     ASCENDING -> sortAscending(sortOrder)
     DESCENDING -> sortDescending(sortOrder)
   }
@@ -49,7 +52,10 @@ class ListDetailsSorter @Inject constructor() {
     }
 
   private fun getTitle(item: ListDetailsItem): String {
-    return if (item.translation?.hasTitle == true) item.translation.title
-    else item.getTitleNoThe().uppercase()
+    return if (item.translation?.hasTitle == true) {
+      item.translation.title
+    } else {
+      item.getTitleNoThe().uppercase()
+    }
   }
 }

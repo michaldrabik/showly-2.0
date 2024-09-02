@@ -46,8 +46,11 @@ class MyShowFanartView : FrameLayout {
     with(binding) {
       myShowFanartTitle.visible()
       myShowFanartTitle.text =
-        if (showItem.translation?.title.isNullOrBlank()) showItem.show.title
-        else showItem.translation?.title
+        if (showItem.translation?.title.isNullOrBlank()) {
+          showItem.show.title
+        } else {
+          showItem.translation?.title
+        }
     }
     onClick { clickListener(showItem) }
     onLongClick { longClickListener(showItem, it) }

@@ -44,7 +44,7 @@ class StatisticsMoviesViewModelTest : BaseMockTest() {
 
     SUT = StatisticsMoviesViewModel(
       ratingsCase,
-      moviesRepository
+      moviesRepository,
     )
   }
 
@@ -56,53 +56,57 @@ class StatisticsMoviesViewModelTest : BaseMockTest() {
   }
 
   @Test
-  internal fun `Should load ratings`() = runTest {
-    val movieItem = StatisticsMoviesRatingItem(Movie.EMPTY, Image.createUnknown(ImageType.POSTER), false, TraktRating.EMPTY)
-    coEvery { ratingsCase.loadRatings() } returns listOf(movieItem)
+  internal fun `Should load ratings`() =
+    runTest {
+      val movieItem =
+        StatisticsMoviesRatingItem(Movie.EMPTY, Image.createUnknown(ImageType.POSTER), false, TraktRating.EMPTY)
+      coEvery { ratingsCase.loadRatings() } returns listOf(movieItem)
 
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+      val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
 
-    SUT.loadRatings()
+      SUT.loadRatings()
 
-    assertThat(stateResult.last().ratings?.size).isEqualTo(1)
-    assertThat(stateResult.last().ratings).contains(movieItem)
+      assertThat(stateResult.last().ratings?.size).isEqualTo(1)
+      assertThat(stateResult.last().ratings).contains(movieItem)
 
-    job.cancel()
-  }
-
-  @Test
-  internal fun `Should load empty ratings in case of error`() = runTest {
-    coEvery { ratingsCase.loadRatings() } throws Throwable("Test error")
-
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
-
-    SUT.loadRatings()
-
-    assertThat(stateResult.last().ratings).isEmpty()
-
-    job.cancel()
-  }
+      job.cancel()
+    }
 
   @Test
-  internal fun `Should load statistics properly`() = runTest {
-    val movies = listOf(
-      Movie.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(1)), runtime = 1, genres = listOf("war", "drama")),
-      Movie.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(2)), runtime = 2, genres = listOf("war", "animation")),
-      Movie.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(3)), runtime = 3, genres = listOf("war", "animation")),
-    )
+  internal fun `Should load empty ratings in case of error`() =
+    runTest {
+      coEvery { ratingsCase.loadRatings() } throws Throwable("Test error")
 
-    coEvery { moviesRepository.myMovies.loadAll() } returns movies
+      val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
 
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+      SUT.loadRatings()
 
-    SUT.loadData(initialDelay = 0)
+      assertThat(stateResult.last().ratings).isEmpty()
 
-    val result = stateResult.last()
-    assertThat(result.totalWatchedMovies).isEqualTo(3)
-    assertThat(result.totalTimeSpentMinutes).isEqualTo(6)
-    assertThat(result.topGenres?.size).isEqualTo(3)
-    assertThat(result.topGenres).containsExactly(Genre.WAR, Genre.ANIMATION, Genre.DRAMA)
+      job.cancel()
+    }
 
-    job.cancel()
-  }
+  @Test
+  internal fun `Should load statistics properly`() =
+    runTest {
+      val movies = listOf(
+        Movie.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(1)), runtime = 1, genres = listOf("war", "drama")),
+        Movie.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(2)), runtime = 2, genres = listOf("war", "animation")),
+        Movie.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(3)), runtime = 3, genres = listOf("war", "animation")),
+      )
+
+      coEvery { moviesRepository.myMovies.loadAll() } returns movies
+
+      val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+
+      SUT.loadData(initialDelay = 0)
+
+      val result = stateResult.last()
+      assertThat(result.totalWatchedMovies).isEqualTo(3)
+      assertThat(result.totalTimeSpentMinutes).isEqualTo(6)
+      assertThat(result.topGenres?.size).isEqualTo(3)
+      assertThat(result.topGenres).containsExactly(Genre.WAR, Genre.ANIMATION, Genre.DRAMA)
+
+      job.cancel()
+    }
 }

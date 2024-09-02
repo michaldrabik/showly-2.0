@@ -37,8 +37,10 @@ class ProgressWidgetEpisodeCheckService : JobIntentService(), CoroutineScope {
         putExtra(EXTRA_SHOW_ID, showId.id)
       }
       enqueueWork(
-        context, ProgressWidgetEpisodeCheckService::class.java,
-        JOB_ID, intent
+        context,
+        ProgressWidgetEpisodeCheckService::class.java,
+        JOB_ID,
+        intent,
       )
     }
   }
@@ -64,7 +66,7 @@ class ProgressWidgetEpisodeCheckService : JobIntentService(), CoroutineScope {
       quickSyncManager.scheduleEpisodes(
         showId = showId,
         episodesIds = listOf(episodeId),
-        customDate = null
+        customDate = null,
       )
       (applicationContext as WidgetsProvider).requestShowsWidgetsUpdate()
     }

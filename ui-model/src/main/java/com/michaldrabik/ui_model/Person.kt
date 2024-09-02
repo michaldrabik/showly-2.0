@@ -23,18 +23,19 @@ data class Person(
   val deathday: LocalDate?,
 ) : Parcelable {
 
-  fun getAge() = when {
-    birthday != null && deathday != null -> Period.between(birthday, deathday).years
-    birthday != null -> Period.between(birthday, nowUtcDay()).years
-    else -> null
-  }
+  fun getAge() =
+    when {
+      birthday != null && deathday != null -> Period.between(birthday, deathday).years
+      birthday != null -> Period.between(birthday, nowUtcDay()).years
+      else -> null
+    }
 
   enum class Department(val slug: String) {
     ACTING("Acting"),
     DIRECTING("Directing"),
     WRITING("Writing"),
     SOUND("Sound"),
-    UNKNOWN("-")
+    UNKNOWN("-"),
   }
 
   enum class Job(val slug: String) {
@@ -44,7 +45,8 @@ data class Person(
     SCREENPLAY("Screenplay"),
     MUSIC("Music"),
     ORIGINAL_MUSIC("Original Music Composer"),
-    UNKNOWN("-");
+    UNKNOWN("-"),
+    ;
 
     companion object {
       fun fromSlug(slug: String?) = values().firstOrNull { it.slug == slug } ?: UNKNOWN

@@ -76,8 +76,8 @@ class ProgressMoviesViewModel @Inject constructor(
       eventChannel.send(
         MovieCheckActionUiEvent(
           movie = movie,
-          dateSelectionType = settingsRepository.progressDateSelectionType
-        )
+          dateSelectionType = settingsRepository.progressDateSelectionType,
+        ),
       )
     }
   }
@@ -93,7 +93,10 @@ class ProgressMoviesViewModel @Inject constructor(
     }
   }
 
-  fun findMissingImage(item: ProgressMovieListItem.MovieItem, force: Boolean) {
+  fun findMissingImage(
+    item: ProgressMovieListItem.MovieItem,
+    force: Boolean,
+  ) {
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
       try {
@@ -119,7 +122,10 @@ class ProgressMoviesViewModel @Inject constructor(
     }
   }
 
-  fun setSortOrder(sortOrder: SortOrder, sortType: SortType) {
+  fun setSortOrder(
+    sortOrder: SortOrder,
+    sortType: SortType,
+  ) {
     viewModelScope.launch {
       sortCase.setSortOrder(sortOrder, sortType)
       loadItems(resetScroll = true)
@@ -140,7 +146,7 @@ class ProgressMoviesViewModel @Inject constructor(
       workManager,
       isImport = true,
       isExport = true,
-      isSilent = false
+      isSilent = false,
     )
   }
 
@@ -157,17 +163,17 @@ class ProgressMoviesViewModel @Inject constructor(
     itemsState,
     scrollState,
     sortOrderState,
-    overscrollState
+    overscrollState,
   ) { s1, s2, s3, s4 ->
     ProgressMoviesUiState(
       items = s1,
       scrollReset = s2,
       sortOrder = s3,
-      isOverScrollEnabled = s4
+      isOverScrollEnabled = s4,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = ProgressMoviesUiState()
+    initialValue = ProgressMoviesUiState(),
   )
 }

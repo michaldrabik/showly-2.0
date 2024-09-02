@@ -69,14 +69,21 @@ class ListsViewModel @Inject constructor(
     }
   }
 
-  fun setSortOrder(sortOrder: SortOrder, sortType: SortType) {
+  fun setSortOrder(
+    sortOrder: SortOrder,
+    sortType: SortType,
+  ) {
     viewModelScope.launch {
       sortCase.setSortOrder(sortOrder, sortType)
       loadItems(resetScroll = true)
     }
   }
 
-  fun loadMissingImage(item: ListsItem, itemImage: ListsItemImage, force: Boolean) {
+  fun loadMissingImage(
+    item: ListsItem,
+    itemImage: ListsItemImage,
+    force: Boolean,
+  ) {
     viewModelScope.launch {
       try {
         val imageType = itemImage.image.type
@@ -117,17 +124,17 @@ class ListsViewModel @Inject constructor(
     itemsState,
     scrollState,
     sortOrderState,
-    syncingState
+    syncingState,
   ) { s1, s2, s3, s4 ->
     ListsUiState(
       items = s1,
       resetScroll = s2,
       sortOrder = s3,
-      isSyncing = s4
+      isSyncing = s4,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = ListsUiState()
+    initialValue = ListsUiState(),
   )
 }

@@ -16,7 +16,9 @@ import dagger.hilt.components.SingletonComponent
 class DiscoverModule {
 
   @Provides
-  internal fun providesItemTypeProvider(@ApplicationContext context: Context): ImageTypeProvider {
+  internal fun providesItemTypeProvider(
+    @ApplicationContext context: Context,
+  ): ImageTypeProvider {
     return if (context.isTablet()) {
       TabletImageTypeProvider()
     } else {

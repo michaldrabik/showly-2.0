@@ -1,4 +1,6 @@
-// ktlint-disable filename
+
+@file:Suppress("ktlint:standard:filename")
+
 package com.michaldrabik.ui_progress.main
 
 import com.michaldrabik.ui_base.utilities.events.Event
@@ -15,7 +17,7 @@ data class EpisodeCheckActionUiEvent(
 data class OpenEpisodeDetails(
   val show: Show,
   val episode: Episode,
-  val isWatched: Boolean
+  val isWatched: Boolean,
 ) : Event<Episode>(episode)
 
 object RequestWidgetsUpdate : Event<Unit>(Unit)

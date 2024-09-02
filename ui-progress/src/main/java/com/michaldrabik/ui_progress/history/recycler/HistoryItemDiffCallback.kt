@@ -7,7 +7,7 @@ internal class HistoryItemDiffCallback : DiffUtil.ItemCallback<HistoryListItem>(
 
   override fun areItemsTheSame(
     oldItem: HistoryListItem,
-    newItem: HistoryListItem
+    newItem: HistoryListItem,
   ): Boolean {
     val areEpisodes = oldItem is HistoryListItem.Episode && newItem is HistoryListItem.Episode
     val areHeaders = oldItem is HistoryListItem.Header && newItem is HistoryListItem.Header
@@ -15,11 +15,11 @@ internal class HistoryItemDiffCallback : DiffUtil.ItemCallback<HistoryListItem>(
     return when {
       areEpisodes -> areItemsTheSame(
         (oldItem as HistoryListItem.Episode),
-        (newItem as HistoryListItem.Episode)
+        (newItem as HistoryListItem.Episode),
       )
       areHeaders -> areItemsTheSame(
         (oldItem as HistoryListItem.Header),
-        (newItem as HistoryListItem.Header)
+        (newItem as HistoryListItem.Header),
       )
       areFilters -> true
       else -> false
@@ -28,21 +28,21 @@ internal class HistoryItemDiffCallback : DiffUtil.ItemCallback<HistoryListItem>(
 
   private fun areItemsTheSame(
     oldItem: HistoryListItem.Episode,
-    newItem: HistoryListItem.Episode
+    newItem: HistoryListItem.Episode,
   ): Boolean {
     return oldItem.episode.ids.trakt == newItem.episode.ids.trakt
   }
 
   private fun areItemsTheSame(
     oldItem: HistoryListItem.Header,
-    newItem: HistoryListItem.Header
+    newItem: HistoryListItem.Header,
   ): Boolean {
     return oldItem.date == newItem.date
   }
 
   override fun areContentsTheSame(
     oldItem: HistoryListItem,
-    newItem: HistoryListItem
+    newItem: HistoryListItem,
   ): Boolean {
     return when (oldItem) {
       is HistoryListItem.Episode -> areContentsTheSame(oldItem, (newItem as HistoryListItem.Episode))
@@ -53,7 +53,7 @@ internal class HistoryItemDiffCallback : DiffUtil.ItemCallback<HistoryListItem>(
 
   private fun areContentsTheSame(
     oldItem: HistoryListItem.Episode,
-    newItem: HistoryListItem.Episode
+    newItem: HistoryListItem.Episode,
   ): Boolean {
     return oldItem.episode == newItem.episode &&
       oldItem.season == newItem.season &&
@@ -65,7 +65,7 @@ internal class HistoryItemDiffCallback : DiffUtil.ItemCallback<HistoryListItem>(
 
   private fun areContentsTheSame(
     oldItem: HistoryListItem.Header,
-    newItem: HistoryListItem.Header
+    newItem: HistoryListItem.Header,
   ): Boolean {
     return oldItem == newItem
   }

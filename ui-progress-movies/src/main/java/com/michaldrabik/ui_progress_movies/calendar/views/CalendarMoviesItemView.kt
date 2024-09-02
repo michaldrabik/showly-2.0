@@ -51,8 +51,11 @@ class CalendarMoviesItemView : MovieView<CalendarMovieListItem.MovieItem> {
 
     with(binding) {
       progressMovieCalendarItemTitle.text =
-        if (item.translation?.title.isNullOrBlank()) item.movie.title
-        else item.translation?.title
+        if (item.translation?.title.isNullOrBlank()) {
+          item.movie.title
+        } else {
+          item.translation?.title
+        }
 
       bindDescription(item)
       bindBadge(item)

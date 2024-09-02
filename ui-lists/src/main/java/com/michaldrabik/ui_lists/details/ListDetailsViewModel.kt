@@ -45,7 +45,7 @@ class ListDetailsViewModel @Inject constructor(
   private val sortCase: ListDetailsSortCase,
   private val tipsCase: ListDetailsTipsCase,
   private val showImagesProvider: ShowImagesProvider,
-  private val movieImagesProvider: MovieImagesProvider
+  private val movieImagesProvider: MovieImagesProvider,
 ) : ViewModel(), ChannelsDelegate by DefaultChannelsDelegate() {
 
   private val listDetailsState = MutableStateFlow<CustomList?>(null)
@@ -77,7 +77,10 @@ class ListDetailsViewModel @Inject constructor(
     }
   }
 
-  fun loadMissingImage(item: ListDetailsItem, force: Boolean) {
+  fun loadMissingImage(
+    item: ListDetailsItem,
+    force: Boolean,
+  ) {
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
       try {
@@ -106,13 +109,16 @@ class ListDetailsViewModel @Inject constructor(
     }
   }
 
-  fun setReorderMode(listId: Long, isReorderMode: Boolean) {
+  fun setReorderMode(
+    listId: Long,
+    isReorderMode: Boolean,
+  ) {
     viewModelScope.launch {
       if (isReorderMode) {
         val list = mainCase.loadDetails(listId).copy(
           sortByLocal = SortOrder.RANK,
           sortHowLocal = SortType.ASCENDING,
-          filterTypeLocal = Mode.getAll()
+          filterTypeLocal = Mode.getAll(),
         )
         val listItems = itemsCase.loadItems(list).first.map { it.copy(isManageMode = true) }
         listItemsState.value = listItems
@@ -130,7 +136,10 @@ class ListDetailsViewModel @Inject constructor(
     }
   }
 
-  fun updateRanks(listId: Long, items: List<ListDetailsItem>) {
+  fun updateRanks(
+    listId: Long,
+    items: List<ListDetailsItem>,
+  ) {
     viewModelScope.launch {
       val updatedItems = mainCase.updateRanks(listId, items)
       listItemsState.value = updatedItems
@@ -140,7 +149,7 @@ class ListDetailsViewModel @Inject constructor(
   fun setSortOrder(
     id: Long,
     sortOrder: SortOrder,
-    sortType: SortType
+    sortType: SortType,
   ) {
     viewModelScope.launch {
       val list = sortCase.setSortOrder(id, sortOrder, sortType)
@@ -150,7 +159,7 @@ class ListDetailsViewModel @Inject constructor(
         currentItems,
         list.sortByLocal,
         list.sortHowLocal,
-        list.filterTypeLocal
+        list.filterTypeLocal,
       )
 
       listDetailsState.value = list
@@ -159,7 +168,10 @@ class ListDetailsViewModel @Inject constructor(
     }
   }
 
-  fun setFilterTypes(listId: Long, types: List<Mode>) {
+  fun setFilterTypes(
+    listId: Long,
+    types: List<Mode>,
+  ) {
     viewModelScope.launch {
       val list = sortCase.setFilterTypes(listId, types)
       val (sortedItems, _) = itemsCase.loadItems(list)
@@ -171,7 +183,10 @@ class ListDetailsViewModel @Inject constructor(
     }
   }
 
-  fun deleteList(listId: Long, removeFromTrakt: Boolean) {
+  fun deleteList(
+    listId: Long,
+    removeFromTrakt: Boolean,
+  ) {
     viewModelScope.launch {
       try {
         if (removeFromTrakt) {
@@ -187,7 +202,10 @@ class ListDetailsViewModel @Inject constructor(
     }
   }
 
-  fun deleteListItem(listId: Long, item: ListDetailsItem) {
+  fun deleteListItem(
+    listId: Long,
+    item: ListDetailsItem,
+  ) {
     viewModelScope.launch {
       val type =
         when {
@@ -217,7 +235,7 @@ class ListDetailsViewModel @Inject constructor(
     listDeleteState,
     scrollState,
     filtersVisibleState,
-    viewModeState
+    viewModeState,
   ) { s1, s2, s3, s4, s5, s6, s7, s8, s9 ->
     ListDetailsUiState(
       listDetails = s1,
@@ -228,11 +246,11 @@ class ListDetailsViewModel @Inject constructor(
       deleteEvent = s6,
       resetScroll = s7,
       isFiltersVisible = s8,
-      viewMode = s9
+      viewMode = s9,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = ListDetailsUiState()
+    initialValue = ListDetailsUiState(),
   )
 }

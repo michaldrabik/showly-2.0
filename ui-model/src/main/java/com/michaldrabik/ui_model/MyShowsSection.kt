@@ -12,21 +12,21 @@ enum class MyShowsSection(
   val allowedStatuses: List<ShowStatus> = emptyList(),
 ) {
   RECENTS(
-    displayString = R.string.textHeaderRecentlyAdded
+    displayString = R.string.textHeaderRecentlyAdded,
   ),
   WATCHING(
     allowedStatuses = listOf(RETURNING),
-    displayString = R.string.textHeaderWatching
+    displayString = R.string.textHeaderWatching,
   ),
   FINISHED(
     allowedStatuses = listOf(CANCELED, ENDED),
-    displayString = R.string.textHeaderFinished
+    displayString = R.string.textHeaderFinished,
   ),
   UPCOMING(
     allowedStatuses = listOf(IN_PRODUCTION, PLANNED, ShowStatus.UPCOMING),
-    displayString = R.string.textHeaderReturning
+    displayString = R.string.textHeaderReturning,
   ),
   ALL(
-    displayString = R.string.textHeaderAll
-  )
+    displayString = R.string.textHeaderAll,
+  ),
 }

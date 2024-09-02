@@ -17,63 +17,77 @@ class PreferencesModule {
   @Provides
   @Singleton
   @Named("tipsPreferences")
-  fun providesTutorialsPreferences(@ApplicationContext context: Context): SharedPreferences =
+  fun providesTutorialsPreferences(
+    @ApplicationContext context: Context,
+  ): SharedPreferences =
     context.applicationContext.getSharedPreferences(
       "PREFERENCES_TUTORIALS",
-      Context.MODE_PRIVATE
+      Context.MODE_PRIVATE,
     )
 
   @Provides
   @Singleton
   @Named("watchlistPreferences")
-  fun providesProgressShowsPreferences(@ApplicationContext context: Context): SharedPreferences =
+  fun providesProgressShowsPreferences(
+    @ApplicationContext context: Context,
+  ): SharedPreferences =
     context.applicationContext.getSharedPreferences(
       "PREFERENCES_WATCHLIST",
-      Context.MODE_PRIVATE
+      Context.MODE_PRIVATE,
     )
 
   @Provides
   @Singleton
   @Named("progressOnHoldPreferences")
-  fun providesProgressShowsOnHoldPreferences(@ApplicationContext context: Context): SharedPreferences =
+  fun providesProgressShowsOnHoldPreferences(
+    @ApplicationContext context: Context,
+  ): SharedPreferences =
     context.applicationContext.getSharedPreferences(
       "PREFERENCES_PROGRESS_SHOWS_ON_HOLD",
-      Context.MODE_PRIVATE
+      Context.MODE_PRIVATE,
     )
 
   @Provides
   @Singleton
   @Named("progressMoviesPreferences")
-  fun providesProgressMoviesPreferences(@ApplicationContext context: Context): SharedPreferences =
+  fun providesProgressMoviesPreferences(
+    @ApplicationContext context: Context,
+  ): SharedPreferences =
     context.applicationContext.getSharedPreferences(
       "PREFERENCES_PROGRESS_MOVIES",
-      Context.MODE_PRIVATE
+      Context.MODE_PRIVATE,
     )
 
   @Provides
   @Singleton
   @Named("miscPreferences")
-  fun providesMiscPreferences(@ApplicationContext context: Context): SharedPreferences =
+  fun providesMiscPreferences(
+    @ApplicationContext context: Context,
+  ): SharedPreferences =
     context.applicationContext.getSharedPreferences(
       "PREFERENCES_MISC",
-      Context.MODE_PRIVATE
+      Context.MODE_PRIVATE,
     )
 
   @Provides
   @Singleton
   @Named("spoilersPreferences")
-  fun providesSpoilersPreferences(@ApplicationContext context: Context): SharedPreferences =
+  fun providesSpoilersPreferences(
+    @ApplicationContext context: Context,
+  ): SharedPreferences =
     context.applicationContext.getSharedPreferences(
       "PREFERENCES_SPOILERS",
-      Context.MODE_PRIVATE
+      Context.MODE_PRIVATE,
     )
 
   @Provides
   @Singleton
   @Named("syncPreferences")
-  fun providesSyncPreferences(@ApplicationContext context: Context): SharedPreferences =
+  fun providesSyncPreferences(
+    @ApplicationContext context: Context,
+  ): SharedPreferences =
     context.applicationContext.getSharedPreferences(
       "PREFERENCES_SYNC",
-      Context.MODE_PRIVATE
+      Context.MODE_PRIVATE,
     )
 }

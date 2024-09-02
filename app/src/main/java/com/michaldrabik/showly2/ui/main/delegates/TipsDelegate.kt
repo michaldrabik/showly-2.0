@@ -16,6 +16,7 @@ interface TipsDelegate : TipsHost {
   )
 
   fun showAllTips()
+
   fun hideAllTips()
 }
 
@@ -28,7 +29,7 @@ class MainTipsDelegate : TipsDelegate, DefaultLifecycleObserver {
     mapOf(
       Tip.MENU_DISCOVER to binding.tutorialTipDiscover,
       Tip.MENU_MY_SHOWS to binding.tutorialTipMyShows,
-      Tip.MENU_MODES to binding.tutorialTipModeMenu
+      Tip.MENU_MODES to binding.tutorialTipModeMenu,
     )
   }
 

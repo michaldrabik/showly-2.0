@@ -44,7 +44,10 @@ internal class CollectionFiltersGenreBottomSheet : BaseBottomSheetFragment(R.lay
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
 
@@ -54,7 +57,7 @@ internal class CollectionFiltersGenreBottomSheet : BaseBottomSheetFragment(R.lay
       doAfterLaunch = {
         val origin = requireSerializable<CollectionFiltersOrigin>(ARG_ORIGIN)
         viewModel.loadData(origin)
-      }
+      },
     )
   }
 

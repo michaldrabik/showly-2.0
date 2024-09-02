@@ -38,7 +38,7 @@ class EpisodeView : ConstraintLayout {
     item: EpisodeListItem,
     itemClickListener: (Episode, Boolean) -> Unit,
     itemCheckedListener: (Episode, Boolean) -> Unit,
-    isLocked: Boolean
+    isLocked: Boolean,
   ) {
     clear()
     with(binding) {
@@ -73,8 +73,10 @@ class EpisodeView : ConstraintLayout {
 
       if (!hasAired) {
         val date = item.episode.firstAired?.toLocalZone()
-        val displayDate = date?.let { item.dateFormat?.format(it)?.capitalizeWords() } ?: context.getString(R.string.textTba)
-        episodeTitle.text = String.format(ENGLISH, context.getString(R.string.textEpisodeDate), item.episode.number, displayDate)
+        val displayDate = date?.let { item.dateFormat?.format(it)?.capitalizeWords() }
+          ?: context.getString(R.string.textTba)
+        episodeTitle.text =
+          String.format(ENGLISH, context.getString(R.string.textEpisodeDate), item.episode.number, displayDate)
       }
 
       episodeCheckbox.setOnClickListener {

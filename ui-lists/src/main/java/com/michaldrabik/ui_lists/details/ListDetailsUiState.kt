@@ -14,5 +14,5 @@ data class ListDetailsUiState(
   val isManageMode: Boolean = false,
   val isQuickRemoveEnabled: Boolean = false,
   val isLoading: Boolean = false,
-  val viewMode: ListViewMode = ListViewMode.LIST_NORMAL
+  val viewMode: ListViewMode = ListViewMode.LIST_NORMAL,
 )

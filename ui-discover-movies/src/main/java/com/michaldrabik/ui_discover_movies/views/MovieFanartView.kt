@@ -42,8 +42,11 @@ class MovieFanartView : MovieView<DiscoverMovieListItem> {
     this.item = item
     with(binding) {
       movieFanartTitle.text =
-        if (item.translation?.title.isNullOrBlank()) item.movie.title
-        else item.translation?.title
+        if (item.translation?.title.isNullOrBlank()) {
+          item.movie.title
+        } else {
+          item.translation?.title
+        }
       movieFanartProgress.visibleIf(item.isLoading)
       movieFanartBadge.visibleIf(item.isCollected)
       movieFanartBadgeLater.visibleIf(item.isWatchlist)

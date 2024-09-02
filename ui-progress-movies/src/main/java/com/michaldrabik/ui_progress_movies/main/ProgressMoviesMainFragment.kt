@@ -76,7 +76,10 @@ class ProgressMoviesMainFragment :
     }
   }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
     setupPager()
@@ -84,7 +87,7 @@ class ProgressMoviesMainFragment :
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
-      doAfterLaunch = { viewModel.loadProgress() }
+      doAfterLaunch = { viewModel.loadProgress() },
     )
   }
 
@@ -195,7 +198,10 @@ class ProgressMoviesMainFragment :
     }.add(animations)
   }
 
-  fun openMovieMenu(movie: Movie, showPinButtons: Boolean = true) {
+  fun openMovieMenu(
+    movie: Movie,
+    showPinButtons: Boolean = true,
+  ) {
     setFragmentResultListener(NavigationArgs.REQUEST_ITEM_MENU) { requestKey, _ ->
       if (requestKey == NavigationArgs.REQUEST_ITEM_MENU) {
         viewModel.loadProgress()
@@ -207,13 +213,16 @@ class ProgressMoviesMainFragment :
   }
 
   fun openDateSelectionDialog(movie: Movie) {
-
     fun openRateDialogIfNeeded(customDate: ZonedDateTime? = null) {
       viewModel.setWatchedMovie(movie, customDate)
     }
 
     setFragmentResultListener(REQUEST_DATE_SELECTION) { _, bundle ->
-      when (val result = bundle.requireParcelable<DateSelectionBottomSheet.Result>(DateSelectionBottomSheet.RESULT_DATE_SELECTION)) {
+      when (
+        val result = bundle.requireParcelable<DateSelectionBottomSheet.Result>(
+          DateSelectionBottomSheet.RESULT_DATE_SELECTION,
+        )
+      ) {
         is DateSelectionBottomSheet.Result.Now -> openRateDialogIfNeeded()
         is DateSelectionBottomSheet.Result.CustomDate -> openRateDialogIfNeeded(result.date)
       }
@@ -297,7 +306,7 @@ class ProgressMoviesMainFragment :
         progressMoviesTabs,
         progressMoviesModeTabs,
         progressMoviesSideIcons,
-        progressMoviesSearchLocalView
+        progressMoviesSearchLocalView,
       ).forEach {
         it.animate().translationY(0F).setDuration(duration).add(animations)?.start()
       }
@@ -326,7 +335,12 @@ class ProgressMoviesMainFragment :
       currentPage = position
     }
 
-    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) = Unit
+    override fun onPageScrolled(
+      position: Int,
+      positionOffset: Float,
+      positionOffsetPixels: Int,
+    ) = Unit
+
     override fun onPageScrollStateChanged(state: Int) = Unit
   }
 }

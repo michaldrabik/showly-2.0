@@ -55,11 +55,9 @@ class CommentsFragment : BaseFragment<CommentsViewModel>(R.layout.fragment_comme
   companion object {
     const val BACK_UP_BUTTON_THRESHOLD = 25
 
-    fun createBundle(movie: Movie): Bundle =
-      bundleOf(ARG_OPTIONS to Options(movie.ids.trakt, Mode.MOVIES))
+    fun createBundle(movie: Movie): Bundle = bundleOf(ARG_OPTIONS to Options(movie.ids.trakt, Mode.MOVIES))
 
-    fun createBundle(show: Show): Bundle =
-      bundleOf(ARG_OPTIONS to Options(show.ids.trakt, Mode.SHOWS))
+    fun createBundle(show: Show): Bundle = bundleOf(ARG_OPTIONS to Options(show.ids.trakt, Mode.SHOWS))
   }
 
   override val navigationId = R.id.commentsFragment
@@ -68,7 +66,10 @@ class CommentsFragment : BaseFragment<CommentsViewModel>(R.layout.fragment_comme
 
   private var commentsAdapter: CommentsAdapter? = null
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
     setupRecycler()
@@ -76,7 +77,7 @@ class CommentsFragment : BaseFragment<CommentsViewModel>(R.layout.fragment_comme
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
-      { viewModel.messageFlow.collect { showSnack(it) } }
+      { viewModel.messageFlow.collect { showSnack(it) } },
     )
   }
 
@@ -107,7 +108,7 @@ class CommentsFragment : BaseFragment<CommentsViewModel>(R.layout.fragment_comme
     commentsAdapter = CommentsAdapter(
       onDeleteClickListener = { openDeleteCommentDialog(it) },
       onReplyClickListener = { openPostCommentSheet(it) },
-      onRepliesClickListener = { viewModel.loadCommentReplies(it) }
+      onRepliesClickListener = { viewModel.loadCommentReplies(it) },
     )
     binding.commentsRecycler.apply {
       setHasFixedSize(true)
@@ -136,7 +137,7 @@ class CommentsFragment : BaseFragment<CommentsViewModel>(R.layout.fragment_comme
     val bundle = when {
       comment != null -> bundleOf(
         ARG_COMMENT_ID to comment.getReplyId(),
-        ARG_REPLY_USER to comment.user.username
+        ARG_REPLY_USER to comment.user.username,
       )
       else -> {
         val (id, mode) = requireParcelable<Options>(ARG_OPTIONS)
@@ -187,7 +188,10 @@ class CommentsFragment : BaseFragment<CommentsViewModel>(R.layout.fragment_comme
   }
 
   private val recyclerScrollListener = object : RecyclerView.OnScrollListener() {
-    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+    override fun onScrollStateChanged(
+      recyclerView: RecyclerView,
+      newState: Int,
+    ) {
       if (newState != RecyclerView.SCROLL_STATE_IDLE) {
         return
       }

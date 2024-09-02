@@ -67,7 +67,10 @@ class ShowDetailsLoadSeasonsCase @Inject constructor(
       }
     }
 
-  private suspend fun loadLocalSeasons(show: Show, showSpecials: Boolean): SeasonsBundle {
+  private suspend fun loadLocalSeasons(
+    show: Show,
+    showSpecials: Boolean,
+  ): SeasonsBundle {
     val localEpisodes = localSource.episodes.getAllByShowId(show.traktId)
     val localSeasons = localSource.seasons.getAllByShowId(show.traktId).map { season ->
       val seasonEpisodes = localEpisodes.filter { ep -> ep.idSeason == season.idTrakt }
@@ -80,7 +83,10 @@ class ShowDetailsLoadSeasonsCase @Inject constructor(
     return SeasonsBundle(seasonsItems, isLocal = true)
   }
 
-  private suspend fun mapToSeasonItems(remoteSeasons: List<Season>, show: Show) = coroutineScope {
+  private suspend fun mapToSeasonItems(
+    remoteSeasons: List<Season>,
+    show: Show,
+  ) = coroutineScope {
     val isSignedIn = userManager.isAuthorized()
     val format = dateFormatProvider.loadFullHourFormat()
     val seasonsRatings = ratingsRepository.shows.loadRatingsSeasons(remoteSeasons)
@@ -103,7 +109,7 @@ class ShowDetailsLoadSeasonsCase @Inject constructor(
               myRating = rating,
               dateFormat = format,
               isAnime = show.isAnime,
-              spoilers = spoilers
+              spoilers = spoilers,
             )
           }
         }.awaitAll()

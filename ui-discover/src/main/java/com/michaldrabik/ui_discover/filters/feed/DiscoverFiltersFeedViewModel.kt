@@ -44,7 +44,7 @@ internal class DiscoverFiltersFeedViewModel @Inject constructor(
       }
       val settings = settingsRepository.load()
       settingsRepository.update(
-        settings.copy(discoverFilterFeed = feedOrder)
+        settings.copy(discoverFilterFeed = feedOrder),
       )
       eventChannel.send(ApplyFilters)
     }
@@ -61,6 +61,6 @@ internal class DiscoverFiltersFeedViewModel @Inject constructor(
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = DiscoverFiltersFeedUiState()
+    initialValue = DiscoverFiltersFeedUiState(),
   )
 }

@@ -55,7 +55,10 @@ class CalendarFragment :
   private var statusBarHeight = 0
   private var isSearching = false
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupRecycler()
     setupStatusBar()
@@ -97,7 +100,7 @@ class CalendarFragment :
         requireMainFragment().openEpisodeDetails(
           show = it.show,
           episode = it.episode,
-          season = it.season
+          season = it.season,
         )
       },
     )
@@ -110,7 +113,11 @@ class CalendarFragment :
   }
 
   private fun setupStatusBar() {
-    val recyclerPadding = if (moviesEnabled) R.dimen.progressCalendarTabsViewPadding else R.dimen.progressCalendarTabsViewPaddingNoModes
+    val recyclerPadding = if (moviesEnabled) {
+      R.dimen.progressCalendarTabsViewPadding
+    } else {
+      R.dimen.progressCalendarTabsViewPaddingNoModes
+    }
 
     if (statusBarHeight != 0) {
       binding.progressCalendarRecycler.updatePadding(top = statusBarHeight + dimenToPx(recyclerPadding))

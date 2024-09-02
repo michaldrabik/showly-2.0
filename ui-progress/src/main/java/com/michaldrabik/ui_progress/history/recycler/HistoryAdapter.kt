@@ -30,26 +30,31 @@ internal class HistoryAdapter(
 
   override val asyncDiffer = AsyncListDiffer(this, HistoryItemDiffCallback())
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    when (viewType) {
-      VIEW_TYPE_ITEM -> BaseViewHolder(
-        HistoryItemView(parent.context).apply {
-          itemClickListener = this@HistoryAdapter.onItemClick
-          missingImageListener = this@HistoryAdapter.onImageMissing
-          missingTranslationListener = this@HistoryAdapter.onTranslationMissing
-          onDetailsClick = this@HistoryAdapter.onDetailsClick
-        }
-      )
-      VIEW_TYPE_HEADER -> BaseViewHolder(HistoryHeaderView(parent.context))
-      VIEW_TYPE_FILTERS -> BaseViewHolder(
-        HistoryFiltersView(parent.context).apply {
-          onDatesChipClick = this@HistoryAdapter.onDatesFilterClick
-        }
-      )
-      else -> throw IllegalStateException()
-    }
+  override fun onCreateViewHolder(
+    parent: ViewGroup,
+    viewType: Int,
+  ) = when (viewType) {
+    VIEW_TYPE_ITEM -> BaseViewHolder(
+      HistoryItemView(parent.context).apply {
+        itemClickListener = this@HistoryAdapter.onItemClick
+        missingImageListener = this@HistoryAdapter.onImageMissing
+        missingTranslationListener = this@HistoryAdapter.onTranslationMissing
+        onDetailsClick = this@HistoryAdapter.onDetailsClick
+      },
+    )
+    VIEW_TYPE_HEADER -> BaseViewHolder(HistoryHeaderView(parent.context))
+    VIEW_TYPE_FILTERS -> BaseViewHolder(
+      HistoryFiltersView(parent.context).apply {
+        onDatesChipClick = this@HistoryAdapter.onDatesFilterClick
+      },
+    )
+    else -> throw IllegalStateException()
+  }
 
-  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+  override fun onBindViewHolder(
+    holder: RecyclerView.ViewHolder,
+    position: Int,
+  ) {
     when (val item = asyncDiffer.currentList[position]) {
       is Header -> (holder.itemView as HistoryHeaderView).bind(item, position)
       is Episode -> (holder.itemView as HistoryItemView).bind(item)

@@ -18,7 +18,10 @@ class ManageListsCase @Inject constructor(
   private val quickSyncManager: QuickSyncManager,
 ) {
 
-  suspend fun loadLists(itemId: IdTrakt, itemType: String) = withContext(dispatchers.IO) {
+  suspend fun loadLists(
+    itemId: IdTrakt,
+    itemType: String,
+  ) = withContext(dispatchers.IO) {
     val listsAsync = async { listsRepository.loadAll() }
     val listsWithItemAsync = async { listsRepository.loadListIdsForItem(itemId, itemType) }
     val (lists, listsWithItem) = Pair(listsAsync.await(), listsWithItemAsync.await())

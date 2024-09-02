@@ -94,7 +94,10 @@ class ListsFragment :
     }
   }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
     setupStatusBar()
@@ -103,7 +106,7 @@ class ListsFragment :
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
       { eventsManager.events.collect { handleEvent(it) } },
-      doAfterLaunch = { viewModel.loadItems(resetScroll = false) }
+      doAfterLaunch = { viewModel.loadItems(resetScroll = false) },
     )
   }
 
@@ -201,9 +204,15 @@ class ListsFragment :
         clearOnScrollListeners()
         addOnScrollListener(object : RecyclerView.OnScrollListener() {
           var isFading = false
-          override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+
+          override fun onScrolled(
+            recyclerView: RecyclerView,
+            dx: Int,
+            dy: Int,
+          ) {
             if (isFading) return
-            val position = (this@ListsFragment.layoutManager as? LinearLayoutManager)?.findFirstCompletelyVisibleItemPosition()
+            val position = (this@ListsFragment.layoutManager as? LinearLayoutManager)
+              ?.findFirstCompletelyVisibleItemPosition()
               ?: (this@ListsFragment.layoutManager as? GridLayoutManager)?.findFirstCompletelyVisibleItemPosition()
             if ((position ?: 0) > 1) {
               if (fragmentListsCreateListButton.visibility != VISIBLE) return
@@ -246,7 +255,7 @@ class ListsFragment :
         doAfterTextChanged {
           viewModel.loadItems(
             searchQuery = it.toString().trim(),
-            resetScroll = true
+            resetScroll = true,
           )
         }
         visible()
@@ -274,7 +283,10 @@ class ListsFragment :
     }
   }
 
-  private fun showSortOrderDialog(sortOrder: SortOrder, sortType: SortType) {
+  private fun showSortOrderDialog(
+    sortOrder: SortOrder,
+    sortType: SortType,
+  ) {
     val options = listOf(NAME, NEWEST, DATE_UPDATED)
     val args = SortOrderBottomSheet.createBundle(options, sortOrder, sortType)
 
@@ -348,7 +360,7 @@ class ListsFragment :
         fragmentListsSearchView,
         fragmentListsModeTabs,
         fragmentListsIcons,
-        fragmentListsSearchLocalView
+        fragmentListsSearchLocalView,
       ).forEach {
         it.animate().translationY(0F).setDuration(duration).add(animations)?.start()
       }

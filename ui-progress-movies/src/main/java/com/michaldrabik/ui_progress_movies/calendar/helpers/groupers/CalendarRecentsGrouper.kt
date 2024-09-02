@@ -13,7 +13,7 @@ class CalendarRecentsGrouper @Inject constructor() : CalendarGrouper {
 
   override fun groupByTime(
     nowUtc: ZonedDateTime,
-    items: List<CalendarMovieListItem.MovieItem>
+    items: List<CalendarMovieListItem.MovieItem>,
   ): List<CalendarMovieListItem> {
     val now = nowUtc.toLocalZone().toLocalDate()
 

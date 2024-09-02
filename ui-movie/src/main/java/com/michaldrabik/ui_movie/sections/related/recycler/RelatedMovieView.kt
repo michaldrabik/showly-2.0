@@ -52,7 +52,7 @@ class RelatedMovieView : MovieView<RelatedListItem> {
 
     ImageViewCompat.setImageTintList(
       binding.relatedMovieBadge,
-      ColorStateList.valueOf(if (item.isFollowed) colorAccent else colorGray)
+      ColorStateList.valueOf(if (item.isFollowed) colorAccent else colorGray),
     )
 
     loadImage(item)

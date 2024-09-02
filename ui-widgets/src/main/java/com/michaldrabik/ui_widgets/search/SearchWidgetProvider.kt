@@ -20,7 +20,7 @@ class SearchWidgetProvider : AppWidgetProvider() {
   override fun onUpdate(
     context: Context,
     appWidgetManager: AppWidgetManager,
-    appWidgetIds: IntArray?
+    appWidgetIds: IntArray?,
   ) {
     appWidgetIds?.forEach { updateWidget(context, appWidgetManager, it) }
     super.onUpdate(context, appWidgetManager, appWidgetIds)
@@ -29,7 +29,7 @@ class SearchWidgetProvider : AppWidgetProvider() {
   private fun updateWidget(
     context: Context,
     appWidgetManager: AppWidgetManager,
-    widgetId: Int
+    widgetId: Int,
   ) {
     val remoteViews = RemoteViews(context.packageName, R.layout.widget_search).apply {
       val intent = Intent().apply {

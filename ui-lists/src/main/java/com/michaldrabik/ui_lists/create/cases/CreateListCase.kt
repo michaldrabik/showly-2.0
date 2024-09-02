@@ -27,7 +27,10 @@ class CreateListCase @Inject constructor(
   private val eventsManager: EventsManager,
 ) {
 
-  suspend fun createList(name: String, description: String?): CustomList {
+  suspend fun createList(
+    name: String,
+    description: String?,
+  ): CustomList {
     val isAuthorized = userTraktManager.isAuthorized()
     val isQuickSyncEnabled = settingsRepository.load().traktQuickSyncEnabled
     if (isAuthorized && isQuickSyncEnabled) {

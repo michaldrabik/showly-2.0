@@ -57,10 +57,12 @@ class QuickSetupView : FrameLayout {
     quickSetupAdapter.setItems(items)
   }
 
-  fun getSelectedItem() =
-    quickSetupAdapter.getItems().firstOrNull { it.isChecked }
+  fun getSelectedItem() = quickSetupAdapter.getItems().firstOrNull { it.isChecked }
 
-  private fun onItemChecked(episode: Episode, isChecked: Boolean) {
+  private fun onItemChecked(
+    episode: Episode,
+    isChecked: Boolean,
+  ) {
     val items = quickSetupAdapter.getItems()
       .map { it.copy(isChecked = false) }
       .toMutableList()

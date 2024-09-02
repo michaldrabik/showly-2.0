@@ -40,7 +40,7 @@ class StatisticsLoadRatingsCase @Inject constructor(
           isLoading = false,
           show = show,
           image = imagesProvider.findCachedImage(show, ImageType.POSTER),
-          rating = rating
+          rating = rating,
         )
       }.sortedByDescending { it.rating.ratedAt }
   }

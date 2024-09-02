@@ -19,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class FollowedMoviesViewModel @Inject constructor(
   private val eventsManager: EventsManager,
-  workManager: WorkManager
+  workManager: WorkManager,
 ) : ViewModel() {
 
   private val searchQueryState = MutableStateFlow<String?>(null)
@@ -43,15 +43,15 @@ class FollowedMoviesViewModel @Inject constructor(
 
   val uiState = combine(
     searchQueryState,
-    syncingState
+    syncingState,
   ) { s1, s2 ->
     FollowedMoviesUiState(
       searchQuery = s1,
-      isSyncing = s2
+      isSyncing = s2,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = FollowedMoviesUiState()
+    initialValue = FollowedMoviesUiState(),
   )
 }

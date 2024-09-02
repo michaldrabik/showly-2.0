@@ -40,14 +40,17 @@ class PersonGalleryFragment : BaseFragment<PersonGalleryViewModel>(R.layout.frag
 
   private var galleryAdapter: PersonGalleryAdapter? = null
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
     setupStatusBar()
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
-      doAfterLaunch = { viewModel.loadImages(personId) }
+      doAfterLaunch = { viewModel.loadImages(personId) },
     )
   }
 
@@ -67,7 +70,7 @@ class PersonGalleryFragment : BaseFragment<PersonGalleryViewModel>(R.layout.frag
         openImageInBrowser(image?.fullFileUrl)
       }
       galleryAdapter = PersonGalleryAdapter(
-        onItemClickListener = { personGalleryPager.nextPage() }
+        onItemClickListener = { personGalleryPager.nextPage() },
       )
       personGalleryPager.run {
         adapter = galleryAdapter

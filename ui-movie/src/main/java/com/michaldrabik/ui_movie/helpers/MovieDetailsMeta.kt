@@ -5,5 +5,5 @@ import java.time.format.DateTimeFormatter
 data class MovieDetailsMeta(
   val dateFormat: DateTimeFormatter,
   val commentsDateFormat: DateTimeFormatter,
-  val isSignedIn: Boolean
+  val isSignedIn: Boolean,
 )

@@ -22,12 +22,13 @@ class FollowedPagesAdapter(
 
   override fun getCount() = PAGES_COUNT
 
-  override fun getItem(position: Int): Fragment = when (position) {
-    0 -> MyMoviesFragment()
-    1 -> WatchlistFragment()
-    2 -> HiddenFragment()
-    else -> throw IllegalStateException("Unknown position")
-  }
+  override fun getItem(position: Int): Fragment =
+    when (position) {
+      0 -> MyMoviesFragment()
+      1 -> WatchlistFragment()
+      2 -> HiddenFragment()
+      else -> throw IllegalStateException("Unknown position")
+    }
 
   override fun getPageTitle(position: Int) =
     when (position) {

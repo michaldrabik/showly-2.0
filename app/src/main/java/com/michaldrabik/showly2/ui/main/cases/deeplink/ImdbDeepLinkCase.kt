@@ -16,7 +16,7 @@ class ImdbDeepLinkCase @Inject constructor(
   private val moviesLocalSource: MoviesLocalDataSource,
   private val showDetailsRepository: ShowDetailsRepository,
   private val movieDetailsRepository: MovieDetailsRepository,
-  private val mappers: Mappers
+  private val mappers: Mappers,
 ) {
 
   companion object {

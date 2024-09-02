@@ -12,5 +12,5 @@ data class StatisticsMostWatchedItem(
   val seasonsCount: Long,
   override val image: Image,
   override val isLoading: Boolean = false,
-  val translation: Translation? = null
+  val translation: Translation? = null,
 ) : ListItem

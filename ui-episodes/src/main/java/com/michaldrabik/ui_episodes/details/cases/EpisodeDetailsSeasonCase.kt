@@ -15,7 +15,11 @@ class EpisodeDetailsSeasonCase @Inject constructor(
   private val mappers: Mappers,
 ) {
 
-  suspend fun loadSeason(showId: IdTrakt, episode: Episode, seasonEpisodes: IntArray?): List<Episode> {
+  suspend fun loadSeason(
+    showId: IdTrakt,
+    episode: Episode,
+    seasonEpisodes: IntArray?,
+  ): List<Episode> {
     val isMyShow = myShowsDataSource.checkExists(showId.id)
     if (!isMyShow) {
       return seasonEpisodes?.map {

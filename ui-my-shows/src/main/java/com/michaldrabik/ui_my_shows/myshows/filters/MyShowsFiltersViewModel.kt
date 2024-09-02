@@ -53,6 +53,6 @@ internal class MyShowsFiltersViewModel @Inject constructor(
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = MyShowsFiltersUiState()
+    initialValue = MyShowsFiltersUiState(),
   )
 }

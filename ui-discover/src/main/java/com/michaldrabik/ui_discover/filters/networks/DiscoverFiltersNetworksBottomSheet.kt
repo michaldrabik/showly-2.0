@@ -38,13 +38,16 @@ internal class DiscoverFiltersNetworksBottomSheet : BaseBottomSheetFragment(R.la
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
-      { viewModel.eventFlow.collect { handleEvent(it) } }
+      { viewModel.eventFlow.collect { handleEvent(it) } },
     )
   }
 
@@ -98,7 +101,10 @@ internal class DiscoverFiltersNetworksBottomSheet : BaseBottomSheetFragment(R.la
             .build()
           setEnsureMinTouchTargetSize(false)
           setChipIconResource(icon)
-          chipBackgroundColor = ContextCompat.getColorStateList(requireContext(), R.color.selector_discover_chip_background)
+          chipBackgroundColor = ContextCompat.getColorStateList(
+            requireContext(),
+            R.color.selector_discover_chip_background,
+          )
           setChipStrokeColorResource(R.color.selector_discover_chip_text)
           setChipStrokeWidthResource(R.dimen.discoverFilterChipStroke)
           setTextColor(ContextCompat.getColorStateList(requireContext(), R.color.selector_discover_chip_text))

@@ -28,47 +28,55 @@ internal class DiscoverMoviesCase @Inject constructor(
   private val moviesRepository: MoviesRepository,
   private val imagesProvider: MovieImagesProvider,
   private val imageTypeProvider: ImageTypeProvider,
-  private val translationsRepository: TranslationsRepository
+  private val translationsRepository: TranslationsRepository,
 ) {
 
-  suspend fun isCacheValid() = withContext(dispatchers.IO) {
-    moviesRepository.discoverMovies.isCacheValid()
-  }
+  suspend fun isCacheValid() =
+    withContext(dispatchers.IO) {
+      moviesRepository.discoverMovies.isCacheValid()
+    }
 
-  suspend fun loadCachedMovies(filters: DiscoverFilters) = withContext(dispatchers.IO) {
-    val myIds = async { moviesRepository.myMovies.loadAllIds() }
-    val watchlistIds = async { moviesRepository.watchlistMovies.loadAllIds() }
-    val hiddenIds = async { moviesRepository.hiddenMovies.loadAllIds() }
-    val cachedMovies = async { moviesRepository.discoverMovies.loadAllCached() }
-    val language = translationsRepository.getLanguage()
+  suspend fun loadCachedMovies(filters: DiscoverFilters) =
+    withContext(dispatchers.IO) {
+      val myIds = async { moviesRepository.myMovies.loadAllIds() }
+      val watchlistIds = async { moviesRepository.watchlistMovies.loadAllIds() }
+      val hiddenIds = async { moviesRepository.hiddenMovies.loadAllIds() }
+      val cachedMovies = async { moviesRepository.discoverMovies.loadAllCached() }
+      val language = translationsRepository.getLanguage()
 
-    prepareItems(
-      cachedMovies.await(),
-      myIds.await(),
-      watchlistIds.await(),
-      hiddenIds.await(),
-      filters,
-      language
-    )
-  }
+      prepareItems(
+        cachedMovies.await(),
+        myIds.await(),
+        watchlistIds.await(),
+        hiddenIds.await(),
+        filters,
+        language,
+      )
+    }
 
-  suspend fun loadRemoteMovies(filters: DiscoverFilters) = withContext(dispatchers.IO) {
-    val showAnticipated = !filters.hideAnticipated
-    val showCollection = !filters.hideCollection
-    val genres = filters.genres.toList()
+  suspend fun loadRemoteMovies(filters: DiscoverFilters) =
+    withContext(dispatchers.IO) {
+      val showAnticipated = !filters.hideAnticipated
+      val showCollection = !filters.hideCollection
+      val genres = filters.genres.toList()
 
-    val myAsync = async { moviesRepository.myMovies.loadAllIds() }
-    val watchlistSync = async { moviesRepository.watchlistMovies.loadAllIds() }
-    val hiddenAsync = async { moviesRepository.hiddenMovies.loadAllIds() }
-    val (myIds, watchlistIds, hiddenIds) = awaitAll(myAsync, watchlistSync, hiddenAsync)
-    val collectionSize = myIds.size + watchlistIds.size + hiddenIds.size
+      val myAsync = async { moviesRepository.myMovies.loadAllIds() }
+      val watchlistSync = async { moviesRepository.watchlistMovies.loadAllIds() }
+      val hiddenAsync = async { moviesRepository.hiddenMovies.loadAllIds() }
+      val (myIds, watchlistIds, hiddenIds) = awaitAll(myAsync, watchlistSync, hiddenAsync)
+      val collectionSize = myIds.size + watchlistIds.size + hiddenIds.size
 
-    val remoteMovies = moviesRepository.discoverMovies.loadAllRemote(showAnticipated, showCollection, collectionSize, genres)
-    val language = translationsRepository.getLanguage()
+      val remoteMovies = moviesRepository.discoverMovies.loadAllRemote(
+        showAnticipated,
+        showCollection,
+        collectionSize,
+        genres,
+      )
+      val language = translationsRepository.getLanguage()
 
-    moviesRepository.discoverMovies.cacheDiscoverMovies(remoteMovies)
-    prepareItems(remoteMovies, myIds, watchlistIds, hiddenIds, filters, language)
-  }
+      moviesRepository.discoverMovies.cacheDiscoverMovies(remoteMovies)
+      prepareItems(remoteMovies, myIds, watchlistIds, hiddenIds, filters, language)
+    }
 
   private suspend fun prepareItems(
     movies: List<Movie>,
@@ -76,14 +84,17 @@ internal class DiscoverMoviesCase @Inject constructor(
     watchlistMoviesIds: List<Long>,
     hiddenMoviesIds: List<Long>,
     filters: DiscoverFilters?,
-    language: String
+    language: String,
   ) = coroutineScope {
     val collectionIds = myMoviesIds + watchlistMoviesIds
     movies
       .filter { !hiddenMoviesIds.contains(it.traktId) }
       .filter {
-        if (filters?.hideCollection == false) true
-        else !collectionIds.contains(it.traktId)
+        if (filters?.hideCollection == false) {
+          true
+        } else {
+          !collectionIds.contains(it.traktId)
+        }
       }
       .sortedBy(filters?.feedOrder ?: HOT)
       .mapIndexed { index, movie ->
@@ -96,7 +107,7 @@ internal class DiscoverMoviesCase @Inject constructor(
             image,
             isCollected = movie.ids.trakt.id in myMoviesIds,
             isWatchlist = movie.ids.trakt.id in watchlistMoviesIds,
-            translation = translation
+            translation = translation,
           )
         }
       }
@@ -104,13 +115,20 @@ internal class DiscoverMoviesCase @Inject constructor(
       .toList()
   }
 
-  private suspend fun loadTranslation(language: String, itemType: ImageType, movie: Movie) =
-    if (language == Config.DEFAULT_LANGUAGE || itemType == POSTER) null
-    else translationsRepository.loadTranslation(movie, language, true)
-
-  private fun List<Movie>.sortedBy(order: DiscoverSortOrder) = when (order) {
-    HOT -> this
-    RATING -> this.sortedWith(compareByDescending<Movie> { it.votes }.thenBy { it.rating })
-    NEWEST -> this.sortedWith(compareByDescending<Movie> { it.year }.thenByDescending { it.released })
+  private suspend fun loadTranslation(
+    language: String,
+    itemType: ImageType,
+    movie: Movie,
+  ) = if (language == Config.DEFAULT_LANGUAGE || itemType == POSTER) {
+    null
+  } else {
+    translationsRepository.loadTranslation(movie, language, true)
   }
+
+  private fun List<Movie>.sortedBy(order: DiscoverSortOrder) =
+    when (order) {
+      HOT -> this
+      RATING -> this.sortedWith(compareByDescending<Movie> { it.votes }.thenBy { it.rating })
+      NEWEST -> this.sortedWith(compareByDescending<Movie> { it.year }.thenByDescending { it.released })
+    }
 }

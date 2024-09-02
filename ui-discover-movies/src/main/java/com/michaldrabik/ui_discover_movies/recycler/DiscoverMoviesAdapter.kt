@@ -14,10 +14,10 @@ class DiscoverMoviesAdapter(
   private val itemClickListener: (DiscoverMovieListItem) -> Unit,
   private val itemLongClickListener: (DiscoverMovieListItem) -> Unit,
   private val missingImageListener: (DiscoverMovieListItem, Boolean) -> Unit,
-  listChangeListener: () -> Unit
+  listChangeListener: () -> Unit,
 ) : BaseMovieAdapter<DiscoverMovieListItem>(
-  listChangeListener = listChangeListener
-) {
+    listChangeListener = listChangeListener,
+  ) {
 
   init {
     stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
@@ -25,25 +25,31 @@ class DiscoverMoviesAdapter(
 
   override val asyncDiffer = AsyncListDiffer(this, DiscoverMovieItemDiffCallback())
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
+  override fun onCreateViewHolder(
+    parent: ViewGroup,
+    viewType: Int,
+  ) = when (viewType) {
     POSTER.id -> BaseViewHolder(
       MoviePosterView(parent.context).apply {
         itemClickListener = this@DiscoverMoviesAdapter.itemClickListener
         itemLongClickListener = this@DiscoverMoviesAdapter.itemLongClickListener
         missingImageListener = this@DiscoverMoviesAdapter.missingImageListener
-      }
+      },
     )
     FANART.id, FANART_WIDE.id -> BaseViewHolder(
       MovieFanartView(parent.context).apply {
         itemClickListener = this@DiscoverMoviesAdapter.itemClickListener
         itemLongClickListener = this@DiscoverMoviesAdapter.itemLongClickListener
         missingImageListener = this@DiscoverMoviesAdapter.missingImageListener
-      }
+      },
     )
     else -> throw IllegalStateException("Unknown view type.")
   }
 
-  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+  override fun onBindViewHolder(
+    holder: RecyclerView.ViewHolder,
+    position: Int,
+  ) {
     val item = asyncDiffer.currentList[position]
     when (holder.itemViewType) {
       POSTER.id ->

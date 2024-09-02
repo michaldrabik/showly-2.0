@@ -25,20 +25,25 @@ import com.michaldrabik.ui_model.DiscoverSortOrder.RATING
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-internal class DiscoverMoviesFiltersFeedBottomSheet : BaseBottomSheetFragment(R.layout.view_discover_movies_filters_feed) {
+internal class DiscoverMoviesFiltersFeedBottomSheet : BaseBottomSheetFragment(
+  R.layout.view_discover_movies_filters_feed,
+) {
 
   private val viewModel by viewModels<DiscoverMoviesFiltersFeedViewModel>()
   private val binding by viewBinding(ViewDiscoverMoviesFiltersFeedBinding::bind)
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
-      { viewModel.eventFlow.collect { handleEvent(it) } }
+      { viewModel.eventFlow.collect { handleEvent(it) } },
     )
   }
 

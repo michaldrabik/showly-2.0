@@ -55,58 +55,62 @@ class ProgressMoviesMainViewModelTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should emit current timestamp and calendar mode`() = runTest {
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+  fun `Should emit current timestamp and calendar mode`() =
+    runTest {
+      val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
 
-    SUT.loadProgress()
+      SUT.loadProgress()
 
-    with(stateResult.last()) {
-      assertThat(timestamp).isGreaterThan(0L)
-      assertThat(calendarMode).isEqualTo(CalendarMode.PRESENT_FUTURE)
+      with(stateResult.last()) {
+        assertThat(timestamp).isGreaterThan(0L)
+        assertThat(calendarMode).isEqualTo(CalendarMode.PRESENT_FUTURE)
+      }
+
+      job.cancel()
     }
 
-    job.cancel()
-  }
-
   @Test
-  fun `Should emit search query`() = runTest {
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+  fun `Should emit search query`() =
+    runTest {
+      val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
 
-    SUT.onSearchQuery("test")
+      SUT.onSearchQuery("test")
 
-    with(stateResult.last()) {
-      assertThat(searchQuery).isEqualTo("test")
+      with(stateResult.last()) {
+        assertThat(searchQuery).isEqualTo("test")
+      }
+
+      job.cancel()
     }
 
-    job.cancel()
-  }
+  @Test
+  fun `Should toggle calendar mode properly`() =
+    runTest {
+      val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+
+      SUT.toggleCalendarMode()
+      SUT.toggleCalendarMode()
+
+      assertThat(stateResult[0].calendarMode).isEqualTo(null)
+      assertThat(stateResult[1].calendarMode).isEqualTo(CalendarMode.RECENTS)
+      assertThat(stateResult[2].calendarMode).isEqualTo(CalendarMode.PRESENT_FUTURE)
+
+      job.cancel()
+    }
 
   @Test
-  fun `Should toggle calendar mode properly`() = runTest {
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+  fun `Should set watched movie properly and update timestamp`() =
+    runTest {
+      val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+      coEvery { mainCase.addToMyMovies(any<Movie>(), null) } just Runs
 
-    SUT.toggleCalendarMode()
-    SUT.toggleCalendarMode()
+      SUT.setWatchedMovie(Movie.EMPTY, null)
 
-    assertThat(stateResult[0].calendarMode).isEqualTo(null)
-    assertThat(stateResult[1].calendarMode).isEqualTo(CalendarMode.RECENTS)
-    assertThat(stateResult[2].calendarMode).isEqualTo(CalendarMode.PRESENT_FUTURE)
+      assertThat(stateResult[0].timestamp).isEqualTo(null)
+      assertThat(stateResult[1].timestamp).isGreaterThan(0L)
 
-    job.cancel()
-  }
+      coVerify(exactly = 1) { mainCase.addToMyMovies(any<Movie>(), null) }
 
-  @Test
-  fun `Should set watched movie properly and update timestamp`() = runTest {
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
-    coEvery { mainCase.addToMyMovies(any<Movie>(), null) } just Runs
-
-    SUT.setWatchedMovie(Movie.EMPTY, null)
-
-    assertThat(stateResult[0].timestamp).isEqualTo(null)
-    assertThat(stateResult[1].timestamp).isGreaterThan(0L)
-
-    coVerify(exactly = 1) { mainCase.addToMyMovies(any<Movie>(), null) }
-
-    job.cancel()
-  }
+      job.cancel()
+    }
 }

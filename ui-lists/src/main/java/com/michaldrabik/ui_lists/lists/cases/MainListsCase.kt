@@ -40,40 +40,42 @@ class MainListsCase @Inject constructor(
     private const val IMAGES_LIMIT = 3
   }
 
-  suspend fun loadLists(searchQuery: String?) = withContext(dispatchers.IO) {
-    val lists = listsRepository.loadAll()
-    val dateFormat = dateProvider.loadFullDayFormat()
-    val sorting = Pair(
-      settingsRepository.sorting.listsAllSortOrder,
-      settingsRepository.sorting.listsAllSortType
-    )
+  suspend fun loadLists(searchQuery: String?) =
+    withContext(dispatchers.IO) {
+      val lists = listsRepository.loadAll()
+      val dateFormat = dateProvider.loadFullDayFormat()
+      val sorting = Pair(
+        settingsRepository.sorting.listsAllSortOrder,
+        settingsRepository.sorting.listsAllSortType,
+      )
 
-    lists
-      .filterByQuery(searchQuery)
-      .sortedWith(sorter.sort(sorting.first, sorting.second))
-      .map {
-        async {
-          val items = localSource.customListsItems.getItemsForListImages(it.id, IMAGES_LIMIT)
-          val images = mutableListOf<ListsItemImage>()
-          val unavailable = ListsItemImage(Image.createUnavailable(POSTER))
-          items.forEach { item ->
-            images.add(findImage(item) ?: unavailable)
+      lists
+        .filterByQuery(searchQuery)
+        .sortedWith(sorter.sort(sorting.first, sorting.second))
+        .map {
+          async {
+            val items = localSource.customListsItems.getItemsForListImages(it.id, IMAGES_LIMIT)
+            val images = mutableListOf<ListsItemImage>()
+            val unavailable = ListsItemImage(Image.createUnavailable(POSTER))
+            items.forEach { item ->
+              images.add(findImage(item) ?: unavailable)
+            }
+            if (images.size < IMAGES_LIMIT) {
+              (images.size..IMAGES_LIMIT).forEach { _ -> images.add(unavailable) }
+            }
+            ListsItem(it, images, sorting, dateFormat)
           }
-          if (images.size < IMAGES_LIMIT) {
-            (images.size..IMAGES_LIMIT).forEach { _ -> images.add(unavailable) }
-          }
-          ListsItem(it, images, sorting, dateFormat)
-        }
-      }.awaitAll()
-  }
-
-  private fun List<CustomList>.filterByQuery(query: String?) = when {
-    query.isNullOrBlank() -> this
-    else -> this.filter {
-      it.name.contains(query, ignoreCase = true) ||
-        it.description?.contains(query, ignoreCase = true) == true
+        }.awaitAll()
     }
-  }
+
+  private fun List<CustomList>.filterByQuery(query: String?) =
+    when {
+      query.isNullOrBlank() -> this
+      else -> this.filter {
+        it.name.contains(query, ignoreCase = true) ||
+          it.description?.contains(query, ignoreCase = true) == true
+      }
+    }
 
   private suspend fun findImage(item: CustomListItem) =
     when (item.type) {

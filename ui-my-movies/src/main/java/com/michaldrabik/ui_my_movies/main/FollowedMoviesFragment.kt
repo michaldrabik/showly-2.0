@@ -70,14 +70,17 @@ class FollowedMoviesFragment :
     }
   }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
     setupPager()
     setupStatusBar()
 
     launchAndRepeatStarted(
-      { viewModel.uiState.collect { render(it) } }
+      { viewModel.uiState.collect { render(it) } },
     )
   }
 
@@ -269,7 +272,7 @@ class FollowedMoviesFragment :
         followedMoviesTabs,
         followedMoviesModeTabs,
         followedMoviesIcons,
-        followedMoviesSearchLocalView
+        followedMoviesSearchLocalView,
       ).forEach {
         it.animate().translationY(0F).setDuration(duration).add(animations)?.start()
       }
@@ -293,14 +296,19 @@ class FollowedMoviesFragment :
           {
             childFragmentManager.fragments.forEach { (it as? OnScrollResetListener)?.onScrollReset() }
           },
-          225L
+          225L,
         )
       }
 
       currentPage = position
     }
 
-    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) = Unit
+    override fun onPageScrolled(
+      position: Int,
+      positionOffset: Float,
+      positionOffsetPixels: Int,
+    ) = Unit
+
     override fun onPageScrollStateChanged(state: Int) = Unit
   }
 }

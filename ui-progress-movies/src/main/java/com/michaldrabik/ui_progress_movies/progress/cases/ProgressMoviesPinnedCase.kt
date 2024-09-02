@@ -7,12 +7,10 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class ProgressMoviesPinnedCase @Inject constructor(
-  private val pinnedItemsRepository: PinnedItemsRepository
+  private val pinnedItemsRepository: PinnedItemsRepository,
 ) {
 
-  fun addPinnedItem(item: Movie) =
-    pinnedItemsRepository.addPinnedItem(item)
+  fun addPinnedItem(item: Movie) = pinnedItemsRepository.addPinnedItem(item)
 
-  fun removePinnedItem(item: Movie) =
-    pinnedItemsRepository.removePinnedItem(item)
+  fun removePinnedItem(item: Movie) = pinnedItemsRepository.removePinnedItem(item)
 }

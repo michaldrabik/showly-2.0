@@ -48,7 +48,10 @@ class StatisticsViewModel @Inject constructor(
 
   private var takeLimit = 5
 
-  fun loadData(limit: Int = 0, initialDelay: Long = 150L) {
+  fun loadData(
+    limit: Int = 0,
+    initialDelay: Long = 150L,
+  ) {
     takeLimit += limit
     viewModelScope.launch {
       val language = translationsRepository.getLanguage()
@@ -74,7 +77,7 @@ class StatisticsViewModel @Inject constructor(
               .filter { it.idShowTrakt == show.traktId }
               .map { mappers.episode.fromDatabase(it) },
             image = Image.createUnknown(POSTER),
-            translation = translation
+            translation = translation,
           )
         }
         .sortedByDescending { item -> item.episodes.sumOf { it.runtime } }
@@ -146,9 +149,14 @@ class StatisticsViewModel @Inject constructor(
       .toList()
       .filterNotNull()
 
-  private suspend fun loadTranslation(language: String, show: Show) =
-    if (language == Config.DEFAULT_LANGUAGE) null
-    else translationsRepository.loadTranslation(show, language, true)
+  private suspend fun loadTranslation(
+    language: String,
+    show: Show,
+  ) = if (language == Config.DEFAULT_LANGUAGE) {
+    null
+  } else {
+    translationsRepository.loadTranslation(show, language, true)
+  }
 
   val uiState = combine(
     mostWatchedShowsState,
@@ -157,7 +165,7 @@ class StatisticsViewModel @Inject constructor(
     totalWatchedEpisodesState,
     totalWatchedEpisodesShowsState,
     topGenresState,
-    ratingsState
+    ratingsState,
   ) { s1, s2, s3, s4, s5, s6, s7 ->
     StatisticsUiState(
       mostWatchedShows = s1,
@@ -166,11 +174,11 @@ class StatisticsViewModel @Inject constructor(
       totalWatchedEpisodes = s4,
       totalWatchedEpisodesShows = s5,
       topGenres = s6,
-      ratings = s7
+      ratings = s7,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = StatisticsUiState()
+    initialValue = StatisticsUiState(),
   )
 }

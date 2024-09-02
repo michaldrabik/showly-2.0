@@ -8,19 +8,24 @@ import com.michaldrabik.ui_base.BaseMovieAdapter
 import com.michaldrabik.ui_statistics_movies.views.ratings.StatisticsMoviesRateItemView
 
 class StatisticsMoviesRatingsAdapter(
-  private val itemClickListener: (StatisticsMoviesRatingItem) -> Unit
+  private val itemClickListener: (StatisticsMoviesRatingItem) -> Unit,
 ) : BaseMovieAdapter<StatisticsMoviesRatingItem>() {
 
   override val asyncDiffer = AsyncListDiffer(this, StatisticsMoviesRatingsDiffCallback())
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    ViewHolderShow(
-      StatisticsMoviesRateItemView(parent.context).apply {
-        itemClickListener = this@StatisticsMoviesRatingsAdapter.itemClickListener
-      }
-    )
+  override fun onCreateViewHolder(
+    parent: ViewGroup,
+    viewType: Int,
+  ) = ViewHolderShow(
+    StatisticsMoviesRateItemView(parent.context).apply {
+      itemClickListener = this@StatisticsMoviesRatingsAdapter.itemClickListener
+    },
+  )
 
-  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+  override fun onBindViewHolder(
+    holder: RecyclerView.ViewHolder,
+    position: Int,
+  ) {
     val item = asyncDiffer.currentList[position]
     (holder.itemView as StatisticsMoviesRateItemView).bind(item)
   }

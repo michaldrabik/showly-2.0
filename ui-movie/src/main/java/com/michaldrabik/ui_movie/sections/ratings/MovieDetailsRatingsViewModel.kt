@@ -40,7 +40,7 @@ class MovieDetailsRatingsViewModel @Inject constructor(
         trakt = Ratings.Value(String.format(Locale.ENGLISH, "%.1f", movie.rating), false),
         imdb = Ratings.Value(null, true),
         metascore = Ratings.Value(null, true),
-        rottenTomatoes = Ratings.Value(null, true)
+        rottenTomatoes = Ratings.Value(null, true),
       )
 
       try {
@@ -68,16 +68,16 @@ class MovieDetailsRatingsViewModel @Inject constructor(
   val uiState = combine(
     ratingsState,
     movieState,
-    isRefreshingRatingsState
+    isRefreshingRatingsState,
   ) { s1, s2, s3 ->
     MovieDetailsRatingsUiState(
       ratings = s1,
       movie = s2,
-      isRefreshingRatings = s3
+      isRefreshingRatings = s3,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = MovieDetailsRatingsUiState()
+    initialValue = MovieDetailsRatingsUiState(),
   )
 }

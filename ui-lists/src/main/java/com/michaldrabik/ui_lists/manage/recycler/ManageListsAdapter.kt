@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.ui_lists.manage.views.ManageListsItemView
 
 class ManageListsAdapter(
-  val itemCheckListener: ((ManageListsItem, Boolean) -> Unit)
+  val itemCheckListener: ((ManageListsItem, Boolean) -> Unit),
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   private val asyncDiffer = AsyncListDiffer(this, ManageListsItemDiffCallback())
@@ -16,16 +16,21 @@ class ManageListsAdapter(
     asyncDiffer.submitList(newItems)
   }
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    ManageListsItemViewHolder(
-      ManageListsItemView(parent.context).apply {
-        itemCheckListener = { item, isChecked ->
-          this@ManageListsAdapter.itemCheckListener.invoke(item, isChecked)
-        }
+  override fun onCreateViewHolder(
+    parent: ViewGroup,
+    viewType: Int,
+  ) = ManageListsItemViewHolder(
+    ManageListsItemView(parent.context).apply {
+      itemCheckListener = { item, isChecked ->
+        this@ManageListsAdapter.itemCheckListener.invoke(item, isChecked)
       }
-    )
+    },
+  )
 
-  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+  override fun onBindViewHolder(
+    holder: RecyclerView.ViewHolder,
+    position: Int,
+  ) {
     val item = asyncDiffer.currentList[position]
     (holder.itemView as ManageListsItemView).bind(item)
   }

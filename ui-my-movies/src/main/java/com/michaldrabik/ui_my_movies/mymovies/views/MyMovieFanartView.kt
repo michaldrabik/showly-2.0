@@ -45,8 +45,11 @@ class MyMovieFanartView : FrameLayout {
     with(binding) {
       myMovieFanartTitle.visible()
       myMovieFanartTitle.text =
-        if (item.translation?.title.isNullOrBlank()) item.movie.title
-        else item.translation?.title
+        if (item.translation?.title.isNullOrBlank()) {
+          item.movie.title
+        } else {
+          item.translation?.title
+        }
     }
     onClick { clickListener(item) }
     onLongClick { longClickListener(item) }

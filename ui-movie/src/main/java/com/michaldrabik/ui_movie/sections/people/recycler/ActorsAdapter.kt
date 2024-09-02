@@ -19,10 +19,15 @@ class ActorsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     notifyDataSetChanged()
   }
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    ViewHolderShow(ActorView(parent.context))
+  override fun onCreateViewHolder(
+    parent: ViewGroup,
+    viewType: Int,
+  ) = ViewHolderShow(ActorView(parent.context))
 
-  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+  override fun onBindViewHolder(
+    holder: RecyclerView.ViewHolder,
+    position: Int,
+  ) {
     (holder.itemView as ActorView).bind(items[position], itemClickListener)
   }
 

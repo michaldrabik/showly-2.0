@@ -52,7 +52,7 @@ class ShowDetailsRelatedViewModel @Inject constructor(
             show = it,
             image = image,
             isFollowed = it.traktId in myShows,
-            isWatchlist = it.traktId in watchlistShows
+            isWatchlist = it.traktId in watchlistShows,
           )
         }
         relatedItemsState.value = related
@@ -67,8 +67,10 @@ class ShowDetailsRelatedViewModel @Inject constructor(
     Timber.d("Loading related shows...")
   }
 
-  fun loadMissingImage(item: RelatedListItem, force: Boolean) {
-
+  fun loadMissingImage(
+    item: RelatedListItem,
+    force: Boolean,
+  ) {
     fun updateItem(new: RelatedListItem) {
       val currentItems = uiState.value.relatedShows?.toMutableList()
       currentItems?.findReplace(new) { it isSameAs new }
@@ -88,15 +90,15 @@ class ShowDetailsRelatedViewModel @Inject constructor(
 
   val uiState = combine(
     loadingState,
-    relatedItemsState
+    relatedItemsState,
   ) { s1, s2 ->
     ShowDetailsRelatedUiState(
       isLoading = s1,
-      relatedShows = s2
+      relatedShows = s2,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = ShowDetailsRelatedUiState()
+    initialValue = ShowDetailsRelatedUiState(),
   )
 }

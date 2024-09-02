@@ -8,7 +8,7 @@ import javax.inject.Named
 
 @ViewModelScoped
 class ListDetailsTipsCase @Inject constructor(
-  @Named("tipsPreferences") private val sharedPreferences: SharedPreferences
+  @Named("tipsPreferences") private val sharedPreferences: SharedPreferences,
 ) {
 
   fun isTipShown(tip: Tip) = sharedPreferences.getBoolean(tip.name, false)

@@ -10,14 +10,15 @@ import javax.inject.Inject
 @ViewModelScoped
 class ShowDetailsRelatedCase @Inject constructor(
   private val dispatchers: CoroutineDispatchers,
-  private val showsRepository: ShowsRepository
+  private val showsRepository: ShowsRepository,
 ) {
 
-  suspend fun loadRelatedShows(show: Show): List<Show> = withContext(dispatchers.IO) {
-    val archivedShowsIds = showsRepository.hiddenShows.loadAllIds()
-    showsRepository.relatedShows.loadAll(show, archivedShowsIds.size)
-      .filter { it.traktId !in archivedShowsIds }
-      .sortedWith(compareBy({ it.votes }, { it.rating }))
-      .reversed()
-  }
+  suspend fun loadRelatedShows(show: Show): List<Show> =
+    withContext(dispatchers.IO) {
+      val archivedShowsIds = showsRepository.hiddenShows.loadAllIds()
+      showsRepository.relatedShows.loadAll(show, archivedShowsIds.size)
+        .filter { it.traktId !in archivedShowsIds }
+        .sortedWith(compareBy({ it.votes }, { it.rating }))
+        .reversed()
+    }
 }

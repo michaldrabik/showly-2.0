@@ -53,15 +53,18 @@ import timber.log.Timber
 import java.util.Locale
 
 @AndroidEntryPoint
-class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R.layout.fragment_show_details_episodes) {
+class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(
+  R.layout.fragment_show_details_episodes,
+) {
 
   companion object {
     fun createBundle(
       showId: IdTrakt,
       seasonId: IdTrakt,
-    ): Bundle = bundleOf(
-      NavigationArgs.ARG_OPTIONS to Options(showId, seasonId)
-    )
+    ): Bundle =
+      bundleOf(
+        NavigationArgs.ARG_OPTIONS to Options(showId, seasonId),
+      )
   }
 
   override val navigationId = R.id.showDetailsEpisodesFragment
@@ -72,7 +75,10 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
   private var episodesAdapter: EpisodesAdapter? = null
   private var isLocked = true
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
 
     setupView()
@@ -81,7 +87,7 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
-      { viewModel.eventFlow.collect { handleEvent(it as ShowDetailsEpisodesEvent<*>) } }
+      { viewModel.eventFlow.collect { handleEvent(it as ShowDetailsEpisodesEvent<*>) } },
     )
   }
 
@@ -116,7 +122,7 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
       },
       itemCheckedListener = { episode: Episode, isChecked: Boolean ->
         viewModel.onEpisodeCheck(episode, isChecked)
-      }
+      },
     )
     binding.episodesRecycler.apply {
       setHasFixedSize(true)
@@ -131,8 +137,11 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
       with(binding) {
         season?.let {
           episodesTitle.text =
-            if (it.season.isSpecial()) getString(R.string.textSpecials)
-            else String.format(Locale.ENGLISH, getString(R.string.textSeason), it.season.number)
+            if (it.season.isSpecial()) {
+              getString(R.string.textSpecials)
+            } else {
+              String.format(Locale.ENGLISH, getString(R.string.textSeason), it.season.number)
+            }
           episodesOverview.text = it.season.overview
           episodesOverview.visibleIf(it.season.overview.isNotBlank())
           episodesCheckbox.run {
@@ -145,7 +154,12 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
               }
             }
           }
-          episodesUnlockButton.visibleIf(!it.season.isSpecial() && it.episodes.any { ep -> !ep.episode.hasAired(it.season) })
+          episodesUnlockButton.visibleIf(
+            !it.season.isSpecial() && it.episodes.any {
+                ep ->
+              !ep.episode.hasAired(it.season)
+            },
+          )
 
           renderSeasonRating(season)
         }
@@ -236,7 +250,7 @@ class ShowDetailsEpisodesFragment : BaseFragment<ShowDetailsEpisodesViewModel>(R
       episode = episode,
       seasonEpisodesIds = season.episodes.map { it.number },
       isWatched = isWatched,
-      showTabs = true
+      showTabs = true,
     )
     navigateToSafe(R.id.actionEpisodesFragmentToEpisodesDetails, bundle)
   }

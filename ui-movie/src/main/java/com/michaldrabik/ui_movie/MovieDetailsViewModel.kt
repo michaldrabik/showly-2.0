@@ -98,7 +98,7 @@ class MovieDetailsViewModel @Inject constructor(
           isMyMovie = isMyMovie.await(),
           isWatchlist = isWatchlist.await(),
           isHidden = isHidden.await(),
-          withAnimation = false
+          withAnimation = false,
         )
 
         progressJob.cancel()
@@ -142,7 +142,10 @@ class MovieDetailsViewModel @Inject constructor(
   private fun loadBackgroundImage(movie: Movie? = null) {
     viewModelScope.launch {
       try {
-        val backgroundImage = imagesProvider.loadRemoteImage(movie ?: this@MovieDetailsViewModel.movie, ImageType.FANART)
+        val backgroundImage = imagesProvider.loadRemoteImage(
+          movie ?: this@MovieDetailsViewModel.movie,
+          ImageType.FANART,
+        )
         imageState.value = backgroundImage
       } catch (error: Throwable) {
         imageState.value = Image.createUnavailable(ImageType.FANART)
@@ -179,7 +182,11 @@ class MovieDetailsViewModel @Inject constructor(
       try {
         ratingState.value = RatingState(rateLoading = true, rateAllowed = true)
         val rating = ratingsCase.loadRating(movie)
-        ratingState.value = RatingState(rateLoading = false, rateAllowed = true, userRating = rating ?: TraktRating.EMPTY)
+        ratingState.value = RatingState(
+          rateLoading = false,
+          rateAllowed = true,
+          userRating = rating ?: TraktRating.EMPTY,
+        )
       } catch (error: Throwable) {
         ratingState.value = RatingState(rateLoading = false, rateAllowed = true)
         rethrowCancellation(error)
@@ -189,7 +196,7 @@ class MovieDetailsViewModel @Inject constructor(
 
   fun addToMyMovies(
     isCustomDateSelected: Boolean = false,
-    customDate: ZonedDateTime? = null
+    customDate: ZonedDateTime? = null,
   ) {
     viewModelScope.launch {
       if (!isCustomDateSelected && settingsRepository.progressDateSelectionType == ALWAYS_ASK) {
@@ -282,7 +289,7 @@ class MovieDetailsViewModel @Inject constructor(
     translationState,
     listsCountState,
     metaState,
-    spoilersState
+    spoilersState,
   ) { s1, s2, s3, s4, s5, s6, s7, s8, s9 ->
     MovieDetailsUiState(
       movie = s1,
@@ -293,11 +300,11 @@ class MovieDetailsViewModel @Inject constructor(
       translation = s6,
       listsCount = s7,
       meta = s8,
-      spoilers = s9
+      spoilers = s9,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = MovieDetailsUiState()
+    initialValue = MovieDetailsUiState(),
   )
 }

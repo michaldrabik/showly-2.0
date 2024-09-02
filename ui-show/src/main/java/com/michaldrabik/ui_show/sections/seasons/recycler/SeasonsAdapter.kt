@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class SeasonsAdapter(
   private val itemClickListener: (SeasonListItem) -> Unit,
-  private val itemCheckedListener: (SeasonListItem, Boolean) -> Unit
+  private val itemCheckedListener: (SeasonListItem, Boolean) -> Unit,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   private val items: MutableList<SeasonListItem> = mutableListOf()
@@ -22,10 +22,15 @@ class SeasonsAdapter(
     diffResult.dispatchUpdatesTo(this)
   }
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    ViewHolderShow(SeasonView(parent.context))
+  override fun onCreateViewHolder(
+    parent: ViewGroup,
+    viewType: Int,
+  ) = ViewHolderShow(SeasonView(parent.context))
 
-  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+  override fun onBindViewHolder(
+    holder: RecyclerView.ViewHolder,
+    position: Int,
+  ) {
     (holder.itemView as SeasonView).bind(items[position], itemClickListener, itemCheckedListener)
   }
 

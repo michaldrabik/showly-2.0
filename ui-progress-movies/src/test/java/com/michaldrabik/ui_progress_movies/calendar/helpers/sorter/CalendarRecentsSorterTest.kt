@@ -20,24 +20,26 @@ class CalendarRecentsSorterTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should sort by release date`() = runBlockingTest {
-    val movie1 = Movie.EMPTY.copy(released = LocalDate.now().plusDays(333))
-    val movie2 = Movie.EMPTY.copy(released = LocalDate.now().plusDays(33))
-    val movie3 = Movie.EMPTY.copy(released = LocalDate.now().plusDays(3))
+  fun `Should sort by release date`() =
+    runBlockingTest {
+      val movie1 = Movie.EMPTY.copy(released = LocalDate.now().plusDays(333))
+      val movie2 = Movie.EMPTY.copy(released = LocalDate.now().plusDays(33))
+      val movie3 = Movie.EMPTY.copy(released = LocalDate.now().plusDays(3))
 
-    val result = listOf(movie2, movie1, movie3).sortedWith(SUT.sort())
+      val result = listOf(movie2, movie1, movie3).sortedWith(SUT.sort())
 
-    assertThat(result).containsExactly(movie1, movie2, movie3)
-  }
+      assertThat(result).containsExactly(movie1, movie2, movie3)
+    }
 
   @Test
-  fun `Should sort by year if release date is the same`() = runBlockingTest {
-    val movie1 = Movie.EMPTY.copy(released = LocalDate.now().plusDays(3), year = 333)
-    val movie2 = Movie.EMPTY.copy(released = LocalDate.now().plusDays(3), year = 33)
-    val movie3 = Movie.EMPTY.copy(released = LocalDate.now().plusDays(3), year = 3)
+  fun `Should sort by year if release date is the same`() =
+    runBlockingTest {
+      val movie1 = Movie.EMPTY.copy(released = LocalDate.now().plusDays(3), year = 333)
+      val movie2 = Movie.EMPTY.copy(released = LocalDate.now().plusDays(3), year = 33)
+      val movie3 = Movie.EMPTY.copy(released = LocalDate.now().plusDays(3), year = 3)
 
-    val result = listOf(movie2, movie1, movie3).sortedWith(SUT.sort())
+      val result = listOf(movie2, movie1, movie3).sortedWith(SUT.sort())
 
-    assertThat(result).containsExactly(movie1, movie2, movie3)
-  }
+      assertThat(result).containsExactly(movie1, movie2, movie3)
+    }
 }

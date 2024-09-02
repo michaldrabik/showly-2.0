@@ -9,5 +9,5 @@ data class StatisticsMoviesRatingItem(
   override val movie: Movie,
   override val image: Image,
   override val isLoading: Boolean,
-  val rating: TraktRating
+  val rating: TraktRating,
 ) : MovieListItem

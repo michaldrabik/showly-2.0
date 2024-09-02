@@ -86,7 +86,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
         episode = episode,
         seasonEpisodesIds = seasonEpisodesIds,
         isWatched = isWatched,
-        showTabs = showTabs
+        showTabs = showTabs,
       )
       return bundleOf(ARG_OPTIONS to options)
     }
@@ -104,7 +104,10 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
 
@@ -119,7 +122,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
           loadImage(ids.tmdb, episode)
           loadTranslation(ids.trakt, episode)
           loadRatings(episode)
-        }
+        },
       )
     }
   }
@@ -128,7 +131,11 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
     binding.run {
       val (ids, episode, _, isWatched, showTabs) = options
       episodeDetailsTitle.text = when (episode.title) {
-        "Episode ${episode.number}" -> String.format(ENGLISH, requireContext().getString(R.string.textEpisode), episode.number)
+        "Episode ${episode.number}" -> String.format(
+          ENGLISH,
+          requireContext().getString(R.string.textEpisode),
+          episode.number,
+        )
         else -> episode.title
       }
       episodeDetailsOverview.text = episode.overview.ifBlank { getString(R.string.textNoDescription) }
@@ -136,7 +143,11 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
       episodeDetailsWatchedAt.visibleIf(episode.lastWatchedAt != null || isWatched)
       if (!showTabs) episodeDetailsTabs.gone()
       episodeDetailsRating.text = String.format(ENGLISH, getString(R.string.textVotes), episode.rating, episode.votes)
-      episodeDetailsCommentsButton.text = String.format(ENGLISH, getString(R.string.textLoadCommentsCount), episode.commentCount)
+      episodeDetailsCommentsButton.text = String.format(
+        ENGLISH,
+        getString(R.string.textLoadCommentsCount),
+        episode.commentCount,
+      )
       episodeDetailsCommentsButton.onClick {
         viewModel.loadComments(ids.trakt, episode.season, episode.number)
       }
@@ -171,7 +182,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
     val bundle = when {
       comment != null -> bundleOf(
         ARG_COMMENT_ID to comment.getReplyId(),
-        ARG_REPLY_USER to comment.user.username
+        ARG_REPLY_USER to comment.user.username,
       )
       else -> bundleOf(ARG_EPISODE_ID to options.episode.ids.trakt.id)
     }
@@ -190,7 +201,13 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
           } else {
             it.format(dateFromMillis(millis).toLocalZone()).capitalizeWords()
           }
-          val name = String.format(ENGLISH, getString(R.string.textSeasonEpisodeDate), episode.season, episode.number, date)
+          val name = String.format(
+            ENGLISH,
+            getString(R.string.textSeasonEpisodeDate),
+            episode.season,
+            episode.number,
+            date,
+          )
           val runtime = "${episode.runtime} ${getString(R.string.textMinutesShort)}"
           episodeDetailsName.text = if (episode.runtime > 0) "$name | $runtime" else name
         }
@@ -218,7 +235,11 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
           episodeDetailsCommentsEmpty.fadeIf(comments.isEmpty())
           episodeDetailsPostCommentButton.fadeIf(isSignedIn)
           episodeDetailsCommentsButton.isEnabled = false
-          episodeDetailsCommentsButton.text = String.format(ENGLISH, getString(R.string.textLoadCommentsCount), comments.size)
+          episodeDetailsCommentsButton.text = String.format(
+            ENGLISH,
+            getString(R.string.textLoadCommentsCount),
+            comments.size,
+          )
         }
         rating?.let { state ->
           episodeDetailsRateProgress.visibleIf(state.rateLoading == true)
@@ -328,7 +349,10 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
     }
   }
 
-  private fun renderWatchedAt(watchedAt: ZonedDateTime?, dateFormat: DateTimeFormatter?) {
+  private fun renderWatchedAt(
+    watchedAt: ZonedDateTime?,
+    dateFormat: DateTimeFormatter?,
+  ) {
     with(binding) {
       dateFormat?.let {
         episodeDetailsWatchedAt.visibleIf(watchedAt != null)
@@ -397,7 +421,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
         addTab(
           newTab()
             .setText("${options.episode.season}x${it.number.toString().padStart(2, '0')}")
-            .setTag(it)
+            .setTag(it),
         )
       }
       val index = episodes.indexOfFirst { it.number == options.episode.number }
@@ -440,6 +464,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
     }
 
     override fun onTabUnselected(tab: TabLayout.Tab?) = Unit
+
     override fun onTabReselected(tab: TabLayout.Tab?) = Unit
   }
 

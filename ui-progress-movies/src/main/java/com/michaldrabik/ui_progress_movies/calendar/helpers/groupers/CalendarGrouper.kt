@@ -6,6 +6,6 @@ import java.time.ZonedDateTime
 interface CalendarGrouper {
   fun groupByTime(
     nowUtc: ZonedDateTime,
-    items: List<CalendarMovieListItem.MovieItem>
+    items: List<CalendarMovieListItem.MovieItem>,
   ): List<CalendarMovieListItem>
 }

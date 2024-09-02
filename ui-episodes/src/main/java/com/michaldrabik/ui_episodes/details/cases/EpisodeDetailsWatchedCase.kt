@@ -15,7 +15,10 @@ class EpisodeDetailsWatchedCase @Inject constructor(
   private val episodesDataSource: EpisodesLocalDataSource,
 ) {
 
-  suspend fun getLastWatchedAt(showId: IdTrakt, episode: Episode): ZonedDateTime? {
+  suspend fun getLastWatchedAt(
+    showId: IdTrakt,
+    episode: Episode,
+  ): ZonedDateTime? {
     return withContext(dispatchers.IO) {
       episodesDataSource.getById(showId.id, episode.ids.trakt.id)?.lastWatchedAt
     }

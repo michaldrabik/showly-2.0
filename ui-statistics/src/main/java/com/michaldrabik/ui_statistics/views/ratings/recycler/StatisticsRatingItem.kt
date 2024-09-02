@@ -9,5 +9,5 @@ data class StatisticsRatingItem(
   override val show: Show,
   override val image: Image,
   override val isLoading: Boolean,
-  val rating: TraktRating
+  val rating: TraktRating,
 ) : ListItem

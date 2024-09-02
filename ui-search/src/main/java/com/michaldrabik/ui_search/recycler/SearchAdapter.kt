@@ -12,21 +12,26 @@ class SearchAdapter(
   private val missingImageListener: (SearchListItem, Boolean) -> Unit,
   listChangeListener: () -> Unit,
 ) : BaseAdapter<SearchListItem>(
-  listChangeListener = listChangeListener
-) {
+    listChangeListener = listChangeListener,
+  ) {
 
   override val asyncDiffer = AsyncListDiffer(this, SearchItemDiffCallback())
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    BaseViewHolder(
-      SearchItemView(parent.context).apply {
-        itemClickListener = this@SearchAdapter.itemClickListener
-        itemLongClickListener = this@SearchAdapter.itemLongClickListener
-        missingImageListener = this@SearchAdapter.missingImageListener
-      }
-    )
+  override fun onCreateViewHolder(
+    parent: ViewGroup,
+    viewType: Int,
+  ) = BaseViewHolder(
+    SearchItemView(parent.context).apply {
+      itemClickListener = this@SearchAdapter.itemClickListener
+      itemLongClickListener = this@SearchAdapter.itemLongClickListener
+      missingImageListener = this@SearchAdapter.missingImageListener
+    },
+  )
 
-  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+  override fun onBindViewHolder(
+    holder: RecyclerView.ViewHolder,
+    position: Int,
+  ) {
     val item = asyncDiffer.currentList[position]
     (holder.itemView as SearchItemView).bind(item)
   }

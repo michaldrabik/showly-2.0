@@ -18,7 +18,7 @@ data class Episode(
   val firstAired: ZonedDateTime?,
   val runtime: Int,
   val numberAbs: Int?,
-  val lastWatchedAt: ZonedDateTime?
+  val lastWatchedAt: ZonedDateTime?,
 ) : Parcelable {
 
   companion object {

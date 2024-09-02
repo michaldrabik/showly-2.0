@@ -8,5 +8,5 @@ package com.michaldrabik.ui_model
 enum class ImageStatus {
   AVAILABLE,
   UNKNOWN,
-  UNAVAILABLE
+  UNAVAILABLE,
 }

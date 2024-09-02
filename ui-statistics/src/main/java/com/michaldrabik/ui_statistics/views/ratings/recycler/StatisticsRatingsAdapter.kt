@@ -13,14 +13,19 @@ class StatisticsRatingsAdapter(
 
   override val asyncDiffer = AsyncListDiffer(this, StatisticsRatingsDiffCallback())
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    ViewHolderShow(
-      StatisticsRateItemView(parent.context).apply {
-        itemClickListener = this@StatisticsRatingsAdapter.itemClickListener
-      }
-    )
+  override fun onCreateViewHolder(
+    parent: ViewGroup,
+    viewType: Int,
+  ) = ViewHolderShow(
+    StatisticsRateItemView(parent.context).apply {
+      itemClickListener = this@StatisticsRatingsAdapter.itemClickListener
+    },
+  )
 
-  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+  override fun onBindViewHolder(
+    holder: RecyclerView.ViewHolder,
+    position: Int,
+  ) {
     val item = asyncDiffer.currentList[position]
     (holder.itemView as StatisticsRateItemView).bind(item)
   }

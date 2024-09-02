@@ -41,50 +41,52 @@ class StatisticsLoadRatingsCaseTest : BaseMockTest() {
       userTraktManager,
       showsRepository,
       ratingsRepository,
-      showImagesProvider
+      showImagesProvider,
     )
   }
 
   @Test
-  fun `Should return empty list if not authorized`() = runBlockingTest {
-    coEvery { userTraktManager.isAuthorized() } returns false
+  fun `Should return empty list if not authorized`() =
+    runBlockingTest {
+      coEvery { userTraktManager.isAuthorized() } returns false
 
-    val result = SUT.loadRatings()
+      val result = SUT.loadRatings()
 
-    assertThat(result).isEmpty()
-  }
+      assertThat(result).isEmpty()
+    }
 
   @Test
-  fun `Should load sorted ratings properly`() = runBlockingTest {
-    val ratings = listOf(
-      TraktRating.EMPTY.copy(IdTrakt(1), ratedAt = ZonedDateTime.of(2000, 3, 1, 1, 1, 1, 1, ZoneId.systemDefault())),
-      TraktRating.EMPTY.copy(IdTrakt(2), ratedAt = ZonedDateTime.of(2001, 3, 1, 1, 1, 1, 1, ZoneId.systemDefault())),
-      TraktRating.EMPTY.copy(IdTrakt(3), ratedAt = ZonedDateTime.of(2002, 3, 1, 1, 1, 1, 1, ZoneId.systemDefault())),
-    )
+  fun `Should load sorted ratings properly`() =
+    runBlockingTest {
+      val ratings = listOf(
+        TraktRating.EMPTY.copy(IdTrakt(1), ratedAt = ZonedDateTime.of(2000, 3, 1, 1, 1, 1, 1, ZoneId.systemDefault())),
+        TraktRating.EMPTY.copy(IdTrakt(2), ratedAt = ZonedDateTime.of(2001, 3, 1, 1, 1, 1, 1, ZoneId.systemDefault())),
+        TraktRating.EMPTY.copy(IdTrakt(3), ratedAt = ZonedDateTime.of(2002, 3, 1, 1, 1, 1, 1, ZoneId.systemDefault())),
+      )
 
-    val shows = listOf(
-      Show.EMPTY.copy(Ids.EMPTY.copy(trakt = IdTrakt(1))),
-      Show.EMPTY.copy(Ids.EMPTY.copy(trakt = IdTrakt(2))),
-      Show.EMPTY.copy(Ids.EMPTY.copy(trakt = IdTrakt(3))),
-      Show.EMPTY.copy(Ids.EMPTY.copy(trakt = IdTrakt(4))),
-      Show.EMPTY.copy(Ids.EMPTY.copy(trakt = IdTrakt(5))),
-    )
+      val shows = listOf(
+        Show.EMPTY.copy(Ids.EMPTY.copy(trakt = IdTrakt(1))),
+        Show.EMPTY.copy(Ids.EMPTY.copy(trakt = IdTrakt(2))),
+        Show.EMPTY.copy(Ids.EMPTY.copy(trakt = IdTrakt(3))),
+        Show.EMPTY.copy(Ids.EMPTY.copy(trakt = IdTrakt(4))),
+        Show.EMPTY.copy(Ids.EMPTY.copy(trakt = IdTrakt(5))),
+      )
 
-    val image = Image.createUnknown(ImageType.POSTER)
+      val image = Image.createUnknown(ImageType.POSTER)
 
-    coEvery { userTraktManager.checkAuthorization() } just Runs
-    coEvery { userTraktManager.isAuthorized() } returns true
-    coEvery { ratingsRepository.shows.loadShowsRatings() } returns ratings
-    coEvery { showsRepository.myShows.loadAll(any()) } returns shows
-    coEvery { showImagesProvider.findCachedImage(any(), any()) } returns image
+      coEvery { userTraktManager.checkAuthorization() } just Runs
+      coEvery { userTraktManager.isAuthorized() } returns true
+      coEvery { ratingsRepository.shows.loadShowsRatings() } returns ratings
+      coEvery { showsRepository.myShows.loadAll(any()) } returns shows
+      coEvery { showImagesProvider.findCachedImage(any(), any()) } returns image
 
-    val result = SUT.loadRatings()
+      val result = SUT.loadRatings()
 
-    assertThat(result).hasSize(3)
-    assertThat(result).containsExactly(
-      StatisticsRatingItem(shows[2], image, false, ratings[2]),
-      StatisticsRatingItem(shows[1], image, false, ratings[1]),
-      StatisticsRatingItem(shows[0], image, false, ratings[0])
-    )
-  }
+      assertThat(result).hasSize(3)
+      assertThat(result).containsExactly(
+        StatisticsRatingItem(shows[2], image, false, ratings[2]),
+        StatisticsRatingItem(shows[1], image, false, ratings[1]),
+        StatisticsRatingItem(shows[0], image, false, ratings[0]),
+      )
+    }
 }

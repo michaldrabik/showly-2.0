@@ -58,13 +58,14 @@ class DiscoverViewModelTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should not pull to refresh data too often`() = runTest {
-    SUT.lastPullToRefreshMs = nowUtcMillis() - TimeUnit.SECONDS.toMillis(5)
-    SUT.loadShows(pullToRefresh = true)
+  fun `Should not pull to refresh data too often`() =
+    runTest {
+      SUT.lastPullToRefreshMs = nowUtcMillis() - TimeUnit.SECONDS.toMillis(5)
+      SUT.loadShows(pullToRefresh = true)
 
-    coVerify(exactly = 0) { showsCase.loadCachedShows(any()) }
-    coVerify(exactly = 0) { showsCase.loadRemoteShows(any()) }
-  }
+      coVerify(exactly = 0) { showsCase.loadCachedShows(any()) }
+      coVerify(exactly = 0) { showsCase.loadRemoteShows(any()) }
+    }
 
   @Test
   fun `Should load cached data and not load remote data if cache is valid`() {
@@ -113,12 +114,13 @@ class DiscoverViewModelTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should update last PTR stamp if PTR`() = runTest {
-    coEvery { showsCase.isCacheValid() } returns false
+  fun `Should update last PTR stamp if PTR`() =
+    runTest {
+      coEvery { showsCase.isCacheValid() } returns false
 
-    SUT.loadShows(pullToRefresh = true)
-    assertThat(SUT.lastPullToRefreshMs).isGreaterThan(nowUtcMillis() - TimeUnit.MINUTES.toMillis(1))
-  }
+      SUT.loadShows(pullToRefresh = true)
+      assertThat(SUT.lastPullToRefreshMs).isGreaterThan(nowUtcMillis() - TimeUnit.MINUTES.toMillis(1))
+    }
 
   @Test
   fun `Should not update last PTR stamp if was not PTR`() {
@@ -129,132 +131,138 @@ class DiscoverViewModelTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should hide loading state when PTR is run too often`() = runTest {
-    val stateResult = mutableListOf<DiscoverUiState>()
-    val messagesResult = mutableListOf<MessageEvent>()
+  fun `Should hide loading state when PTR is run too often`() =
+    runTest {
+      val stateResult = mutableListOf<DiscoverUiState>()
+      val messagesResult = mutableListOf<MessageEvent>()
 
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
-    val job2 = launch(UnconfinedTestDispatcher()) { SUT.messageFlow.toList(messagesResult) }
+      val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+      val job2 = launch(UnconfinedTestDispatcher()) { SUT.messageFlow.toList(messagesResult) }
 
-    SUT.lastPullToRefreshMs = nowUtcMillis() - TimeUnit.SECONDS.toMillis(5)
-    SUT.loadShows(pullToRefresh = true)
+      SUT.lastPullToRefreshMs = nowUtcMillis() - TimeUnit.SECONDS.toMillis(5)
+      SUT.loadShows(pullToRefresh = true)
 
-    assertThat(stateResult[0].isLoading).isNull()
-    assertThat(stateResult[1].isLoading).isFalse()
-    assertThat(stateResult[2].isLoading).isTrue()
-    assertThat(stateResult[3].isLoading).isFalse()
-    assertThat(messagesResult).isEmpty()
+      assertThat(stateResult[0].isLoading).isNull()
+      assertThat(stateResult[1].isLoading).isFalse()
+      assertThat(stateResult[2].isLoading).isTrue()
+      assertThat(stateResult[3].isLoading).isFalse()
+      assertThat(messagesResult).isEmpty()
 
-    job.cancel()
-    job2.cancel()
-  }
-
-  @Test
-  fun `Should show loading state instantly if pull to refresh`() = runTest {
-    val stateResult = mutableListOf<DiscoverUiState>()
-    val messagesResult = mutableListOf<MessageEvent>()
-
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
-    val job2 = launch(UnconfinedTestDispatcher()) { SUT.messageFlow.toList(messagesResult) }
-
-    SUT.loadShows(pullToRefresh = true)
-
-    assertThat(stateResult[0].isLoading).isNull()
-    assertThat(stateResult[1].isLoading).isFalse()
-    assertThat(stateResult[2].isLoading).isTrue()
-    assertThat(messagesResult).isEmpty()
-
-    job.cancel()
-    job2.cancel()
-  }
-
-  @Test
-  fun `Should not emit cached results if pull to refresh`() = runTest {
-    val stateResult = mutableListOf<DiscoverUiState>()
-    val messagesResult = mutableListOf<MessageEvent>()
-
-    val job = launch { SUT.uiState.toList(stateResult) }
-    val job2 = launch { SUT.messageFlow.toList(messagesResult) }
-
-    val cachedItem = TestData.DISCOVER_LIST_ITEM
-    coEvery { showsCase.loadCachedShows(any()) } returns listOf(cachedItem)
-
-    SUT.loadShows(pullToRefresh = true)
-
-    stateResult.forEach {
-      assertThat(it.items.isNullOrEmpty()).isTrue()
+      job.cancel()
+      job2.cancel()
     }
-    assertThat(messagesResult).isEmpty()
-
-    job.cancel()
-    job2.cancel()
-  }
 
   @Test
-  fun `Should not post cached results if skipping cache`() = runTest {
-    val stateResult = mutableListOf<DiscoverUiState>()
-    val messagesResult = mutableListOf<MessageEvent>()
+  fun `Should show loading state instantly if pull to refresh`() =
+    runTest {
+      val stateResult = mutableListOf<DiscoverUiState>()
+      val messagesResult = mutableListOf<MessageEvent>()
 
-    val job = launch { SUT.uiState.toList(stateResult) }
-    val job2 = launch { SUT.messageFlow.toList(messagesResult) }
+      val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+      val job2 = launch(UnconfinedTestDispatcher()) { SUT.messageFlow.toList(messagesResult) }
 
-    val cachedItem = TestData.DISCOVER_LIST_ITEM
-    coEvery { showsCase.loadCachedShows(any()) } returns listOf(cachedItem)
+      SUT.loadShows(pullToRefresh = true)
 
-    SUT.loadShows(skipCache = true)
+      assertThat(stateResult[0].isLoading).isNull()
+      assertThat(stateResult[1].isLoading).isFalse()
+      assertThat(stateResult[2].isLoading).isTrue()
+      assertThat(messagesResult).isEmpty()
 
-    stateResult.forEach {
-      assertThat(it.items.isNullOrEmpty()).isTrue()
+      job.cancel()
+      job2.cancel()
     }
-    assertThat(messagesResult).isEmpty()
-
-    job.cancel()
-    job2.cancel()
-  }
 
   @Test
-  fun `Should post cached results and then fresh remote results`() = runTest {
-    val stateResult = mutableListOf<DiscoverUiState>()
-    val messagesResult = mutableListOf<MessageEvent>()
+  fun `Should not emit cached results if pull to refresh`() =
+    runTest {
+      val stateResult = mutableListOf<DiscoverUiState>()
+      val messagesResult = mutableListOf<MessageEvent>()
 
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
-    val job2 = launch(UnconfinedTestDispatcher()) { SUT.messageFlow.toList(messagesResult) }
+      val job = launch { SUT.uiState.toList(stateResult) }
+      val job2 = launch { SUT.messageFlow.toList(messagesResult) }
 
-    val cachedItem = TestData.DISCOVER_LIST_ITEM
-    val remoteItem = cachedItem.copy(isFollowed = true)
-    coEvery { showsCase.loadCachedShows(any()) } returns listOf(cachedItem)
-    coEvery { showsCase.loadRemoteShows(any()) } coAnswers {
-      delay(1000)
-      listOf(remoteItem)
+      val cachedItem = TestData.DISCOVER_LIST_ITEM
+      coEvery { showsCase.loadCachedShows(any()) } returns listOf(cachedItem)
+
+      SUT.loadShows(pullToRefresh = true)
+
+      stateResult.forEach {
+        assertThat(it.items.isNullOrEmpty()).isTrue()
+      }
+      assertThat(messagesResult).isEmpty()
+
+      job.cancel()
+      job2.cancel()
     }
-    coEvery { showsCase.isCacheValid() } returns false
-
-    SUT.loadShows()
-    advanceUntilIdle()
-
-    assertThat(stateResult.any { it.items?.contains(cachedItem) == true }).isTrue()
-    assertThat(stateResult.last().items?.contains(remoteItem)).isTrue()
-    assertThat(messagesResult).isEmpty()
-
-    job.cancel()
-    job2.cancel()
-  }
 
   @Test
-  fun `Should post error message on error`() = runTest {
-    val stateResult = mutableListOf<DiscoverUiState>()
-    val messagesResult = mutableListOf<MessageEvent>()
+  fun `Should not post cached results if skipping cache`() =
+    runTest {
+      val stateResult = mutableListOf<DiscoverUiState>()
+      val messagesResult = mutableListOf<MessageEvent>()
 
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
-    val job2 = launch(UnconfinedTestDispatcher()) { SUT.messageFlow.toList(messagesResult) }
+      val job = launch { SUT.uiState.toList(stateResult) }
+      val job2 = launch { SUT.messageFlow.toList(messagesResult) }
 
-    coEvery { showsCase.loadCachedShows(any()) } throws Error()
+      val cachedItem = TestData.DISCOVER_LIST_ITEM
+      coEvery { showsCase.loadCachedShows(any()) } returns listOf(cachedItem)
 
-    SUT.loadShows()
+      SUT.loadShows(skipCache = true)
 
-    assertThat(messagesResult.last().consume()).isEqualTo(com.michaldrabik.ui_base.R.string.errorCouldNotLoadDiscover)
+      stateResult.forEach {
+        assertThat(it.items.isNullOrEmpty()).isTrue()
+      }
+      assertThat(messagesResult).isEmpty()
 
-    job.cancel()
-    job2.cancel()
-  }
+      job.cancel()
+      job2.cancel()
+    }
+
+  @Test
+  fun `Should post cached results and then fresh remote results`() =
+    runTest {
+      val stateResult = mutableListOf<DiscoverUiState>()
+      val messagesResult = mutableListOf<MessageEvent>()
+
+      val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+      val job2 = launch(UnconfinedTestDispatcher()) { SUT.messageFlow.toList(messagesResult) }
+
+      val cachedItem = TestData.DISCOVER_LIST_ITEM
+      val remoteItem = cachedItem.copy(isFollowed = true)
+      coEvery { showsCase.loadCachedShows(any()) } returns listOf(cachedItem)
+      coEvery { showsCase.loadRemoteShows(any()) } coAnswers {
+        delay(1000)
+        listOf(remoteItem)
+      }
+      coEvery { showsCase.isCacheValid() } returns false
+
+      SUT.loadShows()
+      advanceUntilIdle()
+
+      assertThat(stateResult.any { it.items?.contains(cachedItem) == true }).isTrue()
+      assertThat(stateResult.last().items?.contains(remoteItem)).isTrue()
+      assertThat(messagesResult).isEmpty()
+
+      job.cancel()
+      job2.cancel()
+    }
+
+  @Test
+  fun `Should post error message on error`() =
+    runTest {
+      val stateResult = mutableListOf<DiscoverUiState>()
+      val messagesResult = mutableListOf<MessageEvent>()
+
+      val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+      val job2 = launch(UnconfinedTestDispatcher()) { SUT.messageFlow.toList(messagesResult) }
+
+      coEvery { showsCase.loadCachedShows(any()) } throws Error()
+
+      SUT.loadShows()
+
+      assertThat(messagesResult.last().consume()).isEqualTo(com.michaldrabik.ui_base.R.string.errorCouldNotLoadDiscover)
+
+      job.cancel()
+      job2.cancel()
+    }
 }

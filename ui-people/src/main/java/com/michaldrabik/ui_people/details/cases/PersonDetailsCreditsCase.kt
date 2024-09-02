@@ -35,63 +35,65 @@ class PersonDetailsCreditsCase @Inject constructor(
   private val movieImagesProvider: MovieImagesProvider,
 ) {
 
-  suspend fun loadCredits(person: Person, filters: List<Mode>) =
-    withContext(dispatchers.IO) {
-      val myShowsIdsAsync = async { showsRepository.myShows.loadAllIds() }
-      val myMoviesIdsAsync = async { moviesRepository.myMovies.loadAllIds() }
-      val watchlistShowsIdsAsync = async { showsRepository.watchlistShows.loadAllIds() }
-      val watchlistMoviesIdsAsync = async { moviesRepository.watchlistMovies.loadAllIds() }
-      val spoilers = settingsRepository.spoilers.getAll()
+  suspend fun loadCredits(
+    person: Person,
+    filters: List<Mode>,
+  ) = withContext(dispatchers.IO) {
+    val myShowsIdsAsync = async { showsRepository.myShows.loadAllIds() }
+    val myMoviesIdsAsync = async { moviesRepository.myMovies.loadAllIds() }
+    val watchlistShowsIdsAsync = async { showsRepository.watchlistShows.loadAllIds() }
+    val watchlistMoviesIdsAsync = async { moviesRepository.watchlistMovies.loadAllIds() }
+    val spoilers = settingsRepository.spoilers.getAll()
 
-      val (myShowsIds, myMoviesIds, watchlistShowsId, watchlistMoviesIds) = awaitAll(
-        myShowsIdsAsync,
-        myMoviesIdsAsync,
-        watchlistShowsIdsAsync,
-        watchlistMoviesIdsAsync
+    val (myShowsIds, myMoviesIds, watchlistShowsId, watchlistMoviesIds) = awaitAll(
+      myShowsIdsAsync,
+      myMoviesIdsAsync,
+      watchlistShowsIdsAsync,
+      watchlistMoviesIdsAsync,
+    )
+
+    val credits = peopleRepository.loadCredits(person)
+    credits
+      .filter {
+        when {
+          filters.isEmpty() || filters.containsAll(Mode.values().toList()) -> true
+          filters.contains(Mode.SHOWS) -> it.show != null
+          filters.contains(Mode.MOVIES) -> it.movie != null
+          else -> true
+        }
+      }
+      .filter { it.releaseDate != null || (it.releaseDate == null && it.isUpcoming) }
+      .sortedWith(
+        compareByDescending<PersonCredit> { it.releaseDate == null }.thenByDescending { it.releaseDate?.toEpochDay() },
       )
-
-      val credits = peopleRepository.loadCredits(person)
-      credits
-        .filter {
+      .map {
+        async {
           when {
-            filters.isEmpty() || filters.containsAll(Mode.values().toList()) -> true
-            filters.contains(Mode.SHOWS) -> it.show != null
-            filters.contains(Mode.MOVIES) -> it.movie != null
-            else -> true
+            it.show != null -> createShowItem(
+              show = it.requireShow(),
+              myShowsIds = myShowsIds,
+              watchlistShowsId = watchlistShowsId,
+              spoilersSettings = spoilers,
+            )
+            it.movie != null -> createMovieItem(
+              movie = it.requireMovie(),
+              myMoviesIds = myMoviesIds,
+              watchlistMoviesId = watchlistMoviesIds,
+              spoilersSettings = spoilers,
+            )
+            else -> throw IllegalStateException()
           }
         }
-        .filter { it.releaseDate != null || (it.releaseDate == null && it.isUpcoming) }
-        .sortedWith(
-          compareByDescending<PersonCredit> { it.releaseDate == null }.thenByDescending { it.releaseDate?.toEpochDay() }
-        )
-        .map {
-          async {
-            when {
-              it.show != null -> createShowItem(
-                show = it.requireShow(),
-                myShowsIds = myShowsIds,
-                watchlistShowsId = watchlistShowsId,
-                spoilersSettings = spoilers
-              )
-              it.movie != null -> createMovieItem(
-                movie = it.requireMovie(),
-                myMoviesIds = myMoviesIds,
-                watchlistMoviesId = watchlistMoviesIds,
-                spoilersSettings = spoilers
-              )
-              else -> throw IllegalStateException()
-            }
-          }
-        }
-        .awaitAll()
-        .groupBy { it.getReleaseDate()?.year }
-    }
+      }
+      .awaitAll()
+      .groupBy { it.getReleaseDate()?.year }
+  }
 
   private suspend fun createShowItem(
     show: Show,
     myShowsIds: List<Long>,
     watchlistShowsId: List<Long>,
-    spoilersSettings: SpoilersSettings
+    spoilersSettings: SpoilersSettings,
   ) = show.let {
     val isMy = it.traktId in myShowsIds
     val isWatchlist = it.traktId in watchlistShowsId
@@ -106,7 +108,7 @@ class PersonDetailsCreditsCase @Inject constructor(
       isMy = isMy,
       isWatchlist = isWatchlist,
       translation = translation,
-      spoilers = spoilersSettings
+      spoilers = spoilersSettings,
     )
   }
 
@@ -114,7 +116,7 @@ class PersonDetailsCreditsCase @Inject constructor(
     movie: Movie,
     myMoviesIds: List<Long>,
     watchlistMoviesId: List<Long>,
-    spoilersSettings: SpoilersSettings
+    spoilersSettings: SpoilersSettings,
   ) = movie.let {
     val isMy = it.traktId in myMoviesIds
     val isWatchlist = it.traktId in watchlistMoviesId
@@ -130,7 +132,7 @@ class PersonDetailsCreditsCase @Inject constructor(
       isWatchlist = isWatchlist,
       translation = translation,
       spoilers = spoilersSettings,
-      moviesEnabled = settingsRepository.isMoviesEnabled
+      moviesEnabled = settingsRepository.isMoviesEnabled,
     )
   }
 }

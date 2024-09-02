@@ -12,7 +12,7 @@ import javax.inject.Inject
 @ViewModelScoped
 class ShowDetailsTranslationCase @Inject constructor(
   private val dispatchers: CoroutineDispatchers,
-  private val translationsRepository: TranslationsRepository
+  private val translationsRepository: TranslationsRepository,
 ) {
 
   suspend fun loadTranslation(show: Show): Translation? =

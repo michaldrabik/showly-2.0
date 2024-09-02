@@ -34,7 +34,7 @@ internal class HistoryHeaderView : FrameLayout {
       top = context.dimenToPx(R.dimen.spaceBig),
       bottom = context.dimenToPx(R.dimen.spaceTiny),
       left = context.dimenToPx(R.dimen.itemMarginHorizontal),
-      right = context.dimenToPx(R.dimen.itemMarginHorizontal)
+      right = context.dimenToPx(R.dimen.itemMarginHorizontal),
     )
   }
 
@@ -44,7 +44,10 @@ internal class HistoryHeaderView : FrameLayout {
     }
   }
 
-  fun bind(item: HistoryListItem.Header, position: Int) {
+  fun bind(
+    item: HistoryListItem.Header,
+    position: Int,
+  ) {
     with(binding) {
       text.text = if (now.dayOfYear == item.date.dayOfYear) {
         context.getString(R.string.textToday)
@@ -53,7 +56,7 @@ internal class HistoryHeaderView : FrameLayout {
         item.date.format(dateFormat).capitalizeWords()
       }
       updatePadding(
-        top = context.dimenToPx(if (position == 1) R.dimen.spaceMedium else R.dimen.spaceBig)
+        top = context.dimenToPx(if (position == 1) R.dimen.spaceMedium else R.dimen.spaceBig),
       )
     }
   }

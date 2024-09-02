@@ -118,19 +118,20 @@ class MainInitialsCase @Inject constructor(
     return AppLanguage.ENGLISH
   }
 
-  suspend fun preloadRatings() = supervisorScope {
-    val errorHandler = CoroutineExceptionHandler { _, _ -> Timber.e("Failed to preload.") }
+  suspend fun preloadRatings() =
+    supervisorScope {
+      val errorHandler = CoroutineExceptionHandler { _, _ -> Timber.e("Failed to preload.") }
 
-    if (!userTraktManager.isAuthorized()) {
-      return@supervisorScope
-    }
+      if (!userTraktManager.isAuthorized()) {
+        return@supervisorScope
+      }
 
-    userTraktManager.checkAuthorization()
-    launch(errorHandler) { ratingsRepository.shows.preloadRatings() }
-    if (settingsRepository.isMoviesEnabled) {
-      launch(errorHandler) { ratingsRepository.movies.preloadRatings() }
+      userTraktManager.checkAuthorization()
+      launch(errorHandler) { ratingsRepository.shows.preloadRatings() }
+      if (settingsRepository.isMoviesEnabled) {
+        launch(errorHandler) { ratingsRepository.movies.preloadRatings() }
+      }
     }
-  }
 
   fun showWhatsNew(isInitialRun: Boolean): Boolean {
     val keyAppVersion = "APP_VERSION"

@@ -48,7 +48,10 @@ class PersonDetailsViewModel @Inject constructor(
   private var imagesJobs = mutableMapOf<String, Boolean>()
   private var translationsJobs = mutableMapOf<String, Boolean>()
 
-  fun loadDetails(person: Person, personArgs: PersonDetailsArgs) {
+  fun loadDetails(
+    person: Person,
+    personArgs: PersonDetailsArgs,
+  ) {
     viewModelScope.launch {
       mainProgressJob = launchDelayed(750) { setMainLoading(true) }
       try {
@@ -112,8 +115,8 @@ class PersonDetailsViewModel @Inject constructor(
               PersonDetailsUiEvent.ScrollToPosition(
                 position = it.firstVisibleItemPosition,
                 isSheetExpanded = it.isExpanded,
-                isUpButtonVisible = it.isUpButtonVisible
-              )
+                isUpButtonVisible = it.isUpButtonVisible,
+              ),
             )
           }
         }
@@ -127,7 +130,10 @@ class PersonDetailsViewModel @Inject constructor(
     }
   }
 
-  fun loadMissingImage(item: PersonDetailsItem, force: Boolean) {
+  fun loadMissingImage(
+    item: PersonDetailsItem,
+    force: Boolean,
+  ) {
     if (item.getId() in imagesJobs.keys) {
       return
     }
@@ -197,14 +203,14 @@ class PersonDetailsViewModel @Inject constructor(
   }
 
   val uiState = combine(
-    personDetailsItemsState
+    personDetailsItemsState,
   ) { s1 ->
     PersonDetailsUiState(
-      personDetailsItems = s1[0]
+      personDetailsItems = s1[0],
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = PersonDetailsUiState()
+    initialValue = PersonDetailsUiState(),
   )
 }

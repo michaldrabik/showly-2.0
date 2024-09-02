@@ -10,14 +10,14 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class SearchFiltersCase @Inject constructor(
-  private val settingsRepository: SettingsRepository
+  private val settingsRepository: SettingsRepository,
 ) {
 
   val isMoviesEnabled by lazy { settingsRepository.isMoviesEnabled }
 
   fun filter(
     searchOptions: SearchOptions,
-    item: SearchListItem
+    item: SearchListItem,
   ): Boolean {
     val filterNone = searchOptions.filters.isEmpty() || searchOptions.filters.containsAll(listOf(SHOWS, MOVIES))
     return when {

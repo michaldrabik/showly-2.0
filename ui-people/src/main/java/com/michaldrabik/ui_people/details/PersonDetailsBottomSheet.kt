@@ -59,7 +59,7 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_person_de
       return bundleOf(
         ARG_PERSON to person,
         ARG_PERSON_ARGS to (personArgs ?: PersonDetailsArgs()),
-        ARG_ID to sourceId
+        ARG_ID to sourceId,
       )
     }
   }
@@ -76,7 +76,10 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_person_de
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     setupView()
     setupTips()
     setupRecycler()
@@ -85,7 +88,7 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_person_de
       { viewModel.uiState.collect { render(it) } },
       { viewModel.eventFlow.collect { handleEvent(it) } },
       { viewModel.messageFlow.collect { renderSnackbar(it) } },
-      doAfterLaunch = { viewModel.loadDetails(person, personArgs) }
+      doAfterLaunch = { viewModel.loadDetails(person, personArgs) },
     )
   }
 
@@ -122,7 +125,7 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_person_de
       onImageClickListener = { openGallery() },
       onImageMissingListener = { item, force -> viewModel.loadMissingImage(item, force) },
       onTranslationMissingListener = { item -> viewModel.loadMissingTranslation(item) },
-      onFiltersChangeListener = { filters -> viewModel.loadCredits(person, null, filters) }
+      onFiltersChangeListener = { filters -> viewModel.loadCredits(person, null, filters) },
     )
     with(binding.personDetailsRecycler) {
       adapter = this@PersonDetailsBottomSheet.adapter
@@ -139,7 +142,7 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_person_de
       ARG_PERSON_ARGS to PersonDetailsArgs(
         isExpanded = isSheetExpanded(),
         isUpButtonVisible = binding.personDetailsRecyclerFab.isVisible,
-        firstVisibleItemPosition = (layoutManager?.findLastVisibleItemPosition() ?: 0)
+        firstVisibleItemPosition = (layoutManager?.findLastVisibleItemPosition() ?: 0),
       ),
     )
     if (item is PersonDetailsItem.CreditsShowItem && item.show.traktId != sourceId.id) {
@@ -207,7 +210,10 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_person_de
   }
 
   private val recyclerScrollListener = object : RecyclerView.OnScrollListener() {
-    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+    override fun onScrollStateChanged(
+      recyclerView: RecyclerView,
+      newState: Int,
+    ) {
       if (newState != RecyclerView.SCROLL_STATE_IDLE) return
       if ((layoutManager?.findFirstVisibleItemPosition() ?: 0) >= SHOW_BACK_UP_BUTTON_THRESHOLD) {
         binding.personDetailsRecyclerFab.fadeIn(150)

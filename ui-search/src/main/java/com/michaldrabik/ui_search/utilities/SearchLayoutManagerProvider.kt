@@ -11,7 +11,7 @@ internal object SearchLayoutManagerProvider {
 
   fun provideLayoutManger(
     context: Context,
-    gridSpanSize: Int
+    gridSpanSize: Int,
   ): RecyclerView.LayoutManager {
     return if (context.isTablet()) {
       GridLayoutManager(context, gridSpanSize)

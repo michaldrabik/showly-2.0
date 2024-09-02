@@ -47,7 +47,7 @@ class ShowDetailsNextEpisodeViewModel @Inject constructor(
           val nextEpisode = NextEpisodeBundle(
             nextEpisode = Pair(show, it),
             dateFormat = dateFormat,
-            isWatched = isWatched
+            isWatched = isWatched,
           )
           spoilersState.value = spoilersSettingsRepository.getAll()
           nextEpisodeState.value = nextEpisode
@@ -58,7 +58,7 @@ class ShowDetailsNextEpisodeViewModel @Inject constructor(
             val nextEpisodeTranslated = NextEpisodeBundle(
               nextEpisode = Pair(show, translated),
               dateFormat = dateFormat,
-              isWatched = isWatched
+              isWatched = isWatched,
             )
             nextEpisodeState.value = nextEpisodeTranslated
           }
@@ -72,15 +72,15 @@ class ShowDetailsNextEpisodeViewModel @Inject constructor(
 
   val uiState = combine(
     nextEpisodeState,
-    spoilersState
+    spoilersState,
   ) { s1, s2 ->
     ShowDetailsNextEpisodeUiState(
       nextEpisode = s1,
-      spoilersSettings = s2
+      spoilersSettings = s2,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = ShowDetailsNextEpisodeUiState()
+    initialValue = ShowDetailsNextEpisodeUiState(),
   )
 }

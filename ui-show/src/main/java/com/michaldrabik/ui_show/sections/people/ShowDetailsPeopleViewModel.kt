@@ -70,7 +70,10 @@ class ShowDetailsPeopleViewModel @Inject constructor(
     }
   }
 
-  fun loadPeopleList(people: List<Person>, department: Department) {
+  fun loadPeopleList(
+    people: List<Person>,
+    department: Department,
+  ) {
     viewModelScope.launch {
       eventChannel.send(ShowDetailsEvent.OpenPeopleSheet(show, people, department))
     }
@@ -95,7 +98,7 @@ class ShowDetailsPeopleViewModel @Inject constructor(
   val uiState = combine(
     loadingState,
     actorsState,
-    crewState
+    crewState,
   ) { s1, s2, s3 ->
     ShowDetailsPeopleUiState(
       isLoading = s1,
@@ -105,6 +108,6 @@ class ShowDetailsPeopleViewModel @Inject constructor(
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = ShowDetailsPeopleUiState()
+    initialValue = ShowDetailsPeopleUiState(),
   )
 }

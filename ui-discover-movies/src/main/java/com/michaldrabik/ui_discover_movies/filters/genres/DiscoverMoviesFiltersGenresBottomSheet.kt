@@ -26,20 +26,25 @@ import com.michaldrabik.ui_model.Genre
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-internal class DiscoverMoviesFiltersGenresBottomSheet : BaseBottomSheetFragment(R.layout.view_discover_movies_filters_genres) {
+internal class DiscoverMoviesFiltersGenresBottomSheet : BaseBottomSheetFragment(
+  R.layout.view_discover_movies_filters_genres,
+) {
 
   private val viewModel by viewModels<DiscoverMoviesFiltersGenresViewModel>()
   private val binding by viewBinding(ViewDiscoverMoviesFiltersGenresBinding::bind)
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
-      { viewModel.eventFlow.collect { handleEvent(it) } }
+      { viewModel.eventFlow.collect { handleEvent(it) } },
     )
   }
 

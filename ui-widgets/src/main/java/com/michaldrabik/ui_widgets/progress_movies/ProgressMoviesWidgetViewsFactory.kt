@@ -49,13 +49,19 @@ class ProgressMoviesWidgetViewsFactory(
   private fun createItemRemoteView(item: ProgressMovieListItem.MovieItem): RemoteViews {
     val translatedTitle = item.translation?.title
     val title =
-      if (translatedTitle?.isBlank() == false) translatedTitle
-      else item.movie.title
+      if (translatedTitle?.isBlank() == false) {
+        translatedTitle
+      } else {
+        item.movie.title
+      }
 
     val translatedDescription = item.translation?.overview
     val description =
-      if (translatedDescription?.isBlank() == false) translatedDescription
-      else item.movie.overview
+      if (translatedDescription?.isBlank() == false) {
+        translatedDescription
+      } else {
+        item.movie.overview
+      }
 
     val remoteView = RemoteViews(context.packageName, getItemLayout()).apply {
       setTextViewText(R.id.progressMoviesWidgetItemTitle, title)

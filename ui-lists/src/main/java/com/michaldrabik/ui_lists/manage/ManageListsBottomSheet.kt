@@ -54,7 +54,10 @@ class ManageListsBottomSheet : BaseBottomSheetFragment(R.layout.view_manage_list
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
     setupRecycler()
@@ -62,7 +65,7 @@ class ManageListsBottomSheet : BaseBottomSheetFragment(R.layout.view_manage_list
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
       { eventsManager.events.collect { handleEvent(it) } },
-      doAfterLaunch = { viewModel.loadLists(itemId, itemType) }
+      doAfterLaunch = { viewModel.loadLists(itemId, itemType) },
     )
     viewLifecycleOwner.lifecycleScope.launch {
       repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -79,7 +82,7 @@ class ManageListsBottomSheet : BaseBottomSheetFragment(R.layout.view_manage_list
     adapter = ManageListsAdapter(
       itemCheckListener = { item, isChecked ->
         viewModel.onListItemChecked(itemId, itemType, item, isChecked)
-      }
+      },
     )
     binding.viewManageListsRecycler.apply {
       adapter = this@ManageListsBottomSheet.adapter

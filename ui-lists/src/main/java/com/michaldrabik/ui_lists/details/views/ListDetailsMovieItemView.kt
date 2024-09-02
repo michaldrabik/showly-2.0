@@ -79,7 +79,7 @@ class ListDetailsMovieItemView : ListDetailsItemView {
       }
       listDetailsMovieRoot.setOutboundRipple(
         size = (context.dimenToPx(R.dimen.collectionItemRippleSpace)).toFloat(),
-        corner = context.dimenToPx(R.dimen.mediaTileCorner).toFloat()
+        corner = context.dimenToPx(R.dimen.mediaTileCorner).toFloat(),
       )
     }
   }
@@ -97,8 +97,11 @@ class ListDetailsMovieItemView : ListDetailsItemView {
       listDetailsMovieProgress.visibleIf(item.isLoading)
 
       listDetailsMovieTitle.text =
-        if (item.translation?.title.isNullOrBlank()) movie.title
-        else item.translation?.title
+        if (item.translation?.title.isNullOrBlank()) {
+          movie.title
+        } else {
+          item.translation?.title
+        }
 
       bindDescription(item, movie)
       bindRating(item, movie)

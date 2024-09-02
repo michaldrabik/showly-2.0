@@ -5,9 +5,13 @@ import com.michaldrabik.ui_model.MovieCollection
 
 class MovieCollectionDiffCallback : DiffUtil.ItemCallback<MovieCollection>() {
 
-  override fun areItemsTheSame(oldItem: MovieCollection, newItem: MovieCollection) =
-    oldItem.id == newItem.id
+  override fun areItemsTheSame(
+    oldItem: MovieCollection,
+    newItem: MovieCollection,
+  ) = oldItem.id == newItem.id
 
-  override fun areContentsTheSame(oldItem: MovieCollection, newItem: MovieCollection) =
-    oldItem == newItem
+  override fun areContentsTheSame(
+    oldItem: MovieCollection,
+    newItem: MovieCollection,
+  ) = oldItem == newItem
 }

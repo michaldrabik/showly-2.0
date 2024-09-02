@@ -113,9 +113,11 @@ class MainViewModel @Inject constructor(
   }
 
   fun setMode(mode: Mode) = modesCase.setMode(mode)
+
   fun getMode(): Mode = modesCase.getMode()
 
   fun isTipShown(tip: Tip) = tipsCase.isTipShown(tip)
+
   fun setTipShown(tip: Tip) = tipsCase.setTipShown(tip)
 
   fun hasMoviesEnabled(): Boolean = settingsRepository.isMoviesEnabled
@@ -159,7 +161,7 @@ class MainViewModel @Inject constructor(
     whatsNewEvent,
     openLinkEvent,
     loadingState,
-    maskState
+    maskState,
   ) { s1, s2, s3, s4, s5, s6 ->
     MainUiState(
       isInitialRun = s1,
@@ -167,11 +169,11 @@ class MainViewModel @Inject constructor(
       showWhatsNew = s3,
       openLink = s4,
       isLoading = s5,
-      showMask = s6
+      showMask = s6,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = MainUiState()
+    initialValue = MainUiState(),
   )
 }

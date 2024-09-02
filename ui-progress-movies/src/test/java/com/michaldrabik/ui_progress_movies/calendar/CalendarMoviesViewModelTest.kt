@@ -50,7 +50,7 @@ class CalendarMoviesViewModelTest : BaseMockTest() {
       recentsCase,
       futureCase,
       imagesProvider,
-      translationsRepository
+      translationsRepository,
     )
   }
 
@@ -62,72 +62,77 @@ class CalendarMoviesViewModelTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should load items if parent timestamp changed`() = runTest {
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
-    val item = mockk<CalendarMovieListItem.MovieItem>()
-    coEvery { futureCase.loadItems(any()) } returns listOf(item)
+  fun `Should load items if parent timestamp changed`() =
+    runTest {
+      val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+      val item = mockk<CalendarMovieListItem.MovieItem>()
+      coEvery { futureCase.loadItems(any()) } returns listOf(item)
 
-    SUT.onParentState(parentState.copy(timestamp = 123))
+      SUT.onParentState(parentState.copy(timestamp = 123))
 
-    assertThat(stateResult.last().items).containsExactly(item)
-    coVerify(exactly = 1) { futureCase.loadItems(any()) }
-    coVerify { recentsCase wasNot Called }
-    job.cancel()
-  }
-
-  @Test
-  fun `Should not reload items if parent timestamp is the same`() = runTest {
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
-    val item = mockk<CalendarMovieListItem.MovieItem>()
-    coEvery { futureCase.loadItems(any()) } returns listOf(item)
-
-    SUT.onParentState(parentState.copy(timestamp = 0))
-
-    assertThat(stateResult.lastOrNull()?.items).isNull()
-    coVerify { futureCase wasNot Called }
-    job.cancel()
-  }
+      assertThat(stateResult.last().items).containsExactly(item)
+      coVerify(exactly = 1) { futureCase.loadItems(any()) }
+      coVerify { recentsCase wasNot Called }
+      job.cancel()
+    }
 
   @Test
-  fun `Should load items if calendar mode changed`() = runTest {
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
-    val item = mockk<CalendarMovieListItem.MovieItem>()
-    coEvery { recentsCase.loadItems(any()) } returns listOf(item)
+  fun `Should not reload items if parent timestamp is the same`() =
+    runTest {
+      val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+      val item = mockk<CalendarMovieListItem.MovieItem>()
+      coEvery { futureCase.loadItems(any()) } returns listOf(item)
 
-    SUT.onParentState(parentState.copy(timestamp = 0, calendarMode = CalendarMode.RECENTS))
+      SUT.onParentState(parentState.copy(timestamp = 0))
 
-    assertThat(stateResult.last().items).containsExactly(item)
-    coVerify(exactly = 1) { recentsCase.loadItems(any()) }
-    coVerify { futureCase wasNot Called }
-    job.cancel()
-  }
-
-  @Test
-  fun `Should load items if search query changed`() = runTest {
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
-    val item = mockk<CalendarMovieListItem.MovieItem>()
-    coEvery { futureCase.loadItems(any()) } returns listOf(item)
-
-    SUT.onParentState(parentState.copy(timestamp = 0, searchQuery = "test"))
-
-    assertThat(stateResult.last().items).containsExactly(item)
-    coVerify(exactly = 1) { futureCase.loadItems(any()) }
-    coVerify { recentsCase wasNot Called }
-    job.cancel()
-  }
+      assertThat(stateResult.lastOrNull()?.items).isNull()
+      coVerify { futureCase wasNot Called }
+      job.cancel()
+    }
 
   @Test
-  fun `Should not reload items if parent search query is the same`() = runTest {
-    val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
-    val item = mockk<CalendarMovieListItem.MovieItem>()
-    coEvery { futureCase.loadItems(any()) } returns listOf(item)
+  fun `Should load items if calendar mode changed`() =
+    runTest {
+      val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+      val item = mockk<CalendarMovieListItem.MovieItem>()
+      coEvery { recentsCase.loadItems(any()) } returns listOf(item)
 
-    SUT.onParentState(parentState.copy(timestamp = 0, searchQuery = "test"))
-    SUT.onParentState(parentState.copy(timestamp = 0, searchQuery = "test"))
+      SUT.onParentState(parentState.copy(timestamp = 0, calendarMode = CalendarMode.RECENTS))
 
-    assertThat(stateResult.last().items).containsExactly(item)
-    coVerify(exactly = 1) { futureCase.loadItems(any()) }
-    coVerify { recentsCase wasNot Called }
-    job.cancel()
-  }
+      assertThat(stateResult.last().items).containsExactly(item)
+      coVerify(exactly = 1) { recentsCase.loadItems(any()) }
+      coVerify { futureCase wasNot Called }
+      job.cancel()
+    }
+
+  @Test
+  fun `Should load items if search query changed`() =
+    runTest {
+      val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+      val item = mockk<CalendarMovieListItem.MovieItem>()
+      coEvery { futureCase.loadItems(any()) } returns listOf(item)
+
+      SUT.onParentState(parentState.copy(timestamp = 0, searchQuery = "test"))
+
+      assertThat(stateResult.last().items).containsExactly(item)
+      coVerify(exactly = 1) { futureCase.loadItems(any()) }
+      coVerify { recentsCase wasNot Called }
+      job.cancel()
+    }
+
+  @Test
+  fun `Should not reload items if parent search query is the same`() =
+    runTest {
+      val job = launch(UnconfinedTestDispatcher()) { SUT.uiState.toList(stateResult) }
+      val item = mockk<CalendarMovieListItem.MovieItem>()
+      coEvery { futureCase.loadItems(any()) } returns listOf(item)
+
+      SUT.onParentState(parentState.copy(timestamp = 0, searchQuery = "test"))
+      SUT.onParentState(parentState.copy(timestamp = 0, searchQuery = "test"))
+
+      assertThat(stateResult.last().items).containsExactly(item)
+      coVerify(exactly = 1) { futureCase.loadItems(any()) }
+      coVerify { recentsCase wasNot Called }
+      job.cancel()
+    }
 }

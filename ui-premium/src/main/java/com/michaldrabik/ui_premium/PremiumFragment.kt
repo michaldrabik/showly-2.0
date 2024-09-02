@@ -19,11 +19,14 @@ class PremiumFragment : BaseFragment<PremiumViewModel>(R.layout.fragment_premium
   override val viewModel by viewModels<PremiumViewModel>()
   private val binding by viewBinding(FragmentPremiumBinding::bind)
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
     launchAndRepeatStarted(
-      { viewModel.uiState.collect { render(it) } }
+      { viewModel.uiState.collect { render(it) } },
     )
   }
 

@@ -49,7 +49,10 @@ internal class CollectionFiltersNetworkBottomSheet : BaseBottomSheetFragment(R.l
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+  override fun onViewCreated(
+    view: View,
+    savedInstanceState: Bundle?,
+  ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
 
@@ -59,7 +62,7 @@ internal class CollectionFiltersNetworkBottomSheet : BaseBottomSheetFragment(R.l
       doAfterLaunch = {
         val origin = requireSerializable<CollectionFiltersOrigin>(ARG_ORIGIN)
         viewModel.loadData(origin)
-      }
+      },
     )
   }
 
@@ -113,7 +116,8 @@ internal class CollectionFiltersNetworkBottomSheet : BaseBottomSheetFragment(R.l
             .build()
           setEnsureMinTouchTargetSize(false)
           setChipIconResource(icon)
-          chipBackgroundColor = ContextCompat.getColorStateList(requireContext(), R.color.selector_discover_chip_background)
+          chipBackgroundColor = ContextCompat
+            .getColorStateList(requireContext(), R.color.selector_discover_chip_background)
           setChipStrokeColorResource(R.color.selector_discover_chip_text)
           setChipStrokeWidthResource(R.dimen.discoverFilterChipStroke)
           setTextColor(ContextCompat.getColorStateList(requireContext(), R.color.selector_discover_chip_text))

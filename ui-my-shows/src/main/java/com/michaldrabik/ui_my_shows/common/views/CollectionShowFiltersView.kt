@@ -69,8 +69,10 @@ class CollectionShowFiltersView : FrameLayout {
       followedShowsGenresChip.text = when {
         item.genres.isEmpty() -> context.getString(R.string.textGenres).filter { it.isLetter() }
         item.genres.size == 1 -> context.getString(item.genres.first().displayName)
-        item.genres.size == 2 -> "${context.getString(item.genres[0].displayName)}, ${context.getString(item.genres[1].displayName)}"
-        else -> "${context.getString(item.genres[0].displayName)}, ${context.getString(item.genres[1].displayName)} + ${item.genres.size - 2}"
+        item.genres.size == 2 -> "${context.getString(item.genres[0].displayName)}, " +
+          context.getString(item.genres[1].displayName)
+        else -> "${context.getString(item.genres[0].displayName)}, " +
+          "${context.getString(item.genres[1].displayName)} + ${item.genres.size - 2}"
       }
 
       followedShowsUpcomingChip.isChecked = item.upcoming.isActive()
@@ -82,7 +84,7 @@ class CollectionShowFiltersView : FrameLayout {
       followedShowsListViewChip.setChipIconResource(
         when (viewMode) {
           LIST_NORMAL -> R.drawable.ic_view_list
-        }
+        },
       )
 
       followedShowsSortingChip.onClick { onSortChipClicked?.invoke(item.sortOrder, item.sortType) }

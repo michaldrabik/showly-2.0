@@ -24,28 +24,29 @@ class MovieDetailsRatingSpoilersCase @Inject constructor(
 
   suspend fun hideSpoilerRatings(
     movie: Movie,
-    ratings: Ratings
-  ): Ratings = withContext(dispatchers.IO) {
-    val spoilers = settingsSpoilersRepository.getAll()
+    ratings: Ratings,
+  ): Ratings =
+    withContext(dispatchers.IO) {
+      val spoilers = settingsSpoilersRepository.getAll()
 
-    val isMy = async { myMoviesCase.isMyMovie(movie) }
-    val isWatchlist = async { watchlistCase.isWatchlist(movie) }
-    val isHidden = async { hiddenCase.isHidden(movie) }
+      val isMy = async { myMoviesCase.isMyMovie(movie) }
+      val isWatchlist = async { watchlistCase.isWatchlist(movie) }
+      val isHidden = async { hiddenCase.isHidden(movie) }
 
-    val state = FollowedState(
-      isMyMovie = isMy.await(),
-      isWatchlist = isWatchlist.await(),
-      isHidden = isHidden.await(),
-      withAnimation = false
-    )
+      val state = FollowedState(
+        isMyMovie = isMy.await(),
+        isWatchlist = isWatchlist.await(),
+        isHidden = isHidden.await(),
+        withAnimation = false,
+      )
 
-    val isMyHidden = spoilers.isMyMoviesRatingsHidden && state.isMyMovie
-    val isWatchlistHidden = spoilers.isWatchlistMoviesRatingsHidden && state.isWatchlist
-    val isHiddenHidden = spoilers.isHiddenMoviesRatingsHidden && state.isHidden
-    val isNotCollectedHidden = spoilers.isNotCollectedMoviesRatingsHidden && !state.isInCollection()
+      val isMyHidden = spoilers.isMyMoviesRatingsHidden && state.isMyMovie
+      val isWatchlistHidden = spoilers.isWatchlistMoviesRatingsHidden && state.isWatchlist
+      val isHiddenHidden = spoilers.isHiddenMoviesRatingsHidden && state.isHidden
+      val isNotCollectedHidden = spoilers.isNotCollectedMoviesRatingsHidden && !state.isInCollection()
 
-    return@withContext ratings.copy(
-      isHidden = isMyHidden || isWatchlistHidden || isHiddenHidden || isNotCollectedHidden
-    )
-  }
+      return@withContext ratings.copy(
+        isHidden = isMyHidden || isWatchlistHidden || isHiddenHidden || isNotCollectedHidden,
+      )
+    }
 }

@@ -27,8 +27,8 @@ class CollectionAdapter(
   private val missingTranslationListener: (CollectionListItem) -> Unit,
   private val upcomingChipVisible: Boolean = true,
 ) : BaseAdapter<CollectionListItem>(
-  listChangeListener = listChangeListener
-) {
+    listChangeListener = listChangeListener,
+  ) {
 
   companion object {
     private const val VIEW_TYPE_SHOW = 1
@@ -43,32 +43,37 @@ class CollectionAdapter(
       notifyItemRangeChanged(0, asyncDiffer.currentList.size)
     }
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    when (viewType) {
-      VIEW_TYPE_SHOW -> BaseMovieAdapter.BaseViewHolder(
-        when (listViewMode) {
-          LIST_NORMAL -> CollectionShowView(parent.context)
-        }.apply {
-          itemClickListener = this@CollectionAdapter.itemClickListener
-          itemLongClickListener = this@CollectionAdapter.itemLongClickListener
-          missingImageListener = this@CollectionAdapter.missingImageListener
-          missingTranslationListener = this@CollectionAdapter.missingTranslationListener
-        }
-      )
-      VIEW_TYPE_FILTERS -> BaseMovieAdapter.BaseViewHolder(
-        CollectionShowFiltersView(parent.context).apply {
-          onSortChipClicked = this@CollectionAdapter.sortChipClickListener
-          onFilterUpcomingClicked = this@CollectionAdapter.upcomingChipClickListener
-          onListViewModeClicked = this@CollectionAdapter.listViewChipClickListener
-          onNetworksChipClick = this@CollectionAdapter.networksChipClickListener
-          onGenresChipClick = this@CollectionAdapter.genresChipClickListener
-          isUpcomingChipVisible = upcomingChipVisible
-        }
-      )
-      else -> throw IllegalStateException()
-    }
+  override fun onCreateViewHolder(
+    parent: ViewGroup,
+    viewType: Int,
+  ) = when (viewType) {
+    VIEW_TYPE_SHOW -> BaseMovieAdapter.BaseViewHolder(
+      when (listViewMode) {
+        LIST_NORMAL -> CollectionShowView(parent.context)
+      }.apply {
+        itemClickListener = this@CollectionAdapter.itemClickListener
+        itemLongClickListener = this@CollectionAdapter.itemLongClickListener
+        missingImageListener = this@CollectionAdapter.missingImageListener
+        missingTranslationListener = this@CollectionAdapter.missingTranslationListener
+      },
+    )
+    VIEW_TYPE_FILTERS -> BaseMovieAdapter.BaseViewHolder(
+      CollectionShowFiltersView(parent.context).apply {
+        onSortChipClicked = this@CollectionAdapter.sortChipClickListener
+        onFilterUpcomingClicked = this@CollectionAdapter.upcomingChipClickListener
+        onListViewModeClicked = this@CollectionAdapter.listViewChipClickListener
+        onNetworksChipClick = this@CollectionAdapter.networksChipClickListener
+        onGenresChipClick = this@CollectionAdapter.genresChipClickListener
+        isUpcomingChipVisible = upcomingChipVisible
+      },
+    )
+    else -> throw IllegalStateException()
+  }
 
-  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+  override fun onBindViewHolder(
+    holder: RecyclerView.ViewHolder,
+    position: Int,
+  ) {
     when (val item = asyncDiffer.currentList[position]) {
       is FiltersItem ->
         (holder.itemView as CollectionShowFiltersView).bind(item, listViewMode)

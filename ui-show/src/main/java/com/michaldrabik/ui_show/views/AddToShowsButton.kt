@@ -42,7 +42,10 @@ class AddToShowsButton : FrameLayout {
     }
   }
 
-  fun setState(state: State, animate: Boolean = false) {
+  fun setState(
+    state: State,
+    animate: Boolean = false,
+  ) {
     if (state == this.state) return
     this.state = state
 
@@ -126,6 +129,6 @@ class AddToShowsButton : FrameLayout {
     ADD,
     IN_MY_SHOWS,
     IN_WATCHLIST,
-    IN_HIDDEN
+    IN_HIDDEN,
   }
 }

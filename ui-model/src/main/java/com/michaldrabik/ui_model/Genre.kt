@@ -4,7 +4,7 @@ import androidx.annotation.StringRes
 
 enum class Genre(
   val slug: String,
-  @StringRes val displayName: Int
+  @StringRes val displayName: Int,
 ) {
   ACTION("action", R.string.textGenreAction),
   ADVENTURE("adventure", R.string.textGenreAdventure),
@@ -21,7 +21,8 @@ enum class Genre(
   ROMANCE("romance", R.string.textGenreRomance),
   THRILLER("thriller", R.string.textGenreThriller),
   WAR("war", R.string.textGenreWar),
-  WESTERN("western", R.string.textGenreWestern);
+  WESTERN("western", R.string.textGenreWestern),
+  ;
 
   companion object {
     fun fromSlug(slug: String) = entries.find { it.slug.equals(slug, ignoreCase = true) }

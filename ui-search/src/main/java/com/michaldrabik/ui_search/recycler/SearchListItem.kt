@@ -18,7 +18,7 @@ data class SearchListItem(
   val isFollowed: Boolean = false,
   val isWatchlist: Boolean = false,
   val translation: Translation? = null,
-  val spoilers: SpoilersSettings
+  val spoilers: SpoilersSettings,
 ) : ListItem {
 
   val isShow = show != Show.EMPTY

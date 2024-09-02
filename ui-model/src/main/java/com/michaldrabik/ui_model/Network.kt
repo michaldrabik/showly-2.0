@@ -20,12 +20,12 @@ enum class Network(
   ),
   AMC(
     "AMC",
-    "AMC+"
+    "AMC+",
   ),
   APPLE(
     "Apple",
     "Apple TV+",
-    "Apple Music"
+    "Apple Music",
   ),
   AMAZON(
     "Amazon",
@@ -34,7 +34,7 @@ enum class Network(
     "Amazon Kids+",
     "Amazon Prime Video",
     "Amazon Studios",
-    "Amazon miniTV"
+    "Amazon miniTV",
   ),
   BBC(
     "BBC",
@@ -100,7 +100,7 @@ enum class Network(
     "Discovery Turbo",
     "Discovery Turbo UK",
     "Discovery UK",
-    "Discovery+"
+    "Discovery+",
   ),
   DISNEY(
     "Disney",
@@ -117,7 +117,7 @@ enum class Network(
     "Disney XD",
     "Disney XD (Latin America)",
     "Disney+",
-    "Disney+ Hotstar"
+    "Disney+ Hotstar",
   ),
   HBO(
     "HBO Max",
@@ -151,14 +151,14 @@ enum class Network(
     "ITV",
     "ITV Encore",
     "ITV Granada",
-    "ITV Wales"
+    "ITV Wales",
   ),
   NBC(
     "NBC",
     "NBC News Studios",
     "NBC Universo",
     "NBCSN",
-    "NBCUniversal"
+    "NBCUniversal",
   ),
   NETFLIX("Netflix"),
   PARAMOUNT(

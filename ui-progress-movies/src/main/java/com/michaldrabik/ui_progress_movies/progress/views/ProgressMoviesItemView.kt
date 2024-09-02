@@ -61,8 +61,11 @@ class ProgressMoviesItemView : MovieView<ProgressMovieListItem.MovieItem> {
     with(binding) {
       val translationTitle = item.translation?.title
       progressMovieItemTitle.text =
-        if (translationTitle.isNullOrBlank()) item.movie.title
-        else translationTitle
+        if (translationTitle.isNullOrBlank()) {
+          item.movie.title
+        } else {
+          translationTitle
+        }
 
       bindDescription(item)
       bindRating(item)

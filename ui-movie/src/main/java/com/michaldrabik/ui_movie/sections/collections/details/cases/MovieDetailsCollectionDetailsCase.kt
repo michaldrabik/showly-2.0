@@ -21,7 +21,7 @@ class MovieDetailsCollectionDetailsCase @Inject constructor(
 
       return@withContext MovieDetailsCollectionItem.HeaderItem(
         title = collection.name,
-        description = collection.description
+        description = collection.description,
       )
     }
 }

@@ -19,29 +19,32 @@ class ProgressMainEpisodesCase @Inject constructor(
   private val episodesManager: EpisodesManager,
   private val quickSyncManager: QuickSyncManager,
   private val spoilersSettings: SettingsSpoilersRepository,
-  private val localDataSource: EpisodesLocalDataSource
+  private val localDataSource: EpisodesLocalDataSource,
 ) {
 
-  suspend fun setEpisodeWatched(bundle: EpisodeBundle, customDate: ZonedDateTime?) {
+  suspend fun setEpisodeWatched(
+    bundle: EpisodeBundle,
+    customDate: ZonedDateTime?,
+  ) {
     episodesManager.setEpisodeWatched(bundle, customDate)
     quickSyncManager.scheduleEpisodes(
       showId = bundle.show.traktId,
       episodesIds = listOf(bundle.episode.ids.trakt.id),
-      customDate = customDate
+      customDate = customDate,
     )
   }
 
   suspend fun isWatched(
     show: Show,
-    episode: Episode
+    episode: Episode,
   ): Boolean {
     return withContext(dispatchers.IO) {
       // No need to query DB if spoilers settings are all off in that case.
       if (!(
-        spoilersSettings.isEpisodesTitleHidden ||
-          spoilersSettings.isEpisodesDescriptionHidden ||
-          spoilersSettings.isEpisodesImageHidden ||
-          spoilersSettings.isEpisodesRatingHidden
+          spoilersSettings.isEpisodesTitleHidden ||
+            spoilersSettings.isEpisodesDescriptionHidden ||
+            spoilersSettings.isEpisodesImageHidden ||
+            spoilersSettings.isEpisodesRatingHidden
         )
       ) {
         return@withContext false

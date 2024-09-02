@@ -12,7 +12,7 @@ import javax.inject.Inject
 class PersonDetailsLoadCase @Inject constructor(
   private val dispatchers: CoroutineDispatchers,
   private val peopleRepository: PeopleRepository,
-  private val dateFormatProvider: DateFormatProvider
+  private val dateFormatProvider: DateFormatProvider,
 ) {
 
   suspend fun loadDetails(person: Person) =

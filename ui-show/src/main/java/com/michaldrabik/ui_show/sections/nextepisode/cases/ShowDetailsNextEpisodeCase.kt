@@ -16,8 +16,9 @@ class ShowDetailsNextEpisodeCase @Inject constructor(
   private val mappers: Mappers,
 ) {
 
-  suspend fun loadNextEpisode(traktId: IdTrakt): Episode? = withContext(dispatchers.IO) {
-    val episode = remoteSource.trakt.fetchNextEpisode(traktId.id) ?: return@withContext null
-    return@withContext mappers.episode.fromNetwork(episode)
-  }
+  suspend fun loadNextEpisode(traktId: IdTrakt): Episode? =
+    withContext(dispatchers.IO) {
+      val episode = remoteSource.trakt.fetchNextEpisode(traktId.id) ?: return@withContext null
+      return@withContext mappers.episode.fromNetwork(episode)
+    }
 }

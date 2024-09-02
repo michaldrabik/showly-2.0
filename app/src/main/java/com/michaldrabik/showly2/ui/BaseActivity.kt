@@ -21,14 +21,17 @@ abstract class BaseActivity : AppCompatActivity() {
   private val actionKeys = arrayOf(
     FcmExtra.SHOW_ID.key,
     EXTRA_SHOW_ID,
-    EXTRA_MOVIE_ID
+    EXTRA_MOVIE_ID,
   )
 
   protected fun findNavHostFragment() = supportFragmentManager.findFragmentById(R.id.navigationHost) as? NavHostFragment
 
   protected abstract fun handleSearchWidgetClick(bundle: Bundle?)
 
-  fun handleNotification(extras: Bundle?, action: () -> Unit = {}) {
+  fun handleNotification(
+    extras: Bundle?,
+    action: () -> Unit = {},
+  ) {
     if (extras == null) return
     if (extras.containsKey(SearchWidgetProvider.EXTRA_WIDGET_SEARCH_CLICK)) {
       handleSearchWidgetClick(extras)
@@ -42,7 +45,11 @@ abstract class BaseActivity : AppCompatActivity() {
   }
 
   @SuppressLint("RestrictedApi")
-  private fun handleShowMovieExtra(extras: Bundle, key: String, action: () -> Unit) {
+  private fun handleShowMovieExtra(
+    extras: Bundle,
+    key: String,
+    action: () -> Unit,
+  ) {
     val itemId = extras.getString(key)?.toLong() ?: -1
     val bundle = Bundle().apply {
       putLong(ARG_SHOW_ID, itemId)

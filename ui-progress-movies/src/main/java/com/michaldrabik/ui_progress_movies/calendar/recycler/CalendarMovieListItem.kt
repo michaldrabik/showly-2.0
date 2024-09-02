@@ -24,35 +24,36 @@ sealed class CalendarMovieListItem(
     val isWatchlist: Boolean,
     val translation: Translation? = null,
     val dateFormat: DateTimeFormatter? = null,
-    val spoilers: SpoilersSettings
+    val spoilers: SpoilersSettings,
   ) : CalendarMovieListItem(movie, image, isLoading)
 
   data class Header(
     @StringRes val textResId: Int,
     val calendarMode: CalendarMode,
   ) : CalendarMovieListItem(
-    movie = Movie.EMPTY,
-    image = Image.createUnknown(ImageType.POSTER),
-    isLoading = false
-  ) {
+      movie = Movie.EMPTY,
+      image = Image.createUnknown(ImageType.POSTER),
+      isLoading = false,
+    ) {
 
     companion object {
-      fun create(@StringRes textResId: Int, mode: CalendarMode) =
-        Header(
-          textResId = textResId,
-          calendarMode = mode
-        )
+      fun create(
+        @StringRes textResId: Int,
+        mode: CalendarMode,
+      ) = Header(
+        textResId = textResId,
+        calendarMode = mode,
+      )
     }
 
-    override fun isSameAs(other: MovieListItem) =
-      textResId == (other as? Header)?.textResId
+    override fun isSameAs(other: MovieListItem) = textResId == (other as? Header)?.textResId
   }
 
   data class Filters(
     val mode: CalendarMode,
   ) : CalendarMovieListItem(
-    movie = Movie.EMPTY,
-    image = Image.createUnknown(ImageType.POSTER),
-    isLoading = false
-  )
+      movie = Movie.EMPTY,
+      image = Image.createUnknown(ImageType.POSTER),
+      isLoading = false,
+    )
 }

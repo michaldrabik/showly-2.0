@@ -72,7 +72,10 @@ class ShowDetailsEpisodesViewModel @Inject constructor(
     loadInitialData(showId, seasonId)
   }
 
-  private fun loadInitialData(showId: IdTrakt, seasonId: IdTrakt) {
+  private fun loadInitialData(
+    showId: IdTrakt,
+    seasonId: IdTrakt,
+  ) {
     viewModelScope.launch {
       this@ShowDetailsEpisodesViewModel.show = loadShowCase.loadDetails(showId)
 
@@ -84,7 +87,7 @@ class ShowDetailsEpisodesViewModel @Inject constructor(
       }
       val ratingSeason = ratingsCase.loadRating(season.season)
       seasonState.value = season.copy(
-        userRating = season.userRating.copy(ratingSeason)
+        userRating = season.userRating.copy(ratingSeason),
       )
 
       delay(265) // Let enter transition animation complete peacefully.
@@ -109,7 +112,7 @@ class ShowDetailsEpisodesViewModel @Inject constructor(
           }
         }.awaitAll()
         val updatedSeasonItem = seasonItem.copy(
-          episodes = updatedEpisodesItems
+          episodes = updatedEpisodesItems,
         )
         seasonState.value = updatedSeasonItem
         episodesState.value = updatedEpisodesItems
@@ -123,7 +126,7 @@ class ShowDetailsEpisodesViewModel @Inject constructor(
       seasonItem?.let {
         val ratingSeason = ratingsCase.loadRating(seasonItem.season)
         val updatedSeasonItem = seasonItem.copy(
-          userRating = seasonItem.userRating.copy(ratingSeason)
+          userRating = seasonItem.userRating.copy(ratingSeason),
         )
         seasonState.value = updatedSeasonItem
         initialLoadState.value = false
@@ -186,7 +189,7 @@ class ShowDetailsEpisodesViewModel @Inject constructor(
   fun setEpisodeWatched(
     episode: Episode,
     isChecked: Boolean,
-    customDate: ZonedDateTime? = null
+    customDate: ZonedDateTime? = null,
   ) {
     viewModelScope.launch {
       seasonState.value?.let {
@@ -196,7 +199,7 @@ class ShowDetailsEpisodesViewModel @Inject constructor(
           val event = ShowDetailsEpisodesEvent.RemoveFromTrakt(
             actionId = R.id.actionEpisodesFragmentToRemoveTraktProgress,
             mode = RemoveTraktBottomSheet.Mode.EPISODE,
-            traktIds = listOf(episode.ids.trakt)
+            traktIds = listOf(episode.ids.trakt),
           )
           eventChannel.send(event)
         }
@@ -227,7 +230,7 @@ class ShowDetailsEpisodesViewModel @Inject constructor(
   fun setSeasonWatched(
     season: SeasonListItem,
     isChecked: Boolean,
-    customDate: ZonedDateTime? = null
+    customDate: ZonedDateTime? = null,
   ) {
     viewModelScope.launch {
       val result = seasonWatchedCase.setSeasonWatched(show, season.season, isChecked, customDate)
@@ -235,7 +238,7 @@ class ShowDetailsEpisodesViewModel @Inject constructor(
         val event = ShowDetailsEpisodesEvent.RemoveFromTrakt(
           actionId = R.id.actionEpisodesFragmentToRemoveTraktProgress,
           mode = RemoveTraktBottomSheet.Mode.EPISODE,
-          traktIds = season.season.episodes.map { it.ids.trakt }
+          traktIds = season.season.episodes.map { it.ids.trakt },
         )
         eventChannel.send(event)
       }
@@ -245,11 +248,16 @@ class ShowDetailsEpisodesViewModel @Inject constructor(
   }
 
   fun openEpisodeDetails(episode: Episode) {
-    val currentEpisode = episodesState.value?.find { it.season.number == episode.season && it.episode.number == episode.number }!!
+    val currentEpisode = episodesState.value?.find {
+      it.season.number == episode.season && it.episode.number == episode.number
+    }!!
     openEpisodeDetails(episode, currentEpisode.isWatched)
   }
 
-  fun openEpisodeDetails(episode: Episode, isWatched: Boolean) {
+  fun openEpisodeDetails(
+    episode: Episode,
+    isWatched: Boolean,
+  ) {
     val currentSeason = seasonState.value?.season
     val currentEpisode = episodesState.value
       ?.find { it.season.number == episode.season && it.episode.number == episode.number }
@@ -262,7 +270,7 @@ class ShowDetailsEpisodesViewModel @Inject constructor(
       val episodeBundle = EpisodeBundle(
         episode = currentEpisode.episode,
         season = currentSeason,
-        show = show
+        show = show,
       )
       eventChannel.send(ShowDetailsEpisodesEvent.OpenEpisodeDetails(episodeBundle, isWatched))
     }
@@ -303,7 +311,7 @@ class ShowDetailsEpisodesViewModel @Inject constructor(
       cachedSeasons?.find { it.id == currentSeason.id }?.let { season ->
         val updated = currentSeason.copy(
           episodes = currentEpisodes,
-          userRating = currentSeason.userRating
+          userRating = currentSeason.userRating,
         )
         cachedSeasons.findReplace(updated) { it.id == season.id }
         seasonsCache.setSeasons(show.ids.trakt, cachedSeasons, isSeasonLocal)
@@ -319,16 +327,16 @@ class ShowDetailsEpisodesViewModel @Inject constructor(
   val uiState = combine(
     seasonState,
     episodesState,
-    initialLoadState
+    initialLoadState,
   ) { s2, s3, s4 ->
     ShowDetailsEpisodesUiState(
       season = s2,
       episodes = s3,
-      isInitialLoad = s4
+      isInitialLoad = s4,
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = ShowDetailsEpisodesUiState()
+    initialValue = ShowDetailsEpisodesUiState(),
   )
 }
