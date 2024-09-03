@@ -89,6 +89,7 @@
       app:layout_constraintTop_toTopOf="parent"
       app:trackColor="?attr/colorProgressTrack"
       app:trackCornerRadius="4dp"
+      app:trackStopIndicatorSize="0dp"
       app:trackThickness="4dp"
       />
 

@@ -232,6 +232,7 @@
       app:layout_constraintTop_toTopOf="@id/progressItemProgressText"
       app:trackColor="?attr/colorProgressTrack"
       app:trackCornerRadius="10dp"
+      app:trackStopIndicatorSize="0dp"
       app:trackThickness="4dp"
       />
 
