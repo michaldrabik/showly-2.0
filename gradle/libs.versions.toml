@@ -2,7 +2,7 @@
 
 agp = "8.6.0"
 kotlin = "2.0.20"
-devtools = "2.0.20-1.0.24"
+devtools = "2.0.20-1.0.25"
 core-ktx = "1.13.1"
 appcompat = "1.7.0"
 gridlayout = "1.0.0"
