@@ -6,7 +6,7 @@ import com.michaldrabik.ui_progress_movies.BaseMockTest
 import io.mockk.clearAllMocks
 import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -31,7 +31,7 @@ class ProgressMoviesPinnedCaseTest : BaseMockTest() {
 
   @Test
   fun `Should set pinned item properly`() =
-    runBlockingTest {
+    runTest {
       SUT.addPinnedItem(Movie.EMPTY)
 
       coVerify(exactly = 1) { pinnedItemsRepository.addPinnedItem(Movie.EMPTY) }
@@ -39,7 +39,7 @@ class ProgressMoviesPinnedCaseTest : BaseMockTest() {
 
   @Test
   fun `Should remove pinned item properly`() =
-    runBlockingTest {
+    runTest {
       SUT.removePinnedItem(Movie.EMPTY)
 
       coVerify(exactly = 1) { pinnedItemsRepository.removePinnedItem(Movie.EMPTY) }

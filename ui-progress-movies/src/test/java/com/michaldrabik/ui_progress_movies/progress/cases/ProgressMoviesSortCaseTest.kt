@@ -7,7 +7,7 @@ import com.michaldrabik.ui_progress_movies.BaseMockTest
 import io.mockk.clearAllMocks
 import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -32,7 +32,7 @@ class ProgressMoviesSortCaseTest : BaseMockTest() {
 
   @Test
   fun `Should set sorting order properly`() =
-    runBlockingTest {
+    runTest {
       SUT.setSortOrder(SortOrder.RANK, SortType.DESCENDING)
 
       coVerify { settingsRepository.sorting setProperty "progressMoviesSortOrder" value SortOrder.RANK }

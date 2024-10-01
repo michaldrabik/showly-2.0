@@ -14,7 +14,6 @@ import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.just
 import io.mockk.slot
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
@@ -63,14 +62,14 @@ class SearchRecentsCaseTest : BaseMockTest() {
 
   @Test
   fun `Should clear recent searches properly`() =
-    runBlockingTest {
+    runTest {
       SUT.clearRecentSearches()
       coVerify(exactly = 1) { recentSearchDao.deleteAll() }
     }
 
   @Test
   fun `Should save recent searches properly`() =
-    runBlockingTest {
+    runTest {
       val slot = slot<List<RecentSearch>>()
       coEvery { recentSearchDao.upsert(capture(slot)) } just Runs
 

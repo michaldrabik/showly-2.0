@@ -6,7 +6,7 @@ import com.michaldrabik.ui_progress_movies.R
 import com.michaldrabik.ui_progress_movies.calendar.recycler.CalendarMovieListItem
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 import java.time.LocalDate
@@ -25,7 +25,7 @@ class CalendarFutureGrouperTest : BaseMockTest() {
 
   @Test
   fun `Should group past items by time properly`() =
-    runBlockingTest {
+    runTest {
       val zonedNow = ZonedDateTime.parse("2021-10-11T12:00:00Z")
       val now = LocalDate.parse("2021-10-11") // Monday
       val item1 = mockk<CalendarMovieListItem.MovieItem> {

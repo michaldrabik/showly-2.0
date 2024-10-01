@@ -10,7 +10,7 @@ import com.michaldrabik.ui_progress_movies.BaseMockTest
 import io.mockk.clearAllMocks
 import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -41,7 +41,7 @@ class ProgressMoviesMainCaseTest : BaseMockTest() {
 
   @Test
   fun `Should add movie to My Movies properly`() =
-    runBlockingTest {
+    runTest {
       val movie = Movie.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(123)))
 
       SUT.addToMyMovies(movie, null)
@@ -53,7 +53,7 @@ class ProgressMoviesMainCaseTest : BaseMockTest() {
 
   @Test
   fun `Should add movie to My Movies properly using only ID`() =
-    runBlockingTest {
+    runTest {
       SUT.addToMyMovies(IdTrakt(123))
 
       coVerify { moviesRepository.myMovies.insert(IdTrakt(123), null) }

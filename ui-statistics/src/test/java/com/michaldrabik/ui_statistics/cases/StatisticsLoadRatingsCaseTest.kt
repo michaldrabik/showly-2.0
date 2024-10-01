@@ -17,7 +17,7 @@ import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import io.mockk.just
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 import java.time.ZoneId
@@ -47,7 +47,7 @@ class StatisticsLoadRatingsCaseTest : BaseMockTest() {
 
   @Test
   fun `Should return empty list if not authorized`() =
-    runBlockingTest {
+    runTest {
       coEvery { userTraktManager.isAuthorized() } returns false
 
       val result = SUT.loadRatings()
@@ -57,7 +57,7 @@ class StatisticsLoadRatingsCaseTest : BaseMockTest() {
 
   @Test
   fun `Should load sorted ratings properly`() =
-    runBlockingTest {
+    runTest {
       val ratings = listOf(
         TraktRating.EMPTY.copy(IdTrakt(1), ratedAt = ZonedDateTime.of(2000, 3, 1, 1, 1, 1, 1, ZoneId.systemDefault())),
         TraktRating.EMPTY.copy(IdTrakt(2), ratedAt = ZonedDateTime.of(2001, 3, 1, 1, 1, 1, 1, ZoneId.systemDefault())),
