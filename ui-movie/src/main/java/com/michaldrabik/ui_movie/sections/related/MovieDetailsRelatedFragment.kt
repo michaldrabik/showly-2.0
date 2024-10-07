@@ -13,6 +13,7 @@ import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomShee
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
+import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_movie.MovieDetailsViewModel
@@ -65,7 +66,7 @@ class MovieDetailsRelatedFragment :
 
   private fun openDetails(item: RelatedListItem) {
     val bundle = Bundle().apply { putLong(ARG_MOVIE_ID, item.movie.traktId) }
-    navigateTo(R.id.actionMovieDetailsFragmentToSelf, bundle)
+    navigateToSafe(R.id.actionMovieDetailsFragmentToSelf, bundle)
   }
 
   private fun openContextMenu(item: RelatedListItem) {
@@ -78,7 +79,7 @@ class MovieDetailsRelatedFragment :
       }
 
     val bundle = ContextMenuBottomSheet.createBundle(item.movie.ids.trakt)
-    navigateTo(R.id.actionMovieDetailsFragmentToContext, bundle)
+    navigateToSafe(R.id.actionMovieDetailsFragmentToContext, bundle)
   }
 
   private fun render(uiState: MovieDetailsRelatedUiState) {

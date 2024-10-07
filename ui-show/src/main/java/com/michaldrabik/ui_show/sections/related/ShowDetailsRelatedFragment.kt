@@ -13,6 +13,7 @@ import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomShee
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
+import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
@@ -64,7 +65,7 @@ class ShowDetailsRelatedFragment : BaseFragment<ShowDetailsRelatedViewModel>(R.l
 
   private fun openDetails(item: RelatedListItem) {
     val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.traktId) }
-    navigateTo(R.id.actionShowDetailsFragmentToSelf, bundle)
+    navigateToSafe(R.id.actionShowDetailsFragmentToSelf, bundle)
   }
 
   private fun openContextMenu(item: RelatedListItem) {
@@ -77,7 +78,7 @@ class ShowDetailsRelatedFragment : BaseFragment<ShowDetailsRelatedViewModel>(R.l
       }
 
     val bundle = ContextMenuBottomSheet.createBundle(item.show.ids.trakt)
-    navigateTo(R.id.actionShowDetailsFragmentToContext, bundle)
+    navigateToSafe(R.id.actionShowDetailsFragmentToContext, bundle)
   }
 
   private fun render(uiState: ShowDetailsRelatedUiState) {
