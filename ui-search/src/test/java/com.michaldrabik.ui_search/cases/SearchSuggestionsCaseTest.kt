@@ -70,7 +70,7 @@ class SearchSuggestionsCaseTest : BaseMockTest() {
     runTest {
       SUT.preloadCache() // Initial preload. Db data should be loaded
       SUT.preloadCache() // Further preload. Db data should not be loaded
-      coVerify(exactly = 1) { showsDao.getAll() }
+      coVerify(exactly = 1) { showsDao.getAllForSearch() }
     }
 
   @Test
@@ -78,7 +78,7 @@ class SearchSuggestionsCaseTest : BaseMockTest() {
     runTest {
       SUT.preloadCache() // Initial preload. Db data should be loaded
       SUT.preloadCache() // Further preload. Db data should not be loaded
-      coVerify(exactly = 1) { moviesDao.getAll() }
+      coVerify(exactly = 1) { moviesDao.getAllForSearch() }
     }
 
   @Test
@@ -87,7 +87,7 @@ class SearchSuggestionsCaseTest : BaseMockTest() {
       coEvery { settingsRepository.isMoviesEnabled } returns false
 
       SUT.preloadCache()
-      coVerify(exactly = 0) { moviesDao.getAll() }
+      coVerify(exactly = 0) { moviesDao.getAllForSearch() }
     }
 
   @Test
@@ -118,8 +118,8 @@ class SearchSuggestionsCaseTest : BaseMockTest() {
   fun `Should preload local cache`() =
     runTest {
       SUT.preloadCache()
-      coVerify(exactly = 1) { showsDao.getAll() }
-      coVerify(exactly = 1) { moviesDao.getAll() }
+      coVerify(exactly = 1) { showsDao.getAllForSearch() }
+      coVerify(exactly = 1) { moviesDao.getAllForSearch() }
     }
 
   @Test
@@ -152,8 +152,8 @@ class SearchSuggestionsCaseTest : BaseMockTest() {
       SUT.clearCache()
       SUT.preloadCache()
 
-      coVerify(exactly = 2) { showsDao.getAll() }
-      coVerify(exactly = 2) { moviesDao.getAll() }
+      coVerify(exactly = 2) { showsDao.getAllForSearch() }
+      coVerify(exactly = 2) { moviesDao.getAllForSearch() }
       coVerify(exactly = 2) { translationsRepository.loadAllShowsLocal("br") }
       coVerify(exactly = 2) { translationsRepository.loadAllMoviesLocal("br") }
     }
