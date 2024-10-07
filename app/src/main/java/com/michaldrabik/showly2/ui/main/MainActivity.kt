@@ -82,6 +82,7 @@ class MainActivity :
   private lateinit var binding: ActivityMainBinding
 
   private val navigationHeight by lazy { dimenToPx(R.dimen.bottomNavigationHeight) }
+  private val navigationPadding by lazy { dimenToPx(R.dimen.spaceMedium) }
   private val decelerateInterpolator by lazy { DecelerateInterpolator(2F) }
 
   @Inject lateinit var workManager: WorkManager
@@ -241,7 +242,7 @@ class MainActivity :
         isEnabled = false
         isClickable = false
       }
-      snackbarHost.translationY = navigationHeight.toFloat()
+      snackbarHost.translationY = 0F
       bottomNavigationWrapper
         .animate()
         .alpha(0F)
@@ -258,7 +259,7 @@ class MainActivity :
       isEnabled = true
       isClickable = true
     }
-    binding.snackbarHost.translationY = 0F
+    binding.snackbarHost.translationY = -(navigationHeight + (navigationPadding.toFloat()))
     binding.bottomNavigationWrapper
       .animate()
       .alpha(1F)
