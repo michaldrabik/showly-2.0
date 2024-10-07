@@ -1,10 +1,13 @@
 package com.michaldrabik.data_local.sources
 
 import com.michaldrabik.data_local.database.model.Show
+import com.michaldrabik.data_local.database.model.ShowSearch
 
 interface ShowsLocalDataSource {
 
   suspend fun getAll(): List<Show>
+
+  suspend fun getAllForSearch(): List<ShowSearch>
 
   suspend fun getAll(ids: List<Long>): List<Show>
 

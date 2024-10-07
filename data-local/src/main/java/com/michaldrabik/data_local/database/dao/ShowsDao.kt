@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
 import com.michaldrabik.data_local.database.model.Show
+import com.michaldrabik.data_local.database.model.ShowSearch
 import com.michaldrabik.data_local.sources.ShowsLocalDataSource
 
 @Dao
@@ -16,6 +17,9 @@ interface ShowsDao :
 
   @Query("SELECT * FROM shows WHERE id_trakt IN (:ids)")
   override suspend fun getAll(ids: List<Long>): List<Show>
+
+  @Query("SELECT shows.id_trakt, shows.title FROM shows")
+  override suspend fun getAllForSearch(): List<ShowSearch>
 
   @Transaction
   override suspend fun getAllChunked(ids: List<Long>): List<Show> =

@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
 import com.michaldrabik.data_local.database.model.Movie
+import com.michaldrabik.data_local.database.model.MovieSearch
 import com.michaldrabik.data_local.sources.MoviesLocalDataSource
 
 @Dao
@@ -16,6 +17,9 @@ interface MoviesDao :
 
   @Query("SELECT * FROM movies WHERE id_trakt IN (:ids)")
   override suspend fun getAll(ids: List<Long>): List<Movie>
+
+  @Query("SELECT movies.id_trakt, movies.title FROM movies")
+  override suspend fun getAllForSearch(): List<MovieSearch>
 
   @Transaction
   override suspend fun getAllChunked(ids: List<Long>): List<Movie> =

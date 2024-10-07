@@ -1,10 +1,13 @@
 package com.michaldrabik.data_local.sources
 
 import com.michaldrabik.data_local.database.model.Movie
+import com.michaldrabik.data_local.database.model.MovieSearch
 
 interface MoviesLocalDataSource {
 
   suspend fun getAll(): List<Movie>
+
+  suspend fun getAllForSearch(): List<MovieSearch>
 
   suspend fun getAll(ids: List<Long>): List<Movie>
 

@@ -3,6 +3,8 @@ package com.michaldrabik.ui_search.cases
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.dispatchers.CoroutineDispatchers
 import com.michaldrabik.data_local.LocalDataSource
+import com.michaldrabik.data_local.database.model.MovieSearch
+import com.michaldrabik.data_local.database.model.ShowSearch
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.images.ShowImagesProvider
@@ -22,8 +24,6 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
 import java.util.UUID
 import javax.inject.Inject
-import com.michaldrabik.data_local.database.model.Movie as MovieDb
-import com.michaldrabik.data_local.database.model.Show as ShowDb
 
 @ViewModelScoped
 class SearchSuggestionsCase @Inject constructor(
@@ -38,31 +38,14 @@ class SearchSuggestionsCase @Inject constructor(
   private val moviesImagesProvider: MovieImagesProvider,
 ) {
 
-  private var showsCache: List<ShowDb>? = null
-  private var moviesCache: List<MovieDb>? = null
+  private var showsCache: List<ShowSearch>? = null
+  private var moviesCache: List<MovieSearch>? = null
   private var showTranslationsCache: Map<Long, Translation>? = null
   private var movieTranslationsCache: Map<Long, Translation>? = null
 
-  suspend fun preloadCache() =
-    withContext(dispatchers.IO) {
-      val language = translationsRepository.getLanguage()
-      val moviesEnabled = settingsRepository.isMoviesEnabled
-
-      if (showsCache == null) showsCache = localSource.shows.getAll()
-      if (moviesEnabled && moviesCache == null) moviesCache = localSource.movies.getAll()
-
-      if (translationsRepository.getLanguage() != Config.DEFAULT_LANGUAGE) {
-        if (showTranslationsCache == null) {
-          showTranslationsCache = translationsRepository.loadAllShowsLocal(language)
-        }
-        if (moviesEnabled && movieTranslationsCache == null) {
-          movieTranslationsCache = translationsRepository.loadAllMoviesLocal(language)
-        }
-      }
-    }
-
   suspend fun loadSuggestions(query: String) =
     withContext(dispatchers.IO) {
+      preloadCache()
       val spoilers = settingsRepository.spoilers.getAll()
 
       val showsDef = async { loadShows(query.trim(), 5) }
@@ -116,34 +99,66 @@ class SearchSuggestionsCase @Inject constructor(
         .sortedByDescending { it.votes }
     }
 
+  suspend fun preloadCache() =
+    withContext(dispatchers.IO) {
+      val language = translationsRepository.getLanguage()
+      val moviesEnabled = settingsRepository.isMoviesEnabled
+
+      if (showsCache == null) {
+        showsCache = localSource.shows.getAllForSearch()
+      }
+      if (moviesEnabled && moviesCache == null) {
+        moviesCache = localSource.movies.getAllForSearch()
+      }
+
+      if (translationsRepository.getLanguage() != Config.DEFAULT_LANGUAGE) {
+        if (showTranslationsCache == null) {
+          showTranslationsCache = translationsRepository.loadAllShowsLocal(language)
+        }
+        if (moviesEnabled && movieTranslationsCache == null) {
+          movieTranslationsCache = translationsRepository.loadAllMoviesLocal(language)
+        }
+      }
+    }
+
   private suspend fun loadShows(
     query: String,
     limit: Int,
   ): List<Show> {
-    if (query.trim().isBlank()) return emptyList()
-    preloadCache()
-    return showsCache
+    if (query.trim().isBlank()) {
+      return emptyList()
+    }
+
+    val cachedIds = showsCache
       ?.filter {
         it.title.contains(query, true) ||
           showTranslationsCache?.get(it.idTrakt)?.title?.contains(query, true) == true
       }?.take(limit)
-      ?.map { mappers.show.fromDatabase(it) }
-      ?: emptyList()
+      ?.map { it.idTrakt }
+
+    return localSource.shows
+      .getAll(cachedIds ?: emptyList())
+      .map { mappers.show.fromDatabase(it) }
   }
 
   private suspend fun loadMovies(
     query: String,
     limit: Int,
   ): List<Movie> {
-    if (query.trim().isBlank()) return emptyList()
-    preloadCache()
-    return moviesCache
+    if (query.trim().isBlank()) {
+      return emptyList()
+    }
+
+    val cachedIds = moviesCache
       ?.filter {
         it.title.contains(query, true) ||
           movieTranslationsCache?.get(it.idTrakt)?.title?.contains(query, true) == true
       }?.take(limit)
-      ?.map { mappers.movie.fromDatabase(it) }
-      ?: emptyList()
+      ?.map { it.idTrakt }
+
+    return localSource.movies
+      .getAll(cachedIds ?: emptyList())
+      .map { mappers.movie.fromDatabase(it) }
   }
 
   private suspend fun loadTranslation(result: SearchResult): Translation? {
