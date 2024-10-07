@@ -11,7 +11,6 @@
   <string name="textEpisodeTitle">الموسم %02d الحلقة %02d - %s</string>
   <string name="textTraktSyncRemovedFromTrakt">إكتملت مزامنة Trakt.tv بنجاح.</string>
   <string name="textActorsEmpty">قائمة الممثلين غير متاحة</string>
-  <string name="textShowExtraInfo" translatable="false">%3$s %2$s %1$s | %6$s | %4$s %5$s</string>
   <string name="textSeasons">المواسم:</string>
   <string name="textSeasonsEmpty">المواسم غير متوفرة.</string>
   <string name="textTrailer">التريلر</string>

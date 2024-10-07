@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="textOk">OK</string>
-  <string name="textYes">Si</string>
+  <string name="textYes">Sì</string>
   <string name="textNo">No</string>
   <string name="textApply">Applica</string>
   <string name="textCancel">Annulla</string>
   <string name="textClose">Chiudi</string>
   <string name="textNow">Adesso</string>
   <string name="textNotNow">Non Ora</string>
+  <string name="textReleaseDay">Giorno di uscita</string>
   <string name="textNew">Nuovo</string>
   <string name="textSelect">Seleziona</string>
   <string name="textHot">Popolari</string>
@@ -85,10 +86,10 @@
   <string name="textLast7Days">Ultimi 7 giorni</string>
   <string name="textLast30Days">Ultimi 30 giorni</string>
   <string name="textLast90Days">Ultimi 90 giorni</string>
-  <string name="textNewEpisodeAvailable">Nuovi episodi disponibili ora!</string>
-  <string name="textNewEpisodeAvailableSoon">Il nuovo episodio sarà disponibile a breve!</string>
+  <string name="textNewEpisodeAvailable">Nuovo episodio disponibile ora!</string>
+  <string name="textNewEpisodeAvailableSoon">Nuovo episodio disponibile a breve!</string>
   <string name="textNewSeasonAvailable">Nuova stagione disponibile ora!</string>
-  <string name="textNewSeasonAvailableSoon">La nuova stagione sarà disponibile a breve!</string>
+  <string name="textNewSeasonAvailableSoon">Nuova stagione disponibile a breve!</string>
   <string name="textNewMovieAvailable">Il film è uscito!</string>
   <string name="textTraktSync">Sincronizzazione Trakt.tv</string>
   <string name="textTraktSyncComplete">Sincronizzazione completata correttamente.</string>
