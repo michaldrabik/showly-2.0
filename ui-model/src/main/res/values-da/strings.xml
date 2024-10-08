@@ -9,6 +9,7 @@
   <string name="textSortDateUpdated">Senest Opdateret</string>
   <string name="textSortRecentlyWatched">Senest Set</string>
   <string name="textSortEpisodesLeft">Afsnit Tilbage</string>
+  <string name="textSortRuntime">Spilletid</string>
   <string name="textPeriodThisWeek">Denne uge</string>
   <string name="textPeriodLastWeek">Sidste uge</string>
   <string name="textPeriodThisMonth">Denne måned</string>
@@ -40,6 +41,7 @@
   <string name="textTipWatchlistPinItem">Tryk og hold et listeelement for at fastgøre det til toppen.</string>
   <string name="textTipBottomModeMenu">Stryg bundmenuen venstre eller højre for hurtigt at skifte tilstand.</string>
   <string name="textTipListSwipeToDelete">Stryg listeelementer for at fjerne dem fra listen.</string>
+  <string name="textTipDefaultOption">Standardindstillingen kan justeres i indstillingerne</string>
   <string name="textGenreAction">Action</string>
   <string name="textGenreAdventure">Eventyr</string>
   <string name="textGenreAnimation">Animation</string>

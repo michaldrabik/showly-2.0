@@ -7,7 +7,9 @@
   <string name="textCancel">Annuller</string>
   <string name="textContinue">Fortsæt</string>
   <string name="textClose">Luk</string>
+  <string name="textNow">Nu</string>
   <string name="textNotNow">Ikke nu</string>
+  <string name="textReleaseDay">Udgivelsesdag</string>
   <string name="textNew">Ny</string>
   <string name="textSelect">Vælg</string>
   <string name="textHot">Populært</string>
@@ -39,6 +41,9 @@
   <string name="textRateSaved">Din bedømmelse er blevet gemt.</string>
   <string name="textRateRemoved">Din bedømmelse er blevet fjernet.</string>
   <string name="textDays">%1$d dage</string>
+  <string name="textSelectDate">Vælg dato</string>
+  <string name="textDateSelectionTitle">Datovalg</string>
+  <string name="textDateSelectionDescription">Hvornår så du det?</string>
   <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
     <item quantity="one">%d tilbage</item>
     <item quantity="other">%d tilbage</item>

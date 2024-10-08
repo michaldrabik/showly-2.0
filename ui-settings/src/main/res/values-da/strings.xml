@@ -65,6 +65,8 @@
   <string name="textSettingsStreamingServicesMessage">Vis data for streamingtjenester.</string>
   <string name="textSettingsProgressNextEpisodeTitle">Næste Afsnit</string>
   <string name="textSettingsProgressNextEpisodeMessage">Beregn næste afsnit med:</string>
+  <string name="textSettingsDateSelectionTitle">Datovalg</string>
+  <string name="textSettingsDateSelectionMessage">Vælg standardindstilling for datovalg.</string>
   <string name="textSettingsTabletColumnsTitle">Antal Kolonner i Lister</string>
   <string name="textSettingsTabletColumnsSummary">Vælg foretrukne antal kolonner i lister.</string>
   <string name="textSettingsSpoilers">Spoilere</string>
@@ -106,6 +108,8 @@
   <string name="textSettingsSpoilersTapToRevealDescription">Tryk på skjult indhold for at vise det midlertidigt.</string>
   <string name="textNextEpisodeLastWatched">Sidst sete afsnit</string>
   <string name="textNextEpisodeOldest">Ældste usete afsnit</string>
+  <string name="textDateSelectionAsk">Spørg altid</string>
+  <string name="textDateSelectionNow">Altid \"Nu\"</string>
   <string name="textThemeDark">Mørk</string>
   <string name="textThemeLight">Lys</string>
   <string name="textThemeSystem">System</string>
