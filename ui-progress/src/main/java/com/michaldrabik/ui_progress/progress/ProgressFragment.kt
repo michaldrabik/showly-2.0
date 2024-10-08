@@ -185,20 +185,18 @@ class ProgressFragment :
         if (moviesEnabled) R.dimen.progressOverscrollPadding else R.dimen.progressOverscrollPaddingNoModes
 
       if (statusBarHeight != 0) {
-        progressRecycler.updatePadding(top = statusBarHeight + dimenToPx(recyclerPadding))
         (progressOverscroll.layoutParams as ViewGroup.MarginLayoutParams)
           .updateMargins(top = statusBarHeight + dimenToPx(overscrollPadding))
-        return
       }
 
-      progressRecycler.doOnApplyWindowInsets { view, insets, padding, _ ->
+      root.doOnApplyWindowInsets { _, insets, padding, _ ->
         val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
         val systemInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
         statusBarHeight = systemInsets.top + tabletOffset
 
-        view.updatePadding(
+        progressRecycler.updatePadding(
           top = statusBarHeight + dimenToPx(recyclerPadding),
-          bottom = padding.bottom + systemInsets.bottom,
+          bottom = systemInsets.bottom + dimenToPx(R.dimen.bottomNavigationHeightPadded),
         )
 
         (progressEmptyView.root.layoutParams as ViewGroup.MarginLayoutParams)

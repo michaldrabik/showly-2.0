@@ -234,25 +234,21 @@ class ProgressMoviesFragment :
   }
 
   private fun setupInsets() {
-    if (statusBarHeight != 0) {
-      binding.progressMoviesMainRecycler.updatePadding(
-        top = statusBarHeight + dimenToPx(R.dimen.progressMoviesTabsViewPadding),
-      )
-      return
-    }
-    binding.progressMoviesMainRecycler.doOnApplyWindowInsets { view, insets, padding, _ ->
-      val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
-      val systemInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+    with(binding) {
+      root.doOnApplyWindowInsets { _, insets, padding, _ ->
+        val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
+        val systemInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
 
-      statusBarHeight = systemInsets.top + tabletOffset
-      view.updatePadding(
-        top = statusBarHeight + dimenToPx(R.dimen.progressMoviesTabsViewPadding),
-        bottom = padding.bottom + systemInsets.bottom,
-      )
-      (binding.progressMoviesEmptyView.rootLayout.layoutParams as ViewGroup.MarginLayoutParams)
-        .updateMargins(top = statusBarHeight + dimenToPx(R.dimen.spaceBig))
-      (binding.progressMoviesOverscroll.layoutParams as ViewGroup.MarginLayoutParams)
-        .updateMargins(top = statusBarHeight + dimenToPx(R.dimen.progressMoviesOverscrollPadding))
+        statusBarHeight = systemInsets.top + tabletOffset
+        progressMoviesMainRecycler.updatePadding(
+          top = statusBarHeight + dimenToPx(R.dimen.progressMoviesTabsViewPadding),
+          bottom = systemInsets.bottom + dimenToPx(R.dimen.bottomNavigationHeightPadded),
+        )
+        (progressMoviesEmptyView.rootLayout.layoutParams as ViewGroup.MarginLayoutParams)
+          .updateMargins(top = statusBarHeight + dimenToPx(R.dimen.spaceBig))
+        (progressMoviesOverscroll.layoutParams as ViewGroup.MarginLayoutParams)
+          .updateMargins(top = statusBarHeight + dimenToPx(R.dimen.progressMoviesOverscrollPadding))
+      }
     }
   }
 

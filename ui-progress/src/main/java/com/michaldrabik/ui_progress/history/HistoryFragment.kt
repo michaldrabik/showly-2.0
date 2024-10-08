@@ -56,7 +56,6 @@ internal class HistoryFragment :
 
   private var adapter: HistoryAdapter? = null
   private var layoutManager: LayoutManager? = null
-  private var statusBarHeight = 0
   private var isSearching = false
 
   override fun onViewCreated(
@@ -124,18 +123,11 @@ internal class HistoryFragment :
       R.dimen.progressHistoryTabsViewPaddingNoModes
     }
 
-    if (statusBarHeight != 0) {
-      binding.recycler.updatePadding(top = statusBarHeight + dimenToPx(recyclerPadding))
-      return
-    }
-
     binding.recycler.doOnApplyWindowInsets { view, insets, padding, _ ->
       val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
       val systemInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-      statusBarHeight = systemInsets.top + tabletOffset
-
       view.updatePadding(
-        top = statusBarHeight + dimenToPx(recyclerPadding),
+        top = systemInsets.top + tabletOffset + dimenToPx(recyclerPadding),
         bottom = systemInsets.bottom + padding.bottom,
       )
     }

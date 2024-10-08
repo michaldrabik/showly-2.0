@@ -66,7 +66,6 @@ class MyMoviesFragment :
 
   private var adapter: MyMoviesAdapter? = null
   private var layoutManager: LayoutManager? = null
-  private var statusBarHeight = 0
   private var isSearching = false
   private val gridSpanSize by lazy { settings.tabletGridSpanSize }
 
@@ -115,16 +114,10 @@ class MyMoviesFragment :
 
   private fun setupInsets() {
     with(binding) {
-      if (statusBarHeight != 0) {
-        myMoviesRoot.updatePadding(top = statusBarHeight)
-        myMoviesRecycler.updatePadding(top = dimenToPx(R.dimen.myMoviesTabsViewPadding))
-        return
-      }
-      myMoviesRoot.doOnApplyWindowInsets { view, insets, _, _ ->
+      root.doOnApplyWindowInsets { _, insets, _, _ ->
         val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
         val systemInset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-        statusBarHeight = systemInset.top + tabletOffset
-        view.updatePadding(top = statusBarHeight)
+        myMoviesRoot.updatePadding(top = systemInset.top + tabletOffset)
         myMoviesRecycler.updatePadding(
           top = dimenToPx(R.dimen.myMoviesTabsViewPadding),
           bottom = dimenToPx(R.dimen.myMoviesBottomPadding) + systemInset.bottom,

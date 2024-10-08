@@ -52,7 +52,6 @@ class CalendarFragment :
 
   private var adapter: CalendarAdapter? = null
   private var layoutManager: LayoutManager? = null
-  private var statusBarHeight = 0
   private var isSearching = false
 
   override fun onViewCreated(
@@ -119,17 +118,11 @@ class CalendarFragment :
       R.dimen.progressCalendarTabsViewPaddingNoModes
     }
 
-    if (statusBarHeight != 0) {
-      binding.progressCalendarRecycler.updatePadding(top = statusBarHeight + dimenToPx(recyclerPadding))
-      return
-    }
-
     binding.progressCalendarRecycler.doOnApplyWindowInsets { view, insets, padding, _ ->
       val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
       val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-      statusBarHeight = inset.top + tabletOffset
       view.updatePadding(
-        top = statusBarHeight + dimenToPx(recyclerPadding),
+        top = inset.top + tabletOffset + dimenToPx(recyclerPadding),
         bottom = inset.bottom + padding.bottom,
       )
     }

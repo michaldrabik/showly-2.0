@@ -69,7 +69,6 @@ class WatchlistFragment :
 
   private var adapter: CollectionAdapter? = null
   private var layoutManager: LayoutManager? = null
-  private var statusBarHeight = 0
   private var isSearching = false
   private val tabletGridSpanSize by lazy { settings.tabletGridSpanSize }
 
@@ -119,19 +118,13 @@ class WatchlistFragment :
 
   private fun setupInsets() {
     with(binding) {
-      if (statusBarHeight != 0) {
-        watchlistContent.updatePadding(top = watchlistContent.paddingTop + statusBarHeight)
-        watchlistRecycler.updatePadding(top = dimenToPx(R.dimen.collectionTabsViewPadding))
-        return
-      }
-      watchlistContent.doOnApplyWindowInsets { view, insets, padding, _ ->
+      root.doOnApplyWindowInsets { _, insets, padding, _ ->
         val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
-        val systemInset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-        statusBarHeight = systemInset.top + tabletOffset
-        view.updatePadding(top = padding.top + statusBarHeight)
+        val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+        watchlistContent.updatePadding(top = padding.top + inset.top + tabletOffset)
         watchlistRecycler.updatePadding(
           top = dimenToPx(R.dimen.collectionTabsViewPadding),
-          bottom = dimenToPx(R.dimen.myShowsBottomPadding) + systemInset.bottom,
+          bottom = dimenToPx(R.dimen.myShowsBottomPadding) + inset.bottom,
         )
       }
     }

@@ -69,7 +69,6 @@ class HiddenFragment :
 
   private var adapter: CollectionAdapter? = null
   private var layoutManager: LayoutManager? = null
-  private var statusBarHeight = 0
   private var isSearching = false
   private val tabletGridSpanSize by lazy { settings.tabletGridSpanSize }
 
@@ -120,16 +119,10 @@ class HiddenFragment :
 
   private fun setupInsets() {
     with(binding) {
-      if (statusBarHeight != 0) {
-        hiddenContent.updatePadding(top = hiddenContent.paddingTop + statusBarHeight)
-        hiddenRecycler.updatePadding(top = dimenToPx(R.dimen.archiveTabsViewPadding))
-        return
-      }
-      hiddenContent.doOnApplyWindowInsets { view, insets, padding, _ ->
+      root.doOnApplyWindowInsets { _, insets, padding, _ ->
         val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
         val systemInset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-        statusBarHeight = systemInset.top + tabletOffset
-        view.updatePadding(top = padding.top + statusBarHeight)
+        hiddenContent.updatePadding(top = padding.top + systemInset.top + tabletOffset)
         hiddenRecycler.updatePadding(
           top = dimenToPx(R.dimen.archiveTabsViewPadding),
           bottom = dimenToPx(R.dimen.myShowsBottomPadding) + systemInset.bottom,

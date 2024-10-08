@@ -49,7 +49,6 @@ class CalendarMoviesFragment :
 
   private var adapter: CalendarMoviesAdapter? = null
   private var layoutManager: LayoutManager? = null
-  private var statusBarHeight = 0
   private var isSearching = false
 
   override fun onViewCreated(
@@ -101,17 +100,11 @@ class CalendarMoviesFragment :
   }
 
   private fun setupInsets() {
-    if (statusBarHeight != 0) {
-      binding.progressMoviesCalendarRecycler
-        .updatePadding(top = statusBarHeight + dimenToPx(R.dimen.progressMoviesCalendarTabsViewPadding))
-      return
-    }
     binding.progressMoviesCalendarRecycler.doOnApplyWindowInsets { view, insets, padding, _ ->
       val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
       val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-      statusBarHeight = inset.top + tabletOffset
       view.updatePadding(
-        top = statusBarHeight + dimenToPx(R.dimen.progressMoviesCalendarTabsViewPadding),
+        top = inset.top + tabletOffset + dimenToPx(R.dimen.progressMoviesCalendarTabsViewPadding),
         bottom = inset.bottom + padding.bottom,
       )
     }

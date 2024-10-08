@@ -71,7 +71,6 @@ class MyShowsFragment :
 
   private var adapter: MyShowsAdapter? = null
   private var layoutManager: LayoutManager? = null
-  private var statusBarHeight = 0
   private var isSearching = false
   private val tabletGridSpanSize by lazy { settings.tabletGridSpanSize }
 
@@ -119,20 +118,16 @@ class MyShowsFragment :
   }
 
   private fun setupInsets() {
-    if (statusBarHeight != 0) {
-      binding.myShowsRoot.updatePadding(top = statusBarHeight)
-      binding.myShowsRecycler.updatePadding(top = dimenToPx(R.dimen.myShowsTabsViewPadding))
-      return
-    }
-    binding.myShowsRoot.doOnApplyWindowInsets { view, insets, _, _ ->
-      val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
-      val systemInset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-      statusBarHeight = systemInset.top + tabletOffset
-      view.updatePadding(top = statusBarHeight)
-      binding.myShowsRecycler.updatePadding(
-        top = dimenToPx(R.dimen.myShowsTabsViewPadding),
-        bottom = dimenToPx(R.dimen.myShowsBottomPadding) + systemInset.bottom,
-      )
+    with(binding) {
+      root.doOnApplyWindowInsets { view, insets, _, _ ->
+        val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
+        val systemInset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+        myShowsRoot.updatePadding(top = systemInset.top + tabletOffset)
+        myShowsRecycler.updatePadding(
+          top = dimenToPx(R.dimen.myShowsTabsViewPadding),
+          bottom = dimenToPx(R.dimen.myShowsBottomPadding) + systemInset.bottom,
+        )
+      }
     }
   }
 
