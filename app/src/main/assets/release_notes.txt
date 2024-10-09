@@ -1,2 +1,3 @@
-* Added option to sort by runtime for movies in your collection
-* Internal dev. tools updates.
+* Added support for edge-to-edge display with new floating menu
+* Added option to select release day when marking movies/episodes
+* Fixed bug where app could crash for some users when using Search
