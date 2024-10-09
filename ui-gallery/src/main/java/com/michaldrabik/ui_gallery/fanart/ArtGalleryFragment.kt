@@ -8,14 +8,19 @@ import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup.MarginLayoutParams
 import androidx.activity.addCallback
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updateMargins
+import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.utilities.extensions.colorStateListFromAttr
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.nextPage
@@ -64,7 +69,7 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
       requireActivity().requestedOrientation = SCREEN_ORIENTATION_FULL_USER
     }
     setupView()
-    setupStatusBar()
+    setupInsets()
 
     viewLifecycleOwner.lifecycleScope.launch {
       repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -128,12 +133,22 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
     }
   }
 
-  private fun setupStatusBar() {
-    requireView().doOnApplyWindowInsets { _, insets, _, _ ->
-      val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+  private fun setupInsets() {
+    requireView().doOnApplyWindowInsets { view, insets, _, _ ->
+      val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+      view.updatePadding(bottom = inset.bottom)
       with(binding) {
-        artGalleryBackArrow.updateTopMargin(inset)
-        artGalleryBrowserIcon.updateTopMargin(inset)
+        artGalleryBackArrow.updateTopMargin(inset.top)
+        artGalleryBrowserIcon.updateTopMargin(inset.top)
+        artGalleryPagerIndicator.updateLayoutParams<MarginLayoutParams> {
+          updateMargins(bottom = inset.bottom + dimenToPx(R.dimen.spaceNormal))
+        }
+        artGalleryPagerIndicatorWhite.updateLayoutParams<MarginLayoutParams> {
+          updateMargins(bottom = inset.bottom + dimenToPx(R.dimen.spaceNormal))
+        }
+        artGalleryImagesProgress.updateLayoutParams<MarginLayoutParams> {
+          updateMargins(bottom = inset.bottom + dimenToPx(R.dimen.spaceNormal))
+        }
       }
     }
   }

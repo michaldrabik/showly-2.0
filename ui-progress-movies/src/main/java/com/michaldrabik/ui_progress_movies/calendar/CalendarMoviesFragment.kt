@@ -58,7 +58,7 @@ class CalendarMoviesFragment :
   ) {
     super.onViewCreated(view, savedInstanceState)
     setupRecycler()
-    setupStatusBar()
+    setupInsets()
 
     viewLifecycleOwner.lifecycleScope.launch {
       viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -100,17 +100,20 @@ class CalendarMoviesFragment :
     }
   }
 
-  private fun setupStatusBar() {
+  private fun setupInsets() {
     if (statusBarHeight != 0) {
-      binding.progressMoviesCalendarRecycler.updatePadding(
-        top = statusBarHeight + dimenToPx(R.dimen.progressMoviesCalendarTabsViewPadding),
-      )
+      binding.progressMoviesCalendarRecycler
+        .updatePadding(top = statusBarHeight + dimenToPx(R.dimen.progressMoviesCalendarTabsViewPadding))
       return
     }
-    binding.progressMoviesCalendarRecycler.doOnApplyWindowInsets { view, insets, _, _ ->
+    binding.progressMoviesCalendarRecycler.doOnApplyWindowInsets { view, insets, padding, _ ->
       val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
-      statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top + tabletOffset
-      view.updatePadding(top = statusBarHeight + dimenToPx(R.dimen.progressMoviesCalendarTabsViewPadding))
+      val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+      statusBarHeight = inset.top + tabletOffset
+      view.updatePadding(
+        top = statusBarHeight + dimenToPx(R.dimen.progressMoviesCalendarTabsViewPadding),
+        bottom = inset.bottom + padding.bottom,
+      )
     }
   }
 

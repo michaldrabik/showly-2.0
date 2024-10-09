@@ -3,10 +3,8 @@
   <!-- Base app theme -->
   <style name="AppTheme" parent="Theme.Material3.Dark.NoActionBar">
     <item name="android:windowBackground">@color/colorBackground</item>
-    <item name="android:navigationBarColor">@color/colorPrimary</item>
-    <item name="android:windowTranslucentStatus">true</item>
-    <item name="toolbarNavigationButtonStyle">@style/Toolbar.Button.Navigation.Tinted</item>
     <item name="switchStyle">@style/ShowlySwitch</item>
+    <item name="enableEdgeToEdge">true</item>
 
     <item name="colorPrimary">@color/colorPrimary</item>
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -54,13 +52,12 @@
 
   <!--  Bottom Sheet Dialogs -->
 
-  <style name="CustomBottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
-    <item name="android:windowTranslucentStatus">false</item>
+  <style name="CustomBottomSheetDialog" parent="@style/ThemeOverlay.Material3.BottomSheetDialog">
     <item name="bottomSheetStyle">@style/CustomBottomSheet</item>
+    <item name="android:navigationBarColor">@android:color/transparent</item>
   </style>
 
-  <style name="CustomBottomSheet" parent="Widget.MaterialComponents.BottomSheet">
-    <item name="backgroundTint">#00000000</item>
+  <style name="CustomBottomSheet" parent="Widget.Material3.BottomSheet">
     <item name="shapeAppearanceOverlay">@style/CustomShapeAppearanceBottomSheetDialog</item>
   </style>
 

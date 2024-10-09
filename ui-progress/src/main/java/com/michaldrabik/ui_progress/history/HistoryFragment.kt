@@ -2,7 +2,7 @@ package com.michaldrabik.ui_progress.history
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.WindowInsetsCompat.Type.systemBars
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -65,7 +65,7 @@ internal class HistoryFragment :
   ) {
     super.onViewCreated(view, savedInstanceState)
     setupRecycler()
-    setupStatusBar()
+    setupInsets()
 
     viewLifecycleOwner.lifecycleScope.launch {
       viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -117,7 +117,7 @@ internal class HistoryFragment :
     }
   }
 
-  private fun setupStatusBar() {
+  private fun setupInsets() {
     val recyclerPadding = if (moviesEnabled) {
       R.dimen.progressHistoryTabsViewPadding
     } else {
@@ -129,10 +129,15 @@ internal class HistoryFragment :
       return
     }
 
-    binding.recycler.doOnApplyWindowInsets { view, insets, _, _ ->
+    binding.recycler.doOnApplyWindowInsets { view, insets, padding, _ ->
       val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
-      statusBarHeight = insets.getInsets(systemBars()).top + tabletOffset
-      view.updatePadding(top = statusBarHeight + dimenToPx(recyclerPadding))
+      val systemInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+      statusBarHeight = systemInsets.top + tabletOffset
+
+      view.updatePadding(
+        top = statusBarHeight + dimenToPx(recyclerPadding),
+        bottom = systemInsets.bottom + padding.bottom,
+      )
     }
   }
 

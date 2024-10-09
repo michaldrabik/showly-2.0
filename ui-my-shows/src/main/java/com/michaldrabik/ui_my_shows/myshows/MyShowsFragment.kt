@@ -80,7 +80,7 @@ class MyShowsFragment :
     savedInstanceState: Bundle?,
   ) {
     super.onViewCreated(view, savedInstanceState)
-    setupStatusBar()
+    setupInsets()
     setupRecycler()
 
     launchAndRepeatStarted(
@@ -118,7 +118,7 @@ class MyShowsFragment :
     }
   }
 
-  private fun setupStatusBar() {
+  private fun setupInsets() {
     if (statusBarHeight != 0) {
       binding.myShowsRoot.updatePadding(top = statusBarHeight)
       binding.myShowsRecycler.updatePadding(top = dimenToPx(R.dimen.myShowsTabsViewPadding))
@@ -126,9 +126,13 @@ class MyShowsFragment :
     }
     binding.myShowsRoot.doOnApplyWindowInsets { view, insets, _, _ ->
       val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
-      statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top + tabletOffset
+      val systemInset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+      statusBarHeight = systemInset.top + tabletOffset
       view.updatePadding(top = statusBarHeight)
-      binding.myShowsRecycler.updatePadding(top = dimenToPx(R.dimen.myShowsTabsViewPadding))
+      binding.myShowsRecycler.updatePadding(
+        top = dimenToPx(R.dimen.myShowsTabsViewPadding),
+        bottom = dimenToPx(R.dimen.myShowsBottomPadding) + systemInset.bottom,
+      )
     }
   }
 

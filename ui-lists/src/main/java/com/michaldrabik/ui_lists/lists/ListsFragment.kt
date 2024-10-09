@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.ViewGroup.MarginLayoutParams
 import androidx.activity.addCallback
 import androidx.core.os.bundleOf
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.postDelayed
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
@@ -100,7 +103,7 @@ class ListsFragment :
   ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
-    setupStatusBar()
+    setupInsets()
     setupRecycler()
 
     launchAndRepeatStarted(
@@ -165,19 +168,26 @@ class ListsFragment :
     }
   }
 
-  private fun setupStatusBar() {
+  private fun setupInsets() {
     with(binding) {
       fragmentListsRoot.doOnApplyWindowInsets { _, insets, _, _ ->
         val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
-        val statusBarSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top + tabletOffset
+        val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+        val statusBarSize = inset.top + tabletOffset
         fragmentListsRecycler
-          .updatePadding(top = statusBarSize + dimenToPx(R.dimen.listsRecyclerPaddingTop))
+          .updatePadding(
+            top = statusBarSize + dimenToPx(R.dimen.listsRecyclerPaddingTop),
+            bottom = inset.bottom + dimenToPx(R.dimen.listsBottomPadding),
+          )
         fragmentListsSearchView.applyWindowInsetBehaviour(dimenToPx(R.dimen.spaceNormal) + statusBarSize)
         fragmentListsSearchView.updateTopMargin(dimenToPx(R.dimen.spaceMedium) + statusBarSize)
         fragmentListsModeTabs.updateTopMargin(dimenToPx(R.dimen.collectionTabsMargin) + statusBarSize)
         fragmentListsIcons.updateTopMargin(dimenToPx(R.dimen.listsIconsPadding) + statusBarSize)
         fragmentListsSearchLocalView.updateTopMargin(dimenToPx(R.dimen.listsSearchLocalViewPadding) + statusBarSize)
         fragmentListsEmptyView.root.updateTopMargin(statusBarSize)
+        fragmentListsSnackHost.updateLayoutParams<MarginLayoutParams> {
+          updateMargins(bottom = inset.bottom + dimenToPx(R.dimen.listsFabBottomPadding))
+        }
       }
     }
   }

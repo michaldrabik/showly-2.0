@@ -89,7 +89,7 @@ class ListDetailsFragment :
 
   private val list by lazy { requireParcelable<CustomList>(ARG_LIST) }
 
-  private val recyclerPaddingBottom by lazy { requireContext().dimenToPx(R.dimen.spaceSmall) }
+  private val recyclerPaddingBottom by lazy { requireContext().dimenToPx(R.dimen.spaceNormal) }
   private val recyclerPaddingTop by lazy { requireContext().dimenToPx(R.dimen.listDetailsRecyclerTopPadding) }
   private val recyclerPaddingGridTop by lazy { requireContext().dimenToPx(R.dimen.listDetailsRecyclerTopGridPadding) }
   private val tabletGridSpanSize by lazy { settings.tabletGridSpanSize }
@@ -118,6 +118,7 @@ class ListDetailsFragment :
   ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
+    setupInsets()
     setupRecycler()
 
     launchAndRepeatStarted(
@@ -145,10 +146,6 @@ class ListDetailsFragment :
 
   private fun setupView() {
     with(binding) {
-      fragmentListDetailsRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
-        val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
-        view.updatePadding(top = padding.top + inset)
-      }
       with(fragmentListDetailsToolbar) {
         title = list.name
         subtitle = list.description
@@ -169,6 +166,15 @@ class ListDetailsFragment :
       fragmentListDetailsViewModeButton.onClick {
         val args = bundleOf(ARG_ITEM to PremiumFeature.VIEW_TYPES)
         navigateToSafe(R.id.actionListDetailsFragmentToPremium, args)
+      }
+    }
+  }
+
+  private fun setupInsets() {
+    with(binding) {
+      fragmentListDetailsRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
+        val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+        view.updatePadding(top = padding.top + inset.top)
       }
     }
   }
@@ -369,17 +375,23 @@ class ListDetailsFragment :
           if (isManageMode) {
             fragmentListDetailsToolbar.title = getString(R.string.textChangeRanks)
             fragmentListDetailsToolbar.subtitle = getString(R.string.textChangeRanksSubtitle)
-            fragmentListDetailsRecycler.updatePadding(
-              top = if (layoutManager is GridLayoutManager) dimenToPx(R.dimen.spaceTiny) else 0,
-              bottom = recyclerPaddingBottom,
-            )
+            fragmentListDetailsRecycler.doOnApplyWindowInsets { view, insets, _, _ ->
+              val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+              view.updatePadding(
+                top = if (layoutManager is GridLayoutManager) dimenToPx(R.dimen.spaceTiny) else 0,
+                bottom = inset.bottom + recyclerPaddingBottom,
+              )
+            }
           } else {
             renderTitle(listDetails?.name ?: list.name, listItems?.size)
             fragmentListDetailsToolbar.subtitle = listDetails?.description
-            fragmentListDetailsRecycler.updatePadding(
-              top = if (layoutManager is GridLayoutManager) recyclerPaddingGridTop else recyclerPaddingTop,
-              bottom = recyclerPaddingBottom,
-            )
+            fragmentListDetailsRecycler.doOnApplyWindowInsets { view, insets, _, _ ->
+              val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+              view.updatePadding(
+                top = if (layoutManager is GridLayoutManager) recyclerPaddingGridTop else recyclerPaddingTop,
+                bottom = inset.bottom + recyclerPaddingBottom,
+              )
+            }
           }
 
           if (resetScroll?.consume() == true) {

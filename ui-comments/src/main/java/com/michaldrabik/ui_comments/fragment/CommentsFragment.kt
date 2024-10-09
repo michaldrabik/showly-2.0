@@ -4,9 +4,12 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
+import android.view.ViewGroup.MarginLayoutParams
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -17,6 +20,7 @@ import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
@@ -73,7 +77,7 @@ class CommentsFragment : BaseFragment<CommentsViewModel>(R.layout.fragment_comme
     super.onViewCreated(view, savedInstanceState)
     setupView()
     setupRecycler()
-    setupStatusBar()
+    setupInsets()
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
@@ -93,13 +97,22 @@ class CommentsFragment : BaseFragment<CommentsViewModel>(R.layout.fragment_comme
     }
   }
 
-  private fun setupStatusBar() {
+  private fun setupInsets() {
     with(binding) {
-      commentsRecycler.doOnApplyWindowInsets { _, insets, padding, _ ->
-        val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
-        commentsRecycler.updatePadding(top = padding.top + inset)
-        commentsTitle.updateTopMargin(inset)
-        commentsBackArrow.updateTopMargin(inset)
+      commentsRecycler.doOnApplyWindowInsets { view, insets, padding, _ ->
+        val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+        view.updatePadding(
+          top = padding.top + inset.top,
+          bottom = padding.bottom + inset.bottom,
+        )
+        commentsTitle.updateTopMargin(inset.top)
+        commentsBackArrow.updateTopMargin(inset.top)
+        commentsUpButton.updateLayoutParams<MarginLayoutParams> {
+          updateMargins(bottom = inset.bottom + dimenToPx(R.dimen.fabButtonPadding))
+        }
+        commentsPostButton.updateLayoutParams<MarginLayoutParams> {
+          updateMargins(bottom = inset.bottom + dimenToPx(R.dimen.fabButtonPadding))
+        }
       }
     }
   }

@@ -75,7 +75,7 @@ class MyMoviesFragment :
     savedInstanceState: Bundle?,
   ) {
     super.onViewCreated(view, savedInstanceState)
-    setupStatusBar()
+    setupInsets()
     setupRecycler()
 
     launchAndRepeatStarted(
@@ -113,7 +113,7 @@ class MyMoviesFragment :
     }
   }
 
-  private fun setupStatusBar() {
+  private fun setupInsets() {
     with(binding) {
       if (statusBarHeight != 0) {
         myMoviesRoot.updatePadding(top = statusBarHeight)
@@ -122,9 +122,13 @@ class MyMoviesFragment :
       }
       myMoviesRoot.doOnApplyWindowInsets { view, insets, _, _ ->
         val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
-        statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top + tabletOffset
+        val systemInset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+        statusBarHeight = systemInset.top + tabletOffset
         view.updatePadding(top = statusBarHeight)
-        myMoviesRecycler.updatePadding(top = dimenToPx(R.dimen.myMoviesTabsViewPadding))
+        myMoviesRecycler.updatePadding(
+          top = dimenToPx(R.dimen.myMoviesTabsViewPadding),
+          bottom = dimenToPx(R.dimen.myMoviesBottomPadding) + systemInset.bottom,
+        )
       }
     }
   }

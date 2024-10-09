@@ -4,11 +4,15 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.ViewGroup
+import android.view.ViewGroup.MarginLayoutParams
 import android.view.animation.DecelerateInterpolator
 import androidx.activity.addCallback
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -43,6 +47,7 @@ import com.michaldrabik.ui_base.utilities.MoviesStatusHost
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
+import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -76,7 +81,6 @@ class MainActivity :
   private val viewModel by viewModels<MainViewModel>()
   private lateinit var binding: ActivityMainBinding
 
-  private val navigationHeightPad by lazy { dimenToPx(R.dimen.bottomNavigationHeightPadded) }
   private val navigationHeight by lazy { dimenToPx(R.dimen.bottomNavigationHeight) }
   private val decelerateInterpolator by lazy { DecelerateInterpolator(2F) }
 
@@ -88,6 +92,8 @@ class MainActivity :
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    enableEdgeToEdge()
+
     binding = ActivityMainBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
@@ -137,11 +143,17 @@ class MainActivity :
   }
 
   private fun setupView() {
-    with(binding.bottomMenuView) {
-      isModeMenuEnabled = hasMoviesEnabled()
-      onModeSelected = { setMode(it) }
+    with(binding) {
+      bottomNavigationWrapper.doOnApplyWindowInsets { _, insets, _, margins ->
+        val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
+        bottomNavigationWrapper.updateLayoutParams<MarginLayoutParams> {
+          bottomMargin = margins.bottom + inset
+        }
+      }
+      bottomMenuView.isModeMenuEnabled = hasMoviesEnabled()
+      bottomMenuView.onModeSelected = { setMode(it) }
+      viewMask.onClick { /* NOOP */ }
     }
-    binding.viewMask.onClick { /* NOOP */ }
   }
 
   @OptIn(FlowPreview::class)
@@ -232,7 +244,8 @@ class MainActivity :
       snackbarHost.translationY = navigationHeight.toFloat()
       bottomNavigationWrapper
         .animate()
-        .translationYBy(navigationHeightPad.toFloat())
+        .alpha(0F)
+        .translationYBy(navigationHeight.toFloat() / 2)
         .setDuration(if (animate) NAVIGATION_TRANSITION_DURATION_MS else 0)
         .setInterpolator(decelerateInterpolator)
         .start()
@@ -248,6 +261,7 @@ class MainActivity :
     binding.snackbarHost.translationY = 0F
     binding.bottomNavigationWrapper
       .animate()
+      .alpha(1F)
       .translationY(0F)
       .setDuration(if (animate) NAVIGATION_TRANSITION_DURATION_MS else 0)
       .setInterpolator(decelerateInterpolator)

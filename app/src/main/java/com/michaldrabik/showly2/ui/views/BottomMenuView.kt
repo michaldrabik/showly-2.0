@@ -13,13 +13,17 @@ import android.view.MotionEvent.ACTION_UP
 import android.view.ViewGroup
 import android.view.ViewPropertyAnimator
 import android.widget.FrameLayout
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.children
+import androidx.core.view.updateLayoutParams
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.michaldrabik.common.Mode
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.databinding.ViewBottomMenuBinding
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
+import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.screenWidth
@@ -49,6 +53,15 @@ class BottomMenuView : FrameLayout {
 
   private var touchX = 0F
   private var isModeMenu = false
+
+  init {
+    rootView.doOnApplyWindowInsets { _, insets, _, _ ->
+      val bottomInset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
+      binding.bottomNavigationView.updateLayoutParams<MarginLayoutParams> {
+        height = context.dimenToPx(R.dimen.bottomNavigationHeight) + bottomInset
+      }
+    }
+  }
 
   override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
     if (!isModeMenuEnabled) return super.onInterceptTouchEvent(ev)

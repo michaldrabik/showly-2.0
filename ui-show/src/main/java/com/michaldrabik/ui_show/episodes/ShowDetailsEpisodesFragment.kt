@@ -83,7 +83,7 @@ class ShowDetailsEpisodesFragment :
     super.onViewCreated(view, savedInstanceState)
 
     setupView()
-    setupStatusBar()
+    setupInsets()
     setupRecycler()
 
     launchAndRepeatStarted(
@@ -107,7 +107,7 @@ class ShowDetailsEpisodesFragment :
     }
   }
 
-  private fun setupStatusBar() {
+  private fun setupInsets() {
     with(binding) {
       episodesRoot.doOnApplyWindowInsets { _, insets, padding, _ ->
         val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top

@@ -7,7 +7,7 @@
   <dimen name="myMoviesHeaderGridPadding">3dp</dimen>
   <dimen name="myMoviesRecentsGridPadding">-1dp</dimen>
 
-  <dimen name="myMoviesBottomPadding">76dp</dimen>
+  <dimen name="myMoviesBottomPadding">92dp</dimen>
   <dimen name="myMoviesFanartCorner">4dp</dimen>
   <dimen name="myMoviesFanartHeight">126dp</dimen>
 

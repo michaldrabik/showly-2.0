@@ -78,7 +78,7 @@ class HiddenFragment :
     savedInstanceState: Bundle?,
   ) {
     super.onViewCreated(view, savedInstanceState)
-    setupStatusBar()
+    setupInsets()
     setupRecycler()
 
     launchAndRepeatStarted(
@@ -118,7 +118,7 @@ class HiddenFragment :
     }
   }
 
-  private fun setupStatusBar() {
+  private fun setupInsets() {
     with(binding) {
       if (statusBarHeight != 0) {
         hiddenContent.updatePadding(top = hiddenContent.paddingTop + statusBarHeight)
@@ -127,9 +127,13 @@ class HiddenFragment :
       }
       hiddenContent.doOnApplyWindowInsets { view, insets, padding, _ ->
         val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
-        statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top + tabletOffset
+        val systemInset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+        statusBarHeight = systemInset.top + tabletOffset
         view.updatePadding(top = padding.top + statusBarHeight)
-        hiddenRecycler.updatePadding(top = dimenToPx(R.dimen.archiveTabsViewPadding))
+        hiddenRecycler.updatePadding(
+          top = dimenToPx(R.dimen.archiveTabsViewPadding),
+          bottom = dimenToPx(R.dimen.myShowsBottomPadding) + systemInset.bottom,
+        )
       }
     }
   }

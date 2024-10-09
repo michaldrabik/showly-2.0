@@ -40,6 +40,7 @@ import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.copyToClipboard
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.gone
@@ -118,7 +119,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     super.onViewCreated(view, savedInstanceState)
     requireActivity().requestedOrientation = SCREEN_ORIENTATION_PORTRAIT
     setupView()
-    setupStatusBar()
+    setupInsets()
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
@@ -165,18 +166,19 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     }
   }
 
-  private fun setupStatusBar() {
+  private fun setupInsets() {
     with(binding) {
-      movieDetailsBackArrow.doOnApplyWindowInsets { view, insets, _, _ ->
-        val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+      root.doOnApplyWindowInsets { view, insets, _, _ ->
+        val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
         if (imagePadded) {
           movieDetailsMainLayout
-            .updatePadding(top = inset)
+            .updatePadding(top = inset.top)
         } else {
           (movieDetailsShareButton.layoutParams as ViewGroup.MarginLayoutParams)
-            .updateMargins(top = inset)
+            .updateMargins(top = inset.top)
         }
-        (view.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(top = inset)
+        movieDetailsMainContent.updatePadding(bottom = inset.bottom + dimenToPx(R.dimen.spaceNormal))
+        (movieDetailsBackArrow.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(top = inset.top)
       }
     }
   }

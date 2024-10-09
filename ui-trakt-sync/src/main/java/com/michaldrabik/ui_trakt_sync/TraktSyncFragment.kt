@@ -53,7 +53,7 @@ class TraktSyncFragment :
   ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
-    setupStatusBar()
+    setupInsets()
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
@@ -75,7 +75,7 @@ class TraktSyncFragment :
     }
   }
 
-  private fun setupStatusBar() {
+  private fun setupInsets() {
     binding.traktSyncRoot.doOnApplyWindowInsets { view, insets, _, _ ->
       val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
       view.updatePadding(top = inset)

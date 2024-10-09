@@ -7,7 +7,7 @@
   <dimen name="myShowsSearchLocalViewPadding">150dp</dimen>
   <dimen name="myShowsSearchLocalOffset">40dp</dimen>
 
-  <dimen name="myShowsBottomPadding">76dp</dimen>
+  <dimen name="myShowsBottomPadding">92dp</dimen>
   <dimen name="myShowsFanartCorner">4dp</dimen>
   <dimen name="myShowsFanartHeight">126dp</dimen>
   <dimen name="myShowsPosterHeight">120dp</dimen>

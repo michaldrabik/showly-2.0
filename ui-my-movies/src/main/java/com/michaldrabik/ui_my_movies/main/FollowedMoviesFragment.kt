@@ -77,7 +77,7 @@ class FollowedMoviesFragment :
     super.onViewCreated(view, savedInstanceState)
     setupView()
     setupPager()
-    setupStatusBar()
+    setupInsets()
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
@@ -148,7 +148,7 @@ class FollowedMoviesFragment :
     }
   }
 
-  private fun setupStatusBar() {
+  private fun setupInsets() {
     with(binding) {
       followedMoviesRoot.doOnApplyWindowInsets { _, insets, _, _ ->
         val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0

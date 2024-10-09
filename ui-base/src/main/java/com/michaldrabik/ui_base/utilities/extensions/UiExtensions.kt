@@ -133,6 +133,10 @@ fun View.updateTopMargin(margin: Int) {
   (layoutParams as ViewGroup.MarginLayoutParams).updateMargins(top = margin)
 }
 
+fun View.updateBottomMargin(margin: Int) {
+  (layoutParams as ViewGroup.MarginLayoutParams).updateMargins(bottom = margin)
+}
+
 fun TextView.setTextFade(
   text: String,
   duration: Long = 125,

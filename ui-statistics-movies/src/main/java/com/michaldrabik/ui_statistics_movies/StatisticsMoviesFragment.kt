@@ -31,7 +31,7 @@ class StatisticsMoviesFragment : BaseFragment<StatisticsMoviesViewModel>(R.layou
   ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
-    setupStatusBar()
+    setupInsets()
 
     viewLifecycleOwner.lifecycleScope.launch {
       repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -56,7 +56,7 @@ class StatisticsMoviesFragment : BaseFragment<StatisticsMoviesViewModel>(R.layou
     }
   }
 
-  private fun setupStatusBar() {
+  private fun setupInsets() {
     binding.statisticsMoviesRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
       val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
       view.updatePadding(top = padding.top + inset)

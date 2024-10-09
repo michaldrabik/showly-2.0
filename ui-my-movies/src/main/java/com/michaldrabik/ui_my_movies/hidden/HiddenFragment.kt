@@ -74,7 +74,7 @@ class HiddenFragment :
     savedInstanceState: Bundle?,
   ) {
     super.onViewCreated(view, savedInstanceState)
-    setupStatusBar()
+    setupInsets()
     setupRecycler()
 
     launchAndRepeatStarted(
@@ -111,7 +111,7 @@ class HiddenFragment :
     }
   }
 
-  private fun setupStatusBar() {
+  private fun setupInsets() {
     with(binding) {
       if (statusBarHeight != 0) {
         hiddenMoviesContent.updatePadding(top = hiddenMoviesContent.paddingTop + statusBarHeight)
@@ -120,9 +120,13 @@ class HiddenFragment :
       }
       hiddenMoviesContent.doOnApplyWindowInsets { view, insets, padding, _ ->
         val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
-        statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top + tabletOffset
+        val systemInset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+        statusBarHeight = systemInset.top + tabletOffset
         view.updatePadding(top = padding.top + statusBarHeight)
-        hiddenMoviesRecycler.updatePadding(top = dimenToPx(R.dimen.collectionTabsViewPadding))
+        hiddenMoviesRecycler.updatePadding(
+          top = dimenToPx(R.dimen.collectionTabsViewPadding),
+          bottom = dimenToPx(R.dimen.myMoviesBottomPadding) + systemInset.bottom,
+        )
       }
     }
   }

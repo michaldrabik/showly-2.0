@@ -23,9 +23,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
-    android:background="?attr/colorBottomMenuBackground"
-    android:elevation="@dimen/elevationNormal"
+    android:layout_marginStart="@dimen/bottomMenuHorizontalPadding"
+    android:layout_marginEnd="@dimen/bottomMenuHorizontalPadding"
+    android:layout_marginBottom="@dimen/spaceMedium"
+    android:elevation="4dp"
     android:orientation="vertical"
+    app:elevation="4dp"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +40,10 @@
       android:id="@+id/statusView"
       android:layout_width="match_parent"
       android:layout_height="@dimen/bottomNoInternetViewHeight"
-      android:background="?colorErrorSnackbar"
+      android:layout_marginStart="@dimen/spaceNormal"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:layout_marginBottom="@dimen/spaceTiny"
+      android:background="@drawable/bg_status_view"
       android:gravity="center"
       android:text="@string/errorNoInternetConnection"
       android:textColor="?textColorOnSurface"
@@ -46,17 +52,13 @@
       tools:visibility="visible"
       />
 
-    <View
-      android:id="@+id/bottomNavigationSeparator"
-      android:layout_width="match_parent"
-      android:layout_height="1dp"
-      android:background="?attr/colorBottomMenuSeparator"
-      />
-
     <com.michaldrabik.showly2.ui.views.BottomMenuView
       android:id="@+id/bottomMenuView"
       android:layout_width="match_parent"
       android:layout_height="@dimen/bottomNavigationHeight"
+      android:background="@drawable/bg_bottom_menu"
+      android:elevation="2dp"
+      app:elevation="2dp"
       />
 
   </LinearLayout>
@@ -76,6 +78,7 @@
     android:layout_width="@dimen/tutorialTipSize"
     android:layout_height="@dimen/tutorialTipSize"
     android:layout_marginBottom="54dp"
+    android:translationZ="10dp"
     app:layout_constraintBottom_toBottomOf="@id/bottomNavigationWrapper"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="@dimen/tipModeMenuRatio"

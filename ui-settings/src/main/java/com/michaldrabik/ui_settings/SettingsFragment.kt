@@ -55,8 +55,11 @@ class SettingsFragment :
       settingsToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
       settingsPremium.onClick { navigateTo(R.id.actionSettingsFragmentToPremium) }
       settingsRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
-        val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
-        view.updatePadding(top = padding.top + inset)
+        val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+        view.updatePadding(
+          top = padding.top + inset.top,
+          bottom = padding.bottom + inset.bottom,
+        )
       }
     }
   }

@@ -32,7 +32,7 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
   ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
-    setupStatusBar()
+    setupInsets()
 
     viewLifecycleOwner.lifecycleScope.launch {
       repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -63,7 +63,7 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
     }
   }
 
-  private fun setupStatusBar() {
+  private fun setupInsets() {
     binding.statisticsRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
       val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
       view.updatePadding(top = padding.top + inset)

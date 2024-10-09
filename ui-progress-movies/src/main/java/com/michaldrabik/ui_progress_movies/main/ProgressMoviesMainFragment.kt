@@ -83,7 +83,7 @@ class ProgressMoviesMainFragment :
     super.onViewCreated(view, savedInstanceState)
     setupView()
     setupPager()
-    setupStatusBar()
+    setupInsets()
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
@@ -158,7 +158,7 @@ class ProgressMoviesMainFragment :
     }
   }
 
-  private fun setupStatusBar() {
+  private fun setupInsets() {
     with(binding) {
       progressMoviesRoot.doOnApplyWindowInsets { _, insets, _, _ ->
         val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0

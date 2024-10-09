@@ -104,7 +104,7 @@ class SearchFragment :
     setupView()
     setupRecycler()
     setupSuggestionsRecycler()
-    setupStatusBar()
+    setupInsets()
 
     if (savedInstanceState == null && !isInitialized) {
       isInitialized = true
@@ -244,11 +244,14 @@ class SearchFragment :
     }
   }
 
-  private fun setupStatusBar() {
-    binding.searchRoot.doOnApplyWindowInsets { view, insets, _, _ ->
-      val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
-      val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top + tabletOffset
-      view.updatePadding(top = inset)
+  private fun setupInsets() {
+    with(binding) {
+      searchRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
+        val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
+        val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+        view.updatePadding(top = inset.top + tabletOffset)
+        searchRecycler.updatePadding(bottom = inset.bottom + padding.bottom)
+      }
     }
   }
 

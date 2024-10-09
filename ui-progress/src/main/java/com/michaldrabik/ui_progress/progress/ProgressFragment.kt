@@ -104,7 +104,7 @@ class ProgressFragment :
     super.onViewCreated(view, savedInstanceState)
     setupView()
     setupRecycler()
-    setupStatusBar()
+    setupInsets()
 
     viewLifecycleOwner.lifecycleScope.launch {
       viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -176,30 +176,34 @@ class ProgressFragment :
     }
   }
 
-  private fun setupStatusBar() {
+  private fun setupInsets() {
     with(binding) {
-      val recyclerPadding = if (moviesEnabled) {
-        R.dimen.progressTabsViewPadding
-      } else {
-        R.dimen.progressTabsViewPaddingNoModes
-      }
-      val overscrollPadding = if (moviesEnabled) {
-        R.dimen.progressOverscrollPadding
-      } else {
-        R.dimen.progressOverscrollPaddingNoModes
-      }
+      val recyclerPadding =
+        if (moviesEnabled) R.dimen.progressTabsViewPadding else R.dimen.progressTabsViewPaddingNoModes
+
+      val overscrollPadding =
+        if (moviesEnabled) R.dimen.progressOverscrollPadding else R.dimen.progressOverscrollPaddingNoModes
+
       if (statusBarHeight != 0) {
         progressRecycler.updatePadding(top = statusBarHeight + dimenToPx(recyclerPadding))
         (progressOverscroll.layoutParams as ViewGroup.MarginLayoutParams)
           .updateMargins(top = statusBarHeight + dimenToPx(overscrollPadding))
         return
       }
-      progressRecycler.doOnApplyWindowInsets { view, insets, _, _ ->
+
+      progressRecycler.doOnApplyWindowInsets { view, insets, padding, _ ->
         val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
-        statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top + tabletOffset
-        view.updatePadding(top = statusBarHeight + dimenToPx(recyclerPadding))
+        val systemInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+        statusBarHeight = systemInsets.top + tabletOffset
+
+        view.updatePadding(
+          top = statusBarHeight + dimenToPx(recyclerPadding),
+          bottom = padding.bottom + systemInsets.bottom,
+        )
+
         (progressEmptyView.root.layoutParams as ViewGroup.MarginLayoutParams)
           .updateMargins(top = statusBarHeight + dimenToPx(R.dimen.spaceBig))
+
         (progressOverscroll.layoutParams as ViewGroup.MarginLayoutParams)
           .updateMargins(top = statusBarHeight + dimenToPx(overscrollPadding))
       }

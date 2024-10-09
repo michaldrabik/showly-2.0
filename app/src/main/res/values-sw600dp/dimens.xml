@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <dimen name="welcomeDialogSpace">112dp</dimen>
+  <dimen name="bottomMenuHorizontalPadding">96dp</dimen>
 
   <item name="tipModeMenuRatio" format="float" type="dimen">0.32</item>
   <item name="tipDiscoverRatio" format="float" type="dimen">0.55</item>

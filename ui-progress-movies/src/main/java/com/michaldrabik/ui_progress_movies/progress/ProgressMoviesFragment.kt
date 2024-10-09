@@ -101,7 +101,7 @@ class ProgressMoviesFragment :
     super.onViewCreated(view, savedInstanceState)
     setupView()
     setupRecycler()
-    setupStatusBar()
+    setupInsets()
 
     viewLifecycleOwner.lifecycleScope.launch {
       viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -233,17 +233,22 @@ class ProgressMoviesFragment :
     binding.progressMoviesOverscrollProgress.progress = 0
   }
 
-  private fun setupStatusBar() {
+  private fun setupInsets() {
     if (statusBarHeight != 0) {
       binding.progressMoviesMainRecycler.updatePadding(
         top = statusBarHeight + dimenToPx(R.dimen.progressMoviesTabsViewPadding),
       )
       return
     }
-    binding.progressMoviesMainRecycler.doOnApplyWindowInsets { view, insets, _, _ ->
+    binding.progressMoviesMainRecycler.doOnApplyWindowInsets { view, insets, padding, _ ->
       val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
-      statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top + tabletOffset
-      view.updatePadding(top = statusBarHeight + dimenToPx(R.dimen.progressMoviesTabsViewPadding))
+      val systemInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+      statusBarHeight = systemInsets.top + tabletOffset
+      view.updatePadding(
+        top = statusBarHeight + dimenToPx(R.dimen.progressMoviesTabsViewPadding),
+        bottom = padding.bottom + systemInsets.bottom,
+      )
       (binding.progressMoviesEmptyView.rootLayout.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarHeight + dimenToPx(R.dimen.spaceBig))
       (binding.progressMoviesOverscroll.layoutParams as ViewGroup.MarginLayoutParams)

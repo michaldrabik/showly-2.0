@@ -74,7 +74,7 @@ class WatchlistFragment :
     savedInstanceState: Bundle?,
   ) {
     super.onViewCreated(view, savedInstanceState)
-    setupStatusBar()
+    setupInsets()
     setupRecycler()
 
     launchAndRepeatStarted(
@@ -113,7 +113,7 @@ class WatchlistFragment :
     }
   }
 
-  private fun setupStatusBar() {
+  private fun setupInsets() {
     with(binding) {
       if (statusBarHeight != 0) {
         watchlistMoviesContent.updatePadding(top = watchlistMoviesContent.paddingTop + statusBarHeight)
@@ -122,9 +122,13 @@ class WatchlistFragment :
       }
       watchlistMoviesContent.doOnApplyWindowInsets { view, insets, padding, _ ->
         val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0
-        statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top + tabletOffset
+        val systemInset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+        statusBarHeight = systemInset.top + tabletOffset
         view.updatePadding(top = padding.top + statusBarHeight)
-        watchlistMoviesRecycler.updatePadding(top = dimenToPx(R.dimen.collectionTabsViewPadding))
+        watchlistMoviesRecycler.updatePadding(
+          top = dimenToPx(R.dimen.collectionTabsViewPadding),
+          bottom = dimenToPx(R.dimen.myMoviesBottomPadding) + systemInset.bottom,
+        )
       }
     }
   }

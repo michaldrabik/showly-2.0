@@ -78,7 +78,7 @@ class FollowedShowsFragment :
     super.onViewCreated(view, savedInstanceState)
     setupView()
     setupPager()
-    setupStatusBar()
+    setupInsets()
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
@@ -153,7 +153,7 @@ class FollowedShowsFragment :
     }
   }
 
-  private fun setupStatusBar() {
+  private fun setupInsets() {
     with(binding) {
       followedShowsRoot.doOnApplyWindowInsets { _, insets, _, _ ->
         val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0

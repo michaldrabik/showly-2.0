@@ -100,7 +100,7 @@ internal class DiscoverMoviesFragment :
   ) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
-    setupStatusBar()
+    setupInsets()
     setupRecycler()
     setupSwipeRefresh()
 
@@ -142,7 +142,7 @@ internal class DiscoverMoviesFragment :
     }
   }
 
-  private fun setupStatusBar() {
+  private fun setupInsets() {
     with(binding) {
       discoverMoviesRoot.doOnApplyWindowInsets { _, insets, _, _ ->
         val tabletOffset = if (isTablet) dimenToPx(R.dimen.spaceMedium) else 0

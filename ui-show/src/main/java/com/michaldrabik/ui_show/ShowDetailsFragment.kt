@@ -37,6 +37,7 @@ import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.events.Event
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.copyToClipboard
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.gone
@@ -109,7 +110,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     super.onViewCreated(view, savedInstanceState)
     requireActivity().requestedOrientation = SCREEN_ORIENTATION_PORTRAIT
     setupView()
-    setupStatusBar()
+    setupInsets()
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
@@ -163,17 +164,19 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
   }
 
-  private fun setupStatusBar() {
+  private fun setupInsets() {
     with(binding) {
-      showDetailsBackArrow.doOnApplyWindowInsets { _, insets, _, _ ->
-        val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+      root.doOnApplyWindowInsets { _, insets, _, _ ->
+        val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
         if (imagePadded) {
-          showDetailsMainLayout.updatePadding(top = inset)
+          showDetailsMainLayout
+            .updatePadding(top = inset.top)
         } else {
           (showDetailsShareButton.layoutParams as MarginLayoutParams)
-            .updateMargins(top = inset)
+            .updateMargins(top = inset.top)
         }
-        (showDetailsBackArrow.layoutParams as MarginLayoutParams).updateMargins(top = inset)
+        showDetailsMainContent.updatePadding(bottom = inset.bottom + dimenToPx(R.dimen.spaceNormal))
+        (showDetailsBackArrow.layoutParams as MarginLayoutParams).updateMargins(top = inset.top)
       }
     }
   }
