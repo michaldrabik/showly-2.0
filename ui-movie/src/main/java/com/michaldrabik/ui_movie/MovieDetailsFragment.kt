@@ -88,6 +88,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MANAGE_LISTS
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import java.time.ZoneOffset.UTC
 import java.util.Locale.ENGLISH
 import java.util.Locale.ROOT
 
@@ -389,7 +390,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   private fun handleEvent(event: Event<*>) {
     when (event) {
       is RemoveFromTrakt -> openRemoveTraktSheet(event.navigationId)
-      is OpenDateSelectionSheet -> openDateSelectionSheet()
+      is OpenDateSelectionSheet -> openDateSelectionSheet(event.movie)
       is RequestWidgetsUpdate -> (requireAppContext() as WidgetsProvider).requestMoviesWidgetsUpdate()
       is Finish -> requireActivity().onBackPressed()
     }
@@ -408,14 +409,16 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     navigateTo(action, args)
   }
 
-  private fun openDateSelectionSheet() {
+  private fun openDateSelectionSheet(movie: Movie) {
     setFragmentResultListener(DateSelectionBottomSheet.REQUEST_DATE_SELECTION) { _, bundle ->
       when (val result = bundle.requireParcelable<Result>(DateSelectionBottomSheet.RESULT_DATE_SELECTION)) {
         is Result.Now -> viewModel.addToMyMovies(isCustomDateSelected = true)
         is Result.CustomDate -> viewModel.addToMyMovies(isCustomDateSelected = true, customDate = result.date)
+        is Result.ReleaseDate -> viewModel.addToMyMovies(isCustomDateSelected = true, customDate = result.date)
       }
     }
-    navigateToSafe(R.id.actionMovieDetailsFragmentToDateSelection)
+    val options = DateSelectionBottomSheet.createBundle(movie.released?.atStartOfDay(UTC))
+    navigateToSafe(R.id.actionMovieDetailsFragmentToDateSelection, options)
   }
 
   private fun openShareSheet(movie: Movie) {

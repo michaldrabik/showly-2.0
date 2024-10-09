@@ -10,6 +10,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.repository.settings.SettingsViewModeRepository
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.WidgetsProvider
+import com.michaldrabik.ui_base.common.sheets.date_selection.DateSelectionBottomSheet
 import com.michaldrabik.ui_base.common.sheets.date_selection.DateSelectionBottomSheet.Companion.REQUEST_DATE_SELECTION
 import com.michaldrabik.ui_base.common.sheets.date_selection.DateSelectionBottomSheet.Companion.RESULT_DATE_SELECTION
 import com.michaldrabik.ui_base.common.sheets.date_selection.DateSelectionBottomSheet.Result
@@ -193,9 +194,11 @@ class ShowDetailsSeasonsFragment : BaseFragment<ShowDetailsSeasonsViewModel>(R.l
       when (val result = bundle.requireParcelable<Result>(RESULT_DATE_SELECTION)) {
         is Result.Now -> viewModel.setSeasonWatched(season, true)
         is Result.CustomDate -> viewModel.setSeasonWatched(season, true, result.date)
+        is Result.ReleaseDate -> viewModel.setSeasonWatched(season, true, result.date)
       }
     }
-    navigateToSafe(R.id.actionShowDetailsFragmentToDateSelection)
+    val options = DateSelectionBottomSheet.createBundle(season.firstAired)
+    navigateToSafe(R.id.actionShowDetailsFragmentToDateSelection, options)
   }
 
   private fun openDateSelectionDialog(item: QuickSetupListItem) {
@@ -203,9 +206,11 @@ class ShowDetailsSeasonsFragment : BaseFragment<ShowDetailsSeasonsViewModel>(R.l
       when (val result = bundle.requireParcelable<Result>(RESULT_DATE_SELECTION)) {
         is Result.Now -> viewModel.setQuickProgress(item, null)
         is Result.CustomDate -> viewModel.setQuickProgress(item, result.date)
+        is Result.ReleaseDate -> viewModel.setQuickProgress(item, result.date)
       }
     }
-    navigateToSafe(R.id.actionShowDetailsFragmentToDateSelection)
+    val options = DateSelectionBottomSheet.createBundle(item.episode.firstAired)
+    navigateToSafe(R.id.actionShowDetailsFragmentToDateSelection, options)
   }
 
   override fun setupBackPressed() = Unit

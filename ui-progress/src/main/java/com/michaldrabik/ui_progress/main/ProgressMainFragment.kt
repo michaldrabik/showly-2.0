@@ -17,6 +17,7 @@ import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.OnShowsMoviesSyncedListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.sheets.context_menu.ContextMenuBottomSheet
+import com.michaldrabik.ui_base.common.sheets.date_selection.DateSelectionBottomSheet
 import com.michaldrabik.ui_base.common.sheets.date_selection.DateSelectionBottomSheet.Companion.REQUEST_DATE_SELECTION
 import com.michaldrabik.ui_base.common.sheets.date_selection.DateSelectionBottomSheet.Companion.RESULT_DATE_SELECTION
 import com.michaldrabik.ui_base.common.sheets.date_selection.DateSelectionBottomSheet.Result
@@ -293,9 +294,11 @@ class ProgressMainFragment :
       when (val result = bundle.requireParcelable<Result>(RESULT_DATE_SELECTION)) {
         is Result.Now -> openRateDialogIfNeeded()
         is Result.CustomDate -> openRateDialogIfNeeded(result.date)
+        is Result.ReleaseDate -> openRateDialogIfNeeded(result.date)
       }
     }
-    navigateToSafe(R.id.actionProgressFragmentToDateSelection)
+    val options = DateSelectionBottomSheet.createBundle(episodeBundle.episode.firstAired)
+    navigateToSafe(R.id.actionProgressFragmentToDateSelection, options)
   }
 
   private fun openSettings() {

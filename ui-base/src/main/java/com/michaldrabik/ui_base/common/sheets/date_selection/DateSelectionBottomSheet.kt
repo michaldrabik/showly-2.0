@@ -18,14 +18,20 @@ import com.michaldrabik.common.extensions.toUtcZone
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.databinding.ViewDateSelectionBinding
+import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.utilities.TipsHost
+import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.requireSerializable
+import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_model.Tip.DATE_SELECTION_DEFAULTS
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_OPTIONS
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 
 @AndroidEntryPoint
@@ -34,9 +40,15 @@ class DateSelectionBottomSheet : BaseBottomSheetFragment(R.layout.view_date_sele
   companion object {
     const val REQUEST_DATE_SELECTION = "REQUEST_DATE_SELECTION"
     const val RESULT_DATE_SELECTION = "RESULT_DATE_SELECTION"
+
+    fun createBundle(releaseDate: ZonedDateTime?): Bundle =
+      bundleOf(
+        ARG_OPTIONS to releaseDate,
+      )
   }
 
   private val binding by viewBinding(ViewDateSelectionBinding::bind)
+  private val releaseDate by lazy { requireSerializable<ZonedDateTime?>(ARG_OPTIONS) }
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
@@ -51,6 +63,7 @@ class DateSelectionBottomSheet : BaseBottomSheetFragment(R.layout.view_date_sele
 
   private fun setupView() {
     with(binding) {
+      cancelButton.onClick { closeSheet() }
       dateNowButton.onClick {
         closeSheet()
         setFragmentResult(
@@ -59,7 +72,21 @@ class DateSelectionBottomSheet : BaseBottomSheetFragment(R.layout.view_date_sele
         )
       }
       dateCustomButton.onClick { openDateSelectionDialog() }
-      cancelButton.onClick { closeSheet() }
+      with(dateReleaseButton) {
+        if (releaseDate != null) {
+          isEnabled = true
+          alpha = 1F
+          val dateFormat = DateTimeFormatter.ofPattern(DateFormatProvider.DAY_1)
+          dateReleaseButtonLabel.text = releaseDate?.toLocalZone()?.format(dateFormat)
+          dateReleaseButtonLabel.visible()
+        } else {
+          isEnabled = false
+          alpha = 0.3F
+          dateReleaseButtonLabel.text = null
+          dateReleaseButtonLabel.gone()
+        }
+        onClick { onReleaseDateSelected() }
+      }
     }
   }
 
@@ -137,10 +164,33 @@ class DateSelectionBottomSheet : BaseBottomSheetFragment(R.layout.view_date_sele
     setFragmentResult(REQUEST_DATE_SELECTION, result)
   }
 
+  private fun onReleaseDateSelected() {
+    val resultDate = releaseDate
+      ?.toLocalZone()
+      ?.withHour(20)
+      ?.withMinute(0)
+      ?.toUtcZone()
+      ?: nowUtc()
+
+    closeSheet()
+
+    setFragmentResult(
+      requestKey = REQUEST_DATE_SELECTION,
+      result = bundleOf(
+        RESULT_DATE_SELECTION to Result.ReleaseDate(resultDate),
+      ),
+    )
+  }
+
   sealed interface Result : Parcelable {
 
     @Parcelize
     data object Now : Result
+
+    @Parcelize
+    data class ReleaseDate(
+      val date: ZonedDateTime,
+    ) : Result
 
     @Parcelize
     data class CustomDate(

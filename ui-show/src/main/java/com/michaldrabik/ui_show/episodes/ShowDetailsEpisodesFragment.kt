@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.WidgetsProvider
+import com.michaldrabik.ui_base.common.sheets.date_selection.DateSelectionBottomSheet
 import com.michaldrabik.ui_base.common.sheets.date_selection.DateSelectionBottomSheet.Companion.REQUEST_DATE_SELECTION
 import com.michaldrabik.ui_base.common.sheets.date_selection.DateSelectionBottomSheet.Companion.RESULT_DATE_SELECTION
 import com.michaldrabik.ui_base.common.sheets.date_selection.DateSelectionBottomSheet.Result
@@ -285,9 +286,11 @@ class ShowDetailsEpisodesFragment :
       when (val result = bundle.requireParcelable<Result>(RESULT_DATE_SELECTION)) {
         is Result.Now -> viewModel.setEpisodeWatched(episode, true)
         is Result.CustomDate -> viewModel.setEpisodeWatched(episode, true, result.date)
+        is Result.ReleaseDate -> viewModel.setEpisodeWatched(episode, true, result.date)
       }
     }
-    navigateToSafe(R.id.actionEpisodesFragmentToDateSelection)
+    val options = DateSelectionBottomSheet.createBundle(episode.firstAired)
+    navigateToSafe(R.id.actionEpisodesFragmentToDateSelection, options)
   }
 
   private fun openDateSelectionDialog(season: SeasonListItem) {
@@ -295,9 +298,11 @@ class ShowDetailsEpisodesFragment :
       when (val result = bundle.requireParcelable<Result>(RESULT_DATE_SELECTION)) {
         is Result.Now -> viewModel.setSeasonWatched(season, true)
         is Result.CustomDate -> viewModel.setSeasonWatched(season, true, result.date)
+        is Result.ReleaseDate -> viewModel.setSeasonWatched(season, true, result.date)
       }
     }
-    navigateToSafe(R.id.actionEpisodesFragmentToDateSelection)
+    val options = DateSelectionBottomSheet.createBundle(season.season.firstAired)
+    navigateToSafe(R.id.actionEpisodesFragmentToDateSelection, options)
   }
 
   override fun onDestroyView() {

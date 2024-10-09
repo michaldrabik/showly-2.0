@@ -25,8 +25,10 @@ import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.requireParcelable
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.ZoneOffset.UTC
 import java.util.Locale
 
 @AndroidEntryPoint
@@ -205,20 +207,22 @@ class MovieContextMenuBottomSheet : ContextMenuBottomSheet() {
         result.removeHidden -> openRemoveTraktSheet(R.id.actionMovieItemContextDialogToRemoveTraktHidden, Mode.MOVIE)
         else -> close()
       }
-      is SelectDateUiEvent -> openDateSelection()
+      is SelectDateUiEvent -> openDateSelection(result.movie)
       is FinishUiEvent -> if (result.isSuccess) close()
       else -> throw IllegalStateException()
     }
   }
 
-  private fun openDateSelection() {
+  private fun openDateSelection(movie: Movie) {
     setFragmentResultListener(DateSelectionBottomSheet.REQUEST_DATE_SELECTION) { _, bundle ->
       when (val result = bundle.requireParcelable<Result>(DateSelectionBottomSheet.RESULT_DATE_SELECTION)) {
         is Result.Now -> viewModel.moveToMyMovies(isCustomDateSelected = true)
         is Result.CustomDate -> viewModel.moveToMyMovies(isCustomDateSelected = true, customDate = result.date)
+        is Result.ReleaseDate -> viewModel.moveToMyMovies(isCustomDateSelected = true, customDate = result.date)
       }
     }
-    navigateTo(R.id.actionMovieItemContextDialogToDateSelection)
+    val options = DateSelectionBottomSheet.createBundle(movie.released?.atStartOfDay(UTC))
+    navigateTo(R.id.actionMovieItemContextDialogToDateSelection, options)
   }
 
   override fun openDetails() {

@@ -11,7 +11,7 @@
   android:paddingStart="@dimen/spaceNormal"
   android:paddingTop="@dimen/spaceMedium"
   android:paddingEnd="@dimen/spaceNormal"
-  android:paddingBottom="@dimen/spaceNormal"
+  android:paddingBottom="@dimen/spaceBig"
   tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
   >
 
@@ -49,38 +49,11 @@
     />
 
   <TextView
-    android:id="@+id/dateCustomButton"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_marginEnd="@dimen/spaceSmall"
-    android:background="@drawable/bg_date_selection_button"
-    android:clipToOutline="true"
-    android:drawablePadding="@dimen/spaceTiny"
-    android:foreground="?android:selectableItemBackground"
-    android:gravity="center"
-    android:paddingTop="@dimen/spaceNormal"
-    android:paddingBottom="@dimen/spaceNormal"
-    android:text="@string/textSelectDate"
-    android:textColor="?android:textColorPrimary"
-    android:textSize="14sp"
-    app:drawableTint="?android:textColorPrimary"
-    app:drawableTopCompat="@drawable/ic_calendar"
-    app:layout_constraintBottom_toBottomOf="@id/dateNowButton"
-    app:layout_constraintEnd_toStartOf="@id/dateNowButton"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="@id/dateNowButton"
-    tools:targetApi="m"
-    />
-
-  <TextView
     android:id="@+id/dateNowButton"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_marginStart="@dimen/spaceSmall"
     android:layout_marginTop="@dimen/spaceNormal"
-    android:layout_marginBottom="@dimen/spaceNormal"
     android:background="@drawable/bg_date_selection_button"
     android:clipToOutline="true"
     android:drawablePadding="@dimen/spaceTiny"
@@ -93,18 +66,99 @@
     android:textSize="14sp"
     app:drawableTint="?android:textColorPrimary"
     app:drawableTopCompat="@drawable/ic_check"
-    app:layout_constraintBottom_toTopOf="@id/defaultsTipText"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toEndOf="@id/dateCustomButton"
+    app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/subtitle"
     tools:targetApi="m"
     />
+
+  <LinearLayout
+    android:id="@+id/dateReleaseButton"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/spaceNormal"
+    android:layout_marginEnd="@dimen/spaceSmall"
+    android:background="@drawable/bg_date_selection_button_secondary"
+    android:clipToOutline="true"
+    android:foreground="?android:selectableItemBackground"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/spaceMedium"
+    android:paddingBottom="@dimen/spaceMedium"
+    app:layout_constraintBottom_toTopOf="@id/defaultsTipText"
+    app:layout_constraintEnd_toStartOf="@id/dateCustomButton"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/dateNowButton"
+    app:layout_goneMarginBottom="@dimen/spaceNormal"
+    >
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:drawablePadding="0dp"
+      android:gravity="center"
+      android:text="@string/textReleaseDay"
+      android:textColor="?android:textColorPrimary"
+      android:textSize="14sp"
+      app:drawableTint="?android:textColorPrimary"
+      app:drawableTopCompat="@drawable/ic_double_arrow"
+      tools:targetApi="m"
+      />
+
+    <TextView
+      android:id="@+id/dateReleaseButtonLabel"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:gravity="center"
+      android:maxLines="1"
+      android:textColor="?android:textColorSecondary"
+      android:textSize="12sp"
+      tools:text="23 Oct 2024"
+      />
+
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/dateCustomButton"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:layout_marginStart="@dimen/spaceSmall"
+    android:background="@drawable/bg_date_selection_button_secondary"
+    android:clipToOutline="true"
+    android:foreground="?android:selectableItemBackground"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/spaceMedium"
+    android:paddingBottom="@dimen/spaceMedium"
+    app:layout_constraintBottom_toBottomOf="@id/dateReleaseButton"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@id/dateReleaseButton"
+    app:layout_constraintTop_toTopOf="@id/dateReleaseButton"
+    >
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:drawablePadding="@dimen/spaceTiny"
+      android:gravity="center"
+      android:text="@string/textSelectDate"
+      android:textColor="?android:textColorPrimary"
+      android:textSize="14sp"
+      app:drawableTint="?android:textColorPrimary"
+      app:drawableTopCompat="@drawable/ic_calendar"
+      tools:targetApi="m"
+      />
+
+  </LinearLayout>
 
   <TextView
     android:id="@+id/defaultsTipText"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/spaceSmall"
+    android:layout_marginTop="@dimen/spaceBig"
     android:layout_marginEnd="@dimen/spaceSmall"
     android:layout_marginBottom="@dimen/spaceBig"
     android:ellipsize="end"
@@ -120,7 +174,7 @@
     app:layout_constraintHorizontal_bias="0"
     app:layout_constraintHorizontal_chainStyle="packed"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/dateNowButton"
+    app:layout_constraintTop_toBottomOf="@id/dateReleaseButton"
     tools:visibility="visible"
     />
 
