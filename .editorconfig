@@ -1,9 +1,9 @@
 # noinspection EditorConfigKeyCorrectness
 
 [*.{kt,kts}]
-indent_size=2
-insert_final_newline=true
-max_line_length=120
+indent_size = 2
+insert_final_newline = true
+max_line_length = 120
 
 ktlint_standard_package-name = disabled
 ktlint_standard_import-ordering = disabled

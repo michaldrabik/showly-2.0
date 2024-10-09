@@ -27,8 +27,8 @@ class CollectionAdapter(
   private val missingTranslationListener: (CollectionListItem) -> Unit,
   private val upcomingChipVisible: Boolean = true,
 ) : BaseAdapter<CollectionListItem>(
-    listChangeListener = listChangeListener,
-  ) {
+  listChangeListener = listChangeListener,
+) {
 
   companion object {
     private const val VIEW_TYPE_SHOW = 1

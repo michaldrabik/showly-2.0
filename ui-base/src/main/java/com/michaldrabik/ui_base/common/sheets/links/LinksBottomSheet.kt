@@ -70,9 +70,11 @@ class LinksBottomSheet : BaseBottomSheetFragment(R.layout.view_links) {
       viewLinksJustWatch.onClick {
         val country = viewModel.loadCountry()
         openWebUrl(
-          "https://www.justwatch.com/${country.code}/${country.justWatchQuery}?content_type=${type.type}&q=${Uri.encode(
-            title,
-          )}",
+          "https://www.justwatch.com/${country.code}/${country.justWatchQuery}?content_type=${type.type}&q=${
+            Uri.encode(
+              title,
+            )
+          }",
         )
       }
       viewLinksYouTube.onClick {

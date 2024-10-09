@@ -53,8 +53,8 @@ sealed class ProgressMovieListItem(
     val sortOrder: SortOrder,
     val sortType: SortType,
   ) : ProgressMovieListItem(
-      movie = Movie.EMPTY,
-      image = Image.createUnknown(ImageType.POSTER),
-      isLoading = false,
-    )
+    movie = Movie.EMPTY,
+    image = Image.createUnknown(ImageType.POSTER),
+    isLoading = false,
+  )
 }

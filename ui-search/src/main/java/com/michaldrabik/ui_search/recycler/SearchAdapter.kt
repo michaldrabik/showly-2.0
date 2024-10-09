@@ -12,8 +12,8 @@ class SearchAdapter(
   private val missingImageListener: (SearchListItem, Boolean) -> Unit,
   listChangeListener: () -> Unit,
 ) : BaseAdapter<SearchListItem>(
-    listChangeListener = listChangeListener,
-  ) {
+  listChangeListener = listChangeListener,
+) {
 
   override val asyncDiffer = AsyncListDiffer(this, SearchItemDiffCallback())
 

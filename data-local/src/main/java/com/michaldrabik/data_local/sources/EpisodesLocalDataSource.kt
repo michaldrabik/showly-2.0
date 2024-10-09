@@ -1,4 +1,3 @@
-
 @file:Suppress("ktlint:standard:max-line-length")
 
 package com.michaldrabik.data_local.sources

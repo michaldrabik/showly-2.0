@@ -1,4 +1,3 @@
-
 @file:Suppress("ktlint:standard:filename")
 
 package com.michaldrabik.ui_discover.filters.networks

@@ -17,13 +17,13 @@ class SettingsViewModel @Inject constructor() :
   ViewModel(),
   ChannelsDelegate by DefaultChannelsDelegate() {
 
-    private val premiumState = MutableStateFlow(false)
+  private val premiumState = MutableStateFlow(false)
 
-    val uiState = premiumState
-      .map { SettingsUiState(it) }
-      .stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-        initialValue = SettingsUiState(),
-      )
-  }
+  val uiState = premiumState
+    .map { SettingsUiState(it) }
+    .stateIn(
+      scope = viewModelScope,
+      started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+      initialValue = SettingsUiState(),
+    )
+}

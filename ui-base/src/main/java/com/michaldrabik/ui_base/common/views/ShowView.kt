@@ -60,7 +60,7 @@ abstract class ShowView<Item : ListItem> : FrameLayout {
         width * item.image.type
           .getSpan(isTablet)
           .toFloat()
-      ).toInt(),
+        ).toInt(),
       height.toInt(),
     )
   }

@@ -27,8 +27,8 @@ class MyShowsAdapter(
   private val missingTranslationListener: (ListItem) -> Unit,
   listChangeListener: () -> Unit,
 ) : BaseAdapter<MyShowsItem>(
-    listChangeListener = listChangeListener,
-  ) {
+  listChangeListener = listChangeListener,
+) {
 
   companion object {
     private const val VIEW_TYPE_HEADER = 1

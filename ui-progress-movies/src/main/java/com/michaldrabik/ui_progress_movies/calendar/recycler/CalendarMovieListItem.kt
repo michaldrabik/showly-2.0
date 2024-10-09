@@ -31,10 +31,10 @@ sealed class CalendarMovieListItem(
     @StringRes val textResId: Int,
     val calendarMode: CalendarMode,
   ) : CalendarMovieListItem(
-      movie = Movie.EMPTY,
-      image = Image.createUnknown(ImageType.POSTER),
-      isLoading = false,
-    ) {
+    movie = Movie.EMPTY,
+    image = Image.createUnknown(ImageType.POSTER),
+    isLoading = false,
+  ) {
 
     companion object {
       fun create(
@@ -52,8 +52,8 @@ sealed class CalendarMovieListItem(
   data class Filters(
     val mode: CalendarMode,
   ) : CalendarMovieListItem(
-      movie = Movie.EMPTY,
-      image = Image.createUnknown(ImageType.POSTER),
-      isLoading = false,
-    )
+    movie = Movie.EMPTY,
+    image = Image.createUnknown(ImageType.POSTER),
+    isLoading = false,
+  )
 }

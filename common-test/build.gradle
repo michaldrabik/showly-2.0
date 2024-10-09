@@ -3,36 +3,36 @@ apply plugin: 'kotlin-android'
 apply from: '../versions.gradle'
 
 android {
-    kotlinOptions { jvmTarget = "17" }
-    compileOptions {
-        coreLibraryDesugaringEnabled true
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
-    }
+  kotlinOptions { jvmTarget = "17" }
+  compileOptions {
+    coreLibraryDesugaringEnabled true
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
+  }
 
+  compileSdkVersion versions.compileSdk
+
+  defaultConfig {
+    minSdkVersion versions.minSdk
+    targetSdkVersion versions.targetSdk
     compileSdkVersion versions.compileSdk
 
-    defaultConfig {
-        minSdkVersion versions.minSdk
-        targetSdkVersion versions.targetSdk
-        compileSdkVersion versions.compileSdk
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+  }
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+  buildTypes {
+    release {
+      minifyEnabled false
     }
+  }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-        }
-    }
-
-    namespace 'com.michaldrabik.test_base'
+  namespace 'com.michaldrabik.test_base'
 }
 
 dependencies {
-    implementation project(':common')
+  implementation project(':common')
 
-    implementation libs.coroutinesTest
-    implementation libs.junit
-    coreLibraryDesugaring libs.android.desugar
+  implementation libs.coroutinesTest
+  implementation libs.junit
+  coreLibraryDesugaring libs.android.desugar
 }

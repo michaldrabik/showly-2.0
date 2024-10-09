@@ -7,11 +7,12 @@
 If you use and enjoy Showly OSS, consider buying me a coffee as a support for my work. Thanks!
 
 # Showly
+
 <img src="https://i.ibb.co/ChBN7Lg/ic-launcher.png" align="left" width="180" hspace="10" vspace="10" />
 
 Showly is a modern Android TV Shows Tracker.
 
-The OSS version available in this repo is completely free of all Google services. 
+The OSS version available in this repo is completely free of all Google services.
 
 <a href="https://play.google.com/store/apps/details?id=com.michaldrabik.showly2">
   <img
@@ -34,18 +35,23 @@ The OSS version available in this repo is completely free of all Google services
 1. Clone repository and open project in the latest version of Android Studio.
 2. Create `keystore.properties` file and put it in the `/app` folder.
 3. Add following properties into `keystore.properties` file (values are not important at this moment):
+
 ```
 keyAlias=github
 keyPassword=github
 storePassword=github
 ```
-4. Add your [Trakt.tv](https://trakt.tv/oauth/applications), [TMDB](https://developers.themoviedb.org/3/), [OMDB](http://www.omdbapi.com) API keys as following properties into your `local.properties` file located in the root directory of the project:
+
+4. Add your [Trakt.tv](https://trakt.tv/oauth/applications), [TMDB](https://developers.themoviedb.org/3/), [OMDB](http://www.omdbapi.com) API keys as
+   following properties into your `local.properties` file located in the root directory of the project:
+
 ```
 traktClientId="your trakt client id"
 traktClientSecret="your trakt client secret"
 tmdbApiKey="your tmdb api key (v4)"
 omdbApiKey="your omdb api key"
 ```
+
 5. Rebuild and start the app.
 
 ## Issues & Contributions
@@ -81,21 +87,19 @@ Few things surely could be adressed:
 
 **1. Can I watch/stream/download shows and movies with Showly app?**
 
-  No, that is not possible. Showly is a progress tracking type of app - not a streaming service.
-
+No, that is not possible. Showly is a progress tracking type of app - not a streaming service.
 
 **2. I'm a user from India. I can't see any images and also encounter errors!**
 
-  There is a known issue with TMDB API being blocked by India gov.
-  For more details and a possible solution please see the thread here:
-  [https://www.themoviedb.org/talk/65d226e5c433ea0187b5b958#65d2dd5128d7fe017c34e9b5](https://www.themoviedb.org/talk/65d226e5c433ea0187b5b958#65d2dd5128d7fe017c34e9b5)
-
+There is a known issue with TMDB API being blocked by India gov.
+For more details and a possible solution please see the thread here:
+[https://www.themoviedb.org/talk/65d226e5c433ea0187b5b958#65d2dd5128d7fe017c34e9b5](https://www.themoviedb.org/talk/65d226e5c433ea0187b5b958#65d2dd5128d7fe017c34e9b5)
 
 **3. Show/Episode/Movie I'm looking for seems to be missing. What can I do?**
 
-  Showly uses [Trakt.tv](https://trakt.tv) as its main data source.
-  If something is missing please use "Import Show" / "Import Movie" option located at the bottom of Trakt.tv website.
-  It's also possible to contact Trakt.tv support about any related issue.
+Showly uses [Trakt.tv](https://trakt.tv) as its main data source.
+If something is missing please use "Import Show" / "Import Movie" option located at the bottom of Trakt.tv website.
+It's also possible to contact Trakt.tv support about any related issue.
 
 ## Contact
 
