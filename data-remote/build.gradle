@@ -56,6 +56,7 @@ dependencies {
   api libs.retrofit.moshi
   api libs.loggingInterceptor
 
+  implementation libs.moshi
   implementation libs.coroutines
   implementation libs.timber
 

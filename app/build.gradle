@@ -56,7 +56,7 @@ android {
     debug {
       applicationIdSuffix '.debug'
       versionNameSuffix '-debug'
-      minifyEnabled true
+      minifyEnabled false
       proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
       manifestPlaceholders = [
           appIcon     : "@mipmap/ic_launcher_gray",
