@@ -31,9 +31,11 @@ class MovieDetailsRelatedFragment :
     R.layout.fragment_movie_details_related,
   ) {
 
+  override val navigationId = R.id.movieDetailsFragment
+  private val binding by viewBinding(FragmentMovieDetailsRelatedBinding::bind)
+
   private val parentViewModel by viewModels<MovieDetailsViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<MovieDetailsRelatedViewModel>()
-  private val binding by viewBinding(FragmentMovieDetailsRelatedBinding::bind)
 
   private var relatedAdapter: RelatedMovieAdapter? = null
 
