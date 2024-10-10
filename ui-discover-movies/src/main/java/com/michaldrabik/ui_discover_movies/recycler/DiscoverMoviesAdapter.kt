@@ -16,8 +16,8 @@ class DiscoverMoviesAdapter(
   private val missingImageListener: (DiscoverMovieListItem, Boolean) -> Unit,
   listChangeListener: () -> Unit,
 ) : BaseMovieAdapter<DiscoverMovieListItem>(
-  listChangeListener = listChangeListener,
-) {
+    listChangeListener = listChangeListener,
+  ) {
 
   init {
     stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY

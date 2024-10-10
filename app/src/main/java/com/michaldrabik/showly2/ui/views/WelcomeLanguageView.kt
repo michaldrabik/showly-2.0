@@ -35,6 +35,6 @@ class WelcomeLanguageView : FrameLayout {
     // This text will always be English.
     binding.viewWelcomeLanguageMessage.text =
       "It seems like your device\'s language is ${appLanguage.displayNameRaw}.\n" +
-        "Would you like to use it in Showly app?"
+      "Would you like to use it in Showly app?"
   }
 }

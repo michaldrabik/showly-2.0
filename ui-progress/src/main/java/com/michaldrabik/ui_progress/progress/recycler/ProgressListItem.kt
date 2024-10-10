@@ -90,10 +90,10 @@ sealed class ProgressListItem(
     val isOnHold: Boolean,
     val newAtTop: Boolean,
   ) : ProgressListItem(
-    show = Show.EMPTY,
-    image = Image.createUnknown(ImageType.POSTER),
-    isLoading = false,
-  ) {
+      show = Show.EMPTY,
+      image = Image.createUnknown(ImageType.POSTER),
+      isLoading = false,
+    ) {
 
     fun hasActiveFilters() = isUpcoming || isOnHold
   }

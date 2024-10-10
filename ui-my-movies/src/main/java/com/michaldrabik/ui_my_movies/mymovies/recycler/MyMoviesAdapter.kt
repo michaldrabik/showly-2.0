@@ -24,8 +24,8 @@ class MyMoviesAdapter(
   private val onListViewModeClickListener: () -> Unit,
   listChangeListener: (() -> Unit),
 ) : BaseMovieAdapter<MyMoviesItem>(
-  listChangeListener = listChangeListener,
-) {
+    listChangeListener = listChangeListener,
+  ) {
 
   companion object {
     private const val VIEW_TYPE_HEADER = 1

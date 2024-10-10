@@ -11,7 +11,7 @@ class TraktSourceResolver : SourceResolver {
       !(
         linkPath[0] == DeepLinkResolver.TRAKT_TYPE_TV ||
           linkPath[0] == DeepLinkResolver.TRAKT_TYPE_MOVIE
-        )
+      )
     ) {
       return null
     }

@@ -39,10 +39,10 @@ sealed class CalendarListItem(
     @StringRes val textResId: Int,
     val calendarMode: CalendarMode,
   ) : CalendarListItem(
-    show = Show.EMPTY,
-    image = Image.createUnknown(ImageType.POSTER),
-    isLoading = false,
-  ) {
+      show = Show.EMPTY,
+      image = Image.createUnknown(ImageType.POSTER),
+      isLoading = false,
+    ) {
 
     companion object {
       fun create(
@@ -60,8 +60,8 @@ sealed class CalendarListItem(
   data class Filters(
     val mode: CalendarMode,
   ) : CalendarListItem(
-    show = Show.EMPTY,
-    image = Image.createUnknown(ImageType.POSTER),
-    isLoading = false,
-  )
+      show = Show.EMPTY,
+      image = Image.createUnknown(ImageType.POSTER),
+      isLoading = false,
+    )
 }

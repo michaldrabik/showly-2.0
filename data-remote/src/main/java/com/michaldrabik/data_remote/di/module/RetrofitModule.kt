@@ -92,12 +92,15 @@ object RetrofitModule {
 
   @Provides
   @Singleton
-  fun providesMoshiFactory(moshi: Moshi): MoshiConverterFactory = MoshiConverterFactory
-    .create(moshi)
+  fun providesMoshiFactory(moshi: Moshi): MoshiConverterFactory =
+    MoshiConverterFactory
+      .create(moshi)
 
   @Provides
   @Singleton
-  fun providesMoshi(): Moshi = Moshi.Builder()
-    .addLast(KotlinJsonAdapterFactory())
-    .build()
+  fun providesMoshi(): Moshi =
+    Moshi
+      .Builder()
+      .addLast(KotlinJsonAdapterFactory())
+      .build()
 }

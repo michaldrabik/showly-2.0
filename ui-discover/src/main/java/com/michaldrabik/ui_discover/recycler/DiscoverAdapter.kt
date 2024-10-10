@@ -19,8 +19,8 @@ class DiscoverAdapter(
   private val twitterCancelClickListener: (() -> Unit)?,
   listChangeListener: () -> Unit,
 ) : BaseAdapter<DiscoverListItem>(
-  listChangeListener = listChangeListener,
-) {
+    listChangeListener = listChangeListener,
+  ) {
 
   override val asyncDiffer = AsyncListDiffer(this, DiscoverItemDiffCallback())
 

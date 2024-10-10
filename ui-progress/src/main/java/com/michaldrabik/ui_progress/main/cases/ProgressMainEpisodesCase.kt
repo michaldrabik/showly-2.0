@@ -45,7 +45,7 @@ class ProgressMainEpisodesCase @Inject constructor(
             spoilersSettings.isEpisodesDescriptionHidden ||
             spoilersSettings.isEpisodesImageHidden ||
             spoilersSettings.isEpisodesRatingHidden
-          )
+        )
       ) {
         return@withContext false
       }

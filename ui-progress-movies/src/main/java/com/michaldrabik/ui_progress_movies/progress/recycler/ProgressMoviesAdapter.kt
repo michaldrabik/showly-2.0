@@ -18,8 +18,8 @@ class ProgressMoviesAdapter(
   private val checkClickListener: (ProgressMovieListItem.MovieItem) -> Unit,
   listChangeListener: () -> Unit,
 ) : BaseMovieAdapter<ProgressMovieListItem>(
-  listChangeListener = listChangeListener,
-) {
+    listChangeListener = listChangeListener,
+  ) {
 
   companion object {
     private const val VIEW_TYPE_MOVIE = 1

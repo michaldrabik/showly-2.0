@@ -21,8 +21,8 @@ class ProgressAdapter(
   private val missingTranslationListener: (ProgressListItem) -> Unit,
   listChangeListener: () -> Unit,
 ) : BaseAdapter<ProgressListItem>(
-  listChangeListener = listChangeListener,
-) {
+    listChangeListener = listChangeListener,
+  ) {
 
   companion object {
     private const val VIEW_TYPE_ITEM = 1

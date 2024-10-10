@@ -222,7 +222,7 @@ class MainActivity :
             R.id.followedShowsFragment,
             R.id.followedMoviesFragment,
             R.id.listsFragment,
-              -> {
+            -> {
               bottomMenuView.binding.bottomNavigationView.selectedItemId = R.id.menuProgress
             }
             else -> {

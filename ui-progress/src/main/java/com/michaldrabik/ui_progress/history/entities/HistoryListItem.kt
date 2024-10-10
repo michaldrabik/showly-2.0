@@ -34,10 +34,10 @@ internal sealed class HistoryListItem(
     val date: LocalDateTime,
     val language: String,
   ) : HistoryListItem(
-    show = Show.EMPTY,
-    image = Image.createUnknown(ImageType.POSTER),
-    isLoading = false,
-  ) {
+      show = Show.EMPTY,
+      image = Image.createUnknown(ImageType.POSTER),
+      isLoading = false,
+    ) {
     override fun isSameAs(other: ListItem): Boolean {
       val otherHeader = (other as? Header) ?: return false
       return date.isEqual(otherHeader.date)
@@ -47,10 +47,10 @@ internal sealed class HistoryListItem(
   data class Filters(
     val period: HistoryPeriod,
   ) : HistoryListItem(
-    show = Show.EMPTY,
-    image = Image.createUnknown(ImageType.POSTER),
-    isLoading = false,
-  ) {
+      show = Show.EMPTY,
+      image = Image.createUnknown(ImageType.POSTER),
+      isLoading = false,
+    ) {
     override fun isSameAs(other: ListItem): Boolean = period == (other as? Filters)?.period
   }
 }
