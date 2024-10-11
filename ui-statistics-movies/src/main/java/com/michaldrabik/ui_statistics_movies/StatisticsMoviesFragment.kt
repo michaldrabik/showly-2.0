@@ -57,9 +57,12 @@ class StatisticsMoviesFragment : BaseFragment<StatisticsMoviesViewModel>(R.layou
   }
 
   private fun setupInsets() {
-    binding.statisticsMoviesRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
-      val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
-      view.updatePadding(top = padding.top + inset)
+    binding.root.doOnApplyWindowInsets { view, insets, padding, _ ->
+      val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+      view.updatePadding(
+        top = padding.top + inset.top,
+        bottom = padding.bottom + inset.bottom
+      )
     }
   }
 

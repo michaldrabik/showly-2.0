@@ -64,9 +64,13 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
   }
 
   private fun setupInsets() {
-    binding.statisticsRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
-      val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
-      view.updatePadding(top = padding.top + inset)
+    binding.root.doOnApplyWindowInsets { view, insets, padding, _ ->
+      val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+      view.updatePadding(
+        top = padding.top + inset.top,
+        bottom = padding.bottom + inset.bottom
+
+      )
     }
   }
 
