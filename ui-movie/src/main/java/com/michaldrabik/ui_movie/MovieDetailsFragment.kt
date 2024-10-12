@@ -207,7 +207,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
           movieDetailsActions.linksChip.run {
             onClick {
               val args = LinksBottomSheet.createBundle(movie)
-              navigateTo(R.id.actionMovieDetailsFragmentToLinks, args)
+              navigateToSafe(R.id.actionMovieDetailsFragmentToLinks, args)
             }
           }
           movieDetailsActions.commentsChip.onClick {
@@ -406,7 +406,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       }
     }
     val args = RemoveTraktBottomSheet.createBundle(movieId, RemoveTraktBottomSheet.Mode.MOVIE)
-    navigateTo(action, args)
+    navigateToSafe(action, args)
   }
 
   private fun openDateSelectionSheet(movie: Movie) {
@@ -445,7 +445,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       viewModel.loadUserRating()
     }
     val bundle = RatingsBottomSheet.createBundle(movieId, Type.MOVIE)
-    navigateTo(R.id.actionMovieDetailsFragmentToRating, bundle)
+    navigateToSafe(R.id.actionMovieDetailsFragmentToRating, bundle)
   }
 
   private fun openListsDialog() {

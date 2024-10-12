@@ -41,6 +41,7 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.hideKeyboard
 import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
+import com.michaldrabik.ui_base.utilities.extensions.navigateToSafe
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showKeyboard
@@ -73,6 +74,7 @@ class ListsFragment :
     private const val TRANSLATION_DURATION = 225L
   }
 
+  override val navigationId = R.id.listsFragment
   override val viewModel by viewModels<ListsViewModel>()
   private val binding by viewBinding(FragmentListsBinding::bind)
 
@@ -306,7 +308,7 @@ class ListsFragment :
       viewModel.setSortOrder(order, type)
     }
 
-    navigateTo(R.id.actionListsFragmentToSortOrder, args)
+    navigateToSafe(R.id.actionListsFragmentToSortOrder, args)
   }
 
   private fun render(uiState: ListsUiState) {
@@ -349,7 +351,7 @@ class ListsFragment :
     binding.fragmentListsRoot
       .fadeOut(150) {
         val bundle = bundleOf(ARG_LIST to listItem.list)
-        navigateTo(R.id.actionListsFragmentToDetailsFragment, bundle)
+        navigateToSafe(R.id.actionListsFragmentToDetailsFragment, bundle)
         exitSearch()
       }.add(animations)
   }
@@ -357,12 +359,12 @@ class ListsFragment :
   private fun openSettings() {
     hideNavigation()
     exitSearch()
-    navigateTo(R.id.actionListsFragmentToSettingsFragment)
+    navigateToSafe(R.id.actionListsFragmentToSettingsFragment)
   }
 
   private fun openCreateList() {
     setFragmentResultListener(REQUEST_CREATE_LIST) { _, _ -> viewModel.loadItems(resetScroll = true) }
-    navigateTo(R.id.actionListsFragmentToCreateListDialog, bundleOf())
+    navigateToSafe(R.id.actionListsFragmentToCreateListDialog, bundleOf())
   }
 
   private fun resetTranslations(duration: Long = TRANSLATION_DURATION) {
