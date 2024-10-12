@@ -68,8 +68,7 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
       val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
       view.updatePadding(
         top = padding.top + inset.top,
-        bottom = padding.bottom + inset.bottom
-
+        bottom = padding.bottom + inset.bottom,
       )
     }
   }
