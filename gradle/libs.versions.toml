@@ -1,7 +1,7 @@
 [versions]
 
 agp = "8.7.0"
-kotlin = "2.0.20"
+kotlin = "2.0.21"
 devtools = "2.0.20-1.0.25"
 core-ktx = "1.13.1"
 appcompat = "1.7.0"
