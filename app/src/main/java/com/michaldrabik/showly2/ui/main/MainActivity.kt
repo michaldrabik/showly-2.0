@@ -52,10 +52,12 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
+import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
+import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import dagger.hilt.android.AndroidEntryPoint
@@ -76,7 +78,7 @@ class MainActivity :
   TipsDelegate by MainTipsDelegate() {
 
   companion object {
-    private const val NAVIGATION_TRANSITION_DURATION_MS = 350L
+    private const val NAVIGATION_TRANSITION_DURATION_MS = 250L
     private const val ARG_NAVIGATION_VISIBLE = "ARG_NAVIGATION_VISIBLE"
   }
 
@@ -248,6 +250,7 @@ class MainActivity :
         .translationYBy(navigationHeight.toFloat() / 2)
         .setDuration(if (animate) NAVIGATION_TRANSITION_DURATION_MS else 0)
         .setInterpolator(decelerateInterpolator)
+        .withEndAction { bottomMenuView.gone() }
         .start()
     }
   }
@@ -255,6 +258,7 @@ class MainActivity :
   override fun showNavigation(animate: Boolean) {
     with(binding) {
       showAllTips()
+      bottomMenuView.visible()
       bottomMenuView.isEnabled = true
       snackbarHost.translationY = -(navigationHeight + (navigationPadding.toFloat()))
       bottomNavigationWrapper
