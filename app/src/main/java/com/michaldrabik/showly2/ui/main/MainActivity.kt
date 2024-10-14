@@ -2,10 +2,12 @@ package com.michaldrabik.showly2.ui.main
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color.TRANSPARENT
 import android.os.Bundle
 import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
 import android.view.animation.DecelerateInterpolator
+import androidx.activity.SystemBarStyle
 import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -93,7 +95,7 @@ class MainActivity :
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    enableEdgeToEdge()
+    enableEdgeToEdge(statusBarStyle = SystemBarStyle.dark(TRANSPARENT))
 
     binding = ActivityMainBinding.inflate(layoutInflater)
     setContentView(binding.root)
@@ -238,10 +240,7 @@ class MainActivity :
   override fun hideNavigation(animate: Boolean) {
     with(binding) {
       hideAllTips()
-      bottomMenuView.binding.bottomNavigationView.run {
-        isEnabled = false
-        isClickable = false
-      }
+      bottomMenuView.isEnabled = false
       snackbarHost.translationY = 0F
       bottomNavigationWrapper
         .animate()
@@ -254,23 +253,25 @@ class MainActivity :
   }
 
   override fun showNavigation(animate: Boolean) {
-    showAllTips()
-    binding.bottomMenuView.binding.bottomNavigationView.run {
-      isEnabled = true
-      isClickable = true
+    with(binding) {
+      showAllTips()
+      bottomMenuView.isEnabled = true
+      snackbarHost.translationY = -(navigationHeight + (navigationPadding.toFloat()))
+      bottomNavigationWrapper
+        .animate()
+        .alpha(1F)
+        .translationY(0F)
+        .setDuration(if (animate) NAVIGATION_TRANSITION_DURATION_MS else 0)
+        .setInterpolator(decelerateInterpolator)
+        .start()
     }
-    binding.snackbarHost.translationY = -(navigationHeight + (navigationPadding.toFloat()))
-    binding.bottomNavigationWrapper
-      .animate()
-      .alpha(1F)
-      .translationY(0F)
-      .setDuration(if (animate) NAVIGATION_TRANSITION_DURATION_MS else 0)
-      .setInterpolator(decelerateInterpolator)
-      .start()
   }
 
   override fun navigateToDiscover() {
-    binding.bottomMenuView.binding.bottomNavigationView.selectedItemId = R.id.menuDiscover
+    with(binding) {
+      bottomMenuView.isEnabled = true
+      bottomMenuView.binding.bottomNavigationView.selectedItemId = R.id.menuDiscover
+    }
   }
 
   override fun setMode(

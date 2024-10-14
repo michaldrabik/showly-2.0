@@ -15,6 +15,7 @@ import android.view.ViewPropertyAnimator
 import android.widget.FrameLayout
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.children
+import androidx.core.view.forEach
 import androidx.core.view.updateLayoutParams
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.michaldrabik.common.Mode
@@ -63,8 +64,15 @@ class BottomMenuView : FrameLayout {
     }
   }
 
+  override fun setEnabled(enabled: Boolean) {
+    super.setEnabled(enabled)
+    binding.bottomNavigationView.menu.forEach { it.isEnabled = enabled }
+  }
+
   override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
-    if (!isModeMenuEnabled) return super.onInterceptTouchEvent(ev)
+    if (!isModeMenuEnabled || !isEnabled) {
+      return super.onInterceptTouchEvent(ev)
+    }
 
     when (ev?.actionMasked) {
       ACTION_DOWN -> {

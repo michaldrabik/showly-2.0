@@ -1,8 +1,8 @@
 [versions]
 
 agp = "8.7.0"
-kotlin = "2.0.20"
-devtools = "2.0.20-1.0.25"
+kotlin = "2.0.21"
+devtools = "2.0.21-1.0.25"
 core-ktx = "1.13.1"
 appcompat = "1.7.0"
 gridlayout = "1.0.0"
@@ -32,7 +32,7 @@ circleindicator = "2.1.6"
 logging-interceptor = "4.12.0"
 overscroll-decor = "1.1.1"
 junit = "5.11.2"
-mockk = "1.13.12"
+mockk = "1.13.13"
 truth = "1.4.4"
 core-testing = "2.2.0"
 
