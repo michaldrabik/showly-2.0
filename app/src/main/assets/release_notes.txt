@@ -1,3 +1,1 @@
-* Added support for edge-to-edge display with new floating menu
-* Added option to select release day when marking movies/episodes
-* Fixed bug where app could crash for some users when using Search
+* Fixed bug where bottom menu could prevent some of user taps
