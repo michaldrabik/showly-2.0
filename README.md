@@ -33,8 +33,8 @@ The OSS version available in this repo is completely free of all Google services
 ## Project Setup
 
 1. Clone repository and open project in the latest version of Android Studio.
-2. Create `keystore.properties` file and put it in the `/app` folder.
-3. Add following properties into `keystore.properties` file (values are not important at this moment):
+2. Create a `keystore.properties` file and put it in the `/app` folder.
+3. Add the following properties into the `keystore.properties` file (values are not important at this moment):
 
 ```
 keyAlias=github
@@ -75,17 +75,17 @@ Translations status for 5 Aug 2024:
 ## Dev Notes
 
 The codebase has been around for a few years now and it grew a bit rusty.
-Few things surely could be adressed:
+A few things surely could be addressed:
 
-- Overall architecture should be simplified and refactored into more strict feature-based one
-- Single responsibility principle is broken and should be refactored in a few places like some of the Use Cases
+- Overall architecture should be simplified and refactored into a more strict feature-based one
+- The single responsibility principle is broken and should be refactored in a few places like some of the Use Cases
 - Retrofit could be replaced in favor of Ktor Client
 - Jetpack Compose migration (although there is no **_real_** benefit of it currently from end-user point of view)
-- Add more unit tests to complete suite and increase coverage
+- Add more unit tests to complete the suite and increase coverage
 
 ## FAQ
 
-**1. Can I watch/stream/download shows and movies with Showly app?**
+**1. Can I watch/stream/download shows and movies with the Showly app?**
 
 No, that is not possible. Showly is a progress tracking type of app - not a streaming service.
 
@@ -95,7 +95,7 @@ There is a known issue with TMDB API being blocked by India gov.
 For more details and a possible solution please see the thread here:
 [https://www.themoviedb.org/talk/65d226e5c433ea0187b5b958#65d2dd5128d7fe017c34e9b5](https://www.themoviedb.org/talk/65d226e5c433ea0187b5b958#65d2dd5128d7fe017c34e9b5)
 
-**3. Show/Episode/Movie I'm looking for seems to be missing. What can I do?**
+**3. The Show/Episode/Movie I'm looking for seems to be missing. What can I do?**
 
 Showly uses [Trakt.tv](https://trakt.tv) as its main data source.
 If something is missing please use "Import Show" / "Import Movie" option located at the bottom of Trakt.tv website.
