@@ -1,1 +1,1 @@
-* Fixed bug where bottom menu could prevent some of user taps
+* Updated Trakt icons to match new branding

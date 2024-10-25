@@ -78,7 +78,7 @@
       android:layout_width="@dimen/progressOverscrollIcon"
       android:layout_height="@dimen/progressOverscrollIcon"
       android:layout_gravity="center"
-      app:srcCompat="@drawable/ic_trakt"
+      app:srcCompat="@drawable/ic_trakt_mono"
       app:tint="?android:attr/textColorPrimary"
       />
 

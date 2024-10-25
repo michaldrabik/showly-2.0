@@ -37,6 +37,7 @@
       android:id="@+id/traktSyncIcon"
       android:layout_width="80dp"
       android:layout_height="0dp"
+      android:padding="3dp"
       app:layout_constraintBottom_toBottomOf="@id/traktSyncIconArrow"
       app:layout_constraintEnd_toStartOf="@id/traktSyncIconArrow"
       app:layout_constraintHorizontal_chainStyle="packed"

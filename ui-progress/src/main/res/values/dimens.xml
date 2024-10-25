@@ -23,7 +23,7 @@
 
   <dimen name="progressOverscrollPadding">132dp</dimen>
   <dimen name="progressOverscrollPaddingNoModes">96dp</dimen>
-  <dimen name="progressOverscrollIcon">36dp</dimen>
+  <dimen name="progressOverscrollIcon">35dp</dimen>
   <dimen name="progressOverscrollProgress">48dp</dimen>
 
   <dimen name="progressImageHeight">120dp</dimen>

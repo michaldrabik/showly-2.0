@@ -69,7 +69,7 @@
       android:layout_width="@dimen/progressMoviesOverscrollIcon"
       android:layout_height="@dimen/progressMoviesOverscrollIcon"
       android:layout_gravity="center"
-      app:srcCompat="@drawable/ic_trakt"
+      app:srcCompat="@drawable/ic_trakt_mono"
       app:tint="?android:attr/textColorPrimary"
       />
 

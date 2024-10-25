@@ -17,7 +17,7 @@
   <dimen name="progressMoviesSearchLocalOffset">40dp</dimen>
 
   <dimen name="progressMoviesOverscrollPadding">132dp</dimen>
-  <dimen name="progressMoviesOverscrollIcon">36dp</dimen>
+  <dimen name="progressMoviesOverscrollIcon">35dp</dimen>
   <dimen name="progressMoviesOverscrollProgress">48dp</dimen>
 
   <dimen name="progressMoviesItemCheckButtonWidth">72dp</dimen>
