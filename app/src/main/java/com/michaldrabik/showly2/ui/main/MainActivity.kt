@@ -97,7 +97,10 @@ class MainActivity :
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    enableEdgeToEdge(statusBarStyle = SystemBarStyle.dark(TRANSPARENT))
+    enableEdgeToEdge(
+      statusBarStyle = SystemBarStyle.dark(TRANSPARENT),
+      navigationBarStyle = SystemBarStyle.dark(ContextCompat.getColor(this, R.color.colorBlackTranslucentMedium)),
+    )
 
     binding = ActivityMainBinding.inflate(layoutInflater)
     setContentView(binding.root)
