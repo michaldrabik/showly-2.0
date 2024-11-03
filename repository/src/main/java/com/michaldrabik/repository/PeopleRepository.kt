@@ -168,7 +168,7 @@ class PeopleRepository @Inject constructor(
     val crewFilter = arrayOf(
       Department.DIRECTING,
       Department.WRITING,
-      Department.SOUND
+      Department.SOUND,
     ).map { it.slug }
 
     val remoteTmdbPeople = remoteSource.tmdb.fetchShowPeople(showIds.tmdb.id)
@@ -266,7 +266,7 @@ class PeopleRepository @Inject constructor(
     val crewFilter = arrayOf(
       Department.DIRECTING,
       Department.WRITING,
-      Department.SOUND
+      Department.SOUND,
     ).map { it.slug }
 
     val remoteTmdbPeople = remoteSource.tmdb.fetchMoviePeople(movieIds.tmdb.id)
