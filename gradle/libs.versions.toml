@@ -1,15 +1,15 @@
 [versions]
 
-agp = "8.7.1"
+agp = "8.7.2"
 kotlin = "2.0.21"
 devtools = "2.0.21-1.0.26"
-core-ktx = "1.13.1"
+core-ktx = "1.13.1" # Compile SDK 35 to update.
 appcompat = "1.7.0"
 gridlayout = "1.0.0"
 desugar_jdk_libs = "2.1.2"
 material = "1.12.0"
 dynamicanimation = "1.0.0"
-work-runtime-ktx = "2.9.1"
+work-runtime-ktx = "2.9.1" # Compile SDK 35 to update.
 swiperefreshlayout = "1.1.0"
 constraintlayout = "2.2.0"
 recyclerview = "1.3.2"
