@@ -10,7 +10,7 @@ import com.michaldrabik.data_local.database.model.PersonCredits
 import com.michaldrabik.data_local.database.model.PersonShowMovie
 import com.michaldrabik.data_local.utilities.TransactionsProvider
 import com.michaldrabik.data_remote.RemoteDataSource
-import com.michaldrabik.data_remote.tmdb.model.TmdbPerson
+import com.michaldrabik.data_remote.tmdb.model.TmdbPerson.Type
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_model.Ids
@@ -22,7 +22,6 @@ import com.michaldrabik.ui_model.PersonCredit
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import timber.log.Timber
 import javax.inject.Inject
 
 class PeopleRepository @Inject constructor(
@@ -110,7 +109,7 @@ class PeopleRepository @Inject constructor(
       }
 
       // Return remote fetched data if available and cache it locally
-      val type = if (person.department == Department.ACTING) TmdbPerson.Type.CAST else TmdbPerson.Type.CREW
+      val type = if (person.department == Department.ACTING) Type.CAST else Type.CREW
       val showsCreditsAsync = async { remoteSource.trakt.fetchPersonShowsCredits(idTrakt!!, type) }
       val moviesCreditsAsync = async { remoteSource.trakt.fetchPersonMoviesCredits(idTrakt!!, type) }
       val remoteCredits = awaitAll(showsCreditsAsync, moviesCreditsAsync)
@@ -159,41 +158,65 @@ class PeopleRepository @Inject constructor(
       return local
         .map { mappers.person.fromDatabase(it) }
         .groupBy { it.department }
-        .mapValues { v -> v.value.sortedWith(compareBy { it.imagePath.isNullOrBlank() }) }
+        .mapValues { v ->
+          v.value
+            .sortedWith(compareBy { it.imagePath.isNullOrBlank() })
+        }
     }
+
+    val jobsFilter = Person.Job.entries.map { it.slug }
+    val crewFilter = arrayOf(
+      Department.DIRECTING,
+      Department.WRITING,
+      Department.SOUND
+    ).map { it.slug }
 
     val remoteTmdbPeople = remoteSource.tmdb.fetchShowPeople(showIds.tmdb.id)
 
-    val remoteTmdbActors = remoteTmdbPeople
-      .getOrDefault(TmdbPerson.Type.CAST, emptyList())
-      .sortedWith(compareBy { it.profile_path.isNullOrBlank() })
-      .map { mappers.person.fromNetwork(it) }
-      .take(ACTORS_DISPLAY_LIMIT)
-
-    val crewFilter = arrayOf(Department.DIRECTING, Department.WRITING, Department.SOUND).map { it.slug }
-    val jobsFilter = Person.Job.values().map { it.slug }
     val remoteTmdbCrew = remoteTmdbPeople
-      .getOrDefault(TmdbPerson.Type.CREW, emptyList())
+      .getOrDefault(Type.CREW, emptyList())
       .asSequence()
       .filter { it.department in crewFilter }
-      .filter { it.jobs?.any { job -> job.job ?: "" in jobsFilter } == true }
+      .filter { it.jobs?.any { job -> (job.job ?: "") in jobsFilter } == true }
       .sortedWith(compareBy { it.profile_path.isNullOrBlank() })
       .map { mappers.person.fromNetwork(it) }
       .groupBy { it.department }
 
+    val actors = remoteTmdbPeople
+      .getOrDefault(Type.CAST, emptyList())
+      .sortedWith(compareBy { it.profile_path.isNullOrBlank() })
+      .map { mappers.person.fromNetwork(it) }
+      .take(ACTORS_DISPLAY_LIMIT)
+
     val directors = remoteTmdbCrew[Department.DIRECTING]
       ?.take(CREW_DISPLAY_LIMIT)
       ?.distinctBy { it.ids.tmdb } ?: emptyList()
+
     val writers = remoteTmdbCrew[Department.WRITING]
       ?.take(CREW_DISPLAY_LIMIT)
       ?.distinctBy { it.ids.tmdb } ?: emptyList()
+
     val sound = remoteTmdbCrew[Department.SOUND]
       ?.take(CREW_DISPLAY_LIMIT)
       ?.distinctBy { it.ids.tmdb } ?: emptyList()
 
-    val filteredTmdbPeople = remoteTmdbActors + directors + writers + sound
-    val dbTmdbPeople = filteredTmdbPeople.map { mappers.person.toDatabase(it, null) }
-    val dbTmdbPeopleShows = filteredTmdbPeople.map {
+    val dbTmdbCast = actors.map {
+      PersonShowMovie(
+        id = 0,
+        idTmdbPerson = it.ids.tmdb.id,
+        mode = Mode.SHOWS.type,
+        department = Department.ACTING.slug,
+        character = it.characters.joinToString(","),
+        job = it.jobs.joinToString(",") { job -> job.slug },
+        episodesCount = it.episodesCount,
+        idTraktShow = showIds.trakt.id,
+        idTraktMovie = null,
+        createdAt = timestamp,
+        updatedAt = timestamp,
+      )
+    }
+
+    val dbTmdbCrew = (directors + writers + sound).map {
       PersonShowMovie(
         id = 0,
         idTmdbPerson = it.ids.tmdb.id,
@@ -209,15 +232,19 @@ class PeopleRepository @Inject constructor(
       )
     }
 
+    val dbTmdbPeople = (actors + directors + writers + sound)
+      .map { mappers.person.toDatabase(it, null) }
+
     with(localSource) {
       transactions.withTransaction {
         people.upsert(dbTmdbPeople)
-        peopleShowsMovies.insertForShow(dbTmdbPeopleShows, showIds.trakt.id)
+        peopleShowsMovies.insertForShow(dbTmdbCast + dbTmdbCrew, showIds.trakt.id)
       }
     }
 
-    Timber.d("Returning remote result.")
-    return filteredTmdbPeople.groupBy { it.department }
+    val showActors = actors.map { it.copy(department = Department.ACTING) }
+    return (showActors + directors + writers + sound)
+      .groupBy { it.department }
   }
 
   suspend fun loadAllForMovie(movieIds: Ids): Map<Department, List<Person>> {
@@ -229,21 +256,23 @@ class PeopleRepository @Inject constructor(
       return local
         .map { mappers.person.fromDatabase(it) }
         .groupBy { it.department }
-        .mapValues { v -> v.value.sortedWith(compareBy { it.imagePath.isNullOrBlank() }) }
+        .mapValues { v ->
+          v.value
+            .sortedWith(compareBy { it.imagePath.isNullOrBlank() })
+        }
     }
+
+    val jobsFilter = Person.Job.entries.map { it.slug }
+    val crewFilter = arrayOf(
+      Department.DIRECTING,
+      Department.WRITING,
+      Department.SOUND
+    ).map { it.slug }
 
     val remoteTmdbPeople = remoteSource.tmdb.fetchMoviePeople(movieIds.tmdb.id)
 
-    val remoteTmdbActors = remoteTmdbPeople
-      .getOrDefault(TmdbPerson.Type.CAST, emptyList())
-      .sortedWith(compareBy { it.profile_path.isNullOrBlank() })
-      .map { mappers.person.fromNetwork(it) }
-      .take(ACTORS_DISPLAY_LIMIT)
-
-    val crewFilter = arrayOf(Department.DIRECTING, Department.WRITING, Department.SOUND).map { it.slug }
-    val jobsFilter = Person.Job.values().map { it.slug }
     val remoteTmdbCrew = remoteTmdbPeople
-      .getOrDefault(TmdbPerson.Type.CREW, emptyList())
+      .getOrDefault(Type.CREW, emptyList())
       .asSequence()
       .filter { it.department in crewFilter }
       .filter { it.job in jobsFilter }
@@ -251,19 +280,41 @@ class PeopleRepository @Inject constructor(
       .map { mappers.person.fromNetwork(it) }
       .groupBy { it.department }
 
+    val actors = remoteTmdbPeople
+      .getOrDefault(Type.CAST, emptyList())
+      .sortedWith(compareBy { it.profile_path.isNullOrBlank() })
+      .map { mappers.person.fromNetwork(it) }
+      .take(ACTORS_DISPLAY_LIMIT)
+
     val directors = remoteTmdbCrew[Department.DIRECTING]
       ?.take(CREW_DISPLAY_LIMIT)
       ?.distinctBy { it.ids.tmdb } ?: emptyList()
+
     val writers = remoteTmdbCrew[Department.WRITING]
       ?.take(CREW_DISPLAY_LIMIT)
       ?.distinctBy { it.ids.tmdb } ?: emptyList()
+
     val sound = remoteTmdbCrew[Department.SOUND]
       ?.take(CREW_DISPLAY_LIMIT)
       ?.distinctBy { it.ids.tmdb } ?: emptyList()
 
-    val filteredTmdbPeople = remoteTmdbActors + directors + writers + sound
-    val dbTmdbPeople = filteredTmdbPeople.map { mappers.person.toDatabase(it, null) }
-    val dbTmdbPeopleMovies = filteredTmdbPeople.map {
+    val dbTmdbCast = actors.map {
+      PersonShowMovie(
+        id = 0,
+        idTmdbPerson = it.ids.tmdb.id,
+        mode = Mode.MOVIES.type,
+        department = Department.ACTING.slug,
+        character = it.characters.joinToString(","),
+        job = it.jobs.joinToString(",") { job -> job.slug },
+        episodesCount = it.episodesCount,
+        idTraktShow = null,
+        idTraktMovie = movieIds.trakt.id,
+        createdAt = timestamp,
+        updatedAt = timestamp,
+      )
+    }
+
+    val dbTmdbCrew = (directors + writers + sound).map {
       PersonShowMovie(
         id = 0,
         idTmdbPerson = it.ids.tmdb.id,
@@ -279,14 +330,18 @@ class PeopleRepository @Inject constructor(
       )
     }
 
+    val dbTmdbPeople = (actors + directors + writers + sound)
+      .map { mappers.person.toDatabase(it, null) }
+
     with(localSource) {
       transactions.withTransaction {
         people.upsert(dbTmdbPeople)
-        peopleShowsMovies.insertForMovie(dbTmdbPeopleMovies, movieIds.trakt.id)
+        peopleShowsMovies.insertForMovie(dbTmdbCast + dbTmdbCrew, movieIds.trakt.id)
       }
     }
 
-    Timber.d("Returning remote result.")
-    return filteredTmdbPeople.groupBy { it.department }
+    val movieActors = actors.map { it.copy(department = Department.ACTING) }
+    return (movieActors + directors + writers + sound)
+      .groupBy { it.department }
   }
 }
