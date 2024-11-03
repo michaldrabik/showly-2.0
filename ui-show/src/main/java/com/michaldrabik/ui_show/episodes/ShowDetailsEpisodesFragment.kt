@@ -110,9 +110,10 @@ class ShowDetailsEpisodesFragment :
 
   private fun setupInsets() {
     with(binding) {
-      episodesRoot.doOnApplyWindowInsets { _, insets, padding, _ ->
-        val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
-        episodesRoot.updatePadding(top = padding.top + inset)
+      episodesRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
+        val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+        view.updatePadding(top = padding.top + inset.top)
+        episodesRecycler.updatePadding(bottom = episodesRecycler.paddingBottom + inset.bottom)
       }
     }
   }

@@ -172,7 +172,7 @@
     android:nestedScrollingEnabled="false"
     android:overScrollMode="never"
     android:paddingTop="@dimen/spaceSmall"
-    android:paddingBottom="@dimen/spaceSmall"
+    android:paddingBottom="@dimen/spaceNormal"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
