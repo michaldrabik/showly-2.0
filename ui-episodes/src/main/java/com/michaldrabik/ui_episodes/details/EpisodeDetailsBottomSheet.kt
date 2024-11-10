@@ -292,7 +292,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
 
       val isEpisodeTitleHidden = !options.isWatched && spoilersSettings?.isEpisodeTitleHidden == true
       if (isEpisodeTitleHidden) {
-        if (spoilerTitle == null) {
+        if (title.any { it.isLetter() }) {
           spoilerTitle = String(title.toCharArray())
         }
         title = SPOILERS_REGEX.replace(title, SPOILERS_HIDE_SYMBOL)
@@ -329,7 +329,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
         }
 
       if (!options.isWatched && spoilersSettings?.isEpisodeDescriptionHidden == true) {
-        if (spoilerDescription == null) {
+        if (description.any { it.isLetter() }) {
           spoilerDescription = String(description.toCharArray())
         }
         description = SPOILERS_REGEX.replace(description, SPOILERS_HIDE_SYMBOL)
