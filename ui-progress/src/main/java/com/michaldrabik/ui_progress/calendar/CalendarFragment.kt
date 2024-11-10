@@ -94,6 +94,7 @@ class CalendarFragment :
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) },
       missingTranslationListener = { viewModel.findMissingTranslation(it) },
       modeClickListener = { requireMainFragment().toggleCalendarMode() },
+      premieresClickListener = { viewModel.togglePremieresFilter() },
       checkClickListener = { viewModel.onEpisodeChecked(it) },
       detailsClickListener = {
         requireMainFragment().openEpisodeDetails(

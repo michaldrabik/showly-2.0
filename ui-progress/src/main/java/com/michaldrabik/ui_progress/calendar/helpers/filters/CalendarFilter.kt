@@ -7,5 +7,6 @@ interface CalendarFilter {
   fun filter(
     now: ZonedDateTime,
     episode: Episode,
+    onlyPremieres: Boolean,
   ): Boolean
 }

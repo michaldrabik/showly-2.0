@@ -59,6 +59,7 @@ sealed class CalendarListItem(
 
   data class Filters(
     val mode: CalendarMode,
+    val premieres: Boolean,
   ) : CalendarListItem(
       show = Show.EMPTY,
       image = Image.createUnknown(ImageType.POSTER),

@@ -38,6 +38,13 @@
         app:chipIconVisible="true"
         />
 
+      <com.google.android.material.chip.Chip
+        android:id="@+id/premieresChip"
+        style="@style/ShowlyChip.Filter"
+        android:checkable="false"
+        android:text="@string/textPremieres"
+        />
+
     </com.google.android.material.chip.ChipGroup>
 
   </HorizontalScrollView>

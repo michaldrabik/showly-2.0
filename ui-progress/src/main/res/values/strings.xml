@@ -14,4 +14,5 @@
   <string name="textTraktSynchronize">Import from Trakt.tv</string>
   <string name="textProgressEmpty">Your <b>Progress</b> is currently empty.\n\nVisit <b>Discover</b> tab to add shows or import your Trakt.tv collection.</string>
   <string name="textNewSeason">Season Premiere</string>
+  <string name="textPremieres">Premieres</string>
 </resources>

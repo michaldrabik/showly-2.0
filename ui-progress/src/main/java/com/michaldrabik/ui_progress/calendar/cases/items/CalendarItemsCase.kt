@@ -10,6 +10,7 @@ import com.michaldrabik.data_local.database.model.Season
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.repository.mappers.Mappers
+import com.michaldrabik.repository.settings.SettingsFiltersRepository
 import com.michaldrabik.repository.settings.SettingsSpoilersRepository
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
@@ -27,13 +28,14 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 
 @Suppress("UNCHECKED_CAST")
-abstract class CalendarItemsCase constructor(
+abstract class CalendarItemsCase(
   private val dispatchers: CoroutineDispatchers,
   private val localSource: LocalDataSource,
   private val mappers: Mappers,
   private val showsRepository: ShowsRepository,
   private val translationsRepository: TranslationsRepository,
   private val spoilersRepository: SettingsSpoilersRepository,
+  private val filtersRepository: SettingsFiltersRepository,
   private val imagesProvider: ShowImagesProvider,
   private val dateFormatProvider: DateFormatProvider,
   private val watchlistAppender: WatchlistAppender,
@@ -58,6 +60,7 @@ abstract class CalendarItemsCase constructor(
       val language = translationsRepository.getLanguage()
       val dateFormat = dateFormatProvider.loadFullHourFormat()
       val spoilers = spoilersRepository.getAll()
+      val premieresOnly = filtersRepository.calendarPremieresOnly
 
       val (myShows, watchlistShows) = coroutineScope {
         val async1 = async { showsRepository.myShows.loadAll() }
@@ -95,7 +98,7 @@ abstract class CalendarItemsCase constructor(
       )
 
       val elements = filteredEpisodes
-        .filter { filter.filter(now, it) }
+        .filter { filter.filter(now, it, premieresOnly) }
         .sortedWith(sortEpisodes())
         .map { episode ->
           async {
@@ -144,8 +147,8 @@ abstract class CalendarItemsCase constructor(
 
       if (withFilters) {
         val filtersItem = when (this@CalendarItemsCase) {
-          is CalendarFutureCase -> CalendarListItem.Filters(PRESENT_FUTURE)
-          is CalendarRecentsCase -> CalendarListItem.Filters(RECENTS)
+          is CalendarFutureCase -> CalendarListItem.Filters(PRESENT_FUTURE, premieresOnly)
+          is CalendarRecentsCase -> CalendarListItem.Filters(RECENTS, premieresOnly)
           else -> throw IllegalStateException()
         }
         listOf(filtersItem) + groupedItems

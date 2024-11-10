@@ -16,6 +16,7 @@ class CalendarAdapter(
   var detailsClickListener: ((CalendarListItem.Episode) -> Unit),
   var checkClickListener: ((CalendarListItem.Episode) -> Unit),
   var modeClickListener: ((CalendarMode) -> Unit),
+  var premieresClickListener: (() -> Unit),
 ) : BaseAdapter<CalendarListItem>() {
 
   companion object {
@@ -43,6 +44,7 @@ class CalendarAdapter(
     VIEW_TYPE_FILTERS -> BaseViewHolder(
       CalendarFiltersView(parent.context).apply {
         onModeChipClick = this@CalendarAdapter.modeClickListener
+        onPremieresChipClick = this@CalendarAdapter.premieresClickListener
       },
     )
     else -> throw IllegalStateException()

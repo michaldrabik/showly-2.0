@@ -6,6 +6,7 @@ import com.michaldrabik.data_local.database.model.Episode
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.repository.mappers.Mappers
+import com.michaldrabik.repository.settings.SettingsFiltersRepository
 import com.michaldrabik.repository.settings.SettingsSpoilersRepository
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
@@ -23,6 +24,7 @@ class CalendarRecentsCase @Inject constructor(
   showsRepository: ShowsRepository,
   translationsRepository: TranslationsRepository,
   spoilersRepository: SettingsSpoilersRepository,
+  filtersRepository: SettingsFiltersRepository,
   imagesProvider: ShowImagesProvider,
   dateFormatProvider: DateFormatProvider,
   watchlistAppender: WatchlistAppender,
@@ -35,6 +37,7 @@ class CalendarRecentsCase @Inject constructor(
     showsRepository,
     translationsRepository,
     spoilersRepository,
+    filtersRepository,
     imagesProvider,
     dateFormatProvider,
     watchlistAppender,

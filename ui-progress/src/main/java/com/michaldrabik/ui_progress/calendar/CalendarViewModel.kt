@@ -79,6 +79,12 @@ class CalendarViewModel @Inject constructor(
     }
   }
 
+  fun togglePremieresFilter() {
+    val isPremieresEnabled = settingsRepository.filters.calendarPremieresOnly
+    settingsRepository.filters.calendarPremieresOnly = !isPremieresEnabled
+    loadItems()
+  }
+
   fun onEpisodeChecked(episode: CalendarListItem.Episode) {
     viewModelScope.launch {
       val bundle = EpisodeBundle(episode.episode, episode.season, episode.show)

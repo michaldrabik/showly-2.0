@@ -23,6 +23,7 @@ internal class CalendarFiltersView : FrameLayout {
   private lateinit var filters: CalendarListItem.Filters
 
   var onModeChipClick: ((CalendarMode) -> Unit)? = null
+  var onPremieresChipClick: (() -> Unit)? = null
 
   init {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
@@ -30,12 +31,16 @@ internal class CalendarFiltersView : FrameLayout {
       modeChip.onClick {
         onModeChipClick?.invoke(filters.mode)
       }
+      premieresChip.onClick {
+        onPremieresChipClick?.invoke()
+      }
     }
   }
 
   fun bind(filters: CalendarListItem.Filters) {
     this.filters = filters
     with(binding) {
+      premieresChip.isSelected = filters.premieres
       when (filters.mode) {
         CalendarMode.PRESENT_FUTURE -> {
           modeChip.text = context.getText(R.string.textWatchlistIncoming)
