@@ -12,4 +12,5 @@
   <string name="textTraktSynchronize">Importer fra Trakt.tv</string>
   <string name="textProgressEmpty">Dit <b>Fremskridt</b> er tomt i øjeblikket.\n\nBesøg <b>Opdag</b>-fanen for at tilføje serier eller importer din Trakt.tv samling.</string>
   <string name="textNewSeason">Sæson Præmiere</string>
+  <string name="textPremieres">Premierer</string>
 </resources>

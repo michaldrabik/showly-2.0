@@ -10,4 +10,5 @@
   <string name="textTraktSynchronize">Импортировать из Trakt.tv</string>
   <string name="textProgressEmpty">Ваш <b>Прогресс</b> в настоящее время пуст.\n\nПосетите вкладку <b>Открытия</b>, чтобы добавить сериалы или импортировать вашу коллекцию Trakt.tv.</string>
   <string name="textNewSeason">Премьера сезона</string>
+  <string name="textPremieres">Премьеры</string>
 </resources>

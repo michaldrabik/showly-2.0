@@ -12,4 +12,5 @@
   <string name="textTraktSynchronize">إستيراد البيانات من Trakt.tv</string>
   <string name="textProgressEmpty">قائمة <b>مستوى التقدم</b> فارغة حالياً.\n\nإذهب إلى صفحة <b>إكتشف</b> لإضافة مسلسلات، أو اِستورد البيانات من Trakt.tv.</string>
   <string name="textNewSeason">إفتتاحية الموسم</string>
+  <string name="textPremieres">العروض الأولى</string>
 </resources>
