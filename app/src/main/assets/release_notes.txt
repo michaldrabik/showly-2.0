@@ -1,3 +1,4 @@
 * Added premieres filter for shows calendar
+* Added Taiwan and Hong Kong regions
 * Fixed bug where last element in episodes list was covered with bottom bar
 * Fixed bug where some people credits would display incorrectly
