@@ -2,7 +2,7 @@
 
 agp = "8.7.2"
 kotlin = "2.0.21"
-devtools = "2.0.21-1.0.28"
+devtools = "2.1.0-1.0.29"
 core-ktx = "1.13.1" # Compile SDK 35 to update.
 appcompat = "1.7.0"
 gridlayout = "1.0.0"
