@@ -69,7 +69,7 @@ glide-compiler = { group = "com.github.bumptech.glide", name = "compiler", versi
 
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit" }
-moshi = { group = "com.squareup.moshi", name = "moshi-kotlin", version = "1.15.1" }
+moshi = { group = "com.squareup.moshi", name = "moshi-kotlin", version = "1.15.2" }
 
 hilt-plugin = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hilt" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
