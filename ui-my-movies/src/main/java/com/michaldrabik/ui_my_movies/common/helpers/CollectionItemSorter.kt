@@ -33,7 +33,9 @@ class CollectionItemSorter @Inject constructor() {
           .thenBy { it.userRating }
           .thenBy { getTitle(it) }
       DATE_ADDED -> compareBy { it.movie.createdAt }
-      NEWEST -> compareBy<CollectionListItem.MovieItem> { it.movie.released }.thenBy { it.movie.year }
+      NEWEST -> compareBy<CollectionListItem.MovieItem> { it.movie.released == null }
+        .thenBy { it.movie.released }
+        .thenBy { it.movie.year }
       else -> throw IllegalStateException("Invalid sort order")
     }
 

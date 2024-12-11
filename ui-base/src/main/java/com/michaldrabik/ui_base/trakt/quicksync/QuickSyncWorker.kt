@@ -4,13 +4,14 @@ import android.annotation.SuppressLint
 import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.Constraints
-import androidx.work.ExistingWorkPolicy.REPLACE
+import androidx.work.ExistingWorkPolicy.APPEND_OR_REPLACE
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.michaldrabik.common.errors.ErrorHelper
 import com.michaldrabik.common.errors.ShowlyError.AccountLimitsError
+import com.michaldrabik.common.errors.ShowlyError.CoroutineCancellation
 import com.michaldrabik.common.errors.ShowlyError.UnauthorizedError
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_base.Logger
@@ -54,7 +55,7 @@ class QuickSyncWorker @AssistedInject constructor(
         .addTag(TAG)
         .build()
 
-      workManager.enqueueUniqueWork(TAG, REPLACE, request)
+      workManager.enqueueUniqueWork(TAG, APPEND_OR_REPLACE, request)
       Timber.i("Trakt QuickSync scheduled.")
     }
   }
@@ -85,6 +86,9 @@ class QuickSyncWorker @AssistedInject constructor(
 
   private suspend fun handleError(error: Throwable) {
     val showlyError = ErrorHelper.parse(error)
+    if (showlyError is CoroutineCancellation) {
+      return
+    }
     if (showlyError is UnauthorizedError) {
       eventsManager.sendEvent(TraktSyncAuthError)
       userManager.revokeToken()
