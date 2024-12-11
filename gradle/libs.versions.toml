@@ -1,8 +1,8 @@
 [versions]
 
-agp = "8.7.2"
-kotlin = "2.0.21"
-devtools = "2.0.21-1.0.27"
+agp = "8.7.3"
+kotlin = "2.1.0"
+devtools = "2.1.0-1.0.29"
 core-ktx = "1.13.1" # Compile SDK 35 to update.
 appcompat = "1.7.0"
 gridlayout = "1.0.0"
@@ -21,7 +21,7 @@ androidTestRunner = "1.6.2"
 androidTestTruth = "1.6.0"
 glide = "4.16.0"
 retrofit = "2.11.0"
-hilt = "2.52"
+hilt = "2.53"
 hiltWork = "1.2.0"
 hilt-compiler = "1.2.0"
 kotlinx-coroutines = "1.9.0"
@@ -69,7 +69,7 @@ glide-compiler = { group = "com.github.bumptech.glide", name = "compiler", versi
 
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit" }
-moshi = { group = "com.squareup.moshi", name = "moshi-kotlin", version = "1.15.1" }
+moshi = { group = "com.squareup.moshi", name = "moshi-kotlin", version = "1.15.2" }
 
 hilt-plugin = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hilt" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
