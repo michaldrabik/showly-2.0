@@ -101,6 +101,7 @@ class ShowDetailsEpisodesFragment :
   private fun setupView() {
     with(binding) {
       episodesBackArrow.onClick { findNavControl()?.popBackStack() }
+      episodesTitle.onClick { findNavControl()?.popBackStack() }
       episodesUnlockButton.onClick(safe = false) { toggleEpisodesLock() }
       listOf(episodesSeasonRateButton, episodesSeasonMyStarIcon).onClick {
         viewModel.openRateSeasonDialog()
