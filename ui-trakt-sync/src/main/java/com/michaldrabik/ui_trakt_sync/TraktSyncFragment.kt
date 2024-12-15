@@ -65,7 +65,7 @@ class TraktSyncFragment :
 
   private fun setupView() {
     with(binding) {
-      traktSyncToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+      traktSyncToolbar.setOnClickListener { activity?.onBackPressed() }
       traktSyncImportCheckbox.setOnCheckedChangeListener { _, isChecked ->
         traktSyncButton.isEnabled = (isChecked || traktSyncExportCheckbox.isChecked)
       }

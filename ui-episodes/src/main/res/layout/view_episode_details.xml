@@ -6,7 +6,7 @@
   android:id="@+id/episodeDetailsRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:background="@drawable/bg_bottom_sheet"
+  android:background="@drawable/bg_bottom_sheet_secondary"
   tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
   >
 
@@ -240,6 +240,7 @@
             android:id="@+id/episodeDetailsRateButton"
             style="@style/ShowlyChip.Button"
             android:text="@string/textRate"
+            app:chipBackgroundColor="?colorSheetBackground"
             app:chipIcon="@drawable/ic_star"
             />
 
@@ -265,6 +266,7 @@
             style="@style/ShowlyChip.Button"
             android:layout_marginStart="@dimen/spaceSmall"
             android:text="@string/textLoadCommentsCount"
+            app:chipBackgroundColor="?colorSheetBackground"
             app:chipIcon="@drawable/ic_comment"
             />
 

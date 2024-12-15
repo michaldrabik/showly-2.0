@@ -110,7 +110,7 @@ internal class CollectionFiltersGenreBottomSheet : BaseBottomSheetFragment(R.lay
             .setAllCornerSizes(100f)
             .build()
           chipBackgroundColor = ContextCompat.getColorStateList(context, R.color.selector_discover_chip_background)
-          setChipStrokeColorResource(R.color.selector_discover_chip_text)
+          setChipStrokeColorResource(R.color.selector_discover_chip_stroke)
           setChipStrokeWidthResource(R.dimen.discoverFilterChipStroke)
           setTextColor(ContextCompat.getColorStateList(context, R.color.selector_discover_chip_text))
           isChecked = genre.name in genresNames

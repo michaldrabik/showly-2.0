@@ -116,9 +116,9 @@ internal class CollectionFiltersNetworkBottomSheet : BaseBottomSheetFragment(R.l
             .build()
           setEnsureMinTouchTargetSize(false)
           setChipIconResource(icon)
-          chipBackgroundColor = ContextCompat
-            .getColorStateList(requireContext(), R.color.selector_discover_chip_background)
-          setChipStrokeColorResource(R.color.selector_discover_chip_text)
+          chipBackgroundColor =
+            ContextCompat.getColorStateList(requireContext(), R.color.selector_discover_chip_background)
+          setChipStrokeColorResource(R.color.selector_discover_chip_stroke)
           setChipStrokeWidthResource(R.dimen.discoverFilterChipStroke)
           setTextColor(ContextCompat.getColorStateList(requireContext(), R.color.selector_discover_chip_text))
           isChecked = network.name in networksNames

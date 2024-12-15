@@ -21,6 +21,7 @@
   <attr name="colorChipButtonStroke" format="color" />
   <attr name="colorCardBackground" format="color" />
   <attr name="colorBadgeBackground" format="color" />
+  <attr name="colorSheetBackground" format="color" />
 
   <attr name="colorPlaceholderBackground" format="color" />
   <attr name="colorPlaceholderStroke" format="color" />

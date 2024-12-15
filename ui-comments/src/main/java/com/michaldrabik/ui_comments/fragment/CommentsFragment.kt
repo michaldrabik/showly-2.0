@@ -89,6 +89,7 @@ class CommentsFragment : BaseFragment<CommentsViewModel>(R.layout.fragment_comme
     hideNavigation()
     with(binding) {
       commentsBackArrow.onClick { requireActivity().onBackPressed() }
+      commentsTitle.onClick { requireActivity().onBackPressed() }
       commentsPostButton.onClick { openPostCommentSheet() }
       commentsUpButton.onClick {
         commentsUpButton.fadeOut(150)

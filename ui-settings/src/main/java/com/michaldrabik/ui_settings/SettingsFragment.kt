@@ -52,7 +52,7 @@ class SettingsFragment :
 
   private fun setupView() {
     with(binding) {
-      settingsToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+      settingsToolbar.setOnClickListener { activity?.onBackPressed() }
       settingsPremium.onClick { navigateTo(R.id.actionSettingsFragmentToPremium) }
       settingsRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
         val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())

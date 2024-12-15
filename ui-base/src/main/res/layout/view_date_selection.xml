@@ -184,7 +184,7 @@
     android:layout_height="32dp"
     android:text="@string/textOk"
     android:visibility="gone"
-    app:chipBackgroundColor="?colorBottomMenuBackground"
+    app:chipBackgroundColor="?colorSheetBackground"
     app:layout_constraintBottom_toBottomOf="@id/defaultsTipText"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toEndOf="@id/defaultsTipText"

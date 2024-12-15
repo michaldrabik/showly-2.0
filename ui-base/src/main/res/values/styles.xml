@@ -47,6 +47,7 @@
     <item name="colorChipButtonStroke">#66AAAAAA</item>
     <item name="colorCardBackground">#282828</item>
     <item name="colorBadgeBackground">@color/colorGrayDark</item>
+    <item name="colorSheetBackground">@color/colorPrimary</item>
     <item name="colorWidgetStatusBackground">@color/colorBlackTranslucent</item>
   </style>
 
@@ -232,16 +233,17 @@
     <item name="android:textSize">12sp</item>
   </style>
 
-  <style name="ContextMenuItemButton.Move" parent="RoundOutlinedButton">
+  <style name="ContextMenuItemButton.Move" parent="RoundTextButton">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
-    <item name="android:gravity">center</item>
+    <item name="android:gravity">start|center_vertical</item>
     <item name="android:includeFontPadding">true</item>
     <item name="android:textColor">?android:attr/textColorPrimary</item>
     <item name="iconGravity">textStart</item>
-    <item name="iconPadding">@dimen/spaceTiny</item>
+    <item name="iconPadding">@dimen/spaceSmall</item>
     <item name="iconTint">?android:attr/textColorPrimary</item>
     <item name="iconSize">22dp</item>
+    <item name="android:insetLeft">-16dp</item>
     <item name="rippleColor">?android:attr/textColorPrimary</item>
     <item name="strokeColor">?android:attr/textColorPrimary</item>
   </style>
@@ -249,13 +251,14 @@
   <style name="ContextMenuItemButton.Remove" parent="RoundTextButton">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
-    <item name="android:gravity">center</item>
+    <item name="android:gravity">start|center_vertical</item>
     <item name="android:includeFontPadding">false</item>
     <item name="android:textColor">?android:attr/textColorPrimary</item>
     <item name="icon">@drawable/ic_remove_list</item>
     <item name="iconGravity">textStart</item>
     <item name="iconSize">22dp</item>
-    <item name="iconPadding">@dimen/spaceTiny</item>
+    <item name="android:insetLeft">-16dp</item>
+    <item name="iconPadding">@dimen/spaceSmall</item>
     <item name="iconTint">?android:attr/textColorPrimary</item>
     <item name="rippleColor">?android:attr/textColorPrimary</item>
     <item name="strokeColor">?android:attr/textColorPrimary</item>
@@ -314,7 +317,7 @@
   <style name="ShowlyChip.Sort" parent="ShowlyChip">
     <item name="android:textColor">?android:textColorPrimary</item>
     <item name="chipBackgroundColor">?android:windowBackground</item>
-    <item name="chipStrokeColor">?android:textColorSecondary</item>
+    <item name="chipStrokeColor">?colorChipButtonStroke</item>
     <item name="closeIcon">@drawable/ic_arrow_alt_up</item>
     <item name="closeIconEndPadding">0dp</item>
     <item name="closeIconTint">?android:textColorPrimary</item>

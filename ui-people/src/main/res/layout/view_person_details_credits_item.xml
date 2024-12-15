@@ -32,7 +32,7 @@
       android:id="@+id/viewPersonCreditsItemImage"
       android:layout_width="@dimen/personCreditsImageWidth"
       android:layout_height="@dimen/personCreditsImageHeight"
-      android:background="@drawable/bg_media_view_elevation"
+      android:background="@drawable/bg_media_view_elevation_sheet"
       android:elevation="@dimen/elevationSmall"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"

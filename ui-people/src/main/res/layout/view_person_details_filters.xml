@@ -23,12 +23,14 @@
       android:id="@+id/viewPersonDetailsFiltersShowsChip"
       style="@style/ShowlyChip.Filter"
       android:text="@string/textShows"
+      app:chipBackgroundColor="?colorSheetBackground"
       />
 
     <com.google.android.material.chip.Chip
       android:id="@+id/viewPersonDetailsFiltersMoviesChip"
       style="@style/ShowlyChip.Filter"
       android:text="@string/textMovies"
+      app:chipBackgroundColor="?colorSheetBackground"
       />
 
   </com.google.android.material.chip.ChipGroup>

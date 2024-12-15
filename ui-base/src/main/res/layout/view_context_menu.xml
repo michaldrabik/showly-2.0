@@ -6,7 +6,7 @@
   android:id="@+id/contextMenuItemRoot"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:background="@drawable/bg_bottom_sheet"
+  android:background="@drawable/bg_bottom_sheet_secondary"
   android:clipChildren="false"
   android:clipToPadding="false"
   android:focusableInTouchMode="true"
@@ -182,20 +182,35 @@
     tools:text="@tools:sample/lorem/random"
     />
 
+  <View
+    android:id="@+id/contextMenuItemSeparator1"
+    android:layout_width="0dp"
+    android:layout_height="1dp"
+    android:layout_marginTop="@dimen/spaceNormal"
+    android:background="?attr/colorSeparator"
+    app:layout_constraintBottom_toTopOf="@id/contextMenuItemPinButtonsLayout"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/contextMenuItemBarrier"
+    tools:visibility="visible"
+    />
+
   <!-- Pinning Buttons -->
 
   <LinearLayout
     android:id="@+id/contextMenuItemPinButtonsLayout"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:divider="@drawable/divider_item_menu"
+    android:layout_marginTop="@dimen/spaceTiny"
+    android:layout_marginBottom="@dimen/spaceTiny"
+    android:clipChildren="false"
     android:orientation="vertical"
     android:showDividers="middle"
     android:visibility="gone"
     app:layout_constraintBottom_toBottomOf="@id/contextMenuItemSeparator2"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/contextMenuItemBarrier"
+    app:layout_constraintTop_toBottomOf="@id/contextMenuItemSeparator1"
     tools:visibility="visible"
     >
 
@@ -241,14 +256,12 @@
     android:id="@+id/contextMenuItemSeparator2"
     android:layout_width="0dp"
     android:layout_height="1dp"
-    android:layout_marginTop="11dp"
     android:background="?attr/colorSeparator"
     android:visibility="gone"
     app:layout_constraintBottom_toTopOf="@id/contextMenuItemButtonsLayout"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/contextMenuItemPinButtonsLayout"
-    app:layout_goneMarginTop="8dp"
     tools:visibility="visible"
     />
 
@@ -258,8 +271,9 @@
     android:id="@+id/contextMenuItemButtonsLayout"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/spaceMedium"
-    android:divider="@drawable/divider_item_menu"
+    android:layout_marginTop="@dimen/spaceTiny"
+    android:layout_marginBottom="@dimen/spaceTiny"
+    android:clipChildren="false"
     android:orientation="vertical"
     android:showDividers="middle"
     app:layout_constraintBottom_toBottomOf="parent"

@@ -7,5 +7,5 @@
     android:topLeftRadius="16dp"
     android:topRightRadius="16dp"
     />
-  <solid android:color="?colorBottomMenuBackground" />
+  <solid android:color="?colorSheetBackground" />
 </shape>
