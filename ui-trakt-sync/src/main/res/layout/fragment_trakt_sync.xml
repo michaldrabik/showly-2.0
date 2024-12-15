@@ -64,8 +64,9 @@
 
     <ImageView
       android:id="@+id/traktSyncIconShowly"
-      android:layout_width="80dp"
+      android:layout_width="74dp"
       android:layout_height="0dp"
+      android:layout_marginStart="2dp"
       app:layout_constraintBottom_toBottomOf="@id/traktSyncIconArrow"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_chainStyle="packed"
