@@ -240,12 +240,13 @@
     <item name="android:includeFontPadding">true</item>
     <item name="android:textColor">?android:attr/textColorPrimary</item>
     <item name="iconGravity">textStart</item>
-    <item name="iconPadding">@dimen/spaceSmall</item>
+    <item name="iconPadding">10dp</item>
     <item name="iconTint">?android:attr/textColorPrimary</item>
     <item name="iconSize">22dp</item>
     <item name="android:insetLeft">-16dp</item>
-    <item name="rippleColor">?android:attr/textColorPrimary</item>
-    <item name="strokeColor">?android:attr/textColorPrimary</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textSize">15sp</item>
+    <item name="rippleColor">?android:attr/textColorSecondary</item>
   </style>
 
   <style name="ContextMenuItemButton.Remove" parent="RoundTextButton">
@@ -258,10 +259,11 @@
     <item name="iconGravity">textStart</item>
     <item name="iconSize">22dp</item>
     <item name="android:insetLeft">-16dp</item>
-    <item name="iconPadding">@dimen/spaceSmall</item>
+    <item name="iconPadding">10dp</item>
     <item name="iconTint">?android:attr/textColorPrimary</item>
-    <item name="rippleColor">?android:attr/textColorPrimary</item>
-    <item name="strokeColor">?android:attr/textColorPrimary</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textSize">15sp</item>
+    <item name="rippleColor">?android:attr/textColorSecondary</item>
   </style>
 
   <style name="RoundMaterialButton" parent="Widget.Material3.Button">

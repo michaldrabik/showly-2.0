@@ -139,8 +139,8 @@
 
   <string name="menuPin">Pin to top</string>
   <string name="menuUnpin">Unpin from top</string>
-  <string name="menuAddOnHold" comment="This is a button for Progress subsection. It will contain pending shows marked by user.">Pin to \'on hold\'</string>
-  <string name="menuRemoveOnHold" comment="This is a button for Progress subsection. It will contain pending shows marked by user.">Unpin from \'on hold\'</string>
+  <string name="menuAddOnHold" comment="This is a button for Progress subsection. It will contain pending shows marked by user.">Pin to \'On Hold\'</string>
+  <string name="menuRemoveOnHold" comment="This is a button for Progress subsection. It will contain pending shows marked by user.">Unpin from \'On Hold\'</string>
 
   <string name="errorGeneral">Oops… Something went wrong.\nPlease contact us if this keeps happening.</string>
   <string name="errorAuthorization">Authorization failed. Please contact us if this keeps happening.</string>
