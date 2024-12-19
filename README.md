@@ -31,13 +31,13 @@ The OSS version for Android available in this repo is completely free of all Goo
 ## Screenshots
 
 <div>
-   <img src="https://github.com/user-attachments/assets/84f00049-6593-4cb6-bbe3-9cff7ffd313f" width="200" alt="Screenshot 1">
+   <img src="https://github.com/user-attachments/assets/84f00049-6593-4cb6-bbe3-9cff7ffd313f" width="160" alt="Screenshot 1">
   &nbsp;&nbsp;
-   <img src="https://github.com/user-attachments/assets/81dcb5a1-0db0-40bd-bba4-0bb82fbc7a4e" width="200" alt="Screenshot 2">
+   <img src="https://github.com/user-attachments/assets/81dcb5a1-0db0-40bd-bba4-0bb82fbc7a4e" width="160" alt="Screenshot 2">
   &nbsp;&nbsp;
-   <img src="https://github.com/user-attachments/assets/a6959690-57d0-40c9-a2e3-f02216aacc71" width="200" alt="Screenshot 3">
+   <img src="https://github.com/user-attachments/assets/a6959690-57d0-40c9-a2e3-f02216aacc71" width="160" alt="Screenshot 3">
   &nbsp;&nbsp;
-  <img src="https://github.com/user-attachments/assets/255505c5-ddc4-4ae6-b130-1ef47057e9b8" width="200" alt="Screenshot 4">
+  <img src="https://github.com/user-attachments/assets/255505c5-ddc4-4ae6-b130-1ef47057e9b8" width="160" alt="Screenshot 4">
 </div>
 
 ## Project Setup
