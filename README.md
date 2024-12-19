@@ -6,7 +6,7 @@
 
 If you use and enjoy Showly OSS, consider buying me a coffee as a support for my work. Thanks!
 
-# Showly is coming to iOS!
+# Showly is coming to iOS! 🍎
 
 I am happy to announce that Showly is coming to iOS!
 
