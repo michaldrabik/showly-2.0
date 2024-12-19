@@ -8,26 +8,36 @@ If you use and enjoy Showly OSS, consider buying me a coffee as a support for my
 
 # Showly
 
-<img src="https://i.ibb.co/ChBN7Lg/ic-launcher.png" align="left" width="180" hspace="10" vspace="10" />
+<img src="https://github.com/user-attachments/assets/b31c6ce6-7257-4c90-a13b-b12603e105a9" align="left" width="180" hspace="0" vspace="80" />
 
-Showly is a modern Android TV Shows Tracker.
+Showly is a modern TV Shows and Movies tracking app.
 
-The OSS version available in this repo is completely free of all Google services.
+The OSS version for Android available in this repo is completely free of all Google services.
 
 <a href="https://play.google.com/store/apps/details?id=com.michaldrabik.showly2">
   <img
     alt="Get it on Google Play"
     height="80"
-    src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"/>
+    src="https://github.com/user-attachments/assets/3e49d1b3-1046-4e76-ad50-dfd859c23f3a"/>
+</a>
+&nbsp;&nbsp;
+<a href="https://testflight.apple.com/join/UM44YZmM">
+  <img
+    alt="Get it on App Store"
+    height="80"
+    src="https://github.com/user-attachments/assets/f43c7c55-01d8-4ac3-99dd-ca8e0f574283"/>
 </a>
 
 ## Screenshots
 
 <div>
-   <img src="assets/screenshots/github1a.png" width="150" alt="Screenshot 1">
-   <img src="assets/screenshots/github2a.png" width="150" alt="Screenshot 2">
-   <img src="assets/screenshots/github3a.png" width="150" alt="Screenshot 3">
-   <img src="assets/screenshots/github4a.png" width="150" alt="Screenshot 4">
+   <img src="https://github.com/user-attachments/assets/84f00049-6593-4cb6-bbe3-9cff7ffd313f" width="200" alt="Screenshot 1">
+  &nbsp;&nbsp;
+   <img src="https://github.com/user-attachments/assets/81dcb5a1-0db0-40bd-bba4-0bb82fbc7a4e" width="200" alt="Screenshot 2">
+  &nbsp;&nbsp;
+   <img src="https://github.com/user-attachments/assets/a6959690-57d0-40c9-a2e3-f02216aacc71" width="200" alt="Screenshot 3">
+  &nbsp;&nbsp;
+  <img src="https://github.com/user-attachments/assets/255505c5-ddc4-4ae6-b130-1ef47057e9b8" width="200" alt="Screenshot 4">
 </div>
 
 ## Project Setup
