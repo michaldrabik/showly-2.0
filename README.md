@@ -1,6 +1,6 @@
 ![Version](https://img.shields.io/github/v/tag/michaldrabik/showly-2.0?label=version)
 ![Build]( https://img.shields.io/github/actions/workflow/status/michaldrabik/showly-2.0/android.yml?branch=master)
-![Twitter](https://img.shields.io/twitter/follow/AppShowly?style=social)
+[![Twitter](https://img.shields.io/twitter/follow/AppShowly?style=social)](https://twitter.com/AppShowly)
 
 <a href="https://www.buymeacoffee.com/showly" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-red.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
